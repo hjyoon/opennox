@@ -197,8 +197,8 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v141;               // esi
 	char* v142;             // esi
 	wchar2_t* v143;          // eax
-	char* v144;             // esi
-	uint32_t* v145;         // eax
+	nox_team_t* v144;       // esi
+	nox_object_team_t* v145; // eax
 	wchar2_t* v146;          // eax
 	int v147;               // eax
 	wchar2_t* v148;          // eax
@@ -207,15 +207,15 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	wchar2_t* v151;          // eax
 	int v152;               // eax
 	int v153;               // edi
-	char* v154;             // ebx
+	nox_playerInfo* v154;   // ebx
 	wchar2_t* v155;          // eax
 	wchar2_t* v156;          // eax
 	wchar2_t* v157;          // eax
 	wchar2_t* v158;          // eax
 	wchar2_t* v159;          // eax
-	char* v160;             // ebx
+	nox_team_t* v160;       // ebx
 	wchar2_t* v161;          // eax
-	uint32_t* v162;         // esi
+	nox_object_team_t* v162; // esi
 	wchar2_t* v163;          // eax
 	int v164;               // esi
 	wchar2_t* v165;          // eax
@@ -225,9 +225,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	wchar2_t* v169;          // eax
 	wchar2_t* v170;          // eax
 	wchar2_t* v171;          // eax
-	char* v172;             // ebx
+	nox_team_t* v172;       // ebx
 	wchar2_t* v173;          // eax
-	uint32_t* v174;         // esi
+	nox_object_team_t* v174; // esi
 	wchar2_t* v175;          // eax
 	int v176;               // esi
 	wchar2_t* v177;          // eax
@@ -952,7 +952,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			sub_470510();
 		}
 		v145 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
-		if (v145 && nox_xxx_teamCompare2_419180((int)v145, *(uint8_t*)(data + 1))) {
+		if (v145 && nox_xxx_teamCompare2_419180(v145, *(uint8_t*)(data + 1))) {
 			v146 = nox_strman_loadString_40F1D0("TeamWon", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3776);
 			nox_swprintf(v400, v146);
 			v147 = 0;
@@ -996,7 +996,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			v175 = nox_strman_loadString_40F1D0("CTF_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c",
 												4071);
 			nox_swprintf(v398, v175, v172);
-			if (!v174 || !nox_xxx_teamCompare2_419180((int)v174, v172[57])) {
+			if (!v174 || !nox_xxx_teamCompare2_419180(v174, v172->field_57)) {
 				v176 = 1;
 				goto LABEL_600;
 			}
@@ -1048,16 +1048,16 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 					goto LABEL_559;
 				}
 				if (!*(uint8_t*)(data + 3)) {
-					sub_4947E0((int)v154);
+					sub_4947E0(v154);
 				}
 				if (v153 != nox_player_netCode_85319C) {
 					v159 = nox_strman_loadString_40F1D0("DM_Loss", 0,
 														"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3899);
-					nox_swprintf(v389, v159, v154 + 4704);
+					nox_swprintf(v389, v159, v154->name_final);
 					v150 = 1;
 					goto LABEL_559;
 				}
-				if (!v154[2252]) {
+				if (!v154->info.isFemale) {
 					v314 = nox_strman_loadString_40F1D0("DM_MaleVictory", 0,
 														"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3905);
 					nox_swprintf(v389, v314);
@@ -1102,9 +1102,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			if (v154) {
 				v158 = nox_strman_loadString_40F1D0("HL_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c",
 													3863);
-				nox_swprintf(v392, v158, v154 + 4704);
+				nox_swprintf(v392, v158, v154->name_final);
 				if (!*(uint8_t*)(data + 3)) {
-					sub_4947E0((int)v154);
+					sub_4947E0(v154);
 				}
 			}
 			nox_wcscat(v389, v392);
@@ -1150,7 +1150,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			v165 =
 				nox_strman_loadString_40F1D0("HL_Header", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3969);
 			nox_swprintf(v390, v165);
-			if (v162 && nox_xxx_teamCompare2_419180((int)v162, v160[57])) {
+			if (v162 && nox_xxx_teamCompare2_419180(v162, v160->field_57)) {
 				v335 = nox_strman_loadString_40F1D0("HL_YourTeam", 0,
 													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 3973);
 				v166 = nox_strman_loadString_40F1D0("HL_Victory", 0, "C:\\NoxPost\\src\\Client\\Network\\cdecode.c",
@@ -1169,7 +1169,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				v164 = 1;
 			}
 			if (!*(uint8_t*)(data + 3)) {
-				sub_4948B0((int)v160);
+				sub_4948B0(v160);
 				goto LABEL_585;
 			}
 		} else {
@@ -1180,7 +1180,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				v164 = 0;
 				goto LABEL_585;
 			}
-			if (v162 && nox_xxx_teamCompare2_419180((int)v162, v160[57])) {
+			if (v162 && nox_xxx_teamCompare2_419180(v162, v160->field_57)) {
 				v169 = nox_strman_loadString_40F1D0("DM_TeamVictory", 0,
 													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 4006);
 				nox_swprintf(v390, v169);
@@ -1195,7 +1195,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				v164 = 1;
 			}
 			if (!*(uint8_t*)(data + 3)) {
-				sub_4948B0((int)v160);
+				sub_4948B0(v160);
 				goto LABEL_585;
 			}
 		}

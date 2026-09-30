@@ -1317,112 +1317,97 @@ void sub_48E940() {
 }
 
 //----- (004947E0) --------------------------------------------------------
-char* sub_4947E0(int a1) {
-	short v1;     // ax
-	int v2;       // edi
-	char* result; // eax
-	int i;        // esi
-
+void sub_4947E0(nox_playerInfo* winner) {
+	int score_limit;
 	if (nox_common_gameFlags_check_40A5C0(1)) {
-		v1 = nox_common_gameFlags_getVal_40A5B0();
-		v2 = (unsigned short)nox_xxx_servGamedataGet_40A020(v1);
+		short flags = nox_common_gameFlags_getVal_40A5B0();
+		score_limit = (unsigned short)nox_xxx_servGamedataGet_40A020(flags);
 	} else {
-		v2 = *((unsigned short*)nox_xxx_cliGamedataGet_416590(0) + 27);
+		score_limit = *((unsigned short*)nox_xxx_cliGamedataGet_416590(0) + 27);
 	}
-	result = nox_common_playerInfoGetFirst_416EA0();
-	for (i = (int)result; result; i = (int)result) {
-		if (!(*(uint8_t*)(i + 3680) & 1)) {
-			if (i == a1) {
-				if (nox_common_gameFlags_check_40A5C0(1024)) {
-					if (*(uint32_t*)(i + 2140) >= v2) {
-						*(uint32_t*)(i + 2140) = v2 - 1;
-					}
-				} else {
-					*(uint32_t*)(i + 2136) = v2;
-				}
-			} else if (nox_common_gameFlags_check_40A5C0(1024)) {
-				if (*(uint32_t*)(i + 2140) < v2) {
-					*(uint32_t*)(i + 2140) = v2;
-				}
-			} else if (*(uint32_t*)(i + 2136) >= v2) {
-				*(uint32_t*)(i + 2136) = v2 - 1;
-			}
+	const int highlander = nox_common_gameFlags_check_40A5C0(1024);
+	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+		 player = nox_common_playerInfoGetNext_416EE0(player)) {
+		if (player->field_3680 & 1) {
+			continue;
 		}
-		result = nox_common_playerInfoGetNext_416EE0(i);
+		if (player == winner) {
+			if (highlander) {
+				if (player->field_2140 >= score_limit) {
+					player->field_2140 = score_limit - 1;
+				}
+			} else {
+				player->lessons = score_limit;
+			}
+		} else if (highlander) {
+			if (player->field_2140 < score_limit) {
+				player->field_2140 = score_limit;
+			}
+		} else if (player->lessons >= score_limit) {
+			player->lessons = score_limit - 1;
+		}
 	}
-	return result;
 }
 
 //----- (004948B0) --------------------------------------------------------
-int sub_4948B0(int a1) {
-	short v1;   // ax
-	int v2;     // edi
-	char* i;    // esi
-	int result; // eax
-	int j;      // ebp
-	char* v6;   // eax
-	char* v7;   // esi
-	int k;      // ebp
-	char* v9;   // eax
-	char* v10;  // esi
-
-	if (nox_common_gameFlags_check_40A5C0(1)) {
-		v1 = nox_common_gameFlags_getVal_40A5B0();
-		v2 = (unsigned short)nox_xxx_servGamedataGet_40A020(v1);
-	} else {
-		v2 = *((unsigned short*)nox_xxx_cliGamedataGet_416590(0) + 27);
+void sub_4948B0(nox_team_t* winner) {
+	if (!winner) {
+		return;
 	}
-	for (i = nox_server_teamFirst_418B10(); i; i = nox_server_teamNext_418B60((int)i)) {
-		if (i == (char*)a1) {
-			if (!nox_common_gameFlags_check_40A5C0(1024)) {
-				*((uint32_t*)i + 13) = v2;
+	int score_limit;
+	if (nox_common_gameFlags_check_40A5C0(1)) {
+		short flags = nox_common_gameFlags_getVal_40A5B0();
+		score_limit = (unsigned short)nox_xxx_servGamedataGet_40A020(flags);
+	} else {
+		score_limit = *((unsigned short*)nox_xxx_cliGamedataGet_416590(0) + 27);
+	}
+	const int highlander = nox_common_gameFlags_check_40A5C0(1024);
+	for (nox_team_t* team = nox_server_teamFirst_418B10(); team; team = nox_server_teamNext_418B60(team)) {
+		if (team == winner) {
+			if (!highlander) {
+				team->lessons = score_limit;
 			}
-		} else if (!nox_common_gameFlags_check_40A5C0(1024) && *((uint32_t*)i + 13) >= v2) {
-			*((uint32_t*)i + 13) = v2 - 1;
+		} else if (!highlander && team->lessons >= score_limit) {
+			team->lessons = score_limit - 1;
 		}
 	}
 	if (nox_common_gameFlags_check_40A5C0(1)) {
-		result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-		for (j = result; result; j = result) {
-			if (!nox_xxx_teamCompare2_419180(j + 48, *(uint8_t*)(a1 + 57))) {
-				v6 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(j + 36));
-				v7 = v6;
-				if (v6) {
-					if (!(v6[3680] & 1)) {
-						if (nox_common_gameFlags_check_40A5C0(1024)) {
-							if (*((uint32_t*)v7 + 535) < v2) {
-								*((uint32_t*)v7 + 535) = v2;
-							}
-						} else if (*((uint32_t*)v7 + 534) >= v2) {
-							*((uint32_t*)v7 + 534) = v2 - 1;
-						}
-					}
-				}
+		for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
+			 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+			if (nox_xxx_teamCompare2_419180((nox_object_team_t*)&unit->field_12, winner->field_57)) {
+				continue;
 			}
-			result = nox_xxx_getNextPlayerUnit_4DA7F0(j);
+			nox_playerInfo* player = nox_common_playerInfoGetByID_417040(unit->net_code);
+			if (!player || (player->field_3680 & 1)) {
+				continue;
+			}
+			if (highlander) {
+				if (player->field_2140 < score_limit) {
+					player->field_2140 = score_limit;
+				}
+			} else if (player->lessons >= score_limit) {
+				player->lessons = score_limit - 1;
+			}
 		}
 	} else {
-		result = nox_xxx_cliGetSpritePlayer_45A000();
-		for (k = result; result; k = result) {
-			if (!nox_xxx_teamCompare2_419180(k + 24, *(uint8_t*)(a1 + 57))) {
-				v9 = nox_common_playerInfoGetByID_417040(*(uint32_t*)(k + 128));
-				v10 = v9;
-				if (v9) {
-					if (!(v9[3680] & 1)) {
-						if (nox_common_gameFlags_check_40A5C0(1024)) {
-							if (*((uint32_t*)v10 + 535) < v2) {
-								*((uint32_t*)v10 + 535) = v2;
-							}
-						} else if (*((uint32_t*)v10 + 534) >= v2) {
-							*((uint32_t*)v10 + 534) = v2 - 1;
-						}
-					}
-				}
+		for (nox_drawable* drawable = nox_xxx_cliGetSpritePlayer_45A000(); drawable;
+			 drawable = sub_45A010(drawable)) {
+			if (nox_xxx_teamCompare2_419180((nox_object_team_t*)&drawable->field_6, winner->field_57)) {
+				continue;
 			}
-			result = sub_45A010(k);
+			nox_playerInfo* player = nox_common_playerInfoGetByID_417040(drawable->field_32);
+			if (!player || (player->field_3680 & 1)) {
+				continue;
+			}
+			if (highlander) {
+				if (player->field_2140 < score_limit) {
+					player->field_2140 = score_limit;
+				}
+			} else if (player->lessons >= score_limit) {
+				player->lessons = score_limit - 1;
+			}
 		}
 	}
-	return result;
 }
 
 // 0x494A60 and 0x494C30 were ported to network_update_stream_494a60.go.

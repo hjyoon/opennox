@@ -1,6 +1,7 @@
 #ifndef NOX_PORT_GAME2_3
 #define NOX_PORT_GAME2_3
 
+#include "common__system__team.h"
 #include "defs.h"
 
 void sub_48C580(pixel8888* a1, int num);
@@ -78,8 +79,8 @@ int* sub_48E6A0(char a1, uint32_t* a2, uint32_t* a3, int* a4, int* a5);
 void sub_48E8E0(int a1);
 void sub_48E940();
 nox_drawable* nox_xxx_spriteCreate_48E970(int a1, unsigned short a2, int a3, int a4);
-char* sub_4947E0(int a1);
-int sub_4948B0(int a1);
+void sub_4947E0(nox_playerInfo* winner);
+void sub_4948B0(nox_team_t* winner);
 int sub_494F00();
 char* sub_494FF0();
 char* sub_495020(int a1);

@@ -4,11 +4,13 @@
 
 ## Quest 테마 생성기 초기화와 종류 매핑 `0051A1F0..0051A59F`
 
-툴팁 수정 후 최신 커밋의 실제 headless Host Quest 입력에서도 `G_TemplD.map` stage 1까지 진행한 뒤 `sub_51A1F0`의 첫 객체 순회에서 충돌했다. C의 `int` 임시 변수에 잘린 객체 주소가 native `Object.Next`로 전달된다. 후속 `0051A500`도 객체 포인터를 `int`로 받고, `0051A550`은 PE32의 16-byte 이름/ID 레코드에 native 8-byte 포인터와 4-byte ID를 겹쳐 저장하므로 세 함수의 경계를 함께 조사했다. 이 기록은 구현 전 봉인이며 실제 Quest 시작 성공을 주장하지 않는다.
+툴팁 수정 후 최신 커밋의 실제 headless Host Quest 입력에서도 `G_TemplD.map` stage 1까지 진행한 뒤 `sub_51A1F0`의 첫 객체 순회에서 충돌했다. C의 `int` 임시 변수에 잘린 객체 주소가 native `Object.Next`로 전달된다. 후속 `0051A500`도 객체 포인터를 `int`로 받고, `0051A550`은 PE32의 16-byte 이름/ID 레코드를 `char**`로 직접 읽어 기존 native pointer side slot을 우회하므로 세 함수의 경계를 함께 조사했다. packed 4-byte 포인터를 native 8-byte 포인터로 읽거나 저장하면 인접 종류 ID와 겹친다. 이 기록은 구현 전 봉인이며 실제 Quest 시작 성공을 주장하지 않는다.
 
 테마 본체 `0051A1F0..0051A4E2` 755바이트/SHA-256 `8a48248b3d69df53f4772773f4edaad6c7c4942926079c2727c67348163ebe8c`, 1-NOP, 네 selector의 16-byte jump table/`7367219d94565af93ebb6f1fb150890e1a9eb6c81ca4ef2b4de5b6146cf48a73`, 뒤 12-NOP를 독립 봉인했다. 종류 조회 `0051A500..0051A54C` 77바이트/`ff5e3ebb16627fd0380291143185f992c7afe2ff77a40b4b5ea3809aa8294f78`와 3-NOP, 매핑 초기화 `0051A550..0051A596` 71바이트/`5e24dd592de11f9bc9b4c6d527e77d84b0231cde317b715b677a1000c99ae7be`와 9-NOP도 추가했다.
 
 매핑 레코드 `005C4028..005C4387` 864바이트/`01905ed05b8acbcf7a9cef20643971e8f454ce040435390932ed5e2cbe6e7ec5`는 53개 creature/generator 쌍과 16-byte zero terminator다. 이름 블록 `005C43C4..005C4A04` 1,601바이트/`82986056f72ffb6eb20d8afdcde7296dd975e835c71aec4a439453cc52215056`, balance·marker·source 키 `005C4A08..005C4B7B` 372바이트/`7e8898ec78fe9dbf22925295434f3bcf744acb243b6cccd0784aafe5ca3e4d61`도 별도 데이터 범위로 봉인했다. 원본 순서의 `creature\0generator\0` 정규화 1,449바이트 SHA-256은 `8674612fb9e7d8d37ef911c9d426b7713247fd82acd5d094a8ba6d5c6c0b0160`이다. 원본은 generator 이름을 먼저 조회·저장한 뒤 creature 이름을 live 재조회·저장하고, 이후 creature type과 첫 일치하는 generator ID를 반환한다. 초기화는 빈 표나 ID 0도 ready=1로 마치며 함수 자체에는 ready guard가 없다. 누적 직접 verifier 대상은 **코드 2,756개·데이터 517개**다.
+
+`0051A550`의 활성 C 진입점은 native Go 초기화로 연결된다. blob loader가 이미 제공하는 native 이름 side slot을 매 접근마다 읽고, ID만 원본의 4-byte 슬롯에 기록한다. 실제 C 진입점에서 generator lookup→ID 저장→live creature 이름 재조회→ID 저장→다음 generator 이름 순서, 빈 표, ID 0, ready가 이미 nonzero일 때도 재초기화하는 계약을 회귀 시험으로 고정했다. 실제 종류 레지스트리의 53쌍, semantic SHA-256, 4GiB 초과 이름 pointer identity와 packed 이름 슬롯·terminator 보존을 확인했다. Go 1.26.5 전체 일반 시험, 실제 `GOEXPERIMENT=cgocheck2` 반복 시험 및 race/checkptr 반복 시험을 통과했고 Darwin/ARM64 일반·HD 제품 빌드와 `-h` 실행도 통과했다. 테마 순회와 종류 조회 본체는 아직 후속 이식 대상이며 Quest 시작 성공으로 간주하지 않는다.
 
 ## 아이템 이름 툴팁 `004BF050..004BF7DF`
 

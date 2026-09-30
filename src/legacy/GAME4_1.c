@@ -4655,24 +4655,9 @@ int sub_51A500(int a1) {
 }
 
 //----- (0051A550) --------------------------------------------------------
+extern char* nox_xxx_questGeneratorTypesInit_native_51A550(void);
 char* sub_51A550() {
-	char* result;      // eax
-	unsigned char* v1; // esi
-
-	result = *(char**)getMemAt(0x587000, 249904);
-	if (*getMemU32Ptr(0x587000, 249904)) {
-		v1 = getMemAt(0x587000, 249896);
-		do {
-			*((uint32_t*)v1 + 3) = nox_xxx_getNameId_4E3AA0(result);
-			*((uint32_t*)v1 + 1) = nox_xxx_getNameId_4E3AA0(*(char**)v1);
-			result = (char*)*((uint32_t*)v1 + 6);
-			v1 += 16;
-		} while (result);
-		*getMemU32Ptr(0x5D4594, 2388664) = 1;
-	} else {
-		*getMemU32Ptr(0x5D4594, 2388664) = 1;
-	}
-	return result;
+	return nox_xxx_questGeneratorTypesInit_native_51A550();
 }
 
 //----- (0051A5A0) --------------------------------------------------------

@@ -1657,7 +1657,7 @@ int sub_465D50_draw(nox_window* win) {
 		drawable->pos.x = x + 51;
 		drawable->pos.y = y + 81;
 		if (drawable->draw_func) {
-			drawable->draw_func(getMemAt(0x5D4594, 1049732), drawable);
+			drawable->draw_func((uint32_t*)nox_client_inventory_viewport_native(), drawable);
 		}
 	} else if (!dword_5d4594_1062496 && !dword_5d4594_1062492) {
 		nox_client_drawImageAt_47D2C0(nox_inventory_images[NOX_INV_IMG_FIST], x + 21, y + 50);

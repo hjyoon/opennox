@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest stage 브리핑 `00450980` — 전체 native 본체
+
+별도 공개 ABI 복원 뒤 봉인된 `00450980..00450A28` 전체 본체를 Go 경로에 연결했다. 기존 본체는 실제 `F0/0D` 69바이트 packet의 image-key 포인터를 `int`로 잘라 Quest 다음 맵 로딩 직후 SIGSEGV를 발생시켰다. 새 경로는 packet/image/text 주소를 native 폭으로 유지하며 state 초기화→particles reset→book hide→prepare→image/text setter→unsigned stage→live flag bit 1→조건부 state 저장→signed show/lock 반환 순서를 보존한다. 빈 text는 시작 브리핑과 다른 inline `005D4594+832544` 주소이며 lock flags도 원본의 2다. callback 뒤 stage/flags를 다시 읽고 clear bit에서 callback의 state를 덮지 않는다.
+
+모든 key/flags/show 분기, signed 반환값, 의존 호출별 fault prefix·부분 저장, live mutation, nil setter와 실제 image fallback, packet 비변조를 검증했다. 실제 C entry와 C storage에 4GiB 위 packet/image/text 주소를 전달하는 일반·cgocheck2·race/checkptr 표적 시험 각 3회 및 모듈 전체 일반·cgocheck2 시험이 통과했다. 직접 원본 verifier는 코드 2,800개·데이터 586개, stock 전체 verifier는 1,556개 파일이 일치했다.
+
+Darwin/ARM64의 일반·HD headless 실행 모두 실제 Quest 출구 접촉 후 `g_templd` stage 1→`g_swamp` stage 2 전환, 동일한 native player identity와 client drawable·접속 상태, HP 450/450, 전환 후 400틱 대기와 100틱 이동 및 정상 종료를 확인했다. client/client-hd/server 제품도 arm64 Mach-O 빌드와 `-h` 실행이 통과했다. 이는 위 두 packet 소비자의 전환 크래시 수정 검증이며, Quest 모든 분기나 별도로 미재현인 소환수 소실 문제의 완료 주장은 아니다.
+
 ## Quest stage 브리핑 packet ABI `00450980` — 분리 단계
 
 실제 stage 전환에서 다음으로 재현된 `F0/0D` 브리핑의 공개 packet 인자를 `const unsigned char*`로 복원한다. 옛 `int a1` 지역 변수와 본체는 이 ABI 커밋에서 그대로 두므로 아직 런타임 크래시 수정이 아니다. 원본 전체 본체 `00450980..00450A28` 169바이트, 뒤 7-NOP, line 1714 source-file 문자열 37바이트를 먼저 봉인했다. image/text setter 뒤 unsigned stage를 읽고 stage setter 뒤 bit 1을 조회해 state를 설정하며, show가 nonzero이면 flags 2로 lock하는 순서가 다음 독립 본체 이식 기준이다. C11 fixture는 공개 원형·전체 packet 주소·signed show/반환값 및 packet 비변조를 검사한다.

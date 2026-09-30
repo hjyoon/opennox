@@ -1330,6 +1330,20 @@
       "purpose": "the exact PE32 Briefing.wnd root-window constructor used as the provenance anchor for the native Credits presentation"
     },
     {
+      "name": "nox_client_showQuestBriefing_450A30",
+      "address": "0x00450A30",
+      "size": 152,
+      "sha256": "ed4775f89b69cabccf0032d003d1500db642b6b402692d9752c772ebb3513ce2",
+      "purpose": "the complete Quest start briefing body: clear state, reset particles, hide book, prepare GUI, image and text setters, live unsigned stage load, and optional screen-254 lock with flags 4"
+    },
+    {
+      "name": "nox_client_showQuestBriefing_450A30_padding",
+      "address": "0x00450AC8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating Quest start briefing from its image setter at 00450AD0"
+    },
+    {
       "name": "gui_server_object_list_4530C0_45384F",
       "address": "0x004530C0",
       "size": 1936,
@@ -19789,6 +19803,13 @@
       "size": 464,
       "sha256": "a9d2c354422e7185606234cfaac0ef17d7f5bec7a18efd81ea07095278de5a50",
       "purpose": "the exact aligned NUL-terminated GUIDE_INVALID plus forty creature names referenced in order by the guide-name pointer table"
+    },
+    {
+      "name": "quest_start_briefing_source_450a30",
+      "address": "0x005A5D94",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file C string passed with line 1756 to the Quest start briefing text lookup at 00450A80"
     },
     {
       "name": "class_initial_spell_rows",

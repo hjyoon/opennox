@@ -4878,6 +4878,12 @@ update → signed-byte stack index → head 주소 → action을 원본 순서�
 
 두 독립 headless seat/mock audio Host Quest 입력 실행은 이전 Mimic 충돌 지점을 지나 `G_TemplD.map` 로딩·클라이언트 재접속 후 **`MSG_GAUNTLET` (`0xF0`)의 화면 이미지 이름 주소 잘림**에서 종료 코드 2로 중단됐다. 일반 패킷 `0x600003f00c30`/HD 패킷 `0x600001b27730`에서 image loader로 넘어간 이름 주소는 각각 `0x3f00c35`/`0x1b27735`로, packet low dword+5와 일치한다. 해당 패킷 처리 본체는 이번 커밋에서 변경하지 않았다. **Quest 플레이 성공이나 전체 ARM64 포팅 완료로 간주하지 않으며**, 다음 별도 이식 대상으로 남긴다. GUI는 headless로만 실행했고 관찰 캡처는 golden-image 동등성 주장에 사용하지 않는다.
 
+### Quest 시작 화면 `00450A30`: 공개 packet ABI
+
+실제 ARM64 Host Quest의 다음 충돌을 조사하면서, `00450A30..00450AC7` 전체 152바이트와 뒤 8-NOP, text lookup에 쓰는 `005A5D94`의 NUL 포함 37바이트 source-file 문자열을 먼저 봉인했다. 원본은 준비 호출 세 개 뒤 packet+5 이미지 이름, packet+37 텍스트 키, 마지막으로 packet+2 unsigned stage를 읽는다. 서버의 `004D6960`은 subtype `0x0E`의 69바이트 시작 패킷을 구성하며, 기존 decoder는 이를 이 함수에 연결한다.
+
+저장소의 두 단계 refactoring 규칙에 따라 이 커밋에서는 공개 packet 인자만 `const unsigned char*`로 복원했다. **기존 본체의 int 축소는 임시로 남아 있어 런타임 크래시 수정 완료가 아니다.** 다음 독립 본체 이식에서 제거한다. 공개 선언 C11 정적 검사를 포함한 ABI fixture의 ARM64 O0/O2 및 ASan/UBSan 실행, legacy 전체 링크 검사를 통과했으며 코드 2,784개·데이터 519개 원본 범위를 검증했다. fixture는 공개 ABI 검사이지 실제 GUI 동작 검증이 아니다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

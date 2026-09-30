@@ -763,7 +763,8 @@ int nox_client_showQuestBriefing2_450980(int a1, int a2) {
 }
 
 //----- (00450A30) --------------------------------------------------------
-int nox_client_showQuestBriefing_450A30(int a1, int a2) {
+int nox_client_showQuestBriefing_450A30(const unsigned char* packet, int a2) {
+	int a1 = (int)(uintptr_t)packet; // Retain the old body until the separate native port.
 	char* v2;    // eax
 	wchar2_t* v3; // eax
 	int result;  // eax

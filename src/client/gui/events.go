@@ -50,7 +50,11 @@ func EventRespInt(r WindowEventResp) int {
 	if r == nil {
 		return 0
 	}
-	return int(r.EventRespC())
+	// Legacy window procedures return a 32-bit C int. On AArch64, writing the
+	// return value through w0 clears the upper half of x0, so a negative value
+	// such as -1 can arrive here as 0x00000000ffffffff. Interpret integer
+	// responses at their original width; pointer responses use EventRespPtr.
+	return int(int32(uint32(r.EventRespC())))
 }
 
 func EventRespPtr(r WindowEventResp) unsafe.Pointer {

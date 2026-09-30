@@ -49,28 +49,90 @@ steps:
   - action: wait
     dt: 60
     name: settle after warrior opening dialog
-  - action: assert-npc-equipment-visible
-    name: verify nearby NPC equipment rendering
-  - action: move
-    x: 515
-    y: 280
-    name: hover the nearby wagon
+  # Real hit-test identity and text assertions; no direct tooltip calls or
+  # injected client text. All fixtures retain their stock object callbacks.
+  - action: check-ground-item-tooltip
+    item: RedApple
+    text: 사과
+    x: 40
+    y: 0
+    name: verify apple Korean tooltip
+  - action: screen
+    name: apple Korean tooltip
+  - action: check-object-tooltip-cleared
+    name: clear apple tooltip
+  - action: check-ground-item-tooltip
+    item: Mushroom
+    text: 버섯
+    x: -40
+    y: 0
+    name: verify mushroom Korean tooltip
+  - action: screen
+    name: mushroom Korean tooltip
+  - action: check-object-tooltip-cleared
+    name: clear mushroom tooltip
+  - action: check-ground-item-tooltip
+    item: GreatSword
+    text: 그레이트 서드
+    x: 0
+    y: 40
+    name: verify weapon Korean tooltip
+  - action: screen
+    name: weapon Korean tooltip
+  - action: check-object-tooltip-cleared
+    name: clear weapon tooltip
+  - action: check-ground-item-tooltip
+    item: LeatherArmor
+    text: 가죽 튜닉
+    x: 0
+    y: -40
+    name: verify armor Korean tooltip
+  - action: screen
+    name: armor Korean tooltip
+  - action: check-object-tooltip-cleared
+    name: clear armor tooltip
+  # The client book cache starts at zero. It must receive the real server
+  # information reply before its localized title assertion can pass.
+  - action: check-ground-item-tooltip
+    item: CommonSpellBook
+    amount: 27
+    x: 45
+    y: 45
+    name: verify spell book request reply and tooltip
+  - action: screen
+    name: spell book Korean tooltip
+  - action: check-object-tooltip-cleared
+    name: clear spell book tooltip
+  - action: check-ground-item-tooltip
+    item: FieldGuide
+    creature: Wasp
+    x: -45
+    y: 45
+    name: verify creature guide request reply and tooltip
+  - action: screen
+    name: creature guide Korean tooltip
+  - action: check-object-tooltip-cleared
+    name: clear creature guide tooltip
+  - action: check-ground-item-tooltip
+    item: AbilityBook
+    amount: 1
+    x: -45
+    y: -45
+    name: verify ability book request reply and tooltip
+  - action: screen
+    name: ability book Korean tooltip
+  - action: check-object-tooltip-cleared
+    name: clear ability book tooltip
+  - action: check-object-hover-cursor
+    item: AirshipCaptain
+    mode: 4
+    name: verify actual NPC talk cursor without an item name
   - action: wait
-    dt: 240
-    name: hold cursor over the wagon
-  - action: move
-    x: 509
-    y: 365
-    name: hover the nearby NPC
-  - action: wait
-    dt: 240
-    name: hold cursor over the NPC
-  - action: move
-    x: 550
-    y: 310
-    name: hover the player
-  - action: wait
-    dt: 240
-    name: hold cursor over the player
+    dt: 120
+    name: hold the real NPC cursor for visual inspection
+  - action: screen
+    name: NPC talk Korean caption
+  - action: check-object-tooltip-cleared
+    name: clear NPC hover
   - action: quit
     dt: 1

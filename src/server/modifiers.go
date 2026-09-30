@@ -244,6 +244,12 @@ func (p *ModifierEff) Description16() *uint16 {
 	return p.desc8
 }
 
+// SecondaryDescription16 exposes the secondary suffix selected by GAME.EXE
+// 004BF050 for modifier slot three; it is not the identification description.
+func (p *ModifierEff) SecondaryDescription16() *uint16 {
+	return p.secdesc12
+}
+
 // IdentificationDescription16 exposes the native UTF-16 identification
 // suffix. GAME.EXE 004E77E0 uses this field only for modifier slot three.
 func (p *ModifierEff) IdentificationDescription16() *uint16 {

@@ -9388,6 +9388,7 @@ type e2eStepYML struct {
 	Time     uint64        `yaml:"dt,omitempty"`
 	Dur      time.Duration `yaml:"dur,omitempty"`
 	Name     string        `yaml:"name,omitempty"`
+	Text     string        `yaml:"text,omitempty"`
 	X        int           `yaml:"x,omitempty"`
 	Y        int           `yaml:"y,omitempty"`
 	Ang      float64       `yaml:"ang,omitempty"`
@@ -9447,6 +9448,15 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.Move(l.X, l.Y, l.Name)
+		case "check-ground-item-tooltip":
+			sc.Wait(dt, "")
+			sc.CheckGroundItemTooltip(l.Item, l.Creature, l.Text, l.Amount, image.Pt(l.X, l.Y), l.Name)
+		case "check-object-tooltip-cleared":
+			sc.Wait(dt, "")
+			sc.CheckObjectTooltipCleared(l.Name)
+		case "check-object-hover-cursor":
+			sc.Wait(dt, "")
+			sc.CheckObjectHoverCursor(l.Item, l.Mode, l.Name)
 		case "click":
 			if dt != 0 {
 				sc.Wait(dt, "")

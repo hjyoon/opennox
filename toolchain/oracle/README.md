@@ -8,6 +8,10 @@ macOS/ARM64의 실제 headless War01a 커서 입력에서 RedApple·Mushroom·Gr
 
 전체 원본 본체 1,905바이트를 SHA-256 `a3f06b99e5a0f5b2b562993c8a5deb4f97feea75f63122b565fffcf787c63ad1`로 독립 봉인했다. 뒤 3-byte LEA, 다섯 언어 branch의 20-byte jump table, 8-NOP를 각각 비중첩 범위로 봉인했으며 전체 1,936바이트 SHA-256은 `9b8e85a9b1429cde09c02d3641b2485911f9c5041682534f8d58c45dcef52f35`다. 문자열 키·source path·UTF-16 space/format 블록 `005B312C..005B32DF` 436바이트도 `23991397ffe6d90890da8f02e3ef7fbb106881aab3be398503761d38ea513963`로 봉인했다. 원본은 일반 이름 pointer fallback, 장비 네 modifier의 primary/secondary description 선택과 언어별 순서·공백, 책 정보 요청 `E2 + 16-bit net code + kind` 및 pending sentinel `137/41/6`을 한 함수에서 처리한다. 이 기록은 구현 전 근거이며 누적 대상은 **코드 2,748개·데이터 514개**다.
 
+활성 C 진입점은 이제 전체 native Go 구현으로 연결된다. drawable type/class/subclass/union과 modifier 설명 pointer를 typed native 필드로 읽되, 빈 설명의 non-null pointer가 만드는 공백, 마지막 modifier의 secondary 설명, language callback 전 캐시와 callback 뒤 live 재조회 순서를 원본대로 유지한다. 책 요청은 byte payload만 직렬화하며 pending을 전송 전에 기록하고 동기 응답을 덮어쓰지 않는다. 4GiB 초과 C 주소의 실제 C 진입점, 원본 언어 조합, UTF-16 raw unit 보존 및 커서의 255-unit 경계와 인접 메모리 guard를 회귀 시험으로 고정했다. Go 1.26.5 전체 일반·실제 `GOEXPERIMENT=cgocheck2` 시험과 반복 race/checkptr 검사를 통과했다.
+
+`solo-warrior-object-hover.yaml`은 부정확했던 고정 좌표 label을 실제 drawable identity·cursor·표시 buffer assertion으로 교체했다. stock server 객체와 실제 headless 마우스 입력으로 일반/HD 제품 모두 `사과`, `버섯`, `그레이트 서드`, `가죽 튜닉`을 표시한다. 세 종류의 책은 client cache 0에서 실제 서버 reply `27/30/1`을 받은 뒤 `책: 화이어볼`, `와스프 비스트 스크롤`, `책: 버저커 차지`를 표시한다. 각 hover 뒤 cursor를 옮기면 hit target과 tooltip이 비워지고 실제 AirshipCaptain에는 item 이름 없이 Talk cursor가 적용된다. 두 실행은 정상 종료했으며 캡처에서 한글·줍기·말하기 문구를 확인했다. PNG는 관찰용 생성물로 golden comparison을 주장하지 않는다. 원본 자산 1,556개와 코드/데이터 범위 verifier도 변경 없이 통과했다. 상점·인벤토리 등 이 함수를 사용하는 모든 GUI 문맥의 실제 입력 검증까지 완료했다는 의미는 아니다.
+
 ## Quest 참가 정원 검사 `004E4100..004E416F`
 
 macOS/ARM64의 실제 Host Quest 메뉴 입력으로 `so_lod.map`을 읽은 뒤 `startSoloQuest`가 실행되면 `setupQuestGame`의 `sub_4E4100`에서 충돌했다. 재현 시 첫 player unit은 `0x1300f03c0`였지만 C의 `int` 임시 변수와 PE32 offset `+748` 접근은 `0x300f06ac`를 역참조했다. 기존 메뉴→ClassSelect 시험만으로는 이 초기화 경계를 실행하지 못한다.

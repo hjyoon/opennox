@@ -27,7 +27,7 @@ extern uint32_t dword_5d4594_832532;
 extern uint32_t dword_5d4594_832536;
 extern nox_window* nox_wnd_briefing_831232;
 extern uint32_t dword_5d4594_832476;
-extern uint32_t dword_5d4594_832484;
+extern uintptr_t dword_5d4594_832484;
 extern int nox_win_width;
 extern int nox_win_height;
 

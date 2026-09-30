@@ -181,7 +181,7 @@ static void nox_book_anim_start(nox_things_imageRef_t* ref) {
 }
 extern uint32_t dword_5d4594_1046868;
 extern nox_window* dword_5d4594_1049504;
-extern uint32_t dword_5d4594_832484;
+extern uintptr_t dword_5d4594_832484;
 extern nox_window* dword_5d4594_1045684;
 extern void* nox_xxx_aClosewoodengat_587000_133480;
 extern nox_window* dword_5d4594_1046492;

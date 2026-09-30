@@ -55,6 +55,12 @@ func TestShopViewportUsesNativeWidth(t *testing.T) {
 	}
 }
 
+func TestShopItemLocationUsesNativeCellsAndScrollOffset(t *testing.T) {
+	if got := shopItemLocationContract(); got != 0xff {
+		t.Fatalf("shop location contract bits = %#x, want %#x", got, 0xff)
+	}
+}
+
 func TestInventoryCapacityPreservesNativeDrawablePointer(t *testing.T) {
 	available, highPointer := inventoryCapacityContract(1234, 1234, 0, 1, 1)
 	if unsafe.Sizeof(uintptr(0)) > 4 && !highPointer {

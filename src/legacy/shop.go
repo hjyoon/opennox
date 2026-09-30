@@ -3,6 +3,7 @@ package legacy
 /*
 #include <stddef.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "GAME2_1.h"
@@ -10,9 +11,89 @@ package legacy
 #include "client__gui__guiinv.h"
 
 extern uint32_t dword_5d4594_1098624;
+extern uint32_t dword_5d4594_1107036;
 extern uintptr_t dword_5d4594_1062480;
 extern uint32_t dword_5d4594_1062484;
 extern nox_inventory_cell_t nox_client_inventory_grid_1050020[NOX_INVENTORY_CELLS_MAX];
+
+// Read-only E2E observer: resolve an active wire ID to its real shop cell.
+// Use the same origin and scroll offset as 00478C80, without invoking a buy
+// callback or altering the cell/drawable while locating the mouse target.
+static int nox_client_shop_item_location(uint32_t net_code, int* x, int* y,
+	uint32_t* thing_type, uint32_t* count, uint32_t* price) {
+	if (!net_code || !dword_5d4594_1098624) {
+		return 0;
+	}
+	for (int row = 0; row < NOX_SHOP_INVENTORY_ROW_COUNT; row++) {
+		for (int column = 0; column < NOX_SHOP_INVENTORY_COLUMN_COUNT; column++) {
+			const nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(row, column);
+			if (!cell->drawable || !cell->count || cell->count > NOX_SHOP_INVENTORY_STACK_MAX) {
+				continue;
+			}
+			for (uint32_t i = 0; i < cell->count; i++) {
+				if (cell->net_codes[i] != net_code) {
+					continue;
+				}
+				*x = *getMemIntPtr(0x5D4594, 1098380) + 50 * column + 25;
+				*y = *getMemIntPtr(0x5D4594, 1098384) + 50 * row + 25 - (int)dword_5d4594_1107036;
+				*thing_type = cell->drawable->field_27;
+				*count = cell->count;
+				*price = cell->price;
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+static uint32_t nox_test_shop_item_location_contract(void) {
+	nox_shop_inventory_cell_t backup[NOX_SHOP_INVENTORY_CELL_COUNT];
+	memcpy(backup, nox_client_shop_inventory, sizeof(backup));
+	uint32_t old_active = dword_5d4594_1098624;
+	uint32_t old_offset = dword_5d4594_1107036;
+	int old_x = *getMemIntPtr(0x5D4594, 1098380);
+	int old_y = *getMemIntPtr(0x5D4594, 1098384);
+	nox_drawable* drawable = calloc(1, sizeof(nox_drawable));
+	if (!drawable) { return 0; }
+	memset(nox_client_shop_inventory, 0, sizeof(nox_client_shop_inventory));
+	dword_5d4594_1098624 = 1;
+	dword_5d4594_1107036 = 50;
+	*getMemIntPtr(0x5D4594, 1098380) = 10;
+	*getMemIntPtr(0x5D4594, 1098384) = 20;
+	drawable->field_27 = UINT32_C(0x12345678);
+	nox_shop_inventory_cell_t* cell = nox_client_shop_inventory_cell(7, 5);
+	cell->drawable = drawable;
+	cell->count = 2;
+	cell->net_codes[0] = 123;
+	cell->net_codes[1] = UINT32_C(0x89ABCDEF);
+	cell->net_codes[2] = 456; // stale, outside the active stack
+	cell->price = UINT32_C(0xFEDCBA98);
+	int x = 0, y = 0;
+	uint32_t type = 0, count = 0, price = 0, result = 0;
+	if (nox_client_shop_item_location(UINT32_C(0x89ABCDEF), &x, &y, &type, &count, &price) &&
+		x == 285 && y == 345 && type == drawable->field_27 && count == 2 && price == cell->price) {
+		result |= 1;
+	}
+	if (sizeof(void*) == 4 || (uintptr_t)drawable > UINT32_MAX) { result |= 2; }
+	if (drawable->field_32 == 0 && cell->count == 2 && cell->net_codes[1] == UINT32_C(0x89ABCDEF)) { result |= 4; }
+	if (!nox_client_shop_item_location(456, &x, &y, &type, &count, &price)) { result |= 8; }
+	if (!nox_client_shop_item_location(0, &x, &y, &type, &count, &price)) { result |= 16; }
+	dword_5d4594_1098624 = 0;
+	if (!nox_client_shop_item_location(123, &x, &y, &type, &count, &price)) { result |= 32; }
+	dword_5d4594_1098624 = 1;
+	cell->count = NOX_SHOP_INVENTORY_STACK_MAX + 1;
+	if (!nox_client_shop_item_location(123, &x, &y, &type, &count, &price)) { result |= 64; }
+	cell->count = 2;
+	cell->drawable = NULL;
+	if (!nox_client_shop_item_location(123, &x, &y, &type, &count, &price)) { result |= 128; }
+	memcpy(nox_client_shop_inventory, backup, sizeof(backup));
+	dword_5d4594_1098624 = old_active;
+	dword_5d4594_1107036 = old_offset;
+	*getMemIntPtr(0x5D4594, 1098380) = old_x;
+	*getMemIntPtr(0x5D4594, 1098384) = old_y;
+	free(drawable);
+	return result;
+}
 
 static void nox_test_shop_clear(void) {
 	// Test drawables are intentionally synthetic high addresses. Never run the
@@ -396,6 +477,17 @@ func Nox_client_inventoryItemLocation(thingType uint32) (found bool, column, row
 		C.uint32_t(thingType), &ccolumn, &crow, &cnetCode,
 	) != 0
 	return found, int(ccolumn), int(crow), uint32(cnetCode)
+}
+
+func Nox_client_shopItemLocation(netCode uint32) (found bool, x, y int, thingType, count, price uint32) {
+	var cx, cy C.int
+	var ctype, ccount, cprice C.uint32_t
+	found = C.nox_client_shop_item_location(C.uint32_t(netCode), &cx, &cy, &ctype, &ccount, &cprice) != 0
+	return found, int(cx), int(cy), uint32(ctype), uint32(ccount), uint32(cprice)
+}
+
+func shopItemLocationContract() uint32 {
+	return uint32(C.nox_test_shop_item_location_contract())
 }
 
 func inventoryItemStateContract() (found bool, count uint16, currentHealth, maximumHealth uint16) {

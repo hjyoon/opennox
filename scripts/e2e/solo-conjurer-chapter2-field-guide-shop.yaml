@@ -1,6 +1,6 @@
 steps:
   - action: slow
-    dur: 5ms
+    dur: 1ms
   - action: click
     dt: 30
     x: 320
@@ -55,21 +55,15 @@ steps:
   - action: wait-map
     map: Con02a
     name: wait for Conjurer chapter two map
+  - action: click-chapter-briefing
+    name: dismiss Conjurer chapter two briefing
   - action: wait-forced-coop-autosave
     name: finish Conjurer chapter two entry autosave
   - action: wait
     dt: 180
     name: settle Conjurer chapter two objects
-  - action: click-npc-dialog-done
-    name: dismiss Conjurer chapter two entry dialog
-  - action: wait
-    dt: 60
-    name: settle after Conjurer chapter two entry dialog
-  - action: click-npc-dialog-done
-    name: dismiss continued Conjurer chapter two entry dialog
-  - action: wait
-    dt: 60
-    name: settle after continued Conjurer chapter two entry dialog
+  # Con02a's MapEntry does not open an NPC dialog. Henrick's conversation
+  # belongs to the wolf setpiece; do not click nonexistent entry dialogs.
   - action: assert-map-shopkeeper-field-guide
     item: Con02a:Mystic
     creature: Wasp
@@ -108,5 +102,146 @@ steps:
     mode: 1
     count: 8
     name: verify Mystic shop UI after field guide reward
+  - action: click
+    x: 786
+    y: 665
+    name: select Mystic buy mode
+  - action: wait
+    dt: 10
+    name: settle Mystic buy mode
+  - action: assert-shop
+    active: true
+    mode: 2
+    count: 8
+    name: verify Mystic buy mode
+  - action: set-player-gold
+    gold: 10000
+    name: fund real Mystic purchase
+  - action: wait
+    dt: 20
+    name: receive purchase funds on client
+  - action: assert-player-gold
+    gold: 10000
+    name: verify purchase funds
+  - action: click-shop-field-guide
+    creature: Wasp
+    name: select Mystic Wasp Field Guide through mouse input
+  - action: wait
+    dt: 20
+    name: wait for Field Guide amount dialog
+  - action: assert-item-amount
+    amount: 1
+    max: 1
+    price: 100
+    name: verify single Field Guide purchase
+  - action: click-item-amount-accept
+    x: -1
+    y: 1
+    name: accept Wasp Field Guide purchase
+  - action: wait
+    dt: 60
+    name: process real purchase request and acknowledgements
+  - action: assert-item-amount-closed
+    name: verify purchase amount dialog closed
+  - action: assert-shop-field-guide-purchased
+    creature: Wasp
+    name: verify exact item transfer and server-client gold subtraction
+  - action: assert-server-shop
+    active: true
+    count: 7
+    name: verify remaining Mystic server stock
+  - action: assert-server-shop-field-guide
+    creature: Wasp
+    count: 0
+    name: verify Wasp Field Guide removed from server shop
+  - action: assert-shop
+    active: true
+    mode: 2
+    count: 7
+    name: verify remaining Mystic client stock
+  - action: assert-inventory-count
+    item: FieldGuide
+    count: 1
+    name: verify purchased Field Guide in server and client inventory
+  - action: click
+    x: 786
+    y: 752
+    name: exit Mystic shop through mouse input
+  - action: wait
+    dt: 60
+    name: wait for shop close acknowledgement
+  - action: assert-server-shop
+    active: false
+    name: verify Mystic server session release
+  - action: assert-shop
+    active: false
+    mode: 0
+    count: 0
+    name: verify Mystic client shop closed
+  - action: inventory
+    name: open inventory to read the purchased Field Guide
+  - action: wait
+    dt: 90
+    name: settle inventory animation before reading the guide
+  - action: click-inventory-item
+    item: FieldGuide
+    name: read purchased Wasp guide through mouse and MSG_TRY_USE
+  - action: wait
+    dt: 90
+    name: process native guide use and reward-book animation
+  - action: assert-field-guide-learned
+    creature: Wasp
+    name: verify Wasp guide learned on server and client with reward book open
+  - action: assert-inventory-count
+    item: FieldGuide
+    count: 0
+    name: verify purchased guide consumed on server and client
+  - action: close-field-guide-reward
+    name: close purchased Wasp reward book
+  - action: wait
+    dt: 90
+    name: settle after closing Wasp reward book
+  - action: inventory
+    name: close inventory after reading the guide
+  - action: wait
+    dt: 90
+    name: settle inventory before revisiting Mystic
+  - action: open-map-shopkeeper
+    item: Con02a:Mystic
+    name: revisit Mystic after purchasing and learning Wasp guide
+  - action: wait
+    dt: 120
+    name: receive reopened Mystic shop
+  - action: assert-server-shop
+    active: true
+    count: 7
+    name: verify sold stock does not respawn in reopened server shop
+  - action: assert-server-shop-field-guide
+    creature: Wasp
+    count: 0
+    name: verify purchased Wasp guide stays sold out
+  - action: assert-shop
+    active: true
+    mode: 1
+    count: 7
+    name: verify reopened client shop retains stock decrement
+  - action: assert-player-gold
+    gold: 9900
+    name: verify purchase gold persisted after guide use and shop reentry
+  - action: click
+    x: 786
+    y: 752
+    name: exit reopened Mystic shop
+  - action: wait
+    dt: 60
+    name: process reopened shop exit
+  - action: assert-server-shop
+    active: false
+    name: verify reopened native session released
+  - action: assert-shop
+    active: false
+    mode: 0
+    count: 0
+    name: verify reopened client shop closed
   - action: quit
     dt: 1

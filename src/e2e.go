@@ -97,6 +97,9 @@ var e2e struct {
 	shopMerchant           *server.Object
 	shopMerchantWireCode   uint16
 	shopSession            *server.TradeSession
+	shopPurchaseItem       *server.Object
+	shopPurchaseGold       uint32
+	shopPurchasePrice      uint32
 	fieldGuideID           int
 	fieldGuideCreature     string
 	monster                *server.Object
@@ -8818,7 +8821,8 @@ func (sc *e2eScenario) OpenMapShopkeeper(id, name string) {
 		e2e.shopMerchant = merchant
 		e2e.shopMerchantWireCode = uint16(wireCode)
 		e2e.shopSession = nil
-		e2eLog.Printf("MAP SHOPKEEPER: id=%q merchant=%p wire=%#x player_pos=%v merchant_pos=%v", id, merchant, wireCode, player.Pos(), merchant.Pos())
+		e2eLog.Printf("MAP SHOPKEEPER: id=%q merchant=%p wire=%#x player_pos=%v merchant_pos=%v inventory_state=%d inventory_offset=%d",
+			id, merchant, wireCode, player.Pos(), merchant.Pos(), legacy.Nox_client_inventoryAnimationState(), legacy.Nox_client_inventoryAnimationOffset())
 	})
 	sc.addWhen(0, name+" visible", 1200, func() bool {
 		if e2e.shopMerchant == nil || e2e.shopMerchantWireCode == 0 {
@@ -8834,8 +8838,25 @@ func (sc *e2eScenario) OpenMapShopkeeper(id, name string) {
 		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
 	})
 	sc.addWhen(1, name+" cursor", 600, func() bool {
+		drawable := noxClient.Objs.ByNetCode(e2e.shopMerchantWireCode)
+		if drawable == nil {
+			return false
+		}
+		// Repositioning the player and closing inventory can still move the
+		// viewport. Follow the real drawable until cursor hit-testing agrees;
+		// a cached talk/shop cursor alone does not identify the intended NPC.
+		pos := noxClient.Viewport().ToScreenPos(drawable.Pos())
+		if !pos.In(noxClient.Viewport().Screen) {
+			return false
+		}
+		if pos != noxClient.Inp.GetMousePos() {
+			e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
+			return false
+		}
+		target := legacy.Nox_xxx_clientGetSpriteAtCursor_476F90()
 		cursor := noxClient.Nox_client_getCursorType()
-		return cursor == gui.CursorShop || cursor == gui.CursorTalk
+		return target != nil && target.NetCode32 == uint32(e2e.shopMerchantWireCode) &&
+			(cursor == gui.CursorShop || cursor == gui.CursorTalk)
 	}, func() {
 		target := legacy.Nox_xxx_clientGetSpriteAtCursor_476F90()
 		if target == nil {
@@ -9058,6 +9079,107 @@ func (sc *e2eScenario) AssertServerShopFieldGuide(creature string, count int, na
 			return
 		}
 		e2eLog.Printf("SERVER SHOP FIELD GUIDE: creature=%s count=%d", creature, got)
+	})
+}
+
+func (sc *e2eScenario) ClickShopFieldGuide(creature, name string) {
+	sc.add(0, name, func() {
+		player := noxServer.Players.HostUnit()
+		if player == nil || player.UpdateDataPlayer().Player == nil {
+			e2eError(fmt.Errorf("shop purchase has no host player"))
+			return
+		}
+		session := player.UpdateDataPlayer().Trade70
+		active, mode, _ := legacy.Nox_gui_shopState()
+		if session == nil || !noxServer.Server.IsTradeSessionNative(session) || !active || mode != 2 {
+			e2eError(fmt.Errorf("field-guide purchase requires an active native shop in buy mode"))
+			return
+		}
+		var selected *server.TradeItem
+		for node := session.Field20; node != nil; node = node.Field8 {
+			item := node.Item0
+			if item != nil && item.Class().Has(object.ClassInfoBook) && item.SubClass().AsBook().Has(object.BookFieldGuide) &&
+				item.UseData.Ptr != nil && item.UseDataFieldGuide().Creature() == creature {
+				if selected != nil {
+					e2eError(fmt.Errorf("shop has multiple field guides for %q", creature))
+					return
+				}
+				selected = node
+			}
+		}
+		if selected == nil {
+			e2eError(fmt.Errorf("shop has no field guide for %q", creature))
+			return
+		}
+		guide := server.RewardFieldGuideID4F0D20(creature)
+		if guide <= 0 || guide >= 41 {
+			e2eError(fmt.Errorf("shop purchase %q has invalid guide ID %d", creature, guide))
+			return
+		}
+		clientLevel, _, _, _, _ := legacy.Nox_client_guideRewardState45D140(guide)
+		if player.UpdateDataPlayer().Player.BeastScrollLvl[guide] != 0 || clientLevel != 0 {
+			e2eError(fmt.Errorf("shop purchase %q must begin with an unknown field guide", creature))
+			return
+		}
+		item := selected.Item0
+		found, x, y, typeInd, count, price := legacy.Nox_client_shopItemLocation(item.NetCode)
+		pos := image.Pt(x, y)
+		if !found || typeInd != uint32(item.TypeInd) || count != 1 || price != selected.Cost4 || price == 0 ||
+			!pos.In(noxClient.Viewport().Screen) || player.UpdateDataPlayer().Player.GoldVal < price {
+			e2eError(fmt.Errorf("field-guide shop cell %q = found:%t type:%d count:%d price:%d point:%v; server type:%d price:%d",
+				creature, found, typeInd, count, price, pos, item.TypeInd, selected.Cost4))
+			return
+		}
+		e2e.shopPurchaseItem = item
+		e2e.shopPurchaseGold = player.UpdateDataPlayer().Player.GoldVal
+		e2e.shopPurchasePrice = price
+		e2eLog.Printf("SHOP FIELD GUIDE CLICK: creature=%s item=%p netcode=%d price=%d gold=%d point=%v",
+			creature, item, item.NetCode, price, e2e.shopPurchaseGold, pos)
+		e2eQueueInput(&seat.MouseMoveEvent{Pos: pos, Relative: false})
+	})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
+	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+}
+
+func (sc *e2eScenario) AssertShopFieldGuidePurchased(creature, name string) {
+	sc.add(0, name, func() {
+		player := noxServer.Players.HostUnit()
+		item := e2e.shopPurchaseItem
+		if player == nil || item == nil || item.UseData.Ptr == nil || item.UseDataFieldGuide().Creature() != creature ||
+			!player.HasItem(item) || item.InvHolder != player || item.Flags().Has(object.FlagDestroyed) {
+			e2eError(fmt.Errorf("purchased field guide %q did not move into the host inventory: item=%p player=%p", creature, item, player))
+			return
+		}
+		wantGold := e2e.shopPurchaseGold - e2e.shopPurchasePrice
+		serverGold, clientGold := player.UpdateDataPlayer().Player.GoldVal, legacy.Nox_client_gold_4674A0()
+		found, _, _, _, _, _ := legacy.Nox_client_shopItemLocation(item.NetCode)
+		if serverGold != wantGold || clientGold != wantGold || found {
+			e2eError(fmt.Errorf("field-guide purchase %q = gold server:%d client:%d shop-cell:%t, want gold:%d removed-cell",
+				creature, serverGold, clientGold, found, wantGold))
+			return
+		}
+		e2eLog.Printf("SHOP FIELD GUIDE PURCHASED: creature=%s item=%p player=%p netcode=%d price=%d gold=%d->%d client_gold=%d",
+			creature, item, player, item.NetCode, e2e.shopPurchasePrice, e2e.shopPurchaseGold, serverGold, clientGold)
+	})
+}
+
+func (sc *e2eScenario) AssertFieldGuideLearned(creature, name string) {
+	sc.add(0, name, func() {
+		guide := server.RewardFieldGuideID4F0D20(creature)
+		player := noxServer.Players.HostUnit()
+		if guide <= 0 || guide >= 41 || player == nil || player.UpdateDataPlayer().Player == nil {
+			e2eError(fmt.Errorf("field-guide learning assertion has no valid player/guide for %q", creature))
+			return
+		}
+		serverLevel := player.UpdateDataPlayer().Player.BeastScrollLvl[guide]
+		clientLevel, guideMode, bookOpen, page, found := legacy.Nox_client_guideRewardState45D140(guide)
+		if serverLevel != 1 || clientLevel != 1 || !guideMode || !bookOpen || !found {
+			e2eError(fmt.Errorf("field guide %q learned = server:%d client:%d guide-mode:%t book-open:%t page:%d found:%t",
+				creature, serverLevel, clientLevel, guideMode, bookOpen, page, found))
+			return
+		}
+		e2eLog.Printf("FIELD GUIDE LEARNED: creature=%s guide=%d server_level=%d client_level=%d page=%d book_open=%t",
+			creature, guide, serverLevel, clientLevel, page, bookOpen)
 	})
 }
 
@@ -10213,6 +10335,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertServerShopFieldGuide(l.Creature, l.Count, l.Name)
+		case "click-shop-field-guide":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ClickShopFieldGuide(l.Creature, l.Name)
+		case "assert-shop-field-guide-purchased":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertShopFieldGuidePurchased(l.Creature, l.Name)
+		case "assert-field-guide-learned":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertFieldGuideLearned(l.Creature, l.Name)
 		case "assert-shop":
 			if dt != 0 {
 				sc.Wait(dt, "")

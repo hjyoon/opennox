@@ -4748,6 +4748,18 @@ Con02a의 dormant `Julie2`/`Tanya2`가 잘못 `0/75`로 로드되면 체력 부�
 
 합성 version-64 tail 회귀는 host dormant byte 1/2, host live monster, client dormant의 네 분기와 offset 2 보존, 마지막 wire sentinel을 검사한다. macOS/ARM64 Go 1.26.5의 실제 `GOEXPERIMENT=cgocheck2` runner에서 표적 3회와 전체 패키지가 통과했다. 원본 `GAME.EXE`의 두 store는 별도 어셈블리 확인으로 검증했다. 일반 몬스터의 피해/food AI 동작을 변경하는 패치는 아니다.
 
+### Con02a Mystic 상점 구매·Field Guide 사용·재입장 회귀
+
+`solo-conjurer-chapter2-field-guide-shop.yaml`의 forced-map 진입은 실제 chapter briefing 클릭 뒤 autosave를 완료한다. 원본 Con02a `MapEntry`는 NPC 대화를 열지 않으므로 존재하지 않던 두 entry-dialog 클릭을 제거했다. Henrick 대화는 늑대 이벤트의 별도 경로이며, 이 변경으로 원본 map script나 게임 진행을 생략하지 않는다.
+
+상점 열기는 실제 `Con02a:Mystic`의 맵 정의 6개와 Wasp FieldGuide parameter를 검사한다. 앞선 Urchin `SignCollide` 보상과 구매 자금 10,000은 시험 fixture다. Wasp 책을 임의 생성하거나 구매·사용 callback을 직접 호출하지 않는다. native trade 목록의 해당 책을 client shop cell의 wire ID·type·count·price와 대조해 실제 마우스 위치를 구하고, Buy → 수량 1/가격 100 → Accept 입력으로 서버 구매와 클라이언트 응답을 처리한다. 동일한 object가 player inventory로 이동했는지, client cell에서 제거됐는지와 양쪽 잔액 `10,000→9,900`, 재고 `8→7`을 확인한다.
+
+상점 Exit 뒤 인벤토리의 실제 책을 클릭해 `MSG_TRY_USE`를 보낸다. 구매 전 Wasp 습득 레벨은 서버·클라이언트 모두 0이어야 하며, 사용 뒤 모두 1, reward book 열림, guide page 존재, 양쪽 FieldGuide 수량 `1→0`을 검사한다. 책과 인벤토리를 닫고 Mystic에 다시 대화하면 양쪽 재고 7, Wasp 책 0, 잔액 9,900이어야 한다. 마지막 Exit는 native server session 해제와 client shop 종료까지 확인한다.
+
+재입장 검증에서 viewport 이동 중 남아 있던 talk/shop cursor만 준비 조건으로 사용하면 NPC target이 nil인 프레임에 클릭할 수 있었다. E2E helper는 실제 drawable의 화면 위치를 따라 마우스를 옮기고 hit-test wire ID와 cursor가 함께 일치할 때만 클릭한다. 게임 callback이나 서버 구매 상태를 강제로 맞추는 우회는 아니다. 새 read-only C observer는 native drawable 포인터와 32비트 wire/type/count/price를 분리하며, 4GiB 초과 C heap 주소, scroll offset, inactive/nil/invalid count와 active stack 밖 stale ID를 회귀 시험한다.
+
+macOS/ARM64 Go 1.26.5에서 일반·HD 클라이언트가 이 전체 흐름을 각각 독립 headless seat/mock audio 세션으로 통과했다. 실제 `GOEXPERIMENT=cgocheck2` 전체 패키지, 새 observer와 inventory 관련 race 3회·강제 `checkptr=2` 3회도 통과했다. 원본 O0와 코드 2,743개·데이터 513개 범위의 무결성을 재검증했다. 이는 해당 상점·책 사용 흐름의 증거이며 모든 캠페인 경로나 물리 화면·음향 출력의 완료를 의미하지 않는다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

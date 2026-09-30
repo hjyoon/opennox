@@ -4902,6 +4902,16 @@ update → signed-byte stack index → head 주소 → action을 원본 순서�
 
 표적 3회, 모든 callback fault prefix·nil 게시 순서·later-cache mutation·cached-local flag 갱신, 4GiB 초과 실제 C drawable/font 주소의 공개 C→Go entry·C 전역 왕복 및 전체 drawable byte 비변조를 검증했다. native fixture는 type lookup/생성 경계를 대체하므로 실제 게임의 아이콘 렌더링 성공 증거와 구분한다. race/강제 checkptr 결합 3회 및 저장소 전체 일반·실제 Go 1.26.5 cgocheck2 시험도 통과했다. 코드 2,786개·데이터 532개 봉인 범위를 검증했다. 별도 안내 renderer `0044F300`의 고정 위치·draw callback·font 접근은 아직 다음 본체 이식 대상으로 남아 있으며, 이 생성 커밋만으로 Quest GUI 또는 전체 ARM64 포팅 완료를 주장하지 않는다.
 
+### Quest 안내 렌더러 `0044F300`: 전체 native 본체
+
+본체 `0044F300..00450154` 3,669바이트/SHA-256 `3960a887fd69ab104d5173adadfc3dea92f5b84a28339dda76cb12be108f9bb8`, 뒤 11-NOP와 lookup source/key 문자열 44개를 구현 전에 봉인하고 직접 검증했다. 기존 C entry의 한 원본 함수 본체만 Go로 연결한다. 앞서 복원한 실제 C drawable/font 캐시를 읽고, `Drawable.PosVec`, native viewport의 screen/world min 및 `DrawFuncPtr`로 위치 변환과 실제 간접 draw를 수행한다. 다른 draw callback의 본체나 GUI 정리 함수, packed 원본 매핑은 바꾸지 않았다.
+
+준비 호출·제목의 다섯 outline/center draw·열두 아이콘·문자열 22개의 lookup/measure/color/draw/wrap 순서를 보존한다. right-aligned 세 쌍은 signed dword 합과 inclusive 폭 경계를 사용하고, footer는 두 lookup 뒤 두 measure를 수행한다. 좌표·폭 계산은 signed 32-bit wrap과 0 방향 나눗셈을 유지하며, `0044F7A4`의 실제 dy 기반 wrap 폭도 dx로 고치지 않는다. blink는 실제 명령의 unsigned frame 한 번 조회·30 나눗셈·live state 조회를 유지한다. prompt의 white는 lookup 전에 캐시하고, normal font로 measure하되 window font로 draw하는 원본 차이와 full signed 반환값도 보존한다. callback 뒤 font/cache는 원본 경계에서 다시 읽으며 nil helper 값을 새로 무시하거나 indirect draw를 no-op으로 바꾸지 않는다.
+
+전체 golden helper trace, 세 폭 분기 경계·음수/overflow·odd screen 크기, blink/unsigned frame wrap, live font/cache/color mutation 및 모든 의존성 fault prefix를 회귀로 고정했다. 실제 4GiB 초과 C 할당 window/viewport/font/UTF-16/drawable, public C→Go entry와 실제 C cache/field 쓰기를 검증하며 위치 외 drawable byte는 보존한다. nullable fixture는 helper 경계를 대체해 호출 계약을 검사하는 것이지 실제 nil renderer의 안전성 주장이 아니다. 표적 3회, race/강제 checkptr 결합 3회, 전체 일반·실제 Go 1.26.5 cgocheck2 시험이 통과했다. 코드 2,788개·데이터 576개 및 stock 1,556파일 트리 검증도 통과했다. Darwin/ARM64 일반·HD 제품은 Mach-O arm64로 링크됐고 각각 `-h` 종료 코드 0이었다.
+
+두 독립 headless seat/mock audio Host Quest 입력 실행은 이전 `00473A10`의 잘린 위치 출력 주소를 통과하고 새 renderer의 실제 첫 BeholderGenerator draw에 진입했다. 두 실행은 다음 별도 원본 함수 **`004BC750` monster-generator draw**에서 종료 코드 2로 중단됐다. Mach-O ASLR slide `0xFBC000`/`0x4F54000`을 제거하면 각각 static `0x100F66088`/`0x100F660A8`, 동일 symbol+`0x5C`의 `ldrb w20,[x24]`이다. 이 C callback은 native `field_76` animation 주소를 다시 32-bit `v4`로 좁히고, 선택 state의 count byte를 읽으면서 `0x2349F58`/`0xB1AF98`에서 충돌한다. 해당 callback은 이번 커밋에서 변경하지 않았다. **안내 화면 전체 렌더링, Quest 플레이 성공 또는 ARM64 포팅 완료로 간주하지 않는다.** 캡처는 관찰용이며 golden-image 동등성 증거로 쓰지 않는다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

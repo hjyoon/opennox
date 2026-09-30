@@ -1344,6 +1344,20 @@
       "purpose": "the exact PE32 Briefing.wnd root-window constructor used as the provenance anchor for the native Credits presentation"
     },
     {
+      "name": "sub_44F300",
+      "address": "0x0044F300",
+      "size": 3669,
+      "sha256": "3960a887fd69ab104d5173adadfc3dea92f5b84a28339dda76cb12be108f9bb8",
+      "purpose": "the complete Quest briefing renderer, including preparation, five outlined title draws, twelve live cached drawable mappings and callbacks, localized text layout branches, and the single unsigned frame load and blinking prompt return"
+    },
+    {
+      "name": "sub_44F300_padding",
+      "address": "0x00450155",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes following the Quest briefing renderer"
+    },
+    {
       "name": "nox_client_showQuestBriefing_450A30",
       "address": "0x00450A30",
       "size": 152,
@@ -19908,6 +19922,314 @@
       "size": 18,
       "sha256": "a7069667d8b7e4d41004a1c558404a5ac03f7afa31d543b0d21bfb4adbd06140",
       "purpose": "the exact NUL-terminated ConjurerSpellBook lookup name used by Quest preview initialization at 0044E110"
+    },
+    {
+      "name": "quest_briefing_source_005a5648_44f300",
+      "address": "0x005A5648",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_1_44f300",
+      "address": "0x005A5670",
+      "size": 26,
+      "sha256": "ed215e6c5e24ca89e180e8c818555af2d3bbff95d5b674377e6a9d6f5c5381e0",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash1 text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a568c_44f300",
+      "address": "0x005A568C",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_2a_44f300",
+      "address": "0x005A56B4",
+      "size": 27,
+      "sha256": "e416db250e994d40f1693b6f8e719d6da01d3709aa052936b70e1e315bd1b356",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash2a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a56d0_44f300",
+      "address": "0x005A56D0",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_2b_44f300",
+      "address": "0x005A56F8",
+      "size": 27,
+      "sha256": "57586466c34332a76859bf1a1bebbad370c3b54fd584256a0ea90d169e4be3e4",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash2b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5714_44f300",
+      "address": "0x005A5714",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_3a_44f300",
+      "address": "0x005A573C",
+      "size": 27,
+      "sha256": "dfbec2df2b681f490d69b4705ffff55b5939550b5562e78754674f47265e59e3",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash3a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5758_44f300",
+      "address": "0x005A5758",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_3b_44f300",
+      "address": "0x005A5780",
+      "size": 27,
+      "sha256": "42dc0f640ab50e0c3a5a5598a4809b036a2ef0424926aed5aa62a36465ea230c",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash3b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a579c_44f300",
+      "address": "0x005A579C",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_4a_44f300",
+      "address": "0x005A57C4",
+      "size": 27,
+      "sha256": "4827588feb8ea3da8e0659ef7244274604f1fa3e4f97ec22834c1ecd32c27461",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash4a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a57e0_44f300",
+      "address": "0x005A57E0",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_4b_44f300",
+      "address": "0x005A5808",
+      "size": 27,
+      "sha256": "eec5f70c281d34186c633387bfa02a5b9c112b45250b1bbca542c3b7a24e9e5f",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash4b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5824_44f300",
+      "address": "0x005A5824",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_7a_44f300",
+      "address": "0x005A584C",
+      "size": 27,
+      "sha256": "dd2213f5de8922c4eed07bf0eb8ac1f89aed9ef235316a1644c5cd76fb9237d9",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash7a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5868_44f300",
+      "address": "0x005A5868",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_7b_44f300",
+      "address": "0x005A5890",
+      "size": 27,
+      "sha256": "78ebbef3298bfa19e6a87549afa66f003f94dbb747e76d2b09a0ca6d30fd8220",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash7b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a58ac_44f300",
+      "address": "0x005A58AC",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_5a_44f300",
+      "address": "0x005A58D4",
+      "size": 27,
+      "sha256": "111bef999ddf8a02eef6181b7d7abb29e34724ac51c847106a06cd2caedac53a",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash5a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a58f0_44f300",
+      "address": "0x005A58F0",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_5b_44f300",
+      "address": "0x005A5918",
+      "size": 27,
+      "sha256": "8d3635cde166a2743ca8d10f2935d0582121df87641bee3eade9fcdba53e8e2b",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash5b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5934_44f300",
+      "address": "0x005A5934",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_6a_44f300",
+      "address": "0x005A595C",
+      "size": 27,
+      "sha256": "e69bbad570d82999b822e9443d6660122b7b906bc71e14da2dbc1d40a3a39d12",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash6a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5978_44f300",
+      "address": "0x005A5978",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_6b_44f300",
+      "address": "0x005A59A0",
+      "size": 27,
+      "sha256": "e08fe68c1b87b49f72f5f58a62b7f24ef09fa526219ba46d377af21415ee6203",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash6b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a59bc_44f300",
+      "address": "0x005A59BC",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_8a_44f300",
+      "address": "0x005A59E4",
+      "size": 27,
+      "sha256": "500b282ed7fa09ad16a9491217c91c1667712b7defec413abce8aae63d87362a",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash8a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5a00_44f300",
+      "address": "0x005A5A00",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_8b_44f300",
+      "address": "0x005A5A28",
+      "size": 27,
+      "sha256": "93ae00c5ac95adb694be49a8ed393293764c43191d477defad548d0740892c40",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash8b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5a44_44f300",
+      "address": "0x005A5A44",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_9a_44f300",
+      "address": "0x005A5A6C",
+      "size": 27,
+      "sha256": "e43ac6e529c32ffe1fc12c9ca6b8a862c61053da525cda733148005485f479ae",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash9a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5a88_44f300",
+      "address": "0x005A5A88",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_9b_44f300",
+      "address": "0x005A5AB0",
+      "size": 27,
+      "sha256": "645efee50739e70fd193b0c6f75dee0e1999051f6065bc5283360431bdaa6a48",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash9b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5acc_44f300",
+      "address": "0x005A5ACC",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_10a_44f300",
+      "address": "0x005A5AF4",
+      "size": 28,
+      "sha256": "723106079a52c3d1bb2a42d0d809e8d328537ce92ecc742e82202a25cbdde1d4",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash10a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5b10_44f300",
+      "address": "0x005A5B10",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_10b_44f300",
+      "address": "0x005A5B38",
+      "size": 28,
+      "sha256": "ec70425441e4ac1233ef565f46a5d4701b3174efbda3fd3c5130e33929211d80",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash10b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5b54_44f300",
+      "address": "0x005A5B54",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_11a_44f300",
+      "address": "0x005A5B7C",
+      "size": 28,
+      "sha256": "b20598c790b03fcc281c37afba05eb8a06f2b6de14bcd91c11148a6dccaebf53",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash11a text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5b98_44f300",
+      "address": "0x005A5B98",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_11b_44f300",
+      "address": "0x005A5BC0",
+      "size": 28,
+      "sha256": "8c18ccccc69ff209704a11063e64d44c21bc3191cb4d948ac48e0af86eb83cb9",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash11b text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_source_005a5bdc_44f300",
+      "address": "0x005A5BDC",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact NUL-terminated GUIBrief.c source-file lookup string used by the Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_briefing_text_key_12_44f300",
+      "address": "0x005A5C04",
+      "size": 27,
+      "sha256": "2ce391f13039047098c96d76ff7463dcdd11fdbba888d5ba1bde279dca68da44",
+      "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash12 text key loaded by the complete Quest briefing renderer at 0044F300"
     },
     {
       "name": "quest_start_briefing_source_450a30",

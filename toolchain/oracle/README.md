@@ -4884,6 +4884,16 @@ update → signed-byte stack index → head 주소 → action을 원본 순서�
 
 저장소의 두 단계 refactoring 규칙에 따라 이 커밋에서는 공개 packet 인자만 `const unsigned char*`로 복원했다. **기존 본체의 int 축소는 임시로 남아 있어 런타임 크래시 수정 완료가 아니다.** 다음 독립 본체 이식에서 제거한다. 공개 선언 C11 정적 검사를 포함한 ABI fixture의 ARM64 O0/O2 및 ASan/UBSan 실행, legacy 전체 링크 검사를 통과했으며 코드 2,784개·데이터 519개 원본 범위를 검증했다. fixture는 공개 ABI 검사이지 실제 GUI 동작 검증이 아니다.
 
+### Quest 시작 화면 `00450A30`: 전체 native 본체
+
+앞선 ABI-only 커밋의 임시 `int a1` 축소를 제거하고, 공개 C entry를 원본 전체 Go 본체에 연결했다. 다른 Quest 화면 `00450980`, decoder switch, 이미지·텍스트·stage setter 본체는 바꾸지 않았다. 상태 clear → particle reset → book hide(1) → GUI prepare → packet+5 이미지 lookup/set → packet+37 unbounded strlen/텍스트 lookup 또는 inline empty 문자열 set → packet+2 unsigned word stage → show가 0이 아닐 때 lock(254,1,4)의 순서를 유지한다. book/image/text helper 반환값은 무시하고 lock의 signed dword 반환값은 그대로 돌려준다. show를 bool/byte로 좁히지 않으며 nil 이미지와 nil 텍스트도 setter에 전달한다. 이미지 setter의 기존 `WarriorChapterBegin8` fallback은 그대로 실행된다.
+
+이미지·텍스트는 기존 native pointer side slot을 사용하고, empty 문자열은 `(0x5D4594,832548)`의 inline UTF-16 저장소 주소를 넘긴다. 함수 내부에 길이 제한, nil packet 무시, 연결 상태 검사 또는 subtype-0D의 bit-2 상태 규칙을 새로 추가하지 않았다. packet 내용은 앞에서 일괄 파싱하지 않아 준비/이미지/텍스트 callback 뒤 변경된 key와 stage를 원본 경계에서 읽는다.
+
+회귀는 두 텍스트 분기, 양 끝 signed show/반환값과 `256`, unsigned stage `0xFEDC/0x8001/0xFFFF`, nil helper 결과와 호출 생략 금지, callback mutation, 모든 의존성 fault prefix를 검증한다. 4GiB 초과 C packet/image/text 할당으로 공개 C→Go entry, 실제 C setter와 side slot, inline empty 주소, fallback loader, 32바이트를 넘는 NUL scan 및 packet 비변조를 확인했다. 이 fixture의 GUI 준비/loader/lock 경계는 대체되어 있으며 실제 GUI 성공 주장과 구분한다. 표적 일반 3회, race/강제 `checkptr=2` 결합 3회, 저장소 전체 일반·실제 Go 1.26.5 `cgocheck2` 테스트, 코드 2,784개·데이터 519개 및 stock 1,556파일 트리 검증이 통과했다. Darwin/ARM64 일반·HD 제품은 Mach-O arm64로 링크됐고 두 `-h` 실행은 종료 코드 0이었다.
+
+일반·HD의 독립 headless seat/mock audio Host Quest 실행은 `G_TemplD.map` 로딩·클라이언트 재접속 뒤 기존 packet+5 주소 잘림을 통과하고 GUI draw 단계까지 진행했다. 두 실행은 **다음 별도 원본 함수 `0044F300`의 Quest 안내 drawable 위치 쓰기**에서 종료 코드 2로 중단됐다. 호출 경로는 `0044E6F0` → `0044F300` → `00473A10`이며, 정상·HD의 fault 주소는 각각 `0x5084865C`/`0x3856865C`이다. Mach-O ASLR slide를 제거한 symbol/disassembly에서 `00473A10`에 대응하는 native `str w8,[x2]` 쓰기를 확인했고, 기존 안내 renderer는 `dword_5d4594_832492+12`를 출력 주소로 넘긴다. 해당 drawable producer/consumer는 이번 본체 커밋에서 변경하지 않았다. **Quest 플레이 성공, 해당 GUI renderer 수정 완료 또는 전체 ARM64 포팅 완료로 간주하지 않는다.** GUI 입력은 모두 headless이며 관찰 캡처는 golden-image 동등성 증거가 아니다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

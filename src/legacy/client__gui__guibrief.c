@@ -763,28 +763,7 @@ int nox_client_showQuestBriefing2_450980(int a1, int a2) {
 }
 
 //----- (00450A30) --------------------------------------------------------
+extern int nox_client_showQuestBriefing_native_450A30(unsigned char* packet, int show);
 int nox_client_showQuestBriefing_450A30(const unsigned char* packet, int a2) {
-	int a1 = (int)(uintptr_t)packet; // Retain the old body until the separate native port.
-	char* v2;    // eax
-	wchar2_t* v3; // eax
-	int result;  // eax
-
-	dword_5d4594_832480 = 0;
-	nox_client_resetScreenParticles_431510();
-	nox_xxx_bookHideMB_45ACA0(1);
-	sub_446780();
-	v2 = (char*)nox_xxx_gLoadImg_42F970((const char*)(a1 + 5));
-	sub_450AD0(v2);
-	if (strlen((const char*)(a1 + 37))) {
-		v3 = nox_strman_loadString_40F1D0((char*)(a1 + 37), 0, "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1756);
-		sub_450AF0(v3);
-	} else {
-		sub_450AF0((wchar2_t*)getMemAt(0x5D4594, 832548));
-	}
-	nox_gui_setQuestStage_450B00(*(unsigned short*)(a1 + 2));
-	result = a2;
-	if (a2) {
-		result = nox_client_lockScreenBriefing_450160(254, 1, 4);
-	}
-	return result;
+	return nox_client_showQuestBriefing_native_450A30((unsigned char*)packet, a2);
 }

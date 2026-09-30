@@ -154,7 +154,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v96;                // eax
 	int v97;                // esi
 	int v98;                // eax
-	int v99;                // esi
+	nox_playerInfo* v99;    // esi
 	int v100;               // ebx
 	int v101;               // eax
 	int v102;               // esi
@@ -377,7 +377,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	int v327;               // [esp+0h] [ebp-1750h]
 	float v328;             // [esp+4h] [ebp-174Ch]
 	int v329;               // [esp+4h] [ebp-174Ch]
-	int v330;               // [esp+4h] [ebp-174Ch]
+	wchar2_t* v330;          // [esp+4h] [ebp-174Ch]
 	int v331;               // [esp+4h] [ebp-174Ch]
 	float v332;             // [esp+4h] [ebp-174Ch]
 	wchar2_t* v334;          // [esp+4h] [ebp-174Ch]
@@ -758,7 +758,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 		return 2;
 	case 72: // MSG_REPORT_STATS
 		v98 = nox_xxx_netClearHighBit_578B30(*(uint16_t*)(data + 1));
-		v99 = dword_8531A0_2576;
+		v99 = (nox_playerInfo*)dword_8531A0_2576;
 		v100 = v98;
 		if (nox_client_isConnected_43C700()) {
 			if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_ENABLE_NET_DEBUG)) {
@@ -767,7 +767,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			if (v100 == nox_player_netCode_85319C) {
 				v101 = nox_common_gameFlags_check_40A5C0(1);
 				if (!v101 && v99) {
-					nox_playerInfo* player = (nox_playerInfo*)v99;
+					nox_playerInfo* player = v99;
 					player->info.field_2247 = *(unsigned short*)(data + 3);
 					player->info.field_2243 = *(unsigned short*)(data + 5);
 					LOWORD(v101) = *(uint16_t*)(data + 9);
@@ -2134,7 +2134,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				}
 				if (nox_common_gameFlags_check_40A5C0(128)) {
 					if (dword_5d4594_1200832) {
-						v330 = dword_8531A0_2576 + 4704;
+						v330 = (wchar2_t*)(dword_8531A0_2576 + 4704);
 						v41 = nox_strman_loadString_40F1D0("NameChange", 0,
 														   "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 1470);
 						nox_swprintf(v401, v41, v330);

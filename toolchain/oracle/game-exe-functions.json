@@ -2709,6 +2709,34 @@
       "purpose": "the exact fifteen NOP bytes after the horizontal slider image renderer"
     },
     {
+      "name": "nox_thing_monster_gen_draw_4BC750",
+      "address": "0x004BC750",
+      "size": 425,
+      "sha256": "207f69ba2326f67e57e00e02d6512b0ddefbd791ae19a5707a2ff2bf3e81c672",
+      "purpose": "the complete monster-generator draw body with cached native animation data and main image table, signed frame comparisons after unsigned division, live timer/state writes, main draw before overlay selection, and terminal flag after the final draw"
+    },
+    {
+      "name": "nox_thing_monster_gen_draw_4BC750_alignment",
+      "address": "0x004BC8F9",
+      "size": 3,
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "purpose": "the exact three-byte LEA alignment between the complete generator draw body and its six-entry switch table"
+    },
+    {
+      "name": "monster_generator_draw_4bc750_switch_table",
+      "address": "0x004BC8FC",
+      "size": 24,
+      "sha256": "9eaca2b68b9efb17b40ac7fd04be29879227784173c397a138f425064b74324f",
+      "purpose": "the six original PE32 switch destinations embedded in the executable section for generator animation kinds zero through five, including rejected kinds one and three"
+    },
+    {
+      "name": "nox_thing_monster_gen_draw_4BC750_padding",
+      "address": "0x004BC914",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after the generator draw switch table"
+    },
+    {
       "name": "gui_server_advanced_host_4BDC10_4BDFCF",
       "address": "0x004BDC10",
       "size": 960,
@@ -20279,6 +20307,13 @@
       "size": 38,
       "sha256": "4d6b86cf8e1bfb58ad1d7f92cc3f3429599d77fe9a622c6c354c36d3c1b28e88",
       "purpose": "the exact NUL-terminated C source path passed to string lookup by the PE32 options feedback routine"
+    },
+    {
+      "name": "monster_generator_draw_4bc750_source",
+      "address": "0x005B2970",
+      "size": 38,
+      "sha256": "a3016b2957d5e848639ed7e46a4534cfe52b5ba8f398521653ac244509775645",
+      "purpose": "the exact NUL-terminated MGenDraw.c source-file string passed with line 86 to the inclusive generator random frame helper"
     },
     {
       "name": "item_tooltip_keys_paths_spaces_and_formats_4BF050",

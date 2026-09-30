@@ -4912,6 +4912,18 @@ update → signed-byte stack index → head 주소 → action을 원본 순서�
 
 두 독립 headless seat/mock audio Host Quest 입력 실행은 이전 `00473A10`의 잘린 위치 출력 주소를 통과하고 새 renderer의 실제 첫 BeholderGenerator draw에 진입했다. 두 실행은 다음 별도 원본 함수 **`004BC750` monster-generator draw**에서 종료 코드 2로 중단됐다. Mach-O ASLR slide `0xFBC000`/`0x4F54000`을 제거하면 각각 static `0x100F66088`/`0x100F660A8`, 동일 symbol+`0x5C`의 `ldrb w20,[x24]`이다. 이 C callback은 native `field_76` animation 주소를 다시 32-bit `v4`로 좁히고, 선택 state의 count byte를 읽으면서 `0x2349F58`/`0xB1AF98`에서 충돌한다. 해당 callback은 이번 커밋에서 변경하지 않았다. **안내 화면 전체 렌더링, Quest 플레이 성공 또는 ARM64 포팅 완료로 간주하지 않는다.** 캡처는 관찰용이며 golden-image 동등성 증거로 쓰지 않는다.
 
+### Generator draw `004BC750`: 월드와 Quest 안내의 공유 native 본체
+
+위 실제 안내 화면에서 충돌한 본체 `004BC750..004BC8F8` 425바이트/SHA-256 `207f69ba2326f67e57e00e02d6512b0ddefbd791ae19a5707a2ff2bf3e81c672`, 3바이트 LEA 정렬·6-entry switch table·12-NOP 및 NUL 포함 source 문자열을 구현 전에 봉인했다. switch table은 원본 executable section에 있어 코드 범위로 분류하며 실제 여섯 목적지를 그대로 검증한다. 한 원본 함수 본체만 Go로 연결하고 기존 공개 C callback ABI는 유지한다. 월드 dispatch도 같은 본체를 호출하므로 안내의 직접 C 간접 호출이 별도 PE32 drawer로 돌아가지 않는다. 기존 native C parser가 할당하는 conditional-animation record의 PE32 56바이트/LP64 80바이트 레이아웃과 native 이미지 테이블을 사용한다.
+
+state 우선순위·main table 선행 cache·count/kind/delay 읽기, unsigned dword frame 합/나눗셈 뒤 signed 비교·IDIV, 실제 inclusive random `0..count`와 line 86, slave index, live terminal class/flags 읽기·쓰기, timer의 live delay/count와 cached limit 및 timer 저장 뒤 state 저장을 보존한다. main draw 뒤에만 live flag와 overlay table/metadata·frame을 다시 읽고 마지막 draw 뒤 terminal flag를 기록한다. 이전 월드 전용 구현의 random 상한 축소·slave bound·nil-image 무시·kind-0 선행 거부는 원본 계약으로 교체했다. kind 0의 delay 주소는 오직 scalar frame word로 유지하며 terminal/timer override가 적용될 수 있다. override가 없는 kind 0이나 잘못된 count/table/index의 원본 접근이 안전하다는 주장은 하지 않는다.
+
+전체 helper trace·state/kind·signed frame wrap·zero divisor·live callback mutation과 모든 dependency fault prefix, 실제 4GiB 초과 C drawable/viewport/animation/table/image 주소의 공개 C 및 function-pointer entry·signed 반환값·C/Go layout·전체 drawable byte 보존을 회귀 시험한다. native fixture는 frame/random/draw 경계만 대체하므로 실제 픽셀 렌더링 증거와 구분한다. 표적 3회·race/강제 checkptr 3회, 전체 일반·실제 Go 1.26.5 cgocheck2 시험과 코드 2,792개·데이터 577개 및 stock 1,556파일 검증을 통과했다.
+
+Darwin/ARM64 일반·HD·server 제품은 Mach-O arm64로 링크되고 `-h`가 종료 코드 0이었다. 두 독립 headless seat/mock audio Host Quest 입력 실행은 이전 animation-pointer 충돌을 통과해 한국어 안내와 열두 아이콘을 렌더링하고, 안내 닫기·`G_TemplD.map` 진입·북쪽 이동 뒤 정상 종료했다. 두 로그 모두 연결 및 player drawable, 체력 `450/450`, 위치 `(5063,5119)→(5052.777,4920.038)`를 확인했다. 캡처도 직접 확인했지만 관찰용 override이며 golden-image 동등성 증거는 아니다. 이 짧은 Host Quest 시작 시나리오가 모든 Quest map/animation이나 전체 ARM64 포팅 완료를 증명하지 않는다.
+
+현재 일반 빌드의 기존 `solo-conjurer-spell-pet-map-transition.yaml` 회귀도 종료 코드 0이었다. 실제 Summon Wolf/Urchin·Charm·Pixie Swarm 서비스와 stock ExitCollide/save/load를 통해 `Con01a→Con02a→Con03a→저장된 Con02a`를 진행하고, 전환마다 30·270 tick 뒤 총 다섯 동료의 owner/월드·missile membership/HP/net-code/client drawable·위치·활성 상태를 확인했다. spell/exit는 테스트에서 실제 엔진 서비스를 호출하며 소유권·migrate/summoned flag를 강제 주입하지 않지만, hotbar 클릭과 출구까지의 물리 이동을 재현하는 시나리오는 아니다. 소실 이슈는 이 범위에서 재현되지 않아 해결 완료로 간주하지 않으며 정확한 map/mode/creature/save 조건이 필요하다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

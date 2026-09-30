@@ -35,52 +35,25 @@ int nox_xxx_quitMenuCanAutoSave_445830() {
 }
 
 //----- (00445840) --------------------------------------------------------
-int nox_xxx_menuGameOnButton_445840(uint32_t* a1, int a2, int* a3, int a4) {
-	int v3;        // esi
-	int v4;        // eax
-	int result;    // eax
-	int v6;        // eax
-	int v7;        // eax
-	char* v8;      // eax
-	int v9;        // eax
-	int v10;       // eax
-	int v12;       // eax
-	wchar2_t* v13;  // eax
-	int v14;       // eax
-	wchar2_t* v15;  // eax
-	int v16;       // eax
-	int v17;       // eax
-	uint32_t* v19; // eax
-	int v20;       // eax
-	int v21;       // eax
-	wchar2_t* v22;  // [esp-18h] [ebp-18h]
-	wchar2_t* v23;  // [esp-18h] [ebp-18h]
-
-	if (a2 != 16391) {
+int nox_xxx_menuGameOnButton_445840(nox_window* root, int event, nox_window* control, uintptr_t event_arg) {
+	(void)event_arg;
+	if (event != 16391) {
 		return 0;
 	}
-	v3 = nox_xxx_wndGetID_46B0A0(a3);
+	int id = nox_xxx_wndGetID_46B0A0(control);
 	nox_xxx_clientPlaySoundSpecial_452D80(766, 100);
-	switch (v3) {
+	switch (id) {
 	case 9001:
 		sub_445C40();
 		sub_413A00(1);
 		if (!nox_common_gameFlags_check_40A5C0(2048) || nox_xxx_playerAnimCheck_4372B0()) {
 			sub_445B40();
-			v17 = a3[9];
-			LOBYTE(v17) = v17 & 0xFD;
-			a3[9] = v17;
-			result = 0;
 		} else {
-			v23 = nox_strman_loadString_40F1D0("GUIQuit.c:ReallyLoadMessage", 0,
-											   "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 199);
-			v15 =
-				nox_strman_loadString_40F1D0("SelChar.c:LoadLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 198);
-			nox_xxx_dialogMsgBoxCreate_449A10(0, (int)v15, (int)v23, 56, sub_445B40, sub_445BA0);
-			v16 = a3[9];
-			LOBYTE(v16) = v16 & 0xFD;
-			a3[9] = v16;
-			result = 0;
+			wchar2_t* message = nox_strman_loadString_40F1D0(
+				"GUIQuit.c:ReallyLoadMessage", 0, "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 199);
+			wchar2_t* title = nox_strman_loadString_40F1D0(
+				"SelChar.c:LoadLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 198);
+			nox_xxx_dialogMsgBoxCreate_449A10(NULL, title, message, 56, sub_445B40, sub_445BA0);
 		}
 		break;
 	case 9002:
@@ -90,18 +63,9 @@ int nox_xxx_menuGameOnButton_445840(uint32_t* a1, int a2, int* a3, int a4) {
 				nox_setSaveFileName_4DB130("AUTOSAVE");
 				sub_4DB170(1, 0, 0);
 			}
-			v21 = a3[9];
-			LOBYTE(v21) = v21 & 0xFD;
-			a3[9] = v21;
-			result = 0;
 			break;
 		}
-		v19 = nox_xxx_wndGetChildByID_46B0C0(a1, v3);
-		nox_xxx_wnd_46ABB0((int)v19, 0);
-		v20 = a3[9];
-		LOBYTE(v20) = v20 & 0xFD;
-		a3[9] = v20;
-		result = 0;
+		nox_xxx_wnd_46ABB0(nox_xxx_wndGetChildByID_46B0C0(root, id), 0);
 		break;
 	case 9003:
 		sub_445C40();
@@ -111,71 +75,39 @@ int nox_xxx_menuGameOnButton_445840(uint32_t* a1, int a2, int* a3, int a4) {
 			nox_xxx_netSavePlayer_41CE00();
 		}
 		if (sub_43C6E0()) {
-			v21 = a3[9];
-			LOBYTE(v21) = v21 & 0xFD;
-			a3[9] = v21;
-			result = 0;
 			break;
 		}
 		sub_43CF70();
-		v12 = a3[9];
-		LOBYTE(v12) = v12 & 0xFD;
-		a3[9] = v12;
-		result = 0;
 		break;
 	case 9004:
 		nox_xxx_wndClearCaptureMain_46ADE0(nox_wnd_quitMenu_825760);
-		v22 = nox_strman_loadString_40F1D0("GUIQuit.c:ReallyQuitMessage", 0, "C:\\NoxPost\\src\\client\\Gui\\guiquit.c",
-										   185);
-		v13 = nox_strman_loadString_40F1D0("GUIQuit.c:ReallyQuitTitle", 0, "C:\\NoxPost\\src\\client\\Gui\\guiquit.c",
-										   184);
-		nox_xxx_dialogMsgBoxCreate_449A10(nox_wnd_quitMenu_825760, (int)v13, (int)v22, 56, nox_xxx_quitDialogYes_445B20,
-										  nox_xxx_quitDialogNo_445B30);
-		v14 = a3[9];
-		LOBYTE(v14) = v14 & 0xFD;
-		a3[9] = v14;
-		result = 0;
+		wchar2_t* message = nox_strman_loadString_40F1D0(
+			"GUIQuit.c:ReallyQuitMessage", 0, "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 185);
+		wchar2_t* title = nox_strman_loadString_40F1D0(
+			"GUIQuit.c:ReallyQuitTitle", 0, "C:\\NoxPost\\src\\client\\Gui\\guiquit.c", 184);
+		nox_xxx_dialogMsgBoxCreate_449A10(nox_wnd_quitMenu_825760, title, message, 56,
+			nox_xxx_quitDialogYes_445B20, nox_xxx_quitDialogNo_445B30);
 		break;
 	case 9005:
 		sub_445C40();
 		sub_4ADA40();
-		v4 = a3[9];
-		LOBYTE(v4) = v4 & 0xFD;
-		a3[9] = v4;
-		result = 0;
 		break;
 	case 9006:
 		sub_445C40();
-		v9 = a3[9];
-		LOBYTE(v9) = v9 & 0xFD;
-		a3[9] = v9;
-		result = 0;
 		break;
 	case 9007:
 		if (nox_common_gameFlags_check_40A5C0(1)) {
-			v8 = nox_common_playerInfoGetByID_417040(nox_player_netCode_85319C);
-			nox_xxx_serverHandleClientConsole_443E90((int)v8, 0, 0);
+			nox_playerInfo* player = nox_common_playerInfoGetByID_417040(nox_player_netCode_85319C);
+			nox_xxx_serverHandleClientConsole_443E90(player, 0, NULL);
 			sub_445C40();
-			v9 = a3[9];
-			LOBYTE(v9) = v9 & 0xFD;
-			a3[9] = v9;
-			result = 0;
 		} else {
 			nox_xxx_netServerCmd_440950_empty();
 			sub_445C40();
-			v7 = a3[9];
-			LOBYTE(v7) = v7 & 0xFD;
-			a3[9] = v7;
-			result = 0;
 		}
 		break;
 	case 9008:
 		sub_445C40();
 		nox_xxx_guiServerOptsLoad_457500();
-		v10 = a3[9];
-		LOBYTE(v10) = v10 & 0xFD;
-		a3[9] = v10;
-		result = 0;
 		break;
 	case 9009:
 		sub_445C40();
@@ -184,19 +116,14 @@ int nox_xxx_menuGameOnButton_445840(uint32_t* a1, int a2, int* a3, int a4) {
 		} else {
 			sub_48CB10(0);
 		}
-		v6 = a3[9];
-		LOBYTE(v6) = v6 & 0xFD;
-		a3[9] = v6;
-		result = 0;
 		break;
 	default:
-		v21 = a3[9];
-		LOBYTE(v21) = v21 & 0xFD;
-		a3[9] = v21;
-		result = 0;
 		break;
 	}
-	return result;
+	if (control) {
+		control->draw_data.field_0 &= ~UINT32_C(2);
+	}
+	return 0;
 }
 
 //----- (00445C40) --------------------------------------------------------

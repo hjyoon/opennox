@@ -90,6 +90,23 @@ steps:
     dt: 4
     game-mode: flagball
     name: verify old ball deletion and replacement minimap mark
+  - action: create-objective-teams
+    name: create the two goal teams through the normal game routine
+  - action: join-objective-team
+    name: join a real FlagBall team through the normal network request
+  - action: approach-flagball
+    name: collide with the stock ball through ordinary server physics
+  - action: assert-flagball-carried
+    dt: 4
+    name: verify native carrier owner and team after pickup
+  - action: approach-flagball-goal
+    dt: 8
+    name: bring the carried ball to the opposing stock goal
+  - action: assert-flagball-scored
+    dt: 4
+    name: verify exactly one point and normal ball respawn
+  - action: reset-objective-teams
+    name: return to a free-for-all roster before loading KOTR
   - action: set-objective-game-mode
     game-mode: kotr
     name: select KOTR mode preference
@@ -103,5 +120,45 @@ steps:
     dt: 120
     game-mode: kotr
     name: verify live native crown and minimap
+  - action: approach-stock-crown
+    name: collide with the existing stock crown through ordinary server physics
+  - action: assert-ground-item-picked
+    dt: 8
+    name: verify crown server and client inventories
+  - action: assert-crown-state
+    owned-by-player: true
+    name: verify crown ownership enchant and minimap removal
+  - action: inventory
+    name: open inventory for crown drop
+  - action: wait
+    dt: 120
+    name: settle inventory animation
+  - action: drag-inventory-item-out
+    item: Crown
+    name: attempt the stock KOTR crown drop through the real mouse path
+  - action: assert-ground-item-picked
+    dt: 8
+    name: verify KOTR rejected the inventory drop and retained the crown
+  - action: assert-crown-state
+    owned-by-player: true
+    name: verify rejected drop preserved ownership enchant and minimap state
+  - action: inventory
+    name: close inventory before entering observer mode
+  - action: wait
+    dt: 90
+    name: settle inventory close animation
+  - action: esc
+    name: open the escape menu
+  - action: assert-escape-menu
+    dt: 60
+    active: true
+    name: verify the escape menu opened
+  - action: click-observer-mode
+    name: return the crown by clicking the ordinary observer mode button
+  - action: assert-ground-item-dropped
+    dt: 8
+    name: verify observer transition dropped the crown and replicated it to the client
+  - action: assert-crown-state
+    name: verify crown owner cleared enchant removed and minimap restored
   - action: quit
     dt: 1

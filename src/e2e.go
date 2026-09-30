@@ -291,6 +291,7 @@ type e2eScenario struct {
 	wizard1UrchinsBefore  int
 	wizard1UrchinHPBefore int
 	wizard1LightningStart uint32
+	objective             e2eObjectiveFixture
 }
 
 func (sc *e2eScenario) Exec() {
@@ -9332,6 +9333,56 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ResetFlagball(l.Name)
+		case "approach-flagball":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ApproachFlagball(l.Name)
+		case "join-objective-team":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.JoinObjectiveTeam(l.Name)
+		case "create-objective-teams":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CreateObjectiveTeams(l.Name)
+		case "reset-objective-teams":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ResetObjectiveTeams(l.Name)
+		case "assert-flagball-carried":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertFlagballCarried(l.Name)
+		case "approach-flagball-goal":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ApproachFlagballGoal(l.Name)
+		case "assert-flagball-scored":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertFlagballScored(l.Name)
+		case "approach-stock-crown":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ApproachStockCrown(l.Name)
+		case "assert-crown-state":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertCrownState(l.Owned, l.Name)
+		case "click-observer-mode":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ClickObserverMode(l.Name)
 		case "wait-map":
 			if dt != 0 {
 				sc.Wait(dt, "")

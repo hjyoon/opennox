@@ -1358,6 +1358,34 @@
       "purpose": "the exact eleven NOP bytes following the Quest briefing renderer"
     },
     {
+      "name": "nox_xxx_clientQuestWinScreen_450770",
+      "address": "0x00450770",
+      "size": 491,
+      "sha256": "b7d5afcacc7c9467ffc4528b0086be0609312b81d34d4463cdddc7234ad0cbd9",
+      "purpose": "the complete Quest score packet consumer: clear six records, read live wire fields after lookup, sort only the nonzero-ID count prefix, measure four live-font labels with signed width comparisons and a final 85-pixel cap, and lock screen 254"
+    },
+    {
+      "name": "nox_xxx_clientQuestWinScreen_450770_padding",
+      "address": "0x0045095B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes following the Quest score packet consumer"
+    },
+    {
+      "name": "sub_450960",
+      "address": "0x00450960",
+      "size": 28,
+      "sha256": "b1e03125200f701a74dfdce41042c13e9eb1e6396c4588df755ab04ec22919a3",
+      "purpose": "the Quest score comparator, returning zero for equality and sorting unsigned dword scores descending"
+    },
+    {
+      "name": "sub_450960_padding",
+      "address": "0x0045097C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes following the Quest score comparator"
+    },
+    {
       "name": "nox_client_showQuestBriefing_450A30",
       "address": "0x00450A30",
       "size": 152,
@@ -20258,6 +20286,62 @@
       "size": 27,
       "sha256": "2ce391f13039047098c96d76ff7463dcdd11fdbba888d5ba1bde279dca68da44",
       "purpose": "the exact NUL-terminated GeneralPrint:QuestSplash12 text key loaded by the complete Quest briefing renderer at 0044F300"
+    },
+    {
+      "name": "quest_win_source_generators_450770",
+      "address": "0x005A5C64",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact GUIBrief.c source-file C string passed with line 1656 by the Quest score consumer"
+    },
+    {
+      "name": "quest_win_key_generators_450770",
+      "address": "0x005A5C8C",
+      "size": 31,
+      "sha256": "e58b1c47183e389db8e364dc3af05e618b217e2fcfed92b50d67affb4c0fe405",
+      "purpose": "the exact NUL-terminated GUIBrief.c:GeneratorsDestroyed key"
+    },
+    {
+      "name": "quest_win_source_kills_450770",
+      "address": "0x005A5CAC",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact GUIBrief.c source-file C string passed with line 1660 by the Quest score consumer"
+    },
+    {
+      "name": "quest_win_key_kills_450770",
+      "address": "0x005A5CD4",
+      "size": 17,
+      "sha256": "9224af69b834c51fe8068cf63556ab2c219a9bdfe7417442b3b5fffb778c5b80",
+      "purpose": "the exact NUL-terminated GUIBrief.c:Kills key"
+    },
+    {
+      "name": "quest_win_source_secrets_450770",
+      "address": "0x005A5CE8",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact GUIBrief.c source-file C string passed with line 1664 by the Quest score consumer"
+    },
+    {
+      "name": "quest_win_key_secrets_450770",
+      "address": "0x005A5D10",
+      "size": 27,
+      "sha256": "2a0b70e473fe53ef1014082228ca8a27b0ee550d7c392ce301b030ae15b4a916",
+      "purpose": "the exact NUL-terminated GUIBrief.c:numSecretsFound key"
+    },
+    {
+      "name": "quest_win_source_score_450770",
+      "address": "0x005A5D2C",
+      "size": 37,
+      "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
+      "purpose": "the exact GUIBrief.c source-file C string passed with line 1668 by the Quest score consumer"
+    },
+    {
+      "name": "quest_win_key_score_450770",
+      "address": "0x005A5D54",
+      "size": 22,
+      "sha256": "f6b3d7d43e4ea7d18ace6c0e3e2d19c4aad23e6c67334988b58ac8c95eee90c4",
+      "purpose": "the exact NUL-terminated GUIBrief.c:TotalScore key"
     },
     {
       "name": "quest_start_briefing_source_450a30",

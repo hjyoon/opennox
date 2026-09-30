@@ -383,7 +383,8 @@ int sub_44F300(nox_window* win, nox_window_data* draw) {
 }
 
 //----- (00450770) --------------------------------------------------------
-int nox_xxx_clientQuestWinScreen_450770(int a1) {
+int nox_xxx_clientQuestWinScreen_450770(const unsigned char* packet) {
+	int a1 = (int)(uintptr_t)packet;
 	size_t v1;          // ebx
 	unsigned char* v2;  // esi
 	unsigned short* v3; // edi

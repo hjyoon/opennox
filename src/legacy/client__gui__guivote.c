@@ -17,141 +17,120 @@ extern uintptr_t dword_8531A0_2576;
 extern uint32_t nox_player_netCode_85319C;
 
 //----- (0048CB10) --------------------------------------------------------
-uint32_t* sub_48CB10(int a1) {
-	uint32_t* result;   // eax
-	wchar2_t* v2;        // eax
-	uint32_t* v3;       // esi
-	wchar2_t* v4;        // eax
-	wchar2_t* v5;        // eax
-	wchar2_t* v6;        // eax
-	wchar2_t* v7;        // eax
-	wchar2_t* v8;        // eax
-	uint32_t* v9;       // esi
-	wchar2_t* v10;       // eax
-	wchar2_t* v11;       // eax
-	wchar2_t* v12;       // eax
-	uint32_t* v13;      // esi
-	wchar2_t* v14;       // eax
-	uint32_t* v15;      // eax
-	char* v16;          // ebx
-	char* i;            // ebp
-	uint32_t* v18;      // eax
-	int v19;            // esi
-	const wchar2_t* v20; // ebx
-	char* j;            // ebp
-	int v22;            // esi
-	const wchar2_t* v23; // edi
-	wchar2_t* v24;       // [esp-10h] [ebp-228h]
-	int v25;            // [esp+10h] [ebp-208h]
-	char* v26;          // [esp+14h] [ebp-204h]
-	wchar2_t v27[256];   // [esp+18h] [ebp-200h]
+uintptr_t sub_48CB10(int a1) {
+	static const wchar2_t space[] = {' ', 0};
+	int list_index = 0;
+	wchar2_t text[256];
 
-	v25 = 0;
-	nox_window_call_field_94(*(int*)&dword_5d4594_1197316, 16399, 0, 0);
-	nox_window_call_field_94(*(int*)&dword_5d4594_1197320, 16399, 0, 0);
-	result = (uint32_t*)a1;
+	nox_window_call_field_94(dword_5d4594_1197316, 16399, 0, 0);
+	nox_window_call_field_94(dword_5d4594_1197320, 16399, 0, 0);
 	dword_5d4594_1197308 = a1;
 	switch (a1) {
 	case 4:
-		if (dword_8531A0_2576 && !*(uint32_t*)(dword_8531A0_2576 + 4792)) {
-			v24 = nox_strman_loadString_40F1D0("GUIVote.c:NotAllowedVote", 0,
-											   "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 452);
-			v2 = nox_strman_loadString_40F1D0("guiquit.c:Vote", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 451);
-			return nox_xxx_dialogMsgBoxCreate_449A10(0, (int)v2, (int)v24, 33, 0, 0);
+		if (dword_8531A0_2576 && !((nox_playerInfo*)dword_8531A0_2576)->field_4792) {
+			wchar2_t* message = nox_strman_loadString_40F1D0(
+				"GUIVote.c:NotAllowedVote", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 452);
+			wchar2_t* title = nox_strman_loadString_40F1D0(
+				"guiquit.c:Vote", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 451);
+			return (uintptr_t)nox_xxx_dialogMsgBoxCreate_449A10(NULL, title, message, 33, NULL, NULL);
 		}
-		nox_window_set_hidden(*(int*)&dword_5d4594_1197316, 1);
-		nox_window_set_hidden(*(int*)&dword_5d4594_1197320, 0);
-		v3 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1197312, 4301);
-		v4 = nox_strman_loadString_40F1D0("SelectVoteTopic", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 465);
-		sub_46AEE0((nox_window*)v3, v4);
-		v5 = nox_strman_loadString_40F1D0("VoteTopicLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 468);
-		nox_wcscpy(v27, v5);
-		nox_wcscat(v27, L" ");
-		v6 = nox_strman_loadString_40F1D0("VoteResetServer", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 470);
-		nox_wcscat(v27, v6);
-		nox_window_call_field_94(*(int*)&dword_5d4594_1197320, 16397, (int)v27, 4);
-		v7 = nox_strman_loadString_40F1D0("VoteTopicLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 474);
-		nox_wcscpy(v27, v7);
-		nox_wcscat(v27, L" ");
-		v8 = nox_strman_loadString_40F1D0("VoteKickPlayer", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 476);
-		nox_wcscat(v27, v8);
-		nox_window_call_field_94(*(int*)&dword_5d4594_1197320, 16397, (int)v27, 4);
-		return (uint32_t*)nox_xxx_wndShowModalMB_46A8C0(*(int*)&dword_5d4594_1197312);
+		nox_window_set_hidden(dword_5d4594_1197316, 1);
+		nox_window_set_hidden(dword_5d4594_1197320, 0);
+		nox_window* prompt = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1197312, 4301);
+		sub_46AEE0(prompt, nox_strman_loadString_40F1D0(
+			"SelectVoteTopic", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 465));
+		nox_wcscpy(text, nox_strman_loadString_40F1D0(
+			"VoteTopicLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 468));
+		nox_wcscat(text, space);
+		nox_wcscat(text, nox_strman_loadString_40F1D0(
+			"VoteResetServer", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 470));
+		nox_window_call_field_94(dword_5d4594_1197320, 16397, (uintptr_t)text, 4);
+		nox_wcscpy(text, nox_strman_loadString_40F1D0(
+			"VoteTopicLabel", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 474));
+		nox_wcscat(text, space);
+		nox_wcscat(text, nox_strman_loadString_40F1D0(
+			"VoteKickPlayer", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 476));
+		nox_window_call_field_94(dword_5d4594_1197320, 16397, (uintptr_t)text, 4);
+		return (uintptr_t)nox_xxx_wndShowModalMB_46A8C0(dword_5d4594_1197312);
 	case 2:
-		nox_window_set_hidden(*(int*)&dword_5d4594_1197316, 1);
-		nox_window_set_hidden(*(int*)&dword_5d4594_1197320, 0);
-		v9 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1197312, 4301);
-		v10 = nox_strman_loadString_40F1D0("Vote:ResetQuest", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 491);
-		sub_46AEE0((nox_window*)v9, v10);
-		v11 = nox_strman_loadString_40F1D0("WindowDir:Yes", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 495);
-		nox_window_call_field_94(*(int*)&dword_5d4594_1197320, 16397, (int)v11, 4);
-		v12 = nox_strman_loadString_40F1D0("WindowDir:No", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 498);
-		nox_window_call_field_94(*(int*)&dword_5d4594_1197320, 16397, (int)v12, 4);
+		nox_window_set_hidden(dword_5d4594_1197316, 1);
+		nox_window_set_hidden(dword_5d4594_1197320, 0);
+		prompt = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1197312, 4301);
+		sub_46AEE0(prompt, nox_strman_loadString_40F1D0(
+			"Vote:ResetQuest", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 491));
+		nox_window_call_field_94(dword_5d4594_1197320, 16397,
+			(uintptr_t)nox_strman_loadString_40F1D0(
+				"WindowDir:Yes", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 495),
+			4);
+		nox_window_call_field_94(dword_5d4594_1197320, 16397,
+			(uintptr_t)nox_strman_loadString_40F1D0(
+				"WindowDir:No", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 498),
+			4);
 		if (dword_5d4594_1197332 == 1) {
-			nox_window_call_field_94(*(int*)&dword_5d4594_1197320, 16403, 0, 0);
+			nox_window_call_field_94(dword_5d4594_1197320, 16403, 0, 0);
 		} else {
-			nox_window_call_field_94(*(int*)&dword_5d4594_1197320, 16403, 1, 0);
+			nox_window_call_field_94(dword_5d4594_1197320, 16403, 1, 0);
 		}
-		return (uint32_t*)nox_xxx_wndShowModalMB_46A8C0(*(int*)&dword_5d4594_1197312);
+		return (uintptr_t)nox_xxx_wndShowModalMB_46A8C0(dword_5d4594_1197312);
 	case 0:
 	case 1:
 	case 3:
-		nox_window_set_hidden(*(int*)&dword_5d4594_1197316, 0);
-		nox_window_set_hidden(*(int*)&dword_5d4594_1197320, 1);
-		v13 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1197312, 4301);
-		v14 = nox_strman_loadString_40F1D0("VoteKickPlayer", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 520);
-		sub_46AEE0((nox_window*)v13, v14);
+		nox_window_set_hidden(dword_5d4594_1197316, 0);
+		nox_window_set_hidden(dword_5d4594_1197320, 1);
+		prompt = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1197312, 4301);
+		sub_46AEE0(prompt, nox_strman_loadString_40F1D0(
+			"VoteKickPlayer", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIVote.c", 520));
+		nox_playerInfo* local_player = (nox_playerInfo*)dword_8531A0_2576;
 		if (nox_xxx_getTeamCounter_417DD0()) {
-			v15 = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
-			v16 = nox_xxx_getTeamByID_418AB0(*((unsigned char*)v15 + 4));
-			v26 = v16;
-			if (v16) {
-				for (i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0((int)i)) {
-					if (i != *(char**)(&dword_8531A0_2576)) {
-						v18 = nox_xxx_objGetTeamByNetCode_418C80(*((uint32_t*)i + 515));
-						if (v18) {
-							if (nox_xxx_teamCompare2_419180((int)v18, v16[57])) {
-								nox_window_call_field_94(
-									*(int*)&dword_5d4594_1197316, 16397, (int)(i + 4704),
-									*getMemU32Ptr(0x587000, 156400 + 8 * ((unsigned char)v16[57] % 10)));
-								v19 = 0;
-								if (dword_5d4594_1197324 > 0) {
-									v20 = (const wchar2_t*)getMemAt(0x5D4594, 1193720);
-									do {
-										if (!nox_wcscmp(v20, (const wchar2_t*)i + 2352)) {
-											nox_window_call_field_94(*(int*)&dword_5d4594_1197316, 16405, v25, 0);
-										}
-										++v19;
-										v20 += 28;
-									} while (v19 < *(int*)&dword_5d4594_1197324);
-									v16 = v26;
-								}
-								++v25;
+			nox_object_team_t* membership = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
+			nox_team_t* team = membership ? nox_xxx_getTeamByID_418AB0(membership->id) : NULL;
+			if (team) {
+				for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+					 player = nox_common_playerInfoGetNext_416EE0(player)) {
+					if (player != local_player) {
+						membership = nox_xxx_objGetTeamByNetCode_418C80(player->netCode);
+						if (membership && nox_xxx_teamCompare2_419180(membership, team->field_57)) {
+							nox_window_call_field_94(
+								dword_5d4594_1197316, 16397, (uintptr_t)player->name_final,
+								*getMemU32Ptr(0x587000, 156400 + 8 * (team->field_57 % 10)));
+							int excluded_index = 0;
+							if (dword_5d4594_1197324 > 0) {
+								const wchar2_t* excluded = (const wchar2_t*)getMemAt(0x5D4594, 1193720);
+								do {
+									if (!nox_wcscmp(excluded, player->name_final)) {
+										nox_window_call_field_94(dword_5d4594_1197316, 16405, list_index, 0);
+									}
+									++excluded_index;
+									excluded += 28;
+								} while (excluded_index < (int)dword_5d4594_1197324);
 							}
+							++list_index;
 						}
 					}
 				}
 			}
 		} else {
-			for (j = nox_common_playerInfoGetFirst_416EA0(); j; j = nox_common_playerInfoGetNext_416EE0((int)j)) {
-				if (j != *(char**)(&dword_8531A0_2576)) {
-					nox_window_call_field_94(*(int*)&dword_5d4594_1197316, 16397, (int)(j + 4704), 4);
-					v22 = 0;
+			for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+				 player = nox_common_playerInfoGetNext_416EE0(player)) {
+				if (player != local_player) {
+					nox_window_call_field_94(
+						dword_5d4594_1197316, 16397, (uintptr_t)player->name_final, 4);
+					int excluded_index = 0;
 					if (dword_5d4594_1197324 > 0) {
-						v23 = (const wchar2_t*)getMemAt(0x5D4594, 1193720);
+						const wchar2_t* excluded = (const wchar2_t*)getMemAt(0x5D4594, 1193720);
 						do {
-							if (!nox_wcscmp(v23, (const wchar2_t*)j + 2352)) {
-								nox_window_call_field_94(*(int*)&dword_5d4594_1197316, 16405, v25, 0);
+							if (!nox_wcscmp(excluded, player->name_final)) {
+								nox_window_call_field_94(dword_5d4594_1197316, 16405, list_index, 0);
 							}
-							++v22;
-							v23 += 28;
-						} while (v22 < *(int*)&dword_5d4594_1197324);
+							++excluded_index;
+							excluded += 28;
+						} while (excluded_index < (int)dword_5d4594_1197324);
 					}
-					++v25;
+					++list_index;
 				}
 			}
 		}
-		return (uint32_t*)nox_xxx_wndShowModalMB_46A8C0(*(int*)&dword_5d4594_1197312);
+		return (uintptr_t)nox_xxx_wndShowModalMB_46A8C0(dword_5d4594_1197312);
 	}
-	return result;
+	return (uintptr_t)a1;
 }

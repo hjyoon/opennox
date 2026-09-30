@@ -195,8 +195,9 @@ int sub_48D000_initGuiKick() {
 	}
 	dword_5d4594_1197316 = nox_xxx_wndGetChildByID_46B0C0(v0, 4320);
 	dword_5d4594_1197320 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1197312, 4321);
-	nox_window_setPos_46A9B0(dword_5d4594_1197312, (nox_win_width - dword_5d4594_1197312->width) / 2,
-							 dword_5d4594_1197312->off_y);
+	nox_window_setPos_46A9B0(dword_5d4594_1197312,
+		(int)((nox_win_width - dword_5d4594_1197312->width) / 2),
+		(int)dword_5d4594_1197312->off_y);
 	nox_window_set_hidden(dword_5d4594_1197312, 1);
 	dword_5d4594_1197324 = 0;
 	dword_5d4594_1197328 = 0;
@@ -206,13 +207,15 @@ int sub_48D000_initGuiKick() {
 }
 
 //----- (0048D0A0) --------------------------------------------------------
-int nox_xxx_guiKick_48D0A0(int a1, int a2, int* a3, int a4) {
+int nox_xxx_guiKick_48D0A0(nox_window* win, int event, nox_window* control, uintptr_t event_arg) {
 	int v4; // eax
 
-	if (a2 != 16391) {
+	(void)win;
+	(void)event_arg;
+	if (event != 16391) {
 		return 0;
 	}
-	v4 = nox_xxx_wndGetID_46B0A0(a3) - 4311;
+	v4 = nox_xxx_wndGetID_46B0A0(control) - 4311;
 	if (v4) {
 		if (v4 == 1) {
 			sub_48CAD0();
@@ -323,49 +326,29 @@ int sub_48D120() {
 }
 
 //----- (0048D260) --------------------------------------------------------
-char* nox_xxx_voteSend_48D260(wchar2_t* a1) {
-	char* result; // eax
-	int v2;       // esi
-	char v3[52];  // [esp+8h] [ebp-34h]
-
-	result = nox_common_playerInfoGetFirst_416EA0();
-	v2 = (int)result;
-	if (result) {
-		while (nox_wcscmp((const wchar2_t*)(v2 + 4704), a1)) {
-			result = nox_common_playerInfoGetNext_416EE0(v2);
-			v2 = (int)result;
-			if (!result) {
-				return result;
-			}
+int nox_xxx_voteSend_48D260(wchar2_t* a1) {
+	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+		 player = nox_common_playerInfoGetNext_416EE0(player)) {
+		if (!nox_wcscmp(player->name_final, a1)) {
+			uint16_t message[26] = {750};
+			nox_wcscpy((wchar2_t*)&message[1], a1);
+			return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)message, sizeof(message));
 		}
-		*(uint16_t*)v3 = 750;
-		nox_wcscpy((wchar2_t*)&v3[2], a1);
-		result = (char*)nox_netlist_addToMsgListCli_40EBC0(31, 0, v3, 52);
 	}
-	return result;
+	return 0;
 }
 
 //----- (0048D2D0) --------------------------------------------------------
-char* nox_xxx_netSendRenameMb_48D2D0(wchar2_t* a1) {
-	char* result; // eax
-	int v2;       // esi
-	char v3[52];  // [esp+8h] [ebp-34h]
-
-	result = nox_common_playerInfoGetFirst_416EA0();
-	v2 = (int)result;
-	if (result) {
-		while (nox_wcscmp((const wchar2_t*)(v2 + 4704), a1)) {
-			result = nox_common_playerInfoGetNext_416EE0(v2);
-			v2 = (int)result;
-			if (!result) {
-				return result;
-			}
+int nox_xxx_netSendRenameMb_48D2D0(wchar2_t* a1) {
+	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+		 player = nox_common_playerInfoGetNext_416EE0(player)) {
+		if (!nox_wcscmp(player->name_final, a1)) {
+			uint16_t message[26] = {238};
+			nox_wcscpy((wchar2_t*)&message[1], a1);
+			return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)message, sizeof(message));
 		}
-		*(uint16_t*)v3 = 238;
-		nox_wcscpy((wchar2_t*)&v3[2], a1);
-		result = (char*)nox_netlist_addToMsgListCli_40EBC0(31, 0, v3, 52);
 	}
-	return result;
+	return 0;
 }
 
 //----- (0048D340) --------------------------------------------------------
@@ -412,14 +395,12 @@ int nox_xxx_clientVote_48D3E0() {
 }
 
 //----- (0048D410) --------------------------------------------------------
-uint32_t* sub_48D410() {
-	uint32_t* result; // eax
-
-	result = (uint32_t*)nox_window_call_field_94(dword_5d4594_1197320, 16404, 0, 0);
+uintptr_t sub_48D410() {
+	uintptr_t result = nox_window_call_field_94(dword_5d4594_1197320, 16404, 0, 0);
 	if (!result) {
 		return sub_48CB10(2);
 	}
-	if (result == (uint32_t*)1) {
+	if (result == 1) {
 		result = sub_48CB10(3);
 	}
 	return result;

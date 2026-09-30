@@ -1344,6 +1344,20 @@
       "purpose": "the exact PE32 Briefing.wnd root-window constructor used as the provenance anchor for the native Credits presentation"
     },
     {
+      "name": "sub_44E8E0",
+      "address": "0x0044E8E0",
+      "size": 2057,
+      "sha256": "a6a1bbb66d529bde80cd58e40d160d8b3b595049227f00559e522ee4996a1f4e",
+      "purpose": "the complete original Quest score renderer, anchoring the six-row native table field and player-name correspondence while retaining its existing rendering body"
+    },
+    {
+      "name": "sub_44E8E0_padding",
+      "address": "0x0044F0E9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes following the Quest score renderer"
+    },
+    {
       "name": "sub_44F300",
       "address": "0x0044F300",
       "size": 3669,

@@ -2,6 +2,10 @@
 
 ## Quest 점수 화면 packet ABI `00450770` — 분리 단계
 
+두 번째 분리 단계는 PE32 `005D4594+832364`의 여섯 score record를 단일 native table 변수로 복원한다. player identity만 native pointer이며 네 unsigned short와 unsigned score는 그대로여서 행 크기는 ILP32 16바이트, LP64 24바이트다. 기존 생산자·comparator·renderer의 table access와 stride만 타입에 맞춰 바꾸고, 이름은 실제 `Player.name_final`에서 읽는다. packet 본문은 여전히 옛 `int a1`을 유지하므로 이 단계도 전체 Quest 맵 전환 완료 주장은 아니다.
+
+실제 C 전역 table과 C comparator/qsort에 4GiB 위 C-allocated Player를 넣어 pointer/모든 필드 보존, unsigned high-bit/동점 비교, prefix 밖 행 비변조, zero/singleton sort를 검증했다. 표적 일반 및 강제 cgocheck2 각 3회와 C11 layout/ABI fixture가 통과했다. 기존 renderer 원본 본체/정렬 padding도 추가 봉인해 직접 verifier는 코드 2,798개·데이터 585개가 일치했다.
+
 실제 headless Quest stage 1→2 출구 충돌은 서버의 `G_Swamp.map` 로딩까지 진행했지만, 클라이언트의 `F0/0C` 90바이트 점수 패킷 소비자에서 `0x60000040d8f0` 주소를 `0x40d8f2`로 잘라 SIGSEGV를 발생시켰다. 이 첫 단계는 packet 인자만 `const unsigned char*`로 복원하고 옛 `int a1` 지역 변수와 본문을 그대로 유지한다. 따라서 아직 런타임 크래시 수정이 아니며, 다음 별도 타입/본문 커밋이 필요하다.
 
 원본 소비자 `00450770..0045095A` 491바이트, comparator `00450960..0045097B` 28바이트와 각 NOP padding 및 네 lookup의 source/key 8개 범위를 봉인했다. 원본은 여섯 wire slot을 압축하지 않고 nonzero-ID 수만큼의 prefix만 unsigned-score 내림차순 `qsort`하며, player lookup 뒤 각 필드를 읽고 font/label-width를 매 호출 뒤 다시 읽는다. 전체 signed lock 반환값과 마지막 width≤85 규칙도 후속 본문 복원의 기준이다.

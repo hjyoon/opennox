@@ -582,8 +582,8 @@ int sub_450960(const void* a1, const void* a2) {
 	unsigned int v3; // ecx
 	int result;      // eax
 
-	v2 = *((uint32_t*)a1 + 3);
-	v3 = *((uint32_t*)a2 + 3);
+	v2 = ((const nox_quest_stats_row_450770*)a1)->score;
+	v3 = ((const nox_quest_stats_row_450770*)a2)->score;
 	if (v2 == v3) {
 		result = 0;
 	} else {

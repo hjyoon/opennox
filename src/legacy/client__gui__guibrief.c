@@ -106,9 +106,9 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 	wchar2_t* v4;             // eax
 	wchar2_t* v5;             // eax
 	unsigned char* v6;       // eax
-	unsigned char* v7;       // ebp
+	nox_quest_stats_row_450770* v7; // ebp, native score table
 	int v8;                  // esi
-	int v9;                  // ecx
+	nox_playerInfo* v9;      // ecx, native player identity
 	int v10;                 // ebx
 	void* v11;               // eax
 	signed int v12;          // eax
@@ -185,21 +185,21 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 	v6 = getMemAt(0x587000, 122964);
 	v43 = 0;
 	v42 = 0;
-	v7 = getMemAt(0x5D4594, 832364);
+	v7 = nox_quest_stats_450770;
 	v48 = getMemAt(0x587000, 122964);
 	while (1) {
 		v8 = *(uint32_t*)v6 + v3 - 240;
-		v9 = *(uint32_t*)v7;
+		v9 = v7->player;
 		v10 = *((uint32_t*)v6 - 1) + v2 - 320;
-		if (*(uint32_t*)v7) {
+		if (v7->player) {
 			++v43;
-			if (v9 == dword_8531A0_2576) {
-				v47 = *((unsigned short*)v7 + 5);
+			if ((uintptr_t)v9 == dword_8531A0_2576) {
+				v47 = v7->coop_secrets;
 			} else {
-				v45 += *((unsigned short*)v7 + 5);
+				v45 += v7->coop_secrets;
 			}
 			nox_xxx_drawSetTextColor_434390(nox_color_orange_2614256);
-			nox_swprintf(&v55[1], L"%d) %s", v42 + 1, *(uint32_t*)v7 + 4704);
+			nox_swprintf(&v55[1], L"%d) %s", v42 + 1, v7->player->name_final);
 			v11 = draw->font;
 			v46 = *getMemU32Ptr(0x587000, 122968) - *getMemU32Ptr(0x587000, 122960) + v10 - 16;
 			nox_xxx_drawGetStringSize_43F840(v11, &v55[1], &v44, &v53, 0);
@@ -217,7 +217,7 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 			v14 = nox_strman_loadString_40F1D0("GUIBrief.c:GeneratorsDestroyed", 0,
 											   "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 529);
 			nox_xxx_drawStringWrap_43FAF0(draw->font, v14, v10, v13, *(int*)&dword_5d4594_832476, v38);
-			nox_swprintf(&v55[1], L" %d", *((unsigned short*)v7 + 3));
+			nox_swprintf(&v55[1], L" %d", v7->generators);
 			nox_xxx_drawSetTextColor_434390(nox_color_green_2614268);
 			nox_xxx_drawStringWrap_43FAF0(draw->font, &v55[1], v10 + dword_5d4594_832476, v13,
 									  v40 - dword_5d4594_832476 - 8, v38);
@@ -226,7 +226,7 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 			v16 = nox_strman_loadString_40F1D0("GUIBrief.c:numSecretsFound", 0,
 											   "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 541);
 			nox_xxx_drawStringWrap_43FAF0(draw->font, v16, v10, v15, *(int*)&dword_5d4594_832476, v38);
-			nox_swprintf(&v55[1], L" %d", *((unsigned short*)v7 + 4));
+			nox_swprintf(&v55[1], L" %d", v7->secrets);
 			nox_xxx_drawSetTextColor_434390(nox_color_green_2614268);
 			nox_xxx_drawStringWrap_43FAF0(draw->font, &v55[1], v10 + dword_5d4594_832476, v15,
 									  v40 - dword_5d4594_832476 - 8, v38);
@@ -234,7 +234,7 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 			nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 			v18 = nox_strman_loadString_40F1D0("GUIBrief.c:Kills", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 553);
 			nox_xxx_drawStringWrap_43FAF0(draw->font, v18, v10, v17, *(int*)&dword_5d4594_832476, v38);
-			nox_swprintf(&v55[1], L" %d", *((unsigned short*)v7 + 2));
+			nox_swprintf(&v55[1], L" %d", v7->kills);
 			nox_xxx_drawSetTextColor_434390(nox_color_green_2614268);
 			nox_xxx_drawStringWrap_43FAF0(draw->font, &v55[1], v10 + dword_5d4594_832476, v17,
 									  v40 - dword_5d4594_832476 - 8, v38);
@@ -243,14 +243,14 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 			v20 = nox_strman_loadString_40F1D0("GUIBrief.c:TotalScore", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c",
 											   565);
 			nox_xxx_drawStringWrap_43FAF0(draw->font, v20, v10, v19, *(int*)&dword_5d4594_832476, v38);
-			nox_swprintf(&v55[1], L" %d", *((uint32_t*)v7 + 3));
+			nox_swprintf(&v55[1], L" %d", v7->score);
 			nox_xxx_drawSetTextColor_434390(nox_color_blue_2650684);
 			nox_xxx_drawStringWrap_43FAF0(draw->font, &v55[1], v10 + dword_5d4594_832476, v19,
 									  v40 - dword_5d4594_832476 - 8, v38);
 			v6 = v48;
 		}
 		v6 += 8;
-		v7 += 16;
+		++v7;
 		++v42;
 		v48 = v6;
 		if ((int)v6 >= (int)getMemAt(0x587000, 123012)) {
@@ -386,7 +386,7 @@ int sub_44F300(nox_window* win, nox_window_data* draw) {
 int nox_xxx_clientQuestWinScreen_450770(const unsigned char* packet) {
 	int a1 = (int)(uintptr_t)packet;
 	size_t v1;          // ebx
-	unsigned char* v2;  // esi
+	nox_quest_stats_row_450770* v2; // esi, native score table
 	unsigned short* v3; // edi
 	uint32_t* v4;       // esi
 	unsigned short* v5; // eax
@@ -395,27 +395,27 @@ int nox_xxx_clientQuestWinScreen_450770(const unsigned char* packet) {
 	unsigned short* v8; // eax
 	int v9;             // eax
 
-	memset(getMemAt(0x5D4594, 832364), 0, 0x60u);
+	memset(nox_quest_stats_450770, 0, sizeof(nox_quest_stats_450770));
 	*getMemU32Ptr(0x5D4594, 832356) = 0;
 	v1 = 0;
 	*getMemU32Ptr(0x5D4594, 832356) = *(unsigned short*)(a1 + 2);
 	*getMemU32Ptr(0x5D4594, 831228) = *(unsigned short*)(a1 + 4);
-	v2 = getMemAt(0x5D4594, 832368);
+	v2 = nox_quest_stats_450770;
 	v3 = (unsigned short*)(a1 + 6);
 	do {
 		if (*v3) {
-			*((uint32_t*)v2 - 1) = nox_common_playerInfoGetByID_417040(*v3);
-			*(uint16_t*)v2 = v3[4];
-			*((uint16_t*)v2 + 1) = v3[1];
-			*((uint16_t*)v2 + 2) = v3[2];
-			*((uint16_t*)v2 + 3) = v3[3];
-			*((uint32_t*)v2 + 2) = *(uint32_t*)(v3 + 5);
+			v2->player = nox_common_playerInfoGetByID_417040(*v3);
+			v2->kills = v3[4];
+			v2->generators = v3[1];
+			v2->secrets = v3[2];
+			v2->coop_secrets = v3[3];
+			v2->score = *(uint32_t*)(v3 + 5);
 			++v1;
 		}
-		v2 += 16;
+		++v2;
 		v3 += 7;
-	} while ((int)v2 < (int)getMemAt(0x5D4594, 832464));
-	qsort(getMemAt(0x5D4594, 832364), v1, 0x10u, sub_450960);
+	} while (v2 < nox_quest_stats_450770 + 6);
+	qsort(nox_quest_stats_450770, v1, sizeof(*v2), sub_450960);
 	if (!dword_5d4594_832476) {
 		v4 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_briefing_831232, 1010);
 		v5 = nox_strman_loadString_40F1D0("GUIBrief.c:GeneratorsDestroyed", 0,

@@ -8,6 +8,7 @@ import (
 	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/noximage"
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
@@ -53,8 +54,67 @@ func (sc *e2eScenario) CheckInventoryClipping(mode int, name string) {
 			e2eError(fmt.Errorf("inventory tray pixel/restore contract failed: rect=%v rowPixels=%v outside=%d", clip, bands, outside))
 			return
 		}
+		if err := e2eInventoryIconPixels(pix, clip); err != nil {
+			e2eError(err)
+			return
+		}
 		e2eLog.Printf("INVENTORY CLIPPING VERIFIED: visible=4x3 capacity=4x21 cells=%d last_row=%d offset=%d row_pixels=%v outside_pixels=0 restore=true", filled, lastRow, offset, bands)
 	})
+}
+
+// Compare the stock Sword/GreatSword silhouettes with the real tray pass.
+// Background pixels alone cannot demonstrate that inventory icons are visible.
+// The reference uses an explicitly native-width viewport; client cells, their
+// positions (already set by the tray pass), and draw callbacks are unchanged.
+func e2eInventoryIconPixels(tray *noximage.Image16, clip image.Rectangle) error {
+	sword := uint32(noxClient.Things.IndByID("Sword"))
+	greatSword := uint32(noxClient.Things.IndByID("GreatSword"))
+	viewport := noxrender.Viewport{Screen: tray.Rect, Size: tray.Rect.Size()}
+	offset := legacy.InventoryScrollOffset()
+	icons := 0
+	defer noxClient.r.SetPixBuffer(tray)
+	for row := 0; row < 20; row++ {
+		for column := 0; column < 4; column++ {
+			position := clip.Min.Add(image.Pt(60+50*column+25, 50*row-offset+25))
+			if !position.In(clip) {
+				continue
+			}
+			drawable := legacy.InventoryCellDrawable(column, row)
+			if drawable == nil || (drawable.TypeIDVal != sword && drawable.TypeIDVal != greatSword) {
+				continue
+			}
+			if drawable.Pos() != position {
+				return fmt.Errorf("inventory icon position: cell=%d/%d pos=%v want=%v", column, row, drawable.Pos(), position)
+			}
+			reference := noximage.NewImage16(tray.Rect)
+			noxClient.r.SetPixBuffer(reference)
+			drawable.CallDraw(&viewport)
+			pixels, matching := 0, 0
+			for y := clip.Min.Y; y < clip.Max.Y; y++ {
+				for x := clip.Min.X; x < clip.Max.X; x++ {
+					index := reference.PixOffset(x, y)
+					if reference.Pix[index] == 0 {
+						continue
+					}
+					pixels++
+					if reference.Pix[index] == tray.Pix[index] {
+						matching++
+					}
+				}
+			}
+			// These two stock items use opaque static silhouettes. Every pixel
+			// must survive the real tray callback, both before and after scrolling.
+			if pixels == 0 || matching != pixels {
+				return fmt.Errorf("inventory icon missing: cell=%d/%d type=%d pos=%v reference_pixels=%d matching_pixels=%d", column, row, drawable.TypeIDVal, drawable.Pos(), pixels, matching)
+			}
+			icons++
+			e2eLog.Printf("INVENTORY ICON VERIFIED: cell=%d/%d type=%d reference_pixels=%d matching_pixels=%d", column, row, drawable.TypeIDVal, pixels, matching)
+		}
+	}
+	if icons == 0 {
+		return fmt.Errorf("no visible stock inventory icons were checked")
+	}
+	return nil
 }
 
 func (sc *e2eScenario) ClickInventoryScroll(down bool, name string) {

@@ -34,6 +34,14 @@ static void nox_e2e_inventory_grid(int* filled, int* last_row) {
         }
     }
 }
+
+static nox_drawable* nox_e2e_inventory_cell_drawable(int column, int row) {
+    if (column < 0 || column >= NOX_INVENTORY_COL_COUNT || row < 0 || row >= NOX_INVENTORY_ROW_COUNT - 1) {
+        return NULL;
+    }
+    const nox_inventory_cell_t* cell = &nox_client_inventory_grid_1050020[row + NOX_INVENTORY_ROW_COUNT * column];
+    return cell->field_140 ? cell->field_0 : NULL;
+}
 */
 import "C"
 
@@ -41,6 +49,7 @@ import (
 	"image"
 	"unsafe"
 
+	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
 )
 
@@ -71,4 +80,8 @@ func InventoryGridMetrics() (columns, rows, filled, lastRow int) {
 
 func InventoryScrollOffset() int {
 	return int(int32(C.dword_5d4594_1062512))
+}
+
+func InventoryCellDrawable(column, row int) *client.Drawable {
+	return asDrawable(C.nox_e2e_inventory_cell_drawable(C.int(column), C.int(row)))
 }

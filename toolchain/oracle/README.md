@@ -4822,6 +4822,8 @@ alternate weapon `004625D0..004626B7` 232바이트, tray `004643B0..0046476A` 95
 
 새 native view helper는 packed 레코드를 넓히거나 constructor의 초기화 범위를 바꾸지 않는다. 13 word를 각 draw 경계에서 읽어 좌표/size/jiggle은 signed 32-bit에서 native int로, flags 두 word는 unsigned로 옮긴다. 사용하지 않던 필드와 외부 메모리 수정도 새 view에 반영하며 바로 뒤의 inventory global을 침범하지 않는다. 실제 CGo 회귀의 다섯 경우는 1024×768, 640×480, 13개 독립 값, 음수 좌표/최대 unsigned flags, nonzero 이후 갱신과 packed record/앞뒤 sentinel 보존을 검사한다. macOS/ARM64 표적 일반 시험 3회가 통과했다. 원본 세 caller의 전환은 각각 별도 함수 단위 커밋으로 진행한다.
 
+tray caller `004643B0`의 viewport 인수만 native view로 바꿨다. 추가 E2E 검사는 stock Sword/GreatSword의 native viewport silhouette를 실제 C tray pass와 비교하므로 셀 배경 픽셀만으로 아이콘이 표시된다고 판단하지 않는다. 수정 전 첫 Sword는 reference 87픽셀/일치 0픽셀로 실패했다. 수정 후 일반 client headless 실게임에서 각 visible Sword 87/87, GreatSword 306/306픽셀이 정확히 일치했고 `0→50→0` scroll과 4×3 clip/설명 scroll 전체 시나리오는 종료 코드 0이었다. clip 밖 픽셀 0개, 보관 셀 21개/마지막 row 5와 caller clip 복원도 유지된다. scroll 후 그려지지 않은 row의 drawable 좌표는 이전 frame 값일 수 있어 검사 대상은 현재 row/offset으로 계산한다. native view의 race·강제 `checkptr=2`·실제 `GOEXPERIMENT=cgocheck2` 시험도 각 3회 통과했다. 네 캡처는 관찰 이미지이며 golden-image 동등성 주장은 아니다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

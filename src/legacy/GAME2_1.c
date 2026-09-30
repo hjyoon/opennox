@@ -1301,7 +1301,7 @@ int nox_xxx_guiDrawInventoryTray_4643B0(int a1, int a2) {
 			drawable->pos.x = x + 25;
 			drawable->pos.y = y + 25;
 			if (drawable->draw_func) {
-				drawable->draw_func((uint32_t*)getMemAt(0x5D4594, 1049732), drawable);
+				drawable->draw_func((uint32_t*)nox_client_inventory_viewport_native(), drawable);
 			}
 			if (dword_5d4594_1049864 == 6) {
 				if ((drawable->flags28 & 0x13001000) && (drawable->flags28 & 0x1000) &&

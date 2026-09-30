@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 점수 화면 `00450770` — 전체 native 본체
+
+공개 packet ABI와 단일 score table 타입 복원 뒤, 봉인된 `00450770..0045095A` 전체 본체를 Go 경로에 연결했다. 90바이트 패킷의 unsigned 필드와 여섯 원래 slot, lookup 실패도 포함하는 nonzero-ID 수의 prefix 정렬, lookup 뒤 live field 읽기와 부분 저장 순서, 문자열 lookup 뒤 live font/cache 읽기, signed 폭 비교와 마지막 85-pixel 상한 및 전체 signed lock 반환값을 유지한다. packet 주소를 `int`로 자르는 경로와 PE32 `Window[59]` font 접근은 더 이상 활성 본문에 없다.
+
+호출 순서·모든 의존 호출의 fault prefix·live mutation·빈/sparse/six-record 패킷·최대 unsigned 값·packet 비변조를 시험했다. 공개 C entry와 실제 C table/qsort에 4GiB 위 packet/Player/window/font/text 포인터를 전달하는 표적 일반·cgocheck2·race/checkptr 시험 각 3회, 저장소 전체 일반 및 Go 1.26.5 cgocheck2 시험을 통과했다. 직접 원본 검증은 코드 2,798개·데이터 585개와 stock 전체 1,556개 파일이 일치했다.
+
+실제 Darwin/ARM64 일반 headless Quest stage 1→2 출구 충돌은 `F0/0C` 점수 packet의 이전 SIGSEGV를 통과했다. 이어서 같은 전환의 `F0/0D` 69바이트 브리핑 packet에서 별도 `00450980`이 image-key 주소 `0x600002f3c3b5`를 `0x2f3c3b5`로 좁혀 중단됐다. 그 함수는 다음 독립 ABI/본문 이식 대상이며, 이 단계는 전체 Quest 전환이나 미재현 소환수 소실 문제의 해결 완료가 아니다.
+
 ## Quest 점수 화면 packet ABI `00450770` — 분리 단계
 
 두 번째 분리 단계는 PE32 `005D4594+832364`의 여섯 score record를 단일 native table 변수로 복원한다. player identity만 native pointer이며 네 unsigned short와 unsigned score는 그대로여서 행 크기는 ILP32 16바이트, LP64 24바이트다. 기존 생산자·comparator·renderer의 table access와 stride만 타입에 맞춰 바꾸고, 이름은 실제 `Player.name_final`에서 읽는다. packet 본문은 여전히 옛 `int a1`을 유지하므로 이 단계도 전체 Quest 맵 전환 완료 주장은 아니다.

@@ -383,71 +383,9 @@ int sub_44F300(nox_window* win, nox_window_data* draw) {
 }
 
 //----- (00450770) --------------------------------------------------------
+extern int nox_client_questWinScreen_native_450770(unsigned char* packet);
 int nox_xxx_clientQuestWinScreen_450770(const unsigned char* packet) {
-	int a1 = (int)(uintptr_t)packet;
-	size_t v1;          // ebx
-	nox_quest_stats_row_450770* v2; // esi, native score table
-	unsigned short* v3; // edi
-	uint32_t* v4;       // esi
-	unsigned short* v5; // eax
-	unsigned short* v6; // eax
-	unsigned short* v7; // eax
-	unsigned short* v8; // eax
-	int v9;             // eax
-
-	memset(nox_quest_stats_450770, 0, sizeof(nox_quest_stats_450770));
-	*getMemU32Ptr(0x5D4594, 832356) = 0;
-	v1 = 0;
-	*getMemU32Ptr(0x5D4594, 832356) = *(unsigned short*)(a1 + 2);
-	*getMemU32Ptr(0x5D4594, 831228) = *(unsigned short*)(a1 + 4);
-	v2 = nox_quest_stats_450770;
-	v3 = (unsigned short*)(a1 + 6);
-	do {
-		if (*v3) {
-			v2->player = nox_common_playerInfoGetByID_417040(*v3);
-			v2->kills = v3[4];
-			v2->generators = v3[1];
-			v2->secrets = v3[2];
-			v2->coop_secrets = v3[3];
-			v2->score = *(uint32_t*)(v3 + 5);
-			++v1;
-		}
-		++v2;
-		v3 += 7;
-	} while (v2 < nox_quest_stats_450770 + 6);
-	qsort(nox_quest_stats_450770, v1, sizeof(*v2), sub_450960);
-	if (!dword_5d4594_832476) {
-		v4 = nox_xxx_wndGetChildByID_46B0C0(nox_wnd_briefing_831232, 1010);
-		v5 = nox_strman_loadString_40F1D0("GUIBrief.c:GeneratorsDestroyed", 0,
-										  "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1656);
-		nox_xxx_drawGetStringSize_43F840(v4[59], v5, &a1, 0, 0);
-		if (a1 > *(int*)&dword_5d4594_832476) {
-			dword_5d4594_832476 = a1;
-		}
-		v6 = nox_strman_loadString_40F1D0("GUIBrief.c:Kills", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1660);
-		nox_xxx_drawGetStringSize_43F840(v4[59], v6, &a1, 0, 0);
-		if (a1 > *(int*)&dword_5d4594_832476) {
-			dword_5d4594_832476 = a1;
-		}
-		v7 = nox_strman_loadString_40F1D0("GUIBrief.c:numSecretsFound", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c",
-										  1664);
-		nox_xxx_drawGetStringSize_43F840(v4[59], v7, &a1, 0, 0);
-		if (a1 > *(int*)&dword_5d4594_832476) {
-			dword_5d4594_832476 = a1;
-		}
-		v8 =
-			nox_strman_loadString_40F1D0("GUIBrief.c:TotalScore", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 1668);
-		nox_xxx_drawGetStringSize_43F840(v4[59], v8, &a1, 0, 0);
-		v9 = dword_5d4594_832476;
-		if (a1 > *(int*)&dword_5d4594_832476) {
-			v9 = a1;
-			dword_5d4594_832476 = a1;
-		}
-		if (v9 > 85) {
-			dword_5d4594_832476 = 85;
-		}
-	}
-	return nox_client_lockScreenBriefing_450160(254, 1, 1);
+	return nox_client_questWinScreen_native_450770((unsigned char*)packet);
 }
 
 //----- (00450980) --------------------------------------------------------

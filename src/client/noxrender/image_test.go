@@ -627,6 +627,7 @@ func TestDrawImageRejectsMalformedPixdata(t *testing.T) {
 		{name: "short run payload clipped", payload: []byte{2, 2, 0, 0}, clip: true},
 		{name: "short run payload direct", payload: []byte{2, 2, 0, 0}},
 		{name: "invalid operation direct", payload: []byte{0, 2}},
+		{name: "run exceeds row width direct", payload: []byte{2, 3, 1, 0, 2, 0, 3, 0}},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
@@ -651,6 +652,35 @@ func TestDrawImageRejectsMalformedPixdata(t *testing.T) {
 			require.Equal(t, make([]uint16, len(pix.Pix)), pix.Pix)
 		})
 	}
+}
+
+func TestSkipPixdataRejectsRunPastRow(t *testing.T) {
+	for _, data := range [][]byte{
+		{1, 3},
+		{2, 3, 1, 0, 2, 0, 3, 0},
+		{4, 3, 1, 2, 3},
+	} {
+		_, ok := skipPixdata(data, 2, 1)
+		require.False(t, ok, "an oversized run must not be counted as a complete row")
+	}
+}
+
+func TestDrawImageRejectsRunPastClippedRow(t *testing.T) {
+	data := make([]byte, 17)
+	binary.LittleEndian.PutUint32(data, 2)
+	binary.LittleEndian.PutUint32(data[4:], 1)
+	data = append(data, 2, 3, 1, 0, 2, 0, 3, 0)
+	pix := noximage.NewImage16(image.Rect(0, 0, 4, 4))
+	d := newRenderData(4, 4)
+	d.SetClip(true)
+	d.SetClipRect(image.Rect(1, 0, 4, 4))
+	r := NewRender(slog.Default(), nil)
+	r.SetPixBuffer(pix)
+	r.SetData(d)
+	require.NotPanics(t, func() {
+		r.DrawImage16(NewRawImage16(3, data), image.Point{})
+	})
+	require.Equal(t, make([]uint16, len(pix.Pix)), pix.Pix)
 }
 
 func TestDrawImageSkipsClippedPixdataRows(t *testing.T) {

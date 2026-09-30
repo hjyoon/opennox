@@ -227,7 +227,7 @@ func (r *NoxRender) nox_client_drawImg_aaa_4C79F0(ops *drawOps, img Image16, pos
 		var val int
 		for j := 0; j < width; j += val {
 			run, _, ok := nextPixdataRun(src)
-			if !ok || len(dst) < run.n {
+			if !ok || run.n > width-j || len(dst) < run.n {
 				return
 			}
 			op := run.op
@@ -326,7 +326,7 @@ func (r *NoxRender) nox_client_drawXxx_4C7C80(ops *drawOps, pix []byte, pos imag
 			}
 			op := pix[0]
 			n = int(pix[1])
-			if n == 0 {
+			if n == 0 || n > width-j {
 				return
 			}
 			pix = pix[2:]
@@ -450,7 +450,7 @@ func skipPixdata(pix []byte, width int, skip int) ([]byte, bool) {
 	for i := 0; i < skip; i++ {
 		for covered := 0; covered < width; {
 			run, next, ok := nextPixdataRun(pix)
-			if !ok {
+			if !ok || run.n > width-covered {
 				return nil, false
 			}
 			pix = next

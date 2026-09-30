@@ -235,7 +235,7 @@ extern nox_things_imageRef_t* dword_5d4594_1046928;
 extern nox_window* dword_5d4594_1098580;
 extern uint32_t dword_5d4594_831224;
 extern uint32_t nox_xxx_energyBoltTarget_5d4594_2487880;
-extern uint32_t dword_5d4594_832504;
+extern uintptr_t dword_5d4594_832504;
 extern void* dword_5d4594_1203864;
 extern uint32_t dword_5d4594_832508;
 extern uint32_t dword_5d4594_3835356;

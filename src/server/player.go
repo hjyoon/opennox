@@ -570,6 +570,43 @@ type MinimapItem struct {
 	Field12 *MinimapItem
 }
 
+// MinimapTracks reports whether obj is present in the player's circular
+// minimap list. The list nodes contain native pointers, so keep traversal in
+// Go instead of exposing their host-dependent layout to legacy C code.
+func (p *Player) MinimapTracks(obj *Object) bool {
+	if p == nil || obj == nil || p.Field4580 == nil {
+		return false
+	}
+	first := p.Field4580
+	for it := first; it != nil; it = it.Field8 {
+		if it.Field4 == obj {
+			return true
+		}
+		if it.Field8 == first {
+			break
+		}
+	}
+	return false
+}
+
+// MinimapTrackCount returns the number of nodes in the player's circular
+// minimap list. A malformed list that terminates at nil is counted only up to
+// that point rather than dereferencing a stale link.
+func (p *Player) MinimapTrackCount() int {
+	if p == nil || p.Field4580 == nil {
+		return 0
+	}
+	first := p.Field4580
+	count := 0
+	for it := first; it != nil; it = it.Field8 {
+		count++
+		if it.Field8 == first {
+			break
+		}
+	}
+	return count
+}
+
 type EquipmentData struct {
 	Field0  uint32            // 0, 0
 	Field4  [4]unsafe.Pointer // 1, 4

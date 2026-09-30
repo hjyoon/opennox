@@ -2162,51 +2162,10 @@ char* nox_xxx_playerByName_4170D0(wchar2_t* a1) {
 	return v1;
 }
 
-//----- (00417270) --------------------------------------------------------
-int sub_417270(int a1) {
-	int result; // eax
-	int v2;     // edx
-	int v3;     // ecx
-
-	result = 0;
-	if (a1 >= 0 && a1 < NOX_PLAYERINFO_MAX) {
-		nox_playerInfo* pl = nox_common_playerInfoFromNumRaw(a1);
-		v2 = pl->field_4580;
-		if (v2) {
-			v3 = *(uint32_t*)(v2 + 8);
-			for (result = 1; v3 != v2; ++result) {
-				v3 = *(uint32_t*)(v3 + 8);
-			}
-		}
-	}
-	return result;
-}
-
-// mark spell -- is tracked
-//----- (004173D0) --------------------------------------------------------
-int nox_xxx_playerMapTracksObj_4173D0(int a1, nox_object_t* a2p) {
-	int a2 = a2p;
-	int result; // eax
-	int v3;     // ecx
-
-	result = 0;
-	if (a1 >= 0 && a1 < NOX_PLAYERINFO_MAX) {
-		if (a2) {
-			nox_playerInfo* pl = nox_common_playerInfoFromNumRaw(a1);
-			v3 = pl->field_4580;
-			if (v3) {
-				while (*(uint32_t*)(v3 + 4) != a2) {
-					v3 = *(uint32_t*)(v3 + 8);
-					if (v3 == pl->field_4580 || !v3) {
-						return result;
-					}
-				}
-				result = 1;
-			}
-		}
-	}
-	return result;
-}
+// GAME.EXE 00417270 and 004173D0 are exported by object.go. The original
+// bodies decoded PE32 minimap nodes with uint32_t addresses and truncated the
+// tracked object pointer to int. The native implementations traverse the Go
+// MinimapItem list without depending on host pointer size or node offsets.
 
 //----- (00417470) --------------------------------------------------------
 char* nox_xxx_netUnmarkMinimapSpec_417470(int a1, int a2) {

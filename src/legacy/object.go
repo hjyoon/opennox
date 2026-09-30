@@ -310,6 +310,18 @@ func nox_xxx_netUnmarkMinimapObj_417300(a1_cgo int32, obj *nox_object_t, a3 uint
 	GetServer().S().Players.Nox_xxx_netUnmarkMinimapObj_417300(ntype.PlayerInd(a1), asObjectS(obj), a3)
 }
 
+//export sub_417270
+func sub_417270(playerInd int32) int32 {
+	pl := GetServer().S().Players.ByIndRaw(ntype.PlayerInd(playerInd))
+	return int32(pl.MinimapTrackCount())
+}
+
+//export nox_xxx_playerMapTracksObj_4173D0
+func nox_xxx_playerMapTracksObj_4173D0(playerInd int32, obj *nox_object_t) int32 {
+	pl := GetServer().S().Players.ByIndRaw(ntype.PlayerInd(playerInd))
+	return int32(bool2int(pl.MinimapTracks(asObjectS(obj))))
+}
+
 //export nox_xxx_monsterMarkUpdate_4E8020
 func nox_xxx_monsterMarkUpdate_4E8020(obj *nox_object_t) {
 	GetServer().S().Nox_xxx_monsterMarkUpdate_4E8020(asObjectS(obj))

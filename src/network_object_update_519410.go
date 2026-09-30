@@ -397,34 +397,11 @@ func (s *Server) complexObjectPacketNative518960(obj *server.Object) [11]byte {
 }
 
 func playerMapTracksObjectNative519410(pl *server.Player, obj *server.Object) bool {
-	if pl == nil || obj == nil || pl.Field4580 == nil {
-		return false
-	}
-	first := pl.Field4580
-	for it := first; it != nil; it = it.Field8 {
-		if it.Field4 == obj {
-			return true
-		}
-		if it.Field8 == first {
-			break
-		}
-	}
-	return false
+	return pl.MinimapTracks(obj)
 }
 
 func playerTrackedObjectCountNative519710(pl *server.Player) int {
-	if pl == nil || pl.Field4580 == nil {
-		return 0
-	}
-	first := pl.Field4580
-	count := 0
-	for it := first; it != nil; it = it.Field8 {
-		count++
-		if it.Field8 == first {
-			break
-		}
-	}
-	return count
+	return pl.MinimapTrackCount()
 }
 
 func netTrackedObjectRefreshDueNative519710(frame, last uint32, tracked int) bool {

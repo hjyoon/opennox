@@ -25,6 +25,14 @@ if [[ ! -f "$scenario" ]]; then
 	echo "error: E2E scenario not found: $scenario" >&2
 	exit 1
 fi
+seat_backend="${NOX_E2E_SEAT:-headless}"
+case "$seat_backend" in
+headless | sdl) ;;
+*)
+	echo "error: NOX_E2E_SEAT must be headless or sdl (got: $seat_backend)" >&2
+	exit 2
+	;;
+esac
 if [[ "$($go_cmd env GOVERSION)" != "go1.26.5" ]]; then
 	echo "error: Go 1.26.5 is required" >&2
 	exit 1
@@ -45,6 +53,8 @@ client-hd)
 	exit 2
 	;;
 esac
+
+echo "E2E seat: $seat_backend"
 
 "$go_cmd" -C "$src_dir" run ./internal/noxbuild \
 	-go="$go_cmd" \

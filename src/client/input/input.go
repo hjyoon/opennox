@@ -203,6 +203,12 @@ func (h *Handler) SetDrawWinSize(sz image.Point) {
 	h.m.SetDrawWinSize(sz)
 }
 
+// DrawPosToWindow converts a canvas position to the logical window coordinates
+// accepted by absolute mouse events, including viewport offsets and scaling.
+func (h *Handler) DrawPosToWindow(p image.Point) image.Point {
+	return h.m.win.toWindowSpace(p)
+}
+
 // InputEvent handles a single input event.
 func (h *Handler) InputEvent(ev seat.InputEvent) {
 	switch ev := ev.(type) {

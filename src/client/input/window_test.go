@@ -2,6 +2,7 @@ package input
 
 import (
 	"image"
+	"math"
 	"testing"
 )
 
@@ -66,5 +67,50 @@ func TestRetinaMousePositionMapsToMainMenuButton(t *testing.T) {
 	got := win.toDrawSpace(image.Pt(576, 215))
 	if got.X < 157 || got.X > 323 || got.Y < 91 || got.Y > 126 {
 		t.Fatalf("Retina mouse point mapped to %v, outside first menu button", got)
+	}
+}
+
+func TestDrawPosToWindow(t *testing.T) {
+	for _, tc := range []struct {
+		name string
+		draw image.Point
+		view image.Rectangle
+	}{
+		{name: "unscaled", draw: image.Pt(640, 480), view: image.Rect(0, 0, 640, 480)},
+		{name: "Retina menu", draw: image.Pt(640, 480), view: image.Rect(98, 0, 1372, 956)},
+		{name: "Retina game", draw: image.Pt(1024, 768), view: image.Rect(98, 0, 1372, 956)},
+		{name: "fractional offset", draw: image.Pt(640, 480), view: image.Rect(160, 12, 1120, 732)},
+		{name: "downscaled", draw: image.Pt(1024, 768), view: image.Rect(0, 30, 512, 414)},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			h := Handler{m: &mouseHandler{}}
+			h.m.win.init(tc.draw)
+			h.SetWinSize(tc.view)
+			maxError := image.Pt(
+				max(0, int(math.Ceil(float64(tc.draw.X)/float64(tc.view.Dx())))-1),
+				max(0, int(math.Ceil(float64(tc.draw.Y)/float64(tc.view.Dy())))-1),
+			)
+			for y := 0; y < tc.draw.Y; y++ {
+				for x := 0; x < tc.draw.X; x++ {
+					p := image.Pt(x, y)
+					logical := h.DrawPosToWindow(p)
+					if !logical.In(tc.view) {
+						t.Fatalf("canvas point %v maps outside viewport: %v", p, logical)
+					}
+					got := h.m.win.toDrawSpace(logical)
+					if math.Abs(float64(got.X-p.X)) > float64(maxError.X) || math.Abs(float64(got.Y-p.Y)) > float64(maxError.Y) {
+						t.Fatalf("canvas %v -> logical %v -> canvas %v, maximum rounding error %v", p, logical, got, maxError)
+					}
+				}
+			}
+		})
+	}
+}
+
+func TestDrawPosToWindowBeforeInitialization(t *testing.T) {
+	h := Handler{m: &mouseHandler{}}
+	p := image.Pt(12, 34)
+	if got := h.DrawPosToWindow(p); got != p {
+		t.Fatalf("uninitialized mapping = %v, want %v", got, p)
 	}
 }

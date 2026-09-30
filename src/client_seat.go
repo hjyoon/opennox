@@ -4,6 +4,7 @@ package opennox
 
 import (
 	"image"
+	"os"
 	"unicode/utf16"
 
 	"github.com/spf13/viper"
@@ -26,10 +27,14 @@ func init() {
 }
 
 func (c *Client) initSeat(sz image.Point) error {
+	e2e.inputToWindow = nil
+	e2e.scenarioToWindow = nil
+	headless, err := e2eHeadlessPlayback(e2ePlay, os.Getenv("NOX_E2E_SEAT"))
+	if err != nil {
+		return err
+	}
 	var sst seat.Seat
-	if e2ePlay != "" {
-		// Playback is always headless: scenarios inject their own input and
-		// assert the software pixbuffer, so an SDL window only adds nondeterminism.
+	if headless {
 		sst = seatheadless.New(sz)
 		c.Log.Info("using headless E2E seat", "size", sz)
 	} else {
@@ -41,12 +46,14 @@ func (c *Client) initSeat(sz image.Point) error {
 		if err != nil {
 			return err
 		}
+		if e2ePlay != "" {
+			c.Log.Info("using SDL E2E seat", "size", sz)
+		}
 	}
 	c.Seat = sst
 	if env.IsE2E() {
 		c.Seat = e2eWrapSeat(c.Seat)
 	}
-	var err error
 	c.Win, err = render.New(c.Seat)
 	if err != nil {
 		_ = c.Seat.Close()
@@ -85,6 +92,15 @@ func (c *Client) initSeat(sz image.Point) error {
 	inp = input.New(c.Log, c.Seat, false, c.Strings().Lang())
 	c.Inp = inp
 	c.GUI.SetInput(inp)
+	if !headless && e2ePlay != "" {
+		e2e.inputToWindow = func(p image.Point) image.Point {
+			syncInputViewport()
+			return inp.DrawPosToWindow(p)
+		}
+		e2e.scenarioToWindow = func(p image.Point) image.Point {
+			return e2e.inputToWindow(e2eScenarioCanvasPos(p, c.r.PixBufferRect().Size()))
+		}
+	}
 
 	inp.OnQuit(mainloopStop)
 	inp.OnToggleFullScreen(c.Win.ToggleWindowMode)
@@ -117,6 +133,8 @@ func (c *Client) initSeat(sz image.Point) error {
 }
 
 func (c *Client) freeSeat() {
+	e2e.inputToWindow = nil
+	e2e.scenarioToWindow = nil
 	if c.Seat != nil {
 		c.Seat.Close()
 		c.Seat = nil

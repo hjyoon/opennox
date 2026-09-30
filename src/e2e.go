@@ -85,12 +85,14 @@ var e2e struct {
 	realMouse  image.Point
 	realEnable bool
 
-	done      chan<- struct{}
-	steps     []e2eStep
-	input     []seat.InputEvent
-	recorded  []e2eRecordedEvent
-	err       error
-	checkSave *e2eCheckSave
+	done             chan<- struct{}
+	steps            []e2eStep
+	input            []e2eQueuedInput
+	inputToWindow    func(image.Point) image.Point
+	scenarioToWindow func(image.Point) image.Point
+	recorded         []e2eRecordedEvent
+	err              error
+	checkSave        *e2eCheckSave
 
 	shopMerchant           *server.Object
 	shopMerchantWireCode   uint16
@@ -338,7 +340,15 @@ func (sc *e2eScenario) Wait(dt time.Duration, name string) {
 
 func (sc *e2eScenario) Input(dt time.Duration, name string, evs ...seat.InputEvent) {
 	sc.add(dt, name, func() {
-		e2eQueueInput(evs...)
+		for _, ev := range evs {
+			e2e.input = append(e2e.input, e2eQueuedInput{event: ev, space: e2eScenarioInputSpace})
+		}
+	})
+}
+
+func (sc *e2eScenario) RawInput(dt time.Duration, evs ...seat.InputEvent) {
+	sc.add(dt, "", func() {
+		e2eQueueRawInput(evs...)
 	})
 }
 
@@ -10204,31 +10214,31 @@ func (sc *e2eScenario) Load(path string) {
 			case "save":
 				sc.Save(ev.SaveName, ev.Hashes)
 			case "move":
-				sc.Input(dt, "", &seat.MouseMoveEvent{
+				sc.RawInput(dt, &seat.MouseMoveEvent{
 					Relative: ev.Relative, Pos: ev.Pos, Rel: ev.Rel,
 				})
 			case "button":
-				sc.Input(dt, "", &seat.MouseButtonEvent{
+				sc.RawInput(dt, &seat.MouseButtonEvent{
 					Pressed: ev.Pressed, Button: ev.Button,
 				})
 			case "wheel":
-				sc.Input(dt, "", &seat.MouseWheelEvent{
+				sc.RawInput(dt, &seat.MouseWheelEvent{
 					Wheel: ev.Wheel,
 				})
 			case "key":
-				sc.Input(dt, "", &seat.KeyboardEvent{
+				sc.RawInput(dt, &seat.KeyboardEvent{
 					Pressed: ev.Pressed, Key: ev.Key,
 				})
 			case "text_edit":
-				sc.Input(dt, "", &seat.TextEditEvent{
+				sc.RawInput(dt, &seat.TextEditEvent{
 					Text: ev.Text,
 				})
 			case "text_input":
-				sc.Input(dt, "", &seat.TextInputEvent{
+				sc.RawInput(dt, &seat.TextInputEvent{
 					Text: ev.Text,
 				})
 			case "closed":
-				sc.Input(dt, "", seat.WindowClosed)
+				sc.RawInput(dt, seat.WindowClosed)
 			default:
 				panic("unsupported type: " + ev.Type)
 			}
@@ -10438,7 +10448,15 @@ func e2eQueue(sc *e2eScenario) {
 }
 
 func e2eQueueInput(evs ...seat.InputEvent) {
-	e2e.input = append(e2e.input, evs...)
+	for _, ev := range evs {
+		e2e.input = append(e2e.input, e2eQueuedInput{event: ev, space: e2eCanvasInputSpace})
+	}
+}
+
+func e2eQueueRawInput(evs ...seat.InputEvent) {
+	for _, ev := range evs {
+		e2e.input = append(e2e.input, e2eQueuedInput{event: ev})
+	}
 }
 
 func e2eRun() {
@@ -10537,7 +10555,7 @@ func e2eRealInput(ev seat.InputEvent) {
 		e2e.recorded = append(e2e.recorded, e2eRecordedEvent{
 			Time: t - 1, Input: ev,
 		})
-		e2eQueueInput(ev)
+		e2eQueueRawInput(ev)
 		return
 	}
 	switch ev := ev.(type) {
@@ -10549,14 +10567,14 @@ func e2eRealInput(ev seat.InputEvent) {
 		e2eLog.Printf("input(%v,%d): %#v @ %v", t, uint64(t), ev, e2e.realMouse)
 	}
 	if e2e.realEnable {
-		e2eQueueInput(ev)
+		e2eQueueRawInput(ev)
 		return
 	}
 	switch ev := ev.(type) {
 	case seat.WindowEvent:
 		switch ev {
 		case seat.WindowClosed:
-			e2eQueueInput(ev)
+			e2eQueueRawInput(ev)
 			e2e.realEnable = true
 			e2e.steps = nil
 		}
@@ -10564,7 +10582,8 @@ func e2eRealInput(ev seat.InputEvent) {
 }
 
 func e2eInputTick() {
-	for _, ev := range e2e.input {
+	for _, queued := range e2e.input {
+		ev := e2ePlaybackInput(queued.event, queued.space, e2e.inputToWindow, e2e.scenarioToWindow)
 		for _, fnc := range e2e.onInput {
 			fnc(ev)
 		}

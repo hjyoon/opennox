@@ -52,6 +52,27 @@ func (win *window) toDrawSpace(p image.Point) image.Point {
 	return clamp(image.Rectangle{Max: win.draw}, p)
 }
 
+// toWindowSpace maps a canvas pixel to logical window coordinates. Integer
+// mouse positions cannot address every canvas pixel when downscaled.
+func (win *window) toWindowSpace(p image.Point) image.Point {
+	if win.draw.X <= 0 || win.draw.Y <= 0 || win.view.Empty() {
+		return p
+	}
+	axis := func(p, size int, scale float32) int {
+		v := min(max(0, int(math.Ceil(float64(p)/float64(scale)))), size-1)
+		// Match the float32 truncation used by toDrawSpace, including at a
+		// pixel boundary where multiplication can round just below p.
+		if int(float32(v)*scale) < p && v+1 < size {
+			v++
+		}
+		return v
+	}
+	return image.Pt(
+		win.view.Min.X+axis(p.X, win.view.Dx(), win.scale.X),
+		win.view.Min.Y+axis(p.Y, win.view.Dy(), win.scale.Y),
+	)
+}
+
 func clamp(r image.Rectangle, p image.Point) image.Point {
 	if p.X < r.Min.X {
 		p.X = r.Min.X

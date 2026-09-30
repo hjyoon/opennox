@@ -48,6 +48,17 @@ This porting branch requires exactly Go 1.26.5. Use `./scripts/go.sh` on macOS/L
 
 For the local reference copy used by this branch, `make oracle-test` first verifies every path, size, and SHA-256 in the private Nox data tree and then runs the implemented semantic comparisons. Original assets remain outside this repository.
 
+### Local GUI regression tests
+
+`scripts/run-headless-gui-e2e.sh` builds the native client and runs a scenario with isolated saves and configuration. Playback defaults to a deterministic headless screen. To exercise the SDL/OpenGL window and presentation on a desktop session, opt in explicitly:
+
+```sh
+NOX_E2E_SEAT=sdl scripts/run-headless-gui-e2e.sh \
+  /path/to/nox scripts/e2e/host-game-objective-modes.yaml /tmp/opennox-sdl-e2e
+```
+
+Set `NOX_E2E_CLIENT_TARGET=client-hd` to test the HD client. Scripted clicks retain the existing 1024×768 reference-screen coordinates and adapt to canvas size, window scaling, letterboxing, and Retina displays; raw recorded events keep their original coordinates. SDL mode requires the platform's native graphics dependencies and access to the desktop window service. The default test driver disables audio; E2E audio-handle tests do not verify hardware sound playback.
+
 ### Linux
 - [Linux](./docs/build-linux.md)
   

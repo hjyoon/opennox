@@ -1,10 +1,70 @@
 package opennox
 
 import (
+	"fmt"
 	"image"
 
 	"github.com/opennox/libs/client/seat"
 )
+
+// Playback defaults to a deterministic headless seat. An explicit SDL seat
+// exercises the production window, OpenGL presentation, and resize path while
+// retaining the same scenario assertions. The option has no effect outside
+// playback, including interactive E2E recording.
+func e2eHeadlessPlayback(playback, backend string) (bool, error) {
+	if playback == "" {
+		return false, nil
+	}
+	switch backend {
+	case "", "headless":
+		return true, nil
+	case "sdl":
+		return false, nil
+	default:
+		return false, fmt.Errorf("NOX_E2E_SEAT must be headless or sdl (got %q)", backend)
+	}
+}
+
+type e2eInputSpace uint8
+
+const (
+	e2eRawInputSpace e2eInputSpace = iota
+	e2eCanvasInputSpace
+	e2eScenarioInputSpace
+)
+
+type e2eQueuedInput struct {
+	event seat.InputEvent
+	space e2eInputSpace
+}
+
+// Existing scenario coordinates refer to the 1024x768 headless screen, not
+// the canvas (menus use 640x480). Match the input handler's float32 scaling.
+func e2eScenarioCanvasPos(p, canvas image.Point) image.Point {
+	return image.Pt(
+		int(float32(p.X)*(float32(canvas.X)/1024)),
+		int(float32(p.Y)*(float32(canvas.Y)/768)),
+	)
+}
+
+// Runtime helper clicks use canvas pixels, fixed scenarios use the reference
+// screen, and recorded/real events already use logical window coordinates.
+func e2ePlaybackInput(ev seat.InputEvent, space e2eInputSpace, canvasToWindow, scenarioToWindow func(image.Point) image.Point) seat.InputEvent {
+	var toWindow func(image.Point) image.Point
+	switch space {
+	case e2eCanvasInputSpace:
+		toWindow = canvasToWindow
+	case e2eScenarioInputSpace:
+		toWindow = scenarioToWindow
+	}
+	move, ok := ev.(*seat.MouseMoveEvent)
+	if toWindow == nil || !ok || move == nil || move.Relative {
+		return ev
+	}
+	out := *move
+	out.Pos = toWindow(move.Pos)
+	return &out
+}
 
 func e2eWrapSeat(s seat.Seat) seat.Seat {
 	e2e.real = s

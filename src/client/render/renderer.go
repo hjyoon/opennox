@@ -80,6 +80,11 @@ func (r *Renderer) CopyBuffer(img *noximage.Image16) {
 
 func (r *Renderer) present(img *noximage.Image16) {
 	sz := img.Size()
+	if img == nil {
+		// Window resize events redraw the existing surface; a nil image has
+		// no dimensions and would otherwise produce a zero-height viewport.
+		sz = r.backbuf.Size()
+	}
 	view := r.setViewport(float32(sz.X) / float32(sz.Y))
 	if r.view != view {
 		r.view = view

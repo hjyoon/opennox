@@ -136,6 +136,7 @@ func TestPixieCollideNative4EA080TargetUsesCachedDataAndLiveDamage(t *testing.T)
 func TestPixieCollideNative4EA080DamagesMonsterThroughDefaultDamage(t *testing.T) {
 	player := &Object{ObjClass: object.ClassPlayer}
 	pixie := &Object{
+		TypeInd:     0x1234,
 		ObjClass:    object.ClassMissile,
 		ObjOwner:    player,
 		CollideData: unsafe.Pointer(&ProjectileCollideData{Damage: 3}),
@@ -210,8 +211,8 @@ func TestPixieCollideNative4EA080DamagesMonsterThroughDefaultDamage(t *testing.T
 	}
 	if urchin.Obj130 != pixie || urchin.Pos132 != pixie.PrevPos ||
 		urchin.Field131 != uint32(object.DamageImpact) || urchin.Frame134 != 1400 ||
-		!update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != uint32(object.DamageImpact) ||
-		update.Field547 != 2 {
+		!update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != uint32(pixie.TypeInd) ||
+		update.Field547 != 1 {
 		t.Fatalf("Urchin damage state = source:%p pos:%v type:%d frame:%d status:%#x hit:%d latch:%d",
 			urchin.Obj130, urchin.Pos132, urchin.Field131, urchin.Frame134,
 			update.StatusFlags, update.Field546, update.Field547)

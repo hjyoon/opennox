@@ -559,7 +559,7 @@ func TestDefaultDamageWorld4E0B30OrdinaryMonsterBlade(t *testing.T) {
 		UpdateData:  unsafe.Pointer(update),
 	}
 	source := &Object{ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 40, Y: 50}}
-	weapon := &Object{ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}
+	weapon := &Object{TypeInd: 1174, ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}
 	var events []string
 	runtime := DefaultDamageWorldRuntime4E0B30{
 		Frame:         func() uint32 { return 700 },
@@ -603,7 +603,7 @@ func TestDefaultDamageWorld4E0B30OrdinaryMonsterBlade(t *testing.T) {
 	if target.Pos132 != source.PrevPos || target.Obj130 != weapon || target.Field131 != 0 || target.Frame134 != 700 {
 		t.Fatalf("target metadata = pos:%+v source:%p type:%d frame:%d", target.Pos132, target.Obj130, target.Field131, target.Frame134)
 	}
-	if !update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != 0 || update.Field547 != 2 {
+	if !update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != uint32(weapon.TypeInd) || update.Field547 != 1 {
 		t.Fatalf("monster hit state = status:%#x field546:%d field547:%d", update.StatusFlags, update.Field546, update.Field547)
 	}
 	want := []string{"buff-off", "sound", "field-guide", "damage"}
@@ -919,7 +919,7 @@ func TestDefaultDamageWorld4E0B30MonsterFiredMissileImpactMonster(t *testing.T) 
 	}
 	sourceUpdate := &MonsterUpdateData{}
 	source := &Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(sourceUpdate)}
-	missile := &Object{ObjClass: object.ClassMissile, PrevPos: types.Pointf{X: 419, Y: 795}}
+	missile := &Object{TypeInd: 333, ObjClass: object.ClassMissile, PrevPos: types.Pointf{X: 419, Y: 795}}
 	enemyChecks, hitSounds, damaged := 0, 0, 0
 	runtime := DefaultDamageWorldRuntime4E0B30{
 		Frame:         func() uint32 { return 1241 },
@@ -957,8 +957,8 @@ func TestDefaultDamageWorld4E0B30MonsterFiredMissileImpactMonster(t *testing.T) 
 	}
 	if target.HealthData.Cur != 29 || target.Pos132 != missile.PrevPos || target.Obj130 != missile ||
 		target.Field131 != uint32(object.DamageImpact) || target.Frame134 != 1241 ||
-		!targetUpdate.StatusFlags.Has(object.MonStatusInjured) || targetUpdate.Field546 != uint32(object.DamageImpact) ||
-		targetUpdate.Field547 != 2 || sourceUpdate.Field130 != 1241 ||
+		!targetUpdate.StatusFlags.Has(object.MonStatusInjured) || targetUpdate.Field546 != uint32(missile.TypeInd) ||
+		targetUpdate.Field547 != 1 || sourceUpdate.Field130 != 1241 ||
 		enemyChecks != 1 || hitSounds != 1 || damaged != 1 {
 		t.Fatalf("missile impact state = health:%d pos:%+v source:%p type:%d frame:%d status:%#x hit type:%d latch:%d source frame:%d enemy checks:%d hit sounds:%d damage calls:%d",
 			target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134,
@@ -990,6 +990,7 @@ func TestDefaultDamageWorld4E0B30RejectsOtherMonsterMissileDamage(t *testing.T) 
 func TestDefaultDamageWorld4E0B30MagicMissileExplosionMonster(t *testing.T) {
 	player := &Object{ObjClass: object.ClassPlayer}
 	missile := &Object{
+		TypeInd:  861,
 		ObjClass: object.ClassMissile,
 		PrevPos:  types.Pointf{X: 731, Y: 449},
 		ObjOwner: player,
@@ -1080,8 +1081,12 @@ func TestDefaultDamageWorld4E0B30MagicMissileExplosionMonster(t *testing.T) {
 				t.Fatalf("target state = health:%d pos:%+v source:%p type:%d frame:%d",
 					target.HealthData.Cur, target.Pos132, target.Obj130, target.Field131, target.Frame134)
 			}
+			wantHitType, wantHitLatch := uint32(object.DamageExplosion), uint32(2)
+			if tc.weapon != nil {
+				wantHitType, wantHitLatch = uint32(tc.weapon.TypeInd), 1
+			}
 			if !update.StatusFlags.Has(object.MonStatusOnFire|object.MonStatusInjured) ||
-				update.Field546 != uint32(object.DamageExplosion) || update.Field547 != 2 {
+				update.Field546 != wantHitType || update.Field547 != wantHitLatch {
 				t.Fatalf("monster hit state = status:%#x type:%d latch:%d",
 					update.StatusFlags, update.Field546, update.Field547)
 			}
@@ -1121,7 +1126,7 @@ func TestDefaultDamageWorld4E0B30PlayerMeleeShapes(t *testing.T) {
 	}{
 		{
 			name:   "wooden staff",
-			weapon: &Object{ObjClass: object.ClassWand, InitData: unsafe.Pointer(&ModifierInitData{})},
+			weapon: &Object{TypeInd: 777, ObjClass: object.ClassWand, InitData: unsafe.Pointer(&ModifierInitData{})},
 			damage: 46,
 			typ:    object.DamageBlade,
 		},
@@ -1140,7 +1145,7 @@ func TestDefaultDamageWorld4E0B30PlayerMeleeShapes(t *testing.T) {
 				HealthData:  &HealthData{Cur: 80, Max: 80},
 				UpdateData:  unsafe.Pointer(update),
 			}
-			source := &Object{ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 31, Y: 47}}
+			source := &Object{TypeInd: 23, ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 31, Y: 47}}
 			soundSource := source
 			if tc.weapon != nil {
 				soundSource = tc.weapon
@@ -1178,7 +1183,11 @@ func TestDefaultDamageWorld4E0B30PlayerMeleeShapes(t *testing.T) {
 				t.Fatalf("target metadata = pos:%+v source:%p type:%d frame:%d",
 					target.Pos132, target.Obj130, target.Field131, target.Frame134)
 			}
-			if !update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != uint32(tc.typ) || update.Field547 != 2 {
+			wantHitType := uint32(source.TypeInd)
+			if tc.weapon != nil {
+				wantHitType = uint32(tc.weapon.TypeInd)
+			}
+			if !update.StatusFlags.Has(object.MonStatusInjured) || update.Field546 != wantHitType || update.Field547 != 1 {
 				t.Fatalf("monster hit state = status:%#x field546:%d field547:%d",
 					update.StatusFlags, update.Field546, update.Field547)
 			}

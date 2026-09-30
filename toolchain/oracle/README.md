@@ -4732,6 +4732,14 @@ active C 경계는 `int nox_xxx_monsterCallDieFn_50A3D0(nox_object_t*)`이며 ra
 
 기존 봉인된 `DefaultDamage` prefix의 `004E0ED4`는 target의 `MONSTER` class만 검사한다. 별도 weapon은 `Field547=1`과 weapon type을 기록하며, 무기 없는 CLAW/CRUSH는 source type을 기록한다. NPC subclass bit `0x10`은 이 적중 기록 조건에 없다. 뒤 `004E0F5D`의 NPC 전용 late-defense 조건과 혼동하면 일반 몬스터의 무기 종류 기록이 누락된다. 본체 해시와 새 판정 세 범위를 직접 verifier로 검증하며 누적 대상은 **코드 2,743개·데이터 513개**다.
 
+native `DefaultDamageWorld4E0B30`는 이 일반 몬스터 무기 분기를 허용하고 hit-sound lookup을 필수로 검사한다. Necromancer subclass `0x51242`와 scripted NPC `0x11012`에 Sword type 1174/BLADE damage 22를 적용하는 회귀는 pre-damage modifier 뒤 실제 HP `80→61`, 무기 종류 latch `1/1174`, source/target frame, BuffOff→modifier→sound→damage 순서와 source hit sound 유무에 따른 기본 음향 억제를 확인한다. friendly hit, missing lookup, ranged/예외 무기/WAND/다른 피해 타입/missing update의 경계도 고정했다. player melee·missile·Pixie의 기존 회귀 기대값도 원본의 weapon-type latch에 맞춰 교정했다.
+
+Con02a headless 실게임 검증은 script global 148뿐 아니라 Clyde가 보유한 Sword의 실제 BLADE 적중 prefix를 매 프레임 관찰한다. standalone 시나리오에서 적중은 1077프레임, 소환은 1039프레임, 종료는 1257프레임으로 확인했다. 연출용 Necromancer의 health `0/0`은 일반 피해량 회귀의 HP 감소와 구분한다. 이 actor를 제거하고 player frozen/cinematic/dialog을 해제하는 것은 원본 map script의 종료 timer다.
+
+새 무기 분기를 끈 A/B는 기존 종료 이미지를 그대로 재현했다. 분기를 켜면 viewport·sight polygon·차폐 오브젝트·고정 횃불의 flicker/intensity는 모두 같고, 이동하는 NPC의 좌표와 그 NPC를 따르는 white light만 달라진다. 이미지 차이는 `(711,114)..(825,188)`의 3,146픽셀 밝기이며 black/nonblack 가시성 변화는 없다. 새 적중이 source의 `Field130`을 기록하고, 봉인된 `00532800` hurt-sound cooldown이 Logic RNG를 소비하며, 종료 script가 주변 NPC에 Wander를 지정하는 경로와 일치한다. 따라서 정상 공격을 처리하지 않던 이전 기준을 새 실게임 캡처로 갱신했다. GUI 입력·렌더링 시험은 headless seat/mock audio로 실행하며 물리 음향 출력 검증을 의미하지 않는다.
+
+최종 macOS/ARM64 Go 1.26.5 검증은 실제 `GOEXPERIMENT=cgocheck2`의 전체 `./...`, 피해 처리 표적 3회, race 3회, 강제 `checkptr=2` 3회를 통과했다. 일반·HD headless 클라이언트 각각 standalone 종료 이미지와 Con01a 곰 `200→0`→Con02a 거미 소환·검 적중·종료→늑대 Charm 60 pulse/host owner/Henrick follow→ESC 메뉴 열기·닫기의 연속 시나리오를 통과했다. 화염 `150→148`, RedApple `40→45`, Meat `40→50`, Mushroom poison `4→0` 실게임 회귀도 둘 다 통과했다. 원본 이미지 15086의 clipping/interlacing/truncation 회귀와 126,687개 원본 sprite stream 검사는 엄격한 CGo 환경에서 다시 통과했다. 게임 E2E는 기본 서버 포트 `18590`을 공유하므로 서로 동시에 실행하지 않고 순서대로 검증했다.
+
 ### dormant monster/NPC health `00529A3D` / `00529A49`
 
 `nox_xxx_XFerMonster_528DB0`의 봉인된 prefix 안에서 `00529A3D`는 HealthData offset 4, `00529A49`는 offset 0을 word 0으로 저장한다. 조건은 map read의 dormant byte가 nonzero이고 host인 경우이며, 의미는 `Max=0`, `Cur=0`이다. offset 2의 이전 체력은 변경하지 않는다. 64비트 tail이 `Cur`와 offset 2만 지우던 오류를 바로잡아 원래 최대 체력을 남기지 않게 했다.

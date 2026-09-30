@@ -142,8 +142,9 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // player melee and unarmed electric spells against ordinary monsters, monster
 // and source-less scripted BLADE/electric damage against ordinary monsters,
 // missile IMPACT and Magic Missile EXPLOSION against ordinary monsters, the
-// monster-on-monster self-weapon BITE branch, and PlayerDamage's scripted-NPC
-// weapon CRUSH tail from GAME.EXE 004E0B30 without narrowing Object pointers.
+// monster-on-monster self-weapon BITE and ordinary melee-weapon BLADE branches,
+// and PlayerDamage's scripted-NPC weapon CRUSH tail from GAME.EXE 004E0B30
+// without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
 // Unsupported instead of entering the unsafe raw body.
@@ -245,14 +246,21 @@ func DefaultDamageWorld4E0B30(
 				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		if !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush {
+		// Armed NPCs such as Con02a's Clyde hit the Necromancer with a Sword.
+		// Admit the ordinary melee-weapon slice of 004E1400, excluding ranged
+		// weapons and the 004E1470 friendly-damage exception. Both NPC and
+		// ordinary monster targets share the original DefaultDamage tail.
+		monsterWeaponBlade := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+			weapon != nil && weapon.Class().Has(object.ClassWeapon) &&
+			uint32(weapon.SubClass())&0x047f40fe == 0 && typ == object.DamageBlade
+		if !playerMelee && !monsterBite && !monsterWeaponBlade && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
 		if monsterElectric && uint32(target.SubClass())&0x800 != 0 {
 			return true
 		}
-		if monsterBite && runtime.MonsterHasHitSound == nil {
+		if (monsterBite || monsterWeaponBlade) && runtime.MonsterHasHitSound == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
 		}
 		// The original's friendly-hit gate does not apply when the weapon is
@@ -374,7 +382,9 @@ func DefaultDamageWorld4E0B30(
 	} else {
 		target.Pos132 = source.PrevPos
 	}
-	if monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 && source != nil {
+	// 004E0ED4 tests only the MONSTER class, not the scripted-NPC subclass.
+	// A distinct weapon records its type before BuffOff and the injured latch.
+	if monsterUpdate != nil && source != nil {
 		if weapon != nil && weapon != source {
 			monsterUpdate.Field547 = 1
 			monsterUpdate.Field546 = uint32(weapon.TypeInd)

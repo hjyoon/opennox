@@ -732,12 +732,14 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 		start         *server.Object
 		summonTrigger *server.Object
 		necro         *server.Object
+		clyde         *server.Object
 		host          *server.Object
 		player        *server.Player
 		initial       map[*server.Object]struct{}
 		startFrame    uint32
 		arrivalFrame  uint32
 		dialogFrame   uint32
+		swordHitFrame uint32
 		spider        *server.Object
 		spiderCode    uint16
 		summonEnabled bool
@@ -775,6 +777,8 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 			switch {
 			case obj.EqualID("Necromancer"):
 				necro = obj
+			case obj.EqualID("Clyde"):
+				clyde = obj
 			case obj.EqualID("SummonTrigger"):
 				summonTrigger = obj
 			}
@@ -809,9 +813,9 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 				start, bestRank, bestDistance = obj, rank, distance
 			}
 		}
-		if arrival == nil || start == nil || summonTrigger == nil || necro == nil {
-			e2eError(fmt.Errorf("Con02A event objects missing: arrival=%p start=%p summon=%p Necromancer=%p",
-				arrival, start, summonTrigger, necro))
+		if arrival == nil || start == nil || summonTrigger == nil || necro == nil || clyde == nil {
+			e2eError(fmt.Errorf("Con02A event objects missing: arrival=%p start=%p summon=%p Necromancer=%p Clyde=%p",
+				arrival, start, summonTrigger, necro, clyde))
 			return
 		}
 		arrivalData := arrival.UpdateDataTrigger()
@@ -963,16 +967,35 @@ func (sc *e2eScenario) RunCon02aNecromancerSetpiece(name string) {
 	// The original Con02a map script keeps the player frozen through the summon and
 	// attack; only SetpieceOver removes the Necromancer and releases control.
 	sc.addWhen(0, name+" wait for natural setpiece completion", 2400, func() bool {
+		// A guard's enemy probe can also invoke NecroHit. Require the real Sword
+		// damage prefix rather than relying only on the script's global 148.
+		if swordHitFrame == 0 && noxServer.Objs.GetObjectByID("Necromancer") == necro {
+			update := necro.UpdateDataMonster()
+			weapon := necro.Obj130
+			if weapon != nil && weapon.InvHolder == clyde && weapon.Class().Has(object.ClassWeapon) &&
+				weapon.ObjectTypeC() != nil && weapon.ObjectTypeC().ID() == "Sword" &&
+				update.Field547 == 1 && update.Field546 == uint32(weapon.TypeInd) &&
+				necro.Field131 == uint32(object.DamageBlade) {
+				swordHitFrame = necro.Frame134
+				health, maximum := necro.Health()
+				e2eLog.Printf("CON02A NPC SWORD HIT VERIFIED: frame=%d source=%q weapon-type=%d hit-latch=%d health=%d/%d",
+					swordHitFrame, clyde.ID(), weapon.TypeInd, update.Field547, health, maximum)
+			}
+		}
 		hit, ok := noxServer.S().NoxScriptVM.GetGlobal(148)
 		return ok && hit != 0 && noxServer.Objs.GetObjectByID("Necromancer") == nil &&
 			!host.Flags().Has(object.FlagNoUpdate) && nox_xxx_guiCursor_477600() == 0
 	}, func() {
+		if swordHitFrame == 0 {
+			e2eError(fmt.Errorf("Con02A setpiece ended without a real Clyde Sword hit"))
+			return
+		}
 		if dialog := legacy.Get_dword_5d4594_1123524(); dialog != nil && !dialog.GetFlags().IsHidden() {
 			e2eError(fmt.Errorf("Con02A Necromancer dialog remained visible after the setpiece ended"))
 			return
 		}
-		e2eLog.Printf("CON02A NECROMANCER SETPIECE COMPLETED: frame=%d elapsed=%d necro-hit=true necro-removed=true player-released=true dialog-closed=true cinematic=false",
-			noxServer.Frame(), noxServer.Frame()-startFrame)
+		e2eLog.Printf("CON02A NECROMANCER SETPIECE COMPLETED: frame=%d elapsed=%d sword-hit-frame=%d necro-hit=true necro-removed=true player-released=true dialog-closed=true cinematic=false",
+			noxServer.Frame(), noxServer.Frame()-startFrame, swordHitFrame)
 	})
 }
 

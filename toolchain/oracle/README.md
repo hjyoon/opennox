@@ -4788,6 +4788,10 @@ Con02a의 dormant `Julie2`/`Tanya2`가 잘못 `0/75`로 로드되면 체력 부�
 
 macOS/ARM64 Go 1.26.5에서 일반·HD 클라이언트가 이 전체 흐름을 각각 독립 headless seat/mock audio 세션으로 통과했다. 실제 `GOEXPERIMENT=cgocheck2` 전체 패키지, 새 observer와 inventory 관련 race 3회·강제 `checkptr=2` 3회도 통과했다. 원본 O0와 코드 2,743개·데이터 513개 범위의 무결성을 재검증했다. 이는 해당 상점·책 사용 흐름의 증거이며 모든 캠페인 경로나 물리 화면·음향 출력의 완료를 의미하지 않는다.
 
+### 미니맵 clip rectangle 원본 근거
+
+`0049F6F0..0049F776` 135바이트와 9-NOP, 직접 호출하는 signed rectangle intersection `0049F930..0049F984` 85바이트와 11-NOP을 봉인했다. `0049F711`의 SetRect, `0049F72B`의 교집합 호출, `0049F735`의 empty-result 분기를 대조했다. 유효한 교집합만 half-open clip에 복사하고 두 maximum을 1씩 줄여 inclusive primitive clip에 복사한다. clipping enable flag는 변경하지 않으며 성공 반환값은 두 번째 CopyRect의 BOOL 1이다. 미니맵 본체 `00472600`의 화면 전체 clip → 경계 그리기 → 미니맵 내부 clip 호출 순서도 기존 봉인 범위에서 확인했다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

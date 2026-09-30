@@ -2289,6 +2289,34 @@
       "purpose": "the exact fifteen NOP bytes separating Escape-key dispatch from the function at 0049B950"
     },
     {
+      "name": "nox_client_copyRect_49F6F0",
+      "address": "0x0049F6F0",
+      "size": 135,
+      "sha256": "dbe750f62ef881f95e40f016177e820c7549e272b2ef116f0fe545c98c667fb0",
+      "purpose": "intersect the requested half-open rectangle with render bounds, leave both clips unchanged on an empty intersection, otherwise copy clip and decrement its maxima for the inclusive primitive clip, returning CopyRect success"
+    },
+    {
+      "name": "nox_client_copyRect_49F6F0_padding",
+      "address": "0x0049F777",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after clip rectangle setup"
+    },
+    {
+      "name": "nox_xxx_utilRect_49F930",
+      "address": "0x0049F930",
+      "size": 85,
+      "sha256": "1d2414df8c8690f4348f881edcb702a1b7efae2eda9f5b82728956b656775df3",
+      "purpose": "the exact PE32 signed rectangle intersection dependency called by clip setup, returning nil without destination writes for an empty intersection"
+    },
+    {
+      "name": "nox_xxx_utilRect_49F930_padding",
+      "address": "0x0049F985",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes after rectangle intersection"
+    },
+    {
       "name": "nox_wol_servers_addResult_4A0030",
       "address": "0x004A0030",
       "size": 608,

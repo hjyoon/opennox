@@ -186,6 +186,7 @@ type audioStream struct {
 	hwready int
 
 	playing bool
+	eof     bool
 
 	dec audioDecoder
 }
@@ -355,12 +356,14 @@ func (dig Driver) OpenStream(name string) Stream {
 	}
 	s.source = openal.NewSource()
 	if !audioCheckError() {
+		dec.Close()
 		return 0
 	}
 	s.hwbuf = openal.NewBuffers(2)
 	s.hwready = 2
 	if !audioCheckError() {
 		s.source.Delete()
+		dec.Close()
 		return 0
 	}
 
@@ -387,10 +390,22 @@ func (h Stream) Close() error {
 	if s == nil {
 		return nil
 	}
+	audioStreams.Lock()
+	delete(audioStreams.byHandle, h)
+	audioStreams.Unlock()
 	s.d.mu.Lock()
+	defer s.d.mu.Unlock()
+	for cur := &s.d.streamHead; *cur != nil; cur = &(*cur).next {
+		if *cur == s {
+			*cur = s.next
+			break
+		}
+	}
 	s.playing = false
+	s.source.Stop()
+	s.source.Delete()
+	s.hwbuf.Delete()
 	s.dec.Close()
-	s.d.mu.Unlock()
 	return nil
 }
 
@@ -521,8 +536,14 @@ func (h Stream) Pause(pause bool) {
 	if s == nil {
 		return
 	}
-	// TODO: mutex?
+	s.d.mu.Lock()
+	defer s.d.mu.Unlock()
 	s.playing = !pause
+	if pause {
+		s.source.Pause()
+	} else if s.source.State() == openal.Paused {
+		s.source.Play()
+	}
 }
 
 func (h Sample) RegisterEOBCallback(f func()) {
@@ -718,7 +739,10 @@ func (h Stream) SetPosition(offset int) {
 	}
 	s.d.mu.Lock()
 	defer s.d.mu.Unlock()
+	s.source.Stop()
+	s.unqueueBuffers()
 	s.dec.Seek(offset)
+	s.eof = false
 }
 
 func (h Stream) SetVolume(volume int) {
@@ -760,6 +784,8 @@ func (h Stream) Start() {
 	if s == nil {
 		return
 	}
+	s.d.mu.Lock()
+	defer s.d.mu.Unlock()
 	s.playing = true
 }
 
@@ -795,19 +821,22 @@ func Shutdown() {
 		return
 	}
 	audioTimers.Lock()
-	for _, t := range audioTimers.byHandle {
+	for h, t := range audioTimers.byHandle {
 		if t.t != nil {
 			t.t.Stop()
 		}
+		delete(audioTimers.byHandle, h)
 	}
 	audioTimers.Unlock()
-	audioDrivers.Lock()
-	for _, d := range audioDrivers.byHandle {
-		if d.t != nil {
-			d.t.Stop()
-		}
+	audioDrivers.RLock()
+	drivers := make([]Driver, 0, len(audioDrivers.byHandle))
+	for h := range audioDrivers.byHandle {
+		drivers = append(drivers, h)
 	}
-	audioDrivers.Unlock()
+	audioDrivers.RUnlock()
+	for _, h := range drivers {
+		_ = h.Close()
+	}
 }
 
 func (h Sample) Stop() {
@@ -865,6 +894,8 @@ func (h Stream) Position() int {
 	if s == nil {
 		return -1
 	}
+	s.d.mu.Lock()
+	defer s.d.mu.Unlock()
 	return s.dec.Position()
 }
 
@@ -876,6 +907,8 @@ func (h Stream) Status() int {
 	if s == nil {
 		return 2
 	}
+	s.d.mu.Lock()
+	defer s.d.mu.Unlock()
 	if s.playing {
 		return 4
 	}
@@ -895,6 +928,23 @@ func (dig Driver) Close() error {
 	}
 	if d.t != nil {
 		d.t.Stop()
+	}
+	// All sources belong to this context. Release them before destroying it,
+	// including streams which callers did not explicitly close.
+	d.ctx.Activate()
+	for d.sampleHead != nil {
+		d.sampleHead.h.Release()
+	}
+	for d.streamHead != nil {
+		_ = d.streamHead.h.Close()
+	}
+	audioDrivers.Lock()
+	delete(audioDrivers.byHandle, dig)
+	audioDrivers.Unlock()
+	openal.NullContext.Activate()
+	d.ctx.Destroy()
+	if !d.dev.CloseDevice() {
+		return fmt.Errorf("cannot close OpenAL playback device")
 	}
 	return nil
 }
@@ -984,13 +1034,13 @@ func (s *audioStream) work() {
 
 	s.unqueueBuffers()
 
-	for s.hwready != 0 {
+	for s.hwready != 0 && !s.eof {
 		offset := 0
 
 		for offset < minSamples {
 			samples, ok := s.dec.Decode(buffer[offset : minSamples*2])
 			if !ok {
-				s.playing = false
+				s.eof = true
 			}
 			if samples == 0 {
 				break
@@ -1019,11 +1069,13 @@ func (s *audioStream) work() {
 			s.hwready++
 			return
 		}
-
-		state := s.source.State()
-		if s.playing && state != openal.Playing {
-			s.source.Play()
-		}
+	}
+	// Decoder EOF does not mean playback has finished: the final buffers still
+	// need to play, including clips shorter than a single decode batch.
+	if s.hwready != len(s.hwbuf) && s.source.State() != openal.Playing {
+		s.source.Play()
+	} else if s.eof && s.hwready == len(s.hwbuf) {
+		s.playing = false
 	}
 }
 
@@ -1063,17 +1115,19 @@ func WaveOutOpen() Driver {
 	audioLog.Println("device ok")
 	d.ctx = d.dev.CreateContext()
 	if d.ctx == nil {
-		if err := openal.Err(); err != nil {
+		if err := d.dev.Err(); err != nil {
 			audioLog.Println("error creating context:", err)
 		} else {
 			audioLog.Println("cannot create context")
 		}
+		d.dev.CloseDevice()
 		return 0
 	}
 	audioLog.Println("context ok")
-	d.ctx.Activate()
-	if err := openal.Err(); err != nil {
-		audioLog.Println("error activating context:", err)
+	if !d.ctx.Activate() {
+		audioLog.Println("error activating context:", d.dev.Err())
+		d.ctx.Destroy()
+		d.dev.CloseDevice()
 		return 0
 	}
 

@@ -4820,6 +4820,8 @@ macOS/ARM64 Go 1.26.5 일반·HD 클라이언트의 독립 headless seat/mock au
 
 alternate weapon `004625D0..004626B7` 232바이트, tray `004643B0..0046476A` 955바이트, current weapon `00465D50..00465DD8` 137바이트와 각 NOP padding을 봉인했다. 세 draw callback은 모두 `006D4A18` (`5D4594+1049732`)의 같은 13-word viewport를 받는다. constructor `00465E00..004661B2` 947바이트와 13-NOP도 봉인했다. `00465E3B..00465E63`은 screen min/world min 네 word를 0, screen max/size 네 word를 화면 크기로 쓰며, 나머지 다섯 word를 초기화하지 않는다. 원본 고정 레코드는 52바이트지만 native C/Go viewport는 64비트에서 104바이트이므로 draw 경계에서 필드별 변환이 필요하다. 누적 봉인은 코드 2,774개·데이터 517개다.
 
+새 native view helper는 packed 레코드를 넓히거나 constructor의 초기화 범위를 바꾸지 않는다. 13 word를 각 draw 경계에서 읽어 좌표/size/jiggle은 signed 32-bit에서 native int로, flags 두 word는 unsigned로 옮긴다. 사용하지 않던 필드와 외부 메모리 수정도 새 view에 반영하며 바로 뒤의 inventory global을 침범하지 않는다. 실제 CGo 회귀의 다섯 경우는 1024×768, 640×480, 13개 독립 값, 음수 좌표/최대 unsigned flags, nonzero 이후 갱신과 packed record/앞뒤 sentinel 보존을 검사한다. macOS/ARM64 표적 일반 시험 3회가 통과했다. 원본 세 caller의 전환은 각각 별도 함수 단위 커밋으로 진행한다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

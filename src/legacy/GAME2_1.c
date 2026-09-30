@@ -140,6 +140,30 @@ nox_window* nox_inventory_close_button = 0;
 static nox_window* nox_inventory_overlay_window = 0;
 void* nox_inventory_font = 0;
 
+const nox_draw_viewport_t* nox_client_inventory_viewport_native(void) {
+	static nox_draw_viewport_t viewport;
+	// 00465E00 still owns the original thirteen PE32 words. Do not widen
+	// that record in place: the next inventory global starts at +1049784.
+	// Refresh the borrowed native view so all untouched words and direct
+	// memory updates retain their original values on each draw call.
+	viewport = (nox_draw_viewport_t){
+		.x1 = *getMemI32Ptr(0x5D4594, 1049732),
+		.y1 = *getMemI32Ptr(0x5D4594, 1049736),
+		.x2 = *getMemI32Ptr(0x5D4594, 1049740),
+		.y2 = *getMemI32Ptr(0x5D4594, 1049744),
+		.field_4 = *getMemI32Ptr(0x5D4594, 1049748),
+		.field_5 = *getMemI32Ptr(0x5D4594, 1049752),
+		.field_6 = *getMemI32Ptr(0x5D4594, 1049756),
+		.field_7 = *getMemI32Ptr(0x5D4594, 1049760),
+		.width = *getMemI32Ptr(0x5D4594, 1049764),
+		.height = *getMemI32Ptr(0x5D4594, 1049768),
+		.field_10 = *getMemU32Ptr(0x5D4594, 1049772),
+		.field_11 = *getMemU32Ptr(0x5D4594, 1049776),
+		.field_12 = *getMemI32Ptr(0x5D4594, 1049780),
+	};
+	return &viewport;
+}
+
 typedef struct {
 	int min;
 	int max;

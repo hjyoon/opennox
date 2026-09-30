@@ -45,6 +45,7 @@ int sub_4622E0(nox_drawable* drawable);
 int nox_xxx_clientEquip_4623B0(nox_drawable* drawable);
 nox_drawable* sub_4623E0(nox_drawable* drawable, int slot);
 int sub_4624D0(int a1);
+const nox_draw_viewport_t* nox_client_inventory_viewport_native(void);
 int sub_4625D0(nox_window* win, nox_window_data* draw);
 double sub_4626C0(const nox_drawable* drawable);
 double sub_462700(const nox_drawable* drawable);

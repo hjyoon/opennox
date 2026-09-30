@@ -3,12 +3,89 @@
 package legacy
 
 import (
+	"encoding/binary"
+	"path/filepath"
 	"testing"
+	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 
+	noxflags "github.com/opennox/opennox/v1/common/flags"
+	"github.com/opennox/opennox/v1/internal/cryptfile"
 	"github.com/opennox/opennox/v1/server"
 )
+
+func TestMonsterXferTail528DB0DormantHealth(t *testing.T) {
+	oldFlags := noxflags.GetGame()
+	t.Cleanup(func() {
+		noxflags.ResetGame()
+		noxflags.SetGame(oldFlags)
+	})
+	for _, tc := range []struct {
+		name    string
+		host    bool
+		dormant byte
+		wantCur uint16
+		wantMax uint16
+	}{
+		{name: "host dormant NPC", host: true, dormant: 1},
+		{name: "host nonzero dormant flag", host: true, dormant: 2},
+		{name: "host live monster", host: true, wantCur: 11, wantMax: 75},
+		{name: "client dormant NPC", dormant: 1, wantCur: 11, wantMax: 75},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			noxflags.ResetGame()
+			if tc.host {
+				noxflags.SetGame(noxflags.GameHost)
+			}
+
+			// Synthetic version-64 tail: dormant byte, field0, subclass,
+			// current health, four definition bytes, empty buffs and poison.
+			// Max and previous health are deliberately absent from the wire.
+			data := []byte{tc.dormant}
+			data = binary.LittleEndian.AppendUint32(data, 0x12345678)
+			data = binary.LittleEndian.AppendUint32(data, 0)
+			data = binary.LittleEndian.AppendUint16(data, 11)
+			data = append(data, 2, 3, 4, 5)
+			data = binary.LittleEndian.AppendUint16(data, 2)
+			data = append(data, 0, 0, 0x5a)
+			path := filepath.Join(t.TempDir(), "monster-tail.bin")
+			cf, err := cryptfile.OpenFile(path, cryptfile.WriteOnly, -1)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if _, err := cf.Write(data); err != nil {
+				_ = cf.Close()
+				t.Fatal(err)
+			}
+			if err := cf.Close(); err != nil {
+				t.Fatal(err)
+			}
+			cf, err = cryptfile.OpenFile(path, cryptfile.ReadOnly, -1)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer cf.Close()
+
+			update := new(server.MonsterUpdateData)
+			health := &server.HealthData{Cur: 99, Field2: 22, Max: 75}
+			unit := &server.Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(update), HealthData: health}
+			if err := monsterXferTail528DB0(cf, unit, 64); err != nil {
+				t.Fatal(err)
+			}
+			if *health != (server.HealthData{Cur: tc.wantCur, Field2: 22, Max: tc.wantMax}) {
+				t.Fatalf("health = %v, want Cur=%d Field2=22 Max=%d", health, tc.wantCur, tc.wantMax)
+			}
+			if update.Field361 != uint32(tc.dormant)<<8|4 || update.Field0 != 0x12345678 {
+				t.Fatalf("definition fields = %#x/%#x", update.Field361, update.Field0)
+			}
+			if sentinel, err := cf.ReadU8(); err != nil || sentinel != 0x5a {
+				t.Fatalf("tail alignment sentinel = %#x, %v", sentinel, err)
+			}
+		})
+	}
+}
 
 func TestMonsterParseSpellID528DB0(t *testing.T) {
 	tests := []struct {

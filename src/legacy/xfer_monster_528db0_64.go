@@ -1007,8 +1007,11 @@ func monsterXferTail528DB0(cf *cryptfile.CryptFile, obj *server.Object, version 
 		return nil
 	}
 	if field361High != 0 && noxflags.HasGame(noxflags.GameHost) {
+		// GAME.EXE 00529A3D and 00529A49 clear health offsets 4 and 0:
+		// Max and Cur, not the previous-health word at offset 2. Leaving
+		// Max nonzero makes invulnerable female NPCs retreat and eat food.
+		obj.HealthData.Max = 0
 		obj.HealthData.Cur = 0
-		obj.HealthData.Field2 = 0
 	}
 	if obj.ObjFlags&0x8000 != 0 && !obj.Server().IsZombie(obj) {
 		obj.ObjFlags |= 0x40

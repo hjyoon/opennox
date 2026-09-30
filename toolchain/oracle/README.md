@@ -4726,6 +4726,14 @@ native 구현은 callback 집합을 변경 전에 완전히 검사한 뒤 원본
 
 active C 경계는 `int nox_xxx_monsterCallDieFn_50A3D0(nox_object_t*)`이며 raw `uint32_t*` 본체는 provenance-only다. CGo 왕복 테스트는 실제 4GiB 초과 Object 주소와 반환값이 손실 없이 같은 Go 객체로 돌아오는지 검증한다. Go 1.26.5 macOS/ARM64에서 server/legacy 표적·root 관련 패키지, race, 강제 `checkptr=2`, `GOEXPERIMENT=cgocheck2`와 전체 원본 오라클 검증을 통과했다. 실게임 E2E는 Urchin 투사체 피해 `75→63`, 근접 시 도주 거리 `20.000→42.587`, Magic Missile 사망과 Wizard 1장 호바스 라이트닝의 서로 다른 Urchin 5마리 적중 및 생성 12마리 전멸(`37→25`, 총 HP `296→200`)을 확인했다.
 
+### dormant monster/NPC health `00529A3D` / `00529A49`
+
+`nox_xxx_XFerMonster_528DB0`의 봉인된 prefix 안에서 `00529A3D`는 HealthData offset 4, `00529A49`는 offset 0을 word 0으로 저장한다. 조건은 map read의 dormant byte가 nonzero이고 host인 경우이며, 의미는 `Max=0`, `Cur=0`이다. offset 2의 이전 체력은 변경하지 않는다. 64비트 tail이 `Cur`와 offset 2만 지우던 오류를 바로잡아 원래 최대 체력을 남기지 않게 했다.
+
+Con02a의 dormant `Julie2`/`Tanya2`가 잘못 `0/75`로 로드되면 체력 부족 AI가 도주하고 exit trigger가 먼저 두 actor를 삭제해 네 명의 도착/소환 이벤트가 멈춘다. 수정 후 두 Maiden과 `Bryan`/`Clyde`는 모두 `0/0`이며, 실제 trigger·NPC 대화 버튼 입력·AI·timer로 네 명 도착, `Spider` 소환/클라이언트 동기화(`12/12`), NPC 공격, `Necromancer` 삭제와 cinematic/player release가 시작 이후 564프레임에 도달했다. 소환 시점은 346프레임이며 이때 플레이어의 frozen 상태는 원본 스크립트처럼 유지된다.
+
+합성 version-64 tail 회귀는 host dormant byte 1/2, host live monster, client dormant의 네 분기와 offset 2 보존, 마지막 wire sentinel을 검사한다. macOS/ARM64 Go 1.26.5의 실제 `GOEXPERIMENT=cgocheck2` runner에서 표적 3회와 전체 패키지가 통과했다. 원본 `GAME.EXE`의 두 store는 별도 어셈블리 확인으로 검증했다. 일반 몬스터의 피해/food AI 동작을 변경하는 패치는 아니다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

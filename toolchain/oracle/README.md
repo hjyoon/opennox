@@ -4866,6 +4866,18 @@ successor는 class/flags 검사 및 setter 전에 캐시한다. 살아 있고 �
 
 두 독립 headless seat/mock audio Host Quest 입력 실행은 체력 보정을 통과하고 `G_TemplD.map` 로딩 및 클라이언트 재접속까지 진행했다. 이후 첫 몬스터 update의 **`00534950` Mimic 변신 검사**에서 별도 SIGSEGV가 재현되었다. 해당 함수의 공개 인자는 이미 pointer지만 본체가 다시 `int a1 = a1p`로 좁혀 PE32 `+748`을 읽는다. 일반·HD fault 주소는 각각 `0x50304d4c`/`0x78994d4c`로, 실제 native 객체 `0x150304a60`/`0x178994a60`의 잘린 low dword에 748을 더한 값이다. **이번 수정은 Quest 플레이 성공이나 전체 ARM64 실행 완료를 의미하지 않으며**, Mimic 본체는 다음 독립 이식 대상이다. GUI 입력은 모두 headless이고 관찰 캡처는 golden-image 동등성 주장에 사용하지 않는다.
 
+### Mimic 변신 검사 `00534950`
+
+본체 `00534950..00534A01` 178바이트/SHA-256 `3590b9ced36106f3fb9e75b6259125d654c4fec89b4c646e5fa6ea27510675e5`, 뒤 14-NOP와 거리 제곱 한계 `00583C7C`의 binary32 `64.0`을 구현 전에 봉인하고 직접 검증했다. 공개 C signature는 이미 `nox_object_t*`이므로 그대로 유지하고, 원본 본체 전체를 typed Go로 연결했다. 기존 본체의 `int a1 = a1p`와 PE32 update/stack 접근은 제거했으며 다른 원본 함수 본체나 저장·네트워크 형식은 변경하지 않았다.
+
+update → signed-byte stack index → head 주소 → action을 원본 순서대로 캐시한다. action 4일 때만 target X/object X/target Y/object Y를 읽고, 뺄셈과 Y 제곱·X 제곱·합을 분리해 53-bit 정밀도를 유지하고 FMA와 binary32 delta spill을 막는다. 제곱 거리가 정확히 64이거나 unordered/NaN이면 idle 경로이다. active action 34는 status를 읽지 않고 반환하며, 나머지 active와 idle은 cached update의 `0x40000` bit에 따라 분기한다. idle에서는 frame → timer → tick rate를 읽고 unsigned wrap subtraction 결과가 tick rate보다 클 때만 변신한다. 두 action push `61→33/34`와 sound 460은 원본처럼 push 결과가 nil이거나 stack이 가득 차도 호출한다.
+
+회귀는 거리·반올림·NaN/무한대·unsigned timer/wrap 경계, cached pointer/live coordinate·timer 조회, 실패한 push 뒤 호출과 모든 의존성 fault prefix를 고정한다. native adapter는 기존 typed Object/MonsterUpdateData/AIStackItem과 실제 action-reset/StackChanged/audio queue에 결속한다. signed index를 clamp하거나 잘못된 상태를 무시하지 않으며, native 배열 범위 밖 index는 Go bounds fault로 검출한다. 이는 유효한 native stack 계약의 검증이며 PE32의 범위 밖 메모리 읽기까지 동등하다는 주장은 아니다.
+
+실제 4GiB 초과 C 할당 fixture는 수정 전 공개 C entry에서 객체 `0x14f804080`의 잘린 low dword에 PE32 update offset 748을 더한 `0x4f80436c` 접근으로 SIGSEGV를 재현했다. 동일 C entry와 기존 Go wrapper는 수정 후 high-address 포인터를 그대로 전달하며 production stack/audio 회귀도 통과한다. 전체 일반·실제 `GOEXPERIMENT=cgocheck2` 패키지 시험, 표적 일반·엄격한 CGo 각 3회, race/강제 `checkptr=2` 결합 3회, Darwin/ARM64 일반·HD 제품 빌드와 `-h` 실행이 통과했다. 코드 2,782개·데이터 518개와 원본 1,556개 파일 트리 무결성도 재검증했다.
+
+두 독립 headless seat/mock audio Host Quest 입력 실행은 이전 Mimic 충돌 지점을 지나 `G_TemplD.map` 로딩·클라이언트 재접속 후 **`MSG_GAUNTLET` (`0xF0`)의 화면 이미지 이름 주소 잘림**에서 종료 코드 2로 중단됐다. 일반 패킷 `0x600003f00c30`/HD 패킷 `0x600001b27730`에서 image loader로 넘어간 이름 주소는 각각 `0x3f00c35`/`0x1b27735`로, packet low dword+5와 일치한다. 해당 패킷 처리 본체는 이번 커밋에서 변경하지 않았다. **Quest 플레이 성공이나 전체 ARM64 포팅 완료로 간주하지 않으며**, 다음 별도 이식 대상으로 남긴다. GUI는 headless로만 실행했고 관찰 캡처는 golden-image 동등성 주장에 사용하지 않는다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

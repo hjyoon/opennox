@@ -2973,32 +2973,9 @@ int nox_xxx_unitIsMimic_534840(int a1) {
 }
 
 //----- (00534950) --------------------------------------------------------
+extern void nox_xxx_monsterMimicCheckMorph_native_534950(nox_object_t* obj);
 void nox_xxx_monsterMimicCheckMorph_534950(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1;    // ecx
-	int v2;    // edx
-	int v3;    // eax
-	double v4; // st7
-	double v5; // st6
-
-	v1 = *(uint32_t*)(a1 + 748);
-	v2 = *(uint32_t*)(v1 + 24 * (*(char*)(v1 + 544) + 23));
-	v3 = v1 + 24 * (*(char*)(v1 + 544) + 23);
-	if (v2 && (v2 != 4 || (v4 = *(float*)(v3 + 4) - *(float*)(a1 + 56), v5 = *(float*)(v3 + 8) - *(float*)(a1 + 60),
-						   v5 * v5 + v4 * v4 > 64.0))) {
-		if (v2 != 34 && *(uint32_t*)(v1 + 1440) & 0x40000) {
-			nox_xxx_monsterPushAction_50A260(a1, 61);
-			nox_xxx_monsterPushAction_50A260(a1, 34);
-			nox_xxx_aud_501960(460, a1, 0, 0);
-			return;
-		}
-	} else if (!(*(uint32_t*)(v1 + 1440) & 0x40000) &&
-			   (unsigned int)(gameFrame() - *(uint32_t*)(v1 + 548)) > (int)gameFPS()) {
-		nox_xxx_monsterPushAction_50A260(a1, 61);
-		nox_xxx_monsterPushAction_50A260(a1, 33);
-		nox_xxx_aud_501960(460, a1, 0, 0);
-		return;
-	}
+	nox_xxx_monsterMimicCheckMorph_native_534950(a1p);
 }
 
 //----- (00534A10) --------------------------------------------------------

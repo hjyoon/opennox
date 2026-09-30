@@ -17199,6 +17199,20 @@
       "purpose": "the exact decoded direct rel32 call at 005341E0 targeting spell buff removal at 004FF5B0"
     },
     {
+      "name": "nox_xxx_monsterMimicCheckMorph_534950",
+      "address": "0x00534950",
+      "size": 178,
+      "sha256": "3590b9ced36106f3fb9e75b6259125d654c4fec89b4c646e5fa6ea27510675e5",
+      "purpose": "the complete original Mimic morph check: read the signed stack index, compare MOVE_TO distance in unspilled x87 precision, and queue dependency 61 followed by morph action 33 or 34 and sound 460 using the original unsigned idle timer"
+    },
+    {
+      "name": "nox_xxx_monsterMimicCheckMorph_534950_padding",
+      "address": "0x00534A02",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen alignment NOPs after the Mimic morph check before the following routine at 00534A10"
+    },
+    {
       "name": "nox_xxx_mobActionGetUp_534A90",
       "address": "0x00534A90",
       "size": 28,
@@ -19712,6 +19726,13 @@
       "size": 4,
       "sha256": "fca31f1667a6aa1bba12fca4e4ea1becd503379d80da3213af07f6cc5702828d",
       "purpose": "the exact binary32 5.0 operand compared first with 004FEA70's spilled absolute X delta and then with its live extended-precision absolute Y delta"
+    },
+    {
+      "name": "mimic_morph_distance_squared_limit_534950",
+      "address": "0x00583C7C",
+      "size": 4,
+      "sha256": "8568e5a1fe347c4aa003af9f44d1f42d104b5e40ea0502e869357877af7fb537",
+      "purpose": "the exact binary32 64.0 operand compared with the unspilled squared MOVE_TO distance by the Mimic morph check at 00534950"
     },
     {
       "name": "monster_move_distance_bias",

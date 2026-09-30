@@ -4623,7 +4623,8 @@ int sub_519710(void* a1) {
 }
 
 //----- (0051A500) --------------------------------------------------------
-int sub_51A500(int a1) {
+int sub_51A500(nox_object_t* object) {
+	int a1 = (int)(uintptr_t)object;
 	int v1;           // ecx
 	int v2;           // edx
 	unsigned char* i; // eax

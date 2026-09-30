@@ -130,7 +130,7 @@ int nox_xxx_netSpriteUpdate_518AE0(int a1, int a2, uint32_t* a3);
 int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1, nox_object_t* a2, int a3, signed int a4);
 char nox_xxx_netSendObjects2Plr_519410(nox_object_t* a1, nox_object_t* a2);
 int sub_519710(void* a1);
-int sub_51A500(int a1);
+int sub_51A500(nox_object_t* object);
 char* sub_51A550();
 void nox_xxx_spawnHecubahQuest_51A5A0(int* a1);
 void nox_xxx_spawnNecroQuest_51A7A0(int* a1);

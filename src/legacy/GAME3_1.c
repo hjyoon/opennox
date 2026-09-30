@@ -147,28 +147,21 @@ static void nox_gui_summon_grid_set(int x, int y, nox_gui_summon_record* record)
 
 //----- (004B9470) --------------------------------------------------------
 int sub_4B9470(const char** a1) {
-	const char* v1;    // esi
-	int v2;            // edx
-	unsigned char* v3; // edi
-
 	if (!a1) {
 		return 0;
 	}
-	v1 = *(const char**)getMemAt(0x587000, 177488);
-	v2 = 0;
-	if (!*getMemU32Ptr(0x587000, 177488)) {
-		return 0;
-	}
-	v3 = getMemAt(0x587000, 177488);
-	while (strcmp(*a1, v1)) {
-		v1 = (const char*)*((uint32_t*)v3 + 2);
-		v3 += 8;
-		++v2;
-		if (!v1) {
+	// The shipped table keeps 8-byte PE32 rows: a 4-byte name pointer followed
+	// by a 4-byte team ID. Native name pointers live in memmap side slots; an
+	// 8-byte load from the packed blob would join the address and team ID.
+	for (uintptr_t row = 0;; row++) {
+		const char* name = getMemPtr(0x587000, 177488 + 8 * row);
+		if (!name) {
 			return 0;
 		}
+		if (!strcmp(*a1, name)) {
+			return *getMemI32Ptr(0x587000, 177492 + 8 * row);
+		}
 	}
-	return *getMemU32Ptr(0x587000, 177492 + 8 * v2);
 }
 
 //----- (004B94E0) --------------------------------------------------------

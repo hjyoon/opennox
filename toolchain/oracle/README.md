@@ -4816,6 +4816,10 @@ Go renderer 한 본체에서 content bounds와 clip save/setup/restore를 복원
 
 macOS/ARM64 Go 1.26.5 일반·HD 클라이언트의 독립 headless seat/mock audio 세션이 같은 전체 시나리오를 각각 종료 코드 0으로 통과했다. 전체 패키지 일반·실제 `GOEXPERIMENT=cgocheck2` 시험도 통과했고 코드 2,766개·데이터 517개와 원본 1,556개 파일 트리의 무결성을 재검증했다. 네 PNG는 `NOX_E2E_OVERRIDE=true`로 생성·시각 검토한 관찰 캡처이며 golden-image 동등성이나 물리 화면 검증을 주장하지 않는다.
 
+### 인벤토리 아이콘 viewport 원본 근거
+
+alternate weapon `004625D0..004626B7` 232바이트, tray `004643B0..0046476A` 955바이트, current weapon `00465D50..00465DD8` 137바이트와 각 NOP padding을 봉인했다. 세 draw callback은 모두 `006D4A18` (`5D4594+1049732`)의 같은 13-word viewport를 받는다. constructor `00465E00..004661B2` 947바이트와 13-NOP도 봉인했다. `00465E3B..00465E63`은 screen min/world min 네 word를 0, screen max/size 네 word를 화면 크기로 쓰며, 나머지 다섯 word를 초기화하지 않는다. 원본 고정 레코드는 52바이트지만 native C/Go viewport는 64비트에서 104바이트이므로 draw 경계에서 필드별 변환이 필요하다. 누적 봉인은 코드 2,774개·데이터 517개다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

@@ -1358,6 +1358,20 @@
       "purpose": "the contiguous PE32 server-options tab selector and reparenting cluster covering native-window image state, Access/Players/General window construction and destruction, and the three tab-parent transitions through the trailing NOPs at 0045964F"
     },
     {
+      "name": "sub_4625D0",
+      "address": "0x004625D0",
+      "size": 232,
+      "sha256": "b2a035027a4dd473573bea0189e833107c74710c8ab4e7da1dc77710307bc0ce",
+      "purpose": "draw the alternate-weapon slot using its center position and the shared thirteen-word inventory viewport at 006D4A18"
+    },
+    {
+      "name": "sub_4625D0_padding",
+      "address": "0x004626B8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after the alternate-weapon slot renderer"
+    },
+    {
       "name": "sub_462740_inventory_identify_close",
       "address": "0x00462740",
       "size": 167,
@@ -1428,6 +1442,20 @@
       "purpose": "the exact seven NOP bytes after the player-statistics renderer before the inventory-tray renderer at 004643B0"
     },
     {
+      "name": "nox_xxx_guiDrawInventoryTray_4643B0",
+      "address": "0x004643B0",
+      "size": 955,
+      "sha256": "01a9dbcd7cd94fa224e37e58cd2a2c60c08b9d2d2153d52acb6f7b56f556e21c",
+      "purpose": "render the four-column inventory tray, preserve twenty-one storage/equipment rows and fifty-pixel scrolling, and invoke each item draw callback with the shared viewport at 006D4A18"
+    },
+    {
+      "name": "nox_xxx_guiDrawInventoryTray_4643B0_padding",
+      "address": "0x0046476B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after the inventory-tray renderer"
+    },
+    {
       "name": "sub_462740_call_464C43",
       "address": "0x00464C43",
       "size": 5,
@@ -1496,6 +1524,34 @@
       "size": 6,
       "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
       "purpose": "the exact six NOP bytes after the inventory multi-drop accept callback"
+    },
+    {
+      "name": "sub_465D50_draw",
+      "address": "0x00465D50",
+      "size": 137,
+      "sha256": "6e48aa7081ae5065b3c17e3c587d5991e7074cc8312db53f1ed6644cf16ad2d4",
+      "purpose": "render the selected current weapon at inventory-parent position plus 51/81 using the shared viewport at 006D4A18, retaining the empty fist fallback"
+    },
+    {
+      "name": "sub_465D50_draw_padding",
+      "address": "0x00465DD9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes after the current-weapon renderer"
+    },
+    {
+      "name": "nox_xxx_wndCreateInventoryMB_465E00",
+      "address": "0x00465E00",
+      "size": 947,
+      "sha256": "71a3962ad9f0bdfb6c7e494ed746dd4b6755ce1c7da404f476d7e6f2c10c7b15",
+      "purpose": "construct the inventory windows and initialize eight fields of the shared fifty-two-byte PE32 viewport without changing its other five words"
+    },
+    {
+      "name": "nox_xxx_wndCreateInventoryMB_465E00_padding",
+      "address": "0x004661B3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes after the inventory-window constructor"
     },
     {
       "name": "sub_466660_inventory_tooltip",

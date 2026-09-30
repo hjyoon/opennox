@@ -199,7 +199,7 @@ extern void* dword_587000_81128;
 extern uint32_t dword_5d4594_3798800;
 extern uint32_t dword_5d4594_3798812;
 extern nox_window* dword_5d4594_1046952;
-extern uint32_t dword_5d4594_832536;
+extern uintptr_t dword_5d4594_832536;
 extern uint32_t dword_587000_87408;
 extern nox_window* dword_5d4594_814988;
 extern uint32_t dword_5d4594_2487560;

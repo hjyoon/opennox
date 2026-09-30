@@ -24,7 +24,7 @@ extern uintptr_t dword_5d4594_832508;
 extern uintptr_t dword_5d4594_832504;
 extern uintptr_t dword_5d4594_832492;
 extern uintptr_t dword_5d4594_832532;
-extern uint32_t dword_5d4594_832536;
+extern uintptr_t dword_5d4594_832536;
 extern nox_window* nox_wnd_briefing_831232;
 extern uint32_t dword_5d4594_832476;
 extern uintptr_t dword_5d4594_832484;

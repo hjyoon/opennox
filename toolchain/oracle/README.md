@@ -12,6 +12,8 @@
 
 `0051A550`의 활성 C 진입점은 native Go 초기화로 연결된다. blob loader가 이미 제공하는 native 이름 side slot을 매 접근마다 읽고, ID만 원본의 4-byte 슬롯에 기록한다. 실제 C 진입점에서 generator lookup→ID 저장→live creature 이름 재조회→ID 저장→다음 generator 이름 순서, 빈 표, ID 0, ready가 이미 nonzero일 때도 재초기화하는 계약을 회귀 시험으로 고정했다. 실제 종류 레지스트리의 53쌍, semantic SHA-256, 4GiB 초과 이름 pointer identity와 packed 이름 슬롯·terminator 보존을 확인했다. Go 1.26.5 전체 일반 시험, 실제 `GOEXPERIMENT=cgocheck2` 반복 시험 및 race/checkptr 반복 시험을 통과했고 Darwin/ARM64 일반·HD 제품 빌드와 `-h` 실행도 통과했다. 테마 순회와 종류 조회 본체는 아직 후속 이식 대상이며 Quest 시작 성공으로 간주하지 않는다.
 
+`0051A500`의 종류 조회 본체도 native Go로 이식했다. 이미 분리된 typed C 진입점에서 4GiB 초과 객체 주소를 보존하고, generator 이름의 native side slot으로 표의 끝을 판정하며 종류 ID는 packed dword 슬롯을 유지한다. 원본 `0051A525`는 객체의 16-bit 종류 ID를 **한 번만** zero-extend하여 캐시한다. 루프 안에서 다시 읽는 복원 C의 동작은 따르지 않는다. ready=0의 초기화는 nil 객체 검사보다 먼저이고, 모든 nonzero ready는 초기화를 생략한다. 첫 일치·ID 0 반환, 중복 종류, 빈 non-null 이름과 nil terminator, unsigned 반환 비트, 콜백 중 객체 종류 변경에 대한 캐시 동작을 실제 C 진입점에서 검증했다. 실 레지스트리 53개 레코드의 첫 일치 결과와 표·ready 보존도 확인했다. 전체 일반 시험, 해당 함수의 실제 cgocheck2 및 race/checkptr 각 3회, 일반·HD Darwin/ARM64 빌드와 `-h` 실행은 통과했다. 누적 verifier는 코드 2,774개·데이터 517개이며, 첫 객체 순회의 `0051A1F0`은 아직 다음 이식 대상이다.
+
 ## 아이템 이름 툴팁 `004BF050..004BF7DF`
 
 macOS/ARM64의 실제 headless War01a 커서 입력에서 RedApple·Mushroom·GreatSword·LeatherArmor 이름이 비어 있었고 HD LeatherArmor도 동일했다. 별도로 그려지는 `줍기`·`말하기` 한글은 정상이다. 원인은 UTF-16 자산이 아니라 drawable의 PE32 type/class/union offset `108/112/432`를 native 구조체에도 적용한 접근이다. native offset은 `120/124/560`이며 원본 class 자리에서 읽힌 값은 좌표 관련 float `0x40A00000`, type 자리는 0이었다. 이 read-only 재현은 정확한 drawable identity와 실제 tooltip buffer를 관찰했으며 이름 함수를 대신 호출하거나 표시 문자열을 주입하지 않았다.

@@ -4623,36 +4623,9 @@ int sub_519710(void* a1) {
 }
 
 //----- (0051A500) --------------------------------------------------------
+extern int nox_xxx_questGeneratorType_native_51A500(nox_object_t* object);
 int sub_51A500(nox_object_t* object) {
-	int a1 = (int)(uintptr_t)object;
-	int v1;           // ecx
-	int v2;           // edx
-	unsigned char* i; // eax
-	int v4;           // esi
-
-	if (!*getMemU32Ptr(0x5D4594, 2388664)) {
-		sub_51A550();
-	}
-	if (!a1) {
-		return 0;
-	}
-	v1 = 0;
-	if (!*getMemU32Ptr(0x587000, 249904)) {
-		return 0;
-	}
-	HIWORD(v2) = 0;
-	for (i = getMemAt(0x587000, 249904);; i += 16) {
-		LOWORD(v2) = *(uint16_t*)(a1 + 4);
-		if (*((uint32_t*)i - 1) == v2) {
-			break;
-		}
-		v4 = *((uint32_t*)i + 4);
-		++v1;
-		if (!v4) {
-			return 0;
-		}
-	}
-	return *getMemU32Ptr(0x587000, 249908 + 16 * v1);
+	return nox_xxx_questGeneratorType_native_51A500(object);
 }
 
 //----- (0051A550) --------------------------------------------------------

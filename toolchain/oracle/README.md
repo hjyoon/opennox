@@ -4796,6 +4796,12 @@ native-width `nox_rect`를 32비트 `int4`로 읽던 C 본체를 typed RenderDat
 
 일반·HD 클라이언트의 headless seat/mock audio 실게임 검증은 stock RedApple 9개를 서버에서 생성하고 정상 minimap mark/interesting-object 패킷으로 클라이언트에 전달한다. 정확한 경계 좌표의 fixture만 서버 collision을 끄며 client drawable·clip·marker pixel은 주입하지 않는다. 내부 1개, 네 가장자리 4개, 외부 4개가 모두 추적 목록에 남은 상태에서 실제 C minimap pass의 내부 색상 픽셀 381개, 경계 밖 누출 0개, 이전 clip 상태 복원을 확인했다. `NOX_E2E_OVERRIDE=true` 캡처는 시각 검토용이며 golden-image 동등성 주장과 구분한다.
 
+### 인벤토리 설명 listbox clip 원본 근거
+
+image 없는 `004A3C50..004A3FBE` 879바이트와 image 있는 `004A3FC0..004A430E` 847바이트 및 각 1-NOP을 추가 봉인했다. 두 renderer의 `004A3CC6`/`004A401E` save, `004A3DA1`/`004A40F1` content clip setup, `004A3FA0`/`004A42F0` restore를 대조했다. constructor scrollbar가 있으면 폭에서 10을 빼고 제목이 있으면 font height+1만큼 content top/height를 조정한다. scroll offset은 row 위치에만 적용하며 content clip은 움직이지 않는다. 선택 배경과 줄바꿈 텍스트 모두 이 영역으로 잘리고 clipping flag와 half-open/inclusive bounds는 그리기 뒤 복원된다. 기존 Go renderer에는 이 save/setup/restore가 누락되어 있었다.
+
+line insertion `004A3AC0..004A3BFE` 319바이트와 1-NOP도 별도 봉인했다. `004A3ACD`는 폭에서 text padding 7을 빼고, `004A3AD8`은 constructor scrollbar가 있을 때 추가로 10을 뺀다. 이 폭을 `004A3BC5`의 줄바꿈 높이 측정에 전달한다. stock `window/identify.wnd`의 9156은 `148×140`, scrollbar가 있는 listbox이므로 text wrap 폭은 131이며 clip 폭은 138이다. 누적 봉인은 코드 2,766개·데이터 517개다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

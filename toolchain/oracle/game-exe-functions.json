@@ -2415,11 +2415,53 @@
       "purpose": "the exact PE32 listbox field94 control callback, its event dispatch table, and trailing alignment before the row-height helper"
     },
     {
+      "name": "nox_xxx_wndListBoxAddLine_4A3AC0",
+      "address": "0x004A3AC0",
+      "size": 319,
+      "sha256": "9dd0b6bc21b75b570e0640fd89b48d7c58889d9766651f625ff05b62f468e25f",
+      "purpose": "the exact PE32 listbox line insertion and measurement helper, including seven-pixel text padding and the additional ten-pixel constructor scrollbar deduction"
+    },
+    {
+      "name": "nox_xxx_wndListBoxAddLine_4A3AC0_padding",
+      "address": "0x004A3BFF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte after the PE32 listbox line insertion helper"
+    },
+    {
       "name": "nox_xxx_wndListboxInit_4A3C00",
       "address": "0x004A3C00",
       "size": 80,
       "sha256": "5ce59a949a8c8300e3c73a3becd19d735fbc4b44115dd10d72d5cc70ee7681a0",
       "purpose": "the exact PE32 listbox initializer that selects the draw callback and installs the single- or multi-selection field93 callback"
+    },
+    {
+      "name": "nox_xxx_wndListboxDrawNoImage_4A3C50",
+      "address": "0x004A3C50",
+      "size": 879,
+      "sha256": "f68752be9cfa216f36c0424c9f9588fcf2e45015f0ec1b63890cf0dcd36f1c0a",
+      "purpose": "the exact PE32 listbox renderer without a background image, including title/scrollbar content bounds, clip save/setup/restore, and clipped row text and selection backgrounds"
+    },
+    {
+      "name": "nox_xxx_wndListboxDrawNoImage_4A3C50_padding",
+      "address": "0x004A3FBF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte after the PE32 listbox renderer without an image"
+    },
+    {
+      "name": "nox_xxx_wndListboxDrawWithImage_4A3FC0",
+      "address": "0x004A3FC0",
+      "size": 847,
+      "sha256": "51f6613a0f7a4d8dc6d82425eca5a3ed678493c1a92e8529365b1214b93ceafa",
+      "purpose": "the exact PE32 listbox renderer with a background image, including title/scrollbar content bounds and clip save/setup/restore for scrolled item text"
+    },
+    {
+      "name": "nox_xxx_wndListboxDrawWithImage_4A3FC0_padding",
+      "address": "0x004A430F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte after the PE32 image-backed listbox renderer"
     },
     {
       "name": "nox_gui_newScrollListBox_4A4310",

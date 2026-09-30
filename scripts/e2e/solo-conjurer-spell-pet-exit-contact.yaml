@@ -1,0 +1,116 @@
+# Complete real Summon Wolf/Summon Urchin/Charm spells and Pixie Swarm.
+# Each transition puts only the player at a stock exit and queues ordinary
+# collision work, without invoking the exit callback or setting migration flags.
+# Check all five pets after fresh-map and saved-map transitions, then after
+# 240 additional destination ticks to detect delayed disappearance.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept conjurer class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept conjurer color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss opening dialog
+  - action: wait
+    dt: 60
+    name: settle after opening dialog
+  - action: create-transition-spell-pets
+    name: complete summons and acquire unowned urchin by Charm
+  - action: create-transition-pixies
+    name: cast Pixie Swarm through the gameplay spell path
+  - action: contact-pet-transition-exit
+    map: con02a
+    name: contact stock campaign exit
+  - action: click-chapter-briefing
+    name: dismiss destination chapter briefing
+  - action: wait-forced-coop-autosave
+    name: wait for destination autosave
+  - action: wait
+    dt: 30
+    name: settle destination network updates
+  - action: assert-transition-summons
+    name: preserve summoned and charmed creatures beside player
+  - action: wait
+    dt: 240
+    name: continue destination gameplay before checking delayed removal
+  - action: assert-transition-summons
+    name: preserve summoned and charmed creatures after destination gameplay
+  - action: screen
+    name: pets visible after first exit contact
+  - action: contact-pet-transition-exit
+    name: contact next stock campaign exit
+  - action: click-chapter-briefing
+    name: dismiss next chapter briefing
+  - action: wait-forced-coop-autosave
+    name: wait for next autosave
+  - action: wait
+    dt: 30
+    name: settle next network updates
+  - action: assert-transition-summons
+    name: preserve summoned and charmed creatures after second transition
+  - action: wait
+    dt: 240
+    name: continue next map gameplay before checking delayed removal
+  - action: assert-transition-summons
+    name: preserve summoned and charmed creatures after next map gameplay
+  - action: screen
+    name: pets visible after second exit contact
+  - action: contact-pet-transition-exit
+    map: con02a
+    name: return to saved chapter two map through stock exit contact
+  - action: wait-forced-coop-autosave
+    name: wait for third autosave
+  - action: wait
+    dt: 30
+    name: settle third network updates
+  - action: assert-transition-summons
+    name: preserve summoned and charmed creatures after saved-map return
+  - action: wait
+    dt: 240
+    name: continue saved map gameplay before checking delayed removal
+  - action: assert-transition-summons
+    name: preserve summoned and charmed creatures after saved map gameplay
+  - action: screen
+    name: pets visible after saved map return
+  - action: quit
+    dt: 1

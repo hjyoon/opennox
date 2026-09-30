@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 소환수의 실제 출구 접촉·맵 전환 headless 회귀
+
+`scripts/e2e/solo-conjurer-spell-pet-exit-contact.yaml`은 실제 Summon Wolf·Summon Urchin·Charm의 duration 완료와 Pixie Swarm으로 creature 3마리·Pixie 2마리를 만든다. E2E 전용 `contact-pet-transition-exit`은 player만 stock 출구에 배치하고 일반 충돌 처리를 예약한다. 출구 callback 직접 호출, 소환수/ownership/migration flag 조작은 하지 않는다. 기존 직접 callback 시나리오도 별도 유지한다.
+
+Darwin/ARM64 일반·HD headless 실행 모두 Con01a→Con02a→Con03a→저장된 Con02a 전환을 완료했다. 각 전환의 초기 검사와 240틱 후 검사에서 같은 다섯 native 객체·owner·wire ID·creature HP 40/8/8이 유지됐고, player 주변 거리와 client drawable 위치/enable/dead 상태도 통과했다. 각 제품에서 30개 보존 검사를 확인했다. 추가 화면 캡처 세 장씩을 생성해 전환 후 렌더링도 검토했고 정상 종료했다. 전체 일반·cgocheck2 시험과 원본 코드 2,800개·데이터 586개 및 stock 1,556개 파일 검증도 통과했다.
+
+보고된 소환수 소실은 이 캠페인 조건에서 여전히 미재현이며, 이 커밋은 소환수 게임 동작을 수정하지 않는다. 다른 맵·소환수 종류·게임 모드·기존 save의 재현 조건은 별도 확인이 필요하다. 특히 이 시나리오는 Quest/온라인 stage 전환의 소환수 보존 증거가 아니다.
+
 ## 실제 Quest stage 전환 headless 회귀
 
 `scripts/e2e/host-quest-stage-transition.yaml`은 실제 메뉴에서 Quest Warrior를 호스트하고 필드 이동 후 로드된 stock 출구에 player를 배치해 일반 충돌 처리를 예약한다. E2E 전용 `enter-quest-exit`은 출구 callback을 직접 부르거나 next-map/observer/exit flag를 주입하지 않으며, 서버·클라이언트 틱이 출구 충돌·점수 packet·다음 맵·브리핑을 수행해야 한다. destination predicate는 stage 증가·load gate 해제·host unit/client drawable·접속 상태를 요구한다. 이후 400틱 대기·100틱 이동·화면 캡처·정상 종료도 포함한다.

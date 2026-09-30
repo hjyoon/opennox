@@ -9687,6 +9687,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.EnterPetTransitionExit(l.Map, l.Name)
+		case "contact-pet-transition-exit":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ContactPetTransitionExit(l.Map, l.Name)
 		case "assert-transition-summons":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -214,6 +214,16 @@ func (sc *e2eScenario) CreateTransitionPixies(name string) {
 // save, map-load and owner/position restoration run. This is not SwitchMap or
 // a replacement persistence implementation.
 func (sc *e2eScenario) EnterPetTransitionExit(mapID, name string) {
+	sc.enterPetTransitionExit(mapID, name, false)
+}
+
+// Put the player in contact with the loaded stock exit, then queue ordinary
+// collision work. Pets, exit flags and migration/save state are not modified.
+func (sc *e2eScenario) ContactPetTransitionExit(mapID, name string) {
+	sc.enterPetTransitionExit(mapID, name, true)
+}
+
+func (sc *e2eScenario) enterPetTransitionExit(mapID, name string, contact bool) {
 	sc.add(0, name, func() {
 		host := noxServer.Players.HostUnit()
 		exit := e2eExitWithDestination()
@@ -252,10 +262,20 @@ func (sc *e2eScenario) EnterPetTransitionExit(mapID, name string) {
 			e2eError(fmt.Errorf("pet transition: invalid stock exit destination %q", target))
 			return
 		}
-		server.CallObjectCollide(exit.Collide, exit, host, nil)
-		if !sub_4DCC00() || !nox_xxx_gameGet_4DB1B0() {
-			e2eError(fmt.Errorf("pet transition: ExitCollide did not queue cooperative migration/save: migrate=%t save=%t", sub_4DCC00(), nox_xxx_gameGet_4DB1B0()))
-			return
+		if contact {
+			pos := exit.PosVec
+			asObjectS(host).SetPos(pos)
+			host.NewPos, host.PrevPos = pos, pos
+			host.VelVec, host.ForceVec, host.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
+			legacy.Nox_xxx_unitHasCollideOrUpdateFn_537610(host)
+			e2eLog.Printf("PET TRANSITION CONTACT ARMED: %s -> %s exit=%p player=%p pos=%v frame=%d",
+				e2eTransitionPets.from, e2eTransitionPets.to, exit, host, pos, noxServer.Frame())
+		} else {
+			server.CallObjectCollide(exit.Collide, exit, host, nil)
+			if !sub_4DCC00() || !nox_xxx_gameGet_4DB1B0() {
+				e2eError(fmt.Errorf("pet transition: ExitCollide did not queue cooperative migration/save: migrate=%t save=%t", sub_4DCC00(), nox_xxx_gameGet_4DB1B0()))
+				return
+			}
 		}
 		e2eLog.Printf("PET TRANSITION EXIT: %s -> %s exit=%p collision=%p pets=%d game-flags=%#x", e2eTransitionPets.from, e2eTransitionPets.to, exit, exit.Collide, len(e2eTransitionPets.pets), uint32(noxflags.GetGame()))
 	})

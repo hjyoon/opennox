@@ -2165,29 +2165,21 @@ nox_playerInfo* nox_xxx_playerByName_4170D0(wchar2_t* a1) {
 // MinimapItem list without depending on host pointer size or node offsets.
 
 //----- (00417470) --------------------------------------------------------
-char* nox_xxx_netUnmarkMinimapSpec_417470(int a1, int a2) {
-	char* result; // eax
-	int i;        // esi
-
-	result = nox_common_playerInfoGetFirst_416EA0();
-	for (i = (int)result; result; i = (int)result) {
-		nox_xxx_netUnmarkMinimapObj_417300(*(unsigned char*)(i + 2064), a1, a2);
-		result = nox_common_playerInfoGetNext_416EE0(i);
+char* nox_xxx_netUnmarkMinimapSpec_417470(nox_object_t* a1, int a2) {
+	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+		 player = nox_common_playerInfoGetNext_416EE0(player)) {
+		nox_xxx_netUnmarkMinimapObj_417300(player->playerInd, a1, a2);
 	}
-	return result;
+	return 0;
 }
 
 //----- (004174B0) --------------------------------------------------------
-char* nox_xxx_netMarkMinimapForAll_4174B0(int a1, int a2) {
-	char* result; // eax
-	int i;        // esi
-
-	result = nox_common_playerInfoGetFirst_416EA0();
-	for (i = (int)result; result; i = (int)result) {
-		nox_xxx_netMarkMinimapObject_417190(*(unsigned char*)(i + 2064), a1, a2);
-		result = nox_common_playerInfoGetNext_416EE0(i);
+char* nox_xxx_netMarkMinimapForAll_4174B0(nox_object_t* a1, int a2) {
+	for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
+		 player = nox_common_playerInfoGetNext_416EE0(player)) {
+		nox_xxx_netMarkMinimapObject_417190(player->playerInd, a1, a2);
 	}
-	return result;
+	return 0;
 }
 
 //----- (004174F0) --------------------------------------------------------
@@ -2302,6 +2294,7 @@ char sub_417DE0() {
 }
 
 //----- (00417EA0) --------------------------------------------------------
+#if 0 // Restored by map_mode_setup_417ea0_export.go; retained as ABI32 provenance.
 int nox_xxx_mapInfoSetCapflag_417EA0() {
 	int v0; // eax
 	int v1; // esi
@@ -2343,6 +2336,7 @@ char nox_xxx_mapInfoSetFlagball_417F30() {
 	return v0;
 }
 // 417F37: variable 'v0' is possibly undefined
+#endif
 
 //----- (00417F50) --------------------------------------------------------
 #if 0 // Restored by game_ball_lifecycle_417f50_export.go; retained as ABI32 provenance.
@@ -2425,6 +2419,7 @@ int sub_417F50(int a1) {
 #endif
 
 //----- (004180D0) --------------------------------------------------------
+#if 0 // Restored by map_mode_setup_417ea0_export.go; retained as ABI32 provenance.
 int nox_xxx_mapInfoSetKotr_4180D0() {
 	int v0;   // esi
 	int v1;   // edi
@@ -2499,6 +2494,7 @@ int nox_xxx_mapInfoSetKotr_4180D0() {
 	}
 	return 1;
 }
+#endif
 
 // The original 004181F0 body stores player pointers in int v22[32], which is
 // only valid for the PE32 address model. The public sub_4181F0 symbol is

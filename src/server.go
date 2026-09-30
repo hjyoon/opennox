@@ -1019,20 +1019,20 @@ func (s *Server) nox_xxx_mapReadSetFlags_4CF990() {
 		mode := noxflags.GameFlag(stt.Field52)
 		if mode.Has(noxflags.GameModeCTF) {
 			gameLog.Println("setting CTF mode")
-			if s.mapInfoSetCapflag417EA0() != 0 {
+			if s.MapInfoSetCapflag417EA0() != 0 {
 				noxflags.UnsetGame(noxflags.GameModeMask)
 				noxflags.SetGame(noxflags.GameModeCTF)
 			}
 		} else if mode.Has(noxflags.GameModeFlagBall) {
 			gameLog.Println("setting flagball mode")
-			if s.mapInfoSetFlagball417F30() != 0 {
+			if s.MapInfoSetFlagball417F30() != 0 {
 				noxflags.UnsetGame(noxflags.GameModeMask)
 				noxflags.SetGame(noxflags.GameModeFlagBall)
 				s.Spells.Enable(spell.SPELL_WALL, false)
 			}
 		} else if mode.Has(noxflags.GameModeKOTR) {
 			gameLog.Println("setting KOTR mode")
-			if s.mapInfoSetKotr4180D0() != 0 {
+			if s.MapInfoSetKotr4180D0() != 0 {
 				noxflags.UnsetGame(noxflags.GameModeMask)
 				noxflags.SetGame(noxflags.GameModeKOTR)
 			}

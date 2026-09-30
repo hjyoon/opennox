@@ -7,10 +7,10 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
-// mapInfoSetFlags417EC0 counts flag objects and assigns teamless players
+// MapInfoSetFlags417EC0 counts flag objects and assigns teamless players
 // without the PE32 object and player iterators used by GAME.EXE 00417EC0 and
 // 004181F0.
-func (s *Server) mapInfoSetFlags417EC0() bool {
+func (s *Server) MapInfoSetFlags417EC0() bool {
 	srv := s.S()
 	flagCount := 0
 	for obj := srv.Objs.First(); obj != nil; obj = obj.Next() {
@@ -29,20 +29,20 @@ func (s *Server) mapInfoSetFlags417EC0() bool {
 	return true
 }
 
-// mapInfoSetCapflag417EA0 initializes CTF without routing native object and
+// MapInfoSetCapflag417EA0 initializes CTF without routing native object and
 // player pointers through the original PE32 setup routine.
-func (s *Server) mapInfoSetCapflag417EA0() int {
-	if !s.mapInfoSetFlags417EC0() {
+func (s *Server) MapInfoSetCapflag417EA0() int {
+	if !s.MapInfoSetFlags417EC0() {
 		return 0
 	}
 	legacy.Sub_455A50(2)
 	return 1
 }
 
-// mapInfoSetFlagball417F30 initializes FlagBall mode on top of the shared
+// MapInfoSetFlagball417F30 initializes FlagBall mode on top of the shared
 // native-width flag setup.
-func (s *Server) mapInfoSetFlagball417F30() int {
-	if !s.mapInfoSetFlags417EC0() {
+func (s *Server) MapInfoSetFlagball417F30() int {
+	if !s.MapInfoSetFlags417EC0() {
 		return 0
 	}
 	legacy.Sub_455F60()

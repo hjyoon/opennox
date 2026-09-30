@@ -6,9 +6,9 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-// mapInfoSetKotr4180D0 initializes KOTR with native-width Object and Team
+// MapInfoSetKotr4180D0 initializes KOTR with native-width Object and Team
 // pointers instead of the PE32 integer walks in GAME.EXE 004180D0.
-func (s *Server) mapInfoSetKotr4180D0() int {
+func (s *Server) MapInfoSetKotr4180D0() int {
 	srv := s.S()
 	ok := srv.MapInfoSetKotr4180D0(
 		uint16(srv.Types.IndByID("Crown")),

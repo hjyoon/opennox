@@ -3822,6 +3822,13 @@
       "purpose": "the exact four NOP bytes after shop object naming before the next routine at 004E3A80"
     },
     {
+      "name": "sub_4E4100",
+      "address": "0x004E4100",
+      "size": 112,
+      "sha256": "b323a472aab3c2dd15363ae93b651bf5b628a91723aea1211abe08015bd8c2a4",
+      "purpose": "traverse every player unit, exclude index 31 only for a non-rendering host, count every nonzero Quest participation state, and return one exactly when fewer than six participants remain"
+    },
+    {
       "name": "nox_xxx_unitNeedSync_4E44F0",
       "address": "0x004E44F0",
       "size": 15,

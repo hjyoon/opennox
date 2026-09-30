@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 참가 정원 검사 `004E4100..004E416F`
+
+macOS/ARM64의 실제 Host Quest 메뉴 입력으로 `so_lod.map`을 읽은 뒤 `startSoloQuest`가 실행되면 `setupQuestGame`의 `sub_4E4100`에서 충돌했다. 재현 시 첫 player unit은 `0x1300f03c0`였지만 C의 `int` 임시 변수와 PE32 offset `+748` 접근은 `0x300f06ac`를 역참조했다. 기존 메뉴→ClassSelect 시험만으로는 이 초기화 경계를 실행하지 못한다.
+
+원본 본체 112바이트의 SHA-256은 `b323a472aab3c2dd15363ae93b651bf5b628a91723aea1211abe08015bd8c2a4`다. 원본은 전체 player-unit 목록을 끝까지 순회하고, Host game flag와 NoRendering engine flag가 모두 설정됐을 때만 index 31을 제외한다. Quest 상태는 정확히 1이 아니라 **모든 nonzero 값**을 세며, 빈 목록 또는 참가자가 6명 미만이면 1, 6명 이상이면 마지막 nil successor의 0을 반환한다. 포팅 전에 코드 범위를 독립 봉인했으며 누적 verifier 대상은 **코드 2,744개·데이터 513개**다. 실제 Quest 맵 진입·플레이 성공은 아직 이 기록의 검증 범위가 아니다.
+
 ## 무기 생성 콜백 `0054C710..0054C94F`
 
 `WeaponCreate`를 raw PE32 콜백에서 native Go dispatcher로 옮겼다. 원본의 modifier 정의/내구도 초기화와 Quest 배율뿐 아니라 `OblivionHeart`·`OblivionWierdling` 고정 인챈트, ammo 기본 수량, Quest staff charge 배율까지 한 경로로 복원했다. 엔트리에서 `InitData`를 먼저 캐시하는 반면 내구도 처리 중 `HealthData`는 매 접근마다 다시 읽고, class·subclass·`UseData`도 각 명령 지점의 live 값을 읽는 순서를 유지한다. ammo 두 조건이 동시에 맞으면 charged 분기가 우선하며 byte 1, 2, 0 순으로 저장하고, staff는 max charge byte 109를 current byte 108보다 먼저 갱신한다.

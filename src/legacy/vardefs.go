@@ -52,7 +52,7 @@ extern nox_window* dword_5d4594_1045636;
 extern uint32_t dword_5d4594_3798804;
 extern uint32_t dword_5d4594_832476;
 extern uint32_t dword_5d4594_1570272;
-extern uint32_t dword_5d4594_1305684;
+extern nox_window* dword_5d4594_1305684;
 extern nox_window* dword_5d4594_1321228;
 extern uint32_t nox_game_createOrJoin_815048;
 extern uint32_t dword_5d4594_1063636;

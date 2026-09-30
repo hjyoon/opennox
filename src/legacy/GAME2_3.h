@@ -167,7 +167,7 @@ void nox_xxx_sprite_49C4F0();
 int nox_xxx_wnd_49C760(int a1, int a2, int* a3, int a4);
 int sub_49C7A0();
 int sub_49C810();
-int sub_49CA60(int a1, int a2, int* a3, int a4);
+int sub_49CA60(nox_window* win, int event, nox_window* event_win, uintptr_t event_arg);
 int sub_49CB40();
 void nox_client_drawBorderLines_49CC70(int xLeft, int yTop, int a3, int a4);
 void sub_49CD30(int xLeft, int yTop, int a3, int a4, int a5, int a6);

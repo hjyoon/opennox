@@ -73,7 +73,7 @@ extern nox_window* dword_5d4594_1305680;
 extern uint32_t dword_5d4594_1301848;
 extern nox_window* dword_5d4594_1197312;
 extern nox_window* dword_5d4594_1303452;
-extern uint32_t dword_5d4594_1305684;
+extern nox_window* dword_5d4594_1305684;
 extern uint32_t nox_player_netCode_85319C;
 extern int nox_win_width;
 extern int nox_win_height;
@@ -2828,29 +2828,27 @@ int sub_49C7A0() {
 int sub_49C810() { return dword_5d4594_1305680 != 0; }
 
 //----- (0049CA60) --------------------------------------------------------
-int sub_49CA60(int a1, int a2, int* a3, int a4) {
-	int v3;       // esi
-	uint32_t* v4; // eax
-	int v5;       // eax
-	int v6;       // eax
-
-	if (a2 == 16391) {
-		v3 = nox_xxx_wndGetID_46B0A0(a3);
+int sub_49CA60(nox_window* win, int event, nox_window* event_win, uintptr_t event_arg) {
+	(void)win;
+	(void)event_arg;
+	if (event == 16391 && event_win) {
+		int id = nox_xxx_wndGetID_46B0A0(event_win);
 		nox_xxx_clientPlaySoundSpecial_452D80(766, 100);
-		if (v3 == 10353) {
-			nox_xxx_wnd_46C6E0(*(int*)&dword_5d4594_1305684);
-			nox_xxx_wndClearCaptureMain_46ADE0(*(int*)&dword_5d4594_1305684);
+		if (id == 10353 && dword_5d4594_1305684) {
+			nox_xxx_wnd_46C6E0(dword_5d4594_1305684);
+			nox_xxx_wndClearCaptureMain_46ADE0(dword_5d4594_1305684);
 			if (nox_common_gameFlags_check_40A5C0(128) && nox_server_sanctuaryHelp_54276) {
 				nox_xxx_cliShowHelpGui_49C560();
 			} else {
 				sub_459D80(0);
 			}
-			v4 = nox_xxx_wndGetChildByID_46B0C0(*(uint32_t**)&dword_5d4594_1305684, 10352);
-			v5 = nox_window_call_field_94((int)v4, 16404, 0, 0);
-			nox_server_connectionType_3596 = v5 + 1;
-			v6 = sub_40A710(v5 + 1);
-			nox_xxx_rateUpdate_40A6D0(v6);
-			nox_xxx_windowDestroyMB_46C4E0(*(uint32_t**)&dword_5d4594_1305684);
+			nox_window* list = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1305684, 10352);
+			if (list) {
+				int selected = (int)nox_window_call_field_94(list, 16404, 0, 0);
+				nox_server_connectionType_3596 = selected + 1;
+				nox_xxx_rateUpdate_40A6D0(sub_40A710(selected + 1));
+			}
+			nox_xxx_windowDestroyMB_46C4E0(dword_5d4594_1305684);
 			dword_5d4594_1305684 = 0;
 			nox_xxx_windowFocus_46B500(0);
 		}

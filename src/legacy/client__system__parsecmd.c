@@ -285,11 +285,11 @@ int nox_cmd_set_spell(int tokInd, int tokCnt, wchar2_t** tokens) {
 //----- (00443160) --------------------------------------------------------
 int nox_cmd_ban(int tokInd, int tokCnt, wchar2_t** tokens) {
 	wchar2_t* v4; // edi
-	char* v5;    // eax
-	char* v6;    // esi
+	nox_playerInfo* v5; // eax
+	nox_playerInfo* v6; // esi
 	wchar2_t* v7; // eax
 	wchar2_t* v8; // eax
-	int v9;      // [esp-Ch] [ebp-Ch]
+	const wchar2_t* v9; // [esp-Ch] [ebp-Ch]
 
 	if (tokCnt != 2) {
 		return 0;
@@ -298,23 +298,23 @@ int nox_cmd_ban(int tokInd, int tokCnt, wchar2_t** tokens) {
 	v5 = nox_xxx_playerByName_4170D0(tokens[tokInd]);
 	v6 = v5;
 	if (v5) {
-		if (v5[2064] == 31) {
+		if (v5->playerInd == 31) {
 			v8 = nox_strman_loadString_40F1D0("cantbanyourself", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c",
 											  3580);
 			sub_440A20(v8);
 			return 1;
 		}
 		if (nox_common_gameFlags_check_40A5C0(4096)) {
-			sub_4DCFB0(*((uint32_t*)v6 + 514));
+			sub_4DCFB0(v6->playerUnit);
 		} else {
-			nox_xxx_playerDisconnByPlrID_4DEB00((unsigned char)v6[2064]);
+			nox_xxx_playerDisconnByPlrID_4DEB00(v6->playerInd);
 		}
-		sub_416770(0, v4, v6 + 2112);
-		v9 = (int)(v6 + 4704);
+		sub_416770(0, v4, v6->serial);
+		v9 = v6->name_final;
 		v7 = nox_strman_loadString_40F1D0("banned", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3577);
 	} else {
 		sub_416770(0, v4, 0);
-		v9 = (int)v4;
+		v9 = v4;
 		v7 = nox_strman_loadString_40F1D0("banDisallow", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3585);
 	}
 	sub_440A20(v7, v9);
@@ -339,8 +339,8 @@ int nox_cmd_allow_ip(int tokInd, int tokCnt, wchar2_t** tokens) {
 
 //----- (004432B0) --------------------------------------------------------
 int nox_cmd_kick(int tokInd, int tokCnt, wchar2_t** tokens) {
-	char* v4;    // eax
-	char* v5;    // esi
+	nox_playerInfo* v4; // eax
+	nox_playerInfo* v5; // esi
 	wchar2_t* v6; // eax
 	wchar2_t* v7; // eax
 
@@ -352,17 +352,17 @@ int nox_cmd_kick(int tokInd, int tokCnt, wchar2_t** tokens) {
 	if (!v4) {
 		return 1;
 	}
-	if (v4[2064] == 31) {
+	if (v4->playerInd == 31) {
 		v7 = nox_strman_loadString_40F1D0("cantkickyourself", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3745);
 		sub_440A20(v7);
 		return 1;
 	}
 	if (nox_common_gameFlags_check_40A5C0(4096)) {
-		sub_4DCFB0(*((uint32_t*)v5 + 514));
+		sub_4DCFB0(v5->playerUnit);
 	} else {
-		nox_xxx_playerCallDisconnect_4DEAB0((unsigned char)v5[2064], 4);
+		nox_xxx_playerCallDisconnect_4DEAB0(v5->playerInd, 4);
 		v6 = nox_strman_loadString_40F1D0("kicked", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3739);
-		sub_440A20(v6, v5 + 4704);
+		sub_440A20(v6, v5->name_final);
 	}
 	return 1;
 }
@@ -411,22 +411,22 @@ int nox_cmd_set_spellpts(int tokInd, int tokCnt, wchar2_t** tokens) {
 //----- (004434B0) --------------------------------------------------------
 int nox_cmd_list_users(int tokInd, int tokCnt, wchar2_t** tokens) {
 	wchar2_t* v0;     // eax
-	char* i;         // esi
+	nox_playerInfo* i; // esi
 	wchar2_t* v2;     // eax
 	wchar2_t* v3;     // eax
 	wchar2_t v5[128]; // [esp+4h] [ebp-100h]
 
 	v0 = nox_strman_loadString_40F1D0("userslist", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3839);
 	nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v0);
-	for (i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0((int)i)) {
+	for (i = nox_common_playerInfoGetFirst_416EA0(); i; i = nox_common_playerInfoGetNext_416EE0(i)) {
 		v5[0] = 0;
-		nox_wcscat(v5, (const wchar2_t*)i + 2352);
-		if (nox_client_consoleIsServer_823684 && i[3680] & 4) {
+		nox_wcscat(v5, i->name_final);
+		if (nox_client_consoleIsServer_823684 && i->field_3680 & 4) {
 			nox_wcscat(v5, L", ");
 			v2 = nox_strman_loadString_40F1D0("SysMuted", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3851);
 			nox_wcscat(v5, v2);
 		}
-		if (i[3680] & 8) {
+		if (i->field_3680 & 8) {
 			nox_wcscat(v5, L", ");
 			v3 = nox_strman_loadString_40F1D0("ClientMuted", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 3857);
 			nox_wcscat(v5, v3);
@@ -444,11 +444,11 @@ int sub_57A0F0(wchar2_t* a1) {
 	if (!a1) {
 		return 0;
 	}
-	char* v1 = nox_xxx_playerByName_4170D0(a1);
+	nox_playerInfo* v1 = nox_xxx_playerByName_4170D0(a1);
 	if (!v1) {
 		return 0;
 	}
-	nox_xxx_playerUnsetStatus_417530((int)v1, 8);
+	nox_xxx_playerUnsetStatus_417530(v1, 8);
 	return 1;
 }
 
@@ -457,11 +457,11 @@ int sub_57A130(wchar2_t* a1) {
 	if (!a1) {
 		return 0;
 	}
-	char* v1 = nox_xxx_playerByName_4170D0(a1);
+	nox_playerInfo* v1 = nox_xxx_playerByName_4170D0(a1);
 	if (!v1) {
 		return 0;
 	}
-	nox_xxx_playerUnsetStatus_417530((int)v1, 4);
+	nox_xxx_playerUnsetStatus_417530(v1, 4);
 	return 1;
 }
 
@@ -509,11 +509,11 @@ int sub_57A080(wchar2_t* a1) {
 	if (!a1) {
 		return 0;
 	}
-	char* v1 = nox_xxx_playerByName_4170D0(a1);
-	if (!v1 || v1[2064] == 31) {
+	nox_playerInfo* v1 = nox_xxx_playerByName_4170D0(a1);
+	if (!v1 || v1->playerInd == 31) {
 		return 0;
 	}
-	nox_xxx_netNeedTimestampStatus_4174F0((int)v1, 8);
+	nox_xxx_netNeedTimestampStatus_4174F0(v1, 8);
 	return 1;
 }
 
@@ -522,11 +522,11 @@ int sub_57A0C0(wchar2_t* a1) {
 	if (!a1) {
 		return 0;
 	}
-	char* v1 = nox_xxx_playerByName_4170D0(a1);
+	nox_playerInfo* v1 = nox_xxx_playerByName_4170D0(a1);
 	if (!v1) {
 		return 0;
 	}
-	nox_xxx_netNeedTimestampStatus_4174F0((int)v1, 4);
+	nox_xxx_netNeedTimestampStatus_4174F0(v1, 4);
 	return 1;
 }
 
@@ -568,24 +568,24 @@ int nox_cmd_mute(int tokInd, int tokCnt, wchar2_t** tokens) {
 
 //----- (00443E90) --------------------------------------------------------
 int nox_xxx_serverHandleClientConsole_443E90(nox_playerInfo* pl, char a2, wchar2_t* a3) {
-	int v3;        // ecx
+	nox_playerInfo* v3; // ecx
 	int result;    // eax
 	int v5;        // edi
 	wchar2_t* v6;   // ebx
 	int v7;        // eax
-	int v8;        // eax
+	nox_object_t* v8; // eax
 	wchar2_t* v9;   // eax
 	wchar2_t* v10;  // esi
 	int v11;       // edi
 	wchar2_t* v12;  // eax
 	wchar2_t* v13;  // eax
-	char* v14;     // esi
-	int v15;       // eax
+	nox_playerInfo* v14; // esi
+	nox_object_t* v15; // eax
 	wchar2_t* v16;  // eax
-	char* v17;     // esi
+	nox_playerInfo* v17; // esi
 	wchar2_t* v18;  // eax
-	int v19;       // [esp-8h] [ebp-94h]
-	int v20;       // [esp-8h] [ebp-94h]
+	wchar2_t* v19; // [esp-8h] [ebp-94h]
+	wchar2_t* v20; // [esp-8h] [ebp-94h]
 	wchar2_t* v21;  // [esp-4h] [ebp-90h]
 	char v22[128]; // [esp+Ch] [ebp-80h]
 
@@ -607,7 +607,7 @@ int nox_xxx_serverHandleClientConsole_443E90(nox_playerInfo* pl, char a2, wchar2
 	switch (a2) {
 	case 0:
 		if (nox_common_gameFlags_check_40A5C0(8) || nox_common_gameFlags_check_40A5C0(4096) ||
-			*(uint8_t*)((int)pl + 3680) & 1) {
+			pl->field_3680 & 1) {
 			nox_console_playerWhoSent_823692 = 0;
 			return 1;
 		}
@@ -629,7 +629,7 @@ int nox_xxx_serverHandleClientConsole_443E90(nox_playerInfo* pl, char a2, wchar2
 		}
 		v8 = pl->playerUnit;
 		if (v8) {
-			nox_xxx_netChangeTeamMb_419570(v8 + 48, pl->netCode);
+			nox_xxx_netChangeTeamMb_419570((nox_object_team_t*)&v8->field_12, pl->netCode);
 		}
 		v21 = v6;
 		v9 = nox_strman_loadString_40F1D0("observermode", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 4308);
@@ -667,7 +667,7 @@ int nox_xxx_serverHandleClientConsole_443E90(nox_playerInfo* pl, char a2, wchar2
 			nox_console_playerWhoSent_823692 = 0;
 			return 1;
 		}
-		v19 = (char*)nox_console_playerWhoSent_823692 + 4704;
+		v19 = nox_console_playerWhoSent_823692->name_final;
 		v13 = nox_strman_loadString_40F1D0("RemoteSysop", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 4345);
 		nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v13, v19, a3);
 		nox_server_parseCmdText_443C80(a3, 0);
@@ -678,7 +678,7 @@ int nox_xxx_serverHandleClientConsole_443E90(nox_playerInfo* pl, char a2, wchar2
 		nox_console_playerWhoSent_823692 = 0;
 		return 1;
 	case 4:
-		if (!(*(uint8_t*)(v3 + 3680) & 1) && !(nox_common_getEngineFlag(NOX_ENGINE_FLAG_REPLAY_READ))) {
+		if (!(v3->field_3680 & 1) && !(nox_common_getEngineFlag(NOX_ENGINE_FLAG_REPLAY_READ))) {
 			if (nox_common_gameFlags_check_40A5C0(1)) {
 				v16 = nox_strman_loadString_40F1D0("notinobserver", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c",
 												   4392);
@@ -690,7 +690,7 @@ int nox_xxx_serverHandleClientConsole_443E90(nox_playerInfo* pl, char a2, wchar2
 			return 1;
 		}
 		if (!*a3) {
-			nox_xxx_playerCameraUnlock_4E6040(*(uint32_t*)(v3 + 2056));
+			nox_xxx_playerCameraUnlock_4E6040(v3->playerUnit);
 			nox_console_playerWhoSent_823692 = 0;
 			return 1;
 		}
@@ -700,11 +700,11 @@ int nox_xxx_serverHandleClientConsole_443E90(nox_playerInfo* pl, char a2, wchar2
 			return 1;
 		}
 		do {
-			if (!_nox_wcsicmp(a3, (const wchar2_t*)v17 + 2352)) {
+			if (!_nox_wcsicmp(a3, v17->name_final)) {
 				nox_xxx_playerCameraFollow_4E6060(nox_console_playerWhoSent_823692->playerUnit,
-												  *((uint32_t*)v17 + 514));
+												  v17->playerUnit);
 			}
-			v17 = nox_common_playerInfoGetNext_416EE0((int)v17);
+			v17 = nox_common_playerInfoGetNext_416EE0(v17);
 		} while (v17);
 		nox_console_playerWhoSent_823692 = 0;
 		return 1;
@@ -716,16 +716,16 @@ int nox_xxx_serverHandleClientConsole_443E90(nox_playerInfo* pl, char a2, wchar2
 			return 1;
 		}
 		do {
-			v15 = *((uint32_t*)v14 + 514);
+			v15 = v14->playerUnit;
 			if (v15) {
 				nox_xxx_aud_501960(902, v15, 0, 0);
 			}
-			v14 = nox_common_playerInfoGetNext_416EE0((int)v14);
+			v14 = nox_common_playerInfoGetNext_416EE0(v14);
 		} while (v14);
 		nox_console_playerWhoSent_823692 = 0;
 		return 1;
 	default:
-		v20 = v3 + 4704;
+		v20 = v3->name_final;
 		v18 = nox_strman_loadString_40F1D0("invalidattempt", 0, "C:\\NoxPost\\src\\Client\\System\\parsecmd.c", 4400);
 		nox_gui_console_Printf_450C00(NOX_CONSOLE_RED, v18, v20, a3);
 		nox_console_playerWhoSent_823692 = 0;

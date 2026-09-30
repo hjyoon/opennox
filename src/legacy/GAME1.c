@@ -558,33 +558,32 @@ int sub_40AA60(int a1) {
 
 //----- (0040AA70) --------------------------------------------------------
 int sub_40AA70(nox_playerInfo* pl) {
-	int a1 = pl;
 	char* v1;   // edi
 	int result; // eax
 	int v3;     // eax
 	int v4;     // esi
 	int v5;     // ebx
-	char* v6;   // eax
+	nox_playerInfo* v6; // eax
 
 	v1 = sub_416640();
-	if (!a1) {
+	if (!pl) {
 		goto LABEL_31;
 	}
 	if (nox_common_gameFlags_check_40A5C0(4096)) {
 		return sub_40A770() < 6;
 	}
-	v3 = *(uint32_t*)(a1 + 3680);
+	v3 = pl->field_3680;
 	if (v3 & 0x100 && !*getMemU32Ptr(0x5D4594, 3508)) {
 		return 0;
 	}
 	if (!sub_40A740() && !nox_common_gameFlags_check_40A5C0(0x8000)) {
 		goto LABEL_31;
 	}
-	result = *(uint32_t*)(a1 + 2068);
+	result = pl->field_2068;
 	if (!result) {
 		return result;
 	}
-	if (nox_server_teamByXxx_418AE0(*(uint32_t*)(a1 + 2068))) {
+	if (nox_server_teamByXxx_418AE0(pl->field_2068)) {
 		goto LABEL_31;
 	}
 	v4 = (unsigned char)v1[52];
@@ -613,8 +612,8 @@ LABEL_31:
 	if (!v6) {
 		return 1;
 	}
-	while (*((int*)v6 + 535) <= 0) {
-		v6 = nox_common_playerInfoGetNext_416EE0((int)v6);
+	while (v6->field_2140 <= 0) {
+		v6 = nox_common_playerInfoGetNext_416EE0(v6);
 		if (!v6) {
 			return 1;
 		}
@@ -2143,18 +2142,16 @@ char* nox_xxx_playerForceSendLessons_416E50(int a1) {
 }
 
 //----- (004170D0) --------------------------------------------------------
-char* nox_xxx_playerByName_4170D0(wchar2_t* a1) {
-	char* v1; // esi
-
+nox_playerInfo* nox_xxx_playerByName_4170D0(wchar2_t* a1) {
 	if (!a1) {
 		return 0;
 	}
-	v1 = nox_common_playerInfoGetFirst_416EA0();
+	nox_playerInfo* v1 = nox_common_playerInfoGetFirst_416EA0();
 	if (!v1) {
 		return 0;
 	}
-	while (_nox_wcsicmp((const wchar2_t*)v1 + 2352, a1)) {
-		v1 = nox_common_playerInfoGetNext_416EE0((int)v1);
+	while (_nox_wcsicmp(v1->name_final, a1)) {
+		v1 = nox_common_playerInfoGetNext_416EE0(v1);
 		if (!v1) {
 			return 0;
 		}

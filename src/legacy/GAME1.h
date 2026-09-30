@@ -237,7 +237,7 @@ int nox_common_playerInfoCount_416F40();
 nox_playerInfo* nox_common_playerInfoGetByID_417040(int a1);
 nox_playerInfo* nox_common_playerInfoFromNum_417090(int i);
 nox_playerInfo* nox_common_playerInfoFromNumRaw(int i);
-char* nox_xxx_playerByName_4170D0(wchar2_t* a1);
+nox_playerInfo* nox_xxx_playerByName_4170D0(wchar2_t* a1);
 void nox_xxx_netMarkMinimapObject_417190(int a1, nox_object_t* a2, unsigned int a3);
 int sub_417270(int a1);
 void nox_xxx_netUnmarkMinimapObj_417300(int a1, nox_object_t* a2, unsigned int a3);

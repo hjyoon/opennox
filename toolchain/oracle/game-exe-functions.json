@@ -3990,6 +3990,20 @@
       "purpose": "the exact four NOP bytes after shop object naming before the next routine at 004E3A80"
     },
     {
+      "name": "nox_xxx_player_4E3CE0",
+      "address": "0x004E3CE0",
+      "size": 105,
+      "sha256": "88d2bebf2fd7552d85f929158e49e3c2837c64553ca555b10b20cd4c1a68afcd",
+      "purpose": "count exactly Quest state one across every player unit, caching its update before live host/rendering gates, excluding player index 31 only for a non-rendering host, and preserving the live player-link reload and native successor order"
+    },
+    {
+      "name": "nox_xxx_player_4E3CE0_padding",
+      "address": "0x004E3D49",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating Quest participant counting and the difficulty update at 004E3D50"
+    },
+    {
       "name": "sub_4E4100",
       "address": "0x004E4100",
       "size": 112,

@@ -871,27 +871,9 @@ int nox_game_getQuestStage_4E3CC0() { return *getMemU32Ptr(0x587000, 202028); }
 void nox_game_setQuestStage_4E3CD0(int a1) { *getMemU32Ptr(0x587000, 202028) = a1; }
 
 //----- (004E3CE0) --------------------------------------------------------
+extern int nox_xxx_questPlayerCount_native_4E3CE0(void);
 int nox_xxx_player_4E3CE0() {
-	int v0; // ebp
-	int v1; // esi
-	int v2; // edi
-
-	v0 = 0;
-	v1 = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	if (!v1) {
-		return 0;
-	}
-	do {
-		v2 = *(uint32_t*)(v1 + 748);
-		if ((!nox_common_gameFlags_check_40A5C0(1) ||
-			 !nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) ||
-			 *(uint8_t*)(*(uint32_t*)(v2 + 276) + 2064) != 31) &&
-			*(uint32_t*)(*(uint32_t*)(v2 + 276) + 4792) == 1) {
-			++v0;
-		}
-		v1 = nox_xxx_getNextPlayerUnit_4DA7F0(v1);
-	} while (v1);
-	return v0;
+	return nox_xxx_questPlayerCount_native_4E3CE0();
 }
 
 //----- (004E3D50) --------------------------------------------------------

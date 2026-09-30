@@ -4846,6 +4846,14 @@ macOS/ARM64 Go 1.26.5 일반·HD 제품의 최종 독립 headless seat/mock audi
 
 macOS/ARM64 Go 1.26.5 일반·HD 제품의 독립 headless seat/mock audio 실행이 allocator 시나리오와 실제 spell 시나리오를 통과했다. 이 범위에서는 보고된 ‘전환 시 모든 소환수 소실’은 재현되지 않았다. `004DF360`에서 별도로 재현·수정한 생성 시 pointer-truncation crash와 구분하며, 다른 맵·소환수 종류·온라인 모드 또는 수동 저장 불러오기까지 해결됐다고 주장하지 않는다. 전체 패키지 일반·실제 `GOEXPERIMENT=cgocheck2` 시험과 코드 2,776개·데이터 517개 및 원본 1,556개 파일 트리 무결성도 재검증했다. 이전 단계의 PNG는 `NOX_E2E_OVERRIDE=true` 관찰 캡처이고 golden-image 동등성 주장은 아니다.
 
+### Quest 참가자 집계 `004E3CE0`
+
+본체 `004E3CE0..004E3D48` 105바이트/SHA-256 `88d2bebf2fd7552d85f929158e49e3c2837c64553ca555b10b20cd4c1a68afcd`와 뒤 7-NOP를 본체 변경 전에 원본에서 봉인했다. Host Quest 시작의 `004E3D50`은 이 집계를 호출하며, 기존 C는 player-unit 주소를 `int`에 담고 PE32 `UpdateData +748`을 읽어 macOS/ARM64에서 충돌했다. 실제 4GiB 초과 C 할당 fixture도 수정 전 같은 `004E3CE0` 진입점에서 SIGSEGV를 재현했다.
+
+활성 C 집계 진입점과 기존 native Quest 점수·warp 소비자가 하나의 typed Go 집계를 사용한다. 원본처럼 update는 host/rendering flag 검사 전에 캐시하고 player link는 상태 검사 직전에 다시 읽는다. 참가 상태는 **정확히 1**이어야 하며, Host와 NoRendering이 모두 켜졌을 때만 index byte 31을 제외한다. `004E4100` 입장 제한의 nonzero 상태·6명 한계와 혼동하지 않고 모든 player-unit을 끝까지 순회한다. 다른 원본 함수 본체나 `004E3D50`의 난이도 산식은 변경하지 않았다.
+
+빈 목록, 0/1/2/최대 unsigned 상태, 제한 없는 집계, 네 host/rendering 조합, callback 사이 cached-update/live-player 순서, fault prefix 및 read-only native 필드 보존을 회귀로 고정했다. 실제 C 진입점 일반·`GOEXPERIMENT=cgocheck2`·race/강제 checkptr 시험은 각 3회, 전체 일반·엄격한 CGo 패키지 시험과 Darwin/ARM64 일반·HD 빌드/`-h` 실행도 통과했다. 두 독립 headless Host Quest 실행은 집계를 통과하고 다음 체력 보정 `004E3DD0`의 잘린 world-object successor 주소에서 충돌했다. **Quest 시작 성공으로 간주하지 않는다.** 코드 2,778개·데이터 517개와 원본 1,556개 파일 트리 무결성도 직접 검증했다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

@@ -4,7 +4,6 @@ import (
 	"encoding/binary"
 	"math"
 
-	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
 )
 
@@ -33,22 +32,6 @@ func QuestScore4D66E0(generators, secrets, monsters, stage uint32, exponent floa
 	weighted := float64(generators)*10.0 + float64(secrets)*35.0 + float64(monsters)*0.1
 	score := float32(float64(stageScale) * weighted)
 	return uint32(questStatsFloatToInt4D66E0(score))
-}
-
-func (s *Server) questPlayerCount4E3CE0() int {
-	count := 0
-	for unit := s.Players.FirstUnit(); unit != nil; unit = s.questNextPlayerUnit4DA7F0(unit) {
-		player := (*PlayerUpdateData)(unit.UpdateData).Player
-		if noxflags.HasGame(noxflags.GameHost) &&
-			noxflags.HasEngine(noxflags.EngineNoRendering) &&
-			player.PlayerInd == HostPlayerIndex {
-			continue
-		}
-		if player.Field4792 == 1 {
-			count++
-		}
-	}
-	return count
 }
 
 // QuestPlayerScore4D6540 computes the Quest scoreboard value without routing

@@ -242,7 +242,7 @@ extern uint32_t dword_5d4594_3835356;
 extern uint32_t nox_client_renderBubbles_80844;
 extern void* nox_alloc_chat_1197364;
 extern nox_window* dword_5d4594_1046520;
-extern uint32_t dword_5d4594_832516;
+extern uintptr_t dword_5d4594_832516;
 extern uint32_t nox_xxx_aNox_cfg_0_587000_132136;
 extern uintptr_t dword_5d4594_832496;
 extern uintptr_t dword_5d4594_832512;

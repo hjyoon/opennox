@@ -119,8 +119,131 @@ func TestOpenALShortStreamDrain(t *testing.T) {
 	if got := s.Status(); got != 2 {
 		t.Fatalf("finished stream status = %d, want 2", got)
 	}
+	stats := h.PlaybackStats()
+	if !stats.Native || stats.StreamSources != 1 || stats.StreamBuffersQueued == 0 || stats.StreamBuffersProcessed != stats.StreamBuffersQueued {
+		t.Fatalf("short stream did not drain on the hardware: %+v", stats)
+	}
 	if got := openal.Err(); got != nil {
 		t.Fatalf("playback error: %v", got)
+	}
+}
+
+func loadSilentPlaybackSample(t *testing.T, sample Sample, stereo bool, blocks int) {
+	t.Helper()
+	sample.Init()
+	format := int32(5)
+	if stereo {
+		format = 7
+	}
+	sample.SetType(format, 0)
+	sample.SetADPCMBlockSize(256)
+	sample.SetPlaybackRate(22050)
+	sample.SetVolume(0)
+	ready := sample.BufferReady()
+	if ready < 0 {
+		t.Fatal("sample has no ready input buffer")
+	}
+	// Zero ADPCM predictors, indices and nibbles decode to silent PCM.
+	sample.LoadBuffer(uint32(ready), make([]byte, 256*blocks))
+}
+
+func TestOpenALSamplePlaybackStats(t *testing.T) {
+	for _, stereo := range []bool{false, true} {
+		name := "mono"
+		if stereo {
+			name = "stereo"
+		}
+		t.Run(name, func(t *testing.T) {
+			h := openPlaybackTestDriver(t)
+			sample := h.AllocateSample()
+			if sample == 0 {
+				t.Fatal("cannot allocate sample")
+			}
+			loadSilentPlaybackSample(t, sample, stereo, 8)
+			h.get().doWork()
+			if got := sample.get().source.State(); got != openal.Playing {
+				t.Fatalf("sample source = %v, want Playing", got)
+			}
+			deadline := time.Now().Add(2 * time.Second)
+			for sample.Status() == 4 && time.Now().Before(deadline) {
+				time.Sleep(10 * time.Millisecond)
+				h.get().doWork()
+			}
+			stats := h.PlaybackStats()
+			if sample.Status() != 2 || !stats.Native || stats.SampleSources != 1 || stats.SampleBuffersQueued != 8 || stats.SampleBuffersProcessed != 8 {
+				t.Fatalf("sample did not finish eight native buffers: %+v", stats)
+			}
+			sample.Release()
+			if got := h.PlaybackStats(); got.SampleSources != 0 || got.SampleBuffersProcessed != 8 {
+				t.Fatalf("sample release lost or duplicated playback history: %+v", got)
+			}
+			if got := openal.Err(); got != nil {
+				t.Fatalf("sample playback error: %v", got)
+			}
+		})
+	}
+}
+
+func TestOpenALPlaybackStatsExcludeDiscardedBuffers(t *testing.T) {
+	h := openPlaybackTestDriver(t)
+	sample := h.AllocateSample()
+	if sample == 0 {
+		t.Fatal("cannot allocate sample")
+	}
+	loadSilentPlaybackSample(t, sample, false, 32)
+	h.get().doWork()
+	sample.get().source.Pause()
+	before := h.PlaybackStats()
+	sample.Init()
+	if got := h.PlaybackStats(); got.SampleBuffersProcessed != before.SampleBuffersProcessed {
+		t.Fatalf("discarded effect buffers counted as playback: before=%+v after=%+v", before, got)
+	}
+	s := h.OpenStream(silentPlaybackWAV(t, time.Second))
+	if s == 0 {
+		t.Fatal("cannot open stream")
+	}
+	s.SetVolume(0)
+	s.Start()
+	h.get().doWork()
+	s.Pause(true)
+	before = h.PlaybackStats()
+	s.SetPosition(0)
+	if got := h.PlaybackStats(); got.StreamBuffersProcessed != before.StreamBuffersProcessed {
+		t.Fatalf("discarded stream buffers counted as playback: before=%+v after=%+v", before, got)
+	}
+	if got := openal.Err(); got != nil {
+		t.Fatalf("discard error: %v", got)
+	}
+}
+
+func TestOpenALPlaybackStatsExcludeExternalMovieBuffers(t *testing.T) {
+	h := openPlaybackTestDriver(t)
+	sample := h.AllocateSample()
+	if sample == 0 {
+		t.Fatal("cannot allocate sample")
+	}
+	source := openal.Source(*sample.GetSource())
+	buffers := openal.NewBuffers(1)
+	defer buffers.Delete()
+	buffers[0].SetDataInt16(openal.FormatMono16, make([]int16, 2205), 22050)
+	source.QueueBuffer(buffers[0])
+	source.Play()
+	deadline := time.Now().Add(2 * time.Second)
+	for source.State() == openal.Playing && time.Now().Before(deadline) {
+		time.Sleep(10 * time.Millisecond)
+	}
+	if source.BuffersProcessed() != 1 {
+		t.Fatal("external movie buffer did not finish")
+	}
+	if got := h.PlaybackStats(); got.SampleBuffersProcessed != 0 || got.SampleBuffersQueued != 0 {
+		t.Fatalf("external movie source counted as effect playback: %+v", got)
+	}
+	sample.Release()
+	if got := h.PlaybackStats(); got.SampleBuffersProcessed != 0 {
+		t.Fatalf("external source release counted as effect playback: %+v", got)
+	}
+	if got := openal.Err(); got != nil {
+		t.Fatalf("external source error: %v", got)
 	}
 }
 
@@ -159,6 +282,9 @@ func TestOpenALDriverCloseReleasesHandles(t *testing.T) {
 	}
 	if h.get() != nil || s.get() != nil || sample.get() != nil {
 		t.Fatal("closed driver retains native playback handles")
+	}
+	if got := h.PlaybackStats(); got != (PlaybackStats{}) {
+		t.Fatalf("closed driver retained playback stats: %+v", got)
 	}
 	if err := h.Close(); err != nil {
 		t.Fatalf("repeated driver close: %v", err)

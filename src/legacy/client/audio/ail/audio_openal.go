@@ -51,7 +51,15 @@ func init() {
 func useE2EAudioHandles() bool {
 	// This mode retains deterministic no-output audio, but assigns valid nonzero
 	// native handles so headless GUI scenarios exercise all handle bridges.
-	return env.IsE2E() && os.Getenv("NOX_E2E_AUDIO_HANDLES") == "true"
+	return useE2EMockAudio() && os.Getenv("NOX_E2E_AUDIO_HANDLES") == "true"
+}
+
+func useE2EMockAudio() bool {
+	return e2eMockAudio(env.IsE2E(), os.Getenv("NOX_E2E_AUDIO"))
+}
+
+func e2eMockAudio(e2e bool, backend string) bool {
+	return e2e && backend != "openal"
 }
 
 func (dig Driver) get() *audioDriver {
@@ -106,6 +114,7 @@ type audioDriver struct {
 	sampleHead *audioSample
 	streamHead *audioStream
 	t          *time.Ticker
+	stats      PlaybackStats
 }
 
 type audioSampleBuf struct {
@@ -187,6 +196,7 @@ type audioStream struct {
 
 	playing bool
 	eof     bool
+	dialog  bool
 
 	dec audioDecoder
 }
@@ -211,7 +221,13 @@ func audioCheckError() bool {
 	return true
 }
 
-func (s *audioSample) unqueueBuffers() {
+func (s *audioSample) processedBuffers() int {
+	// Movie playback uses GetSource to queue its own buffers. Only report the
+	// effect buffers that this sample queued and still owns.
+	return max(0, min(int(s.source.BuffersProcessed()), len(s.hwbuf)-s.hwready))
+}
+
+func (s *audioSample) unqueueBuffers(countPlayback bool) {
 	processed := int(s.source.Geti(openal.AlBuffersProcessed))
 	if !audioCheckError() {
 		return
@@ -221,11 +237,14 @@ func (s *audioSample) unqueueBuffers() {
 		if !audioCheckError() {
 			return
 		}
+		if countPlayback {
+			s.d.stats.SampleBuffersProcessed += uint64(processed)
+		}
 	}
 	s.hwready += processed
 }
 
-func (s *audioStream) unqueueBuffers() {
+func (s *audioStream) unqueueBuffers(countPlayback bool) {
 	processed := int(s.source.Geti(openal.AlBuffersProcessed))
 	if !audioCheckError() {
 		return
@@ -234,13 +253,19 @@ func (s *audioStream) unqueueBuffers() {
 		s.source.UnqueueBuffers(s.hwbuf[s.hwready : s.hwready+processed])
 		if !audioCheckError() {
 			return
+		}
+		if countPlayback {
+			s.d.stats.StreamBuffersProcessed += uint64(processed)
+			if s.dialog {
+				s.d.stats.DialogBuffersProcessed += uint64(processed)
+			}
 		}
 	}
 	s.hwready += processed
 }
 
 func (dig Driver) AllocateSample() Sample {
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		if useE2EAudioHandles() {
 			handles.AssertValid(uintptr(dig))
 		}
@@ -303,6 +328,7 @@ func (s Sample) Release() {
 		}
 	}
 	v.Stop()
+	v.d.stats.SampleBuffersProcessed += uint64(v.processedBuffers())
 	v.source.Stop()
 	v.source.Delete()
 	if len(v.hwbuf) > 0 {
@@ -328,7 +354,7 @@ func (dig Driver) OpenStream(name string) Stream {
 	if audioDebug {
 		audioLog.Println("AIL_open_stream")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		if useE2EAudioHandles() {
 			handles.AssertValid(uintptr(dig))
 			if strings.HasPrefix(name, "dialog/") {
@@ -370,6 +396,14 @@ func (dig Driver) OpenStream(name string) Stream {
 	d.mu.Lock()
 	s.next = d.streamHead
 	d.streamHead = s
+	d.stats.StreamsOpened++
+	lowerName := strings.ToLower(filepath.ToSlash(name))
+	if strings.HasPrefix(lowerName, "music/") {
+		d.stats.MusicStreamsOpened++
+	} else if strings.HasPrefix(lowerName, "dialog/") && filepath.Base(lowerName) != "empty.wav" {
+		s.dialog = true
+		d.stats.DialogStreamsOpened++
+	}
 	d.mu.Unlock()
 
 	audioStreams.Lock()
@@ -382,7 +416,7 @@ func (h Stream) Close() error {
 	if audioDebug {
 		audioLog.Println("AIL_close_stream")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		handles.AssertValid(uintptr(h))
 		return nil
 	}
@@ -402,6 +436,11 @@ func (h Stream) Close() error {
 		}
 	}
 	s.playing = false
+	processed := uint64(s.source.BuffersProcessed())
+	s.d.stats.StreamBuffersProcessed += processed
+	if s.dialog {
+		s.d.stats.DialogBuffersProcessed += processed
+	}
 	s.source.Stop()
 	s.source.Delete()
 	s.hwbuf.Delete()
@@ -413,7 +452,7 @@ func RegisterTimer(f func(u uint32)) Timer {
 	if audioDebug {
 		audioLog.Println("AIL_register_timer")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		h := handles.New()
 		return Timer(h)
 	}
@@ -440,7 +479,7 @@ func (h Timer) Release() {
 }
 
 func (h Sample) GetSource() *uint32 {
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return nil
 	}
 	s := h.get()
@@ -454,7 +493,7 @@ func (h Sample) End() {
 	if audioDebug {
 		audioLog.Println("AIL_end_sample")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -474,7 +513,7 @@ func (h Sample) Init() {
 	if audioDebug {
 		audioLog.Println("AIL_init_sample")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -495,8 +534,9 @@ func (h Sample) Init() {
 	h.SetPan(63)
 
 	s.Stop()
+	s.unqueueBuffers(true)
 	s.source.Stop()
-	s.unqueueBuffers()
+	s.unqueueBuffers(false)
 }
 
 func LastError() string {
@@ -510,7 +550,7 @@ func (h Sample) LoadBuffer(num uint32, buf []byte) {
 	if audioDebug {
 		audioLog.Printf("AIL_load_sample_buffer: [%d]", len(buf))
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -529,7 +569,7 @@ func (h Stream) Pause(pause bool) {
 	if audioDebug {
 		audioLog.Println("AIL_pause_stream")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -550,7 +590,7 @@ func (h Sample) RegisterEOBCallback(f func()) {
 	if audioDebug {
 		audioLog.Println("AIL_register_EOB_callback")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -564,7 +604,7 @@ func (h Sample) RegisterEOSCallback(f func()) {
 	if audioDebug {
 		audioLog.Println("AIL_register_EOS_callback")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -578,7 +618,7 @@ func (h Sample) BufferReady() int {
 	if audioDebug {
 		audioLog.Println("AIL_sample_buffer_ready")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return -1
 	}
 	s := h.get()
@@ -605,7 +645,7 @@ func (h Sample) UserData() any {
 	if audioDebug {
 		audioLog.Println("AIL_sample_user_data")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return nil
 	}
 	s := h.get()
@@ -640,7 +680,7 @@ func (h Sample) SetADPCMBlockSize(block uint32) {
 	if audioDebug {
 		audioLog.Println("AIL_set_sample_adpcm_block_size")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -654,7 +694,7 @@ func (h Sample) SetPan(pan int) {
 	if audioDebug {
 		audioLog.Println("AIL_set_sample_pan")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -670,7 +710,7 @@ func (h Sample) SetPlaybackRate(rate int) {
 	if audioDebug {
 		audioLog.Println("AIL_set_sample_playback_rate")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -684,7 +724,7 @@ func (h Sample) SetType(format int32, flags uint32) {
 	if audioDebug {
 		audioLog.Println("AIL_set_sample_type")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -702,7 +742,7 @@ func (h Sample) SetUserData(value any) {
 	if audioDebug {
 		audioLog.Println("AIL_set_sample_user_data")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -716,7 +756,7 @@ func (h Sample) SetVolume(volume int) {
 	if audioDebug {
 		audioLog.Println("AIL_set_sample_volume")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -730,7 +770,7 @@ func (h Stream) SetPosition(offset int) {
 	if audioDebug {
 		audioLog.Println("AIL_set_stream_position")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -739,8 +779,9 @@ func (h Stream) SetPosition(offset int) {
 	}
 	s.d.mu.Lock()
 	defer s.d.mu.Unlock()
+	s.unqueueBuffers(true)
 	s.source.Stop()
-	s.unqueueBuffers()
+	s.unqueueBuffers(false)
 	s.dec.Seek(offset)
 	s.eof = false
 }
@@ -749,7 +790,7 @@ func (h Stream) SetVolume(volume int) {
 	if audioDebug {
 		audioLog.Println("AIL_set_stream_volume", int(volume))
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -763,7 +804,7 @@ func (h Timer) SetFrequency(hertz uint) {
 	if audioDebug {
 		audioLog.Println("AIL_set_timer_frequency")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	t := h.get()
@@ -777,7 +818,7 @@ func (h Stream) Start() {
 	if audioDebug {
 		audioLog.Println("AIL_start_stream")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -793,7 +834,7 @@ func (h Timer) Start() {
 	if audioDebug {
 		audioLog.Println("AIL_start_timer")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	t := h.get()
@@ -817,7 +858,7 @@ func Shutdown() {
 	if audioDebug {
 		audioLog.Println("AIL_shutdown")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	audioTimers.Lock()
@@ -843,7 +884,7 @@ func (h Sample) Stop() {
 	if audioDebug {
 		audioLog.Println("AIL_stop_sample")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	s := h.get()
@@ -854,7 +895,7 @@ func (h Sample) Stop() {
 }
 
 func (h Sample) Status() int {
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return 2
 	}
 	s := h.get()
@@ -871,7 +912,7 @@ func (h Timer) Stop() {
 	if audioDebug {
 		audioLog.Println("AIL_stop_timer")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return
 	}
 	t := h.get()
@@ -887,7 +928,7 @@ func (h Stream) Position() int {
 	if audioDebug {
 		audioLog.Println("AIL_stream_position")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return -1
 	}
 	s := h.get()
@@ -900,7 +941,7 @@ func (h Stream) Position() int {
 }
 
 func (h Stream) Status() int {
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return 2
 	}
 	s := h.get()
@@ -919,7 +960,7 @@ func (dig Driver) Close() error {
 	if audioDebug {
 		audioLog.Println("AIL_waveOutClose")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		return nil
 	}
 	d := dig.get()
@@ -978,6 +1019,7 @@ func (s *audioSample) playADPCM(data []byte) {
 		s.hwready++
 		return
 	}
+	s.d.stats.SampleBuffersQueued++
 }
 
 func (s *audioSample) work() {
@@ -1000,7 +1042,7 @@ func (s *audioSample) work() {
 		return
 	}
 	defer s.bmu.Unlock()
-	s.unqueueBuffers()
+	s.unqueueBuffers(true)
 
 	for s.hwready != 0 {
 		s.playADPCM(buf.buf[buf.pos : buf.pos+int(s.blockSize)])
@@ -1032,7 +1074,7 @@ func (s *audioStream) work() {
 	sampleRate := s.dec.SampleRate()
 	minSamples := sampleRate * channels / 10
 
-	s.unqueueBuffers()
+	s.unqueueBuffers(true)
 
 	for s.hwready != 0 && !s.eof {
 		offset := 0
@@ -1069,6 +1111,10 @@ func (s *audioStream) work() {
 			s.hwready++
 			return
 		}
+		s.d.stats.StreamBuffersQueued++
+		if s.dialog {
+			s.d.stats.DialogBuffersQueued++
+		}
 	}
 	// Decoder EOF does not mean playback has finished: the final buffers still
 	// need to play, including clips shorter than a single decode batch.
@@ -1094,7 +1140,7 @@ func WaveOutOpen() Driver {
 	if audioDebug {
 		audioLog.Println("AIL_waveOutOpen")
 	}
-	if env.IsE2E() {
+	if useE2EMockAudio() {
 		if useE2EAudioHandles() {
 			return Driver(handles.New())
 		}

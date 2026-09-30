@@ -59,6 +59,22 @@ NOX_E2E_SEAT=sdl scripts/run-headless-gui-e2e.sh \
 
 Set `NOX_E2E_CLIENT_TARGET=client-hd` to test the HD client. Scripted clicks retain the existing 1024×768 reference-screen coordinates and adapt to canvas size, window scaling, letterboxing, and Retina displays; raw recorded events keep their original coordinates. SDL mode requires the platform's native graphics dependencies and access to the desktop window service. The default test driver disables audio; E2E audio-handle tests do not verify hardware sound playback.
 
+To verify real OpenAL playback of the original menu effects, chapter music, and speech, enable audio explicitly:
+
+```sh
+NOX_E2E_SEAT=sdl NOX_E2E_AUDIO=openal scripts/run-headless-gui-e2e.sh \
+  /path/to/nox scripts/e2e/solo-warrior-native-audio.yaml /tmp/opennox-audio-e2e
+```
+
+This mode requires access to the default playback device and the complete original game assets. It checks native source allocation and hardware-consumed buffers, excluding discarded buffers and the movie player's separately managed audio. It does not assess audible quality. Movies and playback use real time, so allow several minutes. The default `NOX_E2E_AUDIO=mock` remains deterministic; do not combine `openal` with mock `NOX_E2E_AUDIO_HANDLES=true`.
+
+The opt-in OpenAL integration tests use generated silent PCM/ADPCM on the actual default device and verify pause/resume, short-clip draining, playback accounting, and resource teardown:
+
+```sh
+cd src
+NOX_TEST_OPENAL=true ../scripts/go.sh test ./legacy/client/audio/ail -run '^TestOpenAL' -count=3
+```
+
 ### Linux
 - [Linux](./docs/build-linux.md)
   

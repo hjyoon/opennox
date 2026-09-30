@@ -33,6 +33,18 @@ headless | sdl) ;;
 	exit 2
 	;;
 esac
+audio_backend="${NOX_E2E_AUDIO:-mock}"
+case "$audio_backend" in
+mock | openal) ;;
+*)
+	echo "error: NOX_E2E_AUDIO must be mock or openal (got: $audio_backend)" >&2
+	exit 2
+	;;
+esac
+if [[ "$audio_backend" == openal && "${NOX_E2E_AUDIO_HANDLES:-}" == true ]]; then
+	echo "error: NOX_E2E_AUDIO=openal cannot be combined with mock NOX_E2E_AUDIO_HANDLES" >&2
+	exit 2
+fi
 if [[ "$($go_cmd env GOVERSION)" != "go1.26.5" ]]; then
 	echo "error: Go 1.26.5 is required" >&2
 	exit 1
@@ -55,6 +67,7 @@ client-hd)
 esac
 
 echo "E2E seat: $seat_backend"
+echo "E2E audio: $audio_backend"
 
 "$go_cmd" -C "$src_dir" run ./internal/noxbuild \
 	-go="$go_cmd" \
@@ -108,7 +121,7 @@ runtime_args=(
 	-data "$runtime_data_dir"
 	-window
 )
-if [[ "${NOX_E2E_AUDIO_HANDLES:-}" != "true" ]]; then
+if [[ "$audio_backend" == mock && "${NOX_E2E_AUDIO_HANDLES:-}" != "true" ]]; then
 	runtime_args+=(-noaudio)
 fi
 

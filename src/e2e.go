@@ -9272,6 +9272,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ClickNPCDialogDone(l.Name)
+		case "assert-openal-playback":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertOpenALPlayback(l.Full, l.Name)
 		case "interact":
 			if dt != 0 {
 				sc.Wait(dt, "")

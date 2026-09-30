@@ -1061,33 +1061,9 @@ void sub_4E40C0(float a1) {
 double sub_4E40F0() { return *getMemFloatPtr(0x587000, 202036); }
 
 //----- (004E4100) --------------------------------------------------------
+extern unsigned int nox_xxx_questCanJoin_native_4E4100(void);
 int sub_4E4100() {
-	unsigned int v0; // ebp
-	int v1;          // esi
-	int v2;          // edi
-	int result;      // eax
-
-	v0 = 0;
-	v1 = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	if (!v1) {
-		return 1;
-	}
-	do {
-		v2 = *(uint32_t*)(v1 + 748);
-		if (!nox_common_gameFlags_check_40A5C0(1) ||
-			!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING) ||
-			*(uint8_t*)(*(uint32_t*)(v2 + 276) + 2064) != 31) {
-			if (*(uint32_t*)(*(uint32_t*)(v2 + 276) + 4792)) {
-				++v0;
-			}
-		}
-		result = nox_xxx_getNextPlayerUnit_4DA7F0(v1);
-		v1 = result;
-	} while (result);
-	if (v0 < 6) {
-		return 1;
-	}
-	return result;
+	return (int)nox_xxx_questCanJoin_native_4E4100();
 }
 
 //----- (004E41B0) --------------------------------------------------------

@@ -8,6 +8,8 @@ macOS/ARM64의 실제 Host Quest 메뉴 입력으로 `so_lod.map`을 읽은 뒤 
 
 원본 본체 112바이트의 SHA-256은 `b323a472aab3c2dd15363ae93b651bf5b628a91723aea1211abe08015bd8c2a4`다. 원본은 전체 player-unit 목록을 끝까지 순회하고, Host game flag와 NoRendering engine flag가 모두 설정됐을 때만 index 31을 제외한다. Quest 상태는 정확히 1이 아니라 **모든 nonzero 값**을 세며, 빈 목록 또는 참가자가 6명 미만이면 1, 6명 이상이면 마지막 nil successor의 0을 반환한다. 포팅 전에 코드 범위를 독립 봉인했으며 누적 verifier 대상은 **코드 2,744개·데이터 513개**다. 실제 Quest 맵 진입·플레이 성공은 아직 이 기록의 검증 범위가 아니다.
 
+활성 C 진입점은 이제 native Go traversal에 위임한다. `Object.UpdateData`, `PlayerUpdateData.Player`, player index와 Quest 상태를 typed 필드로 읽고, flag callback 전에 update pointer를 캐시하는 순서와 끝까지 순회하는 계약을 보존했다. 4GiB 초과 CGo player/unit 주소, 다섯·여섯 명 경계, nonzero 상태, Host/NoRendering short-circuit와 native/PE32 레이아웃을 회귀 시험으로 고정했다. Go 1.26.5 전체 일반·실제 `GOEXPERIMENT=cgocheck2` 시험 및 해당 함수의 반복 race/checkptr 시험이 통과했다. 실제 headless Host Quest 입력은 이 충돌을 지나 `G_TemplD.map`과 stage 1 생성까지 진행했지만 다음 미포팅 `sub_51A1F0`에서 충돌했으므로, Quest 전체 실행 성공으로 간주하지 않는다.
+
 ## 무기 생성 콜백 `0054C710..0054C94F`
 
 `WeaponCreate`를 raw PE32 콜백에서 native Go dispatcher로 옮겼다. 원본의 modifier 정의/내구도 초기화와 Quest 배율뿐 아니라 `OblivionHeart`·`OblivionWierdling` 고정 인챈트, ammo 기본 수량, Quest staff charge 배율까지 한 경로로 복원했다. 엔트리에서 `InitData`를 먼저 캐시하는 반면 내구도 처리 중 `HealthData`는 매 접근마다 다시 읽고, class·subclass·`UseData`도 각 명령 지점의 live 값을 읽는 순서를 유지한다. ammo 두 조건이 동시에 맞으면 charged 분기가 우선하며 byte 1, 2, 0 순으로 저장하고, staff는 max charge byte 109를 current byte 108보다 먼저 갱신한다.

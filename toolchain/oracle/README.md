@@ -4726,6 +4726,12 @@ native 구현은 callback 집합을 변경 전에 완전히 검사한 뒤 원본
 
 active C 경계는 `int nox_xxx_monsterCallDieFn_50A3D0(nox_object_t*)`이며 raw `uint32_t*` 본체는 provenance-only다. CGo 왕복 테스트는 실제 4GiB 초과 Object 주소와 반환값이 손실 없이 같은 Go 객체로 돌아오는지 검증한다. Go 1.26.5 macOS/ARM64에서 server/legacy 표적·root 관련 패키지, race, 강제 `checkptr=2`, `GOEXPERIMENT=cgocheck2`와 전체 원본 오라클 검증을 통과했다. 실게임 E2E는 Urchin 투사체 피해 `75→63`, 근접 시 도주 거리 `20.000→42.587`, Magic Missile 사망과 Wizard 1장 호바스 라이트닝의 서로 다른 Urchin 5마리 적중 및 생성 12마리 전멸(`37→25`, 총 HP `296→200`)을 확인했다.
 
+### 몬스터 일반 근접 무기 판정 `004E1400` / `004E1470`
+
+공격 판정 `004E1400..004E146F` 112바이트/SHA-256 `0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73`, friendly-damage 예외 `004E1470..004E1491` 34바이트/`fa632520ae8b970b679dd6c5b8bd947f81f4b41d65295f6d3a26edbcb975b92e`, 뒤 14-NOP `004E1492..004E149F`/`e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc`를 추가 봉인했다. 판정 함수는 `WEAPON`의 subclass mask `0x047F00FE`를 검사하고, 예외 함수는 같은 class의 bit `0x4000`을 검사한다. Con02a의 Clyde가 Sword로 Necromancer를 공격하는 native 경로는 두 mask를 합친 `0x047F40FE` 밖의 일반 BLADE 분기로 한정한다. WAND, ranged, 예외 무기와 다른 피해 타입을 이 추가 분기로 넓히지 않는다.
+
+기존 봉인된 `DefaultDamage` prefix의 `004E0ED4`는 target의 `MONSTER` class만 검사한다. 별도 weapon은 `Field547=1`과 weapon type을 기록하며, 무기 없는 CLAW/CRUSH는 source type을 기록한다. NPC subclass bit `0x10`은 이 적중 기록 조건에 없다. 뒤 `004E0F5D`의 NPC 전용 late-defense 조건과 혼동하면 일반 몬스터의 무기 종류 기록이 누락된다. 본체 해시와 새 판정 세 범위를 직접 verifier로 검증하며 누적 대상은 **코드 2,743개·데이터 513개**다.
+
 ### dormant monster/NPC health `00529A3D` / `00529A49`
 
 `nox_xxx_XFerMonster_528DB0`의 봉인된 prefix 안에서 `00529A3D`는 HealthData offset 4, `00529A49`는 offset 0을 word 0으로 저장한다. 조건은 map read의 dormant byte가 nonzero이고 host인 경우이며, 의미는 `Max=0`, `Cur=0`이다. offset 2의 이전 체력은 변경하지 않는다. 64비트 tail이 `Cur`와 offset 2만 지우던 오류를 바로잡아 원래 최대 체력을 남기지 않게 했다.

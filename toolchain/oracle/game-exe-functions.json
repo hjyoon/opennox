@@ -3644,7 +3644,7 @@
       "address": "0x004E0B30",
       "size": 1762,
       "sha256": "241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991",
-      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate ordinary player melee admission including WEAPON|WAND Blade and no-weapon Claw attribution"
+      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate player and monster melee admission and the all-MONSTER distinct-weapon/no-weapon Claw hit attribution at 004E0ED4"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4E1212",
@@ -3659,6 +3659,27 @@
       "size": 25,
       "sha256": "c10ba4a472391a7eb4b3e987b44c79a63bfb3afe7fb80575ffccf43a732b8ee4",
       "purpose": "the original DefaultDamage suffix after the already sealed unit-damage-clear call through the next function boundary at 004E1230"
+    },
+    {
+      "name": "sub_4E1400",
+      "address": "0x004E1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73",
+      "purpose": "qualify an attack for friendly-hit and Shock checks using the original no-weapon unit classes, WAND use-data flags, WEAPON subclass mask 0x047F00FE, and MONSTER fallback"
+    },
+    {
+      "name": "sub_4E1470",
+      "address": "0x004E1470",
+      "size": 34,
+      "sha256": "fa632520ae8b970b679dd6c5b8bd947f81f4b41d65295f6d3a26edbcb975b92e",
+      "purpose": "identify the friendly-damage exception only for a non-null WEAPON with subclass bit 0x4000"
+    },
+    {
+      "name": "sub_4E1470_padding",
+      "address": "0x004E1492",
+      "size": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
+      "purpose": "the exact fourteen NOP alignment bytes separating the friendly-damage exception from BallDamage at 004E14A0"
     },
     {
       "name": "sub_4E14A0",

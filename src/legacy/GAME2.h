@@ -115,7 +115,7 @@ void sub_453F70(const void* a1);
 char* sub_453F90();
 int sub_453FA0(void* a1, int a2, int a3);
 int sub_454000(const void* a1, int a2);
-int sub_454040(uint32_t* a1);
+void sub_454040(uint32_t* mask);
 int sub_4540E0(const void* a1);
 int sub_454120(void);
 int sub_455770(void);

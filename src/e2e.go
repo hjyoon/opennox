@@ -9199,6 +9199,7 @@ type e2eStepYML struct {
 	Health   int           `yaml:"health,omitempty"`
 	Color    int           `yaml:"color,omitempty"`
 	Map      string        `yaml:"map,omitempty"`
+	GameMode string        `yaml:"game-mode,omitempty"`
 	Class    string        `yaml:"class,omitempty"`
 	Function string        `yaml:"function,omitempty"`
 	Full     bool          `yaml:"full,omitempty"`
@@ -9316,6 +9317,21 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.SwitchMap(l.Map, l.Name)
+		case "set-objective-game-mode":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.SetObjectiveGameMode(l.GameMode, l.Name)
+		case "assert-objective-game-mode":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertObjectiveGameMode(l.GameMode, l.Name)
+		case "reset-flagball":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ResetFlagball(l.Name)
 		case "wait-map":
 			if dt != 0 {
 				sc.Wait(dt, "")

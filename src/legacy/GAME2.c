@@ -2287,41 +2287,23 @@ int sub_454000(const void* a1, int a2) {
 }
 
 //----- (00454040) --------------------------------------------------------
-int sub_454040(uint32_t* a1) {
-	int v1;           // esi
-	int v2;           // edi
-	int result;       // eax
-	unsigned char v4; // [esp+Ch] [ebp-4h]
-
-	v1 = 1;
-	*a1 = -1;
-	v4 = 0;
-	v2 = 1;
-	a1[1] = -1;
-	a1[2] = -1;
-	a1[3] = -1;
-	a1[4] = -1;
-	do {
-		if (v1 == 0x80000000) {
-			v1 = 1;
-			++v4;
-		} else {
-			v1 *= 2;
+void sub_454040(uint32_t* mask) {
+	if (!mask) {
+		return;
+	}
+	// The settings packet has five dwords even on a native-width host. Keep
+	// its buffer pointer intact: the decompiled int temporary truncated C
+	// stack addresses when a class spell was disabled during map loading.
+	for (int word = 0; word < 5; ++word) {
+		mask[word] = UINT32_MAX;
+	}
+	for (int spell = 1; spell < NOX_SPELLS_MAX; ++spell) {
+		if (nox_xxx_spellIsValid_424B50(spell) &&
+			(nox_xxx_spellFlags_424A70(spell) & 0x7000000u) &&
+			!nox_xxx_spellIsEnabled_424B70(spell)) {
+			mask[spell / 32] &= ~(UINT32_C(1) << (spell % 32));
 		}
-		result = nox_xxx_spellIsValid_424B50(v2);
-		if (result) {
-			result = nox_xxx_spellFlags_424A70(v2);
-			if (result & 0x7000000) {
-				result = nox_xxx_spellIsEnabled_424B70(v2);
-				if (!result) {
-					result = (int)&a1[v4];
-					*(uint32_t*)result = ~v1 & a1[v4];
-				}
-			}
-		}
-		++v2;
-	} while (v2 < 137);
-	return result;
+	}
 }
 
 //----- (004540E0) --------------------------------------------------------

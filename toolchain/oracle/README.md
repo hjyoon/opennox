@@ -4806,6 +4806,16 @@ Go renderer 한 본체에서 content bounds와 clip save/setup/restore를 복원
 
 별도 line insertion 본체는 측정 폭에서 scrollbar 10픽셀도 제외한다. 실제 glyph의 wrap 높이가 141/131 폭에서 달라지는 회귀는 수정 전 높이 14/누적 15·30·45 대신 높이 21/누적 22·44·66이 필요함을 재현했다. scrollbar 유무와 one-line 유무의 네 경우 모두 수정 후 정확한 row 높이·누적 bottom·total height를 보존한다. GUI 패키지 전체 3회·race 3회·강제 `checkptr=2` 3회를 다시 통과했다.
 
+### 인벤토리 4×3 viewport와 실제 설명 scroll 검증
+
+인벤토리 원본 caller `00463430`도 같은 `0049F6F0`을 사용해 `260×150` tray를 자른다. 왼쪽 특수 버튼의 60픽셀을 제외하면 50픽셀 셀의 **4열×3행** 표시 영역이다. tray loop가 경계 아래의 다음 줄까지 그리더라도 원본 clip이 그 픽셀을 제거한다. `ed39bef3a`의 native-width rectangle 수정으로 이 계약도 복원되므로 보관 배열이나 loop를 3행으로 줄이지 않았다. native 배열은 4×21이며 마지막 행은 장착 슬롯이다.
+
+`solo-warrior-inventory-clipping.yaml`은 원본 GreatSword 1개와 Sword 16개를 서버의 기존 지급 경로로 추가하고 정상 inventory 패킷 동기화를 기다린다. 클라이언트의 실제 tray 보관 셀 21개가 6행에 남아 있는 것을 관찰하고, 추가 시 자동 scroll 150을 실제 위 버튼으로 `150→100→50→0`에 되돌린다. 아래/위 버튼으로 `0→50→0`을 왕복해 네 번째 보관 줄이 viewport에 들어오는 경우도 검사한다. live stock images와 networked cells로 caller의 save/setup/tray/restore 순서를 재현한 별도 C raster pass는 세 visible row 모두 픽셀이 있고 `260×150` 밖 누출은 0개이며 caller clip을 복원한다. 전체 inventory UI는 별도 실제 화면 캡처로 검토했다. client cell이나 scroll state를 강제로 바꾸지 않는다.
+
+실제 조회 버튼과 GreatSword 셀을 클릭하면 stock 한글 설명의 9개 row는 총 152픽셀이 되어 140픽셀 박스보다 길다. 원본 9156 callback을 실제 row로 그린 검사는 scroll 전 offset 0/내부 1,441픽셀, 아래 버튼 입력 후 offset 13/내부 1,401픽셀에서 모두 `(58,65)..(196,205)` 밖 누출 0개와 caller clip 복원을 확인했다. 하단에서 잘린 문장은 정상 scroll 뒤 이어서 표시된다.
+
+macOS/ARM64 Go 1.26.5 일반·HD 클라이언트의 독립 headless seat/mock audio 세션이 같은 전체 시나리오를 각각 종료 코드 0으로 통과했다. 전체 패키지 일반·실제 `GOEXPERIMENT=cgocheck2` 시험도 통과했고 코드 2,766개·데이터 517개와 원본 1,556개 파일 트리의 무결성을 재검증했다. 네 PNG는 `NOX_E2E_OVERRIDE=true`로 생성·시각 검토한 관찰 캡처이며 golden-image 동등성이나 물리 화면 검증을 주장하지 않는다.
+
 다른 위치의 정당한 보유본을 쓰려면 절대 경로나 저장소 루트 기준 경로를 넘긴다.
 
 ```sh

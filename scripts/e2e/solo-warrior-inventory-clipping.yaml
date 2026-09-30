@@ -1,0 +1,140 @@
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept warrior color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss warrior opening dialog
+  - action: wait
+    dt: 60
+    name: settle after warrior opening dialog
+  - action: grant-item
+    item: GreatSword
+    count: 1
+    name: grant stock item with original description
+  - action: grant-item
+    item: Sword
+    count: 16
+    name: fill at least four storage rows through normal inventory packets
+  - action: wait
+    dt: 60
+    name: wait for inventory synchronization
+  - action: inventory
+    name: open inventory with I input
+  - action: wait
+    dt: 15
+    name: settle inventory opening animation
+  - action: click-inventory-scroll
+    mode: 1
+    name: undo automatic inventory scroll after granting items first step
+  - action: wait
+    dt: 3
+  - action: click-inventory-scroll
+    mode: 1
+    name: undo automatic inventory scroll second step
+  - action: wait
+    dt: 3
+  - action: click-inventory-scroll
+    mode: 1
+    name: restore top row after automatic inventory scroll
+  - action: wait
+    dt: 3
+  - action: check-inventory-clipping
+    mode: 0
+    name: verify three visible rows without truncating stored items
+  - action: screen
+    name: inventory 4x3 clipped
+  - action: click-inventory-scroll
+    mode: 0
+    name: access fourth stored row with real scroll button input
+  - action: wait
+    dt: 15
+    name: settle inventory scroll
+  - action: check-inventory-clipping
+    mode: 1
+    name: verify scrolled rows still clipped to the three row viewport
+  - action: screen
+    name: inventory scrolled clipped
+  - action: click-inventory-scroll
+    mode: 1
+    name: restore top inventory row with real input
+  - action: wait
+    dt: 15
+    name: settle inventory scroll up
+  - action: check-inventory-clipping
+    mode: 0
+    name: verify top row restored
+  - action: click-inventory-identify
+    name: open identify mode with real input
+  - action: wait
+    dt: 15
+    name: settle identify mode
+  - action: click-inventory-item
+    item: GreatSword
+    name: select original item description
+  - action: wait
+    dt: 15
+    name: settle item description
+  - action: check-item-description-clipping
+    mode: 0
+    name: verify original description text is bounded by its box
+  - action: screen
+    name: item description clipped
+  - action: click-item-description-scroll
+    name: scroll original description with real button input
+  - action: wait
+    dt: 10
+    name: settle description scroll
+  - action: check-item-description-clipping
+    mode: 1
+    name: verify partial description rows remain inside their box
+  - action: screen
+    name: item description scrolled clipped
+  - action: inventory
+    name: close inventory with I input
+  - action: wait
+    dt: 15
+    name: settle inventory closing animation
+  - action: quit
+    dt: 1

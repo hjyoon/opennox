@@ -9463,6 +9463,21 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-minimap-clipping":
 			sc.Wait(dt, "")
 			sc.CheckMinimapClipping(l.Name)
+		case "check-inventory-clipping":
+			sc.Wait(dt, "")
+			sc.CheckInventoryClipping(l.Mode, l.Name)
+		case "click-inventory-scroll":
+			sc.Wait(dt, "")
+			sc.ClickInventoryScroll(l.Mode == 0, l.Name)
+		case "click-inventory-identify":
+			sc.Wait(dt, "")
+			sc.ClickInventoryIdentify(l.Name)
+		case "check-item-description-clipping":
+			sc.Wait(dt, "")
+			sc.CheckItemDescriptionClipping(l.Mode, l.Name)
+		case "click-item-description-scroll":
+			sc.Wait(dt, "")
+			sc.ClickItemDescriptionScroll(l.Name)
 		case "click":
 			if dt != 0 {
 				sc.Wait(dt, "")

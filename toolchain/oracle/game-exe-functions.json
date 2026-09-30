@@ -2548,6 +2548,34 @@
       "purpose": "the contiguous PE32 advanced server-options host covering window construction, page selection, child-panel switching, event dispatch, teardown, and refresh through 004BDFCF"
     },
     {
+      "name": "nox_xxx_clientAskInfoMb_4BF050",
+      "address": "0x004BF050",
+      "size": 1905,
+      "sha256": "a3f06b99e5a0f5b2b562993c8a5deb4f97feea75f63122b565fffcf787c63ad1",
+      "purpose": "the complete PE32 item tooltip body preserving pretty-name pointer fallback, native-to-wire book information requests and pending sentinels, weapon/armor modifier descriptions, and language-specific order and whitespace"
+    },
+    {
+      "name": "nox_xxx_clientAskInfoMb_4BF050_alignment",
+      "address": "0x004BF7C1",
+      "size": 3,
+      "sha256": "53e090edb4fca0626d458dbefa0ae1bcbffc511ed159f1a70641610ad0d9a200",
+      "purpose": "the exact three-byte LEA alignment before the item tooltip language jump table"
+    },
+    {
+      "name": "nox_xxx_clientAskInfoMb_4BF050_language_jump_table",
+      "address": "0x004BF7C4",
+      "size": 20,
+      "sha256": "7dffddcb0164598cc7640d72848727d8f438c363701c0907a393a6af17502e2c",
+      "purpose": "the exact five embedded PE32 code-address entries for languages 2 through 6; language 4 uses the default composition branch"
+    },
+    {
+      "name": "nox_xxx_clientAskInfoMb_4BF050_padding",
+      "address": "0x004BF7D8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after the tooltip language jump table and before the next function"
+    },
+    {
       "name": "sub_4BFD40",
       "address": "0x004BFD40",
       "size": 134,
@@ -19558,6 +19586,13 @@
       "size": 38,
       "sha256": "4d6b86cf8e1bfb58ad1d7f92cc3f3429599d77fe9a622c6c354c36d3c1b28e88",
       "purpose": "the exact NUL-terminated C source path passed to string lookup by the PE32 options feedback routine"
+    },
+    {
+      "name": "item_tooltip_keys_paths_spaces_and_formats_4BF050",
+      "address": "0x005B312C",
+      "size": 436,
+      "sha256": "23991397ffe6d90890da8f02e3ef7fbb106881aab3be398503761d38ea513963",
+      "purpose": "the exact ToolTip.c source paths, NoArmsInfo/BookOf/LoreScroll keys, UTF-16 single-space literals, and percent-s-space formats referenced by the complete item tooltip body"
     },
     {
       "name": "indexed_direction_vectors",

@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 아이템 이름 툴팁 `004BF050..004BF7DF`
+
+macOS/ARM64의 실제 headless War01a 커서 입력에서 RedApple·Mushroom·GreatSword·LeatherArmor 이름이 비어 있었고 HD LeatherArmor도 동일했다. 별도로 그려지는 `줍기`·`말하기` 한글은 정상이다. 원인은 UTF-16 자산이 아니라 drawable의 PE32 type/class/union offset `108/112/432`를 native 구조체에도 적용한 접근이다. native offset은 `120/124/560`이며 원본 class 자리에서 읽힌 값은 좌표 관련 float `0x40A00000`, type 자리는 0이었다. 이 read-only 재현은 정확한 drawable identity와 실제 tooltip buffer를 관찰했으며 이름 함수를 대신 호출하거나 표시 문자열을 주입하지 않았다.
+
+전체 원본 본체 1,905바이트를 SHA-256 `a3f06b99e5a0f5b2b562993c8a5deb4f97feea75f63122b565fffcf787c63ad1`로 독립 봉인했다. 뒤 3-byte LEA, 다섯 언어 branch의 20-byte jump table, 8-NOP를 각각 비중첩 범위로 봉인했으며 전체 1,936바이트 SHA-256은 `9b8e85a9b1429cde09c02d3641b2485911f9c5041682534f8d58c45dcef52f35`다. 문자열 키·source path·UTF-16 space/format 블록 `005B312C..005B32DF` 436바이트도 `23991397ffe6d90890da8f02e3ef7fbb106881aab3be398503761d38ea513963`로 봉인했다. 원본은 일반 이름 pointer fallback, 장비 네 modifier의 primary/secondary description 선택과 언어별 순서·공백, 책 정보 요청 `E2 + 16-bit net code + kind` 및 pending sentinel `137/41/6`을 한 함수에서 처리한다. 이 기록은 구현 전 근거이며 누적 대상은 **코드 2,748개·데이터 514개**다.
+
 ## Quest 참가 정원 검사 `004E4100..004E416F`
 
 macOS/ARM64의 실제 Host Quest 메뉴 입력으로 `so_lod.map`을 읽은 뒤 `startSoloQuest`가 실행되면 `setupQuestGame`의 `sub_4E4100`에서 충돌했다. 재현 시 첫 player unit은 `0x1300f03c0`였지만 C의 `int` 임시 변수와 PE32 offset `+748` 접근은 `0x300f06ac`를 역참조했다. 기존 메뉴→ClassSelect 시험만으로는 이 초기화 경계를 실행하지 못한다.

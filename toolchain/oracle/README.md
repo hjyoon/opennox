@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest host 결과 타이머의 native 경계 `0049B6E0`
+
+Darwin/ARM64의 실제 C entry에서 native PlayerInd offset 2068 대신 PE32 2064를 읽어 host 31에게 countdown을 표시하는 실패를 먼저 재현했다. 이 별도 단위는 인수 없는 int-return 본체 하나만 Go export로 복원한다. cached FPS 한 번→Frame→start DWORD와 modulo-32/signed-negative clamp, native PlayerInd BYTE, host inline UTF-16 복사 또는 unsigned DIV 뒤 정확한 lookup/format, fresh root/child 10712와 기존 `sub_46AEE0`의 zero 반환을 유지한다. GUI procedure의 반환을 직접 돌려주는 retained decompile을 원본으로 취급하지 않는다.
+
+본체 `0049B6E0..0049B79D` 190바이트/SHA-256 `7fd36d514f05347daab284cd0c7eefa361c113837c8b68dbf042b7d8969e089b`, 뒤 `0049B79E`의 2-NOP, source `005AEEB0` 37바이트·key `005AEED8` 13바이트·UTF-16 format `005AEEE8` 16바이트를 각각 봉인했다. 누적 코드 2,866개·데이터 615개다. 256개 PlayerInd와 독립 countdown 모델 2,058개·cached/live 교체·exact callback/fault prefix, zero-FPS 분기 및 4GiB 초과 C-owned 포인터의 실제 C entry/formatter/GUI event 왕복을 검사했다.
+
+Darwin/ARM64 대상 일반 1회, 실제 cgocheck2·race·checkptr 각 3회, 전체 일반·strict와 server-tag 시험 1회, stock 1,556파일·570,653,750바이트·봉인 범위·NXZ 50쌍의 전후 `make oracle-test` 검증이 통과했다. code/data hash는 원본 provenance이지 Go 의미 동등성이나 자연 사망 GUI 성공 자체의 증명이 아니다. 실제 host 결과 text 재검증은 별도 E2E 단위로 남긴다. ankh HUD·옵션 audit의 실패·SDL/OpenAL 검증은 이 변경의 범위 밖이다. 원본 자산·사용자 Save/config를 바꾸지 않는다.
+
 ## Quest 자연 사망·실제 입력 부활의 별도 headless 검증
 
 `70ed901fa`의 사망 본체 복원 뒤 별도 E2E 단위에서 stock 메뉴→네 번의 출구→5단계 네크로맨서의 실제 피해→자연 사망→입력 부활을 세 번 실행했다. player placement만 fixture이고 HP·AI·목숨·통계·damage/death/penalty/respawn callback은 주입하지 않는다. 일반·HD와 일반 독립 재실행에서 stock lives `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`, 같은 고주소 player와 마지막 결과창/Continue 해제를 관찰했다. PNG 7개가 일반·HD에서 같고 재실행 baseline 검사도 통과했다. 원본 PNG는 저장소에 반입하지 않는다.

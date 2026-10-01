@@ -65,30 +65,5 @@ int sub_49B4B0(unsigned short* a1) {
 
 //----- (0049B6E0) --------------------------------------------------------
 int sub_49B6E0() {
-	int result;   // eax
-	int v1;       // eax
-	wchar2_t* v2;  // eax
-	nox_window* v3; // eax
-	int v4;       // [esp-4h] [ebp-4h]
-
-	result = dword_5d4594_1303452 != 0;
-	if (dword_5d4594_1303452) {
-		result = wndIsShown_nox_xxx_wndIsShown_46ACC0(dword_5d4594_1303452);
-		if (!result) {
-			v1 = *getMemU32Ptr(0x5D4594, 1303456) + 30 * gameFPS() - gameFrame();
-			if (v1 < 0) {
-				v1 = 0;
-			}
-			if (dword_8531A0_2576 && *(uint8_t*)(dword_8531A0_2576 + 2064) == 31) {
-				nox_wcscpy((wchar2_t*)getMemAt(0x5D4594, 1301852), (const wchar2_t*)getMemAt(0x5D4594, 1303464));
-			} else {
-				v4 = (unsigned int)v1 / gameFPS();
-				v2 = nox_strman_loadString_40F1D0("Rules.c:Time", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIGGOvr.c", 265);
-				nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 1301852), L"%s - %d", v2, v4);
-			}
-			v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1303452, 10712);
-			result = (int)nox_window_call_field_94(v3, 16385, (uintptr_t)getMemAt(0x5D4594, 1301852), 0);
-		}
-	}
-	return result;
+	return nox_client_questGameOverTimer_native_49B6E0();
 }

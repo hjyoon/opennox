@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest host 결과 타이머의 native PlayerInd 경계 `0049B6E0`
+
+자연 사망 headless에서 관찰한 host countdown을 실제 C entry 회귀로 먼저 재현했다. Darwin/ARM64 C-owned Player의 PlayerInd는 offset 2068인데 retained C가 PE32 offset 2064를 읽어 index 31 host에게도 `Time - 30`을 표시했다. 이 변경 단위는 인수 없는 int-return 함수 `0049B6E0` 한 본체만 Go export로 옮기며 기존 ABI·root 전역·inline UTF-16 buffer를 유지한다.
+
+entry root 캐시→nil/hidden 반환→FPS DWORD 한 번 캐시→Frame→start DWORD→modulo-32 countdown의 signed-negative만 0으로 보정→native Player 캐시/PlayerInd BYTE→31이면 inline empty string 복사, 나머지는 cached FPS의 unsigned DIV→정확한 title lookup/UTF-16 format→fresh root의 child 10712→기존 `sub_46AEE0` 순서다. 마지막 helper는 GUI procedure response를 버리고 0을 반환하는 원본을 그대로 재사용하며 decompiled C의 직접 field94 반환을 따르지 않는다. 새 nil guard·FPS fallback·추가 clamp는 없다.
+
+256개 player index, 독립 wide 모델의 countdown 경계 2,058개, 모든 callback의 exact trace/fault prefix, zero FPS의 non-host fault와 host bypass, cached/live pointer 교체를 검사한다. 실제 C entry→Go export는 4GiB 초과 C-owned Player/window/title/buffer로 native host/비host·inline UTF-16 복사·원래 formatter·C-to-Go GUI text event를 통과한다. hidden 반환과 C entry의 full signed DWORD 반환도 구별한다.
+
+Darwin/ARM64 대상 일반 시험 1회, 대상 실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험 및 server-tag root/server/legacy 1회가 통과했다. 본체 190바이트·뒤 2-NOP·정확한 source/key/UTF-16 format을 봉인했고 `make oracle-test`는 stock 1,556파일·570,653,750바이트·코드 2,866개·데이터 615개·NXZ 50쌍을 전후 검증했다. 실제 자연 사망 GUI의 empty host text 재검증은 다음 별도 단위다. ankh HUD `X 0`·옵션 audit의 실패·SDL/OpenAL·Linux/AMD64 검증까지 해결되었다고 주장하지 않는다. 원본·개인 Save/config는 변경하지 않았다.
+
 ## 옵션 전체 UI 점검: 확인된 실패와 미검증 범위
 
 audit-only 커밋 `13cfe137a`의 `main-menu-options-audit.yaml` 및 `host-game-client-options-audit.yaml`을 Darwin/ARM64 일반·HD headless에서 각각 실행했다. 옵션 동작을 수정하지 않은 점검이며 네 실행 모두 실패 assertion을 보고하고 exit 2로 끝났다. 아래 숫자는 반복 검사를 포함한 assertion 수이지 고유 버그 개수가 아니다.

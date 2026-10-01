@@ -2485,6 +2485,20 @@
       "purpose": "reset and destroy the health-change allocator, clearing its allocator handle"
     },
     {
+      "name": "sub_49B6E0",
+      "address": "0x0049B6E0",
+      "size": 190,
+      "sha256": "7fd36d514f05347daab284cd0c7eefa361c113837c8b68dbf042b7d8969e089b",
+      "purpose": "update a visible Quest result timer using one cached FPS DWORD, modulo-32 countdown clamped only when signed-negative, native PlayerInd BYTE 31 host suppression, and a fresh result-window root for child 10712 and the original set-text helper"
+    },
+    {
+      "name": "sub_49B6E0_padding",
+      "address": "0x0049B79E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating Quest result timer update from Escape-key dispatch at 0049B7A0"
+    },
+    {
       "name": "nox_xxx_consoleEsc_49B7A0",
       "address": "0x0049B7A0",
       "size": 417,
@@ -20853,6 +20867,27 @@
       "size": 184,
       "sha256": "7d166315907e5a3baae7311a347673077272bea0f7a6879e17a0ca4203a26353",
       "purpose": "the exact aligned eight NUL-terminated Red, White, LightBlue, Orange, Green, Violet, LightViolet, and Yellow BubbleParticle type names loaded in order by 00499F60"
+    },
+    {
+      "name": "quest_game_over_timer_source_49b6e0",
+      "address": "0x005AEEB0",
+      "size": 37,
+      "sha256": "9eea4d63ffeccb4371ca373ac71ee674a14dd9479c7e62b632d98dcc33c59fbe",
+      "purpose": "the exact NUL-terminated GUIGGOvr.c source-file C string passed with line 265 to the timer title lookup at 0049B761"
+    },
+    {
+      "name": "quest_game_over_timer_key_49b6e0",
+      "address": "0x005AEED8",
+      "size": 13,
+      "sha256": "db22766bcd3b316709b79e2a9268cab788da78cb1cf7156a051a5c4834dae0f2",
+      "purpose": "the exact NUL-terminated Rules.c:Time key used by the non-host Quest result countdown"
+    },
+    {
+      "name": "quest_game_over_timer_format_49b6e0",
+      "address": "0x005AEEE8",
+      "size": 16,
+      "sha256": "bcaf838e4e012c44769bd0392476c7e3461cb2c819a32ea8ce5a78f0086cf028",
+      "purpose": "the exact NUL-terminated UTF-16 percent-s, hyphen, percent-d format passed to Quest result timer swprintf at 0049B774"
     },
     {
       "name": "class_initial_spell_rows",

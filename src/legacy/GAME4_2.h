@@ -285,7 +285,7 @@ int sub_52BF50(int a1, int a2, int a3, int a4, int* a5);
 int nox_xxx_castPull_52BFA0(int a1, int a2, int a3, int a4, int a5, int a6);
 int nox_xxx_castPush_52C000(int a1, int a2, int a3, int a4, int a5, int a6);
 int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5);
-int nox_xxx_castConfuse_52C1E0(int a1, int a2, int a3, int a4, int* a5, char a6);
+int nox_xxx_castConfuse_52C1E0(int a1, void* a2, nox_object_t* a3, nox_object_t* a4, void* a5, int a6);
 int nox_xxx_castStun_52C2C0(int a1, int a2, int a3, int a4, int* a5, char a6);
 int nox_xxx_castBurn_52C3E0(int a1, int a2, int a3, int a4, int a5);
 int nox_xxx_useShock_52C5A0(int a1, int a2, int a3, int a4, int* a5, int a6);

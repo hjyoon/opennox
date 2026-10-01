@@ -16205,11 +16205,32 @@
       "purpose": "the exact decoded direct rel32 call at 0052C1BE targeting buff application at 004FF380"
     },
     {
+      "name": "nox_xxx_castConfuse_52C1E0_prefix",
+      "address": "0x0052C1E0",
+      "size": 43,
+      "sha256": "d18d842085b145886d8fb54499919366cab9abe8d3de6cf5da91d4b80570f648",
+      "purpose": "the confuse cast nil-target gate, exact balance lookup and binary32 spill before nearest-even conversion, then live target reload and buff arguments"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C20B",
       "address": "0x0052C20B",
       "size": 5,
       "sha256": "344f6d4346f6ccfe98bcbc0ad96746a8404f8da802690873d40be3cbdca30acf",
       "purpose": "the exact decoded direct rel32 call at 0052C20B targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_castConfuse_52C1E0_suffix",
+      "address": "0x0052C210",
+      "size": 23,
+      "sha256": "f2f8cdfc029c0901c8113f1081414179296e6381c19441508a229be984736044",
+      "purpose": "the confuse cast live target reload after buff application, attribution from the third argument, and canonical success return"
+    },
+    {
+      "name": "nox_xxx_castConfuse_52C1E0_padding",
+      "address": "0x0052C227",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes between confuse and nullify casts"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C250",
@@ -22057,6 +22078,13 @@
       "size": 13,
       "sha256": "ad115b168dc33861a1f80aab0b344c5c4d5e2c2803954832105c4cc47b44519e",
       "purpose": "the distinct null-terminated RewardMarker name passed by Quest Necromancer spawn"
+    },
+    {
+      "name": "cast_confuse_duration_key_52C1E0",
+      "address": "0x005C6224",
+      "size": 24,
+      "sha256": "3ca9b7f9a7f3a865c2a937f791a0fc38ee0841b9ac3237ec22995d972450fefa",
+      "purpose": "the exact aligned ConfuseEnchantDuration balance key used by the instant confuse cast"
     },
     {
       "name": "default_xfer_registration_record",

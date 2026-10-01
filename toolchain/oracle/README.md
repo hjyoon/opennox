@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 실제 혼란 주문의 native target 복원 `0052C1E0`
+
+애니메이션 참조를 복원한 뒤 실제 instant Confuse 주문의 C 진입점을 검사했다. 기존 `int*` target 읽기가 `0x12fe05e30`을 `0x2fe05e30`으로 잘라 buff C-to-Go export로 전달하는 실패를 먼저 재현했다. 이 단위는 `0052C1E0` 한 본체만 Go로 옮기고 기존 6-argument dispatch ABI의 object/argument 포인터를 native width로 유지한다. nil target의 zero 반환, balance 조회→binary32 spill→`00419A70` nearest-even 반올림→live target 재조회→buff 3 적용→다시 target 재조회→third-argument 공격자 기록→1 반환 순서를 그대로 둔다. duration word·power byte의 signed narrowing은 buff 호출 경계에서만 하며 buff 거부를 새 실패로 바꾸지 않는다.
+
+원본 본체 `0052C1E0..0052C226` 71바이트의 SHA-256은 `af5ac7c6362c690bba35a871f3bb698edd4dd8f3a9069959ca0cdefdc891136e`다. 기존 `004FF380` 직접 call 봉인을 유지하면서 prefix 43바이트·suffix 23바이트·뒤 9-NOP를 추가하고 정확한 aligned `ConfuseEnchantDuration` 문자열 at `005C6224`를 봉인한다. 누적 코드 2,828개·데이터 596개다. native 고주소 C 진입/공격자 player 링크, 적용 후 대상 변경, 좌표 보존, signed dword 반환, binary32 tie·word/byte 경계·NaN/overflow, nil gate와 fault prefix를 검사한다. 대상 10회 반복, 일반·실제 `GOEXPERIMENT=cgocheck2` 전체 시험과 직접 code verifier가 통과했다. 이 함수 회귀만으로 Stun 분기나 실제 클라이언트 주문 화면 검증을 대신하지 않는다.
+
 ## 상태이상 애니메이션 참조 reset `00473960`
 
 로더를 복원한 뒤 세션 정리의 짝 함수가 여전히 packed DWORD만 지워 native cache가 남는 것을 4GiB 초과 주소의 실제 C 호출 회귀로 재현했다. 이 별도 변경 단위는 `00473960` 한 함수만 Go export로 옮겨 첫 참조→둘째 참조 nil 저장과 canonical zero 반환을 유지한다. 같은 함수의 nil 조합·반복 reset·packed neighbor 보존을 검사하며 애니메이션 소유 메모리를 여기서 free하지 않는다. 원본 본체 `00473960..0047396C` 13바이트/SHA-256 `92d3325facf64fbd7c1eaad4447f63a40e303d74cad1b91d84c949e7cbcd6904`와 뒤 3-NOP를 봉인한다. 누적 코드 2,825개·데이터 595개다.

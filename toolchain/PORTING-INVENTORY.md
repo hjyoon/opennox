@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 사망 페널티 dispatcher의 native 순서·포인터 경계 `0054CBD0`
+
+typed unit ABI 선행 커밋 `81c236a11` 뒤 원본 본체 하나만 Go로 복원했다. entry update를 먼저 캐시→현재 unit의 골드 DWORD 조회→logical `>>1` 차감→보석→무기→방어구 순서를 유지한다. 첫 방어구 helper 뒤 캐시한 update의 live Player/class BYTE를 읽고 정확히 0인 경우에만 방어구 helper를 다시 호출한다. 이후 주문 2회→도감 2회→능력 1회이며 마지막 signed BYTE 반환은 무시한다. 각 반복은 원래 helper를 따로 호출하므로 이전 삭제/학습값 제거/패킷 callback의 현재 unit update·Player·class·inventory 상태를 다음 helper가 다시 읽는다. 이 dispatcher에 class bit gate·nil fallback·RNG·학습/인벤토리 snapshot을 추가하지 않는다.
+
+class BYTE 256개와 골드 DWORD 8개 경계의 2,048개 조합, exact call/fault prefix·0 골드의 필수 차감 호출·ability BYTE 모든 반환과 cached update/late Player 교체를 검사한다. 실제 C entry→Go export는 C-owned unit/update/Player/item 모두 4GiB 초과 주소로 기존 골드 보호와 여섯 native 손실 helper를 연결한다. 독립 원본 후보 목록·48 seed·다섯 class로 연속 제거/패킷과 logic RNG/Other RNG를 비교한다. inventory callback에서 update와 Player 링크를 교체하는 검사 및 패킷 뒤 Wizard→Conjurer→Warrior로 바뀌는 검사도 분리하며, singleton 뒤 empty 재호출을 누락하지 않는다.
+
+Darwin/ARM64 관련 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 시험 1회가 통과했다. 원본 본체 `0054CBD0..0054CC3C` 109바이트와 뒤 3-NOP를 봉인했고 `make oracle-test`는 stock 1,556파일·570,653,750바이트·2,864 code/610 data range·NXZ 50쌍을 전후 검증했다. Quest lives/사망 연결은 별도 원본 변경이 남아 admission은 계속 닫혀 있다. 이 dispatcher 회귀를 실제 Quest 사망·부활 headless 성공 또는 Linux/AMD64 실행으로 확대하지 않는다.
+
 ## Quest 사망 페널티 dispatcher의 typed unit ABI — 본체 복원의 선행 단계 `0054CBD0`
 
 unit 인수를 `int`에서 `nox_object_t*`로 먼저 분리하고 raw Quest 사망 caller를 명시적으로 변환했다. 기존 정수 alias와 C 본체는 그대로 유지한다. 이 단계만으로 cached update·골드·각 손실 helper 연결의 포인터 잘림이 해결되었다고 주장하지 않는다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. native 본체는 다음 별도 커밋이며 Quest lives/사망 admission은 계속 닫혀 있다.

@@ -19579,6 +19579,20 @@
       "purpose": "the exact nine NOP bytes after armor creation before the ObeliskCreate routine at 0054CA10"
     },
     {
+      "name": "sub_54CBD0",
+      "address": "0x0054CBD0",
+      "size": 109,
+      "sha256": "b15e7966f497b8e425acf0d38f099a4899b4bbec13ca7c554c70fe3b9c7a2bfa",
+      "purpose": "cache entry update, subtract the logical DWORD half of gold, lose gems and weapon and armor, read live Player class from cached update for a second Warrior armor loss, then invoke spell and guide loss twice each and ability loss once ignoring its result"
+    },
+    {
+      "name": "sub_54CBD0_padding",
+      "address": "0x0054CC3D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after the Quest death penalty dispatcher before equipped weapon loss at 0054CC40"
+    },
+    {
       "name": "sub_54CC40",
       "address": "0x0054CC40",
       "size": 238,

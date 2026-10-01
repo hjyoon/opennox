@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 사망 페널티 dispatcher의 native 포인터 경계 `0054CBD0`
+
+typed unit ABI를 `81c236a11`로 먼저 분리한 뒤 한 원본 본체의 entry-cached update→DWORD 골드 logical half 차감→gem/weapon/armor 손실→cached update의 late live Player/class BYTE→class 0만 armor 추가 손실→spell 두 번/guide 두 번/ability 한 번의 순서를 Go로 복원했다. 마지막 ability의 signed BYTE 반환은 무시하며 각 반복 helper의 fresh binding·inventory·학습값/패킷 부작용을 유지한다.
+
+원본 `0054CBD0..0054CC3C` 109바이트/SHA-256 `b15e7966f497b8e425acf0d38f099a4899b4bbec13ca7c554c70fe3b9c7a2bfa`와 뒤 `0054CC3D`의 3-NOP를 별도로 봉인했다. 누적 코드 2,864개·데이터 610개다. 2,048개 class/골드 조합·cached/live pointer 교체·exact fault prefix와 C-owned 고주소 entry의 실제 여섯 손실 helper·골드·연속 RNG/packet을 검사했다. 전체 일반·실제 cgocheck2, 관련 일반/strict/race/checkptr 각 3회·server-tag 시험, 원본 1,556파일·570,653,750바이트와 NXZ 50쌍의 전후 검증이 통과했다. code hash는 원본 provenance이며 Go 의미 동등성을 그 자체로 증명하지 않는다. Quest lives/사망 admission은 계속 닫혀 있다. 사용자 Save·설정·원본 자산은 변경하지 않았다.
+
 ## Quest 보석 손실의 native 포인터 경계 `0054D080`
 
 typed unit ABI를 `01a8c3899`로 먼저 분리한 뒤 한 원본 본체의 lazy DWORD 캐시·live 개수 순회·fresh head/cached next 삭제 순회·signed half-price 골드 반환을 Go로 복원했다. Diamond 캐시가 0이면 세 타입을 차례로 게시하고, 각 item type WORD는 full DWORD와 비교하며 ID 충돌은 Diamond→Emerald→Ruby 순서다. 첫 순회의 next는 type 판정 뒤 live로 읽고 두 번째는 가격/삭제/credit 전에 캐시한다. odd first gem의 가격 mode 1·nil merchant→삭제→credit→odd bit 해제와 그 뒤 signed positive half-count quota 삭제를 그대로 유지한다.

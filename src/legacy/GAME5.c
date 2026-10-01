@@ -4345,6 +4345,7 @@ void nox_xxx_diePotion_54CBB0(int a1) {
 }
 
 //----- (0054CBD0) --------------------------------------------------------
+#if 0
 void sub_54CBD0(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
 	int v1;          // edi
@@ -4365,6 +4366,9 @@ void sub_54CBD0(nox_object_t* unit) {
 	sub_54CEE0((nox_object_t*)(uintptr_t)a1);
 	sub_54CFB0((nox_object_t*)(uintptr_t)a1);
 }
+#endif
+extern void nox_server_questPenalty_native_54CBD0(nox_object_t* unit);
+void sub_54CBD0(nox_object_t* unit) { nox_server_questPenalty_native_54CBD0(unit); }
 
 //----- (0054CC40) --------------------------------------------------------
 #if 0

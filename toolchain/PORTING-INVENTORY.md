@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 자연 사망·목숨 소진·실제 입력 부활 headless 회귀
+
+사망 본체 `70ed901fa`와 별도 검증 단위다. `host-quest-player-death.yaml`은 실제 Warrior Quest 메뉴와 네 번의 stock 출구로 5단계 네크로맨서를 생성한 뒤 플레이어만 근처에 배치한다. 원래 AI의 실제 피해와 client 피해 표시를 관찰하며 HP·목숨·통계·사망·페널티·부활을 주입하지 않는다. stock balance의 추가 목숨은 2개다. 일반·HD headless와 일반 새 프로세스 재실행에서 자연 사망 세 번, 서버 목숨 `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`, 같은 native player identity, 마지막 사망의 timestamp·결과창과 실제 GGOver Continue 입력 뒤 해제를 확인했다. 두 첫 부활도 실제 mouse input을 사용한다. 모든 관련 native 포인터는 4GiB를 넘는다.
+
+세 사망/부활과 단계 결과의 PNG 7개가 일반·HD에서 바이트 단위로 같고 일반 독립 재실행의 기존 화면 baseline 검사도 통과했다. PNG는 임시 시나리오 디렉터리에만 남긴다. 첫 사망의 폭발 발사체는 다음 관찰 tick 전에 제거되어 최종 공격자의 소유자를 단정하지 않는다. 네크로맨서의 실제 선행 피해와 자연 사망은 따로 검사하고 제거된 포인터를 역참조하지 않는다. 실제 전투의 골드·generator/monster/secret counter는 0이므로 nonzero 골드 손실·통계 reset의 의미는 별도 native 함수 시험으로 검증하며 이 GUI의 증명으로 확대하지 않는다.
+
+현재 캡처의 ankh HUD는 서버 목숨과 달리 `X 0`이고 host 결과창에도 countdown이 보인다. HUD 목숨 동기화 및 raw `0049B6E0`의 native PlayerInd 경계는 이 단위에서 고치거나 통과로 간주하지 않는다. 부활 후 새 이동, 다른 캐릭터/피격 분기·온라인 Quest 소환수 보존·SDL/OpenAL 출력 검증도 별도다. 원본 함수·balance·맵·개인 Save/config는 변경하지 않는다.
+
+Darwin/ARM64 전체 일반·실제 `GOEXPERIMENT=cgocheck2` Go 시험, E2E/Quest/death 관련 일반·strict·race·`checkptr=2` 각 3회, server-tag root/server/legacy 1회가 통과했다. `make oracle-test`의 stock 1,556파일·570,653,750바이트, 코드 2,864개·데이터 612개, NXZ 50쌍 전후 검증도 통과했다.
+
 ## Quest player death의 native lives·통계·페널티 연결 `0054D2B0`
 
 typed unit ABI 선행 커밋 `2cc55885c` 뒤 원본 사망 본체 하나에 Quest 분기를 연결했다. entry-cached update를 유지하되 common prefix의 offline 공격자 조회, callback 뒤 live Player 재조회, 무조건 rivals 질의, fresh Quest flag의 drop 제외 순서를 원본대로 복원한다. competitive scoring/Elimination의 기존 admission은 계속 닫혀 있다.

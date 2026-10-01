@@ -146,6 +146,18 @@ bash ./scripts/run-headless-server-e2e.sh \
   /absolute/path/to/nox /absolute/path/to/server-e2e-output
 ```
 
+`host-quest-player-death.yaml`은 실제 Quest 메뉴와 네 번의 stock 출구 전환 뒤 자연 전투로 Warrior를 세 번 사망시킨다. 일반·HD headless와 일반 새 프로세스 재실행에서 서버 목숨 `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`, 같은 native player identity, 마지막 사망의 결과창과 실제 Continue 입력 부활을 확인했다. player placement만 fixture이며 HP·AI·목숨·통계·사망·페널티·부활은 주입하지 않는다. PNG 7개가 일반·HD에서 같고 독립 재실행 baseline도 통과했다.
+
+최종 발사체는 제거되었을 수 있어 독점적 lethal attribution은 단정하지 않는다. 실제 전투 골드와 generator/monster/secret counter가 0인 한계, ankh HUD `X 0`·host countdown의 별도 미완료 경계, SDL/OpenAL·부활 후 새 이동·다른 캐릭터/피격·온라인 Quest 소환수 보존 범위를 구분한다. 원본 자산과 개인 Save/config는 변경하지 않는다. PNG가 저장소에 생성되지 않도록 YAML을 임시 시나리오 디렉터리에 복사해 실행하고 다른 GUI E2E와 동시에 실행하지 않는다.
+
+```sh
+NOX_E2E_SEAT=headless bash ./scripts/run-headless-gui-e2e.sh \
+  /absolute/path/to/nox /absolute/path/to/temp-e2e/host-quest-player-death.yaml
+NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
+  bash ./scripts/run-headless-gui-e2e.sh /absolute/path/to/nox \
+  /absolute/path/to/temp-e2e/host-quest-player-death.yaml
+```
+
 패치 버전을 올릴 때에는 다음 항목을 한 변경으로 갱신한다.
 
 1. `toolchain/go-version.txt`

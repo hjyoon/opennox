@@ -9638,6 +9638,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckQuestMinionCombat(l.Creature, l.Name)
+		case "check-quest-player-deaths":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckQuestPlayerDeaths(l.Name)
 		case "check-quest-golem-pierce":
 			if dt != 0 {
 				sc.Wait(dt, "")

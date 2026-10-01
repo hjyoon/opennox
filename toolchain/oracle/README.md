@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 자연 사망·실제 입력 부활의 별도 headless 검증
+
+`70ed901fa`의 사망 본체 복원 뒤 별도 E2E 단위에서 stock 메뉴→네 번의 출구→5단계 네크로맨서의 실제 피해→자연 사망→입력 부활을 세 번 실행했다. player placement만 fixture이고 HP·AI·목숨·통계·damage/death/penalty/respawn callback은 주입하지 않는다. 일반·HD와 일반 독립 재실행에서 stock lives `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`, 같은 고주소 player와 마지막 결과창/Continue 해제를 관찰했다. PNG 7개가 일반·HD에서 같고 재실행 baseline 검사도 통과했다. 원본 PNG는 저장소에 반입하지 않는다.
+
+이 검증은 새 원본 code/data 범위를 추가하지 않아 봉인은 코드 2,864개·데이터 612개 그대로다. 첫 lethal 발사체의 소유자는 제거 뒤 단정하지 않으며 실제 골드/세 통계가 0이므로 nonzero penalty/reset을 GUI에서 증명했다고 하지 않는다. ankh HUD `X 0`과 host countdown은 별도 미완료 경계로 기록하며 전체 Quest UI 성공으로 확대하지 않는다. SDL/OpenAL·부활 후 새 이동·다른 캐릭터/피격·Quest 소환수 보존도 별도다. source provenance·함수 의미 시험·실제 GUI 관찰의 범위를 구별한다.
+
+Darwin/ARM64 전체 일반·실제 `GOEXPERIMENT=cgocheck2` Go 시험, E2E/Quest/death 관련 일반·strict·race·`checkptr=2` 각 3회, server-tag root/server/legacy 1회가 통과했다. `make oracle-test`의 stock 1,556파일·570,653,750바이트, 코드 2,864개·데이터 612개, NXZ 50쌍 전후 검증도 통과했다.
+
 ## Quest player death의 lives·통계·페널티 연결 `0054D2B0`
 
 typed unit ABI를 `2cc55885c`로 먼저 분리한 뒤 원본 사망 본체 하나의 Quest admission을 연결했다. common prefix의 offline 공격자 조회·callback 뒤 fresh Player·rivals 질의·Quest의 drop 제외와 tail의 lives DWORD 차감 또는 timestamp→WORD 통계 packet→reset→penalty→binary32 balance 변환→DWORD lives→fresh Player/LOWBYTE respawn marker 순서를 유지한다. competitive scoring/Elimination admission은 계속 닫혀 있으며 원본 fault·정수 폭·live/cached binding을 바꾸는 방어 코드는 추가하지 않았다.

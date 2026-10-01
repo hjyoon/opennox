@@ -438,9 +438,72 @@ func playerDamageMonster4E17B0(
 	return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
 }
 
+// playerDamageElectricPlayer4E17B0 restores the cases 9/17 at 004E1DF1.
+// Electric armor scales HP damage, but 004E1E1E distributes the original
+// damage (not the absorbed difference) to equipped armor. The caller has
+// already checked the Player, observer, Coop and Reflect Shield gates.
+func playerDamageElectricPlayer4E17B0(
+	target, source *Object, damage int32, typ object.DamageType,
+	runtime PlayerDamageRuntime4E17B0,
+) (handled, result bool) {
+	quest := runtime.QuestMode != nil && runtime.QuestMode()
+	if runtime.ElectricArmorScale == nil || runtime.DefaultDamage == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing player electric service", target, source, nil, damage, typ)
+	}
+	if quest && runtime.QuestDamageScale == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, nil, damage, typ)
+	}
+	update := target.UpdateDataPlayer()
+	scaled := float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
+	accumulated := scaled + math.Float32frombits(update.Field21)
+	effective := playerDamageRound4E17B0(accumulated)
+	armorValue := math.Float32frombits(update.Field57)
+	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, nil, armorValue, damage, runtime)
+	if !ok {
+		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, nil, damage, typ)
+	}
+	update.Field76 = 0
+	if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
+		runtime.ObserveClear(target)
+	}
+	update.Field21 = math.Float32bits(accumulated - float32(effective))
+	for _, planned := range itemPlan {
+		*planned.value = planned.next
+		if planned.damage <= 0 {
+			continue
+		}
+		health := planned.item.HealthData
+		before := health.Cur
+		runtime.DamageArmor(planned.item, source, nil, planned.damage, typ)
+		after := health.Cur
+		if before != after && runtime.ReportArmorHealth != nil {
+			runtime.ReportArmorHealth(target, planned.item, before, after)
+		}
+	}
+	if update.Field76 == 0 {
+		update.Field76 = 2
+		// 004E1E49 copies the incoming DWORD type, not float32(type).
+		update.Field75 = uint32(typ)
+	}
+	if damage > 0 && effective == 0 {
+		effective = 1
+	}
+	if runtime.GodMode != nil && runtime.GodMode() {
+		return true, true
+	}
+	if quest {
+		before := effective
+		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		if before > 0 && effective < 1 {
+			effective = 1
+		}
+	}
+	return true, runtime.DefaultDamage(target, source, nil, effective, typ)
+}
+
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE, monster-fired
 // missile IMPACT, Berserker Charge CRUSH, SentryGlobe ZAP_RAY, world FLAME,
-// and source-less LAVA/POISON branches of
+// unarmed monster ELECTRIC/AIRBORNE_ELECTRIC, and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
 // plus the front-facing shield block and the common Quest damage scaling tail,
 // and the early Reflect Shield and Coop self-damage gates. It returns
@@ -488,6 +551,11 @@ func PlayerDamageNative4E17B0(
 	}
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return handled, result
+	}
+	if (typ == object.DamageElectric || typ == object.DamageAirborneElectric) && damage > 0 &&
+		source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil && weapon == nil {
+		// Ordinary shield/sword blocks explicitly exclude type 9/17.
+		return playerDamageElectricPlayer4E17B0(target, source, damage, typ, runtime)
 	}
 	lava := typ == object.DamageLava && damage > 0 && source == nil && weapon == nil
 	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil

@@ -8,6 +8,14 @@
 
 무기 없는 몬스터→플레이어 전기(9/17) tail을 native 객체 폭으로 허용한다. `004E0E05..004E0E8E`의 전기 저항·binary32 spill·ties-to-even·최소 1과 Player update의 low-word `+160=2`를 유지한다. late Defend→source attribution→몬스터 hit sound에 따른 피해 음향 억제→PlayerDamageSound→흡혈→GameBall→20 이상 hurt(상태 1/15 제외)→공격 몬스터 latch→Shield→HP 순서를 유지하며, hurt 지점은 callback 뒤 live update 포인터를 다시 읽는다. 알 수 없는 damage sound나 누락된 tail 서비스는 raw PE32 fallback 없이 거부한다. 기존 장비/몬스터/돌진 경로와 새 저항·반올림·인접 word 보존·native sound·방어 callback·GameBall/Shield 순서 회귀를 함께 검사한다. PlayerDamage 입구 복원 전이므로 이 커밋만으로 실제 네크로맨서 전투가 해결됐다고 간주하지 않는다.
 
+## 몬스터 전기 주문의 PlayerDamage 입구 `004E17B0`
+
+같은 자연 전투의 실패를 별도 PlayerDamage 회귀로 먼저 재현했다. 원본 전체 `004E17B0..004E20EF` 2,368바이트/SHA-256 `c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9`는 이미 봉인되어 있으므로 중복 범위를 추가하지 않는다.
+
+무기 없는 몬스터의 양수 ELECTRIC(9)/AIRBORNE_ELECTRIC(17)을 `004E1DF1`의 원본 전기 경로로 연결한다. 별도 전기 방어 배율→binary32 소수 누적/ties-to-even→장비 내구도에 원래 피해량 배분→피해 marker→최소 1→GodMode→Quest 배율→DefaultDamage 호출 순서다. `004E1E1E`의 장비 인수는 흡수된 차액이 아닌 raw damage이며, `004E1E49`는 type DWORD를 그대로 `+300`에 복사한다. decompile의 float 인수 추론 대신 실제 PE 명령을 기준으로 type 17을 `0x00000011`로 저장한다. 일반 shield/sword block은 9/17에서 제외되지만 전방 Reflect Shield는 type 17에서 먼저 동작한다.
+
+두 함수 결합의 전기 저항·Quest 배율·HP·source attribution, 3회 fractional carry `[4,4,3]`, GodMode 앞의 raw armor 피해/보고, 최소 피해·Reflect 방향 경계 및 누락 서비스의 무변경 거부를 회귀로 검사한다. 전체 일반 테스트와 실제 `GOEXPERIMENT=cgocheck2` 전체 테스트, 대상 server race/checkptr 반복 검사 및 원본 oracle 검증을 통과했다. 이 기록은 실제 네크로맨서 자연 전투/사망 drop의 완료를 주장하지 않는다.
+
 ## Quest 헤쿠바 생성 `0051A5A0`
 
 네크로맨서 수정 뒤 동일한 실제 headless 연속 출구 실행은 5단계의 헤쿠바 생성에서 별도 null+484 SIGSEGV를 재현했다. 이 원본 함수 하나도 PE32 고정 update/health 위치와 int 객체 임시값 대신 native 포인터 경로로 연결했다. 원본 본체 `0051A5A0..0051A797` 504바이트/SHA-256 `26818353341f30bc7509e702caebe32e1f41b36ce59070d3a3a4829f0094e04e`는 기존 여덟 CALL record와 겹치지 않는 아홉 본체 구간·뒤 8-NOP로 봉인했다. Hecubah 이름 `005C4B7C` 8바이트, HecubahQuestSkill 키 `005C4B84` 18바이트, 별도 RewardMarker 이름 `005C4B98` 13바이트를 추가해 누적 코드 2,817개·데이터 595개다.

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 보석 손실의 native 포인터 경계 `0054D080`
+
+typed unit ABI를 `01a8c3899`로 먼저 분리한 뒤 한 원본 본체의 lazy DWORD 캐시·live 개수 순회·fresh head/cached next 삭제 순회·signed half-price 골드 반환을 Go로 복원했다. Diamond 캐시가 0이면 세 타입을 차례로 게시하고, 각 item type WORD는 full DWORD와 비교하며 ID 충돌은 Diamond→Emerald→Ruby 순서다. 첫 순회의 next는 type 판정 뒤 live로 읽고 두 번째는 가격/삭제/credit 전에 캐시한다. odd first gem의 가격 mode 1·nil merchant→삭제→credit→odd bit 해제와 그 뒤 signed positive half-count quota 삭제를 그대로 유지한다.
+
+원본 `0054D080..0054D2A0` 545바이트/SHA-256 `9ca8eb14b89146636bb27199ca79d390cffc3e3cc9d3b75baaf4f92cf6588e89`, 뒤 `0054D2A1`의 15-NOP 및 `005CDEE8/005CDEF0/005CDEF8`의 NUL 종료 Diamond/Emerald/Ruby를 각각 봉인했다. 누적 코드 2,862개·데이터 610개다. 216개 개수 조합, 세 종류 signed 가격 경계·DWORD 캐시·exact trace·live/cached binding 교체·missing binding fault와 4GiB 초과 C-owned 포인터의 실제 C entry·기존 가격/골드 함수 왕복을 검사했다. 전체 일반·실제 cgocheck2, 관련 일반/strict/race/checkptr 각 3회·server-tag 시험, 원본 1,556파일·570,653,750바이트와 NXZ 50쌍의 전후 검증이 통과했다.
+
+code/data hash는 원본 provenance이며 Go 의미 동등성을 그 자체로 증명하지 않는다. 원래 캐시의 Diamond는 독립 C 전역, Emerald/Ruby는 blob 주소라는 현재 native 저장 경계도 유지한다. dispatcher·Quest lives/사망 연결이 남아 admission은 계속 닫혀 있고 helper 시험을 실제 Quest 사망·부활 GUI 성공으로 확대하지 않는다. 원본 자산이나 사용자 Save·설정은 변경하지 않았다.
+
 ## Quest 무기 손실의 native 포인터 경계 `0054CC40`
 
 typed unit ABI를 별도 커밋으로 먼저 분리한 뒤, 한 원본 본체의 equipped weapon/wand 선택·보호 판정·예비 무기 전체 live 순회·선택 무기 delayed deletion을 Go로 복원했다. entry-cached player update와 이후 live Player/class byte, 캐시한 modifier array의 네 slot, fresh inventory head와 callback 뒤 live next를 구분한다. `0054CD06`의 exact `CanUseItem == 1` 비교를 유지하며 decompiled C의 nonzero 비교를 오라클로 사용하지 않는다. 첫 적격 무기가 보호되면 다른 장착 무기를 선택하지 않는다.

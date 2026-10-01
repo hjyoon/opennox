@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 보석 손실의 native inventory·가격·골드 경계 `0054D080`
+
+typed unit ABI 선행 커밋 `01a8c3899` 뒤 원본 본체 하나만 Go로 복원했다. Diamond DWORD가 0일 때만 Diamond→Emerald→Ruby를 차례로 조회·게시하며, Diamond의 독립 C 전역 변수와 Emerald/Ruby의 blob 주소를 연속 배열로 취급하지 않는다. 첫 live inventory 순회는 Diamond 캐시를 item type WORD보다 먼저 읽고 full DWORD와 비교하며, 같은 ID가 겹치면 Diamond→Emerald→Ruby 우선순위를 유지한다. 다음 링크는 type 판정 뒤 조회한다.
+
+각 signed DWORD 개수의 odd bit를 기록하고 하나를 뺀 뒤 signed /2 toward-zero로 quota를 계산한다. 두 번째 순회는 빈 첫 순회에서도 fresh head를 조회하고, 매 item의 next를 캐시한 뒤 type·가격·삭제·골드를 처리한다. 각 종류의 첫 odd 보석은 원래 mode 1·nil merchant 가격을 캐시→delayed deletion→signed half-price 골드 반환→odd bit 해제 순서이며 quota를 소모하지 않는다. 이후 positive quota만큼 추가 삭제하며 quota를 다 쓴 뒤에도 끝까지 순회한다. 가격을 float로 재해석하거나 inventory snapshot·Player/class gate·RNG·필수 binding 누락 무시를 추가하지 않았다.
+
+세 개수 0..5의 216개 조합, 세 종류의 signed 가격 경계, full DWORD/type WORD·ID 충돌·lazy cache 게시와 0 sentinel 재조회, exact callback/fault prefix, fresh head·live 캐시·첫 순회 live next·두 번째 cached next 교체를 검사했다. native 가격과 C-owned unit/item/update/Player 모두 4GiB 초과 주소의 실제 C entry→Go export→server→delayed-delete→기존 골드 함수 왕복도 통과했다. 삭제에서 unit update를 교체한 뒤 원래 Player는 골드 37을 유지하고 새 Player는 positive credit의 DWORD wrap으로 300, signed negative half-price 뒤 3,221,225,772가 된다. nil RNG에서도 실행되며 무관한 native 필드를 바꾸지 않는다.
+
+Darwin/ARM64 관련 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 시험 1회가 통과했다. 원본 본체 545바이트·뒤 15-NOP·NUL 종료 보석 이름 세 개를 봉인했고 `make oracle-test`는 stock 1,556파일·570,653,750바이트·2,862 code/610 data range·NXZ 50쌍을 전후 검증했다. dispatcher·Quest lives/사망 연결이 남아 admission은 계속 닫혀 있다. helper 검증을 실제 Quest 사망·부활 headless 성공 또는 Linux/AMD64 실행으로 확대하지 않는다.
+
 ## Quest 보석 손실의 typed unit ABI — 본체 복원의 선행 단계 `0054D080`
 
 원본별 리팩터링 규칙에 따라 unit 인수를 `int`에서 `nox_object_t*`로 먼저 분리하고 raw dispatcher caller를 명시적으로 변환했다. 기존 정수 alias와 C 본체는 그대로 유지하며 이 단계만으로 inventory·가격 조회·삭제·골드 반환의 포인터 잘림이 해결되었다고 주장하지 않는다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. native 본체는 다음 별도 커밋이며 Quest 사망 admission은 계속 닫혀 있다.

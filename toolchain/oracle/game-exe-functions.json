@@ -19726,6 +19726,20 @@
       "purpose": "select the live learned eligible ordinal, clear only its DWORD, load the recipient byte after clearing, send F0/18 with the little-endian ability word and unsequenced/remove-one flags, or retain the final EAX low byte on no-match paths"
     },
     {
+      "name": "sub_54D080",
+      "address": "0x0054D080",
+      "size": 545,
+      "sha256": "9ca8eb14b89146636bb27199ca79d390cffc3e3cc9d3b75baaf4f92cf6588e89",
+      "purpose": "initialize the lazy DWORD gem type caches, count the live inventory using WORD-to-DWORD comparisons, then lose each signed half-count plus its odd first gem with a cached next pointer and signed half-price gold credit after deletion"
+    },
+    {
+      "name": "sub_54D080_padding",
+      "address": "0x0054D2A1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes after gem loss before player death at 0054D2B0"
+    },
+    {
       "name": "nox_xxx_playerDie_54D2B0_prefix",
       "address": "0x0054D2B0",
       "size": 905,
@@ -24269,6 +24283,27 @@
       "size": 26,
       "sha256": "81da512437a3de6bd94e5dbd4785447d666eb10ff44db8d5306525c7a8b7b8de",
       "purpose": "the exact NUL-terminated QuestDurabilityMultiplier balance key used by ArmorCreate"
+    },
+    {
+      "name": "quest_lose_gems_diamond_type_name_54D080",
+      "address": "0x005CDEE8",
+      "size": 8,
+      "sha256": "b0649236ec5e59bb2b5b06e8a468183e5bbdb83683c2be85cbe2be9bc7d5ee3c",
+      "purpose": "the exact NUL-terminated Diamond name resolved first when the gem loss helper's Diamond DWORD cache is zero"
+    },
+    {
+      "name": "quest_lose_gems_emerald_type_name_54D080",
+      "address": "0x005CDEF0",
+      "size": 8,
+      "sha256": "e31b88bbc028c724a753b6b19a2875f57e7dfe4c2010b32d3760d9e6b90d4411",
+      "purpose": "the exact NUL-terminated Emerald name resolved after publishing Diamond during lazy gem loss cache initialization"
+    },
+    {
+      "name": "quest_lose_gems_ruby_type_name_54D080",
+      "address": "0x005CDEF8",
+      "size": 5,
+      "sha256": "2f4c74d1e2d431c1b170b29a3b9ae151d64bb750f62c1e1dcc47224031b2239d",
+      "purpose": "the exact NUL-terminated Ruby name resolved after publishing Emerald during lazy gem loss cache initialization"
     },
     {
       "name": "potion_player_class_multiplier_defaults",

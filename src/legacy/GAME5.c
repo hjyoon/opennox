@@ -4650,6 +4650,7 @@ char nox_server_questLoseAbility_native_54CFB0(nox_object_t* unit);
 char sub_54CFB0(nox_object_t* unit) { return nox_server_questLoseAbility_native_54CFB0(unit); }
 
 //----- (0054D080) --------------------------------------------------------
+#if 0
 void sub_54D080(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
 	char v1; // bl
@@ -4754,6 +4755,9 @@ void sub_54D080(nox_object_t* unit) {
 		}
 	}
 }
+#endif
+void nox_server_questLoseGems_native_54D080(nox_object_t* unit);
+void sub_54D080(nox_object_t* unit) { nox_server_questLoseGems_native_54D080(unit); }
 
 //----- (0054D2B0) --------------------------------------------------------
 int nox_xxx_diePlayer_54D2B0(int a1) {

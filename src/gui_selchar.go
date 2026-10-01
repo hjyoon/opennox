@@ -973,7 +973,10 @@ func nox_savegame_sub_46C920(win1 *gui.Window, ev gui.WindowEvent) gui.WindowEve
 }
 
 func nox_savegame_sub_46CBD0() {
-	i := *(*int32)(unsafe.Add(dword_5d4594_1082864.WidgetData, 48))
+	i, selected := saveListSelectedSlot(dword_5d4594_1082864, len(nox_savegame_arr_1064948))
+	if !selected {
+		return
+	}
 	if alloc.GoStringS(nox_savegame_arr_1064948[i].PathBuf[:]) == "" {
 		return
 	}

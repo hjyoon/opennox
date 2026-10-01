@@ -1834,6 +1834,13 @@
       "purpose": "the exact seven NOP bytes separating the Save/Load menu procedure from the load-confirmation callback at 0046CBD0"
     },
     {
+      "name": "nox_savegame_sub_46CBD0",
+      "address": "0x0046CBD0",
+      "size": 160,
+      "sha256": "25726bdc48c17ec6aade021e664d67b66703420925859228c51959692dd12fc9",
+      "purpose": "load the selected save-list slot after confirmation, return without loading an empty path, preserve load-error dialog, death-state cleanup and the final dialog and Save/Load menu dismissal order"
+    },
+    {
       "name": "nox_xxx_drawMinimap4Sprite_4725C0",
       "address": "0x004725C0",
       "size": 58,

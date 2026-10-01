@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 게임 중 로드 확인 callback의 native 슬롯 선택 `0046CBD0`
+
+실제 headless Warrior에서 수동 슬롯 1의 생성과 덮어쓰기 No/Yes를 통과한 뒤, 실제 이동으로 저장 위치 `(4546.18, 1981.0657)`에서 벗어나 Load/Yes를 누르면 AUTOSAVE 위치 `(4404.5, 2104.5)`로 돌아오는 실패를 재현했다. 메뉴 선택은 1이지만 확인 callback이 LP64 slider 주소의 하위 DWORD를 PE32 선택값으로 읽어 0을 로드한다. 별도 원본 본체 `0046CBD0`만 앞선 읽기 전용 native listbox 질의로 변경한다. 선택 없음·nil 응답·범위 밖·빈 수동 경로에서는 로드를 시작하지 않고, 원래 load-error·death-state 정리·dialog/Save 메뉴 닫기 순서는 유지한다.
+
+native 선택 회귀와 callback의 missing/nil/signed -1·범위 밖·빈 슬롯 1/13 거부 시험을 3회 통과했다. 빈 수동 슬롯이 채워진 AUTOSAVE로 fallback하지 않는 것도 검사한다. 전체 일반·실제 cgocheck2 시험과 원본 본체 160바이트 무결성 verifier를 통과했으며 누적 코드는 2,834개·데이터는 597개다. 이 수정은 게임 중 확인 callback에 한정하며, 첫 Solo 메뉴의 `004A5710`과 새 프로세스 수동 슬롯 로드는 별도 실제 검증 대상으로 남는다. 사용자 Save와 stock 자산은 사용·수정하지 않는다.
+
 ## 수동 Save/Load 메뉴의 native 슬롯 선택 `0046C920`
 
 실제 Warrior 캠페인 headless에서 native timestamp/style 열의 선택값이 모두 1이고 수동 슬롯 1이 비어 있는데 Save 버튼이 AUTOSAVE 덮어쓰기 확인창을 띄우는 실패를 재현했다. 확인창에서 Yes를 누르지 않아 기존 자동 저장도 보존했다. PE32 `WidgetData+48`은 LP64의 slider 포인터이며 단일 선택은 native listbox의 Go 상태에 있으므로 `0x4014` 읽기 전용 질의로 치환한다. 이 단위는 `0046C920` 한 본체의 Save/Load 분기만 수정하며 선택 없음·nil 응답·배열 밖 인덱스는 부작용 전에 거부한다. 원본 애니메이션 gate·확인창·취소·저장 이름·작업 큐·pause 순서는 유지한다.

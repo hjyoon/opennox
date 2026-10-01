@@ -24103,6 +24103,20 @@
       "purpose": "the second distinct exact NUL-terminated space delimiter passed to strtok with the original args pointer by the MonsterArrowCollide parser at 0x00536E80"
     },
     {
+      "name": "player_attack_round_chakram_projectile_type_538960",
+      "address": "0x005CAB3C",
+      "size": 21,
+      "sha256": "8788a18d16874bd4c97f8a16c2a3adc16d253275a3816c59474382defca17e3e",
+      "purpose": "the exact NUL-terminated RoundChakramInMotion type name passed by the player-attack branch at 005390E8"
+    },
+    {
+      "name": "player_attack_fan_chakram_projectile_type_538960",
+      "address": "0x005CAB54",
+      "size": 19,
+      "sha256": "5f590b25a508551b39814d1762b516dfb0788d3bda75896127abd0547ceb6a4e",
+      "purpose": "the exact NUL-terminated FanChakramInMotion type name passed by the player-attack branch at 00539279"
+    },
+    {
       "name": "item_drop_rule_table",
       "address": "0x005CB388",
       "size": 240,

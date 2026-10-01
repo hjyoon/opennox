@@ -4310,6 +4310,11 @@ int nox_xxx_playerAttackNativeData_538960(
 			goto finish;
 		}
 
+		if (equipment & 0xC0u) {
+			return nox_xxx_playerAttackThrownNative_538960(
+				unit, weapon, update, equipment, previous_frame);
+		}
+
 		int animation;
 		int sound;
 		uint8_t damage_type;

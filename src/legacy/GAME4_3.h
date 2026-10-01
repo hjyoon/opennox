@@ -151,6 +151,9 @@ int nox_xxx_playerAttackNPCUseWeaponNative_538960(
 int nox_xxx_playerAttackNPCProjectileNative_538960(
 	nox_object_t* owner, nox_object_t* weapon, uint32_t equipment,
 	uint8_t previous_frame, uint8_t* stored_frame);
+int nox_xxx_playerAttackThrownNative_538960(
+	nox_object_t* owner, nox_object_t* weapon, nox_player_update_data_t* update,
+	uint32_t equipment, uint8_t previous_frame);
 void nox_xxx_playerAttackWarcryNative_538960(nox_object_t* unit);
 void nox_xxx_playerAttackBerserkNative_538960(nox_object_t* unit);
 int nox_xxx_playerAttack_538960(nox_object_t* a1);

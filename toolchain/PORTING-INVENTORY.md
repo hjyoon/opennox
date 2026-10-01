@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어 던지기 발사 복원 `00538960`
+
+앞서 재현한 누락 분기를 한 원본 본체 `00538960`의 별도 변경으로 복원했다. action 44의 DWORD deadline·BYTE animation·정확한 중간 frame gate를 유지하며, Round 우선순위·trace 5/4·cached spawn/Ammo/Chakram update와 live modifier/방향/owner 위치를 구분한다. Round는 detach→생성→projectile inventory에 원래 무기 이동→modifier→velocity→반사 4·return state 2→audio 순서다. Fan은 생성 전 collision owner를 저장하고 audio 뒤 infinite flag를 읽어 BYTE charge를 감소시킨다. 마지막 수량은 detach/delete/원본 자동 재장착, 나머지는 cached player update의 fresh recipient로 charge 보고를 한다. 원본에 없는 nil binding 무시나 animation/divisor clamp는 추가하지 않았다.
+
+실제 C entry와 4GiB 초과 native-width 인수를 사용하는 회귀는 두 무기 애니메이션 시작/종료, 일회 발사, pointer binding 교체, 정확한 callback 순서, finite/infinite/마지막·0→255 charge, native NPC frame alias, full signed WORD direction index와 최종 binary32 좌표 저장을 검사한다. NPC alias fixture는 두 native layout을 담는 동일 allocation을 사용한다. 전체 일반·실제 `GOEXPERIMENT=cgocheck2` Go 시험과 관련 race·checkptr=2 각 3회가 통과했다. 원본의 NUL 종료 projectile 이름 두 개도 봉인했으며, `make oracle-test`는 stock 1,556파일·570,653,750바이트·2,853 code/607 data range·NXZ 50쌍을 전후 검증했다.
+
+일반 headless의 실제 Warrior 인벤토리 장착·공격 입력으로 슈리켄 발사를 확인했다. 후속 실제 명중 검사는 `nox_xxx_itemApplyAttackEffect_538840`의 raw PE32 entry에서 projectile `0x3201633d0`의 `+692` 주소가 `0x20163684`로 잘리는 별도 SIGSEGV를 재현했다. 이 커밋은 발사 복원에 한정하며 그 피해 계산, 채크럼의 실제 귀환 또는 일반·HD 전체 사용 성공을 주장하지 않는다. 해당 후속 경로는 별도 원본 함수 변경으로 해결하고 자연 명중·귀환 검증을 이어간다.
+
 ## 플레이어 슈리켄·채크럼 사용 검사 — native 발사 분기 누락 재현
 
 `host-warrior-shuriken.yaml`과 `host-warrior-chakram.yaml`은 실제 Warrior 정규 host 메뉴에서 시작한다. stock FanChakram/RoundChakram 한 개를 지급하고 실제 인벤토리 클릭→장착 보고→마우스 이동·공격 버튼→네트워크→플레이어 공격→world 투사체 생성을 관찰한다. 장비·공격 상태·탄약·투사체·피해 결과를 강제하지 않는다. 대상 stock Troll의 위치·내구도 2000·ordinary WAIT AI만 fixture로 준비하며, 사용자 Save와 원본 맵·자산은 변경하지 않는다. RoundChakram은 탄약형 무기가 아니므로 ammo-use record를 요구하거나 읽지 않는다.

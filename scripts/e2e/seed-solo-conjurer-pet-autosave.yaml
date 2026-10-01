@@ -1,0 +1,73 @@
+# Real duration spells and an unowned Charm target enter Con02a through its
+# stock exit. No pet is recreated or reowned by the load process.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept conjurer class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept conjurer color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss opening dialog
+  - action: wait
+    dt: 60
+    name: settle opening dialog
+  - action: create-transition-spell-pets
+    name: complete Summon Wolf Summon Urchin and Charm
+  - action: contact-pet-transition-exit
+    map: con02a
+    name: enter chapter two through stock exit contact
+  - action: click-chapter-briefing
+    name: dismiss chapter two briefing
+  - action: wait-forced-coop-autosave
+    name: complete chapter two autosave
+  - action: wait
+    dt: 30
+    name: settle saved pets
+  - action: assert-transition-summons
+    name: verify all pets before quitting seed process
+  - action: capture-campaign-pet-save
+    name: record scalar saved pet identities outside save slot
+  - action: screen
+    name: campaign pets before autosave reload
+  - action: quit
+    dt: 1

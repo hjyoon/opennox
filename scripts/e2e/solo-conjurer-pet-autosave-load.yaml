@@ -1,0 +1,73 @@
+seed-scenario: seed-solo-conjurer-pet-autosave.yaml
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign with saved pets
+  - action: wait
+    dt: 500
+    name: wait for autosave selection
+  - action: assert-coop-autosave-selected
+    class: Conjurer
+    map: Con02a
+    name: verify chapter two autosave selection
+  - action: click
+    x: 512
+    y: 608
+    name: load selected autosave in new process
+  - action: wait-map
+    map: Con02a
+    name: wait for saved map
+  - action: wait-player-reloaded
+    name: verify loaded player binding
+  - action: wait
+    dt: 30
+    name: settle restored pet reports
+  - action: assert-campaign-pets-reloaded
+    name: verify saved identities health ownership and client drawables
+  - action: screen
+    name: campaign pets restored from autosave
+  - action: wait
+    dt: 240
+    name: exercise loaded pet gameplay
+  - action: assert-campaign-pets-reloaded
+    name: verify loaded identities and HUD do not disappear on later ticks
+  - action: contact-pet-transition-exit
+    map: con03a
+    name: continue to next chapter with loaded pets
+  - action: click-chapter-briefing
+    name: dismiss next chapter briefing
+  - action: wait-forced-coop-autosave
+    name: complete next chapter autosave
+  - action: wait
+    dt: 30
+    name: settle loaded pets after next transition
+  - action: assert-transition-summons
+    name: verify loaded pets migrate on next exit
+  - action: wait
+    dt: 240
+    name: exercise destination gameplay after reload and transition
+  - action: assert-transition-summons
+    name: verify all loaded pets remain beside player
+  - action: screen
+    name: campaign loaded pets after next chapter transition
+  - action: wait-player-reloaded
+    name: record destination player binding before control check
+  - action: run
+    ang: 0.25
+    dt: 100
+    name: move loaded player after next chapter transition
+  - action: assert-player-moved-after-reload
+    name: verify player control after reload and transition
+  - action: quit
+    dt: 1

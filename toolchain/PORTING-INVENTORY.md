@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 캠페인 AUTOSAVE의 새 프로세스 로드·소환수 보존 회귀
+
+`seed-solo-conjurer-pet-autosave.yaml`은 실제 Summon Wolf·Summon Urchin·Charm으로 Wolf 1마리와 Urchin 2마리를 만든 뒤 stock 출구로 Con02a에 진입하고 기존 AUTOSAVE 완료 후 정상 종료한다. `solo-conjurer-pet-autosave-load.yaml`은 별도 새 프로세스의 실제 메뉴로 그 AUTOSAVE를 불러온다. 저장 슬롯 밖의 E2E 전용 JSON은 포인터 없는 type·script ID·HP 기대값만 기록하며, 게임 저장 데이터나 소환수 복원에는 사용하지 않는다.
+
+Darwin/ARM64 일반·HD headless 실행 모두 새 프로세스 로드 직후와 240틱 후에 같은 script ID 3개, HP 40/40·8/8·8/8, owner/owned list·migration 상태·live client drawable·실제 summon HUD 및 minimap 목록을 확인했다. 이어 stock 출구 충돌로 Con03a에 진입하고 기존 브리핑·AUTOSAVE를 완료한 뒤 초기/추가 240틱 검사에서 같은 native 소환수 3마리가 유지됐다. 전환 후 실제 입력으로 player가 104.667 이동한 것을 확인하고 exit 0으로 종료했으며, 두 제품의 로드/전환 화면도 검토했다.
+
+Con02a에서 먼저 이동하면 NPC 이벤트가 원래의 player update 잠금을 설정해 출구 접촉 검사를 막으므로, 이동 검증은 Con03a 전환 뒤로 옮겼다. 이벤트 잠금·owner·migration flag나 게임의 소환수 보존 규칙은 수정하지 않았다. 전체 일반·cgocheck2 시험과 원본 코드 2,800개·데이터 586개·stock 1,556개 파일 무결성 검증이 통과했다. 이 저장 회귀는 Pixie·Quest/온라인 stage·개인 기존 save를 포함하지 않으며, 사용자가 보고한 소실은 검사한 캠페인 조건에서 여전히 미재현이다.
+
 ## 독립 서버 실제 기동·맵 전환·정상 종료
 
 Darwin/ARM64의 clean `01158cde4` 서버 제품을 실제로 실행해 `so_beach` chat 시작, 인증된 API의 `estate→trilevel→estate` arena 로딩과 계속 도는 메인 루프를 확인했다. 그러나 정상 console `quit`이 `nox_game_exit_xxx2`를 거쳐 `mainloopContinue=false`로 만들어도 독립 `Server.MainLoop`가 이 플래그를 보지 않아 프로세스가 남았다. 같은 fixture의 수정 전 실행은 quit 이후 10초 제한에서 실패했다.

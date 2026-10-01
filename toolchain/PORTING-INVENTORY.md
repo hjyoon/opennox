@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어 슈리켄·채크럼 사용 검사 — native 발사 분기 누락 재현
+
+`host-warrior-shuriken.yaml`과 `host-warrior-chakram.yaml`은 실제 Warrior 정규 host 메뉴에서 시작한다. stock FanChakram/RoundChakram 한 개를 지급하고 실제 인벤토리 클릭→장착 보고→마우스 이동·공격 버튼→네트워크→플레이어 공격→world 투사체 생성을 관찰한다. 장비·공격 상태·탄약·투사체·피해 결과를 강제하지 않는다. 대상 stock Troll의 위치·내구도 2000·ordinary WAIT AI만 fixture로 준비하며, 사용자 Save와 원본 맵·자산은 변경하지 않는다. RoundChakram은 탄약형 무기가 아니므로 ammo-use record를 요구하거나 읽지 않는다.
+
+Darwin/ARM64 일반·HD의 두 무기 네 실행 모두 실제 장착까지 통과했으나 90 tick 안에 소유 투사체를 만들지 못해 **기능 회귀가 실패**했다. 공격 입력 2 tick 뒤 상태 1·attack frame `449→775`·stamina 92로 입력 처리를 확인했지만 attack deadline은 0이다. FanChakram은 장착 mask `0x80`·charge `20→20`, RoundChakram은 mask `0x40`과 원래 장착 객체를 유지하고, 두 표적 HP는 `2000→2000`이다. 실제 unit/weapon/update 및 슈리켄 ammo pointer는 모두 4GiB 초과 native 주소다. 실패를 passing unsupported fallback으로 바꾸지 않으며, 발사하지 않았으므로 명중 피해·반사·채크럼 귀환이나 탄약 소진/자동 재장착이 검증됐다고 주장하지 않는다.
+
+원인은 64비트 player가 실행하는 `nox_xxx_playerAttackNativeData_538960`에 두 던지기 분기가 빠진 것이다. staff/wand 뒤 melee mask에도 `0x40/0x80`이 없어 deadline/animation 갱신이나 투사체 생성 전에 0을 반환한다. 원본 `00538960`에는 action 44와 중간 frame gate, Round/Fan의 trace 5/4 및 각각 inventory 이동/charge 감소가 있다. 이미 복원한 MonsterNPC 투사체 분기는 별도 경로여서 player 발사를 대신하지 않는다. 이 변경은 요청된 사용 검사와 재현 시나리오에 한정하며 제품의 무기 공격 본체는 수정하지 않았다.
+
+새 시나리오의 bounded launch gate·stock type/mask·잘못된 item 거부·Round의 ammo 무접근 시험 및 기존 player attack/Fist 대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·checkptr=2 각각 3회, 전체 일반·실제 cgocheck2 Go 시험이 통과했다. 이는 fixture/기존 코드의 검사이며 위 실패한 실제 무기 사용의 성공을 뜻하지 않는다. `make oracle-test`도 원본 1,556개 파일·570,653,750바이트, 코드 2,853개·데이터 605개와 NXZ 50쌍을 전후 검증했다. 두 시나리오는 수동 headless 기능 회귀로 남기며 Linux/AMD64 실행이나 모든 캐릭터·모드 검증으로 확대하지 않는다.
+
 ## Fist 주문 생성의 native 포인터 경계 `0052D3C0`
 
 보고된 Linux/AMD64 크래시의 실제 ownership root `0x7fe88670ee80`와 오류 주소 `0xffffffff8670f084`는 PE32 `+516` owned-head 읽기가 하위 DWORD로 잘린 뒤 sign-extension된 것과 일치한다. `Nox_xxx_castFist_52D3C0`의 기존 Go selector 인수는 유지하고 여섯 int C 콜백 호출을 직접 native server 함수로 바꿨다. 한 원본 본체 `0052D3C0`의 C 코드는 provenance용 `#if 0`로 보존해 잘리는 실행 진입점을 제거한다.

@@ -9892,6 +9892,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckFistSpell(l.Count, l.Name)
+		case "check-player-thrown-weapon":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerThrownWeapon(l.Item, l.Name)
 		case "assert-player-hud-poisoned":
 			if dt != 0 {
 				sc.Wait(dt, "")

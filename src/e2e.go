@@ -10362,6 +10362,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertEngageItemEquipped(l.Name)
+		case "check-player-regeneration":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerRegeneration(l.Name)
 		case "assert-engage-item-dequipped":
 			if dt != 0 {
 				sc.Wait(dt, "")

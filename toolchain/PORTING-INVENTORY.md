@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 장비 재생 효과의 실제 player update·회복 headless 검증
+
+`host-game-player-regeneration.yaml`은 실제 Warrior 정규 host 메뉴→stock `Regeneration1` Sword 지급→inventory 클릭 장착→player update→장비 순회→native C callback→holder HP 회복→inventory 클릭 해제를 실행한다. 초기 부상과 cooldown timestamp만 fixture로 준비하며 회복·modifier 호출·장착 상태·관전자 flag·clock은 주입하지 않는다. stock rate 7,200·FPS 30·max HP 150의 장비 주기 1,440 tick을 그대로 기다리고, 긴 관찰 동안 실제 한-frame right-button 입력으로 비활성 관전자 전환을 방지한다. callback을 직접 호출하거나 기본 자연 회복만으로 통과시키지 않는다.
+
+Darwin/ARM64 일반·HD 두 실행 모두 4GiB 초과 owner/item/modifier/attributes/health 주소를 사용하며, 4,350 tick 뒤 HP `69→144/150`·회복량 75를 확인했다. 같은 기간 기본 자연 회복의 phase-independent 상한 73을 초과해야 통과한다. player identity·injury timestamp·최대 HP·장착 item/holder·observer bit를 유지하고, 마지막 실제 해제에서 equipped weapon nil·mask 0을 확인해 exit 0으로 종료했다. 부상/회복 화면 네 장을 검토해 HUD 회복을 확인했다. 앞선 부상 PNG 비교의 반짝임 1픽셀 차이는 진단으로 보존했고, 최종 두 제품은 독립 임시 캡처로 기능 검사를 완료했다. 이 시나리오의 일반/HD exact-pixel 동등성은 주장하지 않는다.
+
+최종 소스의 전체 일반·실제 `GOEXPERIMENT=cgocheck2` Go 시험과 관련 race·`checkptr=2` 각 3회가 통과했다. stock 원본 1,556파일·570,653,750바이트·2,856 code/607 data range·NXZ 50쌍의 전후 oracle 검증도 통과했다. 사용자 Save·설정·원본 맵·자산은 변경하지 않았고 PNG는 임시 디렉터리에만 보관한다. 실제 stock 재생 검 한 개의 회귀이며 모든 modifier/armor 조합·캠페인 save/load·Linux/AMD64 실제 실행을 대신하지 않는다.
+
 ## 장비 update 인수·live 순회 복원 `004FA490`
 
 별도 원본 본체 87바이트·9-NOP에 따라 장비 순회 callback 인수를 잘못된 player에서 current equipped item으로 고쳤다. equipped/class mask와 entry-cached modifier array를 유지하며 callback 뒤 네 slot 및 current item의 next link를 live로 조회한다. array 값을 복사하는 range도 제거했다. 회귀는 skip gate·callback 중 array/next/head 교체·item 인수와 native 장비 순회→C callback→재생 holder healing을 검사한다.

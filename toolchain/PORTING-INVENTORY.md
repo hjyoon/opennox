@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 여섯 연속 단계의 플레이 상태·미니언 실제 입력 회귀
+
+`scripts/e2e/host-quest-six-stages.yaml`은 실제 Warrior Quest 메뉴부터 stock 출구로 1→6단계를 연속 진행한다. fixture는 출구에 플레이어를 배치해 정상 collision work를 큐에 넣는 것뿐이다. 단계·지도·spawn·HP·관전자·packet·UI 해제·이동 값을 주입하지 않는다. 여섯 단계 각각 Quest 모드·연결·로딩 종료·지도·동일한 server/client/drawable wire ID·phase 3·observer bit 0·양수 HP·유한 position·briefing 해제를 검사한다. 다섯 결과 화면은 real mouse로 닫고 각 다음 맵에서 real right-button 100틱 이동을 보내 같은 지도·단계·플레이어의 8 이상 이동을 확인한다.
+
+Darwin/ARM64 일반·HD headless 모두 `g_templd→g_castld→g_lotdd→g_swamp→g_forest→g_cryptd`를 완료하고 exit 0으로 종료했다. 단계별 player HP는 450/450, 다섯 이동 거리는 81.989·272.935·322.708·164.631·78.531이다. 5단계 Hecubah 1마리는 native definition/update와 HP 400/400·power 3·aggression 0.83·skill 0.85·인벤토리 4개, Necromancer 2마리는 각각 HP 100/100·power 1·aggression 0.83·skill 0.5·인벤토리 1개였다. 모든 인벤토리 항목의 native holder·중복/cycle·Destroyed 여부도 확인한다. 원본 RewardActivate의 nil 분기를 무시한 보장 drop 수를 강제하지 않고 실제 항목 수를 기록하며, 생성 시험이 보상 시도 횟수와 live stage 순서를 검사한다.
+
+제품당 여섯 플레이 상태·다섯 이동·두 미니언 종류 검사가 통과했다. 5단계 결과/플레이와 6단계 플레이 세 화면을 검토하고 일반·HD의 exact-pixel 일치를 확인해 회귀 기준 PNG로 보관한다. 별도 단위 시험은 observer와 status 0x10을 구분하고 지도/단계/identity 불일치·captured briefing·dead/zero/과다 HP·NaN/Inf·짧은 이동·플레이어 교체를 거부한다. Go 1.26.5 전체 일반·실제 cgocheck2 시험과 새 scalar assertion 단위 시험 3회, stock 1,556개 파일·코드 2,817개·데이터 595개 및 압축 oracle-test도 통과했다. 이는 여섯 단계 생성·전환·상태·이동 검사이며 미니언 전투/사망 drop·모든 Quest stage·원격 플레이어·실제 SDL/OpenAL 검증을 포함하지 않는다.
+
 ## Quest 5단계 헤쿠바 생성과 1→6단계 실제 전환
 
 네크로맨서 수정 뒤 실제 stock 출구 연속 실행으로 재현한 `nox_xxx_spawnHecubahQuest_51A5A0`의 null+484 SIGSEGV도 별도 원본 함수 단위로 수정했다. native 객체·update·health·position 주소와 공통 정확한 x87 HP 계산을 사용한다. 헤쿠바 고유 AI 순서·Field510=3·Field388, 반환값을 버리는 HecubahQuestSkill 조회와 그 뒤의 constant Field330, 네 번의 live stage+2 보상·선택적인 mode-zero 인벤토리 삽입·marker 한 번 해제를 유지한다.

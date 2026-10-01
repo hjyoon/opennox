@@ -9586,6 +9586,18 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.EnterQuestExit(l.Name)
+		case "assert-quest-stage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertQuestStage(l.Count, l.Map, l.Name)
+		case "walk-quest":
+			sc.WalkQuest(l.Ang, dt, l.Name)
+		case "assert-quest-minion":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertQuestMinion(l.Creature, l.Count, l.Name)
 		case "set-objective-game-mode":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -10,6 +10,8 @@
 
 수정 후 일반 Darwin/ARM64 headless의 실제 메뉴→Quest 1→6단계 stock 출구 전환은 exit 0으로 완료했다. 각 결과 화면은 real mouse로 닫히고 다음 맵에서 real right-button 이동으로 server position이 변했으며 HP는 450/450이었다. 대상 server·legacy 시험은 일반·race·checkptr·실제 cgocheck2 각각 3회 통과했고 stock 무결성·봉인 범위·압축 oracle-test도 통과했다. 이는 여섯 단계의 생성·출구·결과 화면·이동 검사이며 모든 Quest stage나 boss combat/drop을 검증하지 않는다. 원본 자산·효과 수치·보상 알고리즘은 바꾸지 않았다.
 
+후속 `host-quest-six-stages.yaml`은 일반·HD 모두 여섯 단계 플레이 가능 상태와 다섯 real input 이동을 assertion으로 검사하고 exit 0으로 완료했다. 5단계에서 Hecubah 1마리(HP 400/400, native 인벤토리 4개)와 Necromancer 2마리(각 HP 100/100, 인벤토리 1개)의 생존·native definition/update·holder 연결을 관찰했다. 각 결과 화면을 real mouse로 닫으며 5단계 결과/플레이·6단계 플레이 세 PNG는 두 제품에서 exact-pixel 일치했다. 원본 미니언 전투/사망 drop의 완료 검사는 아니다.
+
 ## Quest 네크로맨서 생성 `0051A7A0`
 
 실제 headless Host Quest의 stock 출구를 연속 통과하면 1~4단계 뒤 5단계 생성 중 `0051A7A0`에서 null+484 SIGSEGV가 발생했다. PE32 `Object+748`의 update 포인터를 LP64에서도 읽어 native `UpdateData`를 잃는 경로다. 이 원본 함수 하나를 typed Go 본체와 native 서비스 binding으로 연결하고 C 진입점은 전체 position 주소를 전달하는 shim으로 남긴다.

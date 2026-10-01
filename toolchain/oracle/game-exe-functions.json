@@ -3171,6 +3171,34 @@
       "purpose": "the sole decoded direct rel32 call from the client inform subtype-two handler to the ability-result reporter at 004FB960"
     },
     {
+      "name": "input_shell_constructor_4CB880",
+      "address": "0x004CB880",
+      "size": 740,
+      "sha256": "ff1e9f63d6bcff1d7660bfd2ce6bebc53f2f6610308023c47e50a2407f79a77e",
+      "purpose": "the exact shell InputCfg constructor that loads the stock window with disabled control 932, installs its key callback and animated exit, and does not enable the in-game Apply button"
+    },
+    {
+      "name": "input_shell_constructor_4CB880_padding",
+      "address": "0x004CBB64",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes after the shell InputCfg constructor"
+    },
+    {
+      "name": "input_shell_start_out_4CBB70",
+      "address": "0x004CBB70",
+      "size": 52,
+      "sha256": "ec38cbfae04aa50bb6aff8b6a796f93711692d7a734c06d8dee413041b0d0549",
+      "purpose": "the exact shell input animated start-out callback: apply pending bindings, request nox.cfg write, reload and mark the current animation OUT, set global animation state, and play the exit sound"
+    },
+    {
+      "name": "input_shell_start_out_4CBB70_padding",
+      "address": "0x004CBBA4",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP alignment bytes after the shell input animated start-out callback"
+    },
+    {
       "name": "sub_4CBE70_event_cluster",
       "address": "0x004CBE70",
       "size": 208,
@@ -20972,6 +21000,13 @@
       "size": 436,
       "sha256": "23991397ffe6d90890da8f02e3ef7fbb106881aab3be398503761d38ea513963",
       "purpose": "the exact ToolTip.c source paths, NoArmsInfo/BookOf/LoreScroll keys, UTF-16 single-space literals, and percent-s-space formats referenced by the complete item tooltip body"
+    },
+    {
+      "name": "input_shell_window_and_config_4CB880",
+      "address": "0x005B4C80",
+      "size": 24,
+      "sha256": "d158cdb2099ac623603bbc0b4ed2b502f55d1b526fa97395238d793d9a1af9f1",
+      "purpose": "the exact aligned InputCfg.wnd filename and nox.cfg exit-write filename used by the shell constructor and its animated start-out callback"
     },
     {
       "name": "indexed_direction_vectors",

@@ -56,3 +56,26 @@ func TestAuditClientOptionsRejectsInvalidMode(t *testing.T) {
 		}()
 	}
 }
+
+func TestOptionsAuditInputExitControl(t *testing.T) {
+	for _, tc := range []struct {
+		mode int
+		id   uint
+		name string
+	}{{0, 152, "Back"}, {1, 932, "Apply"}} {
+		id, name := optionsAuditInputExitControl(tc.mode)
+		if id != tc.id || name != tc.name {
+			t.Errorf("mode=%d: exit=(%d, %q), want (%d, %q)", tc.mode, id, name, tc.id, tc.name)
+		}
+	}
+	for _, mode := range []int{-1, 2, 99} {
+		func() {
+			defer func() {
+				if recover() == nil {
+					t.Errorf("mode=%d did not panic", mode)
+				}
+			}()
+			optionsAuditInputExitControl(mode)
+		}()
+	}
+}

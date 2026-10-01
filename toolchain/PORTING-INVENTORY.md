@@ -1,5 +1,26 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 옵션 입력 창의 원본 Back 경로와 재설정 후 ESC 후속 점검
+
+`bf26d9450`의 메인 Options constructor 복원 뒤 audit-only 단위다. stock InputCfg.wnd의 932는 원래 disabled이며 메인 constructor `004CB880`도 이를 enable하지 않는다. 게임 내 constructor만 932를 enable한다. 따라서 메인에서 disabled Apply를 클릭하던 기존 audit를 실제 별도 Back 152로 바로잡고, 게임 내 Apply 932는 유지했다. 메인 Back은 `004CBB70`의 animated start-out을 통해 pending binding을 적용한다. production 함수 본체·포커스·animation/state·handler·설정 값을 바꾸지 않는다.
+
+일반·HD 실제 mouse/key 입력에서 Back 뒤 F10/F11 live binding과 in-memory 직렬화, Options 복귀, 입력 창 재열림 후 두 열의 F10/F11 보존이 통과했다. 재열린 창에서 F9/F12로 다시 설정한 뒤 ESC는 두 빌드 모두 실패한다. ESC 직전 read-only observer는 focus=nil·capture=nil·animation global=0(InDone)을 기록하며, ESC 뒤 state 900과 이전 F10/F11 live binding이 남았다. 현재 Go key dispatcher는 nil focus에서 반환하지만 원본 전체 key dispatch와의 대조·복원은 아직 하지 않았다. 이 다섯 실패 assertion을 그대로 수집한 뒤 실제 Back fallback으로 F9/F12 적용·Options 복귀를 확인하고, 이후 Options ESC로 MainMenu 100 복귀도 검사한다. fallback이 ESC 실패를 지우지 않는다.
+
+2026-10-02 Darwin/ARM64 headless 네 경로 결과는 아래와 같다. 숫자는 중복을 포함한 assertion 수이지 고유 버그 개수가 아니다. 이전 메인 audit의 disabled Apply/복귀 관련 다섯 실패가 사라지고 새 ESC 관련 다섯 실패가 추가되어 메인 실패 수 14가 같아도 의미는 다르다. 게임 내는 Apply availability 검사가 하나 추가되었고 기존 Apply·live binding·직렬화·Close가 통과한다.
+
+| 경로 | 통과 | 실패 |
+| --- | ---: | ---: |
+| 일반 메인 메뉴 | 208 | 14 |
+| HD 메인 메뉴 | 210 | 14 |
+| 일반 게임 내 | 181 | 16 |
+| HD 게임 내 | 181 | 18 |
+
+네 실행 모두 summary까지 도달해 수집된 실패에 대한 의도된 exit 2로 끝났다. 일반 메인의 독립 새 프로세스 재실행도 같은 결과이며 override 없이 기존 화면 여섯 개를 통과했다. 최종 네 경로와 재실행에서 별도 SIGSEGV/runtime error·화면 baseline 불일치는 없었다. 일반·HD ESC exit-attempt 화면의 pending F9/F12와 열린 입력 창, 실제 Back 뒤 Options, HD 마지막 메뉴 복귀를 직접 검토했다. PNG 18개와 별도 재실행 결과는 임시 시나리오에만 남긴다.
+
+대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 1회가 통과했다. `004CB880` 본체 740바이트/뒤 12-NOP, `004CBB70` 본체 52바이트/뒤 12-NOP와 InputCfg.wnd·nox.cfg의 정렬 포함 24바이트를 새로 봉인했다. 전후 `make oracle-test`는 stock 1,556파일·570,653,750바이트·code 2,873/data 617개·NXZ 50쌍과 불변 tree를 확인한다.
+
+재설정 후 ESC, 게임 내 pending 해상도/YAML 값, ShowTooltips/NoSoftLights legacy key 부재와 메인 window mode 직렬화는 미해결이다. FX gain 불일치는 inactive mock audio에서 관찰한 것으로 실제 재생의 고장으로 단정하지 않는다. mouse pickup disabled의 원본 의도도 추가 대조가 필요하다. 원래 default.cfg reset·실제 디스크 저장/새 프로세스 로드·물리 오디오·실제 해상도 적용은 아직 미검증이며 모든 옵션이 정상이라고 판정하지 않는다. 개인 Save/config·stock 자산은 변경하지 않는다.
+
 ## 메인 Options 창의 전체 native constructor `004AA6B0`
 
 audit에서 확인한 메인 음량/음소거·입력 창 누락의 첫 복원 단위다. 합성 창/handler를 제거하고 원본 constructor 한 본체만 Go로 옮겼으며 C entry는 thin export bridge다. state 300 추가→원래 Options.wnd의 C callback identity→root 게시/원래 실패 반환→advanced→key proc→tab width 15→animation 게시/원래 실패 반환→state ID/start-out/done-out 연결 순서를 유지한다. 반환 root/animation과 각 slider만 원래 지점에서 캐시하며 나머지 root/animation/checkbox 전역은 다시 읽는다. 각 thumb의 width/height도 따로 조회한다. 세 channel마다 Lit/Lit/Slider 이미지를 별도로 읽어 highlight/selected/enabled에 연결하고 range `0..16384`→fresh Timer.Current DWORD의 logical `>>16` value→enabled 반환의 exact-one 체크와 flags bit 4 갱신을 실행한다. 없는 thumb를 skip하거나 실패 시 새 cleanup을 넣지 않는다. Back은 복원한 animation의 원래 state-switch 경로로 보내며 retained callback 본체를 이 커밋에서 함께 다시 쓰지 않는다.
@@ -19,7 +40,7 @@ audit에서 확인한 메인 음량/음소거·입력 창 누락의 첫 복원 �
 
 대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험 및 server-tag root/server/legacy 1회가 통과했다. 원래 constructor 777바이트·7-NOP의 기존 code 범위를 유지하고 Options.wnd·서로 다른 주소의 이미지 이름 아홉 개·Back key 234바이트를 새로 봉인했다. 전후 `make oracle-test`는 stock 1,556파일·570,653,750바이트·code 2,869/data 616개·NXZ 50쌍을 검증한다.
 
-메인 입력 설정의 Apply/복귀가 여전히 실패하므로 전체 audit의 마지막 ESC/Back 실패를 위 별도 lifecycle 성공으로 숨기지 않는다. ShowTooltips/NoSoftLights legacy key 부재, window mode 직렬화, mock audio의 FX gain 불일치, 게임 내 pending 해상도/YAML 값은 미해결이다. mouse pickup 선택 disabled는 원본 의도와 추가 대조가 필요하다. 실제 오디오 재생·해상도 적용·디스크 저장/새 프로세스 로드·다른 색상 깊이의 close branch·SDL/OpenAL·Linux/AMD64 실행은 이 단위의 검증 범위 밖이다. 모든 옵션이 정상이라고 판정하지 않으며 개인 Save/config·stock 자산은 변경하지 않는다.
+이 당시 audit는 메인에서도 disabled Apply 932를 클릭해 입력 설정 Apply/복귀와 마지막 ESC/Back 실패를 보고했다. 위 후속 audit가 원본 Back 152 경로로 그 판정을 정정하며, 여기의 수치는 당시 기록으로 유지한다. 별도 lifecycle 성공으로 audit 실패를 숨기지 않는다. ShowTooltips/NoSoftLights legacy key 부재, window mode 직렬화, mock audio의 FX gain 불일치, 게임 내 pending 해상도/YAML 값은 미해결이다. mouse pickup 선택 disabled는 원본 의도와 추가 대조가 필요하다. 실제 오디오 재생·해상도 적용·디스크 저장/새 프로세스 로드·다른 색상 깊이의 close branch·SDL/OpenAL·Linux/AMD64 실행은 이 단위의 검증 범위 밖이다. 모든 옵션이 정상이라고 판정하지 않으며 개인 Save/config·stock 자산은 변경하지 않는다.
 
 ## Quest ankh HUD 목숨의 실제 사망·부활 headless 검증
 

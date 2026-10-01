@@ -50,6 +50,20 @@ func optionsAuditEnabled(win *gui.Window) bool {
 	return win != nil
 }
 
+// The stock InputCfg.wnd leaves 932 disabled. The in-game constructor enables
+// it, while the shell constructor applies pending bindings from its animated
+// exit callback (004CBB70), reached through the separate Back button 152.
+func optionsAuditInputExitControl(mode int) (uint, string) {
+	switch mode {
+	case 0:
+		return 152, "Back"
+	case 1:
+		return 932, "Apply"
+	default:
+		panic(fmt.Sprintf("invalid options input audit mode %d", mode))
+	}
+}
+
 func optionsAuditMove(pos image.Point) {
 	e2eQueueRawInput(&seat.MouseMoveEvent{Pos: noxClient.Inp.DrawPosToWindow(pos), Relative: false})
 }
@@ -538,15 +552,36 @@ func (a *optionsAudit) input(sc *e2eScenario) {
 	a.rebind(sc, &available, 912, keybind.KeyF10)
 	a.rebind(sc, &available, 913, keybind.KeyF11)
 	a.rebind(sc, &available, 913, keybind.KeyEsc)
-	a.clickWindow(sc, "input Apply", inputWin(932))
-	sc.Wait(40, "")
+	exitID, exitName := optionsAuditInputExitControl(a.mode)
+	sc.add(0, "audit input exit control", func() {
+		if !available {
+			return
+		}
+		apply := root().ChildByID(932)
+		if a.mode == 0 {
+			a.check(apply != nil && !apply.GetFlags().Has(gui.StatusEnabled), "menu input Apply disabled as in stock", fmt.Sprintf("window=%p", apply))
+		} else {
+			a.check(optionsAuditEnabled(apply), "in-game input Apply available", fmt.Sprintf("window=%p", apply))
+		}
+	})
+	a.clickWindow(sc, "input "+exitName, func() *gui.Window {
+		if !available {
+			return nil
+		}
+		if a.mode == 0 {
+			return noxClient.GUI.ChildByID(exitID)
+		}
+		return root().ChildByID(exitID)
+	})
+	// The shell exits InputCfg and then animates a new Options window in.
+	sc.Wait(80, "")
 	sc.add(0, "", func() {
 		if !available {
 			return
 		}
-		a.check(noxClient.ctrl.hasDefBinding(event, keybind.KeyF10), "input Apply updates binding", fmt.Sprintf("event=%v title=%q", event, noxClient.ctrl.Sub_42E8E0_go(event, 1)))
-		a.check(noxClient.ctrl.hasDefBinding(event, keybind.KeyF11), "input Apply updates secondary binding", fmt.Sprintf("event=%v", event))
-		a.check(!optionsAuditEnabled(root()) && optionsAuditEnabled(a.root()), "input Apply returns to options", fmt.Sprintf("input=%p options=%p", root(), a.root()))
+		a.check(noxClient.ctrl.hasDefBinding(event, keybind.KeyF10), "input "+exitName+" updates binding", fmt.Sprintf("event=%v title=%q", event, noxClient.ctrl.Sub_42E8E0_go(event, 1)))
+		a.check(noxClient.ctrl.hasDefBinding(event, keybind.KeyF11), "input "+exitName+" updates secondary binding", fmt.Sprintf("event=%v", event))
+		a.check(!optionsAuditEnabled(root()) && optionsAuditEnabled(a.root()), "input "+exitName+" returns to options", fmt.Sprintf("input=%p options=%p", root(), a.root()))
 		var section cfg.Section
 		writeConfigHotkeys(&section)
 		for _, key := range []keybind.Key{keybind.KeyF10, keybind.KeyF11} {
@@ -554,6 +589,71 @@ func (a *optionsAudit) input(sc *e2eScenario) {
 			a.check(present && got != "", "input binding serialized", fmt.Sprintf("key=%s present=%t event=%q", key, present, got))
 		}
 	})
+	if a.mode == 0 {
+		sc.Screen("options audit input Back applied")
+		a.clickWindow(sc, "reopen input after Back", func() *gui.Window {
+			if !optionsAuditEnabled(a.root()) {
+				return nil
+			}
+			return a.root().ChildByID(341)
+		})
+		sc.Wait(100, "")
+		sc.add(0, "audit input bindings after reopening", func() {
+			available = optionsAuditEnabled(root())
+			a.check(available, "input configuration reopened", fmt.Sprintf("window=%p state=%d", root(), noxClient.GameGetStateCode()))
+			if !available {
+				return
+			}
+			for _, binding := range []struct {
+				column uint
+				key    keybind.Key
+			}{{912, keybind.KeyF10}, {913, keybind.KeyF11}} {
+				got, want := optionsAuditListText(root().ChildByID(binding.column), 0), binding.key.Title(noxClient.Strings())
+				a.check(got == want, "input Back binding survives reopen", fmt.Sprintf("column=%d title=%q want=%q", binding.column, got, want))
+			}
+		})
+		a.rebind(sc, &available, 912, keybind.KeyF9)
+		a.rebind(sc, &available, 913, keybind.KeyF12)
+		sc.add(0, "audit input focus before Escape", func() {
+			e2eLog.Printf("OPTIONS AUDIT NOTE: mode=%d before input Escape focus=%p capture=%p prompt=%p animation_global=%d", a.mode,
+				noxClient.GUI.Focused(), noxClient.GUI.Captured(), noxClient.GUI.ChildByID(980), gui.AnimGlobalState())
+		})
+		sc.Key(keybind.KeyEsc, "audit leave input with Escape")
+		sc.Wait(80, "")
+		sc.add(0, "audit input Escape applied", func() {
+			if !available {
+				return
+			}
+			for _, key := range []keybind.Key{keybind.KeyF9, keybind.KeyF12} {
+				a.check(noxClient.ctrl.hasDefBinding(event, key), "input Escape updates binding", fmt.Sprintf("key=%s event=%v", key, event))
+			}
+			for _, key := range []keybind.Key{keybind.KeyF10, keybind.KeyF11} {
+				a.check(!noxClient.ctrl.hasDefBinding(event, key), "input Escape replaces previous binding", fmt.Sprintf("key=%s event=%v", key, event))
+			}
+			a.check(root() == nil && optionsAuditEnabled(a.root()) && noxClient.GameGetStateCode() == client.StateOptions,
+				"input Escape returns to options", fmt.Sprintf("input=%p options=%p state=%d", root(), a.root(), noxClient.GameGetStateCode()))
+		})
+		sc.Screen("options audit input Escape exit attempt")
+		// Preserve the Escape failures above, but use real Back input if needed
+		// so one failed route does not prevent the later options-close checks.
+		a.clickWindow(sc, "input Back fallback after Escape", func() *gui.Window {
+			if !optionsAuditEnabled(root()) {
+				return nil
+			}
+			return noxClient.GUI.ChildByID(152)
+		})
+		sc.Wait(80, "")
+		sc.add(0, "audit input return after exit attempts", func() {
+			if !available {
+				return
+			}
+			a.check(root() == nil && optionsAuditEnabled(a.root()) && noxClient.GameGetStateCode() == client.StateOptions,
+				"input exit attempts return to options", fmt.Sprintf("input=%p options=%p state=%d", root(), a.root(), noxClient.GameGetStateCode()))
+			for _, key := range []keybind.Key{keybind.KeyF9, keybind.KeyF12} {
+				a.check(noxClient.ctrl.hasDefBinding(event, key), "input exit attempts apply binding", fmt.Sprintf("key=%s event=%v", key, event))
+			}
+		})
+	}
 }
 
 func (a *optionsAudit) rebind(sc *e2eScenario, available *bool, column uint, key keybind.Key) {

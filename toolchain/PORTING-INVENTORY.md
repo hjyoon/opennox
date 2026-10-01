@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어 슈리켄·채크럼 자연 명중/귀환 headless 검증
+
+기존 launch-only 시나리오를 실제 target HP 감소와 projectile 소멸/원래 무기의 재장착까지 엄격히 기다리도록 확장했다. 원본 stock Troll의 위치·초기 HP 2000만 fixture로 설정하고 실제 Warrior 메뉴→inventory equip→mouse/button→network→일반 player attack→자연 collision을 실행했다. 일반·HD 제품 모두 FanChakram은 10 tick에 HP 1970(30 피해), 11 tick에 projectile 소멸·charge 20→19·원래 무기 유지; RoundChakram은 11 tick에 HP 1962(38 피해), 16 tick에 projectile 소멸·원래 무기의 귀환/재장착을 확인했다. 네 GUI 실행이 정상 종료했고, HD의 launch/hit/completion PNG 여섯 장은 일반 baseline과 정확히 일치했다. 검토한 hit/completion 화면도 피해 숫자·수량·채크럼 장착 icon 상태와 일치한다.
+
+관련 일반·실제 cgocheck2·race·checkptr=2 각 3회와 stock code/data verifier가 통과했다. 이 검증은 무기 하나씩의 정상 투척과 Troll 피해이며, 모든 modifier 조합·전투 사망·Linux/AMD64 실행을 대신하지 않는다. GUI의 Save·설정·PNG는 모두 별도 임시 디렉터리에 격리했다.
+
 ## 발사체 pre-hit modifier dispatch `00538290`
 
 Arrow·Chakram의 다음 ABI32 dispatcher를 별도 원본 함수 변경으로 native Go에 연결했다. item nil·friendly-fire/owner class·enemy·buff 23/27 gate와 cached modifier array의 enchantment slot 2/3만 live 순회하는 순서를 유지한다. 원본 159바이트·1-NOP는 기존 내부 buff call 봉인을 포함한다. gate 순서·callback 중 array/slot 교체·실제 C callback 두 번·native context를 검사한다. 자연 명중과 귀환은 이어지는 headless 시나리오로 검증한다.

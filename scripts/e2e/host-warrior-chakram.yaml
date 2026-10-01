@@ -1,6 +1,7 @@
 # Functional player throw regression: real Warrior menus, stock item grant,
 # actual inventory equip and mouse/button attack. A failed launch is reported
-# as a failure; downstream damage/return cannot be claimed from this check.
+# as a failure. Natural target damage, return and re-equipping the original
+# weapon are observed without injecting attack or collision results.
 steps:
   - action: slow
     dur: 5ms

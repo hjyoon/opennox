@@ -30,11 +30,15 @@ type e2ePlayerThrownWeaponFixture struct {
 	item, projectileType string
 	flag                 object.WeaponClass
 	unit, weapon, target *server.Object
+	projectile           *server.Object
+	projectileWire       uint32
+	projectileScriptID   int32
 	original             types.Pointf
 	frame, attackFrame   uint32
 	charge               uint8
 	health               uint16
 	lastLog              uint32
+	hitHealth            uint16
 }
 
 func (f *e2ePlayerThrownWeaponFixture) currentCharge() uint8 {
@@ -111,6 +115,13 @@ func (f *e2ePlayerThrownWeaponFixture) observeLaunch() bool {
 	now := noxServer.Frame()
 	for _, obj := range noxServer.Objs.AllObjects() {
 		if obj.ObjOwner == f.unit && obj.ObjectTypeC().ID() == f.projectileType && !obj.Flags().Has(object.FlagDestroyed) {
+			f.projectile, f.projectileWire, f.projectileScriptID = obj, obj.NetCode, obj.ScriptIDVal
+			if f.flag == object.WeaponShuriken && (f.charge == 0 || f.currentCharge() != f.charge-1 || f.weapon.InvHolder != f.unit) {
+				e2eError(fmt.Errorf("shuriken launch did not consume exactly one charge: %d->%d holder=%p", f.charge, f.currentCharge(), f.weapon.InvHolder))
+			}
+			if f.flag == object.WeaponChakram && f.weapon.InvHolder != obj {
+				e2eError(fmt.Errorf("chakram launch did not transfer the weapon to its projectile: holder=%p projectile=%p", f.weapon.InvHolder, obj))
+			}
 			e2eLog.Printf("PLAYER THROW LAUNCHED: item=%s projectile=%p owner=%p pos=%v velocity=%v elapsed=%d", f.item,
 				obj, obj.ObjOwner, obj.PosVec, obj.VelVec, now-f.frame)
 			return true
@@ -126,11 +137,60 @@ func (f *e2ePlayerThrownWeaponFixture) observeLaunch() bool {
 	return false
 }
 
-// CheckPlayerThrownWeapon deliberately asserts a functional player launch.
+func (f *e2ePlayerThrownWeaponFixture) projectileInWorld() bool {
+	// A naturally deleted projectile may have a reused allocator address.
+	// Only inspect live objects and match both wire and script identities.
+	for _, obj := range noxServer.Objs.AllObjects() {
+		if obj == f.projectile && obj.NetCode == f.projectileWire && obj.ScriptIDVal == f.projectileScriptID {
+			return true
+		}
+	}
+	return false
+}
+
+func (f *e2ePlayerThrownWeaponFixture) observeHit() bool {
+	if !e2eObjectInWorld(f.target) || f.target.HealthData == nil || f.target.HealthData.Cur == 0 {
+		e2eError(fmt.Errorf("%s durable target disappeared before hit verification", f.item))
+		return true
+	}
+	if f.target.HealthData.Cur < f.health {
+		f.hitHealth = f.target.HealthData.Cur
+		e2eLog.Printf("PLAYER THROW HIT: item=%s health=%d->%d damage=%d elapsed=%d projectile-live=%t", f.item,
+			f.health, f.hitHealth, f.health-f.hitHealth, noxServer.Frame()-f.frame, f.projectileInWorld())
+		return true
+	}
+	if f.lastLog == 0 || noxServer.Frame()-f.lastLog >= 10 {
+		f.lastLog = noxServer.Frame()
+		e2eLog.Printf("PLAYER THROW HIT WAIT: item=%s elapsed=%d target-health=%d projectile-live=%t", f.item,
+			noxServer.Frame()-f.frame, f.target.HealthData.Cur, f.projectileInWorld())
+	}
+	return false
+}
+
+func (f *e2ePlayerThrownWeaponFixture) observeCompletion() bool {
+	if f.projectileInWorld() {
+		return false
+	}
+	update := f.unit.UpdateDataPlayer()
+	if f.weapon.InvHolder != f.unit || update.EquippedWeapon != f.weapon || !f.weapon.Flags().Has(object.FlagEquipped) ||
+		f.unit.ControllingPlayer().WeaponEquip&uint32(f.flag) == 0 || update.State == server.PlayerState1 {
+		return false
+	}
+	if f.flag == object.WeaponShuriken && f.currentCharge() != f.charge-1 {
+		e2eError(fmt.Errorf("shuriken completion changed charges: %d->%d", f.charge, f.currentCharge()))
+	}
+	e2eLog.Printf("PLAYER THROW COMPLETED: item=%s weapon=%p holder=%p equipped=%p equip=%#x charge=%d->%d elapsed=%d target-health=%d->%d",
+		f.item, f.weapon, f.weapon.InvHolder, update.EquippedWeapon, f.unit.ControllingPlayer().WeaponEquip, f.charge,
+		f.currentCharge(), noxServer.Frame()-f.frame, f.health, f.hitHealth)
+	return true
+}
+
+// CheckPlayerThrownWeapon asserts launch, natural damage and completion.
 // A timeout is a regression result, not a passing "unsupported" fallback.
 // The scenario grants stock inventory and equips through actual UI input;
 // this action observes real mouse/button -> network -> player attack -> world.
-// Downstream collision/damage/return are not verified if launch fails.
+// Chakram must return and re-equip the original weapon; Shuriken must disappear
+// without consuming another charge. No projectile or result is injected.
 func (sc *e2eScenario) CheckPlayerThrownWeapon(item, name string) {
 	projectileType, flag, ok := e2ePlayerThrownWeaponType(item)
 	if !ok {
@@ -149,7 +209,13 @@ func (sc *e2eScenario) CheckPlayerThrownWeapon(item, name string) {
 		e2eLog.Printf("PLAYER THROW INPUT: item=%s frame=%d target=%v mouse=%v", f.item, f.frame, f.target.PosVec, mouse)
 	})
 	sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
-	sc.addWhen(1, name+" actual projectile launch", 90, f.observeLaunch, func() {
+	sc.addWhen(1, name+" actual projectile launch", 90, f.observeLaunch, func() {})
+	sc.Screen(name + " launched")
+	sc.addWhen(0, name+" actual target damage", 120, f.observeHit, func() {})
+	sc.Screen(name + " hit")
+	sc.addWhen(0, name+" natural projectile completion and equipment", 360, f.observeCompletion, func() {})
+	sc.Screen(name + " completed")
+	sc.add(0, name+" cleanup fixture", func() {
 		noxServer.DelayedDelete(f.target)
 		asObjectS(f.unit).SetPos(f.original)
 	})

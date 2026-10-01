@@ -21,10 +21,10 @@ func TestE2EPlayerThrownWeaponSchedule(t *testing.T) {
 			}
 			var sc e2eScenario
 			sc.CheckPlayerThrownWeapon(tc.item, tc.item)
-			if len(sc.steps) != 5 {
-				t.Fatalf("steps=%d, want 5", len(sc.steps))
+			if len(sc.steps) != 11 {
+				t.Fatalf("steps=%d, want 11", len(sc.steps))
 			}
-			for _, index := range []int{0, 4} {
+			for _, index := range []int{0, 4, 6, 8} {
 				step := sc.steps[index]
 				if step.ready == nil || step.fnc == nil || step.waitTimeout == 0 {
 					t.Fatalf("step %d has no bounded live check", index)
@@ -32,6 +32,10 @@ func TestE2EPlayerThrownWeaponSchedule(t *testing.T) {
 			}
 			if !strings.HasSuffix(sc.steps[4].name, " actual projectile launch") || sc.steps[4].waitTimeout != 90 {
 				t.Fatal("no strict launch assertion")
+			}
+			if !strings.HasSuffix(sc.steps[6].name, " actual target damage") || sc.steps[6].waitTimeout != 120 ||
+				!strings.HasSuffix(sc.steps[8].name, " natural projectile completion and equipment") || sc.steps[8].waitTimeout != 360 {
+				t.Fatal("no bounded natural damage and completion assertions")
 			}
 		})
 	}

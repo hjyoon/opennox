@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Warrior 돌진의 플레이어·stock 벽 충돌 실제 입력 회귀
+
+`host-game-warrior-charge-collisions.yaml`은 regular Warrior의 실제 A 키 입력으로 서버 플레이어와 기존 stock 벽에 각각 두 번 돌진한다. 두 번째 플레이어는 정상 `newPlayer`·관전자 종료로 초기화한 서버 측 fixture이며, 원격 클라이언트의 네트워크 입력 대결을 대신하지 않는다. HP 2,000·배치·quickbar만 준비하고 능력·collision callback·피해·CollisionWall·buff 종료·쿨다운·HUD 값은 주입하지 않는다. 벽은 실제 맵의 원본 정의 `Flags32 & 5 != 0`과 폭이 충분한 접근로로 선택한다.
+
+Darwin/ARM64 일반·HD headless 모두 플레이어 대상 HP `2,000→1,850`와 공격자 `150→150`, 벽 자기 피해 `150→120` 및 자연 회복 뒤 두 번째 `125→100`, 실제 CollisionWall·Held·HUD active/ready와 종료를 확인했다. 쿨다운 중 A 재입력이 실행 deadline을 바꾸지 않고 경과 frame만큼만 cooldown이 감소하며, 각 충돌 후 ready로 돌아와 재사용되는 제품당 20개 start/collision/retry-rejection/end/ready 검사가 통과하고 exit 0으로 종료했다. 일반·HD 충돌 화면도 검토했다. 벽 충돌 동작은 기존 포팅이 정상이며 수정하지 않았다.
+
+전체 일반·cgocheck2 및 PlayerDamage race·checkptr 시험과 원본 코드 2,802개·데이터 589개·stock 1,556개 파일 무결성 검증이 통과했다. 이 fixture는 regular host 레벨 5를 검사하며 FlagBall의 GameBall drop·campaign 레벨 조합·실제 SDL/OpenAL 검증을 포함하지 않는다.
+
 ## Warrior Berserker Charge의 대플레이어 CRUSH 피해
 
 앞선 Troll 충돌 회귀와 별도로, `PLAYER` target은 `PlayerDamageNative4E17B0`에서 같은 player source/weapon의 `CRUSH(150)`를 unsupported로 거부했다. 수정 전 회귀 시험으로 이 admission 누락을 재현하고 해당 피해 모양만 허용한다. 이미 봉인된 원본 `004E1EE8`처럼 방어력 흡수율의 절반을 적용하고 소수 피해를 누적하며, `004E1F42`처럼 두 damage-marker DWORD에 정수 2를 기록한다. player source를 MonsterUpdateData로 해석하지 않는다.

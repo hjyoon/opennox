@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 첫 Solo 메뉴의 native 수동 슬롯 로드 선택 `004A5710`
+
+게임 중 슬롯 1의 실제 Save·Overwrite No/Yes·Load/Yes·능력치/인벤토리 복원·재이동을 통과한 새 프로세스에서도, real mouse로 native 두 열의 1 선택을 확인한 뒤 첫 메뉴 Load가 `loading slot 0: AUTOSAVE`를 기록하고 저장 위치 대신 187.908 떨어진 자동 저장 위치를 복원했다. 메뉴 canvas(640×480)와 input viewport(1024×768)의 좌표 변환 및 원래 load fade 대기는 E2E 입력/캡처에만 추가해 클릭·검증 실패를 게임의 성공으로 취급하지 않는다.
+
+별도 원본 본체 `004A5710`의 Load와 Delete 분기만 native single-selection 질의로 옮기고 metadata 배열 길이로 선택값을 검사한다. 원본 save 복사·map/stage/script ID 복원·AUTOSAVE 삭제 금지·확인창·애니메이션 순서와 32비트 delete-index 저장은 유지한다. 사용자 Save와 stock 자산은 사용·수정하지 않는다.
+
+native 선택·게임 중 확인 callback·첫 메뉴의 missing/nil/signed 음수·범위 밖·빈 슬롯 거부와 수동 저장 observer 시험을 3회 통과했다. 전체 일반·실제 cgocheck2 시험과 원본 무결성/code verifier도 통과했다. 첫 메뉴 원본 본체 1,350바이트·2바이트 alignment·실행 section의 5-entry dispatch table·4-NOP를 별도 봉인해 코드 2,838개·데이터 597개다. 이 제품 함수 커밋 시점에는 수정 후 새 프로세스 수동 로드 및 일반·HD 전체 save/load 실행을 후속 검증으로 남긴다.
+
 ## 게임 중 로드 확인 callback의 native 슬롯 선택 `0046CBD0`
 
 실제 headless Warrior에서 수동 슬롯 1의 생성과 덮어쓰기 No/Yes를 통과한 뒤, 실제 이동으로 저장 위치 `(4546.18, 1981.0657)`에서 벗어나 Load/Yes를 누르면 AUTOSAVE 위치 `(4404.5, 2104.5)`로 돌아오는 실패를 재현했다. 메뉴 선택은 1이지만 확인 callback이 LP64 slider 주소의 하위 DWORD를 PE32 선택값으로 읽어 0을 로드한다. 별도 원본 본체 `0046CBD0`만 앞선 읽기 전용 native listbox 질의로 변경한다. 선택 없음·nil 응답·범위 밖·빈 수동 경로에서는 로드를 시작하지 않고, 원래 load-error·death-state 정리·dialog/Save 메뉴 닫기 순서는 유지한다.

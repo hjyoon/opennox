@@ -691,9 +691,8 @@ func nox_xxx_windowSelCharProc_4A5710(a1 *gui.Window, e gui.WindowEvent) gui.Win
 			sub_4A50A0()
 			nox_wnd_xxx_1307748.Func13Ptr = legacy.Get_nox_game_showSelClass_4A4840()
 		case 502:
-			v7 := winCharListNames.WidgetData
-			v10 := *(*int32)(unsafe.Add(v7, 48))
-			if v10 == -1 {
+			v10, selected := saveListSelectedSlot(winCharListNames, len(nox_xxx_saves_arr))
+			if !selected {
 				break
 			}
 			sv := &nox_xxx_saves_arr[v10]
@@ -745,9 +744,8 @@ func nox_xxx_windowSelCharProc_4A5710(a1 *gui.Window, e gui.WindowEvent) gui.Win
 				nox_wnd_xxx_1307748.Func13Ptr = nil
 			}
 		case 503:
-			v7 := winCharListNames.WidgetData
-			v5 := *(*int32)(unsafe.Add(v7, 48))
-			if v5 == -1 {
+			v5, selected := saveListSelectedSlot(winCharListNames, len(nox_xxx_saves_arr))
+			if !selected {
 				break
 			}
 			sv := &nox_xxx_saves_arr[v5]
@@ -757,7 +755,7 @@ func nox_xxx_windowSelCharProc_4A5710(a1 *gui.Window, e gui.WindowEvent) gui.Win
 				v16     gui.DialogFlags
 				v6, v15 string
 			)
-			*memmap.PtrInt32(0x5D4594, 1307772) = v5
+			*memmap.PtrInt32(0x5D4594, 1307772) = int32(v5)
 			npath := datapath.SaveNameFromPath(spath)
 			nox_savegame_name_1307752 = npath
 			if noxflags.HasGame(noxflags.GameModeCoop) && nox_savegame_name_1307752 == common.SaveAuto {

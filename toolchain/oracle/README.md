@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 피해를 받은 플레이어의 GameBall 방출 `004E1230`
+
+원본 본체 `004E1230..004E131F` 240바이트/SHA-256 `2cbde9f6827d9834e6558a0ac2d8e6f8d5fc9ea87c5788bcc38822cef644c953`와 별도 type 이름 `005B81B8` 9바이트/`cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd`를 독립 봉인했다. private cache `00752048`은 file-backed 데이터가 아닌 BSS이므로 데이터 hash를 만들지 않는다. 누적 직접 verifier는 코드 2,803개·데이터 590개다.
+
+signed 피해 30 이상·Player 저비트 gate 뒤 uint32 cache와 zero-extended uint16 type을 비교하고 첫 matching owned ball만 처리한다. flag 0x40 제거→force 30→owner 해제→피해자의 last-touch carrier 기록→live team 판정과 공격자 team 조회/변경 또는 생성→sound 926 순서다. teamless 분기는 netcode를 공격자 team byte보다 먼저 읽는다. nil source는 방출 뒤 team byte에서 fault하므로 별도 PlayerDamage admission에서 필요한 서비스와 source를 상태 변경 전에 검증해야 한다. Wink의 force 100·Obj130 clear·BallStatus 1과 다른 함수이며 공의 scoring history를 지우지 않는다.
+
+typed Go 본체·native server binding의 trace, 각 observable callback의 fault prefix, signed 경계·full-width cache·live team/netcode reload·첫 공만 방출·native owned list와 carrier record 보존을 회귀 시험으로 구분한다. 이 단위는 PlayerDamage 연결과 실제 FlagBall 충돌 검증의 선행 포팅이며, 해당 게임 경로의 완료를 주장하지 않는다.
+
 ## Eye of the Wolf의 BubbleParticle 생성 `00499F60`
 
 Warrior 스킬의 실제 키 입력 회귀에서 Eye of the Wolf를 처음 사용하자 minimap의 dynamic drawable 조회가 `0x23e823e8004000bc`를 따라가며 종료됐다. 생성 함수 `00499F60`이 PE32 drawable offset 432에 GreenBubble의 packed 색상 `0x23e823e8`을 쓰지만 LP64의 그 위치는 native `NextPtr`다. 높이 104, light color 152/156/160과 animation 440..446 역시 native drawable 필드 위치가 아니다. 그리기 dispatcher는 이미 typed Go `BubbleDraw`로 연결돼 있으므로 이번 수정은 생성 함수 하나에 한정한다.

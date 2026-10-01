@@ -3969,6 +3969,13 @@
       "purpose": "the original DefaultDamage suffix after the already sealed unit-damage-clear call through the next function boundary at 004E1230"
     },
     {
+      "name": "nox_xxx_gameballOnPlayerDamage_4E1230",
+      "address": "0x004E1230",
+      "size": 240,
+      "sha256": "2cbde9f6827d9834e6558a0ac2d8e6f8d5fc9ea87c5788bcc38822cef644c953",
+      "purpose": "preserve the signed 30-damage Player gate, full-width private GameBall cache, first matching owned object, clear NoCollide, force 30, clear owner, retain victim carrier history, existing-team versus create-team order and live reads, then sound 926; not Wink's throw or BallStatus operation"
+    },
+    {
       "name": "sub_4E1400",
       "address": "0x004E1400",
       "size": 112,
@@ -20503,6 +20510,13 @@
       "size": 22,
       "sha256": "b51c79438897b89937d9178048973f49885363dee6b9018b334fd0b72250ec16",
       "purpose": "the exact NUL-terminated PoisonSpellProtection balance-table key requested with buff-18 power minus one by 004E0040"
+    },
+    {
+      "name": "game_ball_player_damage_type_name_4E1230",
+      "address": "0x005B81B8",
+      "size": 9,
+      "sha256": "cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd",
+      "purpose": "the exact NUL-terminated private GameBall cache key read by 004E1254; its cache 00752048 is unbacked BSS, not a file data range"
     },
     {
       "name": "two_points_direction_results",

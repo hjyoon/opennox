@@ -10,6 +10,7 @@ import (
 	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
@@ -98,6 +99,23 @@ func e2eQuestHostResultTimer(root *gui.Window, player *server.Player) (*gui.Wind
 	return timer, nil
 }
 
+// Observe the same DWORD that the inventory renderer formats as "X %d".
+// The caller supplies the phase's expected wire value: a zero-life result
+// window deliberately retains zero while the server prepares new lives.
+func e2eQuestLifeHUD(unit *server.Object, clientPlayer *server.Player, clientCode, hud, want uint32) error {
+	if unit == nil || !unit.ObjClass.Has(object.ClassPlayer) || unit.UpdateData == nil {
+		return fmt.Errorf("Quest life HUD has no native player unit")
+	}
+	player := unit.UpdateDataPlayer().Player
+	if player == nil || clientPlayer != player || uint32(uint16(unit.NetCode)) != clientCode {
+		return fmt.Errorf("Quest life HUD lost native client/server identity: unit=%p server=%p client=%p net-code=%08x/%08x", unit, player, clientPlayer, unit.NetCode, clientCode)
+	}
+	if hud != want {
+		return fmt.Errorf("Quest life HUD=%d want=%d", hud, want)
+	}
+	return nil
+}
+
 type e2eQuestDeathFixture struct {
 	combat                   e2eQuestCombatFixture
 	before, dead             e2eQuestDeathState
@@ -127,6 +145,10 @@ func (f *e2eQuestDeathFixture) prepare() {
 		e2eError(fmt.Errorf("Quest death cycle %d starting state: %+v stock-balance=%g error=%v", f.cycle+1, f.before, stockLives, err))
 		return
 	}
+	if err := f.observeLifeHUD("prepared", f.before.lives); err != nil {
+		e2eError(err)
+		return
+	}
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for _, pointer := range []unsafe.Pointer{f.combat.unit.CObj(), f.combat.target.CObj(), f.combat.unit.UpdateData, unsafe.Pointer(f.combat.unit.ControllingPlayer()), unsafe.Pointer(f.combat.unit.HealthData)} {
 			if uintptr(pointer) <= math.MaxUint32 {
@@ -140,6 +162,25 @@ func (f *e2eQuestDeathFixture) prepare() {
 	f.lethalSeen, f.lethalMinion = false, false
 	f.lethalSource, f.lethalType, f.lethalFrame = nil, 0, 0
 	e2eLog.Printf("QUEST PLAYER DEATH PREPARED: cycle=%d frame=%d player=%p monster=%p hp=%d/%d lives=%d deaths=%d gold=%d injected=placement-only", f.cycle+1, f.keepaliveFrame, f.combat.unit, f.combat.target, f.before.health, f.before.maximum, f.before.lives, f.before.deaths, f.before.gold)
+}
+
+func (f *e2eQuestDeathFixture) observeLifeHUD(phase string, want uint32) error {
+	player := legacy.Get_dword_8531A0_2576()
+	code := uint32(legacy.ClientPlayerNetCode())
+	hud := memmap.Uint32(0x5D4594, 1050012)
+	if err := e2eQuestLifeHUD(f.combat.unit, player, code, hud, want); err != nil {
+		return err
+	}
+	e2eLog.Printf("QUEST LIFE HUD VERIFIED: cycle=%d phase=%s frame=%d player=%p client=%p net-code=%04x hud=%d read-only=true", f.cycle+1, phase, noxServer.Frame(), f.combat.unit, player, code, hud)
+	return nil
+}
+
+func (f *e2eQuestDeathFixture) deadLifeHUD() bool {
+	want := uint32(0)
+	if f.before.lives != 0 {
+		want = f.dead.lives
+	}
+	return f.observeLifeHUD("dead", want) == nil
 }
 
 func (f *e2eQuestDeathFixture) naturallyDead() bool {
@@ -254,6 +295,9 @@ func (f *e2eQuestDeathFixture) respawned() bool {
 		e2eError(fmt.Errorf("Quest real-input respawn state incomplete: dead=%+v respawn=%+v", f.dead, after))
 		return true
 	}
+	if err := f.observeLifeHUD("respawned", after.lives); err != nil {
+		return false // The existing bounded gate allows ordinary packet reception.
+	}
 	e2eLog.Printf("QUEST PLAYER RESPAWNED: cycle=%d frame=%d player=%p hp=%d/%d lives=%d deaths=%d gold=%d pos=%v blocker=0 score-hidden=true", f.cycle+1, noxServer.Frame(), f.combat.unit, after.health, after.maximum, after.lives, after.deaths, after.gold, state.position)
 	f.cycle++
 	return true
@@ -266,7 +310,11 @@ func (sc *e2eScenario) CheckQuestPlayerDeaths(name string) {
 	for cycle := 1; cycle <= 3; cycle++ {
 		label := fmt.Sprintf("%s cycle %d", name, cycle)
 		sc.add(0, label+" place only player beside stock Necromancer", f.prepare)
+		if cycle == 1 {
+			sc.Screen(label + " initial life HUD")
+		}
 		sc.addWhen(0, label+" wait for natural lethal damage", 15000, f.naturallyDead, func() {})
+		sc.addWhen(0, label+" wait for ordinary life HUD packet", 1200, f.deadLifeHUD, func() {})
 		sc.Screen(label + " dead")
 		sc.Wait(20, label+" finish dead-state input delay")
 		sc.add(0, label+" locate ordinary respawn input", f.respawnMouse)

@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest ankh HUD 목숨의 실제 사망·부활 headless 검증
+
+목숨 sender `b5146d15d`와 self-report loop `004739158` 뒤 별도 read-only E2E 단위다. 기존 stock 메뉴·네 번의 실제 출구·5단계 네크로맨서의 자연 피해·실제 mouse 부활 시나리오를 유지한다. HUD가 원래 `X %d`로 그리는 DWORD `0x5D4594+1050012`를 읽고 native client/server Player identity와 정확한 net-code WORD를 확인한다. 최초 목숨 2, 첫/둘째 사망 뒤 1/0, 각 부활 뒤 1/0, 마지막 zero-life 결과창 동안 0, 실제 Continue 부활 뒤 2를 관찰했다. 마지막 사망의 서버 lives 2와 HUD 0은 원본 death tail의 marker suppression이므로 이를 강제로 같게 하지 않는다. 사망 뒤 packet 관찰은 1,200 frame bounded gate이며 기존 부활 gate도 packet 수신을 기다린다. UI/packet/HP/lives/통계/AI/사망/페널티/부활을 주입하지 않는다.
+
+일반·HD headless 및 일반 새 프로세스 재실행 모두 exit 0이다. 사망 frame 3319/3677/4055, 부활 frame 3342/3700/4078, same player identity, HP `450→0→450`, death counter `0→1→2→0`, 마지막 결과창의 empty host timer와 Continue 해제도 유지한다. native unit/Player/window 주소는 4GiB를 넘는다. 초기 HUD 캡처를 더한 PNG 9개가 일반·HD에서 바이트 단위로 같고 일반 독립 재실행은 override 없이 기존 baseline 9개를 통과했다. 초기 `X 2`, 첫 사망 `X 1`, 둘째 사망 `X 0`, 마지막 부활 `X 2` 및 HD 결과창의 empty timer를 직접 시각 검사했다. PNG는 임시 시나리오 디렉터리에만 남긴다.
+
+observer의 wrong class/nil update/Player identity/net-code/상위 비트·stale HUD 거부와 read-only 성질, 256개 life BYTE, zero-life 결과창의 deferred 값, bounded schedule을 회귀 검사한다. 대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 1회가 통과했다. 전후 `make oracle-test`는 stock 1,556파일·570,653,750바이트·code 2,869/data 615개·NXZ 50쌍을 확인했다. 원본·개인 Save/config는 변경하지 않았다.
+
+실제 전투의 골드/세 통계가 0인 한계, 첫 lethal projectile의 제거 뒤 독점적 attribution, remote non-host, 다른 캐릭터/피격 분기, 온라인 소환수 보존, SDL/OpenAL 출력은 이 회귀로 증명하지 않는다. 시작 시 공개 lobby 조회 timeout/refused 로그도 관찰했으며 로컬 Quest 성공과 별개다. 옵션 전체 audit의 음량/음소거·해상도·직렬화 불일치 등은 여전히 미해결이다.
+
 ## Quest 목숨 self-report loop의 native 연결 `004D99E1`
 
 sender 복원 `b5146d15d` 뒤 현재 native self-report에서 빠진 원본 `004D9900`의 목숨 loop 94바이트만 별도 복원했다. 기존 골드 콜백 전에 update 포인터를 캐시하고 골드→Quest 목숨→기존 stats/vitals 순서로 연결한다. Quest flag 한 번 확인→32개 index의 `Players.ByInd` 순차 조회→nil Player/PlayerUnit skip→entry update의 full ExtraLives DWORD와 zero-extended marker BYTE 비교→기존 sender→반환 무시→entry update의 fresh LOWBYTE를 같은 marker에 저장한다. sender 자체는 별도의 live UpdateData를 읽는 원본 의미를 유지한다. 새 nil/class guard는 slice 안에 없고 outer adapter의 원래 unit nil/low-class-bit gate만 유지한다.

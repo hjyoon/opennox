@@ -4,6 +4,8 @@
 # HP, lives, statistics, AI, damage, death, penalties and respawn are not injected.
 # After 20 ordinary dead frames, observe the native host's empty timer text
 # and capture the result window before the real Continue input.
+# Observe native client/server identity and the real HUD DWORD without writes:
+# initial 2, deaths 1/0/0 (server reset is deferred), respawns 1/0/2.
 steps:
   - action: slow
     dur: 1ms

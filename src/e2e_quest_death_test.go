@@ -106,7 +106,7 @@ func TestE2EQuestDeathSchedule(t *testing.T) {
 	sc.CheckQuestPlayerDeaths("Quest death")
 	for cycle := 1; cycle <= 3; cycle++ {
 		label := fmt.Sprintf("Quest death cycle %d", cycle)
-		for name, timeout := range map[string]time.Duration{label + " wait for natural lethal damage": 15000, label + " wait for real-input respawn": 1200} {
+		for name, timeout := range map[string]time.Duration{label + " wait for natural lethal damage": 15000, label + " wait for real-input respawn": 1200, label + " wait for ordinary life HUD packet": 1200} {
 			found := 0
 			for _, step := range sc.steps {
 				if step.name == name {
@@ -118,6 +118,14 @@ func TestE2EQuestDeathSchedule(t *testing.T) {
 			}
 			if found != 1 {
 				t.Fatalf("gate %q occurs %d times", name, found)
+			}
+		}
+	}
+	for i, step := range sc.steps {
+		if strings.HasSuffix(step.name, " wait for ordinary life HUD packet") {
+			label := strings.TrimSuffix(step.name, " wait for ordinary life HUD packet")
+			if i == 0 || i+1 >= len(sc.steps) || sc.steps[i-1].name != label+" wait for natural lethal damage" || sc.steps[i+1].name != label+" dead" {
+				t.Fatal("read-only life packet gate must follow natural death and precede its capture")
 			}
 		}
 	}
@@ -203,5 +211,76 @@ func TestE2EQuestDeathScenarioDoesNotInjectOutcome(t *testing.T) {
 		if strings.Contains(scenario, "action: "+action) {
 			t.Fatalf("natural death scenario injects outcome: %s", action)
 		}
+	}
+}
+
+func TestE2EQuestLifeHUDRejectsPartialSuccessAndIsReadOnly(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		mutate func(**server.Object, **server.Player, *server.Object, *server.PlayerUpdateData, *uint32, *uint32)
+		wantOK bool
+	}{
+		{"synchronized", func(**server.Object, **server.Player, *server.Object, *server.PlayerUpdateData, *uint32, *uint32) {}, true},
+		{"nil unit", func(unit **server.Object, _ **server.Player, _ *server.Object, _ *server.PlayerUpdateData, _ *uint32, _ *uint32) {
+			*unit = nil
+		}, false},
+		{"wrong class", func(_ **server.Object, _ **server.Player, unit *server.Object, _ *server.PlayerUpdateData, _ *uint32, _ *uint32) {
+			unit.ObjClass = object.ClassMonster
+		}, false},
+		{"nil update", func(_ **server.Object, _ **server.Player, unit *server.Object, _ *server.PlayerUpdateData, _ *uint32, _ *uint32) {
+			unit.UpdateData = nil
+		}, false},
+		{"nil server player", func(_ **server.Object, _ **server.Player, _ *server.Object, update *server.PlayerUpdateData, _ *uint32, _ *uint32) {
+			update.Player = nil
+		}, false},
+		{"nil client player", func(_ **server.Object, player **server.Player, _ *server.Object, _ *server.PlayerUpdateData, _ *uint32, _ *uint32) {
+			*player = nil
+		}, false},
+		{"different player", func(_ **server.Object, player **server.Player, _ *server.Object, _ *server.PlayerUpdateData, _ *uint32, _ *uint32) {
+			*player = &server.Player{}
+		}, false},
+		{"wrong code", func(_ **server.Object, _ **server.Player, _ *server.Object, _ *server.PlayerUpdateData, code *uint32, _ *uint32) {
+			*code = 0x1235
+		}, false},
+		{"high client code", func(_ **server.Object, _ **server.Player, _ *server.Object, _ *server.PlayerUpdateData, code *uint32, _ *uint32) {
+			*code = 0x10001234
+		}, false},
+		{"stale zero HUD", func(_ **server.Object, _ **server.Player, _ *server.Object, _ *server.PlayerUpdateData, _ *uint32, hud *uint32) {
+			*hud = 0
+		}, false},
+		{"high HUD bits", func(_ **server.Object, _ **server.Player, _ *server.Object, _ *server.PlayerUpdateData, _ *uint32, hud *uint32) {
+			*hud = 0x102
+		}, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			player := &server.Player{PlayerInd: 31, GoldVal: 0x89abcdef}
+			update := &server.PlayerUpdateData{Player: player, ExtraLives: 2}
+			unit := &server.Object{ObjClass: object.ClassPlayer, NetCode: 0x89ab1234, UpdateData: unsafe.Pointer(update)}
+			observedUnit, clientPlayer := unit, player
+			code, hud := uint32(0x1234), uint32(2)
+			tc.mutate(&observedUnit, &clientPlayer, unit, update, &code, &hud)
+			beforeUnit, beforeUpdate, beforePlayer, beforeCode, beforeHUD := *unit, *update, *player, code, hud
+			if err := e2eQuestLifeHUD(observedUnit, clientPlayer, code, hud, 2); (err == nil) != tc.wantOK {
+				t.Fatalf("error=%v want-success=%t", err, tc.wantOK)
+			}
+			if *unit != beforeUnit || *update != beforeUpdate || *player != beforePlayer || code != beforeCode || hud != beforeHUD {
+				t.Fatal("HUD observation mutated native state")
+			}
+		})
+	}
+	player := &server.Player{PlayerInd: 31}
+	update := &server.PlayerUpdateData{Player: player}
+	unit := &server.Object{ObjClass: object.ClassPlayer, NetCode: 0x1234, UpdateData: unsafe.Pointer(update)}
+	for value := uint32(0); value < 256; value++ {
+		update.ExtraLives = value
+		if err := e2eQuestLifeHUD(unit, player, 0x1234, value, value); err != nil {
+			t.Fatal(err)
+		}
+	}
+	// Server reset prepares two lives during the zero-life result window.
+	// Its original marker suppresses the new packet until real respawn.
+	update.ExtraLives = 2
+	if err := e2eQuestLifeHUD(unit, player, 0x1234, 0, 0); err != nil {
+		t.Fatal(err)
 	}
 }

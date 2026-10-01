@@ -3668,6 +3668,20 @@
       "purpose": "load Player through the entry-cached update data, compare the live gold dword with its last-reported cache, send the existing reliable gold report on change, then reload Player through the cached update and copy the live gold value into the report cache"
     },
     {
+      "name": "sub_4D9D60",
+      "address": "0x004D9D60",
+      "size": 67,
+      "sha256": "c4fd908221d4f02d90ade3c40f1a8958c09e2e81f7e1dcb2912481d9c6c3e7c3",
+      "purpose": "load the source net-code word before its live update-data pointer, transmit only the low ExtraLives byte in the exact five-byte F0/04 packet, and preserve the signed reliable-send result without new guards"
+    },
+    {
+      "name": "sub_4D9D60_padding",
+      "address": "0x004D9DA3",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP bytes after the Quest extra-life report and before the next original report helper at 004D9DB0"
+    },
+    {
       "name": "nox_xxx_netSendLineMessage_4D9EB0",
       "address": "0x004D9EB0",
       "size": 275,

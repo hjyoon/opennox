@@ -197,6 +197,7 @@ int nox_xxx_netStatsMultiplier_4D9C20(nox_object_t* a1);
 int sub_4D9CF0(int a1);
 int sub_4D9D20(int a1, nox_object_t* a2);
 int sub_4D9D60(int a1, nox_object_t* unit);
+int nox_server_questLivesReport_native_4D9D60(int recipient, nox_object_t* unit);
 int sub_4D9DF0(int a1, int a2, char a3);
 int sub_4D9E30(int a1, int a2, char a3);
 int nox_xxx_netGauntlet_4D9E70(int a1);

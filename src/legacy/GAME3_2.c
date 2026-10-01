@@ -4652,16 +4652,7 @@ int sub_4D9D20(int recipient, nox_object_t* unit) {
 
 //----- (004D9D60) --------------------------------------------------------
 int sub_4D9D60(int a1, nox_object_t* unit) {
-	int a2 = (int)(uintptr_t)unit;
-	int v2;     // edx
-	char v4[5]; // [esp+0h] [ebp-8h]
-
-	v4[0] = -16;
-	v4[1] = 4;
-	v2 = *(uint32_t*)(a2 + 748);
-	*(uint16_t*)&v4[3] = *(uint16_t*)(a2 + 36);
-	v4[2] = *(uint8_t*)(v2 + 320);
-	return nox_xxx_netSendPacket0_4E5420(a1, v4, 5, 0, 1);
+	return nox_server_questLivesReport_native_4D9D60(a1, unit);
 }
 
 //----- (004D9DF0) --------------------------------------------------------

@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 목숨 보고 sender의 native 필드·wire 경계 `004D9D60`
+
+typed unit ABI 선행 커밋 `49a927744` 뒤 sender 한 본체만 Go export로 복원했다. 원본 assembly의 net-code WORD 읽기→live UpdateData 읽기→ExtraLives LOWBYTE→정확한 F0/04 5바이트 packet→기존 reliable 전송 순서와 full signed DWORD 반환을 유지한다. decompiled C의 앞선 UpdateData 읽기를 따르지 않으며 class/nil guard를 추가하지 않는다. native ExtraLives는 ARM64 offset 416을 사용한다.
+
+모든 0~255 목숨 값과 상위 DWORD 경계, net-code WORD 절단, signed recipient/result 경계, callback 읽기 순서·live update 교체·fault prefix·상태 불변을 검사했다. 실제 Go→C entry→Go export→production Server transport 시험은 4GiB를 넘는 C-owned unit/update 포인터와 class 0 오브젝트로도 통과한다. 대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 1회가 통과했다. 전후 stock 검증과 NXZ 50쌍이 통과했고 code range는 본체 67바이트·뒤 13-NOP를 더한 2,868개, data 615개다.
+
+실제 self-report 경로에 빠진 Quest 목숨 loop와 자연 사망 headless HUD 값 검증은 다음 별도 단위다. 이 sender 단독 복원을 HUD `X 0` 해결이나 옵션 audit 실패 해결로 주장하지 않는다. 원본·개인 Save/config는 변경하지 않았다.
+
 ## Quest 목숨 packet의 typed unit ABI 준비 `004D9D60`
 
 인수 변경과 본체 복원을 분리한다. `sub_4D9D60`의 두 번째 인수를 `nox_object_t* unit`으로 선언하고 기존 `int a2` alias에 바로 대입하며, retained PE32 caller의 변환도 명시한다. 전송 본체·필드 접근·클라이언트 HUD는 아직 바꾸지 않는다. 현재 Go self-report 경로에 없는 Quest 목숨 보고 loop와 raw sender의 native 필드 복원이 후속 단위이며, 이 type-only 변경을 `X 0` 해결로 주장하지 않는다. Darwin/ARM64 root/server/legacy 전체 일반 시험과 변경 전 stock 파일·code/data·NXZ 검증을 통과했다. 기존 code 2,866개·data 615개를 유지한다.

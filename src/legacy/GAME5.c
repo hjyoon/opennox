@@ -4908,7 +4908,7 @@ LABEL_38:
 		v19 = *(uint32_t*)(v3 + 320);
 		if (v19) {
 			*(uint32_t*)(v3 + 320) = v19 - 1;
-			result = sub_4D6130(v1);
+			result = sub_4D6130((nox_object_t*)(uintptr_t)v1);
 		} else {
 			v20 = *(uint32_t*)(v3 + 276);
 			*(uint32_t*)(v3 + 548) = gameFrame();

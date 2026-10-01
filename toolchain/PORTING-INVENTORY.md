@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest Warrior 능력 손실의 native player 경계 `0054CFB0`
+
+unit 인수의 typed ABI를 본체 변경 전에 `7d371d8ce`로 분리했다. 한 원본 본체 `0054CFB0`만 native Go로 옮기며 캐시된 Player, class byte가 0이 아닐 때의 signed AL 반환, 첫 0..5·두 번째 1..5의 live learned-level 조회와 원래 `004F2570` eligibility를 유지한다. 후보가 없어도 `1..0` logic RNG 함수를 호출하지만 원래 RNG는 이 범위에서 상태를 전진시키지 않고 0을 반환한다. 선택한 능력 DWORD만 0으로 지운 뒤 recipient byte를 읽고 원래 F0/18·little-endian WORD ID·4바이트·unsequenced/remove-one 패킷을 보낸다. 선택 실패 시 마지막 eligibility/RNG의 AL, 성공 시 send 결과의 AL을 그대로 반환하며 nil binding 무시·class 추가 검사·후보 clamp·기본 능력 변경은 넣지 않았다.
+
+원본 208바이트는 이미 봉인된 두 eligibility call을 보존한 세 추가 disjoint 구간으로 검증했다. `.text`의 유일한 원래 caller는 아직 복원하지 않은 `0054CBD0` dispatcher 안 `0054CC32`다. 누적 코드 2,843개·데이터 597개와 stock 1,556개 파일 verifier가 통과했다. 캐시된 Player와 난수 중 binding 교체·fresh level 편집·삭제 이후 recipient 변경·signed 반환·missing binding fault, 실제 logic RNG 48 seed 및 다른 Player/Update/Object 필드와 Other RNG 무변경을 검사했다. 실제 C entry→Go export→server→C char 왕복은 C-owned unit/update/player 모두 4GiB 초과 주소로 통과했다. 관련 server/legacy/root 일반 시험 3회와 전체 일반·실제 `GOEXPERIMENT=cgocheck2` 시험이 통과했다.
+
+이 함수는 Quest 사망 본체 연결의 선행 helper이며 일반 전투나 사망·부활의 실제 실행을 검증한 것으로 확대하지 않는다. `PlayerDieNative54D2B0`의 Quest admission은 계속 거부한다. 남은 penalty helper·dispatcher를 원본별로 복원한 뒤 본체 연결과 headless 사망·부활 검증을 진행한다.
+
 ## Quest 사망 통계의 native 포인터 경계 `004D6130` — 본체 연결의 선행 단계
 
 `sub_4D6130` 한 원본 본체를 native Go로 복원했다. nil 또는 Destroyed(`0x20`) unit은 입력 Object 주소를 그대로 반환한다. 나머지는 UpdateData를 캐시하고 첫 Player의 사망 DWORD를 wrapping 증가시킨 뒤, 같은 캐시에서 Player를 다시 읽어 진행 mask에 `2`를 OR하고 그 두 번째 Player 주소를 반환한다. Object/Player가 혼합된 원본 EAX를 PE32 int로 잘라 운반하지 않는다. 원본에 없는 class 검사·live binding의 nil 무시·추가 생명·밸런스 변경은 넣지 않았다.

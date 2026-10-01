@@ -19572,6 +19572,13 @@
       "purpose": "the exact second decoded direct rel32 call from random Conjurer field-guide loss, used while selecting the counted ordinal"
     },
     {
+      "name": "sub_54CFB0_prefix",
+      "address": "0x0054CFB0",
+      "size": 50,
+      "sha256": "ee2a4eb655ac9a5bce96accd901be70c0e6f462817ca32b43c91332120f31713",
+      "purpose": "cache the player pointer, return the non-Warrior class low byte, and begin the learned-ability count before the already sealed eligibility call"
+    },
+    {
       "name": "sub_4F2570_call_54CFE2",
       "address": "0x0054CFE2",
       "size": 5,
@@ -19579,11 +19586,25 @@
       "purpose": "the exact first decoded direct rel32 call from random Warrior ability loss, used while counting learned and loss-eligible abilities"
     },
     {
+      "name": "sub_54CFB0_count_rng_select",
+      "address": "0x0054CFE7",
+      "size": 61,
+      "sha256": "5d0cab486880bfd8648d3072ee56e5c5d7429f2f4d66df57ce93d61d868e8220",
+      "purpose": "finish the zero-through-five count, call the inclusive logic RNG with 1..count even when empty, and begin a fresh one-through-five level scan before the second sealed eligibility call"
+    },
+    {
       "name": "sub_4F2570_call_54D024",
       "address": "0x0054D024",
       "size": 5,
       "sha256": "27dea7451fd427fd19fa8a16c3953d27626e7fc4ca36a7965f6613ab7692aa1f",
       "purpose": "the exact second decoded direct rel32 call from random Warrior ability loss, used while selecting the counted ordinal"
+    },
+    {
+      "name": "sub_54CFB0_clear_packet_return",
+      "address": "0x0054D029",
+      "size": 87,
+      "sha256": "702737c544024576870fae2e9ce2b6fda43ff653857f8b7b53c7d0a3f36a3ddc",
+      "purpose": "select the live learned eligible ordinal, clear only its DWORD, load the recipient byte after clearing, send F0/18 with the little-endian ability word and unsequenced/remove-one flags, or retain the final EAX low byte on no-match paths"
     },
     {
       "name": "nox_xxx_playerDie_54D2B0_prefix",

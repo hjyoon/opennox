@@ -4573,6 +4573,7 @@ void sub_54CEE0(int a1) {
 }
 
 //----- (0054CFB0) --------------------------------------------------------
+#if 0
 char sub_54CFB0(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
 	int v1;       // ebx
@@ -4624,6 +4625,9 @@ char sub_54CFB0(nox_object_t* unit) {
 	}
 	return v2;
 }
+#endif
+char nox_server_questLoseAbility_native_54CFB0(nox_object_t* unit);
+char sub_54CFB0(nox_object_t* unit) { return nox_server_questLoseAbility_native_54CFB0(unit); }
 
 //----- (0054D080) --------------------------------------------------------
 void sub_54D080(int a1) {

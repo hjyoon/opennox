@@ -4352,7 +4352,7 @@ void sub_54CBD0(int a1) {
 	v1 = *(uint32_t*)(a1 + 748);
 	v2 = nox_xxx_playerGetGold_4FA6B0(a1);
 	nox_xxx_playerSubGold_4FA5D0(a1, v2 >> 1);
-	sub_54D080(a1);
+	sub_54D080((nox_object_t*)(uintptr_t)a1);
 	sub_54CC40((nox_object_t*)(uintptr_t)a1);
 	sub_54CD30((nox_object_t*)(uintptr_t)a1);
 	if (!*(uint8_t*)(*(uint32_t*)(v1 + 276) + 2251)) {
@@ -4650,7 +4650,8 @@ char nox_server_questLoseAbility_native_54CFB0(nox_object_t* unit);
 char sub_54CFB0(nox_object_t* unit) { return nox_server_questLoseAbility_native_54CFB0(unit); }
 
 //----- (0054D080) --------------------------------------------------------
-void sub_54D080(int a1) {
+void sub_54D080(nox_object_t* unit) {
+	int a1 = (int)(uintptr_t)unit;
 	char v1; // bl
 	int v2;  // ebp
 	int i;   // eax

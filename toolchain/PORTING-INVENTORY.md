@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 보석 손실의 typed unit ABI — 본체 복원의 선행 단계 `0054D080`
+
+원본별 리팩터링 규칙에 따라 unit 인수를 `int`에서 `nox_object_t*`로 먼저 분리하고 raw dispatcher caller를 명시적으로 변환했다. 기존 정수 alias와 C 본체는 그대로 유지하며 이 단계만으로 inventory·가격 조회·삭제·골드 반환의 포인터 잘림이 해결되었다고 주장하지 않는다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. native 본체는 다음 별도 커밋이며 Quest 사망 admission은 계속 닫혀 있다.
+
 ## Quest 무기 손실의 native inventory·modifier·player 경계 `0054CC40`
 
 typed unit ABI 선행 커밋 `532eb7ca8` 뒤 원본 본체 하나만 Go로 복원했다. entry의 player update를 먼저 캐시하고, equipped DWORD 0x100→weapon/wand class DWORD 0x01001000→subclass low BYTE bit 2 순서로 첫 적격 무기만 선택한다. 선택 뒤 subclass DWORD 0x10000이면 반환하고, 0x104 무기는 캐시한 modifier array의 네 포인터를 모두 읽어 전부 nil일 때만 보호한다. 첫 무기가 보호되어도 다음 장착 무기를 고르지 않는다.

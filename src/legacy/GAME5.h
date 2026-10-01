@@ -120,7 +120,7 @@ void sub_54CD30(nox_object_t* unit);
 void sub_54CE00(nox_object_t* unit);
 void sub_54CEE0(nox_object_t* unit);
 char sub_54CFB0(nox_object_t* unit);
-void sub_54D080(int a1);
+void sub_54D080(nox_object_t* unit);
 int nox_xxx_diePlayer_54D2B0(int a1);
 void nox_xxx_playerHandleElimDeath_54D7A0(int a1, int a2);
 void nox_xxx_playerUpdateScore_54D980(int a1, int a2, int a3, int a4);

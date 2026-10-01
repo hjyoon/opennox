@@ -523,14 +523,6 @@ func PlayerDamageNative4E17B0(
 		if runtime.GameplayFlag1 == nil || runtime.IsEnemy == nil {
 			return playerDamageUnsupported4E17B0(runtime, "missing friendly-fire service", target, source, weapon, damage, typ)
 		}
-		if damage >= 30 && target.Field129 != nil {
-			if runtime.GameBallType == 0 {
-				return playerDamageUnsupported4E17B0(runtime, "missing GameBall type", target, source, weapon, damage, typ)
-			}
-			if playerDamageOwnsType4E17B0(target, runtime.GameBallType) {
-				return playerDamageUnsupported4E17B0(runtime, "GameBall drop", target, source, weapon, damage, typ)
-			}
-		}
 		if damage >= 20 && runtime.PlayerSetState == nil {
 			return playerDamageUnsupported4E17B0(runtime, "missing player hurt-state service", target, source, weapon, damage, typ)
 		}
@@ -598,6 +590,27 @@ func PlayerDamageNative4E17B0(
 	}
 	if runtime.DamageClear == nil || (!poison && !flame && runtime.BuffOff == nil) {
 		return playerDamageUnsupported4E17B0(runtime, "missing native damage service", target, source, weapon, damage, typ)
+	}
+	// DefaultDamage releases a carried GameBall using damage after armor,
+	// Quest scaling and late defend, but before Shield absorption. Validate
+	// that tail before any stores; callback-dependent adjustments may raise
+	// a sub-threshold amount, so they also require the service for carriers.
+	mayDropBall := effective >= 30 || quest || len(lateDefendPlan) != 0 || flame || lava
+	if mayDropBall && target.Field129 != nil {
+		if runtime.GameBallType == 0 {
+			return playerDamageUnsupported4E17B0(runtime, "missing GameBall type", target, source, weapon, damage, typ)
+		}
+		if playerDamageOwnsType4E17B0(target, runtime.GameBallType) {
+			if runtime.GameBallOnDamage == nil {
+				return playerDamageUnsupported4E17B0(runtime, "GameBall drop", target, source, weapon, damage, typ)
+			}
+			// The original high-damage release dereferences the attacker's
+			// team after detaching the ball. Do not partially mutate a
+			// source-less carrier on that still-unsupported faulting path.
+			if source == nil {
+				return playerDamageUnsupported4E17B0(runtime, "source-less GameBall drop", target, source, weapon, damage, typ)
+			}
+		}
 	}
 
 	update.Field76 = 0
@@ -705,6 +718,9 @@ func PlayerDamageNative4E17B0(
 			source, target, weapon, effective,
 			runtime.Audio, runtime.BalanceFloatInd, runtime.AdjustHP, runtime.VampirismFX,
 		)
+	}
+	if runtime.GameBallOnDamage != nil {
+		runtime.GameBallOnDamage(source, target, effective)
 	}
 	if bite || missileImpact {
 		monsterUpdate := source.UpdateDataMonster()

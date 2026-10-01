@@ -8,7 +8,9 @@
 
 signed 피해 30 이상·Player 저비트 gate 뒤 uint32 cache와 zero-extended uint16 type을 비교하고 첫 matching owned ball만 처리한다. flag 0x40 제거→force 30→owner 해제→피해자의 last-touch carrier 기록→live team 판정과 공격자 team 조회/변경 또는 생성→sound 926 순서다. teamless 분기는 netcode를 공격자 team byte보다 먼저 읽는다. nil source는 방출 뒤 team byte에서 fault하므로 별도 PlayerDamage admission에서 필요한 서비스와 source를 상태 변경 전에 검증해야 한다. Wink의 force 100·Obj130 clear·BallStatus 1과 다른 함수이며 공의 scoring history를 지우지 않는다.
 
-typed Go 본체·native server binding의 trace, 각 observable callback의 fault prefix, signed 경계·full-width cache·live team/netcode reload·첫 공만 방출·native owned list와 carrier record 보존을 회귀 시험으로 구분한다. 이 단위는 PlayerDamage 연결과 실제 FlagBall 충돌 검증의 선행 포팅이며, 해당 게임 경로의 완료를 주장하지 않는다.
+typed Go 본체·native server binding의 trace, 각 observable callback의 fault prefix, signed 경계·full-width cache·live team/netcode reload·첫 공만 방출·native owned list와 carrier record 보존을 회귀 시험으로 구분한다.
+
+PlayerDamage `004E17B0`의 활성 native 경로도 원본 DefaultDamage 호출 위치에 연결했다. armor·Quest 배율·late Defend·흡혈 뒤, hurt-state·Shield·실제 HP 차감 전에 최종 정수 피해를 전달한다. 원래의 raw damage 기반 GameBall unsupported guard는 제거하고, 실제 방출 가능성·서비스·source를 상태 변경 전에 검증한다. Shield가 피해를 0으로 줄여도 그 앞의 30 이상 피해는 공을 방출하며, armor나 late Defend로 30 미만이 된 피해는 방출하지 않는다. 돌진·Sentry ZapRay·monster bite/missile·Flame 및 source 없는 작은 Poison을 회귀 시험으로 구분한다. source 없는 고피해 소지자는 원본의 부분 저장 뒤 fault를 그대로 실행하지 않고 아직 비지원인 경로로 명시적으로 거부한다. 실제 일반·HD FlagBall headless 실행에서 공을 정상 충돌로 줍는 적에게 A 키로 두 번씩 돌진해 HP `2,000→1,850`, owner 해제·last-touch carrier 보존·공 팀 변경·효과 종료와 쿨다운 재사용을 확인했다.
 
 ## Eye of the Wolf의 BubbleParticle 생성 `00499F60`
 

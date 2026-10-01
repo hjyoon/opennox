@@ -217,16 +217,16 @@ func (sc *e2eScenario) CreateTransitionPixies(name string) {
 // save, map-load and owner/position restoration run. This is not SwitchMap or
 // a replacement persistence implementation.
 func (sc *e2eScenario) EnterPetTransitionExit(mapID, name string) {
-	sc.enterPetTransitionExit(mapID, name, false)
+	sc.enterPetTransitionExit(mapID, name, false, 3)
 }
 
 // Put the player in contact with the loaded stock exit, then queue ordinary
 // collision work. Pets, exit flags and migration/save state are not modified.
 func (sc *e2eScenario) ContactPetTransitionExit(mapID, name string) {
-	sc.enterPetTransitionExit(mapID, name, true)
+	sc.enterPetTransitionExit(mapID, name, true, 3)
 }
 
-func (sc *e2eScenario) enterPetTransitionExit(mapID, name string, contact bool) {
+func (sc *e2eScenario) enterPetTransitionExit(mapID, name string, contact bool, expectedPets int) {
 	sc.add(0, name, func() {
 		host := noxServer.Players.HostUnit()
 		exit := e2eExitWithDestination()
@@ -249,7 +249,7 @@ func (sc *e2eScenario) enterPetTransitionExit(mapID, name string, contact bool) 
 				}
 			}
 		}
-		if host == nil || exit == nil || len(e2eTransitionPets.pets) != 3 {
+		if host == nil || exit == nil || len(e2eTransitionPets.pets) != expectedPets {
 			e2eError(fmt.Errorf("pet transition: player/exit(%q)/summons unavailable: %p/%p/%d", mapID, host, exit, len(e2eTransitionPets.pets)))
 			return
 		}
@@ -292,9 +292,13 @@ func (sc *e2eScenario) enterPetTransitionExit(mapID, name string, contact bool) 
 }
 
 func (sc *e2eScenario) AssertTransitionSummons(name string) {
+	sc.assertTransitionSummons(name, 3)
+}
+
+func (sc *e2eScenario) assertTransitionSummons(name string, expectedPets int) {
 	sc.add(0, name, func() {
 		host := noxServer.Players.HostUnit()
-		if host == nil || len(e2eTransitionPets.pets) != 3 {
+		if host == nil || len(e2eTransitionPets.pets) != expectedPets {
 			e2eError(fmt.Errorf("pet transition: missing host/summons at assertion: %p/%d", host, len(e2eTransitionPets.pets)))
 			return
 		}

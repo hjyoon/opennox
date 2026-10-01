@@ -1,0 +1,116 @@
+# Stock Quest menu and four real exit transitions generate the stage 5 minions.
+# Place only the player beside the existing monster. AI, spells, HP, inventory,
+# damage, death and reward-drop paths are not injected.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 200
+    name: host Quest
+  - action: wait
+    dt: 400
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+    name: accept color
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss Quest guide
+  - action: wait
+    dt: 530
+  - action: assert-quest-stage
+    count: 1
+    map: g_templd
+    name: initial Quest stage playable
+  - action: enter-quest-exit
+    name: combat sequence stage 1 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss combat sequence stage 2 briefing
+  - action: assert-quest-stage
+    count: 2
+    map: g_castld
+    name: combat sequence stage 2 playable
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in combat sequence stage 2
+  - action: enter-quest-exit
+    name: combat sequence stage 2 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss combat sequence stage 3 briefing
+  - action: assert-quest-stage
+    count: 3
+    map: g_lotdd
+    name: combat sequence stage 3 playable
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in combat sequence stage 3
+  - action: enter-quest-exit
+    name: combat sequence stage 3 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss combat sequence stage 4 briefing
+  - action: assert-quest-stage
+    count: 4
+    map: g_swamp
+    name: combat sequence stage 4 playable
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in combat sequence stage 4
+  - action: enter-quest-exit
+    name: combat sequence stage 4 exit
+  - action: wait
+    dt: 400
+  - action: screen
+    name: Quest sequence stage 5 score
+  - action: click-chapter-briefing
+    name: dismiss combat sequence stage 5 briefing
+  - action: assert-quest-stage
+    count: 5
+    map: g_forest
+    name: combat sequence stage 5 playable
+  - action: assert-quest-minion
+    creature: Necromancer
+    count: 1
+    name: stock stage 5 Necromancer generated
+  - action: check-quest-minion-combat
+    creature: Necromancer
+    name: Quest Necromancer real combat
+  - action: quit
+    dt: 1

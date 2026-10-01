@@ -9520,6 +9520,24 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ClickNPCDialogDone(l.Name)
+		case "click-npc-dialog-yes":
+			sc.Wait(dt, "")
+			sc.ClickNPCDialogYes(l.Name)
+		case "prepare-war03b-wolf-purchase":
+			sc.Wait(dt, "")
+			sc.PrepareWar03bWolfPurchase(l.Name)
+		case "open-henrick-dialog":
+			sc.Wait(dt, "")
+			sc.OpenHenrickDialog(l.Name)
+		case "assert-war03b-wolf-purchase":
+			sc.Wait(dt, "")
+			sc.AssertWar03bWolfPurchase(l.Count, l.Name)
+		case "contact-purchased-wolf-exit":
+			sc.Wait(dt, "")
+			sc.ContactPurchasedWolfExit(l.Map, l.Name)
+		case "assert-purchased-wolf-transition":
+			sc.Wait(dt, "")
+			sc.AssertPurchasedWolfTransition(l.Name)
 		case "assert-openal-playback":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -9603,6 +9621,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertQuestGenerators(l.Count, l.Name)
+		case "check-quest-minion-combat":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckQuestMinionCombat(l.Creature, l.Name)
 		case "set-objective-game-mode":
 			if dt != 0 {
 				sc.Wait(dt, "")

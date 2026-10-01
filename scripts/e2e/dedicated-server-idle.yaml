@@ -1,0 +1,8 @@
+# The standalone server has no window/input loop. The runner drives the real
+# authenticated HTTP API and checks its process exit after console quit.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: wait
+    dt: 20000
+    name: keep the dedicated main loop active for local API checks

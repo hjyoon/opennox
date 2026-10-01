@@ -227,7 +227,9 @@ func (s *Server) MainLoop() error {
 	}
 	legacy.Sub_43AA70()
 	s.mainloopInit()
-	for !mainloopStopError {
+	// Console exit and the normal server shutdown path clear this flag too.
+	// The dedicated loop must honor it just like the client-host loop does.
+	for mainloopContinue && !mainloopStopError {
 		s.mainloopPre()
 
 		s.SetRateLimit(30)

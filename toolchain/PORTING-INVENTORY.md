@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 독립 서버 실제 기동·맵 전환·정상 종료
+
+Darwin/ARM64의 clean `01158cde4` 서버 제품을 실제로 실행해 `so_beach` chat 시작, 인증된 API의 `estate→trilevel→estate` arena 로딩과 계속 도는 메인 루프를 확인했다. 그러나 정상 console `quit`이 `nox_game_exit_xxx2`를 거쳐 `mainloopContinue=false`로 만들어도 독립 `Server.MainLoop`가 이 플래그를 보지 않아 프로세스가 남았다. 같은 fixture의 수정 전 실행은 quit 이후 10초 제한에서 실패했다.
+
+새 Go 전용 독립 메인 루프의 반복 조건만 client-host 루프와 같은 `mainloopContinue && !mainloopStopError`로 교정한다. 원본 맵 정리·종료 함수·게임 모드·소환수 보존 규칙은 바꾸지 않는다. 수정 후 같은 실제 서버 기동·세 맵 전환·console quit 검증에서 exit 0을 확인했다. `scripts/run-headless-server-e2e.sh`와 idle YAML은 API 응답뿐 아니라 game tick 증가, 맵 로딩 횟수와 실제 child-process 종료를 검사하며 재현 입력과 원본 데이터는 분리한다. 이 회귀는 원격 플레이어 접속·모든 서버 모드나 미재현 소환수 소실의 해결 완료가 아니다.
+
+전체 일반·cgocheck2 테스트, shellcheck·Bash 구문 검사와 원본 코드 2,800개·데이터 586개·stock 1,556개 파일의 무결성 검증도 통과했다. 개인 save/config는 가져오지 않았고 원본 데이터 트리는 변경되지 않았다.
+
 ## 캠페인 동일 챕터의 하위 맵·저장된 맵 복귀 — 소환수 회귀
 
 `scripts/e2e/solo-conjurer-spell-pet-intrachapter.yaml`은 실제 메뉴·Summon Wolf·Summon Urchin·Charm·Pixie Swarm을 거쳐 Con01a→Con02a→Con03a→Con03b→저장된 Con03a를 일반 stock 출구 충돌로 이동한다. player만 출구에 배치하고 소환수·owner·migration flag·next-map을 직접 조작하지 않는다. 챕터 전환 브리핑은 실제 mouse 입력으로 닫고 각 맵의 기존 autosave가 완료된 뒤 검사한다.

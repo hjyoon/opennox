@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## stock GolemArrow의 ranged WEAPON 분류 정정 — player 입구
+
+별도 `PlayerDamage(004E17B0)` 변경도 PIERCE admission에 원본 `004E1400`의 ranged 판정을 적용한다. 실제 stock class `0x05200001`·subclass `0x10`으로 앞서 실패한 fractional carry 시험을 다시 실행하며, pure missile의 기존 HP/피격 위치 계약은 별도 양성 회귀로 유지한다. melee weapon subclass·unit·wand와 GreatStaff·possession 미지원 경계는 넓히지 않는다. armor·Quest·Shield·HP 본체와 원본 balance/자산은 변경하지 않았다.
+
+Go 1.26.5 전체 일반·실제 cgocheck2 시험과 두 PIERCE 함수의 대상 일반·race·checkptr 각 3회가 통과했다. 실제 Quest 1→5단계 stock 출구 진행 뒤 원래 생성기가 만든 FlyingGolem의 화살에서 HP `424→419`, `321→316`, `194→189` 등 다섯 차례의 PIERCE 감소를 확인했다. raw damage 3·원본 Quest 배율·armor 0.02·marker 529/1도 읽기 전용으로 관찰했다. 이번 제품 함수 커밋 시점의 E2E 피해 숫자/HUD 동시 확인은 아직 통과하지 않았으므로 화면까지 완료한 검증으로 기록하지 않는다.
+
 ## stock GolemArrow의 ranged WEAPON 분류 정정 — 공통 tail
 
 후속 실제 Quest 5단계 headless 시뮬레이션에서 원래 생성기가 만든 FlyingGolem의 화살 class는 `0x05200001`(`MISSILE|WEAPON|COMPLEX|NOT_STACKABLE`), subclass는 `0x10`이었다. 앞선 pure-missile fixture와 WEAPON 전체 제외 guard는 이 stock 화살을 놓쳤다. 원본 `004E1400` disassembly는 WEAPON 자체가 아니라 subclass mask `0x047F00FE`로 근접 공격을 판정하며 `0x10`은 false이므로, friendly-melee·Shock 경로를 생략하는 기존 tail에 해당한다.

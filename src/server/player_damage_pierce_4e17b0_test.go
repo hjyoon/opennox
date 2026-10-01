@@ -37,8 +37,19 @@ func TestPlayerDamageNative4E17B0MissilePierceFractionalCarry(t *testing.T) {
 			t.Fatalf("PIERCE %d carry=%g marker=%#x/%d", i, math.Float32frombits(update.Field21), update.Field75, update.Field76)
 		}
 	}
-	if !reflect.DeepEqual(*damages, []int32{2, 2, 3}) || target.HealthData.Cur != 13 || update.Field40_0 != 0x1234 || target.Obj130 != arrow || target.Field131 != 3 || target.Frame134 != 700 || target.Pos132 != arrow.PrevPos {
+	if !reflect.DeepEqual(*damages, []int32{2, 2, 3}) || target.HealthData.Cur != 13 || update.Field40_0 != 0x1234 || target.Obj130 != arrow || target.Field131 != 3 || target.Frame134 != 700 || target.Pos132 != source.PrevPos {
 		t.Fatalf("PIERCE damage=%v HP=%d source=%p", *damages, target.HealthData.Cur, target.Obj130)
+	}
+}
+
+func TestPlayerDamageNative4E17B0PiercePureMissileStillAdmitted(t *testing.T) {
+	target, source, arrow, r, damages := playerDamagePierceFixture4E17B0(t)
+	arrow.ObjClass = object.ClassMissile
+	if h, result := PlayerDamageNative4E17B0(target, source, arrow, 3, object.DamageImpale, r); !h || !result {
+		t.Fatalf("pure-missile PIERCE = %t/%t", h, result)
+	}
+	if !reflect.DeepEqual(*damages, []int32{3}) || target.HealthData.Cur != 17 || target.Pos132 != arrow.PrevPos {
+		t.Fatal("pure-missile PIERCE or its previous-position contract regressed")
 	}
 }
 
@@ -229,7 +240,7 @@ func TestPlayerDamageNative4E17B0PierceAdmissionBeforeMutation(t *testing.T) {
 		}},
 		{"monster update", func(_, a, _ *Object, _ *PlayerDamageRuntime4E17B0) { a.UpdateData = nil }},
 		{"player source", func(_, a, _ *Object, _ *PlayerDamageRuntime4E17B0) { a.ObjClass = object.ClassPlayer }},
-		{"weapon class", func(_, _, w *Object, _ *PlayerDamageRuntime4E17B0) { w.ObjClass |= object.ClassWeapon }},
+		{"melee weapon subclass", func(_, _, w *Object, _ *PlayerDamageRuntime4E17B0) { w.ObjSubClass = 0 }},
 		{"wand class", func(_, _, w *Object, _ *PlayerDamageRuntime4E17B0) { w.ObjClass |= object.ClassWand }},
 		{"unit class", func(_, _, w *Object, _ *PlayerDamageRuntime4E17B0) { w.ObjClass |= object.ClassMonster }},
 		{"GreatStaff defense", func(v, _, _ *Object, _ *PlayerDamageRuntime4E17B0) { v.UpdateDataPlayer().Player.WeaponEquip = 0x400 }},

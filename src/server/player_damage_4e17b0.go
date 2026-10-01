@@ -638,7 +638,10 @@ func PlayerDamageNative4E17B0(
 	if typ == object.DamageImpale && damage > 0 && source != nil && source != weapon &&
 		source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
-		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand) {
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
+		!defaultDamageAttackQualifies4E1400(source, weapon) {
+		// Stock GolemArrow is also WEAPON, subclass 0x10. Admit its
+		// ranged predicate without silently including melee Shock shapes.
 		return playerDamageMissilePierce4E17B0(target, source, weapon, update, pierceArmorValue, damage, typ, runtime)
 	}
 	if (typ == object.DamageElectric || typ == object.DamageAirborneElectric) && damage > 0 &&

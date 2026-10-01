@@ -3941,25 +3941,18 @@
       "purpose": "disengage regeneration for a player-class owner, retain bit 32 while another equipped modifier supplies it, and play sound 124 with alignment"
     },
     {
-      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_4E0220",
-      "address": "0x004E0220",
-      "size": 5,
-      "sha256": "f7a67f9bd134524290eb9fa90e93eacaef761a9e6def7c266acbd76165c4e2d8",
-      "purpose": "the first exact decoded direct rel32 call from the regeneration effect that compares current and maximum HP"
+      "name": "nox_xxx_effectRegeneration_4E01D0",
+      "address": "0x004E01D0",
+      "size": 204,
+      "sha256": "7b5720413e3ae9a93e233ed1ec5d6e07fd973d1ae6f79bc1a9fd8055d4d2daea",
+      "purpose": "cache the equipped item's holder and preserve health/cooldown/dead gates, WORD HP comparisons, armor rate division, DWORD product wrapping, fresh max HP/FPS/frame reloads and one-point regeneration; subsumes HP calls at 004E0220, 004E0229 and 004E0261"
     },
     {
-      "name": "nox_xxx_unitGetHP_4EE780_call_4E0229",
-      "address": "0x004E0229",
-      "size": 5,
-      "sha256": "572f088ffd4639cdbf6cf0ae3a13a2b044215dbeed5aef3aa589cf25c3283bbf",
-      "purpose": "the exact decoded direct rel32 call from the regeneration effect that compares current and maximum HP"
-    },
-    {
-      "name": "nox_xxx_unitGetMaxHP_4EE7A0_call_4E0261",
-      "address": "0x004E0261",
-      "size": 5,
-      "sha256": "f6ff821420afcc628408a37faee889f9f1a4988720e60313414e693461d494ec",
-      "purpose": "the second exact decoded direct rel32 call from the regeneration effect that computes its healing interval"
+      "name": "nox_xxx_effectRegeneration_4E01D0_padding",
+      "address": "0x004E029C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the regeneration callback"
     },
     {
       "name": "nox_xxx_inversionEffect_4E03D0",

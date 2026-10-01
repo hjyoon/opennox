@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 장비 재생 update callback의 native 경계 `004E01D0`
+
+사용자 PC `0x158cb1d`·주소 `0xffffffffdf1765bc`는 callback 두 번째 인수를 `int`로 받아 +492 holder를 읽는 재생 효과와 일치한다. stock `RegenerationUpdate`를 native C→Go entry에 등록하여 item·modifier·holder·health 주소를 유지한다. 원본 204바이트·4-NOP를 봉인하고, cooldown의 unsigned DWORD wrap·HP WORD 비교·special armor rate/3·DWORD product wrap·fresh maxHP/FPS/frame·1 HP 조정을 그대로 복원했다. 잘못된 divisor를 임의로 clamp하지 않는다. 실제 C callback에서 4GiB 초과 인수와 healing target을 검사한다. 장비 순회가 owner 대신 item을 전달하는 수정은 별도 원본 함수 변경이다.
+
 ## 플레이어 슈리켄·채크럼 자연 명중/귀환 headless 검증
 
 기존 launch-only 시나리오를 실제 target HP 감소와 projectile 소멸/원래 무기의 재장착까지 엄격히 기다리도록 확장했다. 원본 stock Troll의 위치·초기 HP 2000만 fixture로 설정하고 실제 Warrior 메뉴→inventory equip→mouse/button→network→일반 player attack→자연 collision을 실행했다. 일반·HD 제품 모두 FanChakram은 10 tick에 HP 1970(30 피해), 11 tick에 projectile 소멸·charge 20→19·원래 무기 유지; RoundChakram은 11 tick에 HP 1962(38 피해), 16 tick에 projectile 소멸·원래 무기의 귀환/재장착을 확인했다. 네 GUI 실행이 정상 종료했고, HD의 launch/hit/completion PNG 여섯 장은 일반 baseline과 정확히 일치했다. 검토한 hit/completion 화면도 피해 숫자·수량·채크럼 장착 icon 상태와 일치한다.

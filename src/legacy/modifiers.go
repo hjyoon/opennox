@@ -28,6 +28,7 @@ void nox_xxx_buff_4DFD80(void* effect, nox_object_t* owner, const nox_object_t* 
 void nox_xxx_checkPoisonProtectEnch_4DFDE0(void* effect, nox_object_t* owner, const nox_object_t* item);
 int nox_xxx_gripEffect_4E0480(int a1, int a2, int a3, int a4, int a5, int* a6);
 void nox_xxx_effectRegeneration_4E01D0(int a1, int a2);
+void nox_xxx_effectRegenerationNative_4E01D0(void* effect, nox_object_t* item, void* context);
 void nox_xxx_stunEffect_4E04D0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 void nox_xxx_fireEffect_4E0550(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 void nox_xxx_fireRingEffect_4E05B0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
@@ -386,7 +387,7 @@ func init() {
 	server.RegisterModifDefendEffect("BreakingEffect", C.nullsub_41, server.ModEffectParseFloat)
 	server.RegisterModifDefendEffect("PunctureProneEffect", C.nullsub_42, server.ModEffectParseFloat)
 
-	server.RegisterModifUpdateEffect("RegenerationUpdate", C.nox_xxx_effectRegeneration_4E01D0, server.ModEffectParseInt)
+	server.RegisterModifUpdateEffect("RegenerationUpdate", C.nox_xxx_effectRegenerationNative_4E01D0, server.ModEffectParseInt)
 	server.RegisterModifUpdateEffect("ParasiteUpdate", C.nullsub_43, server.ModEffectParseInt)
 	server.RegisterModifUpdateEffect("AttractionUpdate", C.nullsub_44, server.ModEffectParseInt)
 	server.RegisterModifUpdateEffect("ContinualReplenishmentUpdate", C.nox_xxx_attribContinualReplen_4E02C0, server.ModEffectParseInt)

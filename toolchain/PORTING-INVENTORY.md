@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어 방어구 뒤 PIERCE 피해 연결
+
+별도 `PlayerDamage(004E17B0)` 커밋은 stock monster source/pure missile weapon의 양수 `PIERCE(3)`를 `004E1F84`의 armor/carry/durability 계산 뒤 앞선 native DefaultDamage tail로 전달한다. direction callback 전 흡수율과 durability의 live armor 조회를 구분하며 distinct missile의 type/marker를 방패 효과·내구도 전에 기록한다. 최소 1 피해, GodMode의 내구도 이후 반환, Quest 배율과 DefaultDamage의 실제 방어·HP 처리를 유지한다. 일반 방패는 GolemArrow subclass 0x10을 반사하지 않지만 차단하고, Reflect Shield는 정면 화살을 반사해 owner를 이전한다.
+
+수정 전 새 player 회귀 세 개가 모두 unsupported로 실패했다. 수정 뒤 두 native 함수의 연결로 armor 0.25의 세 3 피해가 `2/2/3`·carry `0.25/0.5/-0.25`, stock 화살 marker `529/1`과 정수 attribution `3`을 확인했다. armor 0.25·raw 8의 GodMode에서는 HP를 유지하면서 내구도 2 피해가 먼저 적용되며, direction callback이 armor를 0.5로 바꾼 raw 32는 cached 흡수율로 HP 24·live 내구도 비율로 item 4 피해를 계산한다. 내구도 callback의 update 교체, Quest 최소값·배율·반사 및 ordinary shield 처리, mixed class·누락 서비스의 변경 전 거부도 확인했다.
+
+전체 일반·실제 cgocheck2, PlayerDamage/DefaultDamage 대상 일반·race·checkptr 각 3회가 통과했다. GreatStaff 방어와 possession이 live update/carry를 교체하는 비차단 prefix는 별도 미지원 분기로 드러내며 이번 admission에 숨겨 포함하지 않는다. 원본 피해 수치·밸런스·자산은 바꾸지 않았다. 실제 stock FlyingGolem 충돌과 일반·HD HP/HUD 검증은 후속 E2E에서 진행한다.
+
 ## 몬스터 화살 PIERCE의 공통 피해 tail
 
 현재 HEAD의 실제 Warrior Quest 5단계 headless 전투에서 stock FlyingGolem의 GolemArrow 충돌이 `PlayerDamage native branch is not ported: unsupported player damage shape damage_type=3`로 반복 거부됐다. 원본 PIERCE는 libs의 `DamageImpale(3)`이며 player 방어구 계산 뒤 `DefaultDamage(004E0B30)`으로 전달된다. 두 원본 함수는 별도 커밋으로 복원한다.

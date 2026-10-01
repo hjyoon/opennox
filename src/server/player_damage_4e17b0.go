@@ -197,6 +197,12 @@ func playerDamageShieldBlock4E17B0(
 	if player.ObserveTarget() != nil && runtime.ObserveClear != nil {
 		runtime.ObserveClear(target)
 	}
+	if typ == object.DamageImpale && source != nil && weapon != nil && source != weapon {
+		// 004E1A4D latches a distinct weapon before the block audio/effects.
+		// Existing non-PIERCE slices keep their separate marker contracts.
+		update.Field76 = 1
+		update.Field75 = uint32(weapon.TypeInd)
+	}
 	runtime.Audio(878, target)
 	if reflectProjectile {
 		runtime.ProjectileReflect(attack, target)
@@ -501,8 +507,84 @@ func playerDamageElectricPlayer4E17B0(
 	return true, runtime.DefaultDamage(target, source, nil, effective, typ)
 }
 
+// playerDamageMissilePierce4E17B0 restores switch case 3 at 004E1F84.
+// The armor absorption was captured by the caller before direction/effect
+// callbacks; 004E2180 reads the live armor value again for durability. The
+// distinct missile marker precedes durability and survives the switch tail.
+func playerDamageMissilePierce4E17B0(
+	target, source, weapon *Object, update *PlayerUpdateData, armorValue float32,
+	damage int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0,
+) (handled, result bool) {
+	quest := runtime.QuestMode != nil && runtime.QuestMode()
+	if runtime.DefaultDamage == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing default damage service", target, source, weapon, damage, typ)
+	}
+	if quest && runtime.QuestDamageScale == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
+	}
+	// GreatStaff can reflect missiles in states 13/18/19/20 before this
+	// switch. Do not silently turn that separate, unported defense into HP
+	// damage, including when its facing predicate has not been evaluated.
+	if update.Player.WeaponEquip&0x400 != 0 &&
+		(update.State == PlayerState13 || update.State == PlayerState18 || update.State == PlayerState19 || update.State == PlayerState20) {
+		return playerDamageUnsupported4E17B0(runtime, "player GreatStaff block", target, source, weapon, damage, typ)
+	}
+	if applicable, h, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+		return h, result
+	}
+	if update.Player.ObserveTarget() != nil {
+		// Possession can replace the live update/carry during ObserveClear.
+		// That prefix requires its own ordered native slice.
+		return playerDamageUnsupported4E17B0(runtime, "possessed player missile PIERCE", target, source, weapon, damage, typ)
+	}
+	scaled := float32((1.0 - float64(armorValue)) * float64(damage))
+	live := target.UpdateDataPlayer()
+	accumulated := scaled + math.Float32frombits(live.Field21)
+	effective := playerDamageRound4E17B0(accumulated)
+	remaining := damage - effective
+	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, math.Float32frombits(live.Field57), remaining, runtime)
+	if !ok {
+		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
+	}
+	update.Field76 = 0
+	update.Field76 = 1
+	update.Field75 = uint32(weapon.TypeInd)
+	live.Field21 = math.Float32bits(accumulated - float32(effective))
+	for _, planned := range itemPlan {
+		*planned.value = planned.next
+		if planned.damage <= 0 {
+			continue
+		}
+		health := planned.item.HealthData
+		before := health.Cur
+		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
+		after := health.Cur
+		if before != after && runtime.ReportArmorHealth != nil {
+			runtime.ReportArmorHealth(target, planned.item, before, after)
+		}
+	}
+	if update.Field76 == 0 {
+		update.Field76 = 2
+		update.Field75 = uint32(typ)
+	}
+	if damage > 0 && effective == 0 {
+		effective = 1
+	}
+	if runtime.GodMode != nil && runtime.GodMode() {
+		return true, true
+	}
+	if quest {
+		before := effective
+		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		if before > 0 && effective < 1 {
+			effective = 1
+		}
+	}
+	return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
+}
+
 // PlayerDamageNative4E17B0 restores the ordinary Spider BITE, monster-fired
-// missile IMPACT, Berserker Charge CRUSH, SentryGlobe ZAP_RAY, world FLAME,
+// missile IMPACT/PIERCE, Berserker Charge CRUSH, SentryGlobe ZAP_RAY, world FLAME,
 // unarmed monster ELECTRIC/AIRBORNE_ELECTRIC, and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
 // plus the front-facing shield block and the common Quest damage scaling tail,
@@ -549,8 +631,15 @@ func PlayerDamageNative4E17B0(
 		source.FindOwnerChainPlayer() == target && typ != object.DamageManaBomb {
 		return true, false
 	}
+	pierceArmorValue := math.Float32frombits(update.Field57)
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return handled, result
+	}
+	if typ == object.DamageImpale && damage > 0 && source != nil && source != weapon &&
+		source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand) {
+		return playerDamageMissilePierce4E17B0(target, source, weapon, update, pierceArmorValue, damage, typ, runtime)
 	}
 	if (typ == object.DamageElectric || typ == object.DamageAirborneElectric) && damage > 0 &&
 		source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil && weapon == nil {

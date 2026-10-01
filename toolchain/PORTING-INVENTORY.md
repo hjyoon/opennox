@@ -59,6 +59,8 @@ audit-only 커밋 `13cfe137a`의 `main-menu-options-audit.yaml` 및 `host-game-c
 | 일반 게임 내 | 180 | 16 |
 | HD 게임 내 | 180 | 18 |
 
+2026-10-02에 Quest 목숨/HUD 복원 뒤 clean `ee8f0c473`에서 네 경로를 새 프로세스로 다시 점검했으며 위 assertion 수가 모두 같았다. 각 YAML·생성 PNG·Save/config를 별도 임시 디렉터리에 격리하고 headless/mock audio와 mock handles를 사용했다. 네 실행 모두 summary까지 도달한 뒤 수집한 실패를 보고하는 의도된 exit 2로 종료했고 별도 SIGSEGV나 runtime error는 없었다. 감마의 live 값·마우스 감도, 게임 내 키 두 개의 재설정/직렬화·스크롤 동기화·Close, 메인 Back 복귀는 통과했다. 메인 옵션과 HD 입력 창 캡처도 검토했다. 실제 오디오 출력·해상도 적용·디스크 저장/새 프로세스 로드는 여전히 이 audit의 검증 범위 밖이며 옵션 동작을 수정한 재실행은 아니다. 후속 `make oracle-test`는 stock 1,556파일·570,653,750바이트·code 2,869/data 615개·NXZ 50쌍을 확인했다.
+
 메인 메뉴의 음량 351/352/353은 native `0..16384`와 달리 widget range `0..100`, 초기 value 0/checked false를 보였고, 슬라이더 입력 후 native target/gain이 따르지 않았다. 메인 음소거 361/362/363 입력에서도 enabled/checked가 기대대로 바뀌지 않았다. 게임 내 FX gain도 슬라이더 0/8126/4850과 달리 16384로 남았다. 게임 내 해상도 선택 checkbox는 바뀌지만 pending 값은 `640×480`, YAML 값은 `(0,0)`으로 남았다. 메인 입력 설정 window 900이 열리지 않고 ESC 뒤 state 300이 남았으며 Back 입력은 동작했다.
 
 ShowTooltips/NoSoftLights의 legacy 직렬화 key 부재, window mode·gamma의 live/직렬화 값 불일치도 관찰했다. 그래픽 토글·마우스 민감도·키 설정 UI 등에는 통과한 검사도 있다. 게임 내 mouse pickup 971/972/973의 disabled 상태는 원본 의도와 추가 대조하기 전까지 확정 버그로 세지 않는다.

@@ -4954,15 +4954,7 @@ int nox_xxx_drawMinimapAndLines_4738E0() {
 //----- (00473920) --------------------------------------------------------
 void nox_xxx____setargv_11_473920() { *getMemU32Ptr(0x5D4594, 1096520) = 1; }
 
-//----- (00473930) --------------------------------------------------------
-char* sub_473930() {
-	char* result; // eax
-
-	*getMemU32Ptr(0x5D4594, 1096456) = nox_xxx_gLoadAnim_42FA20("ConfusedBirdies");
-	result = nox_xxx_gLoadAnim_42FA20("SphericalShieldAnim");
-	*getMemU32Ptr(0x5D4594, 1096460) = result;
-	return result;
-}
+// sub_473930 (00473930) is implemented in client_status_animations_473930.go.
 
 //----- (00473960) --------------------------------------------------------
 int sub_473960() {

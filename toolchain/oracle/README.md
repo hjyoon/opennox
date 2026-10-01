@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 상태이상 애니메이션 참조 로더 `00473930`
+
+실제 macOS ARM64 headless 클라이언트에서 `ConfusedBirdies`의 loaded 주소가 `0x600002877870`인데 효과 renderer가 읽는 native cache는 nil이고 packed DWORD는 `0x02877870`만 담는 실패를 재현했다. 스턴(HELD)·혼란·Nullify·Charming 공통 머리 위 효과와 같은 로더의 `SphericalShieldAnim`이 표시되지 않는 원인이다. `00473930` 한 함수만 Go export로 옮겨 PE32 packed 데이터와 인접 필드는 유지하며 `memmap.PtrPtr`의 native side slot을 초기화한다. 첫 효과의 publish→두 번째 asset lookup→publish→두 번째 포인터 반환 순서를 유지한다. duration·색·sprite frame·맵 데이터는 바꾸지 않는다.
+
+실제 C startup ABI를 통과하는 4GiB 초과 참조와 재초기화·nil 조합, 두 번째 lookup 전에 첫 참조 공개 및 packed neighbor 보존을 먼저 실패로 재현했다. 원본 본체 `00473930..00473951` 34바이트/SHA-256 `976084db7f2e4734f490ec2661fbc28c2ba366a21bf58c2d17fe7a61ab6ce616`와 뒤 14-NOP를 봉인한다. 누적 코드 2,823개·데이터 595개다. reset `00473960`은 다음 별도 변경 단위에서 복원하며 이 기록만으로 동적 픽셀 검사 완료를 주장하지 않는다.
+
 ## MakeFriendly의 짝 함수 MakeEnemy subclass 복원 `00516760`
 
 War03b 구매 늑대의 이동 판정을 복원한 뒤 짝 함수도 PE32 원본과 대조했다. `00516772..00516779`는 `Object+12` subclass의 `0x100`만 해제하고 `004EC300` ClearOwner를 호출한다. 기존 port는 잘못된 Object flags 필드를 수정해 Migrate가 남고 item의 Equipped bit가 지워졌다. 이 변경 단위는 MakeEnemy 한 함수만 복원하며 owner 제거·owned 목록 연결 해제·enemy reset과 ClearOwner의 별도 monitored-player 통지 경로는 그대로 둔다.

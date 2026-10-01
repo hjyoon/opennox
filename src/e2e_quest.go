@@ -160,6 +160,80 @@ func (sc *e2eScenario) AssertQuestMinion(typeID string, minimum int, name string
 	})
 }
 
+// This observer covers stock, finite byte-sized balance values. It does not
+// call the generator initializer/theme or repair a mismatched native record.
+func e2eQuestGeneratorMaximum(stage, hardcore uint32, selector uint8, base float64) (uint8, error) {
+	if stage == 0 || hardcore == 0 || selector > 3 || math.IsNaN(base) || math.IsInf(base, 0) || base < 0 || base >= 256 {
+		return 0, fmt.Errorf("invalid stock Quest generator expectation: stage=%d hardcore=%d selector=%d base=%g", stage, hardcore, selector, base)
+	}
+	maximum := uint8(base) // GAME.EXE 00566DCC truncates toward zero.
+	if stage >= hardcore && selector != 3 {
+		maximum *= 2 // The native counter, like the stock counter, is a byte.
+	}
+	return maximum, nil
+}
+
+func (sc *e2eScenario) AssertQuestGenerators(stage int, name string) {
+	sc.add(0, name, func() {
+		state, err := e2eReadQuestPlayer()
+		if err == nil {
+			err = state.validate(stage, "")
+		}
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		group := noxServer.nox_xxx_getQuestStage_51A930()
+		threshold := math.RoundToEven(float64(float32(noxServer.Balance.Float("QuestHardcoreStage"))))
+		if group < 0 || group >= 3 || math.IsNaN(threshold) || math.IsInf(threshold, 0) || threshold <= 0 || threshold > math.MaxInt32 {
+			e2eError(fmt.Errorf("invalid stock Quest generator group/threshold: group=%d hardcore=%g", group, threshold))
+			return
+		}
+		keys := [...]string{
+			"GeneratorMaxActiveCreaturesHigh", "GeneratorMaxActiveCreaturesNormal",
+			"GeneratorMaxActiveCreaturesLow", "GeneratorMaxActiveCreaturesSingular",
+		}
+		var counts [4]int
+		seen := make(map[*server.Object]bool)
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			if seen[obj] {
+				e2eError(fmt.Errorf("Quest world list contains a cycle at object=%p", obj))
+				return
+			}
+			seen[obj] = true
+			if !obj.Class().Has(object.ClassMonsterGenerator) || obj.Flags().HasAny(object.FlagDead|object.FlagDestroyed) {
+				continue
+			}
+			if obj.UpdateData == nil {
+				e2eError(fmt.Errorf("Quest generator lost native update: object=%p type=%s", obj, obj.ObjectTypeC().ID()))
+				return
+			}
+			update := obj.UpdateDataMonsterGen()
+			template := update.Field0[4*group]
+			selector := update.QuestSpawnRate[group]
+			if template == nil || selector > 3 {
+				e2eError(fmt.Errorf("stock Quest generator has no selected template/rate: object=%p update=%p group=%d template=%p selector=%d", obj, update, group, template, selector))
+				return
+			}
+			base := float64(float32(noxServer.Balance.Float(keys[selector])))
+			maximum, err := e2eQuestGeneratorMaximum(uint32(stage), uint32(threshold), selector, base)
+			if err != nil || update.MaxActive != maximum {
+				e2eError(fmt.Errorf("Quest generator maximum mismatch: object=%p update=%p group=%d selector=%d base=%g got=%d want=%d error=%v", obj, update, group, selector, base, update.MaxActive, maximum, err))
+				return
+			}
+			counts[selector]++
+			e2eLog.Printf("QUEST GENERATOR VERIFIED: stage=%d object=%p update=%p template=%p type=%s group=%d selector=%d base=%g max=%d active=%d",
+				stage, obj, update, template, obj.ObjectTypeC().ID(), group, selector, base, maximum, update.ActiveCount)
+		}
+		if counts[0]+counts[1]+counts[2]+counts[3] == 0 {
+			e2eError(fmt.Errorf("Quest stage %d has no live stock generators to verify", stage))
+			return
+		}
+		e2eLog.Printf("QUEST GENERATORS VERIFIED: map=%q stage=%d group=%d hardcore=%g strengthened=%t rate-counts=%v",
+			state.mapName, stage, group, threshold, uint32(stage) >= uint32(threshold), counts)
+	})
+}
+
 // Put the player at a stock Quest exit and queue ordinary collision work. The
 // fixture does not set exit/observer/next-map flags or invoke SwitchMap: the
 // loaded exit callback and server/client ticks must perform the transition.

@@ -1,0 +1,406 @@
+# Real Quest menu -> twenty consecutive stock stages. Only placement at a loaded
+# exit is a fixture; map/stage flags, minions, rewards, HP, packets and UI state
+# are never injected. count in assert-quest-stage is the expected stage; in
+# assert-quest-minion it is the minimum number of live, native monsters.
+# assert-quest-generators reads native caps against the stock balance; it does
+# not initialize, strengthen or repair a generator.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 200
+    name: host Quest
+  - action: wait
+    dt: 400
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+    name: accept color
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss Quest guide
+  - action: wait
+    dt: 530
+  - action: assert-quest-stage
+    count: 1
+    map: g_templd
+    name: initial Quest stage playable
+  - action: assert-quest-generators
+    count: 1
+    name: Quest sequence stage 1 stock generator caps
+  - action: enter-quest-exit
+    name: Quest sequence stage 1 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 2 briefing
+  - action: assert-quest-stage
+    count: 2
+    map: g_castld
+    name: Quest sequence stage 2 playable
+  - action: assert-quest-generators
+    count: 2
+    name: Quest sequence stage 2 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 2
+  - action: enter-quest-exit
+    name: Quest sequence stage 2 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 3 briefing
+  - action: assert-quest-stage
+    count: 3
+    map: g_lotdd
+    name: Quest sequence stage 3 playable
+  - action: assert-quest-generators
+    count: 3
+    name: Quest sequence stage 3 stock generator caps
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 3
+  - action: enter-quest-exit
+    name: Quest sequence stage 3 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 4 briefing
+  - action: assert-quest-stage
+    count: 4
+    map: g_swamp
+    name: Quest sequence stage 4 playable
+  - action: assert-quest-generators
+    count: 4
+    name: Quest sequence stage 4 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 4
+  - action: enter-quest-exit
+    name: Quest sequence stage 4 exit
+  - action: wait
+    dt: 400
+  - action: screen
+    name: Quest sequence stage 5 score
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 5 briefing
+  - action: assert-quest-stage
+    count: 5
+    map: g_forest
+    name: Quest sequence stage 5 playable
+  - action: assert-quest-generators
+    count: 5
+    name: Quest sequence stage 5 stock generator caps
+  - action: assert-quest-minion
+    creature: Hecubah
+    count: 1
+    name: Quest stage 5 native Hecubah alive
+  - action: assert-quest-minion
+    creature: Necromancer
+    count: 1
+    name: Quest stage 5 native Necromancer alive
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 5
+  - action: screen
+    name: Quest sequence stage 5 gameplay
+  - action: enter-quest-exit
+    name: Quest sequence stage 5 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 6 briefing
+  - action: assert-quest-stage
+    count: 6
+    map: g_cryptd
+    name: Quest sequence stage 6 playable
+  - action: assert-quest-generators
+    count: 6
+    name: Quest sequence stage 6 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 6
+  - action: screen
+    name: Quest sequence stage 6 gameplay
+  - action: enter-quest-exit
+    name: Quest sequence stage 6 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 7 briefing
+  - action: assert-quest-stage
+    count: 7
+    map: g_lava
+    name: Quest sequence stage 7 playable
+  - action: assert-quest-generators
+    count: 7
+    name: Quest sequence stage 7 stock generator caps
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 7
+  - action: enter-quest-exit
+    name: Quest sequence stage 7 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 8 briefing
+  - action: assert-quest-stage
+    count: 8
+    map: g_mines
+    name: Quest sequence stage 8 playable
+  - action: assert-quest-generators
+    count: 8
+    name: Quest sequence stage 8 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 8
+  - action: enter-quest-exit
+    name: Quest sequence stage 8 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 9 briefing
+  - action: assert-quest-stage
+    count: 9
+    map: g_castld
+    name: Quest sequence stage 9 playable
+  - action: assert-quest-generators
+    count: 9
+    name: Quest sequence stage 9 stock generator caps
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 9
+  - action: enter-quest-exit
+    name: Quest sequence stage 9 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 10 briefing
+  - action: assert-quest-stage
+    count: 10
+    map: g_forest
+    name: Quest sequence stage 10 playable
+  - action: assert-quest-generators
+    count: 10
+    name: Quest sequence stage 10 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 10
+  - action: enter-quest-exit
+    name: Quest sequence stage 10 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 11 briefing
+  - action: assert-quest-stage
+    count: 11
+    map: g_lotdd
+    name: Quest sequence stage 11 playable
+  - action: assert-quest-generators
+    count: 11
+    name: Quest sequence stage 11 stock generator caps
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 11
+  - action: enter-quest-exit
+    name: Quest sequence stage 11 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 12 briefing
+  - action: assert-quest-stage
+    count: 12
+    map: g_temple
+    name: Quest sequence stage 12 playable
+  - action: assert-quest-generators
+    count: 12
+    name: Quest sequence stage 12 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 12
+  - action: enter-quest-exit
+    name: Quest sequence stage 12 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 13 briefing
+  - action: assert-quest-stage
+    count: 13
+    map: g_swamp
+    name: Quest sequence stage 13 playable
+  - action: assert-quest-generators
+    count: 13
+    name: Quest sequence stage 13 stock generator caps
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 13
+  - action: enter-quest-exit
+    name: Quest sequence stage 13 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 14 briefing
+  - action: assert-quest-stage
+    count: 14
+    map: g_mines
+    name: Quest sequence stage 14 playable
+  - action: assert-quest-generators
+    count: 14
+    name: Quest sequence stage 14 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 14
+  - action: enter-quest-exit
+    name: Quest sequence stage 14 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 15 briefing
+  - action: assert-quest-stage
+    count: 15
+    map: g_lava
+    name: Quest sequence stage 15 playable
+  - action: assert-quest-generators
+    count: 15
+    name: Quest sequence stage 15 stock generator caps
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 15
+  - action: enter-quest-exit
+    name: Quest sequence stage 15 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 16 briefing
+  - action: assert-quest-stage
+    count: 16
+    map: g_cryptd
+    name: Quest sequence stage 16 playable
+  - action: assert-quest-generators
+    count: 16
+    name: Quest sequence stage 16 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 16
+  - action: enter-quest-exit
+    name: Quest sequence stage 16 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 17 briefing
+  - action: assert-quest-stage
+    count: 17
+    map: g_temple
+    name: Quest sequence stage 17 playable
+  - action: assert-quest-generators
+    count: 17
+    name: Quest sequence stage 17 stock generator caps
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 17
+  - action: enter-quest-exit
+    name: Quest sequence stage 17 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 18 briefing
+  - action: assert-quest-stage
+    count: 18
+    map: g_swamp
+    name: Quest sequence stage 18 playable
+  - action: assert-quest-generators
+    count: 18
+    name: Quest sequence stage 18 stock generator caps
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 18
+  - action: enter-quest-exit
+    name: Quest sequence stage 18 exit
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 19 briefing
+  - action: assert-quest-stage
+    count: 19
+    map: g_forest
+    name: Quest sequence stage 19 playable
+  - action: assert-quest-generators
+    count: 19
+    name: Quest sequence stage 19 stock generator caps
+  - action: walk-quest
+    ang: 0.5
+    dt: 100
+    name: real walk in Quest sequence stage 19
+  - action: enter-quest-exit
+    name: Quest sequence stage 19 exit
+  - action: wait
+    dt: 400
+  - action: screen
+    name: Quest sequence stage 20 score
+  - action: click-chapter-briefing
+    name: dismiss Quest sequence stage 20 briefing
+  - action: assert-quest-stage
+    count: 20
+    map: g_castle
+    name: Quest sequence stage 20 playable
+  - action: assert-quest-generators
+    count: 20
+    name: Quest sequence stage 20 stock generator caps
+  - action: assert-quest-minion
+    creature: Hecubah
+    count: 1
+    name: Quest stage 20 native Hecubah alive
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: real walk in Quest sequence stage 20
+  - action: screen
+    name: Quest sequence stage 20 gameplay
+  - action: quit
+    dt: 1

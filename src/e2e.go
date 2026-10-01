@@ -9598,6 +9598,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertQuestMinion(l.Creature, l.Count, l.Name)
+		case "assert-quest-generators":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertQuestGenerators(l.Count, l.Name)
 		case "set-objective-game-mode":
 			if dt != 0 {
 				sc.Wait(dt, "")

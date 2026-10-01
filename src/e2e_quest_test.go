@@ -91,3 +91,45 @@ func TestE2EQuestMovementDistance(t *testing.T) {
 		t.Fatal("movement with a captured briefing accepted")
 	}
 }
+
+func TestE2EQuestGeneratorMaximum(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		stage    uint32
+		selector uint8
+		base     float64
+		want     uint8
+	}{
+		{"high before", 19, 0, 8, 8},
+		{"high at boundary", 20, 0, 8, 16},
+		{"normal at boundary", 20, 1, 5, 10},
+		{"low after", 21, 2, 2, 4},
+		{"singular before", 19, 3, 1, 1},
+		{"singular at boundary", 20, 3, 1, 1},
+		{"singular after", ^uint32(0), 3, 1, 1},
+		{"truncation before doubling", 20, 0, 8.75, 16},
+		{"native byte wrap", 20, 0, 255, 254},
+		{"zero maximum", 20, 0, 0, 0},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			got, err := e2eQuestGeneratorMaximum(tc.stage, 20, tc.selector, tc.base)
+			if err != nil || got != tc.want {
+				t.Fatalf("maximum=%d error=%v want=%d", got, err, tc.want)
+			}
+		})
+	}
+	for _, base := range []float64{-1, 256, math.NaN(), math.Inf(1), math.Inf(-1)} {
+		if _, err := e2eQuestGeneratorMaximum(20, 20, 0, base); err == nil {
+			t.Fatalf("invalid stock balance accepted: %g", base)
+		}
+	}
+	if _, err := e2eQuestGeneratorMaximum(0, 20, 0, 6); err == nil {
+		t.Fatal("uninitialized stage accepted")
+	}
+	if _, err := e2eQuestGeneratorMaximum(20, 0, 0, 6); err == nil {
+		t.Fatal("uninitialized threshold accepted")
+	}
+	if _, err := e2eQuestGeneratorMaximum(20, 20, 4, 6); err == nil {
+		t.Fatal("invalid stock selector accepted")
+	}
+}

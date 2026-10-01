@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 1→20단계와 stock 생성기 강화 경계 실제 입력 회귀
+
+`scripts/e2e/host-quest-twenty-stages.yaml`은 여섯 단계 회귀를 실제 Warrior Quest 메뉴부터 20단계까지 확장한다. 각 stock 출구에 player를 배치하는 기존 fixture만 사용하며 단계·지도·미니언·HP·생성기 cap·packet·UI 해제·이동은 주입하지 않는다. 모든 단계에서 예상 지도와 playable server/client/drawable identity를 검사하고, 19개 결과 화면을 real mouse로 닫은 뒤 다음 지도에서 real right-button 100틱 이동을 확인한다.
+
+새 read-only `assert-quest-generators`는 선택된 native template와 QuestSpawnRate를 읽고 stock balance의 float32 값·정수 절단·byte counter에 맞춘 기대 MaxActive와 비교한다. initializer/theme을 다시 호출하거나 잘못된 record를 고치지 않는다. world list cycle·누락 update/template·범위를 벗어난 stock selector와 balance를 거부한다. 별도 scalar 회귀는 19/20/21 경계, Singular 예외, 절단 후 배가, byte wrap과 NaN/Inf·음수/과다 balance·미초기화 stage/threshold를 구분한다. 임의 모드 balance 전체를 지원하는 observer는 아니다.
+
+Darwin/ARM64 일반·HD headless 모두 같은 20단계 playable 상태·19회 실제 이동·20개 생성기 stage 검사, 제품당 native 생성기 2,596개 기록을 통과하고 exit 0으로 종료했다. 7→20단계는 `g_lava→g_mines→g_castld→g_forest→g_lotdd→g_temple→g_swamp→g_mines→g_lava→g_cryptd→g_temple→g_swamp→g_forest→g_castle`이었다. player HP는 450/450으로 유지됐다. 원본 `MinionsAlwaysStage=20`·`QuestHardcoreStage=20` 경계에서 20단계 생성기 125개 중 High 2개·Normal 3개·Low 96개는 각각 `8→16`·`5→10`·`2→4`, Singular 24개는 `1→1`이었다. 5단계 Hecubah 1마리·Necromancer 2마리와 20단계 Hecubah 1마리의 native definition/update·양수 HP·정상 inventory holder를 확인했고, 마지막 Hecubah는 HP 1,147/1,147·power 3·aggression 0.83·skill 0.85·인벤토리 4개였다.
+
+기존 세 화면과 새 20단계 진입 전 결과/20단계 플레이 두 화면의 일반·HD exact-pixel 비교를 통과했고 새 PNG도 검토했다. 전체 일반·실제 cgocheck2 시험, scalar assertion 시험 3회와 원본 1,556개 파일·코드 2,817개·데이터 595개 및 압축 oracle-test가 통과했다. 이번 확장에서 추가 제품 결함은 재현되지 않아 게임 함수나 원본 자산을 변경하지 않았다. 생성기 최대값 검사는 실제 최대 개체 수까지의 spawn·boss 전투/사망 drop·20단계 이후·원격 플레이어·SDL/OpenAL 검증을 대신하지 않는다. 온라인 Quest의 이전-stage 소환수 제거는 아래 별도 회귀로 확인한 원본 규칙이며 변경하지 않는다.
+
 ## Quest 여섯 연속 단계의 플레이 상태·미니언 실제 입력 회귀
 
 `scripts/e2e/host-quest-six-stages.yaml`은 실제 Warrior Quest 메뉴부터 stock 출구로 1→6단계를 연속 진행한다. fixture는 출구에 플레이어를 배치해 정상 collision work를 큐에 넣는 것뿐이다. 단계·지도·spawn·HP·관전자·packet·UI 해제·이동 값을 주입하지 않는다. 여섯 단계 각각 Quest 모드·연결·로딩 종료·지도·동일한 server/client/drawable wire ID·phase 3·observer bit 0·양수 HP·유한 position·briefing 해제를 검사한다. 다섯 결과 화면은 real mouse로 닫고 각 다음 맵에서 real right-button 100틱 이동을 보내 같은 지도·단계·플레이어의 8 이상 이동을 확인한다.

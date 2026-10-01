@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 헤쿠바 생성 `0051A5A0`
+
+네크로맨서 수정 뒤 동일한 실제 headless 연속 출구 실행은 5단계의 헤쿠바 생성에서 별도 null+484 SIGSEGV를 재현했다. 이 원본 함수 하나도 PE32 고정 update/health 위치와 int 객체 임시값 대신 native 포인터 경로로 연결했다. 원본 본체 `0051A5A0..0051A797` 504바이트/SHA-256 `26818353341f30bc7509e702caebe32e1f41b36ce59070d3a3a4829f0094e04e`는 기존 여덟 CALL record와 겹치지 않는 아홉 본체 구간·뒤 8-NOP로 봉인했다. Hecubah 이름 `005C4B7C` 8바이트, HecubahQuestSkill 키 `005C4B84` 18바이트, 별도 RewardMarker 이름 `005C4B98` 13바이트를 추가해 누적 코드 2,817개·데이터 595개다.
+
+공통 x87 HP 계산과 callback 뒤 live health·cached update를 유지하되, 헤쿠바의 AI 저장 순서와 Field510=3, Field388=0x40000000을 구분한다. HecubahQuestSkill 조회는 결과를 쓰지 않아도 원본 위치에서 호출하며 그 뒤 Field330의 binary32 상수 0x3f59999a를 저장한다. 늦은 position 조회·생성 뒤 보상 네 번 각각 stage를 재조회·uint32 wrap+2하고 nil 보상만 해당 인벤토리 삽입을 건너뛴 뒤 marker를 한 번 해제한다. 전체 fault prefix·살아 있는 stage 변경·nil 분기·signed HP·balance lookup의 순서와 무시된 값·native 인접 필드 및 4GiB 초과 C position 주소를 회귀 시험으로 구분한다.
+
+수정 후 일반 Darwin/ARM64 headless의 실제 메뉴→Quest 1→6단계 stock 출구 전환은 exit 0으로 완료했다. 각 결과 화면은 real mouse로 닫히고 다음 맵에서 real right-button 이동으로 server position이 변했으며 HP는 450/450이었다. 대상 server·legacy 시험은 일반·race·checkptr·실제 cgocheck2 각각 3회 통과했고 stock 무결성·봉인 범위·압축 oracle-test도 통과했다. 이는 여섯 단계의 생성·출구·결과 화면·이동 검사이며 모든 Quest stage나 boss combat/drop을 검증하지 않는다. 원본 자산·효과 수치·보상 알고리즘은 바꾸지 않았다.
+
 ## Quest 네크로맨서 생성 `0051A7A0`
 
 실제 headless Host Quest의 stock 출구를 연속 통과하면 1~4단계 뒤 5단계 생성 중 `0051A7A0`에서 null+484 SIGSEGV가 발생했다. PE32 `Object+748`의 update 포인터를 LP64에서도 읽어 native `UpdateData`를 잃는 경로다. 이 원본 함수 하나를 typed Go 본체와 native 서비스 binding으로 연결하고 C 진입점은 전체 position 주소를 전달하는 shim으로 남긴다.

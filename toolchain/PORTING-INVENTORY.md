@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 5단계 헤쿠바 생성과 1→6단계 실제 전환
+
+네크로맨서 수정 뒤 실제 stock 출구 연속 실행으로 재현한 `nox_xxx_spawnHecubahQuest_51A5A0`의 null+484 SIGSEGV도 별도 원본 함수 단위로 수정했다. native 객체·update·health·position 주소와 공통 정확한 x87 HP 계산을 사용한다. 헤쿠바 고유 AI 순서·Field510=3·Field388, 반환값을 버리는 HecubahQuestSkill 조회와 그 뒤의 constant Field330, 네 번의 live stage+2 보상·선택적인 mode-zero 인벤토리 삽입·marker 한 번 해제를 유지한다.
+
+함수별 fault prefix·nil 보상/할당·signed HP·stage wrap과 변경·balance 및 position의 늦은 조회·native 인접 필드·C heap의 4GiB 초과 pointer/float bit 회귀를 추가했다. 대상 server·legacy 시험은 일반·race·checkptr·실제 cgocheck2 각각 3회 통과했다. 원본 본체 504바이트는 기존 CALL 봉인과 겹치지 않도록 나누고 이름 세 범위를 추가했다. 직접 verifier는 코드 2,817개·데이터 595개·stock 1,556개 파일 및 압축 왕복을 확인한다.
+
+일반 Darwin/ARM64 headless의 실제 메뉴→Quest 1→6단계 stock 출구 전환·각 결과 화면의 real mouse 닫기·다음 맵의 right-button 이동은 exit 0으로 완료했다. `g_castld→g_lotdd→g_swamp→g_forest→g_cryptd`로 진행하고 HP 450/450, 정상 server/client 연결과 player drawable을 관찰했다. 단계·지도·spawn·결과 packet·UI 해제와 이동 값은 직접 주입하지 않았고 출구 옆 플레이어 배치만 fixture다. 모든 Quest stage·boss combat/drop·실제 SDL/OpenAL 검증을 대신하지 않는다.
+
 ## Quest 5단계 네크로맨서 생성 포인터 수정
 
 Darwin/ARM64의 실제 headless Host Quest stock 출구 연속 입력에서 1~4단계는 정상 진행했으나 5단계의 `nox_xxx_spawnNecroQuest_51A7A0`은 PE32 고정 위치의 update 포인터를 읽고 null+484에서 종료됐다. 독립 봉인한 원본 함수 하나를 native Object/MonsterUpdateData/MonsterDef/HealthData 경로로 옮겼다. C 진입점의 position 포인터는 native 전체 주소 그대로 전달하고 실패한 객체 할당이면 position을 읽지 않는다.

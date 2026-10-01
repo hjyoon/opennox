@@ -4636,86 +4636,9 @@ char* sub_51A550() {
 
 //----- (0051A5A0) --------------------------------------------------------
 void* nox_xxx_objectTypeByIndHealthData(int a1);
+extern void nox_xxx_spawnHecubahQuest_native_51A5A0(float2* position);
 void nox_xxx_spawnHecubahQuest_51A5A0(int* a1) {
-	uint32_t* v1;  // edi
-	uint32_t* v2;  // esi
-	int v3;        // eax
-	int v4;        // eax
-	double v5;     // st7
-	int v6;        // eax
-	uint32_t* v7;  // esi
-	int v8;        // eax
-	nox_object_t* v9; // eax
-	int v10;       // eax
-	nox_object_t* v11; // eax
-	int v12;       // eax
-	nox_object_t* v13; // eax
-	int v14;       // eax
-	nox_object_t* v15; // eax
-	float v16;     // [esp+8h] [ebp-8h]
-	float v17;     // [esp+Ch] [ebp-4h]
-
-	v1 = nox_xxx_newObjectByTypeID_4E3810("Hecubah");
-	v16 = sub_4E40F0();
-	if (v1) {
-		v2 = (uint32_t*)v1[187];
-		v3 = v2[121];
-		if (v3) {
-			v4 = *(uint32_t*)(v3 + 72);
-		} else {
-			v4 = *(unsigned short*)((int)nox_xxx_objectTypeByIndHealthData(*((unsigned short*)v1 + 2)) + 4);
-		}
-		if (v16 < 1.0) {
-			v16 = 1.0;
-		}
-		v5 = (double)v4 * v16;
-		v17 = v5;
-		nox_xxx_unitSetHP_4E4560((int)v1, (long long)v5);
-		*(uint16_t*)(v1[139] + 4) = nox_float2int(v17);
-		if (!*(uint16_t*)v1[139]) {
-			nox_xxx_unitSetHP_4E4560((int)v1, 1u);
-		}
-		v6 = v1[139];
-		if (!*(uint16_t*)(v6 + 4)) {
-			*(uint16_t*)(v6 + 4) = 1;
-		}
-		v2[411] = 0x10000000;
-		v2[423] = 0x10000000;
-		v2[340] = 4;
-		v2[326] = 1062501089;
-		v2[510] = 3;
-		v2[410] = 0x8000000;
-		v2[444] = 0x20000000;
-		v2[388] = 0x40000000;
-		v2[415] = 0x40000000;
-		nox_xxx_gamedataGetFloat_419D40("HecubahQuestSkill");
-		v2[330] = 1062836634;
-		nox_xxx_createAt_4DAA50((int)v1, 0, *(float*)a1, *((float*)a1 + 1));
-		v7 = nox_xxx_newObjectByTypeID_4E3810("RewardMarker");
-		if (v7) {
-			v8 = nox_game_getQuestStage_4E3CC0();
-			v9 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v8 + 2);
-			if (v9) {
-				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v9, 0);
-			}
-			v10 = nox_game_getQuestStage_4E3CC0();
-			v11 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v10 + 2);
-			if (v11) {
-				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v11, 0);
-			}
-			v12 = nox_game_getQuestStage_4E3CC0();
-			v13 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v12 + 2);
-			if (v13) {
-				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v13, 0);
-			}
-			v14 = nox_game_getQuestStage_4E3CC0();
-			v15 = nox_server_rewardgen_activateMarker_4F0720((nox_object_t*)v7, v14 + 2);
-			if (v15) {
-				nox_xxx_inventoryPutImpl_4F3070((nox_object_t*)v1, v15, 0);
-			}
-			nox_xxx_objectFreeMem_4E38A0((nox_object_t*)v7);
-		}
-	}
+	nox_xxx_spawnHecubahQuest_native_51A5A0((float2*)a1);
 }
 
 //----- (0051A7A0) --------------------------------------------------------

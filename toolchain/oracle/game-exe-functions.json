@@ -15323,11 +15323,25 @@
       "purpose": "the exact nine NOP bytes separating mapping cache initialization and Hecubah spawning"
     },
     {
+      "name": "quest_hecubah_spawn_51A5A0_prefix",
+      "address": "0x0051A5A0",
+      "size": 363,
+      "sha256": "34cce735bcacd60105df64e27ad08488369d09112809d3f29ec190daeaa8cf07",
+      "purpose": "Quest Hecubah allocation, signed quest/type HP, x87 arithmetic and repair, ordered AI stores, required discarded balance lookup, constant skill, late position creation and first stage+2 reward arguments"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A70B",
       "address": "0x0051A70B",
       "size": 5,
       "sha256": "fadc3ab45ad9a2db18f5641e5c1d776ecc51bce0ff872bd49bb67756598326d3",
       "purpose": "the first exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "quest_hecubah_spawn_reward_one_guard",
+      "address": "0x0051A710",
+      "size": 11,
+      "sha256": "76a877d6b8e5e17caf9f248159ef6adf819d8b540f4e24ce4b45ffd6e06bc196",
+      "purpose": "first reward null guard and mode-zero inventory arguments"
     },
     {
       "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A71B",
@@ -15337,11 +15351,25 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
+      "name": "quest_hecubah_spawn_reward_two_stage",
+      "address": "0x0051A720",
+      "size": 13,
+      "sha256": "cd3577e3bd69173c2e5981af286257e75e5ab9e06f91f6dc9ac92726557a81b5",
+      "purpose": "second live stage read, wrapping add two and reward arguments"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A72D",
       "address": "0x0051A72D",
       "size": 5,
       "sha256": "7c4245b4efcabbd44099fe47eab6f23253f35f534a21cafb49cb439d2f0d29d5",
       "purpose": "the second exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "quest_hecubah_spawn_reward_two_guard",
+      "address": "0x0051A732",
+      "size": 11,
+      "sha256": "76a877d6b8e5e17caf9f248159ef6adf819d8b540f4e24ce4b45ffd6e06bc196",
+      "purpose": "second reward null guard and mode-zero inventory arguments"
     },
     {
       "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A73D",
@@ -15351,11 +15379,25 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
+      "name": "quest_hecubah_spawn_reward_three_stage",
+      "address": "0x0051A742",
+      "size": 13,
+      "sha256": "50e85b3544c61e045aad19bbbe6e23f30bc588d0fda3a82cc203b0c624ca7adb",
+      "purpose": "third live stage read, wrapping add two and reward arguments"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A74F",
       "address": "0x0051A74F",
       "size": 5,
       "sha256": "3381e3a66f7e55da625b0c166592756f5ffa6dcf33cbe55d8cca8cea25dba7ea",
       "purpose": "the third exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
+    },
+    {
+      "name": "quest_hecubah_spawn_reward_three_guard",
+      "address": "0x0051A754",
+      "size": 11,
+      "sha256": "76a877d6b8e5e17caf9f248159ef6adf819d8b540f4e24ce4b45ffd6e06bc196",
+      "purpose": "third reward null guard and mode-zero inventory arguments"
     },
     {
       "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A75F",
@@ -15365,6 +15407,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
+      "name": "quest_hecubah_spawn_reward_four_stage",
+      "address": "0x0051A764",
+      "size": 13,
+      "sha256": "f0fb13cbff7742a2f343e0e7e042ecf695e4ed805ca22b8e18f106a5cf7eb546",
+      "purpose": "fourth live stage read, wrapping add two and reward arguments"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A771",
       "address": "0x0051A771",
       "size": 5,
@@ -15372,11 +15421,32 @@
       "purpose": "the fourth exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
     },
     {
+      "name": "quest_hecubah_spawn_reward_four_guard",
+      "address": "0x0051A776",
+      "size": 11,
+      "sha256": "76a877d6b8e5e17caf9f248159ef6adf819d8b540f4e24ce4b45ffd6e06bc196",
+      "purpose": "fourth reward null guard and mode-zero inventory arguments"
+    },
+    {
       "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A781",
       "address": "0x0051A781",
       "size": 5,
       "sha256": "8a66074dbabaffe89c0f5d95f7613963cfee112d830413beaf5985f55cd88f63",
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "quest_hecubah_spawn_51A5A0_tail",
+      "address": "0x0051A786",
+      "size": 18,
+      "sha256": "611b7d50f1d14a31cc3138abf2ed96eaea34a723e6ce3fa5645b2f2ce9b91007",
+      "purpose": "one marker free after four optional inventory insertions and common allocation-failure return"
+    },
+    {
+      "name": "quest_hecubah_spawn_51A5A0_padding",
+      "address": "0x0051A798",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the eight NOP bytes after the Quest Hecubah spawn body"
     },
     {
       "name": "nox_xxx_spawnNecroQuest_51A7A0_prefix",
@@ -21896,6 +21966,27 @@
       "size": 372,
       "sha256": "7e8898ec78fe9dbf22925295434f3bcf744acb243b6cccd0784aafe5ca3e4d61",
       "purpose": "the exact QuestHardcoreStage, boss marker names, four generator limit keys, MinionsAlwaysStage, and GTheme.c debug source paths"
+    },
+    {
+      "name": "quest_hecubah_spawn_type_name",
+      "address": "0x005C4B7C",
+      "size": 8,
+      "sha256": "f166acd133644f9a2df4432a58b48c7457f08bba46b25f13657692557dffd369",
+      "purpose": "the exact null-terminated Hecubah type name passed by Quest spawn 0051A5A0"
+    },
+    {
+      "name": "quest_hecubah_spawn_balance_key",
+      "address": "0x005C4B84",
+      "size": 18,
+      "sha256": "8ebbfce3aab54b6c82808d6d0b1b59e4f3b0e0cc5afdb3046b95f0e1a72fd454",
+      "purpose": "the exact HecubahQuestSkill key read and discarded before storing constant binary32 skill"
+    },
+    {
+      "name": "quest_hecubah_spawn_marker_name",
+      "address": "0x005C4B98",
+      "size": 13,
+      "sha256": "ad115b168dc33861a1f80aab0b344c5c4d5e2c2803954832105c4cc47b44519e",
+      "purpose": "the distinct RewardMarker name used for Hecubah four-reward generation"
     },
     {
       "name": "quest_necro_spawn_type_name",

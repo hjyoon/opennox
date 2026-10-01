@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 5단계 네크로맨서 생성 포인터 수정
+
+Darwin/ARM64의 실제 headless Host Quest stock 출구 연속 입력에서 1~4단계는 정상 진행했으나 5단계의 `nox_xxx_spawnNecroQuest_51A7A0`은 PE32 고정 위치의 update 포인터를 읽고 null+484에서 종료됐다. 독립 봉인한 원본 함수 하나를 native Object/MonsterUpdateData/MonsterDef/HealthData 경로로 옮겼다. C 진입점의 position 포인터는 native 전체 주소 그대로 전달하고 실패한 객체 할당이면 position을 읽지 않는다.
+
+원본 체력 배율·signed quest HP·x87 정확한 곱과 별도 binary32 spill·최소 HP 보정·여덟 AI 저장·stage+2 보상 한 개를 유지한다. callback의 fault prefix, health 재조회와 cached update, 늦은 position 읽기, type fallback·NaN·word wrap·보상 nil·marker 해제 및 4GiB 초과 C heap 주소를 회귀 검사한다. 수정 후 실제 동일 실행은 헤쿠바 `0051A5A0`의 별도 충돌까지 진행했고 Quest 5단계 전체 완료는 아직 검증되지 않았다. 누적 stock verifier는 코드 2,807개·데이터 592개·1,556개 파일 및 압축 왕복을 확인했다.
+
 ## Warrior 돌진의 FlagBall 소지자 피해·공 방출 실제 입력 회귀
 
 `host-game-warrior-flagball-charge.yaml`은 regular Warrior 메뉴·stock FlagBall 맵·정상 host team 참가를 거쳐 적 서버 플레이어가 일반 충돌로 GameBall을 줍게 한다. fixture의 HP 2,000·team·배치·quickbar만 준비하며 owner·공 방출·피해·힘·ability record·buff·cooldown·HUD 값을 주입하지 않는다. 팀 spawn 옆의 대각선 벽을 피하도록 stock 공 주변의 실제 열린 court를 선택하고, 정상 spawn protection은 직접 제거하지 않고 기다린다. 서버 플레이어 fixture는 원격 클라이언트의 입력·통신 대결을 대신하지 않는다.

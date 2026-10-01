@@ -15379,6 +15379,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
+      "name": "nox_xxx_spawnNecroQuest_51A7A0_prefix",
+      "address": "0x0051A7A0",
+      "size": 330,
+      "sha256": "21257992f44ed47ca251b8790933e95237a6718bf966e4ca65a3c9f55a785bb4",
+      "purpose": "Quest Necromancer allocation, binary32 scale spill, signed quest/type health, separate x87 truncation and rounded maximum, minimum HP repair, ordered AI stores and late position creation through the first reward call"
+    },
+    {
       "name": "nox_server_rewardgen_activateMarker_4F0720_call_51A8EA",
       "address": "0x0051A8EA",
       "size": 5,
@@ -15386,11 +15393,32 @@
       "purpose": "the fifth exact decoded direct rel32 call from the quest reward-selection path to reward-marker activation"
     },
     {
+      "name": "nox_xxx_spawnNecroQuest_51A7A0_reward_guard",
+      "address": "0x0051A8EF",
+      "size": 11,
+      "sha256": "76a877d6b8e5e17caf9f248159ef6adf819d8b540f4e24ce4b45ffd6e06bc196",
+      "purpose": "the live reward null guard and mode-zero inventory arguments between already sealed direct calls"
+    },
+    {
       "name": "nox_xxx_inventoryPutImpl_4F3070_call_51A8FA",
       "address": "0x0051A8FA",
       "size": 5,
       "sha256": "fb0efc28b42c9eba103a673ecb3c0a19c9850ca5b9f1a1fbb65be6c2512aca99",
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
+    },
+    {
+      "name": "nox_xxx_spawnNecroQuest_51A7A0_tail",
+      "address": "0x0051A8FF",
+      "size": 18,
+      "sha256": "1bab465647ffdefeda80201ddfdf35eebfc8ec25cce8ee83e20866d37d34a898",
+      "purpose": "reward marker free after optional inventory insertion and common allocation-failure return"
+    },
+    {
+      "name": "nox_xxx_spawnNecroQuest_51A7A0_padding",
+      "address": "0x0051A911",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the fifteen NOP bytes following the exact Quest Necromancer spawn body"
     },
     {
       "name": "sub_537770_call_51B3F7",
@@ -21868,6 +21896,20 @@
       "size": 372,
       "sha256": "7e8898ec78fe9dbf22925295434f3bcf744acb243b6cccd0784aafe5ca3e4d61",
       "purpose": "the exact QuestHardcoreStage, boss marker names, four generator limit keys, MinionsAlwaysStage, and GTheme.c debug source paths"
+    },
+    {
+      "name": "quest_necro_spawn_type_name",
+      "address": "0x005C4BA8",
+      "size": 12,
+      "sha256": "db076a603f2e61724a6d73514d0d0b1cb96259cb2842f2e7ad47dc7a64f22a15",
+      "purpose": "the exact null-terminated Necromancer name passed by Quest spawn 0051A7A0"
+    },
+    {
+      "name": "quest_necro_spawn_reward_marker_name",
+      "address": "0x005C4BB4",
+      "size": 13,
+      "sha256": "ad115b168dc33861a1f80aab0b344c5c4d5e2c2803954832105c4cc47b44519e",
+      "purpose": "the distinct null-terminated RewardMarker name passed by Quest Necromancer spawn"
     },
     {
       "name": "default_xfer_registration_record",

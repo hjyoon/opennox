@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 네크로맨서 생성 `0051A7A0`
+
+실제 headless Host Quest의 stock 출구를 연속 통과하면 1~4단계 뒤 5단계 생성 중 `0051A7A0`에서 null+484 SIGSEGV가 발생했다. PE32 `Object+748`의 update 포인터를 LP64에서도 읽어 native `UpdateData`를 잃는 경로다. 이 원본 함수 하나를 typed Go 본체와 native 서비스 binding으로 연결하고 C 진입점은 전체 position 주소를 전달하는 shim으로 남긴다.
+
+본체 `0051A7A0..0051A910` 369바이트/SHA-256 `f507555b1dbf90beb5cb7c06f3244d0c0e8c6ce899037ef11b8eeaf131e0bfe5`를 기존 두 CALL 봉인과 겹치지 않는 세 구간으로 나누고 뒤 15-NOP를 별도 봉인했다. Necromancer 이름 `005C4BA8` 12바이트와 RewardMarker 이름 `005C4BB4` 13바이트도 추가했다. 누적 직접 verifier는 코드 2,807개·데이터 592개다.
+
+할당 실패 뒤에도 scale을 읽는 순서, binary32 scale과 NaN의 1.0 clamp, signed-dword quest HP와 type fallback, x87의 정확한 최대 55-bit 곱에서 current HP를 signed-qword truncation하는 동작과 별도 binary32 spill의 nearest-even maximum을 보존한다. HP는 low-word wrap과 zero→1 보정이며 callback 뒤 health는 재조회하고 AI update 주소는 처음 읽은 값을 유지한다. 여덟 AI 저장→늦은 position 조회·생성→marker 할당→wrapping stage+2 보상 한 개→mode-zero 인벤토리→marker free 순서다. 각 hook의 fault prefix, 포인터 교체, null 분기, 큰 곱의 binary64 정밀도 손실 및 C heap의 4GiB 초과 position/NaN·음수 zero bit 보존을 회귀 시험으로 구분한다.
+
+수정 후 같은 실제 연속 실행은 네크로맨서 경로를 지나 헤쿠바 생성 `0051A5A0`의 별도 null+484 충돌까지 진행했다. 이 기록은 Quest 5단계 전체 성공을 주장하지 않는다. stock 파일·봉인 범위·압축 왕복 검증은 통과했으며 원본 자산은 변경하지 않았다.
+
 ## 피해를 받은 플레이어의 GameBall 방출 `004E1230`
 
 원본 본체 `004E1230..004E131F` 240바이트/SHA-256 `2cbde9f6827d9834e6558a0ac2d8e6f8d5fc9ea87c5788bcc38822cef644c953`와 별도 type 이름 `005B81B8` 9바이트/`cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd`를 독립 봉인했다. private cache `00752048`은 file-backed 데이터가 아닌 BSS이므로 데이터 hash를 만들지 않는다. 누적 직접 verifier는 코드 2,803개·데이터 590개다.

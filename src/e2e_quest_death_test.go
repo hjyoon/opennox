@@ -10,6 +10,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -119,6 +120,73 @@ func TestE2EQuestDeathSchedule(t *testing.T) {
 				t.Fatalf("gate %q occurs %d times", name, found)
 			}
 		}
+	}
+	label := "Quest death cycle 3"
+	for i, step := range sc.steps {
+		if step.name == label+" host result timer" {
+			if i < 2 || sc.steps[i-1].name != label+" locate ordinary respawn input" || sc.steps[i-2].name != label+" finish dead-state input delay" {
+				t.Fatal("host result capture must follow the ordinary dead-frame delay and read-only timer observation")
+			}
+			return
+		}
+	}
+	t.Fatal("missing host result timer capture before Continue input")
+}
+
+func TestE2EQuestHostResultTimerReadOnly(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		mutate func(**gui.Window, **server.Player, *gui.Window, *gui.StaticTextData)
+		wantOK bool
+	}{
+		{"empty", func(_ **gui.Window, _ **server.Player, _ *gui.Window, _ *gui.StaticTextData) {}, true},
+		{"nil text", func(_ **gui.Window, _ **server.Player, _ *gui.Window, data *gui.StaticTextData) { data.Text = nil }, true},
+		{"countdown", func(_ **gui.Window, _ **server.Player, _ *gui.Window, data *gui.StaticTextData) {
+			text := []uint16{'T', 'i', 'm', 'e', ' ', '-', ' ', '3', '0', 0}
+			data.Text = &text[0]
+		}, false},
+		{"nil root", func(root **gui.Window, _ **server.Player, _ *gui.Window, _ *gui.StaticTextData) { *root = nil }, false},
+		{"wrong root", func(root **gui.Window, _ **server.Player, _ *gui.Window, _ *gui.StaticTextData) { (*root).SetID(10600) }, false},
+		{"hidden root", func(root **gui.Window, _ **server.Player, _ *gui.Window, _ *gui.StaticTextData) {
+			(*root).Flags |= gui.StatusHidden
+		}, false},
+		{"nil player", func(_ **gui.Window, player **server.Player, _ *gui.Window, _ *gui.StaticTextData) { *player = nil }, false},
+		{"non-host", func(_ **gui.Window, player **server.Player, _ *gui.Window, _ *gui.StaticTextData) {
+			(*player).PlayerInd = 0
+		}, false},
+		{"missing child", func(root **gui.Window, _ **server.Player, _ *gui.Window, _ *gui.StaticTextData) {
+			(*root).Field100Ptr = nil
+		}, false},
+		{"hidden child", func(_ **gui.Window, _ **server.Player, child *gui.Window, _ *gui.StaticTextData) {
+			child.Flags |= gui.StatusHidden
+		}, false},
+		{"wrong widget type", func(_ **gui.Window, _ **server.Player, child *gui.Window, _ *gui.StaticTextData) {
+			child.DrawData().Style = gui.StylePushButton
+		}, false},
+		{"missing widget data", func(_ **gui.Window, _ **server.Player, child *gui.Window, _ *gui.StaticTextData) {
+			child.WidgetData = nil
+		}, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			empty := uint16(0)
+			data := &gui.StaticTextData{Text: &empty, Center: 1, Glow: 2}
+			child := &gui.Window{Flags: gui.StatusEnabled, WidgetData: unsafe.Pointer(data)}
+			child.SetID(10712)
+			child.DrawData().Style = gui.StyleStaticText
+			root := &gui.Window{Flags: gui.StatusEnabled, Field100Ptr: child}
+			root.SetID(10700)
+			player := &server.Player{PlayerInd: 31, GoldVal: 0xaabbccdd}
+			observedRoot, observedPlayer := root, player
+			tc.mutate(&observedRoot, &observedPlayer, child, data)
+			beforeRoot, beforeChild, beforePlayer, beforeData := *root, *child, *player, *data
+			timer, err := e2eQuestHostResultTimer(observedRoot, observedPlayer)
+			if (err == nil) != tc.wantOK || tc.wantOK && timer != child || !tc.wantOK && timer != nil {
+				t.Fatalf("timer=%p error=%v want-success=%t", timer, err, tc.wantOK)
+			}
+			if *root != beforeRoot || *child != beforeChild || *player != beforePlayer || *data != beforeData || empty != 0 {
+				t.Fatal("timer observation mutated native window/Player/text data")
+			}
+		})
 	}
 }
 

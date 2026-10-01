@@ -2,6 +2,8 @@
 # Only player placement is a fixture. Natural attacks cause three deaths;
 # ordinary mouse input respawns the player, including GGOver Continue.
 # HP, lives, statistics, AI, damage, death, penalties and respawn are not injected.
+# After 20 ordinary dead frames, observe the native host's empty timer text
+# and capture the result window before the real Continue input.
 steps:
   - action: slow
     dur: 1ms

@@ -9,7 +9,9 @@ import (
 
 	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/object"
+	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/legacy"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -75,6 +77,25 @@ func e2eQuestDeathTransition(before, after e2eQuestDeathState) error {
 		return fmt.Errorf("Quest zero-life statistics/reset/penalty branch is incomplete: before=%+v after=%+v", before, after)
 	}
 	return nil
+}
+
+// Read the actual native StaticText data after ordinary client frames. Never
+// call the timer, dispatch a text event or clear a widget to establish success.
+func e2eQuestHostResultTimer(root *gui.Window, player *server.Player) (*gui.Window, error) {
+	if root == nil || root.ID() != 10700 || root.GetFlags().IsHidden() {
+		return nil, fmt.Errorf("Quest host result window unavailable")
+	}
+	if player == nil || player.PlayerInd != 31 {
+		return nil, fmt.Errorf("Quest result timer observation has no native host Player")
+	}
+	timer := root.ChildByID(10712)
+	if timer == nil || timer.GetFlags().IsHidden() || !timer.DrawData().Style.IsStaticText() || timer.WidgetData == nil {
+		return nil, fmt.Errorf("Quest host result timer widget unavailable")
+	}
+	if text := alloc.GoString16((*gui.StaticTextData)(timer.WidgetData).Text); text != "" {
+		return nil, fmt.Errorf("Quest host result timer still displays countdown %q", text)
+	}
+	return timer, nil
 }
 
 type e2eQuestDeathFixture struct {
@@ -193,6 +214,17 @@ func (f *e2eQuestDeathFixture) respawnMouse() {
 			e2eError(fmt.Errorf("Quest game-over window unavailable"))
 			return
 		}
+		player := legacy.Get_dword_8531A0_2576()
+		if player != f.combat.unit.ControllingPlayer() {
+			e2eError(fmt.Errorf("Quest result timer lost the native client/server Player identity"))
+			return
+		}
+		timer, err := e2eQuestHostResultTimer(root, player)
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		e2eLog.Printf("QUEST HOST RESULT TIMER VERIFIED: cycle=%d frame=%d player=%p index=%d window=%p widget=%p text=\"\" observed-after-dead-frames=20", f.cycle+1, noxServer.Frame(), player, player.PlayerInd, root, timer)
 		button := root.ChildByID(10702)
 		if button == nil || button.GetFlags().IsHidden() || !button.GetFlags().IsEnabled() {
 			e2eError(fmt.Errorf("Quest game-over Continue button unavailable"))
@@ -238,6 +270,9 @@ func (sc *e2eScenario) CheckQuestPlayerDeaths(name string) {
 		sc.Screen(label + " dead")
 		sc.Wait(20, label+" finish dead-state input delay")
 		sc.add(0, label+" locate ordinary respawn input", f.respawnMouse)
+		if cycle == 3 {
+			sc.Screen(label + " host result timer")
+		}
 		sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: true})
 		sc.Input(1, "", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 		sc.addWhen(0, label+" wait for real-input respawn", 1200, f.respawned, func() {})

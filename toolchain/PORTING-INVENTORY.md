@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest host 타이머의 실제 자연 사망 headless 후속 검증
+
+본체 복원 `793dde2a8` 뒤 별도 E2E 단위로 `host-quest-player-death.yaml`의 stock 메뉴·네 번의 출구·세 번의 자연 사망·실제 입력 부활을 다시 실행했다. 기존 placement-only fixture를 유지하며 마지막 사망 뒤 20 ordinary frame을 기다리고 native client Player가 server Player와 같고 PlayerInd가 31인지 확인한다. child 10712의 실제 StaticText data를 읽어 empty text를 검사할 뿐 timer 함수·text event·GUI 값·HP·목숨·통계·AI·사망/페널티/부활을 주입하지 않는다. missing/hidden window·wrong widget type·nil data·non-host·nonempty countdown은 실패이며 helper의 read-only 성질도 회귀 시험으로 검사한다.
+
+일반·HD headless 및 일반 새 프로세스 재실행 세 번 모두 exit 0이다. 서버 목숨 `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`, 같은 player identity와 최종 결과창/Continue 해제를 유지한다. 각 실행에서 마지막 사망의 input-ready 상태는 frame 4055, empty host timer 관찰은 frame 4075, 실제 입력 부활은 frame 4078이다. 관련 player/window/widget 주소는 4GiB를 넘는다. Continue 직전 캡처를 더한 PNG 8개가 일반·HD에서 바이트 단위로 같고 일반 독립 재실행은 기존 baseline 8개를 통과했다. 일반·HD 결과창을 직접 확인해 countdown이 없는 것도 검사했다. PNG는 임시 시나리오 디렉터리에만 남긴다.
+
+대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 1회가 통과했다. 새 원본 range 없이 코드 2,866개·데이터 615개이며 전후 `make oracle-test`의 stock 1,556파일·570,653,750바이트·NXZ 50쌍 검증도 통과했다. 기존 ankh HUD `X 0`과 옵션 audit의 실패는 미해결이다. 실제 골드/세 통계가 0인 한계·독점적 lethal attribution·remote non-host 결과창·부활 후 새 이동·다른 캐릭터/피격·온라인 Quest 소환수 보존·SDL/OpenAL 검증을 이 host 회귀로 확대하지 않는다. 원본·개인 Save/config는 변경하지 않는다.
+
 ## Quest host 결과 타이머의 native PlayerInd 경계 `0049B6E0`
 
 자연 사망 headless에서 관찰한 host countdown을 실제 C entry 회귀로 먼저 재현했다. Darwin/ARM64 C-owned Player의 PlayerInd는 offset 2068인데 retained C가 PE32 offset 2064를 읽어 index 31 host에게도 `Time - 30`을 표시했다. 이 변경 단위는 인수 없는 int-return 함수 `0049B6E0` 한 본체만 Go export로 옮기며 기존 ABI·root 전역·inline UTF-16 buffer를 유지한다.

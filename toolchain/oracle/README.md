@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest host 타이머의 별도 자연 사망 headless 검증
+
+본체 복원 `793dde2a8` 뒤 기존 placement-only 자연 사망 시나리오를 일반·HD와 일반 독립 프로세스에서 다시 실행했다. 세 사망·실제 입력 부활의 lives `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`을 유지한다. 마지막 사망 뒤 20 ordinary frame이 지난 frame 4075에서 native client/server Player identity·PlayerInd 31과 실제 child 10712의 empty StaticText data를 관찰하고 Continue 직전 화면을 추가한다. timer 호출·text event·GUI/게임 상태를 주입하지 않는다. 세 실행 모두 frame 4078에 실제 입력 부활하며 결과창을 닫는다.
+
+PNG 8개가 일반·HD에서 바이트 단위로 같고 일반 독립 재실행 baseline 8개도 통과했다. 일반·HD 화면에서 countdown이 사라진 것을 직접 확인했지만 ankh HUD `X 0`은 미해결로 구별한다. PNG는 저장소에 반입하지 않는다. 이 E2E는 새 code/data range를 추가하지 않아 코드 2,866개·데이터 615개다. 대상 일반/실제 cgocheck2/race/checkptr 각 3회·전체 일반/strict·server-tag 1회와 stock 1,556파일·570,653,750바이트·NXZ 50쌍의 전후 `make oracle-test` 검증이 통과했다. 원본 provenance·함수 의미 시험·실제 host GUI 관찰을 구별하며 nonzero penalty/statistics·remote non-host·SDL/OpenAL·다른 Quest 경로의 증명으로 확대하지 않는다. 옵션 audit의 실패·ankh HUD는 별도 미완료 경계이며 원본·개인 Save/config는 변경하지 않는다.
+
 ## Quest host 결과 타이머의 native 경계 `0049B6E0`
 
 Darwin/ARM64의 실제 C entry에서 native PlayerInd offset 2068 대신 PE32 2064를 읽어 host 31에게 countdown을 표시하는 실패를 먼저 재현했다. 이 별도 단위는 인수 없는 int-return 본체 하나만 Go export로 복원한다. cached FPS 한 번→Frame→start DWORD와 modulo-32/signed-negative clamp, native PlayerInd BYTE, host inline UTF-16 복사 또는 unsigned DIV 뒤 정확한 lookup/format, fresh root/child 10712와 기존 `sub_46AEE0`의 zero 반환을 유지한다. GUI procedure의 반환을 직접 돌려주는 retained decompile을 원본으로 취급하지 않는다.

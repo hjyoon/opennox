@@ -146,9 +146,9 @@ bash ./scripts/run-headless-server-e2e.sh \
   /absolute/path/to/nox /absolute/path/to/server-e2e-output
 ```
 
-`host-quest-player-death.yaml`은 실제 Quest 메뉴와 네 번의 stock 출구 전환 뒤 자연 전투로 Warrior를 세 번 사망시킨다. 일반·HD headless와 일반 새 프로세스 재실행에서 서버 목숨 `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`, 같은 native player identity, 마지막 사망의 결과창과 실제 Continue 입력 부활을 확인했다. player placement만 fixture이며 HP·AI·목숨·통계·사망·페널티·부활은 주입하지 않는다. PNG 7개가 일반·HD에서 같고 독립 재실행 baseline도 통과했다.
+`host-quest-player-death.yaml`은 실제 Quest 메뉴와 네 번의 stock 출구 전환 뒤 자연 전투로 Warrior를 세 번 사망시킨다. 일반·HD headless와 일반 새 프로세스 재실행에서 서버 목숨 `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`, 같은 native player identity, 마지막 사망의 결과창과 실제 Continue 입력 부활을 확인했다. 20 ordinary dead frame 뒤 native host PlayerInd 31과 실제 timer child 10712의 empty StaticText data를 관찰하고 Continue 직전 화면도 캡처한다. player placement만 fixture이며 timer/text event·GUI 값·HP·AI·목숨·통계·사망·페널티·부활은 주입하지 않는다. PNG 8개가 일반·HD에서 바이트 단위로 같고 독립 재실행 baseline도 통과했다.
 
-최종 발사체는 제거되었을 수 있어 독점적 lethal attribution은 단정하지 않는다. 실제 전투 골드와 generator/monster/secret counter가 0인 한계, ankh HUD `X 0`·host countdown의 별도 미완료 경계, SDL/OpenAL·부활 후 새 이동·다른 캐릭터/피격·온라인 Quest 소환수 보존 범위를 구분한다. 원본 자산과 개인 Save/config는 변경하지 않는다. PNG가 저장소에 생성되지 않도록 YAML을 임시 시나리오 디렉터리에 복사해 실행하고 다른 GUI E2E와 동시에 실행하지 않는다.
+최종 발사체는 제거되었을 수 있어 독점적 lethal attribution은 단정하지 않는다. 실제 전투 골드와 generator/monster/secret counter가 0인 한계, ankh HUD `X 0`의 별도 미완료 경계, remote non-host 결과창·SDL/OpenAL·부활 후 새 이동·다른 캐릭터/피격·온라인 Quest 소환수 보존 범위를 구분한다. host countdown은 `0049B6E0` 복원 뒤 empty text와 실제 화면으로 후속 검증했다. 원본 자산과 개인 Save/config는 변경하지 않는다. PNG가 저장소에 생성되지 않도록 YAML을 임시 시나리오 디렉터리에 복사해 실행하고 다른 GUI E2E와 동시에 실행하지 않는다.
 
 ```sh
 NOX_E2E_SEAT=headless bash ./scripts/run-headless-gui-e2e.sh \

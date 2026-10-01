@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 자연 전투: 몬스터 전기 주문의 Player DefaultDamage `004E0B30`
+
+실제 메뉴와 stock 출구로 Quest 1→5를 진행한 headless 전투에서 네크로맨서가 플레이어를 자연 감지하고 `AIRBORNE_ELECTRIC(17)`을 시전했지만 PlayerDamage의 비지원 shape guard가 피해를 거부했다. 두 원본 함수는 별도 변경 단위로 복원한다. 이 단위는 이미 봉인된 DefaultDamage `004E0B30..004E122F`의 SHA-256 `6f045c2910bfb5e4a1100b5daaed3aeb5695bb401d3b447c63245c3543e0b871`을 재사용하며 원본 데이터나 중복 범위를 추가하지 않는다.
+
+무기 없는 몬스터→플레이어 전기(9/17) tail을 native 객체 폭으로 허용한다. `004E0E05..004E0E8E`의 전기 저항·binary32 spill·ties-to-even·최소 1과 Player update의 low-word `+160=2`를 유지한다. late Defend→source attribution→몬스터 hit sound에 따른 피해 음향 억제→PlayerDamageSound→흡혈→GameBall→20 이상 hurt(상태 1/15 제외)→공격 몬스터 latch→Shield→HP 순서를 유지하며, hurt 지점은 callback 뒤 live update 포인터를 다시 읽는다. 알 수 없는 damage sound나 누락된 tail 서비스는 raw PE32 fallback 없이 거부한다. 기존 장비/몬스터/돌진 경로와 새 저항·반올림·인접 word 보존·native sound·방어 callback·GameBall/Shield 순서 회귀를 함께 검사한다. PlayerDamage 입구 복원 전이므로 이 커밋만으로 실제 네크로맨서 전투가 해결됐다고 간주하지 않는다.
+
 ## Quest 헤쿠바 생성 `0051A5A0`
 
 네크로맨서 수정 뒤 동일한 실제 headless 연속 출구 실행은 5단계의 헤쿠바 생성에서 별도 null+484 SIGSEGV를 재현했다. 이 원본 함수 하나도 PE32 고정 update/health 위치와 int 객체 임시값 대신 native 포인터 경로로 연결했다. 원본 본체 `0051A5A0..0051A797` 504바이트/SHA-256 `26818353341f30bc7509e702caebe32e1f41b36ce59070d3a3a4829f0094e04e`는 기존 여덟 CALL record와 겹치지 않는 아홉 본체 구간·뒤 8-NOP로 봉인했다. Hecubah 이름 `005C4B7C` 8바이트, HecubahQuestSkill 키 `005C4B84` 18바이트, 별도 RewardMarker 이름 `005C4B98` 13바이트를 추가해 누적 코드 2,817개·데이터 595개다.

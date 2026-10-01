@@ -189,6 +189,13 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 		DefaultDamageSound: func(target, source *server.Object) {
 			server.Nox_xxx_soundDefaultDamageSound_532E20(target, source)
 		},
+		PlayerDamageSound: func(target, source *server.Object) {
+			C.nox_xxx_soundPlayerDamageSound_5328B0(asObjectC(target), asObjectC(source))
+		},
+		GameBallType: uint16(s.Types.GameBallID()),
+		GameBallOnDamage: func(source, target *server.Object, damage int32) {
+			s.GameBallOnPlayerDamage4E1230(source, target, damage, gameBallPlayerDamageRuntime4E1230(s))
+		},
 		AdjustFieldGuide: func(source, target *server.Object, damage int32) int32 {
 			if !noxflags.HasGame(noxflags.GameModeCoop | noxflags.GameModeQuest) {
 				return damage
@@ -217,6 +224,7 @@ func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorld
 		ApplyPreDamage:      itemPreDamageApplyNative4E13B0,
 		DamageClear:         unitDamageClearCall4EE5E0,
 		DefaultDamageSoundC: C.nox_xxx_soundDefaultDamageSound_532E20,
+		PlayerDamageSoundC:  C.nox_xxx_soundPlayerDamageSound_5328B0,
 		Unsupported: func(reason string, target, source, weapon *server.Object, damage int32, typ object.DamageType) {
 			if s.Log == nil {
 				return

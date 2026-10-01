@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 사망 통계의 native 포인터 경계 `004D6130` — 본체 연결의 선행 단계
+
+`sub_4D6130` 한 원본 본체를 native Go로 복원했다. nil 또는 Destroyed(`0x20`) unit은 입력 Object 주소를 그대로 반환한다. 나머지는 UpdateData를 캐시하고 첫 Player의 사망 DWORD를 wrapping 증가시킨 뒤, 같은 캐시에서 Player를 다시 읽어 진행 mask에 `2`를 OR하고 그 두 번째 Player 주소를 반환한다. Object/Player가 혼합된 원본 EAX를 PE32 int로 잘라 운반하지 않는다. 원본에 없는 class 검사·live binding의 nil 무시·추가 생명·밸런스 변경은 넣지 않았다.
+
+unit 인수의 typed ABI(`59f6b7fb9`)와 결과의 `uintptr_t` ABI(`9cec175a1`)는 본체 변경 전 별도 커밋으로 분리했다. Go는 native Object.UpdateData·PlayerUpdateData.Player·Player의 사망/mask DWORD를 읽는다. 해당 PE32/LP64 offset `748/872`, `276/336`, `4660/5964`, `4692/5996`과 DWORD 폭 4를 회귀로 검사한다. 원본 `004D6130`의 58바이트 및 뒤 6-NOP를 독립 봉인했으며, 원본 caller는 PlayerDie의 `0054D782`다. 누적 코드 2,840개·데이터 597개와 stock 1,556개 파일·압축 왕복 및 GUI 실행 후 원본 무변경 검증을 통과했다.
+
+nil/destroyed 반환·DWORD wrap·캐시된 UpdateData와 두 번째 live Player·다른 필드 무변경·원래 missing binding fault를 검사했다. 실제 C entry→Go export→C 결과의 왕복도 C-owned Object/UpdateData/Player 모두 4GiB 초과 주소로 통과했다. 관련 server/legacy/root 일반·race·checkptr 각 3회와 전체 일반·실제 `GOEXPERIMENT=cgocheck2` 시험이 통과했다.
+
+같은 제품의 기존 Quest 1→5단계 stock 전투 회귀를 Darwin/ARM64 일반·HD headless/mock audio에서 각각 재실행했다. 원래 FlyingGolem의 GolemArrow 세 차례 피해, 최종 HP HUD `163/450`, client 합산 피해 숫자 `31`, 빨간 채움 675·빈 부분 153 픽셀을 확인하고 두 제품 모두 exit 0으로 종료했다. 기존 PNG와 exact-pixel 비교를 통과한 피해/HP 화면도 검토했다. runner의 격리 Save만 사용하며 개인 Save와 stock 자산은 사용·수정하지 않는다.
+
+이 전투는 살아 있는 player의 피해/HUD 회귀이며 새 사망 통계 함수나 사망·부활의 실전 검증이 아니다. `PlayerDieNative54D2B0`의 Quest admission은 아직 거부 상태로 유지했다. 생명 소진 시 원본 `0054CBD0` dispatcher와 여섯 penalty helper를 별도 복원한 뒤 사망 본체에 연결하고 실제 사망·부활을 검증하는 것이 후속 작업이다.
+
 ## 캠페인 수동 Save/Load와 새 프로세스 복원 — 일반·HD 실제 입력 회귀
 
 `seed-solo-warrior-manual-save.yaml`과 `solo-warrior-manual-save-load.yaml`은 runner가 만든 격리 Save에서 실제 Warrior 메뉴·War01a 시작·NPC 대화 종료·원래 AUTOSAVE를 거친다. Escape·Save/Load·슬롯 1 선택·확인창은 native widget 위치를 읽어 실제 mouse/keyboard 이벤트로 누른다. 선택·callback·HP·능력치·장비·저장 파일을 직접 주입하지 않는다. 저장 슬롯 밖의 `.e2e-manual-save.json`은 새 프로세스와 비교할 포인터 없는 기대값만 담으며 게임 loader는 읽지 않는다.

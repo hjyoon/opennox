@@ -2892,6 +2892,7 @@ uint32_t* sub_4D60E0(int a1) {
 }
 
 //----- (004D6130) --------------------------------------------------------
+#if 0
 uintptr_t sub_4D6130(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
 	uintptr_t result; // eax
@@ -2908,6 +2909,9 @@ uintptr_t sub_4D6130(nox_object_t* unit) {
 	}
 	return result;
 }
+#endif
+uintptr_t nox_server_questRecordDeath_native_4D6130(nox_object_t* unit);
+uintptr_t sub_4D6130(nox_object_t* unit) { return nox_server_questRecordDeath_native_4D6130(unit); }
 
 //----- (004D6170) --------------------------------------------------------
 int sub_4D6170(int a1) {

@@ -191,7 +191,9 @@ func (s noxScriptNS) MakeEnemy(obj ns4.Obj) {
 	if unit == nil {
 		return
 	}
-	unit.ObjFlags &^= object.Flags(0x100)
+	// GAME.EXE 00516760 clears the same subclass bit set by MakeFriendly.
+	// ClearOwner retains its separate monitored-pet notification behavior.
+	unit.ObjSubClass &^= object.SubClass(0x100)
 	s.s.ObjClearOwner(unit)
 }
 

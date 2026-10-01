@@ -15169,6 +15169,20 @@
       "purpose": "the exact three NOP alignment bytes separating MakeFriendly from MakeEnemy at 00516760"
     },
     {
+      "name": "nox_script_MakeEnemy_516760",
+      "address": "0x00516760",
+      "size": 39,
+      "sha256": "0b41be36ac289131c997c0cf19d24c1b1ff25eb2bc65581ca0b6a6d802f34cb0",
+      "purpose": "clear bit 0x100 in Object subclass at PE32 offset 12, then call stock ClearOwner; never modify Object flags at offset 16"
+    },
+    {
+      "name": "nox_script_MakeEnemy_516760_padding",
+      "address": "0x00516787",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP alignment bytes separating MakeEnemy from the following function at 00516790"
+    },
+    {
       "name": "nox_xxx_playerRespawnItem_4EF750_call_5168F7",
       "address": "0x005168F7",
       "size": 5,

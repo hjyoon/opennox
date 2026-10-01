@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## MakeFriendly의 짝 함수 MakeEnemy subclass 복원 `00516760`
+
+War03b 구매 늑대의 이동 판정을 복원한 뒤 짝 함수도 PE32 원본과 대조했다. `00516772..00516779`는 `Object+12` subclass의 `0x100`만 해제하고 `004EC300` ClearOwner를 호출한다. 기존 port는 잘못된 Object flags 필드를 수정해 Migrate가 남고 item의 Equipped bit가 지워졌다. 이 변경 단위는 MakeEnemy 한 함수만 복원하며 owner 제거·owned 목록 연결 해제·enemy reset과 ClearOwner의 별도 monitored-player 통지 경로는 그대로 둔다.
+
+4GiB 초과 native 객체에서 다섯 subclass 경계, Object flags/Monitor 보존, owner 없는 호출·nil object, non-player owner 목록 해제와 enemy reset 회귀를 먼저 실패로 재현했다. 원본 본체 `00516760..00516786` 39바이트의 SHA-256은 `0b41be36ac289131c997c0cf19d24c1b1ff25eb2bc65581ca0b6a6d802f34cb0`이며 뒤 9-NOP는 별도로 봉인한다. 누적 코드 2,821개·데이터 595개다. MakeEnemy 자체가 바꾸는 비트와 player owner를 해제할 때 ClearOwner가 바꾸는 Monitor bit를 구분한다.
+
+일반·실제 `GOEXPERIMENT=cgocheck2` 전체 Go 시험, MakeFriendly/MakeEnemy 대상 10회 반복·race/checkptr 각 3회, 원본 자산 무결성·직접 code verifier·압축 oracle-test를 통과했다. 이식 함수 외 원본 자산·맵 script·게임 효과 수치는 변경하지 않는다.
+
 ## War03b 구입 늑대의 MakeFriendly subclass 복원 `00516720`
 
 stock War03b Henrick 대화의 실제 Yes 입력 두 번으로 Wolf1/Wolf2를 구매하고 골드가 `400→200→0`이 되는 것을 관찰했다. 이후 플레이어만 stock 출구에 배치해 일반 collision으로 War03c에 들어가면 두 원본 늑대가 owned/world 목록에서 모두 사라졌다. 구매 script의 `MakeFriendly`가 subclass가 아닌 Object flags에 `0x100`을 쓰는 이식 오류다. 원본 `0051673C..00516742`는 PE32 `Object+12`를 읽어 CH bit 0을 세운 뒤 같은 필드에 저장하며, `Object+16` flags는 변경하지 않는다. 별도 `BecomePet(004E7B00)`가 쓰는 `Monitor(0x80)`와 맵 보존 판정 `004E5B50`의 `Migrate(0x100)`를 혼동하지 않는다.

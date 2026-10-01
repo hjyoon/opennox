@@ -9863,6 +9863,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ArmPlayerPoison(l.Name)
+		case "check-player-status-animation":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerStatusAnimation(l.Text, l.Name)
 		case "assert-player-hud-poisoned":
 			if dt != 0 {
 				sc.Wait(dt, "")

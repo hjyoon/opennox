@@ -19579,6 +19579,20 @@
       "purpose": "the exact nine NOP bytes after armor creation before the ObeliskCreate routine at 0054CA10"
     },
     {
+      "name": "sub_54CC40",
+      "address": "0x0054CC40",
+      "size": 238,
+      "sha256": "5a53584386ae8e100849c6ddd2cf2ec2154d201b702787b083a55161caa51c5c",
+      "purpose": "cache the player update, select the first equipped weapon without subclass bit two, protect subclass 0x10000 and unmodified 0x104 weapons, scan all live usable spares using exact result one and delay-delete only the selected weapon"
+    },
+    {
+      "name": "sub_54CC40_padding",
+      "address": "0x0054CD2E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes after equipped weapon loss before random equipped armor loss at 0054CD30"
+    },
+    {
       "name": "sub_54CD30",
       "address": "0x0054CD30",
       "size": 203,

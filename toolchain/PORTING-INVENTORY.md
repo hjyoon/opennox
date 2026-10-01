@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 무기 손실의 native inventory·modifier·player 경계 `0054CC40`
+
+typed unit ABI 선행 커밋 `532eb7ca8` 뒤 원본 본체 하나만 Go로 복원했다. entry의 player update를 먼저 캐시하고, equipped DWORD 0x100→weapon/wand class DWORD 0x01001000→subclass low BYTE bit 2 순서로 첫 적격 무기만 선택한다. 선택 뒤 subclass DWORD 0x10000이면 반환하고, 0x104 무기는 캐시한 modifier array의 네 포인터를 모두 읽어 전부 nil일 때만 보호한다. 첫 무기가 보호되어도 다음 장착 무기를 고르지 않는다.
+
+예비 무기는 fresh inventory head에서 class→unequipped gate 뒤 cached update의 live Player 링크·raw class BYTE를 읽는다. 원본 `0054CD06`은 decompiled C의 truthy 비교와 달리 exact `CanUseItem == 1`만 인정한다. 예비 무기의 subclass bit 2/0x10000은 검사하지 않으며, 적격 예비 무기를 찾은 뒤에도 callback 뒤 live next로 끝까지 순회하고 처음 선택한 무기 하나만 delayed-delete한다. 추가 Player/class gate·modifier snapshot·class clamp·nil binding 무시는 넣지 않았다.
+
+gate별 exact trace, 네 modifier slot 각각과 signed DWORD CanUse 결과, cached update/fresh head/live Player·modifier·next 교체, 삭제 시점·선택 무기 보존·무관한 필드 무변경과 nil fault prefix를 검사했다. C-owned unit/item/update/Player/attributes/modifier가 모두 4GiB 초과 주소인 실제 C entry→Go export→server→class/deletion callback 왕복도 통과했다. RNG가 없는 원본이므로 nil RNG로도 실행된다.
+
+Darwin/ARM64 전체 일반·실제 `GOEXPERIMENT=cgocheck2` Go 시험, 관련 일반·strict CGo·race·`checkptr=2` 각 3회와 server-tag root/server/legacy 시험 1회가 통과했다. 원본 본체 238바이트·뒤 2-NOP를 봉인했고 `make oracle-test`는 stock 1,556파일·570,653,750바이트·2,860 code/607 data range·NXZ 50쌍을 전후 검증했다. gem penalty·dispatcher·Quest 사망 분기가 남아 admission은 계속 닫혀 있다. 이 helper 검증을 Quest 실제 사망·부활 headless 성공 또는 Linux/AMD64 실행으로 확대하지 않는다.
+
 ## Quest 무기 손실의 typed unit ABI — 본체 복원의 선행 단계 `0054CC40`
 
 unit 인수를 `int`에서 `nox_object_t*`로 먼저 분리하고 raw dispatcher caller에 명시적인 변환을 적용한다. 이 단계는 원본별 리팩터링 규칙에 따라 기존 정수 alias와 C 본체를 그대로 유지한다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. native inventory·modifier·player 포인터 복원과 원본의 exact `CanUseItem == 1` 비교는 다음 별도 변경이다. Quest 사망 admission은 아직 열지 않는다.

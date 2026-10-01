@@ -4366,6 +4366,7 @@ void sub_54CBD0(int a1) {
 }
 
 //----- (0054CC40) --------------------------------------------------------
+#if 0
 void sub_54CC40(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
 	int v1;       // ebp
@@ -4431,6 +4432,9 @@ void sub_54CC40(nox_object_t* unit) {
 		}
 	}
 }
+#endif
+void nox_server_questLoseWeapon_native_54CC40(nox_object_t* unit);
+void sub_54CC40(nox_object_t* unit) { nox_server_questLoseWeapon_native_54CC40(unit); }
 
 //----- (0054CD30) --------------------------------------------------------
 #if 0

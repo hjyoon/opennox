@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 무기 손실의 native 포인터 경계 `0054CC40`
+
+typed unit ABI를 별도 커밋으로 먼저 분리한 뒤, 한 원본 본체의 equipped weapon/wand 선택·보호 판정·예비 무기 전체 live 순회·선택 무기 delayed deletion을 Go로 복원했다. entry-cached player update와 이후 live Player/class byte, 캐시한 modifier array의 네 slot, fresh inventory head와 callback 뒤 live next를 구분한다. `0054CD06`의 exact `CanUseItem == 1` 비교를 유지하며 decompiled C의 nonzero 비교를 오라클로 사용하지 않는다. 첫 적격 무기가 보호되면 다른 장착 무기를 선택하지 않는다.
+
+원본 `0054CC40..0054CD2D` 238바이트/SHA-256 `5a53584386ae8e100849c6ddd2cf2ec2154d201b702787b083a55161caa51c5c`와 `0054CD2E`의 뒤 2-NOP를 추가했다. 누적 코드 2,860개·데이터 607개다. exact hook traces·modifier 네 slot·signed CanUse 결과·cached/live 포인터 교체·nil fault prefix와 모든 관련 C-owned allocation이 4GiB 초과 주소인 CGo 왕복을 검사했다. 전체 일반·실제 cgocheck2, 관련 일반/strict/race/checkptr 각 3회와 server-tag 시험, 원본 파일 무결성·코드/데이터 봉인·NXZ 50쌍의 전후 검증이 통과했다. code hash는 원본 provenance이며 Go 본체의 의미 동등성을 그 자체로 증명하지 않는다. gem penalty와 dispatcher가 남아 Quest 사망 admission은 아직 닫혀 있고, 이 helper 시험을 실제 사망·부활 GUI 성공으로 확대하지 않는다.
+
 ## 실제 Confuse/Stun 주문의 headless 화면 회귀
 
 두 cast 본체를 각각 복원한 뒤 정상 `SpellAccept4FD400` selector와 실제 6-argument C dispatch를 통과하는 별도 시각 시나리오를 추가했다. 실제 메뉴에서 Wizard/Warrior를 선택하고 4GiB 초과 native player를 self-target으로 level 1 cast한다. 원본 Confuse 90틱, Stun 60틱과 Wizard Held/Warrior Slowed 분기를 유지하며 client buff·packet·그리기·자연 만료를 주입하지 않는다. C-heap argument의 실제 target과 시전 시점 좌표를 명시적으로 초기화·보존하는 회귀도 추가했다.

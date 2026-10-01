@@ -1,5 +1,22 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 옵션 전체 UI 점검: 확인된 실패와 미검증 범위
+
+audit-only 커밋 `13cfe137a`의 `main-menu-options-audit.yaml` 및 `host-game-client-options-audit.yaml`을 Darwin/ARM64 일반·HD headless에서 각각 실행했다. 옵션 동작을 수정하지 않은 점검이며 네 실행 모두 실패 assertion을 보고하고 exit 2로 끝났다. 아래 숫자는 반복 검사를 포함한 assertion 수이지 고유 버그 개수가 아니다.
+
+| 경로 | 통과 | 실패 |
+| --- | ---: | ---: |
+| 일반 메인 메뉴 | 115 | 34 |
+| HD 메인 메뉴 | 117 | 34 |
+| 일반 게임 내 | 180 | 16 |
+| HD 게임 내 | 180 | 18 |
+
+메인 메뉴의 음량 351/352/353은 native `0..16384`와 달리 widget range `0..100`, 초기 value 0/checked false를 보였고, 슬라이더 입력 후 native target/gain이 따르지 않았다. 메인 음소거 361/362/363 입력에서도 enabled/checked가 기대대로 바뀌지 않았다. 게임 내 FX gain도 슬라이더 0/8126/4850과 달리 16384로 남았다. 게임 내 해상도 선택 checkbox는 바뀌지만 pending 값은 `640×480`, YAML 값은 `(0,0)`으로 남았다. 메인 입력 설정 window 900이 열리지 않고 ESC 뒤 state 300이 남았으며 Back 입력은 동작했다.
+
+ShowTooltips/NoSoftLights의 legacy 직렬화 key 부재, window mode·gamma의 live/직렬화 값 불일치도 관찰했다. 그래픽 토글·마우스 민감도·키 설정 UI 등에는 통과한 검사도 있다. 게임 내 mouse pickup 971/972/973의 disabled 상태는 원본 의도와 추가 대조하기 전까지 확정 버그로 세지 않는다.
+
+E2E의 legacy close 경로는 실제 해상도 적용과 디스크 저장을 의도적으로 억제하므로 그 guard 자체를 실패로 판정하지 않았다. 직렬화 검사와 새 프로세스의 실제 저장·로드 성공은 구별하며 후자는 미검증이다. 실행은 headless/mock audio이므로 실제 SDL 출력·OpenAL 재생도 미검증이다. 모든 옵션이 정상이라는 결론이나 설정 저장·실제 음량 적용이 해결됐다는 결론을 내리지 않는다. 개인 Save/config·stock 자산은 변경하지 않았다.
+
 ## Quest 자연 사망·목숨 소진·실제 입력 부활 headless 회귀
 
 사망 본체 `70ed901fa`와 별도 검증 단위다. `host-quest-player-death.yaml`은 실제 Warrior Quest 메뉴와 네 번의 stock 출구로 5단계 네크로맨서를 생성한 뒤 플레이어만 근처에 배치한다. 원래 AI의 실제 피해와 client 피해 표시를 관찰하며 HP·목숨·통계·사망·페널티·부활을 주입하지 않는다. stock balance의 추가 목숨은 2개다. 일반·HD headless와 일반 새 프로세스 재실행에서 자연 사망 세 번, 서버 목숨 `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`, 같은 native player identity, 마지막 사망의 timestamp·결과창과 실제 GGOver Continue 입력 뒤 해제를 확인했다. 두 첫 부활도 실제 mouse input을 사용한다. 모든 관련 native 포인터는 4GiB를 넘는다.

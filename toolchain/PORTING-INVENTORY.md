@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 목숨 self-report loop의 native 연결 `004D99E1`
+
+sender 복원 `b5146d15d` 뒤 현재 native self-report에서 빠진 원본 `004D9900`의 목숨 loop 94바이트만 별도 복원했다. 기존 골드 콜백 전에 update 포인터를 캐시하고 골드→Quest 목숨→기존 stats/vitals 순서로 연결한다. Quest flag 한 번 확인→32개 index의 `Players.ByInd` 순차 조회→nil Player/PlayerUnit skip→entry update의 full ExtraLives DWORD와 zero-extended marker BYTE 비교→기존 sender→반환 무시→entry update의 fresh LOWBYTE를 같은 marker에 저장한다. sender 자체는 별도의 live UpdateData를 읽는 원본 의미를 유지한다. 새 nil/class guard는 slice 안에 없고 outer adapter의 원래 unit nil/low-class-bit gate만 유지한다.
+
+정확한 읽기 trace·8개 callback fault prefix·모든 signed nonzero flag·32개 수신자와 active/unit gate·목숨 0~255 및 256 이상 DWORD 경계·보고 마커 반복 비교·live 후속 Player lookup·cached update/fresh sender/fresh BYTE 교체를 검사했다. production root의 self-report 시험은 4GiB 초과 C-owned unit/update/Player로 골드 전송 중 UpdateData를 교체한 뒤 원래 entry marker만 갱신하는 것을 확인한다. 대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 1회가 통과했다. 전후 stock 1,556파일·570,653,750바이트·NXZ 50쌍과 code 2,869/data 615개 검증도 통과했다.
+
+이 단위는 armor/poison/Quest key 등의 다른 누락 slice나 기존 stats/vitals의 바인딩을 복원하지 않는다. 자연 사망·실제 입력 부활에서 HUD 값이 맞는지 다음 headless 단위에서 확인하며, 그 전까지 실제 GUI 성공이나 옵션 audit 실패 해결을 주장하지 않는다. 원본·개인 Save/config는 변경하지 않았다.
+
 ## Quest 목숨 보고 sender의 native 필드·wire 경계 `004D9D60`
 
 typed unit ABI 선행 커밋 `49a927744` 뒤 sender 한 본체만 Go export로 복원했다. 원본 assembly의 net-code WORD 읽기→live UpdateData 읽기→ExtraLives LOWBYTE→정확한 F0/04 5바이트 packet→기존 reliable 전송 순서와 full signed DWORD 반환을 유지한다. decompiled C의 앞선 UpdateData 읽기를 따르지 않으며 class/nil guard를 추가하지 않는다. native ExtraLives는 ARM64 offset 416을 사용한다.

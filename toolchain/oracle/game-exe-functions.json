@@ -3668,6 +3668,13 @@
       "purpose": "load Player through the entry-cached update data, compare the live gold dword with its last-reported cache, send the existing reliable gold report on change, then reload Player through the cached update and copy the live gold value into the report cache"
     },
     {
+      "name": "nox_xxx_playerReportAnything_4D9900_quest_lives_4D99E1",
+      "address": "0x004D99E1",
+      "size": 94,
+      "sha256": "4202ff392e7857655a72e529f3a913683ac293d451b52030dc6f74e9eea88799",
+      "purpose": "check Quest once, look up all thirty-two recipient slots in order, skip missing players or player-unit pointers, compare entry-cached ExtraLives as a full dword with the zero-extended marker byte, ignore the existing sender result, then reload and store the low life byte through the same cached update pointer"
+    },
+    {
       "name": "sub_4D9D60",
       "address": "0x004D9D60",
       "size": 67,

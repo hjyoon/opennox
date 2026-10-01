@@ -204,28 +204,38 @@ func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object,
 	if updateStream {
 		s.reportUnitHealthDeltaNative4D8760(int(player.PlayerIndex()), unit)
 	}
-	playerReportSelf518CAF(recipient, unit, func(unit *server.Object) {
-		s.Server.PlayerGoldReportSync4D9900(unit)
-		playerReportStatsNative4D9900(unit, playerStatsReportHooks4D9900{
-			totalHealth: func(playerInd byte, unit *server.Object) {
-				legacy.NetReportTotalHealthNative4D85C0(s.Server, playerInd, unit)
-			},
-			totalMana: func(playerInd byte, unit *server.Object) {
-				legacy.NetReportTotalManaNative4D88C0(s.Server, playerInd, unit)
-			},
-			stats: func(playerInd byte, unit *server.Object) {
-				s.playerStatsReportNative4D8990(playerInd, unit)
-			},
-		})
-		playerReportVitalsNative4D9900(unit, s.playerHealthReportNative4D86E0, func(playerInd byte, unit *server.Object) {
-			legacy.NetReportManaNative4D8930(s.Server, playerInd, unit)
-		})
-	})
+	playerReportSelf518CAF(recipient, unit, s.playerReportSelfNative4D9900)
 	packet := s.playerObjectPacketNative518C30(unit)
 	if updateStream {
 		return nox_netlist_addToMsgListSrv(player.PlayerIndex(), packet[:])
 	}
 	return s.NetList.AddToMsgListCli(player.PlayerIndex(), netlist.Kind1, packet[:])
+}
+
+// Keep the Quest loop's update pointer cached before the existing gold
+// callback, as in 004D9900. This does not restore its other missing slices
+// or change the existing statistics/vitals helpers' own bindings.
+func (s *Server) playerReportSelfNative4D9900(unit *server.Object) {
+	if unit == nil || uint8(unit.ObjClass)&0x04 == 0 {
+		return
+	}
+	update := (*server.PlayerUpdateData)(unit.UpdateData)
+	s.Server.PlayerGoldReportSync4D9900(unit)
+	s.Server.PlayerQuestLivesReport4D99E1(unit, update)
+	playerReportStatsNative4D9900(unit, playerStatsReportHooks4D9900{
+		totalHealth: func(playerInd byte, unit *server.Object) {
+			legacy.NetReportTotalHealthNative4D85C0(s.Server, playerInd, unit)
+		},
+		totalMana: func(playerInd byte, unit *server.Object) {
+			legacy.NetReportTotalManaNative4D88C0(s.Server, playerInd, unit)
+		},
+		stats: func(playerInd byte, unit *server.Object) {
+			s.playerStatsReportNative4D8990(playerInd, unit)
+		},
+	})
+	playerReportVitalsNative4D9900(unit, s.playerHealthReportNative4D86E0, func(playerInd byte, unit *server.Object) {
+		legacy.NetReportManaNative4D8930(s.Server, playerInd, unit)
+	})
 }
 
 func playerReportSelf518CAF[O comparable](recipient, unit O, report func(O)) {

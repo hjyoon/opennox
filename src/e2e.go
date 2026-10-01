@@ -9445,6 +9445,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-warrior-charge-collision":
 			sc.Wait(dt, "")
 			sc.CheckWarriorChargeCollision(l.Text, l.Name)
+		case "check-warrior-flagball-charge":
+			sc.Wait(dt, "")
+			sc.CheckWarriorFlagBallCharge(l.Name)
 		case "slow":
 			sc.Slow(dt)
 		case "wait":

@@ -1,0 +1,85 @@
+# Normal menu and keyboard input. The enemy server-player fixture picks up
+# the stock GameBall through ordinary collision; never inject owner or damage.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: set-objective-game-mode
+    game-mode: flagball
+    name: select FlagBall mode preference
+  - action: switch-map
+    map: flagball
+    name: load stock FlagBall map
+  - action: wait-map
+    map: flagball
+    name: wait for FlagBall server and client map load
+  - action: assert-objective-game-mode
+    dt: 120
+    game-mode: flagball
+    name: verify live native FlagBall and minimap
+  - action: create-objective-teams
+    name: create the two stock goal teams
+  - action: join-objective-team
+    name: join the host team through the normal network request
+  - action: check-warrior-flagball-charge
+    name: charge an enemy GameBall carrier
+  - action: screen
+    name: FlagBall charge ready
+  - action: quit
+    dt: 1

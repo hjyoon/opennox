@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Warrior 돌진의 FlagBall 소지자 피해·공 방출 실제 입력 회귀
+
+`host-game-warrior-flagball-charge.yaml`은 regular Warrior 메뉴·stock FlagBall 맵·정상 host team 참가를 거쳐 적 서버 플레이어가 일반 충돌로 GameBall을 줍게 한다. fixture의 HP 2,000·team·배치·quickbar만 준비하며 owner·공 방출·피해·힘·ability record·buff·cooldown·HUD 값을 주입하지 않는다. 팀 spawn 옆의 대각선 벽을 피하도록 stock 공 주변의 실제 열린 court를 선택하고, 정상 spawn protection은 직접 제거하지 않고 기다린다. 서버 플레이어 fixture는 원격 클라이언트의 입력·통신 대결을 대신하지 않는다.
+
+수정 전 같은 실제 A 키 돌진에서 `PlayerDamage`가 `GameBall drop` unsupported를 보고하고 적 HP 2,000과 공 소유가 그대로였다. 독립 봉인된 `004E1230`의 native 서비스를 PlayerDamage의 armor·Quest·late Defend·흡혈 뒤, hurt-state·Shield·HP 차감 전 위치에 연결했다. raw damage 기반 guard 대신 상태 변경 전 서비스·source 검사를 두고 최종 정수 피해를 사용한다. 단위 시험은 29/30 경계·armor 및 Quest 감소·late Defend 증감·Shield 전 방출·Sentry/monster/Flame·source 없는 작은 Poison 및 고피해 소지자의 안전한 비지원 거부를 구분한다.
+
+Darwin/ARM64 일반·HD headless 모두 두 번의 돌진에서 적 HP `2,000→1,850`, 공격자 `150→150`, 공의 NoCollide 해제·owner/owned-list 제거·공 팀 2→1과 피해자의 last-touch carrier/team/frame 보존을 확인했다. 공의 정상 힘·물리 처리 뒤 속도는 두 방향에서 약 `6.413/±6.663`이었으며, 쿨다운 재입력 거부·효과 종료·HUD ready 복귀도 제품당 두 번씩 통과했다. 세 공 방출/ready 화면은 일반·HD에서 동일했고 검토한 PNG를 회귀 기준으로 보관한다. 이 시나리오는 Wink의 공 방출이나 모든 objective/campaign 모드를 검증하지 않는다.
+
+수정된 코드로 기존 워리어 5개 스킬을 두 제품에서 각각 두 번씩 재실행해 제품당 50개 start/effect/repeat-rejection/end/ready 검사를 통과하고 정상 종료했다. HD의 초기 공용 pixel 비교는 Harpoon 재사용 거부 안내 문구 차이에서 중단됐으며, diff에는 그 문자만 있었다. 제품별 독립 캡처로 동일한 YAML·키 입력·상태 검사를 다시 완료하고 효과와 HUD 화면을 검토했다. 게임의 문구·능력 수치나 상태 assertion은 바꾸지 않았고 이 전체 스킬 시나리오에 비결정적인 pixel baseline을 추가하지 않았다.
+
+전체 일반·cgocheck2 시험, PlayerDamage/GameBall race·checkptr·cgocheck2 각 3회와 원본 코드 2,803개·데이터 590개·stock 1,556개 파일 및 압축 oracle-test가 통과했다. 일반·strict 전체 시험의 최초 병렬 실행은 임시 디스크 공간 부족으로 link가 실패했으며, 같은 시험의 순차 재실행은 모두 통과했다. 이 회귀는 level 5 regular host이며 모든 레벨 조합이나 실제 SDL/OpenAL 기기 검증을 포함하지 않는다. 원본 자산은 변경하지 않았다.
+
 ## Warrior 돌진의 플레이어·stock 벽 충돌 실제 입력 회귀
 
 `host-game-warrior-charge-collisions.yaml`은 regular Warrior의 실제 A 키 입력으로 서버 플레이어와 기존 stock 벽에 각각 두 번 돌진한다. 두 번째 플레이어는 정상 `newPlayer`·관전자 종료로 초기화한 서버 측 fixture이며, 원격 클라이언트의 네트워크 입력 대결을 대신하지 않는다. HP 2,000·배치·quickbar만 준비하고 능력·collision callback·피해·CollisionWall·buff 종료·쿨다운·HUD 값은 주입하지 않는다. 벽은 실제 맵의 원본 정의 `Flags32 & 5 != 0`과 폭이 충분한 접근로로 선택한다.
@@ -12,7 +24,7 @@ Darwin/ARM64 일반·HD headless 모두 플레이어 대상 HP `2,000→1,850`�
 
 앞선 Troll 충돌 회귀와 별도로, `PLAYER` target은 `PlayerDamageNative4E17B0`에서 같은 player source/weapon의 `CRUSH(150)`를 unsupported로 거부했다. 수정 전 회귀 시험으로 이 admission 누락을 재현하고 해당 피해 모양만 허용한다. 이미 봉인된 원본 `004E1EE8`처럼 방어력 흡수율의 절반을 적용하고 소수 피해를 누적하며, `004E1F42`처럼 두 damage-marker DWORD에 정수 2를 기록한다. player source를 MonsterUpdateData로 해석하지 않는다.
 
-방어구 내구도·Quest 배율·late Defend·흡혈·hurt-state·Shield 처리 순서, 방패 정면 차단, 아군 owner gate·관전자·무적·Coop 자기 피해 조건을 회귀 시험으로 구분한다. 방어력 0.4의 150 돌진은 HP `2,000→1,880`, 방어력 0.03의 세 돌진은 `148/148/147` 피해와 소수 carry `-0.25/-0.5/0.25`를 확인했다. PLAYER-class weapon은 원본 melee 판정이 아니므로 별도 melee Shock 반격은 타지 않는다. GameBall 소유자의 drop 등 아직 미이식된 별도 피해 분기는 상태 변경 전에 명시적으로 거부한다.
+방어구 내구도·Quest 배율·late Defend·흡혈·hurt-state·Shield 처리 순서, 방패 정면 차단, 아군 owner gate·관전자·무적·Coop 자기 피해 조건을 회귀 시험으로 구분한다. 방어력 0.4의 150 돌진은 HP `2,000→1,880`, 방어력 0.03의 세 돌진은 `148/148/147` 피해와 소수 carry `-0.25/-0.5/0.25`를 확인했다. PLAYER-class weapon은 원본 melee 판정이 아니므로 별도 melee Shock 반격은 타지 않는다. 이 admission 수정 당시 GameBall 소유자의 drop은 상태 변경 전에 거부했으며, 이후 별도 native 서비스 연결과 실제 FlagBall 회귀는 위 최신 항목에 기록했다.
 
 전체 일반·cgocheck2 시험, PlayerDamage 대상 race·checkptr 검증 및 원본 코드 2,802개·데이터 589개·stock 1,556개 파일 검증이 통과했다. 원본 효과 수치·쿨다운·벽 충돌 및 자산은 바꾸지 않았다.
 

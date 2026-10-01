@@ -271,7 +271,7 @@ func TestPlayerDieNative54D2B0RejectsBeforeMutation(t *testing.T) {
 		}, want: "unsupported game mode"},
 		{name: "quest", mutate: func(_ *Object, _ *PlayerUpdateData, _ *Player, r *PlayerDieRuntime54D2B0) {
 			r.GameFlag = func(flag uint32) bool { return flag == playerDieCoopMode54D2B0 || flag == playerDieQuestMode54D2B0 }
-		}, want: "quest mode"},
+		}, want: "missing quest death service"},
 		{name: "elimination", mutate: func(_ *Object, _ *PlayerUpdateData, _ *Player, r *PlayerDieRuntime54D2B0) {
 			r.GameFlag = func(flag uint32) bool {
 				return flag == playerDieOnlineMode54D2B0 || flag == playerDieElimMode54D2B0

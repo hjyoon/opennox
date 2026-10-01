@@ -375,6 +375,19 @@ var playerDieCall54D2B0 = func(unit *server.Object) {
 		CancelAbilities: Nox_xxx_playerCancelAbils_4FC180,
 		CancelSpells:    Nox_xxx_playerCancelSpells_4FEAE0,
 		CancelTrade:     Nox_xxx_shopCancelSession_510DC0,
+		Quest: &server.PlayerDieQuestRuntime54D2B0{
+			SendStats: func(index uint8, packet [14]byte) {
+				s.NetSendPacketXxx0(int(index), packet[:], nil, 1)
+			},
+			RecordDeath: server.QuestRecordDeath4D6130,
+			ResetPlayer: Sub_4D6000,
+			Penalty: func(unit *server.Object) {
+				nox_server_questPenalty_native_54CBD0(asObjectC(unit))
+			},
+			BalanceFloat: func(key string) float32 {
+				return float32(s.Balance.Float(key))
+			},
+		},
 		Unsupported: func(reason string, obj *server.Object) {
 			if s.Log != nil {
 				s.Log.Error("PlayerDie native branch is not ported",

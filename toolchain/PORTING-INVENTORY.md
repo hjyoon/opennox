@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest player death의 native lives·통계·페널티 연결 `0054D2B0`
+
+typed unit ABI 선행 커밋 `2cc55885c` 뒤 원본 사망 본체 하나에 Quest 분기를 연결했다. entry-cached update를 유지하되 common prefix의 offline 공격자 조회, callback 뒤 live Player 재조회, 무조건 rivals 질의, fresh Quest flag의 drop 제외 순서를 원본대로 복원한다. competitive scoring/Elimination의 기존 admission은 계속 닫혀 있다.
+
+tail의 unsigned lives DWORD가 0이 아니면 차감 뒤 현재 unit의 기존 death-record helper만 호출한다. 0이면 Frame→entry update의 Player 캐시→timestamp 저장→stage/generators/monsters/secrets WORD를 순서대로 읽어 F0/2 14바이트 packet에 넣기→PlayerInd BYTE 수신자 전송→기존 player reset→기존 penalty dispatcher→balance binary32→원래 nearest-even signed 변환→entry lives DWORD 저장→fresh Player→fresh lives LOWBYTE→PlayerInd BYTE→entry respawn marker 저장 순서다. mixed 반환 도메인은 scalar/record pointer/Player pointer로 구별하며 기존 void death ABI는 이를 소비하지 않는다. 추가 nil guard·clamp·Player/inventory snapshot은 없다.
+
+모든 tail callback의 exact trace/fault prefix, DWORD/WORD/BYTE 경계와 wrap, float tie/NaN/overflow, cached/live binding 교체를 검사한다. 실제 C entry는 C-owned unit/update/Player/health 고주소로 production Quest services의 통계 전송→reset→골드 페널티를 통과한다. outer package에서 등록하는 state/ability boundary만 시험에서 공급한다. Darwin/ARM64 관련 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 시험 1회가 통과했다. `make oracle-test`는 stock 1,556파일·570,653,750바이트·2,864 code/612 data range·NXZ 50쌍을 전후 검증했다. 이 회귀를 stock Quest 사망·부활 headless 성공이나 Linux/AMD64 실행으로 확대하지 않는다.
+
 ## Quest player death의 typed unit ABI — lives 연결의 선행 단계 `0054D2B0`
 
 기존 native 사망 본체에 Quest lives 분기를 연결하기 전에 retained C 함수의 unit 인수를 `int`에서 `nox_object_t*`로 별도 분리했다. 기존 정수 alias·본체·반환 도메인은 유지하고 32비트 fallback caller만 typed 포인터를 넘긴다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. 이 ABI 단계 자체를 Quest 사망·부활 해결로 보지 않으며 64비트 Quest admission은 아직 닫혀 있다.

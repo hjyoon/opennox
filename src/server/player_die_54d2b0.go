@@ -44,6 +44,7 @@ type PlayerDieRuntime54D2B0 struct {
 	CancelAbilities    func(*Object)
 	CancelSpells       func(*Object)
 	CancelTrade        func(*TradeSession)
+	Quest              *PlayerDieQuestRuntime54D2B0
 	Unsupported        func(string, *Object)
 }
 
@@ -56,6 +57,9 @@ func playerDieUnsupported54D2B0(runtime PlayerDieRuntime54D2B0, reason string, u
 
 func playerDieRuntimeReady54D2B0(runtime PlayerDieRuntime54D2B0) bool {
 	return runtime.GameFlag != nil &&
+		runtime.Frame != nil && runtime.TickRate != nil &&
+		runtime.PlayerByIndex != nil && runtime.ObjectByNetCode != nil &&
+		runtime.GameplayHasRivals != nil &&
 		runtime.PrepareAnkhType != nil &&
 		runtime.Audio != nil &&
 		runtime.SetPlayerState != nil &&
@@ -78,11 +82,15 @@ func playerDieOnlineRuntimeReady54D2B0(runtime PlayerDieRuntime54D2B0) bool {
 }
 
 func playerDieRecentAggressor54D2B0(player *Player, primary, victim *Object, runtime PlayerDieRuntime54D2B0) *Object {
-	pending, playerIndex, frame := player.LastAggressorState()
-	if pending == 0 || runtime.Frame()-frame >= 10*runtime.TickRate() {
+	if player.Field3600 == 0 {
 		return nil
 	}
-	aggressor := runtime.PlayerByIndex(playerIndex)
+	frame := runtime.Frame()
+	elapsed := frame - player.field3608
+	if elapsed >= 10*runtime.TickRate() {
+		return nil
+	}
+	aggressor := runtime.PlayerByIndex(player.Field3604)
 	if aggressor == nil || aggressor.Active == 0 || aggressor.PlayerUnit == nil {
 		return nil
 	}
@@ -133,8 +141,9 @@ func playerDieOnlinePacket54D2B0(unit *Object, update *PlayerUpdateData, primary
 
 // PlayerDieNative54D2B0 restores GAME.EXE 0054D2B0 for offline solo
 // cooperative play and hosted online play without a competitive scoring
-// opponent. Competitive scoring, Elimination cleanup, and Quest lives remain
-// separately admitted branches. The complete gate is evaluated before
+// opponent, including Quest lives and the ordered Quest penalty branch.
+// Competitive scoring and Elimination cleanup remain separately admitted
+// branches. The complete gate is evaluated before
 // PrepareAnkhType, so a 64-bit build never partially executes an unsupported
 // PE32 callback.
 func PlayerDieNative54D2B0(unit *Object, runtime PlayerDieRuntime54D2B0) bool {
@@ -154,10 +163,11 @@ func PlayerDieNative54D2B0(unit *Object, runtime PlayerDieRuntime54D2B0) bool {
 	}
 	coop := runtime.GameFlag(playerDieCoopMode54D2B0)
 	online := runtime.GameFlag(playerDieOnlineMode54D2B0)
-	if runtime.GameFlag(playerDieQuestMode54D2B0) {
-		return playerDieUnsupported54D2B0(runtime, "quest mode", unit)
+	quest := runtime.GameFlag(playerDieQuestMode54D2B0)
+	if quest && !playerDieQuestRuntimeReady54D2B0(runtime) {
+		return playerDieUnsupported54D2B0(runtime, "missing quest death service", unit)
 	}
-	if !coop && !online {
+	if !coop && !online && !quest {
 		return playerDieUnsupported54D2B0(runtime, "unsupported game mode", unit)
 	}
 	if coop && runtime.CancelPendingSave == nil {
@@ -182,16 +192,16 @@ func PlayerDieNative54D2B0(unit *Object, runtime PlayerDieRuntime54D2B0) bool {
 	}
 
 	runtime.PrepareAnkhType()
-	if coop {
+	if runtime.GameFlag(playerDieCoopMode54D2B0) {
 		runtime.CancelPendingSave()
 	}
-	if online {
-		source := unit.Obj130
-		var primary *Object
-		if source != nil {
-			primary = source.FindOwnerChainPlayer()
-		}
-		assist := playerDieRecentAggressor54D2B0(player, primary, unit, runtime)
+	source := unit.Obj130
+	var primary *Object
+	if source != nil {
+		primary = source.FindOwnerChainPlayer()
+	}
+	assist := playerDieRecentAggressor54D2B0(update.Player, primary, unit, runtime)
+	if runtime.GameFlag(playerDieOnlineMode54D2B0) {
 		packet := playerDieOnlinePacket54D2B0(unit, update, primary, assist)
 		runtime.InformText(14, packet)
 		if packet[10] == 2 && binary.LittleEndian.Uint16(packet[8:]) == 2 {
@@ -203,7 +213,7 @@ func PlayerDieNative54D2B0(unit *Object, runtime PlayerDieRuntime54D2B0) bool {
 	sound := playerDieMaleSound54D2B0
 	if unit.Field131 == playerDieElectricDamage54D2B0 {
 		sound = playerDieElectricSound54D2B0
-	} else if player.Info().IsFemale() {
+	} else if update.Player.Info().IsFemale() {
 		sound = playerDieFemaleSound54D2B0
 	}
 	runtime.Audio(sound, unit)
@@ -216,17 +226,23 @@ func PlayerDieNative54D2B0(unit *Object, runtime PlayerDieRuntime54D2B0) bool {
 		update.TrapSpells[i] = 0
 	}
 	update.TrapSpellsCnt &^= 0xff
+	// The original query is also observable outside scoring modes. Admission
+	// above keeps its still-unported competitive/Elimination callees closed.
+	runtime.GameplayHasRivals()
 
 	unit.ObjFlags |= object.FlagShort
 	runtime.RemoveActionShadow(unit)
-	runtime.DropAllItems(unit)
+	if !runtime.GameFlag(playerDieQuestMode54D2B0) {
+		runtime.DropAllItems(unit)
+	}
 	runtime.NotifyPlayerDied(unit)
 
+	player = update.Player
 	update.ManaCur = 0
 	runtime.ProtectMana(player.ProtUnitManaCur, 0)
 	runtime.SetBuffFlags(unit, 0)
 	runtime.CancelAbilities(unit)
-	player.Field3600 = 0
+	update.Player.Field3600 = 0
 	runtime.CancelSpells(unit)
 	runtime.SetBuffFlags(unit, 0)
 	for i := range unit.BuffsDur {
@@ -237,5 +253,6 @@ func PlayerDieNative54D2B0(unit *Object, runtime PlayerDieRuntime54D2B0) bool {
 		runtime.CancelTrade(update.Trade70)
 	}
 	update.Trade70 = nil
+	playerDieQuestNative54D2B0(unit, update, runtime)
 	return true
 }

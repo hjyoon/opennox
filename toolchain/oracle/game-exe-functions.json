@@ -24320,6 +24320,20 @@
       "purpose": "the exact NUL-terminated Ruby name resolved after publishing Emerald during lazy gem loss cache initialization"
     },
     {
+      "name": "player_die_ankh_type_name_54D2B0",
+      "address": "0x005CDF00",
+      "size": 13,
+      "sha256": "bda0ee3e69d057a554b26b2a4c67fe7a6fe738670aaba42457e8b9c2e84d971d",
+      "purpose": "the exact NUL-terminated AnkhTradable name lazily resolved before the player death body mutates death state"
+    },
+    {
+      "name": "player_die_quest_starting_extra_lives_key_54D2B0",
+      "address": "0x005CDF10",
+      "size": 28,
+      "sha256": "d51a55560581c4262c3dfc2d3e69a5771362410ba7892e3cacbf136b0ba08686",
+      "purpose": "the exact NUL-terminated QuestGameStartingExtraLives balance key read after zero-life statistics, player reset, and the Quest penalty dispatcher"
+    },
+    {
       "name": "potion_player_class_multiplier_defaults",
       "address": "0x005D35D0",
       "size": 48,

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest player death의 lives·통계·페널티 연결 `0054D2B0`
+
+typed unit ABI를 `2cc55885c`로 먼저 분리한 뒤 원본 사망 본체 하나의 Quest admission을 연결했다. common prefix의 offline 공격자 조회·callback 뒤 fresh Player·rivals 질의·Quest의 drop 제외와 tail의 lives DWORD 차감 또는 timestamp→WORD 통계 packet→reset→penalty→binary32 balance 변환→DWORD lives→fresh Player/LOWBYTE respawn marker 순서를 유지한다. competitive scoring/Elimination admission은 계속 닫혀 있으며 원본 fault·정수 폭·live/cached binding을 바꾸는 방어 코드는 추가하지 않았다.
+
+본체 `0054D2B0..0054D791` 1,250바이트/SHA-256 `c047f0a6b91c5a57e0f23d43acf62cffe447e1bc11f29e3bf255760360afbeeb`와 뒤 14-NOP를 포함한 1,264바이트/SHA-256 `9678654a4d55c46151714ff6d8e626db848e18c6f3bb5befe5d012cf02620da6`는 기존 세 disjoint code range로 이미 봉인되어 중복 등록하지 않는다. 이번에는 `005CDF00`의 `AnkhTradable\0` 13바이트와 `005CDF10`의 `QuestGameStartingExtraLives\0` 28바이트만 별도로 추가하여 코드 2,864개·데이터 612개다. 다른 원본 주소에 존재하는 같은 balance key와도 구별한다.
+
+generic/native/실제 C entry 시험은 callback/fault prefix·폭·float 경계·고주소 binding 교체와 기존 production 통계/reset/penalty 서비스를 검사한다. Darwin/ARM64 관련 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험과 server-tag root/server/legacy 시험 1회가 통과했다. `make oracle-test`는 stock 1,556파일·570,653,750바이트·2,864 code/612 data range·NXZ 50쌍의 전후 검증을 통과했다. code/data hash는 원본 provenance이며 Go 의미 동등성이나 실제 stock Quest 사망·부활 headless 성공을 그 자체로 증명하지 않는다. 사용자 Save·설정·원본 자산은 변경하지 않았다.
+
 ## Quest 사망 페널티 dispatcher의 native 포인터 경계 `0054CBD0`
 
 typed unit ABI를 `81c236a11`로 먼저 분리한 뒤 한 원본 본체의 entry-cached update→DWORD 골드 logical half 차감→gem/weapon/armor 손실→cached update의 late live Player/class BYTE→class 0만 armor 추가 손실→spell 두 번/guide 두 번/ability 한 번의 순서를 Go로 복원했다. 마지막 ability의 signed BYTE 반환은 무시하며 각 반복 helper의 fresh binding·inventory·학습값/패킷 부작용을 유지한다.

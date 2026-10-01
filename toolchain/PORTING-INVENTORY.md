@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 무기 손실의 typed unit ABI — 본체 복원의 선행 단계 `0054CC40`
+
+unit 인수를 `int`에서 `nox_object_t*`로 먼저 분리하고 raw dispatcher caller에 명시적인 변환을 적용한다. 이 단계는 원본별 리팩터링 규칙에 따라 기존 정수 alias와 C 본체를 그대로 유지한다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. native inventory·modifier·player 포인터 복원과 원본의 exact `CanUseItem == 1` 비교는 다음 별도 변경이다. Quest 사망 admission은 아직 열지 않는다.
+
 ## Quest 방어구 손실의 native live inventory 경계 `0054CD30`
 
 unit typed ABI 선행 커밋 `bef726245` 뒤 한 원본 본체만 native Go로 복원했다. equipped DWORD 0x100→armor class DWORD 0x02000000→unsigned type WORD→원래 armor lookup·보호 mask 0x405 순서를 두 live 순회에서 유지한다. StreetShirt/Pants/Sneakers는 보호하되 다른 clothing을 임의로 제외하지 않는다. 후보 0개에서는 RNG를 호출하지 않으며, 선택 후에는 fresh inventory head에서 다시 세어 해당 ordinal 하나만 원래 delayed deletion으로 넘기고 즉시 반환한다. 후보 snapshot·selected clamp·추가 Player/class gate·nil binding 무시는 넣지 않았다.

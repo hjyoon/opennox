@@ -4353,7 +4353,7 @@ void sub_54CBD0(int a1) {
 	v2 = nox_xxx_playerGetGold_4FA6B0(a1);
 	nox_xxx_playerSubGold_4FA5D0(a1, v2 >> 1);
 	sub_54D080(a1);
-	sub_54CC40(a1);
+	sub_54CC40((nox_object_t*)(uintptr_t)a1);
 	sub_54CD30((nox_object_t*)(uintptr_t)a1);
 	if (!*(uint8_t*)(*(uint32_t*)(v1 + 276) + 2251)) {
 		sub_54CD30((nox_object_t*)(uintptr_t)a1);
@@ -4366,7 +4366,8 @@ void sub_54CBD0(int a1) {
 }
 
 //----- (0054CC40) --------------------------------------------------------
-void sub_54CC40(int a1) {
+void sub_54CC40(nox_object_t* unit) {
+	int a1 = (int)(uintptr_t)unit;
 	int v1;       // ebp
 	int v2;       // edi
 	int v3;       // eax

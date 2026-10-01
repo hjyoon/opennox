@@ -2892,9 +2892,9 @@ uint32_t* sub_4D60E0(int a1) {
 }
 
 //----- (004D6130) --------------------------------------------------------
-int sub_4D6130(nox_object_t* unit) {
+uintptr_t sub_4D6130(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
-	int result; // eax
+	uintptr_t result; // eax
 	int v2;     // eax
 
 	result = a1;

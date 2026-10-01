@@ -82,7 +82,7 @@ int nox_xxx_mapGenStartAlt_4D5F30();
 int sub_4D6000(nox_object_t* a1);
 int sub_4D60B0();
 uint32_t* sub_4D60E0(int a1);
-int sub_4D6130(nox_object_t* unit);
+uintptr_t sub_4D6130(nox_object_t* unit);
 int sub_4D6170(int a1);
 void sub_4D61B0(int a1);
 nox_playerInfo* sub_4D61F0(nox_object_t* player_unit);

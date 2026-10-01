@@ -117,7 +117,7 @@ void nox_xxx_diePotion_54CBB0(int a1);
 void sub_54CBD0(int a1);
 void sub_54CC40(int a1);
 void sub_54CD30(int a1);
-void sub_54CE00(int a1);
+void sub_54CE00(nox_object_t* unit);
 void sub_54CEE0(int a1);
 char sub_54CFB0(nox_object_t* unit);
 void sub_54D080(int a1);

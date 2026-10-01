@@ -4358,8 +4358,8 @@ void sub_54CBD0(int a1) {
 	if (!*(uint8_t*)(*(uint32_t*)(v1 + 276) + 2251)) {
 		sub_54CD30(a1);
 	}
-	sub_54CE00(a1);
-	sub_54CE00(a1);
+	sub_54CE00((nox_object_t*)(uintptr_t)a1);
+	sub_54CE00((nox_object_t*)(uintptr_t)a1);
 	sub_54CEE0(a1);
 	sub_54CEE0(a1);
 	sub_54CFB0((nox_object_t*)(uintptr_t)a1);
@@ -4471,7 +4471,8 @@ void sub_54CD30(int a1) {
 }
 
 //----- (0054CE00) --------------------------------------------------------
-void sub_54CE00(int a1) {
+void sub_54CE00(nox_object_t* unit) {
+	int a1 = (int)(uintptr_t)unit;
 	int v1;       // edi
 	int v2;       // eax
 	int v3;       // ebp

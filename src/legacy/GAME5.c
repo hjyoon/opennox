@@ -4362,7 +4362,7 @@ void sub_54CBD0(int a1) {
 	sub_54CE00(a1);
 	sub_54CEE0(a1);
 	sub_54CEE0(a1);
-	sub_54CFB0(a1);
+	sub_54CFB0((nox_object_t*)(uintptr_t)a1);
 }
 
 //----- (0054CC40) --------------------------------------------------------
@@ -4573,7 +4573,8 @@ void sub_54CEE0(int a1) {
 }
 
 //----- (0054CFB0) --------------------------------------------------------
-char sub_54CFB0(int a1) {
+char sub_54CFB0(nox_object_t* unit) {
+	int a1 = (int)(uintptr_t)unit;
 	int v1;       // ebx
 	int v2;       // eax
 	int v3;       // ebp

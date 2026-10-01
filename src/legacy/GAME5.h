@@ -119,7 +119,7 @@ void sub_54CC40(int a1);
 void sub_54CD30(int a1);
 void sub_54CE00(int a1);
 void sub_54CEE0(int a1);
-char sub_54CFB0(int a1);
+char sub_54CFB0(nox_object_t* unit);
 void sub_54D080(int a1);
 int nox_xxx_diePlayer_54D2B0(int a1);
 void nox_xxx_playerHandleElimDeath_54D7A0(int a1, int a2);

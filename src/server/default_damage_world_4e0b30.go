@@ -208,13 +208,14 @@ func DefaultDamageWorld4E0B30(
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
 	// Stock GolemArrow calls this tail with the monster as source and the
 	// distinct missile as weapon. PIERCE (type 3, DamageImpale in libs) skips
-	// both protection branches. A missile is not a melee weapon in 004E1400;
-	// exclude mixed weapon/unit classes rather than skipping their unported
-	// friendly-hit or Shock predicates.
+	// both protection branches. Stock GolemArrow is MISSILE|WEAPON, subclass
+	// 0x10: 004E1400 rejects this ranged weapon, not every WEAPON-class
+	// missile. Keep melee/unit/wand shapes outside this no-Shock slice.
 	missilePierce := typ == object.DamageImpale && source != nil && source != weapon &&
 		source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
-		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand)
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
+		!defaultDamageAttackQualifies4E1400(source, weapon)
 	playerTail := playerElectric || (missilePierce && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {

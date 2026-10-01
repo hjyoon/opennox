@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## stock GolemArrow의 ranged WEAPON 분류 정정 — 공통 tail
+
+후속 실제 Quest 5단계 headless 시뮬레이션에서 원래 생성기가 만든 FlyingGolem의 화살 class는 `0x05200001`(`MISSILE|WEAPON|COMPLEX|NOT_STACKABLE`), subclass는 `0x10`이었다. 앞선 pure-missile fixture와 WEAPON 전체 제외 guard는 이 stock 화살을 놓쳤다. 원본 `004E1400` disassembly는 WEAPON 자체가 아니라 subclass mask `0x047F00FE`로 근접 공격을 판정하며 `0x10`은 false이므로, friendly-melee·Shock 경로를 생략하는 기존 tail에 해당한다.
+
+이 독립 변경은 `DefaultDamage(004E0B30)`의 admission만 기존 원본 predicate에 연결하고 player/NPC 회귀의 화살을 실제 stock class로 바꾼다. stock WEAPON 화살의 피격 위치는 원본대로 source.PrevPos이며 pure missile은 weapon.PrevPos인 차이도 검사한다. melee subclass·unit·wand 경계는 계속 거부한다. 공통 tail 표적 일반·실제 cgocheck2 각 3회와 원본 코드 2,831개·데이터 597개 검증을 통과했다. PlayerDamage 입구의 같은 class guard는 새 stock fixture에서 여전히 실패하므로 다음 별도 변경 단위로 정정하며 이 tail만으로 실전 player 피해 완료를 주장하지 않는다.
+
 ## 플레이어 방어구 뒤 PIERCE 피해 연결
 
 별도 `PlayerDamage(004E17B0)` 커밋은 stock monster source/pure missile weapon의 양수 `PIERCE(3)`를 `004E1F84`의 armor/carry/durability 계산 뒤 앞선 native DefaultDamage tail로 전달한다. direction callback 전 흡수율과 durability의 live armor 조회를 구분하며 distinct missile의 type/marker를 방패 효과·내구도 전에 기록한다. 최소 1 피해, GodMode의 내구도 이후 반환, Quest 배율과 DefaultDamage의 실제 방어·HP 처리를 유지한다. 일반 방패는 GolemArrow subclass 0x10을 반사하지 않지만 차단하고, Reflect Shield는 정면 화살을 반사해 owner를 이전한다.

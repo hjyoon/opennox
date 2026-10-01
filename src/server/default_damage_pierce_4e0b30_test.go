@@ -14,7 +14,10 @@ import (
 func defaultDamagePierceFixture4E0B30(t *testing.T) (*Object, *Object, *Object, DefaultDamageWorldRuntime4E0B30) {
 	t.Helper()
 	target, source, sound := playerDamageFixture4E17B0(t)
-	arrow := &Object{ObjClass: object.ClassMissile, ObjSubClass: 16, TypeInd: 529, PrevPos: types.Ptf(12, 34)}
+	source.PrevPos = types.Ptf(56, 78)
+	// Observed from the immutable stock definition during actual stage-5 AI:
+	// MISSILE|WEAPON|COMPLEX|NOT_STACKABLE, not a synthetic pure missile.
+	arrow := &Object{ObjClass: object.Class(0x05200001), ObjSubClass: 16, TypeInd: 529, PrevPos: types.Ptf(12, 34)}
 	r := DefaultDamageWorldRuntime4E0B30{
 		Frame: func() uint32 { return 700 }, GameplayFlag1: func() bool { return true },
 		IsEnemy: func(*Object, *Object) bool { return true }, BuffOff: func(*Object, EnchantID) {},
@@ -52,7 +55,7 @@ func TestDefaultDamageWorld4E0B30MonsterMissilePierce(t *testing.T) {
 			r.FireProtection = func(*Object) float64 { t.Fatal("PIERCE used fire protection"); return 0 }
 			r.ElectricProtection = func(*Object) float64 { t.Fatal("PIERCE used electric protection"); return 0 }
 			r.BuffOff = func(v *Object, enchant EnchantID) {
-				if v != target || enchant != 0 || v.Pos132 != arrow.PrevPos {
+				if v != target || enchant != 0 || v.Pos132 != source.PrevPos {
 					t.Fatal("hit position/invisibility order")
 				}
 				events = append(events, "buff-off")
@@ -93,6 +96,15 @@ func TestDefaultDamageWorld4E0B30MonsterMissilePierce(t *testing.T) {
 				t.Fatal("default tail overwrote player marker or electric word")
 			}
 		})
+	}
+}
+
+func TestDefaultDamageWorld4E0B30PiercePureMissileStillAdmitted(t *testing.T) {
+	target, source, arrow, r := defaultDamagePierceFixture4E0B30(t)
+	arrow.ObjClass = object.ClassMissile
+	if !DefaultDamageWorld4E0B30(target, source, arrow, 3, object.DamageImpale, r) ||
+		target.HealthData.Cur != 17 || target.Pos132 != arrow.PrevPos || target.Obj130 != arrow {
+		t.Fatal("pure-missile PIERCE or its previous-position contract regressed")
 	}
 }
 
@@ -276,7 +288,7 @@ func TestDefaultDamageWorld4E0B30PierceAdmissionBoundary(t *testing.T) {
 	}{
 		{"no monster update", func(_, a, _ *Object) { a.UpdateData = nil }, object.DamageImpale},
 		{"player source is a separate port", func(_, a, _ *Object) { a.ObjClass = object.ClassPlayer }, object.DamageImpale},
-		{"mixed missile weapon", func(_, _, w *Object) { w.ObjClass |= object.ClassWeapon }, object.DamageImpale},
+		{"mixed missile melee weapon", func(_, _, w *Object) { w.ObjSubClass = 0 }, object.DamageImpale},
 		{"mixed missile wand", func(_, _, w *Object) { w.ObjClass |= object.ClassWand }, object.DamageImpale},
 		{"mixed missile monster", func(_, _, w *Object) { w.ObjClass |= object.ClassMonster }, object.DamageImpale},
 		{"different type", func(_, _, _ *Object) {}, object.DamageDrain},

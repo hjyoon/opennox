@@ -880,6 +880,21 @@ func nox_savegame_sub_46C730() int {
 	return 1
 }
 
+// saveListSelectedSlot reads the original single-selection value through the
+// native listbox query. PE32 WidgetData+48 is not a selection on LP64: that
+// address belongs to the slider pointer, while selection lives in Go state.
+func saveListSelectedSlot(list *gui.Window, count int) (int, bool) {
+	if list == nil || count <= 0 {
+		return -1, false
+	}
+	resp := list.Func94(gui.AsWindowEvent(0x4014, 0, 0))
+	if resp == nil {
+		return -1, false
+	}
+	ind := gui.EventRespInt(resp)
+	return ind, ind >= 0 && ind < count
+}
+
 func nox_savegame_sub_46C920(win1 *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 	c := noxClient
 	switch ev := ev.(type) {
@@ -893,8 +908,8 @@ func nox_savegame_sub_46C920(win1 *gui.Window, ev gui.WindowEvent) gui.WindowEve
 		clientPlaySoundSpecial(sound.SoundButtonPress, 100)
 		switch ev.Win.ID() {
 		case 501:
-			saveNum := *(*int32)(unsafe.Add(dword_5d4594_1082864.WidgetData, 48))
-			if saveNum < 0 {
+			saveNum, selected := saveListSelectedSlot(dword_5d4594_1082864, len(nox_savegame_arr_1064948))
+			if !selected {
 				return nil
 			}
 			v9 := c.ClientPlayerUnit().Flags()
@@ -927,8 +942,8 @@ func nox_savegame_sub_46C920(win1 *gui.Window, ev gui.WindowEvent) gui.WindowEve
 			sub_46D6F0()
 			return nil
 		case 502:
-			v6 := *(*int32)(unsafe.Add(dword_5d4594_1082864.WidgetData, 48))
-			if v6 >= 0 && alloc.GoStringS(nox_savegame_arr_1064948[v6].PathBuf[:]) != "" {
+			v6, selected := saveListSelectedSlot(dword_5d4594_1082864, len(nox_savegame_arr_1064948))
+			if selected && alloc.GoStringS(nox_savegame_arr_1064948[v6].PathBuf[:]) != "" {
 				if legacy.Nox_xxx_playerAnimCheck_4372B0() != 0 {
 					nox_savegame_sub_46CBD0()
 					return nil

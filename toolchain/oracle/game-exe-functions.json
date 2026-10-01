@@ -1820,6 +1820,20 @@
       "purpose": "the exact seven NOP bytes separating the window hidden-ancestor predicate from the next routine at 0046C2E0"
     },
     {
+      "name": "nox_savegame_sub_46C920",
+      "address": "0x0046C920",
+      "size": 681,
+      "sha256": "8f773e5c6bb400fc817cb7741341d5dc04eba47f28c2534471e24e42c6677cdb",
+      "purpose": "synchronize save-list columns and dispatch save, load and cancel using the original signed single-selection index; preserve populated-slot overwrite confirmation, AUTOSAVE versus SAVE%04d naming, player animation gate and deferred load confirmation"
+    },
+    {
+      "name": "nox_savegame_sub_46C920_padding",
+      "address": "0x0046CBC9",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes separating the Save/Load menu procedure from the load-confirmation callback at 0046CBD0"
+    },
+    {
       "name": "nox_xxx_drawMinimap4Sprite_4725C0",
       "address": "0x004725C0",
       "size": 58,

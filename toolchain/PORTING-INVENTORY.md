@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 수동 Save/Load 메뉴의 native 슬롯 선택 `0046C920`
+
+실제 Warrior 캠페인 headless에서 native timestamp/style 열의 선택값이 모두 1이고 수동 슬롯 1이 비어 있는데 Save 버튼이 AUTOSAVE 덮어쓰기 확인창을 띄우는 실패를 재현했다. 확인창에서 Yes를 누르지 않아 기존 자동 저장도 보존했다. PE32 `WidgetData+48`은 LP64의 slider 포인터이며 단일 선택은 native listbox의 Go 상태에 있으므로 `0x4014` 읽기 전용 질의로 치환한다. 이 단위는 `0046C920` 한 본체의 Save/Load 분기만 수정하며 선택 없음·nil 응답·배열 밖 인덱스는 부작용 전에 거부한다. 원본 애니메이션 gate·확인창·취소·저장 이름·작업 큐·pause 순서는 유지한다.
+
+4GiB 초과 native window/widget에서 슬롯 0/1/13, slider 포인터와 선택의 분리, signed -1 및 범위 밖 선택, nil/destroyed 응답·질의의 무변경 회귀가 3회 통과했다. 일반·실제 cgocheck2 전체 시험 및 원본 무결성/code verifier도 통과했다. 원본 본체 681바이트와 뒤 7-NOP를 봉인해 코드 2,833개·데이터 597개다. 실제 일반 빌드에서 빈 슬롯 1의 파일 두 개 생성, 덮어쓰기 No 시 무변경·Yes 시 해당 슬롯 갱신·AUTOSAVE 보존을 확인했다. 자동 저장 생성→새 프로세스 War01a 로드→HP 20/20·재입력 이동 187.908도 통과했다. 수동 로드 확인 callback `0046CBD0`과 첫 메뉴 `004A5710`의 같은 PE32 읽기는 다음 별도 변경 대상으로 남기며 이 메뉴 수정만으로 수동 저장·로드 전체 완료를 주장하지 않는다. 사용자 Save와 원본 자산은 사용·수정하지 않는다.
+
 ## Quest stock FlyingGolem의 실제 화살 피해·HP HUD 회귀
 
 `host-quest-golem-pierce.yaml`은 실제 Warrior Quest 메뉴·네 stock 출구 충돌로 5단계 `g_forest`에 도달한다. 플레이어만 원래 Necromancer 근처에 배치하고 생성기·FlyingGolem·화살·AI·HP·피해·네트워크를 주입하지 않는다. 원래 생성기가 만든 FlyingGolem 소유의 살아 있는 GolemArrow를 읽고 type/생성 frame/CollideData 정수 피해만 캐시한다. 지연 삭제 뒤의 피해 attribution 포인터는 map key로만 쓰며 역참조하지 않는다.

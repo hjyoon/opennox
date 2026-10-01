@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 실제 스턴 주문의 native target·player class 복원 `0052C2C0`
+
+실제 Stun 6-argument C dispatch가 `0x12d304080`의 target을 `0x2d304080`으로 잘라 class 읽기에서 `0x2d304088` SIGSEGV를 내는 실패를 먼저 재현했다. 이 별도 단위는 `0052C2C0` 한 본체만 Go export로 옮긴다. initial nil target→0, balance→binary32 spill→nearest-even 변환, live target을 캐시한 뒤 class와 필요 필드 읽기, buff 적용 뒤 live target을 다시 조회해 third-argument 공격자 기록→1 반환 순서를 보존한다. Player bit가 Monster보다 우선하며 raw class byte 0(Warrior)은 Slowed(4), 모든 nonzero byte는 Held(5)다. non-player Monster만 PE32 `Object+120`의 **Mass**를 읽고 엄격히 15를 넘을 때 Slowed를 고른다. 높이 `ZSize2`가 아니며 NaN·15 이하·다른 class는 Held다. native player update/player/info 링크가 잘못된 경우를 새 nil fallback으로 숨기지 않는다.
+
+원본 본체 `0052C2C0..0052C34B` 140바이트/SHA-256 `a88462682d5d6a729ac17603340d4c2db3d2da72b095b0fbc243aec3ab8ca6c2`를 기존 buff 직접 call과 겹치지 않는 prefix 79바이트·suffix 56바이트로 봉인하고 뒤 4-NOP, 정확한 `StunEnchantDuration` 문자열을 추가한다. 15.0 상수는 기존 `00583C30` 봉인을 재사용한다. 누적 코드 2,831개·데이터 597개다. 4GiB 초과 실제 C target/Player 링크·공격자 기록, player 0/1/2/255와 player/monster 우선순위, Mass 경계·unordered, target 캐시/재조회 순서, binary32 ties·word/byte narrowing·signed dword 반환, nil gate와 fault prefix를 회귀로 검사한다. 맵·원본 balance·효과 수치는 바꾸지 않는다. 실제 주문 화면 시나리오는 다음 별도 검증 단위다.
+
+일반·실제 `GOEXPERIMENT=cgocheck2` 전체 Go 시험, Confuse/Stun 대상 10회 반복과 race/checkptr 각 3회, 직접 code verifier 및 원본 자산 무결성·압축 oracle-test가 통과했다.
+
 ## 실제 혼란 주문의 native target 복원 `0052C1E0`
 
 애니메이션 참조를 복원한 뒤 실제 instant Confuse 주문의 C 진입점을 검사했다. 기존 `int*` target 읽기가 `0x12fe05e30`을 `0x2fe05e30`으로 잘라 buff C-to-Go export로 전달하는 실패를 먼저 재현했다. 이 단위는 `0052C1E0` 한 본체만 Go로 옮기고 기존 6-argument dispatch ABI의 object/argument 포인터를 native width로 유지한다. nil target의 zero 반환, balance 조회→binary32 spill→`00419A70` nearest-even 반올림→live target 재조회→buff 3 적용→다시 target 재조회→third-argument 공격자 기록→1 반환 순서를 그대로 둔다. duration word·power byte의 signed narrowing은 buff 호출 경계에서만 하며 buff 거부를 새 실패로 바꾸지 않는다.

@@ -16247,11 +16247,32 @@
       "purpose": "the exact decoded direct rel32 call at 0052C296 targeting buff application at 004FF380"
     },
     {
+      "name": "nox_xxx_castStun_52C2C0_prefix",
+      "address": "0x0052C2C0",
+      "size": 79,
+      "sha256": "e8428852bc349a164d061cd59f25a5d92982d890eb595460ba1cceb3aa3a7dfd",
+      "purpose": "the stun cast nil-target gate, binary32 balance spill and nearest-even conversion, cached target and player-first raw-class branch before buff application"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C30F",
       "address": "0x0052C30F",
       "size": 5,
       "sha256": "094d9ed5d86878acdaade9c633fb4f3f20e2c9f523975f872367c464029bbb49",
       "purpose": "the exact decoded direct rel32 call at 0052C30F targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_castStun_52C2C0_suffix",
+      "address": "0x0052C314",
+      "size": 56,
+      "sha256": "9a905d879a36462da8e70e8f2bf9105630f6983137e10f6f9ca7b834bf019f85",
+      "purpose": "the stun cast live target reload for third-argument attribution, success return, and non-player monster Mass strictly above 15 or unordered/other-object HELD branch"
+    },
+    {
+      "name": "nox_xxx_castStun_52C2C0_padding",
+      "address": "0x0052C34C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes between stun and blind casts"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C373",
@@ -20012,7 +20033,7 @@
       "address": "0x00583C30",
       "size": 4,
       "sha256": "a5d4cd5b9cc4aba67ebe403c68466c378868947703d75704381d0c90e2615d1e",
-      "purpose": "the exact binary32 15.0 forward clearance added after the shape extent and 4.0 margin by 004EDF00"
+      "purpose": "the exact binary32 15.0 forward clearance added after the shape extent and 4.0 margin by 004EDF00; also the strict monster Mass threshold used by stun at 0052C335"
     },
     {
       "name": "player_value_init_interpolation_constants",
@@ -22085,6 +22106,13 @@
       "size": 24,
       "sha256": "3ca9b7f9a7f3a865c2a937f791a0fc38ee0841b9ac3237ec22995d972450fefa",
       "purpose": "the exact aligned ConfuseEnchantDuration balance key used by the instant confuse cast"
+    },
+    {
+      "name": "cast_stun_duration_key_52C2C0",
+      "address": "0x005C623C",
+      "size": 20,
+      "sha256": "bc64c2cc64140168802b82140ada92d1cefb62ba50b66975059691f1e70e1c2d",
+      "purpose": "the exact StunEnchantDuration balance key including its terminator used by the instant stun cast"
     },
     {
       "name": "default_xfer_registration_record",

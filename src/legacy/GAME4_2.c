@@ -9510,42 +9510,6 @@ int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5) {
 	return result;
 }
 
-//----- (0052C2C0) --------------------------------------------------------
-int nox_xxx_castStun_52C2C0(int a1, int a2, int a3, int a4, int* a5, char a6) {
-	short v7;  // ax
-	int v8;    // ecx
-	short v9;  // dx
-	int v10;   // eax
-	float v11; // [esp+0h] [ebp-8h]
-
-	if (!*a5) {
-		return 0;
-	}
-	v11 = nox_xxx_gamedataGetFloat_419D40("StunEnchantDuration");
-	v7 = nox_float2int(v11);
-	v8 = *a5;
-	v9 = v7;
-	v10 = *(uint32_t*)(*a5 + 8);
-	if (!(v10 & 4)) {
-		if (v10 & 2 && *(float*)(v8 + 120) > 15.0) {
-			nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)v8, 4, v9, a6);
-			sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
-			return 1;
-		}
-		nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)v8, 5, v9, a6);
-		sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
-		return 1;
-	}
-	if (*(uint8_t*)(*(uint32_t*)(*(uint32_t*)(v8 + 748) + 276) + 2251)) {
-		nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)v8, 5, v9, a6);
-		sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
-		return 1;
-	}
-	nox_xxx_buffApplyTo_4FF380((nox_object_t*)(uintptr_t)(uint32_t)v8, 4, v9, a6);
-	sub_4E7540((nox_object_t*)(uintptr_t)a3, (nox_object_t*)(uintptr_t)*a5);
-	return 1;
-}
-
 //----- (0052C3E0) --------------------------------------------------------
 int nox_xxx_castBurn_52C3E0(int a1, int a2, int a3, int a4, int a5) {
 	int v5;     // eax

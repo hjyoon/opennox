@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 캠페인 동일 챕터의 하위 맵·저장된 맵 복귀 — 소환수 회귀
+
+`scripts/e2e/solo-conjurer-spell-pet-intrachapter.yaml`은 실제 메뉴·Summon Wolf·Summon Urchin·Charm·Pixie Swarm을 거쳐 Con01a→Con02a→Con03a→Con03b→저장된 Con03a를 일반 stock 출구 충돌로 이동한다. player만 출구에 배치하고 소환수·owner·migration flag·next-map을 직접 조작하지 않는다. 챕터 전환 브리핑은 실제 mouse 입력으로 닫고 각 맵의 기존 autosave가 완료된 뒤 검사한다.
+
+Darwin/ARM64 일반·HD headless 실행 모두 네 전환을 완료하고 각 전환에서 같은 다섯 native 객체·owner·wire ID·creature HP 40/8/8 및 live client drawable을 초기/추가 게임 틱 뒤 두 번씩 확인했다. 각 제품에서 40개 보존 검사가 통과했으며 Con03b와 저장된 Con03a 화면의 creature monitor와 렌더링도 검토하고 정상 종료했다. 마지막 검사는 frame 2076으로 Pixie의 기존 자연 종료 deadline 2546/3536보다 앞이다. 파일을 다시 불러오는 load-game과 이 살아 있는 서버의 저장 맵 재방문은 서로 다른 경로이며, 이 회귀는 load-game의 소환수 직렬화를 검증하지 않는다.
+
+이 조건에서도 사용자가 보고한 소환수 소실은 미재현이다. 별도로 확인한 Quest Online 정리는 원본 계약이므로 캠페인 보존을 Quest까지 강제하는 게임 동작 변경은 하지 않았다. 전체 일반·cgocheck2 시험 및 원본 코드 2,800개·데이터 586개·stock 전체 1,556개 파일 검증이 통과한 상태에서 이 YAML 회귀를 추가한다.
+
 ## Quest 온라인 단계 전환의 소환수 정리 — 원본 계약 회귀
 
 `scripts/e2e/host-quest-spell-pet-stage-cleanup.yaml`은 실제 Quest Conjurer 메뉴와 gameplay award·Summon Wolf·Summon Urchin·Charm·Pixie Swarm으로 creature 3마리와 Pixie 2마리를 만든다. 같은 다섯 객체의 server ownership·world/missile 목록·client drawable을 먼저 확인하고 stock 출구에 player만 배치해 일반 충돌로 stage 1→2를 진행한다. 다음 맵의 점수 화면을 실제 mouse 입력으로 닫고 60틱 후, 이어서 100틱 이동 후 원래 객체·wire ID가 세 목록에서 모두 제거됐음을 확인한다. 삭제된 소환수 포인터는 역참조하지 않는다.

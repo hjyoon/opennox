@@ -4546,7 +4546,7 @@ void nox_xxx_playerReportAnything_4D9900(int a1) {
 			for (i = 0; i < 32; ++i) {
 				v7 = nox_common_playerInfoFromNum_417090(i);
 				if (v7 && *((uint32_t*)v7 + 514) && *(uint32_t*)(v2 + 320) != *(unsigned char*)(i + v2 + 452)) {
-					sub_4D9D60(i, v1);
+					sub_4D9D60(i, (nox_object_t*)(uintptr_t)(uint32_t)v1);
 					*(uint8_t*)(i + v2 + 452) = *(uint8_t*)(v2 + 320);
 				}
 			}
@@ -4651,7 +4651,8 @@ int sub_4D9D20(int recipient, nox_object_t* unit) {
 }
 
 //----- (004D9D60) --------------------------------------------------------
-int sub_4D9D60(int a1, int a2) {
+int sub_4D9D60(int a1, nox_object_t* unit) {
+	int a2 = (int)(uintptr_t)unit;
 	int v2;     // edx
 	char v4[5]; // [esp+0h] [ebp-8h]
 

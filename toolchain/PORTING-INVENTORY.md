@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 목숨 packet의 typed unit ABI 준비 `004D9D60`
+
+인수 변경과 본체 복원을 분리한다. `sub_4D9D60`의 두 번째 인수를 `nox_object_t* unit`으로 선언하고 기존 `int a2` alias에 바로 대입하며, retained PE32 caller의 변환도 명시한다. 전송 본체·필드 접근·클라이언트 HUD는 아직 바꾸지 않는다. 현재 Go self-report 경로에 없는 Quest 목숨 보고 loop와 raw sender의 native 필드 복원이 후속 단위이며, 이 type-only 변경을 `X 0` 해결로 주장하지 않는다. Darwin/ARM64 root/server/legacy 전체 일반 시험과 변경 전 stock 파일·code/data·NXZ 검증을 통과했다. 기존 code 2,866개·data 615개를 유지한다.
+
 ## Quest host 타이머의 실제 자연 사망 headless 후속 검증
 
 본체 복원 `793dde2a8` 뒤 별도 E2E 단위로 `host-quest-player-death.yaml`의 stock 메뉴·네 번의 출구·세 번의 자연 사망·실제 입력 부활을 다시 실행했다. 기존 placement-only fixture를 유지하며 마지막 사망 뒤 20 ordinary frame을 기다리고 native client Player가 server Player와 같고 PlayerInd가 31인지 확인한다. child 10712의 실제 StaticText data를 읽어 empty text를 검사할 뿐 timer 함수·text event·GUI 값·HP·목숨·통계·AI·사망/페널티/부활을 주입하지 않는다. missing/hidden window·wrong widget type·nil data·non-host·nonempty countdown은 실패이며 helper의 read-only 성질도 회귀 시험으로 검사한다.

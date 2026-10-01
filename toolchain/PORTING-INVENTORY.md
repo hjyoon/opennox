@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Warrior Berserker Charge의 대플레이어 CRUSH 피해
+
+앞선 Troll 충돌 회귀와 별도로, `PLAYER` target은 `PlayerDamageNative4E17B0`에서 같은 player source/weapon의 `CRUSH(150)`를 unsupported로 거부했다. 수정 전 회귀 시험으로 이 admission 누락을 재현하고 해당 피해 모양만 허용한다. 이미 봉인된 원본 `004E1EE8`처럼 방어력 흡수율의 절반을 적용하고 소수 피해를 누적하며, `004E1F42`처럼 두 damage-marker DWORD에 정수 2를 기록한다. player source를 MonsterUpdateData로 해석하지 않는다.
+
+방어구 내구도·Quest 배율·late Defend·흡혈·hurt-state·Shield 처리 순서, 방패 정면 차단, 아군 owner gate·관전자·무적·Coop 자기 피해 조건을 회귀 시험으로 구분한다. 방어력 0.4의 150 돌진은 HP `2,000→1,880`, 방어력 0.03의 세 돌진은 `148/148/147` 피해와 소수 carry `-0.25/-0.5/0.25`를 확인했다. PLAYER-class weapon은 원본 melee 판정이 아니므로 별도 melee Shock 반격은 타지 않는다. GameBall 소유자의 drop 등 아직 미이식된 별도 피해 분기는 상태 변경 전에 명시적으로 거부한다.
+
+전체 일반·cgocheck2 시험, PlayerDamage 대상 race·checkptr 검증 및 원본 코드 2,802개·데이터 589개·stock 1,556개 파일 검증이 통과했다. 원본 효과 수치·쿨다운·벽 충돌 및 자산은 바꾸지 않았다.
+
 ## Warrior 스킬 5개 실제 입력·효과·종료·재사용 회귀
 
 `host-game-warrior-abilities.yaml`은 실제 메뉴로 regular Warrior를 시작하고 정상 초기화의 레벨 5 스킬을 A/S/D/F/G 키로 두 번씩 사용한다. target·quickbar·wall/solid-prop를 피한 lane은 명시적인 fixture이며 스킬 실행·active record·buff 종료·HUD ready/cooldown을 직접 주입하지 않는다. 서버의 능력 record와 실제 패킷 소비자의 pointer-free 24-byte HUD 슬롯 5개를 같이 관찰하고, 쿨다운 중 재입력에서 record/deadline이 바뀌지 않으며 정확히 경과한 frame 수만큼 cooldown이 감소하는지 검사한다.

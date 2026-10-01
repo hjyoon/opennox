@@ -21,9 +21,10 @@ type e2eTransitionPet struct {
 }
 
 var e2eTransitionPets struct {
-	pets     []e2eTransitionPet
-	pixies   []e2eTransitionPet
-	from, to string
+	pets       []e2eTransitionPet
+	pixies     []e2eTransitionPet
+	from, to   string
+	questStage int
 }
 
 // Use the real summon allocator, ownership/monitor reports and ordinary
@@ -65,12 +66,14 @@ func (sc *e2eScenario) CreateTransitionSummons(name string) {
 func (sc *e2eScenario) CreateTransitionSpellPets(name string) {
 	sc.add(0, name+" prepare spell awards", func() {
 		host := noxServer.Players.HostUnit()
-		if host == nil || !noxflags.HasGame(noxflags.GameModeCoop) {
-			e2eError(fmt.Errorf("pet transition: a live campaign player is required"))
+		if host == nil || !noxflags.HasGame(noxflags.GameModeCoop|noxflags.GameModeQuest) {
+			e2eError(fmt.Errorf("pet transition: a live campaign or Quest player is required"))
 			return
 		}
 		e2eTransitionPets.pets = nil
 		e2eTransitionPets.pixies = nil
+		e2eTransitionPets.questStage = noxServer.nox_game_getQuestStage_4E3CC0()
+		e2eLog.Printf("PET SPELL MODE: map=%q quest-stage=%d game-flags=%#x", legacy.Nox_xxx_mapGetMapName_409B40(), e2eTransitionPets.questStage, uint32(noxflags.GetGame()))
 		for _, id := range []spell.ID{spell.SPELL_SUMMON_WOLF, spell.SPELL_SUMMON_URCHIN} {
 			guide := int32(id) - 74
 			noxServer.AwardBeastGuide4FAE80(host, guide, 1)
@@ -360,6 +363,48 @@ func (sc *e2eScenario) AssertTransitionSummons(name string) {
 				return
 			}
 			e2eLog.Printf("PET PIXIE PRESERVED: object=%p owner=%p wire=%#x distance=%.3f server-pos=%v client-pos=%v client-delta=%.3f client-flags=%#x deadline=%d frame=%d", obj, obj.ObjOwner, pet.wire, distance, obj.PosVec, drawable.PosVec, clientDistance, uint32(drawable.ObjFlags), obj.UpdateDataPixie().Deadline, noxServer.Frame())
+		}
+	})
+}
+
+// GAME.EXE 004E5B50 excludes Online monsters from map-load preservation;
+// 004E5B80 only preserves Coop Pixies. Quest is Online, not Coop, so this
+// checks stock cleanup rather than imposing the campaign's carry-over rule.
+func (sc *e2eScenario) AssertQuestTransitionPetsRemoved(name string) {
+	sc.add(0, name, func() {
+		flags := noxflags.GetGame()
+		stage := noxServer.nox_game_getQuestStage_4E3CC0()
+		host := noxServer.Players.HostUnit()
+		if !flags.HasAll(noxflags.GameModeQuest|noxflags.GameOnline) || flags.Has(noxflags.GameModeCoop) ||
+			host == nil || stage != e2eTransitionPets.questStage+1 ||
+			len(e2eTransitionPets.pets) != 3 || len(e2eTransitionPets.pixies) != 2 {
+			e2eError(fmt.Errorf("Quest pet cleanup: invalid transition fixture: flags=%#x stage=%d/%d host=%p pets=%d pixies=%d",
+				uint32(flags), stage, e2eTransitionPets.questStage, host, len(e2eTransitionPets.pets), len(e2eTransitionPets.pixies)))
+			return
+		}
+		owned := make(map[*server.Object]bool)
+		for obj := host.FirstOwned516(); obj != nil; obj = obj.NextOwned512() {
+			owned[obj] = true
+		}
+		world := make(map[*server.Object]bool)
+		for obj := noxServer.Objs.First(); obj != nil; obj = obj.Next() {
+			world[obj] = true
+		}
+		for obj := noxServer.Objs.MissileList; obj != nil; obj = obj.Next() {
+			world[obj] = true
+		}
+		for _, pets := range [][]e2eTransitionPet{e2eTransitionPets.pets, e2eTransitionPets.pixies} {
+			for _, pet := range pets {
+				// Membership and wire lookups do not dereference a deleted pet.
+				drawable := noxClient.Objs.ByNetCode(pet.wire)
+				if owned[pet.object] || world[pet.object] || drawable != nil {
+					e2eError(fmt.Errorf("Quest pet cleanup: %s survived online stage transition: object=%p owned=%t world=%t wire=%#x drawable=%p",
+						pet.typeID, pet.object, owned[pet.object], world[pet.object], pet.wire, drawable))
+					return
+				}
+				e2eLog.Printf("QUEST PET STOCK CLEANUP: type=%s object=%p wire=%#x stage=%d/%d game-flags=%#x owned=false world=false drawable=false",
+					pet.typeID, pet.object, pet.wire, e2eTransitionPets.questStage, stage, uint32(flags))
+			}
 		}
 	})
 }

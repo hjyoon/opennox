@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 온라인 단계 전환의 소환수 정리 — 원본 계약 회귀
+
+`scripts/e2e/host-quest-spell-pet-stage-cleanup.yaml`은 실제 Quest Conjurer 메뉴와 gameplay award·Summon Wolf·Summon Urchin·Charm·Pixie Swarm으로 creature 3마리와 Pixie 2마리를 만든다. 같은 다섯 객체의 server ownership·world/missile 목록·client drawable을 먼저 확인하고 stock 출구에 player만 배치해 일반 충돌로 stage 1→2를 진행한다. 다음 맵의 점수 화면을 실제 mouse 입력으로 닫고 60틱 후, 이어서 100틱 이동 후 원래 객체·wire ID가 세 목록에서 모두 제거됐음을 확인한다. 삭제된 소환수 포인터는 역참조하지 않는다.
+
+Darwin/ARM64 일반·HD headless 실행 모두 `g_templd`→`g_mines` 전환과 실제 destination gameplay·이동·정상 종료를 완료했고, 각 제품에서 다섯 소환수의 제거 검사를 두 번씩 통과했다. flags `0x10023007`은 Online(`0x2000`)·Quest(`0x1000`)이며 Coop(`0x800`)은 없다. 봉인된 원본 `004E5B50`은 Online에서 migrating monster 보존을 제외하고, `004E5B80`은 Coop에서만 player-owned Pixie를 보존한다. 전체 map cleanup `004E5BF0`이 이 조건을 사용하므로 여기서 재현된 제거는 원본 동작이며 포팅 결함으로 수정하지 않는다.
+
+이 회귀는 캠페인의 보존 검사와 분리되어 있고 모든 게임 모드에 같은 보존 규칙을 강제하지 않는다. 전체 일반·cgocheck2 시험 및 원본 코드 2,800개·데이터 586개·stock 전체 1,556개 파일 검증이 통과했다. 사용자가 보고한 캠페인 소환수 소실의 해결 완료 주장은 아니며, 해당 맵·모드·소환수·기존 save 조건의 확인은 계속 필요하다.
+
 ## 소환수의 실제 출구 접촉·맵 전환 headless 회귀
 
 `scripts/e2e/solo-conjurer-spell-pet-exit-contact.yaml`은 실제 Summon Wolf·Summon Urchin·Charm의 duration 완료와 Pixie Swarm으로 creature 3마리·Pixie 2마리를 만든다. E2E 전용 `contact-pet-transition-exit`은 player만 stock 출구에 배치하고 일반 충돌 처리를 예약한다. 출구 callback 직접 호출, 소환수/ownership/migration flag 조작은 하지 않는다. 기존 직접 callback 시나리오도 별도 유지한다.

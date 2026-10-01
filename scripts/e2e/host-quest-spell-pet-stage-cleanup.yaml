@@ -1,0 +1,84 @@
+# Quest is Online: GAME.EXE 004E5B50 does not preserve migrating monsters,
+# and 004E5B80 preserves Pixies only in Coop. Keep this stock cleanup contract
+# separate from the campaign's pet carry-over regression.
+# Award guides/spells through gameplay, complete Summon/Charm/Pixie Swarm,
+# then contact a loaded stock exit without injecting map or pet flags.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 200
+    name: host Quest
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+    name: accept color
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss Quest guide
+  - action: wait
+    dt: 530
+  - action: screen
+    name: quest route start
+  - action: create-transition-spell-pets
+    name: cast real Quest summons and Charm
+  - action: create-transition-pixies
+    name: cast real Quest Pixie Swarm
+  - action: assert-transition-summons
+    name: verify pets before Quest exit
+  - action: screen
+    name: Quest pets before exit
+  - action: enter-quest-exit
+    name: contact stock Quest stage exit with pets
+  - action: wait
+    dt: 400
+  - action: screen
+    name: Quest stage score after exit
+  - action: click-chapter-briefing
+    name: dismiss Quest stage score through real mouse input
+  - action: wait
+    dt: 60
+  - action: assert-quest-transition-pets-removed
+    name: verify stock cleanup after Quest stage change
+  - action: screen
+    name: Quest gameplay without previous stage pets
+  - action: walk
+    ang: 1
+    dt: 100
+  - action: assert-quest-transition-pets-removed
+    name: verify stock cleanup after destination gameplay
+  - action: screen
+    name: Quest destination movement without previous stage pets
+  - action: quit
+    dt: 1

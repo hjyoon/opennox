@@ -9697,6 +9697,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertTransitionSummons(l.Name)
+		case "assert-quest-transition-pets-removed":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.AssertQuestTransitionPetsRemoved(l.Name)
 		case "run-war01a-wizard-setpiece":
 			if dt != 0 {
 				sc.Wait(dt, "")

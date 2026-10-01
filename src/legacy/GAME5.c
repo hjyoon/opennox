@@ -4471,6 +4471,7 @@ void sub_54CD30(int a1) {
 }
 
 //----- (0054CE00) --------------------------------------------------------
+#if 0
 void sub_54CE00(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
 	int v1;       // edi
@@ -4523,6 +4524,9 @@ void sub_54CE00(nox_object_t* unit) {
 		}
 	}
 }
+#endif
+void nox_server_questLoseSpell_native_54CE00(nox_object_t* unit);
+void sub_54CE00(nox_object_t* unit) { nox_server_questLoseSpell_native_54CE00(unit); }
 
 //----- (0054CEE0) --------------------------------------------------------
 void sub_54CEE0(int a1) {

@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest Wizard·Conjurer 주문 손실의 native player 경계 `0054CE00`
+
+unit typed ABI(`613f5a4e2`)와 한 원본 본체 `0054CE00`의 native Go 복원을 별도 커밋으로 분리했다. Player를 한 번 캐시하고 class byte가 2 또는 1일 때만 원래 137개의 DWORD를 두 번 live 조회한다. learned level은 임의의 nonzero DWORD이며 원래 `004F24E0` eligibility가 Glyph 34·Fireball 27·Charm 9·LesserHeal 41을 보호한다. 후보 0개에서도 원래 `0..-1` logic RNG API를 호출한다(상태 전진 없이 -1 반환). 두 번째 조회에서 ordinal이 맞으면 선택한 DWORD만 0으로 지우고 그 뒤 recipient byte를 읽어 F0/17·little-endian spell WORD·4바이트·unsequenced/remove-one 패킷을 보낸다. 원본 void 반환과 send 결과 무시, 잘못된 ordinal의 무변경 및 missing binding fault도 유지한다.
+
+캐시된 Player와 난수 중 unit/update binding 교체·fresh learned-level 변경·삭제 뒤 recipient 변경의 정확한 호출 순서, 0/136 양끝 인덱스, class byte 0/128/255의 early return, 빈 후보와 기본 주문만 있는 경우를 검사했다. 봉인된 원본 reward table의 독립적인 42개 후보로 Wizard·Conjurer 각각 48 seed를 비교하며 Player/Update/Object의 다른 필드와 Other RNG 무변경을 확인했다. 실제 C entry→Go export→server 왕복도 두 class와 C-owned unit/update/player 모두 4GiB 초과 주소로 통과했다. 관련 server/legacy/root 일반 시험 3회가 통과했다.
+
+원본 216바이트는 이미 봉인된 두 eligibility call을 보존한 세 구간, 뒤 8-NOP는 별도 구간으로 검증했다. `.text`의 두 원래 caller는 아직 복원하지 않은 dispatcher 안 `0054CC1A`·`0054CC20`이다. stock 1,556개 파일 및 누적 코드 2,847개·데이터 597개 verifier가 통과했다. 이 helper의 실제 Quest 사망 경로와 전체 일반·strict/race/checkptr 통합 게이트는 후속 작업으로 남긴다. Quest 사망 admission을 열거나 원래 penalty 횟수·기본 주문·밸런스를 바꾸지 않는다.
+
 ## Quest Warrior 능력 손실의 native player 경계 `0054CFB0`
 
 unit 인수의 typed ABI를 본체 변경 전에 `7d371d8ce`로 분리했다. 한 원본 본체 `0054CFB0`만 native Go로 옮기며 캐시된 Player, class byte가 0이 아닐 때의 signed AL 반환, 첫 0..5·두 번째 1..5의 live learned-level 조회와 원래 `004F2570` eligibility를 유지한다. 후보가 없어도 `1..0` logic RNG 함수를 호출하지만 원래 RNG는 이 범위에서 상태를 전진시키지 않고 0을 반환한다. 선택한 능력 DWORD만 0으로 지운 뒤 recipient byte를 읽고 원래 F0/18·little-endian WORD ID·4바이트·unsequenced/remove-one 패킷을 보낸다. 선택 실패 시 마지막 eligibility/RNG의 AL, 성공 시 send 결과의 AL을 그대로 반환하며 nil binding 무시·class 추가 검사·후보 clamp·기본 능력 변경은 넣지 않았다.

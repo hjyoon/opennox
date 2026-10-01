@@ -14,7 +14,6 @@ import (
 
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/ntype"
-	"github.com/opennox/opennox/v1/legacy/common/ccall"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -57,13 +56,7 @@ var chakramCollideCall4EAF00 = func(source, target *server.Object, collision uns
 				srv.S().ItemApplyAttackEffect538840(source, owner, unsafe.Pointer(attack))
 			},
 			PreAttackEffects: func(target, owner, source *server.Object, attack *server.ChakramAttackData) {
-				ccall.CallIntUPtr4(
-					C.nox_xxx_playerPreAttackEffects_538290,
-					uintptr(target.CObj()),
-					uintptr(owner.CObj()),
-					uintptr(source.CObj()),
-					uintptr(unsafe.Pointer(attack)),
-				)
+				srv.S().PlayerPreAttackEffects538290(target, owner, source, unsafe.Pointer(attack))
 			},
 			CreateAt: func(item, owner *server.Object, pos types.Pointf) {
 				srv.CreateObjectAt(item, owner, pos)

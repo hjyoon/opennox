@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 발사체 pre-hit modifier dispatch `00538290`
+
+Arrow·Chakram의 다음 ABI32 dispatcher를 별도 원본 함수 변경으로 native Go에 연결했다. item nil·friendly-fire/owner class·enemy·buff 23/27 gate와 cached modifier array의 enchantment slot 2/3만 live 순회하는 순서를 유지한다. 원본 159바이트·1-NOP는 기존 내부 buff call 봉인을 포함한다. gate 순서·callback 중 array/slot 교체·실제 C callback 두 번·native context를 검사한다. 자연 명중과 귀환은 이어지는 headless 시나리오로 검증한다.
+
 ## 발사체 명중 시 공격 modifier dispatch `00538840`
 
 실제 슈리켄 명중 검증에서 projectile의 native 주소가 C의 `int` 인수로 잘리는 크래시를 재현했다. 원본 본체 73바이트와 7-NOP를 봉인하고, Arrow·Chakram 경로를 native Go dispatcher로 연결했다. entry-cached modifier array의 네 slot은 callback 뒤 live로 재조회하며, native callback의 다섯 인수와 null target·최종 반환 0을 유지한다. 원본의 필수 item/array 전제를 nil guard로 숨기지 않는다. 4GiB 초과 인수·실제 C damage multiplier 네 번 호출·cached/live mutation을 회귀로 검사한다. 후속 pre-hit dispatcher와 자연 명중/귀환 검증은 별도 변경으로 진행한다.

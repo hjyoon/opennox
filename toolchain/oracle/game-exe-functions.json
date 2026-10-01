@@ -17913,18 +17913,18 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting inventory insertion at 004F3070"
     },
     {
-      "name": "nox_xxx_testUnitBuffs_4FF350_call_5382D6",
-      "address": "0x005382D6",
-      "size": 5,
-      "sha256": "a7dc3d9b724909734190d658de8d3c998c15a3ebb2315dda5bb53335710da87d",
-      "purpose": "the exact decoded direct rel32 call at 005382D6 targeting unit buff membership testing at 004FF350"
+      "name": "nox_xxx_playerPreAttackEffects_538290",
+      "address": "0x00538290",
+      "size": 159,
+      "sha256": "49d2ccb16f1678112500f58848bfaa5c23f61a98fdde354c9cfe9c821eb1e9a5",
+      "purpose": "cache item modifiers before friendly-fire and buff 23/27 gates, then traverse only two live enchantment pre-hit slots with five callback arguments; subsumes buff calls at 005382D6 and 005382E5"
     },
     {
-      "name": "nox_xxx_testUnitBuffs_4FF350_call_5382E5",
-      "address": "0x005382E5",
-      "size": 5,
-      "sha256": "3d56d077b60ca161ce88af54e3fa1620f76700e7711143793476240e10521b60",
-      "purpose": "the exact decoded direct rel32 call at 005382E5 targeting unit buff membership testing at 004FF350"
+      "name": "nox_xxx_playerPreAttackEffects_538290_padding",
+      "address": "0x0053832F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact NOP separating pre-hit effects from attack tracing"
     },
     {
       "name": "nox_xxx_itemApplyAttackEffect_538840",

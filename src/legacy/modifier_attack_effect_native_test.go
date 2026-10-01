@@ -97,3 +97,23 @@ func TestItemAttackEffect538840NativeCallback(t *testing.T) {
 		t.Fatalf("native attack record = %+v, want damage 40.5 with unchanged pointers", attack)
 	}
 }
+
+func TestPlayerPreAttackEffects538290NativeCallback(t *testing.T) {
+	mod := &server.ModifierEff{Attack40: server.ModifierEffFnc{Valf: 1.5},
+		AttackPreHit52: server.ModifierEffFnc{Fnc: modifierDamageMultiplierPointer4E04C0()}}
+	data := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{mod, mod, mod, mod}}
+	item := &server.Object{InitData: unsafe.Pointer(data)}
+	target := &server.Object{}
+	attack := &server.ChakramAttackData{Damage: 8, Source: item}
+	var pin runtime.Pinner
+	for _, ptr := range []any{mod, data, item, target, attack} {
+		pin.Pin(ptr)
+	}
+	defer pin.Unpin()
+	if got := (*server.Server)(nil).PlayerPreAttackEffects538290(target, nil, item, unsafe.Pointer(attack)); got != 0 {
+		t.Fatalf("dispatcher result = %d", got)
+	}
+	if attack.Damage != 18 || attack.Source != item {
+		t.Fatalf("native pre-hit record = %+v, want damage 18 with unchanged source", attack)
+	}
+}

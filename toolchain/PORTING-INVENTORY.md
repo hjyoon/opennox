@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 방어구 손실의 native live inventory 경계 `0054CD30`
+
+unit typed ABI 선행 커밋 `bef726245` 뒤 한 원본 본체만 native Go로 복원했다. equipped DWORD 0x100→armor class DWORD 0x02000000→unsigned type WORD→원래 armor lookup·보호 mask 0x405 순서를 두 live 순회에서 유지한다. StreetShirt/Pants/Sneakers는 보호하되 다른 clothing을 임의로 제외하지 않는다. 후보 0개에서는 RNG를 호출하지 않으며, 선택 후에는 fresh inventory head에서 다시 세어 해당 ordinal 하나만 원래 delayed deletion으로 넘기고 즉시 반환한다. 후보 snapshot·selected clamp·추가 Player/class gate·nil binding 무시는 넣지 않았다.
+
+gate별 exact trace, lookup 중 flags/next/head 교체, RNG 뒤 head/candidate 교체, cached selected item과 삭제 직후 next 무접근, unsigned type 32768/65535·invalid ordinal을 검사했다. 기존 armor table의 독립적인 23개 eligible ordinal과 48 seed를 비교하며 다른 object field·Other RNG 무변경을 확인했다. C-owned unit/item 모두 4GiB 초과 주소로 실제 C entry→Go export→native server→delayed-delete callback 왕복도 통과했다. 필수 binding 누락은 원래 fault를 유지한다.
+
+Darwin/ARM64 관련 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회와 전체 일반·strict Go 시험이 통과했다. 원본 본체 203바이트·뒤 5-NOP 봉인을 추가했고 `make oracle-test`는 stock 1,556파일·570,653,750바이트·2,858 code/607 data range·NXZ 50쌍을 전후 검증했다. 아직 weapon/gem penalty와 dispatcher가 미복원이라 Quest 사망 admission은 계속 닫혀 있다. 이 helper 테스트를 실제 Quest 사망·복활 headless 성공이나 Linux/AMD64 실행으로 확대하지 않는다.
+
 ## Quest 방어구 손실의 typed unit ABI — 본체 복원의 선행 단계 `0054CD30`
 
 원본별 리팩터링 규칙에 따라 unit 인수를 `int`에서 `nox_object_t*`로 먼저 분리했다. 이 단계의 C 본체는 기존 정수 alias와 동작을 유지하며, 두 raw dispatcher caller에도 명시적인 변환을 적용한다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. native 본체 복원·후보 순회·선택·지연 삭제 및 고주소 CGo 왕복은 다음 별도 변경이다. Quest 사망 admission은 아직 열지 않는다.

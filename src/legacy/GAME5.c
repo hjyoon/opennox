@@ -4432,6 +4432,7 @@ void sub_54CC40(int a1) {
 }
 
 //----- (0054CD30) --------------------------------------------------------
+#if 0
 void sub_54CD30(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
 	int v1; // edi
@@ -4470,6 +4471,9 @@ void sub_54CD30(nox_object_t* unit) {
 		}
 	}
 }
+#endif
+void nox_server_questLoseArmor_native_54CD30(nox_object_t* unit);
+void sub_54CD30(nox_object_t* unit) { nox_server_questLoseArmor_native_54CD30(unit); }
 
 //----- (0054CE00) --------------------------------------------------------
 #if 0

@@ -19579,6 +19579,20 @@
       "purpose": "the exact nine NOP bytes after armor creation before the ObeliskCreate routine at 0054CA10"
     },
     {
+      "name": "sub_54CD30",
+      "address": "0x0054CD30",
+      "size": 203,
+      "sha256": "9247e85f499304daaefbc975fe6c4b3a184bc8952a4896c7aa5c51b0439e1104",
+      "purpose": "count equipped armor excluding type flags 0x405, draw a zero-based ordinal only for nonempty candidates, rescan live inventory and delay-delete the selected eligible item"
+    },
+    {
+      "name": "sub_54CD30_padding",
+      "address": "0x0054CDFB",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after random equipped armor loss before Wizard and Conjurer spell loss at 0054CE00"
+    },
+    {
       "name": "sub_54CE00_prefix",
       "address": "0x0054CE00",
       "size": 60,

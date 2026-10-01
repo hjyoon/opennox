@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 캠페인 수동 Save/Load와 새 프로세스 복원 — 일반·HD 실제 입력 회귀
+
+`seed-solo-warrior-manual-save.yaml`과 `solo-warrior-manual-save-load.yaml`은 runner가 만든 격리 Save에서 실제 Warrior 메뉴·War01a 시작·NPC 대화 종료·원래 AUTOSAVE를 거친다. Escape·Save/Load·슬롯 1 선택·확인창은 native widget 위치를 읽어 실제 mouse/keyboard 이벤트로 누른다. 선택·callback·HP·능력치·장비·저장 파일을 직접 주입하지 않는다. 저장 슬롯 밖의 `.e2e-manual-save.json`은 새 프로세스와 비교할 포인터 없는 기대값만 담으며 게임 loader는 읽지 않는다.
+
+Darwin/ARM64 일반·HD 모두 빈 `SAVE0001`의 player/map 두 파일 생성, 덮어쓰기 No 시 두 슬롯의 hash 무변경, Yes 시 수동 슬롯 갱신과 AUTOSAVE 보존을 확인했다. 실제 이동으로 저장 위치에서 벗어난 뒤 게임 중 Load/Yes, 이어 정상 종료한 별도 새 프로세스에서 슬롯 1의 Load를 통과했다. 첫 메뉴 로그도 `loading slot 1: SAVE0001`이다. 두 복원 경로에서 War01a·chapter 1·Warrior Jack·HP 20/20·mana 0/0·strength 20·gold/XP 0·level 1·장비 4개의 착용/내구도/modifier를 동일하게 확인한다. 위치는 저장된 `(4546.18, 1981.0657)`에서 원래 spawn displacement 허용 2 이내이며, fade 이후 실제 입력 이동은 두 제품·두 로드 모두 329.469다.
+
+원래 load fade 100틱 뒤의 게임 중/새 프로세스 화면 두 장을 검토하고 일반·HD exact-pixel 비교를 통과했다. observer 단위 시험은 잘못된 슬롯·map·player·stat·위치·중복 item 누락·착용·내구도·modifier를 구분하고 기대값 자체의 nil/범위 밖/비유한 위치도 거부한다. 제품 수정은 `0046C920`·`0046CBD0`·`004A5710`의 native 선택 읽기이며 원본 함수별 세 독립 커밋으로 분리했다. 전체 일반·실제 cgocheck2, 선택/확인/첫 메뉴/observer 대상 일반·race·checkptr 각 3회와 stock 1,556개 파일·코드 2,838개·데이터 597개·압축 oracle-test를 통과했다.
+
+같은 수정 뒤 기존 Conjurer AUTOSAVE 시나리오도 일반·HD에서 재실행했다. 새 프로세스의 Con02a 로드 직후와 240틱 뒤에 같은 script ID의 Wolf 40/40·Urchin 8/8 두 마리, owner/owned list·live drawable·summon HUD·minimap 목록을 확인했다. stock 출구로 Con03a에 전환하고 원래 브리핑·AUTOSAVE를 완료한 뒤 초기/240틱에서도 같은 세 마리를 확인하며, 실제 player 이동 104.667과 정상 종료를 통과했다. 제품당 복원/후속 전환 보존 12개 검사가 통과했고 seed/로드/다음 전환 세 화면을 검토해 일반·HD exact-pixel 일치를 확인한 PNG로 보관한다.
+
+최신 제품 코드의 Warrior AUTOSAVE도 일반·HD에서 각각 격리 seed와 별도 새 프로세스 로드를 재실행했다. 슬롯 0·Jack·class 0·War01a·stage 1 선택, 원래 load 작업 뒤 frame 1의 live server/client/drawable binding과 HP 20/20을 확인하고, 실제 right-button 입력으로 187.908 이동한 뒤 두 제품 모두 exit 0으로 종료했다. 수동 슬롯 선택 수정이 기존 AUTOSAVE 메뉴 경로를 대체하지 않는 것을 함께 검사한다.
+
+이 회귀는 해당 Warrior 수동 슬롯의 Save/Overwrite/Load와 Conjurer 소환수 AUTOSAVE 검증을 구분한다. 다른 class의 수동 저장·모든 슬롯·Delete·손상 파일·Quest/온라인·개인 기존 Save·실제 SDL/OpenAL을 검증한 것으로 확대하지 않는다. 사용자 Save와 원본 자산은 사용·수정하지 않는다.
+
 ## 첫 Solo 메뉴의 native 수동 슬롯 로드 선택 `004A5710`
 
 게임 중 슬롯 1의 실제 Save·Overwrite No/Yes·Load/Yes·능력치/인벤토리 복원·재이동을 통과한 새 프로세스에서도, real mouse로 native 두 열의 1 선택을 확인한 뒤 첫 메뉴 Load가 `loading slot 0: AUTOSAVE`를 기록하고 저장 위치 대신 187.908 떨어진 자동 저장 위치를 복원했다. 메뉴 canvas(640×480)와 input viewport(1024×768)의 좌표 변환 및 원래 load fade 대기는 E2E 입력/캡처에만 추가해 클릭·검증 실패를 게임의 성공으로 취급하지 않는다.

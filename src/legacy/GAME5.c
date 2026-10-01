@@ -4360,8 +4360,8 @@ void sub_54CBD0(int a1) {
 	}
 	sub_54CE00((nox_object_t*)(uintptr_t)a1);
 	sub_54CE00((nox_object_t*)(uintptr_t)a1);
-	sub_54CEE0(a1);
-	sub_54CEE0(a1);
+	sub_54CEE0((nox_object_t*)(uintptr_t)a1);
+	sub_54CEE0((nox_object_t*)(uintptr_t)a1);
 	sub_54CFB0((nox_object_t*)(uintptr_t)a1);
 }
 
@@ -4529,7 +4529,8 @@ void nox_server_questLoseSpell_native_54CE00(nox_object_t* unit);
 void sub_54CE00(nox_object_t* unit) { nox_server_questLoseSpell_native_54CE00(unit); }
 
 //----- (0054CEE0) --------------------------------------------------------
-void sub_54CEE0(int a1) {
+void sub_54CEE0(nox_object_t* unit) {
+	int a1 = (int)(uintptr_t)unit;
 	int v2;       // edi
 	int v3;       // ebp
 	int v4;       // esi

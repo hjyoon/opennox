@@ -505,7 +505,7 @@ func Nox_xxx_castFireball_52C790(spellID spell.ID, a2, a3, a4 *server.Object, sa
 }
 
 func Nox_xxx_castFist_52D3C0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castFist_52D3C0, spellID, a2, a3, a4, sa, lvl)
+	return fistCastCall52D3C0(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Nox_xxx_castFumble_52C060(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

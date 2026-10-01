@@ -10004,6 +10004,10 @@ int nox_xxx_castTelekinesis_52D330(int a1, int a2, int a3, int a4, int* a5, char
 }
 
 //----- (0052D3C0) --------------------------------------------------------
+// Native-width implementation: server/spell_fist_52d3c0.go, selected through
+// legacy/spell_fist_52d3c0.go. Retain the original body only as provenance;
+// do not compile an entry whose integer object arguments truncate pointers.
+#if 0
 int nox_xxx_castFist_52D3C0(int a1, int a2, int a3, int a4, int a5, int a6) {
 	int v6;            // edx
 	unsigned char* v7; // eax
@@ -10085,6 +10089,7 @@ int nox_xxx_castFist_52D3C0(int a1, int a2, int a3, int a4, int a5, int a6) {
 	}
 	return result;
 }
+#endif
 
 //----- (0052D5C0) --------------------------------------------------------
 int nox_xxx_spellCastCleansingFlame_52D5C0(int a1, nox_object_t* a2p, nox_object_t* a3p, nox_object_t* a4p, void* a5p, int a6) {

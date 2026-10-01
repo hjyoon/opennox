@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Fist 주문 생성의 native 포인터 경계 `0052D3C0`
+
+보고된 Linux/AMD64 크래시의 실제 ownership root `0x7fe88670ee80`와 오류 주소 `0xffffffff8670f084`는 PE32 `+516` owned-head 읽기가 하위 DWORD로 잘린 뒤 sign-extension된 것과 일치한다. `Nox_xxx_castFist_52D3C0`의 기존 Go selector 인수는 유지하고 여섯 int C 콜백 호출을 직접 native server 함수로 바꿨다. 한 원본 본체 `0052D3C0`의 C 코드는 provenance용 `#if 0`로 보존해 잘리는 실행 진입점을 제거한다.
+
+원래 5개 DWORD type cache의 lookup/store/ready 순서, node마다 한 번 읽는 type WORD와 full-DWORD 비교·live owned-next, 소유 root에 대한 TooManyFists 메시지를 유지한다. trace 좌표는 mode 확인 전에 캐시하고 Coop `9`·다른 모드 `73`을 쓰며, ray 차단 시 live Player의 recipient에 code 0/value 2를 알린다. 레벨 1/2/3..5는 Small/Medium/LargeFist를 만들고, update pointer를 balance 조회 전에 캐시한다. 원본 binary32 spill과 nearest-even/invalid-int 피해 변환, create의 fresh 좌표, Field5 OR 0x20·Raise 255·음의 stock FistSpeed·ObjFlags OR 0x800000·Field29 0x41100000·cast audio 순서를 보존한다. 할당 실패도 성공 1을 반환하며 level clamp나 원본에 없는 nil binding 무시는 넣지 않았다.
+
+C-owned owner/caster/두 owned node/Fist/update/arg 모두 4GiB 초과 주소로 native 본체를 검사하고, 기존 legacy Go selector wrapper도 native 인수 전달과 signed 결과를 검사했다. 5개 레벨의 생성/할당 실패, 각 cache slot의 중복 거부, cached type/live-next·cache 상위 비트, Coop/다른 모드·player/non-player trace 차단, balance 중 update/좌표 교체, float32 반올림·NaN/Inf·범위 경계와 missing binding fault를 검사한다. 실제 native layout의 owned-head/next `568/560`, update `872`, Player `336`, index `2068`, SpellAcceptArg position `8`을 PE32 offset과 구분한다. 관련 server/legacy/root 일반 시험 3회가 통과했다.
+
+원본 본체 503바이트·뒤 9-NOP 및 정확한 type/message/balance 문자열 8개를 봉인했다. 원래 selector의 callback 선택은 `004FD98E`이며 stock 1,556개 파일·누적 코드 2,853개·데이터 605개 verifier가 통과했다. 이 커밋은 native 생성과 회귀 시험 단계이며 전체 일반·실제 cgocheck2·race/checkptr, 제품 headless 생성/낙하/충돌 검증과 사용자가 겪은 정확한 맵 이벤트 재현은 후속 검증으로 남긴다.
+
 ## Quest Conjurer 필드 가이드 손실의 native player 경계 `0054CEE0`
 
 unit typed ABI(`d5fb4f0a3`)와 한 원본 본체 `0054CEE0`의 native Go 복원을 별도 커밋으로 분리했다. Player를 한 번 캐시하고 class byte가 정확히 2인 경우에만 41개의 guide DWORD를 두 번 live 조회한다. learned level은 nonzero가 아니라 정확히 1이어야 하며 원래 `004F2530` eligibility를 유지한다. 후보 0개에서도 원래 `0..-1` logic RNG API를 호출한다(상태 전진 없이 -1 반환). 두 번째 조회에서 ordinal이 맞으면 선택한 DWORD만 0으로 지우고 그 뒤 recipient byte를 읽어 F0/0x13·little-endian guide WORD·4바이트·unsequenced/remove-one 패킷을 보낸다. 원본 void 반환과 send 결과 무시, 잘못된 ordinal의 무변경 및 missing binding fault도 유지한다.

@@ -16520,6 +16520,20 @@
       "purpose": "the exact decoded direct rel32 call from Telekinesis startup that cancels spell 43 for its caster immediately after spell 24"
     },
     {
+      "name": "nox_xxx_castFist_52D3C0",
+      "address": "0x0052D3C0",
+      "size": 503,
+      "sha256": "46cb2a57b445ab911582b5b6436061fbe94630ffa0c278cff03f3a3048048c8e",
+      "purpose": "initialize the five DWORD Fist type slots, scan the ownership root's owned list, choose Coop or other ray flags, create the level-indexed Fist with binary32 damage conversion and falling fields, or report duplicate/blocked casting"
+    },
+    {
+      "name": "nox_xxx_castFist_52D3C0_padding",
+      "address": "0x0052D5B7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOPs separating the Fist cast from CleansingFlame"
+    },
+    {
       "name": "nox_xxx_unitGetHP_4EE780_call_52DD65",
       "address": "0x0052DD65",
       "size": 5,
@@ -22253,6 +22267,62 @@
       "size": 20,
       "sha256": "bc64c2cc64140168802b82140ada92d1cefb62ba50b66975059691f1e70e1c2d",
       "purpose": "the exact StunEnchantDuration balance key including its terminator used by the instant stun cast"
+    },
+    {
+      "name": "fist_cast_small_type_name_52D3C0",
+      "address": "0x005C6610",
+      "size": 10,
+      "sha256": "56bbb192221cc1f5faf5f9ee1caa4906849125a50abe0baf64c164b9bdb9f87b",
+      "purpose": "the exact NUL-terminated SmallFist type used by Fist level one"
+    },
+    {
+      "name": "fist_cast_medium_type_name_52D3C0",
+      "address": "0x005C661C",
+      "size": 11,
+      "sha256": "363f6133b40ad827f2afbc3841688c453c28bcbd1bcda527900c7e0b88904c2c",
+      "purpose": "the exact NUL-terminated MediumFist type used by Fist level two"
+    },
+    {
+      "name": "fist_cast_large_level_three_type_name_52D3C0",
+      "address": "0x005C6628",
+      "size": 10,
+      "sha256": "09087b99d6a53f74566703a739d0a3a1760ad479cedceebd9b4f27cb115bd003",
+      "purpose": "the exact NUL-terminated LargeFist lookup for level three"
+    },
+    {
+      "name": "fist_cast_large_level_four_type_name_52D3C0",
+      "address": "0x005C6634",
+      "size": 10,
+      "sha256": "09087b99d6a53f74566703a739d0a3a1760ad479cedceebd9b4f27cb115bd003",
+      "purpose": "the original distinct LargeFist string address looked up for level four"
+    },
+    {
+      "name": "fist_cast_large_level_five_type_name_52D3C0",
+      "address": "0x005C6640",
+      "size": 10,
+      "sha256": "09087b99d6a53f74566703a739d0a3a1760ad479cedceebd9b4f27cb115bd003",
+      "purpose": "the original distinct LargeFist string address looked up for level five"
+    },
+    {
+      "name": "fist_cast_duplicate_message_52D3C0",
+      "address": "0x005C664C",
+      "size": 24,
+      "sha256": "15cc52af32853e778c60701eb68ce33e4ebb742859419117df89f861604dae80",
+      "purpose": "the exact TooManyFists priority message key passed to the ownership root"
+    },
+    {
+      "name": "fist_cast_damage_balance_key_52D3C0",
+      "address": "0x005C6664",
+      "size": 22,
+      "sha256": "071ebd483b0b0da9504c70d1f540e7e19eb1aae6dcf71ec3ad3e9e2aa7f19311",
+      "purpose": "the exact FistOfVengeanceDamage key indexed by level minus one and spilled to binary32 before conversion"
+    },
+    {
+      "name": "fist_cast_speed_balance_key_52D3C0",
+      "address": "0x005C667C",
+      "size": 10,
+      "sha256": "21b8823aa2fe666873f018f1936111e6e78334bdd065e867efe9df5c0d79df67",
+      "purpose": "the exact FistSpeed key whose negated value sets the falling velocity"
     },
     {
       "name": "default_xfer_registration_record",

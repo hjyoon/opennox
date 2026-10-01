@@ -143,7 +143,8 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // and source-less scripted BLADE/electric damage against ordinary monsters,
 // missile IMPACT and Magic Missile EXPLOSION against ordinary monsters, the
 // monster-on-monster self-weapon BITE and ordinary melee-weapon BLADE branches,
-// and PlayerDamage's scripted-NPC weapon CRUSH tail from GAME.EXE 004E0B30
+// Berserker Charge's player-self-weapon CRUSH and PlayerDamage's scripted-NPC
+// weapon CRUSH tail from GAME.EXE 004E0B30
 // without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
 // protection, modifier, and equipment branches remain visible through
@@ -222,6 +223,11 @@ func DefaultDamageWorld4E0B30(
 	monsterWeaponCrush := monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 &&
 		source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassWeapon) && typ == object.DamageCrush
+	// PlayerCollide supplies the charging Warrior as source AND weapon. CRUSH
+	// skips fire/electric protection; 004E0ED0 skips distinct-weapon attribution
+	// and 004E0FC9 records the damage type before the normal damage tail.
+	playerCharge := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassPlayer) &&
+		weapon == source && typ == object.DamageCrush
 	selfSourcedMissileImpact := monsterUpdate != nil && source != nil && source == weapon &&
 		source.Class().Has(object.ClassMissile) && !source.Class().HasAny(object.MaskUnits) && typ == object.DamageImpact
 	playerFiredMissileImpact := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassPlayer) &&
@@ -253,7 +259,7 @@ func DefaultDamageWorld4E0B30(
 		monsterWeaponBlade := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon != nil && weapon.Class().Has(object.ClassWeapon) &&
 			uint32(weapon.SubClass())&0x047f40fe == 0 && typ == object.DamageBlade
-		if !playerMelee && !monsterBite && !monsterWeaponBlade && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush {
+		if !playerMelee && !monsterBite && !monsterWeaponBlade && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush && !playerCharge {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -263,9 +269,10 @@ func DefaultDamageWorld4E0B30(
 		if (monsterBite || monsterWeaponBlade) && runtime.MonsterHasHitSound == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
 		}
-		// The original's friendly-hit gate does not apply when the weapon is
-		// a missile (sub_4E1400 returns false for this class).
-		if source != nil && !missileDamage && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		// The original's melee friendly-hit gate does not apply to a missile
+		// or PLAYER-class charge weapon (sub_4E1400 returns false for both).
+		// The earlier campaign owner gate still applies to a friendly charge.
+		if source != nil && !missileDamage && !playerCharge && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 	}
@@ -312,7 +319,7 @@ func DefaultDamageWorld4E0B30(
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
-		!missileDamage && !nonUnit && !monsterElectric && !monsterWeaponCrush {
+		!missileDamage && !nonUnit && !monsterElectric && !monsterWeaponCrush && !playerCharge {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion

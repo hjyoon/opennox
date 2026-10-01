@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Warrior Berserker Charge의 player-self-weapon 피해
+
+실제 regular host의 Warrior 키 입력에서 돌진은 이동·종료·쿨다운까지 진행하지만 Troll HP는 2,000 그대로였고 `DefaultDamageWorld4E0B30`이 `PLAYER` source와 같은 weapon의 `CRUSH(150)`를 unsupported로 거부했다. 이미 봉인된 원본 `004E0ED0`의 동일 객체 분기와 `004E0FC9`의 damage-type 기록을 따라 이 피해 모양만 native admission에 추가했다. `004E1400`의 PLAYER-class weapon은 melee 판정이 아니므로 별도 melee friendly-hit/Shock 분기는 타지 않고, 앞선 campaign owner gate는 그대로 유지한다.
+
+NoUpdate·Dead·Invulnerable·shield·field guide 및 NPC 장비의 late Defend 계약과 인접 비지원 피해 모양은 회귀 시험으로 구분한다. 실제 headless 일반 클라이언트의 두 돌진 모두 Troll `2,000→1,850`, player `150→150`, 돌진 이동·종료·쿨다운 중 재입력 거부·ready 보고와 다음 사용이 통과했다. 이는 unit 충돌 검사이며 벽 충돌의 자기 피해나 모든 모드의 스킬 검증을 대신하지 않는다.
+
 ## 캠페인 AUTOSAVE의 새 프로세스 로드·소환수 보존 회귀
 
 `seed-solo-conjurer-pet-autosave.yaml`은 실제 Summon Wolf·Summon Urchin·Charm으로 Wolf 1마리와 Urchin 2마리를 만든 뒤 stock 출구로 Con02a에 진입하고 기존 AUTOSAVE 완료 후 정상 종료한다. `solo-conjurer-pet-autosave-load.yaml`은 별도 새 프로세스의 실제 메뉴로 그 AUTOSAVE를 불러온다. 저장 슬롯 밖의 E2E 전용 JSON은 포인터 없는 type·script ID·HP 기대값만 기록하며, 게임 저장 데이터나 소환수 복원에는 사용하지 않는다.

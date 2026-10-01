@@ -15155,6 +15155,20 @@
       "purpose": "the exact nine NOP alignment bytes separating PlayerIsTrading from MakeFriendly at 00516720"
     },
     {
+      "name": "nox_script_MakeFriendly_516720",
+      "address": "0x00516720",
+      "size": 61,
+      "sha256": "dcb1d05f074c7b9601e99be71218224d81774107ddb816253ad38f23a3499500",
+      "purpose": "set bit 0x100 in Object subclass at PE32 offset 12, then assign the cached host player's live unit as owner when present; never modify Object flags at offset 16"
+    },
+    {
+      "name": "nox_script_MakeFriendly_516720_padding",
+      "address": "0x0051675D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP alignment bytes separating MakeFriendly from MakeEnemy at 00516760"
+    },
+    {
       "name": "nox_xxx_playerRespawnItem_4EF750_call_5168F7",
       "address": "0x005168F7",
       "size": 5,

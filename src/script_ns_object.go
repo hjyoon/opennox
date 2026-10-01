@@ -178,9 +178,9 @@ func (s noxScriptNS) MakeFriendly(obj ns4.Obj) {
 	if unit == nil {
 		return
 	}
-	// GAME.EXE uses bit 0x100 as the friendly marker for units. The same bit
-	// is named FlagEquipped for items, so keep the overloaded value explicit.
-	unit.ObjFlags |= object.Flags(0x100)
+	// GAME.EXE 00516720 writes Object+12 (subclass), not Object+16
+	// (flags). For monsters this is Migrate, which permits campaign exits.
+	unit.ObjSubClass |= object.SubClass(0x100)
 	if host := s.s.Players.HostUnit(); host != nil {
 		s.s.ObjSetOwner(host, unit)
 	}

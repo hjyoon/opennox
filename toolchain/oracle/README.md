@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## War03b 구입 늑대의 MakeFriendly subclass 복원 `00516720`
+
+stock War03b Henrick 대화의 실제 Yes 입력 두 번으로 Wolf1/Wolf2를 구매하고 골드가 `400→200→0`이 되는 것을 관찰했다. 이후 플레이어만 stock 출구에 배치해 일반 collision으로 War03c에 들어가면 두 원본 늑대가 owned/world 목록에서 모두 사라졌다. 구매 script의 `MakeFriendly`가 subclass가 아닌 Object flags에 `0x100`을 쓰는 이식 오류다. 원본 `0051673C..00516742`는 PE32 `Object+12`를 읽어 CH bit 0을 세운 뒤 같은 필드에 저장하며, `Object+16` flags는 변경하지 않는다. 별도 `BecomePet(004E7B00)`가 쓰는 `Monitor(0x80)`와 맵 보존 판정 `004E5B50`의 `Migrate(0x100)`를 혼동하지 않는다.
+
+이 단위에서는 MakeFriendly 한 함수만 고친다. native subclass의 다른 비트와 Object flags를 보존하고 기존 live host owner-assignment를 유지한다. 4GiB 초과 실제 객체에서 다섯 subclass 경계·host 없는 호출·nil object·host 소유 목록 연결과 enemy reset 회귀를 먼저 실패로 재현한 뒤 통과시켰다. 원본 본체 `00516720..0051675C` 61바이트의 SHA-256은 `dcb1d05f074c7b9601e99be71218224d81774107ddb816253ad38f23a3499500`이며 뒤 3-NOP를 따로 봉인했다. 누적 직접 verifier는 코드 2,819개·데이터 595개다. 원본 맵과 구매 가격, 펫 효과를 수정하지 않는다. 늑대 왕복 headless의 최종 결과는 별도 시나리오 기록으로 남긴다.
+
 ## Quest 자연 전투: 몬스터 전기 주문의 Player DefaultDamage `004E0B30`
 
 실제 메뉴와 stock 출구로 Quest 1→5를 진행한 headless 전투에서 네크로맨서가 플레이어를 자연 감지하고 `AIRBORNE_ELECTRIC(17)`을 시전했지만 PlayerDamage의 비지원 shape guard가 피해를 거부했다. 두 원본 함수는 별도 변경 단위로 복원한다. 이 단위는 이미 봉인된 DefaultDamage `004E0B30..004E122F`의 SHA-256 `6f045c2910bfb5e4a1100b5daaed3aeb5695bb401d3b447c63245c3543e0b871`을 재사용하며 원본 데이터나 중복 범위를 추가하지 않는다.

@@ -4345,7 +4345,8 @@ void nox_xxx_diePotion_54CBB0(int a1) {
 }
 
 //----- (0054CBD0) --------------------------------------------------------
-void sub_54CBD0(int a1) {
+void sub_54CBD0(nox_object_t* unit) {
+	int a1 = (int)(uintptr_t)unit;
 	int v1;          // edi
 	unsigned int v2; // eax
 
@@ -4951,7 +4952,7 @@ LABEL_38:
 			*(uint32_t*)&v23[10] = 0;
 			nox_xxx_netSendPacket0_4E5420(*(unsigned char*)(v20 + 2064), v23, 14, 0, 1);
 			sub_4D6000(v1);
-			sub_54CBD0(v1);
+			sub_54CBD0((nox_object_t*)(uintptr_t)v1);
 			v21 = nox_xxx_gamedataGetFloat_419D40("QuestGameStartingExtraLives");
 			*(uint32_t*)(v3 + 320) = nox_float2int(v21);
 			result = *(uint32_t*)(v3 + 276);

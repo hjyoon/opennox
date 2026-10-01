@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 사망 페널티 dispatcher의 typed unit ABI — 본체 복원의 선행 단계 `0054CBD0`
+
+unit 인수를 `int`에서 `nox_object_t*`로 먼저 분리하고 raw Quest 사망 caller를 명시적으로 변환했다. 기존 정수 alias와 C 본체는 그대로 유지한다. 이 단계만으로 cached update·골드·각 손실 helper 연결의 포인터 잘림이 해결되었다고 주장하지 않는다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. native 본체는 다음 별도 커밋이며 Quest lives/사망 admission은 계속 닫혀 있다.
+
 ## Quest 보석 손실의 native inventory·가격·골드 경계 `0054D080`
 
 typed unit ABI 선행 커밋 `01a8c3899` 뒤 원본 본체 하나만 Go로 복원했다. Diamond DWORD가 0일 때만 Diamond→Emerald→Ruby를 차례로 조회·게시하며, Diamond의 독립 C 전역 변수와 Emerald/Ruby의 blob 주소를 연속 배열로 취급하지 않는다. 첫 live inventory 순회는 Diamond 캐시를 item type WORD보다 먼저 읽고 full DWORD와 비교하며, 같은 ID가 겹치면 Diamond→Emerald→Ruby 우선순위를 유지한다. 다음 링크는 type 판정 뒤 조회한다.

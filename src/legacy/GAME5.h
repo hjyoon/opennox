@@ -114,7 +114,7 @@ uint32_t* nox_xxx_createRewardMarker_54CAC0(nox_object_t* obj);
 int nox_xxx_dieImpEgg_54CAE0(int a1);
 void nox_xxx_diePolyp_54CB10(int a1);
 void nox_xxx_diePotion_54CBB0(int a1);
-void sub_54CBD0(int a1);
+void sub_54CBD0(nox_object_t* unit);
 void sub_54CC40(nox_object_t* unit);
 void sub_54CD30(nox_object_t* unit);
 void sub_54CE00(nox_object_t* unit);

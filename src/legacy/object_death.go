@@ -388,7 +388,7 @@ var playerDieCall54D2B0 = func(unit *server.Object) {
 		return
 	}
 	if unsafe.Sizeof(uintptr(0)) == 4 {
-		C.nox_xxx_diePlayer_54D2B0(C.int(uintptr(unit.CObj())))
+		C.nox_xxx_diePlayer_54D2B0(asObjectC(unit))
 	}
 }
 

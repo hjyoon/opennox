@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest player death의 typed unit ABI — lives 연결의 선행 단계 `0054D2B0`
+
+기존 native 사망 본체에 Quest lives 분기를 연결하기 전에 retained C 함수의 unit 인수를 `int`에서 `nox_object_t*`로 별도 분리했다. 기존 정수 alias·본체·반환 도메인은 유지하고 32비트 fallback caller만 typed 포인터를 넘긴다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. 이 ABI 단계 자체를 Quest 사망·부활 해결로 보지 않으며 64비트 Quest admission은 아직 닫혀 있다.
+
 ## Quest 사망 페널티 dispatcher의 native 순서·포인터 경계 `0054CBD0`
 
 typed unit ABI 선행 커밋 `81c236a11` 뒤 원본 본체 하나만 Go로 복원했다. entry update를 먼저 캐시→현재 unit의 골드 DWORD 조회→logical `>>1` 차감→보석→무기→방어구 순서를 유지한다. 첫 방어구 helper 뒤 캐시한 update의 live Player/class BYTE를 읽고 정확히 0인 경우에만 방어구 helper를 다시 호출한다. 이후 주문 2회→도감 2회→능력 1회이며 마지막 signed BYTE 반환은 무시한다. 각 반복은 원래 helper를 따로 호출하므로 이전 삭제/학습값 제거/패킷 callback의 현재 unit update·Player·class·inventory 상태를 다음 helper가 다시 읽는다. 이 dispatcher에 class bit gate·nil fallback·RNG·학습/인벤토리 snapshot을 추가하지 않는다.

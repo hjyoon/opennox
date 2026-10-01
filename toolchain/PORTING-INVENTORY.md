@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 몬스터 화살 PIERCE의 공통 피해 tail
+
+현재 HEAD의 실제 Warrior Quest 5단계 headless 전투에서 stock FlyingGolem의 GolemArrow 충돌이 `PlayerDamage native branch is not ported: unsupported player damage shape damage_type=3`로 반복 거부됐다. 원본 PIERCE는 libs의 `DamageImpale(3)`이며 player 방어구 계산 뒤 `DefaultDamage(004E0B30)`으로 전달된다. 두 원본 함수는 별도 커밋으로 복원한다.
+
+첫 공통 tail은 monster source와 별도 pure-missile weapon만 admission에 추가한다. mixed unit/weapon/wand class와 player source는 별도 미지원 경계로 유지한다. 이미 봉인한 `004E0B30`의 owner gate·화살 이전 위치·투명화 해제·late Defend·피격 attribution·hit sound·흡혈·GameBall·live player hurt-state·Shield·HP 순서를 보존하며, PIERCE는 fire/electric 보호 및 melee Shock 반격을 사용하지 않는다. electric 전용 DWORD는 바꾸지 않는다.
+
+4GiB 초과 객체 포인터의 player/NPC target, 아군·hit sound·hurt 상태 경계, late Defend가 update를 교체하는 경우, Shield 전 흡혈·GameBall·hurt 처리와 누락 서비스의 변경 전 거부 회귀가 통과했다. 전체 일반·실제 cgocheck2 시험과 해당 server 회귀의 race·checkptr 각 3회도 통과했다. 이 첫 커밋만으로 player entry가 연결되지는 않으므로 실제 GolemArrow HP 감소·화면 검증은 후속 PlayerDamage 연결 뒤 수행한다. 원본 수치·자산은 변경하지 않았다.
+
 ## Quest 1→20단계와 stock 생성기 강화 경계 실제 입력 회귀
 
 `scripts/e2e/host-quest-twenty-stages.yaml`은 여섯 단계 회귀를 실제 Warrior Quest 메뉴부터 20단계까지 확장한다. 각 stock 출구에 player를 배치하는 기존 fixture만 사용하며 단계·지도·미니언·HP·생성기 cap·packet·UI 해제·이동은 주입하지 않는다. 모든 단계에서 예상 지도와 playable server/client/drawable identity를 검사하고, 19개 결과 화면을 real mouse로 닫은 뒤 다음 지도에서 real right-button 100틱 이동을 확인한다.

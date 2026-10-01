@@ -148,7 +148,8 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // missile IMPACT and Magic Missile EXPLOSION against ordinary monsters, the
 // monster-on-monster self-weapon BITE and ordinary melee-weapon BLADE branches,
 // Berserker Charge's player-self-weapon CRUSH and PlayerDamage's scripted-NPC
-// weapon CRUSH tail, and weapon-less monster electric damage against players
+// weapon CRUSH tail, monster-fired missile PIERCE against players/monsters,
+// and weapon-less monster electric damage against players
 // from GAME.EXE 004E0B30
 // without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
@@ -205,12 +206,22 @@ func DefaultDamageWorld4E0B30(
 	playerElectric := target.Class().Has(object.ClassPlayer) && source != nil &&
 		source.Class().Has(object.ClassMonster) && source.UpdateData != nil && weapon == nil &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
-	if playerElectric {
+	// Stock GolemArrow calls this tail with the monster as source and the
+	// distinct missile as weapon. PIERCE (type 3, DamageImpale in libs) skips
+	// both protection branches. A missile is not a melee weapon in 004E1400;
+	// exclude mixed weapon/unit classes rather than skipping their unported
+	// friendly-hit or Shock predicates.
+	missilePierce := typ == object.DamageImpale && source != nil && source != weapon &&
+		source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand)
+	playerTail := playerElectric || (missilePierce && target.Class().Has(object.ClassPlayer))
+	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
 		}
 	}
-	if target.Class().HasAny(object.MaskUnits) && monsterUpdate == nil && !playerElectric {
+	if target.Class().HasAny(object.MaskUnits) && monsterUpdate == nil && !playerTail {
 		return defaultDamageUnsupported4E0B30(runtime, "non-monster unit target", target, source, weapon, damage, typ)
 	}
 
@@ -230,6 +241,10 @@ func DefaultDamageWorld4E0B30(
 	}
 	if playerElectric && (runtime.MonsterHasHitSound == nil || runtime.PlayerSetState == nil) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player electric tail service", target, source, weapon, damage, typ)
+	}
+	if missilePierce && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
+		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing missile PIERCE tail service", target, source, weapon, damage, typ)
 	}
 	monsterElectric := monsterUpdate != nil && weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
@@ -256,7 +271,7 @@ func DefaultDamageWorld4E0B30(
 	missileSourcedExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMissile) &&
 		!source.Class().HasAny(object.MaskUnits) && weapon == nil && typ == object.DamageExplosion
 	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion
-	missileDamage := missileImpact || missileExplosion
+	missileDamage := missileImpact || missileExplosion || missilePierce
 	if monsterUpdate != nil {
 		if target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
@@ -321,7 +336,7 @@ func DefaultDamageWorld4E0B30(
 	}
 
 	var lateDefendPlan []playerDamageLateDefend4E1320
-	if playerElectric || (monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0) {
+	if playerTail || (monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0) {
 		var ok bool
 		lateDefendPlan, ok = playerDamagePlanLateDefend4E1320(target, PlayerDamageRuntime4E17B0{
 			CanApplyLateDefend: runtime.CanApplyLateDefend,
@@ -335,7 +350,7 @@ func DefaultDamageWorld4E0B30(
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
-		!missileDamage && !nonUnit && !monsterElectric && !playerElectric && !monsterWeaponCrush && !playerCharge {
+		!missileDamage && !nonUnit && !monsterElectric && !playerTail && !monsterWeaponCrush && !playerCharge {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion
@@ -361,16 +376,16 @@ func DefaultDamageWorld4E0B30(
 			return defaultDamageUnsupported4E0B30(runtime, "weapon pre-damage modifiers", target, source, weapon, damage, typ)
 		}
 	}
-	playerSound := playerElectric && target.DamageSound != nil && target.DamageSound == runtime.PlayerDamageSoundC
+	playerSound := playerTail && target.DamageSound != nil && target.DamageSound == runtime.PlayerDamageSoundC
 	if playerSound && runtime.PlayerDamageSound == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player damage sound", target, source, weapon, damage, typ)
 	}
 	if target.DamageSound != nil && target.DamageSound != runtime.DefaultDamageSoundC && !playerSound {
 		return defaultDamageUnsupported4E0B30(runtime, "custom damage sound", target, source, weapon, damage, typ)
 	}
-	// Electric resistance and late defend can raise even a small input above
+	// Electric resistance or late defend can raise even a small input above
 	// the ball-release threshold. Validate the carrier tail before any stores.
-	if playerElectric && target.Field129 != nil {
+	if playerTail && target.Field129 != nil {
 		if runtime.GameBallType == 0 {
 			return defaultDamageUnsupported4E0B30(runtime, "missing GameBall type", target, source, weapon, damage, typ)
 		}
@@ -484,7 +499,7 @@ func DefaultDamageWorld4E0B30(
 			runtime.Audio, runtime.BalanceFloatInd, runtime.AdjustHP, runtime.VampirismFX,
 		)
 	}
-	if playerElectric {
+	if playerTail {
 		if runtime.GameBallOnDamage != nil {
 			runtime.GameBallOnDamage(source, target, damage)
 		}

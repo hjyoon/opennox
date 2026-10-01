@@ -1,0 +1,69 @@
+# Manual diagnostic: failures are collected and reported at the end.
+# Use the headless runner with NOX_E2E_AUDIO=mock and
+# NOX_E2E_AUDIO_HANDLES=true and NOX_E2E_OVERRIDE=true to record screenshots.
+# Copy this YAML into a temporary directory before recording. Audio playback
+# and disk writes are not verified; this audit currently reports known failures.
+# Both client and client-hd are supported via NOX_E2E_CLIENT_TARGET.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+  - action: audit-client-options
+    mode: 1
+    name: audit all in-game client options using real input
+  - action: quit
+    dt: 1

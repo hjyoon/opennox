@@ -1,0 +1,28 @@
+# Manual diagnostic: failures are collected and reported at the end.
+# Use the headless runner with NOX_E2E_AUDIO=mock and
+# NOX_E2E_AUDIO_HANDLES=true and NOX_E2E_OVERRIDE=true to record screenshots.
+# Copy this YAML into a temporary directory before recording. Audio playback
+# and disk writes are not verified; this audit currently reports known failures.
+# Both client and client-hd are supported via NOX_E2E_CLIENT_TARGET.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 358
+    y: 728
+    name: open options through main menu button
+  - action: wait
+    dt: 100
+  - action: audit-client-options
+    mode: 0
+    name: audit all main menu options using real input
+  - action: quit
+    dt: 1

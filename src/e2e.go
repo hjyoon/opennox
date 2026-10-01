@@ -9445,6 +9445,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-manual-save-load":
 			sc.Wait(dt, "")
 			sc.CheckManualSaveLoad(l.Slot, l.Name)
+		case "audit-client-options":
+			sc.Wait(dt, "")
+			sc.AuditClientOptions(l.Mode, l.Name)
 		case "select-manual-campaign-save":
 			sc.Wait(dt, "")
 			sc.SelectManualCampaignSave(l.Slot, l.Name)

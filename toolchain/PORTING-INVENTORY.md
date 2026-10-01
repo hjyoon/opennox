@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 방어구 손실의 typed unit ABI — 본체 복원의 선행 단계 `0054CD30`
+
+원본별 리팩터링 규칙에 따라 unit 인수를 `int`에서 `nox_object_t*`로 먼저 분리했다. 이 단계의 C 본체는 기존 정수 alias와 동작을 유지하며, 두 raw dispatcher caller에도 명시적인 변환을 적용한다. Darwin/ARM64 root·server·legacy 시험 1회가 통과했다. native 본체 복원·후보 순회·선택·지연 삭제 및 고주소 CGo 왕복은 다음 별도 변경이다. Quest 사망 admission은 아직 열지 않는다.
+
 ## 장비 재생 효과의 실제 player update·회복 headless 검증
 
 `host-game-player-regeneration.yaml`은 실제 Warrior 정규 host 메뉴→stock `Regeneration1` Sword 지급→inventory 클릭 장착→player update→장비 순회→native C callback→holder HP 회복→inventory 클릭 해제를 실행한다. 초기 부상과 cooldown timestamp만 fixture로 준비하며 회복·modifier 호출·장착 상태·관전자 flag·clock은 주입하지 않는다. stock rate 7,200·FPS 30·max HP 150의 장비 주기 1,440 tick을 그대로 기다리고, 긴 관찰 동안 실제 한-frame right-button 입력으로 비활성 관전자 전환을 방지한다. callback을 직접 호출하거나 기본 자연 회복만으로 통과시키지 않는다.

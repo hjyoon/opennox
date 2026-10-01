@@ -4529,6 +4529,7 @@ void nox_server_questLoseSpell_native_54CE00(nox_object_t* unit);
 void sub_54CE00(nox_object_t* unit) { nox_server_questLoseSpell_native_54CE00(unit); }
 
 //----- (0054CEE0) --------------------------------------------------------
+#if 0
 void sub_54CEE0(nox_object_t* unit) {
 	int a1 = (int)(uintptr_t)unit;
 	int v2;       // edi
@@ -4577,6 +4578,9 @@ void sub_54CEE0(nox_object_t* unit) {
 		}
 	}
 }
+#endif
+void nox_server_questLoseGuide_native_54CEE0(nox_object_t* unit);
+void sub_54CEE0(nox_object_t* unit) { nox_server_questLoseGuide_native_54CEE0(unit); }
 
 //----- (0054CFB0) --------------------------------------------------------
 #if 0

@@ -19586,6 +19586,13 @@
       "purpose": "the exact eight NOP bytes after random spell loss before Conjurer guide loss at 0054CEE0"
     },
     {
+      "name": "sub_54CEE0_prefix",
+      "address": "0x0054CEE0",
+      "size": 55,
+      "sha256": "51261b42de3d47ef0f52dfa23583acd291c1be2fd2284126dbc50595b76baa7f",
+      "purpose": "cache Player, admit only Conjurer class byte two, and begin the 41 live exactly-one guide DWORD count before the already sealed eligibility call"
+    },
+    {
       "name": "sub_4F2530_call_54CF17",
       "address": "0x0054CF17",
       "size": 5,
@@ -19593,11 +19600,32 @@
       "purpose": "the exact first decoded direct rel32 call from random Conjurer field-guide loss, used while counting learned and loss-eligible guides"
     },
     {
+      "name": "sub_54CEE0_count_rng_select",
+      "address": "0x0054CF1C",
+      "size": 51,
+      "sha256": "2e960ca60c11fe02073980b2c4c9498b6b738019bd762a4718e8d1343b325aac",
+      "purpose": "finish the exactly-one eligible count, always call inclusive logic RNG with zero through count minus one and begin the fresh zero-through-40 guide scan before the second sealed eligibility call"
+    },
+    {
       "name": "sub_4F2530_call_54CF4F",
       "address": "0x0054CF4F",
       "size": 5,
       "sha256": "fce5c4a0fa2828f39b1ae80637fa2bc5695b036ee9ffcdf4850bcf17e38a51e7",
       "purpose": "the exact second decoded direct rel32 call from random Conjurer field-guide loss, used while selecting the counted ordinal"
+    },
+    {
+      "name": "sub_54CEE0_clear_packet_return",
+      "address": "0x0054CF54",
+      "size": 89,
+      "sha256": "e930ff52c1c2187fe1f9d29a9ca886b800b3fc0d0d309623be70779ad826991e",
+      "purpose": "select the live eligible ordinal, clear only its guide DWORD, load recipient afterward and send the four-byte unsequenced/remove-one F0/19 packet with little-endian guide word, preserving the original void returns"
+    },
+    {
+      "name": "sub_54CEE0_padding",
+      "address": "0x0054CFAD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after Conjurer guide loss before Warrior ability loss at 0054CFB0"
     },
     {
       "name": "sub_54CFB0_prefix",

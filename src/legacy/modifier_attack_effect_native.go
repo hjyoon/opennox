@@ -11,6 +11,10 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+func modifierDamageMultiplierPointer4E04C0() unsafe.Pointer {
+	return C.nox_xxx_effectDamageMultiplier_4E04C0
+}
+
 func modifierDamageMultiplierCallNative4E04C0(effect *server.ModifierEff, damage *float32) *float32 {
 	return (*float32)(unsafe.Pointer(C.nox_xxx_effectDamageMultiplier_4E04C0(
 		effect.C(), nil, nil, nil, (*C.float)(unsafe.Pointer(damage)),

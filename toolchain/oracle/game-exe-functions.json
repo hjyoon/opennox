@@ -17927,6 +17927,20 @@
       "purpose": "the exact decoded direct rel32 call at 005382E5 targeting unit buff membership testing at 004FF350"
     },
     {
+      "name": "nox_xxx_itemApplyAttackEffect_538840",
+      "address": "0x00538840",
+      "size": 73,
+      "sha256": "d65a8817ac550bebdb5b8f19912da8a24f0fec1fbe5acdaf33cf82b4bc4173ff",
+      "purpose": "cache the item modifier array and traverse four live slots, invoking each non-null attack callback with item, owner, null target and attack context, then return zero"
+    },
+    {
+      "name": "nox_xxx_itemApplyAttackEffect_538840_padding",
+      "address": "0x00538889",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP bytes following the item attack-effect dispatcher"
+    },
+    {
       "name": "nox_xxx_playerAttack_538960",
       "address": "0x00538960",
       "size": 4642,

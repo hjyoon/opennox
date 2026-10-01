@@ -54,12 +54,7 @@ var chakramCollideCall4EAF00 = func(source, target *server.Object, collision uns
 				)
 			},
 			ApplyAttackEffect: func(source, owner *server.Object, attack *server.ChakramAttackData) {
-				ccall.CallIntUPtr3(
-					C.nox_xxx_itemApplyAttackEffect_538840,
-					uintptr(source.CObj()),
-					uintptr(owner.CObj()),
-					uintptr(unsafe.Pointer(attack)),
-				)
+				srv.S().ItemApplyAttackEffect538840(source, owner, unsafe.Pointer(attack))
 			},
 			PreAttackEffects: func(target, owner, source *server.Object, attack *server.ChakramAttackData) {
 				ccall.CallIntUPtr4(

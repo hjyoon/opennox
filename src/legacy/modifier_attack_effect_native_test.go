@@ -69,3 +69,31 @@ func TestModifierAttackEffectsKeepNativePointers(t *testing.T) {
 	runtime.KeepAlive(effect)
 	runtime.KeepAlive(projectile)
 }
+
+func TestItemAttackEffect538840NativeCallback(t *testing.T) {
+	mod := &server.ModifierEff{Attack40: server.ModifierEffFnc{
+		Fnc: modifierDamageMultiplierPointer4E04C0(), Valf: 1.5,
+	}}
+	data := &server.ModifierInitData{Modifiers: [4]*server.ModifierEff{mod, mod, mod, mod}}
+	item := &server.Object{InitData: unsafe.Pointer(data)}
+	owner := &server.Object{}
+	attack := &server.ArrowAttackData{Damage: 8, Owner: owner, Source: item}
+	var pin runtime.Pinner
+	for _, ptr := range []any{mod, data, item, owner, attack} {
+		pin.Pin(ptr)
+	}
+	defer pin.Unpin()
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		for _, ptr := range []unsafe.Pointer{mod.C(), unsafe.Pointer(data), item.CObj(), owner.CObj(), unsafe.Pointer(attack)} {
+			if uintptr(ptr) <= math.MaxUint32 {
+				t.Fatalf("expected native high pointer, got %p", ptr)
+			}
+		}
+	}
+	if got := (*server.Server)(nil).ItemApplyAttackEffect538840(item, owner, unsafe.Pointer(attack)); got != 0 {
+		t.Fatalf("dispatcher result = %d, want 0", got)
+	}
+	if attack.Damage != 40.5 || attack.Owner != owner || attack.Source != item {
+		t.Fatalf("native attack record = %+v, want damage 40.5 with unchanged pointers", attack)
+	}
+}

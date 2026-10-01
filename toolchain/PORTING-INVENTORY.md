@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 발사체 명중 시 공격 modifier dispatch `00538840`
+
+실제 슈리켄 명중 검증에서 projectile의 native 주소가 C의 `int` 인수로 잘리는 크래시를 재현했다. 원본 본체 73바이트와 7-NOP를 봉인하고, Arrow·Chakram 경로를 native Go dispatcher로 연결했다. entry-cached modifier array의 네 slot은 callback 뒤 live로 재조회하며, native callback의 다섯 인수와 null target·최종 반환 0을 유지한다. 원본의 필수 item/array 전제를 nil guard로 숨기지 않는다. 4GiB 초과 인수·실제 C damage multiplier 네 번 호출·cached/live mutation을 회귀로 검사한다. 후속 pre-hit dispatcher와 자연 명중/귀환 검증은 별도 변경으로 진행한다.
+
 ## 플레이어 던지기 발사 복원 `00538960`
 
 앞서 재현한 누락 분기를 한 원본 본체 `00538960`의 별도 변경으로 복원했다. action 44의 DWORD deadline·BYTE animation·정확한 중간 frame gate를 유지하며, Round 우선순위·trace 5/4·cached spawn/Ammo/Chakram update와 live modifier/방향/owner 위치를 구분한다. Round는 detach→생성→projectile inventory에 원래 무기 이동→modifier→velocity→반사 4·return state 2→audio 순서다. Fan은 생성 전 collision owner를 저장하고 audio 뒤 infinite flag를 읽어 BYTE charge를 감소시킨다. 마지막 수량은 detach/delete/원본 자동 재장착, 나머지는 cached player update의 fresh recipient로 charge 보고를 한다. 원본에 없는 nil binding 무시나 animation/divisor clamp는 추가하지 않았다.

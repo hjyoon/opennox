@@ -2231,11 +2231,9 @@ void nox_xxx_bookRewardCli_499CF0(int* a1, int a2, int a3) {
 
 //----- (00499F60) --------------------------------------------------------
 void sub_499F60(int a1, int a2, int a3, short a4, char a5, char a6, char a7, char a8, char a9, int a10) {
-	uint32_t* result; // eax
-	int v11;          // edx
-	int v12;          // ecx
-	uint32_t* v13;    // esi
-	int v14;          // eax
+	nox_drawable* dr;
+	uint8_t* effect;
+	uint32_t center_color;
 
 	if (!*getMemU32Ptr(0x5D4594, 1217512)) {
 		*getMemU32Ptr(0x5D4594, 1217512) = nox_xxx_getTTByNameSpriteMB_44CFC0("RedBubbleParticle");
@@ -2247,47 +2245,44 @@ void sub_499F60(int a1, int a2, int a3, short a4, char a5, char a6, char a7, cha
 		*getMemU32Ptr(0x5D4594, 1217536) = nox_xxx_getTTByNameSpriteMB_44CFC0("LightVioletBubbleParticle");
 		*getMemU32Ptr(0x5D4594, 1217540) = nox_xxx_getTTByNameSpriteMB_44CFC0("YellowBubbleParticle");
 	}
-	result = (uint32_t*)nox_xxx_spriteLoadAdd_45A360_drawable(a1, a2, a3);
-	v13 = result;
-	if (result) {
-		BYTE1(v11) = HIBYTE(a4);
-		LOBYTE(result) = *((uint8_t*)result + 160);
-		LOBYTE(v12) = *((uint8_t*)v13 + 156);
-		*((uint16_t*)v13 + 52) = a4;
-		LOBYTE(v11) = *((uint8_t*)v13 + 152);
-		v13[108] = nox_color_rgb_4344A0(v11, v12, (int)result);
+	dr = nox_xxx_spriteLoadAdd_45A360_drawable(a1, a2, a3);
+	if (dr) {
+		// Only the numeric effect prefix retains its PE32 byte layout. The
+		// drawable's height, light colors, and list links have native offsets.
+		dr->z = (uint16_t)a4;
+		dr->union_u32[0] = nox_color_rgb_4344A0((uint8_t)dr->light_color_r, (uint8_t)dr->light_color_g,
+												(uint8_t)dr->light_color_b);
 		if (a1 == *getMemU32Ptr(0x5D4594, 1217512)) {
-			v14 = nox_color_rgb_4344A0(255, 128, 128);
+			center_color = nox_color_rgb_4344A0(255, 128, 128);
 		} else if (a1 == *getMemU32Ptr(0x5D4594, 1217516)) {
-			v14 = nox_color_rgb_4344A0(255, 255, 255);
+			center_color = nox_color_rgb_4344A0(255, 255, 255);
 		} else if (a1 == *getMemU32Ptr(0x5D4594, 1217524)) {
-			v14 = nox_color_rgb_4344A0(255, 100, 50);
+			center_color = nox_color_rgb_4344A0(255, 100, 50);
 		} else if (a1 == *getMemU32Ptr(0x5D4594, 1217528)) {
-			v14 = nox_color_rgb_4344A0(64, 255, 64);
+			center_color = nox_color_rgb_4344A0(64, 255, 64);
 		} else if (a1 == *getMemU32Ptr(0x5D4594, 1217532)) {
-			v14 = nox_color_rgb_4344A0(255, 100, 255);
+			center_color = nox_color_rgb_4344A0(255, 100, 255);
 		} else if (a1 == *getMemU32Ptr(0x5D4594, 1217536)) {
-			v14 = nox_color_rgb_4344A0(255, 200, 255);
+			center_color = nox_color_rgb_4344A0(255, 200, 255);
 		} else if (a1 == *getMemU32Ptr(0x5D4594, 1217540)) {
-			v14 = nox_color_rgb_4344A0(255, 255, 200);
+			center_color = nox_color_rgb_4344A0(255, 255, 200);
 		} else {
-			v14 = nox_color_rgb_4344A0(200, 200, 255);
+			center_color = nox_color_rgb_4344A0(200, 200, 255);
 		}
-		v13[109] = v14;
-		*((uint8_t*)v13 + 440) = a5;
-		*((uint8_t*)v13 + 443) = a6;
-		*((uint8_t*)v13 + 442) = a6;
-		*((uint8_t*)v13 + 441) = 1;
-		*((uint8_t*)v13 + 444) = a8;
-		*((uint8_t*)v13 + 445) = a9;
-		*((uint8_t*)v13 + 446) = a7;
-		nox_xxx_spriteToSightDestroyList_49BAB0_drawable(v13);
-		nox_xxx_spriteTransparentDecay_49B950(v13, a10);
-		nox_xxx_sprite_45A110_drawable(v13);
+		dr->union_u32[1] = center_color;
+		effect = (uint8_t*)dr->union_u32;
+		effect[8] = a5;
+		effect[11] = a6;
+		effect[10] = a6;
+		effect[9] = 1;
+		effect[12] = a8;
+		effect[13] = a9;
+		effect[14] = a7;
+		nox_xxx_spriteToSightDestroyList_49BAB0_drawable(dr);
+		nox_xxx_spriteTransparentDecay_49B950(dr, a10);
+		nox_xxx_sprite_45A110_drawable(dr);
 	}
 }
-// 49A025: variable 'v11' is possibly undefined
-// 49A025: variable 'v12' is possibly undefined
 
 //----- (0049A3D0) --------------------------------------------------------
 // EquipmentData contains native pointers and is 48 bytes on 64-bit hosts.

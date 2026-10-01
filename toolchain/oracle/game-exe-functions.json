@@ -2352,6 +2352,13 @@
       "purpose": "the exact fifteen NOP bytes separating friend membership lookup from the next allocator at 00495AB0"
     },
     {
+      "name": "sub_499F60_bubble_particle_create",
+      "address": "0x00499F60",
+      "size": 496,
+      "sha256": "c7bbfe049e41dd90f9fe2aca1cd054c89dcdba3d60164b86e0f6d4c07802f2a7",
+      "purpose": "the complete bubble-particle creator: lazy eight-type cache, sprite allocation, signed-word height, byte-masked light color, ordered center-color selection, packed byte animation state, and sight/decay/update list insertion"
+    },
+    {
       "name": "nox_xxx_allocArrayHealthChanges_49A5F0",
       "address": "0x0049A5F0",
       "size": 51,
@@ -2763,6 +2770,13 @@
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
       "purpose": "the exact fifteen NOP bytes after the horizontal slider image renderer"
+    },
+    {
+      "name": "nox_thing_bubble_draw_4B7540",
+      "address": "0x004B7540",
+      "size": 448,
+      "sha256": "0a0ec5bc4891561455bbc8b5064d0e8cd2830bd3c18341884f702086e79956d4",
+      "purpose": "the complete BubbleDraw callback with deadline-triggered decay, glow/center drawing, byte countdowns and phases, signed-byte height oscillation, and deletion at zero radius or negative signed-word height"
     },
     {
       "name": "nox_thing_monster_gen_draw_4BC750",
@@ -19917,6 +19931,20 @@
       "purpose": "the exact aligned NUL-terminated GUIDE_INVALID plus forty creature names referenced in order by the guide-name pointer table"
     },
     {
+      "name": "bubble_draw_registration_record",
+      "address": "0x005A3738",
+      "size": 16,
+      "sha256": "ec0ff599bd657f6bf6db2780fdee87e60f9452c5259973e7bfa109c1a987312c",
+      "purpose": "the exact four-dword draw registration binding BubbleDraw name pointer 005A4AB8 to callback 004B7540 with two zero slots"
+    },
+    {
+      "name": "bubble_draw_name",
+      "address": "0x005A4AB8",
+      "size": 11,
+      "sha256": "6edb08967b66bfbbaf799f86d4be13dfe7e5ce4f34dcb6ed0a02fd582c6bae52",
+      "purpose": "the exact NUL-terminated BubbleDraw name referenced by the draw registration record"
+    },
+    {
       "name": "quest_preview_default_font_44e110",
       "address": "0x005A50A4",
       "size": 8,
@@ -20384,6 +20412,13 @@
       "size": 37,
       "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
       "purpose": "the exact NUL-terminated GUIBrief.c source-file C string passed with line 1756 to the Quest start briefing text lookup at 00450A80"
+    },
+    {
+      "name": "bubble_particle_type_names",
+      "address": "0x005AEC08",
+      "size": 184,
+      "sha256": "7d166315907e5a3baae7311a347673077272bea0f7a6879e17a0ca4203a26353",
+      "purpose": "the exact aligned eight NUL-terminated Red, White, LightBlue, Orange, Green, Violet, LightViolet, and Yellow BubbleParticle type names loaded in order by 00499F60"
     },
     {
       "name": "class_initial_spell_rows",

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Eye of the Wolf의 BubbleParticle 생성 `00499F60`
+
+Warrior 스킬의 실제 키 입력 회귀에서 Eye of the Wolf를 처음 사용하자 minimap의 dynamic drawable 조회가 `0x23e823e8004000bc`를 따라가며 종료됐다. 생성 함수 `00499F60`이 PE32 drawable offset 432에 GreenBubble의 packed 색상 `0x23e823e8`을 쓰지만 LP64의 그 위치는 native `NextPtr`다. 높이 104, light color 152/156/160과 animation 440..446 역시 native drawable 필드 위치가 아니다. 그리기 dispatcher는 이미 typed Go `BubbleDraw`로 연결돼 있으므로 이번 수정은 생성 함수 하나에 한정한다.
+
+원본 생성 본체 `00499F60..0049A14F` 496바이트/SHA-256 `c7bbfe049e41dd90f9fe2aca1cd054c89dcdba3d60164b86e0f6d4c07802f2a7`와 BubbleDraw `004B7540..004B76FF` 448바이트/`0a0ec5bc4891561455bbc8b5064d0e8cd2830bd3c18341884f702086e79956d4`를 구현 전에 독립 봉인·검증했다. 등록 record `005A3738` 16바이트, `BubbleDraw` 이름 `005A4AB8` 11바이트, 여덟 particle type 이름 블록 `005AEC08` 184바이트도 별도 데이터 범위이며 각 SHA-256은 매니페스트에 기록한다. 직접 verifier 대상은 누적 **코드 2,802개·데이터 589개**다.
+
+생성부는 기존 scalar C ABI·여덟 live type cache·첫 일치 색상 분기를 유지하고 `nox_drawable.z`, native light-color member와 `union_u32`의 숫자 prefix만 쓴다. 16-bit 높이와 byte radius/phase/countdown/oscillation의 원본 wrap, 미사용 union byte 보존 및 sight→transparent decay→update list 삽입 순서는 그대로다. 실제 C 진입점 회귀는 수정 전 모든 색상에서 native NextPtr 손상을 재현했으며, 수정 후 여덟 색상·unknown default·중복 cache 우선순위·실패한 sprite 할당과 zero/missing type cache를 검사한다. C heap drawable의 실제 주소와 payload·인접 링크·dynamic lookup·실제 client list/expiry를 관찰하며 새 surrogate C setter는 없다. 일반·HD headless 실행은 각각 Eye를 두 번 사용하고 투명 Spider 감지, buff/HUD 자연 종료, 쿨다운과 재사용까지 exit 0으로 완료했다. Go 1.26.5 전체 일반·cgocheck2 시험, 대상별 race/checkptr/cgocheck2 각 3회와 stock 무결성·압축 oracle-test도 통과했다. Darwin/ARM64의 C heap 회귀 주소는 모두 4GiB를 초과했고 원본 자산은 변경하지 않았다.
+
 ## Quest 테마 생성기 초기화와 종류 매핑 `0051A1F0..0051A59F`
 
 툴팁 수정 후 최신 커밋의 실제 headless Host Quest 입력에서도 `G_TemplD.map` stage 1까지 진행한 뒤 `sub_51A1F0`의 첫 객체 순회에서 충돌했다. C의 `int` 임시 변수에 잘린 객체 주소가 native `Object.Next`로 전달된다. 후속 `0051A500`도 객체 포인터를 `int`로 받고, `0051A550`은 PE32의 16-byte 이름/ID 레코드를 `char**`로 직접 읽어 기존 native pointer side slot을 우회하므로 세 함수의 경계를 함께 조사했다. packed 4-byte 포인터를 native 8-byte 포인터로 읽거나 저장하면 인접 종류 ID와 겹친다. 이 기록은 구현 전 봉인이며 실제 Quest 시작 성공을 주장하지 않는다.

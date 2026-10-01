@@ -8,7 +8,13 @@
 
 C-owned owner/caster/두 owned node/Fist/update/arg 모두 4GiB 초과 주소로 native 본체를 검사하고, 기존 legacy Go selector wrapper도 native 인수 전달과 signed 결과를 검사했다. 5개 레벨의 생성/할당 실패, 각 cache slot의 중복 거부, cached type/live-next·cache 상위 비트, Coop/다른 모드·player/non-player trace 차단, balance 중 update/좌표 교체, float32 반올림·NaN/Inf·범위 경계와 missing binding fault를 검사한다. 실제 native layout의 owned-head/next `568/560`, update `872`, Player `336`, index `2068`, SpellAcceptArg position `8`을 PE32 offset과 구분한다. 관련 server/legacy/root 일반 시험 3회가 통과했다.
 
-원본 본체 503바이트·뒤 9-NOP 및 정확한 type/message/balance 문자열 8개를 봉인했다. 원래 selector의 callback 선택은 `004FD98E`이며 stock 1,556개 파일·누적 코드 2,853개·데이터 605개 verifier가 통과했다. 이 커밋은 native 생성과 회귀 시험 단계이며 전체 일반·실제 cgocheck2·race/checkptr, 제품 headless 생성/낙하/충돌 검증과 사용자가 겪은 정확한 맵 이벤트 재현은 후속 검증으로 남긴다.
+원본 본체 503바이트·뒤 9-NOP 및 정확한 type/message/balance 문자열 8개를 봉인했다. 원래 selector의 callback 선택은 `004FD98E`이며 stock 1,556개 파일·누적 코드 2,853개·데이터 605개 verifier가 통과했다. 생성 본체 수정은 `595d4e06d`로 별도 커밋·푸시했다.
+
+후속 통합 검증은 전체 일반·실제 `GOEXPERIMENT=cgocheck2`, 관련 server/legacy/root race·checkptr=2 각각 3회와 macOS ARM64 client/client-hd/server 제품 빌드를 통과했다. 전체 `make oracle-test`는 stock 트리를 전후 재검증하고 원본 코드/데이터 범위 및 NXZ 50쌍을 검사했다. 세 Quest loss helper도 이 통합 게이트에 포함됐으나 미복원 penalty/dispatcher가 남아 Quest 사망 admission은 계속 거부한다.
+
+`host-game-fist-spell.yaml`은 실제 Wizard 메뉴 시작 뒤 object-to-position NoxScript API→일반 selector→native cast→자연 물리/충돌→패킷/클라이언트 그리기를 실행한다. 결과나 Z/속도/피해를 주입하지 않고, stock 비유닛 Barrel의 위치와 내구도만 fixture로 준비했다. 일반·HD 모두 레벨 1..5의 소유 projectile 한 개, 중복 거부, 2 tick 뒤 낙하 Z=234.5, 18 tick 뒤 CRUSH 피해 50/100/200/300/400(HP 2000→1950/1900/1800/1700/1600), 36 tick 뒤 world/owned/drawable 소멸을 확인했다. 실제 owner/Fist/update는 모두 4GiB 초과 native 주소였다. 검토한 낙하·충돌 10개 PNG는 HD에서도 일반 제품 baseline과 정확히 일치했다. 시나리오 예약/레벨 거부 시험도 3회 통과했다.
+
+이 headless 검증은 사용자 맵의 trigger bytecode/builtin 0x84, 키보드 주문/마나, 유닛 대상 피해·사망 또는 Linux/AMD64 제품 실행을 대신하지 않는다. 사용자가 겪은 정확한 맵 이벤트는 맵 정보가 없어 아직 재현하지 않았다.
 
 ## Quest Conjurer 필드 가이드 손실의 native player 경계 `0054CEE0`
 

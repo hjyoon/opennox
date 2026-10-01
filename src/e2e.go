@@ -9868,6 +9868,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckPlayerStatusAnimation(l.Text, l.Name)
+		case "check-player-status-spell":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerStatusSpell(l.Text, l.Name)
 		case "assert-player-hud-poisoned":
 			if dt != 0 {
 				sc.Wait(dt, "")

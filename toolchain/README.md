@@ -63,6 +63,23 @@ NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
   ./scripts/e2e/host-game-player-status-animation.yaml
 ```
 
+`host-game-player-status-spell.yaml`은 실제 Wizard 메뉴 선택 뒤 level 1 Confuse와 Stun을 self-target으로 시전한다. `host-game-player-status-spell-warrior.yaml`은 실제 Warrior 메뉴로 Stun의 Slowed 분기를 확인한다. 정상 `SpellAccept4FD400` selector→6-argument C cast 진입→buff 적용→실제 client packet/HUD→그리기→자연 만료 경로이며, enchant를 직접 적용하는 앞 시나리오와 구분한다. 원본 Confuse 90틱·Stun 60틱과 class 선택을 바꾸지 않는다. Wizard의 Held 머리 위 효과는 두 서로 다른 sprite frame에서 픽셀이 일치했고, Warrior는 원본대로 Held가 아닌 Slowed의 노란 입자가 두 시점에서 7개·6개 표시된 뒤 사라졌다. 4GiB 초과 native player/argument 포인터를 유지하며, C-heap argument를 명시적으로 초기화하는 회귀도 검사한다.
+
+일반·HD headless 네 실행에서 시작·진행·해제의 새 PNG 9개가 decoded RGBA 기준으로 정확히 일치했다. 공유 시각 검사 helper 변경 후 기존 6종 상태의 PNG 18개도 일반 회귀 실행에서 그대로 일치했다. self-target server cast 준비만 fixture이며 적의 주문 명중·플레이어 incantation 입력·mana 소비, 모든 캐릭터 자세나 SDL/OpenAL 출력을 대신하지 않는다. Conjurer/기타 class byte와 Monster Mass 분기는 별도 native 함수 회귀 범위다. 다른 GUI E2E와 동시에 실행하지 않는다.
+
+```sh
+NOX_E2E_SEAT=headless bash ./scripts/run-headless-gui-e2e.sh \
+  /absolute/path/to/nox ./scripts/e2e/host-game-player-status-spell.yaml
+NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
+  bash ./scripts/run-headless-gui-e2e.sh /absolute/path/to/nox \
+  ./scripts/e2e/host-game-player-status-spell.yaml
+NOX_E2E_SEAT=headless bash ./scripts/run-headless-gui-e2e.sh \
+  /absolute/path/to/nox ./scripts/e2e/host-game-player-status-spell-warrior.yaml
+NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
+  bash ./scripts/run-headless-gui-e2e.sh /absolute/path/to/nox \
+  ./scripts/e2e/host-game-player-status-spell-warrior.yaml
+```
+
 `host-game-warrior-abilities.yaml`은 regular host의 정상 초기화로 습득한 Warrior 스킬 5개를 실제 A/S/D/F/G 키로 각각 두 번 사용한다. 돌진 피해·범위 내 함성의 anti-magic/stun·작살의 피해와 끌어오기·가볍게 걷기의 은신 유지 및 이동 중 공격으로 해제·늑대의 눈의 투명 적 감지를 확인한다. 각 사용의 서버 상태·실제 패킷의 HUD·종료·쿨다운 중 재입력 거부·ready 보고·재사용을 검사하며 일반·HD headless 실행 모두 통과했다. Troll HP 2,000, 정지 AI 대상·위치·투명 Spider와 quickbar 배치는 명시적인 fixture다. 스킬 실행·종료·쿨다운을 직접 주입하지 않는다. 원본 HarpoonDuration=0과 TreadLightlyDuration=99,999는 변경하지 않으며, 벽 돌진·PvP·campaign의 레벨별 검증이나 SDL/OpenAL 검증을 대신하지 않는다. 다른 GUI E2E와 동시에 실행하지 않는다.
 
 ```sh

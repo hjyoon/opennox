@@ -3,6 +3,7 @@ package opennox
 import (
 	"fmt"
 	"image"
+	"time"
 	"unsafe"
 
 	"github.com/opennox/libs/noximage"
@@ -18,6 +19,7 @@ type e2ePlayerStatusAnimation struct {
 	unit     *server.Object
 	ref      *legacy.ImageRef
 	frame    uint32
+	duration uint32
 	baseline *noximage.Image16
 	first    int
 }
@@ -42,6 +44,15 @@ func e2ePlayerStatusBuff(kind string) (server.EnchantID, bool) {
 }
 
 func (sc *e2eScenario) CheckPlayerStatusAnimation(kind, name string) {
+	sc.checkPlayerStatusAnimation(kind, name, "player status "+kind, 180, func(unit *server.Object, buff server.EnchantID) uint32 {
+		// Status preparation uses the normal enchant API; client buffs,
+		// rendering, and expiry remain the actual game pipeline.
+		asObjectS(unit).ApplyEnchant(buff, 90, 1)
+		return 90
+	})
+}
+
+func (sc *e2eScenario) checkPlayerStatusAnimation(kind, name, screenPrefix string, expiryTimeout time.Duration, apply func(*server.Object, server.EnchantID) uint32) {
 	buff, ok := e2ePlayerStatusBuff(kind)
 	if !ok {
 		e2eError(fmt.Errorf("unknown player status animation %q", kind))
@@ -84,9 +95,7 @@ func (sc *e2eScenario) CheckPlayerStatusAnimation(kind, name string) {
 		f.baseline = noximage.NewImage16(pix.Rect)
 		copy(f.baseline.Pix, pix.Pix)
 		f.frame = noxServer.Frame()
-		// Only the normal native enchant API prepares the status. Neither the
-		// client buffs nor its drawing pass/framebuffer is injected or forced.
-		asObjectS(f.unit).ApplyEnchant(buff, 90, 1)
+		f.duration = apply(f.unit, buff)
 		e2eLog.Printf("STATUS ANIMATION APPLIED: kind=%s enchant=%d frame=%d timer=%d", kind, buff, f.frame, f.unit.EnchantDur(buff))
 	})
 	for _, sample := range []struct {
@@ -125,11 +134,11 @@ func (sc *e2eScenario) CheckPlayerStatusAnimation(kind, name string) {
 			}
 			e2eLog.Printf("STATUS ANIMATION VISIBLE: kind=%s sample=%s frame=%d timer=%d image-frame=%d matching-pixels=%d/%d", kind, sample.label, noxServer.Frame(), f.unit.EnchantDur(buff), index, matched, total)
 		})
-		sc.Screen("player status " + kind + " " + sample.label)
+		sc.Screen(screenPrefix + " " + sample.label)
 	}
-	sc.addWhen(0, name+" natural expiry", 180, func() bool {
+	sc.addWhen(0, name+" natural expiry", expiryTimeout, func() bool {
 		dr := noxClient.ClientPlayerUnit()
-		return f.unit != nil && dr != nil && noxServer.Frame() >= f.frame+95 &&
+		return f.unit != nil && dr != nil && noxServer.Frame() >= f.frame+f.duration+5 &&
 			!f.unit.HasEnchant(buff) && !dr.HasEnchant(buff)
 	}, func() {
 		if f.unit.Buffs != 0 || noxClient.ClientPlayerUnit().Buffs != 0 || memmap.Uint32(0x5D4594, 1062540) != 0 || f.unit.EnchantDur(buff) != 0 {
@@ -150,7 +159,7 @@ func (sc *e2eScenario) CheckPlayerStatusAnimation(kind, name string) {
 		}
 		e2eLog.Printf("STATUS ANIMATION EXPIRED: kind=%s frame=%d elapsed=%d buffs=%#x", kind, noxServer.Frame(), noxServer.Frame()-f.frame, f.unit.Buffs)
 	})
-	sc.Screen("player status " + kind + " expired")
+	sc.Screen(screenPrefix + " expired")
 }
 
 func e2eVisibleSlowParticles() int {

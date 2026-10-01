@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 실제 Confuse/Stun 주문의 headless 화면 회귀
+
+두 cast 본체를 각각 복원한 뒤 정상 `SpellAccept4FD400` selector와 실제 6-argument C dispatch를 통과하는 별도 시각 시나리오를 추가했다. 실제 메뉴에서 Wizard/Warrior를 선택하고 4GiB 초과 native player를 self-target으로 level 1 cast한다. 원본 Confuse 90틱, Stun 60틱과 Wizard Held/Warrior Slowed 분기를 유지하며 client buff·packet·그리기·자연 만료를 주입하지 않는다. C-heap argument의 실제 target과 시전 시점 좌표를 명시적으로 초기화·보존하는 회귀도 추가했다.
+
+일반·HD headless의 Wizard/Warrior 네 실행이 통과했다. Confuse/Held의 서로 다른 두 원본 sprite frame, Slowed의 화면 안 노란 입자 7개→6개, 각 효과의 자연 종료 뒤 buff/HUD와 입자 제거를 검사하고 새 PNG 9개를 decoded RGBA exact-pixel로 비교했다. 공유 검사 helper의 기존 6종 상태 회귀에서도 PNG 18개가 변경 없이 통과했다. 이 단위는 새로운 원본 봉인 범위를 추가하지 않아 코드 2,831개·데이터 597개다. 적 명중·플레이어 incantation/mana 경로나 모든 캐릭터 자세, SDL/OpenAL 검증을 대신하지 않는다.
+
+새 fixture 추가 후 일반·실제 `GOEXPERIMENT=cgocheck2` 전체 Go 시험, 해당 fixture의 strict CGo 10회·race/checkptr 각 3회와 원본 무결성·직접 code verifier·압축 oracle-test가 통과했다. 원본 자산 1,556개·570,653,750바이트와 tree SHA-256은 그대로다.
+
 ## 실제 스턴 주문의 native target·player class 복원 `0052C2C0`
 
 실제 Stun 6-argument C dispatch가 `0x12d304080`의 target을 `0x2d304080`으로 잘라 class 읽기에서 `0x2d304088` SIGSEGV를 내는 실패를 먼저 재현했다. 이 별도 단위는 `0052C2C0` 한 본체만 Go export로 옮긴다. initial nil target→0, balance→binary32 spill→nearest-even 변환, live target을 캐시한 뒤 class와 필요 필드 읽기, buff 적용 뒤 live target을 다시 조회해 third-argument 공격자 기록→1 반환 순서를 보존한다. Player bit가 Monster보다 우선하며 raw class byte 0(Warrior)은 Slowed(4), 모든 nonzero byte는 Held(5)다. non-player Monster만 PE32 `Object+120`의 **Mass**를 읽고 엄격히 15를 넘을 때 Slowed를 고른다. 높이 `ZSize2`가 아니며 NaN·15 이하·다른 class는 Held다. native player update/player/info 링크가 잘못된 경우를 새 nil fallback으로 숨기지 않는다.

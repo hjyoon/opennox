@@ -9821,6 +9821,20 @@
       "purpose": "33 absolute branch targets mapping Player states zero through 32 to the action-mapping cases used by 004FA2B0"
     },
     {
+      "name": "nox_xxx_itemsApplyUpdateEffect_4FA490",
+      "address": "0x004FA490",
+      "size": 87,
+      "sha256": "5ab9dcbf90088b250e573d583d580a550a25886bca434b1f4c3fc54a3c643b52",
+      "purpose": "walk equipped native items under mask 0x13001000, cache each modifier array, reload four live update slots and pass the modifier plus equipped item and null context, then reload the current item's next link"
+    },
+    {
+      "name": "nox_xxx_itemsApplyUpdateEffect_4FA490_padding",
+      "address": "0x004FA4E7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes separating equipped-item update dispatch from inversion-effect lookup"
+    },
+    {
       "name": "nox_xxx_checkInversionEffect_4FA4F0",
       "address": "0x004FA4F0",
       "size": 159,

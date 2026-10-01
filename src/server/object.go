@@ -1709,20 +1709,6 @@ func (obj *Object) Sub547DB0(p *types.Pointf) bool {
 	return true
 }
 
-func (s *Server) ItemsApplyUpdateEffect(obj *Object) {
-	for it := obj.InvFirstItem; it != nil; it = it.InvNextItem {
-		const maskItems = object.ClassFlag | object.ClassWeapon | object.ClassArmor | object.ClassWand
-		if it.Flags().Has(object.FlagEquipped) && it.Class().HasAny(maskItems) {
-			idata := it.InitDataModifier()
-			for _, mod := range idata.Modifiers {
-				if mod != nil {
-					mod.CallUpdateNil(obj)
-				}
-			}
-		}
-	}
-}
-
 func (s *Server) Sub4DE4D0(a1 int) {
 	bit := uint32(1) << a1
 	for it := s.Objs.First(); it != nil; it = it.Next() {

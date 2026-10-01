@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 장비 update 인수·live 순회 복원 `004FA490`
+
+별도 원본 본체 87바이트·9-NOP에 따라 장비 순회 callback 인수를 잘못된 player에서 current equipped item으로 고쳤다. equipped/class mask와 entry-cached modifier array를 유지하며 callback 뒤 네 slot 및 current item의 next link를 live로 조회한다. array 값을 복사하는 range도 제거했다. 회귀는 skip gate·callback 중 array/next/head 교체·item 인수와 native 장비 순회→C callback→재생 holder healing을 검사한다.
+
 ## 장비 재생 update callback의 native 경계 `004E01D0`
 
 사용자 PC `0x158cb1d`·주소 `0xffffffffdf1765bc`는 callback 두 번째 인수를 `int`로 받아 +492 holder를 읽는 재생 효과와 일치한다. stock `RegenerationUpdate`를 native C→Go entry에 등록하여 item·modifier·holder·health 주소를 유지한다. 원본 204바이트·4-NOP를 봉인하고, cooldown의 unsigned DWORD wrap·HP WORD 비교·special armor rate/3·DWORD product wrap·fresh maxHP/FPS/frame·1 HP 조정을 그대로 복원했다. 잘못된 divisor를 임의로 clamp하지 않는다. 실제 C callback에서 4GiB 초과 인수와 healing target을 검사한다. 장비 순회가 owner 대신 item을 전달하는 수정은 별도 원본 함수 변경이다.

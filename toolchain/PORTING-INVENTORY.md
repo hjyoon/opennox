@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Warrior 스킬 5개 실제 입력·효과·종료·재사용 회귀
+
+`host-game-warrior-abilities.yaml`은 실제 메뉴로 regular Warrior를 시작하고 정상 초기화의 레벨 5 스킬을 A/S/D/F/G 키로 두 번씩 사용한다. target·quickbar·wall/solid-prop를 피한 lane은 명시적인 fixture이며 스킬 실행·active record·buff 종료·HUD ready/cooldown을 직접 주입하지 않는다. 서버의 능력 record와 실제 패킷 소비자의 pointer-free 24-byte HUD 슬롯 5개를 같이 관찰하고, 쿨다운 중 재입력에서 record/deadline이 바뀌지 않으며 정확히 경과한 frame 수만큼 cooldown이 감소하는지 검사한다.
+
+일반·HD Darwin/ARM64 headless 실행 모두 5개×2회의 start/effect/repeat-rejection/end/ready, 합계 제품당 50개 검사가 통과하고 exit 0으로 종료했다. Berserker Charge는 Troll `2,000→1,850`와 player `150→150`, Warcry는 범위 안 Necromancer의 AntiMagic·stock WARCRY_STUN 종류 GreenFrog의 Held 및 범위 밖 Necromancer의 무효과, Harpoon은 실제 bolt 부착·1 피해·8 이상 끌어오기와 bolt/target 정리를 확인했다. Tread Lightly는 Bomber 감지 차단·실제 walk 유지·이동 중 공격으로 server/client Sneak 해제와 감지 복귀, Eye of the Wolf는 투명 Spider의 감지→300-frame buff/HUD 자연 종료→감지 불가 복귀를 확인했다. 두 번의 Eye는 frame 2,228/2,838에서 시작하고 2,529/3,139에 종료했으며 2,827/3,437에 ready로 복귀했다. 원본 HarpoonDuration=0은 timed record/HUD active가 없는 bolt lifecycle이며 TreadLightlyDuration=99,999는 실제 공격으로 종료한다.
+
+검증 중 발견한 두 제품 결함은 돌진의 player-self-weapon CRUSH admission 누락과 Eye의 BubbleParticle 생성부 PE32 offset으로 인한 native NextPtr 손상이다. 각 원본 함수는 별도 수정하고 효과 시간·범위·게임 모드·원본 자산을 바꾸지 않았다. 전체 일반·cgocheck2, 대상별 race/checkptr/cgocheck2 각 3회, 코드 2,802개·데이터 589개·stock 1,556개 파일 무결성과 압축 oracle-test가 통과했다. 일반·HD의 효과·HUD 화면도 검토했다. 이 fixture는 level 5 regular host이며 벽 충돌 자기 피해·PvP·campaign 레벨 조합·실제 SDL/OpenAL을 검증하지 않는다.
+
 ## Warrior Berserker Charge의 player-self-weapon 피해
 
 실제 regular host의 Warrior 키 입력에서 돌진은 이동·종료·쿨다운까지 진행하지만 Troll HP는 2,000 그대로였고 `DefaultDamageWorld4E0B30`이 `PLAYER` source와 같은 weapon의 `CRUSH(150)`를 unsupported로 거부했다. 이미 봉인된 원본 `004E0ED0`의 동일 객체 분기와 `004E0FC9`의 damage-type 기록을 따라 이 피해 모양만 native admission에 추가했다. `004E1400`의 PLAYER-class weapon은 melee 판정이 아니므로 별도 melee friendly-hit/Shock 분기는 타지 않고, 앞선 campaign owner gate는 그대로 유지한다.

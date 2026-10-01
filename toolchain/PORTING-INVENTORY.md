@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest stock FlyingGolem의 실제 화살 피해·HP HUD 회귀
+
+`host-quest-golem-pierce.yaml`은 실제 Warrior Quest 메뉴·네 stock 출구 충돌로 5단계 `g_forest`에 도달한다. 플레이어만 원래 Necromancer 근처에 배치하고 생성기·FlyingGolem·화살·AI·HP·피해·네트워크를 주입하지 않는다. 원래 생성기가 만든 FlyingGolem 소유의 살아 있는 GolemArrow를 읽고 type/생성 frame/CollideData 정수 피해만 캐시한다. 지연 삭제 뒤의 피해 attribution 포인터는 map key로만 쓰며 역참조하지 않는다.
+
+Darwin/ARM64 일반·HD headless 모두 stock 화살의 raw PIERCE 3·marker 529/1·HP `424→419`, `321→316`, `194→189` 세 차례를 관찰했다. 원본 피해 숫자 보고는 마지막 피격 뒤 두 frame 동안 지연되어 다른 stock 적의 공격도 합산할 수 있으므로, 단일 화살 피해 5를 강제하지 않고 실제 수신자별 HealthSamples의 `194→163` 전진과 client 합산 `-31`, 같은 live HP HUD `163/450`을 함께 검사한다. 채워진 빨간 픽셀 675·빈 부분 153과 화면의 피해 숫자 31을 확인하고 정상 종료했다. 두 제품은 동일 PNG의 exact-pixel 비교도 통과했다.
+
+별도 단위 회귀는 다른/오래된/미확인 missile·전기 피해·동일 frame 중복·죽음/회복을 제외하고, 아직 화살을 포함하지 않은 recipient cache와 오래되거나 잘못된 client 숫자를 거부한다. 전체 일반·실제 cgocheck2 및 해당 observer 시험 3회, 원본 코드 2,831개·데이터 597개·stock 1,556개 파일 무결성과 압축 왕복이 통과했다. 이는 해당 stock 전투의 피해·HUD 검증이며 Quest 사망 처리·모든 적 종류·원격 PvP·SDL/OpenAL 검증을 포함하지 않는다. 실제 게임 HP 처리나 원본 숫자 합산 규칙을 시험에 맞춰 바꾸지 않았다.
+
 ## stock GolemArrow의 ranged WEAPON 분류 정정 — player 입구
 
 별도 `PlayerDamage(004E17B0)` 변경도 PIERCE admission에 원본 `004E1400`의 ranged 판정을 적용한다. 실제 stock class `0x05200001`·subclass `0x10`으로 앞서 실패한 fractional carry 시험을 다시 실행하며, pure missile의 기존 HP/피격 위치 계약은 별도 양성 회귀로 유지한다. melee weapon subclass·unit·wand와 GreatStaff·possession 미지원 경계는 넓히지 않는다. armor·Quest·Shield·HP 본체와 원본 balance/자산은 변경하지 않았다.

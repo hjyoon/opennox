@@ -2,6 +2,10 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 상태이상 애니메이션 참조 reset `00473960`
+
+로더를 복원한 뒤 세션 정리의 짝 함수가 여전히 packed DWORD만 지워 native cache가 남는 것을 4GiB 초과 주소의 실제 C 호출 회귀로 재현했다. 이 별도 변경 단위는 `00473960` 한 함수만 Go export로 옮겨 첫 참조→둘째 참조 nil 저장과 canonical zero 반환을 유지한다. 같은 함수의 nil 조합·반복 reset·packed neighbor 보존을 검사하며 애니메이션 소유 메모리를 여기서 free하지 않는다. 원본 본체 `00473960..0047396C` 13바이트/SHA-256 `92d3325facf64fbd7c1eaad4447f63a40e303d74cad1b91d84c949e7cbcd6904`와 뒤 3-NOP를 봉인한다. 누적 코드 2,825개·데이터 595개다.
+
 ## 상태이상 애니메이션 참조 로더 `00473930`
 
 실제 macOS ARM64 headless 클라이언트에서 `ConfusedBirdies`의 loaded 주소가 `0x600002877870`인데 효과 renderer가 읽는 native cache는 nil이고 packed DWORD는 `0x02877870`만 담는 실패를 재현했다. 스턴(HELD)·혼란·Nullify·Charming 공통 머리 위 효과와 같은 로더의 `SphericalShieldAnim`이 표시되지 않는 원인이다. `00473930` 한 함수만 Go export로 옮겨 PE32 packed 데이터와 인접 필드는 유지하며 `memmap.PtrPtr`의 native side slot을 초기화한다. 첫 효과의 publish→두 번째 asset lookup→publish→두 번째 포인터 반환 순서를 유지한다. duration·색·sprite frame·맵 데이터는 바꾸지 않는다.

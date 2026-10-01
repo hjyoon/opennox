@@ -1862,6 +1862,20 @@
       "purpose": "the exact fourteen NOP bytes separating status animation cache initialization from reset at 00473960"
     },
     {
+      "name": "sub_473960",
+      "address": "0x00473960",
+      "size": 13,
+      "sha256": "92d3325facf64fbd7c1eaad4447f63a40e303d74cad1b91d84c949e7cbcd6904",
+      "purpose": "clear the two animation references at 006E009C and 006E00A0 in order and return canonical zero"
+    },
+    {
+      "name": "sub_473960_padding",
+      "address": "0x0047396D",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes after status animation cache reset before the next routine at 00473970"
+    },
+    {
       "name": "sub_478080",
       "address": "0x00478080",
       "size": 32,

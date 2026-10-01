@@ -4956,15 +4956,7 @@ void nox_xxx____setargv_11_473920() { *getMemU32Ptr(0x5D4594, 1096520) = 1; }
 
 // sub_473930 (00473930) is implemented in client_status_animations_473930.go.
 
-//----- (00473960) --------------------------------------------------------
-int sub_473960() {
-	int result; // eax
-
-	result = 0;
-	*getMemU32Ptr(0x5D4594, 1096456) = 0;
-	*getMemU32Ptr(0x5D4594, 1096460) = 0;
-	return result;
-}
+// sub_473960 (00473960) is implemented in client_status_animations_473960.go.
 
 //----- (004739E0) --------------------------------------------------------
 int sub_4739E0(uint32_t* a1, int2* a2, int2* a3) {

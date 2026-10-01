@@ -20953,6 +20953,13 @@
       "purpose": "the exact NUL-terminated C source path passed to string lookup by the PE32 options feedback routine"
     },
     {
+      "name": "options_constructor_window_images_and_back_4AA6B0",
+      "address": "0x005B13DC",
+      "size": 234,
+      "sha256": "28fd46752e19090db0d6057d8568d1778df2c169387f76906fbf21b9bbe16ac4",
+      "purpose": "the exact aligned NUL-terminated Options.wnd name, nine separate volume image names, and OptsBack.wnd:Back key read in order by the main Options constructor"
+    },
+    {
       "name": "monster_generator_draw_4bc750_source",
       "address": "0x005B2970",
       "size": 38,

@@ -38,9 +38,6 @@ func (a *optionsAudit) check(ok bool, name, detail string) {
 }
 
 func (a *optionsAudit) root() *gui.Window {
-	if a.mode == 0 {
-		return winOptionsNative
-	}
 	return noxClient.GUI.ChildByID(300)
 }
 
@@ -364,17 +361,17 @@ func (sc *e2eScenario) AuditClientOptions(mode int, name string) {
 		sc.Key(keybind.KeyEsc, "audit leave main options")
 		sc.Wait(80, "")
 		sc.add(0, "", func() {
-			a.check(winOptionsNative == nil && noxClient.GameGetStateCode() == client.StateMainMenu, "escape closes options", fmt.Sprintf("window=%p state=%d", winOptionsNative, noxClient.GameGetStateCode()))
+			a.check(a.root() == nil && noxClient.GameGetStateCode() == client.StateMainMenu, "escape closes options", fmt.Sprintf("window=%p state=%d", a.root(), noxClient.GameGetStateCode()))
 		})
 		a.clickWindow(sc, "Back fallback", func() *gui.Window {
-			if winOptionsNative == nil {
+			if a.root() == nil {
 				return nil
 			}
 			return noxClient.GUI.ChildByID(152)
 		})
 		sc.Wait(80, "")
 		sc.add(0, "", func() {
-			a.check(winOptionsNative == nil && noxClient.GameGetStateCode() == client.StateMainMenu, "Back closes options", fmt.Sprintf("window=%p state=%d", winOptionsNative, noxClient.GameGetStateCode()))
+			a.check(a.root() == nil && noxClient.GameGetStateCode() == client.StateMainMenu, "Back closes options", fmt.Sprintf("window=%p state=%d", a.root(), noxClient.GameGetStateCode()))
 			var section cfg.Section
 			writeConfigLegacyMain(&section)
 			// E2E intentionally suppresses actual resolution changes in the

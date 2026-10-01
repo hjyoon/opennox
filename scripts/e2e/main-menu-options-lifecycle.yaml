@@ -1,0 +1,50 @@
+# Real input and read-only observers; no settings or animation injection.
+# Run headless with private Save/config. Copy before recording screenshots.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: check-main-options-lifecycle
+    dt: 600
+    mode: 0
+    name: main menu before options
+  - action: click
+    x: 358
+    y: 728
+    name: open main options
+  - action: check-main-options-lifecycle
+    dt: 100
+    mode: 1
+    name: first options animation completed
+  - action: screen
+    name: main options lifecycle open
+  - action: esc
+    name: real Escape key input
+  - action: check-main-options-lifecycle
+    dt: 80
+    mode: 0
+    name: Escape returned to main menu
+  - action: screen
+    name: main options lifecycle escape closed
+  - action: click
+    x: 358
+    y: 728
+    name: reopen main options
+  - action: check-main-options-lifecycle
+    dt: 100
+    mode: 1
+    name: second options animation completed
+  - action: click-main-options-back
+    name: real Back button input
+  - action: check-main-options-lifecycle
+    dt: 80
+    mode: 0
+    name: Back returned to main menu
+  - action: screen
+    name: main options lifecycle back closed
+  - action: quit
+    dt: 1

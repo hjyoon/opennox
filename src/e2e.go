@@ -9448,6 +9448,12 @@ func (sc *e2eScenario) Load(path string) {
 		case "audit-client-options":
 			sc.Wait(dt, "")
 			sc.AuditClientOptions(l.Mode, l.Name)
+		case "check-main-options-lifecycle":
+			sc.Wait(dt, "")
+			sc.CheckMainOptionsLifecycle4AA6B0(l.Mode, l.Name)
+		case "click-main-options-back":
+			sc.Wait(dt, "")
+			sc.ClickMainOptionsBack4AA6B0(l.Name)
 		case "select-manual-campaign-save":
 			sc.Wait(dt, "")
 			sc.SelectManualCampaignSave(l.Slot, l.Name)

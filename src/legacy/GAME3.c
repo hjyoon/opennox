@@ -2615,52 +2615,8 @@ static int nox_options_init_volume_slider(nox_window* slider, void* state, nox_v
 										  nox_video_bag_image_t* image_lit);
 static void nox_options_set_checked(nox_window* checkbox, int checked);
 
-int nox_game_showOptions_4AA6B0() {
-	nox_video_bag_image_t* image = nox_xxx_gLoadImg_42F970("OptionsVolumeSlider");
-	nox_video_bag_image_t* image_lit = nox_xxx_gLoadImg_42F970("OptionsVolumeSliderLit");
-
-	nox_game_addStateCode_43BDD0(300);
-	dword_5d4594_1309720 = nox_new_window_from_file("Options.wnd", sub_4AABE0);
-	if (!dword_5d4594_1309720 || !nox_client_advVideoOpts_New_4CB590(dword_5d4594_1309720)) {
-		return 0;
-	}
-	nox_xxx_wndSetWindowProc_46B300(dword_5d4594_1309720, sub_4A18E0);
-	nox_draw_setTabWidth_43FE20(15);
-	nox_wnd_xxx_1309740 =
-		nox_gui_makeAnimation_43C5B0(dword_5d4594_1309720, 0, 0, 0, -480, 0, 20, 0, -40);
-	if (!nox_wnd_xxx_1309740) {
-		return 0;
-	}
-	nox_wnd_xxx_1309740->field_0 = 300;
-	nox_wnd_xxx_1309740->field_12 = sub_4AA9C0;
-	nox_wnd_xxx_1309740->fnc_done_out = sub_4AAA10;
-
-	if (!nox_options_init_volume_slider(nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1309720, 351),
-										dword_587000_127004, image, image_lit)) {
-		return 0;
-	}
-	dword_5d4594_1309728 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1309720, 361);
-	nox_options_set_checked(dword_5d4594_1309728, sub_453070());
-
-	if (!nox_options_init_volume_slider(nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1309720, 352),
-										dword_587000_122852, image, image_lit)) {
-		return 0;
-	}
-	dword_5d4594_1309732 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1309720, 362);
-	nox_options_set_checked(dword_5d4594_1309732, sub_44D990());
-
-	if (!nox_options_init_volume_slider(nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1309720, 353),
-										dword_587000_93164, image, image_lit)) {
-		return 0;
-	}
-	dword_5d4594_1309736 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1309720, 363);
-	nox_options_set_checked(dword_5d4594_1309736, sub_43DC30());
-	nox_xxx_wndRetNULL_46A8A0();
-	sub_4A19F0("OptsBack.wnd:Back");
-	sub_4A1A40(0);
-	sub_4AAA70();
-	return 1;
-}
+extern int nox_game_showOptions_native(void);
+int nox_game_showOptions_4AA6B0() { return nox_game_showOptions_native(); }
 // 4A18E0: using guessed type int  sub_4A18E0(int, int, int, int);
 
 void nox_video_setMenuOptions(nox_window* root);

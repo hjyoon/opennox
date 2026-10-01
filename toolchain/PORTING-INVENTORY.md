@@ -1,5 +1,26 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 메인 Options 창의 전체 native constructor `004AA6B0`
+
+audit에서 확인한 메인 음량/음소거·입력 창 누락의 첫 복원 단위다. 합성 창/handler를 제거하고 원본 constructor 한 본체만 Go로 옮겼으며 C entry는 thin export bridge다. state 300 추가→원래 Options.wnd의 C callback identity→root 게시/원래 실패 반환→advanced→key proc→tab width 15→animation 게시/원래 실패 반환→state ID/start-out/done-out 연결 순서를 유지한다. 반환 root/animation과 각 slider만 원래 지점에서 캐시하며 나머지 root/animation/checkbox 전역은 다시 읽는다. 각 thumb의 width/height도 따로 조회한다. 세 channel마다 Lit/Lit/Slider 이미지를 별도로 읽어 highlight/selected/enabled에 연결하고 range `0..16384`→fresh Timer.Current DWORD의 logical `>>16` value→enabled 반환의 exact-one 체크와 flags bit 4 갱신을 실행한다. 없는 thumb를 skip하거나 실패 시 새 cleanup을 넣지 않는다. Back은 복원한 animation의 원래 state-switch 경로로 보내며 retained callback 본체를 이 커밋에서 함께 다시 쓰지 않는다.
+
+80개 exact callback/read trace 및 각 fault prefix, 세 원래 constructor 실패, signed nonzero advanced 결과, DWORD current 경계·signed enabled 결과와 다른 flags 비트 보존, cached 반환/live 전역 교체를 검사한다. 실제 C entry→Go export→native GUI slider/checkbox/animation 회귀는 4GiB 초과 C-owned window/widget/animation/timer 주소와 signed DWORD 반환을 구별한다. read-only lifecycle observer는 닫힌 뒤 stale C root/animation 전역을 역참조하지 않고 실제 GUI tree 및 animation list만 확인한다.
+
+2026-10-02 Darwin/ARM64 일반·HD의 메인/게임 내 네 headless audit는 아래 결과다. assertion 수는 고유 버그 개수가 아니며, 입력 창이 새로 열리면서 메인 검사 수가 증가했다. 모두 summary까지 도달하고 수집한 실패에 대한 의도된 exit 2로 끝났으며 별도 SIGSEGV/runtime error는 없었다. 메인 세 volume 초기 범위/value·target 입력·zero/enable·mute 검사와 입력 창 열림이 통과한다.
+
+| 경로 | 통과 | 실패 |
+| --- | ---: | ---: |
+| 일반 메인 메뉴 | 192 | 14 |
+| HD 메인 메뉴 | 194 | 14 |
+| 일반 게임 내 | 180 | 16 |
+| HD 게임 내 | 180 | 18 |
+
+별도 `main-menu-options-lifecycle.yaml`은 설정을 변경하지 않는 실제 mouse/key 입력으로 메인 `100→300→100→300→100`과 animation 완료·창 제거를 확인한다. ESC/Back 모두 일반·HD headless exit 0이며 일반 독립 재실행도 override 없이 기존 PNG 세 개를 통과했다. 복귀 화면 두 개는 일반·HD 바이트가 같다. 메인 음량/HD 입력 창·HD 옵션 창·실제 메뉴 복귀 캡처를 직접 확인했으며 PNG는 임시 시나리오에만 남긴다.
+
+대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반·strict Go 시험 및 server-tag root/server/legacy 1회가 통과했다. 원래 constructor 777바이트·7-NOP의 기존 code 범위를 유지하고 Options.wnd·서로 다른 주소의 이미지 이름 아홉 개·Back key 234바이트를 새로 봉인했다. 전후 `make oracle-test`는 stock 1,556파일·570,653,750바이트·code 2,869/data 616개·NXZ 50쌍을 검증한다.
+
+메인 입력 설정의 Apply/복귀가 여전히 실패하므로 전체 audit의 마지막 ESC/Back 실패를 위 별도 lifecycle 성공으로 숨기지 않는다. ShowTooltips/NoSoftLights legacy key 부재, window mode 직렬화, mock audio의 FX gain 불일치, 게임 내 pending 해상도/YAML 값은 미해결이다. mouse pickup 선택 disabled는 원본 의도와 추가 대조가 필요하다. 실제 오디오 재생·해상도 적용·디스크 저장/새 프로세스 로드·다른 색상 깊이의 close branch·SDL/OpenAL·Linux/AMD64 실행은 이 단위의 검증 범위 밖이다. 모든 옵션이 정상이라고 판정하지 않으며 개인 Save/config·stock 자산은 변경하지 않는다.
+
 ## Quest ankh HUD 목숨의 실제 사망·부활 headless 검증
 
 목숨 sender `b5146d15d`와 self-report loop `004739158` 뒤 별도 read-only E2E 단위다. 기존 stock 메뉴·네 번의 실제 출구·5단계 네크로맨서의 자연 피해·실제 mouse 부활 시나리오를 유지한다. HUD가 원래 `X %d`로 그리는 DWORD `0x5D4594+1050012`를 읽고 native client/server Player identity와 정확한 net-code WORD를 확인한다. 최초 목숨 2, 첫/둘째 사망 뒤 1/0, 각 부활 뒤 1/0, 마지막 zero-life 결과창 동안 0, 실제 Continue 부활 뒤 2를 관찰했다. 마지막 사망의 서버 lives 2와 HUD 0은 원본 death tail의 marker suppression이므로 이를 강제로 같게 하지 않는다. 사망 뒤 packet 관찰은 1,200 frame bounded gate이며 기존 부활 gate도 packet 수신을 기다린다. UI/packet/HP/lives/통계/AI/사망/페널티/부활을 주입하지 않는다.

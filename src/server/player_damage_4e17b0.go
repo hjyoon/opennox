@@ -31,6 +31,7 @@ type PlayerDamageRuntime4E17B0 struct {
 	IsEnemy             func(*Object, *Object) bool
 	SentryGlobeType     uint16
 	GameBallType        uint16
+	GameBallOnDamage    func(*Object, *Object, int32)
 	Audio               func(int, *Object)
 	BuffOff             func(*Object, EnchantID)
 	ObserveClear        func(*Object)

@@ -299,6 +299,9 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		IsEnemy:          s.IsEnemyTo,
 		SentryGlobeType:  uint16(s.Types.IndByID("SentryGlobe")),
 		GameBallType:     uint16(s.Types.GameBallID()),
+		GameBallOnDamage: func(source, target *server.Object, damage int32) {
+			s.GameBallOnPlayerDamage4E1230(source, target, damage, gameBallPlayerDamageRuntime4E1230(s))
+		},
 		Audio: func(id int, obj *server.Object) {
 			s.Audio.EventObj(sound.ID(id), obj, 0, 0)
 		},

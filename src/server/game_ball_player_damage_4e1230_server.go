@@ -37,6 +37,8 @@ func (s *Server) GameBallOnPlayerDamage4E1230(source, target *Object, damage int
 		createTeam: func(id uint8, value *ObjectTeam, active int32, code uint32, flags int32) {
 			r.CreateTeam(TeamID(id), value, active, code, flags)
 		},
-		audio: func(id uint32, obj *Object, kind int32, code uint32) { s.Audio.EventObj(sound.ID(id), obj, int(kind), code) },
+		audio: func(id uint32, obj *Object, kind int32, code uint32) {
+			s.Audio.EventObj(sound.ID(id), obj, int(kind), code)
+		},
 	})
 }

@@ -359,6 +359,9 @@ func playerDamageMonster4E17B0(
 		return true, true
 	}
 
+	if source == nil && weapon == nil && typ == object.DamagePoison {
+		return playerDamageMonsterPoison4E17B0(target, damage, runtime)
+	}
 	update := target.UpdateDataMonster()
 	crush := typ == object.DamageCrush && source != nil && source.Class().Has(object.ClassMonster) &&
 		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassWeapon)

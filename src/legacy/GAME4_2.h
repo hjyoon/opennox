@@ -3,6 +3,7 @@
 
 #include "defs.h"
 #include "net_send_fx_all_523030.h"
+#include "cast_shock_52c5a0.h"
 
 int sub_51DA70(int a1, int a2, int a3, int a4, int a5);
 void sub_51DD50(int a1, int a2, int a3, int a4);
@@ -288,7 +289,6 @@ int nox_xxx_castFumble_52C060(int a1, int a2, int a3, int a4, int* a5);
 int nox_xxx_castConfuse_52C1E0(int a1, void* a2, nox_object_t* a3, nox_object_t* a4, void* a5, int a6);
 int nox_xxx_castStun_52C2C0(int a1, void* a2, nox_object_t* a3, nox_object_t* a4, void* a5, int a6);
 int nox_xxx_castBurn_52C3E0(int a1, int a2, int a3, int a4, int a5);
-int nox_xxx_useShock_52C5A0(int a1, int a2, int a3, int a4, int* a5, int a6);
 int nox_xxx_castPoison_52C720(int a1, int a2, int a3, int a4, int* a5, int a6);
 int nox_xxx_castFireball_52C790(int a1, int a2, int a3, int a4, int a5, int a6);
 int sub_52CA80(int a1, int a2, int a3, int a4);

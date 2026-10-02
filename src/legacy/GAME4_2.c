@@ -9575,6 +9575,10 @@ LABEL_12:
 }
 
 //----- (0052C5A0) --------------------------------------------------------
+// Native-width implementation: server/cast_shock_52c5a0.go and the typed
+// legacy/cast_shock_52c5a0_export.go entry. Retain this PE32 body only as
+// provenance; its integer context and first-dword target truncate pointers.
+#if 0
 int nox_xxx_useShock_52C5A0(int a1, int a2, int a3, int a4, int* a5, int a6) {
 	int result; // eax
 	int v7;     // eax
@@ -9604,6 +9608,7 @@ int nox_xxx_useShock_52C5A0(int a1, int a2, int a3, int a4, int* a5, int a6) {
 	}
 	return result;
 }
+#endif
 
 //----- (0052C720) --------------------------------------------------------
 int nox_xxx_castPoison_52C720(int a1, int a2, int a3, int a4, int* a5, int a6) {

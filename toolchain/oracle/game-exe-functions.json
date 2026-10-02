@@ -16604,11 +16604,32 @@
       "purpose": "the exact decoded direct rel32 call at 0052C58E targeting buff application at 004FF380"
     },
     {
+      "name": "nox_xxx_useShock_52C5A0_prefix",
+      "address": "0x0052C5A0",
+      "size": 144,
+      "sha256": "125fb8c50d8d938d8131eb7befd21ae9d708b0585227f4133c679841af1300be",
+      "purpose": "gate only the acceptance target, lazily initialize the whole-DWORD Glyph cache at 00833B34, compare the fourth object's zero-extended type word, and either call the reloaded target's damage callback with duplicated third-object attribution and rounded binary32 ShockTrapDamage at signed level minus one, or reload the target after rounded binary32 ShockEnchantDuration for buff 22"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C630",
       "address": "0x0052C630",
       "size": 5,
       "sha256": "b0033a038f6eacfbfb1a868734fbb25e78f0509066d6ff46af1c6298c8a2c231",
       "purpose": "the exact decoded direct rel32 call at 0052C630 targeting buff application at 004FF380"
+    },
+    {
+      "name": "nox_xxx_useShock_52C5A0_suffix",
+      "address": "0x0052C635",
+      "size": 10,
+      "sha256": "1cbf18dfa819dc99628f5bbc3164574ceae73f15d6aa5bff7d50b2a00691c037",
+      "purpose": "discard the buff helper result, release its arguments, and return canonical success one; together with the already sealed direct buff call and prefix this seals the entire 159-byte Shock body"
+    },
+    {
+      "name": "nox_xxx_useShock_52C5A0_padding",
+      "address": "0x0052C63F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP byte between Shock and the following instant buff cast at 0052C640"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C66B",
@@ -22652,6 +22673,13 @@
       "size": 20,
       "sha256": "bc64c2cc64140168802b82140ada92d1cefb62ba50b66975059691f1e70e1c2d",
       "purpose": "the exact StunEnchantDuration balance key including its terminator used by the instant stun cast"
+    },
+    {
+      "name": "shock_cast_type_and_balance_keys_52C5A0",
+      "address": "0x005C62C0",
+      "size": 48,
+      "sha256": "eab00584a349064f71145547c56ba3c6ef4abc43cd536fa9449bbc0642552122",
+      "purpose": "the exact aligned Glyph name, ShockTrapDamage table key, and ShockEnchantDuration scalar key used by the two Shock branches"
     },
     {
       "name": "fist_cast_small_type_name_52D3C0",

@@ -584,7 +584,8 @@ func playerDamageMissilePierce4E17B0(
 	return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
 }
 
-// PlayerDamageNative4E17B0 restores ordinary player/NPC melee, Spider BITE, monster-fired
+// PlayerDamageNative4E17B0 restores ordinary player/NPC melee, unit-sourced SIMPLE
+// CRUSH (including stock Fists), Spider BITE, monster-fired
 // missile IMPACT/PIERCE, Berserker Charge CRUSH, SentryGlobe ZAP_RAY, world FLAME,
 // unarmed monster ELECTRIC/AIRBORNE_ELECTRIC, and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
@@ -601,7 +602,7 @@ func PlayerDamageNative4E17B0(
 	if target == nil {
 		return playerDamageUnsupported4E17B0(runtime, "non-player target", target, source, weapon, damage, typ)
 	}
-	if playerDamageMeleeShape4E17B0(source, weapon, typ) {
+	if playerDamageMeleeShape4E17B0(source, weapon, typ) || playerDamageSimpleCrushShape4E17B0(source, weapon, typ) {
 		return PlayerDamageMeleeNative4E17B0(target, source, weapon, damage, typ, runtime)
 	}
 	if target.ObjClass.Has(object.ClassMonster) {

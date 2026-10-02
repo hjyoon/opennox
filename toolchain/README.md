@@ -53,6 +53,18 @@ NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
 
 `host-game-flame-monster-food.yaml`도 일반·HD headless 실행에서 player HP `150→148`, Spider의 RedApple `40→45`, Meat `40→50`, Mushroom 독 `4→0`과 소비된 필드 오브젝트 제거를 확인했다. 휴면 tutorial NPC/Wolf의 원본 `Cur=Max=0`은 사망 상태가 아니며, 일반 몬스터의 food/retreat AI와 구분한다. 통합 이벤트의 종료가 통과하더라도 미이식 피해 분기는 별도로 검사해야 한다.
 
+`host-game-fist-unit-damage.yaml`은 실제 Wizard host 메뉴 시작 뒤 정상 NoxScript object-to-position API로 Fist 1..5레벨을 플레이어→stock NPC 및 NPC→플레이어 방향으로 시전한다. 두 유닛의 원래 `PlayerDamage` callback, 자연 충돌, 서버 HP/피격 marker/귀속, fractional carry, 실제 client 피해 표시와 발사체 제거를 검사하며 일반·HD headless 각각 10회, 합계 20회가 exit 0이다. 원본 피해 `50/100/200/300/400`, Wizard의 시작 armor `0.23000002` 및 연속 시전의 소수 누적을 유지하고 NPC→플레이어 실효 피해 `44/89/177/265/354`를 확인했다. 모든 시전에서 중복 거부, 18틱의 명중, 36틱의 world/owned/client drawable 제거를 관찰하며 native object/update 포인터는 4GiB를 넘는다. 위치·검증용 HP 2,000·NPC 대기 AI만 fixture이고 피해 결과·패킷·물리 상태를 주입하지 않는다. 자율 NPC 주문 선택, incantation/mana, 유닛 사망·campaign trigger·다른 모든 피해 종류나 Linux/Windows/SDL/OpenAL 검증을 대신하지 않는다.
+
+기존 배럴 Fist 제어 시나리오의 첫 historical PNG는 앞선 색상 복원 이후 불일치한다. 이번 피해 수정 전 `e882c931b`의 별도 clean worktree에서도 같은 불일치를 확인했고 현재 `_got` PNG와 byte-identical이었다. 기존 공개 기준 PNG를 바꾸거나 override하지 않았다. 피해 수정 전 worktree에서 얻은 private 비교 프레임 10개를 기준으로 일반·HD의 배럴 5레벨 피해/제거 및 RGBA 비교를 모두 통과했으며 이를 historical PNG 통과로 세지 않는다. 원본 자산·개인 Save/config와 private 참조 이미지는 저장소에 추가하지 않는다. 다른 GUI E2E와 동시에 실행하지 않는다.
+
+```sh
+NOX_E2E_SEAT=headless bash ./scripts/run-headless-gui-e2e.sh \
+  /absolute/path/to/nox ./scripts/e2e/host-game-fist-unit-damage.yaml
+NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
+  bash ./scripts/run-headless-gui-e2e.sh /absolute/path/to/nox \
+  ./scripts/e2e/host-game-fist-unit-damage.yaml
+```
+
 `host-game-player-status-animation.yaml`은 실제 메뉴로 시작한 regular host에서 정상 enchant API로 제자리 플레이어에게 Held(스턴)·Confused·AntiMagic·Charming·Shield·Slowed를 각각 90틱 적용한다. 초기 무적은 강제로 제거하지 않고 자연 만료를 기다린다. 일반·HD headless와 일반 독립 재실행에서 실제 클라이언트 패킷의 buff/HUD 동기화, 두 시점의 원본 효과 sprite 픽셀 및 서로 다른 애니메이션 프레임, 자연 만료 후 제거를 확인했다. Slowed는 실제 화면 안의 YellowBubbleParticle 생성과 만료 후 0개를 검사한다. 효과별 시작·진행·해제의 18개 PNG도 모든 실행에서 일치했다. 원래 로더의 packed DWORD 저장으로 native 애니메이션 cache가 nil이 되는 실패를 먼저 재현했으며, cache 초기화와 세션 정리를 별도 함수 단위로 복원했다. 상태 준비만 fixture이고 client buff·화면 출력·만료를 주입하지 않는다. Stun 주문의 조건별 Held/Slowed 선택, 적의 주문 명중·이동 제어, 다른 상태 종류·캐릭터 자세나 SDL/OpenAL 검증을 대신하지 않는다. 다른 GUI E2E와 동시에 실행하지 않는다.
 
 ```sh

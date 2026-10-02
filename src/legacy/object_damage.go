@@ -298,6 +298,7 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 	weapon := asObjectS(weaponp)
 	s := GetServer().S()
 	handled, result := server.PlayerDamageNative4E17B0(target, source, weapon, int32(damage), object.DamageType(damageType), server.PlayerDamageRuntime4E17B0{
+		Melee:            playerDamageMeleeRuntime4E17B0(s),
 		Frame:            s.Frame,
 		CoopMode:         func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
 		GameplayFlag1:    func() bool { return noxflags.HasGamePlay(noxflags.GameplayFlag1) },

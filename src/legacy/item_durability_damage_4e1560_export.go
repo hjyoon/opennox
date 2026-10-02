@@ -127,6 +127,16 @@ func canEquipDamageNative4E16D0(item *server.Object) bool {
 		unsafe.Sizeof(uintptr(0)) == 4
 }
 
+func itemDurabilityCanApplyDefendNative4E1560(effect *server.ModifierEff) bool {
+	if effect == nil || effect.Defend76.Fnc == nil {
+		return true
+	}
+	fnc := effect.Defend76.Fnc
+	return fnc == C.sub_4E0370 || fnc == C.sub_4E0380 ||
+		fnc == C.nullsub_40 || fnc == C.nullsub_41 || fnc == C.nullsub_42 ||
+		unsafe.Sizeof(uintptr(0)) == 4
+}
+
 //export nox_xxx_playerDamageWeapon_4E1560_go
 func nox_xxx_playerDamageWeapon_4E1560_go(
 	itemp, ownerp, sourcep, effectivep *nox_object_t,

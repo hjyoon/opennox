@@ -4256,6 +4256,34 @@
       "purpose": "the complete original PlayerDamage interval through the next function boundary, used to validate the ordinary Spider-to-player damage, lethal transition, and death-notification admission"
     },
     {
+      "name": "sub_4E22A0",
+      "address": "0x004E22A0",
+      "size": 135,
+      "sha256": "4294d212dd18138b2a8784ca0fa07ffc15cb4270af5682cb8b4933203a16054e",
+      "purpose": "select the first equipped subclass match, apply weapon block durability using the weapon-or-source pointer, then reset Player state or pop the NPC action when the item is destroyed"
+    },
+    {
+      "name": "sub_4E22A0_padding",
+      "address": "0x004E2327",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes between weapon-block durability and shield-block durability at 004E2330"
+    },
+    {
+      "name": "sub_4E2330",
+      "address": "0x004E2330",
+      "size": 135,
+      "sha256": "834aa819ec9483bd70972c7c10a043796682227701044db778ddf60598e3f693",
+      "purpose": "select the first equipped subclass match, apply shield block durability using the weapon-or-source pointer, then reset Player state or pop the NPC action when the item is destroyed"
+    },
+    {
+      "name": "sub_4E2330_padding",
+      "address": "0x004E23B7",
+      "size": 9,
+      "sha256": "f56642978961c41b24911838d549a9957c25a0dee0914c9230b5f17a3567418b",
+      "purpose": "the exact nine NOP bytes after shield-block durability before the following routine at 004E23C0"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_4E23CE",
       "address": "0x004E23CE",
       "size": 5,
@@ -17750,6 +17778,20 @@
       "size": 5,
       "sha256": "461d868e3aa6cc99952e072e5502039e8b67c1a8b224fb47eaaa9755b3d5cd2c",
       "purpose": "the exact decoded direct rel32 call at 005341E0 targeting spell buff removal at 004FF5B0"
+    },
+    {
+      "name": "sub_534340",
+      "address": "0x00534340",
+      "size": 72,
+      "sha256": "467b1f4802b0cea280b1877cf5404dc002ce82379fc4230951f810b8f8801f4e",
+      "purpose": "read the signed NPC AI stack head and permit weapon blocking only for action IDs 0, 1, 4, 23, 25, 26 and 27"
+    },
+    {
+      "name": "sub_534340_padding",
+      "address": "0x00534388",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes after the NPC weapon-block action predicate before the following routine at 00534390"
     },
     {
       "name": "nox_xxx_monsterMimicCheckMorph_534950",

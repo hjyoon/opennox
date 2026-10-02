@@ -22,6 +22,7 @@ const (
 // object state, so a caller can keep an unported branch visible without
 // entering the PE32 callback on a 64-bit host.
 type PlayerDamageRuntime4E17B0 struct {
+	Melee               PlayerDamageMeleeRuntime4E17B0
 	Frame               func() uint32
 	CoopMode            func() bool
 	GameplayFlag1       func() bool

@@ -1,0 +1,89 @@
+# Real host startup, player script casts at levels 1..5, and an original NPC
+# queued through normal monster update and the natural cast-animation frame.
+# Placement, waiting AI and explicit spell/target selection are fixtures;
+# force, cast frame, HP, movement packets and client position are not injected.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-pull-spell
+    count: 1
+    text: player-to-npc
+    name: Player Pull level one
+  - action: check-pull-spell
+    count: 2
+    text: player-to-npc
+    name: Player Pull level two
+  - action: check-pull-spell
+    count: 3
+    text: player-to-npc
+    name: Player Pull level three
+  - action: check-pull-spell
+    count: 4
+    text: player-to-npc
+    name: Player Pull level four
+  - action: check-pull-spell
+    count: 5
+    text: player-to-npc
+    name: Player Pull level five
+  - action: check-pull-spell
+    text: npc-to-player
+    name: NPC natural Pull cast
+  - action: quit
+    dt: 1

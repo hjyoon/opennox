@@ -75,6 +75,16 @@ NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
   ./scripts/e2e/host-game-push-spell.yaml
 ```
 
+`host-game-pull-spell.yaml`은 같은 실제 Wizard host 시작과 정상 script cast 1..5레벨, stock NPC의 자연 `AIActionCastOnObj` 시전 경로에서 Pull을 검사한다. 일반·HD headless 각각 6회, 합계 12회가 exit 0이다. 원본 `PullPowerCoeff=15`, 반경 600/10, 거리 감쇠와 대상 mass를 유지하며, 서버의 정확한 음수 force와 실제 이동 packet을 받은 client drawable의 **안쪽 이동**을 확인했다. NPC는 원본 mode-selected power 3으로 11틱 후 animation frame 4에서 시전하고 12틱 후 행동 종료와 양쪽 이동을 확인했다. 모든 시전에서 cast audio event는 1회이며 NPC HP 150과 Wizard HP 75는 변하지 않는다. 4GiB 초과 native 포인터를 실제 공개 Pull wrapper에 넘기면 기존 6-int C callee의 시전자 절단 및 PE32 `+56` 접근으로 크래시가 발생하는 실패 회귀를 먼저 재현했고, wide host의 실제 `PosVec`(offset `+60`)를 사용하는 Go cast로 복원했다. 원본의 signed DWORD level 곱셈→FCHS 부호 반전→binary32 spill 순서, 음수 0과 세 번째 오브젝트의 cast audio 귀속은 별도 함수 회귀에서 검사한다. 기존 Push 시나리오도 일반·HD 각각 6회 재실행해 바깥쪽 이동이 유지됨을 확인했으며 원본 executable/자산은 검사 전후 동일하다. 위치·대기 AI·명시적인 주문/대상 선택만 fixture이고 force 결과·cast frame·HP·이동 packet·client 위치는 주입하지 않는다. 자율 NPC 주문 선택, 플레이어 incantation/mana, campaign trigger 또는 Linux/Windows/SDL/OpenAL 검증을 대신하지 않는다. 다른 GUI E2E와 동시에 실행하지 않는다.
+
+```sh
+NOX_E2E_SEAT=headless bash ./scripts/run-headless-gui-e2e.sh \
+  /absolute/path/to/nox ./scripts/e2e/host-game-pull-spell.yaml
+NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
+  bash ./scripts/run-headless-gui-e2e.sh /absolute/path/to/nox \
+  ./scripts/e2e/host-game-pull-spell.yaml
+```
+
 `host-game-player-status-animation.yaml`은 실제 메뉴로 시작한 regular host에서 정상 enchant API로 제자리 플레이어에게 Held(스턴)·Confused·AntiMagic·Charming·Shield·Slowed를 각각 90틱 적용한다. 초기 무적은 강제로 제거하지 않고 자연 만료를 기다린다. 일반·HD headless와 일반 독립 재실행에서 실제 클라이언트 패킷의 buff/HUD 동기화, 두 시점의 원본 효과 sprite 픽셀 및 서로 다른 애니메이션 프레임, 자연 만료 후 제거를 확인했다. Slowed는 실제 화면 안의 YellowBubbleParticle 생성과 만료 후 0개를 검사한다. 효과별 시작·진행·해제의 18개 PNG도 모든 실행에서 일치했다. 원래 로더의 packed DWORD 저장으로 native 애니메이션 cache가 nil이 되는 실패를 먼저 재현했으며, cache 초기화와 세션 정리를 별도 함수 단위로 복원했다. 상태 준비만 fixture이고 client buff·화면 출력·만료를 주입하지 않는다. Stun 주문의 조건별 Held/Slowed 선택, 적의 주문 명중·이동 제어, 다른 상태 종류·캐릭터 자세나 SDL/OpenAL 검증을 대신하지 않는다. 다른 GUI E2E와 동시에 실행하지 않는다.
 
 ```sh

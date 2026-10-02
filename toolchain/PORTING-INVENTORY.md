@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 옵션 해상도 apply의 native callback 등록
+
+별도 단위로 `legacy_exports.go:init` 한 production 본체에서 준비된 Go apply를 native callback에 등록했다. 관련 7패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict·server-tag 각 1회 및 전후 oracle을 통과했다. fresh headless API fixture는 실제 등록된 callback을 통해 해상도/세 signed window mode/E2E guard와 파일 무변경을 확인한다. C export와 게임 내 Close는 아직 연결하지 않았으며 이 등록만으로 앞선 Close 실패가 해결되었다고 주장하지 않는다.
+
 ## 게임 내 해상도 종료 적용의 Go 준비 단위
 
 실제 in-game Options constructor·C-owned root/slider/thumb·C procedure의 해상도 radio와 Close를 격리 headless API fixture에서 검사했다. 일반 8개/HD 10개 해상도 모두 pending 선택은 바뀌지만 Close 뒤 seat/game 크기는 640×480, 이전 window-mode checkpoint 및 저장된 VideoMode도 그대로인 실패를 재현했다. cancel·hidden no-op·E2E guard는 통과했다. generated 창과 실제 pause-menu hide 분기를 사용한 API fixture이며 stock queued input이나 실제 macOS 창 검사로 확대하지 않는다.

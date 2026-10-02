@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	"github.com/opennox/opennox/v1/client/seat/headless"
+	"github.com/opennox/opennox/v1/legacy"
 )
 
 // API fixture with an actual renderer/headless seat. This prepares the Go
@@ -39,7 +40,7 @@ func testOptionsVideoApply(t *testing.T, c *Client, sc *headless.Seat, phase str
 			c.UpdateFullScreen(mode)
 			g_fullscreen_cfg = 99 // A deliberately different save checkpoint.
 			guiOptionsRes = res
-			applyOptionsVideoMode()
+			legacy.Nox_video_applyOptions()
 			wantSize, wantCheckpoint := res, mode
 			if phase == "video-apply-e2e" {
 				wantSize, wantCheckpoint = initial, 99

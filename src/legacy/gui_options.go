@@ -20,6 +20,7 @@ import (
 
 var (
 	Nox_video_setMenuOptions func(win *gui.Window)
+	Nox_video_applyOptions   func()
 	Nox_gui_menu_proc_ext    func(id int) int
 	Sub_4A19F0               func(name strman.ID)
 	Sub_4AAA10               func() int

@@ -2,6 +2,10 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 옵션 apply native callback 등록
+
+이번 production 단위는 `legacy_exports.go:init` 한 본체의 callback 등록이다. Go apply·기존 C procedure는 변경하지 않는다. 실제 등록 callback의 격리 headless API 검사 및 관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·server-tag 각 1회와 전후 oracle이 통과했다. C export/Close 연결은 다음 단위이며 아직 Close 실패나 모든 옵션 정상으로 판정하지 않는다. 원본 code 2,878/data 617개·stock/NXZ 50쌍과 개인 파일 불변을 유지한다.
+
 ## 게임 내 Options Close의 해상도 적용 준비
 
 실제 constructor·C-owned 고주소 root/slider/thumb·해상도 radio/C Close 및 pause-menu hide 분기의 격리 headless API 검사에서, 일반 8개/HD 10개 선택 모두 640×480과 이전 저장 checkpoint에 머무르는 red를 재현했다. cancel·hidden no-op·E2E는 통과하며 원본 창/queued GUI/physical window를 새로 검증했다고 하지 않는다. 이번 단위는 Go `applyOptionsVideoMode` 한 본체만 준비한다. shell과 같은 E2E guard, 실제 seat/game 크기 및 signed live window mode의 checkpoint 동기화와 파일 무변경을 각 모드/해상도에서 확인했다. 아직 C Close에 연결하지 않았고 전체 옵션 정상으로 판정하지 않는다.

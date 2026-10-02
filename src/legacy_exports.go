@@ -61,6 +61,7 @@ func init() {
 	legacy.Sub_554D10 = sub_554D10
 	legacy.Nox_gui_menu_proc_ext = nox_gui_menu_proc_ext
 	legacy.Nox_video_setMenuOptions = nox_video_setMenuOptions
+	legacy.Nox_video_applyOptions = applyOptionsVideoMode
 	legacy.Sub_4A19F0 = guiSetBackButtonText
 	legacy.Sub_4C3A90 = sub_4C3A90
 	legacy.Sub_4CBE70 = sub_4CBE70

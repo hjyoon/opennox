@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 원본 sprite PNG 회귀의 역사적 색상 변환 복원
+
+이번 단위는 테스트 전용이다. 앞 세 production 단위의 5비트 픽셀·재질·typed 색상 계산 수정 뒤에도 표시용 31→255 변환 때문에 남은 기존 `TestDrawImage`의 270개 실패를 분리했다. PNG 직렬화에만 2022년 기준의 31→248 확장을 읽기 전용 `rasterGoldenImage`로 적용하며 production 표시 모델이나 기존 기대 MD5 270개는 변경하지 않는다. 새 view는 production 색상 분해 함수를 호출하지 않는다. 연결 전에는 view의 독립 검사가 통과하지만 기존 이미지 비교 270개는 계속 실패하는 red를 확인했다.
+
+65,536개 packed 색상/알파 필드, nonzero image bounds, 32,768개 opaque 색상의 PNG 왕복 및 source 불변 검사가 통과했다. 실제 한 픽셀 변경이 encoded 결과를 바꾸는 민감도 검사도 포함한다. 연결 후 원본 이미지 270개 하위 사례 각각의 3회 통과(810 pass event)를 별도 JSON 결과에서 확인했으며 실패와 skip은 0이다. 원본 자산을 지정한 renderer 전체는 일반·실제 cgocheck2·race·checkptr·HD 각 3회 통과하여 reported sprite·전체 pixel stream·crop/malformed 회귀도 포함한다. 관련 renderer/GUI/render/headless 4패키지의 같은 다섯 모드 각 3회, 장비 160개 팔레트 회귀 3회, 전체 일반/strict와 fresh-process server-tag root/server/legacy 각 1회 및 전후 oracle도 통과했다.
+
+누적 code 2,882/data 617개·NXZ 50쌍 및 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 유지한다. 공개 변경은 테스트와 검증 설명뿐이며 원본 자산·개인 Save/config·private reference source/PNG를 변경하거나 저장소에 추가하지 않는다. 아래 이전 단위의 미해결 stock PNG 비교는 이 단위에서 해소한 역사적 상태로 구별한다. 과거 OpenNox 픽셀 계약의 회귀이지 원본 Windows runtime 전체·새 queued-input GUI·물리 화면 검증은 아니다.
+
 ## typed RGB5551 색상 연산 일관성
 
 이번 production 단위는 `SplitColor` 한 본체다. 선·원·입자가 쓰는 typed packed 색상을 표시용 변환 대신 검증한 `SplitColor16`으로 분해한다. typed API·알파 비트 무시·표시 모델·byte-RGB 팔레트는 유지한다. 수정 전 31 채널의 255/248 차이와 white/red/green/blue 알파 선의 잘못된 픽셀을 재현했다. 수정 후 65,536개 typed word와 실제 line-alpha 픽셀·인접 untouched 픽셀 검사가 통과했다. 기존 packed 픽셀/재질 회귀와 장비 160개 팔레트도 유지한다.

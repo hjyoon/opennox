@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 기존 stock PNG 기대값의 테스트 전용 복원
+
+앞선 세 5비트 연산 수정으로 private pinned 과거 OpenNox 참조의 raw frame/PNG 270개 일치를 확인한 뒤, 현재 `TestDrawImage`의 직렬화도 같은 역사적 색상 확장으로 분리했다. 읽기 전용 `rasterGoldenImage`는 native RGB5551 필드를 직접 풀어 31→248로 인코딩하며 production `SplitColor` 계열에 기대값을 의존시키지 않는다. 기존 MD5 270개·production 표시용 31→255·byte-RGB 장비 API는 변경하지 않는다. 연결 직전 view unit 검사는 통과했지만 기존 이미지 비교 270개는 실패하는 red를 보존했다.
+
+새 view의 65,536개 색상/알파 필드·nonzero bounds·32,768개 opaque 색상 PNG 왕복/source 불변·실제 한 픽셀 변화 감지를 확인했다. 연결 후 별도 JSON 실행에서 270개 stock 이미지 하위 사례 각각 3회 통과, 총 810 pass·fail/skip 0을 확인했다. stock renderer 전체의 일반/실제 cgocheck2/race/checkptr/HD 각 3회는 reported sprite·전체 stream·crop/malformed도 포함한다. 관련 renderer/GUI/render/headless 4패키지 각 모드 3회, 장비 160개 팔레트 회귀 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다.
+
+원본 tree 1,556파일·570,653,750바이트·SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,882/data 617개·NXZ 50쌍을 유지한다. 테스트/설명 외 production 변경은 없으며 원본 자산·private 참조 소스/PNG·개인 Save/config를 변경하거나 공개하지 않는다. 아래 이전 단위의 stock PNG 실패는 이 단위 이전의 기록이다. 이는 역사적 OpenNox 회귀이며 원본 Windows runtime 전체·새 queued-input GUI·물리 출력 검증으로 확대하지 않는다.
+
 ## typed RGB5551 색상 연산 일관성
 
 이번 production 단위는 `SplitColor` 한 본체다. 선·원·입자가 쓰는 typed packed 색상을 표시용 변환 대신 검증한 `SplitColor16`으로 분해한다. typed API·알파 비트 무시·표시 모델·byte-RGB 팔레트는 유지한다. 수정 전 31 채널의 255/248 차이와 white/red/green/blue 알파 선의 잘못된 픽셀을 재현했다. 수정 후 65,536개 typed word와 실제 line-alpha 픽셀·인접 untouched 픽셀 검사가 통과했다. 기존 packed 픽셀/재질 회귀와 장비 160개 팔레트도 유지한다.

@@ -554,7 +554,9 @@ func TestDrawImage(t *testing.T) {
 						defer out.Close()
 						w = io.MultiWriter(w, out)
 					}
-					err = png.Encode(w, pix)
+					// Retain the historical color expansion and existing hashes;
+					// presentation's saturated white is not part of raster math.
+					err = png.Encode(w, rasterGoldenImage{pix})
 					require.NoError(t, err)
 
 					got := hex.EncodeToString(h.Sum(nil))

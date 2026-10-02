@@ -1,5 +1,28 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 옵션의 마우스 선택을 위한 native capability 게시 `0047D8D0`
+
+`inputInitMouse`는 mouse-present DWORD만 1로 만들고 `006F7A3C`의 버튼 capability BYTE는 0으로 남겼다. 원래 unsigned BYTE getter `0047DBC0`을 사용하는 메인/게임 내 InputCfg constructor는 그 개수만큼 ID 971..973을 enable하므로 왼쪽·오른쪽·중앙 선택이 모두 disabled였다. 실제 C getter를 포함한 회귀에서 수정 전 0 반환을 재현했다. 이번 변경은 initializer 한 본체의 native adapter만 보정하며 UI의 enabled flag·focus·handler·설정을 테스트에서 강제로 바꾸지 않는다.
+
+원본 Windows DirectInput initializer `0047D8D0..0047DA6A`는 GetCapabilities의 nonnegative HRESULT에서 dwButtons의 low BYTE를 `006F7A3C`에 저장한 뒤 mouse-present DWORD `006F7A28`을 게시한다. 이식판에는 physical button count 질의나 COM 초기화/HRESULT 모델이 없다. 실제 native input state의 세 logical button 배열에서 도출한 capacity를 BYTE에 먼저 게시하며, 이는 물리 장치에 버튼 세 개가 있다고 판정하거나 Windows 초기화/실패 동작 전체를 복원했다는 뜻이 아니다. Left/Right/Middle과 별도 wheel channel이라는 SDL/native 입력 계약을 사용한다.
+
+256개 이전 BYTE 값에 대해 actual initializer→C getter와 present DWORD·두 필드 사이/뒤의 packed neighbor 보존을 검사한다. getter의 unsigned BYTE 읽기도 0..255 전체와 인접 high-bit byte로 확인한다. headless seat의 실제 queued press/release를 세 버튼 각각 native handler로 처리하고 wheel이 capacity에 포함되지 않음을 검사했다. 첫 전체 검사는 새 fixture가 이미 extracted된 noxInputMap 끝을 raw 참조하는 `TestCodeStatic` 실패를 드러냈다. fixture를 그 영역 다음부터의 28바이트로 바로잡고 guard를 유지한 채 옵션/입력/GUI/메모리 맵 대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반/strict Go 시험과 server-tag root/server/legacy 1회를 다시 통과시켰다.
+
+2026-10-02 Darwin/ARM64에서 기존 전체 옵션 audit를 일반·HD 메인/게임 내 네 경로의 실제 mouse/key 입력으로 재실행했다. 마우스 선택 순서를 Left→Right→Middle→Left로 늘려 기본 선택 클릭뿐 아니라 Left로 실제 되돌아가는 변경도 검증한다. 각 단계에서 availability·live primary button·radio exclusivity·in-memory `MousePickup` 직렬화가 모두 일치한다. 영상 checkbox 15개·해상도 선택·gamma/sensitivity·세 음량/mute·입력 목록/스크롤·두 열 key binding·Reset/Defaults의 unapplied-edit 폐기·Back/Apply/ESC/Close 검사는 그대로 두었다. 아래 수는 중복 assertion 수이지 고유 버그 개수가 아니다.
+
+| 경로 | 통과 | 실패 |
+| --- | ---: | ---: |
+| 일반 메인 메뉴 | 216 | 11 |
+| HD 메인 메뉴 | 218 | 11 |
+| 일반 게임 내 | 197 | 5 |
+| HD 게임 내 | 199 | 5 |
+
+네 최종 실행은 summary까지 도달해 남은 audit 실패에 대한 의도된 exit 2로 끝났다. 변경 전 입력 순서의 private 화면 baseline을 새 순서에 재사용한 시도는 Back 뒤 작은 픽셀 차이로 먼저 종료했으며, 원래/actual/diff PNG를 직접 대조했다. 그 baseline을 overwrite하지 않고 새 순서를 별도 private 시나리오 네 개로 기록했다. 최종 네 경로와 일반 메인의 독립 새 프로세스 재실행에는 별도 SIGSEGV/runtime error·화면 mismatch가 없고, 재실행은 override 없이 최종 PNG 6개를 통과했다. 네 InputCfg 화면에서 세 selector의 enabled 표시와 원래 main-disabled/game-enabled Apply 구별을 직접 확인했다. 최종 PNG 18개와 이전 차이 산출물은 임시 경로에만 남긴다.
+
+남은 관찰은 main key 재설정 뒤 ESC 5개 assertion, ShowTooltips/NoSoftLights legacy key 부재 2개, main의 열린 옵션 창에서 window mode 직렬화 불일치 1개다. FX gain 3개는 inactive mock audio의 값 관찰이며 물리 재생 고장으로 단정하지 않는다. 원래 default.cfg Reset·실제 디스크 저장 후 새 프로세스 load·물리 오디오·실제 해상도 적용은 아직 미검증이다. 따라서 모든 옵션이 정상이라고 판정하지 않으며 과거 기록의 mouse pickup disabled는 이번 후속 단위에서 해결한 항목으로 구별한다.
+
+원본 initializer 411바이트/SHA-256 `4b91b3f8978a7bb125c6ba815aee965a7dad8460820ff7cc74bc63bb8b4ffb56`·뒤 5-NOP와 getter 6바이트/SHA-256 `12fe2a1633c5326cdec725c9fc09afee93f3ff19e4ab580e9ffa443fedc29d12`·뒤 10-NOP를 각각 봉인했다. 전후 `make oracle-test`는 불변 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,874→2,878/data 617개·NXZ 50쌍을 확인했다. 원본 provenance·native scalar 회귀·headless UI 관찰의 범위를 구별하고 개인 Save/config·원본 자산은 변경하지 않는다. Linux/AMD64 실행 검증으로 확대하지 않는다.
+
 ## 게임 내 Options의 추가 해상도 이벤트 연결 `004ADF30`
 
 메인 메뉴의 추가 해상도 버튼은 기존 Go handler로 전달되지만 게임 내 `nox_xxx_windowOptionsProc_4ADF30`에는 그 연결이 없어 선택 표시만 바뀌고 `guiOptionsRes`·Viper width/height가 갱신되지 않았다. 수정 전 실제 C callback 회귀에서 ID 380의 delegate 반환이 무시되는 실패를 재현했다. 이번 변경은 이 한 C callback의 클릭 분기에 메인과 같은 ID 380+ 전달만 추가한다. 해상도 설정·저장 요청·클릭 음향의 기능은 기존 Go handler에 그대로 두며, legacy ID의 분기와 음향·반환은 유지한다. 이는 기존 OpenNox 확장의 연결 보정이지 원본 PE32 본체 전체의 복원이나 새 해상도 적용 기능이 아니다.

@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 마우스 초기화 capability BYTE와 native 입력 adapter `0047D8D0`
+
+원본 `0047D8D0..0047DA6A`의 Windows DirectInput initializer 411바이트/SHA-256 `4b91b3f8978a7bb125c6ba815aee965a7dad8460820ff7cc74bc63bb8b4ffb56`·뒤 `0047DA6B`의 5-NOP 및 unsigned BYTE getter `0047DBC0..0047DBC5` 6바이트/SHA-256 `12fe2a1633c5326cdec725c9fc09afee93f3ff19e4ab580e9ffa443fedc29d12`·뒤 10-NOP를 각각 봉인했다. initializer는 nonnegative GetCapabilities HRESULT에서 dwButtons의 low BYTE를 `006F7A3C`에 쓴 뒤 present DWORD `006F7A28`을 게시한다. GetCapabilities 실패 시 이전 BYTE를 보존하는 Windows 흐름과, COM/HRESULT 모델 없이 native handler capacity를 게시하는 adapter를 혼동하지 않는다. 이 code hash는 원본 provenance이며 adapter가 물리 장치 capability 또는 Windows 초기화 전체를 에뮬레이트한다는 증거가 아니다.
+
+기존 native initializer의 capability 게시 누락으로 C getter가 0을 읽어 메인/게임 내 InputCfg의 ID 971..973이 모두 disabled였다. 수정은 initializer 한 본체에서 native state의 Left/Right/Middle 배열 길이를 BYTE로 먼저 게시하는 것이다. wheel은 별도 channel이며 physical button enumeration을 새로 주장하지 않는다. 256개 이전 BYTE 값과 두 scalar 저장 사이/뒤의 packed neighbor, actual C getter의 0..255 unsigned 읽기, 실제 headless queued press/release·wheel을 검사한다. 첫 전체 검사에서 fixture의 extracted noxInputMap raw access를 확인해 범위를 바로잡았으며 static guard는 수정하지 않았다.
+
+Darwin/ARM64 일반/HD 메인·게임 내 옵션 audit는 각각 216/11·218/11·197/5·199/5 assertion이다. 실제 클릭 Left→Right→Middle→Left의 availability/live 값/radio exclusivity/in-memory 직렬화는 모두 통과하고 다른 실패 assertion은 유지한다. 변경 전 입력 순서의 private Back 화면 baseline에는 작은 픽셀 mismatch가 있어 원래/actual/diff를 직접 검토했으며 기존 baseline을 override하지 않았다. 별도 최종 시나리오 네 개는 summary까지 도달했고 일반 main의 독립 새 프로세스는 override 없이 최종 PNG 6개를 재검증했다. 최종 실행의 exit 2는 수집된 audit 실패이며 성공 종료로 부르지 않는다. 최종 PNG 18개와 이전 차이 산출물은 private temporary 경로에만 둔다.
+
+main 재설정 뒤 ESC 5개·ShowTooltips/NoSoftLights legacy key 부재 2개·main window mode 직렬화 1개가 남는다. inactive mock FX gain 3개는 물리 오디오 고장 판정이 아니며 실제 해상도 적용·디스크 저장/새 프로세스 load·원래 default.cfg Reset도 미검증이다. 옵션/입력/GUI/메모리 맵 대상 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict 및 server-tag 1회가 통과했다. 전후 `make oracle-test`의 stock 1,556파일·570,653,750바이트·불변 tree와 NXZ 50쌍 검증도 통과하여 누적 code 2,878/data 617개다. 원본 자산·개인 Save/config는 변경하지 않는다.
+
 ## 게임 내 Options의 기존 Go 해상도 확장 연결 `004ADF30`
 
 원본 `004ADF30..004ADF75`의 event/click-ID dispatch prefix 70바이트를 봉인했다. SHA-256은 `20505a16801ca6ded59db84d477078680e03eca2469cc8144dedd1863208b589`이다. `004ADF51`의 GetID 호출 뒤 ID에서 311을 빼고 unsigned 값 60 초과를 default로 보내므로 원래 action 범위는 311..371다. 이 prefix 봉인은 그 범위의 근거이며 전체 callback의 의미 동등성 증명은 아니다. 기존 OpenNox ID 380+는 PE32 기능이 아니라 별도 Go 해상도 확장이다.

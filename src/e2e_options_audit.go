@@ -478,7 +478,9 @@ func (a *optionsAudit) input(sc *e2eScenario) {
 			return root().ChildByID(id)
 		}
 	}
-	for _, id := range []uint{971, 972, 973} {
+	// Return from Middle to Left so Left is tested as an actual setting change,
+	// not only as a click on the already-selected startup default.
+	for _, id := range []uint{971, 972, 973, 971} {
 		sc.add(0, "", func() {
 			if available {
 				a.check(optionsAuditEnabled(root().ChildByID(id)), fmt.Sprintf("input pickup %d available", id), "mouse pickup selector")
@@ -494,8 +496,14 @@ func (a *optionsAudit) input(sc *e2eScenario) {
 			writeConfigHotkeys(&section)
 			win := root().ChildByID(id)
 			checked := win != nil && win.DrawData().Field0&4 != 0
-			a.check(int(legacy.Nox_client_mousePriKey_430AF0()) == want && checked,
-				fmt.Sprintf("input pickup %d applied", id), fmt.Sprintf("live=%d checked=%t serialized=%q", legacy.Nox_client_mousePriKey_430AF0(), checked, sectionValueOptionsAudit(section, "MousePickup")))
+			exclusive := true
+			for _, other := range []uint{971, 972, 973} {
+				peer := root().ChildByID(other)
+				exclusive = exclusive && peer != nil && (peer.DrawData().Field0&4 != 0) == (other == id)
+			}
+			serialized := sectionValueOptionsAudit(section, "MousePickup")
+			a.check(int(legacy.Nox_client_mousePriKey_430AF0()) == want && checked && exclusive && serialized == noxMouseSelectOpt[want],
+				fmt.Sprintf("input pickup %d applied", id), fmt.Sprintf("live=%d checked=%t exclusive=%t serialized=%q", legacy.Nox_client_mousePriKey_430AF0(), checked, exclusive, serialized))
 		})
 	}
 	for _, id := range []uint{933, 931} {

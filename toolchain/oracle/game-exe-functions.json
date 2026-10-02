@@ -2177,6 +2177,34 @@
       "purpose": "the exact fifteen NOP bytes separating NPC dialog open from the text preparation helper at 0047A020"
     },
     {
+      "name": "nox_input_mouseInit_47D8D0",
+      "address": "0x0047D8D0",
+      "size": 411,
+      "sha256": "4b91b3f8978a7bb125c6ba815aee965a7dad8460820ff7cc74bc63bb8b4ffb56",
+      "purpose": "the exact original Windows DirectInput mouse initialization body; on a nonnegative GetCapabilities HRESULT it stores the low BYTE of dwButtons at 006F7A3C before publishing the mouse-present DWORD at 006F7A28; provenance for the native input capability adapter, not a claim to emulate COM initialization"
+    },
+    {
+      "name": "nox_input_mouseInit_47D8D0_padding",
+      "address": "0x0047DA6B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after the DirectInput mouse initializer's final return"
+    },
+    {
+      "name": "sub_47DBC0",
+      "address": "0x0047DBC0",
+      "size": 6,
+      "sha256": "12fe2a1633c5326cdec725c9fc09afee93f3ff19e4ab580e9ffa443fedc29d12",
+      "purpose": "read the unsigned mouse-button capability BYTE at 006F7A3C without reading its packed neighbors"
+    },
+    {
+      "name": "sub_47DBC0_padding",
+      "address": "0x0047DBC6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes separating the capability BYTE getter from the next function"
+    },
+    {
       "name": "nox_xxx_wndEditProc_487D70",
       "address": "0x00487D70",
       "size": 1008,

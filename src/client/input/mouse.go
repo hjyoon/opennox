@@ -38,6 +38,11 @@ const (
 	NOX_MOUSE_MIDDLE = MouseButton(2)
 )
 
+// MouseButtonCount is the number of logical buttons accepted by the native
+// input handler, not a count of physical buttons on the attached device.
+// Wheel events have their own channel and are not mouse buttons.
+const MouseButtonCount = len(noxMouseStateInt{}.btn)
+
 type MouseState int8
 
 func (s MouseState) String() string {

@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## FX startup scalar 오검출과 실제 GUI 재검증
+
+이번 수정은 `optionsAudit.slider` 한 본체의 read-only 관찰 의미만 보정한다. 저장된 startup scalar를 live gain이라고 비교하지 않고, 실제 mouse 입력 전/후 startup 보존을 검사한다. 기존 slider 위치·FX Target·enabled 검사와 queued input은 유지하며 오디오 동작이나 설정/handler/focus를 주입하지 않는다. 실제 source gain/mute/30Hz 서비스의 OpenAL 회귀는 별도로 유지한다. 새 원본 body/range를 봉인하지 않아 code 2,878/data 617개 그대로다.
+
+격리 observer-only 회귀의 96조건(두 mode·startup 4개·live 4개·정상/Target 오류/startup 변경)을 독립 3회 확인했다. fixture DWORD 타입의 초기 컴파일 실패를 준비 실패로 구별하며, 그 후 startup=0·live Target=1의 잘못된 gain assertion red를 재현했다. 예약한 입력이나 handler는 이 fixture에서 실행하지 않는다. 정상은 통과하고 두 잘못된 관찰은 계속 실패하며 observer가 timer/widget/설정/input/enabled/focus를 변경하지 않는다. 관련 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict 및 server-tag 각 1회가 통과했다.
+
+headless 실제 입력 일반/HD main은 221/5·223/5 및 의도된 exit 2, 게임 내는 201/0·203/0 및 정상 exit 0이다. 기존 PNG 18개를 override 없이 통과했고 새 크래시/화면 mismatch는 없다. main 재지정 뒤 nil focus/ESC와 binding 적용 실패 5개는 보존한다. 실제 OpenAL Soft null의 일반 게임 내도 201/0·exit 0/기존 PNG 기준과 audit 직전 효과음 queued/processed 389/389·음악 99/97 및 source 16+1을 확인했다. 이번 단위의 native main/HD 재실행이나 physical speakers·default.cfg Reset·전체 설정 disk round-trip·실제 해상도 적용/전체 옵션 정상 증명으로 확대하지 않는다.
+
+전후 oracle은 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code/data와 NXZ 50쌍을 확인했다. hash·관찰자 회귀·실제 queued GUI/오디오 backend 검증의 범위를 구별하며 개인 Save/config·stock 및 원본 자산/PNG/시나리오를 변경하거나 저장소에 추가하지 않는다.
+
 ## Native FX active playback의 실제 timer service
 
 이번 production 변경은 Go audio 확장 `startAudioServices` 한 본체의 기존 30Hz callback에서 native-owned 활성 voice의 live FX Current/gain/음소거를 처리한다. 원래 event DWORD를 mix-before-127 순서로 적용하며, mute는 sample `Init`으로 실제 source의 queued buffer까지 제거한다. re-enable은 이전 소리를 되살리지 않고 미래 event를 허용한다. legacy/movie/외부 sample·새 타입·원본 PE32 body/range는 변경하지 않아 code 2,878/data 617개 그대로다.

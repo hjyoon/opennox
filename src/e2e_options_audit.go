@@ -228,6 +228,12 @@ func (a *optionsAudit) dragSlider(sc *e2eScenario, id uint, fraction float64, ta
 }
 
 func (a *optionsAudit) slider(sc *e2eScenario, id uint, fraction float64) {
+	var startupFX int
+	if id == 351 {
+		sc.add(0, "audit FX startup value before slider", func() {
+			startupFX = configGetVolume(VolumeFX)
+		})
+	}
 	a.dragSlider(sc, id, fraction, func() *gui.Window { return a.root().ChildByID(id) })
 	sc.add(0, "", func() {
 		win := a.root().ChildByID(id)
@@ -257,7 +263,10 @@ func (a *optionsAudit) slider(sc *e2eScenario, id uint, fraction float64) {
 				fmt.Sprintf("volume %d target applied", ind), fmt.Sprintf("current=%d target=%d startupGain=%d slider=%d max=%d enabled=%t", current, target, configGetVolume(ind), data.Field3, data.Max, enabled))
 			a.check(enabled == (data.Field3 != 0), fmt.Sprintf("volume %d zero/enable link", ind), fmt.Sprintf("value=%d enabled=%t", data.Field3, enabled))
 			if ind == VolumeFX {
-				a.check(configGetVolume(VolumeFX) == int(data.Field3), "native FX gain follows slider", fmt.Sprintf("gain=%d slider=%d", configGetVolume(VolumeFX), data.Field3))
+				// This scalar is the saved startup setting, not live source gain.
+				// The Target/enable checks above observe the GUI command; actual
+				// native source mixing is covered by the OpenAL integration tests.
+				a.check(configGetVolume(VolumeFX) == startupFX, "FX startup value preserved", fmt.Sprintf("before=%d after=%d liveTarget=%d", startupFX, configGetVolume(VolumeFX), target))
 			}
 		}
 	})

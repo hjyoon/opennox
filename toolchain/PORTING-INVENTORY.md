@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## FX 옵션 observer의 startup/live 의미 구별
+
+`configGetVolume(VolumeFX)`는 저장된 시작 scalar이지 현재 OpenAL gain이 아니다. 이전 UI observer는 이를 slider와 같아야 한다고 검사해 실제 live mix를 고친 뒤에도 세 오검출을 만들었다. 이번 변경은 `optionsAudit.slider` 한 본체에서 실제 입력 전 startup 값을 읽어 두고, 입력 뒤 값이 보존되는지 검사하는 것이다. 기존 slider 위치·FX Target·zero/enabled 검사와 실제 입력 경로를 유지한다. native source gain/decode/30Hz service는 별도의 실제 OpenAL 회귀가 맡는다. 게임 설정/handler/focus·오디오 production 동작은 변경하지 않는다.
+
+격리 subprocess의 observer-only 회귀는 C-owned GUI/slider data와 실제 FX binding을 사용한다. 예약된 mouse 단계나 handler를 실행하지 않고 read-only before/after 단계만 검사한다. 두 mode·startup 4개·live 4개·정상/잘못된 Target/변경된 startup의 96조건을 독립 3회 확인한다. fixture DWORD 타입의 초기 컴파일 준비 실패와 그 후 startup=0·live Target=1의 실제 오검출 red를 구별한다. 잘못된 Target와 startup 변경은 계속 실패하며 timer·widget·설정·queued input·enabled flag·focus를 observer가 변경하지 않는지도 확인한다. 일반/실제 cgocheck2/race/checkptr 관련 7패키지 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회가 통과했다.
+
+headless queued mouse/key 일반/HD main은 221/5·223/5와 의도된 audit-failure exit 2, 게임 내는 201/0·203/0과 정상 exit 0이다. 이전 PNG 18개를 override 없이 비교했고 새 크래시/화면 mismatch는 없다. main의 키 재지정 후 nil focus/ESC 복귀 및 binding 적용 실패 5개는 그대로 남긴다. 실제 OpenAL Soft null backend의 일반 게임 내 경로도 201/0·exit 0 및 기존 PNG 기준을 통과했다. audit 직전 16개 sample source/음악 source 하나, 효과음 queued/processed 389/389·음악 99/97을 read-only observer로 확인했다. 이 단위에서 native main/HD 또는 physical speakers까지 다시 검증했다고 주장하지 않는다.
+
+전체 옵션 완료 판정은 보류한다. main ESC·원래 default.cfg Reset·전체 legacy 설정 disk round-trip·실제 해상도 적용 등은 남은 경계이며 이전 source-gain 및 mute 회귀를 UI startup 비교로 대체하지 않는다. 전후 oracle은 불변 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개/NXZ 50쌍을 확인했다. 새 PE32 range·원본 자산/PNG/시나리오를 저장소에 추가하거나 개인 Save/config를 변경하지 않는다.
+
 ## 재생 중 Native FX의 live 음량과 음소거 service
 
 원래 event/voice service를 우회하는 native FX는 제출 이후 옵션 음량이나 enabled flag가 바뀌어도 이미 재생 중인 source에 반영하지 않았다. 실제 C slider를 4,850으로 바꿔도 live Current=16,384·Target=4,850 및 gain=126/127에 머무르는 수정 전 실패를 확인했다. 이번 production 변경은 기존 `startAudioServices` 한 본체의 30Hz callback 안에서 native-owned 활성 voice만 처리한다. FX timer의 Current를 갱신하고 보존한 원래 event DWORD와 mix-before-127 순서로 섞는다. 음소거는 sample `Init`으로 logical state뿐 아니라 실제 source와 queued buffer도 중단/제거한다. 다시 켜도 버린 소리는 재개하지 않고 새 요청만 허용한다. 별도 goroutine·새 타입/맵·원본 PE32 range는 추가하지 않는다.

@@ -16436,6 +16436,13 @@
       "purpose": "the exact two NOP bytes separating the Push cast from Fumble at 0052C060"
     },
     {
+      "name": "nox_xxx_castFumble_52C060_prefix",
+      "address": "0x0052C060",
+      "size": 50,
+      "sha256": "8b8a2ab482d94b9ca0ea9ab107e1a900e0d4f0b6a6f26e9f220e2d67cc4a0ee4",
+      "purpose": "load the acceptance target, return zero for no target, and select player/NPC equipment versus ordinary-monster inventory while excluding shopkeeper monsters from the latter path"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_52C092",
       "address": "0x0052C092",
       "size": 5,
@@ -16443,11 +16450,32 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting drop-all-items at 004EDA40"
     },
     {
+      "name": "nox_xxx_castFumble_52C060_middle",
+      "address": "0x0052C097",
+      "size": 82,
+      "sha256": "e7e37a1601f5dc198822d6ab87b68c01cfb8a65e707ac3a764588a6cb7acbdf3",
+      "purpose": "push the live acceptance target away from the fourth caster argument with force 50 after drop-all, or traverse inventory with a saved successor and force-drop only equipped weapon/armor or the original usable-wand subclass"
+    },
+    {
       "name": "nox_xxx_invForceDropItem_4ED930_call_52C0E9",
       "address": "0x0052C0E9",
       "size": 5,
       "sha256": "71be5cfff8ae11d814fbe44a8c2f437197de1c45b8ed5180abc86dabbbbcfb4d",
       "purpose": "the exact direct rel32 call from cast-fumble inventory traversal to force-drop"
+    },
+    {
+      "name": "nox_xxx_castFumble_52C060_suffix",
+      "address": "0x0052C0EE",
+      "size": 150,
+      "sha256": "200a20a0aabe00bd5c9c3fb227e2245cd19deb5d33cec6bb7cb1b48e5e434aea",
+      "purpose": "finish saved-successor inventory traversal, initialize the dedicated whole-DWORD GameBall type cache, force the first matching owned ball with 100, clear its owner, emit ball sound 926 then selector-one effect audio on the live target and return one"
+    },
+    {
+      "name": "nox_xxx_castFumble_52C060_padding",
+      "address": "0x0052C184",
+      "size": 12,
+      "sha256": "ab16a4264a14a2fd326c262e20ab7a8d0e67bc1658371fe45c446f311cdb6dbd",
+      "purpose": "the exact twelve NOP bytes after the Fumble cast and before 0052C190"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C1BE",
@@ -22575,6 +22603,13 @@
       "size": 15,
       "sha256": "bb55e6aeab8dc6d25be29dad5f9f208a712b2c2fa587074edf46d32b1332f528",
       "purpose": "the exact NUL-terminated PushPowerCoeff balance key used by the Push cast before signed-level multiplication"
+    },
+    {
+      "name": "fumble_cast_game_ball_type_name_52C060",
+      "address": "0x005C6204",
+      "size": 9,
+      "sha256": "cb2e1a4ebca964c4d17f0c583de10017d5ccb21858579b7f4930cc12fa3656dd",
+      "purpose": "the exact NUL-terminated GameBall name used by the dedicated Fumble cast type cache"
     },
     {
       "name": "cast_confuse_duration_key_52C1E0",

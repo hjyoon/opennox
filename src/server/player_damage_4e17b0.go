@@ -330,6 +330,21 @@ func playerDamagePlanArmorCarry4E17B0(
 	return plan, true
 }
 
+// Glyph's CastShock passes its unit caster as both source and weapon. The
+// weaponless monster shape also supplies ordinary spells/Shock retaliation.
+// Distinct weapons, wands and missiles still need their separate effect ports.
+func playerDamageElectricShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
+	if source == nil || source.UpdateData == nil ||
+		(typ != object.DamageElectric && typ != object.DamageAirborneElectric) {
+		return false
+	}
+	if weapon == nil {
+		return source.Class().Has(object.ClassMonster)
+	}
+	return weapon == source && source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
+		!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)
+}
+
 // playerDamageMonster4E17B0 restores the native-width monster half of
 // PlayerDamage used by scripted NPCs. In particular, War01A's wizard setpiece
 // sends Bryan's MorningStar CRUSH and the wizard's weaponless
@@ -365,15 +380,16 @@ func playerDamageMonster4E17B0(
 	update := target.UpdateDataMonster()
 	crush := typ == object.DamageCrush && source != nil && source.Class().Has(object.ClassMonster) &&
 		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassWeapon)
-	airborneElectric := typ == object.DamageAirborneElectric && source != nil &&
-		source.Class().Has(object.ClassMonster) && source.UpdateData != nil && weapon == nil
-	if !crush && !airborneElectric {
+	electric := playerDamageElectricShape4E17B0(source, weapon, typ)
+	if !crush && !electric {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 	}
 	// Reflect Shield precedes the damage-type switch and monster shield blocks
 	// require their own action/equipment effects. Keep those uncommon branches
-	// fail-closed until they have native-width effect ports.
-	if target.HasEnchant(playerDamageReflectEnchant4E17B0) {
+	// fail-closed until they have native-width effect ports. Ordinary electric
+	// from a non-missile does not enter 004E199A's reflection branch (16/17).
+	if target.HasEnchant(playerDamageReflectEnchant4E17B0) &&
+		(!electric || typ != object.DamageElectric || source.Class().Has(object.ClassMissile)) {
 		return playerDamageUnsupported4E17B0(runtime, "monster Reflect Shield", target, source, weapon, damage, typ)
 	}
 	if crush && update.ArmorEquipFlags&0x3000000 != 0 && target.MonsterActionGet50A020() == 21 {
@@ -383,7 +399,7 @@ func playerDamageMonster4E17B0(
 	if quest && runtime.QuestDamageScale == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
-	if airborneElectric && runtime.ElectricArmorScale == nil {
+	if electric && runtime.ElectricArmorScale == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing electric armor service", target, source, weapon, damage, typ)
 	}
 	if runtime.DefaultDamage == nil {
@@ -453,24 +469,24 @@ func playerDamageMonster4E17B0(
 // damage (not the absorbed difference) to equipped armor. The caller has
 // already checked the Player, observer, Coop and Reflect Shield gates.
 func playerDamageElectricPlayer4E17B0(
-	target, source *Object, damage int32, typ object.DamageType,
+	target, source, weapon *Object, damage int32, typ object.DamageType,
 	runtime PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
 	quest := runtime.QuestMode != nil && runtime.QuestMode()
 	if runtime.ElectricArmorScale == nil || runtime.DefaultDamage == nil {
-		return playerDamageUnsupported4E17B0(runtime, "missing player electric service", target, source, nil, damage, typ)
+		return playerDamageUnsupported4E17B0(runtime, "missing player electric service", target, source, weapon, damage, typ)
 	}
 	if quest && runtime.QuestDamageScale == nil {
-		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, nil, damage, typ)
+		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
 	update := target.UpdateDataPlayer()
 	scaled := float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
 	accumulated := scaled + math.Float32frombits(update.Field21)
 	effective := playerDamageRound4E17B0(accumulated)
 	armorValue := math.Float32frombits(update.Field57)
-	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, nil, armorValue, damage, runtime)
+	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, armorValue, damage, runtime)
 	if !ok {
-		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, nil, damage, typ)
+		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
 	update.Field76 = 0
 	if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
@@ -484,7 +500,7 @@ func playerDamageElectricPlayer4E17B0(
 		}
 		health := planned.item.HealthData
 		before := health.Cur
-		runtime.DamageArmor(planned.item, source, nil, planned.damage, typ)
+		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
 		after := health.Cur
 		if before != after && runtime.ReportArmorHealth != nil {
 			runtime.ReportArmorHealth(target, planned.item, before, after)
@@ -508,7 +524,7 @@ func playerDamageElectricPlayer4E17B0(
 			effective = 1
 		}
 	}
-	return true, runtime.DefaultDamage(target, source, nil, effective, typ)
+	return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
 }
 
 // playerDamageMissilePierce4E17B0 restores switch case 3 at 004E1F84.
@@ -590,7 +606,8 @@ func playerDamageMissilePierce4E17B0(
 // PlayerDamageNative4E17B0 restores ordinary player/NPC melee, unit-sourced SIMPLE
 // CRUSH (including stock Fists), Spider BITE, monster-fired
 // missile IMPACT/PIERCE, Berserker Charge CRUSH, SentryGlobe ZAP_RAY, world FLAME,
-// unarmed monster ELECTRIC/AIRBORNE_ELECTRIC, and source-less LAVA/POISON branches of
+// unarmed monster and unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC,
+// and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
 // plus the front-facing shield block and the common Quest damage scaling tail,
 // and the early Reflect Shield and Coop self-damage gates. It returns
@@ -652,10 +669,9 @@ func PlayerDamageNative4E17B0(
 		// ranged predicate without silently including melee Shock shapes.
 		return playerDamageMissilePierce4E17B0(target, source, weapon, update, pierceArmorValue, damage, typ, runtime)
 	}
-	if (typ == object.DamageElectric || typ == object.DamageAirborneElectric) && damage > 0 &&
-		source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil && weapon == nil {
+	if damage > 0 && playerDamageElectricShape4E17B0(source, weapon, typ) {
 		// Ordinary shield/sword blocks explicitly exclude type 9/17.
-		return playerDamageElectricPlayer4E17B0(target, source, damage, typ, runtime)
+		return playerDamageElectricPlayer4E17B0(target, source, weapon, damage, typ, runtime)
 	}
 	lava := typ == object.DamageLava && damage > 0 && source == nil && weapon == nil
 	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil

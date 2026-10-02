@@ -85,6 +85,16 @@ NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
   ./scripts/e2e/host-game-pull-spell.yaml
 ```
 
+`host-game-fumble-spell.yaml`은 실제 Warrior host 메뉴 시작 뒤 플레이어→stock NPC의 정상 script object cast 요청 1..5, 플레이어→일반 Troll의 drop-all 분기, stock NPC→플레이어의 자연 cast-animation 경로를 검사한다. 일반·HD headless 각각 7회, 합계 14회가 exit 0이다. 원본 targeted Magic projectile은 요청 level과 별개로 mode-selected power 3을 유지하며 Fumble 효과는 level을 사용하지 않는다. 장착 무기·wand·방패만 떨어뜨리고 몸통 방어구와 미장착 예비 장비를 유지하는 판정은 함수 회귀로 고정했고, 실제 NPC/플레이어의 무기·방패 드롭 및 client 장비 mask 동기화도 확인했다. 일반 몬스터는 인벤토리 두 개가 모두 떨어지고, 최초 시전자가 아닌 **명중한 Magic의 위치**를 기준으로 원본 force 50과 mass에 따른 정확한 힘 및 서버·client의 바깥쪽 이동을 확인한다. NPC HP 150, Troll HP 80, Warrior HP 150은 변하지 않는다. NPC는 11틱 후 animation frame 4에서 자연 시전하고 20틱 후 명중, 22틱 후 행동 종료·투사체 제거·client replay가 완료됐다. native unit/item/projectile/update 포인터는 4GiB를 넘는다. 모든 드롭의 실제 서버 상태와 시야 안 드롭의 client drawable을 검사하며, 원본의 무작위 reachable 위치가 벽 뒤인 드롭은 표시 결과 검증에서 구분한다. 위치·대기 AI·정상 아이템 지급/장착·명시적인 주문/대상 선택만 fixture이고 드롭·장비 flag·힘·cast frame·HP·투사체·client 결과를 주입하지 않는다. 원본 executable/자산은 검사 전후 동일하다. GameBall/Shopkeeper 분기는 별도 함수 회귀 범위이며, 자율 NPC 주문 선택·플레이어 incantation/mana·campaign trigger·Linux/Windows/SDL/OpenAL 검증을 대신하지 않는다. 다른 GUI E2E와 동시에 실행하지 않는다.
+
+```sh
+NOX_E2E_SEAT=headless bash ./scripts/run-headless-gui-e2e.sh \
+  /absolute/path/to/nox ./scripts/e2e/host-game-fumble-spell.yaml
+NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
+  bash ./scripts/run-headless-gui-e2e.sh /absolute/path/to/nox \
+  ./scripts/e2e/host-game-fumble-spell.yaml
+```
+
 `host-game-player-status-animation.yaml`은 실제 메뉴로 시작한 regular host에서 정상 enchant API로 제자리 플레이어에게 Held(스턴)·Confused·AntiMagic·Charming·Shield·Slowed를 각각 90틱 적용한다. 초기 무적은 강제로 제거하지 않고 자연 만료를 기다린다. 일반·HD headless와 일반 독립 재실행에서 실제 클라이언트 패킷의 buff/HUD 동기화, 두 시점의 원본 효과 sprite 픽셀 및 서로 다른 애니메이션 프레임, 자연 만료 후 제거를 확인했다. Slowed는 실제 화면 안의 YellowBubbleParticle 생성과 만료 후 0개를 검사한다. 효과별 시작·진행·해제의 18개 PNG도 모든 실행에서 일치했다. 원래 로더의 packed DWORD 저장으로 native 애니메이션 cache가 nil이 되는 실패를 먼저 재현했으며, cache 초기화와 세션 정리를 별도 함수 단위로 복원했다. 상태 준비만 fixture이고 client buff·화면 출력·만료를 주입하지 않는다. Stun 주문의 조건별 Held/Slowed 선택, 적의 주문 명중·이동 제어, 다른 상태 종류·캐릭터 자세나 SDL/OpenAL 검증을 대신하지 않는다. 다른 GUI E2E와 동시에 실행하지 않는다.
 
 ```sh

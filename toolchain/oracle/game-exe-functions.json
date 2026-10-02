@@ -16454,7 +16454,7 @@
       "address": "0x0052C097",
       "size": 82,
       "sha256": "e7e37a1601f5dc198822d6ab87b68c01cfb8a65e707ac3a764588a6cb7acbdf3",
-      "purpose": "push the live acceptance target away from the fourth caster argument with force 50 after drop-all, or traverse inventory with a saved successor and force-drop only equipped weapon/armor or the original usable-wand subclass"
+      "purpose": "push the live acceptance target away from the fourth caster argument with force 50 after drop-all, or traverse inventory with a saved successor and force-drop only equipped weapons/wands or the original shield armor subclass"
     },
     {
       "name": "nox_xxx_invForceDropItem_4ED930_call_52C0E9",

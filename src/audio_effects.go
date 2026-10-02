@@ -14,7 +14,9 @@ import (
 
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/internal/binfile"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/client/audio/ail"
+	"github.com/opennox/opennox/v1/legacy/timer"
 )
 
 const (
@@ -548,9 +550,14 @@ func (s *nativeAudioEffectsState) playSampleLocked(id sound.ID, def *nativeSound
 	voice.SetPlaybackRate(int(entry.rate))
 	voice.SetPan(63)
 
+	// The original effect service updates the live FX group before mixing
+	// each event, then converts that mixed volume to the sample's 0..127 scale.
+	// The saved configuration scalar is only the group's startup value.
+	fx := (*timer.TimerGroup)(legacy.Get_dword_587000_127004())
+	fx.Update()
 	eventVolume := uint32((uint64(163*requestedVolume) * uint64(def.volume)) >> 14)
-	volume := int((uint64(127) * uint64(eventVolume)) >> 14)
-	volume = volume * configGetVolume(VolumeFX) / VolumeMax
+	mixedVolume := uint64(eventVolume) * uint64(fx.Timers[0].Current>>16) / VolumeMax
+	volume := int((uint64(127) * mixedVolume) >> 14)
 	if volume > 127 {
 		volume = 127
 	}

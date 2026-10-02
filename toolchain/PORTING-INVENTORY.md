@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Native FX 샘플의 현재 음량 적용
+
+옵션의 FX slider는 live timer에 `SetRaw`를 보내지만 native `playSampleLocked`는 시작 설정 scalar를 고정 배율로 사용했다. 수정 전 실제 OpenAL source에서 startup=16,384·slider=0인데 gain=126/127인 실패를 재현했다. 이번 production 변경은 이 Go 확장 함수 한 본체뿐이다. 원래 effect service처럼 live FX group을 update한 뒤 event volume과 섞고, 그 결과를 0..127로 변환한다. mix-before-127 정수 반올림·상한과 다른 sample 설정을 유지하며 `configGetVolume`의 startup 의미를 바꾸지 않는다. 새 원본 PE32 본체/range를 복원했다고 주장하지 않는다.
+
+격리 subprocess의 opt-in 회귀는 실제 blob binding과 AIL sample submission을 사용하고 `GetSource`의 OpenAL gain을 읽는다. startup 4개·live 값 8개·requested 값 3개·definition 값 4개·mono/stereo의 768개 조합, pending raw update·startup/target 보존, Current와 Target이 다른 zero-tick interpolation 및 fractional Current의 discard를 확인한다. fixture가 production 대신 timer를 advance하지 않는다. 생성한 무음 ADPCM만 사용하며 stock bank·개인 설정/Save는 읽거나 쓰지 않는다.
+
+기본 하드웨어 device는 현재 실행 환경에서 `openal: invalid operation`으로 열리지 않았다. 따라서 `ALSOFT_DRIVERS=null`의 실제 OpenAL Soft context/source에서 검증했다. mock handle이나 predicted gain 검사가 아니지만 물리 스피커·샘플 decode/재생 완료 검증도 아니다. 관련 패키지 전체 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회가 통과했다. 새 opt-in 회귀를 실제로 실행했으며 기존 default-device playback 시험까지 통과했다고 확대하지 않는다.
+
+Darwin/ARM64 headless 일반/HD main·게임 내 옵션 audit는 각각 218/8·220/8·198/3·200/3 assertion으로 끝까지 진행했다. 기존 main PNG 재사용은 Back 이후 FX thumb 차이로 summary 전에 중단되었다. main constructor도 FX Current를 읽으므로 마지막 선택값 4,850이 실제로 반영된 결과다. 이전 baseline을 덮어쓰지 않고 byte-identical YAML을 별도 private 경로에 두었다. 이전/새 PNG 18개를 decode 비교해 16개는 같고, 일반/HD Back 화면 두 개만 각 659 pixel·bounds `(490,103)-(514,211)`의 FX thumb 위치가 다르며 직접 검토했다. 새 일반/HD 독립 프로세스 재실행은 override 없이 각 PNG 6개와 같은 assertion 결과를 확인했다. 최종 여섯 실행의 exit 2는 유지된 audit-failure panic이며 추가 SIGSEGV/runtime error·화면 mismatch는 없다. PNG·시나리오·비교 helper는 임시 경로에만 남긴다.
+
+FX 3개 실패는 startup scalar를 slider와 비교하는 기존 observer 판정으로, 이번 실제 backend gain 회귀와 구별한다. 이 observer를 통과하도록 startup 값을 덮어쓰거나 실패를 제거하지 않았다. main 재설정 뒤 ESC 5개 assertion도 유지한다. 새 샘플 gain만 이번에 보정했으며 `play`의 startup-zero admission·mute, 이미 재생 중인 source의 음량 변경, 실제 default.cfg Reset·전체 legacy 설정 disk round-trip·해상도 적용은 별도 점검이 남는다. 모든 옵션이 정상이라고 판정하지 않는다.
+
+전후 `make oracle-test`는 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개와 NXZ 50쌍을 확인했다. provenance·native adapter 회귀·실제 GUI 관찰은 서로 대체하지 않으며 원본 자산·개인 Save/config를 변경하지 않는다.
+
 ## Stretch YAML 저장 예약과 옵션 persistence 검사의 범위
 
 기존 YAML을 성공적으로 읽으면 `configDirty=false`가 된다. `Client.SetStretch`는 renderer와 Viper 값만 변경해 Stretch만 바꾼 뒤 종료할 때 `maybeWriteConfig`가 저장을 건너뛰었다. 수정 전 격리 회귀에서 양방향 변경 모두 live/YAML은 바뀌지만 dirty가 false인 실패를 재현했다. 이번 production 변경은 이 Go 확장 함수 한 본체에 다른 영상 setter와 같은 저장 예약을 추가하는 한 줄이다. 원본 C 본체나 설정 키·게임 효과는 변경하지 않는다.

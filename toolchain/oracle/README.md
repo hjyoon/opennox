@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Native FX gain의 live timer와 backend 검증
+
+이번 변경은 Go native audio 확장 `playSampleLocked` 한 본체에서 saved startup scalar 대신 live FX group을 update/mix한 뒤 127 scale로 변환하는 보정이다. 새 원본 PE32 함수/range를 봉인하지 않아 code 2,878/data 617개는 그대로다. startup scalar의 reader·original timer mix-before-127 반올림·sample metadata 계약은 유지한다. 수정 전 startup=16,384·live=0인데 실제 OpenAL gain=126/127인 실패를 확인했다.
+
+실제 AIL sample과 source gain reader를 사용하는 격리 opt-in 회귀는 768개 mono/stereo 조합·pending raw update·startup/target 보존 및 interpolation의 Current/Target 구별을 검사했다. default hardware device는 실행 환경에서 열리지 않아 실제 OpenAL Soft null backend를 명시했다. 생성한 무음 ADPCM만 쓰며 physical playback·decode 완료나 개인/stock 음원을 검증한 것으로 확대하지 않는다. 관련 패키지 일반/실제 cgocheck2/race/checkptr 각 3회, 전체 일반/strict·server-tag 각 1회가 통과했다.
+
+headless 실제 입력의 일반/HD main·게임 내 최종 결과는 218/8·220/8·198/3·200/3 assertion이다. 이전 main Back PNG에서 FX thumb 차이로 먼저 중단된 실행은 성공으로 세지 않는다. Current를 읽는 constructor와 실제 이미지를 대조하고 이전 PNG를 보존한 채 동일 YAML을 별도 private 경로에 기록했다. 18개 decode 비교 중 16개가 같고 두 Back 화면만 FX thumb 위치 659 pixel씩 다르다. 새 일반/HD 독립 재실행은 override 없이 PNG 6개씩을 통과했다. 최종 실행은 summary 뒤 의도된 audit-failure exit 2이며 추가 SIGSEGV/runtime error·화면 mismatch는 없다. startup scalar 비교 observer의 FX 3개와 main ESC 5개 실패는 유지한다. mute/startup-zero 재활성화·active source 음량 변경·전체 config disk round-trip·default.cfg Reset·해상도 적용은 남은 경계다.
+
+전후 `make oracle-test`의 stock 1,556파일·570,653,750바이트·불변 tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code/data 및 NXZ 50쌍 검증은 통과했다. 원본 hash·함수 회귀·headless UI 관찰의 범위를 구별하고 PNG나 원본 자산을 저장소에 추가하지 않는다.
+
 ## Stretch 저장 예약과 persistence 관찰의 후속 구별
 
 이번 production 수정은 원본 PE32 함수 복원이 아니라 Go 확장 `Client.SetStretch` 한 본체의 YAML 저장 예약 누락을 보정한다. 기존 파일을 읽어 dirty=false인 상태에서 Stretch만 바꾸면 live/Viper 값만 바뀌는 실패를 먼저 재현했다. 실제 설정 reader/setter/deferred writer로 임시 YAML의 양방향 변경을 저장하고 서로 독립된 새 프로세스에서 읽는다. unrelated 값 보존·readonly/E2E 억제·nil 호출의 무변경도 확인하며 개인 Save/config·stock 파일이나 전체 게임 시작 경로는 사용하지 않는다.

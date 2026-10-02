@@ -568,6 +568,8 @@ func (s *nativeAudioEffectsState) playSampleLocked(id sound.ID, def *nativeSound
 	if ready < 0 {
 		return false
 	}
+	// Retain the original event gain for live mixing, even after a zero gain.
+	voice.SetUserData(eventVolume)
 	voice.LoadBuffer(uint32(ready), entry.data)
 	if audioEffectsDebug {
 		audioEffectsLog.Printf("playing %s via %s (%d bytes, %d Hz)", id, entry.name, len(entry.data), entry.rate)

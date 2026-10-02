@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Native FX live service를 위한 event DWORD 보존
+
+이번 변경은 Go 확장 `playSampleLocked` 한 본체에서 성공한 native sample 제출의 mix 이전 event DWORD를 기존 Go user data 슬롯에 기록한다. legacy sample의 pointer user data·C ABI/원본 body는 변경하지 않으며 code 2,878/data 617개 그대로다. gain으로 원래 음량을 역산해 누적 반올림/zero 복원을 일으키지 않도록 하는 준비 단위이지 active playback의 옵션 적용 완료는 아니다.
+
+수정 전 실제 OpenAL Soft null의 첫 zero-live 제출에서 nil metadata 실패를 확인했다. 생성한 무음 ADPCM과 격리 subprocess의 768조합/interpolation은 source gain과 제출마다 교체되는 DWORD를 검사하며 invalid bank entry의 이전 metadata 보존도 확인한다. 관련 일반/실제 cgocheck2/race/checkptr 각 3회·전체 일반/strict와 server-tag 각 1회가 통과했다. GUI는 앞선 단위의 관찰로 구별하고 이번에 새 queued-input 실행이나 실제 스피커/decode 완료를 증명했다고 하지 않는다. service 및 production timer 연결, 다른 옵션 경계가 남아 있다. 불변 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`와 NXZ 50쌍을 보존하며 개인/원본 파일을 변경하지 않는다.
+
 ## Native FX enabled flag와 실제 C checkbox 회귀
 
 이번 production 수정은 Go native audio 확장 `play` 한 본체의 새 샘플 admission을 startup config scalar 대신 live `sub_453070`으로 판단하도록 보정한다. 원래 effect allocator의 enabled flag 계약과 startup 설정의 의미를 구별하며 요청 clamp·ID/definition/bank/voice guard·sample 선택은 유지한다. 새 원본 body/range를 봉인하지 않아 code 2,878/data 617개는 그대로다.

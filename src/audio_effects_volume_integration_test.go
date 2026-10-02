@@ -89,6 +89,9 @@ func TestNativeAudioEffectsLiveVolumeChild(t *testing.T) {
 	}
 	t.Cleanup(state.close)
 	source := openal.Source(*voice.GetSource())
+	if got := voice.UserData(); got != nil {
+		t.Fatalf("fresh native FX sample already has user data: %T", got)
+	}
 	t.Logf("native FX driver=%#x sample=%#x source=%d renderer=%q ALSOFT_DRIVERS=%q", driver, voice, source, openal.GetString(0xB003 /* AL_RENDERER */), os.Getenv("ALSOFT_DRIVERS"))
 	fx := (*timer.TimerGroup)(legacy.Get_dword_587000_127004())
 	if fx == nil {
@@ -109,6 +112,9 @@ func TestNativeAudioEffectsLiveVolumeChild(t *testing.T) {
 		got := source.Getf(openal.AlGain)
 		if math.Abs(float64(got)-float64(float32(want)/127)) > 1e-6 {
 			t.Fatalf("%s: submitted OpenAL gain=%g (%g/127), want %d/127", name, got, got*127, want)
+		}
+		if saved, ok := voice.UserData().(uint32); !ok || saved != event {
+			t.Fatalf("%s: original event volume=%v (%T), want DWORD %d before the live FX mix", name, voice.UserData(), voice.UserData(), event)
 		}
 		if err := openal.Err(); err != nil {
 			t.Fatalf("%s: OpenAL error: %v", name, err)
@@ -152,5 +158,15 @@ func TestNativeAudioEffectsLiveVolumeChild(t *testing.T) {
 	if fx.Timers[0].Current != 8126<<16|0xffff || fx.Timers[0].Target != VolumeMax<<16 {
 		t.Fatalf("interpolated FX timer was snapped to its target: %+v", fx.Timers[0])
 	}
-	t.Logf("checked %d raw mono/stereo submissions plus interpolated current and original mix-before-127 quantization", count)
+	// Invalid entries must not replace a previously submitted event's metadata.
+	saved := voice.UserData()
+	for _, sample := range []string{"missing", "empty", "pcm", "no-block"} {
+		state.bank.entries["empty"] = &nativeAudioBankEntry{}
+		state.bank.entries["pcm"] = &nativeAudioBankEntry{data: []byte{0}, blockSize: 256}
+		state.bank.entries["no-block"] = &nativeAudioBankEntry{data: []byte{0}, flags: 8}
+		if state.playSampleLocked(sound.SoundShellClick, &def, sample, 33) || voice.UserData() != saved {
+			t.Fatalf("invalid %q entry admitted a sample or replaced its saved event volume", sample)
+		}
+	}
+	t.Logf("checked %d raw mono/stereo submissions plus interpolated current, original mix-before-127 quantization and per-submission event volume", count)
 }

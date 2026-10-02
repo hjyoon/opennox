@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Native FX voice의 원래 event 음량 보존
+
+재생 중 source의 live FX mix에는 제출 당시의 event 음량이 필요하다. 현재 gain만 재사용하면 반올림이 누적되고 zero에서 복원할 수 없다. 이번 production 변경은 `playSampleLocked` 한 본체에서 성공한 buffer 제출 직전에 원래 DWORD event 음량을 그 native-owned AIL sample의 기존 Go user data 슬롯에 보존한다. 기존 legacy sample의 `*AudioSample` user data나 C pointer/layout·새 음량 계산·sample 선택·decode/service는 변경하지 않는다. 새 타입/맵과 원본 PE32 range를 추가하지 않는다.
+
+격리 subprocess의 실제 OpenAL Soft null 회귀에서 수정 전 첫 zero-live 제출의 user data가 nil인 실패를 확인했다. 기존 768개 mono/stereo·startup/live/request/definition 조합과 interpolation 각각에서 실제 gain 및 매번 교체되는 mix 이전 DWORD를 확인한다. missing/empty/PCM/no-block 실패가 이전 metadata를 바꾸지 않는지도 검사한다. 생성한 무음 ADPCM만 사용하며 API fixture이지 GUI input 또는 실제 스피커 검사라고 주장하지 않는다.
+
+root/legacy/AIL/timer 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회가 통과했다. 기존 headless 옵션 결과는 앞선 admission 단위의 관찰이며 이번에 새 GUI 실행을 했다고 기록하지 않는다. 이 준비 변경만으로 이미 재생 중인 소리의 gain/mute가 갱신되지는 않으며 service 본체와 30Hz 호출 연결을 후속 단위에서 검증해야 한다. 전체 옵션 정상 판정도 보류한다. 불변 stock/code 2,878/data 617개/NXZ 50쌍의 oracle 범위를 유지하고 개인 Save/config·원본 자산을 변경하지 않는다.
+
 ## Native FX 활성 상태와 새 효과음의 admission
 
 `nativeAudioEffectsState.play`는 시작 설정 음량만 보고 효과음을 허용해, FX를 꺼도 새 소리가 제출되고 startup=0이면 다시 켜도 제출되지 않았다. 수정 전 실제 OpenAL source에서 C 체크박스 off의 클릭이 gain=17/127→37/127로 바뀌고, startup=0의 on 클릭이 62/127 대신 17/127에 머무르는 실패를 재현했다. 이번 production 수정은 이 Go 확장 함수 한 본체의 admission을 원래 allocator와 같은 live enabled flag `sub_453070`으로 바꾸는 것이다. startup scalar의 의미·요청 음량 clamp·sound ID/definition/bank/voice guard·sample 선택 흐름은 그대로다. 새 원본 PE32 body/range를 복원했다고 주장하지 않는다.

@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 장비 replay·stock 레이어 색상의 headless 검증
+
+앞서 수정한 무기/방어구 팔레트와 5비트 연산을 실제 stock 게임 경로에서도 확인했다. 테스트 전용 `assert-equipment-colors`는 서버의 장착 inventory, 클라이언트의 native equipment replay와 현재 player/NPC animation을 읽고, C-owned drawable/viewport 사본 및 scratch RGB5551 buffer에서 원래 `DrawWeapon`/`DrawArmor`를 실행한다. 별도 기대 팔레트는 definition 색상 1..6과 네 modifier 슬롯을 직접 읽으며 production 팔레트 helper에 의존하지 않는다. 모든 16슬롯·nonblank 전체 레이어 픽셀·client equipment/definition/modifier 불변을 확인하고 live render state/buffer를 복원한다. NPC state 8과 player animation 0을 혼동하지 않으며 RNG/deletion animation은 관찰하지 않는다.
+
+자산 없는 공개 시나리오 두 개를 추가했다. War01a의 기존 visible-NPC fixture는 한 NPC의 배치/AI 정지를 준비하는 렌더 검사이며 자연 전투 검사가 아니다. 정규 Warrior host는 stock Sword/FireProtect1 지급 fixture 뒤 실제 마우스 장착→서버 callback/packet→character draw→마우스 해제를 거친다. 일반·HD headless/mock 네 실행 모두 exit 0이다. NPC 무기 1/방어구 8 레이어·1,844 nonzero 픽셀·modifier 15개와 player 무기 1/방어구 3 레이어·488 픽셀·modifier 4개가 각각 같은 결과를 냈다. armor 레이어에는 방패도 포함된다. fresh 장착 replay와 respawn의 원래 초기 placeholder를 구별하며 초기 seed를 테스트에 맞춰 바꾸지 않는다. private 초기 NPC 화면의 기존 baseline 비교도 override 없이 통과했다.
+
+새 observer의 예약/잘못된 mode, 16가지 modifier 조합·중복 last-wins·-1/0/15/16 슬롯 경계, blank·한 RGB5551 비트 오염·잘못된 bounds/buffer 길이 거부 회귀를 포함한다. 관련 6패키지의 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict와 fresh-process server-tag root/server/legacy 각 1회 및 전후/GUI 후 oracle이 통과했다. 기존 본체 변경은 E2E loader의 새 action dispatch 하나뿐이며 gameplay 수치·장비·원본 색상/자산·PNG 기대값을 변경하지 않는다. code 2,882/data 617개·NXZ 50쌍 및 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 유지한다. 개인 Save/config·private reference/PNG는 공개하지 않는다. 이 검증은 선택한 실제 stock 레이어/GUI 경로이며 모든 캐릭터 animation·composite occlusion·원본 Windows runtime·물리 화면 동등성으로 확대하지 않는다.
+
 ## 원본 sprite PNG 회귀의 역사적 색상 변환 복원
 
 이번 단위는 테스트 전용이다. 앞 세 production 단위의 5비트 픽셀·재질·typed 색상 계산 수정 뒤에도 표시용 31→255 변환 때문에 남은 기존 `TestDrawImage`의 270개 실패를 분리했다. PNG 직렬화에만 2022년 기준의 31→248 확장을 읽기 전용 `rasterGoldenImage`로 적용하며 production 표시 모델이나 기존 기대 MD5 270개는 변경하지 않는다. 새 view는 production 색상 분해 함수를 호출하지 않는다. 연결 전에는 view의 독립 검사가 통과하지만 기존 이미지 비교 270개는 계속 실패하는 red를 확인했다.

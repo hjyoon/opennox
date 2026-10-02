@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Stock 장착 레이어의 실제 headless 색상 관찰
+
+팔레트/5비트 연산 수정 뒤 테스트 전용 observer와 자산 없는 시나리오 두 개로 실제 stock equipment replay 및 native layer draw를 확인했다. 서버 inventory와 클라이언트의 네 modifier 이름/ID/RGB를 대조하고, 독립적으로 계산한 definition 1..6/ordered override 팔레트의 16슬롯 및 원래 sprite callback의 nonblank RGB5551 픽셀을 비교한다. drawable/viewport는 C-owned 사본, render state/buffer는 저장·복원하여 live 장비/정의/modifier를 바꾸지 않는다. 실제 NPC→player animation 선택을 관찰하되 RNG/deletion 분기는 제외한다.
+
+일반·HD headless/mock 각각 War01a의 visible equipped NPC와 정규 Warrior host의 실제 inventory mouse equip/dequip 경로, 총 네 실행이 exit 0이다. NPC 9레이어/1,844 nonzero 픽셀/15 modifier, player 4레이어/488 픽셀/4 modifier가 각 제품에서 일치했다. NPC fixture의 위치 변경/AI 정지는 렌더 검사 준비이며 자연 전투나 모든 animation의 증거가 아니다. respawn 초기 placeholder의 원래 의미는 유지하고 fresh equipment replay와 구별한다. private 기존 NPC PNG baseline도 overwrite 없이 통과했다. palette 존재/중복/경계 및 blank·한 비트 오염·bounds/buffer 길이 거부 회귀와 관련 6패키지 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·fresh-process server-tag root/server/legacy 각 1회가 통과했다.
+
+전후 및 GUI 후 oracle의 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,882/data 617개·NXZ 50쌍은 불변이다. gameplay/색상/자산·기대 PNG를 변경하지 않으며 원본/개인/private 참조와 PNG를 공개하지 않는다. 선택한 stock 레이어와 입력 경로의 검증이지 full composite·Windows runtime 전체·물리 화면 동등성의 증명은 아니다.
+
 ## 기존 stock PNG 기대값의 테스트 전용 복원
 
 앞선 세 5비트 연산 수정으로 private pinned 과거 OpenNox 참조의 raw frame/PNG 270개 일치를 확인한 뒤, 현재 `TestDrawImage`의 직렬화도 같은 역사적 색상 확장으로 분리했다. 읽기 전용 `rasterGoldenImage`는 native RGB5551 필드를 직접 풀어 31→248로 인코딩하며 production `SplitColor` 계열에 기대값을 의존시키지 않는다. 기존 MD5 270개·production 표시용 31→255·byte-RGB 장비 API는 변경하지 않는다. 연결 직전 view unit 검사는 통과했지만 기존 이미지 비교 270개는 실패하는 red를 보존했다.

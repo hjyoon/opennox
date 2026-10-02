@@ -9846,6 +9846,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertNPCEquipmentVisible(l.Name)
+		case "assert-equipment-colors":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckEquipmentColors(l.Mode, l.Name)
 		case "place-player-on-lava":
 			if dt != 0 {
 				sc.Wait(dt, "")

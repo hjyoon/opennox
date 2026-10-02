@@ -216,6 +216,8 @@ func playerDamageMeleeArmorReady4E17B0(target *Object, armorValue float32, remai
 
 // PlayerDamageMeleeNative4E17B0 restores the ordinary BLADE/CRUSH and unarmed
 // CLAW/CRUSH slice for players and NPC-subclass monsters. Armor and block
+// defenses also serve unit-sourced SIMPLE CRUSH, including stock Fists whose
+// type IDs bypass ordinary shield blocking via BlockSourceExcluded.
 // durability precede the original GodMode/Quest/DefaultDamage tail. Reflect
 // Shield does not intercept these non-missile, non-electric hits in GAME.EXE.
 // The native possession prefix is kept fail-closed until its live update-data
@@ -224,7 +226,8 @@ func PlayerDamageMeleeNative4E17B0(
 	target, source, weapon *Object, damage int32, typ object.DamageType,
 	r PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
-	if target == nil || !playerDamageMeleeShape4E17B0(source, weapon, typ) || !target.Class().HasAny(object.MaskUnits) {
+	if target == nil || (!playerDamageMeleeShape4E17B0(source, weapon, typ) &&
+		!playerDamageSimpleCrushShape4E17B0(source, weapon, typ)) || !target.Class().HasAny(object.MaskUnits) {
 		return playerDamageUnsupported4E17B0(r, "unsupported ordinary melee shape", target, source, weapon, damage, typ)
 	}
 	if target.Flags().HasAny(object.FlagNoUpdate | object.FlagDead) {

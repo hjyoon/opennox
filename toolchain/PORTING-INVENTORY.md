@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 메인 키 재지정 창의 포커스 복귀 준비
+
+실제 queued input의 별도 headless 진단에서 재지정 없이 ESC로 InputCfg를 닫으면 Options로 복귀하지만, 재지정 뒤에는 직접 ESC 및 실제 mouse radio 선택 뒤 ESC 모두 InputCfg에 남는 것을 확인했다. stock InputCfg root와 controls는 NOFOCUS이며 기존 shell animation이 사용하는 MainBg가 키 입력을 받는다. 원본 process-input/key-poll의 정적 대조는 추가 focus 복귀를 찾지 못했지만 원본 런타임 결과를 증명한 것은 아니다.
+
+이번 production 단위는 기존 `gui.FocusMainBg`를 호출하는 `nox_gui_input_cfg_restore_focus` Go export 한 본체와 C 선언만 준비한다. 실제 C function pointer→CGo→Go export의 고주소 C-owned window API 회귀는 background focus, generic nil-focus clear 유지, nil/destroyed background 및 stack/capture/visibility 무변경을 검사한다. 아직 `sub_4CC170`에 연결하지 않았으므로 ESC 실패가 해결됐다고 판정하지 않는다. 범용 dispatcher나 게임 내 key-capture callback은 바꾸지 않는다.
+
+관련 7패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. 최초 checkptr 링크는 디스크 공간 부족으로 중단됐으며, task 전용 재생성 가능한 Go build cache만 정리한 후 소스 변경 없이 남은 검사를 재실행했다. stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개·NXZ 50쌍은 불변이다. 새 원본 range·자산·PNG/시나리오를 저장소에 추가하거나 개인 Save/config를 변경하지 않는다.
+
 ## 게임 내 Options Close의 실제 해상도 적용과 전체 옵션 재검사
 
 이번 production 단위는 `sub_4AD9B0` 한 C 본체의 saving 분기에서 준비된 Go apply 진입을 기존 config writer보다 먼저 호출하는 연결이다. 선택한 추가 해상도가 실제 seat/game 크기와 signed live window-mode checkpoint에 반영된 뒤 nox.cfg의 VideoMode/Fullscreen을 저장한다. 취소·이미 숨겨진 창의 no-op 및 shell과 같은 E2E 변경 억제는 유지한다. 원본 PE32의 새로운 기능 복원이라고 주장하지 않고 기존 OpenNox 확장의 종료 연결 보정으로 구별한다.

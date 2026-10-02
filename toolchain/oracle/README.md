@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 메인 InputCfg capture의 focus 복귀 준비
+
+재지정 전 ESC 복귀 성공과 재지정 후 직접/실제 mouse-radio 이후 ESC 복귀 실패를 fresh headless queued input으로 구별했다. stock NOFOCUS root/controls와 기존 MainBg 경로를 확인했으며 원본 정적 process-input/key-poll 대조만으로 원본 런타임의 동일 결과를 주장하지 않는다. 이번 production 단위는 `nox_gui_input_cfg_restore_focus` Go export 한 본체/C 선언의 준비뿐이다. 실제 C function pointer/CGo/Go export와 고주소 C-owned window API 회귀는 focus 수신, nil/dead background 및 generic nil-focus clear·stack/capture/visibility 보존을 검사한다. C capture 종료 본체에는 아직 연결하지 않아 ESC 해결 또는 모든 옵션 정상으로 판정하지 않는다.
+
+관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·server-tag 각 1회 및 전후 oracle이 통과했다. 첫 checkptr 링크의 disk-full 중단 뒤 task build cache만 정리해 소스 무변경 재검사로 완료했다. 원본 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개/NXZ 50쌍 및 개인 파일 불변을 유지한다. 새 PE32 range·원본 자산/PNG·private scenario는 추가하지 않는다.
+
 ## 게임 내 Options Close의 적용 연결과 옵션 재검증
 
 이번 production 단위는 `sub_4AD9B0` 한 C 본체에서 saving 때 Go apply를 기존 writer 앞에 연결하는 것이다. 앞선 실제 constructor/C Close의 일반 8개·HD 10개 해상도 미적용/잘못된 VideoMode 저장 red를 해결한다. generated layout·C-owned 고주소 root/slider/thumb·실제 pause-menu hide 분기의 fresh headless API 회귀로 선택 전 미적용, Close 적용/저장 및 cancel/hidden/E2E 무변경을 검사한다. stale pending에서 constructor가 기존 radio 이벤트로 열린 800×600을 동기화하며 unchanged Close도 유지/저장하는 회귀가 통과했다. 별도 초기화 버그나 원본 PE32 기능을 복원했다고 하지 않는다.

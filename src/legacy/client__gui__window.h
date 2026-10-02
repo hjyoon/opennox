@@ -93,6 +93,7 @@ uintptr_t nox_window_call_field_94_fnc(nox_window* win, int a2, uintptr_t a3, ui
 uintptr_t nox_window_call_field_93(nox_window* win, int a2, uintptr_t a3, uintptr_t a4);
 nox_window* nox_xxx_wndGetFocus_46B4F0();
 int nox_xxx_windowFocus_46B500(nox_window* win);
+void nox_gui_input_cfg_restore_focus(void);
 int nox_xxx_wndClearFlag_46AD80(nox_window* win, int flags);
 int nox_xxx_wndGetFlags_46ADA0(nox_window* win);
 int nox_xxx_wndSetCaptureMain_46ADC0(nox_window* a1);

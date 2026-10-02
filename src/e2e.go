@@ -9941,6 +9941,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckShockSpell(l.Count, l.Text, l.Name)
+		case "check-shock-retaliation":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckShockRetaliation(l.Text, l.Name)
 		case "check-player-thrown-weapon":
 			if dt != 0 {
 				sc.Wait(dt, "")

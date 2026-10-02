@@ -150,6 +150,7 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // Berserker Charge's player-self-weapon CRUSH and PlayerDamage's scripted-NPC
 // weapon CRUSH tail, monster-fired missile PIERCE against players/monsters,
 // ordinary player/NPC weapon BLADE/CRUSH and unarmed CLAW/CRUSH tails,
+// unit-sourced SIMPLE CRUSH (including all three stock Fists),
 // and weapon-less monster electric damage against players
 // from GAME.EXE 004E0B30
 // without narrowing Object pointers.
@@ -218,7 +219,8 @@ func DefaultDamageWorld4E0B30(
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon)
 	ordinaryMelee := playerDamageMeleeShape4E17B0(source, weapon, typ)
-	playerTail := playerElectric || ((missilePierce || ordinaryMelee) && target.Class().Has(object.ClassPlayer))
+	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
+	playerTail := playerElectric || ((missilePierce || ordinaryMelee || simpleCrush) && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -263,6 +265,10 @@ func DefaultDamageWorld4E0B30(
 		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing missile PIERCE tail service", target, source, weapon, damage, typ)
 	}
+	if simpleCrush && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
+		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing SIMPLE CRUSH tail service", target, source, weapon, damage, typ)
+	}
 	monsterElectric := monsterUpdate != nil && weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
 	// Campaign scripts use source-less BLADE damage for set-piece kills. The
@@ -302,7 +308,7 @@ func DefaultDamageWorld4E0B30(
 			weapon == source && typ == object.DamageBite
 		// Armed NPCs and ordinary monster/player targets share the restored
 		// ordinaryMelee path, including WAND melee and the Hammer exception.
-		if !ordinaryMelee && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush && !playerCharge {
+		if !ordinaryMelee && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush && !playerCharge {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -313,9 +319,9 @@ func DefaultDamageWorld4E0B30(
 			return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
 		}
 		// The original's melee friendly-hit gate does not apply to a missile
-		// or PLAYER-class charge weapon (sub_4E1400 returns false for both).
+		// SIMPLE CRUSH or PLAYER-class charge weapon (004E1400 is false).
 		// The earlier campaign owner gate still applies to a friendly charge.
-		if source != nil && !ordinaryMelee && !missileDamage && !playerCharge && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		if source != nil && !ordinaryMelee && !simpleCrush && !missileDamage && !playerCharge && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 	}
@@ -362,7 +368,7 @@ func DefaultDamageWorld4E0B30(
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
-		!ordinaryMelee && !missileDamage && !nonUnit && !monsterElectric && !playerTail && !monsterWeaponCrush && !playerCharge {
+		!ordinaryMelee && !simpleCrush && !missileDamage && !nonUnit && !monsterElectric && !playerTail && !monsterWeaponCrush && !playerCharge {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion

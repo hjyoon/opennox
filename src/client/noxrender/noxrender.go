@@ -288,7 +288,7 @@ func (p *RenderData) SetMaterial(ind int, cl color.Color) {
 		return
 	}
 	m.Color32 = cl32
-	c := cl16.ColorNRGBA()
+	c := SplitColor16(uint16(cl16))
 	m.Color = RGB{R: int(c.R), G: int(c.G), B: int(c.B)}
 }
 

@@ -2,7 +2,15 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
-+## RGB5551 픽셀 연산의 표시 변환 분리
+## RGB5551 재질 계산의 표시 변환 분리
+
+이번 production 단위는 `RenderData.SetMaterial` 한 본체다. packed 색상을 표시용 `ColorNRGBA`로 풀지 않고 앞 단위의 `SplitColor16`으로 분해한다. 팔레트 범위 검사·packed Color32 및 transparent sentinel·동일 packed 색상의 no-op은 유지하고, 별도 byte-RGB 장비 API `SetMaterialRGB`는 변경하지 않는다. 수정 전 full channel의 255/248 차이를 독립 회귀로 재현했다. 수정 후 65,536개 packed 재질의 RGB/Color32, 재호출·-1/16 범위·슬롯 15 byte-RGB=255 보존을 확인했다.
+
+private historical-view 비교는 앞 단위의 198/270에서 270/270으로 회복했다. 2022년 pinned 참조 변환으로 계산한 raw RGB5551 프레임 270개와 기존 PNG MD5 270개 모두 일치하며 현재 기대 해시를 재생성하지 않는다. Go 1.19.13 인코더만 사용한 비교는 여전히 표시 변환 때문에 현재 PNG 해시와 같고 old golden과는 다르다. 현재 `TestDrawImage`의 표시용 이미지 직렬화는 아직 별도 정리 대상이며 이를 이번 stock-test 통과로 주장하지 않는다. 참조는 역사적 OpenNox 결과이며 원본 Windows runtime 전체의 증명은 아니다.
+
+관련 6패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. 기존 장비 160개 팔레트 회귀 및 code 2,882/data 617개·NXZ 50쌍/stock tree를 유지한다. 원본 자산·private reference source/PNG·개인 Save/config는 변경하거나 공개 저장소에 추가하지 않는다. GUI 입력 또는 물리 화면 검증으로 확대하지 않는다.
+
+## RGB5551 픽셀 연산의 표시 변환 분리
 
 기존 stock `TestDrawImage`의 270개 PNG MD5 실패를 고정 기대값을 바꾸지 않고 조사했다. 현재 프레임을 Go 1.19.13의 PNG/zlib/flate 코드로 인코딩해도 Go 1.26.5와 270개 모두 byte-identical이므로 인코더 차이가 아니다. 기준 커밋 `3a2338f7201af36c68a74614e3ff9dcb44497971`이 쓰던 `opennox-lib@db559cc95748`의 RGB5551 변환은 31을 248로 확장하지만 현재 libs는 표시용 최대 채널을 255로 포화한다. pinned 과거 변환을 private module/overlay로 사용하는 독립 검사에서 기존 270개 해시를 전부 재현했다. 현재와 과거 계산의 raw RGB5551 프레임은 226개가 다르고, 44개는 표시 변환만 달랐다. 이는 과거 OpenNox 기준 재현이지 원본 Windows 게임을 실행한 결과라는 주장이 아니다.
 

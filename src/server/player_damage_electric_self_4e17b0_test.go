@@ -186,8 +186,8 @@ func TestPlayerDamageNative4E17B0SelfWeaponElectricReflectNPC(t *testing.T) {
 				if !handled || !result || calls != 1 || reason != "" || marker != 2 || rawType != uint32(typ) {
 					t.Fatalf("ordinary electric was reflected: %t/%t calls=%d reason=%q", handled, result, calls, reason)
 				}
-			} else if handled || result || calls != 0 || reason != "monster Reflect Shield" || marker != 99 || rawType != 77 {
-				t.Fatalf("unported NPC airborne reflection mutated: %t/%t calls=%d reason=%q", handled, result, calls, reason)
+			} else if handled || result || calls != 0 || reason != "missing Reflect Shield direction service" || marker != 99 || rawType != 77 {
+				t.Fatalf("NPC reflection without its direction service mutated: %t/%t calls=%d reason=%q", handled, result, calls, reason)
 			}
 		})
 	}

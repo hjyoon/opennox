@@ -108,10 +108,16 @@ func playerDamageReflectShield4E17B0(
 		return true, handled, result
 	}
 
-	update := target.UpdateDataPlayer()
-	update.Field76 = 0
-	if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
-		runtime.ObserveClear(target)
+	if target.Class().Has(object.ClassPlayer) {
+		update := target.UpdateDataPlayer()
+		update.Field76 = 0
+		if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
+			runtime.ObserveClear(target)
+		}
+	} else {
+		// 004E18D1 selects the NPC hit marker at PE32 offset 2188;
+		// the player marker/observer fields belong to a different layout.
+		target.UpdateDataMonster().Field547 = 0
 	}
 	if missile {
 		runtime.ProjectileReflect(attack, target)
@@ -377,6 +383,11 @@ func playerDamageMonster4E17B0(
 	if source == nil && weapon == nil && typ == object.DamagePoison {
 		return playerDamageMonsterPoison4E17B0(target, damage, runtime)
 	}
+	// 004E18F3..004E19C1 reflects before the damage-type switch, including
+	// missiles whose unreflected damage path has not yet been ported.
+	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+		return handled, result
+	}
 	update := target.UpdateDataMonster()
 	crush := typ == object.DamageCrush && source != nil && source.Class().Has(object.ClassMonster) &&
 		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassWeapon)
@@ -384,14 +395,8 @@ func playerDamageMonster4E17B0(
 	if !crush && !electric {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 	}
-	// Reflect Shield precedes the damage-type switch and monster shield blocks
-	// require their own action/equipment effects. Keep those uncommon branches
-	// fail-closed until they have native-width effect ports. Ordinary electric
-	// from a non-missile does not enter 004E199A's reflection branch (16/17).
-	if target.HasEnchant(playerDamageReflectEnchant4E17B0) &&
-		(!electric || typ != object.DamageElectric || source.Class().Has(object.ClassMissile)) {
-		return playerDamageUnsupported4E17B0(runtime, "monster Reflect Shield", target, source, weapon, damage, typ)
-	}
+	// Ordinary electric type 9 and rear hits fall through reflection. Monster
+	// shield-item blocks still require their separate action/equipment effects.
 	if crush && update.ArmorEquipFlags&0x3000000 != 0 && target.MonsterActionGet50A020() == 21 {
 		return playerDamageUnsupported4E17B0(runtime, "monster shield block", target, source, weapon, damage, typ)
 	}

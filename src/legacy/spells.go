@@ -553,7 +553,7 @@ func Nox_xxx_castPull_52BFA0(spellID spell.ID, a2, a3, a4 *server.Object, sa *se
 }
 
 func Nox_xxx_castPush_52C000(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castPush_52C000, spellID, a2, a3, a4, sa, lvl)
+	return pushCastCall52C000(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Nox_xxx_castSpellWinkORrestoreHealth_52BF20(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

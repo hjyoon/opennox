@@ -16408,6 +16408,20 @@
       "purpose": "the exact decoded direct rel32 call from a spell path that restores the player's maximum mana"
     },
     {
+      "name": "nox_xxx_castPush_52C000",
+      "address": "0x0052C000",
+      "size": 94,
+      "sha256": "67832454fd5272864e074fbf30eb71e852e1b2dc5047aa1d49d16b379744de3d",
+      "purpose": "multiply PushPowerCoeff by the signed DWORD level, spill to binary32, push around the caster position with outer radius 600 and inner radius 10 and null callback arguments, emit the cast sound on the third object argument, and return one"
+    },
+    {
+      "name": "nox_xxx_castPush_52C000_padding",
+      "address": "0x0052C05E",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating the Push cast from Fumble at 0052C060"
+    },
+    {
       "name": "nox_xxx_dropAllItems_4EDA40_call_52C092",
       "address": "0x0052C092",
       "size": 5,
@@ -22533,6 +22547,13 @@
       "size": 13,
       "sha256": "ad115b168dc33861a1f80aab0b344c5c4d5e2c2803954832105c4cc47b44519e",
       "purpose": "the distinct null-terminated RewardMarker name passed by Quest Necromancer spawn"
+    },
+    {
+      "name": "push_cast_power_balance_key_52C000",
+      "address": "0x005C61F4",
+      "size": 15,
+      "sha256": "bb55e6aeab8dc6d25be29dad5f9f208a712b2c2fa587074edf46d32b1332f528",
+      "purpose": "the exact NUL-terminated PushPowerCoeff balance key used by the Push cast before signed-level multiplication"
     },
     {
       "name": "cast_confuse_duration_key_52C1E0",

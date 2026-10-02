@@ -1,5 +1,24 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 메인 InputCfg의 key-capture 종료 후 ESC 복귀
+
+이번 production 단위는 `sub_4CC170` 한 C 본체의 기존 capture 종료 7분기에 준비된 `nox_gui_input_cfg_restore_focus`를 연결하는 것이다. 기존 nil-focus clear→modal stack pop→hide 뒤 shell animation이 이미 사용하는 MainBg로 keyboard focus를 돌린다. mouse/button/wheel 및 ESC press·유효 key release의 기존 binding 선택/쓰기·반환값·stack/hide 계약은 유지한다. NOFOCUS InputCfg root에 focus를 강제하거나 generic key dispatcher·게임 내 capture callback을 바꾸지 않는다. 원본 PE32 런타임 복원이 아니라 OpenNox shell의 종료 연결 보정으로 구별한다.
+
+수정 전 actual C procedure를 사용하는 고주소 C-owned window API 회귀에서 10개 종료 event와 queued key의 rebind/cancel 두 경로가 nil focus에 남는 red를 재현했다. ESC release·유효 key press·invalid key·다른 event의 기존 무종료 계약은 통과했다. 수정 후 전체 회귀는 focus/stack/hide와 unrelated capture·NOFOCUS·selection 보존을 검사하며, 실제 headless seat→input handler→GUI key dispatch의 후속 ESC가 부모에 정확히 한 번 전달되고 modal을 닫는 ESC가 부모를 연쇄 종료하지 않는 것을 확인한다. 이 fixture의 binding columns는 의도적으로 없으며 실제 binding 적용은 별도 stock queued GUI로 검사한다.
+
+설정·focus·handler를 observer로 주입하지 않는 기존 private 시나리오에 actual queued mouse/key를 보내 네 경로를 재실행했다. 영상 checkbox 15개, 일반 8개/HD 10개 해상도 선택, window mode·gamma/sensitivity, 세 음량/mute, mouse radio, 입력 목록/스크롤/두 binding 열, Reset/Defaults·Back/Apply/ESC/Close가 실패 없이 통과했다. 재지정 뒤 ESC의 Options 복귀와 F9/F12 적용·이전 F10/F11 binding 제거도 확인했다.
+
+| 경로 | 통과 | 실패 | 종료 |
+| --- | ---: | ---: | --- |
+| 일반 메인 메뉴 | 226 | 0 | 정상 exit 0 |
+| HD 메인 메뉴 | 228 | 0 | 정상 exit 0 |
+| 일반 게임 내 | 201 | 0 | 정상 exit 0 |
+| HD 게임 내 | 203 | 0 | 정상 exit 0 |
+
+숫자는 반복 assertion 수이지 고유 기능/버그 수가 아니다. 이전 PNG 18개는 덮어쓰지 않고 보존했다. 기존 화면 14개는 그대로 비교하며, main 일반/HD의 ESC 복귀 및 최종 메뉴 화면 4개는 수정으로 의도된 차이를 직접 검토한 뒤 별도 private 기준으로 반복 비교했다. ESC 화면은 InputCfg 대신 Options이고, 후속 Back fallback 클릭이 더 이상 실행되지 않아 메뉴 cursor/Quit hover와 일부 sparks가 달라진다. 첫 고정 기준 비교의 메뉴 mismatch 중단은 성공 또는 새 production 크래시로 세지 않으며 got/diff를 보존했다. 최종 네 실행은 모든 기준 이미지가 있는 상태에서 override 없이 summary까지 도달했고 새 SIGSEGV/runtime error·이미지 mismatch가 없다.
+
+관련 7패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. E2E의 해상도/디스크 변경 억제는 유지하며 앞선 비-E2E apply/save와 fresh-process config 회귀의 근거를 GUI 입력 결과와 구별한다. 실제 macOS 창·최종 framebuffer 전환·물리 스피커 및 전체 게임 재시작은 이번 검증에 포함하지 않는다. stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개·NXZ 50쌍을 유지한다. 새 원본 range·자산·PNG/시나리오를 저장소에 추가하거나 개인 Save/config를 변경하지 않는다.
+
 ## 메인 키 재지정 창의 포커스 복귀 준비
 
 실제 queued input의 별도 headless 진단에서 재지정 없이 ESC로 InputCfg를 닫으면 Options로 복귀하지만, 재지정 뒤에는 직접 ESC 및 실제 mouse radio 선택 뒤 ESC 모두 InputCfg에 남는 것을 확인했다. stock InputCfg root와 controls는 NOFOCUS이며 기존 shell animation이 사용하는 MainBg가 키 입력을 받는다. 원본 process-input/key-poll의 정적 대조는 추가 focus 복귀를 찾지 못했지만 원본 런타임 결과를 증명한 것은 아니다.

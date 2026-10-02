@@ -4672,6 +4672,7 @@ int sub_4CC170(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 		nox_xxx_windowFocus_46B500(0);
 		nox_xxx_wnd_46C6E0(dword_5d4594_1522612);
 		nox_window_set_hidden(dword_5d4594_1522612, 1);
+		nox_gui_input_cfg_restore_focus();
 		return 1;
 	case 10:
 	case 11:
@@ -4679,6 +4680,7 @@ int sub_4CC170(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 		nox_xxx_windowFocus_46B500(0);
 		nox_xxx_wnd_46C6E0(dword_5d4594_1522612);
 		nox_window_set_hidden(dword_5d4594_1522612, 1);
+		nox_gui_input_cfg_restore_focus();
 		return 1;
 	case 14:
 	case 15:
@@ -4686,18 +4688,21 @@ int sub_4CC170(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 		nox_xxx_windowFocus_46B500(0);
 		nox_xxx_wnd_46C6E0(dword_5d4594_1522612);
 		nox_window_set_hidden(dword_5d4594_1522612, 1);
+		nox_gui_input_cfg_restore_focus();
 		return 1;
 	case 19:
 		sub_4CC3C0(0x10003);
 		nox_xxx_windowFocus_46B500(0);
 		nox_xxx_wnd_46C6E0(dword_5d4594_1522612);
 		nox_window_set_hidden(dword_5d4594_1522612, 1);
+		nox_gui_input_cfg_restore_focus();
 		return 1;
 	case 20:
 		sub_4CC3C0(0x10004);
 		nox_xxx_windowFocus_46B500(0);
 		nox_xxx_wnd_46C6E0(dword_5d4594_1522612);
 		nox_window_set_hidden(dword_5d4594_1522612, 1);
+		nox_gui_input_cfg_restore_focus();
 		return 1;
 	case 21:
 		if (event_arg == 1) {
@@ -4705,6 +4710,7 @@ int sub_4CC170(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 				nox_xxx_windowFocus_46B500(0);
 				nox_xxx_wnd_46C6E0(dword_5d4594_1522612);
 				nox_window_set_hidden(dword_5d4594_1522612, 1);
+				nox_gui_input_cfg_restore_focus();
 				if (dword_5d4594_1522632) {
 					nox_window_call_field_94(dword_5d4594_1522632, 16403, UINTPTR_MAX, 0);
 				}
@@ -4715,6 +4721,7 @@ int sub_4CC170(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 			nox_xxx_windowFocus_46B500(0);
 			nox_xxx_wnd_46C6E0(dword_5d4594_1522612);
 			nox_window_set_hidden(dword_5d4594_1522612, 1);
+			nox_gui_input_cfg_restore_focus();
 			return 1;
 		} else {
 			return 0;

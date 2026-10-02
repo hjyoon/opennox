@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Native FX active playback의 실제 timer service
+
+이번 production 변경은 Go audio 확장 `startAudioServices` 한 본체의 기존 30Hz callback에서 native-owned 활성 voice의 live FX Current/gain/음소거를 처리한다. 원래 event DWORD를 mix-before-127 순서로 적용하며, mute는 sample `Init`으로 실제 source의 queued buffer까지 제거한다. re-enable은 이전 소리를 되살리지 않고 미래 event를 허용한다. legacy/movie/외부 sample·새 타입·원본 PE32 body/range는 변경하지 않아 code 2,878/data 617개 그대로다.
+
+격리 opt-in API fixture는 생성한 무음 mono/stereo ADPCM·4GiB 초과 C-owned 창/실제 GUI owner·기존 C Options slider/checkbox·production AIL timer/`Serve`·OpenAL gain/queue/drain을 사용한다. 외부 sample `BufferReady` 및 GUI owner 누락의 초기 준비 실패를 production 실패로 세지 않는다. 올바른 준비 후 C slider 4,850에서 Current=16,384·Target=4,850·gain=126/127에 머무르는 수정 전 실패를 확인했다. zero mix 복원·fractional Current/interpolation·stopped/idle/외부/닫힌 pool의 무변경·mute/re-enable와 새 event metadata 교체가 통과했다. 최종 독립 3회 각각 buffer queued 17/processed 1 및 native pool 정리 후 외부 source 하나의 생존을 확인했다. null OpenAL Soft 실제 backend이지 mock/물리 device 또는 GUI input E2E 증명은 아니다.
+
+관련 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict 및 server-tag 각 1회가 통과했다. headless 실제 입력의 일반/HD main·게임 내 mock audit는 218/8·220/8·198/3·200/3으로 기존 PNG 18개를 override 없이 통과했다. 실제 backend 일반 main/게임 내도 기존 PNG 기준을 override 없이 통과했다. read-only observer는 16개 sample source/음악 source 하나와 main 효과음 135/131·음악 43/41, 게임 내 효과음 389/389·음악 103/101 queued/processed count를 확인했다. native audit는 218/8·198/3이며 모두 summary 뒤 의도된 exit 2다. 새 크래시/화면 mismatch는 없지만 startup-scalar observer 3개·main ESC 5개 실패 및 Reset/default.cfg·전체 설정 disk round-trip·해상도 적용 등의 남은 경계를 유지한다.
+
+전후 oracle은 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code/data 및 NXZ 50쌍을 확인했다. source hash·API 실제 backend 회귀·queued-input 관찰의 범위를 구별하고 개인 Save/config·stock을 변경하거나 원본 자산/PNG/시나리오를 저장소에 추가하지 않는다.
+
 ## Native FX live service를 위한 event DWORD 보존
 
 이번 변경은 Go 확장 `playSampleLocked` 한 본체에서 성공한 native sample 제출의 mix 이전 event DWORD를 기존 Go user data 슬롯에 기록한다. legacy sample의 pointer user data·C ABI/원본 body는 변경하지 않으며 code 2,878/data 617개 그대로다. gain으로 원래 음량을 역산해 누적 반올림/zero 복원을 일으키지 않도록 하는 준비 단위이지 active playback의 옵션 적용 완료는 아니다.

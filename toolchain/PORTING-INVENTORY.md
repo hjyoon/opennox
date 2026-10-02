@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 재생 중 Native FX의 live 음량과 음소거 service
+
+원래 event/voice service를 우회하는 native FX는 제출 이후 옵션 음량이나 enabled flag가 바뀌어도 이미 재생 중인 source에 반영하지 않았다. 실제 C slider를 4,850으로 바꿔도 live Current=16,384·Target=4,850 및 gain=126/127에 머무르는 수정 전 실패를 확인했다. 이번 production 변경은 기존 `startAudioServices` 한 본체의 30Hz callback 안에서 native-owned 활성 voice만 처리한다. FX timer의 Current를 갱신하고 보존한 원래 event DWORD와 mix-before-127 순서로 섞는다. 음소거는 sample `Init`으로 logical state뿐 아니라 실제 source와 queued buffer도 중단/제거한다. 다시 켜도 버린 소리는 재개하지 않고 새 요청만 허용한다. 별도 goroutine·새 타입/맵·원본 PE32 range는 추가하지 않는다.
+
+새 opt-in API 회귀는 격리 subprocess·생성한 무음 ADPCM·4GiB 초과 C-owned Options 창과 실제 GUI owner·기존 C slider/checkbox procedure·실제 AIL timer/`Serve`/OpenAL source를 사용한다. callback 직접 호출이나 mock handle이 아니다. 초기 fixture에서 외부 sample의 `BufferReady`와 GUI owner가 누락된 실행은 준비 실패로 구별하고, 이들을 갖춘 뒤 위 production 실패를 재현했다. 실제 gain·queue/drain으로 mono/stereo·zero mix 복원·fractional Current/interpolation·음소거/재활성화·새 event metadata 교체를 확인한다. idle/stopped/외부 sample 및 닫힌 native pool을 변경하거나 되살리지 않는지도 검사한다. 최종 독립 3회는 각각 실제 sample buffer queued 17/processed 1과 pool 정리 후 외부 source 하나의 생존을 확인했다. `ALSOFT_DRIVERS=null`의 실제 OpenAL Soft backend이며 물리 스피커 검사가 아니다.
+
+root/legacy/AIL/timer/GUI/renderer/memmap 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회가 통과했다. headless queued mouse/key의 일반/HD main·게임 내 재검사는 각각 218/8·220/8·198/3·200/3 assertion과 의도된 audit-failure exit 2다. 앞선 기준 PNG 18개는 override 없이 통과했고 새 SIGSEGV/runtime error·화면 mismatch는 없다. 실제 OpenAL backend 일반 main/게임 내 두 경로도 기존 기준 PNG를 override 없이 통과했다. audit 직전 16개 sample source와 음악 source 하나, main의 효과음 135/131·음악 43/41 및 게임 내의 효과음 389/389·음악 103/101 queued/processed count를 확인했다. 이 두 audit도 218/8·198/3·exit 2이며 physical playback이나 모든 옵션 정상으로 확대하지 않는다.
+
+startup scalar를 slider와 비교하는 observer 3개·main key 재설정 뒤 ESC 5개 실패를 숨기지 않는다. 실제 default.cfg Reset·전체 legacy config disk round-trip·해상도 적용·dialog/물리 오디오 등의 옵션 경계는 후속 점검이다. 전후 oracle의 불변 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개/NXZ 50쌍 범위를 유지한다. 개인 Save/config·원본 자산은 변경하지 않으며 이미지와 GUI 시나리오는 private 임시 경로에만 둔다.
+
 ## Native FX voice의 원래 event 음량 보존
 
 재생 중 source의 live FX mix에는 제출 당시의 event 음량이 필요하다. 현재 gain만 재사용하면 반올림이 누적되고 zero에서 복원할 수 없다. 이번 production 변경은 `playSampleLocked` 한 본체에서 성공한 buffer 제출 직전에 원래 DWORD event 음량을 그 native-owned AIL sample의 기존 Go user data 슬롯에 보존한다. 기존 legacy sample의 `*AudioSample` user data나 C pointer/layout·새 음량 계산·sample 선택·decode/service는 변경하지 않는다. 새 타입/맵과 원본 PE32 range를 추가하지 않는다.

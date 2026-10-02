@@ -93,6 +93,33 @@ func startAudioServices() int {
 	ail.Startup()
 	audioTimer93944 = ail.RegisterTimer(func(u uint32) {
 		sub_486EF0()
+		// Native FX bypass the old event/voice service. Apply its live FX
+		// group to those voices too, without touching legacy/movie samples.
+		nativeAudioFX.mu.Lock()
+		if len(nativeAudioFX.voices) != 0 {
+			fx := (*timer.TimerGroup)(legacy.Get_dword_587000_127004())
+			fx.Update()
+			enabled := legacy.Sub_453070() != 0
+			for _, voice := range nativeAudioFX.voices {
+				eventVolume, ok := voice.UserData().(uint32)
+				if !ok || voice.Status() != 4 {
+					continue
+				}
+				if !enabled {
+					// Discard queued hardware buffers as well as the AIL state.
+					// Re-enabling admits future events, not these old sounds.
+					voice.Init()
+					continue
+				}
+				mixedVolume := uint64(eventVolume) * uint64(fx.Timers[0].Current>>16) / VolumeMax
+				volume := int(127 * mixedVolume >> 14)
+				if volume > 127 {
+					volume = 127
+				}
+				voice.SetVolume(volume)
+			}
+		}
+		nativeAudioFX.mu.Unlock()
 		legacy.MusicModule.Sub_43D2D0()
 		(*timer.TimerGroup)(legacy.Get_dword_587000_127004()).ClearUpdated()
 	})

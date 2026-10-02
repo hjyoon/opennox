@@ -16604,11 +16604,11 @@
       "purpose": "the exact decoded direct rel32 call at 0052C6FB targeting buff application at 004FF380"
     },
     {
-      "name": "nox_xxx_activatePoison_4EE7E0_call_52C734",
-      "address": "0x0052C734",
-      "size": 5,
-      "sha256": "b53f106a1f834358497a74563f94595e7e832cfa84c38a27d608569a679958c4",
-      "purpose": "the exact decoded direct rel32 call from CastPoison that passes spell power as both increment and cap and discards the activation result"
+      "name": "nox_xxx_castPoison_52C720",
+      "address": "0x0052C720",
+      "size": 48,
+      "sha256": "44ecc041c5d0d1ae109ae82ed9c16f05dabcfc4134794904b8a3bda8663bc2b4",
+      "purpose": "load the entry spell-argument target, return zero only for a null target, activate poison through the direct rel32 call at 0052C734 to 004EE7E0 with signed power as both increment and cap while ignoring that result, reload the target for player attribution from the third object, and return one; supersedes the isolated activation-call seal with its entire containing body; no alignment padding before Confuse at 0052C750"
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C773",

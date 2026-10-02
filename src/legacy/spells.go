@@ -545,7 +545,7 @@ func Nox_xxx_castPixies_540440(spellID spell.ID, a2, a3, a4 *server.Object, sa *
 }
 
 func Nox_xxx_castPoison_52C720(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castPoison_52C720, spellID, a2, a3, a4, sa, lvl)
+	return poisonCastCall52C720(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Nox_xxx_castPull_52BFA0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

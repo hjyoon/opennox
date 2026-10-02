@@ -4162,7 +4162,7 @@
       "address": "0x004E0B30",
       "size": 1762,
       "sha256": "241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991",
-      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate player and monster melee admission and the all-MONSTER distinct-weapon/no-weapon Claw hit attribution at 004E0ED4"
+      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate melee admission, all-MONSTER hit attribution at 004E0ED4, and source-less POISON damage with subclass 0x200 immunity before NPC late defense and raw type-5 attribution"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4E1212",

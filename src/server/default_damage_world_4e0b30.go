@@ -274,6 +274,9 @@ func DefaultDamageWorld4E0B30(
 	// Campaign scripts use source-less BLADE damage for set-piece kills. The
 	// original enters its no-source branch and still reaches DamageClear.
 	sourceLessMonsterBlade := monsterUpdate != nil && source == nil && weapon == nil && typ == object.DamageBlade
+	// The poison timer damages units without a source or weapon. Stock type 5
+	// bypasses elemental/Shield protection but still runs NPC late defense.
+	sourceLessMonsterPoison := monsterUpdate != nil && source == nil && weapon == nil && typ == object.DamagePoison
 	monsterWeaponCrush := monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 &&
 		source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassWeapon) && typ == object.DamageCrush
@@ -296,6 +299,11 @@ func DefaultDamageWorld4E0B30(
 	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion
 	missileDamage := missileImpact || missileExplosion || missilePierce
 	if monsterUpdate != nil {
+		// GAME.EXE rejects type 5 for poison-immune subclass 0x200 before
+		// health, defense callbacks or attribution are touched.
+		if sourceLessMonsterPoison && uint32(target.SubClass())&0x200 != 0 {
+			return true
+		}
 		if target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
 		}
@@ -308,7 +316,7 @@ func DefaultDamageWorld4E0B30(
 			weapon == source && typ == object.DamageBite
 		// Armed NPCs and ordinary monster/player targets share the restored
 		// ordinaryMelee path, including WAND melee and the Hammer exception.
-		if !ordinaryMelee && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush && !playerCharge {
+		if !ordinaryMelee && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !sourceLessMonsterPoison && !monsterWeaponCrush && !playerCharge {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -368,7 +376,7 @@ func DefaultDamageWorld4E0B30(
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
-		!ordinaryMelee && !simpleCrush && !missileDamage && !nonUnit && !monsterElectric && !playerTail && !monsterWeaponCrush && !playerCharge {
+		!ordinaryMelee && !simpleCrush && !missileDamage && !nonUnit && !monsterElectric && !sourceLessMonsterPoison && !playerTail && !monsterWeaponCrush && !playerCharge {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion

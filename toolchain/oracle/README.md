@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 게임 내 Options의 기존 Go 해상도 확장 연결 `004ADF30`
+
+원본 `004ADF30..004ADF75`의 event/click-ID dispatch prefix 70바이트를 봉인했다. SHA-256은 `20505a16801ca6ded59db84d477078680e03eca2469cc8144dedd1863208b589`이다. `004ADF51`의 GetID 호출 뒤 ID에서 311을 빼고 unsigned 값 60 초과를 default로 보내므로 원래 action 범위는 311..371다. 이 prefix 봉인은 그 범위의 근거이며 전체 callback의 의미 동등성 증명은 아니다. 기존 OpenNox ID 380+는 PE32 기능이 아니라 별도 Go 해상도 확장이다.
+
+게임 내 C callback 한 함수의 클릭 분기에 메인과 같은 확장 delegate를 추가했다. 설정·음향·저장 요청은 기존 Go handler가 처리한다. 수정 전 actual-C regression의 ID 380 delegate 반환 실패, 수정 후 4GiB 초과 native window/control과 50개 signed DWORD 반환·한 번의 delegate·중복 음향 없음 및 legacy/default 경로를 구별한다. GUI E2E에는 handler/focus/설정 값을 주입하지 않는다. 일반·HD 실제 headless 입력에서 게임 내 8/10 해상도의 pending/YAML 값은 모두 통과했다. main은 208/14·210/14, game은 189/8·191/8 assertion이며 수집된 실패에 대한 의도된 exit 2를 성공으로 부르지 않는다. 일반 main 새 프로세스의 기존 PNG 6개 재검증도 통과했다.
+
+원본 focus/key dispatch·prompt 종료·animation 완료 흐름의 정적 대조에서 nil focus clear/키 처리 중단과 매-frame focus 복원 없음은 현재 코드와 일치한다. ESC 실패를 강제 focus로 가리지 않으며 원본에서도 같은 runtime 실패가 있다는 결론은 내리지 않는다. legacy key 부재·main window mode 직렬화·mouse pickup availability와 inactive mock FX gain 관찰은 남는다. 실제 해상도 적용·디스크 저장/load·원래 default.cfg reset·물리 오디오는 미검증이다. PNG 18개는 private temporary 시나리오에만 보관한다.
+
+대상 일반/실제 cgocheck2/race/checkptr 각 3회·전체 일반/strict·server-tag 1회와 전후 stock tree/NXZ 50쌍 검증은 통과했다. 누적 code 2,874/data 617개이며 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`은 같다. 원본 provenance·native callback 회귀·실제 UI 관찰의 범위를 구별하며 원본 자산 및 개인 Save/config는 변경하지 않는다.
+
 ## Quest host 타이머의 별도 자연 사망 headless 검증
 
 본체 복원 `793dde2a8` 뒤 기존 placement-only 자연 사망 시나리오를 일반·HD와 일반 독립 프로세스에서 다시 실행했다. 세 사망·실제 입력 부활의 lives `2→1→0→2`, death counter `0→1→2→0`, HP `450→0→450`을 유지한다. 마지막 사망 뒤 20 ordinary frame이 지난 frame 4075에서 native client/server Player identity·PlayerInd 31과 실제 child 10712의 empty StaticText data를 관찰하고 Continue 직전 화면을 추가한다. timer 호출·text event·GUI/게임 상태를 주입하지 않는다. 세 실행 모두 frame 4078에 실제 입력 부활하며 결과창을 닫는다.

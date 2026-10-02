@@ -1,10 +1,33 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 게임 내 Options의 추가 해상도 이벤트 연결 `004ADF30`
+
+메인 메뉴의 추가 해상도 버튼은 기존 Go handler로 전달되지만 게임 내 `nox_xxx_windowOptionsProc_4ADF30`에는 그 연결이 없어 선택 표시만 바뀌고 `guiOptionsRes`·Viper width/height가 갱신되지 않았다. 수정 전 실제 C callback 회귀에서 ID 380의 delegate 반환이 무시되는 실패를 재현했다. 이번 변경은 이 한 C callback의 클릭 분기에 메인과 같은 ID 380+ 전달만 추가한다. 해상도 설정·저장 요청·클릭 음향의 기능은 기존 Go handler에 그대로 두며, legacy ID의 분기와 음향·반환은 유지한다. 이는 기존 OpenNox 확장의 연결 보정이지 원본 PE32 본체 전체의 복원이나 새 해상도 적용 기능이 아니다.
+
+4GiB 초과 C-owned root/control을 실제 C callback으로 왕복시키며 10개 ID × signed DWORD 반환 5개, delegate 한 번·C 쪽 중복 음향 없음, 13개 legacy/default ID와 nil control을 가진 비클릭 이벤트 8개를 검사한다. 수정 후 이 회귀 3회와 옵션·GUI 대상 일반/실제 `GOEXPERIMENT=cgocheck2`/race/`checkptr=2` 각 3회, 전체 일반·strict Go 시험 및 server-tag root/server/legacy 1회가 통과했다.
+
+2026-10-02 Darwin/ARM64에서 일반·HD 메인/게임 내 옵션을 기존 audit의 실제 mouse/key 입력으로 다시 검사했다. 영상 checkbox 15개, 해상도 선택, gamma/sensitivity·세 음량 slider, 세 mute, 입력 목록/스크롤/두 열 key binding·Reset/Defaults의 unapplied-edit 폐기·Back/Apply/ESC/Close를 관찰한다. observer로 focus·handler·설정 값을 주입하거나 실패 assertion을 지우지 않는다. 아래 수는 중복 assertion 수이지 고유 버그 개수가 아니다.
+
+| 경로 | 통과 | 실패 |
+| --- | ---: | ---: |
+| 일반 메인 메뉴 | 208 | 14 |
+| HD 메인 메뉴 | 210 | 14 |
+| 일반 게임 내 | 189 | 8 |
+| HD 게임 내 | 191 | 8 |
+
+게임 내 일반 8개·HD 10개의 추가 해상도는 선택 표시·pending 값·YAML 설정 값이 모두 일치한다. 이전 게임 내의 16/18 실패 중 이 8/10 assertion이 사라졌으며 다른 실패는 그대로 남는다. 네 경로와 일반 메인의 독립 새 프로세스 재실행은 summary까지 도달해 수집된 실패에 대한 의도된 exit 2로 끝났다. 재실행은 override 없이 기존 화면 6개를 통과하며 별도 SIGSEGV/runtime error·화면 mismatch는 없다. 일반·HD 게임 내 해상도 선택, 일반 메인의 ESC exit-attempt 및 HD 메뉴 복귀 캡처를 직접 확인했다. PNG 18개는 임시 시나리오에만 남긴다.
+
+원본의 focus `0046B500`은 nil을 받아 clear하고 key dispatcher `0046B6B0`은 nil focus에서 반환한다. prompt 종료 `004CC170`의 Focus(0)→stack pop→hide와 animation `0043C380`의 In 완료 때만 main background focus를 설정하는 흐름도 현재 코드와 대조했다. 따라서 main InputCfg 재설정 뒤 ESC 실패를 nil-focus fallback이나 매-frame 강제 focus로 바꾸지 않는다. 이 정적 대조는 원본 런타임에서도 ESC가 실패한다거나 현재 실패의 원인이 확정되었다는 증거가 아니다.
+
+미해결 관찰은 main 재설정 후 ESC 5개 assertion, ShowTooltips/NoSoftLights legacy key 부재 2개, main의 열린 옵션 창에서 window mode 직렬화 불일치 1개다. mouse pickup disabled 3개는 원본 의도·입력 장치 초기화와 추가 대조가 필요하다. FX gain 3개는 inactive mock audio의 관찰이며 물리 재생 고장으로 단정하지 않는다. 게임 내 Close에 실제 화면 크기 적용 경로를 추가하지 않았고 E2E도 해상도 적용·디스크 저장을 억제한다. 원래 default.cfg Reset·실제 디스크 저장/새 프로세스 load·물리 오디오·실제 해상도 적용은 미검증이며 모든 옵션이 정상이라는 판정은 하지 않는다.
+
+원본 클릭 ID dispatch prefix `004ADF30..004ADF75` 70바이트를 새로 봉인해 원래 action ID 범위 311..371와 확장 ID를 구별했다. 전후 `make oracle-test`는 불변 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,873→2,874/data 617개와 NXZ 50쌍을 확인했다. Linux/AMD64 실행 검증으로 확대하지 않으며 개인 Save/config·원본 자산은 바꾸지 않는다.
+
 ## 옵션 입력 창의 원본 Back 경로와 재설정 후 ESC 후속 점검
 
 `bf26d9450`의 메인 Options constructor 복원 뒤 audit-only 단위다. stock InputCfg.wnd의 932는 원래 disabled이며 메인 constructor `004CB880`도 이를 enable하지 않는다. 게임 내 constructor만 932를 enable한다. 따라서 메인에서 disabled Apply를 클릭하던 기존 audit를 실제 별도 Back 152로 바로잡고, 게임 내 Apply 932는 유지했다. 메인 Back은 `004CBB70`의 animated start-out을 통해 pending binding을 적용한다. production 함수 본체·포커스·animation/state·handler·설정 값을 바꾸지 않는다.
 
-일반·HD 실제 mouse/key 입력에서 Back 뒤 F10/F11 live binding과 in-memory 직렬화, Options 복귀, 입력 창 재열림 후 두 열의 F10/F11 보존이 통과했다. 재열린 창에서 F9/F12로 다시 설정한 뒤 ESC는 두 빌드 모두 실패한다. ESC 직전 read-only observer는 focus=nil·capture=nil·animation global=0(InDone)을 기록하며, ESC 뒤 state 900과 이전 F10/F11 live binding이 남았다. 현재 Go key dispatcher는 nil focus에서 반환하지만 원본 전체 key dispatch와의 대조·복원은 아직 하지 않았다. 이 다섯 실패 assertion을 그대로 수집한 뒤 실제 Back fallback으로 F9/F12 적용·Options 복귀를 확인하고, 이후 Options ESC로 MainMenu 100 복귀도 검사한다. fallback이 ESC 실패를 지우지 않는다.
+일반·HD 실제 mouse/key 입력에서 Back 뒤 F10/F11 live binding과 in-memory 직렬화, Options 복귀, 입력 창 재열림 후 두 열의 F10/F11 보존이 통과했다. 재열린 창에서 F9/F12로 다시 설정한 뒤 ESC는 두 빌드 모두 실패한다. ESC 직전 read-only observer는 focus=nil·capture=nil·animation global=0(InDone)을 기록하며, ESC 뒤 state 900과 이전 F10/F11 live binding이 남았다. 이 audit 시점에는 nil focus에서 반환하는 Go key dispatcher와 원본 전체 key dispatch의 대조를 아직 하지 않았다. 위 후속 단위에서 정적 대조 결과를 추가하지만 ESC 실패는 유지한다. 이 다섯 실패 assertion을 그대로 수집한 뒤 실제 Back fallback으로 F9/F12 적용·Options 복귀를 확인하고, 이후 Options ESC로 MainMenu 100 복귀도 검사한다. fallback이 ESC 실패를 지우지 않는다.
 
 2026-10-02 Darwin/ARM64 headless 네 경로 결과는 아래와 같다. 숫자는 중복을 포함한 assertion 수이지 고유 버그 개수가 아니다. 이전 메인 audit의 disabled Apply/복귀 관련 다섯 실패가 사라지고 새 ESC 관련 다섯 실패가 추가되어 메인 실패 수 14가 같아도 의미는 다르다. 게임 내는 Apply availability 검사가 하나 추가되었고 기존 Apply·live binding·직렬화·Close가 통과한다.
 

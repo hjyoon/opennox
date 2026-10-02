@@ -2807,6 +2807,13 @@
       "purpose": "the contiguous PE32 general server-options GUI cluster covering window construction, localized connection-list geometry, draw-time popup dismissal, event dispatch and jump tables, destruction, control-state refresh, and trailing NOPs through 004AD9AF"
     },
     {
+      "name": "nox_xxx_windowOptionsProc_4ADF30_event_click_dispatch_prefix",
+      "address": "0x004ADF30",
+      "size": 70,
+      "sha256": "20505a16801ca6ded59db84d477078680e03eca2469cc8144dedd1863208b589",
+      "purpose": "the exact PE32 event and click-ID dispatch prefix, bounding the original in-game options click actions to IDs 311..371; OpenNox resolution IDs 380+ are an existing Go enhancement, not an original-body restoration"
+    },
+    {
       "name": "nox_xxx_windowOptionsProc_4ADF30_call_sub_4AA650",
       "address": "0x004AE184",
       "size": 5,

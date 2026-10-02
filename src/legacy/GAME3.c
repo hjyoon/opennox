@@ -3868,7 +3868,12 @@ int nox_xxx_windowOptionsProc_4ADF30(nox_window* a1, int a2, nox_window* a3, uin
 		nox_xxx_clientPlaySoundSpecial_452D80(920, 100);
 		return 1;
 	case 16391:
-		switch (nox_xxx_wndGetID_46B0A0(a3)) {
+		id = nox_xxx_wndGetID_46B0A0(a3);
+		// OpenNox resolution controls use the same Go handler as the shell options.
+		if (id >= 380) {
+			return nox_gui_menu_proc_ext(id);
+		}
+		switch (id) {
 		case 311:
 			nox_draw_setCutSize_476700(65, 0);
 			break;

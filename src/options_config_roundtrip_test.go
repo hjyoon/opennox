@@ -80,7 +80,7 @@ func runOptionsConfigChild(t *testing.T, dir, phase string, variant int) {
 		cmd.Env = append(cmd.Env, kv)
 	}
 	cmd.Env = append(cmd.Env, optionsConfigChild+"="+phase, "NOX_TEST_OPTIONS_CONFIG_VARIANT="+strconv.Itoa(variant))
-	if phase == "e2e" {
+	if phase == "e2e" || phase == "video-apply-e2e" {
 		cmd.Env = append(cmd.Env, "NOX_E2E=isolated-config-write-guard")
 	}
 	out, err := cmd.CombinedOutput()
@@ -105,7 +105,7 @@ func TestOptionsConfigChild(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if env.IsE2E() != (phase == "e2e") {
+	if env.IsE2E() != (phase == "e2e" || phase == "video-apply-e2e") {
 		t.Fatal("configuration phase used the wrong E2E mode")
 	}
 	legacy.InitBlobData()
@@ -129,6 +129,10 @@ func TestOptionsConfigChild(t *testing.T) {
 	c.Inp = input.New(c.Log, sc, false, 0)
 	keyBinding = keybind.New(s.Strings())
 	c.videoSetGameMode(image.Pt(640, 480))
+	if strings.HasPrefix(phase, "video-apply") {
+		testOptionsVideoApply(t, c, sc, phase)
+		return
+	}
 	var animation *gui.Anim
 	if phase == "save" || phase == "e2e" {
 		root := c.GUI.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)

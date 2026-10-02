@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 게임 내 해상도 종료 적용의 Go 준비 단위
+
+실제 in-game Options constructor·C-owned root/slider/thumb·C procedure의 해상도 radio와 Close를 격리 headless API fixture에서 검사했다. 일반 8개/HD 10개 해상도 모두 pending 선택은 바뀌지만 Close 뒤 seat/game 크기는 640×480, 이전 window-mode checkpoint 및 저장된 VideoMode도 그대로인 실패를 재현했다. cancel·hidden no-op·E2E guard는 통과했다. generated 창과 실제 pause-menu hide 분기를 사용한 API fixture이며 stock queued input이나 실제 macOS 창 검사로 확대하지 않는다.
+
+이번 production 변경은 `applyOptionsVideoMode` 한 Go 본체의 준비뿐이다. shell 종료와 같은 E2E guard를 유지하여 실제 headless seat/game 크기와 signed window-mode checkpoint를 적용하고, 파일은 쓰지 않는다. 일반 8개/HD 10개 해상도 × windowed/fullscreen/borderless 및 E2E 무변경을 fresh subprocess에서 검사했다. 관련 7패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 server-tag 각 1회와 전후 oracle이 통과했다. in-game C Close 연결은 아직 하지 않았으므로 위 실패가 해결되었다고 판정하지 않는다. 새 PE32 range·원본 자산/PNG를 추가하거나 개인 Save/config를 변경하지 않는다. main ESC와 physical/window/audio 경계도 남아 있다.
+
 ## 옵션 파일의 실제 저장·새 프로세스 복원과 종료 적용
 
 production 동작은 바꾸지 않고 격리 configuration/API 회귀를 추가했다. 실제 client/server owner·headless seat와 실제 legacy/YAML reader/writer를 사용하며, 8가지 FX/dialog/music mute 조합마다 save→load→input Reset을 서로 다른 subprocess에서 수행한다. 11개 저장 가능한 영상 toggle, gamma/cut size/sensitivity, 양수 초기 window mode→서로 다른 signed live windowed/fullscreen/borderless mode, YAML filtering/stretch/해상도와 무관한 key 보존, 두 열/복합 key binding 및 MousePickup을 확인했다. YAML stretch가 legacy 값과 달라도 원래 startup 우선순위를 유지한다. 서버 옵션 전체나 게임의 완전한 재시작을 증명한 것은 아니다.

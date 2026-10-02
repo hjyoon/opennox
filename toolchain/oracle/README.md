@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 게임 내 Options Close의 해상도 적용 준비
+
+실제 constructor·C-owned 고주소 root/slider/thumb·해상도 radio/C Close 및 pause-menu hide 분기의 격리 headless API 검사에서, 일반 8개/HD 10개 선택 모두 640×480과 이전 저장 checkpoint에 머무르는 red를 재현했다. cancel·hidden no-op·E2E는 통과하며 원본 창/queued GUI/physical window를 새로 검증했다고 하지 않는다. 이번 단위는 Go `applyOptionsVideoMode` 한 본체만 준비한다. shell과 같은 E2E guard, 실제 seat/game 크기 및 signed live window mode의 checkpoint 동기화와 파일 무변경을 각 모드/해상도에서 확인했다. 아직 C Close에 연결하지 않았고 전체 옵션 정상으로 판정하지 않는다.
+
+관련 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 server-tag 각 1회가 통과했다. 전후 oracle의 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개/NXZ 50쌍을 유지한다. Go 확장 준비이지 새 원본 body/range 복원은 아니며 generated fixture/PNG·stock 자산·개인 Save/config를 공개 저장소에 추가하거나 변경하지 않는다.
+
 ## 옵션 config disk round-trip과 원본 input Reset
 
 이번 단위는 테스트만 추가하며 production 함수·새 PE32 body/range를 변경하지 않는다. 격리 fresh subprocess의 실제 client/server·headless seat·legacy/YAML reader/writer로 8가지 audio mute 조합의 save/load/Reset, 11개 영상 key와 gamma/sensitivity/cut size·YAML filtering/stretch/해상도 및 key binding/MousePickup을 확인한다. C-owned animation의 원래 C start-out callback을 통해 옵션 종료 전후 headless 640×480→800×600, 이전 save checkpoint와 다른 live window mode 저장 및 AnimOut 시작을 검사한다. E2E 변경 억제·non-E2E YAML read-only·fallback/missing/malformed도 별도로 검사하며 queued-input GUI나 물리 window/audio 검증으로 확대하지 않는다.

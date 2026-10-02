@@ -151,7 +151,7 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // weapon CRUSH tail, monster-fired missile PIERCE against players/monsters,
 // ordinary player/NPC weapon BLADE/CRUSH and unarmed CLAW/CRUSH tails,
 // unit-sourced SIMPLE CRUSH (including all three stock Fists),
-// weapon-less monster electric damage against players, and unit-self-weapon
+// weapon-less player/monster electric damage against players, and unit-self-weapon
 // ELECTRIC/AIRBORNE_ELECTRIC tails used by Shock Glyphs
 // from GAME.EXE 004E0B30
 // without narrowing Object pointers.
@@ -214,7 +214,7 @@ func DefaultDamageWorld4E0B30(
 		!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
 	playerElectric := target.Class().Has(object.ClassPlayer) &&
-		(unitSelfWeaponElectric || (source != nil && source.Class().Has(object.ClassMonster) &&
+		(unitSelfWeaponElectric || (source != nil && source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 			source.UpdateData != nil && weapon == nil &&
 			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
 	// Stock GolemArrow calls this tail with the monster as source and the

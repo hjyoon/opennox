@@ -4162,7 +4162,7 @@
       "address": "0x004E0B30",
       "size": 1762,
       "sha256": "241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991",
-      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate melee admission, all-MONSTER hit attribution at 004E0ED4, source-less POISON damage with subclass 0x200 immunity, and unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC tails with the ordered 004E1400 friendly predicate, Shock retaliation before electric immunity, low-word/byte electric state, native late-defense/Shield arguments and raw type attribution"
+      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate melee admission, all-MONSTER hit attribution at 004E0ED4, source-less POISON damage with subclass 0x200 immunity, unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC tails and nil-weapon player-sourced electric retaliation with the ordered 004E1400 friendly predicate, Shock retaliation before electric immunity, low-word/byte electric state, native late-defense/Shield arguments and raw type attribution"
     },
     {
       "name": "nox_xxx_unitDamageClear_4EE5E0_call_4E1212",

@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 장착 방어구 재질 색상 `004B8CA0`
+
+본체 150바이트/SHA-256 `65a32d094384fa21137002c9edc795f42a5cc8a84ae91856aa244606f67da0d0`와 뒤 10-NOP를 구현 전에 봉인했다. `sub_4B8CA0` 한 production 본체에서 원본의 슬롯/정의 색상 1..6 및 네 ordered modifier override를 복원한다. 0..5 반복과 PE32 +24 RGB 접근을 native `ModifierEff.Color24`(LP64 +44)로 고쳤으며 조회/no-op/적용 순서·장비/정의/effect 값은 보존한다. 이전 무기 단위와 함께 player/NPC 장착 장비의 두 색상 오류를 수정했다.
+
+방어구 수정 전 72개 native 하위 사례가 잘못된 재질/픽셀을 재현했다. 수정 후 두 suite 합계 160개 C-owned 고주소 player/NPC 팔레트·10,240개 독립 RGB555 기대 픽셀·160개 headless frame 및 데이터 불변 검사가 3회 통과했다. 16가지 modifier 존재 조합, 중복 last-wins·-1/0/15/16 경계, 첫/마지막 기록과 누락 조건을 포함한다. generated indexed 이미지 기반 비-GUI material/render 통합 검사이며 stock 캐릭터 frame 전체·queued GUI·캠페인/물리 화면 동등성으로 확대하지 않는다.
+
+관련 6패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. 기존 server 고정 이름 등록 fixture는 process 내 반복 제한을 유지하고 fresh-process count=1 검사에 포함한다. code 2,882/data 617개·NXZ 50쌍 및 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 유지한다. 원본 색상/자산·개인 Save/config·private PNG를 변경하거나 공개 저장소에 추가하지 않는다.
+
 ## 장착 무기 재질 색상 `004B8E10`
 
 본체 150바이트/SHA-256 `9bc6d962f25517278289ba12483d71f135aa6babd05fcab2888719d5aa1c13f6`와 뒤 10-NOP를 구현 전에 봉인했다. `Client.sub_4B8E10` 한 production 본체에서 원본의 기본 슬롯/정의 색상 1..6 및 네 ordered modifier override를 복원한다. 잘못된 0..4 반복과 PE32 +24 RGB 읽기를 고쳤으며 native `ModifierEff.Color24`는 LP64에서 +44다. 반환/조회·nil no-op·modifier 순서와 장비/정의/effect 데이터는 유지한다. player/NPC가 공유하는 무기 경로의 변경이며 방어구는 아직 수정하지 않는다.

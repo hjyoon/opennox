@@ -2905,6 +2905,20 @@
       "purpose": "the complete BubbleDraw callback with deadline-triggered decay, glow/center drawing, byte countdowns and phases, signed-byte height oscillation, and deletion at zero radius or negative signed-word height"
     },
     {
+      "name": "sub_4B8CA0",
+      "address": "0x004B8CA0",
+      "size": 150,
+      "sha256": "65a32d094384fa21137002c9edc795f42a5cc8a84ae91856aa244606f67da0d0",
+      "purpose": "the complete equipped armor palette selector with native equipment lookup, definition material slots one through six, and four ordered modifier RGB/color-slot overrides shared by player and NPC draw paths"
+    },
+    {
+      "name": "sub_4B8CA0_padding",
+      "address": "0x004B8D36",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after the equipped armor palette selector and before 004B8D40"
+    },
+    {
       "name": "sub_4B8E10",
       "address": "0x004B8E10",
       "size": 150,

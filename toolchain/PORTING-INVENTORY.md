@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어·NPC 장착 방어구 팔레트 `004B8CA0`
+
+원본 본체 150바이트/SHA-256 `65a32d094384fa21137002c9edc795f42a5cc8a84ae91856aa244606f67da0d0`와 뒤 10-NOP를 수정 전에 봉인했다. 이번 production 단위는 `sub_4B8CA0` 한 본체다. 기본 색상/재질을 원본의 1..6 범위로 적용하고 네 modifier RGB를 native `ModifierEff.Color24`에서 읽는다. 기존 0..5 반복은 슬롯 0을 덮고 6을 이전 팔레트에 남겼으며 +24 접근은 LP64의 실제 색상 +44와 달랐다. 조회·missing record/definition의 no-op·modifier 적용 순서는 유지하며 다른 draw 함수나 장비/정의/원본 팔레트는 변경하지 않는다. 이전 무기 수정과 합쳐 player/NPC 장착 무기·방어구의 두 오류를 고쳤다.
+
+수정 전 방어구 native 회귀의 72개 하위 사례에서 잘못된 재질/픽셀을 재현했다. 수정 후 방어구/무기 각각 첫·마지막 C-owned player/NPC 장비 기록, 네 modifier의 16개 조합, 중복 last-wins 및 -1/0/15/16 경계와 누락 조건을 검사한다. 두 suite의 합계 160개 팔레트·10,240개 indexed RGB555 픽셀·160개 headless upload/present 및 입력 데이터 불변 검사가 독립 3회 통과했다. 원본 어셈블리 계약과 독립 정수 기대값의 generated-image material/render 검사이지 stock 캐릭터 sprite 전체·queued GUI·캠페인/물리 화면 검증은 아니다.
+
+관련 6패키지 일반·실제 cgocheck2·race·강제 checkptr·HD 각 3회, 격리 환경 전체 일반/strict 및 server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. 이전 단위에서 분리 재현한 server 등록 테스트의 process 내 반복 제한은 유지하고 server 전체는 fresh-process count=1로 검사한다. stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,882/data 617개·NXZ 50쌍을 확인했다. 공개 변경은 코드·테스트·범위 해시/설명이며 원본 자산·색상 데이터·개인 Save/config·private PNG는 변경하지 않는다.
+
 ## 플레이어·NPC 장착 무기 팔레트 `004B8E10`
 
 원본 본체 150바이트/SHA-256 `9bc6d962f25517278289ba12483d71f135aa6babd05fcab2888719d5aa1c13f6`와 뒤 10-NOP를 수정 전에 봉인했다. 두 draw 경로가 공유하는 `Client.sub_4B8E10` 한 production 본체만 변경한다. 원본의 정의 색상/재질 슬롯 1..6을 모두 적용하고, 네 modifier의 순서와 color-slot을 유지하며 native `ModifierEff.Color24`를 읽는다. 기존 0..4 반복은 슬롯 0을 덮고 5/6을 이전 장비 색상에 남겼다. PE32 +24 접근은 LP64에서 실제 색상 +44가 아닌 문자열 포인터 영역을 읽어 인챈트 색상을 오염시켰다. 장비·정의·modifier 레이아웃과 원본 팔레트 데이터는 바꾸지 않는다. 방어구의 같은 오류는 다음 단위로 남긴다.

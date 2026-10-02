@@ -16408,6 +16408,20 @@
       "purpose": "the exact decoded direct rel32 call from a spell path that restores the player's maximum mana"
     },
     {
+      "name": "nox_xxx_castPull_52BFA0",
+      "address": "0x0052BFA0",
+      "size": 94,
+      "sha256": "8326604b58595799a119ed44760f1c7974b7d6f8e5b1d47311dbeaa7d36321c2",
+      "purpose": "multiply PullPowerCoeff by the signed DWORD level, negate before the binary32 spill, apply the radial force around the caster position with radii 600 and 10 and null callback arguments, emit cast audio on the third object argument, and return one"
+    },
+    {
+      "name": "nox_xxx_castPull_52BFA0_padding",
+      "address": "0x0052BFFE",
+      "size": 2,
+      "sha256": "182003d5c37dc5253d84cc5156ca9f93aab75e72e395d157748de67cc20f4f76",
+      "purpose": "the exact two NOP bytes separating the Pull cast from Push at 0052C000"
+    },
+    {
       "name": "nox_xxx_castPush_52C000",
       "address": "0x0052C000",
       "size": 94,
@@ -22547,6 +22561,13 @@
       "size": 13,
       "sha256": "ad115b168dc33861a1f80aab0b344c5c4d5e2c2803954832105c4cc47b44519e",
       "purpose": "the distinct null-terminated RewardMarker name passed by Quest Necromancer spawn"
+    },
+    {
+      "name": "pull_cast_power_balance_key_52BFA0",
+      "address": "0x005C61E4",
+      "size": 15,
+      "sha256": "35529fa5ae46e06edb5932159ad8e30f1bf8a131bee90af57bd2472caa31e606",
+      "purpose": "the exact NUL-terminated PullPowerCoeff key used before signed-level multiplication and negation"
     },
     {
       "name": "push_cast_power_balance_key_52C000",

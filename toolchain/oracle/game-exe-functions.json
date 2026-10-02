@@ -4253,7 +4253,7 @@
       "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
-      "purpose": "the complete original PlayerDamage interval through the next function boundary, used to validate ordinary Spider-to-player damage, lethal transition, death-notification admission, NPC source-less POISON bypass of armor/carry, and player/NPC unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC with original weapon identity through armor defense/durability, fractional HP carry, raw type attribution, GodMode, Quest scaling and DefaultDamage; ordinary non-missile type 9 bypasses Reflect Shield"
+      "purpose": "the complete original PlayerDamage interval through the next function boundary, used to validate ordinary Spider-to-player damage, lethal transition, death-notification admission, NPC source-less POISON bypass of armor/carry, and player/NPC unit-self-weapon and nil-weapon player-sourced ELECTRIC/AIRBORNE_ELECTRIC with original weapon identity through armor defense/durability, fractional HP carry, raw type attribution, GodMode, Quest scaling and DefaultDamage; ordinary non-missile type 9 bypasses Reflect Shield"
     },
     {
       "name": "sub_4E22A0",

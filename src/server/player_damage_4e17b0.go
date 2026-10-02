@@ -331,7 +331,7 @@ func playerDamagePlanArmorCarry4E17B0(
 }
 
 // Glyph's CastShock passes its unit caster as both source and weapon. The
-// weaponless monster shape also supplies ordinary spells/Shock retaliation.
+// weaponless player/monster shape also supplies spells and Shock retaliation.
 // Distinct weapons, wands and missiles still need their separate effect ports.
 func playerDamageElectricShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
 	if source == nil || source.UpdateData == nil ||
@@ -339,7 +339,7 @@ func playerDamageElectricShape4E17B0(source, weapon *Object, typ object.DamageTy
 		return false
 	}
 	if weapon == nil {
-		return source.Class().Has(object.ClassMonster)
+		return source.Class().HasAny(object.ClassPlayer | object.ClassMonster)
 	}
 	return weapon == source && source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 		!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)
@@ -606,7 +606,7 @@ func playerDamageMissilePierce4E17B0(
 // PlayerDamageNative4E17B0 restores ordinary player/NPC melee, unit-sourced SIMPLE
 // CRUSH (including stock Fists), Spider BITE, monster-fired
 // missile IMPACT/PIERCE, Berserker Charge CRUSH, SentryGlobe ZAP_RAY, world FLAME,
-// unarmed monster and unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC,
+// unarmed player/monster and unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC,
 // and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
 // plus the front-facing shield block and the common Quest damage scaling tail,

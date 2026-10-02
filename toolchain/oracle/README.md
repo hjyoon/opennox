@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 장착 무기 재질 색상 `004B8E10`
+
+본체 150바이트/SHA-256 `9bc6d962f25517278289ba12483d71f135aa6babd05fcab2888719d5aa1c13f6`와 뒤 10-NOP를 구현 전에 봉인했다. `Client.sub_4B8E10` 한 production 본체에서 원본의 기본 슬롯/정의 색상 1..6 및 네 ordered modifier override를 복원한다. 잘못된 0..4 반복과 PE32 +24 RGB 읽기를 고쳤으며 native `ModifierEff.Color24`는 LP64에서 +44다. 반환/조회·nil no-op·modifier 순서와 장비/정의/effect 데이터는 유지한다. player/NPC가 공유하는 무기 경로의 변경이며 방어구는 아직 수정하지 않는다.
+
+수정 전 72개 native 하위 사례가 잘못된 재질/픽셀을 재현했다. 수정 후 고주소 C-owned player/NPC와 첫/마지막 기록, 16가지 modifier 존재 조합, 중복 last-wins 및 -1/0/15/16 슬롯 경계와 누락 조건의 80개 팔레트·5,120개 독립 RGB555 기대 픽셀·80개 headless frame/data 불변 검사가 3회 통과했다. generated indexed 이미지 기반 비-GUI material/render 통합 검사이며 stock sprite/전체 캐릭터 frame·queued GUI·캠페인/물리 화면 동등성의 증거가 아니다.
+
+관련 6패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. server 전체를 동일 process -count=3으로 반복한 최초 실패는 cleanup 없는 기존 고정 이름 등록 테스트로 분리 재현했다. server는 fresh-process 전체/server-tag 검사로 검증하고 이 실패를 숨기거나 수정하지 않았다. code 2,880/data 617개·NXZ 50쌍 및 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 유지한다. 원본 색상 데이터·자산·개인 Save/config를 변경하지 않는다.
+
 ## 메인 InputCfg capture 종료의 shell focus 복귀
 
 이번 production 단위는 `sub_4CC170` 한 C 본체의 7개 기존 종료 분기에 준비된 Go export를 연결하는 것이다. nil-focus clear→stack pop→hide 뒤 기존 MainBg에 focus를 돌리며, NOFOCUS root 강제 focus·generic key dispatcher 변경·게임 내 capture callback 변경은 하지 않는다. ESC press와 유효 key release를 포함한 binding 선택/쓰기·반환값·modal 종료 계약을 유지한다. 원본 PE32 런타임의 결과를 증명하거나 새 원본 body/range를 복원한 것으로 주장하지 않는다.

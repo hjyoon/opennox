@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어·NPC 장착 무기 팔레트 `004B8E10`
+
+원본 본체 150바이트/SHA-256 `9bc6d962f25517278289ba12483d71f135aa6babd05fcab2888719d5aa1c13f6`와 뒤 10-NOP를 수정 전에 봉인했다. 두 draw 경로가 공유하는 `Client.sub_4B8E10` 한 production 본체만 변경한다. 원본의 정의 색상/재질 슬롯 1..6을 모두 적용하고, 네 modifier의 순서와 color-slot을 유지하며 native `ModifierEff.Color24`를 읽는다. 기존 0..4 반복은 슬롯 0을 덮고 5/6을 이전 장비 색상에 남겼다. PE32 +24 접근은 LP64에서 실제 색상 +44가 아닌 문자열 포인터 영역을 읽어 인챈트 색상을 오염시켰다. 장비·정의·modifier 레이아웃과 원본 팔레트 데이터는 바꾸지 않는다. 방어구의 같은 오류는 다음 단위로 남긴다.
+
+수정 전 native C-owned 고주소 player/NPC 장비의 72개 하위 사례에서 잘못된 재질·픽셀이 재현됐다. 수정 후 네 modifier의 16개 존재 조합, 중복 슬롯의 last-wins, -1/0/15/16 경계, 첫/마지막 장비 기록 및 누락 record/definition의 no-op을 검사한다. 80개 팔레트·5,120개 indexed RGB555 픽셀·80개 headless upload/present와 입력 데이터 불변 검사가 독립 3회 통과했다. 기대값은 원본 어셈블리의 1..6/override 계약과 독립 정수 색상 계산이며 generated indexed 이미지다. stock sprite 전체, queued-input GUI, 캠페인 또는 물리 화면 검증으로 확대하지 않는다.
+
+관련 6패키지 일반·실제 cgocheck2·race·강제 checkptr·HD 각 3회, 격리 환경의 전체 일반/strict 및 server-tag root/server/legacy 각 1회가 통과했다. 첫 관련 검사에 server 전체를 -count=3으로 넣으면 기존 `TestRegisterObjectCreateGoDispatchesNativeObject`의 cleanup 없는 고정 이름 등록이 두 번째 실행에서 panic한다. 장비 변경을 링크하지 않는 server 단독 실행에서도 같은 실패를 재현했으며 기대값/production을 변경하거나 실패를 통과로 세지 않는다. server는 전체 및 server-tag의 fresh-process 1회 검사에 포함했다. 전후 oracle은 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,880/data 617개·NXZ 50쌍을 확인했다. 원본 자산·private fixture/PNG는 공개 저장소에 넣지 않는다.
+
 ## 실제 framebuffer 전환과 기존 GUI 폰트 연결 보존
 
 비-E2E headless video/API 회귀에서 실제 C options apply 진입→game-entry/menu reset→C-owned pixbuffer/row table→renderer upload/present를 검사했다. 생성한 Go Regular TTF와 headless seat만 fixture이며 video callback·buffer·font field·input bounds를 observer가 고치지 않는다. 일반 8개/HD 10개 해상도와 세 signed window mode에서 각각 98/122개 frame 검사·44/56개 resize callback을 확인했다. 모든 native row table은 4GiB 초과 주소였고 실제 C pitch reader·전체 row pointer·clip·첫/마지막 픽셀·업로드된 전체 frame과 queued mouse 좌표를 검사한다. window resize의 기존 canvas/letterbox, 변경 없는 mode의 no-op, menu의 640×480 canvas와 선택한 game resolution 보존, 강제 reset·정리 및 private config sentinel 무변경도 확인했다. 일반·HD에서 각각 독립 3회 통과했다.

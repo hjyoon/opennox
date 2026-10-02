@@ -428,7 +428,7 @@ func (c *Client) sub_4B8E10(earr *[server.PlayerWeaponCnt]server.EquipmentData, 
 	if m == nil {
 		return
 	}
-	for i := 0; i < 5; i++ { // TODO: are bounds correct?
+	for i := 1; i <= 6; i++ {
 		cl := m.Colors12[i]
 		c.r.Data().SetMaterialRGB(i, int(cl.R), int(cl.G), int(cl.B))
 	}
@@ -436,7 +436,7 @@ func (c *Client) sub_4B8E10(earr *[server.PlayerWeaponCnt]server.EquipmentData, 
 	for i := 0; i < 4; i++ {
 		p := found.Field4[i]
 		if p != nil {
-			cl := *(*types.RGB)(unsafe.Add(p, 24))
+			cl := (*server.ModifierEff)(p).Color24
 			c.r.Data().SetMaterialRGB(int(inds[i]), int(cl.R), int(cl.G), int(cl.B))
 		}
 	}

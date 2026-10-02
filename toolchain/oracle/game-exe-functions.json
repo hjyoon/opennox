@@ -2905,6 +2905,20 @@
       "purpose": "the complete BubbleDraw callback with deadline-triggered decay, glow/center drawing, byte countdowns and phases, signed-byte height oscillation, and deletion at zero radius or negative signed-word height"
     },
     {
+      "name": "sub_4B8E10",
+      "address": "0x004B8E10",
+      "size": 150,
+      "sha256": "9bc6d962f25517278289ba12483d71f135aa6babd05fcab2888719d5aa1c13f6",
+      "purpose": "the complete equipped weapon palette selector with native equipment lookup, definition material slots one through six, and four ordered modifier RGB/color-slot overrides shared by player and NPC draw paths"
+    },
+    {
+      "name": "sub_4B8E10_padding",
+      "address": "0x004B8EA6",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP bytes after the equipped weapon palette selector and before 004B8EB0"
+    },
+    {
       "name": "nox_thing_monster_gen_draw_4BC750",
       "address": "0x004BC750",
       "size": 425,

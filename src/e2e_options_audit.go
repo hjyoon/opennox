@@ -64,6 +64,39 @@ func optionsAuditInputExitControl(mode int) (uint, string) {
 	}
 }
 
+// The original general-section writer (004332E0) does not persist tooltip
+// visibility. NoSoftLights is also absent from its keys/formats, and ID 2052
+// is a Go-side option. Do not invent legacy persistence requirements for
+// these session settings. A future persistence extension needs its own test.
+func optionsAuditLegacyVideoKey(id uint) string {
+	switch id {
+	case 2012:
+		return "SoftShadowEdge"
+	case 2014:
+		return "TranslucentConsole"
+	case 2015:
+		return "RenderGlow"
+	case 2016:
+		return "FadeObjects"
+	case 2020:
+		return "DrawFrontWalls"
+	case 2021:
+		return "TranslucentFrontWalls"
+	case 2022:
+		return "HighResFrontWalls"
+	case 2031:
+		return "HighResFloors"
+	case 2032:
+		return "LockHighResFloors"
+	case 2033:
+		return "TexturedFloors"
+	case 2040:
+		return "RenderGUI"
+	default:
+		return ""
+	}
+}
+
 func optionsAuditMove(pos image.Point) {
 	e2eQueueRawInput(&seat.MouseMoveEvent{Pos: noxClient.Inp.DrawPosToWindow(pos), Relative: false})
 }
@@ -259,12 +292,6 @@ func (sc *e2eScenario) AuditClientOptions(mode int, name string) {
 				fmt.Sprintf("volume %d initialized", id), fmt.Sprintf("range=%d..%d value=%d timer=%d checked=%t enabled=%t", data.Min, data.Max, data.Field3, vol, checked, enabled))
 		}
 	})
-	keys := map[uint]string{
-		2012: "SoftShadowEdge", 2014: "TranslucentConsole", 2015: "RenderGlow",
-		2016: "FadeObjects", 2017: "ShowTooltips", 2020: "DrawFrontWalls",
-		2021: "TranslucentFrontWalls", 2022: "HighResFrontWalls", 2031: "HighResFloors",
-		2032: "LockHighResFloors", 2033: "TexturedFloors", 2052: "NoSoftLights", 2040: "RenderGUI",
-	}
 	ids := []uint{2051, 2050, 2012, 2014, 2015, 2016, 2017, 2020, 2021, 2022, 2031, 2032, 2033, 2052, 2040}
 	for _, id := range ids {
 		var before bool
@@ -292,12 +319,16 @@ func (sc *e2eScenario) AuditClientOptions(mode int, name string) {
 					key = configVideoStretch
 				}
 				a.check(viper.GetBool(key) == live, fmt.Sprintf("video %d persistence value", id), fmt.Sprintf("key=%s stored=%t live=%t", key, viper.GetBool(key), live))
-			} else {
+				if id == 2050 {
+					a.check(configDirty, "stretch schedules configuration save", "live GUI toggle; E2E still suppresses disk writes")
+				}
+			} else if key := optionsAuditLegacyVideoKey(id); key != "" {
 				var section cfg.Section
 				writeConfigLegacyMain(&section)
-				key := keys[id]
 				got, present := section.Get(key)
 				a.check(present && got == fmt.Sprint(bool2int(live)), fmt.Sprintf("video %d persistence value", id), fmt.Sprintf("key=%s present=%t serialized=%q live=%t", key, present, got, live))
+			} else {
+				e2eLog.Printf("OPTIONS AUDIT NOTE: mode=%d video %d is session-only; no original legacy persistence key; live=%t (not a disk round-trip claim)", a.mode, id, live)
 			}
 		})
 		a.click(sc, id)
@@ -321,6 +352,12 @@ func (sc *e2eScenario) AuditClientOptions(mode int, name string) {
 		})
 	}
 	if mode == 0 {
+		var savedWindowMode string
+		sc.add(0, "audit window-mode save checkpoint", func() {
+			var section cfg.Section
+			writeConfigLegacyMain(&section)
+			savedWindowMode = sectionValueOptionsAudit(section, "Fullscreen")
+		})
 		for _, id := range []uint{331, 332, 331} {
 			a.click(sc, id)
 			sc.add(0, "", func() {
@@ -331,8 +368,12 @@ func (sc *e2eScenario) AuditClientOptions(mode int, name string) {
 				a.check(resolution != nil && resolution.DrawData().Field0&4 != 0, "window mode preserves resolution selection", fmt.Sprintf("mode=%d resolution=%d", want, lastResolutionID))
 				var section cfg.Section
 				writeConfigLegacyMain(&section)
-				a.check(sectionValueOptionsAudit(section, "Fullscreen") == fmt.Sprint(want), "window mode persistence value",
-					fmt.Sprintf("live=%d serialized=%q", nox_video_getFullScreen(), sectionValueOptionsAudit(section, "Fullscreen")))
+				// The native setter changes the renderer immediately. The legacy
+				// save checkpoint is synchronized by videoUpdateGameMode on
+				// options close, a path deliberately suppressed during E2E.
+				a.check(sectionValueOptionsAudit(section, "Fullscreen") == savedWindowMode, "open window mode preserves save checkpoint",
+					fmt.Sprintf("live=%d serialized=%q checkpoint=%q", nox_video_getFullScreen(), sectionValueOptionsAudit(section, "Fullscreen"), savedWindowMode))
+				e2eLog.Printf("OPTIONS AUDIT NOTE: mode=%d fullscreen live=%d saved=%q; options-close synchronization and disk restart are not exercised here", a.mode, nox_video_getFullScreen(), savedWindowMode)
 			})
 		}
 	} else {

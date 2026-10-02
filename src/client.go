@@ -113,6 +113,7 @@ func (c *Client) SetStretch(v bool) {
 	}
 	c.Client.SetStretch(v)
 	viper.Set(configVideoStretch, v)
+	writeConfigLater()
 }
 
 func (c *Client) setStretchIfNotSet(v bool) {

@@ -79,3 +79,21 @@ func TestOptionsAuditInputExitControl(t *testing.T) {
 		}()
 	}
 }
+
+func TestOptionsAuditLegacyVideoPersistenceScope(t *testing.T) {
+	for id, want := range map[uint]string{
+		2012: "SoftShadowEdge", 2014: "TranslucentConsole", 2015: "RenderGlow",
+		2016: "FadeObjects", 2020: "DrawFrontWalls", 2021: "TranslucentFrontWalls",
+		2022: "HighResFrontWalls", 2031: "HighResFloors", 2032: "LockHighResFloors",
+		2033: "TexturedFloors", 2040: "RenderGUI",
+	} {
+		if got := optionsAuditLegacyVideoKey(id); got != want {
+			t.Errorf("video %d: legacy key=%q, want %q", id, got, want)
+		}
+	}
+	for _, id := range []uint{0, 2010, 2017, 2050, 2051, 2052, 2099} {
+		if got := optionsAuditLegacyVideoKey(id); got != "" {
+			t.Errorf("video %d: invented legacy persistence key %q", id, got)
+		}
+	}
+}

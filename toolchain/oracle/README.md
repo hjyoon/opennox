@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Stretch 저장 예약과 persistence 관찰의 후속 구별
+
+이번 production 수정은 원본 PE32 함수 복원이 아니라 Go 확장 `Client.SetStretch` 한 본체의 YAML 저장 예약 누락을 보정한다. 기존 파일을 읽어 dirty=false인 상태에서 Stretch만 바꾸면 live/Viper 값만 바뀌는 실패를 먼저 재현했다. 실제 설정 reader/setter/deferred writer로 임시 YAML의 양방향 변경을 저장하고 서로 독립된 새 프로세스에서 읽는다. unrelated 값 보존·readonly/E2E 억제·nil 호출의 무변경도 확인하며 개인 Save/config·stock 파일이나 전체 게임 시작 경로는 사용하지 않는다.
+
+stock `GAME.EXE`의 ASCII config key/format과 general-section writer `004332E0`의 참조를 대조해 tooltip/NoSoftLights 저장 기대를 바로잡았다. `ShowTooltips`·`NoSoftLights`는 원래 writer의 키가 아니며 Go-created ID 2052도 원본 옵션 기능으로 간주하지 않는다. live toggle/restore는 유지하고 두 session-only 설정의 저장 검사는 PASS 대신 NOTE로 남긴다. 기존 11개 legacy video key와 filtering/stretch Viper 검사는 유지한다. main window mode도 즉시 renderer 변경과 options-close에서의 legacy checkpoint 동기화를 구별한다. E2E에서는 close 적용/저장이 억제되므로 열린 창의 checkpoint 보존만 검사하고 디스크 restart를 증명했다고 하지 않는다. 이 검사 기준 정정은 새 저장 기능 구현으로 세지 않는다.
+
+Darwin/ARM64 headless 실제 입력의 일반/HD main·게임 내 결과는 각각 218/8·220/8·198/3·200/3 assertion이다. 이전 private PNG 18개를 override 없이 재사용했고 일반 main의 독립 새 프로세스도 218/8과 PNG 6개 비교를 통과했다. 모두 summary 뒤 의도된 audit-failure panic/exit 2이며 별도 SIGSEGV/runtime error·화면 mismatch는 없다. main ESC 5개와 inactive mock에서 startup FX gain/slider 비교 3개 실패는 보존한다. 실제 default.cfg Reset·전체 legacy 설정 디스크 round-trip·해상도 적용·물리 오디오는 미검증이다. Stretch의 임시 YAML 검증을 모든 옵션 또는 전체 게임 재시작 성공으로 확대하지 않는다.
+
+관련 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict·server-tag 각 1회가 통과했다. 원본 body/range를 새로 봉인하지 않아 code 2,878/data 617개 그대로다. 전후 `make oracle-test`에서 stock 1,556파일·570,653,750바이트·불변 tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`와 NXZ 50쌍을 확인한다. source provenance·Go extension 회귀·read-only GUI 관찰의 근거는 서로 대체하지 않는다.
+
 ## 마우스 초기화 capability BYTE와 native 입력 adapter `0047D8D0`
 
 원본 `0047D8D0..0047DA6A`의 Windows DirectInput initializer 411바이트/SHA-256 `4b91b3f8978a7bb125c6ba815aee965a7dad8460820ff7cc74bc63bb8b4ffb56`·뒤 `0047DA6B`의 5-NOP 및 unsigned BYTE getter `0047DBC0..0047DBC5` 6바이트/SHA-256 `12fe2a1633c5326cdec725c9fc09afee93f3ff19e4ab580e9ffa443fedc29d12`·뒤 10-NOP를 각각 봉인했다. initializer는 nonnegative GetCapabilities HRESULT에서 dwButtons의 low BYTE를 `006F7A3C`에 쓴 뒤 present DWORD `006F7A28`을 게시한다. GetCapabilities 실패 시 이전 BYTE를 보존하는 Windows 흐름과, COM/HRESULT 모델 없이 native handler capacity를 게시하는 adapter를 혼동하지 않는다. 이 code hash는 원본 provenance이며 adapter가 물리 장치 capability 또는 Windows 초기화 전체를 에뮬레이트한다는 증거가 아니다.

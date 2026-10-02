@@ -1,5 +1,30 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Stretch YAML 저장 예약과 옵션 persistence 검사의 범위
+
+기존 YAML을 성공적으로 읽으면 `configDirty=false`가 된다. `Client.SetStretch`는 renderer와 Viper 값만 변경해 Stretch만 바꾼 뒤 종료할 때 `maybeWriteConfig`가 저장을 건너뛰었다. 수정 전 격리 회귀에서 양방향 변경 모두 live/YAML은 바뀌지만 dirty가 false인 실패를 재현했다. 이번 production 변경은 이 Go 확장 함수 한 본체에 다른 영상 setter와 같은 저장 예약을 추가하는 한 줄이다. 원본 C 본체나 설정 키·게임 효과는 변경하지 않는다.
+
+API/configuration 회귀는 개인 설정 대신 `t.TempDir()`의 YAML만 사용한다. 실제 `readConfig`→`SetStretch`→`maybeWriteConfig`로 false→true/true→false를 저장하고 별도 새 프로세스에서 같은 파일을 읽어 확인한다. 각 단계의 Viper override와 cached E2E 상태도 분리한다. renderer 초기화의 Stretch 적용 부분만 따라가며 전체 게임 재시작 성공으로 확대하지 않는다. unrelated filtering/sentinel 보존, readonly/E2E 저장 억제, nil client의 무변경과 파일 바이트 보존도 검사한다.
+
+옵션 audit의 잘못된 persistence 기대도 근거에 맞게 구별했다. stock `GAME.EXE`의 general-section writer `004332E0`와 ASCII 키/format 참조에는 `ShowTooltips`·`NoSoftLights`가 없다. ID 2017의 tooltip과 Go-created ID 2052는 현재 session-only이며 15개 checkbox의 실제 live toggle/restore 검사는 유지하되 두 가짜 legacy 저장 요구는 PASS가 아닌 NOTE로 바꾼다. 원래 11개 영상 키 직렬화와 Go filtering/stretch 값 검사는 유지한다. 새 persistence 확장은 별도 사양/회귀가 필요하며 이번에 키를 추가하지 않는다.
+
+main의 Windowed/Fullscreen 클릭은 renderer를 즉시 바꾸지만 legacy 저장 checkpoint는 options-close의 `videoUpdateGameMode` 경로에서 동기화된다. E2E가 그 적용/저장 경로를 억제하므로 열린 창에서 live와 serialized 값이 즉시 같아야 한다는 기대를 제거하고 기존 checkpoint 보존을 검사한다. 실제 live mode/radio·해상도 선택 보존 검사는 유지하며 디스크 round-trip은 미검증 NOTE로 남긴다. 이 두 기준 정정은 tooltip/NoSoftLights 저장 기능이나 전체 화면 저장 기능을 새로 고쳤다는 뜻이 아니다. 이전 기록의 해당 실패 수는 당시 검사 기준의 결과로 보존한다.
+
+2026-10-02 Darwin/ARM64 일반·HD main/게임 내 옵션을 실제 queued mouse/key 입력으로 다시 검사했다. 영상 15개 checkbox, 기본/추가 해상도 선택, gamma/sensitivity, 세 음량·mute, Left→Right→Middle→Left, 입력 목록/스크롤·두 열 binding, Reset/Defaults의 unapplied-edit 폐기·Back/Apply/ESC/Close를 유지한다. observer로 focus·설정·flag·handler를 주입하지 않는다. 아래는 반복 assertion 수이지 고유 버그 수가 아니다.
+
+| 경로 | 통과 | 실패 |
+| --- | ---: | ---: |
+| 일반 메인 메뉴 | 218 | 8 |
+| HD 메인 메뉴 | 220 | 8 |
+| 일반 게임 내 | 198 | 3 |
+| HD 게임 내 | 200 | 3 |
+
+네 실행과 일반 main의 독립 새 프로세스 재실행은 이전 단계의 private PNG 18개 baseline을 override 없이 재사용했다. 재실행 main도 218/8이며 PNG 6개가 통과했다. 모두 summary까지 도달했고 의도된 audit-failure panic/exit 2로 종료했다. 별도 SIGSEGV/runtime error·화면 mismatch는 없고 normal/HD controls 화면도 직접 검토했다. 이미지/시나리오와 로그는 private temporary 경로에만 남긴다.
+
+main 재설정 뒤 ESC 5개 assertion과 모든 경로의 startup FX gain/slider 비교 3개는 그대로 실패한다. mock AIL timer는 inactive이므로 이 관찰만으로 물리 오디오 고장이나 정상 재생을 단정하지 않는다. 원래 default.cfg Reset, 전체 nox.cfg 저장 후 새 프로세스 load, 실제 해상도 적용·물리 오디오·ESC 종료는 남은 경계다. Stretch의 좁은 YAML round-trip만 이번에 검증했고 모든 옵션이 정상이라고 판정하지 않는다.
+
+옵션/입력/GUI/renderer/메모리 맵 대상 일반·실제 `GOEXPERIMENT=cgocheck2`·race·`checkptr=2` 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회가 통과했다. 전후 `make oracle-test`는 불변 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`·code 2,878/data 617개·NXZ 50쌍을 확인한다. 새 원본 범위는 추가하지 않는다. 원본 provenance·함수 회귀·headless 관찰을 구별하며 개인 Save/config·원본 자산을 변경하지 않는다.
+
 ## 옵션의 마우스 선택을 위한 native capability 게시 `0047D8D0`
 
 `inputInitMouse`는 mouse-present DWORD만 1로 만들고 `006F7A3C`의 버튼 capability BYTE는 0으로 남겼다. 원래 unsigned BYTE getter `0047DBC0`을 사용하는 메인/게임 내 InputCfg constructor는 그 개수만큼 ID 971..973을 enable하므로 왼쪽·오른쪽·중앙 선택이 모두 disabled였다. 실제 C getter를 포함한 회귀에서 수정 전 0 반환을 재현했다. 이번 변경은 initializer 한 본체의 native adapter만 보정하며 UI의 enabled flag·focus·handler·설정을 테스트에서 강제로 바꾸지 않는다.

@@ -491,7 +491,9 @@ func (s *nativeAudioEffectsState) play(id sound.ID, requestedVolume int) bool {
 	} else if requestedVolume > 100 {
 		requestedVolume = 100
 	}
-	if requestedVolume == 0 || configGetVolume(VolumeFX) == 0 {
+	// Like the original effect allocator, admission follows the live FX
+	// enabled flag. The configuration scalar is only a startup value.
+	if requestedVolume == 0 || legacy.Sub_453070() == 0 {
 		return false
 	}
 

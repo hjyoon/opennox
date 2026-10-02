@@ -2,6 +2,20 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Native FX enabled flag와 실제 C checkbox 회귀
+
+이번 production 수정은 Go native audio 확장 `play` 한 본체의 새 샘플 admission을 startup config scalar 대신 live `sub_453070`으로 판단하도록 보정한다. 원래 effect allocator의 enabled flag 계약과 startup 설정의 의미를 구별하며 요청 clamp·ID/definition/bank/voice guard·sample 선택은 유지한다. 새 원본 body/range를 봉인하지 않아 code 2,878/data 617개는 그대로다.
+
+격리 opt-in subprocess는 생성한 무음 ADPCM·실제 blob·4GiB 초과 C-owned Options 창과 ID 361·기존 C procedure/native callback·AIL sample/OpenAL source를 사용한다. 수정 전 off 클릭이 source gain=17/127→37/127로 바꾸고 startup=0의 on 클릭이 목표 62/127 대신 17/127인 실패를 재현했다. off의 새 요청 거부/source와 pending timer 무변경, startup=0에서 on 클릭/후속 요청, nonpositive/clamped 요청·invalid ID를 검증한다. API integration fixture이지 queued-input E2E라고 주장하지 않는다. OpenAL Soft null backend의 실제 source이며 물리 device/재생 완료 증명은 아니다.
+
+대상 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict·server-tag 각 1회와 이전 768조합/interpolation 회귀가 통과했다. 실제 headless 입력의 일반/HD main·게임 내 audit는 218/8·220/8·198/3·200/3으로 끝났다. 이전 main controls PNG mismatch 시도는 summary 전 중단으로 남긴다. 기존 baseline을 overwrite하지 않고 byte-identical YAML을 별도 private 경로에 두었다. PNG 18개 decode 비교에서 8개가 같고 main 10개가 다르며, 두 controls는 22,709/17,099 pixel의 cursor sparks 차이·동일한 controls/thumb 위치다. 다른 main 차이는 6..56 pixel이고 Back/입력 화면도 직접 대조했다. Rand.Other를 공유하는 sample 선택·sparks/menu 눈 animation과 admission 변화의 관계는 코드 근거의 설명이지 원본 runtime trace가 아니다. 새 일반/HD 독립 재실행은 override 없이 PNG 6개씩과 같은 assertion 결과를 확인했다. 최종 mock 실행은 summary 뒤 의도된 exit 2이고 추가 SIGSEGV/runtime error·화면 mismatch는 없다.
+
+실제 backend의 headless 일반 main/게임 내 두 경로도 같은 queued 입력으로 실행했다. 기존 read-only playback observer가 시작 audit 직전에 16개 sample source, music stream 및 queue/drain을 확인했다. main의 효과음 139/136·음악 50/48, 게임 내의 효과음 389/389·음악 124/122는 각각 queued/processed count다. 두 audit는 각각 218/8·198/3과 의도된 exit 2이며 새 크래시 없이 끝까지 진행했다. null backend에서도 실제 ADPCM/music buffer service를 거쳤지만 physical speakers·dialog 재생·이미 재생 중인 FX의 음소거를 검증한 것으로 확대하지 않는다. native controls 화면도 직접 검토했으며 실제 오디오 실행의 독립 반복 PNG 비교까지 했다고 주장하지 않는다.
+
+startup scalar를 slider와 비교하는 observer 3개·main key 재설정 뒤 ESC 5개 실패는 그대로 보존한다. 이미 재생 중인 FX의 live gain/mute·전체 legacy config disk round-trip·원래 default.cfg Reset·해상도 적용은 남은 경계다. 새 샘플 admission과 backend service 검증을 모든 옵션 정상으로 확대하지 않는다.
+
+전후 `make oracle-test`에서 불변 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code/data 범위 및 NXZ 50쌍을 확인했다. 원본 hash·API 회귀·headless 입력 관찰의 범위를 구별하며 PNG·원본 음원·개인 Save/config를 저장소에 추가하거나 변경하지 않는다.
+
 ## Native FX gain의 live timer와 backend 검증
 
 이번 변경은 Go native audio 확장 `playSampleLocked` 한 본체에서 saved startup scalar 대신 live FX group을 update/mix한 뒤 127 scale로 변환하는 보정이다. 새 원본 PE32 함수/range를 봉인하지 않아 code 2,878/data 617개는 그대로다. startup scalar의 reader·original timer mix-before-127 반올림·sample metadata 계약은 유지한다. 수정 전 startup=16,384·live=0인데 실제 OpenAL gain=126/127인 실패를 확인했다.

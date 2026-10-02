@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 옵션 config disk round-trip과 원본 input Reset
+
+이번 단위는 테스트만 추가하며 production 함수·새 PE32 body/range를 변경하지 않는다. 격리 fresh subprocess의 실제 client/server·headless seat·legacy/YAML reader/writer로 8가지 audio mute 조합의 save/load/Reset, 11개 영상 key와 gamma/sensitivity/cut size·YAML filtering/stretch/해상도 및 key binding/MousePickup을 확인한다. C-owned animation의 원래 C start-out callback을 통해 옵션 종료 전후 headless 640×480→800×600, 이전 save checkpoint와 다른 live window mode 저장 및 AnimOut 시작을 검사한다. E2E 변경 억제·non-E2E YAML read-only·fallback/missing/malformed도 별도로 검사하며 queued-input GUI나 물리 window/audio 검증으로 확대하지 않는다.
+
+최초의 unserviced Target 저장 기대 실패는 fixture 계약 오류다. 원본 writer 004332E0의 00433352/0043337B/004333A3이 세 enabled volume의 Current(+4)를 읽는 것을 직접 대조했고, 기존 writer 의미를 유지했다. 최종 시험은 pending Current 1/2/3/음소거 0을 기록한 뒤 실제 TimerGroup.Update와 live 값 저장/복원을 확인한다. startup scalar는 보존한다. 새로운 AIL/물리 device 검사가 아니며 원본 전체 writer를 새 range로 봉인한 것도 아니다.
+
+generated default.cfg는 잘못된 general section을 넣어 input Reset의 skip 동작 및 다른 설정/저장 파일 보존을 확인한다. opt-in NOX_TEST_OPTIONS_STOCK_DEFAULT는 원본을 read-only로 읽어 private copy에서 실제 46개 binding을 복원하며 source bytes 불변을 확인한다. 원본 config 내용과 fixture/로그/GUI PNG는 공개 저장소에 넣지 않는다. 관련 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict 및 server-tag 각 1회가 통과했다.
+
+전후 oracle은 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개 및 NXZ 50쌍을 유지한다. 이전 일반/HD queued GUI 수치는 이전 단위로 구별한다. main 재지정 후 nil focus/ESC 실패, 게임 내 실제 크기 적용, 전체 재시작/물리 출력 경계가 남아 모든 옵션 정상으로 판정하지 않는다. 개인 Save/config·stock은 변경하지 않는다.
+
 ## FX startup scalar 오검출과 실제 GUI 재검증
 
 이번 수정은 `optionsAudit.slider` 한 본체의 read-only 관찰 의미만 보정한다. 저장된 startup scalar를 live gain이라고 비교하지 않고, 실제 mouse 입력 전/후 startup 보존을 검사한다. 기존 slider 위치·FX Target·enabled 검사와 queued input은 유지하며 오디오 동작이나 설정/handler/focus를 주입하지 않는다. 실제 source gain/mute/30Hz 서비스의 OpenAL 회귀는 별도로 유지한다. 새 원본 body/range를 봉인하지 않아 code 2,878/data 617개 그대로다.

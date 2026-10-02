@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 옵션 파일의 실제 저장·새 프로세스 복원과 종료 적용
+
+production 동작은 바꾸지 않고 격리 configuration/API 회귀를 추가했다. 실제 client/server owner·headless seat와 실제 legacy/YAML reader/writer를 사용하며, 8가지 FX/dialog/music mute 조합마다 save→load→input Reset을 서로 다른 subprocess에서 수행한다. 11개 저장 가능한 영상 toggle, gamma/cut size/sensitivity, 양수 초기 window mode→서로 다른 signed live windowed/fullscreen/borderless mode, YAML filtering/stretch/해상도와 무관한 key 보존, 두 열/복합 key binding 및 MousePickup을 확인했다. YAML stretch가 legacy 값과 달라도 원래 startup 우선순위를 유지한다. 서버 옵션 전체나 게임의 완전한 재시작을 증명한 것은 아니다.
+
+save는 C-owned root/animation에 원래 start-out callback을 연결하고 실제 C→Go 옵션 종료 진입을 호출한다. 변경 전 640×480 및 이전 window-mode save checkpoint가 유지되다가, 종료 시 800×600 headless 크기와 변경한 live mode가 실제 nox.cfg에 반영되고 AnimOut이 시작되는지 확인한다. E2E에서는 같은 종료 진입의 해상도/파일 변경 억제를 별도로 확인한다. callback/API fixture이지 stock 창에 queued mouse/key를 보내는 새 GUI E2E, 최종 animation callback/화면 buffer 재구성 또는 실제 macOS 창 표시 검사는 아니다.
+
+첫 fixture는 SetRaw 뒤 아직 처리하지 않은 Target를 저장값으로 기대해 실패했다. 원본 writer 004332E0의 00433352/0043337B/004333A3은 세 enabled channel에서 Current(+4)를 읽으며, 현재 writer도 같다는 것을 직접 대조했다. 따라서 이를 production 저장 버그로 세거나 Target 저장으로 바꾸지 않았다. 최종 회귀는 서비스 전 Current 1/2/3 및 mute의 0 저장을 확인한 뒤 실제 TimerGroup.Update를 통해 live 값을 처리하고 종료 시 그 값의 저장/복원을 검사한다. startup scalar 4096/8192/16384는 저장 과정에서 바뀌지 않는다. 물리 audio/실제 AIL service는 이전 별도 회귀의 범위다.
+
+generated default.cfg Reset은 일반 section을 파싱하지 않고 pending key binding만 복원하며, 음량·영상·YAML dirty 상태·저장된 nox.cfg가 바뀌지 않는지 확인한다. 취소/재로드의 config layer도 이전 disk binding을 복원한다. 별도 opt-in NOX_TEST_OPTIONS_STOCK_DEFAULT는 원본 default.cfg를 read-only로 읽고 private copy로 Reset하여 실제 46개 binding을 복원한다. stock source bytes 불변을 확인하며 원본 내용은 로그/저장소에 남기지 않는다. missing→default fallback, 둘 다 missing, malformed 기존 config의 오류/미덮어쓰기, non-E2E YAML read-only와 E2E legacy/YAML write guard도 통과한다.
+
+최종 관련 7패키지 일반·실제 cgocheck2·race·checkptr 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회가 통과했다. 이전 queued GUI 결과(일반/HD main 221/5·223/5, 게임 내 201/0·203/0)는 이전 커밋의 관찰이며 이번에 재실행했다고 기록하지 않는다. main 재지정 뒤 nil focus/ESC 실패, 게임 내 종료의 실제 해상도 적용 및 physical/window/audio 경계는 여전히 후속 확인이다. 전후 oracle은 불변 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개/NXZ 50쌍을 유지한다. 새 PE32 range·원본 자산·PNG/시나리오를 추가하거나 개인 Save/config를 변경하지 않는다. 모든 옵션 완료 판정은 보류한다.
+
 ## FX 옵션 observer의 startup/live 의미 구별
 
 `configGetVolume(VolumeFX)`는 저장된 시작 scalar이지 현재 OpenAL gain이 아니다. 이전 UI observer는 이를 slider와 같아야 한다고 검사해 실제 live mix를 고친 뒤에도 세 오검출을 만들었다. 이번 변경은 `optionsAudit.slider` 한 본체에서 실제 입력 전 startup 값을 읽어 두고, 입력 뒤 값이 보존되는지 검사하는 것이다. 기존 slider 위치·FX Target·zero/enabled 검사와 실제 입력 경로를 유지한다. native source gain/decode/30Hz service는 별도의 실제 OpenAL 회귀가 맡는다. 게임 설정/handler/focus·오디오 production 동작은 변경하지 않는다.

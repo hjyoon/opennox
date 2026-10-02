@@ -10,10 +10,11 @@ import (
 
 	"github.com/opennox/opennox/v1/client/seat/headless"
 	"github.com/opennox/opennox/v1/legacy"
+	"github.com/opennox/opennox/v1/legacy/common/ccall"
 )
 
-// API fixture with an actual renderer/headless seat. This prepares the Go
-// apply operation; it does not claim that in-game Close is connected yet.
+// API fixture with an actual renderer/headless seat and C-to-Go entry.
+// It does not claim that in-game Close is connected yet.
 func TestOptionsVideoApply(t *testing.T) {
 	for _, phase := range []string{"video-apply", "video-apply-e2e"} {
 		t.Run(phase, func(t *testing.T) {
@@ -40,7 +41,7 @@ func testOptionsVideoApply(t *testing.T, c *Client, sc *headless.Seat, phase str
 			c.UpdateFullScreen(mode)
 			g_fullscreen_cfg = 99 // A deliberately different save checkpoint.
 			guiOptionsRes = res
-			legacy.Nox_video_applyOptions()
+			ccall.CallVoidVoid(legacy.OptionsApplyVideoModeCEntry)
 			wantSize, wantCheckpoint := res, mode
 			if phase == "video-apply-e2e" {
 				wantSize, wantCheckpoint = initial, 99

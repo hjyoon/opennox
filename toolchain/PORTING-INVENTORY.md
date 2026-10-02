@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 옵션 apply의 실제 C→Go 진입 준비
+
+이번 production 단위는 인수/반환이 없는 `nox_video_applyOptions` Go export 한 본체와 C 선언이다. 실제 C function pointer→`ccall.CallVoidVoid`→Go export→등록 callback을 거치는 headless API 회귀로 일반 8개/HD 10개 해상도·세 signed window mode·E2E/파일 무변경을 검사했다. 관련 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict·server-tag 각 1회와 전후 oracle이 통과했다. C Close 본체는 아직 변경하지 않았으므로 종료 적용 실패의 해결 판정은 다음 단위로 남긴다. 원본 code/data range와 stock·개인 Save/config는 변경하지 않는다.
+
 ## 옵션 해상도 apply의 native callback 등록
 
 별도 단위로 `legacy_exports.go:init` 한 production 본체에서 준비된 Go apply를 native callback에 등록했다. 관련 7패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict·server-tag 각 1회 및 전후 oracle을 통과했다. fresh headless API fixture는 실제 등록된 callback을 통해 해상도/세 signed window mode/E2E guard와 파일 무변경을 확인한다. C export와 게임 내 Close는 아직 연결하지 않았으며 이 등록만으로 앞선 Close 실패가 해결되었다고 주장하지 않는다.

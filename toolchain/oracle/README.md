@@ -2,6 +2,10 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 옵션 apply의 C→Go 경계 준비
+
+인수/반환 없는 `nox_video_applyOptions` Go export 한 production 본체와 C 선언을 추가했다. 실제 C function pointer/ccall/Go export/등록 callback의 headless API 회귀는 해상도·signed window mode·E2E guard와 파일 무변경을 검사한다. 관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·server-tag 각 1회 및 전후 oracle이 통과했다. 아직 C Close 본체에 연결하지 않았으며 원본 body 복원/Close 완료 또는 전체 옵션 정상으로 판정하지 않는다. stock/code 2,878/data 617개/NXZ 50쌍·개인 파일 불변을 유지한다.
+
 ## 옵션 apply native callback 등록
 
 이번 production 단위는 `legacy_exports.go:init` 한 본체의 callback 등록이다. Go apply·기존 C procedure는 변경하지 않는다. 실제 등록 callback의 격리 headless API 검사 및 관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·server-tag 각 1회와 전후 oracle이 통과했다. C export/Close 연결은 다음 단위이며 아직 Close 실패나 모든 옵션 정상으로 판정하지 않는다. 원본 code 2,878/data 617개·stock/NXZ 50쌍과 개인 파일 불변을 유지한다.

@@ -19,15 +19,19 @@ import (
 )
 
 var (
-	Nox_video_setMenuOptions func(win *gui.Window)
-	Nox_video_applyOptions   func()
-	Nox_gui_menu_proc_ext    func(id int) int
-	Sub_4A19F0               func(name strman.ID)
-	Sub_4AAA10               func() int
-	Sub_4C3A90               func(a1, a2 int, a3 unsafe.Pointer, a4 int) int
-	Sub_4CBE70               func(a1, a2 int, a3 unsafe.Pointer, a4 int) int
-	Sub_4A1A40               func(a1 int)
+	Nox_video_setMenuOptions    func(win *gui.Window)
+	Nox_video_applyOptions      func()
+	Nox_gui_menu_proc_ext       func(id int) int
+	Sub_4A19F0                  func(name strman.ID)
+	Sub_4AAA10                  func() int
+	Sub_4C3A90                  func(a1, a2 int, a3 unsafe.Pointer, a4 int) int
+	Sub_4CBE70                  func(a1, a2 int, a3 unsafe.Pointer, a4 int) int
+	Sub_4A1A40                  func(a1 int)
+	OptionsApplyVideoModeCEntry = C.nox_video_applyOptions
 )
+
+//export nox_video_applyOptions
+func nox_video_applyOptions() { Nox_video_applyOptions() }
 
 //export nox_video_setMenuOptions
 func nox_video_setMenuOptions(cwin *nox_window) { Nox_video_setMenuOptions(asWindow(cwin)) }

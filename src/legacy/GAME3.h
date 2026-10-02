@@ -95,6 +95,7 @@ int nox_xxx_windowServerOptionsGeneralProc_4AD5D0(nox_window* win, int event, no
 											  uintptr_t event_arg);
 int sub_4AD820();
 int sub_4AD9B0(int a1);
+void nox_video_applyOptions(void);
 int sub_4ADA40();
 int nox_game_initOptionsInGame_4ADAD0();
 int sub_4ADEF0(nox_window* win, nox_window_data* draw);

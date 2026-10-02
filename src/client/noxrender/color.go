@@ -17,11 +17,7 @@ func init() {
 // SplitColor splits RGB555 color into separate 8 bit RGB components.
 // Color components are returned as uint16 for convenience.
 func SplitColor(v noxcolor.RGBA5551) (c Color16) {
-	cl := v.ColorNRGBA()
-	c.R = uint16(cl.R)
-	c.G = uint16(cl.G)
-	c.B = uint16(cl.B)
-	return
+	return SplitColor16(uint16(v))
 }
 
 func SplitColor16(v uint16) (c Color16) {

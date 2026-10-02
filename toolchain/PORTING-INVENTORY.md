@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## typed RGB5551 색상 연산 일관성
+
+이번 production 단위는 `SplitColor` 한 본체다. 선·원·입자가 쓰는 typed packed 색상을 표시용 변환 대신 검증한 `SplitColor16`으로 분해한다. typed API·알파 비트 무시·표시 모델·byte-RGB 팔레트는 유지한다. 수정 전 31 채널의 255/248 차이와 white/red/green/blue 알파 선의 잘못된 픽셀을 재현했다. 수정 후 65,536개 typed word와 실제 line-alpha 픽셀·인접 untouched 픽셀 검사가 통과했다. 기존 packed 픽셀/재질 회귀와 장비 160개 팔레트도 유지한다.
+
+관련 6패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. code 2,882/data 617개·NXZ 50쌍과 stock tree를 변경하지 않는다. production은 한 본체이며 원본 자산·private reference source/PNG·개인 Save/config를 공개 저장소에 추가하지 않는다. stock PNG 테스트의 역사적 표시 변환 분리는 다음 테스트 전용 단위다. Windows 원본 runtime·queued GUI·물리 화면 전체의 검증으로 확대하지 않는다.
+
 ## RGB5551 재질 계산의 표시 변환 분리
 
 이번 production 단위는 `RenderData.SetMaterial` 한 본체다. packed 색상을 표시용 `ColorNRGBA`로 풀지 않고 앞 단위의 `SplitColor16`으로 분해한다. 팔레트 범위 검사·packed Color32 및 transparent sentinel·동일 packed 색상의 no-op은 유지하고, 별도 byte-RGB 장비 API `SetMaterialRGB`는 변경하지 않는다. 수정 전 full channel의 255/248 차이를 독립 회귀로 재현했다. 수정 후 65,536개 packed 재질의 RGB/Color32, 재호출·-1/16 범위·슬롯 15 byte-RGB=255 보존을 확인했다.

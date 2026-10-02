@@ -260,6 +260,12 @@ func TestDefaultDamageWorld4E0B30ScriptedMonsterCrushTail(t *testing.T) {
 		Frame:         func() uint32 { return 750 },
 		GameplayFlag1: func() bool { return true },
 		IsEnemy:       func(gotTarget, gotSource *Object) bool { return gotTarget == target && gotSource == source },
+		MonsterHasHitSound: func(got *Object) bool {
+			if got != source {
+				t.Fatalf("MonsterHasHitSound(%p), want %p", got, source)
+			}
+			return false
+		},
 		BuffOff: func(got *Object, enchant EnchantID) {
 			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
 				t.Fatalf("BuffOff(%p,%d)", got, enchant)

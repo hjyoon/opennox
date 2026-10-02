@@ -185,16 +185,13 @@ func TestDefaultDamageWorld4E0B30BerserkerChargeAdmissionBoundary(t *testing.T) 
 	player := &Object{ObjClass: object.ClassPlayer}
 	otherPlayer := &Object{ObjClass: object.ClassPlayer}
 	monster := &Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(&MonsterUpdateData{})}
-	weapon := &Object{ObjClass: object.ClassWeapon}
 	for _, tc := range []struct {
 		name           string
 		source, weapon *Object
 		typ            object.DamageType
 	}{
 		{"source-less crush", nil, nil, object.DamageCrush},
-		{"player without weapon", player, nil, object.DamageCrush},
 		{"different player weapon", player, otherPlayer, object.DamageCrush},
-		{"equipped weapon crush", player, weapon, object.DamageCrush},
 		{"monster self crush", monster, monster, object.DamageCrush},
 		{"player self blade", player, player, object.DamageBlade},
 		{"player self bite", player, player, object.DamageBite},

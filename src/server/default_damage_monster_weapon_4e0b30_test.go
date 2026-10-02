@@ -154,8 +154,6 @@ func TestDefaultDamageWorld4E0B30MonsterSwordAdmissionBoundary(t *testing.T) {
 		noUpdate bool
 	}{
 		{name: "ranged weapon", class: object.ClassWeapon, subclass: 2, typ: object.DamageBlade},
-		{name: "friendly damage exception", class: object.ClassWeapon, subclass: 0x4000, typ: object.DamageBlade},
-		{name: "wand remains unported", class: object.ClassWand, typ: object.DamageBlade},
 		{name: "non-blade weapon damage", class: object.ClassWeapon, typ: object.DamageFlame},
 		{name: "missing source update", class: object.ClassWeapon, typ: object.DamageBlade, noUpdate: true},
 	} {

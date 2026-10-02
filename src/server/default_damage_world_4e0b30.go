@@ -149,6 +149,7 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // monster-on-monster self-weapon BITE and ordinary melee-weapon BLADE branches,
 // Berserker Charge's player-self-weapon CRUSH and PlayerDamage's scripted-NPC
 // weapon CRUSH tail, monster-fired missile PIERCE against players/monsters,
+// ordinary player/NPC weapon BLADE/CRUSH and unarmed CLAW/CRUSH tails,
 // and weapon-less monster electric damage against players
 // from GAME.EXE 004E0B30
 // without narrowing Object pointers.
@@ -216,7 +217,8 @@ func DefaultDamageWorld4E0B30(
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon)
-	playerTail := playerElectric || (missilePierce && target.Class().Has(object.ClassPlayer))
+	ordinaryMelee := playerDamageMeleeShape4E17B0(source, weapon, typ)
+	playerTail := playerElectric || ((missilePierce || ordinaryMelee) && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -239,6 +241,20 @@ func DefaultDamageWorld4E0B30(
 	}
 	if target.ObjFlags.Has(object.FlagNoUpdate) {
 		return true
+	}
+	// 004E0C90 requires both source and weapon. In particular, an unarmed
+	// hit has no melee friendly-fire gate, and 004E1470 exempts War Hammer.
+	// Neither exception bypasses the earlier campaign owner check.
+	if ordinaryMelee && weapon != nil && target.Class().HasAny(object.MaskUnits) &&
+		!defaultDamageFriendlyException4E1470(weapon) &&
+		(runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		return true
+	}
+	if ordinaryMelee && source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil {
+		return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
+	}
+	if ordinaryMelee && playerTail && runtime.PlayerSetState == nil {
+		return defaultDamageUnsupported4E0B30(runtime, "missing player melee hurt-state service", target, source, weapon, damage, typ)
 	}
 	if playerElectric && (runtime.MonsterHasHitSound == nil || runtime.PlayerSetState == nil) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player electric tail service", target, source, weapon, damage, typ)
@@ -284,27 +300,22 @@ func DefaultDamageWorld4E0B30(
 				(weapon == nil && typ == object.DamageClaw))
 		monsterBite := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
 			weapon == source && typ == object.DamageBite
-		// Armed NPCs such as Con02a's Clyde hit the Necromancer with a Sword.
-		// Admit the ordinary melee-weapon slice of 004E1400, excluding ranged
-		// weapons and the 004E1470 friendly-damage exception. Both NPC and
-		// ordinary monster targets share the original DefaultDamage tail.
-		monsterWeaponBlade := source != nil && source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
-			weapon != nil && weapon.Class().Has(object.ClassWeapon) &&
-			uint32(weapon.SubClass())&0x047f40fe == 0 && typ == object.DamageBlade
-		if !playerMelee && !monsterBite && !monsterWeaponBlade && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush && !playerCharge {
+		// Armed NPCs and ordinary monster/player targets share the restored
+		// ordinaryMelee path, including WAND melee and the Hammer exception.
+		if !ordinaryMelee && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !monsterWeaponCrush && !playerCharge {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
 		if monsterElectric && uint32(target.SubClass())&0x800 != 0 {
 			return true
 		}
-		if (monsterBite || monsterWeaponBlade) && runtime.MonsterHasHitSound == nil {
+		if monsterBite && runtime.MonsterHasHitSound == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
 		}
 		// The original's melee friendly-hit gate does not apply to a missile
 		// or PLAYER-class charge weapon (sub_4E1400 returns false for both).
 		// The earlier campaign owner gate still applies to a friendly charge.
-		if source != nil && !missileDamage && !playerCharge && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		if source != nil && !ordinaryMelee && !missileDamage && !playerCharge && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 	}
@@ -351,7 +362,7 @@ func DefaultDamageWorld4E0B30(
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
-		!missileDamage && !nonUnit && !monsterElectric && !playerTail && !monsterWeaponCrush && !playerCharge {
+		!ordinaryMelee && !missileDamage && !nonUnit && !monsterElectric && !playerTail && !monsterWeaponCrush && !playerCharge {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion

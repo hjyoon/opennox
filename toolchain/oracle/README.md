@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
++## RGB5551 픽셀 연산의 표시 변환 분리
+
+기존 stock `TestDrawImage`의 270개 PNG MD5 실패를 고정 기대값을 바꾸지 않고 조사했다. 현재 프레임을 Go 1.19.13의 PNG/zlib/flate 코드로 인코딩해도 Go 1.26.5와 270개 모두 byte-identical이므로 인코더 차이가 아니다. 기준 커밋 `3a2338f7201af36c68a74614e3ff9dcb44497971`이 쓰던 `opennox-lib@db559cc95748`의 RGB5551 변환은 31을 248로 확장하지만 현재 libs는 표시용 최대 채널을 255로 포화한다. pinned 과거 변환을 private module/overlay로 사용하는 독립 검사에서 기존 270개 해시를 전부 재현했다. 현재와 과거 계산의 raw RGB5551 프레임은 226개가 다르고, 44개는 표시 변환만 달랐다. 이는 과거 OpenNox 기준 재현이지 원본 Windows 게임을 실행한 결과라는 주장이 아니다.
+
+이번 production 단위는 `SplitColor16` 한 본체다. RGB5551 필드를 명시적 shift/mask로 풀어 내부 연산의 최대값 248을 보존하며 외부 libs와 표시용 white=255는 변경하지 않는다. 수정 전 모든 full-channel multiplication 사례에서 잘못된 픽셀을 재현했고, 수정 후 65,536개 packed word와 white/red/green/blue/alpha-bit의 독립 정수 기대 픽셀 및 source/tail 불변 검사가 통과했다. private historical-view stock 비교는 44/270에서 198/270 일치로 개선됐으며 남은 72개 재질 계산과 현재 표시 변환을 쓰는 encoded-PNG 테스트는 다음 단위다. 기존 PNG MD5 기대값은 유지한다.
+
+관련 6패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. 기존 장비 무기/방어구 160개 팔레트 회귀도 유지했다. 누적 code 2,882/data 617개·NXZ 50쌍 및 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 변경하지 않는다. private reference source/원본 자산/PNG·개인 Save/config를 공개 저장소에 추가하거나 변경하지 않는다. GUI 입력·stock 게임 전체/물리 화면 검증으로 확대하지 않는다.
+
 ## 장착 방어구 재질 색상 `004B8CA0`
 
 본체 150바이트/SHA-256 `65a32d094384fa21137002c9edc795f42a5cc8a84ae91856aa244606f67da0d0`와 뒤 10-NOP를 구현 전에 봉인했다. `sub_4B8CA0` 한 production 본체에서 원본의 슬롯/정의 색상 1..6 및 네 ordered modifier override를 복원한다. 0..5 반복과 PE32 +24 RGB 접근을 native `ModifierEff.Color24`(LP64 +44)로 고쳤으며 조회/no-op/적용 순서·장비/정의/effect 값은 보존한다. 이전 무기 단위와 함께 player/NPC 장착 장비의 두 색상 오류를 수정했다.

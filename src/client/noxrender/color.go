@@ -25,10 +25,11 @@ func SplitColor(v noxcolor.RGBA5551) (c Color16) {
 }
 
 func SplitColor16(v uint16) (c Color16) {
-	cl := noxcolor.RGBA5551(v).ColorNRGBA()
-	c.R = uint16(cl.R)
-	c.G = uint16(cl.G)
-	c.B = uint16(cl.B)
+	// Keep the five-bit raster components left-aligned. ColorNRGBA's
+	// display conversion saturates 31 to 255 and changes blend arithmetic.
+	c.R = (v >> 7) & 0xf8
+	c.G = (v >> 2) & 0xf8
+	c.B = (v << 3) & 0xf8
 	return
 }
 

@@ -9916,6 +9916,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckFistUnitDamage(l.Count, l.Text, l.Name)
+		case "check-push-spell":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPushSpell(l.Count, l.Text, l.Name)
 		case "check-player-thrown-weapon":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -151,7 +151,8 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // weapon CRUSH tail, monster-fired missile PIERCE against players/monsters,
 // ordinary player/NPC weapon BLADE/CRUSH and unarmed CLAW/CRUSH tails,
 // unit-sourced SIMPLE CRUSH (including all three stock Fists),
-// and weapon-less monster electric damage against players
+// weapon-less monster electric damage against players, and unit-self-weapon
+// ELECTRIC/AIRBORNE_ELECTRIC tails used by Shock Glyphs
 // from GAME.EXE 004E0B30
 // without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
@@ -205,9 +206,17 @@ func DefaultDamageWorld4E0B30(
 		target.Frame134 = frame
 		return true
 	}
-	playerElectric := target.Class().Has(object.ClassPlayer) && source != nil &&
-		source.Class().Has(object.ClassMonster) && source.UpdateData != nil && weapon == nil &&
+	// Shock Glyph supplies the caster as BOTH source and weapon. Keep that
+	// identity through late defense, attribution, sound and Shield reduction.
+	// Weapon/wand/missile casters have separate modifier branches.
+	unitSelfWeaponElectric := source != nil && source == weapon && source.UpdateData != nil &&
+		source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
+		!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
+	playerElectric := target.Class().Has(object.ClassPlayer) &&
+		(unitSelfWeaponElectric || (source != nil && source.Class().Has(object.ClassMonster) &&
+			source.UpdateData != nil && weapon == nil &&
+			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
 	// Stock GolemArrow calls this tail with the monster as source and the
 	// distinct missile as weapon. PIERCE (type 3, DamageImpale in libs) skips
 	// both protection branches. Stock GolemArrow is MISSILE|WEAPON, subclass
@@ -252,13 +261,20 @@ func DefaultDamageWorld4E0B30(
 		(runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 		return true
 	}
+	// 004E0C55 first queries IsEnemy, then 004E1400. A PLAYER-class
+	// self-weapon does not qualify; a MONSTER-class self-weapon does.
+	if unitSelfWeaponElectric && target.Class().HasAny(object.MaskUnits) &&
+		(runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) &&
+		defaultDamageAttackQualifies4E1400(source, weapon) && !defaultDamageFriendlyException4E1470(weapon) {
+		return true
+	}
 	if ordinaryMelee && source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing monster hit-sound lookup", target, source, weapon, damage, typ)
 	}
 	if ordinaryMelee && playerTail && runtime.PlayerSetState == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player melee hurt-state service", target, source, weapon, damage, typ)
 	}
-	if playerElectric && (runtime.MonsterHasHitSound == nil || runtime.PlayerSetState == nil) {
+	if playerElectric && ((source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil) || runtime.PlayerSetState == nil) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player electric tail service", target, source, weapon, damage, typ)
 	}
 	if missilePierce && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
@@ -269,8 +285,9 @@ func DefaultDamageWorld4E0B30(
 		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing SIMPLE CRUSH tail service", target, source, weapon, damage, typ)
 	}
-	monsterElectric := monsterUpdate != nil && weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
-		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
+	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
+		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
+			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
 	// Campaign scripts use source-less BLADE damage for set-piece kills. The
 	// original enters its no-source branch and still reaches DamageClear.
 	sourceLessMonsterBlade := monsterUpdate != nil && source == nil && weapon == nil && typ == object.DamageBlade
@@ -320,7 +337,7 @@ func DefaultDamageWorld4E0B30(
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
-		if monsterElectric && uint32(target.SubClass())&0x800 != 0 {
+		if monsterElectric && !unitSelfWeaponElectric && uint32(target.SubClass())&0x800 != 0 {
 			return true
 		}
 		if monsterBite && runtime.MonsterHasHitSound == nil {
@@ -329,7 +346,7 @@ func DefaultDamageWorld4E0B30(
 		// The original's melee friendly-hit gate does not apply to a missile
 		// SIMPLE CRUSH or PLAYER-class charge weapon (004E1400 is false).
 		// The earlier campaign owner gate still applies to a friendly charge.
-		if source != nil && !ordinaryMelee && !simpleCrush && !missileDamage && !playerCharge && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		if source != nil && !ordinaryMelee && !simpleCrush && !missileDamage && !playerCharge && !unitSelfWeaponElectric && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 	}
@@ -359,6 +376,11 @@ func DefaultDamageWorld4E0B30(
 		if source.Class().Has(object.ClassPlayer) {
 			_ = runtime.PlayerSetState(source, PlayerState23)
 		}
+	}
+	// 004E0C9E's Shock retaliation precedes 004E0D69's electric immunity.
+	// This ordering becomes reachable when a MONSTER self-weapon is retained.
+	if unitSelfWeaponElectric && monsterUpdate != nil && uint32(target.SubClass())&0x800 != 0 {
+		return true
 	}
 
 	var lateDefendPlan []playerDamageLateDefend4E1320

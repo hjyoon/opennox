@@ -22,6 +22,7 @@
 #include "server__gamemech__explevel.h"
 #include "server__magic__plyrspel.h"
 #include "server__system__trade.h"
+#include "unit_hunt_5157a0.h"
 
 #include "client__gui__window.h"
 #include "client__video__draw_common.h"
@@ -3550,16 +3551,7 @@ void nox_xxx_monsterGoPatrol_515680(nox_object_t* a1p, void* a2p) {
 
 //----- (005157A0) --------------------------------------------------------
 void nox_xxx_unitHunt_5157A0(nox_object_t* obj) {
-	int a1 = obj;
-	int result; // eax
-
-	if (a1 && *(uint8_t*)(a1 + 8) & 2) {
-		result = *(int*)(a1 + 16);
-		if (SBYTE1(result) >= 0) {
-			nox_xxx_monsterClearActionStack_50A3A0(a1);
-			nox_xxx_monsterPushAction_50A260(a1, 5);
-		}
-	}
+	nox_server_unit_hunt_5157a0(obj);
 }
 
 //----- (00515820) --------------------------------------------------------

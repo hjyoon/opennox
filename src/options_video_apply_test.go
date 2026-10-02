@@ -14,7 +14,7 @@ import (
 )
 
 // API fixture with an actual renderer/headless seat and C-to-Go entry.
-// It does not claim that in-game Close is connected yet.
+// The actual in-game constructor/Close path has its own integration fixture.
 func TestOptionsVideoApply(t *testing.T) {
 	for _, phase := range []string{"video-apply", "video-apply-e2e"} {
 		t.Run(phase, func(t *testing.T) {

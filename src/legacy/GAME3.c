@@ -3715,6 +3715,7 @@ int sub_4AD9B0(int a1) {
 		nox_window_set_hidden(dword_5d4594_1309820, 1);
 		nox_window_set_hidden(dword_5d4594_1309824, 1);
 	} else {
+		nox_video_applyOptions();
 		nox_common_writecfgfile("nox.cfg");
 		nox_window_set_hidden(dword_5d4594_1309820, 1);
 		nox_window_set_hidden(dword_5d4594_1309824, 1);

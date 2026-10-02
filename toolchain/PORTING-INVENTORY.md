@@ -1,5 +1,24 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 게임 내 Options Close의 실제 해상도 적용과 전체 옵션 재검사
+
+이번 production 단위는 `sub_4AD9B0` 한 C 본체의 saving 분기에서 준비된 Go apply 진입을 기존 config writer보다 먼저 호출하는 연결이다. 선택한 추가 해상도가 실제 seat/game 크기와 signed live window-mode checkpoint에 반영된 뒤 nox.cfg의 VideoMode/Fullscreen을 저장한다. 취소·이미 숨겨진 창의 no-op 및 shell과 같은 E2E 변경 억제는 유지한다. 원본 PE32의 새로운 기능 복원이라고 주장하지 않고 기존 OpenNox 확장의 종료 연결 보정으로 구별한다.
+
+앞선 실제 constructor/C Close의 일반 8개·HD 10개 해상도 저장 실패를 해결했다. fresh subprocess의 generated Options layout·4GiB 초과 C-owned root/slider/thumb·실제 pause-menu hide 분기와 C procedure를 사용한 API 회귀는 모든 해상도의 선택 전 미적용, saving 때 적용/저장, cancel/hidden/E2E 때 크기·checkpoint·파일 무변경을 검사한다. stale pending 640×480에서 실제 constructor가 열린 800×600을 기존 radio 초기화 이벤트로 동기화하며, 선택을 바꾸지 않고 Close해도 800×600을 유지/저장하는 회귀를 추가했다. 이 초기화는 원래 동작이 통과한 것이지 별도 초기화 버그를 고친 것이 아니다. API fixture를 stock queued GUI나 game-loop draw-buffer 재구성/물리 macOS 창 검사로 확대하지 않는다.
+
+관련 7패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. 별도로 기존 private 시나리오의 실제 queued mouse/key로 Darwin/ARM64 일반·HD 메인/게임 내 옵션을 재검사했다. 영상 checkbox 15개·해상도 선택·gamma/sensitivity·세 음량/mute·마우스 선택·입력 목록/스크롤/두 열 key binding·Reset/Defaults·Back/Apply/ESC/Close를 유지한다. 설정·focus·handler를 observer로 주입하지 않는다.
+
+| 경로 | 통과 | 실패 | 종료 |
+| --- | ---: | ---: | --- |
+| 일반 메인 메뉴 | 221 | 5 | audit-failure exit 2 |
+| HD 메인 메뉴 | 223 | 5 | audit-failure exit 2 |
+| 일반 게임 내 | 201 | 0 | 정상 exit 0 |
+| HD 게임 내 | 203 | 0 | 정상 exit 0 |
+
+이는 중복 assertion 수이지 고유 버그 수가 아니다. 네 실행은 기존 PNG 18개를 override 없이 비교해 summary까지 도달했고 새 SIGSEGV/runtime error·화면 mismatch는 없었다. main/게임 내 HD controls 화면도 직접 검토했다. E2E는 해상도와 디스크 변경을 억제하므로 실제 종료 적용은 위 비-E2E API 회귀로 구별한다. main key 재지정 뒤 nil focus/ESC 복귀·binding 적용의 5개 실패는 그대로 남긴다. 실제 Back 입력으로는 변경 binding과 Options 복귀가 통과한다. 원본 StackPush/Pop·prompt 종료·nil-focus key dispatcher의 정적 대조만으로 원본 런타임의 ESC 결과나 수정 방법을 확정하지 않는다. 실제 macOS 창/최종 framebuffer 전환·물리 스피커 및 전체 게임 재시작 등은 미검증 경계이며 모든 옵션 정상으로 판정하지 않는다.
+
+stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개·NXZ 50쌍을 유지한다. 새 원본 range·자산·PNG/시나리오를 저장소에 추가하거나 개인 Save/config를 변경하지 않는다.
+
 ## 옵션 apply의 실제 C→Go 진입 준비
 
 이번 production 단위는 인수/반환이 없는 `nox_video_applyOptions` Go export 한 본체와 C 선언이다. 실제 C function pointer→`ccall.CallVoidVoid`→Go export→등록 callback을 거치는 headless API 회귀로 일반 8개/HD 10개 해상도·세 signed window mode·E2E/파일 무변경을 검사했다. 관련 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict·server-tag 각 1회와 전후 oracle이 통과했다. C Close 본체는 아직 변경하지 않았으므로 종료 적용 실패의 해결 판정은 다음 단위로 남긴다. 원본 code/data range와 stock·개인 Save/config는 변경하지 않는다.

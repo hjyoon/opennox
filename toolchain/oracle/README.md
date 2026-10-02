@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 게임 내 Options Close의 적용 연결과 옵션 재검증
+
+이번 production 단위는 `sub_4AD9B0` 한 C 본체에서 saving 때 Go apply를 기존 writer 앞에 연결하는 것이다. 앞선 실제 constructor/C Close의 일반 8개·HD 10개 해상도 미적용/잘못된 VideoMode 저장 red를 해결한다. generated layout·C-owned 고주소 root/slider/thumb·실제 pause-menu hide 분기의 fresh headless API 회귀로 선택 전 미적용, Close 적용/저장 및 cancel/hidden/E2E 무변경을 검사한다. stale pending에서 constructor가 기존 radio 이벤트로 열린 800×600을 동기화하며 unchanged Close도 유지/저장하는 회귀가 통과했다. 별도 초기화 버그나 원본 PE32 기능을 복원했다고 하지 않는다.
+
+관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·server-tag 각 1회와 전후 oracle이 통과했다. 별도 actual queued-input headless 일반/HD main은 221/5·223/5와 의도된 audit-failure exit 2, 게임 내는 201/0·203/0과 정상 exit 0이다. 기존 private PNG 18개를 override 없이 비교했고 새 크래시/화면 mismatch는 없다. E2E는 실제 크기/파일 변경을 억제하므로 비-E2E API 적용/저장과 구별한다. main 재지정 후 nil focus/ESC 실패 5개는 유지하며 actual Back의 binding 적용/복귀는 통과한다. 원본 stack/prompt/key dispatch 정적 대조는 원본 런타임의 ESC 결과를 증명하지 않는다. 전체 옵션 정상·physical macOS window/final framebuffer·물리 speaker·전체 게임 재시작 검증으로 확대하지 않는다.
+
+stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개 및 NXZ 50쌍을 유지한다. 새 원본 body/range·자산·PNG/시나리오를 공개 저장소에 추가하거나 개인 Save/config를 변경하지 않는다.
+
 ## 옵션 apply의 C→Go 경계 준비
 
 인수/반환 없는 `nox_video_applyOptions` Go export 한 production 본체와 C 선언을 추가했다. 실제 C function pointer/ccall/Go export/등록 callback의 headless API 회귀는 해상도·signed window mode·E2E guard와 파일 무변경을 검사한다. 관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·server-tag 각 1회 및 전후 oracle이 통과했다. 아직 C Close 본체에 연결하지 않았으며 원본 body 복원/Close 완료 또는 전체 옵션 정상으로 판정하지 않는다. stock/code 2,878/data 617개/NXZ 50쌍·개인 파일 불변을 유지한다.

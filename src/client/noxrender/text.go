@@ -41,8 +41,20 @@ type RenderFonts struct {
 }
 
 func (r *RenderFonts) Load(lang int) error {
+	previous := r.byPtr
+	ptrs := make(map[*fontFile]unsafe.Pointer, len(previous))
 	r.byName = make(map[string]*fontFile)
 	r.byPtr = make(map[unsafe.Pointer]*fontFile)
+	// Video reset frees the faces, but live GUI windows retain their opaque
+	// FontPtr fields. Rebind those handles to the new faces instead of making
+	// every existing window silently fall back to the default font. Retain
+	// all valid bindings even if a partial load must later be retried.
+	for ptr, f := range previous {
+		if handles.IsValid(uintptr(ptr)) {
+			r.byPtr[ptr] = f
+			ptrs[f] = ptr
+		}
+	}
 	for i := range noxFontFiles {
 		f := &noxFontFiles[i]
 		r.byName[f.Name] = f
@@ -58,7 +70,10 @@ func (r *RenderFonts) Load(lang int) error {
 			return fmt.Errorf("cannot load font: %w", err)
 		}
 		f.Font = fnt
-		f.Ptr = handles.NewPtr()
+		f.Ptr = ptrs[f]
+		if f.Ptr == nil {
+			f.Ptr = handles.NewPtr()
+		}
 		r.byPtr[f.Ptr] = f
 	}
 	r.def = r.FontByName(noxfont.DefaultName)

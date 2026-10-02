@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 framebuffer 전환과 기존 GUI 폰트 연결 보존
+
+비-E2E headless video/API 회귀에서 실제 C options apply 진입→game-entry/menu reset→C-owned pixbuffer/row table→renderer upload/present를 검사했다. 생성한 Go Regular TTF와 headless seat만 fixture이며 video callback·buffer·font field·input bounds를 observer가 고치지 않는다. 일반 8개/HD 10개 해상도와 세 signed window mode에서 각각 98/122개 frame 검사·44/56개 resize callback을 확인했다. 모든 native row table은 4GiB 초과 주소였고 실제 C pitch reader·전체 row pointer·clip·첫/마지막 픽셀·업로드된 전체 frame과 queued mouse 좌표를 검사한다. window resize의 기존 canvas/letterbox, 변경 없는 mode의 no-op, menu의 640×480 canvas와 선택한 game resolution 보존, 강제 reset·정리 및 private config sentinel 무변경도 확인했다. 일반·HD에서 각각 독립 3회 통과했다.
+
+버퍼 재생성이 font faces를 해제·재로드할 때 살아 있는 GUI 창의 opaque FontPtr는 그대로지만 새 handle table에서 찾을 수 없는 실패를 먼저 재현했다. 기존 C-owned StaticText 네 창을 실제 Draw로 출력하며 800×600→1024×768→menu→강제 menu reset을 거쳤다. 수정 전 16개 font binding 검사가 실패하고 large/numbers/small의 12개 pixel 비교가 달랐다. 이는 28개 assertion 실패이지 고유 버그 수가 아니다. default의 픽셀은 fallback으로 같아도 binding 검사는 실패했다.
+
+production 변경은 Go 확장 `RenderFonts.Load` 한 본체뿐이다. live handle arena에 속한 기존 font binding을 재로드한 face에 연결하며 창의 FontPtr를 다시 쓰지 않는다. 모든 slot의 binding을 보존하여 partial load 오류 뒤 retry에서도 기존 handle을 유지한다. 생성한 폰트의 언어 0/6/8 전환·해제 직후 nil face·오류/복구·arena 밖 C-owned cached address 거부를 별도 unit 회귀로 검사했다. 첫 전체 반복에서 fixture가 datapath의 not-found flag를 복원하지 않아 stock 이미지 테스트를 잘못 실행한 실패는 테스트 격리 문제로 구별하고 바로잡았다. 최종 16개 retained GUI font/실제 pixel 비교는 일반·HD에서 각각 3회 통과했다. centered widget crash나 원본 PE32 런타임 전체의 의미 동등성을 증명했다고 하지 않는다.
+
+관련 8패키지 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 기본 격리 환경의 전체 일반/strict 및 server-tag root/server/legacy 각 1회가 통과했다. 별도 원본 자산 renderer 검사는 일반/strict/HD 각 3회에 reported sprite·전체 sprite stream·crop/malformed 방어를 확인했다. 단, 기존 `TestDrawImage`의 encoded PNG MD5 기대값 비교는 제외 범위를 명시한다. 이 테스트는 stock 실행에서 매회 270개 비교가 실패했고, 변경 전 HEAD의 `text.go`를 private Go overlay로 사용하는 별도 실행에서도 정확히 같은 실패 이름·기대/실제 MD5를 확인했다. 수정 후 3회 모두 동일하다. 기대값을 갱신하거나 이 실패를 통과로 세지 않았으며 compression 또는 pixel 차이의 원인은 아직 확정하지 않았다.
+
+기존 private 시나리오의 actual queued mouse/key 옵션 검증도 새로 네 경로 실행했다. 일반/HD main은 226/228개, 일반/HD 게임 내는 201/203개 assertion 통과·실패 0·정상 exit 0이다. 기존 PNG 18개를 override 없이 비교했고 새 SIGSEGV/runtime error·화면 mismatch는 없다. 영상 checkbox·해상도 pending 값·window mode·gamma/sensitivity·음량/mute·mouse radio·입력 목록/스크롤/두 binding 열·Reset/Defaults·Back/Apply/ESC/Close를 유지한다. E2E의 해상도/디스크 쓰기 억제는 그대로이며, 위 비-E2E framebuffer/API 검증을 stock GUI/game-loop의 자동 해상도 적용이나 실제 macOS 창·Retina/물리 스피커 검사로 확대하지 않는다.
+
+전후 및 stock GUI 후 oracle은 stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,878/data 617개·NXZ 50쌍을 유지한다. 새 원본 range·자산·PNG를 저장소에 추가하거나 개인 Save/config를 변경하지 않는다. 이번 폰트/전환 회귀의 성공을 모든 포팅 경계 완료로 판정하지 않으며 기존 PNG MD5 불일치는 별도 잔여 항목이다.
+
 ## 메인 InputCfg의 key-capture 종료 후 ESC 복귀
 
 이번 production 단위는 `sub_4CC170` 한 C 본체의 기존 capture 종료 7분기에 준비된 `nox_gui_input_cfg_restore_focus`를 연결하는 것이다. 기존 nil-focus clear→modal stack pop→hide 뒤 shell animation이 이미 사용하는 MainBg로 keyboard focus를 돌린다. mouse/button/wheel 및 ESC press·유효 key release의 기존 binding 선택/쓰기·반환값·stack/hide 계약은 유지한다. NOFOCUS InputCfg root에 focus를 강제하거나 generic key dispatcher·게임 내 capture callback을 바꾸지 않는다. 원본 PE32 런타임 복원이 아니라 OpenNox shell의 종료 연결 보정으로 구별한다.

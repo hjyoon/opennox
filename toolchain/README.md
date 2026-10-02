@@ -158,7 +158,9 @@ NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
   /absolute/path/to/temp-e2e/host-quest-player-death.yaml
 ```
 
-옵션 audit 시나리오 `main-menu-options-audit.yaml`과 `host-game-client-options-audit.yaml`은 일반·HD headless의 실제 입력, native 설정값과 직렬화 결과를 점검한다. 메인 메뉴는 각각 115/117개 통과·34개 실패, 게임 내는 각각 180개 통과·16/18개 실패로 exit 2를 보고했다. 이는 assertion 수이며 고유 버그 개수가 아니다. 음량/음소거·해상도 pending 값·일부 직렬화·메인 입력 설정/ESC 실패를 관찰했고 옵션 동작 자체는 아직 고치지 않았다. disabled pickup selector의 원본 의도, 실제 OpenAL/SDL 출력, 새 프로세스의 디스크 설정 저장·복원은 별도 미검증이다. E2E에서 의도적으로 억제한 해상도 적용/디스크 쓰기를 실패로 세지 않는다. 자세한 관찰과 한계는 `PORTING-INVENTORY.md`의 옵션 점검 항목을 참조한다.
+옵션 audit 시나리오 `main-menu-options-audit.yaml`과 `host-game-client-options-audit.yaml`은 일반·HD headless의 실제 입력, native 설정값과 직렬화 결과를 점검한다. 초기 실패와 함수별 보정 이력은 [포팅 인벤토리](PORTING-INVENTORY.md)에 보존한다. 최신 private 회귀의 일반/HD main은 226/228개, 게임 내는 201/203개 assertion 통과·실패 0·정상 exit 0이며 기존 PNG 18개를 override 없이 비교했다. 이는 반복 assertion 수이지 고유 기능 수가 아니다. checkbox·음량/mute·해상도 pending 값·mouse/키 재지정/스크롤·Reset/Defaults·Back/Apply/ESC/Close를 검사하며 E2E의 해상도/디스크 변경 억제는 유지한다.
+
+비-E2E headless framebuffer/API 회귀는 별도로 실제 C apply와 game-entry/menu reset을 호출한다. 일반 8개/HD 10개 해상도·세 signed window mode에서 98/122개 frame 검사와 기존 GUI 네 폰트의 16개 실제 pixel/binding 검사를 각각 3회 통과했다. 버퍼 재생성 뒤 폰트 handle 연결이 끊기던 문제를 고쳤다. 생성한 font/seat fixture를 stock GUI/game-loop 전체의 해상도 적용이나 실제 macOS 창·Retina/물리 오디오 검증으로 확대하지 않는다. 원본 renderer의 기존 encoded PNG MD5 불일치는 변경 전 코드에서도 같으며 별도 미해결 항목이다. 설정 파일의 새 프로세스 복원·원본 default.cfg Reset·실제 OpenAL Soft null 검증도 각각 독립된 근거와 한계를 인벤토리에 기록한다.
 
 패치 버전을 올릴 때에는 다음 항목을 한 변경으로 갱신한다.
 

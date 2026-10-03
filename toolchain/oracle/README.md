@@ -300,6 +300,18 @@ stock War03b Henrick 대화의 실제 Yes 입력 두 번으로 Wolf1/Wolf2를 �
 
 이 선언 단계는 세 객체 인자만 native pointer로 복원하고 scalar/context DWORD 계약을 유지한다. 기존 C 본체의 명시적 PE32 임시 축소는 다음 별도 본체 복원까지 남아 있으므로 런타임 수정 완료로 주장하지 않는다. 독립 C11 fixture는 공개 ABI/고주소 포인터 전달 검사이며 실제 장비 효과 실행 검증을 대신하지 않는다. 원본 자산·개인 Save/config는 변경하거나 공개하지 않는다.
 
+## 장착 아이템 후반 Defend 본체 `004E1320`
+
+선언 복원과 별도로 실제 C 진입점을 자식 프로세스에서 호출해 `0x156f04080` target의 축소 주소 `0x56f04278`에서 SIGSEGV를 먼저 재현했다. 위에 봉인한 동일 원본 본체를 사용해 PE32 C 임시값을 비활성화하고 native 객체·modifier·damage 주소를 보존하는 Go 본체로 교체한다. 반환에만 쓰는 target low DWORD와 객체 역참조 주소를 구별한다.
+
+flags `0x100`만으로 슬롯 2·3을 검사하며 클래스·health·update·damage의 양수 여부를 추가 조건으로 넣지 않는다. item별 init base는 cache하지만 slot 내용과 다음 inventory link는 callback 뒤 live 조회한다. 원본의 한 stack context 주소를 재사용하고 매 callback 전에 raw signed damage/type DWORD를 다시 채우며 damage 저장을 다음 슬롯 조회보다 먼저 수행한다. callback이 바꾼 context type은 다음 효과로 넘기지 않는다. 빈 inventory·마지막 non-equipped flags·마지막 equipped counter의 반환을 보존하고, nil damage/init/callback은 원본에서 실제 사용될 때만 실패한다.
+
+기존 일곱 stock Defend 함수의 typed 처리에 연결한다. 두 배율의 binary32 비트 해석, Inversion/Grip의 unsigned 비교·boolean 대입, 세 null 효과를 유지한다. LP64에서 알 수 없는 callback은 함수 주소로 점프하지 않고 procedure/raw damage/type을 명시적으로 기록하며 다음 supported slot은 계속 실행한다. C 소유 고주소 객체·modifier·damage로 실제 공개 C 진입점의 known/unknown 분기와 원본 반환을 검사했고, empty/known 효과에는 global server lookup이 없음을 확인했다. server 회귀는 모든 load/call/write의 fault prefix, callback이 바꾼 init·slot·link·다음 flags, 같은 context 주소와 signed/zero DWORD 및 누락 포인터의 분기를 구분한다. 대상 일반·실제 cgocheck2 반복 시험을 각각 3회 통과했다.
+
+이 단위는 원본 helper 한 함수의 복원이다. 활성 PlayerDamage `004E17B0`와 DefaultDamage `004E0B30`의 기존 eager late-Defend plan을 이 커밋에서 함께 바꾸지 않는다. 두 호출자의 원본 위치 연결은 각각 별도 본체 변경 단위로 남아 있으므로 전체 장비 방어·stock 전투의 완료로 주장하지 않는다. 원본 자산·개인 저장 파일·GUI snapshot 기준은 수정하지 않는다.
+
+전체 일반·실제 cgocheck2 및 server 전용 구성을 통과했고, 관련 일반·strict·race·checkptr=2·HD 회귀는 각각 3회 통과했다. 기존 Hunt와 밀치기 크래시의 실제 native 진입점 회귀도 다시 검사했다. Darwin/ARM64 일반·HD·서버 제품 세 개가 빌드되고 `-h` exit 0을 확인했다. 별도 private 이전 diagnostic PNG·원본과 같은 YAML을 사용해 이전 clean `5cff082f9`/새 빌드의 일반·HD Warrior 슈리켄·채크럼 real input을 8회 실행했고 세 화면의 exact-pixel 비교 및 실제 명중·소모/복귀 assertion을 통과했다. 이 화면 검사는 helper의 synthetic C 회귀나 전체 stock 장비 방어 검증을 대신하지 않는다. 실행 전후 원본 1,556개/570,653,750바이트 tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,907개·데이터 621개, 50개 압축 oracle pair를 재검증했다. clean 제품의 commit metadata 검증은 커밋 후 별도 재빌드 단계에서 수행한다.
+
 ## PlayerDamage의 ordered 방어구 호출 `004E17B0`
 
 별도 복원한 `004E2180`을 PlayerDamage의 활성 native 호출 위치에도 연결한다. 이미 봉인한 `004E17B0..004E20EF`의 같은 SHA-256을 사용하며 범위·원본 자산·피해 수치는 바꾸지 않는다. `004E1DE0/004E1E1E`는 화염·Lava·전기의 raw 피해, `004E1F25/004E1FBE`는 CRUSH·일반 armor 계산 후의 signed 차액을 전달한다. POISON과 ZAP_RAY는 방어구 패스를 계속 건너뛴다.

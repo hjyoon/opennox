@@ -6808,6 +6808,7 @@ void nox_xxx_gameballOnPlayerDamage_4E1230(int a1, int a2, int a3) {
 }
 
 //----- (004E1320) --------------------------------------------------------
+#if 0 // Restored from sealed GAME.EXE 004E1320 in item_defend_effects_4e1320_export.go.
 int nox_xxx_itemApplyDefendEffect2_4E1320(nox_object_t* a1p, nox_object_t* a2p, nox_object_t* a3p, int* a4, int a5) {
 	// Public ABI restoration only. Remove these PE32 temporaries when the
 	// original body is moved to the native-pointer implementation.
@@ -6850,6 +6851,7 @@ int nox_xxx_itemApplyDefendEffect2_4E1320(nox_object_t* a1p, nox_object_t* a2p, 
 	}
 	return result;
 }
+#endif
 
 //----- (004E13B0) --------------------------------------------------------
 int nox_xxx_itemApplyPreDamageEffect_4E13B0(int a1, int a2, int a3, int a4) {

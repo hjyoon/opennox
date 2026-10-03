@@ -339,14 +339,10 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		CanApplyLateDefend: playerDamageCanApplyLateDefendNative4E1320,
 		ApplyLateDefend:    playerDamageApplyLateDefendNative4E1320,
 		BlockSourceExcluded: func(source *server.Object) bool {
-			for _, name := range [...]string{
-				"SmallFist", "MediumFist", "LargeFist", "Meteor", "ToxicCloud", "SmallToxicCloud",
-			} {
-				if ind := s.Types.IndByID(name); ind != 0 && uint16(ind) == source.TypeInd {
-					return true
-				}
-			}
-			return false
+			return playerDamageBlockSourceExcluded4E17B0(s, source, true)
+		},
+		BlockSourceOnlyExcluded: func(source *server.Object) bool {
+			return playerDamageBlockSourceExcluded4E17B0(s, source, false)
 		},
 		BlockDirection: func(target *server.Object, attackPos types.Pointf) bool {
 			return Nox_server_testTwoPointsAndDirection_4E6E50(
@@ -452,6 +448,21 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		))
 	}
 	return 0
+}
+
+// 004E1A1D and 004E1ACE use six exclusions with a weapon, four without.
+// Resolve native type IDs without retaining any PE32 object pointer.
+func playerDamageBlockSourceExcluded4E17B0(s *server.Server, attack *server.Object, hasWeapon bool) bool {
+	names := []string{"SmallFist", "MediumFist", "LargeFist", "Meteor", "ToxicCloud", "SmallToxicCloud"}
+	if !hasWeapon {
+		names = names[:4]
+	}
+	for _, name := range names {
+		if ind := s.Types.IndByID(name); ind != 0 && uint16(ind) == attack.TypeInd {
+			return true
+		}
+	}
+	return false
 }
 
 //export sub_4E14A0_go

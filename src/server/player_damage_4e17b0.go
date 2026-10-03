@@ -7,6 +7,8 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
+
+	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
 const (
@@ -22,50 +24,51 @@ const (
 // object state, so a caller can keep an unported branch visible without
 // entering the PE32 callback on a 64-bit host.
 type PlayerDamageRuntime4E17B0 struct {
-	Melee               PlayerDamageMeleeRuntime4E17B0
-	Frame               func() uint32
-	CoopMode            func() bool
-	GameplayFlag1       func() bool
-	QuestMode           func() bool
-	QuestDamageScale    func() float32
-	GodMode             func() bool
-	IsEnemy             func(*Object, *Object) bool
-	SentryGlobeType     uint16
-	GameBallType        uint16
-	GameBallOnDamage    func(*Object, *Object, int32)
-	Audio               func(int, *Object)
-	BuffOff             func(*Object, EnchantID)
-	ObserveClear        func(*Object)
-	ItemArmorValue      func(*Object) float32
-	ApplyArmorDefend    func(*ModifierEff, *Object, *Object, *Object, *Object, *float32) bool
-	CanDamageArmor      func(*Object) bool
-	DamageArmor         func(*Object, *Object, *Object, int32, object.DamageType) bool
-	ReportArmorHealth   func(*Object, *Object, uint16, uint16)
-	CanApplyLateDefend  func(*ModifierEff) bool
-	ApplyLateDefend     func(*ModifierEff, *Object, *Object, *Object, *Object, int32, object.DamageType) int32
-	BlockSourceExcluded func(*Object) bool
-	BlockDirection      func(*Object, types.Pointf) bool
-	BerserkShieldBlock  func(*Object) bool
-	ProjectileReflect   func(*Object, *Object)
-	ClearOwner          func(*Object)
-	SetOwner            func(*Object, *Object)
-	ChangeOwner         func(*Object, *Object)
-	PointFX             func(int, types.Pointf)
-	BlockDamagePercent  func() float64
-	CanDamageBlockItem  func(*Object) bool
-	DamageBlockItem     func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool
-	PlayerSetState      func(*Object, PlayerState) bool
-	FireProtection      func(*Object) float64
-	ElectricArmorScale  func(*Object) float32
-	BalanceFloatInd     func(string, int) float64
-	AdjustHP            func(*Object, int32)
-	VampirismFX         func(int, image.Point, image.Point, uint16)
-	PlayerDamageSound   func(*Object, *Object)
-	PlayerDamageSoundC  unsafe.Pointer
-	ShieldReduce        func(*Object, *int32, object.DamageType, *Object)
-	DamageClear         func(*Object, int32)
-	DefaultDamage       func(*Object, *Object, *Object, int32, object.DamageType) bool
-	Unsupported         func(string, *Object, *Object, *Object, int32, object.DamageType)
+	Melee                   PlayerDamageMeleeRuntime4E17B0
+	Frame                   func() uint32
+	CoopMode                func() bool
+	GameplayFlag1           func() bool
+	QuestMode               func() bool
+	QuestDamageScale        func() float32
+	GodMode                 func() bool
+	IsEnemy                 func(*Object, *Object) bool
+	SentryGlobeType         uint16
+	GameBallType            uint16
+	GameBallOnDamage        func(*Object, *Object, int32)
+	Audio                   func(int, *Object)
+	BuffOff                 func(*Object, EnchantID)
+	ObserveClear            func(*Object)
+	ItemArmorValue          func(*Object) float32
+	ApplyArmorDefend        func(*ModifierEff, *Object, *Object, *Object, *Object, *float32) bool
+	CanDamageArmor          func(*Object) bool
+	DamageArmor             func(*Object, *Object, *Object, int32, object.DamageType) bool
+	ReportArmorHealth       func(*Object, *Object, uint16, uint16)
+	CanApplyLateDefend      func(*ModifierEff) bool
+	ApplyLateDefend         func(*ModifierEff, *Object, *Object, *Object, *Object, int32, object.DamageType) int32
+	BlockSourceExcluded     func(*Object) bool
+	BlockSourceOnlyExcluded func(*Object) bool
+	BlockDirection          func(*Object, types.Pointf) bool
+	BerserkShieldBlock      func(*Object) bool
+	ProjectileReflect       func(*Object, *Object)
+	ClearOwner              func(*Object)
+	SetOwner                func(*Object, *Object)
+	ChangeOwner             func(*Object, *Object)
+	PointFX                 func(int, types.Pointf)
+	BlockDamagePercent      func() float64
+	CanDamageBlockItem      func(*Object) bool
+	DamageBlockItem         func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool
+	PlayerSetState          func(*Object, PlayerState) bool
+	FireProtection          func(*Object) float64
+	ElectricArmorScale      func(*Object) float32
+	BalanceFloatInd         func(string, int) float64
+	AdjustHP                func(*Object, int32)
+	VampirismFX             func(int, image.Point, image.Point, uint16)
+	PlayerDamageSound       func(*Object, *Object)
+	PlayerDamageSoundC      unsafe.Pointer
+	ShieldReduce            func(*Object, *int32, object.DamageType, *Object)
+	DamageClear             func(*Object, int32)
+	DefaultDamage           func(*Object, *Object, *Object, int32, object.DamageType) bool
+	Unsupported             func(string, *Object, *Object, *Object, int32, object.DamageType)
 }
 
 func playerDamageReflectShield4E17B0(
@@ -151,21 +154,33 @@ func playerDamageShieldBlock4E17B0(
 	typ object.DamageType,
 	runtime PlayerDamageRuntime4E17B0,
 ) (applicable, handled, result bool) {
-	update := target.UpdateDataPlayer()
-	player := update.Player
-	if player.ArmorEquip&0x3000000 == 0 {
-		return false, false, false
-	}
-	shieldStance := update.State == PlayerState16
-	if !shieldStance && update.State == PlayerState1 && player.WeaponEquip&0x400 == 0 {
-		if runtime.BerserkShieldBlock == nil {
-			handled, result = playerDamageUnsupported4E17B0(runtime, "missing berserker shield service", target, source, weapon, damage, typ)
-			return true, handled, result
+	playerTarget := target.Class().Has(object.ClassPlayer)
+	var update *PlayerUpdateData
+	if playerTarget {
+		update = target.UpdateDataPlayer()
+		player := update.Player
+		if player.ArmorEquip&0x3000000 == 0 {
+			return false, false, false
 		}
-		shieldStance = runtime.BerserkShieldBlock(target)
-	}
-	if !shieldStance {
-		return false, false, false
+		shieldStance := update.State == PlayerState16
+		if !shieldStance && update.State == PlayerState1 && player.WeaponEquip&0x400 == 0 {
+			if runtime.BerserkShieldBlock == nil {
+				handled, result = playerDamageUnsupported4E17B0(runtime, "missing berserker shield service", target, source, weapon, damage, typ)
+				return true, handled, result
+			}
+			shieldStance = runtime.BerserkShieldBlock(target)
+		}
+		if !shieldStance {
+			return false, false, false
+		}
+	} else {
+		// 004E1B1F..004E1B92: ordinary blocks require a source, never
+		// intercept MANA_BOMB or electric types 9/17, and select the NPC's
+		// action/equipment fields rather than the player state layout.
+		if source == nil || typ == object.DamageManaBomb || typ == object.DamageElectric || typ == object.DamageAirborneElectric ||
+			target.UpdateDataMonster().ArmorEquipFlags&0x3000000 == 0 || target.MonsterActionGet50A020() != ai.ACTION_BLOCK_ATTACK {
+			return false, false, false
+		}
 	}
 	attack := weapon
 	if attack == nil {
@@ -174,11 +189,17 @@ func playerDamageShieldBlock4E17B0(
 	if attack == nil {
 		return false, false, false
 	}
-	if runtime.BlockSourceExcluded == nil || runtime.BlockDirection == nil {
+	excluded := runtime.BlockSourceExcluded
+	if !playerTarget && weapon == nil {
+		// Without a weapon, 004E1ACE..004E1AF4 excludes the three Fists
+		// and Meteor only; the two ToxicCloud exclusions belong to a3 != 0.
+		excluded = runtime.BlockSourceOnlyExcluded
+	}
+	if excluded == nil || runtime.BlockDirection == nil {
 		handled, result = playerDamageUnsupported4E17B0(runtime, "missing shield direction service", target, source, weapon, damage, typ)
 		return true, handled, result
 	}
-	if runtime.BlockSourceExcluded(attack) || !runtime.BlockDirection(target, attack.PrevPos) {
+	if excluded(attack) || !runtime.BlockDirection(target, attack.PrevPos) {
 		return false, false, false
 	}
 	reflectProjectile := attack.ObjClass.Has(object.ClassMissile) && uint32(attack.ObjSubClass)&0x70 == 0
@@ -196,35 +217,52 @@ func playerDamageShieldBlock4E17B0(
 		return true, handled, result
 	}
 	shield := playerDamageShieldItem4E17B0(target)
-	if shield != nil && (runtime.CanDamageBlockItem == nil || !runtime.CanDamageBlockItem(shield) || runtime.PlayerSetState == nil) {
+	if shield != nil && (runtime.CanDamageBlockItem == nil || !runtime.CanDamageBlockItem(shield) ||
+		(playerTarget && runtime.PlayerSetState == nil) || (!playerTarget && runtime.Melee.MonsterPopBlockAction == nil)) {
 		handled, result = playerDamageUnsupported4E17B0(runtime, "shield durability callback", target, source, weapon, damage, typ)
 		return true, handled, result
 	}
-	update.Field76 = 0
-	if player.ObserveTarget() != nil && runtime.ObserveClear != nil {
-		runtime.ObserveClear(target)
-	}
-	if typ == object.DamageImpale && source != nil && weapon != nil && source != weapon {
-		// 004E1A4D latches a distinct weapon before the block audio/effects.
-		// Existing non-PIERCE slices keep their separate marker contracts.
-		update.Field76 = 1
-		update.Field75 = uint32(weapon.TypeInd)
+	if playerTarget {
+		update.Field76 = 0
+		if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
+			runtime.ObserveClear(target)
+		}
+		if typ == object.DamageImpale && source != nil && weapon != nil && source != weapon {
+			// Existing non-PIERCE player slices keep their separate marker contracts.
+			update.Field76 = 1
+			update.Field75 = uint32(weapon.TypeInd)
+		}
+	} else {
+		ud := target.UpdateDataMonster()
+		ud.Field547 = 0
+		if (weapon != nil && source != weapon) || (weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush)) {
+			// 004E1B0D writes the NPC marker/type before block audio or wear.
+			ud.Field547, ud.Field546 = 1, uint32(attack.TypeInd)
+		}
 	}
 	runtime.Audio(878, target)
 	if reflectProjectile {
 		runtime.ProjectileReflect(attack, target)
-		if transferOwner {
+		if transferOwner && attack.Class().Has(object.ClassMissile) && uint32(attack.SubClass())&2 == 0 {
 			runtime.ClearOwner(attack)
 			runtime.SetOwner(target, attack)
 		}
 	}
-	if shield != nil {
-		amount := float32(runtime.BlockDamagePercent() * float64(damage))
-		if !runtime.DamageBlockItem(shield, target, source, weapon, amount, typ) && runtime.Unsupported != nil {
-			runtime.Unsupported("shield durability failed", target, source, weapon, damage, typ)
-		}
-		if shield.ObjFlags.Has(object.FlagDestroyed) {
+	// The 004E1BFD call through sub_4E2330 reaches EquipDamage without a selected
+	// shield; its nil/no-health guard is a successful wear no-op.
+	amount := float32(runtime.BlockDamagePercent() * float64(damage))
+	effective := weapon
+	if effective == nil {
+		effective = source
+	}
+	if !runtime.DamageBlockItem(shield, target, source, effective, amount, typ) && runtime.Unsupported != nil {
+		runtime.Unsupported("shield durability failed", target, source, weapon, damage, typ)
+	}
+	if shield != nil && shield.ObjFlags.Has(object.FlagDestroyed) {
+		if playerTarget {
 			runtime.PlayerSetState(target, PlayerState13)
+		} else {
+			runtime.Melee.MonsterPopBlockAction(target)
 		}
 	}
 	return true, true, false
@@ -388,17 +426,18 @@ func playerDamageMonster4E17B0(
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return handled, result
 	}
+	// The ordinary NPC shield branch also precedes damage-shape admission.
+	// Its return suppresses HP/armor damage even for zero/negative hits and
+	// missile shapes whose unblocked tails remain separate native ports.
+	if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+		return handled, result
+	}
 	update := target.UpdateDataMonster()
 	crush := typ == object.DamageCrush && source != nil && source.Class().Has(object.ClassMonster) &&
 		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassWeapon)
 	electric := playerDamageElectricShape4E17B0(source, weapon, typ)
 	if !crush && !electric {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
-	}
-	// Ordinary electric type 9 and rear hits fall through reflection. Monster
-	// shield-item blocks still require their separate action/equipment effects.
-	if crush && update.ArmorEquipFlags&0x3000000 != 0 && target.MonsterActionGet50A020() == 21 {
-		return playerDamageUnsupported4E17B0(runtime, "monster shield block", target, source, weapon, damage, typ)
 	}
 	quest := runtime.QuestMode != nil && runtime.QuestMode()
 	if quest && runtime.QuestDamageScale == nil {

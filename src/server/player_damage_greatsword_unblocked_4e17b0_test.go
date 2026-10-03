@@ -57,6 +57,10 @@ func TestPlayerDamageNative4E17B0NPCGreatSwordUnblockedFlame(t *testing.T) {
 	damageGreatSwordUnblocked4E17B0(t, false, object.DamageFlame)
 }
 
+func TestPlayerDamageNative4E17B0PlayerGreatSwordUnblockedFlame(t *testing.T) {
+	damageGreatSwordUnblocked4E17B0(t, true, object.DamageFlame)
+}
+
 func TestPlayerDamageGreatSwordMissile4E17B0NPCActionAdmission(t *testing.T) {
 	for action := 0; action < 72; action++ {
 		t.Run(fmt.Sprint(action), func(t *testing.T) {

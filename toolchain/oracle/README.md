@@ -294,6 +294,12 @@ stock War03b Henrick 대화의 실제 Yes 입력 두 번으로 Wolf1/Wolf2를 �
 
 두 함수 결합의 전기 저항·Quest 배율·HP·source attribution, 3회 fractional carry `[4,4,3]`, GodMode 앞의 raw armor 피해/보고, 최소 피해·Reflect 방향 경계 및 누락 서비스의 무변경 거부를 회귀로 검사한다. 전체 일반 테스트와 실제 `GOEXPERIMENT=cgocheck2` 전체 테스트, 대상 server race/checkptr 반복 검사 및 원본 oracle 검증을 통과했다. 이 기록은 실제 네크로맨서 자연 전투/사망 drop의 완료를 주장하지 않는다.
 
+## 무기 pre-Damage ABI `004E13B0`
+
+원본 본체 `004E13B0..004E13FB` 76바이트/SHA-256 `c2634c355fc4cabb596c5e9d110cc6b4378e51a02fa8ff8c5c0f48399b1cb75a`와 뒤 네 NOP를 독립 봉인했다. 원본은 weapon의 init/slot base를 한 번 잡고 슬롯 0·1·2·3 및 각 AttackPreDmg 함수 주소를 콜백 뒤 live 조회한다. class·flags·HP 조건이나 damage 복사/양수 clamp는 없다. 콜백에 modifier/weapon/source/target/같은 signed DWORD damage 주소를 전달하며 네 슬롯 뒤 반환 counter는 0이다.
+
+이 선언 단위는 세 객체와 damage 주소의 공개 C ABI만 native pointer로 바꾸고 원래 본체의 명시적 PE32 임시 축소는 남긴다. 기존 C 호출자의 cast를 같은 선언에 맞춘 것이며 런타임 본체 복원 완료로 주장하지 않는다. C11 `_Generic`/고주소/NULL fixture는 기존 네 `int` 선언에서 컴파일 실패를 먼저 확인했고 공개 선언 복원 뒤 통과한다. 자동 Go 시험에서 fixture를 컴파일·실행하지만 production 효과 실행을 대신하지 않는다. 본체 및 활성 DefaultDamage 호출 위치의 복원은 각각 별도 변경 단위다. 원본 자산·개인 Save/config·GUI 기준은 변경하지 않는다.
+
 ## 장착 아이템 후반 Defend ABI `004E1320`
 
 원본 본체 `004E1320..004E13AE` 143바이트/SHA-256 `c857c754eeebeb65ee2d447c562dc9df0d30cb103810f738f4dc120d9a2736df`와 뒤 1-NOP를 구현 전에 봉인했다. 원본은 class 검사가 아니라 flags `0x100`만 사용하고 item마다 init/slot base를 한 번 cache한 뒤 슬롯 2·3을 live 조회한다. callback마다 damage/type DWORD context를 만들고 첫 DWORD를 damage 주소에 저장한 뒤 다음 슬롯을 읽으며, 두 슬롯 뒤 다음 inventory link를 읽는다. empty inventory의 입력 target low DWORD, non-equipped 마지막 flags, equipped 마지막 counter 0의 incidental 반환도 구별한다.

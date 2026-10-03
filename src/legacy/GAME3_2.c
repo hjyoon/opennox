@@ -6684,7 +6684,8 @@ LABEL_87:
 		}
 	}
 	if (v19 && *(uint32_t*)(v19 + 8) & 0x1001000) {
-		nox_xxx_itemApplyPreDamageEffect_4E13B0(a1, v10, v19, (int)&a4);
+		nox_xxx_itemApplyPreDamageEffect_4E13B0((nox_object_t*)(uintptr_t)(uint32_t)a1,
+			(nox_object_t*)(uintptr_t)(uint32_t)v10, (nox_object_t*)(uintptr_t)(uint32_t)v19, &a4);
 	}
 	if (a1 != v19 || !(*(uint32_t*)(a1 + 8) & 0x1001000)) {
 		if (!v10 || !(*(uint8_t*)(v10 + 8) & 2) || !*(uint32_t*)(v10 + 748) ||
@@ -6854,7 +6855,13 @@ int nox_xxx_itemApplyDefendEffect2_4E1320(nox_object_t* a1p, nox_object_t* a2p, 
 #endif
 
 //----- (004E13B0) --------------------------------------------------------
-int nox_xxx_itemApplyPreDamageEffect_4E13B0(int a1, int a2, int a3, int a4) {
+int nox_xxx_itemApplyPreDamageEffect_4E13B0(nox_object_t* a1p, nox_object_t* a2p, nox_object_t* a3p, int32_t* a4p) {
+	// Public ABI restoration only. Keep the original PE32 temporaries until
+	// the separate native-pointer body restoration.
+	int a1 = (int)(uintptr_t)a1p;
+	int a2 = (int)(uintptr_t)a2p;
+	int a3 = (int)(uintptr_t)a3p;
+	int a4 = (int)(uintptr_t)a4p;
 	int v4;                              // edi
 	int* v5;                             // esi
 	int v6;                              // eax

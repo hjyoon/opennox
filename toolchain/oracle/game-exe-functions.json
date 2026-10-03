@@ -4200,6 +4200,20 @@
       "purpose": "the exact NOP byte between the equipped-item Defend effect loop and the pre-damage effect procedure at 004E13B0"
     },
     {
+      "name": "nox_xxx_itemApplyPreDamageEffect_4E13B0",
+      "address": "0x004E13B0",
+      "size": 76,
+      "sha256": "c2634c355fc4cabb596c5e9d110cc6b4378e51a02fa8ff8c5c0f48399b1cb75a",
+      "purpose": "cache the weapon modifier-slot base once without class/flags/HP gates, load all four slots and their AttackPreDmg callback live after each preceding call, pass modifier/weapon/source/target/the same signed DWORD damage address without a helper copy or clamp, and return the exhausted counter zero"
+    },
+    {
+      "name": "nox_xxx_itemApplyPreDamageEffect_4E13B0_padding",
+      "address": "0x004E13FC",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP alignment bytes between the weapon pre-damage effect loop and the friendly-hit predicate at 004E1400"
+    },
+    {
       "name": "sub_4E1400",
       "address": "0x004E1400",
       "size": 112,

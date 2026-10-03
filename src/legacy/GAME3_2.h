@@ -4,6 +4,7 @@
 #include "defs.h"
 #include "unit_adjust_hp_4ee460.h"
 #include "item_defend_effects_4e1320.h"
+#include "item_pre_damage_4e13b0.h"
 
 int nox_xxx_updDrawDBall_4CDF80(int a1, int a2);
 int sub_4CE0A0(int a1, int a2);
@@ -300,7 +301,6 @@ int nox_xxx_parseDamageTypeByName_4E0A00(const char* a1);
 int nox_xxx_projectileReflect_4E0A70(int a1, int a2);
 int nox_xxx_damageDefaultProc_4E0B30(int a1, int a2, int a3, int a4, int a5);
 void nox_xxx_gameballOnPlayerDamage_4E1230(int a1, int a2, int a3);
-int nox_xxx_itemApplyPreDamageEffect_4E13B0(int a1, int a2, int a3, int a4);
 int sub_4E1400(int a1, uint32_t* a2);
 int sub_4E1470(int a1);
 int sub_4E14A0();

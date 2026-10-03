@@ -471,6 +471,9 @@ func TestPlayerDamageNative4E17B0SentryGlobeZapRay(t *testing.T) {
 		ObjClass:   object.ClassArmor,
 		ObjFlags:   object.FlagEquipped,
 		HealthData: &HealthData{Cur: 10, Max: 10},
+		// ZAP_RAY skips armor wear, but the later flags-only Defend
+		// traversal still reads the stock item's modifier init base.
+		InitData: unsafe.Pointer(&ModifierInitData{}),
 	}
 	target.InvFirstItem = armor
 	source := &Object{ObjClass: object.ClassPlayer}
@@ -1278,8 +1281,8 @@ func TestPlayerDamageNative4E17B0AppliesLateDefendInInventoryOrder(t *testing.T)
 	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
 		t.Fatalf("late-defend bite = %t/%t", handled, result)
 	}
-	if !reflect.DeepEqual(canCalls, []*ModifierEff{first, second}) {
-		t.Fatalf("preflight modifiers = %v, want [%p %p]", canCalls, first, second)
+	if !reflect.DeepEqual(canCalls, []*ModifierEff{first, second, first, second}) {
+		t.Fatalf("admission then live callback checks = %v, want [%p %p %p %p]", canCalls, first, second, first, second)
 	}
 	if gotDamage != 14 {
 		t.Fatalf("late-defend damage = %d, want 14", gotDamage)

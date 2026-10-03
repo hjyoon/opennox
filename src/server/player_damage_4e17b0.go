@@ -327,6 +327,29 @@ func playerDamagePlanLateDefend4E1320(
 	return plan, true
 }
 
+// Admission only: do not retain items or slot contents for the default tail.
+// The actual 004E1320 call owns its flags-only traversal and nil-init fault at
+// use; a missing init base cannot be inspected by this read-only check.
+func playerDamageLateDefendReady4E17B0(target *Object, runtime PlayerDamageRuntime4E17B0) (hasDefend, ready bool) {
+	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
+		if !item.ObjFlags.Has(object.FlagEquipped) || item.InitData == nil {
+			continue
+		}
+		initData := item.InitDataModifier()
+		for slot := 2; slot < 4; slot++ {
+			modifier := initData.Modifiers[slot]
+			if modifier == nil || modifier.Defend76.Fnc == nil {
+				continue
+			}
+			hasDefend = true
+			if runtime.CanApplyLateDefend == nil || runtime.ApplyLateDefend == nil || !runtime.CanApplyLateDefend(modifier) {
+				return hasDefend, false
+			}
+		}
+	}
+	return hasDefend, true
+}
+
 // Check only callback availability. In particular, do not execute the armor
 // lookup/Defend callbacks or snapshot carry, health, or next-item pointers.
 // Zero/signed amounts and a zero armor denominator still reach 004E2180.
@@ -801,7 +824,7 @@ func PlayerDamageNative4E17B0(
 	if target.DamageSound != nil && target.DamageSound != runtime.PlayerDamageSoundC {
 		return playerDamageUnsupported4E17B0(runtime, "custom player damage sound", target, source, weapon, damage, typ)
 	}
-	lateDefendPlan, ok := playerDamagePlanLateDefend4E1320(target, runtime)
+	hasLateDefend, ok := playerDamageLateDefendReady4E17B0(target, runtime)
 	if !ok {
 		return playerDamageUnsupported4E17B0(runtime, "late equipped-item defend effect", target, source, weapon, damage, typ)
 	}
@@ -856,7 +879,7 @@ func PlayerDamageNative4E17B0(
 	// Quest scaling and late defend, but before Shield absorption. Validate
 	// that tail before any stores; callback-dependent adjustments may raise
 	// a sub-threshold amount, so they also require the service for carriers.
-	mayDropBall := effective >= 30 || quest || len(lateDefendPlan) != 0 || flame || lava
+	mayDropBall := effective >= 30 || quest || hasLateDefend || flame || lava
 	if mayDropBall && target.Field129 != nil {
 		if runtime.GameBallType == 0 {
 			return playerDamageUnsupported4E17B0(runtime, "missing GameBall type", target, source, weapon, damage, typ)
@@ -939,11 +962,24 @@ func PlayerDamageNative4E17B0(
 	if !poison && !flame {
 		runtime.BuffOff(target, playerDamageInvisibleEnchant4E17B0)
 	}
-	for _, planned := range lateDefendPlan {
-		effective = runtime.ApplyLateDefend(
-			planned.modifier, planned.item, target, weapon, source, effective, typ,
-		)
-	}
+	// 004E2098 reaches DefaultDamage; its 004E0F77 calls 004E1320 here,
+	// after armor, Quest scaling, attribution position and BuffOff. Recapture
+	// the inventory head now, cache each item's init base, and load slot three
+	// and the next link after callbacks rather than executing an eager plan.
+	ItemDefendEffects4E1320(target, source, weapon, &effective, int32(typ), ItemDefendEffectsRuntime4E1320{
+		ApplyDefend: func(modifier *ModifierEff, item, owner, weapon, attacker *Object, context *[2]int32) {
+			// Earlier armor/BuffOff/Defend callbacks may introduce a new
+			// function after admission. Report it at use without PE32 fallback,
+			// leaving damage unchanged and still visiting supported later slots.
+			if runtime.CanApplyLateDefend == nil || runtime.ApplyLateDefend == nil || !runtime.CanApplyLateDefend(modifier) {
+				if runtime.Unsupported != nil {
+					runtime.Unsupported("unsupported live late equipped-item defend effect", owner, attacker, weapon, context[0], object.DamageType(context[1]))
+				}
+				return
+			}
+			context[0] = runtime.ApplyLateDefend(modifier, item, owner, weapon, attacker, context[0], object.DamageType(context[1]))
+		},
+	})
 	target.Obj130 = weapon
 	target.Field131 = uint32(typ)
 	target.Frame134 = frame
@@ -971,6 +1007,22 @@ func PlayerDamageNative4E17B0(
 			source, target, weapon, effective,
 			runtime.Audio, runtime.BalanceFloatInd, runtime.AdjustHP, runtime.VampirismFX,
 		)
+	}
+	// A newly installed live Defend can raise damage above the drop threshold
+	// even when admission saw no effect. Do not silently skip the required
+	// service or enter its source-less fault after the already-executed prefix.
+	if effective >= 30 && target.Field129 != nil {
+		if runtime.GameBallType == 0 {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live GameBall type", target, source, weapon, effective, typ)
+		}
+		if playerDamageOwnsType4E17B0(target, runtime.GameBallType) {
+			if runtime.GameBallOnDamage == nil {
+				return playerDamageUnsupported4E17B0(runtime, "unsupported live GameBall drop", target, source, weapon, effective, typ)
+			}
+			if source == nil {
+				return playerDamageUnsupported4E17B0(runtime, "unsupported live source-less GameBall drop", target, source, weapon, effective, typ)
+			}
+		}
 	}
 	if runtime.GameBallOnDamage != nil {
 		runtime.GameBallOnDamage(source, target, effective)

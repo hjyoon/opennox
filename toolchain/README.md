@@ -13,6 +13,8 @@ Linux 64비트의 native-width CGo 회귀는 `make test-linux-pie`로 root·serv
 
 2026-10-04 player self-report의 장비 인챈트 바이트 보고 누락을 복원했다. 원본 `004D99A7..004D99E1`은 진입 시의 update 포인터에서 Player를 읽어 마지막 보고 바이트와 object `+440`의 하위 바이트를 비교하고, 변경 시 `004D8840`의 reliable `5B <item-enchantment-byte>` 패킷을 보낸다. 전송 실패도 결과를 무시하며, 전송 뒤 같은 update 포인터에서 Player와 해당 바이트를 다시 읽어 캐시를 갱신한다. `+440`은 native `Field110`이며, 중독 강도 `Poison540` (`+540`)과는 무관하다. 최초 연결의 필드 오해를 headless 실행에서 발견해 바로잡았다. 새 high-C-owned root 회귀는 65,536개 바이트 비교 조합, 256개 unsigned 수신자, 골드 콜백 이후 재로딩, 전송 중 update/Player/마스크가 바뀌는 경우 및 실패 후 캐시 갱신을 검사한다. 상위 24비트만 바뀌거나 중독이 적용되었을 때 잘못 보고하지 않고, 원본 마스크와 중독 상태·타이머도 보존하는 독립 회귀를 추가했다. 원본 코드 manifest에는 보고 slice·sender·3바이트 padding의 해시 범위만 추가했다. Quest key 보고는 아직 별도 누락 slice다.
 
+같은 보고 경로가 사용하는 장비 아이콘 `00413420`의 이름·이미지 캐시 조회를 native pointer side slot에 연결했다. 공용 `memmap.PtrPtr` 저장소는 이미 안전했지만 기존 C 본체는 packed PE32 슬롯을 직접 8바이트로 읽고 이미지 반환을 DWORD로 축소했다. 반환 ABI와 호출자 변수 타입은 별도 커밋으로 먼저 복원했다. 이번 한 본체 변경은 여섯 이미지의 순서대로 lazy load, 마지막 loaded=1 게시, live flag byte의 exact match 및 nil 반환을 보존한다. 모든 256개 입력·nonzero loaded 값·nil loader/reset·로드 후 flag 변경·4GiB 초과 C-owned 이름/이미지와 packed 120바이트 불변을 실제 C 진입점까지 검사했다. 원본 body 91바이트·뒤 5-NOP·6행 테이블과 여섯 이름의 해시만 oracle에 더했으며 원본 자산은 공개하지 않는다. Tooltip 조회와 실제 inventory hover는 아직 별도 검증 단계다.
+
 Windows PowerShell에서는 다음과 같이 실행한다.
 
 ```powershell

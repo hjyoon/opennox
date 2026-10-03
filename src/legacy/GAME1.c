@@ -1204,29 +1204,9 @@ int sub_4133D0(nox_object_t* a1p) {
 }
 
 //----- (00413420) --------------------------------------------------------
+extern nox_video_bag_image_t* nox_item_enchantment_icon_native_413420(uint8_t flag);
 nox_video_bag_image_t* sub_413420(char a1) {
-	unsigned char* v1; // esi
-	int v2;            // ecx
-	unsigned char* v3; // eax
-
-	if (!*getMemU32Ptr(0x5D4594, 251624)) {
-		v1 = getMemAt(0x587000, 27340);
-		do {
-			*(uint32_t*)v1 = nox_xxx_gLoadImg_42F970(*((const char**)v1 - 1));
-			v1 += 20;
-		} while ((int)v1 < (int)getMemAt(0x587000, 27460));
-		*getMemU32Ptr(0x5D4594, 251624) = 1;
-	}
-	v2 = 0;
-	v3 = getMemAt(0x587000, 27332);
-	while (*v3 != a1) {
-		v3 += 20;
-		++v2;
-		if ((int)v3 >= (int)getMemAt(0x587000, 27452)) {
-			return 0;
-		}
-	}
-	return (nox_video_bag_image_t*)(uintptr_t)*getMemU32Ptr(0x587000, 27340 + 20 * v2);
+	return nox_item_enchantment_icon_native_413420((uint8_t)a1);
 }
 
 //----- (004134D0) --------------------------------------------------------

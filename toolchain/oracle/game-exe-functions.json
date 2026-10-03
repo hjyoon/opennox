@@ -4256,6 +4256,20 @@
       "purpose": "the complete original PlayerDamage interval through the next function boundary, used to validate ordinary Spider-to-player damage, lethal transition, death-notification admission, NPC source-less POISON bypass of armor/carry, and player/NPC unit-self-weapon and nil-weapon player-sourced ELECTRIC/AIRBORNE_ELECTRIC with original weapon identity through armor defense/durability, fractional HP carry, raw type attribution, GodMode, Quest scaling and DefaultDamage; NPC Reflect Shield selects hit marker DWORD 2188 rather than the player observer layout, reflects current-position frontal missiles or non-missile types 16/17 before damage-shape admission, preserves conditional projectile ownership and ZapRay point-FX/audio order, and lets ordinary non-missile type 9 and rear electric hits fall through; ordinary NPC shields instead face the attack's previous position, require block action 21 and armor mask 0x3000000, exclude types 9/17/15 and four or six source types according to weapon presence, and preserve marker/audio/reflection/conditional-owner order, weapon-or-source wear with binary32 rounding, inventory removal and actual NPC action pop on shield destruction; unblocked monster-fired NPC PIERCE uses absorption cached before defense callbacks, wider subtraction/multiplication followed by a binary32 spill, live fractional HP and armor carry, missile attribution before wear with cached marker fallback, armor durability before minimum HP and Quest scaling, and the production DefaultDamage tail; native-width C-entry and C-owned armor fixtures prove repeated NPC HP loss, nonlethal item wear and owner-HP wire reports without replacing the damage or HP services"
     },
     {
+      "name": "nox_xxx_playerDamageItems_4E2180",
+      "address": "0x004E2180",
+      "size": 149,
+      "sha256": "76d13e152618dc1a9d8aeedf3335e9f6df2cca3d98bbac840e44bbe1c7ceed6c",
+      "purpose": "select the Player armor layout before the subclass-0x10 Monster layout, cache the binary32 denominator once, then for each live equipped Armor run the 00415C00 lookup, divide and signed-damage multiply before the binary32 spill and 004E16D0 wear callback, loading the next native inventory link only after that callback; preserve zero, negative and unordered portions without adding a health or amount gate"
+    },
+    {
+      "name": "nox_xxx_playerDamageItems_4E2180_padding",
+      "address": "0x004E2215",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "the exact eleven NOP bytes separating armor-items wear from the following routine at 004E2220"
+    },
+    {
       "name": "sub_4E22A0",
       "address": "0x004E22A0",
       "size": 135,

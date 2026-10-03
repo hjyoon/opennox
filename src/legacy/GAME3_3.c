@@ -445,7 +445,9 @@ LABEL_120:
 		nox_xxx_playerDecrementHPMana_4E20F0(v5, (int)&a1, v51);
 		v33 = a4;
 		v42 = a5;
-		nox_xxx_playerDamageItems_4E2180(v5, a2, a3, a4 - a1, a5);
+		nox_xxx_playerDamageItems_4E2180((nox_object_t*)(uintptr_t)(uint32_t)v5,
+			(nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3,
+			a4 - a1, SLODWORD(a5));
 		v43 = *(uint32_t*)(v5 + 8);
 		if (v43 & 4) {
 			if (!*(uint32_t*)(v12 + 304)) {
@@ -461,7 +463,9 @@ LABEL_120:
 	case 0xC:
 		v33 = a4;
 		a1 = a4;
-		nox_xxx_playerDamageItems_4E2180(v5, a2, a3, a4, a5);
+		nox_xxx_playerDamageItems_4E2180((nox_object_t*)(uintptr_t)(uint32_t)v5,
+			(nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3,
+			a4, SLODWORD(a5));
 		v34 = *(uint32_t*)(v5 + 8);
 		if (v34 & 4) {
 			if (!*(uint32_t*)(v12 + 304)) {
@@ -479,7 +483,9 @@ LABEL_120:
 		v50 = (1.0 - v53 * 0.5) * (double)a4;
 		nox_xxx_playerDecrementHPMana_4E20F0(v5, (int)&a1, v50);
 		v33 = a4;
-		nox_xxx_playerDamageItems_4E2180(v5, a2, a3, a4 - a1, COERCE_FLOAT(2));
+		nox_xxx_playerDamageItems_4E2180((nox_object_t*)(uintptr_t)(uint32_t)v5,
+			(nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3,
+			a4 - a1, 2);
 		v41 = *(uint32_t*)(v5 + 8);
 		if (v41 & 4) {
 			if (!*(uint32_t*)(v12 + 304)) {
@@ -518,7 +524,9 @@ LABEL_120:
 		v49 = v35 * (double)a4;
 		nox_xxx_playerDecrementHPMana_4E20F0(v5, (int)&a1, v49);
 		v33 = a4;
-		nox_xxx_playerDamageItems_4E2180(v5, a2, a3, a4, a5);
+		nox_xxx_playerDamageItems_4E2180((nox_object_t*)(uintptr_t)(uint32_t)v5,
+			(nox_object_t*)(uintptr_t)(uint32_t)a2, (nox_object_t*)(uintptr_t)(uint32_t)a3,
+			a4, SLODWORD(a5));
 		v34 = *(uint32_t*)(v5 + 8);
 		if (v34 & 4) {
 			if (!*(uint32_t*)(v12 + 304)) {
@@ -593,6 +601,7 @@ void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3) {
 }
 
 //----- (004E2180) --------------------------------------------------------
+#if 0 // Restored by player_damage_items_4e2180_export.go; retained as PE32 provenance.
 void nox_xxx_playerDamageItems_4E2180(int a1, int a2, int a3, int a4, float a5) {
 	int v5;       // edi
 	int v6;       // eax
@@ -630,6 +639,7 @@ void nox_xxx_playerDamageItems_4E2180(int a1, int a2, int a3, int a4, float a5) 
 		} while (v7);
 	}
 }
+#endif
 
 //----- (004E2220) --------------------------------------------------------
 double sub_4E2220(int a1) {

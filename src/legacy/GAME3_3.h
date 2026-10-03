@@ -91,13 +91,13 @@
 #include "drop_owned_crowns_4ed050.h"
 #include "inventory_detach_4ed0c0.h"
 #include "object_collide_noop_4e87a0.h"
+#include "player_damage_items_4e2180.h"
 #include "quest_map_buffer_4e8e50.h"
 #include "random_reachable_point_4ed970.h"
 #include "unit_adjust_hp_4ee460.h"
 
 int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a5);
 void nox_xxx_playerDecrementHPMana_4E20F0(int a1, int a2, float a3);
-void nox_xxx_playerDamageItems_4E2180(int a1, int a2, int a3, int a4, float a5);
 double sub_4E2220(int a1);
 int sub_4E22A0(int a1, int a2, int a3, int a4, float a5, int a6);
 int sub_4E2330(int a1, int a2, int a3, int a4, float a5, int a6);

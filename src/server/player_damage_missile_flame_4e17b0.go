@@ -2,8 +2,6 @@ package server
 
 import (
 	"github.com/opennox/libs/object"
-
-	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
 // SparkExplosionCollide supplies the owning unit and a distinct missile for
@@ -72,11 +70,8 @@ func playerDamageMonsterMissileFlame4E17B0(
 	target, source, weapon *Object, update *MonsterUpdateData,
 	damage int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
-	// 004E1C0F's GreatStaff reflection is a separate defense, not ordinary
-	// armor absorption. Never silently replace an unported block with HP loss.
-	if update.WeaponEquipFlags&0x400 != 0 && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK {
-		return playerDamageUnsupported4E17B0(runtime, "NPC GreatStaff missile FLAME block", target, source, weapon, damage, typ)
-	}
+	// The entry already applied the real GreatSword defense. A rear hit or
+	// an ineligible NPC action reaches FLAME's original raw-durability tail.
 	return playerDamageMissileFlameTail4E17B0(target, source, weapon, &update.Field547, &update.Field546, damage, typ, runtime)
 }
 

@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 inventory armor 장착·해제 보고의 headless 관찰
+
+테스트 전용 `check-player-armor-report`와 자산 없는 `host-game-armor-report.yaml`은 실제 Warrior 메뉴와 stock LeatherArmor 지급, queued inventory 마우스 입력을 사용한다. 처음 지급한 armor는 원래 respawn 경로에서 자동 장착되어 있었다. 첫 실행의 unequipped 준비 조건 실패를 보존하고, 실제 클릭으로 먼저 해제한 뒤 baseline을 잡도록 YAML fixture만 조정했다. armor 값·장비 flag·보고 cache·client global/패킷을 직접 주입하거나 장착 함수를 직접 호출하지 않는다. 4GiB 초과 unit/update/item/player를 확인한다.
+
+일반·HD headless/mock 각각 두 complete equip/dequip cycle이 exit 0이다. baseline `0.02`/bits `3ca3d70a`, 장착 `0.17000002`/bits `3e2e147c`를 서버 current·self-report cache·실제 opcode 73 client receiver에서 그대로 대조했다. 네 전환과 각각 12-frame 뒤 안정 값, 총 8개 관찰이 각 제품에서 통과했다. baseline 준비와 전환/안정 관찰은 bounded timeout이며 아이템이 inventory에 계속 남아 있는지 확인한다. 클라이언트가 수신한 수치의 검증이지 표시 문자열·폰트 픽셀·물리 화면이나 Windows runtime 전체의 동등성 주장이 아니다. 기존 Quest fullscreen golden 제한은 유지하며 새 PNG 기대값이나 override를 만들지 않는다.
+
+새 outcome의 stale/한 비트 cache·client 오염, 무변화·감소·장비 손실·NaN/Inf 및 잘못된 baseline/dequip 결과 거부, 21-step 두 cycle schedule·공개 YAML loader·AST 결과 주입 금지 회귀가 통과했다. 기존 한 본체 변경은 YAML loader dispatch뿐이다. 관련 root/server/legacy 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag 각 1회와 oracle을 통과했다. code 2,920/data 622개·NXZ 50쌍·stock 1,556파일/tree 및 개인 Save/config는 불변이다. clean 제품 재빌드와 해머·NPC 돌진/작살·shield·장비 색상 회귀는 후속 handoff 검사로 구별한다.
+
 ## 플레이어 armor 변화 보고 `004D992A`
 
 native self-report에서 빠진 armor slice를 원본 `004D992A..004D996C`와 대조했다. 변경 전 실제 self-report 호출은 armor 패킷·cache 갱신·gold 앞 순서의 세 회귀에서 실패했다. 이번 기존 production 본체 변경은 `playerReportSelfNative4D9900`의 새 Go helper 연결 하나다. 기존 native `Field57/Field58/Player` layout과 client opcode 73 decoder는 바꾸지 않는다. x87 FCOMP의 C3 계약에 따라 equal 및 unordered NaN은 보내지 않고 signed zero도 같은 값으로 취급한다. ordered 변화는 pre-call binary32 원래 바이트와 live Player index를 다섯 바이트 reliable 패킷으로 보낸다. 전송 실패에도 같은 entry-cached update의 post-call current 값을 cache에 저장하며 callback이 unit의 update 바인딩을 바꿔도 새 바인딩을 acknowledge하지 않는다.

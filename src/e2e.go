@@ -9956,6 +9956,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckPlayerHammer(l.Name)
+		case "check-player-armor-report":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerArmorReport(l.Item, l.Name)
 		case "assert-player-hud-poisoned":
 			if dt != 0 {
 				sc.Wait(dt, "")

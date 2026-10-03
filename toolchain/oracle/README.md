@@ -4,6 +4,8 @@
 
 ## 플레이어 armor 변화 보고의 원본 계약
 
+테스트 전용 `host-game-armor-report.yaml`의 실제 inventory 입력도 일반·HD headless/mock에서 각 두 장착·해제 cycle을 통과했다. 초기 auto-equipped stock grant는 실제 클릭으로 해제하여 baseline `0.02`를 얻고, `0.17000002` 장착 수치·보고 cache·실제 client receiver의 binary32 bits 및 12-frame 뒤 안정 값을 대조한다. 직접 수치/장비/packet 주입과 새 PNG/override는 없다. 최초 unequipped fixture 조건 실패는 성공으로 세지 않는다. 이 관찰은 client 수신 경로이지 화면 문자열 픽셀·물리 출력·원본 Windows runtime 전체의 증명이 아니다.
+
 `004D8A30` sender 41바이트·뒤 7-NOP와 self-report의 `004D992A` slice 67바이트를 봉인했다. 원본 x87 C3는 equal와 unordered NaN을 모두 건너뛰며 signed zero는 같다. 변화 시 opcode 73과 pre-call armor binary32 바이트를 live Player index에 reliable 전송하고, 성공 여부와 무관하게 같은 entry-cached update의 post-call current 값을 cache에 복사한다. native self-report 연결 뒤 1,600 float 조합·256 index·고주소 C-owned callback 변경·실패 전송·원래 fault-prefix·gold 앞 순서 회귀와 일반/실제 cgocheck2/race/checkptr/HD 및 전체 일반/strict/server-tag 검사가 통과했다. code 2,920/data 622개·NXZ 50쌍·stock tree 불변을 확인했다. 이번 함수 회귀는 queued inventory GUI나 물리 출력 검증을 대신하지 않으며 원본 바이트/자산·개인 파일을 공개하지 않는다.
 
 ## Stock 장착 레이어의 실제 headless 색상 관찰

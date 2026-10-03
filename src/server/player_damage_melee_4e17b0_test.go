@@ -27,6 +27,13 @@ func damageMeleeRuntimeFixture4E17B0(t *testing.T) PlayerDamageRuntime4E17B0 {
 	}
 }
 
+// Keep the scalar view used by carry assertions, but allocate the complete
+// eight-byte update record read by the real EquipDamage implementation.
+func damageArmorCarryFixture4E17B0(value float32) *float32 {
+	update := &WeaponArmorUpdateData{Field0: math.Float32bits(value)}
+	return (*float32)(unsafe.Pointer(update))
+}
+
 func damageMeleeArmorFixture4E17B0(target *Object, armorValue, carry float32) *Object {
 	if target.Class().Has(object.ClassPlayer) {
 		target.UpdateDataPlayer().Field57 = math.Float32bits(armorValue)
@@ -35,10 +42,11 @@ func damageMeleeArmorFixture4E17B0(target *Object, armorValue, carry float32) *O
 		target.UpdateDataMonster().Field518 = math.Float32bits(armorValue)
 		target.UpdateDataMonster().Field1 = math.Float32bits(carry)
 	}
-	itemCarry := float32(0.4)
+	itemCarry := damageArmorCarryFixture4E17B0(0.4)
 	armor := &Object{
 		ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,
-		InitData: unsafe.Pointer(&ModifierInitData{}), UpdateData: unsafe.Pointer(&itemCarry),
+		Damage:   unsafe.Pointer(new(byte)),
+		InitData: unsafe.Pointer(&ModifierInitData{}), UpdateData: unsafe.Pointer(itemCarry),
 		HealthData: &HealthData{Cur: 25, Max: 25},
 	}
 	target.InvFirstItem = armor
@@ -127,7 +135,7 @@ func TestPlayerDamageMeleeNative4E17B0ArmorPrefixOrder(t *testing.T) {
 			r := damageMeleeRuntimeFixture4E17B0(t)
 			damageMeleeArmorRuntime4E17B0(&r, armor, 0.5)
 			var events []string
-			r.Melee.CanApplyArmorDefend = func(m *ModifierEff) bool { return m == modifier }
+			r.CanApplyArmorDefend = func(m *ModifierEff) bool { return m == modifier }
 			r.ApplyArmorDefend = func(m *ModifierEff, item, owner, effective, attacker *Object, amount *float32) bool {
 				marker, markerType, carry := damageMeleeMarker4E17B0(target)
 				if m != modifier || item != armor || owner != target || effective != weapon || attacker != source ||
@@ -147,7 +155,7 @@ func TestPlayerDamageMeleeNative4E17B0ArmorPrefixOrder(t *testing.T) {
 				return true
 			}
 			r.ReportArmorHealth = func(owner, item *Object, before, after uint16) {
-				if owner != target || item != armor || before != 25 || after != 23 {
+				if !player || owner != target || item != armor || before != 25 || after != 23 {
 					t.Fatal("bad armor report")
 				}
 				events = append(events, "armor-report")
@@ -162,7 +170,12 @@ func TestPlayerDamageMeleeNative4E17B0ArmorPrefixOrder(t *testing.T) {
 			if h, result := PlayerDamageMeleeNative4E17B0(target, source, weapon, 9, object.DamageBlade, r); !h || !result {
 				t.Fatal("melee prefix failed")
 			}
-			if !slices.Equal(events, []string{"armor-defend", "armor-damage", "armor-report", "default"}) {
+			want := []string{"armor-defend", "armor-damage"}
+			if player {
+				want = append(want, "armor-report")
+			}
+			want = append(want, "default")
+			if !slices.Equal(events, want) {
 				t.Fatalf("events=%v", events)
 			}
 		})

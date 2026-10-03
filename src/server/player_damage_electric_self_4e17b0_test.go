@@ -22,11 +22,11 @@ func playerDamageElectricSelfArmorFixture4E17B0(t *testing.T, playerTarget, play
 		ud := target.UpdateDataMonster()
 		ud.Field1, ud.Field518 = math.Float32bits(0.25), math.Float32bits(0.4)
 	}
-	carry = new(float32)
-	*carry = 0.25
+	carry = damageArmorCarryFixture4E17B0(0.25)
 	modifier = &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
 	armor = &Object{
 		ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,
+		Damage:     unsafe.Pointer(new(byte)),
 		HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(carry),
 		InitData: unsafe.Pointer(&ModifierInitData{Modifiers: [4]*ModifierEff{nil, modifier, nil, nil}}),
 	}
@@ -59,6 +59,7 @@ func playerDamageElectricSelfArmorRuntime4E17B0(t *testing.T, target, source, ar
 		}
 		return 0.4
 	}
+	r.CanApplyArmorDefend = func(m *ModifierEff) bool { return m == modifier }
 	r.ApplyArmorDefend = func(m *ModifierEff, item, victim, weapon, attacker *Object, portion *float32) bool {
 		if m != modifier || item != armor || victim != target || weapon != source || attacker != source || *portion != 5 {
 			t.Fatal("electric armor defense must receive the raw damage and original self-weapon")
@@ -78,7 +79,7 @@ func playerDamageElectricSelfArmorRuntime4E17B0(t *testing.T, target, source, ar
 		return true
 	}
 	r.ReportArmorHealth = func(owner, item *Object, before, after uint16) {
-		if owner != target || item != armor || before != 100 || after != 94 {
+		if !target.Class().Has(object.ClassPlayer) || owner != target || item != armor || before != 100 || after != 94 {
 			t.Fatal("electric armor report")
 		}
 		*events = append(*events, "report")
@@ -119,7 +120,11 @@ func TestPlayerDamageNative4E17B0SelfWeaponElectricArmorAndDefault(t *testing.T)
 					if handled, result := PlayerDamageNative4E17B0(target, source, source, 5, typ, r); !handled || !result {
 						t.Fatalf("electric self-weapon=%t/%t", handled, result)
 					}
-					want := []string{"scale", "armor-defend", "armor-damage", "report", "quest", "default", "protection"}
+					want := []string{"scale", "armor-defend", "armor-damage"}
+					if playerTarget {
+						want = append(want, "report")
+					}
+					want = append(want, "quest", "default", "protection")
 					if !slices.Equal(events, want) || !slices.Equal(damages, []int32{2}) || target.HealthData.Cur != 58 || *carry != -0.25 || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) {
 						t.Fatalf("events=%v damage=%v HP=%d armor-carry=%g source=%p", events, damages, target.HealthData.Cur, *carry, target.Obj130)
 					}

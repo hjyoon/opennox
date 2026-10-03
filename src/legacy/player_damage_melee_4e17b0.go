@@ -22,7 +22,6 @@ func playerDamageMeleeRuntime4E17B0(s *server.Server) server.PlayerDamageMeleeRu
 			}
 			return canEquipDamageNative4E16D0(item)
 		},
-		DamageBlockWeapon:   playerDamageWeaponNative4E1560,
-		CanApplyArmorDefend: itemDurabilityCanApplyDefendNative4E1560,
+		DamageBlockWeapon: playerDamageWeaponNative4E1560,
 	}
 }

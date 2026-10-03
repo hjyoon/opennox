@@ -60,7 +60,11 @@ func TestPlayerDamageNative4E17B0UnarmedPlayerElectricArmorAndDefault(t *testing
 				if handled, result := PlayerDamageNative4E17B0(target, source, nil, 5, typ, r); !handled || !result {
 					t.Fatalf("unarmed player electric=%t/%t", handled, result)
 				}
-				want := []string{"scale", "armor-defend", "armor-damage", "report", "quest", "default", "protection"}
+				want := []string{"scale", "armor-defend", "armor-damage"}
+				if playerTarget {
+					want = append(want, "report")
+				}
+				want = append(want, "quest", "default", "protection")
 				if !slices.Equal(events, want) || !slices.Equal(damages, []int32{2}) || target.HealthData.Cur != 58 || *carry != -0.25 || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) {
 					t.Fatalf("events=%v damage=%v HP=%d armor-carry=%g source=%p", events, damages, target.HealthData.Cur, *carry, target.Obj130)
 				}

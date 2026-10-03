@@ -294,6 +294,14 @@ stock War03b Henrick 대화의 실제 Yes 입력 두 번으로 Wolf1/Wolf2를 �
 
 두 함수 결합의 전기 저항·Quest 배율·HP·source attribution, 3회 fractional carry `[4,4,3]`, GodMode 앞의 raw armor 피해/보고, 최소 피해·Reflect 방향 경계 및 누락 서비스의 무변경 거부를 회귀로 검사한다. 전체 일반 테스트와 실제 `GOEXPERIMENT=cgocheck2` 전체 테스트, 대상 server race/checkptr 반복 검사 및 원본 oracle 검증을 통과했다. 이 기록은 실제 네크로맨서 자연 전투/사망 drop의 완료를 주장하지 않는다.
 
+## PlayerDamage의 ordered 방어구 호출 `004E17B0`
+
+별도 복원한 `004E2180`을 PlayerDamage의 활성 native 호출 위치에도 연결한다. 이미 봉인한 `004E17B0..004E20EF`의 같은 SHA-256을 사용하며 범위·원본 자산·피해 수치는 바꾸지 않는다. `004E1DE0/004E1E1E`는 화염·Lava·전기의 raw 피해, `004E1F25/004E1FBE`는 CRUSH·일반 armor 계산 후의 signed 차액을 전달한다. POISON과 ZAP_RAY는 방어구 패스를 계속 건너뛴다.
+
+기존 eager wear plan 대신 callback 가용성만 read-only로 검증하고, 원본 hit marker/type 및 HP carry 저장 뒤 lookup→slot 1 Defend→live item carry/HP→등록된 ArmorDamage→Player 전용 health report 순서를 실행한다. 다음 inventory link는 보고 callback까지 반환한 뒤 읽으며, denominator는 helper 진입 때 한 번 cache한다. zero·negative·zero-denominator/NaN과 health 없는 장비도 helper의 원본 분기를 따르고 callback이 바꾼 update/HP/link를 사전 snapshot하지 않는다. Defend 뒤 알 수 없는 damage function으로 교체된 live item은 PE32 fallback 없이 명시적으로 거부한다.
+
+ArmorDamage를 건너뛰어 DefaultDamage에 직접 전달하던 연결도 제거했다. 실제 등록된 callback이 metal/CRUSH wear를 두 배로 만드는 동작을 보존하며, 내구도 패스는 GodMode·Quest 배율·최소 HP tail보다 앞선다. armor callback이 marker를 남겼으면 유지하고 0일 때만 marker 2와 raw type DWORD를 저장한다. callback 순서·포인터 교체·zero/signed/NaN은 server 회귀로, C 소유 고주소 record의 실제 PlayerDamage→C armor lookup→EquipDamage→ArmorDamage→DefaultDamage→UnitSetHP와 Player health packet은 native 통합 회귀로 검사한다. 일반·HD Warrior throw headless 입력은 별도 화면 회귀 진단이며 이 synthetic 방어구 시험이나 전체 stock 전투 검증을 대신하지 않는다.
+
 ## Quest 헤쿠바 생성 `0051A5A0`
 
 네크로맨서 수정 뒤 동일한 실제 headless 연속 출구 실행은 5단계의 헤쿠바 생성에서 별도 null+484 SIGSEGV를 재현했다. 이 원본 함수 하나도 PE32 고정 update/health 위치와 int 객체 임시값 대신 native 포인터 경로로 연결했다. 원본 본체 `0051A5A0..0051A797` 504바이트/SHA-256 `26818353341f30bc7509e702caebe32e1f41b36ce59070d3a3a4829f0094e04e`는 기존 여덟 CALL record와 겹치지 않는 아홉 본체 구간·뒤 8-NOP로 봉인했다. Hecubah 이름 `005C4B7C` 8바이트, HecubahQuestSkill 키 `005C4B84` 18바이트, 별도 RewardMarker 이름 `005C4B98` 13바이트를 추가해 누적 코드 2,817개·데이터 595개다.

@@ -76,8 +76,8 @@ func TestPlayerDamageNative4E17B0ElectricArmorBeforeGodMode(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	update := target.UpdateDataPlayer()
 	update.Field57 = math.Float32bits(0.4)
-	carry := float32(0.25)
-	armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(&carry), InitData: unsafe.Pointer(&ModifierInitData{})}
+	carry := damageArmorCarryFixture4E17B0(0.25)
+	armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, Damage: unsafe.Pointer(new(byte)), HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(carry), InitData: unsafe.Pointer(&ModifierInitData{})}
 	target.InvFirstItem = armor
 	var damages []int32
 	var events []string
@@ -107,8 +107,8 @@ func TestPlayerDamageNative4E17B0ElectricArmorBeforeGodMode(t *testing.T) {
 	if h, result := PlayerDamageNative4E17B0(target, source, nil, 8, object.DamageAirborneElectric, r); !h || !result {
 		t.Fatalf("GodMode electric hit=%t/%t", h, result)
 	}
-	if !reflect.DeepEqual(events, []string{"electric-armor", "armor", "report", "god"}) || armor.HealthData.Cur != 92 || carry != 0.25 || update.Field76 != 2 || update.Field75 != 17 || target.HealthData.Cur != 20 || len(damages) != 0 {
-		t.Fatalf("events=%v armor=%d carry=%g marker=%#x/%d", events, armor.HealthData.Cur, carry, update.Field75, update.Field76)
+	if !reflect.DeepEqual(events, []string{"electric-armor", "armor", "report", "god"}) || armor.HealthData.Cur != 92 || *carry != 0.25 || update.Field76 != 2 || update.Field75 != 17 || target.HealthData.Cur != 20 || len(damages) != 0 {
+		t.Fatalf("events=%v armor=%d carry=%g marker=%#x/%d", events, armor.HealthData.Cur, *carry, update.Field75, update.Field76)
 	}
 }
 

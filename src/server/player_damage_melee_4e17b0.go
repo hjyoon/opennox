@@ -17,7 +17,6 @@ type PlayerDamageMeleeRuntime4E17B0 struct {
 	MonsterPopBlockAction func(*Object)
 	CanDamageBlockWeapon  func(*Object) bool
 	DamageBlockWeapon     func(*Object, *Object, *Object, *Object, float32, object.DamageType) bool
-	CanApplyArmorDefend   func(*ModifierEff) bool
 }
 
 // playerDamageMeleeShape4E17B0 identifies the ordinary armed/unarmed unit
@@ -193,27 +192,6 @@ func playerDamageMeleeApplyBlock4E17B0(
 	}
 }
 
-func playerDamageMeleeArmorReady4E17B0(target *Object, armorValue float32, remaining int32, r PlayerDamageRuntime4E17B0) bool {
-	if remaining == 0 {
-		return true
-	}
-	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
-		if !item.Class().Has(object.ClassArmor) || !item.Flags().Has(object.FlagEquipped) || item.HealthData == nil {
-			continue
-		}
-		if item.UpdateData == nil || item.InitData == nil || armorValue == 0 || r.ItemArmorValue == nil ||
-			r.CanDamageArmor == nil || !r.CanDamageArmor(item) || r.DamageArmor == nil {
-			return false
-		}
-		modifier := item.InitDataModifier().Modifiers[1]
-		if modifier != nil && modifier.Defend76.Fnc != nil &&
-			(r.ApplyArmorDefend == nil || r.Melee.CanApplyArmorDefend == nil || !r.Melee.CanApplyArmorDefend(modifier)) {
-			return false
-		}
-	}
-	return true
-}
-
 // PlayerDamageMeleeNative4E17B0 restores the ordinary BLADE/CRUSH and unarmed
 // CLAW/CRUSH slice for players and NPC-subclass monsters. Armor and block
 // defenses also serve unit-sourced SIMPLE CRUSH, including stock Fists whose
@@ -300,7 +278,7 @@ func PlayerDamageMeleeNative4E17B0(
 	accumulated := scaled + math.Float32frombits(*carry)
 	effective := playerDamageRound4E17B0(accumulated)
 	remaining := damage - effective
-	if !playerDamageMeleeArmorReady4E17B0(target, armorValue, remaining, r) {
+	if !playerDamageArmorReady4E17B0(target, r) {
 		return playerDamageUnsupported4E17B0(r, "melee armor durability callback", target, source, weapon, damage, typ)
 	}
 	// The hit marker is already 1 at 004E1A4D/004E1AD7; it is visible to
@@ -312,21 +290,7 @@ func PlayerDamageMeleeNative4E17B0(
 	}
 	*markerType = uint32(attack.TypeInd)
 	*carry = math.Float32bits(accumulated - float32(effective))
-	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, armorValue, remaining, r)
-	if !ok {
-		return playerDamageUnsupported4E17B0(r, "validated melee armor service failed", target, source, weapon, damage, typ)
-	}
-	for _, planned := range itemPlan {
-		*planned.value = planned.next
-		if planned.damage <= 0 {
-			continue
-		}
-		before := planned.item.HealthData.Cur
-		r.DamageArmor(planned.item, source, weapon, planned.damage, typ)
-		if planned.item.HealthData != nil && before != planned.item.HealthData.Cur && r.ReportArmorHealth != nil {
-			r.ReportArmorHealth(target, planned.item, before, planned.item.HealthData.Cur)
-		}
-	}
+	playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, r)
 	if *marker == 0 {
 		*marker, *markerType = 2, uint32(typ)
 	}

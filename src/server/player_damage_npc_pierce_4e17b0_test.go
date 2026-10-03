@@ -127,9 +127,10 @@ func TestPlayerDamageNPCPierce4E17B0ArmorBeforeQuestAndMinimum(t *testing.T) {
 					target, source, arrow, r, _ := playerDamageNPCPierceSourceFixture4E17B0(t, playerSource)
 					ud := target.UpdateDataMonster()
 					ud.Field518, ud.Field1 = math.Float32bits(tc.armor), math.Float32bits(tc.carry)
-					itemCarry := float32(0.25)
+					itemCarry := damageArmorCarryFixture4E17B0(0.25)
 					item := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,
-						HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(&itemCarry), InitData: unsafe.Pointer(&ModifierInitData{})}
+						Damage:     unsafe.Pointer(new(byte)),
+						HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(itemCarry), InitData: unsafe.Pointer(&ModifierInitData{})}
 					target.InvFirstItem = item
 					var events []string
 					r.ItemArmorValue = func(*Object) float32 { return tc.armor }
@@ -142,12 +143,7 @@ func TestPlayerDamageNPCPierce4E17B0ArmorBeforeQuestAndMinimum(t *testing.T) {
 						v.HealthData.Cur -= uint16(d)
 						return true
 					}
-					r.ReportArmorHealth = func(v, i *Object, before, after uint16) {
-						if v != target || i != item || before != 100 || after != uint16(100-tc.wear) {
-							t.Fatal("armor report")
-						}
-						events = append(events, "report")
-					}
+					r.ReportArmorHealth = func(*Object, *Object, uint16, uint16) { t.Fatal("NPC armor reported player health") }
 					r.QuestMode = func() bool { return true }
 					r.QuestDamageScale = func() float32 { events = append(events, "quest"); return tc.scale }
 					r.DefaultDamage = func(v, a, w *Object, d int32, typ object.DamageType) bool {
@@ -162,10 +158,10 @@ func TestPlayerDamageNPCPierce4E17B0ArmorBeforeQuestAndMinimum(t *testing.T) {
 					}
 					wantEvents := []string{"quest", "HP"}
 					if tc.wear > 0 {
-						wantEvents = []string{"armor", "report", "quest", "HP"}
+						wantEvents = []string{"armor", "quest", "HP"}
 					}
-					if !reflect.DeepEqual(events, wantEvents) || math.Float32frombits(ud.Field1) != tc.wantCarry || itemCarry != 0.25 {
-						t.Fatalf("events=%v HP carry=%g armor carry=%g", events, math.Float32frombits(ud.Field1), itemCarry)
+					if !reflect.DeepEqual(events, wantEvents) || math.Float32frombits(ud.Field1) != tc.wantCarry || *itemCarry != 0.25 {
+						t.Fatalf("events=%v HP carry=%g armor carry=%g", events, math.Float32frombits(ud.Field1), *itemCarry)
 					}
 				})
 			}
@@ -189,9 +185,9 @@ func TestPlayerDamageNPCPierce4E17B0CachedArmorAndLiveCarry(t *testing.T) {
 				target.UpdateData = unsafe.Pointer(live)
 				return false
 			}
-			itemCarry := float32(0)
-			item := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 50},
-				UpdateData: unsafe.Pointer(&itemCarry), InitData: unsafe.Pointer(&ModifierInitData{})}
+			itemCarry := damageArmorCarryFixture4E17B0(0)
+			item := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, Damage: unsafe.Pointer(new(byte)), HealthData: &HealthData{Cur: 50},
+				UpdateData: unsafe.Pointer(itemCarry), InitData: unsafe.Pointer(&ModifierInitData{})}
 			target.InvFirstItem = item
 			r.ItemArmorValue = func(*Object) float32 { return 0.25 }
 			r.CanDamageArmor = func(v *Object) bool { return v == item }
@@ -203,7 +199,7 @@ func TestPlayerDamageNPCPierce4E17B0CachedArmorAndLiveCarry(t *testing.T) {
 				return true
 			}
 			if h, result := PlayerDamageNative4E17B0(target, source, arrow, 8, object.DamageImpale, r); !h || !result ||
-				!reflect.DeepEqual(*damages, []int32{6}) || target.HealthData.Cur != 14 || item.HealthData.Cur != 49 || itemCarry != 0 || old.Field1 != 0 || live.Field1 != math.Float32bits(0.25) || live.Field547 != 1 {
+				!reflect.DeepEqual(*damages, []int32{6}) || target.HealthData.Cur != 14 || item.HealthData.Cur != 49 || *itemCarry != 0 || old.Field1 != 0 || live.Field1 != math.Float32bits(0.25) || live.Field547 != 1 {
 				t.Fatalf("cached/live result=%t/%t HP=%d armor=%d damages=%v", h, result, target.HealthData.Cur, item.HealthData.Cur, *damages)
 			}
 		})
@@ -244,9 +240,9 @@ func TestPlayerDamageNPCPierce4E17B0WearClearsCachedMarker(t *testing.T) {
 			target, source, arrow, r, damages := playerDamageNPCPierceSourceFixture4E17B0(t, playerSource)
 			cached := target.UpdateDataMonster()
 			live := &MonsterUpdateData{Field1: math.Float32bits(-0.125), Field518: math.Float32bits(0.875)}
-			itemCarry := float32(0)
-			item := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 50},
-				UpdateData: unsafe.Pointer(&itemCarry), InitData: unsafe.Pointer(&ModifierInitData{})}
+			itemCarry := damageArmorCarryFixture4E17B0(0)
+			item := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, Damage: unsafe.Pointer(new(byte)), HealthData: &HealthData{Cur: 50},
+				UpdateData: unsafe.Pointer(itemCarry), InitData: unsafe.Pointer(&ModifierInitData{})}
 			target.InvFirstItem = item
 			r.ItemArmorValue = func(*Object) float32 { return 0.25 }
 			r.CanDamageArmor = func(v *Object) bool { return v == item }
@@ -269,7 +265,7 @@ func TestPlayerDamageNPCPierce4E17B0WearClearsCachedMarker(t *testing.T) {
 			}
 			if h, result := PlayerDamageNative4E17B0(target, source, arrow, 3, object.DamageImpale, r); !h || !result ||
 				!reflect.DeepEqual(*damages, []int32{2}) || target.HealthData.Cur != 18 || item.HealthData.Cur != 49 ||
-				cached.Field547 != 2 || cached.Field546 != 3 || cached.Field1 != math.Float32bits(0.25) || itemCarry != 0 ||
+				cached.Field547 != 2 || cached.Field546 != 3 || cached.Field1 != math.Float32bits(0.25) || *itemCarry != 0 ||
 				live.Field547 != 1 || live.Field546 != uint32(arrow.TypeInd) || live.Field1 != math.Float32bits(-0.125) {
 				t.Fatalf("wear/live marker result=%t/%t cached=%d/%d live=%d/%d damage=%v", h, result, cached.Field547, cached.Field546, live.Field547, live.Field546, *damages)
 			}
@@ -325,10 +321,11 @@ func TestPlayerDamageNPCPierce4E17B0AdmissionBeforeMutation(t *testing.T) {
 func TestPlayerDamageNPCPierce4E17B0PlayerArmorDefendArguments(t *testing.T) {
 	target, source, arrow, r, damages := playerDamageNPCPierceSourceFixture4E17B0(t, true)
 	ud := target.UpdateDataMonster()
-	carry := float32(0.25)
+	carry := damageArmorCarryFixture4E17B0(0.25)
 	modifier := &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
 	item := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,
-		HealthData: &HealthData{Cur: 50}, UpdateData: unsafe.Pointer(&carry),
+		Damage:     unsafe.Pointer(new(byte)),
+		HealthData: &HealthData{Cur: 50}, UpdateData: unsafe.Pointer(carry),
 		InitData: unsafe.Pointer(&ModifierInitData{Modifiers: [4]*ModifierEff{nil, modifier, nil, nil}})}
 	target.InvFirstItem = item
 	beforeSource, beforePlayer := *source, *source.UpdateDataPlayer()
@@ -339,6 +336,7 @@ func TestPlayerDamageNPCPierce4E17B0PlayerArmorDefendArguments(t *testing.T) {
 		}
 		return 0.25
 	}
+	r.CanApplyArmorDefend = func(m *ModifierEff) bool { return m == modifier }
 	r.ApplyArmorDefend = func(m *ModifierEff, armor, owner, weapon, attacker *Object, amount *float32) bool {
 		if m != modifier || armor != item || owner != target || weapon != arrow || attacker != source || *amount != 1 {
 			t.Fatal("armor modifier lost the actual player/missile arguments")
@@ -350,26 +348,21 @@ func TestPlayerDamageNPCPierce4E17B0PlayerArmorDefendArguments(t *testing.T) {
 	r.CanDamageArmor = func(got *Object) bool { return got == item }
 	r.DamageArmor = func(got, attacker, weapon *Object, amount int32, typ object.DamageType) bool {
 		if got != item || attacker != source || weapon != arrow || amount != 1 || typ != object.DamageImpale ||
-			ud.Field547 != 1 || ud.Field546 != uint32(arrow.TypeInd) || ud.Field1 != math.Float32bits(0.25) || carry != -0.25 {
+			ud.Field547 != 1 || ud.Field546 != uint32(arrow.TypeInd) || ud.Field1 != math.Float32bits(0.25) || *carry != -0.25 {
 			t.Fatal("durability must receive the player source after missile marker/carry")
 		}
 		events = append(events, "armor")
 		item.HealthData.Cur--
 		return true
 	}
-	r.ReportArmorHealth = func(owner, armor *Object, before, after uint16) {
-		if owner != target || armor != item || before != 50 || after != 49 {
-			t.Fatal("armor health report identity/order")
-		}
-		events = append(events, "report")
-	}
+	r.ReportArmorHealth = func(*Object, *Object, uint16, uint16) { t.Fatal("NPC armor reported player health") }
 	tail := r.DefaultDamage
 	r.DefaultDamage = func(v, a, w *Object, d int32, typ object.DamageType) bool {
 		events = append(events, "default")
 		return tail(v, a, w, d, typ)
 	}
 	if h, result := PlayerDamageNative4E17B0(target, source, arrow, 3, object.DamageImpale, r); !h || !result ||
-		!reflect.DeepEqual(events, []string{"defend", "armor", "report", "default"}) || !reflect.DeepEqual(*damages, []int32{2}) ||
+		!reflect.DeepEqual(events, []string{"defend", "armor", "default"}) || !reflect.DeepEqual(*damages, []int32{2}) ||
 		target.HealthData.Cur != 18 || item.HealthData.Cur != 49 || *source != beforeSource || *source.UpdateDataPlayer() != beforePlayer {
 		t.Fatalf("result=%t/%t events=%v HP=%d armor=%d", h, result, events, target.HealthData.Cur, item.HealthData.Cur)
 	}
@@ -389,9 +382,10 @@ func TestPlayerDamageNPCPierce4E17B0PlayerFriendlyCampaignStillWearsArmor(t *tes
 	r.DefaultDamage = func(v, a, w *Object, d int32, typ object.DamageType) bool {
 		return DefaultDamageWorld4E0B30(v, a, w, d, typ, tail)
 	}
-	carry := float32(0)
+	carry := damageArmorCarryFixture4E17B0(0)
 	item := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,
-		HealthData: &HealthData{Cur: 50}, UpdateData: unsafe.Pointer(&carry),
+		Damage:     unsafe.Pointer(new(byte)),
+		HealthData: &HealthData{Cur: 50}, UpdateData: unsafe.Pointer(carry),
 		InitData: unsafe.Pointer(&ModifierInitData{})}
 	target.InvFirstItem = item
 	r.ItemArmorValue = func(*Object) float32 { return 0.25 }

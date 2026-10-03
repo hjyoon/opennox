@@ -20,9 +20,9 @@ const (
 )
 
 // PlayerDamageRuntime4E17B0 contains the services called by the native-width
-// PlayerDamage slice. Unsupported is reported before this slice changes any
-// object state, so a caller can keep an unported branch visible without
-// entering the PE32 callback on a 64-bit host.
+// PlayerDamage slice. Read-only service checks precede this slice's stores.
+// A callback that replaces an item with an unsupported live record is reported
+// at that record's use, never retried through a PE32 callback on a 64-bit host.
 type PlayerDamageRuntime4E17B0 struct {
 	Melee                   PlayerDamageMeleeRuntime4E17B0
 	Frame                   func() uint32
@@ -39,6 +39,7 @@ type PlayerDamageRuntime4E17B0 struct {
 	BuffOff                 func(*Object, EnchantID)
 	ObserveClear            func(*Object)
 	ItemArmorValue          func(*Object) float32
+	CanApplyArmorDefend     func(*ModifierEff) bool
 	ApplyArmorDefend        func(*ModifierEff, *Object, *Object, *Object, *Object, *float32) bool
 	CanDamageArmor          func(*Object) bool
 	DamageArmor             func(*Object, *Object, *Object, int32, object.DamageType) bool
@@ -268,13 +269,6 @@ func playerDamageShieldBlock4E17B0(
 	return true, true, false
 }
 
-type playerDamageItemCarry4E17B0 struct {
-	item   *Object
-	value  *float32
-	next   float32
-	damage int32
-}
-
 type playerDamageLateDefend4E1320 struct {
 	item     *Object
 	modifier *ModifierEff
@@ -333,45 +327,60 @@ func playerDamagePlanLateDefend4E1320(
 	return plan, true
 }
 
-func playerDamagePlanArmorCarry4E17B0(
-	target, source, weapon *Object,
-	armorValue float32,
-	remaining int32,
-	runtime PlayerDamageRuntime4E17B0,
-) ([]playerDamageItemCarry4E17B0, bool) {
-	if remaining == 0 {
-		return nil, true
-	}
-	var plan []playerDamageItemCarry4E17B0
+// Check only callback availability. In particular, do not execute the armor
+// lookup/Defend callbacks or snapshot carry, health, or next-item pointers.
+// Zero/signed amounts and a zero armor denominator still reach 004E2180.
+func playerDamageArmorReady4E17B0(target *Object, runtime PlayerDamageRuntime4E17B0) bool {
 	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
-		if !item.ObjClass.Has(object.ClassArmor) || !item.ObjFlags.Has(object.FlagEquipped) || item.HealthData == nil {
+		if !item.ObjClass.Has(object.ClassArmor) || !item.ObjFlags.Has(object.FlagEquipped) {
 			continue
 		}
-		if item.UpdateData == nil || item.InitData == nil {
-			return nil, false
+		if runtime.ItemArmorValue == nil {
+			return false
 		}
-		if armorValue == 0 || runtime.ItemArmorValue == nil {
-			return nil, false
+		// The lookup is required even here; EquipDamage owns this no-op.
+		if item.HealthData == nil {
+			continue
 		}
-		portion := float32(float64(runtime.ItemArmorValue(item)) / float64(armorValue) * float64(remaining))
+		if item.UpdateData == nil || item.InitData == nil || item.Damage == nil ||
+			runtime.CanDamageArmor == nil || !runtime.CanDamageArmor(item) || runtime.DamageArmor == nil {
+			return false
+		}
 		modifier := item.InitDataModifier().Modifiers[1]
-		if modifier != nil && modifier.Defend76.Fnc != nil {
-			if runtime.ApplyArmorDefend == nil ||
-				!runtime.ApplyArmorDefend(modifier, item, target, weapon, source, &portion) {
-				return nil, false
-			}
+		if modifier != nil && modifier.Defend76.Fnc != nil &&
+			(runtime.ApplyArmorDefend == nil || runtime.CanApplyArmorDefend == nil || !runtime.CanApplyArmorDefend(modifier)) {
+			return false
 		}
-		value := (*float32)(item.UpdateData)
-		total := portion + *value
-		damage := playerDamageRound4E17B0(total)
-		if damage > 0 && (runtime.CanDamageArmor == nil || !runtime.CanDamageArmor(item) || runtime.DamageArmor == nil) {
-			return nil, false
-		}
-		plan = append(plan, playerDamageItemCarry4E17B0{
-			item: item, value: value, next: total - float32(damage), damage: damage,
-		})
 	}
-	return plan, true
+	return true
+}
+
+func playerDamageApplyArmor4E17B0(target, source, weapon *Object, remaining int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0) {
+	PlayerDamageItems4E2180(target, source, weapon, remaining, typ, PlayerDamageItemsRuntime4E2180{
+		ItemArmorValue: func(item *Object) float64 { return float64(runtime.ItemArmorValue(item)) },
+		EquipDamage: func(item, owner, source, effective *Object, amount float32, typ object.DamageType) {
+			EquipDamageNative4E16D0(item, owner, source, effective, amount, typ, ItemDurabilityDamageRuntime4E1560{
+				ApplyDefend: runtime.ApplyArmorDefend,
+				Damage: func(item, source, effective *Object, damage int32, typ object.DamageType) bool {
+					// Defend or an earlier item's callback can replace the live
+					// damage function after admission. Never fall back to PE32.
+					if runtime.CanDamageArmor == nil || !runtime.CanDamageArmor(item) || runtime.DamageArmor == nil {
+						if runtime.Unsupported != nil {
+							runtime.Unsupported("unsupported live armor damage callback", owner, source, effective, remaining, typ)
+						}
+						return false
+					}
+					return runtime.DamageArmor(item, source, effective, damage, typ)
+				},
+				ReportHealth: runtime.ReportArmorHealth,
+				Unsupported: func(reason string, _, owner, source, effective *Object, _ float32, typ object.DamageType) {
+					if runtime.Unsupported != nil {
+						runtime.Unsupported(reason, owner, source, effective, remaining, typ)
+					}
+				},
+			})
+		},
+	})
 }
 
 // Glyph's CastShock passes its unit caster as both source and weapon. The
@@ -409,28 +418,13 @@ func playerDamageMonsterMissilePierce4E17B0(
 	live := target.UpdateDataMonster()
 	accumulated := scaled + math.Float32frombits(live.Field1)
 	effective := playerDamageRound4E17B0(accumulated)
-	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(
-		target, source, weapon, math.Float32frombits(live.Field518), damage-effective, runtime,
-	)
-	if !ok {
+	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
 	update.Field547 = 1
 	update.Field546 = uint32(weapon.TypeInd)
 	live.Field1 = math.Float32bits(accumulated - float32(effective))
-	for _, planned := range itemPlan {
-		*planned.value = planned.next
-		if planned.damage <= 0 {
-			continue
-		}
-		health := planned.item.HealthData
-		before := health.Cur
-		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
-		after := health.Cur
-		if before != after && runtime.ReportArmorHealth != nil {
-			runtime.ReportArmorHealth(target, planned.item, before, after)
-		}
-	}
+	playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, runtime)
 	if update.Field547 == 0 {
 		update.Field547 = 2
 		update.Field546 = uint32(typ)
@@ -540,29 +534,11 @@ func playerDamageMonster4E17B0(
 	if crush {
 		remaining = damage - effective
 	}
-	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, armorValue, remaining, runtime)
-	if !ok {
+	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
-	if damage > 0 && effective == 0 {
-		effective = 1
-	}
-
 	update.Field547 = 0
 	update.Field1 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
-	for _, planned := range itemPlan {
-		*planned.value = planned.next
-		if planned.damage <= 0 {
-			continue
-		}
-		health := planned.item.HealthData
-		before := health.Cur
-		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
-		after := health.Cur
-		if before != after && runtime.ReportArmorHealth != nil {
-			runtime.ReportArmorHealth(target, planned.item, before, after)
-		}
-	}
 	if weapon != nil && weapon != source {
 		update.Field547 = 1
 		update.Field546 = uint32(weapon.TypeInd)
@@ -570,9 +546,13 @@ func playerDamageMonster4E17B0(
 		update.Field547 = 1
 		update.Field546 = uint32(source.TypeInd)
 	}
+	playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, runtime)
 	if update.Field547 == 0 {
 		update.Field547 = 2
 		update.Field546 = uint32(typ)
+	}
+	if damage > 0 && effective == 0 {
+		effective = 1
 	}
 	if quest {
 		before := effective
@@ -603,9 +583,7 @@ func playerDamageElectricPlayer4E17B0(
 	scaled := float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
 	accumulated := scaled + math.Float32frombits(update.Field21)
 	effective := playerDamageRound4E17B0(accumulated)
-	armorValue := math.Float32frombits(update.Field57)
-	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, armorValue, damage, runtime)
-	if !ok {
+	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
 	update.Field76 = 0
@@ -613,19 +591,7 @@ func playerDamageElectricPlayer4E17B0(
 		runtime.ObserveClear(target)
 	}
 	update.Field21 = math.Float32bits(accumulated - float32(effective))
-	for _, planned := range itemPlan {
-		*planned.value = planned.next
-		if planned.damage <= 0 {
-			continue
-		}
-		health := planned.item.HealthData
-		before := health.Cur
-		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
-		after := health.Cur
-		if before != after && runtime.ReportArmorHealth != nil {
-			runtime.ReportArmorHealth(target, planned.item, before, after)
-		}
-	}
+	playerDamageApplyArmor4E17B0(target, source, weapon, damage, typ, runtime)
 	if update.Field76 == 0 {
 		update.Field76 = 2
 		// 004E1E49 copies the incoming DWORD type, not float32(type).
@@ -682,27 +648,14 @@ func playerDamageMissilePierce4E17B0(
 	accumulated := scaled + math.Float32frombits(live.Field21)
 	effective := playerDamageRound4E17B0(accumulated)
 	remaining := damage - effective
-	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, math.Float32frombits(live.Field57), remaining, runtime)
-	if !ok {
+	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
 	update.Field76 = 0
 	update.Field76 = 1
 	update.Field75 = uint32(weapon.TypeInd)
 	live.Field21 = math.Float32bits(accumulated - float32(effective))
-	for _, planned := range itemPlan {
-		*planned.value = planned.next
-		if planned.damage <= 0 {
-			continue
-		}
-		health := planned.item.HealthData
-		before := health.Cur
-		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
-		after := health.Cur
-		if before != after && runtime.ReportArmorHealth != nil {
-			runtime.ReportArmorHealth(target, planned.item, before, after)
-		}
-	}
+	playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, runtime)
 	if update.Field76 == 0 {
 		update.Field76 = 2
 		update.Field75 = uint32(typ)
@@ -882,14 +835,15 @@ func PlayerDamageNative4E17B0(
 		accumulated = armored + accumulated
 		effective = playerDamageRound4E17B0(accumulated)
 		remaining = damage - effective
-	} else if poison || sentryZapRay {
+	}
+	damageItems := !poison && !sentryZapRay
+	if !damageItems {
 		// POISON and ZAP_RAY are cases 5 and 16 in the original switch: they
 		// change the player damage marker but do not run the armor-durability
 		// pass.
 		remaining = 0
 	}
-	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(target, source, weapon, armorValue, remaining, runtime)
-	if !ok {
+	if damageItems && !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
 	if effective == 0 {
@@ -924,27 +878,19 @@ func PlayerDamageNative4E17B0(
 	if player.ObserveTarget() != nil && runtime.ObserveClear != nil {
 		runtime.ObserveClear(target)
 	}
+	if source != nil && weapon != nil && source != weapon {
+		update.Field76, update.Field75 = 1, uint32(weapon.TypeInd)
+	}
 	if armorReduced {
 		update.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
 	}
-	for _, planned := range itemPlan {
-		*planned.value = planned.next
-		if planned.damage <= 0 {
-			continue
-		}
-		health := planned.item.HealthData
-		before := health.Cur
-		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
-		after := health.Cur
-		if before != after && runtime.ReportArmorHealth != nil {
-			runtime.ReportArmorHealth(target, planned.item, before, after)
-		}
+	if damageItems {
+		playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, runtime)
 	}
-	update.Field76 = 2
-	update.Field75 = math.Float32bits(float32(typ))
-	if playerCharge {
-		// 004E1F42 stores literal DWORD 2, not IEEE float32(2).
-		update.Field75 = uint32(object.DamageCrush)
+	if update.Field76 == 0 {
+		// 004E1E49/004E1EAE/004E1F4D/004E1FE1 copy the raw DWORD,
+		// and preserve a hit marker left by an earlier armor callback.
+		update.Field76, update.Field75 = 2, uint32(typ)
 	}
 
 	if runtime.GodMode != nil && runtime.GodMode() {

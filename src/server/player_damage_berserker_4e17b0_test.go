@@ -55,10 +55,11 @@ func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 	source.PosVec, target.PosVec = types.Ptf(30.5, 31.5), types.Ptf(40.5, 41.5)
 	target.Buffs = 1<<playerDamageInvisibleEnchant4E17B0 | 1<<playerDamageShieldEnchant4E17B0 | 1<<ENCHANT_SHOCK
 	modifier := &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
-	carry := float32(0.25)
+	carry := damageArmorCarryFixture4E17B0(0.25)
 	armor := &Object{
 		ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped,
-		HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(&carry),
+		Damage:     unsafe.Pointer(new(byte)),
+		HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(carry),
 		InitData: unsafe.Pointer(&ModifierInitData{Modifiers: [4]*ModifierEff{nil, nil, modifier, nil}}),
 	}
 	target.InvFirstItem = armor
@@ -140,9 +141,9 @@ func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 	}
 	want := []string{"armor", "report", "quest", "invisible-off", "late-defend", "sound", "vampirism-sound", "heal", "fx", "hurt", "shield", "damage"}
 	if !reflect.DeepEqual(events, want) || !reflect.DeepEqual(*damages, []int32{40}) ||
-		target.HealthData.Cur != 1960 || armor.HealthData.Cur != 70 || carry != 0.25 ||
+		target.HealthData.Cur != 1960 || armor.HealthData.Cur != 70 || *carry != 0.25 ||
 		target.HasEnchant(playerDamageInvisibleEnchant4E17B0) || !target.HasEnchant(ENCHANT_SHOCK) {
-		t.Fatalf("defense tail = events:%v damages:%v hp:%d armor:%d carry:%g buffs:%#x", events, *damages, target.HealthData.Cur, armor.HealthData.Cur, carry, target.Buffs)
+		t.Fatalf("defense tail = events:%v damages:%v hp:%d armor:%d carry:%g buffs:%#x", events, *damages, target.HealthData.Cur, armor.HealthData.Cur, *carry, target.Buffs)
 	}
 }
 

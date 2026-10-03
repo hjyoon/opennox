@@ -323,15 +323,16 @@ func nox_server_handler_PlayerDamage_4E17B0_go(
 		ItemArmorValue: func(item *server.Object) float32 {
 			return float32(C.nox_xxx_itemApplyDefendEffect_415C00(asObjectC(item)))
 		},
-		ApplyArmorDefend: itemDurabilityApplyDefendNative4E1560,
+		CanApplyArmorDefend: itemDurabilityCanApplyDefendNative4E1560,
+		ApplyArmorDefend:    itemDurabilityApplyDefendNative4E1560,
 		CanDamageArmor: func(item *server.Object) bool {
 			return item != nil && item.Damage == C.nox_xxx_damageArmor_4E1500_go &&
 				canEquipDamageNative4E16D0(item)
 		},
 		DamageArmor: func(item, source, weapon *server.Object, damage int32, typ object.DamageType) bool {
-			return server.DefaultDamageWorld4E0B30(
-				item, source, weapon, damage, typ, defaultDamageWorldRuntime4E0B30(s),
-			)
+			// 004E16D0 calls the item's registered damage function. Going
+			// straight to DefaultDamage loses ArmorDamage's metal/CRUSH wear.
+			return item.CallDamage(source, weapon, int(damage), typ)
 		},
 		ReportArmorHealth: func(owner, item *server.Object, before, after uint16) {
 			reportItemHealthNative4E1650(s, owner, item, before, after)

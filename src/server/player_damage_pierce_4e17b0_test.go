@@ -76,8 +76,8 @@ func TestPlayerDamageNative4E17B0PierceArmorBeforeGodMode(t *testing.T) {
 		target, source, arrow, r, damages := playerDamagePierceFixture4E17B0(t, playerSource)
 		update := target.UpdateDataPlayer()
 		update.Field57 = math.Float32bits(0.25)
-		carry := float32(0.25)
-		armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(&carry), InitData: unsafe.Pointer(&ModifierInitData{})}
+		carry := damageArmorCarryFixture4E17B0(0.25)
+		armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, Damage: unsafe.Pointer(new(byte)), HealthData: &HealthData{Cur: 100, Max: 100}, UpdateData: unsafe.Pointer(carry), InitData: unsafe.Pointer(&ModifierInitData{})}
 		target.InvFirstItem = armor
 		var events []string
 		r.ItemArmorValue = func(*Object) float32 { return 0.25 }
@@ -106,8 +106,8 @@ func TestPlayerDamageNative4E17B0PierceArmorBeforeGodMode(t *testing.T) {
 		if h, result := PlayerDamageNative4E17B0(target, source, arrow, 8, object.DamageImpale, r); !h || !result {
 			t.Fatalf("GodMode PIERCE = %t/%t", h, result)
 		}
-		if !reflect.DeepEqual(events, []string{"armor", "report", "god"}) || armor.HealthData.Cur != 98 || carry != 0.25 || target.HealthData.Cur != 20 || len(*damages) != 0 {
-			t.Fatalf("events=%v armor=%d carry=%g HP=%d", events, armor.HealthData.Cur, carry, target.HealthData.Cur)
+		if !reflect.DeepEqual(events, []string{"armor", "report", "god"}) || armor.HealthData.Cur != 98 || *carry != 0.25 || target.HealthData.Cur != 20 || len(*damages) != 0 {
+			t.Fatalf("events=%v armor=%d carry=%g HP=%d", events, armor.HealthData.Cur, *carry, target.HealthData.Cur)
 		}
 	})
 }
@@ -233,8 +233,8 @@ func TestPlayerDamageNative4E17B0PierceCachedArmorAndLiveTail(t *testing.T) {
 		// Direction runs before the type switch. Absorption uses the value
 		// cached at 004E1865; durability reads the newly live value at 004E2180.
 		r.BlockDirection = func(*Object, types.Pointf) bool { old.Field57 = math.Float32bits(0.5); return false }
-		carry := float32(0)
-		armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 50}, UpdateData: unsafe.Pointer(&carry), InitData: unsafe.Pointer(&ModifierInitData{})}
+		carry := damageArmorCarryFixture4E17B0(0)
+		armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, Damage: unsafe.Pointer(new(byte)), HealthData: &HealthData{Cur: 50}, UpdateData: unsafe.Pointer(carry), InitData: unsafe.Pointer(&ModifierInitData{})}
 		target.InvFirstItem = armor
 		r.ItemArmorValue = func(*Object) float32 { return 0.25 }
 		r.CanDamageArmor = func(item *Object) bool { return item == armor }
@@ -323,7 +323,7 @@ func TestPlayerDamageNative4E17B0PierceSignedDamage(t *testing.T) {
 				update := target.UpdateDataPlayer()
 				update.Field57, update.Field21 = math.Float32bits(tc.armor), math.Float32bits(tc.carry)
 				itemUpdate := &WeaponArmorUpdateData{Field0: math.Float32bits(0.125)}
-				armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, UpdateData: unsafe.Pointer(itemUpdate), InitData: unsafe.Pointer(&ModifierInitData{}), HealthData: &HealthData{Cur: 10, Max: 10}}
+				armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, Damage: unsafe.Pointer(new(byte)), UpdateData: unsafe.Pointer(itemUpdate), InitData: unsafe.Pointer(&ModifierInitData{}), HealthData: &HealthData{Cur: 10, Max: 10}}
 				target.InvFirstItem = armor
 				r.ItemArmorValue = func(*Object) float32 { return tc.armor }
 				r.CanDamageArmor = func(item *Object) bool { return item == armor }
@@ -371,7 +371,7 @@ func TestPlayerDamageNative4E17B0PierceFriendlyAndCoop(t *testing.T) {
 			update := target.UpdateDataPlayer()
 			update.Field57, update.Field76, update.Field75 = math.Float32bits(0.25), 88, 77
 			armorUD := &WeaponArmorUpdateData{}
-			armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, UpdateData: unsafe.Pointer(armorUD), InitData: unsafe.Pointer(&ModifierInitData{}), HealthData: &HealthData{Cur: 10, Max: 10}}
+			armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, Damage: unsafe.Pointer(new(byte)), UpdateData: unsafe.Pointer(armorUD), InitData: unsafe.Pointer(&ModifierInitData{}), HealthData: &HealthData{Cur: 10, Max: 10}}
 			target.InvFirstItem = armor
 			r.ItemArmorValue = func(*Object) float32 { return 0.25 }
 			r.CanDamageArmor = func(item *Object) bool { return item == armor }

@@ -1100,7 +1100,7 @@ int nox_xxx_inventoryDrawAllMB_463430(nox_window* win, nox_window_data* draw) {
 	int v5;          // eax
 	void* v6;        // eax, nox_video_bag_image_t*
 	int v7;          // ebp
-	int v8;          // eax
+	void* v8;        // eax, nox_video_bag_image_t*
 	int v9;          // edi
 	int v10;         // esi
 	int v11;         // esi

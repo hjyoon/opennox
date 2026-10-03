@@ -1,0 +1,111 @@
+# Real projectile collision against stock NPC/host PlayerDamage in both
+# directions at all five levels, followed by the natural NPC cast-frame path.
+# Placement, durable HP, aim and waiting AI are setup; damage, collision,
+# hit metadata, client HP, audio and deletion are actual game results.
+# Script requests do not simulate player mana or incantation input.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-fireball-unit-damage
+    count: 1
+    text: player-to-npc
+    name: Player Fireball against NPC
+  - action: check-fireball-unit-damage
+    count: 2
+    text: player-to-npc
+    name: Player StrongFireball against NPC
+  - action: check-fireball-unit-damage
+    count: 3
+    text: player-to-npc
+    name: Player TitanFireball level three against NPC
+  - action: check-fireball-unit-damage
+    count: 4
+    text: player-to-npc
+    name: Player TitanFireball level four against NPC
+  - action: check-fireball-unit-damage
+    count: 5
+    text: player-to-npc
+    name: Player TitanFireball level five against NPC
+  - action: check-fireball-unit-damage
+    count: 1
+    text: npc-to-player
+    name: NPC Fireball against Player
+  - action: check-fireball-unit-damage
+    count: 2
+    text: npc-to-player
+    name: NPC StrongFireball against Player
+  - action: check-fireball-unit-damage
+    count: 3
+    text: npc-to-player
+    name: NPC TitanFireball level three against Player
+  - action: check-fireball-unit-damage
+    count: 4
+    text: npc-to-player
+    name: NPC TitanFireball level four against Player
+  - action: check-fireball-unit-damage
+    count: 5
+    text: npc-to-player
+    name: NPC TitanFireball level five against Player
+  - action: check-fireball-unit-damage
+    count: 0
+    text: npc-to-player
+    name: NPC natural Fireball animation against Player
+  - action: quit
+    dt: 1

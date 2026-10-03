@@ -4,8 +4,6 @@ import (
 	"math"
 
 	"github.com/opennox/libs/object"
-
-	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
 // BoomCollide sends a distinct Magic Missile and its owning unit for the
@@ -90,9 +88,6 @@ func playerDamageMonsterMissileExplosion4E17B0(
 	target, source, weapon *Object, update *MonsterUpdateData, armorValue float32,
 	damage int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
-	if update.WeaponEquipFlags&0x400 != 0 && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK {
-		return playerDamageUnsupported4E17B0(runtime, "NPC GreatStaff missile EXPLOSION block", target, source, weapon, damage, typ)
-	}
 	return playerDamageMissileExplosionTail4E17B0(target, source, weapon, &update.Field547, &update.Field546, armorValue, damage, typ, runtime)
 }
 

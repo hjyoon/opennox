@@ -310,6 +310,18 @@ server 회귀는 모든 init/slot/function/call fault prefix, callback의 다음
 
 전체 일반·실제 `GOEXPERIMENT=cgocheck2` 및 server-tag 검사를 통과했고, 관련 일반·strict·race·checkptr=2·HD 회귀는 각각 3회 통과했다. 기존 Hunt의 실제 고주소 C wrapper/AI stack와 NoxScript caller/trigger 회귀도 다시 통과했다. Darwin/ARM64 일반·HD·서버 제품 세 개의 빌드·Mach-O arm64·`-h` exit 0을 확인했다. 이전 clean `688ffb33b`과 새 빌드에 동일 YAML·이전 private diagnostic PNG를 사용해 일반·HD 슈리켄/채크럼 headless real input을 합계 8회 비교했으며, 실제 명중 HP `2,000→1,970/1,962`·소모/복귀/재장착과 세 화면의 exact-pixel 검사가 통과했다. GUI snapshot override나 기대값 교체는 하지 않았고, 이 화면 회귀를 새로운 helper의 실제 호출 증거로 대신하지 않는다. 실행 전후 원본 1,556파일·570,653,750바이트/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,909개·데이터 621개와 50개 압축 oracle pair를 재검증했다. clean 제품의 commit metadata 검증은 커밋 후 별도 재빌드 단계에서 수행한다.
 
+## NPC 대상 버저커 차지의 CRUSH admission `004E1EE8`
+
+stock NPC를 대상으로 실제 마우스 조준/A 키→서버 능력 활성화→자연 충돌을 실행하면 `damage=150/type=2/source==weapon==NewPlayer`가 `unsupported monster damage shape`로 거부되는 red를 보존했다. 기존 NPC admission은 Monster source와 별도 Weapon만 허용했다. 원본 PlayerDamage `004E1EE8`의 case 2는 플레이어/NPC가 공유하는 CRUSH armor/carry tail이며 이런 source 제한이 없다. 이번 production 단위는 `playerDamageMonster4E17B0` 한 본체의 admission뿐이다. initialized Player를 source와 weapon에 동일하게 전달한 CRUSH만 추가하고 Monster/Weapon/Wand/Missile hybrid와 인접 damage shape는 계속 명시적으로 거부한다.
+
+이미 봉인한 `004E17B0..004E20EF` 2,368바이트/SHA-256 `c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9`를 재사용한다. 원래 `004E1F25`의 armor 피해 인수, fractional carry/ties-to-even, marker 2/type 2, 양수 피해의 최소 1, Quest 배율과 shared DefaultDamage를 통과시킨다. 기존 일반 방패의 전방 차단, invulnerability·dead/NoUpdate, campaign의 friendly-owner 보호는 유지한다. 플레이어에게 NPC의 MonsterUpdateData를 적용하거나 차지 수치를 바꾸지 않는다. 기존 CRUSH 본체의 callback 중 armor cache 교체 순서까지 새로 복원했다고 주장하지 않는다.
+
+server 회귀는 소수 누적·armor wear→Quest→invisibility 해제→late Defend→Shield→HP 순서, 전/후방 방패, source/self-weapon attribution, signed/zero/minimum 피해 및 누락 서비스의 무변경 거부를 검사한다. armor/late Defend/Shield 순서 검사는 주입한 서비스의 계약 시험이다. 별도 native 회귀는 pinned Go-owned 4GiB 초과 target/source/update/HP를 unmodified C damage dispatcher에 넣어 production adapter→DefaultDamage→UnitSetHP의 `60→57→55→52`와 player memory 무변경을 확인한다. 이 fixture에는 실제 장착 armor item이 없으며 자연 NPC AI 전투나 C-owned 장비 내구도 통합 검사로 확대하지 않는다.
+
+새 headless 시나리오는 stock `NPC` type의 원래 damage/update/collision callback을 유지한 채 HP·위치·일반 WAIT AI만 fixture로 설정한다. 일반·HD 각각 두 번 실행했고 매 실행에서 실제 A 입력으로 두 차례 충돌해 NPC HP `2,000→1,850`, 플레이어 HP `150→150`, 불필요한 HELD 없음, 효과 종료·쿨다운 중 재입력 거부·쿨다운 뒤 재사용을 확인했다. damage/collision/HP/HUD 서비스 대체, 새 screenshot 기준, snapshot override는 없다. 같은 빌드의 기존 Shield 피해·Spider 방패·슈리켄/채크럼 시나리오도 일반·HD 총 8회 통과했고 투척 무기는 이전 private diagnostic PNG를 그대로 exact-pixel 비교했다.
+
+전체 일반·실제 `GOEXPERIMENT=cgocheck2`와 server-tag 시험, 관련 일반·strict·race·checkptr=2·HD 각 3회, focus 일반/strict 각 3회, Darwin/ARM64 일반·HD·서버 빌드·Mach-O arm64·`-h` exit 0을 통과했다. 원본 1,556파일·570,653,750바이트/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,911개·데이터 621개 및 50개 압축 oracle pair를 재검증했다. clean commit metadata와 NPC/Shield headless 재검증은 커밋/푸시 후 별도 빌드 단계에서 수행한다. 원본 자산·개인 Save/config는 변경하지 않으며 모든 맵/NPC/멀티플레이어 조합이나 전체 macOS ARM64 포팅 완료로 확대하지 않는다.
+
 ## DefaultDamage의 live Shield 판정 `004E11BF`
 
 이번 production 단위는 DefaultDamageWorld `004E0B30` 한 본체의 Shield 판정뿐이다. 기존 entry-time `shielded`는 protection·BuffOff·late Defend·pre-Damage·음향·Vampirism·GameBall·hurt-state·FieldGuide·source-hit IsEnemy callback이 추가/해제한 buff 26을 놓쳤다. 원본 `004E11BF/004E11C2`는 이 callback과 첫 명중 시각 기록 뒤 현재 Shield를 조회한다. admission의 읽기 전용 서비스 가용성 검사는 유지하되 tail 실행 계획으로 재사용하지 않는다.

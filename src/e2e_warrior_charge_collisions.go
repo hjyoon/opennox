@@ -79,6 +79,36 @@ func (f *e2eWarriorChargeCollision) prepare() {
 			e2eError(err)
 			return
 		}
+	} else if f.kind == "npc" {
+		pos0, direction, err := e2eWarriorAbilityArena(unit.PosVec, unit.Shape.Circle.R+4, func(from, to types.Pointf) bool {
+			return e2eWarriorLaneClear(unit, from, to)
+		})
+		if err != nil {
+			e2eError(err)
+			return
+		}
+		pos, aim = pos0, pos0.Add(direction.Mul(112))
+		target := f.target("NPC", aim)
+		if target == nil {
+			return
+		}
+		if uint32(target.SubClass())&0x10 == 0 || target.Damage == nil ||
+			target.Damage != target.ObjectTypeC().Damage || target.Damage != unit.Damage ||
+			target.Flags().HasAny(object.FlagNoUpdate|object.FlagNoCollide|object.FlagDead|object.FlagDestroyed) ||
+			target.HasEnchant(server.ENCHANT_INVULNERABLE) || target.HasEnchant(server.ENCHANT_SHIELD) {
+			e2eError(fmt.Errorf("charge stock NPC lacks its live PlayerDamage callback"))
+			return
+		}
+		// Fixture health/position and ordinary waiting AI only. Keep the stock
+		// collision/damage/update callbacks and all live packet/HP services.
+		asObjectS(target).SetMaxHealth(2000)
+		f.health = target.HealthData.Cur
+		armor := math.Float32frombits(target.UpdateDataMonster().Field518)
+		carry := math.Float32frombits(target.UpdateDataMonster().Field1)
+		amount := float32((1 - float64(armor)*0.5) * float64(int32(math.RoundToEven(noxServer.Balance.Float("BerserkerDamage")))))
+		f.expectedDamage = uint16(max(1, int32(math.RoundToEven(float64(amount+carry)))))
+		e2eLog.Printf("CHARGE NPC FIXTURE: unit=%p update=%p callback=%p class=%#x subclass=%#x HP=%d armor=%g expected=%d pos=%v",
+			target, target.UpdateData, target.Damage, uint32(target.Class()), uint32(target.SubClass()), f.health, armor, f.expectedDamage, aim)
 	} else {
 		pos0, direction, err := e2eWarriorAbilityArena(unit.PosVec, unit.Shape.Circle.R+4, func(from, to types.Pointf) bool {
 			return e2eWarriorLaneClear(unit, from, to)
@@ -155,8 +185,8 @@ func (f *e2eWarriorChargeCollision) collided() bool {
 // Fixture placement never invokes abilities.Do, the collision callback, damage,
 // cooldown setters, HUD setters, or buff expiry. Those run through real A input.
 func (sc *e2eScenario) CheckWarriorChargeCollision(kind, name string) {
-	if kind != "player" && kind != "wall" {
-		panic("charge collision must be player or wall")
+	if kind != "player" && kind != "wall" && kind != "npc" {
+		panic("charge collision must be player, NPC or wall")
 	}
 	for attempt := 1; attempt <= 2; attempt++ {
 		f := &e2eWarriorChargeCollision{e2eWarriorAbilityFixture: &e2eWarriorAbilityFixture{ability: server.AbilityBerserk}, kind: kind}
@@ -187,7 +217,9 @@ func (sc *e2eScenario) CheckWarriorChargeCollision(kind, name string) {
 			e2eLog.Printf("CHARGE COLLISION: kind=%s attempt=%d frame=%d player-HP=%d->%d target-HP=%d->%d expected=%d held=%t wall=%p pos=%v->%v", kind, attempt, noxServer.Frame(), f.playerHealth, f.unit.HealthData.Cur,
 				f.health, targetHP, f.expectedDamage, f.unit.HasEnchant(server.ENCHANT_HELD), f.unit.UpdateDataPlayer().CollisionWall, f.origin, f.unit.PosVec)
 		})
-		sc.Screen(label + " collision")
+		if kind != "npc" {
+			sc.Screen(label + " collision")
+		}
 		sc.add(0, label+" capture cooldown", func() {
 			f.retryFrame, f.retryCooldown = noxServer.Frame(), noxServer.Abils.GetCooldownForUnit(f.unit, server.AbilityBerserk)
 		})
@@ -209,6 +241,13 @@ func (sc *e2eScenario) CheckWarriorChargeCollision(kind, name string) {
 		}, func() {
 			if f.targetPlayer != nil {
 				noxServer.PlayerDisconnect(f.targetPlayer, 4)
+			}
+			if kind == "npc" {
+				for _, target := range f.targets {
+					if e2eObjectInWorld(target) {
+						noxServer.DelayedDelete(target)
+					}
+				}
 			}
 			e2eLog.Printf("CHARGE READY: kind=%s attempt=%d frame=%d", kind, attempt, noxServer.Frame())
 		})

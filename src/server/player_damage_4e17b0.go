@@ -526,8 +526,14 @@ func playerDamageMonster4E17B0(
 		return playerDamageMonsterMissilePierce4E17B0(target, source, weapon, pierceUpdate, pierceArmor, damage, typ, runtime)
 	}
 	update := target.UpdateDataMonster()
-	crush := typ == object.DamageCrush && source != nil && source.Class().Has(object.ClassMonster) &&
-		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassWeapon)
+	// PlayerCollide passes the charging Warrior as both source and weapon.
+	// NPC case 2 at 004E1EE8 shares the CRUSH armor/carry tail with players;
+	// it is not restricted to the scripted monster-with-weapon shape.
+	playerCharge := typ == object.DamageCrush && source != nil && source == weapon &&
+		source.UpdateData != nil && source.Class().Has(object.ClassPlayer) &&
+		!source.Class().HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand|object.ClassMissile)
+	crush := playerCharge || (typ == object.DamageCrush && source != nil && source.Class().Has(object.ClassMonster) &&
+		source.UpdateData != nil && weapon != nil && weapon.Class().Has(object.ClassWeapon))
 	electric := playerDamageElectricShape4E17B0(source, weapon, typ)
 	if !crush && !electric {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)

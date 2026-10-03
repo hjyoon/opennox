@@ -7,7 +7,7 @@ import (
 )
 
 func TestE2EWarriorChargeCollisionSchedule(t *testing.T) {
-	for _, kind := range []string{"player", "wall"} {
+	for _, kind := range []string{"player", "wall", "npc"} {
 		t.Run(kind, func(t *testing.T) {
 			var sc e2eScenario
 			sc.CheckWarriorChargeCollision(kind, "charge")

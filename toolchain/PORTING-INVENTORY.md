@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest FlyingGolem 전체 화면 golden 차이의 원인 분리
+
+`be58efbec`의 실제 작살/NPC 피해 회귀 뒤 남은 `host-quest-golem-pierce` 화면 비교를 private overlay로 분리했다. 공개 YAML·observer·기대 PNG는 `f24e9928f` 이후 그대로이며 기대 SHA-256은 `c8bf3ac293f152995a72931b4100bbd66e4f0a3874a6a588b717dba9381db812`, 현재 전체 화면은 `611b6c600cd03e06ba6212ee921760bb6e9e47852f21e9e6975240bcd8f76100`이다. 이 장면은 Player 대상이며 NPC 피해 helper의 전후 비교도 같은 화면 실패를 냈다. 모든 실행에서 frame 3187의 자연 stock arrow 3회·마지막 HP 감소 5·client aggregate 감소 31·HUD 163/450·빨간 채움 675/빈 부분 153픽셀 검증은 유지된다. 전체 화면 exit 2를 기능 테스트 통과로 바꿔 세지 않는다.
+
+현재와 과거 화면의 1,606픽셀 차이는 이미 독립 검증한 생명 self-report·5비트 색상 연산·native 장비 보정색 읽기에 따른 것이다. 예전 누락된 생명 loop만 진단용으로 적용하면 HUD/score의 24픽셀이 사라지고 1,582픽셀이 남는다. 예전 색상 계산만 적용하면 199픽셀, 두 진단을 합치면 캐릭터 영역의 175픽셀이 남는다. armor 또는 weapon 기본 슬롯 반복만 되돌리는 시도는 이 나머지를 해소하지 못했다. 현재의 올바른 1..6 반복을 그대로 두고 보정색을 예전 PE32 +24에서 읽는 private 진단을 두 계산 진단과 합치면 일반·HD 모두 기존 PNG와 정확히 일치해 exit 0을 낸다. +24는 LP64의 문자열 포인터 영역이고 실제 `ModifierEff.Color24`는 +44이므로 이 진단은 의도적으로 잘못된 예전 동작이지 제품 수정이 아니다.
+
+수정된 native Quest 시작 생명은 2이며 기존 화면의 0을 복원하지 않는다. 65,536개 색상 word·원본 sprite 270개 역사적 PNG 계약·장비 160개 독립 팔레트와 실제 stock 레이어 회귀의 기존 증거를 유지한다. 이 단위는 원인과 검증 범위의 문서화뿐이다. gameplay·damage·renderer·원본 자산·공개 기대 PNG·개인 Save/config를 변경하지 않으며 private overlay/source/PNG를 공개하지 않는다. 현재 공개 전체 화면 golden의 불일치는 그대로 알려진 비교 제한으로 남긴다. 원본 Windows runtime 전체나 물리 화면 동등성으로 확대하지 않는다.
+
 ## 실제 장비 replay·stock 레이어 색상의 headless 검증
 
 앞서 수정한 무기/방어구 팔레트와 5비트 연산을 실제 stock 게임 경로에서도 확인했다. 테스트 전용 `assert-equipment-colors`는 서버의 장착 inventory, 클라이언트의 native equipment replay와 현재 player/NPC animation을 읽고, C-owned drawable/viewport 사본 및 scratch RGB5551 buffer에서 원래 `DrawWeapon`/`DrawArmor`를 실행한다. 별도 기대 팔레트는 definition 색상 1..6과 네 modifier 슬롯을 직접 읽으며 production 팔레트 helper에 의존하지 않는다. 모든 16슬롯·nonblank 전체 레이어 픽셀·client equipment/definition/modifier 불변을 확인하고 live render state/buffer를 복원한다. NPC state 8과 player animation 0을 혼동하지 않으며 RNG/deletion animation은 관찰하지 않는다.

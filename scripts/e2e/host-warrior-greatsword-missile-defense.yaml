@@ -1,0 +1,171 @@
+# Stock Warrior inventory input and real Fireball collisions, never injected block/hit results.
+# Front and rear attacks cover all levels in both directions plus natural NPC casting.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: grant-item
+    item: GreatSword
+    count: 1
+    name: grant stock greatsword
+  - action: wait
+    dt: 30
+    name: receive inventory packet
+  - action: inventory
+    name: open inventory
+  - action: wait
+    dt: 90
+    name: settle inventory animation
+  - action: click-inventory-item
+    item: GreatSword
+    name: equip greatsword through actual inventory input
+  - action: wait
+    dt: 30
+    name: settle equipment report
+  - action: inventory
+    name: close inventory
+  - action: wait
+    dt: 60
+    name: settle after inventory
+  - action: check-greatsword-missile-defense
+    count: 1
+    text: player-to-npc/front
+    name: GreatSword player-to-npc front Fireball level 1
+  - action: check-greatsword-missile-defense
+    count: 2
+    text: player-to-npc/front
+    name: GreatSword player-to-npc front Fireball level 2
+  - action: check-greatsword-missile-defense
+    count: 3
+    text: player-to-npc/front
+    name: GreatSword player-to-npc front Fireball level 3
+  - action: check-greatsword-missile-defense
+    count: 4
+    text: player-to-npc/front
+    name: GreatSword player-to-npc front Fireball level 4
+  - action: check-greatsword-missile-defense
+    count: 5
+    text: player-to-npc/front
+    name: GreatSword player-to-npc front Fireball level 5
+  - action: check-greatsword-missile-defense
+    count: 1
+    text: player-to-npc/rear
+    name: GreatSword player-to-npc rear Fireball level 1
+  - action: check-greatsword-missile-defense
+    count: 2
+    text: player-to-npc/rear
+    name: GreatSword player-to-npc rear Fireball level 2
+  - action: check-greatsword-missile-defense
+    count: 3
+    text: player-to-npc/rear
+    name: GreatSword player-to-npc rear Fireball level 3
+  - action: check-greatsword-missile-defense
+    count: 4
+    text: player-to-npc/rear
+    name: GreatSword player-to-npc rear Fireball level 4
+  - action: check-greatsword-missile-defense
+    count: 5
+    text: player-to-npc/rear
+    name: GreatSword player-to-npc rear Fireball level 5
+  - action: check-greatsword-missile-defense
+    count: 1
+    text: npc-to-player/front
+    name: GreatSword npc-to-player front Fireball level 1
+  - action: check-greatsword-missile-defense
+    count: 2
+    text: npc-to-player/front
+    name: GreatSword npc-to-player front Fireball level 2
+  - action: check-greatsword-missile-defense
+    count: 3
+    text: npc-to-player/front
+    name: GreatSword npc-to-player front Fireball level 3
+  - action: check-greatsword-missile-defense
+    count: 4
+    text: npc-to-player/front
+    name: GreatSword npc-to-player front Fireball level 4
+  - action: check-greatsword-missile-defense
+    count: 5
+    text: npc-to-player/front
+    name: GreatSword npc-to-player front Fireball level 5
+  - action: check-greatsword-missile-defense
+    count: 1
+    text: npc-to-player/rear
+    name: GreatSword npc-to-player rear Fireball level 1
+  - action: check-greatsword-missile-defense
+    count: 2
+    text: npc-to-player/rear
+    name: GreatSword npc-to-player rear Fireball level 2
+  - action: check-greatsword-missile-defense
+    count: 3
+    text: npc-to-player/rear
+    name: GreatSword npc-to-player rear Fireball level 3
+  - action: check-greatsword-missile-defense
+    count: 4
+    text: npc-to-player/rear
+    name: GreatSword npc-to-player rear Fireball level 4
+  - action: check-greatsword-missile-defense
+    count: 5
+    text: npc-to-player/rear
+    name: GreatSword npc-to-player rear Fireball level 5
+  - action: check-greatsword-missile-defense
+    count: 0
+    text: npc-to-player/front
+    name: GreatSword naturally animated NPC Fireball
+  - action: quit
+    dt: 1

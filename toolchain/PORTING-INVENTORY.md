@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 대검의 양방향 마법 투사체 방어
+
+`host-warrior-greatsword-missile-defense.yaml`과 새 observer는 실제 Warrior 메뉴·stock GreatSword 지급·queued inventory 클릭으로 장착한다. 정상 장착 함수의 shield 자동 해제를 그대로 거치며 baseline에 ordinary shield가 남으면 실패한다. NPC의 stock 대검은 정상 pickup/equip API로 준비한다. 위치·대기 AI·최대 HP·방향/일반 mouse aim·정상 script/AI 시전만 fixture다. 실제 피해·상태/action·buff·ownership/velocity·내구도·패킷/HUD/효과 픽셀은 공급하지 않는다. 이미 추가한 Fireball fixture의 실제 projectile, server/client HP·audio·제거 검사를 재사용한다.
+
+일반·HD headless/mock 각각 정면/후면·1..5레벨·양방향 20회와 NPC 자연 시전 1회, 총 21 outcome이 exit 0이다. 정면은 실제 반사된 owner/velocity와 HP 불변·GreatSwordReflect audio·실행 중 block action/player 자세·원본 binary32 내구도 carry를 확인했다. 후면은 HP 2,000에서 1,936/1,904/1,873으로 감소하고 대검 내구도가 변하지 않는 것을 확인했다. Fireball은 원본대로 block 뒤 폭발하고 server/client에서 제거되므로 반사 후 caster 재명중을 주장하지 않는다. 실행 중 NPC action head는 scheduled 아래 항목과 구분하며 queued block만으로 성공 처리하지 않는다.
+
+초기 NPC block 관찰이 executing head를 제외하는 scheduled 조회 때문에 실패한 결과를 보존했다. 별도 inventory에서 shield를 다시 클릭한 fixture는 대검을 해제하고 shield를 재장착하므로 제거했다. production의 shield 해제 필드 오류는 앞선 한 본체 커밋에서 분리 수정했으며 이 observer로 결과를 우회하지 않는다. 이번 기존 본체 변경은 YAML `Load` dispatch 하나이고 gameplay 변경은 없다. fixture matrix·bounded cleanup·실제 action head·AST 결과 주입 금지 회귀와 관련 root/server/legacy 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict/server-tag 각 1회 및 oracle이 통과했다. code 2,928/data 636개·NXZ 50쌍·stock tree 및 개인 Save/config·기존 PNG 기대값은 유지된다. clean 제품 재빌드와 전체 마법 시나리오 handoff는 뒤의 별도 최종 실행으로 구별한다. 모든 마법·장비·possessed/class/자세·원격 대전 또는 물리 화면을 검증했다는 주장이 아니다.
+
 ## 대검 장착 시 방패 해제 뒤 남는 플레이어 자세
 
 대검의 실제 Fireball 방어 observer 준비 과정에서 GreatSword 장착이 shield를 자동 해제했는데도 플레이어 자세 16이 남는 문제를 분리했다. 원본 `0053E430`의 마지막 shield 판별은 아이템 BYTE +12 subclass다. 기존 typed C는 DWORD index 12/+48인 `field_12`를 읽어 shield 자세 15·16·17을 해제하지 않거나 non-shield를 잘못 해제했다. 이번 production 변경은 `sub_53E430` 한 본체의 `obj_subclass` 필드 선택만이다. 장착·방어 admission 조건이나 PlayerUpdate의 상태 진행을 우회해서 변경하지 않는다.

@@ -287,7 +287,7 @@ func TestDefaultDamageWorld4E0B30PierceAdmissionBoundary(t *testing.T) {
 		typ    object.DamageType
 	}{
 		{"no monster update", func(_, a, _ *Object) { a.UpdateData = nil }, object.DamageImpale},
-		{"player source is a separate port", func(_, a, _ *Object) { a.ObjClass = object.ClassPlayer }, object.DamageImpale},
+		{"non-unit source is a separate port", func(_, a, _ *Object) { a.ObjClass = object.ClassSimple }, object.DamageImpale},
 		{"mixed missile melee weapon", func(_, _, w *Object) { w.ObjSubClass = 0 }, object.DamageImpale},
 		{"mixed missile wand", func(_, _, w *Object) { w.ObjClass |= object.ClassWand }, object.DamageImpale},
 		{"mixed missile monster", func(_, _, w *Object) { w.ObjClass |= object.ClassMonster }, object.DamageImpale},

@@ -217,13 +217,13 @@ func DefaultDamageWorld4E0B30(
 		(unitSelfWeaponElectric || (source != nil && source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 			source.UpdateData != nil && weapon == nil &&
 			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
-	// Stock GolemArrow calls this tail with the monster as source and the
-	// distinct missile as weapon. PIERCE (type 3, DamageImpale in libs) skips
-	// both protection branches. Stock GolemArrow is MISSILE|WEAPON, subclass
+	// Player/monster-fired ranged missiles share the original damage tail.
+	// PIERCE (type 3, DamageImpale in libs) skips both protection branches.
+	// Stock GolemArrow is MISSILE|WEAPON, subclass
 	// 0x10: 004E1400 rejects this ranged weapon, not every WEAPON-class
 	// missile. Keep melee/unit/wand shapes outside this no-Shock slice.
 	missilePierce := typ == object.DamageImpale && source != nil && source != weapon &&
-		source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+		source.Class().HasAny(object.ClassPlayer|object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon)
@@ -277,7 +277,7 @@ func DefaultDamageWorld4E0B30(
 	if playerElectric && ((source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil) || runtime.PlayerSetState == nil) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player electric tail service", target, source, weapon, damage, typ)
 	}
-	if missilePierce && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
+	if missilePierce && ((source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil) || runtime.BuffOff == nil ||
 		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing missile PIERCE tail service", target, source, weapon, damage, typ)
 	}

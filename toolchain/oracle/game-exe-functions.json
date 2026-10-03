@@ -3689,18 +3689,18 @@
       "purpose": "the exact eight NOP alignment bytes separating current-HP reporting from the team network message at 004D8670"
     },
     {
-      "name": "netReportPlayerPoison_4D8840",
+      "name": "netReportPlayerItemEnchantment_4D8840",
       "address": "0x004D8840",
       "size": 45,
       "sha256": "b39c3b342d04079deb97c96f0dfd48d68b4b9506d3ed32d203898b05b508f683",
-      "purpose": "reload the source poison byte, encode opcode 91 plus that unchanged byte, and forward the exact two-byte reliable packet with nil related object and remove-if-disconnected equal to one"
+      "purpose": "reload the low byte of object Field110 at original offset 440, encode opcode 91 plus that unchanged item-enchantment mask byte, and forward the exact two-byte reliable packet with nil related object and remove-if-disconnected equal to one"
     },
     {
-      "name": "netReportPlayerPoison_4D8840_padding",
+      "name": "netReportPlayerItemEnchantment_4D8840_padding",
       "address": "0x004D886D",
       "size": 3,
       "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
-      "purpose": "the exact three NOP bytes separating player-poison reporting from the gold report at 004D8870"
+      "purpose": "the exact three NOP bytes separating player-item-enchantment reporting from the gold report at 004D8870"
     },
     {
       "name": "sub_4D8870_gold_report",
@@ -3822,11 +3822,11 @@
       "purpose": "load Player through the entry-cached update data, compare the live gold dword with its last-reported cache, send the existing reliable gold report on change, then reload Player through the cached update and copy the live gold value into the report cache"
     },
     {
-      "name": "playerReportAnything_poison_4D99A7",
+      "name": "playerReportAnything_item_enchantment_4D99A7",
       "address": "0x004D99A7",
       "size": 58,
       "sha256": "48386cafb8f629939ab6e8fb37ea33e38e6d761d18e3da59574cc8ef3658db71",
-      "purpose": "load Player through the entry-cached update pointer, compare the source poison byte with its reported byte, send through the unsigned player-index byte on change, then reload Player through the same cached update and acknowledge the post-send source poison byte even when sending fails"
+      "purpose": "load Player through the entry-cached update pointer, compare the low source Field110 byte with its reported item-enchantment byte, send through the unsigned player-index byte on change, then reload Player through the same cached update and acknowledge the post-send source mask byte even when sending fails"
     },
     {
       "name": "nox_xxx_playerReportAnything_4D9900_quest_lives_4D99E1",

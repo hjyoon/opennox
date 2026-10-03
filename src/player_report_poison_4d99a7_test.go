@@ -42,6 +42,7 @@ func playerPoisonReportFixture4D99A7(t *testing.T) (*Server, *server.Object, *se
 func TestPlayerReportPoisonNative4D99A7AllBytePairs(t *testing.T) {
 	s, unit, _, player := playerPoisonReportFixture4D99A7(t)
 	player.PlayerInd = 31
+	unit.Poison540 = 0xa7 // Independent +540 field must not supply the +440 report.
 	unit.Field542 = 1000
 	var packet []byte
 	sends := 0
@@ -55,7 +56,7 @@ func TestPlayerReportPoisonNative4D99A7AllBytePairs(t *testing.T) {
 	}
 	for previous := 0; previous < 256; previous++ {
 		for current := 0; current < 256; current++ {
-			player.Field2172, unit.Poison540 = byte(previous), byte(current)
+			player.Field2172, unit.Field110 = byte(previous), 0x8abcde00|uint32(current)
 			packet, sends = nil, 0
 			s.playerReportSelfNative4D9900(unit)
 			wantSends := 0
@@ -64,7 +65,7 @@ func TestPlayerReportPoisonNative4D99A7AllBytePairs(t *testing.T) {
 				wantSends, want = 1, []byte{91, byte(current)}
 			}
 			if sends != wantSends || !reflect.DeepEqual(packet, want) || player.Field2172 != byte(current) ||
-				unit.Poison540 != byte(current) || unit.Field542 != 1000 {
+				unit.Field110 != 0x8abcde00|uint32(current) || unit.Poison540 != 0xa7 || unit.Field542 != 1000 {
 				t.Fatalf("previous=%d current=%d sends=%d want=%d packet=%x want=%x cache=%d poison=%d timer=%d",
 					previous, current, sends, wantSends, packet, want, player.Field2172, unit.Poison540, unit.Field542)
 			}
@@ -89,12 +90,37 @@ func TestPlayerReportPoisonNative4D99A7UnsignedRecipients(t *testing.T) {
 		return 0
 	}
 	for recipient = 0; recipient < 256; recipient++ {
-		player.PlayerInd, player.Field2172, unit.Poison540 = byte(recipient), 0, 0xe7
+		player.PlayerInd, player.Field2172, unit.Field110 = byte(recipient), 0, 0xabcde7
 		packets = nil
 		s.playerReportSelfNative4D9900(unit)
 		if !reflect.DeepEqual(packets, [][]byte{{91, 0xe7}}) || player.Field2172 != 0xe7 {
 			t.Fatalf("recipient=%d packets=%x cache=%d", recipient, packets, player.Field2172)
 		}
+	}
+}
+
+func TestPlayerReportPoisonNative4D99A7ReportsOnlyTheLowItemEnchantmentByte(t *testing.T) {
+	s, unit, _, player := playerPoisonReportFixture4D99A7(t)
+	var packets [][]byte
+	s.Server.NetSendPacketXxx = func(index int, packet []byte, related *server.Object, remove, sequence int) int {
+		packets = append(packets, append([]byte(nil), packet...))
+		return 0
+	}
+	unit.Poison540, unit.Field110 = 2, 0x12345600
+	s.playerReportSelfNative4D9900(unit)
+	if len(packets) != 0 || player.Field2172 != 0 {
+		t.Fatalf("poison or high mask bits reported as item enchantment: packets=%x cache=%d", packets, player.Field2172)
+	}
+	unit.Field110 = 0xffffffff
+	s.playerReportSelfNative4D9900(unit)
+	if !reflect.DeepEqual(packets, [][]byte{{91, 255}}) || player.Field2172 != 255 || unit.Field110 != 0xffffffff || unit.Poison540 != 2 {
+		t.Fatalf("low byte report changed source: packets=%x cache=%d mask=%08x poison=%d", packets, player.Field2172, unit.Field110, unit.Poison540)
+	}
+	packets = nil
+	unit.Field110 = 0xaabbccff
+	s.playerReportSelfNative4D9900(unit)
+	if len(packets) != 0 || player.Field2172 != 255 {
+		t.Fatal("unchanged low byte repeated after only high mask bits changed")
 	}
 }
 
@@ -107,7 +133,7 @@ func TestPlayerReportPoisonNative4D99A7CachedUpdateAndPostSendPlayerAndValue(t *
 	t.Cleanup(freeAfter)
 	t.Cleanup(freeForeign)
 	live.Player = foreign
-	before.PlayerInd, before.Field2172, unit.Poison540 = 31, 1, 2
+	before.PlayerInd, before.Field2172, unit.Field110 = 31, 1, 2
 	after.Field2172, foreign.Field2172 = 88, 99
 	var packets [][]byte
 	s.Server.NetSendPacketXxx = func(index int, packet []byte, related *server.Object, remove, sequence int) int {
@@ -115,7 +141,7 @@ func TestPlayerReportPoisonNative4D99A7CachedUpdateAndPostSendPlayerAndValue(t *
 			t.Fatal("pre-call recipient or transport changed")
 		}
 		packets = append(packets, append([]byte(nil), packet...))
-		unit.UpdateData, entry.Player, unit.Poison540 = unsafe.Pointer(live), after, 0xf1
+		unit.UpdateData, entry.Player, unit.Field110 = unsafe.Pointer(live), after, 0xabcdf1
 		return -1
 	}
 	s.playerReportSelfNative4D9900(unit)
@@ -136,7 +162,7 @@ func TestPlayerReportPoisonNative4D99A7ReloadsAfterGoldCallback(t *testing.T) {
 	poisonPlayer, freePoisonPlayer := alloc.New(server.Player{})
 	t.Cleanup(freePoisonPlayer)
 	goldPlayer.PlayerInd, goldPlayer.GoldVal, goldPlayer.Field2168 = 31, 37, 12
-	poisonPlayer.PlayerInd, poisonPlayer.Field2172, unit.Poison540 = 128, 3, 2
+	poisonPlayer.PlayerInd, poisonPlayer.Field2172, unit.Field110 = 128, 3, 2
 	var packets [][]byte
 	s.Server.NetSendPacketXxx = func(index int, packet []byte, related *server.Object, remove, sequence int) int {
 		if related != nil || remove != 1 || sequence != 0 {
@@ -148,7 +174,8 @@ func TestPlayerReportPoisonNative4D99A7ReloadsAfterGoldCallback(t *testing.T) {
 			if index != 31 {
 				t.Fatal("gold recipient changed")
 			}
-			entry.Player, unit.Poison540 = poisonPlayer, 4
+			entry.Player, unit.Field110 = poisonPlayer, 4
+
 		case 2:
 			if index != 128 {
 				t.Fatal("poison recipient was not reloaded after gold callback")

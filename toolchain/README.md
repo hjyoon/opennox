@@ -11,7 +11,7 @@
 
 Linux 64비트의 native-width CGo 회귀는 `make test-linux-pie`로 root·server·legacy 전체를 시험한다. 기본 비-PIE 실행 파일에서는 C heap이 4GiB 아래에 놓일 수 있어 고주소 포인터 시험의 전제가 성립하지 않을 수 있다. PIE 시험은 그 전제를 유지하는 별도 검증 게이트이며, 일반 제품의 빌드·실행 검증을 대체하지 않는다.
 
-2026-10-04 player self-report의 중독 강도 바이트 보고 누락을 복원했다. 원본 `004D99A7..004D99E1`은 진입 시의 update 포인터에서 Player를 읽어 마지막 보고 바이트와 현재 중독 강도를 비교하고, 변경 시 `004D8840`의 reliable `5B <poison-byte>` 패킷을 보낸다. 전송 실패도 결과를 무시하며, 전송 뒤 같은 update 포인터에서 Player와 현재 중독 바이트를 다시 읽어 캐시를 갱신한다. native `Poison540`/`Field2172` 필드로 복원해 원본의 raw 32비트 offset 접근을 재사용하지 않았다. 기존 상태 비트 `0x400`에 따른 HUD 녹색 표시와는 별도 경로이며 중독 상태·타이머·피해 자체를 바꾸지 않는다. 새 high-C-owned root 경로 회귀 4개는 수정 전 모두 실패했고 복원 후 통과했다. 65,536개 바이트 비교 조합, 256개 unsigned 수신자, 골드 콜백 이후 재로딩, 전송 중 update/Player/강도가 바뀌는 경우 및 실패 후 캐시 갱신을 검사한다. 원본 코드 manifest에는 보고 slice·sender·3바이트 padding의 해시 범위만 추가했다. Quest key 보고는 아직 별도 누락 slice다.
+2026-10-04 player self-report의 장비 인챈트 바이트 보고 누락을 복원했다. 원본 `004D99A7..004D99E1`은 진입 시의 update 포인터에서 Player를 읽어 마지막 보고 바이트와 object `+440`의 하위 바이트를 비교하고, 변경 시 `004D8840`의 reliable `5B <item-enchantment-byte>` 패킷을 보낸다. 전송 실패도 결과를 무시하며, 전송 뒤 같은 update 포인터에서 Player와 해당 바이트를 다시 읽어 캐시를 갱신한다. `+440`은 native `Field110`이며, 중독 강도 `Poison540` (`+540`)과는 무관하다. 최초 연결의 필드 오해를 headless 실행에서 발견해 바로잡았다. 새 high-C-owned root 회귀는 65,536개 바이트 비교 조합, 256개 unsigned 수신자, 골드 콜백 이후 재로딩, 전송 중 update/Player/마스크가 바뀌는 경우 및 실패 후 캐시 갱신을 검사한다. 상위 24비트만 바뀌거나 중독이 적용되었을 때 잘못 보고하지 않고, 원본 마스크와 중독 상태·타이머도 보존하는 독립 회귀를 추가했다. 원본 코드 manifest에는 보고 slice·sender·3바이트 padding의 해시 범위만 추가했다. Quest key 보고는 아직 별도 누락 slice다.
 
 Windows PowerShell에서는 다음과 같이 실행한다.
 

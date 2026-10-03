@@ -15,6 +15,8 @@ Linux 64비트의 native-width CGo 회귀는 `make test-linux-pie`로 root·serv
 
 같은 보고 경로가 사용하는 장비 아이콘 `00413420`의 이름·이미지 캐시 조회를 native pointer side slot에 연결했다. 공용 `memmap.PtrPtr` 저장소는 이미 안전했지만 기존 C 본체는 packed PE32 슬롯을 직접 8바이트로 읽고 이미지 반환을 DWORD로 축소했다. 반환 ABI와 호출자 변수 타입은 별도 커밋으로 먼저 복원했다. 이번 한 본체 변경은 여섯 이미지의 순서대로 lazy load, 마지막 loaded=1 게시, live flag byte의 exact match 및 nil 반환을 보존한다. 모든 256개 입력·nonzero loaded 값·nil loader/reset·로드 후 flag 변경·4GiB 초과 C-owned 이름/이미지와 packed 120바이트 불변을 실제 C 진입점까지 검사했다. 원본 body 91바이트·뒤 5-NOP·6행 테이블과 여섯 이름의 해시만 oracle에 더했으며 원본 자산은 공개하지 않는다. Tooltip 조회와 실제 inventory hover는 아직 별도 검증 단계다.
 
+장비 효과 tooltip `00413480`도 같은 side slot의 native 키 포인터로 복원했다. 한 C 본체 변경이며 six-row live byte 비교·첫 exact match의 late key read·원본 `Modifier.c`/line 2087·null variant output·매 호출 string lookup 및 nil 반환을 유지한다. 원본 본체 61바이트·뒤 3-NOP·여섯 문자열 키와 source path의 해시를 따로 봉인했다. 모든 256개 byte, 조회 순서/콜백 사이 flag·key 변경/중복 first-wins, C 진입점의 4GiB 초과 C-owned UTF-16 반환 및 packed table/아이콘 loaded 상태 불변을 회귀로 검사한다. GUI hover 관찰과 Windows/물리 화면 전체의 검증은 별도다.
+
 Windows PowerShell에서는 다음과 같이 실행한다.
 
 ```powershell

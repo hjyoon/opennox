@@ -98,18 +98,32 @@
       "purpose": "the exact fifteen NOP bytes separating secret-wall list removal from breakable-wall cleanup at 00410810"
     },
     {
-      "address": "0x00413420",
       "name": "itemEnchantmentIcon_413420",
-      "sha256": "7c545ed7d0a12c0970d2487e2c342aa8eb9fa21dc7f6de5a36004abe23b5b52f",
+      "address": "0x00413420",
       "size": 91,
+      "sha256": "7c545ed7d0a12c0970d2487e2c342aa8eb9fa21dc7f6de5a36004abe23b5b52f",
       "purpose": "lazily load all six item-enchantment icons through their PE32 name/cache fields in table order, publish the loaded flag, then return the first cache whose live flag byte exactly matches the argument or null"
     },
     {
-      "address": "0x0041347B",
       "name": "itemEnchantmentIcon_413420_padding",
-      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "address": "0x0041347B",
       "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP bytes separating item-enchantment icon lookup from tooltip lookup at 00413480"
+    },
+    {
+      "name": "itemEnchantmentTooltip_413480",
+      "address": "0x00413480",
+      "size": 61,
+      "sha256": "52403237051dc1c25d4c2f0072fe5f1044348ca42b3b71f4c39dd44a1848c8c6",
+      "purpose": "compare the whole argument byte with six live item-enchantment flag bytes in table order, then call the string manager with only the first matching PE32 key, a null variant output, original source and line 2087, or return null"
+    },
+    {
+      "name": "itemEnchantmentTooltip_413480_padding",
+      "address": "0x004134BD",
+      "size": 3,
+      "sha256": "e65ca7c06ae3e9bacd16f6d87026d2fd51447f87f8771676568af93c6313d707",
+      "purpose": "the exact three NOP bytes separating item-enchantment tooltip lookup from the debug assertion stub at 004134C0"
     },
     {
       "name": "nox_common_randomFloat_416030",
@@ -20771,10 +20785,10 @@
       "purpose": "the original modifier-effect registration record binding name pointer 0x0058DCC0, callback 0x004E03D0, and integer parser 0x00423780"
     },
     {
-      "address": "0x0058DAC0",
       "name": "item_enchantment_gui_table_58DAC0",
-      "sha256": "b07c20bcc71e91a73be285f993d21d0840ebaeec442a712133ff4e7e6ce2143e",
+      "address": "0x0058DAC0",
       "size": 120,
+      "sha256": "b07c20bcc71e91a73be285f993d21d0840ebaeec442a712133ff4e7e6ce2143e",
       "purpose": "the exact six 20-byte PE32 records containing effect callback, flag byte, image-name pointer, image cache and tooltip-key pointer for item enchantments"
     },
     {
@@ -20785,46 +20799,95 @@
       "purpose": "the exact NUL-terminated InversionEffect name referenced by the modifier registration record at 0x0058D9A4"
     },
     {
-      "address": "0x0058DE54",
       "name": "item_enchantment_gui_image_0",
-      "sha256": "80f5e4146257c9c169c4343eb7daafe4dafa516de7dcd2edb3919b77c269cf3b",
+      "address": "0x0058DE54",
       "size": 19,
+      "sha256": "80f5e4146257c9c169c4343eb7daafe4dafa516de7dcd2edb3919b77c269cf3b",
       "purpose": "the exact NUL-terminated BrillianceItemIcon name referenced by item-enchantment GUI table record 0"
     },
     {
-      "address": "0x0058DE90",
+      "name": "item_enchantment_gui_title_0",
+      "address": "0x0058DE68",
+      "size": 38,
+      "sha256": "8abc85031923c4e4c08092a91d4e823bc5ab25be7e40e8e6a5d3396da5d574cd",
+      "purpose": "the exact NUL-terminated modifier.db:BrillianceItemEnchantDesc key referenced by item-enchantment GUI table record 0"
+    },
+    {
       "name": "item_enchantment_gui_image_1",
-      "sha256": "321babdf20e828905a258331cc3998b6a0732ade8599f20d72e1ca674b435075",
+      "address": "0x0058DE90",
       "size": 14,
+      "sha256": "321babdf20e828905a258331cc3998b6a0732ade8599f20d72e1ca674b435075",
       "purpose": "the exact NUL-terminated SpeedItemIcon name referenced by item-enchantment GUI table record 1"
     },
     {
-      "address": "0x0058DEC4",
+      "name": "item_enchantment_gui_title_1",
+      "address": "0x0058DEA0",
+      "size": 33,
+      "sha256": "e0d233b55e4276fa98103c9ea057ece2d18b58284f9e7cea3dacf3cdcb3a2fe7",
+      "purpose": "the exact NUL-terminated modifier.db:SpeedItemEnchantDesc key referenced by item-enchantment GUI table record 1"
+    },
+    {
       "name": "item_enchantment_gui_image_2",
-      "sha256": "7c0ee85dd84fb02f0a5a3615032b42315229034d5c194ee3ca468b2690394faa",
+      "address": "0x0058DEC4",
       "size": 20,
+      "sha256": "7c0ee85dd84fb02f0a5a3615032b42315229034d5c194ee3ca468b2690394faa",
       "purpose": "the exact NUL-terminated FireProtectItemIcon name referenced by item-enchantment GUI table record 2"
     },
     {
-      "address": "0x0058DF00",
+      "name": "item_enchantment_gui_title_2",
+      "address": "0x0058DED8",
+      "size": 39,
+      "sha256": "83f1006cfedd7fce647542601b29755012c5ddb4d5e6e085bf03f79a89edce1a",
+      "purpose": "the exact NUL-terminated modifier.db:FireProtectItemEnchantDesc key referenced by item-enchantment GUI table record 2"
+    },
+    {
       "name": "item_enchantment_gui_image_3",
-      "sha256": "b7a5f47d16d46222fa681187e915179b76b5c7c1217d21869bab8139fbc67b24",
+      "address": "0x0058DF00",
       "size": 25,
+      "sha256": "b7a5f47d16d46222fa681187e915179b76b5c7c1217d21869bab8139fbc67b24",
       "purpose": "the exact NUL-terminated LightningProtectItemIcon name referenced by item-enchantment GUI table record 3"
     },
     {
-      "address": "0x0058DF48",
+      "name": "item_enchantment_gui_title_3",
+      "address": "0x0058DF1C",
+      "size": 41,
+      "sha256": "588bbd64f1cc46479f5fac497e4e10009cc079596bd976ea2509e003710f28f2",
+      "purpose": "the exact NUL-terminated modifier.db:LightningProtItemEnchantDesc key referenced by item-enchantment GUI table record 3"
+    },
+    {
       "name": "item_enchantment_gui_image_4",
-      "sha256": "f37871b7a07ae70a36950b34dcdbc5c9882044e0cc70ec4d5f3f3dfe93ab0811",
+      "address": "0x0058DF48",
       "size": 22,
+      "sha256": "f37871b7a07ae70a36950b34dcdbc5c9882044e0cc70ec4d5f3f3dfe93ab0811",
       "purpose": "the exact NUL-terminated PoisonProtectItemIcon name referenced by item-enchantment GUI table record 4"
     },
     {
-      "address": "0x0058DF8C",
+      "name": "item_enchantment_gui_title_4",
+      "address": "0x0058DF60",
+      "size": 41,
+      "sha256": "d5416fc24b501d1d6e464c258f71c168edde06447998ac2b2310c7edc79cbd29",
+      "purpose": "the exact NUL-terminated modifier.db:PoisonProtectItemEnchantDesc key referenced by item-enchantment GUI table record 4"
+    },
+    {
       "name": "item_enchantment_gui_image_5",
-      "sha256": "7759f144930255634edb6774fd70e3ec92634e4f2d861f0078b22d1e9c680819",
+      "address": "0x0058DF8C",
       "size": 21,
+      "sha256": "7759f144930255634edb6774fd70e3ec92634e4f2d861f0078b22d1e9c680819",
       "purpose": "the exact NUL-terminated RegenerationItemIcon name referenced by item-enchantment GUI table record 5"
+    },
+    {
+      "name": "item_enchantment_gui_title_5",
+      "address": "0x0058DFA4",
+      "size": 20,
+      "sha256": "c57eb13c451fd70b4da1a401f42e3cea48ff23b3fbac4501db36d8090e37afd1",
+      "purpose": "the exact NUL-terminated thing.db:LesserHeal key referenced by item-enchantment GUI table record 5"
+    },
+    {
+      "name": "item_enchantment_gui_source_58ECD4",
+      "address": "0x0058ECD4",
+      "size": 40,
+      "sha256": "c6c84aa8d4ba07faa2bd5299f83163bf4fe30ca8d9a99215e5a880cf16d64b20",
+      "purpose": "the exact NUL-terminated source path passed with line 2087 by item-enchantment tooltip lookup at 00413480"
     },
     {
       "name": "shared_random_integer_table",

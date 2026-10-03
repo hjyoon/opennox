@@ -224,7 +224,7 @@ func (f *e2ePoisonFixture) observeDOT() {
 	var marker, markerType, wantType uint32
 	if f.fromNPC {
 		ud := f.target.UpdateDataPlayer()
-		marker, markerType, wantType = ud.Field76, ud.Field75, math.Float32bits(float32(object.DamagePoison))
+		marker, markerType, wantType = ud.Field76, ud.Field75, uint32(object.DamagePoison)
 	} else {
 		ud := f.target.UpdateDataMonster()
 		marker, markerType, wantType = ud.Field547, ud.Field546, uint32(object.DamagePoison)

@@ -95,3 +95,20 @@ func playerDamageMonsterMissileExplosion4E17B0(
 	}
 	return playerDamageMissileExplosionTail4E17B0(target, source, weapon, &update.Field547, &update.Field546, armorValue, damage, typ, runtime)
 }
+
+func playerDamagePlayerMissileExplosion4E17B0(
+	target, source, weapon *Object, update *PlayerUpdateData, armorValue float32,
+	damage int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0,
+) (handled, result bool) {
+	if applicable, h, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+		return h, result
+	}
+	if update.Player.WeaponEquip&0x400 != 0 &&
+		(update.State == PlayerState13 || update.State == PlayerState18 || update.State == PlayerState19 || update.State == PlayerState20) {
+		return playerDamageUnsupported4E17B0(runtime, "player GreatStaff missile EXPLOSION block", target, source, weapon, damage, typ)
+	}
+	if update.Player.ObserveTarget() != nil {
+		return playerDamageUnsupported4E17B0(runtime, "possessed player missile EXPLOSION", target, source, weapon, damage, typ)
+	}
+	return playerDamageMissileExplosionTail4E17B0(target, source, weapon, &update.Field76, &update.Field75, armorValue, damage, typ, runtime)
+}

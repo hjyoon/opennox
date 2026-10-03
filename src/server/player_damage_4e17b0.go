@@ -796,6 +796,9 @@ func PlayerDamageNative4E17B0(
 	if playerDamageMissileFlameShape4E17B0(source, weapon, typ) {
 		return playerDamagePlayerMissileFlame4E17B0(target, source, weapon, update, damage, typ, runtime)
 	}
+	if playerDamageMissileExplosionShape4E17B0(source, weapon, typ) {
+		return playerDamagePlayerMissileExplosion4E17B0(target, source, weapon, update, pierceArmorValue, damage, typ, runtime)
+	}
 	if typ == object.DamageImpale && source != nil && source != weapon &&
 		source.Class().HasAny(object.ClassPlayer|object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&

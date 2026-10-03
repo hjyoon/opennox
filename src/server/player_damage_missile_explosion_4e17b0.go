@@ -98,10 +98,6 @@ func playerDamagePlayerMissileExplosion4E17B0(
 	if applicable, h, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return h, result
 	}
-	if update.Player.WeaponEquip&0x400 != 0 &&
-		(update.State == PlayerState13 || update.State == PlayerState18 || update.State == PlayerState19 || update.State == PlayerState20) {
-		return playerDamageUnsupported4E17B0(runtime, "player GreatStaff missile EXPLOSION block", target, source, weapon, damage, typ)
-	}
 	if update.Player.ObserveTarget() != nil {
 		return playerDamageUnsupported4E17B0(runtime, "possessed player missile EXPLOSION", target, source, weapon, damage, typ)
 	}

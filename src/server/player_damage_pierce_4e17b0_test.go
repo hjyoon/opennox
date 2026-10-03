@@ -272,7 +272,10 @@ func TestPlayerDamageNative4E17B0PierceAdmissionBeforeMutation(t *testing.T) {
 			{"melee weapon subclass", func(_, _, w *Object, _ *PlayerDamageRuntime4E17B0) { w.ObjSubClass = 0 }},
 			{"wand class", func(_, _, w *Object, _ *PlayerDamageRuntime4E17B0) { w.ObjClass |= object.ClassWand }},
 			{"unit class", func(_, _, w *Object, _ *PlayerDamageRuntime4E17B0) { w.ObjClass |= object.ClassMonster }},
-			{"GreatStaff defense", func(v, _, _ *Object, _ *PlayerDamageRuntime4E17B0) { v.UpdateDataPlayer().Player.WeaponEquip = 0x400 }},
+			{"GreatSword direction service", func(v, _, _ *Object, r *PlayerDamageRuntime4E17B0) {
+				v.UpdateDataPlayer().Player.WeaponEquip = 0x400
+				r.BlockDirection = nil
+			}},
 			{"armor callback", func(v, _, _ *Object, r *PlayerDamageRuntime4E17B0) {
 				v.UpdateDataPlayer().Field57 = math.Float32bits(0.5)
 				r.ItemArmorValue = func(*Object) float32 { return 0.5 }

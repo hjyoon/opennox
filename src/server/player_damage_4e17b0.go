@@ -695,13 +695,6 @@ func playerDamageMissilePierce4E17B0(
 	if quest && runtime.QuestDamageScale == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
-	// GreatStaff can reflect missiles in states 13/18/19/20 before this
-	// switch. Do not silently turn that separate, unported defense into HP
-	// damage, including when its facing predicate has not been evaluated.
-	if update.Player.WeaponEquip&0x400 != 0 &&
-		(update.State == PlayerState13 || update.State == PlayerState18 || update.State == PlayerState19 || update.State == PlayerState20) {
-		return playerDamageUnsupported4E17B0(runtime, "player GreatStaff block", target, source, weapon, damage, typ)
-	}
 	if applicable, h, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return h, result
 	}

@@ -4284,6 +4284,20 @@
       "purpose": "the complete original PlayerDamage interval through the next function boundary, used to validate ordinary Spider-to-player damage, lethal transition, death-notification admission, NPC source-less POISON bypass of armor/carry, and player/NPC unit-self-weapon and nil-weapon player-sourced ELECTRIC/AIRBORNE_ELECTRIC with original weapon identity through armor defense/durability, fractional HP carry, raw type attribution, GodMode, Quest scaling and DefaultDamage; NPC Reflect Shield selects hit marker DWORD 2188 rather than the player observer layout, reflects current-position frontal missiles or non-missile types 16/17 before damage-shape admission, preserves conditional projectile ownership and ZapRay point-FX/audio order, and lets ordinary non-missile type 9 and rear electric hits fall through; ordinary NPC shields instead face the attack's previous position, require block action 21 and armor mask 0x3000000, exclude types 9/17/15 and four or six source types according to weapon presence, and preserve marker/audio/reflection/conditional-owner order, weapon-or-source wear with binary32 rounding, inventory removal and actual NPC action pop on shield destruction; unblocked monster-fired NPC PIERCE uses absorption cached before defense callbacks, wider subtraction/multiplication followed by a binary32 spill, live fractional HP and armor carry, missile attribution before wear with cached marker fallback, armor durability before minimum HP and Quest scaling, and the production DefaultDamage tail; native-width C-entry and C-owned armor fixtures prove repeated NPC HP loss, nonlethal item wear and owner-HP wire reports without replacing the damage or HP services"
     },
     {
+      "name": "sub_4E20F0",
+      "address": "0x004E20F0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
+      "purpose": "reload the live unit class and update at the fractional HP carry read after the caller's binary32 scaled-damage spill, select player before monster layout, add carry with a binary32 spill, round ties-to-even through 00419A70, store the integer damage and reload the live class/update for the remaining fractional carry; nil target or integer output is a no-op"
+    },
+    {
+      "name": "sub_4E20F0_padding",
+      "address": "0x004E2173",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "the exact thirteen NOP alignment bytes separating the fractional HP accumulator from PlayerDamageItems at 004E2180"
+    },
+    {
       "name": "nox_xxx_playerDamageItems_4E2180",
       "address": "0x004E2180",
       "size": 149,

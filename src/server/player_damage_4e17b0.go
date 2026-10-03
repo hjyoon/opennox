@@ -497,11 +497,11 @@ func playerDamageMonster4E17B0(
 	if source == nil && weapon == nil && typ == object.DamagePoison {
 		return playerDamageMonsterPoison4E17B0(target, damage, runtime)
 	}
-	// Preserve the switch's cached absorption value across the preceding
-	// Reflect Shield/ordinary-shield direction callbacks. The durability
-	// helper reads the newly live value independently.
-	pierceUpdate := target.UpdateDataMonster()
-	pierceArmor := math.Float32frombits(pierceUpdate.Field518)
+	// 004E187E/004E1898 cache the NPC update and absorption before the
+	// defense callbacks. Carry (004E20F0) and armor wear (004E2180) reload
+	// their own live update; the hit marker remains on this cached base.
+	update := target.UpdateDataMonster()
+	armorValue := math.Float32frombits(update.Field518)
 	// 004E18F3..004E19C1 reflects before the damage-type switch, including
 	// missiles whose unreflected damage path has not yet been ported.
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
@@ -523,9 +523,8 @@ func playerDamageMonster4E17B0(
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon) {
-		return playerDamageMonsterMissilePierce4E17B0(target, source, weapon, pierceUpdate, pierceArmor, damage, typ, runtime)
+		return playerDamageMonsterMissilePierce4E17B0(target, source, weapon, update, armorValue, damage, typ, runtime)
 	}
-	update := target.UpdateDataMonster()
 	// PlayerCollide passes the charging Warrior as both source and weapon.
 	// NPC case 2 at 004E1EE8 shares the CRUSH armor/carry tail with players;
 	// it is not restricted to the scripted monster-with-weapon shape.
@@ -538,8 +537,10 @@ func playerDamageMonster4E17B0(
 	if !crush && !electric {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 	}
-	quest := runtime.QuestMode != nil && runtime.QuestMode()
-	if quest && runtime.QuestDamageScale == nil {
+	// Missing services still fail before tail stores. With the production
+	// scale service available, the live Quest flag is read only at 004E2046,
+	// after wear and the minimum-damage adjustment, not as an execution plan.
+	if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
 	if electric && runtime.ElectricArmorScale == nil {
@@ -549,31 +550,32 @@ func playerDamageMonster4E17B0(
 		return playerDamageUnsupported4E17B0(runtime, "missing default damage service", target, source, weapon, damage, typ)
 	}
 
-	armorValue := math.Float32frombits(update.Field518)
-	accumulated := math.Float32frombits(update.Field1)
-	remaining := damage
-	if crush {
-		scaled := float32((1.0 - float64(armorValue)*0.5) * float64(damage))
-		accumulated += scaled
-	} else {
-		scaled := float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
-		accumulated += scaled
-	}
-	effective := playerDamageRound4E17B0(accumulated)
-	if crush {
-		remaining = damage - effective
-	}
 	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
 	update.Field547 = 0
-	update.Field1 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
 	if weapon != nil && weapon != source {
 		update.Field547 = 1
 		update.Field546 = uint32(weapon.TypeInd)
 	} else if weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush) {
 		update.Field547 = 1
 		update.Field546 = uint32(source.TypeInd)
+	}
+	var scaled float32
+	if crush {
+		scaled = float32((1.0 - float64(armorValue)*0.5) * float64(damage))
+	} else {
+		scaled = float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
+	}
+	// The electric scale callback can replace UpdateData or its carry. Read
+	// it after the callback and binary32 spill, just like 004E20F0.
+	live := target.UpdateDataMonster()
+	accumulated := scaled + math.Float32frombits(live.Field1)
+	effective := playerDamageRound4E17B0(accumulated)
+	live.Field1 = math.Float32bits(accumulated - float32(effective))
+	remaining := damage
+	if crush {
+		remaining = damage - effective
 	}
 	playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, runtime)
 	if update.Field547 == 0 {
@@ -583,7 +585,10 @@ func playerDamageMonster4E17B0(
 	if damage > 0 && effective == 0 {
 		effective = 1
 	}
-	if quest {
+	if runtime.QuestMode != nil && runtime.QuestMode() {
+		if runtime.QuestDamageScale == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
+		}
 		before := effective
 		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
 		if before > 0 && effective < 1 {

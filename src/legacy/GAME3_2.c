@@ -6855,6 +6855,7 @@ int nox_xxx_itemApplyDefendEffect2_4E1320(nox_object_t* a1p, nox_object_t* a2p, 
 #endif
 
 //----- (004E13B0) --------------------------------------------------------
+#if 0 // Restored from sealed GAME.EXE 004E13B0 in item_pre_damage_4e13b0_export.go.
 int nox_xxx_itemApplyPreDamageEffect_4E13B0(nox_object_t* a1p, nox_object_t* a2p, nox_object_t* a3p, int32_t* a4p) {
 	// Public ABI restoration only. Keep the original PE32 temporaries until
 	// the separate native-pointer body restoration.
@@ -6885,6 +6886,7 @@ int nox_xxx_itemApplyPreDamageEffect_4E13B0(nox_object_t* a1p, nox_object_t* a2p
 	} while (v9);
 	return result;
 }
+#endif
 
 //----- (004E1400) --------------------------------------------------------
 int sub_4E1400(int a1, uint32_t* a2) {

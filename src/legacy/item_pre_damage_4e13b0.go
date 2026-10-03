@@ -54,7 +54,7 @@ func itemPreDamageApplyNative4E13B0(
 	weapon, source, target *server.Object,
 	damage *int32,
 ) {
-	if effect == nil || effect.AttackPreDmg64.Fnc == nil || damage == nil {
+	if effect == nil || effect.AttackPreDmg64.Fnc == nil {
 		return
 	}
 	fnc := effect.AttackPreDmg64.Fnc

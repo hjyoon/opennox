@@ -300,6 +300,16 @@ stock War03b Henrick 대화의 실제 Yes 입력 두 번으로 Wolf1/Wolf2를 �
 
 이 선언 단위는 세 객체와 damage 주소의 공개 C ABI만 native pointer로 바꾸고 원래 본체의 명시적 PE32 임시 축소는 남긴다. 기존 C 호출자의 cast를 같은 선언에 맞춘 것이며 런타임 본체 복원 완료로 주장하지 않는다. C11 `_Generic`/고주소/NULL fixture는 기존 네 `int` 선언에서 컴파일 실패를 먼저 확인했고 공개 선언 복원 뒤 통과한다. 자동 Go 시험에서 fixture를 컴파일·실행하지만 production 효과 실행을 대신하지 않는다. 본체 및 활성 DefaultDamage 호출 위치의 복원은 각각 별도 변경 단위다. 원본 자산·개인 Save/config·GUI 기준은 변경하지 않는다.
 
+## 무기 pre-Damage 본체 `004E13B0`
+
+공개 ABI 변경 뒤 실제 C 진입점을 격리 subprocess에서 실행해, `0x123606130` weapon이 PE32 임시값으로 축소되어 `0x236063e4`에서 SIGSEGV를 일으키는 red를 먼저 보존했다. 위에 봉인한 동일 76바이트 본체를 사용해 이 helper 한 개를 Go로 복원한다. 원래 C 본체는 비활성 보존하며 stock 효과 함수나 DefaultDamage 호출 본체는 이 단위에서 함께 변경하지 않는다.
+
+native init base를 한 번 잡고 슬롯 0·1·2·3과 함수 주소를 live 읽는다. callback에는 modifier/weapon/source/target/원래 damage 주소를 그대로 전달한다. damage 값을 helper에서 읽거나 복사·clamp하지 않으며 반환 counter 0과 원본 at-use nil/fault prefix를 유지한다. 기존 typed stock router의 helper-level nil-damage skip만 제거하여, context를 쓰지 않는 Poison이 nil 주소에서도 실제 실행된다. 각 stock 효과의 자체 조건·읽기·계산은 변경하지 않는다. LP64에서 새 unknown callback은 명시적 unsupported 로그를 남기고 뒤 supported slot을 계속 처리하며 PE32 fallback으로 점프하지 않는다.
+
+server 회귀는 모든 init/slot/function/call fault prefix, callback의 다음 slot 변경, init base 교체와 cached-base 유지, 같은 damage 주소 및 `0→-7→MinInt32→MaxInt32`를 검사한다. C-owned 고주소 객체·init·modifier·HP·damage로 실제 공개 C helper와 다섯 stock 효과의 native dispatch를 검사하며, 실제 Vampirism→Sympathy/production HP의 source `19→20→18`, unknown 뒤 supported Sympathy의 `18→16` 및 nil-context Poison=1을 확인한다. effect나 HP 서비스를 테스트 대역으로 바꾸지 않는다. 이 helper 회귀는 기존 Linux Hunt 크래시 장면의 재실행 또는 전체 전투 검증으로 확대하지 않는다. 활성 DefaultDamage의 기존 eager weapon pre-Damage plan은 별도 본체 변경 단위로 남는다. 원본 자산·개인 Save/config·GUI 기준을 변경하지 않는다.
+
+전체 일반·실제 `GOEXPERIMENT=cgocheck2` 및 server-tag 검사를 통과했고, 관련 일반·strict·race·checkptr=2·HD 회귀는 각각 3회 통과했다. 기존 Hunt의 실제 고주소 C wrapper/AI stack와 NoxScript caller/trigger 회귀도 다시 통과했다. Darwin/ARM64 일반·HD·서버 제품 세 개의 빌드·Mach-O arm64·`-h` exit 0을 확인했다. 이전 clean `688ffb33b`과 새 빌드에 동일 YAML·이전 private diagnostic PNG를 사용해 일반·HD 슈리켄/채크럼 headless real input을 합계 8회 비교했으며, 실제 명중 HP `2,000→1,970/1,962`·소모/복귀/재장착과 세 화면의 exact-pixel 검사가 통과했다. GUI snapshot override나 기대값 교체는 하지 않았고, 이 화면 회귀를 새로운 helper의 실제 호출 증거로 대신하지 않는다. 실행 전후 원본 1,556파일·570,653,750바이트/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,909개·데이터 621개와 50개 압축 oracle pair를 재검증했다. clean 제품의 commit metadata 검증은 커밋 후 별도 재빌드 단계에서 수행한다.
+
 ## 장착 아이템 후반 Defend ABI `004E1320`
 
 원본 본체 `004E1320..004E13AE` 143바이트/SHA-256 `c857c754eeebeb65ee2d447c562dc9df0d30cb103810f738f4dc120d9a2736df`와 뒤 1-NOP를 구현 전에 봉인했다. 원본은 class 검사가 아니라 flags `0x100`만 사용하고 item마다 init/slot base를 한 번 cache한 뒤 슬롯 2·3을 live 조회한다. callback마다 damage/type DWORD context를 만들고 첫 DWORD를 damage 주소에 저장한 뒤 다음 슬롯을 읽으며, 두 슬롯 뒤 다음 inventory link를 읽는다. empty inventory의 입력 target low DWORD, non-equipped 마지막 flags, equipped 마지막 counter 0의 incidental 반환도 구별한다.

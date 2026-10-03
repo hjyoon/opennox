@@ -498,10 +498,11 @@ func playerDamageMonster4E17B0(
 	}
 	// Match the already restored DefaultDamage PIERCE tail. Stock GolemArrow
 	// is MISSILE|WEAPON subclass 0x10, so test 004E1400 rather than rejecting
-	// every weapon-class missile. Player-fired and mixed melee/wand/unit
-	// projectiles retain their separate, visible admission failures.
+	// every weapon-class missile. NPC case 3 has no MONSTER-only source
+	// test: player-fired missiles use the same cached armor/live carry.
+	// Mixed melee/wand/unit projectiles retain separate admission failures.
 	if typ == object.DamageImpale && source != nil && source != weapon &&
-		source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+		source.Class().HasAny(object.ClassPlayer|object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon) {
@@ -724,7 +725,8 @@ func playerDamageMissilePierce4E17B0(
 
 // PlayerDamageNative4E17B0 restores ordinary player/NPC melee, unit-sourced SIMPLE
 // CRUSH (including stock Fists), Spider BITE, monster-fired
-// missile IMPACT/PIERCE, Berserker Charge CRUSH, SentryGlobe ZAP_RAY, world FLAME,
+// missile IMPACT/PIERCE, player-fired NPC PIERCE, Berserker Charge CRUSH,
+// SentryGlobe ZAP_RAY, world FLAME,
 // unarmed player/monster and unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC,
 // and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,

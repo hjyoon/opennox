@@ -310,6 +310,22 @@ server 회귀는 모든 init/slot/function/call fault prefix, callback의 다음
 
 전체 일반·실제 `GOEXPERIMENT=cgocheck2` 및 server-tag 검사를 통과했고, 관련 일반·strict·race·checkptr=2·HD 회귀는 각각 3회 통과했다. 기존 Hunt의 실제 고주소 C wrapper/AI stack와 NoxScript caller/trigger 회귀도 다시 통과했다. Darwin/ARM64 일반·HD·서버 제품 세 개의 빌드·Mach-O arm64·`-h` exit 0을 확인했다. 이전 clean `688ffb33b`과 새 빌드에 동일 YAML·이전 private diagnostic PNG를 사용해 일반·HD 슈리켄/채크럼 headless real input을 합계 8회 비교했으며, 실제 명중 HP `2,000→1,970/1,962`·소모/복귀/재장착과 세 화면의 exact-pixel 검사가 통과했다. GUI snapshot override나 기대값 교체는 하지 않았고, 이 화면 회귀를 새로운 helper의 실제 호출 증거로 대신하지 않는다. 실행 전후 원본 1,556파일·570,653,750바이트/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,909개·데이터 621개와 50개 압축 oracle pair를 재검증했다. clean 제품의 commit metadata 검증은 커밋 후 별도 재빌드 단계에서 수행한다.
 
+## DefaultDamage의 live Shield 판정 `004E11BF`
+
+이번 production 단위는 DefaultDamageWorld `004E0B30` 한 본체의 Shield 판정뿐이다. 기존 entry-time `shielded`는 protection·BuffOff·late Defend·pre-Damage·음향·Vampirism·GameBall·hurt-state·FieldGuide·source-hit IsEnemy callback이 추가/해제한 buff 26을 놓쳤다. 원본 `004E11BF/004E11C2`는 이 callback과 첫 명중 시각 기록 뒤 현재 Shield를 조회한다. admission의 읽기 전용 서비스 가용성 검사는 유지하되 tail 실행 계획으로 재사용하지 않는다.
+
+POISON(type 5)은 전체 Shield block을 건너뛴다. 자기 자신을 source로 하는 ManaBomb(type 15)은 `0052F710` reduction 호출만 건너뛰며 `004E11FA`의 raw signed damage zero 판정은 여전히 실행한다. 따라서 Shield가 있고 raw damage가 0이면 HP clear 없이 false를 반환한다. 다른 공격은 weapon이 있으면 weapon, 없으면 source를 reduction에 전달한다. depletion으로 helper 자체가 buff를 해제해도 helper 뒤 다시 buff를 조회하지 않는다. callback이 새 Shield를 추가했는데 reduction service가 없으면 이미 실행한 hit prefix를 보존하고 현재 raw damage의 명시적 unsupported를 기록하며 HP/PE32 fallback은 실행하지 않는다.
+
+이미 봉인한 prefix `004E0B30` 1,762바이트/SHA-256 `241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991`, HP call `004E1212` 5바이트/SHA-256 `a92aa6543bb2febbee7e546101e84c4e029845e564fc331a43cbe2477b24593f`, suffix `004E1217` 25바이트/SHA-256 `c10ba4a472391a7eb4b3e987b44c79a63bfb3afe7fb80575ffccf43a732b8ee4`를 재사용한다. manifest·원본 함수 본체·damage-shape admission·Shield helper/게임 수치·다른 cached tail 판정은 변경하지 않는다.
+
+수정 전 32개 subcase 실패를 보존했다. server 회귀는 13개 callback 위치에서 Shield 진입/제외, POISON/self-ManaBomb와 raw `0/8/-1/MinInt32/MaxInt32`, 누락 service의 early/live prefix, helper의 zero 결과·buff 해제·fault 이후 HP 무실행을 검사한다. C-owned 4GiB 초과 target/source/weapon/update/HP/duration을 production runtime에 연결해 실제 Shield 추가 시 HP `20→16`·duration `42→38`, 해제 시 HP `20→12`·duration `42→42`를 확인했다. 이는 **direct Go 본체와 실제 BuffOff 뒤 production buff API로 Shield를 바꾸는 한 테스트 hook**, 그리고 injected C-owned duration head이다. reduction·duration traversal·FX·UnitSetHP는 대체하지 않지만 unmodified C damage dispatcher나 stock 맵의 자연 Shield 변화라고 주장하지 않는다. 기존 실제 C damage dispatcher/Hunt wrapper·AI·NoxScript 회귀와 원래 Linux 21분 Hunt 장면의 재실행은 구분한다.
+
+전체 일반·실제 `GOEXPERIMENT=cgocheck2` 및 server-tag 검사를 통과했다. 관련 일반·strict·race·checkptr=2·HD 회귀와 새 Shield/기존 Frame·metadata·Defend·pre-Damage·Hunt·밀치기 focus는 해당 일반/strict 구성에서 각각 3회 통과했다. 초기 strict 링크의 디스크 공간 부족은 재생성 가능한 전용 Go build cache만 정리한 뒤 전체 gate를 처음부터 재실행해 해소했다. Darwin/ARM64 일반·HD·서버 제품 세 개의 빌드·Mach-O arm64·`-h` exit 0도 확인했다.
+
+이전 clean `72e4bfcd5`와 새 빌드의 일반·HD 슈리켄/채크럼 real input을 동일 YAML·기존 private diagnostic PNG로 8회 비교했다. 실제 명중 HP `2,000→1,970/1,962`·슈리켄 charge `20→19`·채크럼 자연 복귀/재장착 및 세 화면 exact-pixel 검사가 통과했다. 두 빌드의 일반·HD에서 기존 Shield 피해·Spider 방패 공격 시나리오도 8회 통과해 HP `150→148`·Shield duration `20→18`, 실제 hostile Spider의 방패 내구도 `200→188`을 확인했다. 이 stable Shield/물리 방패 검사는 callback 중 buff 변화의 본체 회귀를 대신하지 않는다. snapshot override·재생성·원본 자산·개인 Save/config 변경은 없다.
+
+실행 전후 원본 1,556파일·570,653,750바이트/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,911개·데이터 621개 및 50개 압축 oracle pair를 재검증했다. clean 제품의 commit metadata·headless 재검증은 커밋/푸시 후 별도 재빌드 단계에서 수행한다. 전체 macOS ARM64 포팅 완료로 확대하지 않는다.
+
 ## DefaultDamage의 at-use Frame `004E0B30`
 
 이번 production 단위는 DefaultDamageWorld 한 본체에서 진입 시 캐시한 `frame`만 제거한다. 원본은 `004E0B52`의 invulnerability 효과음, IsZombie/attribution/type 뒤 `004E0BEA`의 dead-zombie 기록, protection 반환 뒤 nonzero일 때만 `004E0DB6/004E0E1F`의 효과음 cadence, late Defend/attribution/type 뒤 `004E0F9A`의 피격 시각에서 각각 현재 `84EA04`를 읽는다. 함수 진입과 조기 반환에는 새 읽기를 넣지 않는다. nil Frame service의 기존 zero fallback과 raw DWORD `0/0x80000004/0xFFFFFFFF`를 유지한다. pre-Damage·음향·FieldGuide·Shield 뒤 target timestamp를 재기록하지 않는다.

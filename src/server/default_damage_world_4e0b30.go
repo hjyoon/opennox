@@ -415,9 +415,11 @@ func DefaultDamageWorld4E0B30(
 	if electricProtected && runtime.ElectricProtection == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing electric-protection service", target, source, weapon, damage, typ)
 	}
-	shielded := target.HasEnchant(defaultDamageShieldEnchant4E0B30) && typ != object.DamagePoison &&
+	// Availability admission only. 004E11BF queries the live buff after
+	// protection, Defend, pre-Damage, sound and every later hit callback.
+	shieldNeedsService := target.HasEnchant(defaultDamageShieldEnchant4E0B30) && typ != object.DamagePoison &&
 		(typ != object.DamageManaBomb || source != target)
-	if shielded && runtime.ShieldReduce == nil {
+	if shieldNeedsService && runtime.ShieldReduce == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing Shield reduction service", target, source, weapon, damage, typ)
 	}
 	// Read-only availability admission, not an execution plan. The original
@@ -633,12 +635,19 @@ func DefaultDamageWorld4E0B30(
 			}
 		}
 	}
-	if shielded {
-		shieldSource := weapon
-		if shieldSource == nil {
-			shieldSource = source
+	if target.HasEnchant(defaultDamageShieldEnchant4E0B30) && typ != object.DamagePoison {
+		if typ != object.DamageManaBomb || source != target {
+			if runtime.ShieldReduce == nil {
+				return defaultDamageUnsupported4E0B30(runtime, "unsupported live Shield reduction service", target, source, weapon, damage, typ)
+			}
+			shieldSource := weapon
+			if shieldSource == nil {
+				shieldSource = source
+			}
+			runtime.ShieldReduce(target, &damage, typ, shieldSource)
 		}
-		runtime.ShieldReduce(target, &damage, typ, shieldSource)
+		// 004E11FA also tests raw zero for a self-ManaBomb, even though
+		// that gate skips reduction. Do not re-query after Shield depletion.
 		if damage == 0 {
 			return false
 		}

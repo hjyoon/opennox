@@ -509,6 +509,10 @@ func playerDamageMonster4E17B0(
 	// their own live update; the hit marker remains on this cached base.
 	update := target.UpdateDataMonster()
 	armorValue := math.Float32frombits(update.Field518)
+	greatSword := playerDamageGreatSwordContext4E17B0{
+		weaponFlags: update.WeaponEquipFlags, armorFlags: update.ArmorEquipFlags,
+		marker: &update.Field547, markerType: &update.Field546,
+	}
 	// 004E18F3..004E19C1 reflects before the damage-type switch, including
 	// missiles whose unreflected damage path has not yet been ported.
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
@@ -518,6 +522,9 @@ func playerDamageMonster4E17B0(
 	// Its return suppresses HP/armor damage even for zero/negative hits and
 	// missile shapes whose unblocked tails remain separate native ports.
 	if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+		return handled, result
+	}
+	if applicable, handled, result := playerDamageGreatSwordMissileBlock4E17B0(target, source, weapon, greatSword, damage, typ, runtime); applicable {
 		return handled, result
 	}
 	if playerDamageMissileFlameShape4E17B0(source, weapon, typ) {

@@ -17,6 +17,8 @@ Linux 64비트의 native-width CGo 회귀는 `make test-linux-pie`로 root·serv
 
 장비 효과 tooltip `00413480`도 같은 side slot의 native 키 포인터로 복원했다. 한 C 본체 변경이며 six-row live byte 비교·첫 exact match의 late key read·원본 `Modifier.c`/line 2087·null variant output·매 호출 string lookup 및 nil 반환을 유지한다. 원본 본체 61바이트·뒤 3-NOP·여섯 문자열 키와 source path의 해시를 따로 봉인했다. 모든 256개 byte, 조회 순서/콜백 사이 flag·key 변경/중복 first-wins, C 진입점의 4GiB 초과 C-owned UTF-16 반환 및 packed table/아이콘 loaded 상태 불변을 회귀로 검사한다. GUI hover 관찰과 Windows/물리 화면 전체의 검증은 별도다.
 
+공개 `host-game-player-item-enchantment-report.yaml`은 stock `Sword`/`FireProtect1`의 정상 inventory grant 후 실제 mouse/`MSG_TRY_EQUIP`·`MSG_TRY_DEQUIP`을 두 번 반복한다. observer는 server `Field110`·report cache·opcode 91의 실제 client 수신값, 정상 inventory draw가 채운 4GiB 초과 image handle, 실제 hover의 한국어 `화염 저항` 표시와 해제 후 빈 tooltip을 읽기만 한다. 장비·효과 mask·packet·tooltip·draw 결과를 주입하지 않으며 결과 변조 감도·bounded schedule·공개 action 연결 및 observer의 금지된 writes/calls를 별도 단위 테스트로 검사한다. headless/mock audio 검증이며 원본 PNG golden이나 개인 save/config는 변경하지 않는다.
+
 Windows PowerShell에서는 다음과 같이 실행한다.
 
 ```powershell

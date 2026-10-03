@@ -134,7 +134,10 @@ func (sc *e2eScenario) checkPlayerStatusAnimation(kind, name, screenPrefix strin
 			}
 			e2eLog.Printf("STATUS ANIMATION VISIBLE: kind=%s sample=%s frame=%d timer=%d image-frame=%d matching-pixels=%d/%d", kind, sample.label, noxServer.Frame(), f.unit.EnchantDur(buff), index, matched, total)
 		})
-		sc.Screen(screenPrefix + " " + sample.label)
+		// The live sprite/particle check above is the visual assertion. Keep
+		// an actual frame for diagnosis without comparing unrelated animated
+		// map objects against an incidental fixed frame or rewriting goldens.
+		sc.CaptureMagicFrame(screenPrefix + " " + sample.label)
 	}
 	sc.addWhen(0, name+" natural expiry", expiryTimeout, func() bool {
 		dr := noxClient.ClientPlayerUnit()
@@ -159,7 +162,7 @@ func (sc *e2eScenario) checkPlayerStatusAnimation(kind, name, screenPrefix strin
 		}
 		e2eLog.Printf("STATUS ANIMATION EXPIRED: kind=%s frame=%d elapsed=%d buffs=%#x", kind, noxServer.Frame(), noxServer.Frame()-f.frame, f.unit.Buffs)
 	})
-	sc.Screen(screenPrefix + " expired")
+	sc.CaptureMagicFrame(screenPrefix + " expired")
 }
 
 func e2eVisibleSlowParticles() int {

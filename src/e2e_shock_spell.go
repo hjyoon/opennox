@@ -415,7 +415,10 @@ func (sc *e2eScenario) CheckShockSpell(level int, mode, name string) {
 			elapsed uint32
 		}{{"first", 12}, {"advanced", 24}} {
 			sc.addWhen(0, name+" "+sample.label+" visible", 180, func() bool { return f.visible(sample.label, sample.elapsed) }, func() {})
-			sc.Screen(name + " " + sample.label)
+			// visible asserts real, advancing particle pixels and synchronized
+			// buffs. Whole-frame snapshots are private diagnostics only: the
+			// surrounding map continues animating during the bounded wait.
+			sc.CaptureMagicFrame(name + " " + sample.label)
 		}
 	}
 	sc.addWhen(1, name+" complete", 3000, f.complete, func() {

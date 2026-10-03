@@ -212,6 +212,12 @@ NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
 
 비-E2E headless framebuffer/API 회귀는 별도로 실제 C apply와 game-entry/menu reset을 호출한다. 일반 8개/HD 10개 해상도·세 signed window mode에서 98/122개 frame 검사와 기존 GUI 네 폰트의 16개 실제 pixel/binding 검사를 각각 3회 통과했다. 버퍼 재생성 뒤 폰트 handle 연결이 끊기던 문제를 고쳤다. 생성한 font/seat fixture를 stock GUI/game-loop 전체의 해상도 적용이나 실제 macOS 창·Retina/물리 오디오 검증으로 확대하지 않는다. 원본 renderer의 기존 encoded PNG MD5 불일치는 변경 전 코드에서도 같으며 별도 미해결 항목이다. 설정 파일의 새 프로세스 복원·원본 default.cfg Reset·실제 OpenAL Soft null 검증도 각각 독립된 근거와 한계를 인벤토리에 기록한다.
 
+플레이어/NPC 상호 마법 회귀는 `host-game-fireball-unit-damage.yaml`과 `host-game-magic-missile-unit-damage.yaml`에서 각각 1..5레벨 양방향 10회와 NPC 자연 시전 1회를 검사한다. 위치·대기 AI·내구성 있는 대상 최대 HP·정상 주문/대상 선택만 fixture다. 실제 시전·투사체·명중·피해·fractional carry·방어구·hit marker·audio·HP packet/HUD·투사체 제거는 주입하지 않는다. Fireball의 FLAME과 Magic Missile의 direct/splash EXPLOSION을 NPC 및 플레이어의 PlayerDamage→DefaultDamage 경로에 복원하고, 일반 방패로 막은 직접 명중의 source/type marker를 유지한다. 방어구 carry와 splash 반경 밖의 직접 명중도 구분한다.
+
+`host-game-mutual-status-spells.yaml`은 Confuse·Stun·Slow·Freeze·Blind의 양방향 10회에서 실제 명중 대상, duration/power, client/HUD 동기화, 자연 만료를 검사한다. Confuse/Stun은 원본 sprite와 두 시점의 실제 효과 픽셀·서로 다른 프레임을 비교하고, Slow는 대상 근처의 실제 YellowBubbleParticle을 검사한다. `host-game-shock-spell.yaml`은 player/NPC self-cast 1..5레벨, NPC 자연 시전 및 양방향 Shock Glyph 피해를 별도로 검사한다. 이들 테스트는 실제 입력의 incantation/mana, 모든 주문·장비의 GreatStaff 방어·possessed unit·모든 class/자세·원격 대전을 검증했다는 의미가 아니다.
+
+앞서 기록한 status 전체 화면 PNG 일치는 당시 실행 결과다. 후속 실행에서 횃불·크리스털 등 주변 배경 애니메이션의 프레임 차이로 전체 화면 비교가 실패했으나 실제 Confuse sprite는 55/55 픽셀 일치했다. 현재 status와 Shock의 판정은 기존의 실제 효과 픽셀/입자, 프레임 진행, buff/HUD, 만료 assertion을 유지한다. 전체 화면은 `CaptureMagicFrame`으로 매번 새 private 임시 PNG에 진단용으로 저장하며 기존 baseline이나 `NOX_E2E_OVERRIDE`를 변경하지 않는다. 이는 고정 배경의 전체 화면 golden을 새로 통과시켰다는 주장이 아니다.
+
 패치 버전을 올릴 때에는 다음 항목을 한 변경으로 갱신한다.
 
 1. `toolchain/go-version.txt`

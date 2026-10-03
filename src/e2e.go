@@ -3147,7 +3147,7 @@ func (sc *e2eScenario) AssertPlayerPoisonDamage(name string) {
 		after := player.HealthData.Cur
 		update := player.UpdateDataPlayer()
 		if after != e2e.poisonHealthBefore-1 || player.Flags().HasAny(object.FlagDead|object.FlagDestroyed) ||
-			update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamagePoison)) ||
+			update.Field76 != 2 || update.Field75 != uint32(object.DamagePoison) ||
 			player.Obj130 != nil || player.Field131 != uint32(object.DamagePoison) || player.Pos132 != (types.Pointf{}) ||
 			player.Poison540 == 0 {
 			e2eError(fmt.Errorf("POISON tick state: health=%d->%d flags=%#x marker=%#x/%#x source=%p type=%d hit-pos=%v",

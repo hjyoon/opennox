@@ -79,3 +79,22 @@ func playerDamageMonsterMissileFlame4E17B0(
 	}
 	return playerDamageMissileFlameTail4E17B0(target, source, weapon, &update.Field547, &update.Field546, damage, typ, runtime)
 }
+
+func playerDamagePlayerMissileFlame4E17B0(
+	target, source, weapon *Object, update *PlayerUpdateData,
+	damage int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0,
+) (handled, result bool) {
+	// Ordinary shield blocks precede the separate GreatStaff defense and
+	// FLAME switch. Reflect Shield has already run in the entry function.
+	if applicable, h, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+		return h, result
+	}
+	if update.Player.WeaponEquip&0x400 != 0 &&
+		(update.State == PlayerState13 || update.State == PlayerState18 || update.State == PlayerState19 || update.State == PlayerState20) {
+		return playerDamageUnsupported4E17B0(runtime, "player GreatStaff missile FLAME block", target, source, weapon, damage, typ)
+	}
+	if update.Player.ObserveTarget() != nil {
+		return playerDamageUnsupported4E17B0(runtime, "possessed player missile FLAME", target, source, weapon, damage, typ)
+	}
+	return playerDamageMissileFlameTail4E17B0(target, source, weapon, &update.Field76, &update.Field75, damage, typ, runtime)
+}

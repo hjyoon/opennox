@@ -389,6 +389,65 @@ func playerDamageElectricShape4E17B0(source, weapon *Object, typ object.DamageTy
 		!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)
 }
 
+// playerDamageMonsterMissilePierce4E17B0 restores NPC switch case 3 at
+// 004E1F84. Absorption uses the armor cached at 004E1898, but the carry and
+// armor-durability helper reload the live update data. The cached NPC marker
+// identifies the distinct missile before durability, including when a defense
+// callback has replaced the live update. GodMode applies only to players.
+func playerDamageMonsterMissilePierce4E17B0(
+	target, source, weapon *Object, update *MonsterUpdateData, armorValue float32,
+	damage int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0,
+) (handled, result bool) {
+	quest := runtime.QuestMode != nil && runtime.QuestMode()
+	if runtime.DefaultDamage == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing default damage service", target, source, weapon, damage, typ)
+	}
+	if quest && runtime.QuestDamageScale == nil {
+		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
+	}
+	scaled := float32((1.0 - float64(armorValue)) * float64(damage))
+	live := target.UpdateDataMonster()
+	accumulated := scaled + math.Float32frombits(live.Field1)
+	effective := playerDamageRound4E17B0(accumulated)
+	itemPlan, ok := playerDamagePlanArmorCarry4E17B0(
+		target, source, weapon, math.Float32frombits(live.Field518), damage-effective, runtime,
+	)
+	if !ok {
+		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
+	}
+	update.Field547 = 1
+	update.Field546 = uint32(weapon.TypeInd)
+	live.Field1 = math.Float32bits(accumulated - float32(effective))
+	for _, planned := range itemPlan {
+		*planned.value = planned.next
+		if planned.damage <= 0 {
+			continue
+		}
+		health := planned.item.HealthData
+		before := health.Cur
+		runtime.DamageArmor(planned.item, source, weapon, planned.damage, typ)
+		after := health.Cur
+		if before != after && runtime.ReportArmorHealth != nil {
+			runtime.ReportArmorHealth(target, planned.item, before, after)
+		}
+	}
+	if update.Field547 == 0 {
+		update.Field547 = 2
+		update.Field546 = uint32(typ)
+	}
+	if damage > 0 && effective == 0 {
+		effective = 1
+	}
+	if quest {
+		before := effective
+		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		if before > 0 && effective < 1 {
+			effective = 1
+		}
+	}
+	return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
+}
+
 // playerDamageMonster4E17B0 restores the native-width monster half of
 // PlayerDamage used by scripted NPCs. In particular, War01A's wizard setpiece
 // sends Bryan's MorningStar CRUSH and the wizard's weaponless
@@ -421,6 +480,11 @@ func playerDamageMonster4E17B0(
 	if source == nil && weapon == nil && typ == object.DamagePoison {
 		return playerDamageMonsterPoison4E17B0(target, damage, runtime)
 	}
+	// Preserve the switch's cached absorption value across the preceding
+	// Reflect Shield/ordinary-shield direction callbacks. The durability
+	// helper reads the newly live value independently.
+	pierceUpdate := target.UpdateDataMonster()
+	pierceArmor := math.Float32frombits(pierceUpdate.Field518)
 	// 004E18F3..004E19C1 reflects before the damage-type switch, including
 	// missiles whose unreflected damage path has not yet been ported.
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
@@ -431,6 +495,17 @@ func playerDamageMonster4E17B0(
 	// missile shapes whose unblocked tails remain separate native ports.
 	if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return handled, result
+	}
+	// Match the already restored DefaultDamage PIERCE tail. Stock GolemArrow
+	// is MISSILE|WEAPON subclass 0x10, so test 004E1400 rather than rejecting
+	// every weapon-class missile. Player-fired and mixed melee/wand/unit
+	// projectiles retain their separate, visible admission failures.
+	if typ == object.DamageImpale && source != nil && source != weapon &&
+		source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
+		!defaultDamageAttackQualifies4E1400(source, weapon) {
+		return playerDamageMonsterMissilePierce4E17B0(target, source, weapon, pierceUpdate, pierceArmor, damage, typ, runtime)
 	}
 	update := target.UpdateDataMonster()
 	crush := typ == object.DamageCrush && source != nil && source.Class().Has(object.ClassMonster) &&

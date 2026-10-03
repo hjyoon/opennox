@@ -1204,7 +1204,7 @@ int sub_4133D0(nox_object_t* a1p) {
 }
 
 //----- (00413420) --------------------------------------------------------
-int sub_413420(char a1) {
+nox_video_bag_image_t* sub_413420(char a1) {
 	unsigned char* v1; // esi
 	int v2;            // ecx
 	unsigned char* v3; // eax
@@ -1226,7 +1226,7 @@ int sub_413420(char a1) {
 			return 0;
 		}
 	}
-	return *getMemU32Ptr(0x587000, 27340 + 20 * v2);
+	return (nox_video_bag_image_t*)(uintptr_t)*getMemU32Ptr(0x587000, 27340 + 20 * v2);
 }
 
 //----- (004134D0) --------------------------------------------------------

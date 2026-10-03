@@ -134,7 +134,7 @@ int nox_xxx_modifGetIdByName_413290(char* a1);
 void* nox_xxx_modifGetDescById_413330(int a1);
 obj_412ae0_t* nox_xxx_modifNext_4133C0(obj_412ae0_t* a1);
 int sub_4133D0(nox_object_t* a1);
-int sub_413420(char a1);
+nox_video_bag_image_t* sub_413420(char a1);
 int sub_4134D0();
 void sub_4137E0();
 char* sub_413890();

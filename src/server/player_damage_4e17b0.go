@@ -522,6 +522,9 @@ func playerDamageMonster4E17B0(
 	if playerDamageMissileFlameShape4E17B0(source, weapon, typ) {
 		return playerDamageMonsterMissileFlame4E17B0(target, source, weapon, update, damage, typ, runtime)
 	}
+	if playerDamageMissileExplosionShape4E17B0(source, weapon, typ) {
+		return playerDamageMonsterMissileExplosion4E17B0(target, source, weapon, update, armorValue, damage, typ, runtime)
+	}
 	// HarpoonCollide supplies the owning Player and a distinct HarpoonBolt.
 	// Case 11 shares the full-armor/carry tail at 004E1F84 with PIERCE.
 	// Stock HarpoonBolt is MISSILE|WEAPON subclass 0x10: 004E1400 excludes

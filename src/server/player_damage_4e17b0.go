@@ -430,11 +430,12 @@ func playerDamageMonsterMissilePierce4E17B0(
 	target, source, weapon *Object, update *MonsterUpdateData, armorValue float32,
 	damage int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
-	quest := runtime.QuestMode != nil && runtime.QuestMode()
 	if runtime.DefaultDamage == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing default damage service", target, source, weapon, damage, typ)
 	}
-	if quest && runtime.QuestDamageScale == nil {
+	// A missing service may reject before stores. With the production scale
+	// available, 004E2046 queries Quest only after wear/marker/minimum.
+	if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
 	scaled := float32((1.0 - float64(armorValue)) * float64(damage))
@@ -455,7 +456,10 @@ func playerDamageMonsterMissilePierce4E17B0(
 	if damage > 0 && effective == 0 {
 		effective = 1
 	}
-	if quest {
+	if runtime.QuestMode != nil && runtime.QuestMode() {
+		if runtime.QuestDamageScale == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
+		}
 		before := effective
 		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
 		if before > 0 && effective < 1 {

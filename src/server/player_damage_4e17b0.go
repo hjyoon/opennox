@@ -798,7 +798,14 @@ func PlayerDamageNative4E17B0(
 		return true, false
 	}
 	pierceArmorValue := math.Float32frombits(update.Field57)
+	greatSword := playerDamageGreatSwordContext4E17B0{
+		weaponFlags: player.WeaponEquip, armorFlags: player.ArmorEquip,
+		state: &update.State, marker: &update.Field76, markerType: &update.Field75,
+	}
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+		return handled, result
+	}
+	if applicable, handled, result := playerDamageGreatSwordMissileBlock4E17B0(target, source, weapon, greatSword, damage, typ, runtime); applicable {
 		return handled, result
 	}
 	if playerDamageMissileFlameShape4E17B0(source, weapon, typ) {

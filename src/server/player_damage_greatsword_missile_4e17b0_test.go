@@ -170,6 +170,20 @@ func TestPlayerDamageNative4E17B0NPCGreatSwordMissileTypes(t *testing.T) {
 	}
 }
 
+func TestPlayerDamageNative4E17B0PlayerGreatSwordMissileTypes(t *testing.T) {
+	for _, typ := range []object.DamageType{object.DamageFlame, object.DamageExplosion, object.DamageImpale,
+		object.DamageImpact, object.DamageElectric, object.DamageAirborneElectric, object.DamageZapRay} {
+		t.Run(fmt.Sprint(typ), func(t *testing.T) {
+			target, source, weapon, _, _, _, r, events := damageGreatSwordFixture4E17B0(t, true, false)
+			r.DefaultDamage = nil // A blocked hit must not need the unblocked HP tail.
+			if h, result := PlayerDamageNative4E17B0(target, source, weapon, 9, typ, r); !h || result ||
+				!slices.Equal(*events, []string{"reflect", "clear-owner", "set-owner", "audio", "rng", "state-19", "balance", "wear"}) {
+				t.Fatalf("player block=%t/%t events=%v", h, result, *events)
+			}
+		})
+	}
+}
+
 func TestPlayerDamageGreatSwordMissile4E17B0Admission(t *testing.T) {
 	for _, player := range []bool{false, true} {
 		for _, tc := range []struct {

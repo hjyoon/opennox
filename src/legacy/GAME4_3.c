@@ -4321,6 +4321,7 @@ int nox_xxx_playerAttackNativeData_538960(
 		int sound;
 		uint8_t damage_type;
 		uint32_t field_24;
+		int war_hammer = 0;
 		if (equipment & 0x200) {
 			animation = 28;
 			sound = 880;
@@ -4336,6 +4337,12 @@ int nox_xxx_playerAttackNativeData_538960(
 			sound = 881;
 			damage_type = 0;
 			field_24 = 0;
+		} else if (equipment & 0x4000) {
+			animation = 39;
+			sound = 882;
+			damage_type = 2;
+			field_24 = 1;
+			war_hammer = 1;
 		} else if (equipment & 0x800) {
 			animation = 26;
 			sound = 884;
@@ -4356,6 +4363,10 @@ int nox_xxx_playerAttackNativeData_538960(
 		}
 		current_frame = (uint8_t)((gameFrame() - unit->field_34) / (uint32_t)(frame_duration + 1));
 		if (current_frame == frame_count / 2 && current_frame > previous_frame) {
+			if (war_hammer) {
+				nox_xxx_playerAttackWarHammerHitNative_538960(unit, weapon, modifier, strength);
+				goto finish;
+			}
 			nox_player_attack_info_native_t attack = {
 				.damage = nox_xxx_calcBoltDamage_4EF1E0(strength, modifier),
 				.damage_type = damage_type,

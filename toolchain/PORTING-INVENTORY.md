@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어 해머의 누락된 공격 분기 `00538960`
+
+앞 두 해머 단위 뒤 실제 플레이어 C 공격 진입은 Hammer mask `0x4000`을 처리하지 않아 첫 frame에서 반환 0으로 공격을 끝냈다. 기존에 봉인한 `00538960` 본체의 해머 우선순위·animation 39·Crush damage·중간 frame 타격 계약과 대조해 red를 재현했다. 이번 production 변경은 `nox_xxx_playerAttackNativeData_538960` 한 본체다. 검/대검 뒤, mace/axe 앞에 해머 분기를 복원하고 원래 중간 frame 조건에서 기존 native 광역 타격 helper를 호출한다. 프레임 clamp·종료 반환·기존 deadline 보존·다른 무기 분기는 바꾸지 않는다. ABI·범용 float 변환·원본 자산은 불변이다.
+
+고주소 pinned unit/update/weapon/modifier, C-owned player와 실제 C 진입 회귀에서 앞쪽 두 대상의 동시 피해, 범위 정확 경계/바깥·뒤쪽·destroyed 대상 제외, 네 실제 DamageMultiplier 효과, wall source/반경/Crush 수치와 damage→wall→quake→sound 순서를 검사한다. miss도 원래대로 quake/sound를 내며, 반복 중간 frame·공격 종료 뒤 추가 타격 및 중간 frame을 건너뛴 늦은 타격은 없다. packed 인접 state·무기 위치 동기화·0/기존 deadline 및 8가지 혼합 melee mask 우선순위도 확인한다. 관련 legacy 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 oracle이 통과했다. code 2,917/data 622개·NXZ 50쌍 및 stock tree를 유지한다. 실제 queued inventory/attack GUI는 다음 테스트 전용 단위이며 이번 C API 회귀를 stock 게임 전체·물리 화면/스피커·Windows runtime 검증으로 확대하지 않는다. 개인 Save/config·private 로그/PNG는 변경하거나 공개하지 않는다.
+
 ## 해머 흔들기 강도의 원본 반올림
 
 봉인된 공격 본체 `00538960`의 0053976E FMULS→FSTPS→00419A70 FISTPL은 strength×binary32 0.1을 binary32로 저장한 뒤 현재 반올림 모드로 정수화한다. 00419A70 본체 17바이트와 뒤 15-NOP를 수정 전에 별도 봉인했다. 기존 helper의 전역 `nox_float2int` 호출은 C cast 절삭이어서 기본 nearest-even에서 힘 byte 0..255 중 113개의 중심 수신 패킷이 잘못됐다. 이번 production 단위는 `nox_xxx_playerAttackWarHammerHitNative_538960` 한 본체에서 `nearbyintf`를 사용하는 변경뿐이다. 범용 float 변환·damage/공격 effect·순서·sound·다른 무기 함수는 바꾸지 않는다.

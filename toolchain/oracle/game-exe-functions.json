@@ -17843,6 +17843,20 @@
       "purpose": "the exact fifteen NOP bytes after hurt-sound scheduling before the next routine at 00532880"
     },
     {
+      "name": "sub_532880",
+      "address": "0x00532880",
+      "size": 33,
+      "sha256": "73e524dcc8ceaeacaa15850d264310cd0465da1085324a7de94b6564b55e5b7c",
+      "purpose": "the existing inlined DefaultDamage successful-monster-hit tail: reload update, preserve a nonzero timestamp, otherwise read the live Frame DWORD and store it"
+    },
+    {
+      "name": "sub_532880_padding",
+      "address": "0x005328A1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating the successful-hit timestamp tail from PlayerDamageSound at 005328B0"
+    },
+    {
       "name": "nox_xxx_scriptCallByEventBlock_502490_call_533067",
       "address": "0x00533067",
       "size": 5,

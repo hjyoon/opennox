@@ -167,12 +167,16 @@ func DefaultDamageWorld4E0B30(
 	if target == nil {
 		return true
 	}
-	frame := uint32(0)
-	if runtime.Frame != nil {
-		frame = runtime.Frame()
+	// GAME.EXE reads 84EA04 at each executed use, never on entry. In
+	// particular protection, BuffOff and Defend can precede a later read.
+	currentFrame := func() uint32 {
+		if runtime.Frame != nil {
+			return runtime.Frame()
+		}
+		return 0
 	}
 	if target.HasEnchant(defaultDamageInvulnerableEnchant4E0B30) {
-		if byte(frame)&3 == 0 && runtime.Audio != nil {
+		if byte(currentFrame())&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(defaultDamageInvulnerableSound4E0B30, target)
 		}
 		return true
@@ -203,7 +207,8 @@ func DefaultDamageWorld4E0B30(
 			target.Obj130 = source
 		}
 		target.Field131 = uint32(typ)
-		target.Frame134 = frame
+		// 004E0BEA reads after IsZombie and the attribution/type stores.
+		target.Frame134 = currentFrame()
 		return true
 	}
 	// Shock Glyph supplies the caster as BOTH source and weapon. Keep that
@@ -445,7 +450,7 @@ func DefaultDamageWorld4E0B30(
 	}
 	if fireProtected {
 		protectionValue := runtime.FireProtection(target)
-		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
+		if protectionValue != 0 && byte(currentFrame())&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(104, target)
 		}
 		// GAME.EXE compares the binary64 return before spilling it to v46,
@@ -460,7 +465,7 @@ func DefaultDamageWorld4E0B30(
 	}
 	if electricProtected {
 		protectionValue := runtime.ElectricProtection(target)
-		if protectionValue != 0 && byte(frame)&3 == 0 && runtime.Audio != nil {
+		if protectionValue != 0 && byte(currentFrame())&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(108, target)
 		}
 		protection := float32(protectionValue)
@@ -535,7 +540,9 @@ func DefaultDamageWorld4E0B30(
 	// latch reset must not retain a stale Monster update for these stores.
 	injuredMonster := target.Class().Has(object.ClassMonster)
 	target.Field131 = uint32(typ)
-	target.Frame134 = frame
+	// 004E0F9A is after late Defend and before the injured/update stores;
+	// pre-Damage, sound and Shield must not replay this timestamp.
+	target.Frame134 = currentFrame()
 	if injuredMonster {
 		update := target.UpdateDataMonster()
 		update.StatusFlags |= object.MonStatusInjured
@@ -620,7 +627,9 @@ func DefaultDamageWorld4E0B30(
 			runtime.IsEnemy != nil && runtime.IsEnemy(target, monster) {
 			update := monster.UpdateDataMonster()
 			if update.Field130 == 0 {
-				update.Field130 = frame
+				// The inlined 00532880 tail reads only for an empty latch,
+				// after IsEnemy and every preceding hit callback has returned.
+				update.Field130 = currentFrame()
 			}
 		}
 	}

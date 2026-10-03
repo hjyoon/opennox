@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 Quest 은·금 열쇠 수신의 읽기 전용 관찰
+
+`host-quest-key-report.yaml`은 실제 Quest 메뉴의 Warrior 시작과 정상 stock SilverKey/GoldKey 지급을 사용한다. baseline, 은만 보유, 둘 다 보유, 각 중복 2개, 실제 queued inventory drag·수량 확인을 거친 금지된 수동 드롭, 정상 stock stage 전환까지 server/client의 실제 수량 및 Boolean presence를 읽기만 한다. 새 typed C tail reader는 기존 decoder가 쓴 바이트를 native Player 바인딩으로 읽으며 65,536개 수신 조합·4GiB 초과 C-owned 레코드·인접 바이트/전체 레코드 불변을 검사한다. 결과 오염 감도, bounded schedule, 공개 action 연결과 AST 금지 write/call 검사도 추가했다. 기존 production 본체 변경은 scenario loader 연결 하나이며 보고·패킷·inventory·mode 결과를 주입하지 않는다.
+
+첫 진단은 duplicate stack의 실제 수량 확인 대화창을 누락해 실패했다. 정상 클릭으로 확인하고 observer도 미완료 대화창/drag를 거부하도록 했다. 다음 진단은 Quest save의 ClassKey 필터를 모든 stage exit의 열쇠 삭제로 오해한 기대값 때문에 실패했다. 실제 원본 exit는 별도의 class bit만 드롭하므로 게임을 바꾸지 않고 다음 stage의 2+2 보유·presence 1+1 기대값을 바로잡았다. 최종 일반/HD headless/mock 진단 각 16회, 합계 32회가 exit 0이며 두 실제 수량 대화창 종료와 고주소 unit/update/Player를 관찰했다. 열쇠 실제 소비 뒤 소실·remote client·rank key 픽셀·물리 화면이나 Windows runtime 증거는 아니다.
+
+관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회 및 oracle이 통과했다. native 복원 커밋 `4566ad0b3`의 clean ARM64 3제품 build/revision/help와 일반/HD 양방향 마법 8실행/106결과도 통과했다. observer 자체의 clean 제품 검증은 후속 단계이며 dirty 진단과 구별한다. code 2,933/data 638개·NXZ 50쌍 및 stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 원본/개인 파일·private 로그·PNG·기존 golden은 변경하거나 공개하지 않는다.
+
 ## Quest 은·금 열쇠의 누락된 self-report
 
 native self-report의 마지막 Quest 누락 slice인 `004D9A3F..004D9B48`을 원본과 대조해 복원했다. 기존 production 본체 변경은 `playerReportSelfNative4D9900`의 새 helper 연결 하나다. 생명 보고 앞에서 원래 Quest admission을 보존하고, 생명 전송 콜백이 모드를 바꿔도 이미 진입한 은·금 열쇠 순회를 수행한다. entry-cached update의 두 32-byte recipient marker 배열을 사용하며, player-info만 있고 unit이 없는 슬롯도 원래대로 포함한다. 각 슬롯의 zero type-cache 재조회/게시와 각 inventory 후보의 full DWORD cache→unsigned type WORD 비교 순서, 첫 match 종료, 실패 전송 뒤 precomputed presence 저장을 유지한다. `F0/22`·`F0/23` reliable 5-byte 패킷은 raw source NetCode 하위 WORD와 signed recipient/result를 보존한다. 기존 client 수신 본체와 raw legacy C self-report는 변경하거나 폐기하지 않는다.

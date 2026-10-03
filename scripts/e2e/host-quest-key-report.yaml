@@ -1,0 +1,146 @@
+# Actual Quest menu startup, normal stock key grants, and queued mouse drops.
+# Manual SilverKey/GoldKey drop is originally forbidden; observe unchanged
+# inventory and Boolean reports across the normal stock stage transition.
+# Quest save filtering does not imply unconditional key deletion at every exit.
+# The observer never writes key markers, received packets, or client results.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 200
+    name: host Quest
+  - action: wait
+    dt: 400
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+    name: accept color
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss Quest guide
+  - action: wait
+    dt: 530
+  - action: check-player-quest-keys-report
+    name: no keys baseline
+  - action: grant-item
+    item: SilverKey
+    count: 1
+    name: grant first stock silver key
+  - action: check-player-quest-keys-report
+    count: 1
+    name: silver only
+  - action: grant-item
+    item: GoldKey
+    count: 1
+    name: grant first stock gold key
+  - action: check-player-quest-keys-report
+    count: 1
+    amount: 1
+    name: both keys
+  - action: grant-item
+    item: SilverKey
+    count: 1
+    name: grant second stock silver key
+  - action: check-player-quest-keys-report
+    count: 2
+    amount: 1
+    name: duplicate silver has Boolean presence
+  - action: grant-item
+    item: GoldKey
+    count: 1
+    name: grant second stock gold key
+  - action: check-player-quest-keys-report
+    count: 2
+    amount: 2
+    name: duplicate gold has Boolean presence
+  - action: inventory
+    name: open real inventory
+  - action: wait
+    dt: 90
+    name: settle inventory animation
+  - action: drag-inventory-item-out
+    item: SilverKey
+    name: attempt original forbidden silver key drop
+  - action: wait
+    dt: 20
+    name: settle silver key stack amount dialog
+  - action: assert-item-amount
+    amount: 1
+    max: 2
+    name: observe actual silver key stack dialog
+  - action: click-item-amount-accept
+    name: confirm one silver key drop through normal input
+  - action: wait
+    dt: 30
+    name: process normal silver key drop request
+  - action: assert-item-amount-closed
+    name: silver key drop input is finished
+  - action: check-player-quest-keys-report
+    dt: 30
+    count: 2
+    amount: 2
+    name: silver manual drop remains forbidden
+  - action: drag-inventory-item-out
+    item: GoldKey
+    name: attempt original forbidden gold key drop
+  - action: wait
+    dt: 20
+    name: settle gold key stack amount dialog
+  - action: assert-item-amount
+    amount: 1
+    max: 2
+    name: observe actual gold key stack dialog
+  - action: click-item-amount-accept
+    name: confirm one gold key drop through normal input
+  - action: wait
+    dt: 30
+    name: process normal gold key drop request
+  - action: assert-item-amount-closed
+    name: gold key drop input is finished
+  - action: check-player-quest-keys-report
+    dt: 30
+    count: 2
+    amount: 2
+    name: gold manual drop remains forbidden
+  - action: inventory
+    name: close inventory before normal stage exit
+  - action: wait
+    dt: 90
+  - action: enter-quest-exit
+    name: normal stock Quest stage exit
+  - action: check-player-quest-keys-report
+    dt: 60
+    count: 2
+    amount: 2
+    name: next stage preserves actual keys and reports
+  - action: quit
+    dt: 1

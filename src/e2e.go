@@ -9981,6 +9981,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckPlayerArmorReport(l.Item, l.Name)
+		case "check-player-quest-keys-report":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerQuestKeysReport(l.Count, l.Amount, l.Name)
 		case "check-player-item-enchantment-report":
 			if dt != 0 {
 				sc.Wait(dt, "")

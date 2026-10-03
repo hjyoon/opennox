@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 열쇠 receiver 관찰의 범위
+
+별도 공개 headless scenario와 읽기 전용 observer로 정상 stock grant·queued inventory drag/수량 확인·금지된 drop·stock stage 전환의 실제 server/client inventory와 self-report cache·기존 native C decoder tail 바이트를 대조했다. 최종 일반/HD 진단 각 16회/합계 32회가 통과했다. 최초 수량 확인 누락과 다음 stage의 무조건 ClassKey 삭제 기대값은 테스트 준비 오류로 기록하며 game을 바꿔 성공시키지 않았다. Quest save 필터와 stage exit의 다른 class-bit 드롭은 서로 다르다.
+
+65536개 고주소 C-owned tail 수신 조합·전체 레코드 불변, 결과 오염 감도·bounded schedule·공개 action/AST 금지 쓰기 검사와 일반/실제 cgocheck2/race/checkptr/HD 각 3회·전체 일반/strict/server-tag·oracle이 통과했다. native 복원 `4566ad0b3`의 clean ARM64 3제품 및 마법 8실행/106결과는 별도 통과했으며 observer 커밋의 clean 실행은 후속 검증이다. manifest는 code 2,933/data 638개를 유지하고 stock tree·NXZ 50쌍도 불변이다. 실제 key 소비·remote client·rank key 픽셀·물리 화면·원본 Windows runtime 전체의 증명은 아니며 개인 파일·원본 자산·private 로그/PNG·golden을 변경하거나 공개하지 않는다.
+
 ## Quest 은·금 열쇠 보고 `004D9A3F`
 
 생명 loop 다음 원본 두 key loop 266바이트, `004D9DF0`/`004D9E30` sender 각 59바이트·뒤 5-NOP 두 범위와 `SilverKey`/`GoldKey` NUL literal 10/8바이트의 해시를 추가했다. shared DWORD cache `007504F8`/`007504FC`는 unbacked BSS이므로 data file 범위가 아니다. Quest admission은 생명 loop 앞에서 한 번이며 은→금, 각 0..31 슬롯 순서다. zero cache lookup/publish는 수신자 존재 검사보다 먼저 매 슬롯 수행하고, 존재한 수신자에 대해서만 inventory를 다시 순회한다. player unit은 요구하지 않는다. 후보마다 live cache DWORD를 item WORD보다 먼저 읽고 첫 match에서 next를 읽지 않는다. entry-cached update의 BYTE marker와 다르면 reliable `F0/22|23 presence netCodeWORD`를 전송하고 성공 여부와 무관하게 콜백 전 computed presence를 같은 update에 기록한다. 생명 loop의 post-call live life BYTE 재조회와 구별한다.

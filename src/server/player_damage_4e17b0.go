@@ -228,8 +228,10 @@ func playerDamageShieldBlock4E17B0(
 		if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
 			runtime.ObserveClear(target)
 		}
-		if typ == object.DamageImpale && source != nil && weapon != nil && source != weapon {
-			// Existing non-PIERCE player slices keep their separate marker contracts.
+		if (typ == object.DamageImpale || playerDamageMissileFlameShape4E17B0(source, weapon, typ)) &&
+			source != nil && weapon != nil && source != weapon {
+			// 004E1A8F records the distinct missile before block audio/wear;
+			// Reflect Shield returns earlier with a cleared marker instead.
 			update.Field76 = 1
 			update.Field75 = uint32(weapon.TypeInd)
 		}

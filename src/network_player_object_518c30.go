@@ -212,7 +212,7 @@ func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object,
 	return s.NetList.AddToMsgListCli(player.PlayerIndex(), netlist.Kind1, packet[:])
 }
 
-// Keep the armor/poison/Quest slices' update pointer cached before callbacks,
+// Keep the armor/item-enchantment/Quest slices' update pointer cached before callbacks,
 // as in 004D9900. Quest keys remain a separate missing slice; the existing
 // gold/statistics/vitals helpers retain their own bindings.
 func (s *Server) playerReportSelfNative4D9900(unit *server.Object) {
@@ -222,7 +222,7 @@ func (s *Server) playerReportSelfNative4D9900(unit *server.Object) {
 	update := (*server.PlayerUpdateData)(unit.UpdateData)
 	s.Server.PlayerArmorReport4D992A(update)
 	s.Server.PlayerGoldReportSync4D9900(unit)
-	s.Server.PlayerPoisonReport4D99A7(unit, update)
+	s.Server.PlayerItemEnchantmentReport4D99A7(unit, update)
 	s.Server.PlayerQuestLivesReport4D99E1(unit, update)
 	playerReportStatsNative4D9900(unit, playerStatsReportHooks4D9900{
 		totalHealth: func(playerInd byte, unit *server.Object) {

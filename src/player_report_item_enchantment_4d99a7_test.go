@@ -14,7 +14,7 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func playerPoisonReportFixture4D99A7(t *testing.T) (*Server, *server.Object, *server.PlayerUpdateData, *server.Player) {
+func playerItemEnchantmentReportFixture4D99A7(t *testing.T) (*Server, *server.Object, *server.PlayerUpdateData, *server.Player) {
 	t.Helper()
 	old := noxflags.GetGame()
 	noxflags.ResetGame()
@@ -32,15 +32,15 @@ func playerPoisonReportFixture4D99A7(t *testing.T) (*Server, *server.Object, *se
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for _, ptr := range []unsafe.Pointer{unsafe.Pointer(unit), unsafe.Pointer(update), unsafe.Pointer(player)} {
 			if uintptr(ptr) <= math.MaxUint32 {
-				t.Fatal("poison report fixture must exceed 4 GiB")
+				t.Fatal("item-enchantment report fixture must exceed 4 GiB")
 			}
 		}
 	}
 	return &Server{Server: native}, unit, update, player
 }
 
-func TestPlayerReportPoisonNative4D99A7AllBytePairs(t *testing.T) {
-	s, unit, _, player := playerPoisonReportFixture4D99A7(t)
+func TestPlayerReportItemEnchantmentNative4D99A7AllBytePairs(t *testing.T) {
+	s, unit, _, player := playerItemEnchantmentReportFixture4D99A7(t)
 	player.PlayerInd = 31
 	unit.Poison540 = 0xa7 // Independent +540 field must not supply the +440 report.
 	unit.Field542 = 1000
@@ -48,7 +48,7 @@ func TestPlayerReportPoisonNative4D99A7AllBytePairs(t *testing.T) {
 	sends := 0
 	s.Server.NetSendPacketXxx = func(index int, buf []byte, related *server.Object, remove, sequence int) int {
 		if index != 31 || related != nil || remove != 1 || sequence != 0 {
-			t.Fatal("poison report transport arguments")
+			t.Fatal("item-enchantment report transport arguments")
 		}
 		sends++
 		packet = append([]byte(nil), buf...)
@@ -72,14 +72,14 @@ func TestPlayerReportPoisonNative4D99A7AllBytePairs(t *testing.T) {
 			packet, sends = nil, 0
 			s.playerReportSelfNative4D9900(unit)
 			if sends != 0 {
-				t.Fatalf("unchanged poison %d repeated packet=%x", current, packet)
+				t.Fatalf("unchanged item enchantment %d repeated packet=%x", current, packet)
 			}
 		}
 	}
 }
 
-func TestPlayerReportPoisonNative4D99A7UnsignedRecipients(t *testing.T) {
-	s, unit, _, player := playerPoisonReportFixture4D99A7(t)
+func TestPlayerReportItemEnchantmentNative4D99A7UnsignedRecipients(t *testing.T) {
+	s, unit, _, player := playerItemEnchantmentReportFixture4D99A7(t)
 	var packets [][]byte
 	var recipient int
 	s.Server.NetSendPacketXxx = func(index int, packet []byte, related *server.Object, remove, sequence int) int {
@@ -99,8 +99,8 @@ func TestPlayerReportPoisonNative4D99A7UnsignedRecipients(t *testing.T) {
 	}
 }
 
-func TestPlayerReportPoisonNative4D99A7ReportsOnlyTheLowItemEnchantmentByte(t *testing.T) {
-	s, unit, _, player := playerPoisonReportFixture4D99A7(t)
+func TestPlayerReportItemEnchantmentNative4D99A7ReportsOnlyTheLowItemEnchantmentByte(t *testing.T) {
+	s, unit, _, player := playerItemEnchantmentReportFixture4D99A7(t)
 	var packets [][]byte
 	s.Server.NetSendPacketXxx = func(index int, packet []byte, related *server.Object, remove, sequence int) int {
 		packets = append(packets, append([]byte(nil), packet...))
@@ -124,8 +124,8 @@ func TestPlayerReportPoisonNative4D99A7ReportsOnlyTheLowItemEnchantmentByte(t *t
 	}
 }
 
-func TestPlayerReportPoisonNative4D99A7CachedUpdateAndPostSendPlayerAndValue(t *testing.T) {
-	s, unit, entry, before := playerPoisonReportFixture4D99A7(t)
+func TestPlayerReportItemEnchantmentNative4D99A7CachedUpdateAndPostSendPlayerAndValue(t *testing.T) {
+	s, unit, entry, before := playerItemEnchantmentReportFixture4D99A7(t)
 	live, freeLive := alloc.New(server.PlayerUpdateData{})
 	after, freeAfter := alloc.New(server.Player{})
 	foreign, freeForeign := alloc.New(server.Player{})
@@ -151,18 +151,18 @@ func TestPlayerReportPoisonNative4D99A7CachedUpdateAndPostSendPlayerAndValue(t *
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for _, ptr := range []unsafe.Pointer{unsafe.Pointer(live), unsafe.Pointer(after), unsafe.Pointer(foreign)} {
 			if uintptr(ptr) <= math.MaxUint32 {
-				t.Fatal("callback-rebound poison pointers must exceed 4 GiB")
+				t.Fatal("callback-rebound item-enchantment pointers must exceed 4 GiB")
 			}
 		}
 	}
 }
 
-func TestPlayerReportPoisonNative4D99A7ReloadsAfterGoldCallback(t *testing.T) {
-	s, unit, entry, goldPlayer := playerPoisonReportFixture4D99A7(t)
-	poisonPlayer, freePoisonPlayer := alloc.New(server.Player{})
-	t.Cleanup(freePoisonPlayer)
+func TestPlayerReportItemEnchantmentNative4D99A7ReloadsAfterGoldCallback(t *testing.T) {
+	s, unit, entry, goldPlayer := playerItemEnchantmentReportFixture4D99A7(t)
+	enchantmentPlayer, freeEnchantmentPlayer := alloc.New(server.Player{})
+	t.Cleanup(freeEnchantmentPlayer)
 	goldPlayer.PlayerInd, goldPlayer.GoldVal, goldPlayer.Field2168 = 31, 37, 12
-	poisonPlayer.PlayerInd, poisonPlayer.Field2172, unit.Field110 = 128, 3, 2
+	enchantmentPlayer.PlayerInd, enchantmentPlayer.Field2172, unit.Field110 = 128, 3, 2
 	var packets [][]byte
 	s.Server.NetSendPacketXxx = func(index int, packet []byte, related *server.Object, remove, sequence int) int {
 		if related != nil || remove != 1 || sequence != 0 {
@@ -174,11 +174,10 @@ func TestPlayerReportPoisonNative4D99A7ReloadsAfterGoldCallback(t *testing.T) {
 			if index != 31 {
 				t.Fatal("gold recipient changed")
 			}
-			entry.Player, unit.Field110 = poisonPlayer, 4
-
+			entry.Player, unit.Field110 = enchantmentPlayer, 4
 		case 2:
 			if index != 128 {
-				t.Fatal("poison recipient was not reloaded after gold callback")
+				t.Fatal("item-enchantment recipient was not reloaded after gold callback")
 			}
 		default:
 			t.Fatalf("unexpected packet=%x", packet)
@@ -186,7 +185,7 @@ func TestPlayerReportPoisonNative4D99A7ReloadsAfterGoldCallback(t *testing.T) {
 		return -1
 	}
 	s.playerReportSelfNative4D9900(unit)
-	if !reflect.DeepEqual(packets, [][]byte{{74, 37, 0, 0, 0}, {91, 4}}) || poisonPlayer.Field2172 != 4 || goldPlayer.Field2172 != 0 {
-		t.Fatalf("gold/poison order=%x poison cache=%d entry cache=%d", packets, poisonPlayer.Field2172, goldPlayer.Field2172)
+	if !reflect.DeepEqual(packets, [][]byte{{74, 37, 0, 0, 0}, {91, 4}}) || enchantmentPlayer.Field2172 != 4 || goldPlayer.Field2172 != 0 {
+		t.Fatalf("gold/item-enchantment order=%x item-enchantment cache=%d entry cache=%d", packets, enchantmentPlayer.Field2172, goldPlayer.Field2172)
 	}
 }

@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 플레이어 해머 연속 공격의 headless 검증
+
+앞 세 production 단위의 해머 분기·native quake·반올림 수정을 stock 게임 경로에서도 확인했다. 테스트 전용 `check-player-hammer`와 자산 없는 `host-warrior-hammer` YAML은 정규 Warrior 메뉴, stock WarHammer 지급 fixture와 실제 inventory 마우스 장착을 사용한다. 별도 Troll/NPC 두 대상은 겹치지 않는 동일 aim lane에 배치하며 durability/일반 waiting AI만 준비한다. 공격은 queued 좌클릭으로만 시작하고 직접 damage/state/stamina/buff/animation/quake/sound를 주입하지 않는다. 이전 animation 종료 뒤 남은 스태미나를 무시하지 않고 원래 해머 소모량 100이 자연 회복될 때까지 bounded 조건으로 기다린다.
+
+일반·HD의 두 실제 공격 모두 Troll/NPC HP `2000→1872→1747`, 실제 hammer source/Crush/frame attribution, 서버 animation 39 시작·클라이언트 frame 진행, quake 수신, 매 공격 sound 882 한 번, 자연 종료·추가 피해 없음·무기 유지 검사가 통과했다. 두 번째 수치는 windup 중 자연 재생을 포함한 net HP다. 초기 fixture의 측면 배치는 정상 aim lock으로 한 대상이 front sector/range 밖에 놓였으며, 고정 12-frame 대기는 공격 animation 종료보다 늦은 스태미나 회복을 충족하지 못했다. 이 실패는 통과로 세지 않고 원래 aiming/range/stamina를 바꾸지 않는 fixture 수정으로 분리했다. 두 클릭 간 attack frame은 35이며 각 lifecycle은 18 frame에 종료됐다.
+
+실행은 headless seat/mock audio이고 물리 화면·스피커나 Windows runtime 전체의 동등성 주장이 아니다. 새 PNG baseline이나 override가 없으며 개인 Save/config와 stock 원본 자산을 변경하지 않는다. YAML loader는 기존 한 본체의 dispatch만 추가한다. 배치/두 bounded lifecycle·자연 stamina readiness·16가지 결과 오염 거부·공개 YAML dispatch 및 AST 결과 주입 금지 회귀를 포함한다. 관련 root/legacy 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 oracle이 통과했다. code 2,917/data 622개·NXZ 50쌍·stock tree는 불변이다. 기존 Quest 전체 화면 golden의 알려진 차이는 앞 문서의 제한으로 유지하며 이번 테스트의 성공으로 대체하지 않는다.
+
 ## 플레이어 해머의 누락된 공격 분기 `00538960`
 
 앞 두 해머 단위 뒤 실제 플레이어 C 공격 진입은 Hammer mask `0x4000`을 처리하지 않아 첫 frame에서 반환 0으로 공격을 끝냈다. 기존에 봉인한 `00538960` 본체의 해머 우선순위·animation 39·Crush damage·중간 frame 타격 계약과 대조해 red를 재현했다. 이번 production 변경은 `nox_xxx_playerAttackNativeData_538960` 한 본체다. 검/대검 뒤, mace/axe 앞에 해머 분기를 복원하고 원래 중간 frame 조건에서 기존 native 광역 타격 helper를 호출한다. 프레임 clamp·종료 반환·기존 deadline 보존·다른 무기 분기는 바꾸지 않는다. ABI·범용 float 변환·원본 자산은 불변이다.

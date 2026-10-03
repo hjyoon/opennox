@@ -162,3 +162,78 @@ func TestPlayerAttackExport538960NPCWarHammerKeepsQuakePlayersNativeWidth(t *tes
 	runtime.KeepAlive(unit)
 	runtime.KeepAlive(players)
 }
+
+func TestPlayerAttackExport538960WarHammerRoundsAllStrengthBytes(t *testing.T) {
+	if unsafe.Sizeof(uintptr(0)) != 8 {
+		t.Skip("native-width attack routing applies to 64-bit builds")
+	}
+	srv := server.New(nil, nil, strman.New())
+	t.Cleanup(srv.Close)
+	srv.Map.Init()
+	t.Cleanup(srv.Map.Free)
+	srv.NetList.Init()
+	t.Cleanup(srv.NetList.Free)
+	srv.SetFrame(2)
+	bridge := &playerAttackLegacyServer538960{srv: srv}
+	oldGetServer := GetServer
+	GetServer = func() Server { return bridge }
+	t.Cleanup(func() { GetServer = oldGetServer })
+	oldAnimation := playerAnimFrames4F9F90
+	playerAnimFrames4F9F90 = func(action int) (int, int) {
+		if action != 39 {
+			t.Fatalf("hammer animation = %d, want 39", action)
+		}
+		return 4, 0
+	}
+	t.Cleanup(func() { playerAnimFrames4F9F90 = oldAnimation })
+	unit := &server.Object{
+		ObjClass: object.ClassMonster, ObjSubClass: object.SubClass(object.MonsterNPC),
+		PosVec: types.Ptf(321, 654),
+	}
+	update := &server.MonsterUpdateData{WeaponEquipFlags: uint32(object.WeaponHammer)}
+	weapon := &server.Object{
+		TypeInd: 0x3213, ObjClass: object.ClassWeapon,
+		ObjSubClass: object.SubClass(object.WeaponHammer),
+		ObjFlags:    object.FlagEquipped, InvHolder: unit,
+	}
+	modifier := &server.Modifier{TypeInd: uint32(weapon.TypeInd), Range68: 40}
+	unit.UpdateData, unit.InvFirstItem = unsafe.Pointer(update), weapon
+	srv.Modif.Dword_5d4594_251600 = modifier
+	var pin runtime.Pinner
+	defer pin.Unpin()
+	pinPlayerAttackProjectilePointers538960(t, &pin,
+		unsafe.Pointer(unit), unsafe.Pointer(update), unsafe.Pointer(weapon), unsafe.Pointer(modifier))
+	player := srv.Players.NewRaw(2101)
+	if player == nil {
+		t.Fatal("cannot allocate quake recipient")
+	}
+	playerUpdate, freeUpdate := alloc.New(server.PlayerUpdateData{})
+	t.Cleanup(freeUpdate)
+	playerUnit, freeUnit := alloc.New(server.Object{})
+	t.Cleanup(freeUnit)
+	playerUnit.ObjClass, playerUnit.UpdateData = object.ClassPlayer, unsafe.Pointer(playerUpdate)
+	playerUpdate.Player, player.PlayerUnit = player, playerUnit
+	player.Pos3632Vec = unit.PosVec
+	for strength := 0; strength <= math.MaxUint8; strength++ {
+		update.Field331, update.Field481 = uint32(strength), 0x55667701
+		if got := playerAttackNativeEntry538960(unit); got != 1 {
+			t.Fatalf("strength %d attack = %d, want active middle frame", strength, got)
+		}
+		// Original 0053976E FMULS -> FSTPS -> 00419A70 FISTPL. The
+		// multiplication is spilled as binary32 before default ties-to-even;
+		// the expected value does not call any production conversion helper.
+		scaled := float32(strength) * float32(0.1)
+		want := []byte{0x97, byte(math.RoundToEven(float64(scaled)))}
+		got := srv.NetList.CopyPacketsA(ntype.PlayerInd(player.PlayerInd), netlist.Kind1)
+		if !bytes.Equal(got, want) {
+			t.Errorf("strength %d quake packet = % x, want % x", strength, got, want)
+		}
+		if update.Field481 != 0x55667702 {
+			t.Fatalf("strength %d packed frame = %#x", strength, update.Field481)
+		}
+	}
+	if bridge.wallDamageCalls != 256 || bridge.wallDamageAttacker != weapon {
+		t.Fatalf("hammer wall calls = %d/%p, want 256/%p", bridge.wallDamageCalls, bridge.wallDamageAttacker, weapon)
+	}
+	runtime.KeepAlive(unit)
+}

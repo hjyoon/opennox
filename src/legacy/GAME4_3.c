@@ -3967,8 +3967,10 @@ static void nox_xxx_playerAttackWarHammerHitNative_538960(
 	};
 	nox_xxx_playerAttackApplyEffects_538960(weapon, unit, &attack);
 	nox_xxx_playerTraceAttackNative_538330(unit, &attack);
+	// Original 0053976E -> FSTPS -> 00419A70 FISTPL: round the
+	// binary32 product in the active rounding mode, not C-cast truncation.
 	nox_xxx_earthquakeSend_4D9110(
-		(float2*)&unit->x, nox_float2int((float)strength * 0.1f));
+		(float2*)&unit->x, (int)nearbyintf((float)strength * 0.1f));
 	nox_xxx_aud_501960(882, unit, 0, 0);
 }
 

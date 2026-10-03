@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 해머 흔들기 강도의 원본 반올림
+
+봉인된 공격 본체 `00538960`의 0053976E FMULS→FSTPS→00419A70 FISTPL은 strength×binary32 0.1을 binary32로 저장한 뒤 현재 반올림 모드로 정수화한다. 00419A70 본체 17바이트와 뒤 15-NOP를 수정 전에 별도 봉인했다. 기존 helper의 전역 `nox_float2int` 호출은 C cast 절삭이어서 기본 nearest-even에서 힘 byte 0..255 중 113개의 중심 수신 패킷이 잘못됐다. 이번 production 단위는 `nox_xxx_playerAttackWarHammerHitNative_538960` 한 본체에서 `nearbyintf`를 사용하는 변경뿐이다. 범용 float 변환·damage/공격 effect·순서·sound·다른 무기 함수는 바꾸지 않는다.
+
+독립 Go binary32 곱셈/nearest-even 기대값과 실제 NPC attack C 진입→화면 흔들기 전체 2-byte 패킷 256개를 대조한다. 기존 5명 camera 경계·중복 gate·packed 인접 필드 회귀를 유지하며 관련 legacy 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. code 2,917/data 622개·NXZ 50쌍과 stock tree는 불변이다. 플레이어 해머 분기 연결과 실제 queued GUI는 다음 단위이며 이번 테스트를 물리 화면/스피커나 Windows runtime 전체의 검증으로 확대하지 않는다. 원본 자산·개인 Save/config·private 로그/PNG는 변경하거나 공개하지 않는다.
+
 ## 해머 지진 패킷의 native 플레이어 순회 `004D9110`
 
 실제 NPC WarHammer 타격의 기존 C 진입에서 화면 흔들기 callee가 PlayerUnit 포인터를 `int`로 자른 뒤 PE32 +748/+276/+3632/+2064를 읽어 SIGSEGV를 내는 red를 재현했다. 원본 본체 136바이트·뒤 8-NOP와 binary32 거리 계수/반경을 먼저 봉인했다. 이번 production 변경은 `nox_xxx_earthquakeSend_4D9110` 한 본체다. native unit→update→player 필드와 cached camera 위치·player index를 사용하며, 매 패킷 뒤 다음 플레이어를 읽는 순서·거리 제곱의 엄격한 90,000 경계·signed 절삭·반환 0을 보존한다. 원본 FMULS의 binary32 계수도 유지한다. ABI와 다른 공격/패킷 함수는 바꾸지 않는다.

@@ -189,6 +189,20 @@
       "purpose": "the exact ten NOP bytes separating team attachment from team removal at 00419570"
     },
     {
+      "name": "nox_float2int_419A70",
+      "address": "0x00419A70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "load the binary32 argument and convert to signed int through x87 FISTPL with the active rounding mode; Hammer attack 00538960 spills strength times binary32 00583BB0 before this call"
+    },
+    {
+      "name": "nox_float2int_419A70_padding",
+      "address": "0x00419A81",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP alignment bytes after binary32-to-int conversion and before word-to-int conversion"
+    },
+    {
       "name": "sub_419E10",
       "address": "0x00419E10",
       "size": 71,
@@ -20544,7 +20558,7 @@
       "address": "0x00583BB0",
       "size": 4,
       "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
-      "purpose": "binary32 0.1 added to the x87 projectile-to-target distance in 004E0A70, the Warrior Warcry proximity distance in 004FC4C0, and the Door-normal length in 0057B770"
+      "purpose": "binary32 0.1 added to the x87 projectile-to-target distance in 004E0A70, the Warrior Warcry proximity distance in 004FC4C0, and the Door-normal length in 0057B770; multiplied by Hammer strength and spilled as binary32 before rounding through 00419A70 in attack 00538960"
     },
     {
       "name": "earthquake_camera_attenuation_and_radius",

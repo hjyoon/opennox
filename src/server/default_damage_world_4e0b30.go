@@ -234,7 +234,8 @@ func DefaultDamageWorld4E0B30(
 		!defaultDamageAttackQualifies4E1400(source, weapon)
 	ordinaryMelee := playerDamageMeleeShape4E17B0(source, weapon, typ)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
-	playerTail := playerElectric || ((missilePierce || ordinaryMelee || simpleCrush) && target.Class().Has(object.ClassPlayer))
+	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
+	playerTail := playerElectric || ((missilePierce || missileFlame || ordinaryMelee || simpleCrush) && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -290,6 +291,10 @@ func DefaultDamageWorld4E0B30(
 		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing SIMPLE CRUSH tail service", target, source, weapon, damage, typ)
 	}
+	if missileFlame && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
+		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing missile FLAME tail service", target, source, weapon, damage, typ)
+	}
 	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
 		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
@@ -319,7 +324,7 @@ func DefaultDamageWorld4E0B30(
 	missileSourcedExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMissile) &&
 		!source.Class().HasAny(object.MaskUnits) && weapon == nil && typ == object.DamageExplosion
 	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion
-	missileDamage := missileImpact || missileExplosion || missilePierce
+	missileDamage := missileImpact || missileExplosion || missilePierce || missileFlame
 	if monsterUpdate != nil {
 		// GAME.EXE rejects type 5 for poison-immune subclass 0x200 before
 		// health, defense callbacks or attribution are touched.
@@ -385,6 +390,11 @@ func DefaultDamageWorld4E0B30(
 	// 004E0C9E's Shock retaliation precedes 004E0D69's electric immunity.
 	// This ordering becomes reachable when a MONSTER self-weapon is retained.
 	if unitSelfWeaponElectric && monsterUpdate != nil && uint32(target.SubClass())&0x800 != 0 {
+		return true
+	}
+	// 004E0D20 reloads class/subclass after Shock; 004E0D3E..004E0D52
+	// rejects FLAME for fire-immune monsters before protection or attribution.
+	if missileFlame && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		return true
 	}
 

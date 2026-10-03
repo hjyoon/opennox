@@ -383,10 +383,11 @@ func DefaultDamageWorld4E0B30(
 		return true
 	}
 
-	var lateDefendPlan []playerDamageLateDefend4E1320
-	if playerTail || (monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0) {
-		var ok bool
-		lateDefendPlan, ok = playerDamagePlanLateDefend4E1320(target, PlayerDamageRuntime4E17B0{
+	// Admission only. The 004E0F77 call must capture the live inventory
+	// after protection/position/BuffOff, not an entry-time effect plan.
+	if target.Class().Has(object.ClassPlayer) ||
+		(target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x10 != 0) {
+		_, ok := playerDamageLateDefendReady4E17B0(target, PlayerDamageRuntime4E17B0{
 			CanApplyLateDefend: runtime.CanApplyLateDefend,
 			ApplyLateDefend:    runtime.ApplyLateDefend,
 		})
@@ -500,10 +501,24 @@ func DefaultDamageWorld4E0B30(
 		// GAME.EXE calls BuffOff even when INVSIBILITY is not currently set.
 		runtime.BuffOff(target, defaultDamageInvisibleEnchant4E0B30)
 	}
-	for _, planned := range lateDefendPlan {
-		damage = runtime.ApplyLateDefend(
-			planned.modifier, planned.item, target, weapon, source, damage, typ,
-		)
+	// 004E0F5D reloads class/subclass after the callbacks above. Ordinary
+	// monsters do not enter 004E1320; players and NPC-subclass monsters do.
+	if target.Class().Has(object.ClassPlayer) ||
+		(target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x10 != 0) {
+		ItemDefendEffects4E1320(target, source, weapon, &damage, int32(typ), ItemDefendEffectsRuntime4E1320{
+			ApplyDefend: func(modifier *ModifierEff, item, owner, weapon, attacker *Object, context *[2]int32) {
+				// A callback may introduce an unported live function after
+				// admission. Do not enter ABI32 or alter its damage word; report
+				// it at use and continue visiting supported later slots/items.
+				if runtime.CanApplyLateDefend == nil || runtime.ApplyLateDefend == nil || !runtime.CanApplyLateDefend(modifier) {
+					if runtime.Unsupported != nil {
+						runtime.Unsupported("unsupported live late equipped-item defend effect", owner, attacker, weapon, context[0], object.DamageType(context[1]))
+					}
+					return
+				}
+				context[0] = runtime.ApplyLateDefend(modifier, item, owner, weapon, attacker, context[0], object.DamageType(context[1]))
+			},
+		})
 	}
 	if weapon != nil {
 		target.Obj130 = weapon
@@ -548,6 +563,17 @@ func DefaultDamageWorld4E0B30(
 		)
 	}
 	if playerTail {
+		// Newly installed live effects may raise damage and attach a ball
+		// after the carrier preflight. Preserve the executed hit prefix but
+		// stop an unsupported required drop instead of silently omitting it.
+		if damage >= 30 && target.Field129 != nil {
+			if runtime.GameBallType == 0 {
+				return defaultDamageUnsupported4E0B30(runtime, "unsupported live GameBall type", target, source, weapon, damage, typ)
+			}
+			if playerDamageOwnsType4E17B0(target, runtime.GameBallType) && runtime.GameBallOnDamage == nil {
+				return defaultDamageUnsupported4E0B30(runtime, "unsupported live GameBall drop", target, source, weapon, damage, typ)
+			}
+		}
 		if runtime.GameBallOnDamage != nil {
 			runtime.GameBallOnDamage(source, target, damage)
 		}

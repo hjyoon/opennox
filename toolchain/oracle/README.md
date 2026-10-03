@@ -312,6 +312,20 @@ flags `0x100`만으로 슬롯 2·3을 검사하며 클래스·health·update·da
 
 전체 일반·실제 cgocheck2 및 server 전용 구성을 통과했고, 관련 일반·strict·race·checkptr=2·HD 회귀는 각각 3회 통과했다. 기존 Hunt와 밀치기 크래시의 실제 native 진입점 회귀도 다시 검사했다. Darwin/ARM64 일반·HD·서버 제품 세 개가 빌드되고 `-h` exit 0을 확인했다. 별도 private 이전 diagnostic PNG·원본과 같은 YAML을 사용해 이전 clean `5cff082f9`/새 빌드의 일반·HD Warrior 슈리켄·채크럼 real input을 8회 실행했고 세 화면의 exact-pixel 비교 및 실제 명중·소모/복귀 assertion을 통과했다. 이 화면 검사는 helper의 synthetic C 회귀나 전체 stock 장비 방어 검증을 대신하지 않는다. 실행 전후 원본 1,556개/570,653,750바이트 tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,907개·데이터 621개, 50개 압축 oracle pair를 재검증했다. clean 제품의 commit metadata 검증은 커밋 후 별도 재빌드 단계에서 수행한다.
 
+## DefaultDamage의 live 후반 Defend 호출 `004E0B30`
+
+앞선 PlayerDamage 연결과 별도로 DefaultDamageWorld의 활성 native 본체 한 개를 변경한다. 기존 `004E0B30` prefix·`004E1212` HP call·`004E1217` suffix의 세 봉인을 재사용하며 원본 범위를 추가하지 않는다. 원본 `004E0F33`의 BuffOff 뒤 `004E0F5D`가 class/subclass를 다시 읽고, Player 또는 Monster/NPC subclass `0x10`일 때만 `004E0F77`에서 `004E1320`을 호출한다. attribution metadata는 그 뒤다. 일반 Monster는 이 helper를 건너뛴다.
+
+entry-time eager effect plan을 제거하고 read-only admission은 callback 가용성만 확인한다. 실제 원본 호출 위치에서 live inventory head·flags `0x100`을 조회하며, item별 init base cache·live slot 2/3·callback 뒤 next link/다음 flags·각 효과 뒤 raw signed damage DWORD 저장은 독립 복원한 helper를 사용한다. protection/BuffOff가 head를 교체하거나 class/subclass를 바꾸는 경우, slot 2가 init/slot 3/link/flags를 바꾸는 경우와 `0→-7→MinInt32` copyback을 수정 전 실패로 재현했다. class·HP·update·damage callback이 없는 flags-only 장착 아이템도 원본 helper의 대상이다. 새 live unknown effect는 주소로 점프하지 않고 그 시점의 damage/type을 기록하며 다음 supported slot/item은 계속 실행한다.
+
+admission 뒤 새 Defend가 피해를 30 이상으로 올리고 GameBall 소유를 추가하면 실제 Player tail 위치에서 type/drop 가용성을 검증한다. 미지원 required drop은 이미 실행한 hit prefix/attribution을 보존하고 hurt/HP 전에 중단한다. supported drop→hurt→HP 순서도 구별한다. malformed nil-init은 실제 NPC helper 위치에서 BuffOff/position 뒤, attribution 전에 실패하며 일반 Monster는 해당 helper를 건너뛴다. 기존 BlockAdmission·SimpleCrush의 두 equipped fixture에 누락된 empty modifier init base를 보완했으며 production nil guard로 원래 fault prefix를 숨기지 않는다. 이 단위는 기존 damage-shape admission이나 다른 entry-time metadata cache를 확대 복원하지 않는다.
+
+C 소유 4GiB 초과 target/source/item/init/modifier/player/update/HP record에서 실제 C damage dispatcher→등록 DefaultDamage→`004E1320`→production stock Defend→UnitSetHP를 검사한다. ArmorMultiplier/Grip로 HP `20→19`, Inversion의 0으로 후속 HP `19→19`를 확인했다. 수정 전에는 두 target 모두 `20→13`으로 실패했다. effect/HP/sound/protection callback은 대체하지 않고, legacy 시험 바이너리에 없는 root hurt-state binding만 설치해 이 낮은 피해에서 호출되면 실패하도록 한다. 별도 server 시험은 callback mutation·signed word·live rejection/required-service 경계를 관찰한다. 이 C API 통합 회귀는 원래 Linux 크래시 장면이나 stock Windows runtime 전투를 실행한 것이라는 주장이 아니다.
+
+대상 일반·실제 `GOEXPERIMENT=cgocheck2` 반복 시험과 전체 일반·strict·server-tag 검사가 통과했고, 관련 일반·strict·race·checkptr=2·HD 회귀는 각각 3회 통과했다. 실제 고주소 C Hunt 및 NoxScript caller/trigger 회귀도 재검증했다. Darwin/ARM64 일반·HD·서버 제품 세 개의 Mach-O arm64와 `-h` exit 0을 확인했다. 이전 clean `723d08ad2`와 새 빌드에 byte-identical YAML·이전 private diagnostic PNG를 사용해 일반·HD 슈리켄/채크럼 real input을 합계 8회 검사했다. 실제 명중 HP `2,000→1,970/1,962`, 소모/복귀·재장착과 세 화면의 exact-pixel 비교가 통과했다. GUI snapshot override나 기대값 교체는 없으며 이 화면 검사는 synthetic 장비 방어 회귀를 대신하지 않는다. clean commit metadata 검증은 커밋 후 별도 재빌드 단계에서 수행한다.
+
+전후 `oracle-test`에서 원본 1,556파일·570,653,750바이트/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,907개·데이터 621개와 압축 oracle pair 50개를 재검증했다. 원본 게임 수치·자산·개인 Save/config·GUI snapshot 기대값은 변경하지 않는다. 이 연결은 후반 Defend의 DefaultDamage 호출 위치에 한정하며 전체 장비 방어·stock 전투·ARM64 포팅 전체의 완료를 주장하지 않는다.
+
 ## PlayerDamage의 live 후반 Defend 호출 `004E17B0`
 
 이번 production 단위는 PlayerDamage의 활성 native 본체 한 개다. 이미 봉인한 `004E17B0..004E20EF` 2,368바이트/SHA-256 `c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9`와 DefaultDamage `004E0B30`의 같은 봉인을 재사용한다. `004E2098`의 default tail은 armor·GodMode·Quest 뒤에 도달하며 `004E0F77`은 position 저장·BuffOff 뒤, attribution metadata 전에 `004E1320`을 호출한다. entry-time eager plan을 실행하지 않고 이 위치에서 독립 복원한 helper를 호출한다.

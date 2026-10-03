@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
@@ -54,7 +55,10 @@ func TestPlayerDamageSimpleCrushNative4E17B0OriginalBlockRules(t *testing.T) {
 					ud := target.UpdateDataMonster()
 					ud.ArmorEquipFlags, ud.AIStack[0].Action = 0x1000000, uint32(ai.ACTION_BLOCK_ATTACK)
 				}
-				shield := &Object{ObjFlags: object.FlagEquipped, ObjSubClass: 2}
+				// Excluded Fists bypass block and enter DefaultDamage's
+				// flags-only modifier traversal; keep a valid empty slot base.
+				shield := &Object{ObjFlags: object.FlagEquipped, ObjSubClass: 2,
+					InitData: unsafe.Pointer(&ModifierInitData{})}
 				target.InvFirstItem = shield
 				r := damageMeleeRuntimeFixture4E17B0(t)
 				r.BlockSourceExcluded = func(got *Object) bool {

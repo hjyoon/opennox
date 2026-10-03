@@ -492,7 +492,10 @@ func TestPlayerDamageMeleeNative4E17B0BlockAdmission(t *testing.T) {
 			source := damageMeleeUnitFixture4E17B0(t, false)
 			ud := target.UpdateDataPlayer()
 			ud.State, ud.Player.WeaponEquip, ud.Player.ArmorEquip = tc.state, tc.weaponFlags, tc.armorFlags
-			target.InvFirstItem = &Object{ObjFlags: object.FlagEquipped, ObjSubClass: object.SubClass(tc.weaponFlags | 2)}
+			// Non-blocking cases enter DefaultDamage's flags-only 004E1320
+			// traversal too, so the equipped fixture needs a valid slot base.
+			target.InvFirstItem = &Object{ObjFlags: object.FlagEquipped, ObjSubClass: object.SubClass(tc.weaponFlags | 2),
+				InitData: unsafe.Pointer(&ModifierInitData{})}
 			r := damageMeleeRuntimeFixture4E17B0(t)
 			r.BlockDirection = func(*Object, types.Pointf) bool { return tc.front }
 			r.BlockSourceExcluded = func(*Object) bool { return tc.excluded }

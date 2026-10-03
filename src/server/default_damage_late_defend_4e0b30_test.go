@@ -151,6 +151,10 @@ func TestDefaultDamageWorld4E0B30LateDefendLiveTargetGate(t *testing.T) {
 				target.ObjClass, target.ObjSubClass = 0, 0
 				if test.liveMonster {
 					target.ObjClass = object.ClassMonster
+					if test.player {
+						// A class change needs a valid new native update layout.
+						target.UpdateData = unsafe.Pointer(&MonsterUpdateData{})
+					}
 				}
 				if test.liveNPC {
 					target.ObjSubClass = 0x10

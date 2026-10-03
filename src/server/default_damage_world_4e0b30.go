@@ -469,11 +469,14 @@ func DefaultDamageWorld4E0B30(
 		if damage == 0 {
 			damage = 1
 		}
-		if playerElectric {
+		// 004E0E60 reloads the class after protection/audio. PLAYER wins
+		// over MONSTER, and both branches reload their native update address.
+		class := target.Class()
+		if class.Has(object.ClassPlayer) {
 			// 004E0E6D writes only the low word; the adjacent word is live.
 			target.UpdateDataPlayer().Field40_0 = 2
-		} else if monsterUpdate != nil && uint32(target.SubClass())&0x10 != 0 {
-			monsterUpdate.Field523_2 = 2
+		} else if class.Has(object.ClassMonster) && uint32(target.SubClass())&0x10 != 0 {
+			target.UpdateDataMonster().Field523_2 = 2
 		}
 	}
 	if source == nil {
@@ -489,13 +492,15 @@ func DefaultDamageWorld4E0B30(
 	}
 	// 004E0ED4 tests only the MONSTER class, not the scripted-NPC subclass.
 	// A distinct weapon records its type before BuffOff and the injured latch.
-	if monsterUpdate != nil && source != nil {
+	if source != nil && target.Class().Has(object.ClassMonster) {
 		if weapon != nil && weapon != source {
-			monsterUpdate.Field547 = 1
-			monsterUpdate.Field546 = uint32(weapon.TypeInd)
+			update := target.UpdateDataMonster()
+			update.Field547 = 1
+			update.Field546 = uint32(weapon.TypeInd)
 		} else if weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush) {
-			monsterUpdate.Field547 = 1
-			monsterUpdate.Field546 = uint32(source.TypeInd)
+			update := target.UpdateDataMonster()
+			update.Field547 = 1
+			update.Field546 = uint32(source.TypeInd)
 		}
 	}
 	if (source != nil || sourceLessLava) && runtime.BuffOff != nil {
@@ -526,13 +531,17 @@ func DefaultDamageWorld4E0B30(
 	} else {
 		target.Obj130 = source
 	}
+	// 004E0F91/004E0FAA reload class/update after late Defend; the entry
+	// latch reset must not retain a stale Monster update for these stores.
+	injuredMonster := target.Class().Has(object.ClassMonster)
 	target.Field131 = uint32(typ)
 	target.Frame134 = frame
-	if monsterUpdate != nil {
-		monsterUpdate.StatusFlags |= object.MonStatusInjured
-		if monsterUpdate.Field547 == 0 {
-			monsterUpdate.Field547 = 2
-			monsterUpdate.Field546 = uint32(typ)
+	if injuredMonster {
+		update := target.UpdateDataMonster()
+		update.StatusFlags |= object.MonStatusInjured
+		if update.Field547 == 0 {
+			update.Field547 = 2
+			update.Field546 = uint32(typ)
 		}
 	}
 	// 004E0FD9/004E0FDD use the live weapon class after the attribution and

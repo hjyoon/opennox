@@ -235,7 +235,8 @@ func DefaultDamageWorld4E0B30(
 	ordinaryMelee := playerDamageMeleeShape4E17B0(source, weapon, typ)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
-	playerTail := playerElectric || ((missilePierce || missileFlame || ordinaryMelee || simpleCrush) && target.Class().Has(object.ClassPlayer))
+	spellMissileExplosion := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
+	playerTail := playerElectric || ((missilePierce || missileFlame || spellMissileExplosion || ordinaryMelee || simpleCrush) && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -295,6 +296,12 @@ func DefaultDamageWorld4E0B30(
 		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing missile FLAME tail service", target, source, weapon, damage, typ)
 	}
+	// The already ported monster explosion tail permits optional sound/AI
+	// services. Require the complete service set only for the new player tail.
+	if spellMissileExplosion && playerTail && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
+		runtime.IsEnemy == nil || runtime.DamageClear == nil || runtime.PlayerSetState == nil) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing missile EXPLOSION tail service", target, source, weapon, damage, typ)
+	}
 	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
 		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
@@ -323,7 +330,7 @@ func DefaultDamageWorld4E0B30(
 		weapon != nil && weapon.Class().Has(object.ClassMissile) && typ == object.DamageExplosion
 	missileSourcedExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMissile) &&
 		!source.Class().HasAny(object.MaskUnits) && weapon == nil && typ == object.DamageExplosion
-	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion
+	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion || spellMissileExplosion
 	missileDamage := missileImpact || missileExplosion || missilePierce || missileFlame
 	if monsterUpdate != nil {
 		// GAME.EXE rejects type 5 for poison-immune subclass 0x200 before
@@ -396,6 +403,11 @@ func DefaultDamageWorld4E0B30(
 	// rejects FLAME for fire-immune monsters before protection or attribution.
 	if missileFlame && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		return true
+	}
+	if missileExplosion && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
+		// 004E0D5A..004E0D63: signed division truncates toward zero,
+		// before fire protection's separate binary32 rounding/minimum.
+		damage /= 2
 	}
 
 	// Admission only. The 004E0F77 call must capture the live inventory

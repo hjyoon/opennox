@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어 armor 변화 보고 `004D992A`
+
+native self-report에서 빠진 armor slice를 원본 `004D992A..004D996C`와 대조했다. 변경 전 실제 self-report 호출은 armor 패킷·cache 갱신·gold 앞 순서의 세 회귀에서 실패했다. 이번 기존 production 본체 변경은 `playerReportSelfNative4D9900`의 새 Go helper 연결 하나다. 기존 native `Field57/Field58/Player` layout과 client opcode 73 decoder는 바꾸지 않는다. x87 FCOMP의 C3 계약에 따라 equal 및 unordered NaN은 보내지 않고 signed zero도 같은 값으로 취급한다. ordered 변화는 pre-call binary32 원래 바이트와 live Player index를 다섯 바이트 reliable 패킷으로 보낸다. 전송 실패에도 같은 entry-cached update의 post-call current 값을 cache에 저장하며 callback이 unit의 update 바인딩을 바꿔도 새 바인딩을 acknowledge하지 않는다.
+
+4GiB 초과 C-owned unit/update/player의 1,600 float 조합, 256개 index, raw packet·실패 전송·callback 변경·nil fault-prefix·기존 gold와의 순서 회귀가 통과했다. 관련 root/server/legacy 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag 각 1회가 통과했다. 새 sender 41바이트·뒤 7-NOP·armor slice 67바이트를 독립 봉인하여 code 2,920/data 622개와 NXZ 50쌍 검증을 통과했다. 매니페스트의 최초 주소 정렬 실패는 수정 후 재검사했으며 통과로 세지 않는다. stock 1,556파일·570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7` 및 개인 Save/config는 불변이다. 실제 inventory 입력과 client 수신 검증은 다음 별도 테스트 단위이며 물리 화면·Windows runtime 전체의 동등성을 주장하지 않는다. 남은 poison/Quest-key slice와 기존 다른 보고의 바인딩 정책은 이번 단위에서 변경하지 않는다.
+
 ## 실제 플레이어 해머 연속 공격의 headless 검증
 
 앞 세 production 단위의 해머 분기·native quake·반올림 수정을 stock 게임 경로에서도 확인했다. 테스트 전용 `check-player-hammer`와 자산 없는 `host-warrior-hammer` YAML은 정규 Warrior 메뉴, stock WarHammer 지급 fixture와 실제 inventory 마우스 장착을 사용한다. 별도 Troll/NPC 두 대상은 겹치지 않는 동일 aim lane에 배치하며 durability/일반 waiting AI만 준비한다. 공격은 queued 좌클릭으로만 시작하고 직접 damage/state/stamina/buff/animation/quake/sound를 주입하지 않는다. 이전 animation 종료 뒤 남은 스태미나를 무시하지 않고 원래 해머 소모량 100이 자연 회복될 때까지 bounded 조건으로 기다린다.

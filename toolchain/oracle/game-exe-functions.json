@@ -3703,6 +3703,20 @@
       "purpose": "the exact twelve NOP bytes after gold reporting before total-mana reporting at 004D88C0"
     },
     {
+      "name": "nox_xxx_netReportArmorVal_4D8A30",
+      "address": "0x004D8A30",
+      "size": 41,
+      "sha256": "5e23b91b352958f55b3d41713ef1feec15307ec82ea4db487d174530bea49cfd",
+      "purpose": "encode opcode 73 followed by the unchanged four armor binary32 bytes into a five-byte reliable packet with nil related object and remove-if-disconnected equal to one"
+    },
+    {
+      "name": "nox_xxx_netReportArmorVal_4D8A30_padding",
+      "address": "0x004D8A59",
+      "size": 7,
+      "sha256": "ca4b9a2ec05863e71b87c84feb71741348a30400daeddedd67bc4cdbca737252",
+      "purpose": "the exact seven NOP alignment bytes after armor reporting and before pickup reporting"
+    },
+    {
       "name": "nox_xxx_netSendDMWinner_4D8B90",
       "address": "0x004D8B90",
       "size": 96,
@@ -3778,6 +3792,13 @@
       "size": 64,
       "sha256": "9c488754803ffeb2fe030a70d64d528ed194e2a9e8796af892a0f2a87306ba25",
       "purpose": "encode opcode 104, the low unit code word, the speed binary32 bits, and the trailing status byte into the exact reliable eight-byte player-speed report"
+    },
+    {
+      "name": "nox_xxx_playerReportAnything_armor_delta_4D992A",
+      "address": "0x004D992A",
+      "size": 67,
+      "sha256": "12c54e508b12791a9e2cf9bfa503a25b2d6171dcd1f674b437519ae06d3fd864",
+      "purpose": "compare the cached update armor floats using x87 FCOMP C3 so equal and unordered values skip the send, report the pre-call current bits through the live player-index byte, then reload current bits through the same entry-cached update pointer into its report cache"
     },
     {
       "name": "nox_xxx_playerReportAnything_gold_delta_4D996D",

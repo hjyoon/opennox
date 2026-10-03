@@ -2,6 +2,10 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 플레이어 armor 변화 보고의 원본 계약
+
+`004D8A30` sender 41바이트·뒤 7-NOP와 self-report의 `004D992A` slice 67바이트를 봉인했다. 원본 x87 C3는 equal와 unordered NaN을 모두 건너뛰며 signed zero는 같다. 변화 시 opcode 73과 pre-call armor binary32 바이트를 live Player index에 reliable 전송하고, 성공 여부와 무관하게 같은 entry-cached update의 post-call current 값을 cache에 복사한다. native self-report 연결 뒤 1,600 float 조합·256 index·고주소 C-owned callback 변경·실패 전송·원래 fault-prefix·gold 앞 순서 회귀와 일반/실제 cgocheck2/race/checkptr/HD 및 전체 일반/strict/server-tag 검사가 통과했다. code 2,920/data 622개·NXZ 50쌍·stock tree 불변을 확인했다. 이번 함수 회귀는 queued inventory GUI나 물리 출력 검증을 대신하지 않으며 원본 바이트/자산·개인 파일을 공개하지 않는다.
+
 ## Stock 장착 레이어의 실제 headless 색상 관찰
 
 팔레트/5비트 연산 수정 뒤 테스트 전용 observer와 자산 없는 시나리오 두 개로 실제 stock equipment replay 및 native layer draw를 확인했다. 서버 inventory와 클라이언트의 네 modifier 이름/ID/RGB를 대조하고, 독립적으로 계산한 definition 1..6/ordered override 팔레트의 16슬롯 및 원래 sprite callback의 nonblank RGB5551 픽셀을 비교한다. drawable/viewport는 C-owned 사본, render state/buffer는 저장·복원하여 live 장비/정의/modifier를 바꾸지 않는다. 실제 NPC→player animation 선택을 관찰하되 RNG/deletion 분기는 제외한다.

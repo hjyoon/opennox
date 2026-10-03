@@ -9441,7 +9441,7 @@ func (sc *e2eScenario) Load(path string) {
 			sc.Quit(dt)
 		case "check-warrior-ability":
 			sc.Wait(dt, "")
-			sc.CheckWarriorAbility(server.Ability(l.Spell), l.Name)
+			sc.CheckWarriorAbility(server.Ability(l.Spell), l.Name, l.Text)
 		case "check-manual-save-load":
 			sc.Wait(dt, "")
 			sc.CheckManualSaveLoad(l.Slot, l.Name)

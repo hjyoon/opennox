@@ -513,6 +513,19 @@ func playerDamageMonster4E17B0(
 	if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return handled, result
 	}
+	// HarpoonCollide supplies the owning Player and a distinct HarpoonBolt.
+	// Case 11 shares the full-armor/carry tail at 004E1F84 with PIERCE.
+	// Stock HarpoonBolt is MISSILE|WEAPON subclass 0x10: 004E1400 excludes
+	// ranged weapons, not every weapon-class missile.
+	harpoonImpact := typ == object.DamageImpact && source != nil && source != weapon &&
+		source.UpdateData != nil && source.Class().Has(object.ClassPlayer) &&
+		!source.Class().HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
+		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
+		!defaultDamageAttackQualifies4E1400(source, weapon)
+	if harpoonImpact {
+		return playerDamageMonsterMissilePierce4E17B0(target, source, weapon, update, armorValue, damage, typ, runtime)
+	}
 	// Match the already restored DefaultDamage PIERCE tail. Stock GolemArrow
 	// is MISSILE|WEAPON subclass 0x10, so test 004E1400 rather than rejecting
 	// every weapon-class missile. NPC case 3 has no MONSTER-only source

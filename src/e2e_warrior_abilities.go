@@ -165,6 +165,9 @@ type e2eWarriorAbilityFixture struct {
 	hudActiveSeen bool
 	harpoonSeen   bool
 	lastEffectLog uint32
+	npcHarpoon    bool
+	harpoonDamage uint16
+	harpoonCarry  float32
 }
 
 func (f *e2eWarriorAbilityFixture) record() *server.ExecAbilityClass {
@@ -247,10 +250,37 @@ func (f *e2eWarriorAbilityFixture) prepare() {
 	f.targetOrigin = targetPos
 	switch f.ability {
 	case server.AbilityBerserk, server.AbilityHarpoon:
-		if target := f.target("Troll", targetPos); target != nil {
+		typeID := "Troll"
+		if f.npcHarpoon {
+			typeID = "NPC"
+		}
+		if target := f.target(typeID, targetPos); target != nil {
+			if f.npcHarpoon && (uint32(target.SubClass())&0x10 == 0 || target.Damage == nil ||
+				target.Damage != target.ObjectTypeC().Damage || target.Damage != unit.Damage ||
+				target.Flags().HasAny(object.FlagNoUpdate|object.FlagNoCollide|object.FlagDead|object.FlagDestroyed) ||
+				target.HasEnchant(server.ENCHANT_INVULNERABLE) || target.HasEnchant(server.ENCHANT_SHIELD)) {
+				e2eError(fmt.Errorf("harpoon stock NPC lacks its live PlayerDamage callback"))
+				return
+			}
 			// A durable test target isolates ability damage from the death path.
 			asObjectS(target).SetMaxHealth(2000)
 			f.health, f.targetOrigin = target.HealthData.Cur, target.PosVec
+			if f.npcHarpoon {
+				ud := target.UpdateDataMonster()
+				armor, carry := math.Float32frombits(ud.Field518), math.Float32frombits(ud.Field1)
+				raw := int32(math.RoundToEven(float64(float32(noxServer.Balance.Float("HarpoonDamage")))))
+				scaled := float32((1 - float64(armor)) * float64(raw))
+				effective := int32(math.RoundToEven(float64(scaled + carry)))
+				f.harpoonCarry = scaled + carry - float32(effective)
+				effective = max(1, effective)
+				if effective >= int32(f.health) || raw <= 0 || math.IsNaN(float64(scaled+carry)) {
+					e2eError(fmt.Errorf("harpoon NPC fixture requires positive nonlethal stock damage: raw=%d effective=%d", raw, effective))
+					return
+				}
+				f.harpoonDamage = uint16(effective)
+				e2eLog.Printf("HARPOON NPC FIXTURE: unit=%p update=%p callback=%p class=%#x subclass=%#x HP=%d armor=%g raw=%d expected=%d carry=%g",
+					target, target.UpdateData, target.Damage, uint32(target.Class()), uint32(target.SubClass()), f.health, armor, raw, f.harpoonDamage, f.harpoonCarry)
+			}
 		}
 	case server.AbilityWarcry:
 		// Most monsters (including Wolf) lack the stock WARCRY_STUN bit.
@@ -349,6 +379,22 @@ func (f *e2eWarriorAbilityFixture) effectReady() bool {
 		update := f.unit.UpdateDataPlayer()
 		if update.HarpoonTarg == f.targets[0] && update.HarpoonBolt != nil && f.targets[0].HealthData.Cur < f.health {
 			if !f.harpoonSeen {
+				if f.npcHarpoon {
+					target, bolt := f.targets[0], update.HarpoonBolt
+					ud := target.UpdateDataMonster()
+					if target.HealthData.Cur != f.health-f.harpoonDamage || target.Obj130 != bolt ||
+						target.Field131 != uint32(object.DamageImpact) || target.Frame134 < f.startFrame ||
+						update.HarpoonFrame != target.Frame134 || ud.Field547 != 1 || ud.Field546 != uint32(bolt.TypeInd) ||
+						math.Float32frombits(ud.Field1) != f.harpoonCarry || !bolt.Class().Has(object.ClassMissile) ||
+						bolt.Class().HasAny(object.MaskUnits|object.ClassWand) ||
+						bolt.ObjOwner != f.unit || bolt.ObjectTypeC().ID() != "HarpoonBolt" || f.unit.HealthData.Cur != f.playerHealth {
+						e2eError(fmt.Errorf("harpoon NPC damage/attribution mismatch: HP=%d expected=%d marker=%d/%d type=%d source=%p bolt=%p class=%#x carry=%g",
+							target.HealthData.Cur, f.health-f.harpoonDamage, ud.Field547, ud.Field546, target.Field131, target.Obj130, bolt, uint32(bolt.Class()), math.Float32frombits(ud.Field1)))
+						return true
+					}
+					e2eLog.Printf("HARPOON NPC DAMAGE VERIFIED: HP=%d->%d expected=%d player-HP=%d->%d bolt=%p class=%#x type=%d frame=%d",
+						f.health, target.HealthData.Cur, f.harpoonDamage, f.playerHealth, f.unit.HealthData.Cur, bolt, uint32(bolt.Class()), target.Field131, target.Frame134)
+				}
 				f.harpoonSeen = true
 				e2eLog.Printf("WARRIOR HARPOON ATTACHED: owner=%p bolt=%p target=%p health=%d->%d frame=%d", f.unit, update.HarpoonBolt, update.HarpoonTarg, f.health, f.targets[0].HealthData.Cur, noxServer.Frame())
 			}
@@ -392,13 +438,23 @@ func (f *e2eWarriorAbilityFixture) ended() bool {
 // activation, attack frames, collision, effects, expiry and reports are live.
 // Tread Lightly's stock duration is 99999; end it with an ordinary attack
 // through the real input path, not a timer/deadline or direct cancellation.
-func (sc *e2eScenario) CheckWarriorAbility(ability server.Ability, name string) {
+func (sc *e2eScenario) CheckWarriorAbility(ability server.Ability, name string, targetKinds ...string) {
+	kind := ""
+	if len(targetKinds) > 1 {
+		panic("warrior ability accepts at most one target kind")
+	}
+	if len(targetKinds) == 1 {
+		kind = targetKinds[0]
+	}
+	if kind != "" && (kind != "npc" || ability != server.AbilityHarpoon) {
+		panic("NPC warrior ability fixture is for Harpoon only")
+	}
 	key, err := e2eWarriorAbilityKey(ability)
 	if err != nil {
 		panic(err)
 	}
 	for attempt := 1; attempt <= 2; attempt++ {
-		f := &e2eWarriorAbilityFixture{ability: ability}
+		f := &e2eWarriorAbilityFixture{ability: ability, npcHarpoon: kind == "npc"}
 		label := fmt.Sprintf("%s attempt %d", name, attempt)
 		sc.addWhen(0, label+" prepare", 1200, func() bool {
 			unit := noxServer.Players.HostUnit()
@@ -408,7 +464,9 @@ func (sc *e2eScenario) CheckWarriorAbility(ability server.Ability, name string) 
 		sc.Wait(3, label+" synchronize fixture position and quickbar")
 		sc.add(0, label+" aim by real mouse input", f.aim)
 		sc.Wait(3, label+" synchronize aim")
-		sc.Screen(label + " prepared")
+		if !f.npcHarpoon {
+			sc.Screen(label + " prepared")
+		}
 		sc.Key(key, label+" activate by real keyboard input")
 		sc.addWhen(0, label+" wait for server activation", 120, func() bool {
 			return f.unit != nil && (f.record() != nil || ability == server.AbilityHarpoon && f.unit.UpdateDataPlayer().HarpoonBolt != nil) &&
@@ -438,7 +496,9 @@ func (sc *e2eScenario) CheckWarriorAbility(ability server.Ability, name string) 
 			}
 			e2eLog.Printf("WARRIOR EFFECT: ability=%s attempt=%d frame=%d player-health=%d->%d player-pos=%v->%v targets=%v HUD-active-seen=%t", ability, attempt, noxServer.Frame(), f.playerHealth, f.unit.HealthData.Cur, f.origin, f.unit.PosVec, targets, f.hudActiveSeen)
 		})
-		sc.Screen(label + " effect")
+		if !f.npcHarpoon {
+			sc.Screen(label + " effect")
+		}
 		sc.add(0, label+" capture cooldown before repeat input", func() {
 			f.retryFrame, f.retryCooldown = noxServer.Frame(), noxServer.Abils.GetCooldownForUnit(f.unit, ability)
 			if f.retryCooldown <= 8 {
@@ -478,11 +538,17 @@ func (sc *e2eScenario) CheckWarriorAbility(ability server.Ability, name string) 
 		endTimeout := time.Duration(120100)
 		if ability == server.AbilityTreadLightly {
 			endTimeout = 240
+		} else if f.npcHarpoon {
+			endTimeout = 1200
 		}
 		sc.addWhen(0, label+" wait for gameplay end", endTimeout, f.ended, func() {
 			e2eLog.Printf("WARRIOR ENDED: ability=%s attempt=%d frame=%d state=%d cooldown=%d HUD=%+v", ability, attempt, noxServer.Frame(), f.unit.UpdateDataPlayer().State, noxServer.Abils.GetCooldownForUnit(f.unit, ability), e2eReadAbilityHUD(ability))
 		})
-		sc.addWhen(0, label+" wait for cooldown ready report", 120100, func() bool {
+		readyTimeout := time.Duration(120100)
+		if f.npcHarpoon {
+			readyTimeout = 1200
+		}
+		sc.addWhen(0, label+" wait for cooldown ready report", readyTimeout, func() bool {
 			return noxServer.Abils.GetCooldownForUnit(f.unit, ability) == 0 && e2eReadAbilityHUD(ability).Ready == 1
 		}, func() {
 			hud := e2eReadAbilityHUD(ability)

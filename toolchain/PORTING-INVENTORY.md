@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 대검 장착 시 방패 해제 뒤 남는 플레이어 자세
+
+대검의 실제 Fireball 방어 observer 준비 과정에서 GreatSword 장착이 shield를 자동 해제했는데도 플레이어 자세 16이 남는 문제를 분리했다. 원본 `0053E430`의 마지막 shield 판별은 아이템 BYTE +12 subclass다. 기존 typed C는 DWORD index 12/+48인 `field_12`를 읽어 shield 자세 15·16·17을 해제하지 않거나 non-shield를 잘못 해제했다. 이번 production 변경은 `sub_53E430` 한 본체의 `obj_subclass` 필드 선택만이다. 장착·방어 admission 조건이나 PlayerUpdate의 상태 진행을 우회해서 변경하지 않는다.
+
+기존 disengage call 범위를 포함한 원본 본체 239바이트·뒤 1-NOP를 먼저 봉인했다. 수정 전 실제 C 본체의 non-shield/잘못된 필드 trap이 자세를 변경하는 실패를 재현했다. shared native-width 구조체의 4GiB 초과 pointer, 8,192개 자세/subclass/trap/보고 조합과 post-callback live 값·cached update·실패 admission·NPC 위임 회귀가 수정 후 통과했다. 관련 root/server/legacy 일반·실제 cgocheck2 각 3회와 code 2,928/data 636개·NXZ 50쌍·stock tree 검사를 통과했다. queued GUI의 양방향 정면/후면 방어와 전체 gate는 후속 observer 검증으로 구별한다. 원본 자산·개인 Save/config·기존 PNG 기대값은 변경하지 않는다.
+
 ## 실제 inventory armor 장착·해제 보고의 headless 관찰
 
 테스트 전용 `check-player-armor-report`와 자산 없는 `host-game-armor-report.yaml`은 실제 Warrior 메뉴와 stock LeatherArmor 지급, queued inventory 마우스 입력을 사용한다. 처음 지급한 armor는 원래 respawn 경로에서 자동 장착되어 있었다. 첫 실행의 unequipped 준비 조건 실패를 보존하고, 실제 클릭으로 먼저 해제한 뒤 baseline을 잡도록 YAML fixture만 조정했다. armor 값·장비 flag·보고 cache·client global/패킷을 직접 주입하거나 장착 함수를 직접 호출하지 않는다. 4GiB 초과 unit/update/item/player를 확인한다.

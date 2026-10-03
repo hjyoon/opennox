@@ -18788,11 +18788,18 @@
       "purpose": "the exact decoded direct rel32 call from NPC armor dequip that applies live item disengage effects and discards the machine return register"
     },
     {
-      "name": "nox_xxx_itemApplyDisengageEffect_4F3030_call_53E4ED",
-      "address": "0x0053E4ED",
-      "size": 5,
-      "sha256": "cd63df2f49e9811ac6d352284f8dace90db622aa64735808f6cb9c9c1ef0d394",
-      "purpose": "the exact decoded direct rel32 call from player armor dequip that applies live item disengage effects and discards the machine return register"
+      "name": "sub_53E430",
+      "address": "0x0053E430",
+      "size": 239,
+      "sha256": "c2201e67d970c3d12e7b7af186cbecdda9f76b5cdae3660d526a216fb70023cf",
+      "purpose": "validate equipped armor in the owner's inventory, delegate monsters, clear player equipment flags and report dequip before armor recalculation and disengage, then read the live item subclass byte at original offset 12 and cached update state to restore shield postures 15, 16, or 17 to idle 13; includes the previously sealed disengage call at 0053E4ED"
+    },
+    {
+      "name": "sub_53E430_padding",
+      "address": "0x0053E51F",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP alignment byte separating player armor dequip from NPC armor equip at 0053E520"
     },
     {
       "name": "nox_xxx_itemApplyEngageEffect_4F2FF0_call_53E5DE",

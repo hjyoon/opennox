@@ -7738,7 +7738,7 @@ int sub_53E430(nox_object_t* owner, nox_object_t* item, int a3, int a4) {
 	}
 	nox_xxx_recalculateArmorVal_53E300(owner);
 	nox_xxx_itemApplyDisengageEffect_4F3030(item, owner);
-	if ((item->field_12 & 2) && (update->state == 15 || update->state == 16 || update->state == 17)) {
+	if ((item->obj_subclass & 2) && (update->state == 15 || update->state == 16 || update->state == 17)) {
 		nox_xxx_playerSetState_4FA020(owner, 13);
 	}
 	return 1;

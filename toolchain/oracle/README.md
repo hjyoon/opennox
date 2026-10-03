@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 플레이어 방패 해제 자세 `0053E430`
+
+기존 `0053E4ED` disengage call 봉인 범위를 포함하는 본체 239바이트와 뒤 1-NOP로 확장했다. 원본은 armor 해제·장비 보고·armor 재계산·disengage 뒤 아이템의 BYTE +12 subclass를 다시 읽는다. 방패 subclass bit 2이고 cached player update의 자세가 15·16·17이면 idle 13으로 전환한다. `field_12`는 DWORD index 12/+48로 별개의 필드이며 LP64에서도 두 필드는 +16/+52로 다르다. production은 이 잘못된 필드 선택 한 줄만 바꾼다.
+
+실제 C 본체를 shared native struct와 외부 service spy에 연결한 회귀에서 잘못된 필드 값에 의한 non-shield 자세 변경을 수정 전에 재현했다. 256 자세·4 subclass·2 trap 값·4 보고 조합 8,192개와 post-disengage subclass/state 변경·cached update 바인딩·실패 admission·NPC 우선 위임을 검사한다. 일반 및 실제 cgocheck2 root/server/legacy 관련 검사는 각 3회 통과했다. oracle의 code 2,928/data 636개·NXZ 50쌍·stock tree는 유지된다. 별도 실제 inventory/대검 headless 관찰은 후속 테스트 단위이며 이 service spy 검사를 물리 화면이나 원본 Windows runtime 실행으로 확대하지 않는다.
+
 ## 플레이어 armor 변화 보고의 원본 계약
 
 테스트 전용 `host-game-armor-report.yaml`의 실제 inventory 입력도 일반·HD headless/mock에서 각 두 장착·해제 cycle을 통과했다. 초기 auto-equipped stock grant는 실제 클릭으로 해제하여 baseline `0.02`를 얻고, `0.17000002` 장착 수치·보고 cache·실제 client receiver의 binary32 bits 및 12-frame 뒤 안정 값을 대조한다. 직접 수치/장비/packet 주입과 새 PNG/override는 없다. 최초 unequipped fixture 조건 실패는 성공으로 세지 않는다. 이 관찰은 client 수신 경로이지 화면 문자열 픽셀·물리 출력·원본 Windows runtime 전체의 증명이 아니다.

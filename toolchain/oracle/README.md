@@ -294,6 +294,12 @@ stock War03b Henrick 대화의 실제 Yes 입력 두 번으로 Wolf1/Wolf2를 �
 
 두 함수 결합의 전기 저항·Quest 배율·HP·source attribution, 3회 fractional carry `[4,4,3]`, GodMode 앞의 raw armor 피해/보고, 최소 피해·Reflect 방향 경계 및 누락 서비스의 무변경 거부를 회귀로 검사한다. 전체 일반 테스트와 실제 `GOEXPERIMENT=cgocheck2` 전체 테스트, 대상 server race/checkptr 반복 검사 및 원본 oracle 검증을 통과했다. 이 기록은 실제 네크로맨서 자연 전투/사망 drop의 완료를 주장하지 않는다.
 
+## 장착 아이템 후반 Defend ABI `004E1320`
+
+원본 본체 `004E1320..004E13AE` 143바이트/SHA-256 `c857c754eeebeb65ee2d447c562dc9df0d30cb103810f738f4dc120d9a2736df`와 뒤 1-NOP를 구현 전에 봉인했다. 원본은 class 검사가 아니라 flags `0x100`만 사용하고 item마다 init/slot base를 한 번 cache한 뒤 슬롯 2·3을 live 조회한다. callback마다 damage/type DWORD context를 만들고 첫 DWORD를 damage 주소에 저장한 뒤 다음 슬롯을 읽으며, 두 슬롯 뒤 다음 inventory link를 읽는다. empty inventory의 입력 target low DWORD, non-equipped 마지막 flags, equipped 마지막 counter 0의 incidental 반환도 구별한다.
+
+이 선언 단계는 세 객체 인자만 native pointer로 복원하고 scalar/context DWORD 계약을 유지한다. 기존 C 본체의 명시적 PE32 임시 축소는 다음 별도 본체 복원까지 남아 있으므로 런타임 수정 완료로 주장하지 않는다. 독립 C11 fixture는 공개 ABI/고주소 포인터 전달 검사이며 실제 장비 효과 실행 검증을 대신하지 않는다. 원본 자산·개인 Save/config는 변경하거나 공개하지 않는다.
+
 ## PlayerDamage의 ordered 방어구 호출 `004E17B0`
 
 별도 복원한 `004E2180`을 PlayerDamage의 활성 native 호출 위치에도 연결한다. 이미 봉인한 `004E17B0..004E20EF`의 같은 SHA-256을 사용하며 범위·원본 자산·피해 수치는 바꾸지 않는다. `004E1DE0/004E1E1E`는 화염·Lava·전기의 raw 피해, `004E1F25/004E1FBE`는 CRUSH·일반 armor 계산 후의 signed 차액을 전달한다. POISON과 ZAP_RAY는 방어구 패스를 계속 건너뛴다.

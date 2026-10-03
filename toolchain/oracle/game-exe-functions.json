@@ -4186,6 +4186,20 @@
       "purpose": "preserve the signed 30-damage Player gate, full-width private GameBall cache, first matching owned object, clear NoCollide, force 30, clear owner, retain victim carrier history, existing-team versus create-team order and live reads, then sound 926; not Wink's throw or BallStatus operation"
     },
     {
+      "name": "nox_xxx_itemApplyDefendEffect2_4E1320",
+      "address": "0x004E1320",
+      "size": 143,
+      "sha256": "c857c754eeebeb65ee2d447c562dc9df0d30cb103810f738f4dc120d9a2736df",
+      "purpose": "preserve the inventory head and flags-only equipped gate, cache each item's modifier-slot base once, read slots two and three live, pass an eight-byte damage/type context to each Defend callback with original target/weapon/source order, write returned damage before the next callback, and read the inventory link only after both slots; preserve the incidental DWORD return"
+    },
+    {
+      "name": "nox_xxx_itemApplyDefendEffect2_4E1320_padding",
+      "address": "0x004E13AF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact NOP byte between the equipped-item Defend effect loop and the pre-damage effect procedure at 004E13B0"
+    },
+    {
       "name": "sub_4E1400",
       "address": "0x004E1400",
       "size": 112,

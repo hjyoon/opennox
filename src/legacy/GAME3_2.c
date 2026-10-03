@@ -6661,7 +6661,8 @@ LABEL_83:
 LABEL_87:
 	v22 = *(uint32_t*)(a1 + 8);
 	if (v22 & 4 || v22 & 2 && *(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_itemApplyDefendEffect2_4E1320(a1, v10, v19, &a4, v15);
+		nox_xxx_itemApplyDefendEffect2_4E1320((nox_object_t*)(uintptr_t)(uint32_t)a1,
+			(nox_object_t*)(uintptr_t)(uint32_t)v10, (nox_object_t*)(uintptr_t)(uint32_t)v19, &a4, v15);
 	}
 	if (v19) {
 		*(uint32_t*)(a1 + 520) = v19;
@@ -6807,7 +6808,12 @@ void nox_xxx_gameballOnPlayerDamage_4E1230(int a1, int a2, int a3) {
 }
 
 //----- (004E1320) --------------------------------------------------------
-int nox_xxx_itemApplyDefendEffect2_4E1320(int a1, int a2, int a3, int* a4, int a5) {
+int nox_xxx_itemApplyDefendEffect2_4E1320(nox_object_t* a1p, nox_object_t* a2p, nox_object_t* a3p, int* a4, int a5) {
+	// Public ABI restoration only. Remove these PE32 temporaries when the
+	// original body is moved to the native-pointer implementation.
+	int a1 = (int)(uintptr_t)a1p;
+	int a2 = (int)(uintptr_t)a2p;
+	int a3 = (int)(uintptr_t)a3p;
 	int result;   // eax
 	uint32_t* v6; // esi
 	int v7;       // ebp

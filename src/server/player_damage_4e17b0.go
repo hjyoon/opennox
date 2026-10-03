@@ -725,7 +725,7 @@ func playerDamageMissilePierce4E17B0(
 
 // PlayerDamageNative4E17B0 restores ordinary player/NPC melee, unit-sourced SIMPLE
 // CRUSH (including stock Fists), Spider BITE, monster-fired
-// missile IMPACT/PIERCE, player-fired NPC PIERCE, Berserker Charge CRUSH,
+// missile IMPACT, player/monster-fired missile PIERCE, Berserker Charge CRUSH,
 // SentryGlobe ZAP_RAY, world FLAME,
 // unarmed player/monster and unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC,
 // and source-less LAVA/POISON branches of
@@ -781,13 +781,15 @@ func PlayerDamageNative4E17B0(
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return handled, result
 	}
-	if typ == object.DamageImpale && damage > 0 && source != nil && source != weapon &&
-		source.Class().Has(object.ClassMonster) && source.UpdateData != nil &&
+	if typ == object.DamageImpale && source != nil && source != weapon &&
+		source.Class().HasAny(object.ClassPlayer|object.ClassMonster) && source.UpdateData != nil &&
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon) {
 		// Stock GolemArrow is also WEAPON, subclass 0x10. Admit its
 		// ranged predicate without silently including melee Shock shapes.
+		// 004E1F84 accepts either unit source and raw signed damage; the
+		// positive-only minimum belongs after armor/carry at 004E2011.
 		return playerDamageMissilePierce4E17B0(target, source, weapon, update, pierceArmorValue, damage, typ, runtime)
 	}
 	if damage > 0 && playerDamageElectricShape4E17B0(source, weapon, typ) {

@@ -93,7 +93,7 @@ func TestPlayerDamageMeleeNative4E17B0ArmoredMatrix(t *testing.T) {
 					source.TypeInd = 88
 					var weapon *Object
 					if attack.class != 0 {
-						weapon = &Object{TypeInd: 777, ObjClass: attack.class, ObjSubClass: attack.subclass}
+						weapon = &Object{TypeInd: 777, ObjClass: attack.class, ObjSubClass: attack.subclass, InitData: unsafe.Pointer(&ModifierInitData{})}
 					}
 					armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0.4)
 					r := damageMeleeRuntimeFixture4E17B0(t)
@@ -128,7 +128,7 @@ func TestPlayerDamageMeleeNative4E17B0ArmorPrefixOrder(t *testing.T) {
 		t.Run(fmt.Sprintf("player-%t", player), func(t *testing.T) {
 			target := damageMeleeUnitFixture4E17B0(t, player)
 			source := damageMeleeUnitFixture4E17B0(t, !player)
-			weapon := &Object{TypeInd: 333, ObjClass: object.ClassWeapon}
+			weapon := &Object{TypeInd: 333, ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}
 			armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0.4)
 			modifier := &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
 			armor.InitDataModifier().Modifiers[1] = modifier
@@ -510,7 +510,7 @@ func TestPlayerDamageMeleeNative4E17B0BlockAdmission(t *testing.T) {
 			r.Melee.DamageBlockWeapon = r.DamageBlockItem
 			var sound int
 			r.Audio = func(id int, _ *Object) { sound = id }
-			h, result := PlayerDamageMeleeNative4E17B0(target, source, &Object{ObjClass: object.ClassWeapon}, 9, tc.typ, r)
+			h, result := PlayerDamageMeleeNative4E17B0(target, source, &Object{ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}, 9, tc.typ, r)
 			wantHP := uint16(200)
 			if tc.wantSound == 0 {
 				wantHP = 191

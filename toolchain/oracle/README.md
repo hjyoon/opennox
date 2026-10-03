@@ -310,6 +310,20 @@ server 회귀는 모든 init/slot/function/call fault prefix, callback의 다음
 
 전체 일반·실제 `GOEXPERIMENT=cgocheck2` 및 server-tag 검사를 통과했고, 관련 일반·strict·race·checkptr=2·HD 회귀는 각각 3회 통과했다. 기존 Hunt의 실제 고주소 C wrapper/AI stack와 NoxScript caller/trigger 회귀도 다시 통과했다. Darwin/ARM64 일반·HD·서버 제품 세 개의 빌드·Mach-O arm64·`-h` exit 0을 확인했다. 이전 clean `688ffb33b`과 새 빌드에 동일 YAML·이전 private diagnostic PNG를 사용해 일반·HD 슈리켄/채크럼 headless real input을 합계 8회 비교했으며, 실제 명중 HP `2,000→1,970/1,962`·소모/복귀/재장착과 세 화면의 exact-pixel 검사가 통과했다. GUI snapshot override나 기대값 교체는 하지 않았고, 이 화면 회귀를 새로운 helper의 실제 호출 증거로 대신하지 않는다. 실행 전후 원본 1,556파일·570,653,750바이트/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 봉인 코드 2,909개·데이터 621개와 50개 압축 oracle pair를 재검증했다. clean 제품의 commit metadata 검증은 커밋 후 별도 재빌드 단계에서 수행한다.
 
+## DefaultDamage의 live 무기 pre-Damage 호출 `004E0FEF`
+
+helper 복원과 별도로 DefaultDamage `004E0B30` 한 본체의 활성 호출 위치를 복원한다. 기존 코드는 진입 시 읽은 네 modifier 슬롯을 실행 계획으로 재사용하여 protection·BuffOff·late Defend가 바꾼 init base/슬롯/class를 놓쳤다. 원본 `004E0FD9`의 nil weapon과 `004E0FDD`의 live WEAPON/WAND class 검사 뒤 `004E0FEF`에서 `004E13B0`을 호출한다. attribution·type·frame·injured latch 이후이며 음향·HP tail 이전이다.
+
+기존 봉인 prefix `004E0B30` 1,762바이트/SHA-256 `241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991`, direct HP call `004E1212` 5바이트/SHA-256 `a92aa6543bb2febbee7e546101e84c4e029845e564fc331a43cbe2477b24593f`, suffix `004E1217` 25바이트/SHA-256 `c10ba4a472391a7eb4b3e987b44c79a63bfb3afe7fb80575ffccf43a732b8ee4`를 재사용한다. 중복 범위나 원본 함수 본체를 추가로 변경하지 않는다.
+
+진입 시 callback 지원 여부의 읽기 전용 admission은 유지하지만 실행용 eager slot 배열은 제거한다. 원본 위치에서 native helper를 호출하여 그때의 init base를 한 번 cache하고 이후 슬롯/함수를 live 조회한다. 같은 signed DWORD damage 주소와 `0→-7→MinInt32→MaxInt32`를 보존한다. eligible class의 nil init은 attribution/latch 뒤 실제 사용 시 fault하고, callback이 class를 제외하면 init을 읽지 않는다. 새 unknown effect나 누락된 callback 서비스는 현재 raw damage로 unsupported를 기록하고 뒤 supported 슬롯을 계속 처리한다. PE32 함수 주소로 fallback하지 않는다. pre-Damage가 damage를 30으로 올리고 ball을 붙이는 경우 기존 live GameBall guard의 누락 서비스 거부와 supported drop→hurt→HP 순서도 유지한다.
+
+protection·BuffOff·late Defend의 base 교체, 이후 슬롯 변경, class 진입/제외, cached-base 유지, nil-init fault prefix, 새 unknown continuation과 GameBall 경계는 기존 eager 호출에서 실패하는 red를 먼저 보존했다. 새 서비스 누락 회귀 및 기존 슬롯 지원 검사 순서도 검증한다. 기존 근접·PIERCE·Shield의 가상 eligible 무기에는 원본 helper가 요구하는 유효한 빈 modifier init record만 보완했다. C-owned fixture에는 C-owned init을, Go-owned C fixture에는 pinned init을 사용하며 HP·피해량·GUI 기대값은 변경하지 않는다.
+
+C-owned 4GiB 초과 객체·init·modifier를 실제 등록된 C damage dispatcher→DefaultDamage→native helper→stock Vampirism/Sympathy→production UnitSetHP로 연결해 target HP `20→12`, source HP `19→20→18`, attribution/frame·NPC hit-time latch·HP synchronization을 확인했다. effect·protection·음향·HP 서비스를 대체하지 않는다. 해당 C 진입 및 caller 회귀는 실제 `GOEXPERIMENT=cgocheck2` 3회 통과했다. 이 단위는 기존 Linux Hunt 크래시 장면의 재실행, DefaultDamage의 다른 cached metadata 복원, 전체 stock 전투 완료를 주장하지 않는다. 원본 자산·개인 Save/config·GUI snapshot 기준을 수정하지 않는다.
+
+전체 일반·실제 `GOEXPERIMENT=cgocheck2` 및 server-tag 검사가 통과했다. 관련 일반·strict·race·checkptr=2·HD 회귀는 각각 3회 통과했고, Hunt의 실제 고주소 C wrapper/AI stack와 NoxScript caller/trigger도 재통과했다. Darwin/ARM64 일반·HD·서버 세 제품의 빌드·Mach-O arm64·`-h` exit 0을 확인했다. 이전 clean `62a062504`와 새 빌드에 동일 YAML·기존 private diagnostic PNG를 사용하여 일반·HD 슈리켄/채크럼 headless real input을 합계 8회 비교했다. 실제 명중 HP `2,000→1,970/1,962`·슈리켄 charge `20→19`·채크럼 자연 복귀/재장착과 발사·명중·완료 화면의 exact-pixel 검사가 통과했다. 화면 회귀는 위 실제 C pre-Damage 호출 증거를 대체하지 않는다. 실행 전후 원본 1,556파일·570,653,750바이트/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`와 봉인 코드 2,909개·데이터 621개를 재검증했다. clean 제품의 commit metadata와 headless 재검증은 커밋·푸시 후 별도 clean 재빌드 단계에서 수행한다.
+
 ## 장착 아이템 후반 Defend ABI `004E1320`
 
 원본 본체 `004E1320..004E13AE` 143바이트/SHA-256 `c857c754eeebeb65ee2d447c562dc9df0d30cb103810f738f4dc120d9a2736df`와 뒤 1-NOP를 구현 전에 봉인했다. 원본은 class 검사가 아니라 flags `0x100`만 사용하고 item마다 init/slot base를 한 번 cache한 뒤 슬롯 2·3을 live 조회한다. callback마다 damage/type DWORD context를 만들고 첫 DWORD를 damage 주소에 저장한 뒤 다음 슬롯을 읽으며, 두 슬롯 뒤 다음 inventory link를 읽는다. empty inventory의 입력 target low DWORD, non-equipped 마지막 flags, equipped 마지막 counter 0의 incidental 반환도 구별한다.

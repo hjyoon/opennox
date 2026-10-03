@@ -64,12 +64,13 @@ func TestPlayerDamageMeleeNativeCallback4E17B0BidirectionalHP(t *testing.T) {
 				}
 				target.Damage = playerDamageMeleeCallbackNative4E17B0()
 				var weapon *server.Object
+				weaponInit := &server.ModifierInitData{}
 				if attack.subclass != 0 {
-					weapon = &server.Object{TypeInd: 444, ObjClass: object.ClassWeapon, ObjSubClass: attack.subclass, Material: 0x4000}
+					weapon = &server.Object{TypeInd: 444, ObjClass: object.ClassWeapon, ObjSubClass: attack.subclass, Material: 0x4000, InitData: unsafe.Pointer(weaponInit)}
 				}
 				var pin runtime.Pinner
 				defer pin.Unpin()
-				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(playerUnit), unsafe.Pointer(npc), unsafe.Pointer(player), unsafe.Pointer(playerUpdate), unsafe.Pointer(npcUpdate), unsafe.Pointer(playerUnit.HealthData), unsafe.Pointer(npc.HealthData), unsafe.Pointer(weapon)} {
+				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(playerUnit), unsafe.Pointer(npc), unsafe.Pointer(player), unsafe.Pointer(playerUpdate), unsafe.Pointer(npcUpdate), unsafe.Pointer(playerUnit.HealthData), unsafe.Pointer(npc.HealthData), unsafe.Pointer(weapon), unsafe.Pointer(weaponInit)} {
 					if pointer == nil {
 						continue
 					}

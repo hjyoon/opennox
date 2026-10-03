@@ -98,11 +98,12 @@ func TestPlayerDamageNative4E17B0RegisteredOrderedArmorDamage(t *testing.T) {
 				sourcePlayerUD, freeSourcePlayerUD := alloc.New(server.PlayerUpdateData{})
 				sourceMonsterUD, freeSourceMonsterUD := alloc.New(server.MonsterUpdateData{})
 				initData, freeInit := alloc.New(server.ModifierInitData{})
+				weaponInit, freeWeaponInit := alloc.New(server.ModifierInitData{})
 				itemUD, freeItemUD := alloc.New(server.WeaponArmorUpdateData{})
 				hp, freeHP := alloc.New(server.HealthData{})
 				itemHP, freeItemHP := alloc.New(server.HealthData{})
 				armorDef, freeDef := alloc.New(server.Modifier{})
-				for _, free := range []func(){freePlayer, freePlayerUD, freeMonsterUD, freeSourcePlayer, freeSourcePlayerUD, freeSourceMonsterUD, freeInit, freeItemUD, freeHP, freeItemHP, freeDef} {
+				for _, free := range []func(){freePlayer, freePlayerUD, freeMonsterUD, freeSourcePlayer, freeSourcePlayerUD, freeSourceMonsterUD, freeInit, freeWeaponInit, freeItemUD, freeHP, freeItemHP, freeDef} {
 					t.Cleanup(free)
 				}
 				*player = server.Player{PlayerInd: 7, ArmorEquip: 0x405, WeaponEquip: 0x100}
@@ -125,6 +126,7 @@ func TestPlayerDamageNative4E17B0RegisteredOrderedArmorDamage(t *testing.T) {
 				}
 				target.HealthData, target.Material, source.PrevPos = hp, 0x4000, types.Ptf(44, 7)
 				weapon.ObjClass, weapon.ObjSubClass, weapon.ObjOwner, weapon.PrevPos = object.ClassWeapon, object.SubClass(object.WeaponMace), source, types.Ptf(-20, 0)
+				weapon.InitData = unsafe.Pointer(weaponInit)
 				if tc.typ == object.DamageBlade {
 					weapon.ObjSubClass = object.SubClass(object.WeaponSword)
 				}
@@ -141,7 +143,7 @@ func TestPlayerDamageNative4E17B0RegisteredOrderedArmorDamage(t *testing.T) {
 					return 1
 				}
 				t.Cleanup(func() { s.NetSendPacketXxx = oldSend })
-				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(weapon), unsafe.Pointer(item), target.UpdateData, source.UpdateData, item.UpdateData, item.InitData, unsafe.Pointer(player), unsafe.Pointer(sourcePlayer), unsafe.Pointer(hp), unsafe.Pointer(itemHP), unsafe.Pointer(armorDef)} {
+				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(weapon), unsafe.Pointer(item), target.UpdateData, source.UpdateData, weapon.InitData, item.UpdateData, item.InitData, unsafe.Pointer(player), unsafe.Pointer(sourcePlayer), unsafe.Pointer(hp), unsafe.Pointer(itemHP), unsafe.Pointer(armorDef)} {
 					if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {
 						t.Fatalf("pointer=%p, want above 4 GiB", pointer)
 					}

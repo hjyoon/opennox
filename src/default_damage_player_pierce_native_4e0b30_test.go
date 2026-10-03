@@ -63,7 +63,8 @@ func TestDefaultDamagePlayerPierceNative4E0B30HPAndOwnerReport(t *testing.T) {
 				playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
 				player, freePlayer := alloc.New(server.Player{})
 				hp, freeHP := alloc.New(server.HealthData{})
-				for _, free := range []func(){freeUD, freePlayerUD, freePlayer, freeHP} {
+				weaponInit, freeWeaponInit := alloc.New(server.ModifierInitData{})
+				for _, free := range []func(){freeUD, freePlayerUD, freePlayer, freeHP, freeWeaponInit} {
 					t.Cleanup(free)
 				}
 				*ud, *playerUD, *player = server.MonsterUpdateData{}, server.PlayerUpdateData{}, server.Player{}
@@ -80,11 +81,12 @@ func TestDefaultDamagePlayerPierceNative4E0B30HPAndOwnerReport(t *testing.T) {
 				// admits this ranged self-owned hit, as in the original prefix.
 				target.ObjOwner, source.Field129, target.NetCode = source, target, 0x1234
 				arrow.TypeInd, arrow.ObjClass, arrow.ObjSubClass, arrow.ObjFlags = 529, object.Class(0x05200001), 0x10, 0
+				arrow.InitData = unsafe.Pointer(weaponInit)
 				if pure {
 					arrow.ObjClass = object.ClassMissile
 				}
 				arrow.ObjOwner, arrow.PrevPos = source, types.Ptf(20, 0)
-				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(arrow), target.UpdateData, source.UpdateData, unsafe.Pointer(player), unsafe.Pointer(hp)} {
+				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(arrow), target.UpdateData, source.UpdateData, unsafe.Pointer(player), unsafe.Pointer(hp), arrow.InitData} {
 					if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {
 						t.Fatalf("pointer=%p, want above 4 GiB", pointer)
 					}

@@ -156,7 +156,7 @@ func TestSpellShieldReduceDamage52F710WarriorFrontBlock(t *testing.T) {
 func TestDefaultDamageWorld4E0B30AppliesShieldReduction(t *testing.T) {
 	target := &Object{ObjClass: object.ClassObstacle, Buffs: uint32(1) << ENCHANT_SHIELD}
 	source := &Object{ObjClass: object.ClassPlayer}
-	weapon := &Object{ObjClass: object.ClassWeapon}
+	weapon := &Object{ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}
 	var cleared int32
 	runtime := DefaultDamageWorldRuntime4E0B30{
 		GameplayFlag1: func() bool { return true },

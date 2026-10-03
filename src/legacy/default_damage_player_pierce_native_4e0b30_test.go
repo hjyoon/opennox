@@ -30,11 +30,11 @@ func TestDefaultDamagePlayerPierceNativeCallback4E0B30(t *testing.T) {
 			target := &server.Object{ObjClass: object.ClassMonster, ObjSubClass: 0x10, UpdateData: unsafe.Pointer(ud),
 				HealthData: &server.HealthData{Cur: 60, Max: 60}, Material: 0x4000, Damage: srv.Types.ByID("NativePlayerPierceDefault").Damage}
 			source := &server.Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(playerUD), PrevPos: types.Ptf(44, 7)}
-			arrow := &server.Object{TypeInd: 529, ObjClass: object.Class(0x05200001), ObjSubClass: 0x10, PrevPos: types.Ptf(20, 0), ObjOwner: source}
+			arrow := &server.Object{TypeInd: 529, ObjClass: object.Class(0x05200001), ObjSubClass: 0x10, PrevPos: types.Ptf(20, 0), ObjOwner: source, InitData: unsafe.Pointer(&server.ModifierInitData{})}
 			if pure {
 				arrow.ObjClass = object.ClassMissile
 			}
-			for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(arrow), target.UpdateData, source.UpdateData, unsafe.Pointer(player), unsafe.Pointer(target.HealthData)} {
+			for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(arrow), target.UpdateData, source.UpdateData, unsafe.Pointer(player), unsafe.Pointer(target.HealthData), arrow.InitData} {
 				pin.Pin(pointer)
 				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {
 					t.Fatalf("pointer=%p, want above 4 GiB", pointer)

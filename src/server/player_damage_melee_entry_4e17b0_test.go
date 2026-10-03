@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/object"
 )
@@ -25,7 +26,7 @@ func TestPlayerDamageMeleeEntry4E17B0BidirectionalHP(t *testing.T) {
 				source := damageMeleeUnitFixture4E17B0(t, !toPlayer)
 				var weapon *Object
 				if attack.subclass != 0 {
-					weapon = &Object{TypeInd: 444, ObjClass: object.ClassWeapon, ObjSubClass: attack.subclass}
+					weapon = &Object{TypeInd: 444, ObjClass: object.ClassWeapon, ObjSubClass: attack.subclass, InitData: unsafe.Pointer(&ModifierInitData{})}
 				}
 				r := damageMeleeRuntimeFixture4E17B0(t)
 				reason := ""
@@ -45,7 +46,7 @@ func TestPlayerDamageMeleeEntry4E17B0FriendlyAndArmored(t *testing.T) {
 		t.Run(fmt.Sprintf("player-target-%t", toPlayer), func(t *testing.T) {
 			target := damageMeleeUnitFixture4E17B0(t, toPlayer)
 			source := damageMeleeUnitFixture4E17B0(t, !toPlayer)
-			weapon := &Object{ObjClass: object.ClassWeapon, ObjSubClass: object.SubClass(object.WeaponSword)}
+			weapon := &Object{ObjClass: object.ClassWeapon, ObjSubClass: object.SubClass(object.WeaponSword), InitData: unsafe.Pointer(&ModifierInitData{})}
 			armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0)
 			r := damageMeleeRuntimeFixture4E17B0(t)
 			damageMeleeArmorRuntime4E17B0(&r, armor, 0.5)

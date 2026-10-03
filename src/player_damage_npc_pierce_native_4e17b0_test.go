@@ -82,11 +82,12 @@ func TestPlayerDamageNPCPierceNative4E17B0HPAndDurability(t *testing.T) {
 					playerUD, freePlayerUD := alloc.New(server.PlayerUpdateData{})
 					player, freePlayer := alloc.New(server.Player{})
 					initData, freeInit := alloc.New(server.ModifierInitData{})
+					weaponInit, freeWeaponInit := alloc.New(server.ModifierInitData{})
 					itemUD, freeItemUD := alloc.New(server.WeaponArmorUpdateData{})
 					npcHP, freeHP := alloc.New(server.HealthData{})
 					itemHP, freeItemHP := alloc.New(server.HealthData{})
 					armorDef, freeDef := alloc.New(server.Modifier{})
-					for _, free := range []func(){freeUD, freeSourceUD, freeSourcePlayerUD, freeSourcePlayer, freePlayerUD, freePlayer, freeInit, freeItemUD, freeHP, freeItemHP, freeDef} {
+					for _, free := range []func(){freeUD, freeSourceUD, freeSourcePlayerUD, freeSourcePlayer, freePlayerUD, freePlayer, freeInit, freeWeaponInit, freeItemUD, freeHP, freeItemHP, freeDef} {
 						t.Cleanup(free)
 					}
 					*ud = server.MonsterUpdateData{Field518: math.Float32bits(0.25), Field547: 99, Field546: 77, Field523_2: 0x34}
@@ -122,6 +123,7 @@ func TestPlayerDamageNPCPierceNative4E17B0HPAndDurability(t *testing.T) {
 					}
 					t.Cleanup(func() { s.NetSendPacketXxx = previousSend })
 					arrow.ObjClass, arrow.ObjSubClass = object.Class(0x05200001), 0x10
+					arrow.InitData = unsafe.Pointer(weaponInit)
 					if pure {
 						arrow.ObjClass = object.ClassMissile
 					}
@@ -147,7 +149,7 @@ func TestPlayerDamageNPCPierceNative4E17B0HPAndDurability(t *testing.T) {
 					if !playerSource && !s.IsEnemyTo(target, source) {
 						t.Fatal("fixture monster must be hostile to the player-owned NPC")
 					}
-					for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(arrow), unsafe.Pointer(item), unsafe.Pointer(owner), target.UpdateData, source.UpdateData, item.UpdateData, item.InitData, owner.UpdateData, unsafe.Pointer(player), unsafe.Pointer(sourcePlayer), unsafe.Pointer(sourcePlayerUD), unsafe.Pointer(npcHP), unsafe.Pointer(itemHP), unsafe.Pointer(armorDef)} {
+					for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(arrow), unsafe.Pointer(item), unsafe.Pointer(owner), target.UpdateData, source.UpdateData, arrow.InitData, item.UpdateData, item.InitData, owner.UpdateData, unsafe.Pointer(player), unsafe.Pointer(sourcePlayer), unsafe.Pointer(sourcePlayerUD), unsafe.Pointer(npcHP), unsafe.Pointer(itemHP), unsafe.Pointer(armorDef)} {
 						if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {
 							t.Fatalf("pointer=%p, want above 4 GiB", pointer)
 						}

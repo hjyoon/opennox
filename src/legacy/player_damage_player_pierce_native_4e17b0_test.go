@@ -35,11 +35,11 @@ func TestPlayerDamagePlayerPierceNativeCallback4E17B0(t *testing.T) {
 				if playerSource {
 					source.ObjClass, source.UpdateData = object.ClassPlayer, unsafe.Pointer(sourcePlayerUD)
 				}
-				arrow := &server.Object{TypeInd: 529, ObjClass: object.Class(0x05200001), ObjSubClass: 0x10, PrevPos: types.Ptf(20, 0), ObjOwner: source}
+				arrow := &server.Object{TypeInd: 529, ObjClass: object.Class(0x05200001), ObjSubClass: 0x10, PrevPos: types.Ptf(20, 0), ObjOwner: source, InitData: unsafe.Pointer(&server.ModifierInitData{})}
 				if pure {
 					arrow.ObjClass = object.ClassMissile
 				}
-				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(arrow), target.UpdateData, source.UpdateData, unsafe.Pointer(targetPlayer), unsafe.Pointer(sourcePlayer), unsafe.Pointer(sourcePlayerUD), unsafe.Pointer(target.HealthData)} {
+				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(arrow), target.UpdateData, source.UpdateData, unsafe.Pointer(targetPlayer), unsafe.Pointer(sourcePlayer), unsafe.Pointer(sourcePlayerUD), unsafe.Pointer(target.HealthData), arrow.InitData} {
 					pin.Pin(pointer)
 					if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {
 						t.Fatalf("pointer=%p, want above 4 GiB", pointer)

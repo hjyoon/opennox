@@ -249,7 +249,7 @@ func TestDefaultDamageWorld4E0B30ScriptedMonsterCrushTail(t *testing.T) {
 		ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
 		PrevPos: types.Pointf{X: 70, Y: 80},
 	}
-	weapon := &Object{TypeInd: 110, ObjClass: object.ClassWeapon}
+	weapon := &Object{TypeInd: 110, ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}
 	modifier := &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
 	init := &ModifierInitData{}
 	init.Modifiers[2] = modifier
@@ -470,14 +470,19 @@ func TestDefaultDamageWorld4E0B30AppliesWeaponPreDamageInSlotOrder(t *testing.T)
 	source := &Object{ObjClass: object.ClassPlayer, PrevPos: types.Pointf{X: 7, Y: 8}}
 	weapon := &Object{ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(attrs)}
 	var events []string
+	availabilityChecks := 0
 	runtime := DefaultDamageWorldRuntime4E0B30{
 		Frame:         func() uint32 { return 123 },
 		GameplayFlag1: func() bool { return true },
 		CanApplyPreDamage: func(modifier *ModifierEff) bool {
-			if target.Obj130 != nil || target.Pos132 != (types.Pointf{}) || target.Frame134 != 0 {
+			if availabilityChecks < 2 && (target.Obj130 != nil || target.Pos132 != (types.Pointf{}) || target.Frame134 != 0) {
 				t.Fatalf("preflight observed mutated target: attribution=%p pos=%+v frame=%d",
 					target.Obj130, target.Pos132, target.Frame134)
 			}
+			if availabilityChecks >= 2 && (target.Obj130 != weapon || target.Pos132 != source.PrevPos || target.Frame134 != 123) {
+				t.Fatal("live callback availability checked before attribution")
+			}
+			availabilityChecks++
 			switch modifier {
 			case first:
 				events = append(events, "can:first")
@@ -528,7 +533,7 @@ func TestDefaultDamageWorld4E0B30AppliesWeaponPreDamageInSlotOrder(t *testing.T)
 	if !DefaultDamageWorld4E0B30(target, source, weapon, 5, object.DamageBlade, runtime) {
 		t.Fatal("DefaultDamageWorld4E0B30 returned false")
 	}
-	want := []string{"can:first", "can:second", "apply:first", "apply:second", "sound", "damage"}
+	want := []string{"can:first", "can:second", "can:first", "apply:first", "can:second", "apply:second", "sound", "damage"}
 	if !slices.Equal(events, want) {
 		t.Fatalf("events = %v, want %v", events, want)
 	}
@@ -1429,7 +1434,7 @@ func TestDefaultDamageWorld4E0B30ShockRetaliation(t *testing.T) {
 		UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
 	}
 	source := &Object{ObjClass: object.ClassPlayer}
-	weapon := &Object{ObjClass: object.ClassWeapon}
+	weapon := &Object{ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}
 	var events []string
 	runtime := DefaultDamageWorldRuntime4E0B30{
 		Frame:         func() uint32 { return 77 },
@@ -1561,7 +1566,7 @@ func TestDefaultDamageWorld4E0B30AppliesVampirismBeforeFieldGuide(t *testing.T) 
 		PosVec:   types.Pointf{X: 10.5, Y: 11.5},
 	}
 	source.BuffsPower[damageVampirismEnchant4E0B30] = 2
-	weapon := &Object{ObjClass: object.ClassWeapon}
+	weapon := &Object{ObjClass: object.ClassWeapon, InitData: unsafe.Pointer(&ModifierInitData{})}
 	var events []string
 	runtime := DefaultDamageWorldRuntime4E0B30{
 		Frame:         func() uint32 { return 81 },

@@ -17,7 +17,7 @@ func defaultDamagePierceFixture4E0B30(t *testing.T) (*Object, *Object, *Object, 
 	source.PrevPos = types.Ptf(56, 78)
 	// Observed from the immutable stock definition during actual stage-5 AI:
 	// MISSILE|WEAPON|COMPLEX|NOT_STACKABLE, not a synthetic pure missile.
-	arrow := &Object{ObjClass: object.Class(0x05200001), ObjSubClass: 16, TypeInd: 529, PrevPos: types.Ptf(12, 34)}
+	arrow := &Object{ObjClass: object.Class(0x05200001), ObjSubClass: 16, TypeInd: 529, PrevPos: types.Ptf(12, 34), InitData: unsafe.Pointer(&ModifierInitData{})}
 	r := DefaultDamageWorldRuntime4E0B30{
 		Frame: func() uint32 { return 700 }, GameplayFlag1: func() bool { return true },
 		IsEnemy: func(*Object, *Object) bool { return true }, BuffOff: func(*Object, EnchantID) {},

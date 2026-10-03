@@ -76,7 +76,7 @@ func TestDefaultDamageWorld4E0B30UnitMeleeMatrix(t *testing.T) {
 					source := damageMeleeUnitFixture4E17B0(t, fromPlayer)
 					var weapon *Object
 					if attack.class != 0 {
-						weapon = &Object{TypeInd: 777, ObjClass: attack.class, ObjSubClass: attack.subclass}
+						weapon = &Object{TypeInd: 777, ObjClass: attack.class, ObjSubClass: attack.subclass, InitData: unsafe.Pointer(&ModifierInitData{})}
 					}
 					r := damageMeleeWorldRuntime4E0B30(t)
 					if !DefaultDamageWorld4E0B30(target, source, weapon, 25, attack.typ, r) {
@@ -130,7 +130,7 @@ func TestDefaultDamageWorld4E0B30UnitMeleeFriendlyRules(t *testing.T) {
 			t.Run(fmt.Sprintf("player-target-%t/%s", toPlayer, tc.name), func(t *testing.T) {
 				target := damageMeleeUnitFixture4E17B0(t, toPlayer)
 				source := damageMeleeUnitFixture4E17B0(t, true)
-				weapon := &Object{ObjClass: object.ClassWeapon, ObjSubClass: tc.weapon}
+				weapon := &Object{ObjClass: object.ClassWeapon, ObjSubClass: tc.weapon, InitData: unsafe.Pointer(&ModifierInitData{})}
 				typ := object.DamageCrush
 				if tc.unarmed {
 					weapon, typ = nil, object.DamageClaw

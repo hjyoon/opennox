@@ -415,8 +415,9 @@ func DefaultDamageWorld4E0B30(
 	if shielded && runtime.ShieldReduce == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing Shield reduction service", target, source, weapon, damage, typ)
 	}
-	preDamageModifiers := defaultDamageWeaponPreDamageModifiers4E0B30(weapon)
-	for _, modifier := range preDamageModifiers {
+	// Read-only availability admission, not an execution plan. The original
+	// 004E0FEF call rechecks the weapon class and captures its init base later.
+	for _, modifier := range defaultDamageWeaponPreDamageModifiers4E0B30(weapon) {
 		if modifier == nil || modifier.AttackPreDmg64.Fnc == nil {
 			continue
 		}
@@ -534,10 +535,21 @@ func DefaultDamageWorld4E0B30(
 			monsterUpdate.Field546 = uint32(typ)
 		}
 	}
-	for _, modifier := range preDamageModifiers {
-		if modifier != nil && modifier.AttackPreDmg64.Fnc != nil {
-			runtime.ApplyPreDamage(modifier, weapon, source, target, &damage)
-		}
+	// 004E0FD9/004E0FDD use the live weapon class after the attribution and
+	// injured-latch stores. The helper caches only its native init base and
+	// reloads each later slot/function after the preceding callback returns.
+	if weapon != nil && weapon.Class().HasAny(object.ClassWeapon|object.ClassWand) {
+		ItemPreDamage4E13B0(target, source, weapon, &damage, ItemPreDamageRuntime4E13B0{
+			ApplyPreDamage: func(modifier *ModifierEff, w, attacker, owner *Object, d *int32) {
+				if runtime.CanApplyPreDamage == nil || runtime.ApplyPreDamage == nil || !runtime.CanApplyPreDamage(modifier) {
+					if runtime.Unsupported != nil {
+						runtime.Unsupported("unsupported live weapon pre-damage effect", owner, attacker, w, *d, typ)
+					}
+					return
+				}
+				runtime.ApplyPreDamage(modifier, w, attacker, owner, d)
+			},
+		})
 	}
 
 	suppressDamageSound := target == weapon && target.Class().HasAny(object.ClassWeapon|object.ClassWand)

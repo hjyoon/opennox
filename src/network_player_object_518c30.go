@@ -213,8 +213,7 @@ func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object,
 }
 
 // Keep the armor/item-enchantment/Quest slices' update pointer cached before callbacks,
-// as in 004D9900. Quest keys remain a separate missing slice; the existing
-// gold/statistics/vitals helpers retain their own bindings.
+// as in 004D9900. The existing gold/statistics/vitals helpers retain their own bindings.
 func (s *Server) playerReportSelfNative4D9900(unit *server.Object) {
 	if unit == nil || uint8(unit.ObjClass)&0x04 == 0 {
 		return
@@ -223,7 +222,11 @@ func (s *Server) playerReportSelfNative4D9900(unit *server.Object) {
 	s.Server.PlayerArmorReport4D992A(update)
 	s.Server.PlayerGoldReportSync4D9900(unit)
 	s.Server.PlayerItemEnchantmentReport4D99A7(unit, update)
+	quest := noxflags.HasGame(noxflags.GameModeQuest)
 	s.Server.PlayerQuestLivesReport4D99E1(unit, update)
+	if quest {
+		s.Server.PlayerQuestKeysReport4D9A3F(unit, update)
+	}
 	playerReportStatsNative4D9900(unit, playerStatsReportHooks4D9900{
 		totalHealth: func(playerInd byte, unit *server.Object) {
 			legacy.NetReportTotalHealthNative4D85C0(s.Server, playerInd, unit)

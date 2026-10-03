@@ -3864,6 +3864,13 @@
       "purpose": "check Quest once, look up all thirty-two recipient slots in order, skip missing players or player-unit pointers, compare entry-cached ExtraLives as a full dword with the zero-extended marker byte, ignore the existing sender result, then reload and store the low life byte through the same cached update pointer"
     },
     {
+      "name": "playerReportAnything_quest_keys_4D9A3F",
+      "address": "0x004D9A3F",
+      "size": 266,
+      "sha256": "2440f38bf9f2f861349d7a0d257fba5beeb680b66ceba82b159ee8a0a356de42",
+      "purpose": "after the single Quest admission, process SilverKey then GoldKey across thirty-two slots each; publish a zero type lookup on every slot even without a player, reload the full cached type DWORD before every inventory item WORD, stop on the first match, and store the precomputed presence BYTE through the entry-cached update after an ignored send result"
+    },
+    {
       "name": "sub_4D9D60",
       "address": "0x004D9D60",
       "size": 67,
@@ -3876,6 +3883,34 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "the exact thirteen NOP bytes after the Quest extra-life report and before the next original report helper at 004D9DB0"
+    },
+    {
+      "name": "questSilverKeyReport_4D9DF0",
+      "address": "0x004D9DF0",
+      "size": 59,
+      "sha256": "55c8a06fc5a2880e1ad338e9a3acaf29c411ba2fe3c9056631c954f1f32ba8c2",
+      "purpose": "encode reliable F0/22, the low presence BYTE, and the raw source net-code WORD into five bytes; preserve the signed recipient and reliable-send result without new guards"
+    },
+    {
+      "name": "questSilverKeyReport_4D9DF0_padding",
+      "address": "0x004D9E2B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes between the SilverKey and GoldKey report senders"
+    },
+    {
+      "name": "questGoldKeyReport_4D9E30",
+      "address": "0x004D9E30",
+      "size": 59,
+      "sha256": "dfb5ea98f830d78044a89e2a6d60854ecb042579324ca4c4a9991e1c29bfcd55",
+      "purpose": "encode reliable F0/23, the low presence BYTE, and the raw source net-code WORD into five bytes; preserve the signed recipient and reliable-send result without new guards"
+    },
+    {
+      "name": "questGoldKeyReport_4D9E30_padding",
+      "address": "0x004D9E6B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes after the GoldKey report sender"
     },
     {
       "name": "nox_xxx_netSendLineMessage_4D9EB0",
@@ -21518,6 +21553,20 @@
       "size": 256,
       "sha256": "2af255bdffa4216aec0971c2e063069cb80ac06450c431aac1d85d9770a7455b",
       "purpose": "32 signed int32 X/Y direction pairs indexed twice from live Door current direction by 004E9E90"
+    },
+    {
+      "name": "quest_report_silver_key_type_name_4D9A3F",
+      "address": "0x005B79A0",
+      "size": 10,
+      "sha256": "da1ba063514c0cc74ef4d2231334ddf6a95b4395b21dc6789d3a2dc71ce18392",
+      "purpose": "the exact NUL-terminated SilverKey type lookup literal; its shared cache at 007504F8 is unbacked BSS, not file data"
+    },
+    {
+      "name": "quest_report_gold_key_type_name_4D9A3F",
+      "address": "0x005B79AC",
+      "size": 8,
+      "sha256": "860b08a4deca7ee028641d7dbe2d4ea63e175ee72667c91edfa1e329d2f2830f",
+      "purpose": "the exact NUL-terminated GoldKey type lookup literal; its shared cache at 007504FC is unbacked BSS, not file data"
     },
     {
       "name": "poison_spell_protection_balance_key",

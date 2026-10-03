@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Quest 은·금 열쇠 보고 `004D9A3F`
+
+생명 loop 다음 원본 두 key loop 266바이트, `004D9DF0`/`004D9E30` sender 각 59바이트·뒤 5-NOP 두 범위와 `SilverKey`/`GoldKey` NUL literal 10/8바이트의 해시를 추가했다. shared DWORD cache `007504F8`/`007504FC`는 unbacked BSS이므로 data file 범위가 아니다. Quest admission은 생명 loop 앞에서 한 번이며 은→금, 각 0..31 슬롯 순서다. zero cache lookup/publish는 수신자 존재 검사보다 먼저 매 슬롯 수행하고, 존재한 수신자에 대해서만 inventory를 다시 순회한다. player unit은 요구하지 않는다. 후보마다 live cache DWORD를 item WORD보다 먼저 읽고 첫 match에서 next를 읽지 않는다. entry-cached update의 BYTE marker와 다르면 reliable `F0/22|23 presence netCodeWORD`를 전송하고 성공 여부와 무관하게 콜백 전 computed presence를 같은 update에 기록한다. 생명 loop의 post-call live life BYTE 재조회와 구별한다.
+
+초기 fixture 값/독립 blob 준비 오류는 red 증거에서 제외했고 C-owned 값을 명시적으로 초기화한 뒤 실제 native self-report 연결 누락을 재현했다. 복원 후 목표 root/server 회귀 각 3회는 고주소·presence/marker 전체 조합·unitless recipient·signed packet 반환·fresh callback read·entry update/Quest admission·fault prefix 및 non-Quest/outer admission 불변을 검사한다. 기존 raw C 본체를 제거했다고 하지 않으며 queued Quest GUI·client 키 렌더링·물리 화면·원본 Windows runtime 전체 증명으로 확대하지 않는다. 원본/개인 파일·기존 PNG 기대값은 변경하거나 공개하지 않는다.
+
+관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회 및 oracle 검사가 통과했다. code 2,933/data 638개·NXZ 50쌍과 stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 확인했다. clean 제품 실행과 실제 Quest 키 receiver 관찰은 이 함수 회귀와 별도로 검증해야 한다.
+
 ## 플레이어 방패 해제 자세 `0053E430`
 
 기존 `0053E4ED` disengage call 봉인 범위를 포함하는 본체 239바이트와 뒤 1-NOP로 확장했다. 원본은 armor 해제·장비 보고·armor 재계산·disengage 뒤 아이템의 BYTE +12 subclass를 다시 읽는다. 방패 subclass bit 2이고 cached player update의 자세가 15·16·17이면 idle 13으로 전환한다. `field_12`는 DWORD index 12/+48로 별개의 필드이며 LP64에서도 두 필드는 +16/+52로 다르다. production은 이 잘못된 필드 선택 한 줄만 바꾼다.

@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Quest 은·금 열쇠의 누락된 self-report
+
+native self-report의 마지막 Quest 누락 slice인 `004D9A3F..004D9B48`을 원본과 대조해 복원했다. 기존 production 본체 변경은 `playerReportSelfNative4D9900`의 새 helper 연결 하나다. 생명 보고 앞에서 원래 Quest admission을 보존하고, 생명 전송 콜백이 모드를 바꿔도 이미 진입한 은·금 열쇠 순회를 수행한다. entry-cached update의 두 32-byte recipient marker 배열을 사용하며, player-info만 있고 unit이 없는 슬롯도 원래대로 포함한다. 각 슬롯의 zero type-cache 재조회/게시와 각 inventory 후보의 full DWORD cache→unsigned type WORD 비교 순서, 첫 match 종료, 실패 전송 뒤 precomputed presence 저장을 유지한다. `F0/22`·`F0/23` reliable 5-byte 패킷은 raw source NetCode 하위 WORD와 signed recipient/result를 보존한다. 기존 client 수신 본체와 raw legacy C self-report는 변경하거나 폐기하지 않는다.
+
+최초 테스트 준비에는 `alloc.New`를 값 복사로 오해해 키 TypeInd/NetCode를 0으로 남기는 오류와 독립 server의 blob 초기화 누락이 있었다. 이를 production 실패 증거로 세지 않고 명시적 C-owned 초기화 후 기존 연결 누락의 두 red를 다시 재현했다. 복원 후 root/server 목표 검사는 각 3회 통과했다. 고주소 inventory/Player/update, 두 키 4 presence 조합×256 marker×32 슬롯, zero lookup의 무수신자 게시, callback 후 live inventory/recipient 재조회와 entry update·computed presence 보존, 10 fault prefix 및 sender의 256 byte·7 signed recipient·5 signed return을 검사한다. non-Quest/nil/non-player는 key cache/marker에 접근하지 않는다. 원본 slice·sender·padding 5개 및 literal 2개는 해시로만 추가했고 BSS는 파일 범위로 봉인하지 않는다.
+
+관련 일반/실제 cgocheck2/race/checkptr/HD 각 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회가 통과했다. oracle의 code 2,933/data 638개·NXZ 50쌍·stock 1,556파일/570,653,750바이트와 tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 확인했다. clean 제품 및 실제 Quest inventory/client 키 표시의 headless 검증은 별도 단계이며 이 함수/API 검사를 그 증거로 확대하지 않는다. 원본 자산·개인 Save/config·기존 PNG 기대값은 변경하거나 공개하지 않는다.
+
 ## 실제 대검의 양방향 마법 투사체 방어
 
 `host-warrior-greatsword-missile-defense.yaml`과 새 observer는 실제 Warrior 메뉴·stock GreatSword 지급·queued inventory 클릭으로 장착한다. 정상 장착 함수의 shield 자동 해제를 그대로 거치며 baseline에 ordinary shield가 남으면 실패한다. NPC의 stock 대검은 정상 pickup/equip API로 준비한다. 위치·대기 AI·최대 HP·방향/일반 mouse aim·정상 script/AI 시전만 fixture다. 실제 피해·상태/action·buff·ownership/velocity·내구도·패킷/HUD/효과 픽셀은 공급하지 않는다. 이미 추가한 Fireball fixture의 실제 projectile, server/client HP·audio·제거 검사를 재사용한다.

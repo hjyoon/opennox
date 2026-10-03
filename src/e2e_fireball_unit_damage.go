@@ -244,9 +244,13 @@ func (f *e2eFireballUnitFixture) complete() bool {
 	}
 	if f.fromNPC {
 		meter, ready := e2eClientHUDMeter(0)
-		if !ready || meter.Current != uint32(f.health)-uint32(f.damage) || meter.Maximum != uint32(f.target.HealthData.Max) {
+		// Durable fixture HP does not publish a new player maximum: script
+		// SetMaxHealth leaves the original GUI maximum intact. Still require
+		// the real absolute current HP received after this projectile hit.
+		if !e2eFireballHUDHit(meter, ready, f.health, f.damage, f.hostMax) {
 			return false
 		}
+		e2eLog.Printf("FIREBALL HUD: current=%d maximum=%d original-maximum=%d", meter.Current, meter.Maximum, f.hostMax)
 	} else if delta, ok := legacy.HealthChangeForDrawable(dr.NetCode32); !ok || int32(delta) != -f.damage {
 		return false
 	}

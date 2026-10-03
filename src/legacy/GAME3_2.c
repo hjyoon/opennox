@@ -4227,25 +4227,21 @@ int sub_4D90E0(int a1, char a2) {
 
 //----- (004D9110) --------------------------------------------------------
 int nox_xxx_earthquakeSend_4D9110(float* a1, int a2) {
-	int result; // eax
-	int i;      // edi
-	int v4;     // esi
-	double v5;  // st7
-	double v6;  // st6
-	double v7;  // st5
-
-	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
-	for (i = result; result; i = result) {
-		v4 = *(uint32_t*)(*(uint32_t*)(i + 748) + 276);
-		v5 = *a1 - *(float*)(v4 + 3632);
-		v6 = a1[1] - *(float*)(v4 + 3636);
-		v7 = v6 * v6 + v5 * v5;
-		if (v7 < 90000.0) {
-			sub_4D90E0(*(unsigned char*)(v4 + 2064), (long long)((1.0 - v7 * 0.000011111111) * (double)a2));
+	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
+		 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
+		nox_player_update_data_t* update = unit->data_update;
+		nox_playerInfo* player = update->player;
+		double dx = (double)a1[0] - (double)player->pos_x_3632;
+		double dy = (double)a1[1] - (double)player->pos_y_3636;
+		double distance_squared = dy * dy + dx * dx;
+		if (distance_squared < 90000.0) {
+			// The original x87 FMULS at 004D915A loads a binary32
+			// coefficient. Keep its precision before signed truncation.
+			sub_4D90E0(player->playerInd,
+				(long long)((1.0 - distance_squared * (double)0.000011111111f) * (double)a2));
 		}
-		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
 	}
-	return result;
+	return 0;
 }
 
 //----- (004D91A0) --------------------------------------------------------

@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 해머 지진 패킷의 native 플레이어 순회 `004D9110`
+
+실제 NPC WarHammer 타격의 기존 C 진입에서 화면 흔들기 callee가 PlayerUnit 포인터를 `int`로 자른 뒤 PE32 +748/+276/+3632/+2064를 읽어 SIGSEGV를 내는 red를 재현했다. 원본 본체 136바이트·뒤 8-NOP와 binary32 거리 계수/반경을 먼저 봉인했다. 이번 production 변경은 `nox_xxx_earthquakeSend_4D9110` 한 본체다. native unit→update→player 필드와 cached camera 위치·player index를 사용하며, 매 패킷 뒤 다음 플레이어를 읽는 순서·거리 제곱의 엄격한 90,000 경계·signed 절삭·반환 0을 보존한다. 원본 FMULS의 binary32 계수도 유지한다. ABI와 다른 공격/패킷 함수는 바꾸지 않는다.
+
+Go pinned NPC/무기/보정값 및 실제 C-owned 고주소 플레이어 5명의 회귀는 camera 중심·150 거리·300 직전/정확 경계/바깥, 강도 0/2/4/20, opcode 151 전체 byte·반복 middle-frame 무중복·벽 피해 source와 packed 인접 state 보존을 검사한다. caller의 별도 반올림 결함은 10의 배수 strength로 격리하며 해결됐다고 세지 않는다. 관련 legacy 일반·실제 cgocheck2·race·checkptr·HD 각 3회, 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 전후 oracle이 통과했다. code 2,915/data 622개·NXZ 50쌍 및 stock tree는 불변이다. 현재 플레이어 해머 분기 누락과 caller 반올림은 다음 production 단위다. 이번 검사는 실제 C packet 경로의 API 회귀이며 queued GUI/물리 화면·Windows runtime 전체 검증이 아니다. 원본 자산·private 로그/PNG·개인 Save/config는 공개하거나 변경하지 않는다.
+
 ## Quest FlyingGolem 전체 화면 golden 차이의 원인 분리
 
 `be58efbec`의 실제 작살/NPC 피해 회귀 뒤 남은 `host-quest-golem-pierce` 화면 비교를 private overlay로 분리했다. 공개 YAML·observer·기대 PNG는 `f24e9928f` 이후 그대로이며 기대 SHA-256은 `c8bf3ac293f152995a72931b4100bbd66e4f0a3874a6a588b717dba9381db812`, 현재 전체 화면은 `611b6c600cd03e06ba6212ee921760bb6e9e47852f21e9e6975240bcd8f76100`이다. 이 장면은 Player 대상이며 NPC 피해 helper의 전후 비교도 같은 화면 실패를 냈다. 모든 실행에서 frame 3187의 자연 stock arrow 3회·마지막 HP 감소 5·client aggregate 감소 31·HUD 163/450·빨간 채움 675/빈 부분 153픽셀 검증은 유지된다. 전체 화면 exit 2를 기능 테스트 통과로 바꿔 세지 않는다.

@@ -3745,6 +3745,20 @@
       "purpose": "the exact twelve NOP bytes between lesson reporting and timer status reporting"
     },
     {
+      "name": "nox_xxx_earthquakeSend_4D9110",
+      "address": "0x004D9110",
+      "size": 136,
+      "sha256": "0dcb2ff406203ad1354bfffb547fce03a71fed777149fe9a233cfe0a0148386a",
+      "purpose": "iterate live player units after each send, read the player camera position, compare squared distance strictly below 90000, truncate signed attenuation through binary32 coefficient 00583BC0, and send opcode 151 through the live player-index byte"
+    },
+    {
+      "name": "nox_xxx_earthquakeSend_4D9110_padding",
+      "address": "0x004D9198",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP alignment bytes after earthquake reporting and before creature acquisition reporting"
+    },
+    {
       "name": "nox_xxx_netReportStatsSpeed_4D9360",
       "address": "0x004D9360",
       "size": 64,
@@ -20418,7 +20432,7 @@
       "address": "0x00583068",
       "size": 4,
       "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
-      "purpose": "the exact binary32 1.0 added to the scaled experience gap by XP award service 004EF270"
+      "purpose": "the exact binary32 1.0 added to the scaled experience gap by XP award service 004EF270 and subtracted over the attenuated squared camera distance by earthquake reporting 004D9110"
     },
     {
       "name": "collision_reflect_zero",
@@ -20531,6 +20545,13 @@
       "size": 4,
       "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
       "purpose": "binary32 0.1 added to the x87 projectile-to-target distance in 004E0A70, the Warrior Warcry proximity distance in 004FC4C0, and the Door-normal length in 0057B770"
+    },
+    {
+      "name": "earthquake_camera_attenuation_and_radius",
+      "address": "0x00583BC0",
+      "size": 8,
+      "sha256": "b1b83735ac91443b3dc0ffee13d16b33a47eaa7276446627757b444984c76770",
+      "purpose": "exact binary32 attenuation coefficient 0.000011111111 followed by squared camera-distance limit 90000 consumed by earthquake reporting 004D9110"
     },
     {
       "name": "poison_protection_final_limit",

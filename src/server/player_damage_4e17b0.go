@@ -520,6 +520,131 @@ func playerDamageMonster4E17B0(
 		weaponFlags: update.WeaponEquipFlags, armorFlags: update.ArmorEquipFlags,
 		marker: &update.Field547, markerType: &update.Field546,
 	}
+	// Stock SentryGlobe is SIMPLE|IMMOBILE, not MISSILE or an electric
+	// weapon. Its terminal owner is either a unit or the unowned globe
+	// itself. Restore this bounded NPC prefix before the generic defenses:
+	// 004E18D1 clears the cached marker before Reflect, and 004E1A49
+	// snapshots PrevPos before exclusions/one ordinary facing check.
+	zapRay := typ == object.DamageZapRay && weapon != nil &&
+		weapon.Class().Has(object.ClassSimple) && weapon.Class().Has(object.ClassImmobile) &&
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
+		(source == weapon || (source != nil && source.UpdateData != nil &&
+			source.Class().HasAny(object.MaskUnits) && !source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)))
+	if zapRay {
+		update.Field547 = 0
+		if target.HasEnchant(playerDamageReflectEnchant4E17B0) {
+			if runtime.BlockDirection == nil {
+				return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY Reflect direction service", target, source, weapon, damage, typ)
+			}
+			if runtime.BlockDirection(target, weapon.PosVec) {
+				// The nonmissile branch was selected before the direction
+				// callback; a callback changing class must not reselect it.
+				if runtime.PointFX == nil {
+					return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY Reflect FX service", target, source, weapon, damage, typ)
+				}
+				runtime.PointFX(132, target.PosVec)
+				if runtime.Audio == nil {
+					return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY Reflect audio service", target, source, weapon, damage, typ)
+				}
+				runtime.Audio(122, target)
+				return true, false
+			}
+		}
+		attackPos := weapon.PrevPos
+		if runtime.BlockSourceExcluded == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY exclusion service", target, source, weapon, damage, typ)
+		}
+		excluded := runtime.BlockSourceExcluded(weapon)
+		if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC ZAP_RAY marker record", target, source, weapon, damage, typ)
+		}
+		if source != weapon {
+			// 004E1B0D reads the live type after exclusions, but keeps the
+			// entry update base, even when a callback replaces UpdateData.
+			update.Field547, update.Field546 = 1, uint32(weapon.TypeInd)
+		}
+		if !excluded {
+			if runtime.BlockDirection == nil {
+				return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY block direction service", target, source, weapon, damage, typ)
+			}
+			if runtime.BlockDirection(target, attackPos) {
+				if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+					return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC ZAP_RAY block record", target, source, weapon, damage, typ)
+				}
+				if target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK && greatSword.armorFlags&0x3000000 != 0 {
+					if runtime.Audio == nil {
+						return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY shield audio service", target, source, weapon, damage, typ)
+					}
+					runtime.Audio(878, target)
+					// 004E1BA7 and 004E1BBE reload class/subclass after the
+					// audio/reflection callbacks rather than caching ownership.
+					if weapon.Class().Has(object.ClassMissile) && uint32(weapon.SubClass())&0x70 == 0 {
+						if runtime.ProjectileReflect == nil {
+							return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY shield reflection service", target, source, weapon, damage, typ)
+						}
+						runtime.ProjectileReflect(weapon, target)
+						if weapon.Class().Has(object.ClassMissile) && uint32(weapon.SubClass())&2 == 0 {
+							if runtime.ClearOwner == nil || runtime.SetOwner == nil {
+								return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY shield owner service", target, source, weapon, damage, typ)
+							}
+							runtime.ClearOwner(weapon)
+							runtime.SetOwner(target, weapon)
+						}
+					}
+					if runtime.BlockDamagePercent == nil {
+						return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY shield balance service", target, source, weapon, damage, typ)
+					}
+					amount := float32(runtime.BlockDamagePercent() * float64(damage))
+					// 004E1BFD selects the live inventory shield only after
+					// audio/reflection/balance. Nil/no-health wear is a no-op.
+					shield := playerDamageShieldItem4E17B0(target)
+					if shield != nil && (runtime.CanDamageBlockItem == nil || !runtime.CanDamageBlockItem(shield)) {
+						return playerDamageUnsupported4E17B0(runtime, "NPC ZAP_RAY shield durability callback", target, source, weapon, damage, typ)
+					}
+					if runtime.DamageBlockItem == nil {
+						return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY shield wear service", target, source, weapon, damage, typ)
+					}
+					if !runtime.DamageBlockItem(shield, target, source, weapon, amount, typ) && runtime.Unsupported != nil {
+						runtime.Unsupported("NPC ZAP_RAY shield durability failed", target, source, weapon, damage, typ)
+					}
+					if shield != nil && shield.Flags().Has(object.FlagDestroyed) {
+						if runtime.Melee.MonsterPopBlockAction == nil || !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+							return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC ZAP_RAY broken-shield action", target, source, weapon, damage, typ)
+						}
+						runtime.Melee.MonsterPopBlockAction(target)
+					}
+					return true, false
+				}
+			}
+		}
+		if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) ||
+			!weapon.Class().Has(object.ClassSimple) || !weapon.Class().Has(object.ClassImmobile) ||
+			weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile) {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC ZAP_RAY tail record", target, source, weapon, damage, typ)
+		}
+		// Nonmissile type 16 skips GreatSword at 004E1C23 and enters
+		// 004E1E83 raw: no armor, electric scale, carry or hurt state.
+		if update.Field547 == 0 {
+			update.Field547, update.Field546 = 2, uint32(typ)
+		}
+		effective := damage
+		if runtime.GodMode != nil && runtime.GodMode() && target.Class().Has(object.ClassPlayer) {
+			return true, true
+		}
+		if runtime.QuestMode != nil && runtime.QuestMode() {
+			if runtime.QuestDamageScale == nil {
+				return playerDamageUnsupported4E17B0(runtime, "missing live NPC ZAP_RAY quest damage service", target, source, weapon, damage, typ)
+			}
+			effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+			if damage > 0 && effective < 1 {
+				effective = 1
+			}
+		}
+		if runtime.DefaultDamage == nil || !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC ZAP_RAY default service/record", target, source, weapon, damage, typ)
+		}
+		return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
+	}
 	// 004E18F3..004E19C1 reflects before the damage-type switch, including
 	// missiles whose unreflected damage path has not yet been ported.
 	if applicable, handled, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, runtime); applicable {

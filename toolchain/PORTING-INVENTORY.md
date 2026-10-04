@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## NPC 전용 PlayerDamage의 SIMPLE·IMMOBILE ZAP_RAY prefix·tail 복원
+
+기존 production 본체는 AST 비교로 `playerDamageMonster4E17B0` 하나만 변경했다. 봉인된 `004E18D1..004E2098`의 기존 범위를 읽기 전용으로 대조해 NPC 전용 damage entry에 SIMPLE·IMMOBILE non-unit/non-weapon/non-wand/non-missile ray와 self-world 또는 native update가 있는 Player/Monster source의 type 16 경로를 연결했다. stock SentryGlobe class와 소유자 없는 ray의 terminal owner가 자신인 형태를 유지하며 Sentry type-ID 전용 admission은 아니다. Player entry의 admission, 기존 CRUSH·electric·missile 경로와 helpers는 변경하지 않는다.
+
+entry cached NPC update의 marker clear → Reflect의 current Pos·nonmissile FX 132/audio 122 → ray PrevPos snapshot → 여섯 exclusion → distinct source의 cached marker/live ray type → 한 번의 ordinary facing 순서를 복원했다. callback이 UpdateData를 교체해도 marker·equipment는 entry cache, action·inventory는 사용 시점의 live record다. 정면 BLOCK_ATTACK와 cached shield mask에서 audio 878 뒤 live missile/subclass를 다시 읽어 reflection·owner 변경을 판단하고, balance 뒤 live inventory shield를 선택해 binary32 wear·실제 destroyed shield action pop을 처리한다. Reflect/intact shield early return은 unused Quest/HP/armor 서비스를 요구하지 않는다. 사용 지점의 필수 서비스 부재나 unsupported live class는 이미 실행한 prefix를 되돌리거나 PE32 경로를 재시도하지 않고 거부한다.
+
+비차단 nonmissile case 16은 GreatSword의 melee-only branch와 armor absorption·전기/화염 resistance·carry·armor wear·hurt state를 건너뛴다. cached marker fallback → GodMode와 live Player class 검사 → live Quest의 binary32 scale·ties-to-even·양수 최소 1 → 기존 DefaultDamage의 순서를 유지한다. GodMode가 켜져도 NPC를 무조건 무적 처리하지 않는다. 기존 DefaultDamage의 attribution·injured/frame·NPC sound·흡혈·Shield·실제 HP tail을 사용한다.
+
+새 server 계약 229개는 signed Quest/God 120개·cached/live prefix 12개·Reflect early return 9개·shield cached flags/live item 54개·live missile reflection/owner 4개·missing live service 17개·admission 13개다. 기록 callback의 순서·인자와 supplied DefaultDamage 결과를 검사하며 실제 HP 증거와 구별한다. 별도 C-owned native 9개는 world/Player/NPC source × raw 1/19/500을 실제 등록 C dispatcher→NPC PlayerDamage→DefaultDamage→UnitDamageClear/UnitSetHP로 실행했다. 모두 4 GiB 위 object/update/player/health/ray를 쓰며 실제 HP `2000→1999/1981/1500`, cached marker 2/16 또는 1/live type·injured/frame·carry `0.125`·armor `0.75`·state 88과 source/ray/인접 HP 필드 보존을 확인한다. synthetic native records이지 stock-map ray 설치·GUI 빙의·자율 NPC 입력의 증명이 아니다.
+
+수정 전 동일한 새 238개 leaf는 pass 14/fail 224, native 9개는 모두 실제 dispatcher의 피해 거부로 실패했다. 최종 일반·실제 cgocheck2·race·강제 checkptr·highres의 root/server/legacy 관련 피해·ray·Fist·비밀벽 시험을 각각 3회 통과했다. JSON의 새 server 3,435/native 135, 합계 3,570 pass에 fail/skip은 없다. 전체 일반/strict Go 시험, fresh-process server-tag root/server/legacy 각 1회와 oracle도 통과했다. 전후 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이며 새 원본 byte/range/manifest·C 코드·asset·golden·공개 YAML은 없다.
+
+앞선 `9e822c7cb34a9daad9c92948f33c887d1222b4da`의 clean source/remote 일치 ARM64 일반·highres·server 3제품 full revision/Go 1.26.5/`vcs.modified=false`/help와 일반·HD 비밀벽/Fist/Spider shield/Urchin 8 headless 회귀는 후속 확인을 완료했다. stock 양 대각선 비밀벽의 actual contact→opening→open·server/client 왕복·효과음 한 번 결과를 유지했다. 이 새 커밋의 clean 3제품/같은 8실행은 별도 후속 제품 검증이다. unowned/NPC-owned ray의 Player entry·실제 GUI Sentry/빙의·모든 마법·원격 client·Windows runtime 전체 및 ARM64 포팅 목표는 계속 검증한다. 기존 FlagBall Screen 색상 mismatch/중단된 후속 입력은 남기며 진단 overlay를 제품 합격으로 세지 않는다. 개인 Save/config·원본·private 로그/PNG·공개 baseline을 격리·보존한다.
+
 ## SIMPLE·IMMOBILE ZAP_RAY의 몬스터 DefaultDamage tail 복원
 
 기존 production 본체는 AST 비교로 `DefaultDamageWorld4E0B30` 하나만 변경했다. 봉인한 `004E0B30/004E1400`의 기존 범위와 stock `thing.bin`을 읽기 전용으로 비교했다. 실제 SentryGlobe는 `LIGHT|SIMPLE|IMMOBILE|VISIBLE_ENABLE`, flag `AIRBORNE`이며 ray update가 type 16/500 피해를 전달한다. 소유자 없는 globe의 terminal owner는 nil이 아니라 자신이다. SIMPLE·IMMOBILE이면서 unit/weapon/wand/missile이 아닌 ray와 self-world 또는 native update가 있는 Player/Monster source만 몬스터의 기본 피해 tail에 추가한다. Sentry type-ID 전용 admission이나 PlayerDamage/NPC 전용 entry의 확대는 아니다.

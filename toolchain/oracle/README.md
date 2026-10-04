@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## NPC 전용 PlayerDamage ZAP_RAY의 검증 범위
+
+기존 봉인 `004E18D1..004E2098`을 읽기 전용으로 대조해 `playerDamageMonster4E17B0` 한 본체만 변경했다. SIMPLE·IMMOBILE non-unit/non-weapon/non-wand/non-missile ray의 world-self/Player/Monster source를 NPC 전용 entry에 연결하며 Player entry admission이나 다른 damage branch/helpers를 변경하지 않는다. cached marker clear·Reflect의 current Pos/FX/audio·PrevPos snapshot·exclusion/live type marker·한 번의 facing과 cached shield flags/live action/inventory 순서를 복원했다. audio/reflection 뒤 live class/subclass·balance 뒤 live shield를 읽고 사용 지점에서 필수 서비스와 layout을 검사한다. 비차단 case 16은 armor/electric/fire/carry/wear/hurt를 건너뛰고 cached marker fallback·God/live Player class·Quest binary32 scale/ties-to-even/minimum·기존 DefaultDamage tail을 사용한다.
+
+새 server 계약 229개와 native 9개, 합계 238개 leaf는 수정 전 pass 14/fail 224, 최종 다섯 모드 각 3회/3,570 pass·fail/skip 0이다. 전체 일반/strict·fresh-process server-tag root/server/legacy·oracle도 통과했다. 실제 등록 C dispatcher와 4 GiB 위 C-owned records에서 world/Player/NPC source의 raw 1/19/500에 실제 HP `2000→1999/1981/1500`·cached marker·injured/frame·carry `0.125`·armor `0.75`·state 88 및 source/ray/인접 HP 필드 불변을 확인했다. 기록 callback 계약과 실제 HP를 구별하며 stock-map Sentry 설치·GUI 빙의·자율 NPC 입력 증명으로 확대하지 않는다.
+
+새 원본 byte/range/manifest·C 코드·asset·golden·공개 YAML은 없고 code 2,935/data 638개·strict NXZ 50쌍·stock tree는 불변이다. 앞선 `9e822c7cb`의 clean ARM64 3제품과 일반·HD 비밀벽/Fist/Spider/Urchin 8실행의 후속 확인은 완료했다. 이 커밋의 clean 제품/8실행은 별도 후속 검증이다. unowned/NPC-owned ray의 Player entry와 실제 GUI/다른 마법 경계, FlagBall Screen mismatch/중단된 입력은 남긴다. private 자료·원본·개인 Save/config를 변경하거나 공개하지 않는다. 상세 범위는 [포팅 인벤토리](../PORTING-INVENTORY.md)에 기록했다.
+
 ## SIMPLE·IMMOBILE ZAP_RAY DefaultDamage의 검증 범위
 
 기존 봉인 `004E0B30/004E1400`과 stock SentryGlobe class를 읽기 전용으로 대조해 몬스터 기본 피해의 type 16 ray tail을 복원했다. production 본체 변경은 `DefaultDamageWorld4E0B30` 하나다. stock class와 같은 SIMPLE·IMMOBILE non-unit/non-weapon ray 및 self-world/Player/Monster source의 admission이며 type-ID 전용 또는 PlayerDamage/NPC 전용 entry 전체 복원이 아니다. campaign owner gate·NoUpdate 앞 enemy 조회를 유지하고 non-melee ray에 Shock/별도 melee gate나 electric/fire immunity·resistance·carry/wear를 잘못 적용하지 않는다. 기존 attribution·live metadata·late Defend·흡혈·field guide·Shield·signed HP tail을 사용한다.

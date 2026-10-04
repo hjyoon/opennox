@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Signed ELECTRIC의 clean ARM64 제품·headless 완료
+
+native 진입 복원 `281168a7e320e5bbd65f550c9d94d6937f4b7521`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 signed/zero 진입 단위의 clean 제품/headless 후속 검증 대기를 완료한다. server 256/root C-owned 48의 signed API 검사를 stock-map 음수 피해 검증으로 확대하지 않는다.
+
+기존 공개 YAML의 일반/HD headless/mock 8실행은 모두 정상 exit 0이다. 각 제품에서 stock G_Crypts 두 대각선 비밀벽의 queued 실제 접촉→자연 열림→server/client 왕복 통과·효과음 한 번을 10개 관찰로 확인했다. 해머 두 cycle은 두 대상 HP `2000→1872→1747`·animation 39·quake·효과음·무기 유지·자연 종료를 확인했다. Shock은 각 제품 Player/NPC 1..5레벨·자연 NPC 시전의 자연 만료 11개와 두 Glyph의 실제 명중·client 피해·종료를 포함한 13결과가 통과했다. Glyph→NPC HP 150→105 및 Glyph→Player 75→45는 기존 native 피해 결과다.
+
+각 제품 duration-ray의 Chain Lightning update/피해·cancel/cleanup, Energy Bolt stem 픽셀·update/피해·cancel/cleanup, Drain Mana transfer·cancel/cleanup 및 다른 duration drawing/removal도 통과했다. duration fixture가 native duration을 시작하는 서비스 경계이며 자연 hotbar 입력/자율 NPC 전기 시전 전체·GUI 빙의 입력·음수 balance 마법·원격 client 검증은 아니다. 비밀벽 state/flags·피해 결과를 주입하거나 기존 golden을 변경하지 않는다.
+
+실행 전후 source/remote revision·원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 이 8실행에는 크래시·미복원 경로·E2E 실패가 없었다. 외부 listing 통신 성공·물리 화면/스피커·원본 Windows runtime 전체는 별도다. 완료 기록은 문서만 변경하며 private 로그/PNG·원본 자산은 공개하지 않고 개인 Save/config는 유지한다.
+
 ## 플레이어 ELECTRIC의 signed/zero 진입 복원
 
 기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 복원한 두 unit source·unarmed/self-weapon·type 9/17에 걸려 있던 양수 제한 두 곳을 제거한다. 원본 `004E1DF1`은 signed raw damage를 electric armor scale→live carry→raw armor wear에 전달하며, 양수 조건은 뒤 `004E2011`의 최소 피해 보정에만 있다. 기존 ObserveClear/prefix·Reflect·일반 장비 제외·Quest/God/DefaultDamage 함수나 피해 숫자 계산은 변경하지 않는다. DefaultDamage 전기 보호의 별도 zero→1 보정과 UnitDamageClear의 signed subtraction/low-WORD setter도 그대로 사용한다.

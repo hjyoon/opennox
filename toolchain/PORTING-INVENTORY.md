@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 빙의 상태의 player missile PIERCE 진입점 복원
+
+함수별 준비 변경을 `PlayerDamageNative4E17B0` 한 기존 production 본체에 연결했다. 기존 PIERCE admission과 같은 unit source·distinct stock/pure missile 범위에서 update/equipment/absorption을 캐시하고 marker를 지운 뒤 ObserveClear를 한 번 실행한다. 해제 후 Reflect Shield 조회·current-position 방향 판정이 먼저이며, 반사되지 않은 경우 previous-position snapshot과 cached marker/type을 유지한 채 방패·대검이 하나의 exclusion/facing 결과를 소비한다. HP fractional carry·durability denominator는 live update를 사용한다. missing service는 진입 전에 거부하고 해제 후 손상된 live record도 PE32 fallback 없이 거부한다. 아직 미복원인 빙의 melee·FLAME·EXPLOSION 등을 이 admission에 추가하지 않는다.
+
+진입점 연결 전 두 unit source×네 방어 조건에서 빙의 거부/해제 전 방향 판정 red를 재현했다. 연결 후 두 source×여섯 방어 조건의 반사·일반 방패·대검·제외된 공격·후면 반사를 검사하며, 외부 exclusion이 TypeInd/PrevPos를 바꿔도 기존 marker와 방향 snapshot을 유지한다. 0·음수/positive minimum·live carry, 무적/관전/Coop 조기 종료와 누락 서비스의 무변경 거부 회귀도 포함한다. 실제 C dispatcher의 player/monster source×stock/pure missile 네 경우는 4GiB 초과 pinned native 레코드에서 등록된 PlayerDamage→실제 DefaultDamage/UnitSetHP를 거쳐 HP 60→56, cached carry 0.125 유지·live carry 0.5→0.25 및 attribution/frame을 확인했다. 이 경계 검사에서는 외부 ObserveClear 서비스를 교체해 두 update의 alias/order를 검사하며, 실제 root ObserveClear나 GUI 빙의 입력을 실행한 증거로 확대하지 않는다.
+
+관련 root/server/legacy PlayerDamage·DefaultDamage의 일반·실제 cgocheck2·race·강제 checkptr·실제 highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 전후 oracle이 통과했다. 원본 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 아래 네 준비 단위의 entry 연결 대기는 이 단위에서 해소했다. clean ARM64 3제품 및 일반/HD 비밀벽·기존 양방향 마법 회귀는 후속 검증이며 원본/개인 Save/config·private 로그/PNG·기존 golden은 변경하거나 공개하지 않는다. 경쟁 모드 death와 다른 미복원 피해 분기, 원본 Windows runtime/물리 화면 전체의 검증은 여전히 별도다.
+
 ## PIERCE 빙의 해제 prefix — armor/carry/Quest tail
 
 기존 production 본체는 player missile PIERCE tail 하나만 변경했다. 이미 소비한 prefix에서 ObserveTarget 재조회와 missile marker/type 재저장을 생략한다. entry absorption을 유지하면서 `004E20F0`의 live update carry와 `004E2180`의 live armor denominator를 읽고, armor callback이 marker를 지웠을 때만 cached update에 raw type fallback을 쓴다. Quest flag는 원본 `004E2046`처럼 wear·positive minimum·GodMode 뒤에 읽는다. 해제 후의 두 update/carry·armor 값 trap과 marker 유지/삭제 회귀는 수정 전 빙의 거부 red, 수정 후 live HP carry 0.5→0.25·armor carry 0.5→0·armor HP 30→29·후속 Quest 활성화/배율·실제 DefaultDamage HP 20→18 순서를 확인했다.

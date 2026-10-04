@@ -9931,6 +9931,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckAIFirstAttack(l.Text, l.Name)
+		case "check-ai-inversion":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckAIInversion(l.Text, l.Name)
 		case "check-fireball-unit-damage":
 			if dt != 0 {
 				sc.Wait(dt, "")

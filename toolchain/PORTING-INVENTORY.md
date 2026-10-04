@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## ELECTRIC player tail — cached marker와 live carry 복원
+
+기존 production 본체는 `playerDamageElectricPlayer4E17B0` 하나만 변경했다. 이미 소비한 entry prefix의 cached marker/update를 다시 초기화하거나 새 live observer를 재해제하지 않는다. `004E1DF2`의 electric armor 조회 뒤 `004E20F0`처럼 live update의 소수점 carry를 읽고 쓴다. raw damage/original weapon을 사용하는 live armor wear와 cached marker fallback은 구별하며, fallback의 live Player class·GodMode flag→live class·wear 뒤 Quest 조회 순서를 원본 `004E1E23..004E2056`에 맞췄다. 잘못된 live class/nil update는 별도 미복원 레코드로 보고하여 PE32 fallback 없이 종료한다.
+
+새 server 66개 leaf 회귀는 두 unit source·unarmed/self-weapon·type 9/17의 live update 교체, 소비된 prefix, marker 유지/삭제, wear가 바꾸는 Quest/God/live class와 손상된 live record를 포함한다. 수정 전 marker reset/ObserveClear 재호출·stale carry/Quest 순서 red와 nil update 접근 충돌을 재현했고 수정 후 모두 통과했다. 관련 server PlayerDamage/DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회와 oracle(code 2,935/data 638·strict NXZ 50쌍·stock tree 불변)이 통과했다. 전기 빙의 prefix의 public entry 연결·실제 C 경계와 clean 제품/headless는 후속 단위다. 이 helper 준비 검사를 GUI 빙의 입력 증거로 확대하지 않으며 원본/개인 Save/config·기존 golden은 변경하지 않는다.
+
 ## 빙의 근접 피해의 clean ARM64 제품·headless 완료
 
 native 연결 커밋 `232e345a2bc49ad8f74c89f04e3b136509b27d4d`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 세 Mach-O arm64 제품 모두 Go 1.26.5/tuple/full revision/`vcs.modified=false` 및 도움말 실행이 통과했다. 아래 빙의 melee 연결과 반복 지팡이 방어의 clean 제품/headless 후속 검증 대기는 완료했다.

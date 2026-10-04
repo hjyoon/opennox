@@ -646,27 +646,46 @@ func playerDamageElectricPlayer4E17B0(
 	target, source, weapon *Object, damage int32, typ object.DamageType,
 	runtime PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
-	quest := runtime.QuestMode != nil && runtime.QuestMode()
 	if runtime.ElectricArmorScale == nil || runtime.DefaultDamage == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing player electric service", target, source, weapon, damage, typ)
 	}
-	if quest && runtime.QuestDamageScale == nil {
+	if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
-	update := target.UpdateDataPlayer()
-	scaled := float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
-	accumulated := scaled + math.Float32frombits(update.Field21)
-	effective := playerDamageRound4E17B0(accumulated)
 	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
-	update.Field76 = 0
-	if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
-		runtime.ObserveClear(target)
+	var update *PlayerUpdateData
+	if runtime.playerPrefix != nil {
+		// The entry marker base survives ObserveClear and later callbacks.
+		// Do not repeat that prefix using a replacement live observer.
+		update = runtime.playerPrefix.update
+	} else {
+		update = target.UpdateDataPlayer()
+		observe := update.Player.ObserveTarget() != nil
+		if observe && runtime.ObserveClear == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing player electric ObserveClear service", target, source, weapon, damage, typ)
+		}
+		update.Field76 = 0
+		if observe {
+			runtime.ObserveClear(target)
+		}
 	}
-	update.Field21 = math.Float32bits(accumulated - float32(effective))
+	if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+		return playerDamageUnsupported4E17B0(runtime, "unsupported live player electric record", target, source, weapon, damage, typ)
+	}
+	scaled := float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
+	if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+		return playerDamageUnsupported4E17B0(runtime, "unsupported live player electric carry", target, source, weapon, damage, typ)
+	}
+	// 004E20F0 reloads the live carry after ElectricArmorScale, not from
+	// the cached marker base. 004E2180 similarly reloads live armor data.
+	live := target.UpdateDataPlayer()
+	accumulated := scaled + math.Float32frombits(live.Field21)
+	effective := playerDamageRound4E17B0(accumulated)
+	live.Field21 = math.Float32bits(accumulated - float32(effective))
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage, typ, runtime)
-	if update.Field76 == 0 {
+	if target.Class().Has(object.ClassPlayer) && update.Field76 == 0 {
 		update.Field76 = 2
 		// 004E1E49 copies the incoming DWORD type, not float32(type).
 		update.Field75 = uint32(typ)
@@ -674,10 +693,14 @@ func playerDamageElectricPlayer4E17B0(
 	if damage > 0 && effective == 0 {
 		effective = 1
 	}
-	if runtime.GodMode != nil && runtime.GodMode() {
+	// 004E2025 reads GodMode before the live Player-class gate.
+	if runtime.GodMode != nil && runtime.GodMode() && target.Class().Has(object.ClassPlayer) {
 		return true, true
 	}
-	if quest {
+	if runtime.QuestMode != nil && runtime.QuestMode() {
+		if runtime.QuestDamageScale == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
+		}
 		before := effective
 		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
 		if before > 0 && effective < 1 {

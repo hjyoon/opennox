@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Stock 비밀벽 양 대각선의 후속 관찰
+
+공개 scenario에서 실제 닫힌 stock G_Crypts 벽 두 개를 순차 접촉하여 dir=1 `(91,71)`과 dir=0 `(111,57)` 모두 검증했다. 가까운 벽으로 기존 넓은 fixture 접근이 실패한 경우만 짧은 radius+16 후보를 사용하며 원래 닫힌 trace·양쪽 접근·두 16방향 radius+4 clearance 검사는 유지한다. 원래 벽/충돌/flags나 결과를 쓰거나 열린 첫 벽을 초기화하지 않는다. 일반/HD headless/mock 진단 각 10관찰/합계 20개·exit 0에서 실제 contact·delay 1..23·open 3/23·server/client 왕복·효과음 한 번을 읽었다.
+
+lane 선택/거부·결과 오염·bounded/public/AST 회귀와 일반/실제 cgocheck2/race/checkptr/highres 각 3회·전체 일반/strict 및 oracle을 통과했다. 이 dirty 진단과 committed clean 3제품 후속 실행은 구별한다. 새 원본 byte/range·manifest/asset/PNG는 없고 code 2,935/data 638개·strict NXZ 50쌍·stock tree·개인 파일·기존 golden은 불변이다. 전체 wall frame 픽셀·remote client·물리 출력·Windows runtime 전체 검증으로 확대하지 않는다.
+
 ## 비밀벽 최종 clean 검증 완료
 
 observer `7b68b3bb0`의 clean source/remote 일치 상태에서 ARM64 3제품 build/revision/help와 전후 oracle을 확인했다. 일반/HD stock 비밀벽 각 5관찰/합계 10개·Quest key 각 16관찰/합계 32개와 양방향 대검/Fireball/Magic Missile/상태효과 8실행/106결과, 총 12 headless/mock 실행이 정상 exit 0이다. 종료 뒤 revision·source·stock 자산은 불변이며 아래 clean 후속 대기는 완료됐다. 문서만 갱신하고 runtime 코드·원본 byte/range·manifest/asset/PNG를 추가하거나 바꾸지 않는다.

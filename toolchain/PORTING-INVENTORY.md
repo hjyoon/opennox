@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Stock 비밀벽의 두 대각선 방향
+
+공개 secret-wall scenario가 G_Crypts의 두 닫힌 접촉식 벽을 차례로 관찰한다. 첫 벽의 실제 열린 상태를 유지한 채 남은 닫힌 벽을 선택하며 wall 상태를 초기화하지 않는다. 기존 `prepare` 한 본체만 새 읽기 전용 lane helper에 연결했다. 기본 radius+36 접근이 가까운 다른 벽 때문에 불가능할 때 radius+16 접근을 사용하되, 닫힌 crossing trace·양쪽 접근 trace·각 시작점의 16방향 radius+4 clearance와 기존 radius+16 완전 통과 기준은 그대로 유지한다. 최초 두 번째 벽의 준비 실패는 넓은 fixture 접근선의 제한이지 gameplay 실패가 아니며 원래 map/collision/flags를 바꿔 통과시키지 않았다.
+
+일반/HD headless/mock 진단은 각 10관찰, 합계 20개로 정상 exit 0이다. 실제 stock `(91,71)` dir=1과 `(111,57)` dir=0 각각의 native CollisionWall·state 1→4→3·delay 1..23 전체 mask `0xfffffe`·효과음 한 번·server/client 왕복과 안정 상태를 확인했다. 두 방향/세 radius/두 접근선 선택, 32개 radial obstruction과 잘못된 geometry·서비스 거부 회귀를 추가했고 관련 일반/실제 cgocheck2/race/강제 checkptr/highres 각 3회·전체 일반/strict 및 oracle 각 1회가 통과했다. committed clean ARM64 3제품과 두 방향의 재실행은 후속 검증으로 이 진단과 구별한다.
+
+gameplay·원본 byte/range·manifest/asset/PNG는 이번 단위에서 변경하지 않는다. code 2,935/data 638개·strict NXZ 50쌍·stock tree와 개인 Save/config·기존 golden을 유지한다. 실제 접촉/진행·host-client 통과와 sound event의 관찰이며 모든 벽 animation 픽셀·원격 client·물리 출력·원본 Windows runtime 전체의 증명은 아니다.
+
 ## 비밀벽 observer의 최종 clean 제품·마법 회귀
 
 clean `7b68b3bb0`와 `origin/port/go1.26-multiarch`가 일치하는 상태로 ARM64 일반·실제 highres·server 3제품을 빌드하고 Go 1.26.5/tuple/full revision/`vcs.modified=false` 및 도움말을 확인했다. 일반/HD의 stock 비밀벽 접촉·열림·왕복은 각 5관찰/합계 10개, 실제 Quest key 수신은 각 16관찰/합계 32개다. 대검/Fireball/Magic Missile/상태효과는 각 제품에서 21/11/11/10결과, 합계 106개다. 총 12 headless/mock 실행이 정상 exit 0이며 source/remote revision과 자산이 전후 동일하다. 새 production/manifest 변경 없는 문서 완료 기록이며 아래 observer의 clean 후속 대기를 마무리한다.

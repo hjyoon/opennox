@@ -10,8 +10,119 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/server"
+
 	"gopkg.in/yaml.v2"
 )
+
+func TestE2ESecretWallTouchLaneClearanceAndFallback(t *testing.T) {
+	grid := image.Pt(91, 71)
+	for direction := byte(0); direction <= 1; direction++ {
+		for _, radius := range []float32{1, 10, 32} {
+			base, _, _, normal, err := e2eSecretWallTouchGeometry(grid, direction, radius)
+			if err != nil {
+				t.Fatal(err)
+			}
+			for _, useShort := range []bool{false, true} {
+				var starts []types.Pointf
+				var checks [][2]types.Pointf
+				traceClear := func(from, to types.Pointf) bool {
+					starts = append(starts, from)
+					return false // Both real candidate traces must remain blocked.
+				}
+				laneClear := func(from, to types.Pointf) bool {
+					checks = append(checks, [2]types.Pointf{from, to})
+					return !useShort || from.Sub(base).Len() < float64(radius+26)
+				}
+				center, start, end, gotNormal, err := e2eSecretWallTouchLane(grid, direction, radius, traceClear, laneClear)
+				gap, calls := radius+36, 1
+				if useShort {
+					gap, calls = radius+16, 2
+				}
+				if err != nil || center != base || gotNormal != normal || len(starts) != calls ||
+					math.Abs(start.Sub(base).Len()-float64(gap)) > 0.001 ||
+					math.Abs(end.Sub(base).Len()-float64(gap)) > 0.001 || len(checks) < 34 {
+					t.Fatalf("dir=%d radius=%g short=%t center/start/end=%v/%v/%v starts=%v checks=%d err=%v",
+						direction, radius, useShort, center, start, end, starts, len(checks), err)
+				}
+				// Both complete sets of sixteen starting-circle radial traces
+				// use the same radius+4 clearance as the original wide lane.
+				circles := checks[len(checks)-32:]
+				for around := 0; around < 256; around += 16 {
+					cx, cy := server.SinCosDir(byte(around))
+					offset := types.Ptf((radius+4)*cx, (radius+4)*cy)
+					for side, pos := range []types.Pointf{start, end} {
+						if pair := circles[2*(around/16)+side]; pair != [2]types.Pointf{pos, pos.Add(offset)} {
+							t.Fatalf("circle side=%d direction=%d clearance=%v, want radius+4", side, around, pair)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+func TestE2ESecretWallTouchLaneRejectsUnsafeCandidates(t *testing.T) {
+	grid := image.Pt(91, 71)
+	for blockedRadial := 0; blockedRadial < 32; blockedRadial++ {
+		calls := 0
+		laneClear := func(from, to types.Pointf) bool {
+			calls++
+			if from == to {
+				t.Fatal("clearance must not collapse to an empty ray")
+			}
+			// Each candidate first probes both approach segments, then
+			// the two sixteen-ray circles in alternating start/end order.
+			if calls == blockedRadial+3 {
+				return false
+			}
+			// Do not allow a rejected wide circle to become an unchecked
+			// short-circle fallback.
+			return calls < blockedRadial+4
+		}
+		if _, _, _, _, err := e2eSecretWallTouchLane(grid, 1, 10,
+			func(types.Pointf, types.Pointf) bool { return false }, laneClear); err == nil {
+			t.Fatalf("obstructed circle ray %d passed", blockedRadial)
+		}
+	}
+	for _, traceClear := range []bool{false, true} {
+		for _, laneClear := range []bool{false, true} {
+			if !traceClear && laneClear {
+				continue
+			}
+			if _, _, _, _, err := e2eSecretWallTouchLane(grid, 0, 10,
+				func(types.Pointf, types.Pointf) bool { return traceClear },
+				func(types.Pointf, types.Pointf) bool { return laneClear }); err == nil {
+				t.Fatalf("unsafe closed/approach trace=%t lane=%t passed", traceClear, laneClear)
+			}
+		}
+	}
+	for _, nilTrace := range []bool{false, true} {
+		trace, clear := (func(types.Pointf, types.Pointf) bool)(nil), (func(types.Pointf, types.Pointf) bool)(nil)
+		if nilTrace {
+			clear = func(types.Pointf, types.Pointf) bool { t.Fatal("nil trace called clearance"); return true }
+		} else {
+			trace = func(types.Pointf, types.Pointf) bool { t.Fatal("nil clearance called trace"); return false }
+		}
+		if _, _, _, _, err := e2eSecretWallTouchLane(grid, 0, 10, trace, clear); err == nil {
+			t.Fatal("missing clearance service passed")
+		}
+	}
+	for _, invalid := range []struct {
+		grid      image.Point
+		direction byte
+		radius    float32
+	}{
+		{image.Pt(-1, 71), 1, 10}, {image.Pt(91, 70), 1, 10}, {grid, 2, 10},
+		{grid, 1, 0}, {grid, 1, 33}, {grid, 1, float32(math.NaN())}, {grid, 1, float32(math.Inf(1))},
+	} {
+		check := func(types.Pointf, types.Pointf) bool { t.Fatal("invalid geometry queried the map"); return false }
+		if _, _, _, _, err := e2eSecretWallTouchLane(invalid.grid, invalid.direction, invalid.radius, check, check); err == nil {
+			t.Fatalf("invalid lane passed: %+v", invalid)
+		}
+	}
+}
 
 func TestE2ESecretWallTouchOutcomeSensitivity(t *testing.T) {
 	valid := e2eSecretWallTouchOutcome{
@@ -152,7 +263,7 @@ func TestE2ESecretWallTouchPublicScenario(t *testing.T) {
 			t.Fatalf("secret-wall scenario supplies state/results or a new PNG baseline: %s", step.Action)
 		}
 	}
-	if checks != 1 || switches != 1 || mapsReady != 1 || warriorClicks != 1 {
+	if checks != 2 || switches != 1 || mapsReady != 1 || warriorClicks != 1 {
 		t.Fatalf("scenario check/switch/map-ready/Warrior=%d/%d/%d/%d", checks, switches, mapsReady, warriorClicks)
 	}
 	var sc e2eScenario
@@ -163,8 +274,8 @@ func TestE2ESecretWallTouchPublicScenario(t *testing.T) {
 			stable++
 		}
 	}
-	if stable != 1 {
-		t.Fatal("public action did not schedule its actual stable-wall observation")
+	if stable != 2 {
+		t.Fatal("public actions did not schedule both stock walls' stable observations")
 	}
 }
 

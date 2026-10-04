@@ -53,6 +53,44 @@ func e2eSecretWallTouchGeometry(grid image.Point, direction byte, radius float32
 	return center, start, end, normal, nil
 }
 
+// Retain the wide approach when it fits; a nearby parallel stock wall may
+// require the shorter approach. Both candidates keep the same clear-circle
+// checks and reach the existing radius+16 full-crossing threshold.
+func e2eSecretWallTouchLane(grid image.Point, direction byte, radius float32,
+	traceClear, laneClear func(types.Pointf, types.Pointf) bool,
+) (center, start, end, normal types.Pointf, err error) {
+	center, start, end, normal, err = e2eSecretWallTouchGeometry(grid, direction, radius)
+	if err != nil {
+		return
+	}
+	if traceClear == nil || laneClear == nil {
+		err = fmt.Errorf("secret-wall lane requires both read-only clearance checks")
+		return
+	}
+	for _, distance := range []float32{radius + 36, radius + 16} {
+		start, end = center.Sub(normal.Mul(distance)), center.Add(normal.Mul(distance))
+		if traceClear(start, end) ||
+			!laneClear(start, center.Sub(normal.Mul(radius+8))) ||
+			!laneClear(end, center.Add(normal.Mul(radius+8))) {
+			continue
+		}
+		clear := true
+		for around := 0; around < 256; around += 16 {
+			cx, cy := server.SinCosDir(byte(around))
+			offset := types.Ptf((radius+4)*cx, (radius+4)*cy)
+			if !laneClear(start, start.Add(offset)) || !laneClear(end, end.Add(offset)) {
+				clear = false
+				break
+			}
+		}
+		if clear {
+			return center, start, end, normal, nil
+		}
+	}
+	err = fmt.Errorf("secret wall has no clear closed approach: grid=%v dir=%d radius=%g", grid, direction, radius)
+	return
+}
+
 type e2eSecretWallTouchFixture struct {
 	unit                         *server.Object
 	wall                         *server.Wall
@@ -88,22 +126,10 @@ func (f *e2eSecretWallTouchFixture) prepare() {
 			secret.Wall != wall || wall.Dir0 > 1 {
 			continue
 		}
-		center, start, end, normal, err := e2eSecretWallTouchGeometry(wall.GridPos(), wall.Dir0, radius)
-		if err != nil || noxServer.MapTraceRay(start, end, server.MapTraceFlag1) ||
-			!e2eWarriorLaneClear(f.unit, start, center.Sub(normal.Mul(radius+8))) ||
-			!e2eWarriorLaneClear(f.unit, end, center.Add(normal.Mul(radius+8))) {
-			continue
-		}
-		clear := true
-		for around := 0; around < 256; around += 16 {
-			cx, cy := server.SinCosDir(byte(around))
-			offset := types.Ptf((radius+4)*cx, (radius+4)*cy)
-			if !e2eWarriorLaneClear(f.unit, start, start.Add(offset)) || !e2eWarriorLaneClear(f.unit, end, end.Add(offset)) {
-				clear = false
-				break
-			}
-		}
-		if !clear {
+		center, start, end, normal, err := e2eSecretWallTouchLane(wall.GridPos(), wall.Dir0, radius,
+			func(from, to types.Pointf) bool { return noxServer.MapTraceRay(from, to, server.MapTraceFlag1) },
+			func(from, to types.Pointf) bool { return e2eWarriorLaneClear(f.unit, from, to) })
+		if err != nil {
 			continue
 		}
 		f.wall, f.secret, f.before = wall, secret, *secret

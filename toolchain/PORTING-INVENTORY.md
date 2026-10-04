@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Sentry 정상 삭제 시 native 광선 목록의 해제 포인터 제거
+
+기존 production 본체는 `serverObjects.FreeObject` 하나만 변경했다(AST 나머지 본체 불변). 정상 삭제 예약은 Destroyed를 먼저 세우고 update loop는 그 오브젝트를 건너뛰므로, Sentry update 안의 목록 제거만으로는 충분하지 않았다. 격리 headless에서 실제 `DelayedDelete` 후 network sender가 allocator poison `0xacacacacacacacb0`을 읽는 크래시를 재현했다. 메모리 반환 전에 현재 native Sentry 목록의 membership을 확인하고 기존 remove를 호출한다. FlagMarked만 검사하지 않아 map reset 뒤 남은 marker와 다른 클래스의 marker를 오인하지 않으며 next/previous·head·Alive·NetCode 계약을 유지한다.
+
+실제 native object allocator와 정상 network sender를 사용하는 새 12 leaf(활성/비활성 × only/head/middle/tail/outside/reset)의 수정 전 baseline은 pass 4/fail 8이다. 최종 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 합계 180 leaf pass/fail·skip 0과 전체 일반/strict·fresh server-tag root/server/legacy·불변 oracle·diff 검사를 통과했다. 후속 observer를 포함한 진단 headless 6조합은 실제 HP 20000→19500·정상 client -500·stock 광선 32 pixel·비활성화 30 tick 뒤 ray queue 0 및 정상 삭제를 모두 통과했다. observer/Load dispatch는 별도 단위로 커밋하며 이 수정은 source/target/소유권/피해/렌더링 함수를 변경하지 않는다. 원본 자산·개인 Save/config·공개 baseline과 기존 oracle manifest는 보존했다.
+
 ## 물약 슬롯의 clean ARM64·headless 후속 검증 완료
 
 production 수정 `33455b10b2c4e9ca8b51c2ba1e84ab952ad7052c`와 remote가 일치하는 clean source에서 일반·실제 highres·전용 server 3제품의 Mach-O arm64/Go 1.26.5/full revision/`vcs.modified=false`/help 및 불변 oracle을 확인했다. 일반·HD의 실제 stock inventory/아이콘 촬영과 기존 공개 poison/tube YAML의 byte-identical private 사본, 총 4개 headless/mock 실행이 exit 0으로 완료됐다. 개인 Save/config 및 원본·공개 PNG/YAML/manifest는 격리·보존했다. 새 Screen을 missing baseline 합격으로 세지 않고 아래 독립 decoded pixel 비교를 사용했다.

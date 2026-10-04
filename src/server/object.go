@@ -254,6 +254,17 @@ func (s *serverObjects) FreeObjects() {
 }
 
 func (s *serverObjects) FreeObject(obj *Object) int {
+	// Destroyed objects are skipped by normal update ticks. Unlink a Sentry
+	// before the allocator poisons/releases it; its update cannot do this.
+	// Check the current list, not only FlagMarked: map reset drops its head
+	// without clearing the individual markers, and other classes reuse it.
+	st := &obj.Server().sentryGlobe510E60
+	for linked := st.head; linked != nil; linked = linked.InvNextItem {
+		if linked == obj {
+			st.remove(obj)
+			break
+		}
+	}
 	if obj.Class().Has(object.ClassMonsterGenerator) {
 		ud := obj.UpdateDataMonsterGen()
 		for i := 0; i < 3; i++ {

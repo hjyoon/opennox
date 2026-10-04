@@ -513,7 +513,9 @@ func (s *Server) MapTraceVision(obj1, obj2 *Object) bool {
 	}
 	rect := types.RectFromPointsf(pos, pos2)
 	searching := true
-	line := types.RectFromPointsf(pos, pos2)
+	// 00537110 sorts only the object search bounds. The ray and each
+	// door/box edge retain their directed endpoint pairs.
+	line := types.Rectf{Min: pos, Max: pos2}
 	s.Map.EachObjInRect(rect, func(it *Object) bool {
 		if it == obj1 || it == obj2 {
 			return true
@@ -529,7 +531,7 @@ func (s *Server) MapTraceVision(obj1, obj2 *Object) bool {
 				p := it.Pos()
 				p2 := p.Sub(types.Ptf(float32(sz.X)*0.125, float32(sz.Y)*0.125))
 				p3 := p2.Add(types.Ptf(float32(sz.X)*1.125, float32(sz.Y)*1.125))
-				if LineTraceXxx(line, types.RectFromPointsf(p2, p3)) {
+				if LineTraceXxx(line, types.Rectf{Min: p2, Max: p3}) {
 					searching = false
 					return false
 				}
@@ -548,31 +550,31 @@ func (s *Server) MapTraceVision(obj1, obj2 *Object) bool {
 			}
 		case ShapeKindBox:
 			p := it.Pos()
-			if LineTraceXxx(line, types.RectFromPointsf(
-				p.Add(types.Ptf(it.Shape.Box.LeftTop, it.Shape.Box.LeftBottom)),
-				p.Add(types.Ptf(it.Shape.Box.LeftBottom2, it.Shape.Box.LeftTop2)),
-			)) {
+			if LineTraceXxx(line, types.Rectf{
+				Min: p.Add(types.Ptf(it.Shape.Box.LeftTop, it.Shape.Box.LeftBottom)),
+				Max: p.Add(types.Ptf(it.Shape.Box.LeftBottom2, it.Shape.Box.LeftTop2)),
+			}) {
 				searching = false
 				return false
 			}
-			if LineTraceXxx(line, types.RectFromPointsf(
-				p.Add(types.Ptf(it.Shape.Box.LeftTop, it.Shape.Box.LeftBottom)),
-				p.Add(types.Ptf(it.Shape.Box.RightTop, it.Shape.Box.RightBottom)),
-			)) {
+			if LineTraceXxx(line, types.Rectf{
+				Min: p.Add(types.Ptf(it.Shape.Box.LeftTop, it.Shape.Box.LeftBottom)),
+				Max: p.Add(types.Ptf(it.Shape.Box.RightTop, it.Shape.Box.RightBottom)),
+			}) {
 				searching = false
 				return false
 			}
-			if LineTraceXxx(line, types.RectFromPointsf(
-				p.Add(types.Ptf(it.Shape.Box.RightBottom2, it.Shape.Box.RightTop2)),
-				p.Add(types.Ptf(it.Shape.Box.RightTop, it.Shape.Box.RightBottom)),
-			)) {
+			if LineTraceXxx(line, types.Rectf{
+				Min: p.Add(types.Ptf(it.Shape.Box.RightBottom2, it.Shape.Box.RightTop2)),
+				Max: p.Add(types.Ptf(it.Shape.Box.RightTop, it.Shape.Box.RightBottom)),
+			}) {
 				searching = false
 				return false
 			}
-			if LineTraceXxx(line, types.RectFromPointsf(
-				p.Add(types.Ptf(it.Shape.Box.RightBottom2, it.Shape.Box.RightTop2)),
-				p.Add(types.Ptf(it.Shape.Box.LeftBottom2, it.Shape.Box.LeftTop2)),
-			)) {
+			if LineTraceXxx(line, types.Rectf{
+				Min: p.Add(types.Ptf(it.Shape.Box.RightBottom2, it.Shape.Box.RightTop2)),
+				Max: p.Add(types.Ptf(it.Shape.Box.LeftBottom2, it.Shape.Box.LeftTop2)),
+			}) {
 				searching = false
 				return false
 			}

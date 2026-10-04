@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 선제공격 시야 caller: indexed box/door의 실제 대각선
+
+기존 production 본체는 `MapTraceVision` 하나만 변경했다. canonical object 검색 영역은 유지하되 실제 ray·door edge·box 네 edge를 GAME.EXE 00537110의 원래 directed 순서로 전달한다. 새 indexed-map/CanInteract 41 leaf 중 수정 전 8개 descending box/door on/off-ray·양방향 실패를 재현했다. 수정 후 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 새 615 leaf와 앞선 선분 480 leaf가 모두 통과했으며 fail/skip 0이다. blind·invisible·shadow·open-door·circle·unsupported-shape gates, self/target 제외, 마지막 wall flags 9는 보존했다. AST에서 다른 기존 production 본체의 불변을 확인했다. ranged obstacle caller 및 실제 AI 피해 후속 검증은 별도 단위이며 기존 YAML/PNG/golden/oracle은 변경하지 않았다.
+
 ## 선제공격 시야 검토: directed 선분과 원본 cross-product spill
 
 기존 production 본체는 `LineTraceXxx` 하나만 변경했다. GAME.EXE 00427980의 canonical 검색 bounds와 실제 directed endpoints를 분리하고, binary32 delta 이후 x87 cross-product 차이의 최종 binary32 spill을 유지했다. 기존 Canon은 내려가는 대각선을 반대 대각선으로 바꿨고, 각 곱의 조기 binary32 반올림은 거의 평행한 실제 교차를 parallel로 오인했다. 원본 horizontal overlap·endpoint·parallel/zero rejection gates는 보존했다. 새 32 leaf의 수정 전 pass 11/fail 21, 수정 후 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 합계 480 pass/fail·skip 0이다. 다른 기존 함수 본체의 AST 불변을 확인했다. caller의 Canon도 별도 단위로 수정·검증해야 하므로 이 helper만으로 시야 수정 완료라고 세지 않는다.

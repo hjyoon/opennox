@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 빙의 ELECTRIC 연결의 clean ARM64 제품·headless 완료
+
+native 연결 커밋 `1d659c1bc59e4a6421a0acd4b9aeb614b7b68162`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 세 Mach-O arm64 제품 모두 Go 1.26.5/tuple/full revision/`vcs.modified=false`와 도움말 실행이 통과했다. 아래 ELECTRIC helper·entry의 clean 제품/headless 후속 검증 대기를 완료했다. 새 ELECTRIC 250개 leaf 회귀(server helper 66·entry 176·root C-owned 8)의 코드 경계 증거는 이번 stock-map 실행과 구별한다.
+
+기존 공개 YAML의 일반/HD headless/mock 22실행은 모두 정상 exit 0이다. stock G_Crypts의 두 대각선 비밀벽을 실제 queued movement로 접촉하여 자연 열림·server/client 왕복 통과·한 번의 열림 효과음을 각 제품 10관찰, 합계 20개로 확인했다. wall state/map flags를 주입하거나 벽을 닫힌 상태로 되돌리지 않는다. 실제 inventory 장착을 거친 해머 연속 공격은 각 제품 두 cycle의 두 대상 HP `2000→1872→1747`·animation 39·quake·효과음·무기 유지·자연 종료를 확인했다. 나무 지팡이/맨손의 Spider 처치는 각 제품 한 회씩, Fist 양방향 1..5레벨은 각 제품 10회씩 명중·client 피해·자연 제거가 통과했다. 대검/Fireball/Magic Missile/상태효과는 각 제품 21/11/11/10결과, 합계 106개로 기존 방어·양방향 마법 피해·대상 상태효과 적용/해제를 확인했다.
+
+Shock은 각 제품에서 Player/NPC 1..5레벨과 자연 NPC 시전의 효과·WhiteSpark 픽셀·자연 만료 11회 및 Player Glyph→NPC/NPC Glyph→Player의 실제 명중·client 피해·자연 종료 두 회가 통과했다. duration-ray 시나리오는 테스트 fixture가 native duration을 시작하는 서비스 경계 검사이며 자연 hotbar 입력/자율 NPC 전기 시전 전체를 검증했다고 확대하지 않는다. 각 제품에서 Chain Lightning의 실제 update/피해·cancel/cleanup, Energy Bolt stem 픽셀·update/피해·cancel/cleanup, Drain Mana transfer·cancel/cleanup 및 다른 duration ray의 drawing/removal을 확인했다. 이 stock-map 회귀를 synthetic C possession 회귀와 혼합하거나 GUI 빙의 입력·status packet transport 증거로 세지 않는다.
+
+실행 전후 source/remote revision과 원본 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 동일하다. 크래시·미복원 경로·E2E 실패는 없었으며 외부 XWIS/game-list 조회 timeout/refused는 로컬 host 회귀와 구분한다. 개인 Save/config·원본 자산·기존 golden은 변경하지 않고 private 로그/PNG는 공개하지 않는다. 다른 미복원 피해 분기·경쟁 모드 death·원본 Windows runtime/물리 화면 전체는 별도다. 이번 완료 기록은 문서만 변경한다.
+
 ## 빙의 플레이어 ELECTRIC — native 진입점 연결
 
 기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 양의 type 9/17·두 unit source·unarmed/self-weapon admission을 cached marker clear → 실제 ObserveClear → live Reflect Shield 조회 → PrevPos snapshot → weapon 6개 또는 source-only 4개 exclusion → facing 한 번 → 기존 electric switch로 연결한다. self-weapon/source-only 전기는 marker=1을 만들지 않으며 일반 방패/대검/지팡이로 막히지 않는다. ObserveClear/facing 뒤 live class/nil update가 손상된 경우 electric scale/carry/default에 들어가지 않는다. prefix·electric armor·Quest의 필수 서비스가 없으면 marker/빙의 상태를 바꾸기 전에 명시적으로 거부한다. 아래 ELECTRIC helper의 public entry 연결 대기는 해소했다.

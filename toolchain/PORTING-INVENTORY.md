@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반·빙의 IMPACT prefix의 clean ARM64 제품·headless 완료
+
+native entry 커밋 `764085caec10fed5998ab9dd90dc85c26f20d393`와 remote가 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 monster missile IMPACT prefix의 clean 제품/headless 후속 대기를 완료했다. 기존 production 본체 변경은 AST 비교로 `PlayerDamageNative4E17B0` 하나이며, 새 115회귀의 server callback 계약 109개와 실제 등록 C dispatcher/ObserveClear/DamageClear를 거친 C-owned native 6개는 stock-map GUI 관찰과 구별한다.
+
+기존 공개 YAML의 일반/HD headless/mock 16실행은 모두 정상 exit 0이다. 각 제품 비밀벽·해머·나무 지팡이·맨손·Fist·대검·Spider shield·Urchin 8개 시나리오를 확인했다. 최초 일반 Urchin의 binary 실행은 성공했으나 private 로그 검사기가 client HealthChange를 양수로 잘못 기대해 중단했다. 실제 구현과 기록의 signed 감소 `-12`에 맞춰 검사기만 교정하고, 일반 8개의 저장 로그를 모두 재검사한 뒤 HD 8개를 새로 실행했다. production·공개 YAML·결과 HP·golden을 변경해 성공시키지 않는다.
+
+각 제품 stock G_Crypts의 `(91,71)` dir=1·`(111,57)` dir=0 비밀벽을 실제 queued 이동으로 접촉하여 state 1→4→3·delay 1..23 mask `0xfffffe`·열림 효과음 한 번·server/client 양방향 통과 및 열린 상태 유지 10관찰, 합계 20개를 확인했다. wall state/flags·속도/force·audio·packet/client 좌표를 주입하지 않았다. 비밀벽 gameplay 수정 `068c4cf64`의 native field 복원을 유지한다. 해머는 각 제품 두 cycle·두 대상 HP `2000→1872→1747`·animation 39 진행·quake·효과음 한 번·무기 유지·자연 완료가 통과했고, 나무 지팡이와 맨손의 실제 공격은 각 제품 Spider HP 80→0을 한 회씩 확인했다.
+
+Fist 양방향 1..5레벨은 각 제품 10회 명중·실제 client 피해·world/owned/drawable 자연 제거가 통과했다. Player→NPC 피해는 50/100/200/300/400, NPC→Player는 44/89/177/265/354다. 대검 missile 방어는 각 제품 정면 11·후면 10의 21결과를 확인했다. Spider의 실제 자율 근접 공격은 각 제품 방패 wear·state 16/front=1 및 player HP 감소를 확인했다. 방패 wear를 완전 무피해 막기라고 하거나, missile 회귀를 모든 근접 방어·자율 NPC 시전 검증으로 확대하지 않는다.
+
+Urchin은 각 제품에서 실제 monster-owned ThrowingStone의 기존 ProjectileCollide type 11 명중을 관찰했다. player HP `75→63` 및 실제 client HealthChange `-12`·돌 투사체 존재, 자연 flee의 거리 `20→43.818` 및 양수 이동 dot, player Magic Missile 명중의 monster HP `40→32`와 후속 자연 death HP 0/40을 확인했다. observer는 실제 projectile/owner·server HP·client replay를 읽으며 피해를 직접 공급하지 않는다. 이 양수 stock-map IMPACT 결과를 새 synthetic 일반/빙의 native raw 1/5/21의 HP `200→199/196/184`·carry `0.25`·marker `1/801`·빙의 status/camera 복원 또는 실제 GUI 빙의 입력 증거와 혼동하지 않는다.
+
+관련 root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle이 통과했다. 16실행 전후 oracle의 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7` 및 clean source/remote revision은 동일하다. 새 원본 byte/range/manifest·자산·기존 golden·공개 YAML을 수정하지 않았고 개인 Save/config는 격리·보존했다. private 로그/PNG·원본 자산을 공개하지 않는다. 다른 IMPACT source/zero/signed·미복원 entry/tail·실제 GUI 빙의·모든 자율 NPC 방어·원격 client·원본 Windows runtime·물리 출력 전체는 별도 경계이며 전체 ARM64 포팅 목표는 계속 진행한다.
+
 ## 일반·빙의 플레이어 monster missile IMPACT의 entry prefix 복원
 
 기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 접속된 양수 monster-source·distinct MISSILE weapon·type 11 IMPACT의 일반/빙의 player 경로에 공통 prefix를 연결하며 source/type/zero/signed admission은 확대하지 않는다. BITE 및 다른 missile·Charge·Sentry·환경 피해와 NPC 경로의 기존 admission/처리는 유지한다. 봉인된 `004E18C4` cached marker clear → 조건부 ObserveClear → live Reflect/current position → `004E1A49` PrevPos snapshot → weapon 6개 exclusion → `004E1AA2` distinct live weapon type attribution → facing 한 번 → cached stance/equipment 순서를 따른다. exclusion이 바꾼 weapon type은 사용하지만 facing 위치는 exclusion 전 snapshot이다. Reflect return은 marker 0/type 보존, shield/GreatSword return은 distinct missile marker 1/live type을 보존한다. Shield는 entry equipment mask·facing 후 cached stance·live first shield, 대검은 cached mask/stance·live inventory를 사용한다. replacement observer로 ObserveClear를 반복하지 않으며 잘못된 live class/nil update는 효과나 carry 이전에 명시적으로 거부한다.
@@ -10,7 +24,7 @@ type 11은 jump table에서 BITE/PIERCE와 같은 `004E1F84` full-armor case다.
 
 초기 production 무변경 baseline은 새 115개 중 pass 33/fail 82였고 복원 후 115개 모두 통과했다. baseline에서 이미 통과한 native 숫자 피해와 새 server order 실패를 구별한다. root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle이 통과했다. AST body 비교는 위 한 기존 production 함수만 변경됐음을 확인했다. 원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 새 원본 byte/range/manifest·자산·golden·공개 YAML을 추가하거나 변경하지 않는다.
 
-clean ARM64 일반·highres·server 3제품과 기존 일반/HD 비밀벽·해머·나무 지팡이·맨손·Fist·대검·Spider shield·Urchin 16 headless 실행은 후속 검증이다. ThrowingStone의 기존 ProjectileCollide type 11 실제 명중은 공개 Urchin 전투 시나리오로 별도 확인한다. private 로그/PNG·원본 자산은 공개하지 않고 개인 Save/config를 격리·보존한다. 다른 IMPACT source/zero/signed·다른 미복원 entry/tail·실제 GUI 빙의·모든 자율 NPC 방어·원격 client·원본 Windows runtime·물리 출력 전체는 별도 경계이며 전체 ARM64 포팅 목표는 계속 진행한다.
+clean ARM64 일반·highres·server 3제품과 기존 일반/HD 비밀벽·해머·나무 지팡이·맨손·Fist·대검·Spider shield·Urchin 16 headless 후속 검증은 위 완료 기록으로 마무리했다. ThrowingStone의 기존 ProjectileCollide type 11 실제 명중은 공개 Urchin 전투 시나리오로 별도 확인했다. private 로그/PNG·원본 자산은 공개하지 않고 개인 Save/config를 격리·보존한다. 다른 IMPACT source/zero/signed·다른 미복원 entry/tail·실제 GUI 빙의·모든 자율 NPC 방어·원격 client·원본 Windows runtime·물리 출력 전체는 별도 경계이며 전체 ARM64 포팅 목표는 계속 진행한다.
 
 ## 일반·빙의 BITE prefix의 clean ARM64 제품·headless 완료
 

@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반 플레이어 근접 피해 — no-block entry prefix 복원
+
+기존 production 본체는 `PlayerDamageMeleeNative4E17B0` 하나만 변경했다. 이미 복원한 Player/NPC source의 Sword·MorningStar·WarHammer·WoodenStaff·unarmed CLAW/CRUSH·unit-owned SIMPLE Fist, 합계 14개 shape에서 일반 플레이어의 no-block slice를 공통 prefix에 연결한다. entry shield mask `0x3000000`이 없고 BLADE에는 GreatSword/staff mask도 없는 경우가 이번 범위다. CRUSH/CLAW에서 적용되지 않는 대검/지팡이 mask는 이 slice를 막지 않는다. shape admission·피해 수식·NPC 및 일반 shield/weapon block 경로는 확대하거나 변경하지 않는다.
+
+봉인된 `004E18C4`의 unconditional cached marker clear와 conditional ObserveClear를 구별한다. 일반 플레이어는 ObserveClear 없이 live Reflect 조회 → PrevPos snapshot → weapon 6개 또는 source-only 4개 exclusion → callback 뒤 live type attribution → facing 한 번을 수행한다. cached armor/equipment/marker와 facing 후 live update의 carry를 구별하며, 새 live observer/equipment로 prefix를 재시작하지 않는다. armor callback의 marker 변경을 덮어쓰지 않고 wear/fallback/minimum 뒤 God flag→live Player class→live Quest→DefaultDamage 순서를 유지한다. normal no-block의 read-only armor/필수 서비스 검사는 marker store 전에 수행하며, callback 뒤 잘못된 live class/nil update는 carry/default 전에 명시적으로 거부한다.
+
+새 server contract 560개 leaf는 14 shape×signed/zero/positive×4개 판정 168개, exclusion/facing의 update 교체·live record guard 84개, signed/zero/minimum·marker·late Quest/God tail 126개, missing-service 112개, early-gate 70개다. production 본체가 이전 HEAD와 정확히 같은 baseline은 pass 154/fail 406이었고 복원 후 560개 모두 통과했다. 이 fixture의 DefaultDamage는 전달값만 기록하며 실제 HP를 변경하지 않는다. 기존 C-owned 빙의 melee 14개·signed electric 48개·normal PIERCE 56개와 다른 native 피해 회귀는 기존 재실행으로 구별한다. shared melee runtime fixture는 실제 서비스의 exclusion/facing을 제공하고, 기존 missing-direction 회귀는 의도적으로 callback을 nil로 설정하여 거부와 무변경 검사를 유지한다.
+
+관련 root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict 및 fresh-process server-tag 각 1회와 oracle이 통과했다. 원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 새 원본 byte/range/manifest·자산·golden을 추가하지 않는다. clean ARM64 일반·highres·server 3제품과 기존 일반/HD 비밀벽·해머·나무 지팡이·맨손·Fist·대검 12 headless 실행은 후속 검증이다. 개인 Save/config·private 로그/PNG는 보존하고 공개하지 않는다. 일반 shield/weapon block prefix의 추가 복원, 다른 entry/tail·실제 GUI 빙의 입력·원격 client·원본 Windows runtime/물리 출력 전체는 별도 경계다.
+
 ## 일반 missile prefix의 clean ARM64 제품·headless 완료
 
 native entry 커밋 `caaf092b5ea679e15f8a8a020297dd776eeca86a`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 일반 missile entry의 clean 제품/headless 후속 대기를 완료했다. 새 server contract 444개와 기존 실제 C-owned normal PIERCE 56개 및 다른 피해 회귀의 재실행은 stock-map 결과와 구별한다.

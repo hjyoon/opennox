@@ -17,7 +17,10 @@ func damageMeleeRuntimeFixture4E17B0(t *testing.T) PlayerDamageRuntime4E17B0 {
 	t.Helper()
 	world := damageMeleeWorldRuntime4E0B30(t)
 	return PlayerDamageRuntime4E17B0{
-		Frame: world.Frame,
+		Frame:                   world.Frame,
+		BlockSourceExcluded:     func(*Object) bool { return false },
+		BlockSourceOnlyExcluded: func(*Object) bool { return false },
+		BlockDirection:          func(*Object, types.Pointf) bool { return false },
 		DefaultDamage: func(target, source, weapon *Object, damage int32, typ object.DamageType) bool {
 			return DefaultDamageWorld4E0B30(target, source, weapon, damage, typ, world)
 		},
@@ -385,8 +388,9 @@ func TestPlayerDamageMeleeNative4E17B0UnsupportedBeforeMutation(t *testing.T) {
 			}
 		}},
 		{"missing default tail", func(_ *Object, r *PlayerDamageRuntime4E17B0) { r.DefaultDamage = nil }},
-		{"missing block direction", func(target *Object, _ *PlayerDamageRuntime4E17B0) {
+		{"missing block direction", func(target *Object, r *PlayerDamageRuntime4E17B0) {
 			target.UpdateDataPlayer().Player.WeaponEquip = 0x400
+			r.BlockDirection = nil
 		}},
 		{"missing block item", func(target *Object, r *PlayerDamageRuntime4E17B0) {
 			target.UpdateDataPlayer().Player.WeaponEquip = 0x400

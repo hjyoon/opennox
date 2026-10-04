@@ -54,9 +54,11 @@ func playerDamageMissileExplosionTail4E17B0(
 		accumulated += math.Float32frombits(*carry)
 	}
 	effective := playerDamageRound4E17B0(accumulated)
-	*marker = 0
-	if weapon != nil && source != weapon {
-		*marker, *markerType = 1, uint32(weapon.TypeInd)
+	if runtime.playerPrefix == nil {
+		*marker = 0
+		if weapon != nil && source != weapon {
+			*marker, *markerType = 1, uint32(weapon.TypeInd)
+		}
 	}
 	if carry != nil {
 		*carry = math.Float32bits(accumulated - float32(effective))

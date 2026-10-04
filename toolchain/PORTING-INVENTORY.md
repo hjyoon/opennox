@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반 ELECTRIC prefix의 clean ARM64 제품·headless 완료
+
+native entry 커밋 `60cb448065a702ee4d0dcb090a35de41e033a144`와 remote가 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 normal ELECTRIC entry의 clean 제품/headless 후속 대기는 완료했다. 새 server contract 336개와 기존 실제 C-owned signed 전기 48개의 API 경계 검사는 stock-map 회귀와 구별한다.
+
+기존 공개 YAML 일반/HD headless/mock 8실행이 모두 정상 exit 0이다. 각 제품 stock G_Crypts의 `(91,71)` dir=1·`(111,57)` dir=0 비밀벽을 실제 queued 이동으로 접촉하여 state 1→4→3·delay 1..23 mask `0xfffffe`·열림 효과음 한 번·server/client 왕복 통과를 10개 관찰로 확인했다. 결과 state/flags·속도/force·audio·packet/client 좌표를 주입하거나 기존 golden을 변경하지 않았다. 해머 두 cycle은 두 대상 HP `2000→1872→1747`·animation 39·quake·효과음·무기 유지·자연 완료가 통과했다.
+
+Shock은 각 제품 Player/NPC 1..5레벨 및 자연 NPC 시전의 자연 만료 11회·Glyph 명중/종료 두 회, 합계 13결과가 통과했다. Glyph→NPC HP 150→105·Glyph→Player 75→45와 실제 client 피해 replay도 확인했다. Chain Lightning update/피해·cancel/cleanup, Energy Bolt stem 픽셀·update/피해·cancel/cleanup, Drain Mana transfer·cancel/cleanup 및 다른 duration drawing/removal도 각 제품 통과했다. duration fixture는 native duration을 시작하는 서비스 경계이며 자연 hotbar 입력/자율 NPC 전기 시전 전체·GUI 빙의 입력·음수 balance 마법·원격 client 증거로 확대하지 않는다.
+
+실행 전후 source/remote revision·원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 8실행에 크래시·미복원 경로·E2E 실패는 없었다. 외부 listing 조회 성공·물리 화면/스피커·원본 Windows runtime 전체는 별도다. 이번 완료 기록은 문서만 변경하며 private 로그/PNG·원본 자산은 공개하지 않고 개인 Save/config를 유지한다.
+
 ## 일반 플레이어 ELECTRIC의 entry prefix 복원
 
 기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 복원한 Player/NPC source·unarmed/self-weapon·type 9/17의 eight-shape admission에서 빙의하지 않은 플레이어도 공통 prefix를 소비한다. 봉인된 `004E17B0`의 `004E18C4`는 cached marker를 항상 지우고 `004E18DD..004E18EB`만 ObserveClear를 조건부 호출한다. live Reflect 조회 → 공격 PrevPos snapshot → weapon 6개/source-only 4개 exclusion → distinct live type attribution → facing의 기존 순서를 유지하며 self-weapon/source-only 전기는 distinct attribution을 적용하지 않는다. ELECTRIC helper의 signed scale/carry·raw armor wear·minimum·Quest/God/DefaultDamage 숫자 계산은 변경하지 않는다.

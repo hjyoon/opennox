@@ -924,7 +924,8 @@ func playerDamageMissilePierce4E17B0(
 
 // PlayerDamageNative4E17B0 restores ordinary player/NPC melee, unit-sourced SIMPLE
 // CRUSH (including stock Fists), Spider BITE, monster-fired
-// missile IMPACT, Troll self-weapon IMPACT, player/monster-fired missile PIERCE, Berserker Charge CRUSH,
+// missile IMPACT, pure spell-missile IMPACT (including unowned Pixies),
+// Troll self-weapon IMPACT, player/monster-fired missile PIERCE, Berserker Charge CRUSH,
 // SentryGlobe ZAP_RAY, world FLAME,
 // unarmed player/monster and unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC,
 // and source-less LAVA/POISON branches of
@@ -941,6 +942,12 @@ func PlayerDamageNative4E17B0(
 ) (handled, result bool) {
 	if target == nil {
 		return playerDamageUnsupported4E17B0(runtime, "non-player target", target, source, weapon, damage, typ)
+	}
+	// SIMPLE spell missiles (stock Pixie) need the terminal-parent path;
+	// keep the already ported bare monster-missile slice below disjoint.
+	if target.Class().Has(object.ClassPlayer) && playerDamageSpellMissileImpactShape4E17B0(source, weapon, typ) &&
+		weapon.Class().Has(object.ClassSimple) {
+		return playerDamagePlayerSpellMissileImpact4E17B0(target, source, weapon, damage, typ, runtime)
 	}
 	if playerDamageMeleeShape4E17B0(source, weapon, typ) || playerDamageSimpleCrushShape4E17B0(source, weapon, typ) {
 		return PlayerDamageMeleeNative4E17B0(target, source, weapon, damage, typ, runtime)

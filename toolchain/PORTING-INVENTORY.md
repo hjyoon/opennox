@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 비밀벽 observer의 최종 clean 제품·마법 회귀
+
+clean `7b68b3bb0`와 `origin/port/go1.26-multiarch`가 일치하는 상태로 ARM64 일반·실제 highres·server 3제품을 빌드하고 Go 1.26.5/tuple/full revision/`vcs.modified=false` 및 도움말을 확인했다. 일반/HD의 stock 비밀벽 접촉·열림·왕복은 각 5관찰/합계 10개, 실제 Quest key 수신은 각 16관찰/합계 32개다. 대검/Fireball/Magic Missile/상태효과는 각 제품에서 21/11/11/10결과, 합계 106개다. 총 12 headless/mock 실행이 정상 exit 0이며 source/remote revision과 자산이 전후 동일하다. 새 production/manifest 변경 없는 문서 완료 기록이며 아래 observer의 clean 후속 대기를 마무리한다.
+
+전후 oracle은 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 확인했다. 개인 Save/config·기존 PNG/golden은 변경하지 않는다. 실제 접촉식 stock 벽 하나의 상태 진행/서버·host-client 통과 검증이며 모든 벽 frame 픽셀·원격 대전·물리 화면/스피커·원본 Windows runtime 전체의 동등성으로 확대하지 않는다.
+
 ## 실제 stock 비밀벽 접촉·열림·왕복 통과 관찰
 
 `host-warrior-secret-wall-touch.yaml`은 실제 Warrior host 메뉴와 정상 G_Crypts 맵 로드를 거친다. stock touch-enabled/non-timed closed wall의 양쪽 clear lane을 읽기만 하여 선택하고 player 시작 위치만 준비한다. 실제 queued 오른쪽 mouse 이동이 C 충돌과 복원한 `00548100`을 호출한다. observer는 native CollisionWall·state 1→4→3·모든 delay 1..23·delay>11 뒤 collision/MapTrace 통과·서버와 실제 수신 client drawable의 두 방향 통과·tile open sound event 한 번 및 native 연결/좌표/방향/tile/flags/wait 보존을 읽는다. wall/secret/unit/update는 모두 4GiB 초과다. wall 결과·속도/force·audio·packet/client 위치를 공급하거나 collision helper를 직접 호출하지 않는다.

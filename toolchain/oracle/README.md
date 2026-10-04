@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비밀벽 최종 clean 검증 완료
+
+observer `7b68b3bb0`의 clean source/remote 일치 상태에서 ARM64 3제품 build/revision/help와 전후 oracle을 확인했다. 일반/HD stock 비밀벽 각 5관찰/합계 10개·Quest key 각 16관찰/합계 32개와 양방향 대검/Fireball/Magic Missile/상태효과 8실행/106결과, 총 12 headless/mock 실행이 정상 exit 0이다. 종료 뒤 revision·source·stock 자산은 불변이며 아래 clean 후속 대기는 완료됐다. 문서만 갱신하고 runtime 코드·원본 byte/range·manifest/asset/PNG를 추가하거나 바꾸지 않는다.
+
+code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 개인 파일과 기존 golden을 유지한다. 접촉식 stock 벽 하나의 timing/server·host-client 통과 관찰이며 전체 wall frame 픽셀·remote client·물리 화면/스피커·원본 Windows runtime 전체 검증은 아니다.
+
 ## Stock 비밀벽의 실제 접촉 관찰 범위
 
 새 공개 Warrior host scenario는 정상 G_Crypts 로드 뒤 원래 접촉 열림 flag가 있는 닫힌 비밀벽을 선택한다. player 시작 위치만 준비하고 queued 실제 이동이 collision→`00548100`→정상 wall update를 구동한다. 일반/HD headless/mock 진단 각 5관찰/합계 10개·exit 0은 closed 1/0, 실제 CollisionWall, opening 4의 모든 delay 1..23, open 3/23, delay>11의 정상 trace 통과, server/client drawable의 왕복 통과와 tile sound event 한 번을 확인한다. native wall/secret/unit/update의 고주소 binding 및 원래 연결/좌표/방향/tile/flags/wait는 유지한다. wall 상태·충돌 기록·force·audio·packet·client 위치나 helper 결과를 주입하지 않는다.

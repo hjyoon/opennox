@@ -726,7 +726,7 @@ func TestPlayerDamageNative4E17B0ReflectShieldZapRay(t *testing.T) {
 	}
 }
 
-func TestPlayerDamageNative4E17B0ReflectShieldPreflightDoesNotMutate(t *testing.T) {
+func TestPlayerDamageNative4E17B0ReflectShieldPreflightPreservesEntryPrefix(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	target.Buffs |= 1 << playerDamageReflectEnchant4E17B0
 	update := target.UpdateDataPlayer()
@@ -751,8 +751,10 @@ func TestPlayerDamageNative4E17B0ReflectShieldPreflightDoesNotMutate(t *testing.
 	if handled, result := PlayerDamageNative4E17B0(target, source, missile, 15, object.DamageImpact, runtime); handled || result || reason != "missing Reflect Shield effect service" {
 		t.Fatalf("unsupported Reflect Shield = handled:%t result:%t reason:%q", handled, result, reason)
 	}
+	// 004E18C4 precedes Reflect effect admission; do not roll back the clear.
+	beforeUpdate.Field76 = 0
 	if *target != beforeTarget || *update != beforeUpdate || *missile != beforeMissile {
-		t.Fatal("unsupported Reflect Shield changed state")
+		t.Fatal("unsupported Reflect Shield changed more than the entry marker")
 	}
 }
 
@@ -959,6 +961,7 @@ func TestPlayerDamageNative4E17B0MissileShieldBlockReflectsAndTransfersOwner(t *
 	target.InvFirstItem = shield
 	missile := &Object{
 		ObjClass: object.ClassMissile,
+		TypeInd:  901,
 		PrevPos:  types.Pointf{X: 91, Y: 37},
 	}
 	var damages []int32
@@ -1035,7 +1038,7 @@ func TestPlayerDamageNative4E17B0MissileShieldBlockReflectsAndTransfersOwner(t *
 	if !reflect.DeepEqual(events, wantEvents) {
 		t.Fatalf("missile block events = %v, want %v", events, wantEvents)
 	}
-	if len(damages) != 0 || target.HealthData.Cur != 20 || shield.HealthData.Cur != 8 || update.Field76 != 0 {
+	if len(damages) != 0 || target.HealthData.Cur != 20 || shield.HealthData.Cur != 8 || update.Field76 != 1 || update.Field75 != uint32(missile.TypeInd) {
 		t.Fatalf("missile block state = damage:%v health:%d shield:%d marker:%d",
 			damages, target.HealthData.Cur, shield.HealthData.Cur, update.Field76)
 	}
@@ -1047,7 +1050,7 @@ func TestPlayerDamageNative4E17B0MissileShieldPreflightNeedsOwnerServices(t *tes
 	update.State = PlayerState16
 	update.Field76 = 9
 	update.Player.ArmorEquip = 0x1000000
-	missile := &Object{ObjClass: object.ClassMissile, PrevPos: types.Pointf{X: 91, Y: 37}}
+	missile := &Object{ObjClass: object.ClassMissile, TypeInd: 902, PrevPos: types.Pointf{X: 91, Y: 37}}
 	beforeTarget := *target
 	beforeUpdate := *update
 	beforeMissile := *missile
@@ -1060,8 +1063,10 @@ func TestPlayerDamageNative4E17B0MissileShieldPreflightNeedsOwnerServices(t *tes
 	if handled, result := PlayerDamageNative4E17B0(target, source, missile, 10, object.DamageImpact, runtime); handled || result || reason != "missing projectile owner service" {
 		t.Fatalf("unsupported missile shield = handled:%t result:%t reason:%q", handled, result, reason)
 	}
+	// Distinct missile attribution precedes shield owner-service admission.
+	beforeUpdate.Field76, beforeUpdate.Field75 = 1, uint32(missile.TypeInd)
 	if *target != beforeTarget || *update != beforeUpdate || *missile != beforeMissile {
-		t.Fatal("unsupported missile shield changed state")
+		t.Fatal("unsupported missile shield changed more than its entry attribution")
 	}
 }
 

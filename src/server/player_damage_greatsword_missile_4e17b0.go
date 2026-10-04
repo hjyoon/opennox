@@ -68,14 +68,14 @@ func playerDamageGreatSwordMissileBlock4E17B0(
 	}
 	player = target.Class().Has(object.ClassPlayer)
 	if player {
-		if cached.state == nil || target.UpdateData == nil || target.UpdateDataPlayer().Player == nil {
+		if cached.state == nil || (r.playerPrefix == nil && (target.UpdateData == nil || target.UpdateDataPlayer().Player == nil)) {
 			return reject("GreatSword live player lacks cached player update")
 		}
 		state := *cached.state
 		if state != PlayerState13 && state != PlayerState18 && state != PlayerState19 && state != PlayerState20 {
 			return false, false, false
 		}
-		if target.UpdateDataPlayer().Player.ObserveTarget() != nil {
+		if r.playerPrefix == nil && target.UpdateDataPlayer().Player.ObserveTarget() != nil {
 			return reject("possessed player GreatSword missile block")
 		}
 	} else if !playerDamageMonsterBlockReady534340(target) {
@@ -98,9 +98,11 @@ func playerDamageGreatSwordMissileBlock4E17B0(
 	if uint32(attack.SubClass())&2 == 0 && (r.ClearOwner == nil || r.SetOwner == nil) {
 		return reject("missing GreatSword missile ownership service")
 	}
-	*cached.marker = 0
-	if (weapon != nil && source != weapon) || (weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush)) {
-		*cached.marker, *cached.markerType = 1, uint32(attack.TypeInd)
+	if r.playerPrefix == nil {
+		*cached.marker = 0
+		if (weapon != nil && source != weapon) || (weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush)) {
+			*cached.marker, *cached.markerType = 1, uint32(attack.TypeInd)
+		}
 	}
 	r.ProjectileReflect(attack, target)
 	// 004E1C72/004E1C7C reload class and subclass after reflection. Unlike

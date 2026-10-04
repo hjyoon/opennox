@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## PIERCE 빙의 해제 prefix — GreatSword
+
+기존 production 본체는 GreatSword missile block helper 하나만 변경했다. 소비한 prefix가 있으면 새 live PlayerInfo/ObserveTarget을 다시 요구하지 않고 캐시된 update의 자세를 읽으며, exclusion/facing 전에 저장한 marker/type을 재설정하지 않는다. live update의 자세가 16이고 player-info가 nil이거나 새 관찰 대상을 가져도 원래 cached 자세 13의 대검 반사는 수행된다. state 변경 서비스와 block durability의 live inventory 조회는 원래 순서로 유지한다. 두 교체 trap은 수정 전 명시적 거부 red, 수정 후 cached update 전체 불변·live marker 보존·반사/owner/audio/RNG/live 자세/balance/wear 순서를 확인했다.
+
+관련 PlayerDamage/DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회가 통과했다. 아직 entry/PIERCE tail의 별도 본체 연결을 기다리는 준비 단위다. 기존 non-prefix/NPC 경로와 원본 code/data range·stock tree·개인 Save/config·기존 golden은 유지한다.
+
 ## PIERCE 빙의 해제 prefix — ordinary shield
 
 기존 production 본체는 ordinary shield helper 하나만 변경했다. 소비한 prefix가 있으면 entry-cached equipment mask와 update의 live state를 사용하고 marker reset·ObserveClear·missile type 재저장을 반복하지 않는다. 해제 뒤 live player/update가 교체되어도 원래 캐시의 방패를 유지하며 새 player의 장비를 소급 적용하지 않는다. exclusion callback이 missile TypeInd를 바꿔도 그 전에 저장한 attribution은 유지한다. 두 unit source의 양방향 캐시/live 장비 trap이 수정 전 잘못된 block/누락과 ObserveClear 재호출 red를 재현했고, 수정 후 direction→audio→balance→wear 및 두 update 전체 레코드 불변을 확인했다.

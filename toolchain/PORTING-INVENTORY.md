@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## FLAME 빙의 해제 prefix — raw durability tail
+
+기존 production 본체는 `playerDamageMissileFlameTail4E17B0` 하나만 변경했다. 이미 소비한 entry prefix에서는 marker reset·missile type 재저장을 반복하지 않는다. 원본 `004E1DC7`의 raw signed armor wear·live armor denominator와 armor callback 뒤 cached marker fallback, GodMode→live Quest→DefaultDamage 순서는 유지한다. 두 unit owner·direct/splash·marker 유지/삭제/교체 12회귀에서 live carry 0.5와 cached carry 0.125가 불변이고 armor HP 30→27·Quest 뒤 실제 HP 200→198임을 확인했다. 최초 splash fixture의 armor callback weapon 기대값은 원본의 nil 전달에 맞게 바로잡았고 그 준비 실패를 production red로 세지 않는다. 교정된 direct 여섯 경우는 수정 전 type 777을 695로 덮어쓰는 red였다.
+
+관련 server PlayerDamage/DefaultDamage의 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회가 통과했다. player FLAME wrapper와 entry의 연결 전 준비 단위이며 실제 빙의 피격/GUI 수정 완료로 확대하지 않는다. 원본 range·manifest·stock 자산·개인 Save/config·private 로그/PNG·기존 golden은 변경하지 않는다.
+
 ## PIERCE 빙의 해제 연결의 clean ARM64·기존 headless 회귀
 
 native 진입점 커밋 `43a78f2d37428c32d5992c543f177dcb963a804d`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품 build/Go 1.26.5/full revision/`vcs.modified=false`/help를 확인했다. 같은 제품의 일반/HD stock 비밀벽 두 대각선 방향은 각각 10관찰·합계 20개, 대검/Fireball/Magic Missile/상태효과는 각각 21/11/11/10결과·합계 106개다. 총 10 headless/mock 실행이 정상 exit 0이며 서버와 host-client의 벽 왕복/한 번의 열림 효과음, 양방향 마법 피해와 대상 상태효과 적용/해제를 관찰했다. source/remote revision과 stock 자산은 실행 전후 동일하다.

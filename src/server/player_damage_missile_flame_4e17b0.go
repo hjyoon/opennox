@@ -38,9 +38,11 @@ func playerDamageMissileFlameTail4E17B0(
 	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "missile FLAME armor durability callback", target, source, weapon, damage, typ)
 	}
-	*marker = 0
-	if weapon != nil && source != weapon {
-		*marker, *markerType = 1, uint32(weapon.TypeInd)
+	if runtime.playerPrefix == nil {
+		*marker = 0
+		if weapon != nil && source != weapon {
+			*marker, *markerType = 1, uint32(weapon.TypeInd)
+		}
 	}
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage, typ, runtime)
 	if *marker == 0 {

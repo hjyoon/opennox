@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## LookAtDirection의 clean ARM64 제품·선제공격 회귀 검증 완료
+
+source/origin이 일치하는 clean `89c367a97b5271383dda9fd73dc9319013738214`에서 일반·실제 highres·전용 server 3개를 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 검증이 통과했다. 아래 새 LookAt 54 leaf×5모드×3회=810 pass, 관련 1,515 pass, 전체 일반/strict·fresh server-tag 및 ARM64/i386 header 검사 결과를 유지한다. i386 header 타입 검사는 원본 Windows/386 runtime 검증과 구별한다.
+
+같은 새 일반/HD 제품에서 기존 public 무자극 선제공격 YAML을 각각 private Save/config/maps·headless/mock audio·override 없음으로 실행했다. Spider/Troll/Urchin/적대 NPC × ascending/descending × clear/off-ray-box 각 16조합, 합계 32조합 모두 exit 0이다. incoming-hit 없이 30..47 tick에 스스로 획득/FIGHT/첫 피해가 발생했고, 각 로그의 실제 server HP 감소와 정상 client 음수 delta도 일치했다. 새 private PNG 32개를 보존하고 일반 Troll(-31) 및 HD NPC(-7) 프레임을 직접 확인했다. 기존 YAML/PNG/golden과 자산을 바꾸지 않았다.
+
+제품 실행 전 code 2,935/data 638·strict NXZ 50쌍·stock 전 트리 검증 및 실행 후 stock 전 트리 재검증이 통과했다. 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`와 clean source/origin은 그대로다. 아래 LookAt 절의 clean 후속 대기는 이 결과로 완료했다. 실제 C entry와 SCRIPT03/CallByIndex 회귀로 보고된 포인터 절단을 검증했으며, 사용자 개인 map/dialog의 GUI 재실행·모든 campaign/미포팅 AI 및 무제한 ARM64 포팅 목표의 완료로 확대하지 않는다.
+
 ## LookAtDirection `005125A0`의 native 포인터 크래시
 
 사용자 로그의 object `0x7f3527bef8a0`가 `0x27bef8a8`에서 충돌하는 원인은 C 본체의 `int a1 = obj`였다. 수정 전 실제 Go→C wrapper에 4 GiB 위 C-owned object/update를 전달한 첫 방향 시험에서도 object `0x14b204090`→fault `0x4b204098` SIGSEGV를 재현했다. 기존 production 본체는 `nox_xxx_monsterLookAt_5125A0` 하나만 native Go bridge로 바꿨고, 기존 Go wrapper·C pointer 반환 ABI와 비활성 원본 C 본체는 유지했다. 다른 C 바이트는 header include 외 불변임을 비교했다.

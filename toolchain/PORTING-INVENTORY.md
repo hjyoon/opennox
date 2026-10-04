@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반 플레이어 ELECTRIC의 entry prefix 복원
+
+기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 복원한 Player/NPC source·unarmed/self-weapon·type 9/17의 eight-shape admission에서 빙의하지 않은 플레이어도 공통 prefix를 소비한다. 봉인된 `004E17B0`의 `004E18C4`는 cached marker를 항상 지우고 `004E18DD..004E18EB`만 ObserveClear를 조건부 호출한다. live Reflect 조회 → 공격 PrevPos snapshot → weapon 6개/source-only 4개 exclusion → distinct live type attribution → facing의 기존 순서를 유지하며 self-weapon/source-only 전기는 distinct attribution을 적용하지 않는다. ELECTRIC helper의 signed scale/carry·raw armor wear·minimum·Quest/God/DefaultDamage 숫자 계산은 변경하지 않는다.
+
+새 server 336개 leaf는 일반 prefix의 signed/zero/positive와 7개 방어 168개, callback 뒤 live update/cached marker 분리 48개, missing-service 48개, early-gate 40개, invalid live-record 32개다. ObserveClear가 nil인 일반 플레이어도 동작하고 Reflect 앞면 type 17만 먼저 차단하며 일반 방패/대검/지팡이는 전기를 막지 않는다. exclusion이 PrevPos/type을 바꿔도 기존 snapshot을 사용하고, replacement observer를 다시 해제하거나 live carry를 cached carry로 덮어쓰지 않는다. 필수 서비스 누락은 marker를 바꾸기 전에 거부하며 손상된 live class/nil update는 scale/default 전에 명시적으로 거부한다.
+
+최초 Coop fixture 네 경우는 Player owner-chain이 첫 Player에서 멈추는 계약을 잘못 준비한 실패였다. 이를 바로잡고 production 본체가 HEAD와 정확히 같은 상태에서 다시 실행한 baseline은 pass 72/fail 264이고, 복원 후 새 336개 모두 통과했다. 기존 shared test runtime은 실제 runtime에 있는 exclusion/facing 서비스를 제공하도록, 기존 Reflect 회귀는 current-position 반사와 previous-position 공통 facing의 정확한 호출 수를 검사하도록 교정했다. signed 회귀의 일반 경로도 exclusion/facing 순서를 검사한다. 새 contract fixture의 DefaultDamage 기록과 기존 실제 C-owned signed 전기 48회귀의 registered dispatcher·ObserveClear/CameraUnlock·native scale/protection·DefaultDamage/UnitSetHP 증거는 구별하며, 그 48개를 새 회귀로 세지 않는다.
+
+관련 root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle이 통과했다. 원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 유지한다. clean ARM64 3제품 및 기존 일반/HD 비밀벽·해머·Shock·duration-ray 8 headless 실행은 후속 검증이다.
+
+새 원본 byte/range/manifest·자산·golden을 추가하거나 변경하지 않는다. 개인 Save/config와 private 로그/PNG를 보존하고 공개하지 않는다. 아직 미복원인 다른 normal missile prefix·피해 분기·실제 GUI 빙의 입력·원격 client·원본 Windows runtime/물리 출력 전체는 별도 경계다.
+
 ## Signed ELECTRIC의 clean ARM64 제품·headless 완료
 
 native 진입 복원 `281168a7e320e5bbd65f550c9d94d6937f4b7521`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 signed/zero 진입 단위의 clean 제품/headless 후속 검증 대기를 완료한다. server 256/root C-owned 48의 signed API 검사를 stock-map 음수 피해 검증으로 확대하지 않는다.

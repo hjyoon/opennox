@@ -32,7 +32,7 @@ func signedElectricFixture4E17B0(t *testing.T, playerSource, selfWeapon, observe
 		target.UpdateData = unsafe.Pointer(live)
 	}
 	exclusion := func(v *Object) bool {
-		if !observed || v != source || cached.Field76 != 0 {
+		if v != source || cached.Field76 != 0 {
 			t.Fatal("signed electric exclusion lost the original attack or marker")
 		}
 		*events = append(*events, "exclude")
@@ -40,7 +40,7 @@ func signedElectricFixture4E17B0(t *testing.T, playerSource, selfWeapon, observe
 	}
 	r.BlockSourceExcluded, r.BlockSourceOnlyExcluded = exclusion, exclusion
 	r.BlockDirection = func(v *Object, pos types.Pointf) bool {
-		if !observed || v != target || pos != source.PrevPos || cached.Field76 != 0 {
+		if v != target || pos != source.PrevPos || cached.Field76 != 0 {
 			t.Fatal("signed electric direction lost the prefix snapshot")
 		}
 		*events = append(*events, "direction")
@@ -115,9 +115,9 @@ func TestPlayerDamageSignedElectric4E17B0(t *testing.T) {
 					h, result := PlayerDamageNative4E17B0(target, source, weapon, tc.raw, typ, r)
 					var want []string
 					if observed {
-						want = append(want, "observe", "exclude", "direction")
+						want = append(want, "observe")
 					}
-					want = append(want, "scale")
+					want = append(want, "exclude", "direction", "scale")
 					if !tc.god {
 						if tc.quest {
 							want = append(want, "Quest")
@@ -270,9 +270,9 @@ func TestPlayerDamageSignedElectricArmor4E17B0(t *testing.T) {
 					h, result := PlayerDamageNative4E17B0(target, source, weapon, raw, typ, r)
 					var want []string
 					if observed {
-						want = append(want, "observe", "exclude", "direction")
+						want = append(want, "observe")
 					}
-					want = append(want, "scale", "armor lookup", "armor defend", "armor damage", "report", "God")
+					want = append(want, "exclude", "direction", "scale", "armor lookup", "armor defend", "armor damage", "report", "God")
 					residual := float32(0.5)
 					if raw < 0 {
 						residual = 0

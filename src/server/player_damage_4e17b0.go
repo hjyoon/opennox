@@ -833,20 +833,21 @@ func PlayerDamageNative4E17B0(
 	flameMissile := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	explosionMissile := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
 	electricHit := playerDamageElectricShape4E17B0(source, weapon, typ)
-	if (pierceMissile || flameMissile || explosionMissile || electricHit) && player.ObserveTarget() != nil {
+	observe := player.ObserveTarget() != nil
+	if electricHit || ((pierceMissile || flameMissile || explosionMissile) && observe) {
 		excluded := runtime.BlockSourceExcluded
 		if weapon == nil {
 			excluded = runtime.BlockSourceOnlyExcluded
 		}
-		if runtime.ObserveClear == nil || excluded == nil || runtime.BlockDirection == nil || runtime.DefaultDamage == nil {
+		if (observe && runtime.ObserveClear == nil) || excluded == nil || runtime.BlockDirection == nil || runtime.DefaultDamage == nil {
 			reason := "missing possessed player missile prefix service"
 			if electricHit {
-				reason = "missing possessed player electric prefix service"
+				reason = "missing player electric prefix service"
 			}
 			return playerDamageUnsupported4E17B0(runtime, reason, target, source, weapon, damage, typ)
 		}
 		if electricHit && (runtime.ElectricArmorScale == nil || !playerDamageArmorReady4E17B0(target, runtime)) {
-			return playerDamageUnsupported4E17B0(runtime, "missing possessed player electric armor service", target, source, weapon, damage, typ)
+			return playerDamageUnsupported4E17B0(runtime, "missing player electric armor service", target, source, weapon, damage, typ)
 		}
 		if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 			return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
@@ -854,10 +855,13 @@ func PlayerDamageNative4E17B0(
 		runtime.playerPrefix = &playerDamagePrefix4E17B0{
 			update: update, armorFlags: greatSword.armorFlags, weaponFlags: greatSword.weaponFlags,
 		}
-		// 004E18C4 clears only the cached marker. ObserveClear can change
-		// the live update/player/buffs; absorption and marker base stay cached.
+		// 004E18C4 clears the cached marker even without possession, before
+		// Reflect or exclusion/facing callbacks. ObserveClear is conditional;
+		// it can change live records while the marker base stays cached.
 		update.Field76 = 0
-		runtime.ObserveClear(target)
+		if observe {
+			runtime.ObserveClear(target)
+		}
 		if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
 			return playerDamageUnsupported4E17B0(runtime, "unsupported live possessed player record", target, source, weapon, damage, typ)
 		}

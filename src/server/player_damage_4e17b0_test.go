@@ -32,15 +32,18 @@ func playerDamageFixture4E17B0(t *testing.T) (*Object, *Object, unsafe.Pointer) 
 func playerDamageRuntime4E17B0(t *testing.T, sound unsafe.Pointer, damages *[]int32) PlayerDamageRuntime4E17B0 {
 	t.Helper()
 	return PlayerDamageRuntime4E17B0{
-		Frame:              func() uint32 { return 700 },
-		QuestMode:          func() bool { return false },
-		QuestDamageScale:   func() float32 { return 1 },
-		GodMode:            func() bool { return false },
-		IsEnemy:            func(*Object, *Object) bool { return true },
-		BuffOff:            func(*Object, EnchantID) {},
-		ItemArmorValue:     func(*Object) float32 { return 0.01 },
-		FireProtection:     func(*Object) float64 { return 0 },
-		PlayerDamageSoundC: sound,
+		Frame:                   func() uint32 { return 700 },
+		QuestMode:               func() bool { return false },
+		QuestDamageScale:        func() float32 { return 1 },
+		GodMode:                 func() bool { return false },
+		IsEnemy:                 func(*Object, *Object) bool { return true },
+		BuffOff:                 func(*Object, EnchantID) {},
+		ItemArmorValue:          func(*Object) float32 { return 0.01 },
+		FireProtection:          func(*Object) float64 { return 0 },
+		PlayerDamageSoundC:      sound,
+		BlockSourceExcluded:     func(*Object) bool { return false },
+		BlockSourceOnlyExcluded: func(*Object) bool { return false },
+		BlockDirection:          func(*Object, types.Pointf) bool { return false },
 		DamageClear: func(target *Object, damage int32) {
 			*damages = append(*damages, damage)
 			if int32(target.HealthData.Cur) <= damage {

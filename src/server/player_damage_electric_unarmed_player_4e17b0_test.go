@@ -84,10 +84,19 @@ func TestPlayerDamageNative4E17B0UnarmedPlayerElectricReflect(t *testing.T) {
 				r := playerDamageRuntime4E17B0(t, nil, &damages)
 				r.ElectricArmorScale = func(*Object) float32 { return 1 }
 				reflected, calls := false, 0
+				reflectFacing, prefixFacing := 0, 0
 				r.BlockDirection = func(got *Object, position types.Pointf) bool {
-					if typ != object.DamageAirborneElectric || got != target || position != source.PosVec {
+					if got != target || target.UpdateDataPlayer().Field76 != 0 {
+						t.Fatal("nil-weapon facing preceded the electric marker reset")
+					}
+					if position == source.PrevPos {
+						prefixFacing++
+						return false
+					}
+					if typ != object.DamageAirborneElectric || position != source.PosVec {
 						t.Fatal("nil-weapon Reflect facing")
 					}
+					reflectFacing++
 					return front
 				}
 				r.Audio = func(id int, got *Object) {
@@ -106,6 +115,16 @@ func TestPlayerDamageNative4E17B0UnarmedPlayerElectricReflect(t *testing.T) {
 				wantReflect := front && typ == object.DamageAirborneElectric
 				if handled, result := PlayerDamageNative4E17B0(target, source, nil, 8, typ, r); !handled || result == wantReflect || reflected != wantReflect {
 					t.Fatalf("reflection=%t/%t audio=%t want=%t", handled, result, reflected, wantReflect)
+				}
+				wantReflectFacing, wantPrefixFacing := 0, 1
+				if typ == object.DamageAirborneElectric {
+					wantReflectFacing = 1
+				}
+				if wantReflect {
+					wantPrefixFacing = 0
+				}
+				if reflectFacing != wantReflectFacing || prefixFacing != wantPrefixFacing {
+					t.Fatalf("nil-weapon facing calls Reflect/prefix=%d/%d", reflectFacing, prefixFacing)
 				}
 				marker, rawType, residual := playerDamageElectricSelfMetadata4E17B0(target)
 				if wantReflect {

@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반 equipped 근접 prefix의 clean ARM64 제품·headless 완료
+
+native entry 커밋 `e3fef45500f70c0b6682fbd737f3ed73158424c7`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. AST body 비교로 기존 production 본체 변경이 `PlayerDamageMeleeNative4E17B0` 하나임을 확인했다. 아래 일반 equipped melee entry의 clean 제품/headless 후속 대기를 완료했다. 새 server contract 1,154개는 wear/default 전달값과 호출 순서를 기록하며 실제 HP를 바꾸지 않는 경계 검사이고, 기존 native C dispatcher 회귀 및 아래 실제 stock-map HP 관찰과 구별한다.
+
+기존 공개 YAML의 일반/HD headless/mock 14실행은 모두 정상 exit 0이다. 각 제품 stock G_Crypts의 `(91,71)` dir=1·`(111,57)` dir=0 비밀벽을 실제 이동 접촉으로 열어 state 1→4→3·delay 1..23 mask `0xfffffe`·열림 효과음 한 번·server/client 양방향 통과 및 열린 상태 유지 10관찰, 합계 20개를 확인했다. wall 결과 state/flags·속도/force·피해 주입이나 golden 수정은 하지 않았다. 해머 두 cycle은 각 제품 두 대상 HP `2000→1872→1747`·animation 39·quake·효과음·무기 유지·자연 완료가 통과했다. 나무 지팡이 및 맨손은 각 제품에서 Spider HP 80→0을 한 회씩 확인했다.
+
+Fist는 각 제품 양방향 1..5레벨의 실제 명중·client 피해 표시·world/owned/drawable 자연 제거 10회씩을 확인했다. Player→NPC 피해 50/100/200/300/400 및 NPC→Player 피해 44/89/177/265/354는 아래 이전 단위와 동일하다. 대검은 각 제품 앞면 11/후면 10, 합계 21개의 기존 missile 방어 회귀가 통과했으며 이것을 새 일반 melee prefix의 실제 대검·지팡이 막기 전체 검증으로 확대하지 않는다. Spider의 자율 실제 근접 공격에서도 각 제품 shield HP `200→188`·carry `0→0`·player HP `150→148`·state 16·front 1을 관찰했다. shield wear 경로가 유지되었지만 해당 scene을 플레이어 완전 무피해의 증거로 삼지 않는다.
+
+14실행에 크래시·미복원 피해 경로·E2E 실패는 없었고 실행 전후 source/remote revision과 원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`가 불변이다. 이 완료 기록은 문서만 변경한다. private 로그/PNG·원본 자산은 공개하지 않고 개인 Save/config와 격리 runtime을 보존한다. GUI 빙의 입력·모든 자율 NPC 근접 막기·원격 client·외부 listing 조회·원본 Windows runtime·물리 화면/스피커 전체는 별도 경계로 유지한다.
+
 ## 일반 플레이어 방패·무기 근접 막기의 공통 entry prefix 복원
 
 기존 production 본체는 `PlayerDamageMeleeNative4E17B0` 하나만 변경했다. 앞 단위의 no-block/빙의 연결에 이어, entry shield `0x3000000` 및 BLADE GreatSword/staff mask가 있는 일반 플레이어도 같은 prefix를 소비한다. 기존 Player/NPC source의 Sword·MorningStar·WarHammer·WoodenStaff·unarmed CLAW/CRUSH·unit-owned SIMPLE Fist 14개 shape admission, NPC 본체와 피해 수식은 유지한다. helper의 missing-item 주석만 실제 admission 단계에 맞췄으며 다른 production 본체는 바꾸지 않았다.

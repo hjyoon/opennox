@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## LookAtDirection `005125A0`의 native 포인터 크래시
+
+사용자 로그의 object `0x7f3527bef8a0`가 `0x27bef8a8`에서 충돌하는 원인은 C 본체의 `int a1 = obj`였다. 수정 전 실제 Go→C wrapper에 4 GiB 위 C-owned object/update를 전달한 첫 방향 시험에서도 object `0x14b204090`→fault `0x4b204098` SIGSEGV를 재현했다. 기존 production 본체는 `nox_xxx_monsterLookAt_5125A0` 하나만 native Go bridge로 바꿨고, 기존 Go wrapper·C pointer 반환 ABI와 비활성 원본 C 본체는 유지했다. 다른 C 바이트는 header include 외 불변임을 비교했다.
+
+원본 GAME.EXE `005125A0`를 읽기 전용으로 대조해 direction mapping→class 저위 byte→Dead gate→cos/X와 sin/Y 각각의 최종 binary32 spill→FACE_LOCATION push→X/Y arg store 순서를 보존했다. 좌표는 기존 action 취소 전에 계산하고, WAIT를 비우거나 방향을 즉시 대입하지 않는다. full/dead stack의 push 거절, gate의 angle residual·성공한 native action 주소·거절 0을 구별한다. 임의 modulo/clamp나 null 선행 성공을 만들지 않으며 새 원본 byte/range/manifest는 추가하지 않았다.
+
+새 54 leaf는 Go 계약 15개, 실제 C-owned wrapper/entry/return/회전 완료 21개와 real SCRIPT03 reader→CallByIndex→builtin 13→LookAtDirection의 Caller/Trigger×9방향 18개다. 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 합계 810 pass/fail·skip 0이며 관련 direction/face/walk/hunt 전체 1,515 leaf도 통과했다. 전체 일반/strict 및 fresh server-tag root/server/legacy, ARM64/i386 C header 타입 검사와 불변 oracle 검증을 통과했다. stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`·code 2,935/data 638·strict NXZ 50쌍은 불변이다. 개인 Save/config·기존 public YAML/PNG/golden/자산을 보존한다. 이 source의 clean ARM64 일반/HD/server 3제품 및 기존 무자극 선제공격 32조합은 커밋·push 뒤 별도 후속 검증한다. 원래 사용자 map/dialog의 GUI 전체 재현이나 모든 미포팅 AI 완료로 확대하지 않는다.
+
 ## 선제공격 AI의 clean ARM64·일반/HD 최종 검증 완료
 
 source/remote가 일치하는 clean `3e3180d998718729f85e73c130ecf069d5970605`에서 일반·실제 highres·전용 server 3개를 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 검증이 통과했다. 아래 여섯 production 복원과 stock 무자극 observer를 포함한 관련 5모드×3회·전체 일반/strict·fresh server-tag·원본 monster.bin 5모드×3회 결과를 유지하며, 제품 검증을 진단 overlay 실행과 구별한다.

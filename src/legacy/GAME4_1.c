@@ -22,6 +22,7 @@
 #include "server__gamemech__explevel.h"
 #include "server__magic__plyrspel.h"
 #include "server__system__trade.h"
+#include "monster_look_at_5125a0.h"
 #include "unit_hunt_5157a0.h"
 
 #include "client__gui__window.h"
@@ -3471,6 +3472,13 @@ intptr_t sub_511E20(void) {
 
 //----- (005125A0) --------------------------------------------------------
 float* nox_xxx_monsterLookAt_5125A0(nox_object_t* obj, int a2) {
+	return (float*)nox_server_monster_look_at_5125a0(obj, a2);
+}
+
+#if 0
+// Original PE32 body retained as provenance. The active native-width bridge
+// preserves the angle/action residual result without truncating either pointer.
+float* nox_xxx_monsterLookAt_5125A0(nox_object_t* obj, int a2) {
 	int a1 = obj;
 	float* result; // eax
 	int v3;        // edx
@@ -3492,6 +3500,7 @@ float* nox_xxx_monsterLookAt_5125A0(nox_object_t* obj, int a2) {
 	}
 	return result;
 }
+#endif
 
 //----- (00514110) --------------------------------------------------------
 #if 0

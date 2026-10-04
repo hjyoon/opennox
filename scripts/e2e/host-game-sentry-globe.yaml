@@ -1,0 +1,85 @@
+# A normally initialized stock SentryGlobe, enabled through its public API.
+# Placement/durable HP/waiting AI are fixtures. Real stock update ticks must
+# damage Player/NPC/Troll, normally network and render the stock beam, and
+# stop when disabled. No hit, damage callback, packet or pixel is injected.
+# This does not prove original campaign placement or possession input.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-sentry-globe
+    text: world-to-player
+    name: World Sentry against Player
+  - action: check-sentry-globe
+    text: world-to-npc
+    name: World Sentry against NPC
+  - action: check-sentry-globe
+    text: world-to-monster
+    name: World Sentry against Troll
+  - action: check-sentry-globe
+    text: player-to-npc
+    name: Player owned Sentry against NPC
+  - action: check-sentry-globe
+    text: npc-to-player
+    name: NPC owned Sentry against Player
+  - action: check-sentry-globe
+    text: npc-to-monster
+    name: NPC owned Sentry against Troll
+  - action: quit
+    dt: 1

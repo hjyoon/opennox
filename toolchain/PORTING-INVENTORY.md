@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 Sentry 피해·network 광선·비활성화·삭제 observer
+
+기존 production 본체는 `e2eScenario.Load`의 새 `check-sentry-globe` dispatch 하나만 변경했다. 새 bounded observer/YAML은 stock Sentry를 public Enable로 켜고 실제 update→HP→hit audio→정상 client damage packet→기존 render→비활성화→DelayedDelete를 관측한다. world→Player/NPC/Troll, Player→NPC, NPC→Player 및 NPC→Player-owned Troll의 6조합을 구별한다. unowned NPC와 unowned 몬스터는 원래 ally이므로 마지막 조합은 정상 소환 소유권으로 적대 관계를 준비하고 검증한다. Spider의 Short/regular-game 제외 gate는 보존했으며 결과용 damage/marker/endpoint/packet/버프/pixel을 주입하지 않는다. Monster Injured는 normal update가 같은 tick에 소비하므로 실제 hit audio에서 관측한다. 준비·짧은 실제 피해 대기·client 대기·종료 대기는 각각 명시된 timeout이 있다.
+
+최종 새 17 observer leaf(6 schedule·3 invalid mode·7 read-only pixel 경계·1 YAML dispatch)는 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 합계 255 pass/fail·skip 0이다. 전체 일반/strict·fresh server-tag root/server/legacy·불변 oracle도 통과했다. 최종 진단 headless/mock은 6조합 각각 실제 HP 20000→19500, client -500, 원본 beam color `0x7f3f` 32 pixel, marker 2/16 또는 1/live Sentry type, armor/carry 보존, 정상 비활성화 30 tick 뒤 queue/pixel 0, ordinary 삭제를 통과했다. 원본 framebuffer의 fresh private PNG도 직접 확인했고 golden 합격으로 세지 않았다. 초기 fixture 실패(초기 보호 버프, 자연 재생, 일시적 Injured 관측 시점, Short 대상, ally 소유권)는 성공 실행 수에 합치지 않는다. clean 일반/highres/server 3제품과 일반/HD 전체 6조합은 커밋·push 뒤 별도 검증한다. 특정 campaign의 설치 위치·GUI 빙의 입력·원격/Windows runtime 또는 모든 마법을 이 증거로 확대하지 않는다.
+
 ## Sentry 정상 삭제 시 native 광선 목록의 해제 포인터 제거
 
 기존 production 본체는 `serverObjects.FreeObject` 하나만 변경했다(AST 나머지 본체 불변). 정상 삭제 예약은 Destroyed를 먼저 세우고 update loop는 그 오브젝트를 건너뛰므로, Sentry update 안의 목록 제거만으로는 충분하지 않았다. 격리 headless에서 실제 `DelayedDelete` 후 network sender가 allocator poison `0xacacacacacacacb0`을 읽는 크래시를 재현했다. 메모리 반환 전에 현재 native Sentry 목록의 membership을 확인하고 기존 remove를 호출한다. FlagMarked만 검사하지 않아 map reset 뒤 남은 marker와 다른 클래스의 marker를 오인하지 않으며 next/previous·head·Alive·NetCode 계약을 유지한다.

@@ -9921,6 +9921,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckFistUnitDamage(l.Count, l.Text, l.Name)
+		case "check-sentry-globe":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckSentryGlobe(l.Text, l.Name)
 		case "check-fireball-unit-damage":
 			if dt != 0 {
 				sc.Wait(dt, "")

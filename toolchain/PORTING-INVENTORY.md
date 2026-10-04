@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 무자극 선제공격 AI 검토·stock observer
+
+시야 갱신 → seen/current/preferred 선택 → Idle/MainAI/action stack → Guard/escort/roam/hunt/FIGHT → 근접·원거리·주문 실행을 원본과 대조했다. 내려가는 대각선을 Canon으로 반전시킨 시야/원거리 obstacle ray와 선분 cross-product의 조기 반올림, stock Troll의 self-MONSTER IMPACT 거부를 앞선 여섯 단위에서 수정했다. passive/neutral/ally·blind/invisible·벽/문·conversation/retreat/food 등의 기존 경계를 유지한다. 특수 MainAI buff/spell preemption 및 block/dodge의 미포팅 64-bit 보수적 fallback은 남으며, 일반 Idle/FIGHT 실행까지 중단하는 gate는 아니다. 모든 특수 AI·모든 campaign 맵의 동등성으로 확대하지 않는다.
+
+이번 기존 production 본체 변경은 `e2eScenario.Load`의 새 `check-ai-first-attack` dispatch뿐이다. 새 observer/YAML은 stock Spider/Troll/Urchin/적대 NPC × ascending/descending × clear/off-ray-box 16조합을 준비한다. 독립 wall trace·보수적 prop bounds로 lane을 선택하고, normal NPC aggression/equipment 설정 외 enemy/current/preferred/seen/FIGHT/Injured·damage·packet·pixel을 주입하지 않는다. 피해를 받기 전에 스스로 플레이어를 획득하고 FIGHT에 들어가 실제 server HP와 정상 client 피해 표시가 감소하는지 관측한다. 원거리 missile과 NPC 장비는 살아 있을 때 확인한 정확한 identity로 attribution하며, 삭제된 missile을 나중에 역참조하지 않는다. stock 독은 assertion 뒤 정상 cure하고 오브젝트도 ordinary 삭제한다.
+
+새 45 observer leaf는 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 합계 675 pass/fail·skip 0이다. 관련 AI/시야/피해 root/server/legacy 전체도 같은 5모드·3회, 전체 일반/strict 및 fresh server-tag 시험이 통과했다. 환경 미지정으로 skip된 기존 monster.bin 외부 시험은 원본 stock 파일을 지정한 별도 5모드·3회로 보완했고 Solo/Arena 로더 15 pass/fail·skip 0이다. oracle code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다.
+
+최종 진단 headless/mock의 16조합은 모두 무자극 획득/공격·실제 HP/client 음수 delta를 통과했다. 초기 Urchin observer가 Obj130을 무조건 공격 unit으로 기대한 실패는 원본 DefaultDamage의 nonnil weapon 우선 attribution에 맞춰 NPC equipped weapon/관측 owned missile identity를 검사하도록 바로잡았으며 production 피해·원본·golden을 바꾸지 않았다. 기존 public YAML/PNG/golden/oracle·개인 Save/config·자산은 그대로이고 새 전용 YAML만 추가했다. AST에서 Load 외 기존 production 본체 불변을 확인했다. 이 source 커밋의 clean ARM64 일반/HD/server 3제품, 일반/HD 각 16조합 및 기존 비밀벽/Fist/Spider shield/Urchin 8 headless 회귀는 커밋·push 뒤 별도 후속 검증한다.
+
 ## NPC PlayerDamage의 self-MONSTER IMPACT entry
 
 기존 production 본체는 `playerDamageMonster4E17B0` 하나만 변경했다. stock Troll의 자신을 source/weapon으로 함께 전달하는 nonmissile type 11을 cached NPC marker clear → PrevPos snapshot → 한 번의 exclusion/facing → 기존 새 full-armor helper에 연결했다. NPC action·cached equipment·live carry/inventory를 구별하고, unused Default 서비스가 없는 shield/GreatSword/staff의 정상 block도 처리한다. self-weapon에 distinct missile marker/반사/소유권 변경을 넣지 않으며, signed/zero 입력·wear 뒤 God의 live Player gate·Quest·Default 순서를 유지한다.

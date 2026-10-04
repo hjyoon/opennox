@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## PIERCE 빙의 해제 연결의 clean ARM64·기존 headless 회귀
+
+native 진입점 커밋 `43a78f2d37428c32d5992c543f177dcb963a804d`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품 build/Go 1.26.5/full revision/`vcs.modified=false`/help를 확인했다. 같은 제품의 일반/HD stock 비밀벽 두 대각선 방향은 각각 10관찰·합계 20개, 대검/Fireball/Magic Missile/상태효과는 각각 21/11/11/10결과·합계 106개다. 총 10 headless/mock 실행이 정상 exit 0이며 서버와 host-client의 벽 왕복/한 번의 열림 효과음, 양방향 마법 피해와 대상 상태효과 적용/해제를 관찰했다. source/remote revision과 stock 자산은 실행 전후 동일하다.
+
+이번 기록은 문서만 변경하며 아래 entry의 clean 후속 대기를 마무리한다. 기존 회귀를 새로운 GUI 빙의 입력 검증으로 세지 않고, 빙의 prefix의 증거는 별도 native C 경계·교체 ObserveClear alias/order 검사와 구분한다. 전후 oracle의 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 개인 Save/config·원본 자산·private 로그/PNG·기존 golden을 변경하거나 공개하지 않는다. 다른 빙의 피해 분기·경쟁 모드 death·원격 client/물리 화면·원본 Windows runtime 전체는 여전히 별도다.
+
 ## 빙의 상태의 player missile PIERCE 진입점 복원
 
 함수별 준비 변경을 `PlayerDamageNative4E17B0` 한 기존 production 본체에 연결했다. 기존 PIERCE admission과 같은 unit source·distinct stock/pure missile 범위에서 update/equipment/absorption을 캐시하고 marker를 지운 뒤 ObserveClear를 한 번 실행한다. 해제 후 Reflect Shield 조회·current-position 방향 판정이 먼저이며, 반사되지 않은 경우 previous-position snapshot과 cached marker/type을 유지한 채 방패·대검이 하나의 exclusion/facing 결과를 소비한다. HP fractional carry·durability denominator는 live update를 사용한다. missing service는 진입 전에 거부하고 해제 후 손상된 live record도 PE32 fallback 없이 거부한다. 아직 미복원인 빙의 melee·FLAME·EXPLOSION 등을 이 admission에 추가하지 않는다.

@@ -288,7 +288,7 @@ func TestDefaultDamageWorld4E0B30ZapRayMissingServices(t *testing.T) {
 }
 
 func TestDefaultDamageWorld4E0B30ZapRayKeepsShapeBoundary(t *testing.T) {
-	for _, invalid := range []string{"nil source", "nil ray", "distinct world source", "nil unit update", "mixed source weapon", "no simple", "no immobile", "weapon ray", "wand ray", "missile ray", "unit ray", "wrong type", "player target"} {
+	for _, invalid := range []string{"nil source", "nil ray", "distinct world source", "nil unit update", "mixed source weapon", "no simple", "no immobile", "weapon ray", "wand ray", "missile ray", "unit ray", "wrong type", "player without update"} {
 		t.Run(invalid, func(t *testing.T) {
 			target, source, ray := defaultDamageZapRayFixture4E0B30(t, "Player", 0x202)
 			typ := object.DamageZapRay
@@ -317,8 +317,11 @@ func TestDefaultDamageWorld4E0B30ZapRayKeepsShapeBoundary(t *testing.T) {
 				ray.ObjClass |= object.ClassMonster
 			case "wrong type":
 				typ = object.DamageManaBomb
-			case "player target":
+			case "player without update":
+				// Player ray tails are restored separately; missing native
+				// update data must still fail before any hit metadata/HP.
 				target = damageMeleeUnitFixture4E17B0(t, true)
+				target.UpdateData = nil
 			}
 			r := damageMeleeWorldRuntime4E0B30(t)
 			why := ""

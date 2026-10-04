@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Player 대상 ZAP_RAY DefaultDamage 의존 경로의 검증 범위
+
+기존 봉인 `004E0B30/004E1400`을 읽기 전용 대조하고 `DefaultDamageWorld4E0B30` 한 본체만 변경했다. SIMPLE·IMMOBILE non-unit/non-weapon/non-wand/non-missile ray와 world-self/Player/Monster source의 Player 대상 기본 피해를 복원하며 PlayerDamage 전용 입구는 변경하지 않는다. campaign gate·NoUpdate 앞 enemy 조회·PrevPos/Invisible·live late Defend·attribution/frame/sound·Vampirism·GameBall·live Player class/update/state의 hurt·source first-hit·live Shield·signed HP 순서를 검사한다. ray는 armor/carry/wear/elemental resistance/최소 1·Shock retaliation을 사용하지 않으며 DefaultDamage 자체는 Player hit marker/electric word를 초기화하지 않는다. late callback의 Player→NPC/non-unit 변경과 nil update/필수 hurt 서비스 부재도 사용 시점에 처리한다.
+
+새 server 계약 207개/root native 54개, 합계 261 leaf는 baseline pass 17/fail 244, 최종 다섯 모드 각 3회 합계 3,915 pass·fail/skip 0이다. native 시험은 기록 HP나 state callback 없이 실제 등록 C dispatcher/PlayerSetState/UnitDamageClear/UnitSetHP와 4 GiB 위 C-owned records를 사용했다. 세 source × 세 state × raw -7/0/1/19/20/500의 실제 HP `2000→2007/2000/1999/1981/1980/1500`, hurt frame/State2·state 1/15 보호·marker 88/77·electric word·armor 0.75·carry 0.125 및 source/ray/인접 필드 보존을 확인한다. signed 음수는 원본 API 계약이지 stock balance나 GUI ray/빙의 입력 증명이 아니다. 전체 일반/strict·fresh-process server-tag·oracle·AST/diff도 통과했다.
+
+새 원본 byte/range/manifest·C 코드·asset·golden·공개 YAML은 없고 code 2,935/data 638개·strict NXZ 50쌍·stock tree는 불변이다. 앞선 `7af0cfb3a`의 clean ARM64 3제품과 일반·HD 비밀벽/Fist/Spider/Urchin 8실행 후속 확인은 완료했다. 이 새 source의 clean 제품/8실행은 단위 계약과 분리해 커밋·push 뒤 검증한다. PlayerDamage ray 입구·실제 GUI/다른 마법 경계·기존 FlagBall Screen mismatch/중단된 입력은 남긴다. private 자료·원본·개인 Save/config는 변경하거나 공개하지 않는다. 상세 범위는 [포팅 인벤토리](../PORTING-INVENTORY.md)에 기록했다.
+
 ## NPC 전용 PlayerDamage ZAP_RAY의 검증 범위
 
 기존 봉인 `004E18D1..004E2098`을 읽기 전용으로 대조해 `playerDamageMonster4E17B0` 한 본체만 변경했다. SIMPLE·IMMOBILE non-unit/non-weapon/non-wand/non-missile ray의 world-self/Player/Monster source를 NPC 전용 entry에 연결하며 Player entry admission이나 다른 damage branch/helpers를 변경하지 않는다. cached marker clear·Reflect의 current Pos/FX/audio·PrevPos snapshot·exclusion/live type marker·한 번의 facing과 cached shield flags/live action/inventory 순서를 복원했다. audio/reflection 뒤 live class/subclass·balance 뒤 live shield를 읽고 사용 지점에서 필수 서비스와 layout을 검사한다. 비차단 case 16은 armor/electric/fire/carry/wear/hurt를 건너뛰고 cached marker fallback·God/live Player class·Quest binary32 scale/ties-to-even/minimum·기존 DefaultDamage tail을 사용한다.

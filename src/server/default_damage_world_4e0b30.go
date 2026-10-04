@@ -239,14 +239,14 @@ func DefaultDamageWorld4E0B30(
 	spellMissileExplosion := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
 	// Stock SentryGlobe is SIMPLE|IMMOBILE, not an electric spell or melee
 	// weapon. Its terminal owner can be the globe itself or a unit. Keep this
-	// new admission in the monster DefaultDamage tail, not PlayerDamage.
-	zapRay := monsterUpdate != nil && typ == object.DamageZapRay && weapon != nil &&
+	// admission in DefaultDamage; PlayerDamage retains its separate prefix.
+	zapRay := (monsterUpdate != nil || target.Class().Has(object.ClassPlayer)) && typ == object.DamageZapRay && weapon != nil &&
 		weapon.Class().Has(object.ClassSimple) && weapon.Class().Has(object.ClassImmobile) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
 		(source == weapon || (source != nil && source.UpdateData != nil &&
 			source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 			!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)))
-	playerTail := playerElectric || ((missilePierce || missileFlame || spellMissileExplosion || ordinaryMelee || simpleCrush) && target.Class().Has(object.ClassPlayer))
+	playerTail := playerElectric || ((missilePierce || missileFlame || spellMissileExplosion || ordinaryMelee || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -267,9 +267,13 @@ func DefaultDamageWorld4E0B30(
 			}
 		}
 	}
+	zapRayTarget := "monster"
+	if playerTail {
+		zapRayTarget = "player"
+	}
 	if zapRay {
 		if runtime.IsEnemy == nil {
-			return defaultDamageUnsupported4E0B30(runtime, "missing monster ZAP_RAY enemy service", target, source, weapon, damage, typ)
+			return defaultDamageUnsupported4E0B30(runtime, "missing "+zapRayTarget+" ZAP_RAY enemy service", target, source, weapon, damage, typ)
 		}
 		// 004E0C61 queries even for a non-melee ray before 004E0C94's
 		// NoUpdate check. 004E1400 rejects its class, so a false result does
@@ -305,7 +309,7 @@ func DefaultDamageWorld4E0B30(
 	}
 	if zapRay && (runtime.BuffOff == nil || runtime.DamageClear == nil ||
 		(source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)) {
-		return defaultDamageUnsupported4E0B30(runtime, "missing monster ZAP_RAY tail service", target, source, weapon, damage, typ)
+		return defaultDamageUnsupported4E0B30(runtime, "missing "+zapRayTarget+" ZAP_RAY tail service", target, source, weapon, damage, typ)
 	}
 	if missilePierce && ((source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil) || runtime.BuffOff == nil ||
 		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
@@ -653,11 +657,18 @@ func DefaultDamageWorld4E0B30(
 		if runtime.GameBallOnDamage != nil {
 			runtime.GameBallOnDamage(source, target, damage)
 		}
-		// 004E1147 reloads update data after damage sound, Vampirism and
-		// GameBall callbacks. Do not reuse the earlier electric-state address.
-		if damage >= 20 {
+		// 004E1136/004E1147 reload class/update after damage sound,
+		// Vampirism and GameBall. Neither entry class nor the earlier
+		// electric-state address owns the hurt-state decision.
+		if target.Class().Has(object.ClassPlayer) && damage >= 20 {
+			if target.UpdateData == nil {
+				return defaultDamageUnsupported4E0B30(runtime, "unsupported live player hurt update", target, source, weapon, damage, typ)
+			}
 			state := target.UpdateDataPlayer().State
 			if state != PlayerState1 && state != PlayerState15 {
+				if runtime.PlayerSetState == nil {
+					return defaultDamageUnsupported4E0B30(runtime, "unsupported live player hurt-state service", target, source, weapon, damage, typ)
+				}
 				_ = runtime.PlayerSetState(target, PlayerState30)
 			}
 		}

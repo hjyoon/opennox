@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## EXPLOSION 빙의 해제 prefix — player wrapper
+
+`playerDamagePlayerMissileExplosion4E17B0` 한 기존 본체만 소비한 prefix의 ObserveTarget 재조회를 생략한다. 두 unit owner·direct/splash 네 회귀에서 교체된 live update의 새 관찰 대상·방패를 다시 선택하지 않으며 cached absorption 0.25·live carry 0.5→0.25·실제 HP 200→196·cached/live marker 분리를 확인했다. 수정 전 네 경우 모두 명시적 빙의 거부 red였다. 관련 server PlayerDamage/DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회가 통과했다. entry 연결은 후속이며 원본 자산·개인 파일은 유지한다.
+
 ## EXPLOSION 빙의 해제 prefix — absorption durability tail
 
 기존 production 본체는 `playerDamageMissileExplosionTail4E17B0` 하나만 변경했다. 이미 소비한 prefix의 cached marker/type을 다시 초기화하지 않는다. 두 unit owner·direct/splash·marker 유지/삭제/교체 12회귀에서 cached absorption 0.25·live carry 0.5→0.25·live armor denominator 0.5, armor HP 30→29와 armor callback 뒤 marker fallback·GodMode→live Quest→DefaultDamage·실제 HP 200→198을 확인했다. 수정 전 direct 여섯 경우는 type 777을 현재 missile type 697로 덮어썼다. 관련 server PlayerDamage/DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회가 통과했다. wrapper/entry 연결은 후속이며 원본 자산·개인 파일은 유지한다.

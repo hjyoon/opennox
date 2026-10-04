@@ -100,7 +100,7 @@ func playerDamagePlayerMissileExplosion4E17B0(
 	if applicable, h, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return h, result
 	}
-	if update.Player.ObserveTarget() != nil {
+	if runtime.playerPrefix == nil && update.Player.ObserveTarget() != nil {
 		return playerDamageUnsupported4E17B0(runtime, "possessed player missile EXPLOSION", target, source, weapon, damage, typ)
 	}
 	return playerDamageMissileExplosionTail4E17B0(target, source, weapon, &update.Field76, &update.Field75, armorValue, damage, typ, runtime)

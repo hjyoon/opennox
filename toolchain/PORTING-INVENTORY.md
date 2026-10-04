@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## PIERCE 빙의 해제 prefix — armor/carry/Quest tail
+
+기존 production 본체는 player missile PIERCE tail 하나만 변경했다. 이미 소비한 prefix에서 ObserveTarget 재조회와 missile marker/type 재저장을 생략한다. entry absorption을 유지하면서 `004E20F0`의 live update carry와 `004E2180`의 live armor denominator를 읽고, armor callback이 marker를 지웠을 때만 cached update에 raw type fallback을 쓴다. Quest flag는 원본 `004E2046`처럼 wear·positive minimum·GodMode 뒤에 읽는다. 해제 후의 두 update/carry·armor 값 trap과 marker 유지/삭제 회귀는 수정 전 빙의 거부 red, 수정 후 live HP carry 0.5→0.25·armor carry 0.5→0·armor HP 30→29·후속 Quest 활성화/배율·실제 DefaultDamage HP 20→18 순서를 확인했다.
+
+관련 PlayerDamage/DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회가 통과했다. entry가 prefix를 실행하는 마지막 별도 본체 연결은 다음 단위다. 원본 code/data range·stock tree·개인 Save/config·기존 golden은 유지하며 이 직접 helper 검사를 GUI 증거로 확대하지 않는다.
+
 ## PIERCE 빙의 해제 prefix — GreatSword
 
 기존 production 본체는 GreatSword missile block helper 하나만 변경했다. 소비한 prefix가 있으면 새 live PlayerInfo/ObserveTarget을 다시 요구하지 않고 캐시된 update의 자세를 읽으며, exclusion/facing 전에 저장한 marker/type을 재설정하지 않는다. live update의 자세가 16이고 player-info가 nil이거나 새 관찰 대상을 가져도 원래 cached 자세 13의 대검 반사는 수행된다. state 변경 서비스와 block durability의 live inventory 조회는 원래 순서로 유지한다. 두 교체 trap은 수정 전 명시적 거부 red, 수정 후 cached update 전체 불변·live marker 보존·반사/owner/audio/RNG/live 자세/balance/wear 순서를 확인했다.

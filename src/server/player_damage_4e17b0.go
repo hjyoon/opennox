@@ -695,17 +695,16 @@ func playerDamageMissilePierce4E17B0(
 	target, source, weapon *Object, update *PlayerUpdateData, armorValue float32,
 	damage int32, typ object.DamageType, runtime PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
-	quest := runtime.QuestMode != nil && runtime.QuestMode()
 	if runtime.DefaultDamage == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing default damage service", target, source, weapon, damage, typ)
 	}
-	if quest && runtime.QuestDamageScale == nil {
+	if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
 	if applicable, h, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 		return h, result
 	}
-	if update.Player.ObserveTarget() != nil {
+	if runtime.playerPrefix == nil && update.Player.ObserveTarget() != nil {
 		// Possession can replace the live update/carry during ObserveClear.
 		// That prefix requires its own ordered native slice.
 		return playerDamageUnsupported4E17B0(runtime, "possessed player missile PIERCE", target, source, weapon, damage, typ)
@@ -718,9 +717,11 @@ func playerDamageMissilePierce4E17B0(
 	if !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
-	update.Field76 = 0
-	update.Field76 = 1
-	update.Field75 = uint32(weapon.TypeInd)
+	if runtime.playerPrefix == nil {
+		update.Field76 = 0
+		update.Field76 = 1
+		update.Field75 = uint32(weapon.TypeInd)
+	}
 	live.Field21 = math.Float32bits(accumulated - float32(effective))
 	playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, runtime)
 	if update.Field76 == 0 {
@@ -733,7 +734,10 @@ func playerDamageMissilePierce4E17B0(
 	if runtime.GodMode != nil && runtime.GodMode() {
 		return true, true
 	}
-	if quest {
+	if runtime.QuestMode != nil && runtime.QuestMode() {
+		if runtime.QuestDamageScale == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
+		}
 		before := effective
 		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
 		if before > 0 && effective < 1 {

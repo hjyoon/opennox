@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 물약 슬롯의 clean ARM64·headless 후속 검증 완료
+
+production 수정 `33455b10b2c4e9ca8b51c2ba1e84ab952ad7052c`와 remote가 일치하는 clean source에서 일반·실제 highres·전용 server 3제품의 Mach-O arm64/Go 1.26.5/full revision/`vcs.modified=false`/help 및 불변 oracle을 확인했다. 일반·HD의 실제 stock inventory/아이콘 촬영과 기존 공개 poison/tube YAML의 byte-identical private 사본, 총 4개 headless/mock 실행이 exit 0으로 완료됐다. 개인 Save/config 및 원본·공개 PNG/YAML/manifest는 격리·보존했다. 새 Screen을 missing baseline 합격으로 세지 않고 아래 독립 decoded pixel 비교를 사용했다.
+
+수정 전후 일반/HD 1024×768 PNG 각각의 decoded pixel이 일치하고, 빈 슬롯 화면도 전후 전체 일치한다. stock 세 28×30 child rectangle 밖의 모든 pixel은 동일하며 바뀐 것은 해독 187/체력 172/마나 251, 합계 610 pixel뿐이다. 각 액체색 148/149/160 pixel과 실제 변경 bounds `(942,737)..(959,760)` / `(970,737)..(987,760)` / `(998,737)..(1016,760)`를 확인했다. 실제 server/client 수량 1/3/2, native 창·drawable·stock bag 이미지로 렌더링된 세 아이콘이 단축키 위에 나타난다. 수정 후 두 PNG의 SHA-256은 `72341e4da9935b1a47ba0c6cabe2668a1972bcd1bf90d2a3425a21581e4b25d8`이며 world·튜브·다른 HUD를 포함한 비슬롯 영역은 불변이다. 이것은 이미지 합성·masking·override가 아니다. 물약 소비 단축키 입력 전체를 이 화면 검증으로 증명하지 않으며 기존 소비/선택 코드는 변경하지 않았다.
+
+기존 poison 회귀는 두 제품 모두 실제 tube fill/overlay를 검사하고 health `37/75`, mana `75/150`의 partial bars·자연 독 tick `37→36`·해독제/마법/버섯의 poison `2→0`·해독제와 버섯 실제 소비·버섯 Confused 및 red/blue tube 복원을 확인했다. 아래 최종 소스 시험의 새 33 leaf×3회×5모드 = 495 pass/fail·skip 0, 전체 normal/strict·server-tag·oracle·기존 함수 하나의 변경 audit도 유지했다. 후속 대기였던 이 아이콘 단위는 완료했으며 본 기록은 production 본체를 더 변경하지 않는다. FlagBall 기존 색상 baseline 경계·GUI Sentry/빙의·모든 마법·원격/Windows runtime 및 전체 ARM64 포팅은 별도 남은 범위다.
+
 ## 우측 하단 물약 슬롯의 native viewport 복원
 
 기존 production 본체는 `nox_xxx_guiBottleSlotDrawFn_471A80` 하나만 변경했다. signature 및 함수 앞뒤의 byte-identical 비교로 다른 기존 C 본체·선언·producer·소비/단축키·아이템 선택 로직의 불변을 확인했다. 원본 GAME.EXE의 `00471A80..00471B90`을 읽기 전용으로 대조했다. `004714E0`가 소유하는 `5D4594+1091908`의 13 DWORD/52바이트 화면 레코드를 ARM64 sprite renderer가 native 13필드/104바이트로 잘못 읽어, 1024×768의 체력 슬롯 `(981,748)`이 `(-43,1772)`로 계산됐다. 슬롯 draw 직전에 모든 13개 값을 local native viewport로 변환하며 좌표/크기/jiggle은 signed I32, 두 flags는 unsigned U32로 보존한다. 원본 레코드를 넓히거나 다음 global `+1091960`을 덮지 않고 borrowed callback의 변경도 원본에 전파하지 않는다. 빈 수량/없는 callback·536바이트 슬롯 stride·GUI drawable/type/flags·부모를 포함한 위치·draw 뒤 live 수량 재조회·font 높이·UTF16 단축키·return 1은 유지한다. Warrior의 원래 mana 슬롯 제외 조건도 변경하지 않는다.

@@ -49,8 +49,8 @@ func TestPlayerDamagePossessionPierce4E17B0(t *testing.T) {
 					if defense == "rear Reflect Shield" {
 						before = append(before, "direction")
 					}
-					if w != arrow || !reflect.DeepEqual(events, before) || cached.Field76 != 1 || cached.Field75 != 529 {
-						t.Fatal("exclusion must follow ObserveClear and missile attribution exactly once")
+					if w != arrow || !reflect.DeepEqual(events, before) || cached.Field76 != 0 || cached.Field75 != 77 {
+						t.Fatal("exclusion must follow ObserveClear before missile attribution exactly once")
 					}
 					events = append(events, "exclude")
 					arrow.TypeInd = 530
@@ -72,7 +72,7 @@ func TestPlayerDamagePossessionPierce4E17B0(t *testing.T) {
 						if defense == "rear Reflect Shield" {
 							before = []string{"observe", "direction", "exclude"}
 						}
-						if !reflect.DeepEqual(events, before) || pos != previousPosition {
+						if !reflect.DeepEqual(events, before) || pos != previousPosition || cached.Field76 != 1 || cached.Field75 != 530 {
 							t.Fatal("ordinary facing/prefix order, stale snapshot or duplicate call")
 						}
 					}
@@ -132,7 +132,7 @@ func TestPlayerDamagePossessionPierce4E17B0(t *testing.T) {
 				r.CanDamageBlockItem = func(item *Object) bool { return item == blockItem }
 				r.Melee.CanDamageBlockWeapon = r.CanDamageBlockItem
 				wear := func(item, v, a, w *Object, amount float32, typ object.DamageType) bool {
-					if item != blockItem || v != target || a != source || w != arrow || amount != 2.5 || typ != object.DamageImpale || cached.Field76 != 1 || cached.Field75 != 529 {
+					if item != blockItem || v != target || a != source || w != arrow || amount != 2.5 || typ != object.DamageImpale || cached.Field76 != 1 || cached.Field75 != 530 {
 						t.Fatal("block wear/cached marker")
 					}
 					events = append(events, "wear")
@@ -166,7 +166,7 @@ func TestPlayerDamagePossessionPierce4E17B0(t *testing.T) {
 					t.Fatalf("possession=%t/%t events=%v want=%v", handled, result, events, want)
 				}
 				if wantDamage {
-					if target.HealthData.Cur != 16 || !reflect.DeepEqual(*damages, []int32{4}) || live.Field21 != math.Float32bits(0.25) || cached.Field76 != 1 || cached.Field75 != 529 {
+					if target.HealthData.Cur != 16 || !reflect.DeepEqual(*damages, []int32{4}) || live.Field21 != math.Float32bits(0.25) || cached.Field76 != 1 || cached.Field75 != 530 {
 						t.Fatal("cached absorption/live carry/actual HP damage")
 					}
 				} else if target.HealthData.Cur != 20 || len(*damages) != 0 || live.Field21 != math.Float32bits(0.5) {
@@ -285,7 +285,7 @@ func TestPlayerDamagePossessionPierceSignedDamage4E17B0(t *testing.T) {
 					target.UpdateData = unsafe.Pointer(live)
 				}
 				r.BlockSourceExcluded = func(w *Object) bool {
-					if w != arrow || cached.Field76 != 1 || cached.Field75 != 529 {
+					if w != arrow || cached.Field76 != 0 || cached.Field75 != 77 {
 						t.Fatal("signed possession marker order")
 					}
 					events = append(events, "exclude")

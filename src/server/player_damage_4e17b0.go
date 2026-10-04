@@ -832,13 +832,21 @@ func PlayerDamageNative4E17B0(
 	pierceMissile := playerDamageMissilePierceShape4E17B0(source, weapon, typ)
 	flameMissile := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	explosionMissile := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
-	if (pierceMissile || flameMissile || explosionMissile) && player.ObserveTarget() != nil {
+	electricHit := damage > 0 && playerDamageElectricShape4E17B0(source, weapon, typ)
+	if (pierceMissile || flameMissile || explosionMissile || electricHit) && player.ObserveTarget() != nil {
 		excluded := runtime.BlockSourceExcluded
 		if weapon == nil {
 			excluded = runtime.BlockSourceOnlyExcluded
 		}
 		if runtime.ObserveClear == nil || excluded == nil || runtime.BlockDirection == nil || runtime.DefaultDamage == nil {
-			return playerDamageUnsupported4E17B0(runtime, "missing possessed player missile prefix service", target, source, weapon, damage, typ)
+			reason := "missing possessed player missile prefix service"
+			if electricHit {
+				reason = "missing possessed player electric prefix service"
+			}
+			return playerDamageUnsupported4E17B0(runtime, reason, target, source, weapon, damage, typ)
+		}
+		if electricHit && (runtime.ElectricArmorScale == nil || !playerDamageArmorReady4E17B0(target, runtime)) {
+			return playerDamageUnsupported4E17B0(runtime, "missing possessed player electric armor service", target, source, weapon, damage, typ)
 		}
 		if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 			return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
@@ -858,18 +866,19 @@ func PlayerDamageNative4E17B0(
 		return handled, result
 	}
 	if runtime.playerPrefix != nil {
-		// Direct hits snapshot the weapon and attribute it at 004E1AA2.
-		// Splash uses the source at 004E1ABE and only four exclusions;
-		// FLAME/EXPLOSION leave its marker clear until the switch fallback.
+		// 004E1A49 snapshots the weapon position before the six exclusions.
+		// Only afterwards does 004E1AA2 attribute a distinct live weapon.
+		// Source-only hits use four exclusions at 004E1ACE; self-weapon
+		// and source-only electric hits retain the clear cached marker.
 		attack, exclusion := weapon, runtime.BlockSourceExcluded
 		if attack == nil {
 			attack, exclusion = source, runtime.BlockSourceOnlyExcluded
 		}
 		pos := attack.PrevPos
-		if weapon != nil {
+		excluded := exclusion(attack)
+		if weapon != nil && source != weapon && target.Class().Has(object.ClassPlayer) {
 			update.Field76, update.Field75 = 1, uint32(weapon.TypeInd)
 		}
-		excluded := exclusion(attack)
 		front := !excluded && runtime.BlockDirection(target, pos)
 		// Both specialized defenses consume the original pair's answer;
 		// never invoke the external services twice or reset the prefix again.
@@ -893,7 +902,7 @@ func PlayerDamageNative4E17B0(
 		// positive-only minimum belongs after armor/carry at 004E2011.
 		return playerDamageMissilePierce4E17B0(target, source, weapon, update, pierceArmorValue, damage, typ, runtime)
 	}
-	if damage > 0 && playerDamageElectricShape4E17B0(source, weapon, typ) {
+	if (runtime.playerPrefix != nil && electricHit) || (damage > 0 && playerDamageElectricShape4E17B0(source, weapon, typ)) {
 		// Ordinary shield/sword blocks explicitly exclude type 9/17.
 		return playerDamageElectricPlayer4E17B0(target, source, weapon, damage, typ, runtime)
 	}

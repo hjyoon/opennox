@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 빙의 플레이어 ELECTRIC — native 진입점 연결
+
+기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 양의 type 9/17·두 unit source·unarmed/self-weapon admission을 cached marker clear → 실제 ObserveClear → live Reflect Shield 조회 → PrevPos snapshot → weapon 6개 또는 source-only 4개 exclusion → facing 한 번 → 기존 electric switch로 연결한다. self-weapon/source-only 전기는 marker=1을 만들지 않으며 일반 방패/대검/지팡이로 막히지 않는다. ObserveClear/facing 뒤 live class/nil update가 손상된 경우 electric scale/carry/default에 들어가지 않는다. prefix·electric armor·Quest의 필수 서비스가 없으면 marker/빙의 상태를 바꾸기 전에 명시적으로 거부한다. 아래 ELECTRIC helper의 public entry 연결 대기는 해소했다.
+
+공유 missile prefix도 원본 `004E1A49..004E1B40`의 snapshot → exclusion → distinct live weapon type attribution → facing 순서로 바로잡았다. 기존 PIERCE/FLAME/EXPLOSION possession 테스트가 exclusion 전 type을 기록한다고 잘못 기대하던 부분을 원본에 맞춰 교정했다. 이제 exclusion은 clear marker를 보며 이후 attribution은 callback 뒤의 type을 읽고 facing은 callback 전의 PrevPos snapshot을 사용한다. self-weapon에는 distinct attribution을 적용하지 않는다.
+
+새 server 176개 leaf 회귀는 두 unit source·unarmed/self-weapon·type 9/17의 방어/Reflect 추가·제거/4·6 exclusion 48개, missing-service 56개, early-gate 40개와 live-record guard 32개다. 수정 전 누락된 exclusion/facing, ObserveClear 전 Reflect 조회와 missing-service 뒤 prefix mutation을 재현했고 수정 후 통과했다. 새 root C-owned 8회귀는 4 GiB 초과 pointer와 실제 registered C dispatcher→PlayerDamage→root ObserveClear→C status 해제→CameraUnlock→normal player update 복원→DefaultDamage/UnitSetHP를 대체 callback 없이 실행한다. HP 60→54·carry 0.5→-0.5·marker 2/raw type·status 0x22→0x20·camera=nil·source attribution을 확인했으며 NPC source의 원래 first-hit frame latch 1400을 제외한 source record도 보존한다. 최초 DefaultDamage fixture의 필수 PlayerSetState 및 C-owned NPC first-hit frame 기대값은 원본 계약에 맞춰 교정했고 그 준비 실패를 production red로 세지 않는다.
+
+별도 JSON 결과는 server 176/root 8 leaf·실패 0이다. 관련 root/server/legacy PlayerDamage·DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle(code 2,935/data 638·strict NXZ 50쌍·stock tree 불변)이 통과했다. 이 synthetic C fixture를 stock-map/GUI 빙의 입력·status packet transport 검증으로 확대하지 않는다. clean ARM64 3제품·일반/HD 비밀벽/기존 마법/Shock·duration-ray headless 회귀는 후속 검증이다. 원본 자산·개인 Save/config·기존 golden은 유지하며 다른 미복원 피해 분기·경쟁 모드 death·원본 Windows runtime/물리 화면 전체는 별도다.
+
 ## ELECTRIC player tail — cached marker와 live carry 복원
 
 기존 production 본체는 `playerDamageElectricPlayer4E17B0` 하나만 변경했다. 이미 소비한 entry prefix의 cached marker/update를 다시 초기화하거나 새 live observer를 재해제하지 않는다. `004E1DF2`의 electric armor 조회 뒤 `004E20F0`처럼 live update의 소수점 carry를 읽고 쓴다. raw damage/original weapon을 사용하는 live armor wear와 cached marker fallback은 구별하며, fallback의 live Player class·GodMode flag→live class·wear 뒤 Quest 조회 순서를 원본 `004E1E23..004E2056`에 맞췄다. 잘못된 live class/nil update는 별도 미복원 레코드로 보고하여 PE32 fallback 없이 종료한다.

@@ -66,11 +66,14 @@ func TestPlayerDamagePossessionMagic4E17B0(t *testing.T) {
 					if defense == "rear Reflect Shield" {
 						before = append(before, "direction")
 					}
-					if w != missile || !slices.Equal(events, before) || cached.Field76 != prefixMarker || cached.Field75 != prefixType {
-						t.Fatal("exclusion preceded ObserveClear/attribution or ran twice")
+					if w != missile || !slices.Equal(events, before) || cached.Field76 != 0 || cached.Field75 != 77 {
+						t.Fatal("exclusion must follow ObserveClear before attribution exactly once")
 					}
 					events = append(events, "exclude")
 					missile.TypeInd++
+					if !splash {
+						prefixType = uint32(missile.TypeInd)
+					}
 					missile.PrevPos = types.Ptf(-72, 87)
 					return defense == "excluded shield"
 				}
@@ -92,7 +95,7 @@ func TestPlayerDamagePossessionMagic4E17B0(t *testing.T) {
 						if defense == "rear Reflect Shield" {
 							before = []string{"observe", "direction", "exclude"}
 						}
-						if !slices.Equal(events, before) || pos != previousPosition {
+						if !slices.Equal(events, before) || pos != previousPosition || cached.Field76 != prefixMarker || cached.Field75 != prefixType {
 							t.Fatal("ordinary facing lost its snapshot or ran twice")
 						}
 					}

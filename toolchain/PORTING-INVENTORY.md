@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반 no-block 근접 prefix의 clean ARM64 제품·headless 완료
+
+native entry 커밋 `4d63f443ba5bffa18bba193fe8616f9b41934653`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 일반 no-block melee entry의 clean 제품/headless 후속 대기를 완료했다. 새 server contract 560개는 DefaultDamage 전달값을 기록하는 코드 경계 검사이며, 기존 실제 C-owned 피해 회귀의 재실행 및 아래 실제 stock-map HP 결과와 구별한다.
+
+기존 공개 YAML의 일반/HD headless/mock 12실행은 모두 정상 exit 0이다. 각 제품 stock G_Crypts의 `(91,71)` dir=1·`(111,57)` dir=0 비밀벽을 queued 실제 이동으로 접촉하여 state 1→4→3·delay 1..23 mask `0xfffffe`·열림 효과음 한 번·server/client 왕복 통과를 10관찰, 합계 20개로 확인했다. 결과 wall state/flags·속도/force·피해를 주입하거나 기존 golden을 변경하지 않았다. 해머 두 cycle은 각 제품 두 대상 HP `2000→1872→1747`·animation 39·quake·효과음·무기 유지·자연 완료가 통과했다. 나무 지팡이 및 맨손은 각 제품에서 Spider HP 80→0을 한 회씩 확인했다.
+
+Fist는 각 제품 양방향 1..5레벨 10회씩 실제 명중·client 피해 표시·world/owned/drawable의 자연 제거를 확인했다. Player→NPC 피해는 50/100/200/300/400, NPC→Player는 armor `0.23000002`에서 44/89/177/265/354이며 후자의 live carry는 각 명중 후 0.25/−0.25/−0.25/0.25/0.25이다. 실제 4 GiB 초과 object pointer와 native 피해 경로를 사용하지만, 기존 fixture의 regular cast/배치/HP 준비를 자율 NPC 시전·mana/incantation·대상 death 검증으로 확대하지 않는다. 대검도 각 제품 앞면 11/후면 10, 합계 21개의 반사·방어·피해 결과가 통과했다.
+
+실행 전후 source/remote revision·원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 12실행에 크래시·미복원 피해 경로·E2E 실패는 없었다. 이 완료 기록은 문서만 변경하며 private 로그/PNG·원본 자산은 공개하지 않고 개인 Save/config를 유지한다. 일반 shield/weapon block prefix의 추가 복원·다른 entry/tail·GUI 빙의 입력·원격 client·외부 listing 조회 성공·원본 Windows runtime/물리 출력 전체는 별도 경계다.
+
 ## 일반 플레이어 근접 피해 — no-block entry prefix 복원
 
 기존 production 본체는 `PlayerDamageMeleeNative4E17B0` 하나만 변경했다. 이미 복원한 Player/NPC source의 Sword·MorningStar·WarHammer·WoodenStaff·unarmed CLAW/CRUSH·unit-owned SIMPLE Fist, 합계 14개 shape에서 일반 플레이어의 no-block slice를 공통 prefix에 연결한다. entry shield mask `0x3000000`이 없고 BLADE에는 GreatSword/staff mask도 없는 경우가 이번 범위다. CRUSH/CLAW에서 적용되지 않는 대검/지팡이 mask는 이 slice를 막지 않는다. shape admission·피해 수식·NPC 및 일반 shield/weapon block 경로는 확대하거나 변경하지 않는다.

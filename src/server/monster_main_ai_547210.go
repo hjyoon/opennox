@@ -72,6 +72,9 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if unit.ObjFlags.Has(object.FlagDead) {
 		return true
 	}
+	// The entry prefix retains this pointer across conversation, confusion and
+	// inversion callbacks; the fear sound entry itself is loaded later.
+	soundSet := update.SoundSet122
 	if s.monsterMainConversation547210(unit, update, runtime) {
 		return true
 	}
@@ -82,6 +85,9 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 		unit.MonsterPushAction(ai.ACTION_CONFUSED)
 	}
 	if !unit.HasEnchant(ENCHANT_ANTI_MAGIC) && s.MonsterCastInversion5408D0(unit) {
+		return true
+	}
+	if monsterMainFear547210(unit, soundSet, runtime) {
 		return true
 	}
 	if s.monsterMainFlee547210(unit, update, runtime) {
@@ -235,8 +241,8 @@ func (s *Server) monsterMainConversation547210(unit *Object, update *MonsterUpda
 }
 
 // monsterMainFlee547210 restores the ordinary non-caster flee transition at
-// GAME.EXE 00547547..005476D0. The spell-casting and enchanted branches that
-// precede it remain on the legacy path; this native-width form handles the
+// GAME.EXE 00547547..005476D0. Its adjacent offensive spell branch remains
+// on the legacy path; this native-width form handles the
 // unbuffed mobile monsters (including Urchin) whose enemy has crossed their
 // configured FleeRange.
 func (s *Server) monsterMainFlee547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {

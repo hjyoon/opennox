@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 몬스터 공포 상태의 native MainAI 도주 prefix 복원
+
+앞선 혼란·인버전 복원 다음의 `0054744D..005474CE` 공포 분기를 native 경로에 연결했다. 수정 전 새 서버 transition 시험 15개는 미포팅 반환으로 실패했고 실제 legacy wrapper에는 공포 효과음이 예약되지 않았다. 기존 production 본체 변경은 AST 대조로 `MonsterMainNativeRuntime547210` 하나뿐이다. 새 helper는 원래 throttle·uninterruptible·dead·conversation → 혼란 → ANTI_MAGIC/inversion → 공포 순서를 보존한다. AFRAID enchant 11, binary32 speed ≥0.01 및 stack 전체의 기존 FLEE 부재만 검사하며 enable·aggression·enemy·cast head·다른 buff gate를 추가하지 않는다. 원래 이동 predicate처럼 NaN·음수·경계 아래 속도를 제외한다.
+
+실제 action 서비스를 통해 enchant dependency 62/11 → FLEE 24를 push하고, FLEE push의 기존 action Cancel 뒤 live X/Y DWORD와 세 번째 인수 0을 저장한다. callback 뒤 live update-data/stack을 재조회하며 prefix 앞에 cached된 sound-set pointer의 +48 DWORD는 두 push 뒤에 읽는다. full/dead head의 거절이나 one-slot 부분 성공에서도 원본처럼 sound/early return을 유지한다. 기존 confusion action, inversion 선점, motion/enemy/direction, action-reset fields, raw NaN/Inf/-0 좌표 및 callback 교체·순서를 검사했다. 기존 FLEE movement/caster side branch나 주문 본체는 이 단위에서 바꾸지 않았다.
+
+새 62 leaf는 서버 계약 54개와 실제 Go→C→Go audio를 거친 C-owned legacy MainAI wrapper 8개다. 실제 object/update/sound 주소가 4 GiB 위인 상태의 action과 정상 audio queue의 ID/Obj/Kind/Code를 검증한다. 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 합계 930 pass/fail·skip 0이며, 관련 MainAI/inversion/flee/dodge/movement/confusion 및 LookAt/SCRIPT03 회귀를 포함한 동일 5모드×3회는 4,725 leaf pass/fail·skip 0이다. 전체 일반/strict 및 fresh server-tag root/server/legacy도 통과했다. 첫 server-tag 링크의 디스크 부족 실패는 보존했고 오래된 전용 재생성 Go cache 15개만 정리한 뒤 fresh retry를 통과했다. 원본 byte/range/manifest를 추가하거나 변경하지 않았다.
+
+코드를 `081209eb1b76816e6914551c9006a9f517a421e6`로 커밋하고 즉시 origin `port/go1.26-multiarch`에 push했다. source/origin이 일치하는 이 clean revision에서 일반·실제 highres·전용 server 3제품을 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 검증이 통과했다. 같은 일반/HD 제품으로 기존 stock 자율 인버전 6조합씩(12조합)의 정상 self-cast·반사·귀환 피해/client 보고·자연 제거와 무자극 선제공격 16조합씩(32조합)의 획득·FIGHT·첫 HP 감소/client 음수 delta를 확인했다. 합계 44조합 모두 exit 0이며 새 private PNG 44개를 보존하고 일반/HD Wizard의 실제 투사체·-13 프레임을 직접 확인했다.
+
+모든 headless/mock 실행은 private Save/config/maps·byte-identical private YAML·override 없음으로 격리했다. 실행 전 oracle code 2,935/data 638·strict NXZ 50쌍·stock 전 트리 및 실행 후 stock 전 트리 검증이 통과했다. stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`와 기존 public YAML/PNG/golden·개인 Save/config·자산은 불변이다. 이번 실제 wrapper/stack 공포 검증을 stock 주문의 실제 이동·자연 해제·전투 복귀 headless 검증으로 확대하지 않는다. 공포 전용 end-to-end observer, 남은 특수 MainAI/caster FLEE branch·모든 campaign/원격/Windows runtime 및 무제한 ARM64 포팅 목표는 계속 남은 범위다.
+
 ## Stock 몬스터의 자율 인버전·반사·귀환 피해 headless 검증 완료
 
 앞선 native 인버전 복원을 실제 stock-map AI 판단 → self-cast animation → 투사체 ownership/target/lifetime 변경 → 귀환 이동 → 충돌 피해 귀속 → 정상 client 보고 → 자연 제거까지 연결했다. 새 public `host-game-ai-inversion.yaml`은 원본 Wizard/WizardGreen/UrchinShaman × ascending/descending 6조합이다. 독립 wall/prop bounds로 배치하고 양쪽 내구성을 2,000으로 준비하며 host는 ordinary script API로 level-1 Magic Missile 위협을 공급한다. stock defensive flags·registry·cooldown·RNG·enemy/seen 선택·AI action을 바꾸거나 INVERSION을 직접 요청하지 않는다. 일반 Wizard의 Counterspell/INVERSION 후보 선택도 원래대로 두므로 여러 incoming request가 필요할 수 있다. 플레이어 mana/incantation 입력은 이 AI observer의 범위가 아니다.

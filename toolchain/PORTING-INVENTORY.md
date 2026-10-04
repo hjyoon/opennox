@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 선제공격 AI의 clean ARM64·일반/HD 최종 검증 완료
+
+source/remote가 일치하는 clean `3e3180d998718729f85e73c130ecf069d5970605`에서 일반·실제 highres·전용 server 3개를 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 검증이 통과했다. 아래 여섯 production 복원과 stock 무자극 observer를 포함한 관련 5모드×3회·전체 일반/strict·fresh server-tag·원본 monster.bin 5모드×3회 결과를 유지하며, 제품 검증을 진단 overlay 실행과 구별한다.
+
+일반/HD 각각 Spider/Troll/Urchin/적대 NPC × ascending/descending × clear/off-ray-box 16조합, 합계 32개가 exit 0이다. 먼저 맞거나 적/seen/FIGHT를 공급하지 않은 상태에서 실제 획득·공격 동작·server HP 감소·정상 client 음수 delta를 관찰했다. Spider는 7/8, Troll은 30/31, Urchin은 11/12, 정상 LongSword 장비 NPC는 7의 첫 피해이며 로그의 server 감소량과 client delta도 각각 일치했다. 첫 공격까지 30..47 tick이었다. 각 제품의 새 private framebuffer PNG를 보존했고 일반 Troll 및 HD NPC 프레임도 직접 확인했다. 기존 baseline/golden을 바꾸지 않았다.
+
+같은 clean 일반/HD 제품의 기존 public 비밀벽/Fist/Spider shield/Urchin YAML 4개씩, 합계 8개도 exit 0이다. 실제 접촉·자연 열림·왕복 통과·전투 피해/방어/원거리 동작의 앞선 계약을 유지했다. 모든 headless 실행은 private Save/config/maps·mock audio로 격리했고 override는 쓰지 않았다. 최종 oracle의 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`·code 2,935/data 638·strict NXZ 50쌍은 불변이다. 아래 AI observer 절의 clean 후속 대기는 이 결과로 완료했으며 특수 미포팅 MainAI·모든 campaign/원격/Windows 동등성 및 무제한 ARM64 포팅 목표 완료로 확대하지 않는다.
+
 ## 무자극 선제공격 AI 검토·stock observer
 
 시야 갱신 → seen/current/preferred 선택 → Idle/MainAI/action stack → Guard/escort/roam/hunt/FIGHT → 근접·원거리·주문 실행을 원본과 대조했다. 내려가는 대각선을 Canon으로 반전시킨 시야/원거리 obstacle ray와 선분 cross-product의 조기 반올림, stock Troll의 self-MONSTER IMPACT 거부를 앞선 여섯 단위에서 수정했다. passive/neutral/ally·blind/invisible·벽/문·conversation/retreat/food 등의 기존 경계를 유지한다. 특수 MainAI buff/spell preemption 및 block/dodge의 미포팅 64-bit 보수적 fallback은 남으며, 일반 Idle/FIGHT 실행까지 중단하는 gate는 아니다. 모든 특수 AI·모든 campaign 맵의 동등성으로 확대하지 않는다.

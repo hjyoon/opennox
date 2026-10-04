@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 빙의 근접 피해의 clean ARM64 제품·headless 완료
+
+native 연결 커밋 `232e345a2bc49ad8f74c89f04e3b136509b27d4d`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 세 Mach-O arm64 제품 모두 Go 1.26.5/tuple/full revision/`vcs.modified=false` 및 도움말 실행이 통과했다. 아래 빙의 melee 연결과 반복 지팡이 방어의 clean 제품/headless 후속 검증 대기는 완료했다.
+
+기존 공개 YAML의 일반/HD headless/mock 18실행이 모두 정상 exit 0이다. stock 비밀벽은 두 대각선 방향의 실제 접촉→자연 열림→server/client 왕복 통과·열림 효과음 한 번을 각각 10관찰, 합계 20개로 확인했다. 각 제품의 실제 inventory 장착/해제를 거친 해머 연속 공격 2회·나무 지팡이 Spider 처치 1회·맨손 Spider 처치 1회도 통과했다. 해머의 두 대상 HP 2,000→1,872→1,747·animation 39 진행·quake·효과음·무기 유지와 자연 완료를 관찰했다. Fist는 각 제품에서 양방향 1..5레벨 10회씩 실제 명중·client 피해·자연 제거를 확인했다. 대검/Fireball/Magic Missile/상태효과의 기존 결과도 각 제품에서 21/11/11/10개, 두 제품 합계 106개가 통과했다. 이 stock-map 회귀를 아래 빙의 피해 414회귀(server 400·C-owned 14)와 구별하며 실제 GUI 빙의 입력을 검증했다는 뜻으로 확대하지 않는다.
+
+실행 전후 source/remote revision 및 원본 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`가 동일하다. 크래시·미복원 경로·E2E 실패 로그는 없었다. 개인 Save/config·원본 map/flags·기존 golden은 변경하지 않으며, 원본 자산·private 로그/PNG는 공개하지 않는다. 외부 listing 조회 성공은 검증 범위가 아니며, 다른 미복원 피해 분기·경쟁 모드 death·원본 Windows runtime/물리 화면 전체는 계속 별도다. 이번 완료 기록은 문서만 변경한다.
+
 ## 빙의 플레이어 근접·SIMPLE CRUSH 피해 — native 연결
 
 기존 production 본체는 `PlayerDamageMeleeNative4E17B0` 하나만 변경했다. 기존 두 unit source의 검·MorningStar·WarHammer·나무 지팡이·맨손 CLAW/CRUSH·SIMPLE Fist admission에서 빙의 해제 전 armor/equipment/marker base를 유지한다. cached marker만 clear → 실제 ObserveClear → live Reflect Shield 조회 → 공격 PrevPos snapshot → weapon 6개 또는 source-only 4개 exclusion → live 공격 type attribution → facing 한 번 → cached update의 방어 자세 재조회 순서를 복원했다. 새 live player의 장비/observer가 이전 prefix를 다시 시작하지 않으며 exclusion이 공격 type/position을 바꿔도 snapshot과 원래 callback 순서를 유지한다. 이후 carry와 armor denominator는 live update, hit marker는 cached update를 사용한다. 원본 `004E2025..004E2032`처럼 wear/fallback/minimum 뒤 GodMode flag를 먼저 조회하고 그 뒤 live Player class를 확인하며, 남은 Quest flag/scale과 DefaultDamage를 이어간다. 기존 non-possession/NPC 경로는 유지한다.

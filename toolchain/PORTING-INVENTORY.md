@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Troll self-weapon IMPACT의 기본 피해 tail
+
+기존 production 본체는 `DefaultDamageWorld4E0B30` 하나만 변경했다. 실제 stock Troll은 공격 시 자신을 source와 weapon으로 함께 전달하는 type 11이며, projectile/CRUSH가 아니었다. 원본 004E0C55의 qualifying self-MONSTER friendly gate를 NoUpdate 앞에 복원하고 player/NPC/ordinary monster의 기존 Shock·late Defend·hit sound·GameBall·hurt·source combat latch·live Shield·HP tail에 연결했다. raw zero/signed 값을 양수로 바꾸지 않고 player charge/missile의 서로 다른 friendly 판정도 보존했다.
+
+새 30 leaf(세 target × signed raw/sound, owner-friendly, Shock/Shield)는 수정 전 28 fail/2 pass, 수정 후 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 합계 450 pass/fail·skip 0이다. 같은 실행의 기존 전체 DefaultDamage 시험도 통과했고 AST로 다른 기존 production 본체의 불변을 확인했다. PlayerDamage의 full-armor entry는 별도 후속 단위다. 앞선 실제 headless는 box 옆 ascending/descending 및 clear 양방향 Spider의 무자극 첫 공격과 실제 server/client HP 감소를 확인했으나 Troll entry 거부로 종료했으므로 전체 성공으로 세지 않는다. 자산·기존 YAML/PNG/golden/oracle은 보존했다.
+
 ## 원거리 AI obstacle caller: directed ray/edge와 별도 검색 bounds
 
 기존 production 본체는 `mapTraceObstacles50B580` 하나만 변경했다. GAME.EXE 0050B580/0050B600의 검색 bounds와 directed ray·A–B/A–C/D–C/D–B box edge를 분리했다. 새 실제 indexed-map 32 leaf의 수정 전 descending box on/off-ray 양방향 4개 실패, 수정 후 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 480 pass/fail·skip 0이다. 기존 13 obstacle leaf와 앞선 시야/선분 73 leaf도 같은 5모드·3회 모두 통과했다. 기존 mock-order 테스트의 잘못된 Canon 기대 2개만 원본 directed endpoint 순서로 바로잡았으며 기존 YAML/PNG/golden/oracle은 그대로다. enemy-unit/door/NoCollide/AllowOverlap gates·원본 edge 방문 순서·hit 뒤 iterator 계속 방문 및 circle extended precision은 유지했다. 다른 기존 production 본체의 AST 불변을 확인했다. actual first-attack와 Troll IMPACT 후속은 별도 검증한다.

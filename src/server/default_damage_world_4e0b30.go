@@ -234,6 +234,7 @@ func DefaultDamageWorld4E0B30(
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon)
 	ordinaryMelee := playerDamageMeleeShape4E17B0(source, weapon, typ)
+	monsterImpact := playerDamageMonsterImpactShape4E17B0(source, weapon, typ)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	spellMissileExplosion := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
@@ -246,7 +247,7 @@ func DefaultDamageWorld4E0B30(
 		(source == weapon || (source != nil && source.UpdateData != nil &&
 			source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 			!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)))
-	playerTail := playerElectric || ((missilePierce || missileFlame || spellMissileExplosion || ordinaryMelee || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
+	playerTail := playerElectric || ((missilePierce || missileFlame || spellMissileExplosion || ordinaryMelee || monsterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -280,6 +281,17 @@ func DefaultDamageWorld4E0B30(
 		// not impose a second friendly gate after the campaign owner check.
 		_ = runtime.IsEnemy(target, source)
 	}
+	if monsterImpact && target.Class().HasAny(object.MaskUnits) {
+		// A MONSTER self-weapon qualifies 004E1400, unlike missiles and
+		// PLAYER charge weapons. 004E0C55 queries hostility before NoUpdate
+		// and excludes friendly hits even when gameplay flag 1 is enabled.
+		if runtime.IsEnemy == nil {
+			return defaultDamageUnsupported4E0B30(runtime, "missing monster self-weapon IMPACT enemy service", target, source, weapon, damage, typ)
+		}
+		if !runtime.IsEnemy(target, source) {
+			return true
+		}
+	}
 	if target.ObjFlags.Has(object.FlagNoUpdate) {
 		return true
 	}
@@ -303,6 +315,10 @@ func DefaultDamageWorld4E0B30(
 	}
 	if ordinaryMelee && playerTail && runtime.PlayerSetState == nil {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player melee hurt-state service", target, source, weapon, damage, typ)
+	}
+	if monsterImpact && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil || runtime.DamageClear == nil ||
+		(playerTail && runtime.PlayerSetState == nil)) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing monster self-weapon IMPACT tail service", target, source, weapon, damage, typ)
 	}
 	if playerElectric && ((source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil) || runtime.PlayerSetState == nil) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player electric tail service", target, source, weapon, damage, typ)
@@ -377,7 +393,7 @@ func DefaultDamageWorld4E0B30(
 			weapon == source && typ == object.DamageBite
 		// Armed NPCs and ordinary monster/player targets share the restored
 		// ordinaryMelee path, including WAND melee and the Hammer exception.
-		if !ordinaryMelee && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !sourceLessMonsterPoison && !monsterWeaponCrush && !playerCharge && !zapRay {
+		if !ordinaryMelee && !monsterImpact && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !sourceLessMonsterPoison && !monsterWeaponCrush && !playerCharge && !zapRay {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -391,7 +407,7 @@ func DefaultDamageWorld4E0B30(
 		// SIMPLE CRUSH, SIMPLE|IMMOBILE ray or PLAYER-class charge weapon
 		// (004E1400 is false).
 		// The earlier campaign owner gate still applies to a friendly charge.
-		if source != nil && !ordinaryMelee && !simpleCrush && !missileDamage && !playerCharge && !unitSelfWeaponElectric && !zapRay && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		if source != nil && !ordinaryMelee && !monsterImpact && !simpleCrush && !missileDamage && !playerCharge && !unitSelfWeaponElectric && !zapRay && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 	}
@@ -454,7 +470,7 @@ func DefaultDamageWorld4E0B30(
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
-		!ordinaryMelee && !simpleCrush && !missileDamage && !nonUnit && !monsterElectric && !sourceLessMonsterPoison && !playerTail && !monsterWeaponCrush && !playerCharge && !zapRay {
+		!ordinaryMelee && !monsterImpact && !simpleCrush && !missileDamage && !nonUnit && !monsterElectric && !sourceLessMonsterPoison && !playerTail && !monsterWeaponCrush && !playerCharge && !zapRay {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion

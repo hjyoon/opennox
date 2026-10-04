@@ -159,13 +159,19 @@ func playerDamageShieldBlock4E17B0(
 	playerTarget := target.Class().Has(object.ClassPlayer)
 	var update *PlayerUpdateData
 	if playerTarget {
-		update = target.UpdateDataPlayer()
-		player := update.Player
-		if player.ArmorEquip&0x3000000 == 0 {
+		var armorFlags, weaponFlags uint32
+		if prefix := runtime.playerPrefix; prefix != nil {
+			update = prefix.update
+			armorFlags, weaponFlags = prefix.armorFlags, prefix.weaponFlags
+		} else {
+			update = target.UpdateDataPlayer()
+			armorFlags, weaponFlags = update.Player.ArmorEquip, update.Player.WeaponEquip
+		}
+		if armorFlags&0x3000000 == 0 {
 			return false, false, false
 		}
 		shieldStance := update.State == PlayerState16
-		if !shieldStance && update.State == PlayerState1 && player.WeaponEquip&0x400 == 0 {
+		if !shieldStance && update.State == PlayerState1 && weaponFlags&0x400 == 0 {
 			if runtime.BerserkShieldBlock == nil {
 				handled, result = playerDamageUnsupported4E17B0(runtime, "missing berserker shield service", target, source, weapon, damage, typ)
 				return true, handled, result
@@ -224,7 +230,7 @@ func playerDamageShieldBlock4E17B0(
 		handled, result = playerDamageUnsupported4E17B0(runtime, "shield durability callback", target, source, weapon, damage, typ)
 		return true, handled, result
 	}
-	if playerTarget {
+	if playerTarget && runtime.playerPrefix == nil {
 		update.Field76 = 0
 		if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
 			runtime.ObserveClear(target)
@@ -237,7 +243,7 @@ func playerDamageShieldBlock4E17B0(
 			update.Field76 = 1
 			update.Field75 = uint32(weapon.TypeInd)
 		}
-	} else {
+	} else if !playerTarget {
 		ud := target.UpdateDataMonster()
 		ud.Field547 = 0
 		if (weapon != nil && source != weapon) || (weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush)) {

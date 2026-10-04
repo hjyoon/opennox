@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## PIERCE 빙의 해제 prefix — ordinary shield
+
+기존 production 본체는 ordinary shield helper 하나만 변경했다. 소비한 prefix가 있으면 entry-cached equipment mask와 update의 live state를 사용하고 marker reset·ObserveClear·missile type 재저장을 반복하지 않는다. 해제 뒤 live player/update가 교체되어도 원래 캐시의 방패를 유지하며 새 player의 장비를 소급 적용하지 않는다. exclusion callback이 missile TypeInd를 바꿔도 그 전에 저장한 attribution은 유지한다. 두 unit source의 양방향 캐시/live 장비 trap이 수정 전 잘못된 block/누락과 ObserveClear 재호출 red를 재현했고, 수정 후 direction→audio→balance→wear 및 두 update 전체 레코드 불변을 확인했다.
+
+관련 PlayerDamage/DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회가 통과했다. prefix entry·대검·PIERCE tail 연결은 아직 후속 단위다. 원본 code/data range·stock tree·개인 Save/config·기존 golden은 변경하지 않는다.
+
 ## PIERCE 빙의 해제 prefix — Reflect Shield
 
 봉인된 `004E17B0` 2,368바이트 SHA-256 `c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9`의 `004E184A..004E18F0`은 update/equipment/absorption을 캐시하고 hit marker를 지운 뒤 ObserveClear를 호출하며, 반사 방향 판정은 그 뒤다. 새 private runtime context는 이 prefix의 소비 여부와 캐시를 전달한다. 이번 기존 production 본체 변경은 Reflect Shield helper 하나이며 이미 소비한 prefix에서 marker reset·ObserveClear를 반복하지 않는다. live update/player/observation target을 바꾼 정면·후면 회귀는 수정 전 재호출 red, 수정 후 캐시/live 전체 레코드 보존과 반사·owner·audio 순서를 확인한다.

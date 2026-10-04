@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반 missile prefix의 clean ARM64 제품·headless 완료
+
+native entry 커밋 `caaf092b5ea679e15f8a8a020297dd776eeca86a`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 일반 missile entry의 clean 제품/headless 후속 대기를 완료했다. 새 server contract 444개와 기존 실제 C-owned normal PIERCE 56개 및 다른 피해 회귀의 재실행은 stock-map 결과와 구별한다.
+
+기존 공개 YAML의 일반/HD headless/mock 14실행은 모두 정상 exit 0이다. 각 제품 stock G_Crypts의 `(91,71)` dir=1·`(111,57)` dir=0 비밀벽을 실제 queued 이동으로 접촉하여 state 1→4→3·delay 1..23 mask `0xfffffe`·열림 효과음 한 번·server/client 왕복 통과를 10관찰, 합계 20개로 확인했다. wall state/flags·속도/force·피해 결과를 주입하거나 기존 golden을 변경하지 않는다. 해머 두 cycle은 두 대상 HP `2000→1872→1747`·animation 39·quake·효과음·무기 유지·자연 완료가 각 제품 통과했다.
+
+대검은 각 제품 앞면 11/후면 10, 합계 21개의 반사·방어·피해 결과를 확인했다. Fireball과 Magic Missile은 각각 양방향 1..5레벨 및 자연 NPC 시전, 각 제품 11결과씩 실제 명중·server/client HP·투사체 제거가 통과했다. Shock도 각 제품 자연 만료 11회와 Glyph 명중/종료 두 회, 합계 13결과가 통과했으며 Glyph→NPC HP 150→105·Glyph→Player 75→45 및 client 피해 replay를 확인했다. 이 stock-map 양수 피해 회귀를 새 contract의 zero/negative signed 입력 검사 또는 실제 GUI 빙의 입력 증거로 확대하지 않는다.
+
+Chain Lightning의 실제 update/피해·cancel/cleanup, Energy Bolt stem 픽셀·update/피해·cancel/cleanup, Drain Mana transfer·cancel/cleanup 및 다른 duration drawing/removal도 각 제품 통과했다. duration fixture는 native duration을 시작하는 서비스 경계이며 자연 hotbar 입력/자율 NPC 전기 시전 전체·원격 client 증거는 아니다.
+
+실행 전후 source/remote revision·원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 14실행에는 크래시·미복원 피해 경로·E2E 실패가 없었다. 이 완료 기록은 문서만 변경하며 private 로그/PNG·원본 자산은 공개하지 않고 개인 Save/config를 유지한다. 다른 미복원 entry/tail·손상된 live record guard·외부 listing 조회 성공·물리 화면/스피커·원본 Windows runtime 전체는 별도다.
+
 ## 일반 플레이어 PIERCE/FLAME/EXPLOSION의 entry prefix 복원
 
 기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 복원된 Player/NPC source의 stock/pure PIERCE 및 두 unit owner의 pure FLAME/EXPLOSION direct/splash, 합계 12개 shape를 일반 플레이어도 공통 entry prefix에 연결한다. 봉인된 `004E18C4`의 unconditional cached marker clear와 conditional ObserveClear를 구별하고, live Reflect current-position → PrevPos snapshot → weapon 6개/source-only 4개 exclusion → callback 뒤 distinct live weapon type attribution → facing 한 번 순서를 보존한다. cached equipment/armor/marker와 live carry를 분리하며 기존 signed damage 숫자 계산과 admission 범위는 변경하지 않는다.

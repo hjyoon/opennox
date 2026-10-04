@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Player-owned Sentry ZAP_RAY prefix의 검증 범위
+
+봉인된 `004E18C4/004E18EB`의 cached marker clear/ObserveClear를 Reflect 앞에, `004E1A49/004E1AA2`의 snapshot/exclusion/live type marker와 한 번의 facing을 일반/Observe Sentry 경로에 연결했다. case 16은 armor/carry pass를 하지 않는다. cached equipment·post-facing state/live inventory를 유지하며 rear/excluded는 layout 읽기 전 건너뛴다. live weapon-like class는 미복원 retaliation으로 넘기지 않고 거부하며 실행한 prefix를 롤백하지 않는다. `004E1136/004E1147`의 late callback 뒤 live class/update/state를 사용해 effective damage ≥20의 state 1/15 hurt 보호를 복원한다. 기존 production 본체 변경은 `PlayerDamageNative4E17B0` 하나이며 helpers는 불변이다.
+
+새 server 계약 85개/native 8개, 합계 93개는 unchanged HEAD private diagnostic overlay에서 pass 9/fail 84, 최종 production에서 93개×3×5=1,395 leaf pass·fail/skip 0이다. 일반·실제 cgocheck2·race·checkptr·highres 각 3회와 전체 일반/strict·fresh-process server-tag 각 1회, oracle을 통과했다. native 숫자 피해 8개는 baseline부터 통과했으므로 prefix/live-state 실패 재현과 혼동하지 않는다. 실제 등록 C dispatcher와 4 GiB 위 C-owned records의 HP `2000→1999/1981/1980/1500`·carry `0.125`·marker 1/live type·state 13/30 및 Observe status `0x22→0x20`/camera/normal update 복원을 확인했다. synthetic native 계약이지 stock-map Sentry ray·GUI 빙의·자율 NPC 입력 증명은 아니다.
+
+전후 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 새 원본 byte/range/manifest·asset·golden·공개 YAML을 추가하거나 변경하지 않는다. clean ARM64 3제품 및 기존 일반/HD 비밀벽/Fist/Spider/Urchin 8실행은 후속 제품 검증이며 아직 이 단위 계약의 성공 수에 합치지 않는다. 기존 FlagBall Screen mismatch/그 뒤 미실행 경계와 다른 미복원 entry/tail은 유지한다. private 참조·로그/PNG·원본 자산·개인 Save/config를 공개하거나 변경하지 않는다. 상세 범위는 [포팅 인벤토리](../PORTING-INVENTORY.md)에 기록했다.
+
 ## FlagBall 기존 화면 기준의 색상 원인 분리
 
 CRUSH prefix 뒤 발견한 FlagBall 첫 Screen 실패를 private 역사적 clean 제품으로 이분 탐색했다. golden 생성 `542c6d7b5`와 마지막 통과 `0bba5d6bf`는 세 Screen/두 차지 cycle까지 exit 0이며 다음 `3c7abc0fa`의 올바른 방어구 팔레트 복원부터 player 영역 191픽셀, `255653c28`의 올바른 packed 5비트 연산 복원부터 현재와 같은 1,581픽셀 차이다. 첫 gameplay frame/위치/HP/drop/velocity는 동일하며 최근 charge 피해 연결이 최초 원인이 아니다. full revision·출력 SHA·범위별 관찰은 [포팅 인벤토리](../PORTING-INVENTORY.md)에 기록했다.

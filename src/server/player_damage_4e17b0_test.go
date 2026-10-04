@@ -610,8 +610,11 @@ func TestPlayerDamageNative4E17B0SentryGlobeGameBallFailsClosed(t *testing.T) {
 	if reason != "GameBall drop" {
 		t.Fatalf("SentryGlobe GameBall reason = %q", reason)
 	}
+	// The common entry/defense prefix already ran. Fail before HP/drop
+	// side effects, without rolling back its distinct-weapon marker.
+	beforeUpdate.Field76, beforeUpdate.Field75 = 1, uint32(sentryType)
 	if *target != beforeTarget || *target.UpdateDataPlayer() != beforeUpdate {
-		t.Fatal("unsupported GameBall drop mutated player state")
+		t.Fatal("unsupported GameBall drop changed state beyond its executed prefix")
 	}
 }
 

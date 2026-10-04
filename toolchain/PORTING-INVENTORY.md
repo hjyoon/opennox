@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Player-owned Sentry ZAP_RAY의 entry prefix·live hurt 복원
+
+기존 production 본체는 AST 비교로 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 접속된 양수 Player-source·SentryGlobe type·type 16 ZAP_RAY 경로에 공통 entry를 연결하며 source/type/zero/signed admission을 확대하지 않는다. `004E18C4` cached marker clear → 조건부 ObserveClear → Reflect → `004E1A49` PrevPos snapshot → 여섯 exclusion → `004E1AA2` distinct live type marker → facing 한 번 순서를 복원한다. 방패는 entry equipment mask와 post-facing state/live inventory를 사용하며 rear/excluded는 state/layout 읽기 전에 건너뛴다. Reflect나 intact shield의 early return에 unused friendly-fire/HP/Quest/hurt 서비스는 요구하지 않는다. case 16의 armor wear/carry 없는 처리는 유지한다.
+
+Sentry type admission은 callback 전 값으로 고정하되 hit marker에는 exclusion 뒤 live type을 사용한다. callback이 weapon을 Monster/Weapon/Wand로 바꾼 경우 별도 미복원 retaliation 경로로 들어가지 않고 명시적으로 거부하며 이미 실행한 marker/ObserveClear를 되돌리지 않는다. marker fallback/GodMode의 live Player class 검사와 God 뒤 Quest 순서를 복원한다. `DefaultDamage`의 `004E1136/004E1147`에 따라 BuffOff·late Defend·sound·Vampirism·GameBall 뒤 live class/update/state를 다시 읽고 effective damage ≥20일 때 state 1/15의 hurt 보호를 판단한다. nil update나 필요한 hurt 서비스 부재는 사용 지점에서 거부하며 entry state를 재사용하지 않는다. 기존 GameBall fails-closed 회귀도 이미 실행한 distinct marker를 보존하도록 교정했다.
+
+새 server callback 계약 85개와 실제 등록 C dispatcher를 거친 native 8개, 합계 93개 leaf를 추가했다. server는 일반/Observe 각각 shield·front/rear/excluded·raw 1/19/20의 order 36개, Reflect 2개, late callback의 live hurt 24개, live Quest/God/friendly 8개, missing prefix 6개, live hurt fault 3개와 live weapon-class boundary 6개를 검사한다. callback 순서·전달값을 검사하며 HP/내구도 결과를 공급하지 않는다. unchanged HEAD production을 private overlay로 연결한 최종 baseline은 pass 9/fail 84다. native 숫자 피해 8개는 baseline부터 통과했으며 callback order/live record 실패와 구별한다.
+
+native fixture는 4 GiB 위 C-owned object/update/player/health/source/weapon과 실제 PlayerDamage dispatcher·ObserveClear/status/CameraUnlock·PlayerSetState·DamageClear를 사용한다. 일반/Observe raw 1/19/20/500에서 실제 HP `2000→1999/1981/1980/1500`, carry `0.125`, marker 1/live Sentry type, state 13/30, source·weapon·인접 HP 필드 보존을 확인했다. Observe는 status `0x22→0x20`·camera clear·normal update 복원까지 검사한다. 등록한 synthetic Sentry type의 native 서비스 계약이지 stock-map ray·실제 GUI 빙의/자율 NPC 입력의 증명이 아니다.
+
+최종 root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear는 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 통과했다. 전용 JSON의 새 93개×3×5=1,395 leaf pass에 fail/skip은 없다. 전체 일반/strict 및 fresh-process server-tag root/server/legacy 각 1회와 oracle도 통과했다. 전후 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 새 원본 byte/range/manifest·자산·golden·공개 YAML을 추가하거나 변경하지 않는다.
+
+이 커밋의 clean ARM64 일반·highres·server 3제품 및 기존 일반/HD 비밀벽·Fist·Spider shield·Urchin 8 headless 회귀는 위 단위 계약과 별도로 후속 검증한다. 비밀벽 수정 `068c4cf64`와 이전 양 대각선 실제 접촉 20관찰은 유지한다. FlagBall의 기존 첫 Screen 색상 mismatch와 그 뒤 중단된 제품 입력 경계도 남기며 진단 overlay를 제품 합격으로 세지 않는다. 개인 Save/config·private 로그/PNG·원본 자산은 격리·보존한다. 다른 미복원 damage entry/tail·모든 플레이어/NPC 마법·실제 GUI 빙의·원격 client·원본 Windows runtime/물리 출력 전체 및 ARM64 포팅 목표는 계속 별도 검증한다.
+
 ## FlagBall 기존 Screen golden의 색상 원인 분리 완료
 
 clean source `757da2fdf7d386e5cb9f0dd6d300b5cf01b3218b`의 앞선 FlagBall 실패를 별도 private clone의 첫-parent 이분 탐색으로 조사했다. 공개 YAML과 세 기존 PNG를 매번 byte-identical인 private 사본에 seed하고, clean 역사적 제품의 full revision/Go 1.26.5/ARM64 metadata를 확인했다. golden 생성 커밋 `542c6d7b5216a950ba1fe2a949ff729fb844ce9d` 및 마지막 통과 커밋 `0bba5d6bfca0d3008cd4687976247c909255f4ee`는 두 차지 cycle·세 Screen까지 exit 0이다. 바로 다음 `3c7abc0fa1708198da42bd2f46cbd834fe69af5a`의 방어구 팔레트 복원부터 첫 Screen만 191픽셀이 달라진다. 따라서 최근 CRUSH prefix 연결이나 피해/공 방출 회귀가 최초 원인이 아니다.

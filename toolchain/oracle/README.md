@@ -2,6 +2,16 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## FlagBall 기존 화면 기준의 색상 원인 분리
+
+CRUSH prefix 뒤 발견한 FlagBall 첫 Screen 실패를 private 역사적 clean 제품으로 이분 탐색했다. golden 생성 `542c6d7b5`와 마지막 통과 `0bba5d6bf`는 세 Screen/두 차지 cycle까지 exit 0이며 다음 `3c7abc0fa`의 올바른 방어구 팔레트 복원부터 player 영역 191픽셀, `255653c28`의 올바른 packed 5비트 연산 복원부터 현재와 같은 1,581픽셀 차이다. 첫 gameplay frame/위치/HP/drop/velocity는 동일하며 최근 charge 피해 연결이 최초 원인이 아니다. full revision·출력 SHA·범위별 관찰은 [포팅 인벤토리](../PORTING-INVENTORY.md)에 기록했다.
+
+옛 31→255 내부 계산만 진단용으로 되돌리면 일반/HD에서 player 191픽셀만 남고 옛 definition 슬롯 loop를 추가해도 같다. 올바른 armor/weapon 슬롯 및 weapon RGB 읽기를 유지한 채 armor RGB만 PE32 +24로 읽고 세 packed 색상 계산을 함께 되돌린 private overlay는 일반/HD 모두 기존 세 Screen decoded pixel 비교와 두 차지·재시도 거부·종료/재사용까지 exit 0이다. ARM64 `ModifierEff.Color24`는 +44이며 +24는 다른 포인터 영역이다. 이 wrong-offset overlay는 독립 armor 계약 68개 leaf를, wrong-loop overlay는 72개를 실패한다. 잘못된 화면을 맞춘 진단을 현재 제품 합격으로 세거나 올바른 production 색상 수정을 되돌리지 않는다.
+
+현재 armor/weapon 160개 native palette 계약 및 stock renderer 이미지/packed 색상 표적은 일반·실제 cgocheck2·race·checkptr·highres 각 3회 통과했다. 일반 JSON은 160개×3/480 palette 및 270개×3/810 stock PNG leaf pass·fail/skip 0이며 renderer 전체 일반 3회도 통과했다. 공개 YAML/세 기준 PNG/MD5·Screen·RNG·피해/공 방출 본체는 변경하지 않았고 override도 쓰지 않았다. 기존 현재 제품 20 headless 성공과 FlagBall 2실행의 첫 Screen 실패/그 뒤 중단 경계는 유지한다. 원본 Windows runtime 전체나 물리 출력 동등성으로 확대하지 않는다.
+
+이번 변경은 문서뿐이며 새 원본 byte/range·manifest/asset/PNG는 없다. 전후 oracle의 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. private 참조 source/binary/log/got/diff와 원본 자산을 공개하거나 개인 Save/config를 변경하지 않는다.
+
 ## Stock 비밀벽 양 대각선의 후속 관찰
 
 공개 scenario에서 실제 닫힌 stock G_Crypts 벽 두 개를 순차 접촉하여 dir=1 `(91,71)`과 dir=0 `(111,57)` 모두 검증했다. 가까운 벽으로 기존 넓은 fixture 접근이 실패한 경우만 짧은 radius+16 후보를 사용하며 원래 닫힌 trace·양쪽 접근·두 16방향 radius+4 clearance 검사는 유지한다. 원래 벽/충돌/flags나 결과를 쓰거나 열린 첫 벽을 초기화하지 않는다. 일반/HD headless/mock 진단 각 10관찰/합계 20개·exit 0에서 실제 contact·delay 1..23·open 3/23·server/client 왕복·효과음 한 번을 읽었다.

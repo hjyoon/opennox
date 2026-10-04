@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 근접 지팡이 방어 — 반복 방어 자세 복원
+
+`playerDamageMeleeBlockPlan4E17B0` 한 기존 본체의 플레이어 지팡이 자세 판정을 원본 `004E1D35..004E1D40`의 13/21로 복원했다. 대검 전용 18/19/20을 지팡이에도 적용해 첫 방어 후 상태 21에서 다음 명중을 막지 못하던 오류와, 대검 방어 자세를 지팡이 방어로 인정하던 오류를 새 네 회귀가 수정 전 재현했다. 기존 NPC action 판정과 walking-staff 옵션은 유지한다. root/server/legacy 피해 회귀 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 및 원본 oracle이 통과했다. 빙의 melee 진입점과 clean 제품·headless 회귀는 후속 단위다.
+
 ## 빙의 FLAME/EXPLOSION 진입점의 clean 제품·headless 완료
 
 native 연결 커밋 `3c24ee8e4a082c99dbf7f00f5e86372cba513864`와 remote가 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품의 Go 1.26.5/tuple/full revision/`vcs.modified=false` 및 도움말 실행을 확인했다. 같은 제품의 일반/HD stock 비밀벽 두 대각선 방향은 각각 10관찰·합계 20개로 실제 접촉→자연 열림→server/client 왕복 통과·한 번의 열림 효과음을 확인했다. 대검/Fireball/Magic Missile/상태효과는 각각 21/11/11/10결과·합계 106개다. 10 headless/mock 실행 전부 정상 exit 0이며 기존 양방향 마법 피해·반사/방어와 혼란/스턴/감속/동결/실명 대상 효과 적용·해제가 통과했다. 이것은 아래 synthetic C possession fixture와 별개의 stock-map 회귀 증거다.

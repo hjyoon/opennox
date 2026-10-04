@@ -110,11 +110,16 @@ func playerDamageMeleeBlockPlan4E17B0(
 			shield = r.BerserkShieldBlock(target)
 		}
 		if !shield && weaponFlags&0x7ff8000 != 0 && typ == object.DamageBlade {
-			if player && state == PlayerState0 {
-				if r.Melee.StaffWalkingBlock == nil {
-					return plan, "missing walking staff block service"
+			if player {
+				// 004E1D35..004E1D40 accepts idle or an existing staff
+				// block, not the GreatSword's three block animations.
+				ready = state == PlayerState13 || state == PlayerState21
+				if state == PlayerState0 {
+					if r.Melee.StaffWalkingBlock == nil {
+						return plan, "missing walking staff block service"
+					}
+					ready = r.Melee.StaffWalkingBlock()
 				}
-				ready = r.Melee.StaffWalkingBlock()
 			}
 			if !ready {
 				return plan, ""

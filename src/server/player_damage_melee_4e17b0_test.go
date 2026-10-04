@@ -477,6 +477,10 @@ func TestPlayerDamageMeleeNative4E17B0BlockAdmission(t *testing.T) {
 		wantSound                         int
 	}{
 		{"staff idle", PlayerState13, 0x8000, 0, object.DamageBlade, true, false, false, false, 894},
+		{"staff repeated block", PlayerState21, 0x8000, 0, object.DamageBlade, true, false, false, false, 894},
+		{"staff sword block 18", PlayerState18, 0x8000, 0, object.DamageBlade, true, false, false, false, 0},
+		{"staff sword block 19", PlayerState19, 0x8000, 0, object.DamageBlade, true, false, false, false, 0},
+		{"staff sword block 20", PlayerState20, 0x8000, 0, object.DamageBlade, true, false, false, false, 0},
 		{"staff walking option off", PlayerState0, 0x8000, 0, object.DamageBlade, true, false, false, false, 0},
 		{"staff walking option on", PlayerState0, 0x8000, 0, object.DamageBlade, true, false, true, false, 894},
 		{"sword attacking", PlayerState1, 0x400, 0, object.DamageBlade, true, false, false, false, 0},

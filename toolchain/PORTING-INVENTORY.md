@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반·빙의 플레이어 self-weapon CRUSH의 entry prefix·live hurt 복원
+
+기존 production 본체는 AST 비교로 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 접속된 양수 Player-source·source==weapon·type 2 CRUSH(차지)의 일반/빙의 경로에 공통 prefix를 연결하며 source/type/zero/signed admission은 확대하지 않는다. 다른 근접·BITE·IMPACT·전기/missile·Sentry·환경 피해 및 NPC 본체는 유지한다. 봉인된 `004E18C4` cached marker clear → 조건부 ObserveClear → Reflect의 non-missile 통과 → `004E1A49` PrevPos snapshot → weapon 6개 exclusion → facing 한 번 → `004E1B56` cached equipment/post-facing stance 순서를 따른다. self-weapon에는 distinct marker를 쓰지 않는다. 방패는 entry mask와 live inventory를 사용하며, 성공한 block은 unused friendly-fire/hurt/HP/armor/Quest 서비스 없이 marker 0/type 보존으로 반환한다. replacement observer로 prefix를 반복하지 않고 잘못된 live class/nil update는 효과나 carry 이전에 거부한다.
+
+`004E1EE8`의 절반 흡수율은 entry armor, `004E20F0`의 carry는 live update로 구별한다. 기존 binary32 spill·ties-to-even·remaining armor wear 계산을 유지하며 carry는 live update, marker는 cached entry update에 저장한다. armor callback marker를 보존하고 live Player class가 남을 때만 raw type 2 fallback을 쓴다. armor/minimum 뒤 God flag→live Player class→late Quest 순서와 기존 late Defend·sound·Vampirism·GameBall·Shield·DamageClear를 유지한다. `DefaultDamage`의 `004E1136/004E1147`처럼 GameBall까지 실행한 뒤 live class/update/state를 다시 읽어 state 1/15의 hurt 보호를 판단한다. entry state를 재사용하지 않으며 nil live update나 Quest가 raw threshold 아래 피해를 키웠을 때의 missing hurt service는 사용 지점에서 명시적으로 거부한다. Sentry의 별도 tail은 변경하지 않는다.
+
+새 server contract 111개 leaf는 일반/빙의 각각 shield 유무·front/rear/excluded·raw 1/5/21 order 36개, exclusion/facing live replacement/class/nil guard 16개, armor marker 및 late Quest/God 12개, missing prefix 5개, unused-tail shield block 2개, early gate 10개, shape boundary 16개, non-missile Reflect 2개, GameBall 뒤 live hurt 10개, late Quest 뒤 missing hurt service 2개다. 전달값·호출 순서를 기록하며 HP·내구도 결과를 공급하지 않는다. 기존 Charge preflight는 원본의 앞선 marker clear만 허용하고 나머지 object/update/carry/HP/source 무변경을 유지하도록 교정했다.
+
+추가 C-owned native 6개는 일반/빙의 raw 1/5/21을 실제 등록 C dispatcher→ObserveClear/status/CameraUnlock→DamageClear/HP로 처리해 HP `200→199/195/181`, carry `0.375/-0.125/-0.125`, marker `2/2`, self-weapon attribution/frame 및 인접 HP 필드와 source record 보존을 확인한다. 모든 64비트 포인터는 4 GiB 위다. 빙의 status `0x22→0x20`·camera clear·normal update 복원은 synthetic native 서비스 증거이며 stock-map GUI 빙의 입력과 구별한다.
+
+최초 실행의 전용 Go cache 용량 부족과 새 boundary fixture의 class 변경 후 typed getter 오류를 교정한 뒤, production이 HEAD와 같은 상태의 검증 가능한 115 baseline은 pass 32/fail 83이었다. native 숫자 피해 6개는 baseline부터 통과했으며 callback order/live record 실패와 혼동하지 않는다. 복원 뒤 그 115개 및 추가 late-service guard 2개, 합계 117개가 모두 통과했다. root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle도 통과했다. 정리한 전용 빌드 cache는 재생성 가능한 파생물이며 source·Save/config·검증 로그는 보존했다.
+
+원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 유지한다. 새 원본 byte/range/manifest·자산·golden·공개 YAML을 추가하거나 변경하지 않는다. clean ARM64 일반·highres·server 3제품 및 기존 일반/HD 비밀벽·해머·나무 지팡이·맨손·Fist·대검·Spider shield·Urchin·차지 player/wall·NPC·FlagBall 22 headless 실행은 후속 검증이다. 개인 Save/config와 private 로그/PNG를 격리·보존하고 공개하지 않는다. 다른 CRUSH source/zero/signed, 다른 미복원 entry/tail, 실제 GUI 빙의·모든 자율 NPC 방어·원격 client·원본 Windows runtime·물리 출력 전체는 별도 경계이며 전체 ARM64 포팅 목표는 계속 진행한다.
+
 ## 일반·빙의 IMPACT prefix의 clean ARM64 제품·headless 완료
 
 native entry 커밋 `764085caec10fed5998ab9dd90dc85c26f20d393`와 remote가 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 monster missile IMPACT prefix의 clean 제품/headless 후속 대기를 완료했다. 기존 production 본체 변경은 AST 비교로 `PlayerDamageNative4E17B0` 하나이며, 새 115회귀의 server callback 계약 109개와 실제 등록 C dispatcher/ObserveClear/DamageClear를 거친 C-owned native 6개는 stock-map GUI 관찰과 구별한다.

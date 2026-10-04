@@ -837,9 +837,12 @@ func PlayerDamageNative4E17B0(
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
+	playerCharge := typ == object.DamageCrush && damage > 0 && source != nil && source == weapon &&
+		source.ObjClass.Has(object.ClassPlayer) && !source.ObjClass.HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand)
 	fullArmorHit := bite || missileImpact
+	armorPrefixHit := fullArmorHit || playerCharge
 	observe := player.ObserveTarget() != nil
-	if electricHit || pierceMissile || flameMissile || explosionMissile || fullArmorHit {
+	if electricHit || pierceMissile || flameMissile || explosionMissile || armorPrefixHit {
 		excluded := runtime.BlockSourceExcluded
 		if weapon == nil {
 			excluded = runtime.BlockSourceOnlyExcluded
@@ -847,8 +850,8 @@ func PlayerDamageNative4E17B0(
 		// The existing normal GreatSword defense can finish before the HP
 		// switch without DefaultDamage. Its unblocked tail still checks that
 		// service; do not make an unused HP callback a block prerequisite.
-		// BITE and monster missile IMPACT retain their existing native HP tail.
-		defaultRequired := !fullArmorHit && (electricHit || observe || greatSword.weaponFlags&0x400 == 0)
+		// BITE, monster missile IMPACT and player CRUSH retain their native HP tail.
+		defaultRequired := !armorPrefixHit && (electricHit || observe || greatSword.weaponFlags&0x400 == 0)
 		if (observe && runtime.ObserveClear == nil) || excluded == nil || runtime.BlockDirection == nil || (defaultRequired && runtime.DefaultDamage == nil) {
 			reason := "missing player missile prefix service"
 			if electricHit {
@@ -857,18 +860,20 @@ func PlayerDamageNative4E17B0(
 				reason = "missing player bite prefix service"
 			} else if missileImpact {
 				reason = "missing player impact prefix service"
+			} else if playerCharge {
+				reason = "missing player charge prefix service"
 			}
 			return playerDamageUnsupported4E17B0(runtime, reason, target, source, weapon, damage, typ)
 		}
 		if electricHit && (runtime.ElectricArmorScale == nil || !playerDamageArmorReady4E17B0(target, runtime)) {
 			return playerDamageUnsupported4E17B0(runtime, "missing player electric armor service", target, source, weapon, damage, typ)
 		}
-		if !electricHit && !fullArmorHit && !observe && !playerDamageArmorReady4E17B0(target, runtime) {
+		if !electricHit && !armorPrefixHit && !observe && !playerDamageArmorReady4E17B0(target, runtime) {
 			// Preserve normal missile admission's read-only armor checks before
 			// moving its marker stores into the common entry prefix.
 			return playerDamageUnsupported4E17B0(runtime, "missing player missile armor service", target, source, weapon, damage, typ)
 		}
-		if !fullArmorHit && runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
+		if !armorPrefixHit && runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 			return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 		}
 		runtime.playerPrefix = &playerDamagePrefix4E17B0{
@@ -892,7 +897,7 @@ func PlayerDamageNative4E17B0(
 		// 004E1A49 snapshots the weapon position before the six exclusions.
 		// Only afterwards does 004E1AA2 attribute a distinct live weapon.
 		// Source-only hits use four exclusions at 004E1ACE; self-weapon
-		// and source-only electric hits retain the clear cached marker.
+		// and source-only electric/player CRUSH hits retain the clear cached marker.
 		attack, exclusion := weapon, runtime.BlockSourceExcluded
 		if attack == nil {
 			attack, exclusion = source, runtime.BlockSourceOnlyExcluded
@@ -909,12 +914,14 @@ func PlayerDamageNative4E17B0(
 		runtime.BlockSourceOnlyExcluded = runtime.BlockSourceExcluded
 		runtime.BlockDirection = func(*Object, types.Pointf) bool { return front }
 	}
-	if fullArmorHit && (!target.Class().Has(object.ClassPlayer) || target.UpdateData == nil) {
+	if armorPrefixHit && (!target.Class().Has(object.ClassPlayer) || target.UpdateData == nil) {
 		// Exclusion/facing can replace the live record. The entry marker and
 		// equipment stay cached, but never read a non-player/nil live carry.
 		reason := "unsupported live player bite record"
 		if missileImpact {
 			reason = "unsupported live player impact record"
+		} else if playerCharge {
+			reason = "unsupported live player charge record"
 		}
 		return playerDamageUnsupported4E17B0(runtime, reason, target, source, weapon, damage, typ)
 	}
@@ -945,8 +952,6 @@ func PlayerDamageNative4E17B0(
 	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil
 	flame := typ == object.DamageFlame && damage > 0 && weapon != nil &&
 		(source == nil || source == weapon) && weapon.ObjClass.Has(object.ClassFire)
-	playerCharge := typ == object.DamageCrush && damage > 0 && source != nil && source == weapon &&
-		source.ObjClass.Has(object.ClassPlayer) && !source.ObjClass.HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand)
 	sentryZapRayCandidate := typ == object.DamageZapRay && damage > 0 && source != nil && weapon != nil &&
 		source.ObjClass.Has(object.ClassPlayer)
 	if sentryZapRayCandidate && runtime.SentryGlobeType == 0 {
@@ -965,6 +970,14 @@ func PlayerDamageNative4E17B0(
 			return playerDamageUnsupported4E17B0(runtime, "unexpected SentryGlobe class", target, source, weapon, damage, typ)
 		}
 	}
+	if playerCharge {
+		// 004E1B56 uses the cached equipment masks and post-facing stance,
+		// then live inventory. A successful block never needs the HP tail's
+		// friendly-fire or hurt services and does not read Quest/GodMode.
+		if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
+			return handled, result
+		}
+	}
 	if sentryZapRay || playerCharge {
 		// PLAYER charge weapons also make sub_4E1400 false. Only the
 		// general owner/friendly-fire gate applies; no melee Shock retaliation.
@@ -975,17 +988,17 @@ func PlayerDamageNative4E17B0(
 			return playerDamageUnsupported4E17B0(runtime, "missing player hurt-state service", target, source, weapon, damage, typ)
 		}
 	}
-	if bite || missileImpact || playerCharge || sentryZapRay {
+	if bite || missileImpact || sentryZapRay {
 		if applicable, handled, result := playerDamageShieldBlock4E17B0(target, source, weapon, damage, typ, runtime); applicable {
 			return handled, result
 		}
 	}
-	// With a scale service present, BITE and monster missile IMPACT read
+	// With a scale service present, BITE, monster IMPACT and player CRUSH read
 	// Quest only at 004E2046, after armor/marker/minimum and GodMode.
 	// A missing service may still
 	// reject the unblocked tail before carry/wear; it is not a block input.
-	quest := !fullArmorHit && runtime.QuestMode != nil && runtime.QuestMode()
-	if fullArmorHit && runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
+	quest := !armorPrefixHit && runtime.QuestMode != nil && runtime.QuestMode()
+	if armorPrefixHit && runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 	}
 	shielded := !poison && target.HasEnchant(playerDamageShieldEnchant4E17B0) &&
@@ -1016,15 +1029,18 @@ func PlayerDamageNative4E17B0(
 
 	armorValue := math.Float32frombits(update.Field57)
 	carryUpdate := update
-	if fullArmorHit {
+	if armorPrefixHit {
 		if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
 			reason := "unsupported live player bite carry"
 			if missileImpact {
 				reason = "unsupported live player impact carry"
+			} else if playerCharge {
+				reason = "unsupported live player charge carry"
 			}
 			return playerDamageUnsupported4E17B0(runtime, reason, target, source, weapon, damage, typ)
 		}
-		// 004E1F84 consumes entry armor; 004E20F0 reloads the live carry,
+		// 004E1F84 consumes entry armor (half at 004E1EE8 for CRUSH);
+		// 004E20F0 reloads the live carry,
 		// independently of the cached marker/update used by the prefix.
 		armorValue, carryUpdate = pierceArmorValue, target.UpdateDataPlayer()
 	}
@@ -1099,16 +1115,16 @@ func PlayerDamageNative4E17B0(
 	if damageItems {
 		playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, runtime)
 	}
-	if update.Field76 == 0 && (!fullArmorHit || target.Class().Has(object.ClassPlayer)) {
+	if update.Field76 == 0 && (!armorPrefixHit || target.Class().Has(object.ClassPlayer)) {
 		// 004E1E49/004E1EAE/004E1F4D/004E1FE1 copy the raw DWORD,
 		// and preserve a hit marker left by an earlier armor callback.
 		update.Field76, update.Field75 = 2, uint32(typ)
 	}
 
-	if runtime.GodMode != nil && runtime.GodMode() && (!fullArmorHit || target.Class().Has(object.ClassPlayer)) {
+	if runtime.GodMode != nil && runtime.GodMode() && (!armorPrefixHit || target.Class().Has(object.ClassPlayer)) {
 		return true, true
 	}
-	if fullArmorHit {
+	if armorPrefixHit {
 		quest = runtime.QuestMode != nil && runtime.QuestMode()
 		if quest && runtime.QuestDamageScale == nil {
 			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
@@ -1228,7 +1244,20 @@ func PlayerDamageNative4E17B0(
 			monsterUpdate.Field130 = frame
 		}
 	}
-	if (sentryZapRay || playerCharge) && effective >= 20 && update.State != PlayerState1 && update.State != PlayerState15 {
+	if playerCharge && effective >= 20 && target.Class().Has(object.ClassPlayer) {
+		// DefaultDamage's 004E1136/004E1147 reload class/update/state after
+		// Defend, sound, Vampirism and GameBall. Entry state is not a hurt gate.
+		if target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live player charge hurt record", target, source, weapon, effective, typ)
+		}
+		state := target.UpdateDataPlayer().State
+		if state != PlayerState1 && state != PlayerState15 {
+			if runtime.PlayerSetState == nil {
+				return playerDamageUnsupported4E17B0(runtime, "missing live player charge hurt-state service", target, source, weapon, effective, typ)
+			}
+			runtime.PlayerSetState(target, PlayerState30)
+		}
+	} else if sentryZapRay && effective >= 20 && update.State != PlayerState1 && update.State != PlayerState15 {
 		runtime.PlayerSetState(target, PlayerState30)
 	}
 	if shielded {

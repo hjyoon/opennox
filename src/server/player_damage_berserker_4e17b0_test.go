@@ -244,6 +244,12 @@ func TestPlayerDamageNative4E17B0BerserkerChargePreflight(t *testing.T) {
 			if handled, result := PlayerDamageNative4E17B0(target, source, source, 150, object.DamageCrush, runtime); handled || result || reason != tc.reason {
 				t.Fatalf("charge preflight = %t/%t reason:%q, want %q", handled, result, reason, tc.reason)
 			}
+			if tc.reason != "unsupported player damage shape" {
+				// The supported charge entry now owns 004E18C4's unconditional
+				// cached marker clear before admitting its unblocked HP services.
+				// All other fields, carry, HP and attacker data remain untouched.
+				beforeUpdate.Field76 = 0
+			}
 			if *target != before || *target.UpdateDataPlayer() != beforeUpdate || *source.UpdateDataPlayer() != beforeSource || len(*damages) != 0 {
 				t.Fatal("unsupported charge changed player state")
 			}

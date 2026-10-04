@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어 ELECTRIC의 signed/zero 진입 복원
+
+기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 복원한 두 unit source·unarmed/self-weapon·type 9/17에 걸려 있던 양수 제한 두 곳을 제거한다. 원본 `004E1DF1`은 signed raw damage를 electric armor scale→live carry→raw armor wear에 전달하며, 양수 조건은 뒤 `004E2011`의 최소 피해 보정에만 있다. 기존 ObserveClear/prefix·Reflect·일반 장비 제외·Quest/God/DefaultDamage 함수나 피해 숫자 계산은 변경하지 않는다. DefaultDamage 전기 보호의 별도 zero→1 보정과 UnitDamageClear의 signed subtraction/low-WORD setter도 그대로 사용한다.
+
+새 server 256개 leaf 회귀는 일반/관찰 상태의 zero·negative·positive control·half-even/carry·Quest·God·Shield, 관찰 해제 뒤 Reflect front/rear와 signed raw armor modifier/wear/report 순서를 검사한다. 새 root C-owned 48개는 4 GiB 초과 pointer와 실제 registered C dispatcher→PlayerDamage→ObserveClear/CameraUnlock→electric scale/protection→DefaultDamage→UnitDamageClear→C UnitSetHP를 사용한다. scale=1/carry=0.5/protection=0에서 raw -5/0/+1은 각각 HP 60→64/59/58이며 Max/Field2는 불변이다. 음수 피해에 별도 Max clamp나 무시 규칙을 추가하지 않는다. observer status/camera/normal update 복원·marker 2/raw type·carry·low WORD 옆 상태·attribution과 NPC first-hit latch 외 source record도 확인한다.
+
+최초 root fixture의 `CallDamage` int 인자 컴파일 오류는 준비 실패로 구분한다. 그 타입 수정 뒤 production 변경 전 JSON은 server pass 16/fail 240·root pass 16/fail 32였고, 변경 후 server 256/root 48·실패 0이다. 관련 root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict와 fresh-process server-tag 각 1회 및 oracle이 통과했다. 기존 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 유지한다.
+
+이 C API fixture는 stock map의 음수 balance 마법·GUI 빙의 입력 검증이 아니며, 새 원본 byte/range/asset/PNG를 추가하지 않는다. clean ARM64 3제품 및 일반/HD 비밀벽·해머·Shock·duration-ray의 후속 headless 회귀는 다음 단계다. 개인 Save/config·기존 golden은 보존하고 다른 미복원 피해 분기·원격/경쟁 모드·원본 Windows runtime 전체는 별도 경계로 유지한다.
+
 ## 빙의 ELECTRIC 연결의 clean ARM64 제품·headless 완료
 
 native 연결 커밋 `1d659c1bc59e4a6421a0acd4b9aeb614b7b68162`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 세 Mach-O arm64 제품 모두 Go 1.26.5/tuple/full revision/`vcs.modified=false`와 도움말 실행이 통과했다. 아래 ELECTRIC helper·entry의 clean 제품/headless 후속 검증 대기를 완료했다. 새 ELECTRIC 250개 leaf 회귀(server helper 66·entry 176·root C-owned 8)의 코드 경계 증거는 이번 stock-map 실행과 구별한다.

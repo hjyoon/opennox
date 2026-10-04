@@ -832,7 +832,7 @@ func PlayerDamageNative4E17B0(
 	pierceMissile := playerDamageMissilePierceShape4E17B0(source, weapon, typ)
 	flameMissile := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	explosionMissile := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
-	electricHit := damage > 0 && playerDamageElectricShape4E17B0(source, weapon, typ)
+	electricHit := playerDamageElectricShape4E17B0(source, weapon, typ)
 	if (pierceMissile || flameMissile || explosionMissile || electricHit) && player.ObserveTarget() != nil {
 		excluded := runtime.BlockSourceExcluded
 		if weapon == nil {
@@ -902,8 +902,11 @@ func PlayerDamageNative4E17B0(
 		// positive-only minimum belongs after armor/carry at 004E2011.
 		return playerDamageMissilePierce4E17B0(target, source, weapon, update, pierceArmorValue, damage, typ, runtime)
 	}
-	if (runtime.playerPrefix != nil && electricHit) || (damage > 0 && playerDamageElectricShape4E17B0(source, weapon, typ)) {
+	if (runtime.playerPrefix != nil && electricHit) || playerDamageElectricShape4E17B0(source, weapon, typ) {
 		// Ordinary shield/sword blocks explicitly exclude type 9/17.
+		// 004E1DF1 accepts raw signed damage, including zero. The
+		// positive-only minimum belongs after scale/carry/wear at 004E2011;
+		// DefaultDamage's later electric protection has its own minimum.
 		return playerDamageElectricPlayer4E17B0(target, source, weapon, damage, typ, runtime)
 	}
 	lava := typ == object.DamageLava && damage > 0 && source == nil && weapon == nil

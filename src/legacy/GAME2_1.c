@@ -4012,7 +4012,25 @@ int nox_xxx_guiBottleSlotDrawFn_471A80(nox_window* win, nox_window_data* draw_da
 		if (drawable->draw_func) {
 			drawable->pos.x = v8 + 14;
 			drawable->pos.y = y + 15;
-			drawable->draw_func(getMemAt(0x5D4594, 1091908), drawable);
+			// 004714E0 owns thirteen PE32 words; the native sprite renderer
+			// expects thirteen pointer-width fields. Keep the original record
+			// and the next global at +1091960 intact, including unsigned flags.
+			nox_draw_viewport_t viewport = {
+				.x1 = *getMemI32Ptr(0x5D4594, 1091908),
+				.y1 = *getMemI32Ptr(0x5D4594, 1091912),
+				.x2 = *getMemI32Ptr(0x5D4594, 1091916),
+				.y2 = *getMemI32Ptr(0x5D4594, 1091920),
+				.field_4 = *getMemI32Ptr(0x5D4594, 1091924),
+				.field_5 = *getMemI32Ptr(0x5D4594, 1091928),
+				.field_6 = *getMemI32Ptr(0x5D4594, 1091932),
+				.field_7 = *getMemI32Ptr(0x5D4594, 1091936),
+				.width = *getMemI32Ptr(0x5D4594, 1091940),
+				.height = *getMemI32Ptr(0x5D4594, 1091944),
+				.field_10 = *getMemU32Ptr(0x5D4594, 1091948),
+				.field_11 = *getMemU32Ptr(0x5D4594, 1091952),
+				.field_12 = *getMemI32Ptr(0x5D4594, 1091956),
+			};
+			drawable->draw_func((uint32_t*)&viewport, drawable);
 		}
 		nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 		nox_swprintf(v9, L"%d", *getMemU16Ptr(0x5D4594, 1090312 + v2));

@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Stock Pixie의 Player IMPACT 피해·방어구·실제 HP 경로 복원
+
+앞선 공포/인버전 검증에 남았던 stock Pixie→Player type-11 미포팅 반환을 복원했다. 먼저 `5e49bf91f`에서 기존 production 본체 `DefaultDamageWorld4E0B30` 하나만 순수 spell missile의 player tail에 연결하고 즉시 push했다. 이어 `5df37f04f63f85e8a3ab0601e6c79e4617656325`에서 기존 본체 `PlayerDamageNative4E17B0` 하나만 새 경로에 연결하고 즉시 push했다. AST 대조로 각 커밋의 단일 기존 본체 변경을 확인했다. 새 Player 경로는 원본 stock Pixie의 `MISSILE|LIGHT|SIMPLE` 및 IMPACT 계약에 한정되며 이미 포팅된 bare NPC missile 경로를 교체하지 않는다. 타입 ID나 positive-only 피해 gate를 추가하지 않았고 stock `thing.bin` 선언·CollidePixie·기존 YAML/PNG/golden/oracle은 불변이다.
+
+Player prefix의 dead/NoUpdate·무적 audio·Coop 자기 피해·observer 순서, cached update/equipment/absorption과 callback 뒤 live class/subclass/type/position 조회를 유지한다. possession clear와 Reflect27, 전방 shield 및 berserk shield, 반사 ownership/flags·sound·live shield wear 순서를 보존한다. full armor는 binary32 흡수·carry·ties-to-even 반올림·raw-effective 내구성 감소·positive-only 최소 피해·GodMode 후순위·Quest 후순위 scale을 원본대로 처리한다. IMPACT에 다른 elemental protection을 덧붙이지 않는다. Default의 enemy query는 NoUpdate보다 앞에 실행하되 순수 world missile의 qualifier가 false이면 false-enemy 결과만으로 거부하지 않는다. self/Player/NPC source identity를 유지하며 late metadata·defend·shield·HP 서비스를 정상 경로로 통과시킨다.
+
+Default의 새 38 leaf와 Player의 새 114 leaf를 각각 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 검증했고 fail/skip은 0이다. Player의 114에는 4 GiB 위 C-owned target/update/health/missile과 세 source 종류를 사용하는 실제 등록된 C→PlayerDamage→Default→UnitSetHP 시험 3개가 포함된다. HP/damage 결과를 대체하지 않고 absorption 0.25/carry 0.25/raw 8에서 실제 HP `60→54→48→42` 및 identity/carry/metadata를 확인한다. 수정 전 self/Player의 실제 HP는 60에서 변하지 않았다. 초기 NPC fixture의 누락된 sound delegate panic과 넓은 admission의 기존 bare-missile 회귀 실패는 진단 로그에 보존하고 정상 실행 수에 합치지 않았다. 기존 기대값을 약화하지 않고 fixture와 admission 범위를 교정했다. 관련 PlayerDamage/DefaultDamage/Pixie 회귀, 전체 일반/strict root/server/legacy·fresh server-tag·불변 oracle도 통과했다.
+
+source/origin이 일치하는 clean `5df37f04f63f85e8a3ab0601e6c79e4617656325`에서 일반·실제 highres·전용 server 3제품을 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 검증이 통과했다. 일반/HD의 자율 인버전 각 6조합, 무자극 선제공격 각 16조합 및 Urchin/Pixie swarm 각 1실행, 합계 46조합이 exit 0이다. 이전 Pixie→Player unsupported damage 로그는 이 실행들에 없고, swarm의 실제 monster HP `40→16`/client `-24` 회귀도 유지된다. 새 private PNG 44개를 보존하고 일반 WizardGreen 인버전·HD NPC `-7` 전투 프레임을 직접 확인했다. 이를 자연 Pixie→Player만의 고정 HP delta나 2,000 HP fixture의 HUD geometry/golden 검증으로 확대하지 않는다.
+
+headless/mock 실행은 private Save/config/maps·byte-identical private YAML·override 없음으로 격리했다. 실행 전후 code 2,935/data 638 및 stock 전 트리, 앞선 strict NXZ 50쌍 검증은 통과했다. stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 공간 확보 때 오래된 전용 재생성 Go cache 아카이브만 정리했고 소스·개인 데이터·로그/PNG는 보존했다. Pixie의 위 피해 경로와 기존 headless 회귀는 완료했으며 새로 요청된 Spike/SpikeBlock의 world IMPALE 피해 누락, 남은 특수 MainAI/caster FLEE·모든 campaign/원격/Windows runtime 및 무제한 ARM64 포팅 목표는 계속 남은 범위다.
+
 ## Stock 공포 도주·자연 해제·전투 복귀와 NPC 면역 headless 검증
 
 앞선 native MainAI 공포 prefix를 실제 stock 주문·도주·해제·재공격까지 연결해 검증했다. 새 public `host-game-ai-fear.yaml`은 Spider/Troll/Urchin/적대 NPC × ascending/descending 8조합이다. 기존 stock 선제공격 fixture의 정상 배치·NPC 장비 설정을 사용하며, 먼저 맞거나 enemy/seen/FIGHT를 공급하지 않은 실제 첫 공격·HP 감소·client 음수 delta가 확인된 뒤 ordinary script API로 FEAR를 요청한다. 기존 production 본체 변경은 AST 대조로 `e2eScenario.Load`의 dispatch 하나뿐이다. gameplay/C 본체·기존 공개 YAML/PNG/golden·자산·원본 byte/range/manifest는 불변이다. 플레이어 마나 소비·incantation 입력 전체를 이 API observer로 증명하지 않는다.

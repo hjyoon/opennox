@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 빙의 FLAME/EXPLOSION 진입점의 clean 제품·headless 완료
+
+native 연결 커밋 `3c24ee8e4a082c99dbf7f00f5e86372cba513864`와 remote가 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품의 Go 1.26.5/tuple/full revision/`vcs.modified=false` 및 도움말 실행을 확인했다. 같은 제품의 일반/HD stock 비밀벽 두 대각선 방향은 각각 10관찰·합계 20개로 실제 접촉→자연 열림→server/client 왕복 통과·한 번의 열림 효과음을 확인했다. 대검/Fireball/Magic Missile/상태효과는 각각 21/11/11/10결과·합계 106개다. 10 headless/mock 실행 전부 정상 exit 0이며 기존 양방향 마법 피해·반사/방어와 혼란/스턴/감속/동결/실명 대상 효과 적용·해제가 통과했다. 이것은 아래 synthetic C possession fixture와 별개의 stock-map 회귀 증거다.
+
+실행 전후 source/remote revision 및 원본 code 2,935/data 638개·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`가 동일하다. 개인 Save/config·원본 map/flags·golden·private 로그/PNG는 수정하거나 공개하지 않는다. 일부 외부 XWIS/game-list 조회의 timeout/refused는 로컬 host 회귀와 구분하며 온라인 listing 성공 검증을 주장하지 않는다. 아래 entry의 clean 제품/headless 후속 대기는 완료했다. 새 production/manifest 변경 없는 문서 완료 기록이며 빙의 melee 등 미복원 분기·경쟁 모드 death·전체 물리 화면/원본 Windows runtime 검증은 계속 별도다.
+
 ## 빙의 플레이어 FLAME/EXPLOSION — native 진입점 연결
 
 기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 복원한 PIERCE prefix에 pure spell missile FLAME/EXPLOSION의 직접 명중·source-only splash를 연결한다. cached armor/equipment/state/marker → marker clear → 실제 ObserveClear → live Reflect Shield → PrevPos snapshot/직접 명중 attribution → weapon 6개 또는 source-only 4개 exclusion/facing 한 번 → 기존 방패/대검/해당 signed damage switch 순서를 보존한다. callback 뒤 missile type/position이 바뀌어도 캐시한 attribution/facing과 admission damage type을 유지하고 splash는 switch의 type fallback까지 marker=0이다. 아래 네 준비 단위의 entry 연결 대기는 해소했다.

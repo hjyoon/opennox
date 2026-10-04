@@ -778,9 +778,9 @@ func playerDamageMissilePierce4E17B0(
 // and source-less LAVA/POISON branches of
 // GAME.EXE 004E17B0 together with their relevant unit-default-damage tails,
 // plus the front-facing shield block and the common Quest damage scaling tail,
-// and the early Reflect Shield and Coop self-damage gates. It returns
-// handled=false before mutation for spell and modifier branches that remain
-// separate ports.
+// and the early Reflect Shield and Coop self-damage gates. Unported spell or
+// modifier branches return handled=false at their admission/use boundary;
+// an already executed entry prefix is not rolled back.
 func PlayerDamageNative4E17B0(
 	target, source, weapon *Object,
 	damage int32,
@@ -833,8 +833,10 @@ func PlayerDamageNative4E17B0(
 	flameMissile := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	explosionMissile := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
 	electricHit := playerDamageElectricShape4E17B0(source, weapon, typ)
+	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
+		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
 	observe := player.ObserveTarget() != nil
-	if electricHit || pierceMissile || flameMissile || explosionMissile {
+	if electricHit || pierceMissile || flameMissile || explosionMissile || bite {
 		excluded := runtime.BlockSourceExcluded
 		if weapon == nil {
 			excluded = runtime.BlockSourceOnlyExcluded
@@ -842,23 +844,25 @@ func PlayerDamageNative4E17B0(
 		// The existing normal GreatSword defense can finish before the HP
 		// switch without DefaultDamage. Its unblocked tail still checks that
 		// service; do not make an unused HP callback a block prerequisite.
-		defaultRequired := electricHit || observe || greatSword.weaponFlags&0x400 == 0
+		defaultRequired := !bite && (electricHit || observe || greatSword.weaponFlags&0x400 == 0)
 		if (observe && runtime.ObserveClear == nil) || excluded == nil || runtime.BlockDirection == nil || (defaultRequired && runtime.DefaultDamage == nil) {
 			reason := "missing player missile prefix service"
 			if electricHit {
 				reason = "missing player electric prefix service"
+			} else if bite {
+				reason = "missing player bite prefix service"
 			}
 			return playerDamageUnsupported4E17B0(runtime, reason, target, source, weapon, damage, typ)
 		}
 		if electricHit && (runtime.ElectricArmorScale == nil || !playerDamageArmorReady4E17B0(target, runtime)) {
 			return playerDamageUnsupported4E17B0(runtime, "missing player electric armor service", target, source, weapon, damage, typ)
 		}
-		if !electricHit && !observe && !playerDamageArmorReady4E17B0(target, runtime) {
+		if !electricHit && !bite && !observe && !playerDamageArmorReady4E17B0(target, runtime) {
 			// Preserve normal missile admission's read-only armor checks before
 			// moving its marker stores into the common entry prefix.
 			return playerDamageUnsupported4E17B0(runtime, "missing player missile armor service", target, source, weapon, damage, typ)
 		}
-		if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
+		if !bite && runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 			return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
 		}
 		runtime.playerPrefix = &playerDamagePrefix4E17B0{
@@ -899,6 +903,11 @@ func PlayerDamageNative4E17B0(
 		runtime.BlockSourceOnlyExcluded = runtime.BlockSourceExcluded
 		runtime.BlockDirection = func(*Object, types.Pointf) bool { return front }
 	}
+	if bite && (!target.Class().Has(object.ClassPlayer) || target.UpdateData == nil) {
+		// Exclusion/facing can replace the live record. The entry marker and
+		// equipment stay cached, but never read a non-player/nil live carry.
+		return playerDamageUnsupported4E17B0(runtime, "unsupported live player bite record", target, source, weapon, damage, typ)
+	}
 	if applicable, handled, result := playerDamageGreatSwordMissileBlock4E17B0(target, source, weapon, greatSword, damage, typ, runtime); applicable {
 		return handled, result
 	}
@@ -926,8 +935,6 @@ func PlayerDamageNative4E17B0(
 	poison := typ == object.DamagePoison && damage > 0 && source == nil && weapon == nil
 	flame := typ == object.DamageFlame && damage > 0 && weapon != nil &&
 		(source == nil || source == weapon) && weapon.ObjClass.Has(object.ClassFire)
-	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
-		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
 	playerCharge := typ == object.DamageCrush && damage > 0 && source != nil && source == weapon &&
@@ -965,7 +972,13 @@ func PlayerDamageNative4E17B0(
 			return handled, result
 		}
 	}
-	quest := runtime.QuestMode != nil && runtime.QuestMode()
+	// With a scale service present, BITE reads Quest only at 004E2046,
+	// after armor/marker/minimum and GodMode. A missing service may still
+	// reject the unblocked tail before carry/wear; it is not a block input.
+	quest := !bite && runtime.QuestMode != nil && runtime.QuestMode()
+	if bite && runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
+		return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
+	}
 	shielded := !poison && target.HasEnchant(playerDamageShieldEnchant4E17B0) &&
 		(typ != object.DamageManaBomb || source != target)
 	if shielded && runtime.ShieldReduce == nil {
@@ -993,9 +1006,18 @@ func PlayerDamageNative4E17B0(
 	}
 
 	armorValue := math.Float32frombits(update.Field57)
+	carryUpdate := update
+	if bite {
+		if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live player bite carry", target, source, weapon, damage, typ)
+		}
+		// 004E1F84 consumes entry armor; 004E20F0 reloads the live carry,
+		// independently of the cached marker/update used by the prefix.
+		armorValue, carryUpdate = pierceArmorValue, target.UpdateDataPlayer()
+	}
 	effective := damage
 	remaining := damage
-	accumulated := math.Float32frombits(update.Field21)
+	accumulated := math.Float32frombits(carryUpdate.Field21)
 	armorReduced := bite || missileImpact || playerCharge
 	if armorReduced {
 		absorption := float64(armorValue)
@@ -1029,6 +1051,8 @@ func PlayerDamageNative4E17B0(
 	// Quest scaling and late defend, but before Shield absorption. Validate
 	// that tail before any stores; callback-dependent adjustments may raise
 	// a sub-threshold amount, so they also require the service for carriers.
+	// BITE's late Quest/Defend can introduce a drop only after this read-only
+	// admission. The final live GameBall guard below owns that actual amount.
 	mayDropBall := effective >= 30 || quest || hasLateDefend || flame || lava
 	if mayDropBall && target.Field129 != nil {
 		if runtime.GameBallType == 0 {
@@ -1047,27 +1071,35 @@ func PlayerDamageNative4E17B0(
 		}
 	}
 
-	update.Field76 = 0
-	if player.ObserveTarget() != nil && runtime.ObserveClear != nil {
-		runtime.ObserveClear(target)
-	}
-	if source != nil && weapon != nil && source != weapon {
-		update.Field76, update.Field75 = 1, uint32(weapon.TypeInd)
+	if runtime.playerPrefix == nil {
+		update.Field76 = 0
+		if player.ObserveTarget() != nil && runtime.ObserveClear != nil {
+			runtime.ObserveClear(target)
+		}
+		if source != nil && weapon != nil && source != weapon {
+			update.Field76, update.Field75 = 1, uint32(weapon.TypeInd)
+		}
 	}
 	if armorReduced {
-		update.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
+		carryUpdate.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
 	}
 	if damageItems {
 		playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, runtime)
 	}
-	if update.Field76 == 0 {
+	if update.Field76 == 0 && (!bite || target.Class().Has(object.ClassPlayer)) {
 		// 004E1E49/004E1EAE/004E1F4D/004E1FE1 copy the raw DWORD,
 		// and preserve a hit marker left by an earlier armor callback.
 		update.Field76, update.Field75 = 2, uint32(typ)
 	}
 
-	if runtime.GodMode != nil && runtime.GodMode() {
+	if runtime.GodMode != nil && runtime.GodMode() && (!bite || target.Class().Has(object.ClassPlayer)) {
 		return true, true
+	}
+	if bite {
+		quest = runtime.QuestMode != nil && runtime.QuestMode()
+		if quest && runtime.QuestDamageScale == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
+		}
 	}
 	if quest {
 		before := effective

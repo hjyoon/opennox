@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반·빙의 플레이어 BITE의 공통 entry prefix 복원
+
+기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 접속된 양수 monster self-weapon BITE의 일반·빙의 player 경로에 공통 prefix를 연결하며 source/type/signed admission은 확대하지 않는다. IMPACT·Charge·Sentry·환경 피해의 기존 동작 및 NPC 경로는 유지한다. 봉인된 `004E18C4` cached marker clear → 조건부 ObserveClear → live Reflect 조회 → `004E1A49` PrevPos snapshot → weapon 6개 exclusion → facing 한 번 → `004E1B56` cached stance/equipment 조회 순서를 따른다. self-weapon에는 distinct-weapon attribution을 새로 쓰지 않고, block은 entry mask·facing 뒤 cached stance·live first-equipped shield를 사용한다. replacement observer로 prefix를 재시작하지 않으며 잘못된 live class/nil update는 block effects/carry 이전에 명시적으로 거부한다.
+
+`004E1F84`의 흡수율은 entry 값, `004E20F0`의 소수점 carry 및 `004E2180` armor denominator/inventory는 live 값으로 구별한다. carry는 live update에, marker는 cached entry update에 저장한다. armor callback marker를 보존하고 live Player class가 남은 경우에만 raw BITE type 8 fallback을 쓴다. wear 뒤 God flag→live Player class→late Quest의 순서를 복원하며, 기존 late Defend·Vampirism·GameBall·source first-hit·Shield·DamageClear 연결을 유지한다. 성공한 방패 막기는 HP/armor/Quest 서비스 없이 반환한다. missing prefix 서비스는 marker store 전에, missing shield 효과는 clear/facing 뒤 효과 이전에 거부한다. 기존 shield admission 회귀는 marker clear만 허용하면서 나머지 object/update 전부의 무변경을 유지하고, inactive shield stance 회귀는 원본의 unconditional facing 한 번과 기존 피해/stance/equipment/marker를 함께 검사하도록 교정했다. GameBall은 선제 거부 범위를 넓히지 않고 기존 최종 live damage guard를 보존한다.
+
+새 server contract 95개 leaf는 일반/빙의 각각 shield 유무·front/rear/excluded·raw 1/5/21의 ordered 36개, exclusion/facing의 live update 교체·class/nil guard 16개, marker 및 armor callback 뒤 Quest/God 12개, missing prefix 5개, unused-tail block 2개, early gate 10개, 유지한 shape boundary 14개다. callback 전달값/순서를 기록하며 player HP는 변경하지 않는다. 추가한 C-owned native 6개는 일반/빙의 raw 1/5/21을 실제 등록 C dispatcher→root ObserveClear/status/CameraUnlock→DamageClear/HP로 처리해 HP `200→199/196/184`, carry `0.25`, marker `2/8`, source first-hit/frame 및 인접 HP 필드 보존을 확인한다. 64비트 포인터는 모두 4 GiB 위다. 빙의 status `0x22→0x20`·camera clear·normal update 복원과 일반 상태 무변경을 구별한다. 실제 GUI 빙의 입력이나 stock-map 전체 피해 증거는 아니다.
+
+초기 production 무변경 baseline은 새 101개 중 pass 32/fail 69였으며 복원 후 모두 통과했다. race가 발견한 새 armor fixture의 부족한 allocation은 실제 8-byte `WeaponArmorUpdateData`로 교정하고 전체 검사를 다시 통과시켰다. root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict 및 fresh-process server-tag 각 1회와 oracle이 통과했다. AST body 비교는 기존 production 변경이 위 한 함수뿐임을 확인했다. 원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이며 새로운 원본 byte/range/manifest·자산·golden을 추가하지 않는다.
+
+clean ARM64 일반·highres·server 3제품과 기존 일반/HD 비밀벽·해머·나무 지팡이·맨손·Fist·대검·Spider shield 14 headless 실행은 후속 검증이다. private 로그/PNG·원본 자산은 공개하지 않고 개인 Save/config를 유지한다. 다른 BITE source/zero/signed/NPC·friendly-hit admission, 다른 entry/tail 복원, 실제 GUI 빙의·모든 자율 NPC 방어·원격 client·원본 Windows runtime·물리 출력 전체는 별도 경계다.
+
 ## 일반 equipped 근접 prefix의 clean ARM64 제품·headless 완료
 
 native entry 커밋 `e3fef45500f70c0b6682fbd737f3ed73158424c7`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. AST body 비교로 기존 production 본체 변경이 `PlayerDamageMeleeNative4E17B0` 하나임을 확인했다. 아래 일반 equipped melee entry의 clean 제품/headless 후속 대기를 완료했다. 새 server contract 1,154개는 wear/default 전달값과 호출 순서를 기록하며 실제 HP를 바꾸지 않는 경계 검사이고, 기존 native C dispatcher 회귀 및 아래 실제 stock-map HP 관찰과 구별한다.

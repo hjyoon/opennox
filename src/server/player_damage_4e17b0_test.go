@@ -1100,13 +1100,12 @@ func TestPlayerDamageNative4E17B0ShieldBreakChangesState(t *testing.T) {
 
 func TestPlayerDamageNative4E17B0ShieldStanceNeedsFrontHit(t *testing.T) {
 	for _, test := range []struct {
-		name     string
-		state    PlayerState
-		front    bool
-		weapon   uint32
-		wantTest bool
+		name   string
+		state  PlayerState
+		front  bool
+		weapon uint32
 	}{
-		{name: "rear hit", state: PlayerState16, front: false, wantTest: true},
+		{name: "rear hit", state: PlayerState16, front: false},
 		{name: "ordinary stance", state: PlayerState13, front: true},
 		{name: "sword does not block bite", state: PlayerState13, front: true, weapon: 0x400 | 0x7ff8000},
 	} {
@@ -1119,10 +1118,14 @@ func TestPlayerDamageNative4E17B0ShieldStanceNeedsFrontHit(t *testing.T) {
 			var damages []int32
 			runtime := playerDamageRuntime4E17B0(t, sound, &damages)
 			runtime.BlockSourceExcluded = func(*Object) bool { return false }
-			runtime.BlockDirection = func(*Object, types.Pointf) bool {
-				if !test.wantTest {
-					t.Fatal("direction checked outside shield stance")
+			directions := 0
+			runtime.BlockDirection = func(obj *Object, pos types.Pointf) bool {
+				// 004E1B40 checks facing before 004E1B56 reads the stance,
+				// including ordinary/sword stances that cannot block BITE.
+				if obj != target || pos != source.PrevPos {
+					t.Fatal("wrong entry direction arguments")
 				}
+				directions++
 				return test.front
 			}
 			if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
@@ -1130,6 +1133,9 @@ func TestPlayerDamageNative4E17B0ShieldStanceNeedsFrontHit(t *testing.T) {
 			}
 			if !reflect.DeepEqual(damages, []int32{3}) {
 				t.Fatalf("unblocked bite damages = %v", damages)
+			}
+			if directions != 1 || update.State != test.state || update.Player.ArmorEquip != 0x1000000 || update.Player.WeaponEquip != test.weapon || update.Field76 != 2 || update.Field75 != uint32(object.DamageBite) {
+				t.Fatal("facing repeated, an inactive block changed stance/equipment, or the BITE marker was lost")
 			}
 		})
 	}
@@ -1159,7 +1165,7 @@ func TestPlayerDamageNative4E17B0ShieldExcludesFistType(t *testing.T) {
 	}
 }
 
-func TestPlayerDamageNative4E17B0ShieldPreflightDoesNotMutate(t *testing.T) {
+func TestPlayerDamageNative4E17B0ShieldAdmissionPreservesClearedPrefix(t *testing.T) {
 	target, source, sound := playerDamageFixture4E17B0(t)
 	update := target.UpdateDataPlayer()
 	update.State = PlayerState16
@@ -1168,6 +1174,9 @@ func TestPlayerDamageNative4E17B0ShieldPreflightDoesNotMutate(t *testing.T) {
 	target.InvFirstItem = &Object{ObjSubClass: object.SubClass(2), ObjFlags: object.FlagEquipped}
 	beforeTarget := *target
 	beforeUpdate := *update
+	// 004E18C4 clears the cached marker before facing and 004E1BFD's
+	// shield-wear admission. Rejection must preserve every other field.
+	beforeUpdate.Field76 = 0
 	var reason string
 	runtime := playerDamageRuntime4E17B0(t, sound, new([]int32))
 	runtime.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
@@ -1185,7 +1194,7 @@ func TestPlayerDamageNative4E17B0ShieldPreflightDoesNotMutate(t *testing.T) {
 		t.Fatalf("unsupported shield = handled:%t result:%t reason:%q", handled, result, reason)
 	}
 	if *target != beforeTarget || *update != beforeUpdate {
-		t.Fatal("unsupported shield changed player state")
+		t.Fatal("unsupported shield changed fields beyond the cleared entry marker")
 	}
 }
 

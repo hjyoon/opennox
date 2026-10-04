@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Stock 공포 도주·자연 해제·전투 복귀와 NPC 면역 headless 검증
+
+앞선 native MainAI 공포 prefix를 실제 stock 주문·도주·해제·재공격까지 연결해 검증했다. 새 public `host-game-ai-fear.yaml`은 Spider/Troll/Urchin/적대 NPC × ascending/descending 8조합이다. 기존 stock 선제공격 fixture의 정상 배치·NPC 장비 설정을 사용하며, 먼저 맞거나 enemy/seen/FIGHT를 공급하지 않은 실제 첫 공격·HP 감소·client 음수 delta가 확인된 뒤 ordinary script API로 FEAR를 요청한다. 기존 production 본체 변경은 AST 대조로 `e2eScenario.Load`의 dispatch 하나뿐이다. gameplay/C 본체·기존 공개 YAML/PNG/golden·자산·원본 byte/range/manifest는 불변이다. 플레이어 마나 소비·incantation 입력 전체를 이 API observer로 증명하지 않는다.
+
+비면역 6조합은 4 GiB 위 C-owned host/target/update 및 정상 targeted Magic의 owner/source/target/power를 검사한다. target만 AFRAID 11·stock duration 300·실제 projectile power 3을 받고 HP는 보존돼야 한다. native live stack의 adjacent enchant dependency 62/11 → FLEE 24, 실제 server/client 양쪽의 16 이상 변위와 시전자 대비 거리 증가, client AFRAID mask를 읽기 전용으로 관찰한다. 원래 도주 경로가 통로를 돌아가는 경우도 허용한다. 타이머 300±2 tick의 자연 해제 뒤 독립 wall/prop·player radius 검사를 사용하는 bounded 23-unit grid로 테스트 플레이어의 정상 우클릭 이동만 공급한다. 적의 경로·action·위치·타이머·피해·packet·pixel을 공급하지 않는다. 자연 FIGHT 재획득 뒤 expiry HP checkpoint보다 감소한 실제 HP·새 hit frame/귀속, 이전 client 피해 표시의 자연 소멸 뒤 새 음수 delta, cast/on/off 각 한 번·stock nonzero FLEE sound와 Magic의 정상 server/client 제거를 확인한다.
+
+stock NPC의 실제 subclass `0x11012`에는 `IMMUNE_FEAR=0x1000`이 있다. 원본 `004FF380` 계약상 non-Coop에서는 이를 거부하므로 두 NPC 조합을 억지로 도주시켜 통과시키지 않는다. cast 한 번·on/off/FLEE 없음·duration 0·server/client 무버프·Magic 정상 제거·자연 FIGHT 지속과 시전 뒤 새 server hit를 검사한다. 이 면역 응답의 client 검증은 무버프 상태이며, 계속 겹치는 피해 표시를 새 client delta로 주장하지 않는다. Coop 면역 우회는 기존 source 계약과 새 read-only gate 시험으로 검사한 것이지 campaign GUI 결과가 아니다. 초기 진단의 시야 밖 대기·벽에 막히는 직선 입력·곡선 도주 오판·조기 이동 중단·NPC 면역 오판은 observer만 교정했고, 실패 로그/캡처를 보존해 성공 실행 수에 합치지 않았다.
+
+새 schedule/invalid input/duration/immunity/live-stack/read-only displacement/fresh-hit/독립 player route/public YAML의 92 leaf는 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 합계 1,380 pass/fail·skip 0이다. 기존 AI/inversion/MainAI/flee/dodge/movement/confusion/BuffApply 및 보고된 LookAtDirection C wrapper·SCRIPT03 회귀를 포함한 500 leaf의 동일 5모드×3회는 7,500 pass/fail·skip 0이다. 전체 일반/strict와 fresh server-tag root/server/legacy 및 불변 oracle도 통과했다. 코드를 `f032a7ac8d30d63b3432a2d6d693b4f6cfb85b79`로 커밋하고 즉시 origin `port/go1.26-multiarch`에 push했다.
+
+source/origin이 일치하는 clean `f032a7ac8d30d63b3432a2d6d693b4f6cfb85b79`에서 일반·실제 highres·전용 server 3제품을 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 검증이 통과했다. 새 일반/HD 제품에서 공포 8조합을 각각 fresh process 3회, 합계 48조합(정상 도주/해제/재공격 36·정상 면역 거부 12) 실행해 모두 exit 0이다. 같은 제품의 기존 자율 인버전 6조합씩(12)과 무자극 선제공격 16조합씩(32)도 exit 0이다. 합계 92조합의 새 private PNG 132+12+32=176개를 보존하고, 일반/HD의 실제 거미 도주·Urchin 재공격 -12·NPC 면역 전투 프레임을 직접 확인했다. 2,000 HP 내구성 fixture의 HUD geometry나 missing/golden Screen 합격으로 확대하지 않는다.
+
+모든 headless/mock 실행은 private Save/config/maps·byte-identical private YAML·override 없음으로 격리했다. 실행 전 oracle code 2,935/data 638·strict NXZ 50쌍·stock 전 트리와 실행 후 stock 전 트리 재검증이 통과했다. stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 공간 확보 때 종료된 진단 client 5개와 오래된 전용 Go cache 아카이브 8개만 정리했고 모두 재생성 가능한 파생물이며 소스·개인 데이터·로그/PNG는 보존했다. 인버전 실행의 Pixie→Player type-11 피해 8 미포팅 로그는 변경 전 제품에도 동일하게 있으며 이번에도 남아 있다. 이를 인버전 반사 계약의 실패나 모든 마법 피해의 완료로 숨기지 않는다. 앞선 공포 observer 대기는 위 범위에서 완료했으며, Pixie 피해·남은 특수 MainAI/caster FLEE branch·모든 campaign/원격/Windows runtime 및 무제한 ARM64 포팅 목표는 계속 남은 범위다.
+
 ## 몬스터 공포 상태의 native MainAI 도주 prefix 복원
 
 앞선 혼란·인버전 복원 다음의 `0054744D..005474CE` 공포 분기를 native 경로에 연결했다. 수정 전 새 서버 transition 시험 15개는 미포팅 반환으로 실패했고 실제 legacy wrapper에는 공포 효과음이 예약되지 않았다. 기존 production 본체 변경은 AST 대조로 `MonsterMainNativeRuntime547210` 하나뿐이다. 새 helper는 원래 throttle·uninterruptible·dead·conversation → 혼란 → ANTI_MAGIC/inversion → 공포 순서를 보존한다. AFRAID enchant 11, binary32 speed ≥0.01 및 stack 전체의 기존 FLEE 부재만 검사하며 enable·aggression·enemy·cast head·다른 buff gate를 추가하지 않는다. 원래 이동 predicate처럼 NaN·음수·경계 아래 속도를 제외한다.

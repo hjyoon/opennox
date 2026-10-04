@@ -24,6 +24,7 @@ const (
 // A callback that replaces an item with an unsupported live record is reported
 // at that record's use, never retried through a PE32 callback on a 64-bit host.
 type PlayerDamageRuntime4E17B0 struct {
+	playerPrefix            *playerDamagePrefix4E17B0
 	Melee                   PlayerDamageMeleeRuntime4E17B0
 	Frame                   func() uint32
 	CoopMode                func() bool
@@ -112,13 +113,13 @@ func playerDamageReflectShield4E17B0(
 		return true, handled, result
 	}
 
-	if target.Class().Has(object.ClassPlayer) {
+	if target.Class().Has(object.ClassPlayer) && runtime.playerPrefix == nil {
 		update := target.UpdateDataPlayer()
 		update.Field76 = 0
 		if update.Player.ObserveTarget() != nil && runtime.ObserveClear != nil {
 			runtime.ObserveClear(target)
 		}
-	} else {
+	} else if !target.Class().Has(object.ClassPlayer) {
 		// 004E18D1 selects the NPC hit marker at PE32 offset 2188;
 		// the player marker/observer fields belong to a different layout.
 		target.UpdateDataMonster().Field547 = 0

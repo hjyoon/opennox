@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## PIERCE 빙의 해제 prefix — Reflect Shield
+
+봉인된 `004E17B0` 2,368바이트 SHA-256 `c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9`의 `004E184A..004E18F0`은 update/equipment/absorption을 캐시하고 hit marker를 지운 뒤 ObserveClear를 호출하며, 반사 방향 판정은 그 뒤다. 새 private runtime context는 이 prefix의 소비 여부와 캐시를 전달한다. 이번 기존 production 본체 변경은 Reflect Shield helper 하나이며 이미 소비한 prefix에서 marker reset·ObserveClear를 반복하지 않는다. live update/player/observation target을 바꾼 정면·후면 회귀는 수정 전 재호출 red, 수정 후 캐시/live 전체 레코드 보존과 반사·owner·audio 순서를 확인한다.
+
+관련 PlayerDamage/DefaultDamage의 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회와 변경 전 oracle(code 2,935/data 638, NXZ 50쌍, stock tree 불변)을 통과했다. 아직 entry와 방패/대검/PIERCE tail에 연결하지 않은 함수별 준비 단위이며 실제 게임의 빙의 피격 수정 완료나 GUI 증거로 세지 않는다. 후속 본체별 복원 후 entry에서 원래 순서로 연결한다. 원본/개인 Save/config·기존 golden은 변경하지 않는다.
+
 ## Stock 비밀벽의 두 대각선 방향
 
 공개 secret-wall scenario가 G_Crypts의 두 닫힌 접촉식 벽을 차례로 관찰한다. 첫 벽의 실제 열린 상태를 유지한 채 남은 닫힌 벽을 선택하며 wall 상태를 초기화하지 않는다. 기존 `prepare` 한 본체만 새 읽기 전용 lane helper에 연결했다. 기본 radius+36 접근이 가까운 다른 벽 때문에 불가능할 때 radius+16 접근을 사용하되, 닫힌 crossing trace·양쪽 접근 trace·각 시작점의 16방향 radius+4 clearance와 기존 radius+16 완전 통과 기준은 그대로 유지한다. 최초 두 번째 벽의 준비 실패는 넓은 fixture 접근선의 제한이지 gameplay 실패가 아니며 원래 map/collision/flags를 바꿔 통과시키지 않았다.

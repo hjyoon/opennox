@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반 플레이어 방패·무기 근접 막기의 공통 entry prefix 복원
+
+기존 production 본체는 `PlayerDamageMeleeNative4E17B0` 하나만 변경했다. 앞 단위의 no-block/빙의 연결에 이어, entry shield `0x3000000` 및 BLADE GreatSword/staff mask가 있는 일반 플레이어도 같은 prefix를 소비한다. 기존 Player/NPC source의 Sword·MorningStar·WarHammer·WoodenStaff·unarmed CLAW/CRUSH·unit-owned SIMPLE Fist 14개 shape admission, NPC 본체와 피해 수식은 유지한다. helper의 missing-item 주석만 실제 admission 단계에 맞췄으며 다른 production 본체는 바꾸지 않았다.
+
+봉인된 `004E18C4`의 cached marker clear → 조건부 ObserveClear → live Reflect 조회 → PrevPos snapshot → weapon 6개/source-only 4개 exclusion → callback 뒤 live type attribution → facing 한 번 → `004E1B56` cached stance 조회 순서를 모든 player melee에 연결했다. cached entry armor/equipment/marker와 live inventory/carry를 구분하고, 콜백이 장비나 update/observer를 교체해도 prefix를 재시작하지 않는다. 잘못된 live class/nil update는 block effects 전에 명시적으로 거부한다. first-equipped shield/weapon의 기존 audio·stance/RNG·signed wear 순서를 유지하며 성공한 막기는 armor·God/Quest·DefaultDamage tail 전에 반환한다. rear/excluded/inactive 등 비차단에서는 marker callback·armor wear·fallback/minimum·God flag→live Player class→late Quest→DefaultDamage 순서를 유지한다.
+
+일반 equipped block의 DefaultDamage/armor/Quest 서비스는 막기 성공에 필요하지 않다. prefix exclusion/direction 누락은 marker store 전에, live block item/effects 및 비차단 armor/default 누락은 prefix 뒤 해당 효과 이전에 거부한다. 기존 missing-block-item 회귀의 무조건 pre-store 기대는 `004E22A0`이 marker/facing 뒤에 호출되는 원본 순서에 맞춰 marker 1/type만 허용하도록 교정했다. 거부 reason·object/update의 나머지 필드·carry·armor·HP 불변 검사는 그대로 유지하며, missing-direction 등 기존 early admission은 변경하지 않는다. 이를 모든 missing-service 실패가 prefix mutation 전에 끝난다는 주장으로 확대하지 않는다.
+
+새 server contract 1,154개 leaf는 22개 source/attack/defense 조합의 signed/zero/positive와 front/rear/excluded/inactive·berserk·staff repeated/walking 384개, 막기 전용 nil tail 66개, exclusion/facing의 cached/live replacement·invalid record 176개, rear armor/marker/late Quest/God·minimum/signed tail 198개, 단계별 missing-service 220개, early-gate 110개다. production 본체가 이전 HEAD와 동일한 baseline은 pass 126/fail 1,028이고 복원 후 모두 통과했다. 새 fixture는 DefaultDamage 및 wear의 전달값/호출 순서를 기록하는 경계 검사이며 HP를 바꾸지 않는다. 기존 native registered C dispatcher·고주소 피해/빙의·NPC·missile/electric 회귀는 재실행으로 구별한다.
+
+관련 root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict 및 fresh-process server-tag 각 1회와 oracle이 통과했다. 원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 원본 byte/range/manifest·자산·golden은 추가하거나 변경하지 않는다. clean ARM64 일반·highres·server 3제품 및 기존 일반/HD 비밀벽·해머·나무 지팡이·맨손·Fist·대검 missile·Spider shield 14 headless 실행은 후속 검증이다. 새 API contract를 실제 자율 NPC의 모든 근접 막기·GUI 빙의 입력·원격 client·원본 Windows runtime·물리 화면/스피커 전체 검증으로 확대하지 않는다. 개인 Save/config·private 로그/PNG는 보존하고 공개하지 않는다.
+
 ## 일반 no-block 근접 prefix의 clean ARM64 제품·headless 완료
 
 native entry 커밋 `4d63f443ba5bffa18bba193fe8616f9b41934653`가 remote와 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 일반 no-block melee entry의 clean 제품/headless 후속 대기를 완료했다. 새 server contract 560개는 DefaultDamage 전달값을 기록하는 코드 경계 검사이며, 기존 실제 C-owned 피해 회귀의 재실행 및 아래 실제 stock-map HP 결과와 구별한다.

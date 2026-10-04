@@ -135,7 +135,8 @@ func playerDamageMeleeBlockPlan4E17B0(
 	}
 	// 004E22A0/004E2330 use the first equipped subclass match, not the
 	// cached equipped-weapon pointer. A missing item is an original PE32
-	// nil-fault boundary, so reject it before committing the hit prefix.
+	// nil-fault boundary; reject it before block effects, after a player's
+	// common hit prefix (or before an NPC's separately admitted hit marker).
 	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
 		if item.Flags().Has(object.FlagEquipped) && uint32(item.SubClass())&mask != 0 {
 			plan.item = item
@@ -204,9 +205,9 @@ func playerDamageMeleeApplyBlock4E17B0(
 // type IDs bypass ordinary shield blocking via BlockSourceExcluded.
 // Durability precedes the original GodMode/Quest/DefaultDamage tail. Reflect
 // Shield does not intercept these non-missile, non-electric hits in GAME.EXE.
-// Possession and normal players without applicable block equipment keep the
-// entry armor/equipment/marker base, but read state from that base after facing
-// and carry from the live update. Normal shield/weapon blocks remain separate.
+// All player entries keep the cached armor/equipment/marker base, but read
+// state from that base after facing, inventory and carry from the live target.
+// Successful shield/weapon blocks return before the armor and HP tail.
 func PlayerDamageMeleeNative4E17B0(
 	target, source, weapon *Object, damage int32, typ object.DamageType,
 	r PlayerDamageRuntime4E17B0,
@@ -252,54 +253,58 @@ func PlayerDamageMeleeNative4E17B0(
 		armorValue = math.Float32frombits(ud.Field57)
 		weaponFlags, armorFlags, state = ud.Player.WeaponEquip, ud.Player.ArmorEquip, ud.State
 		observe := ud.Player.ObserveTarget() != nil
-		// Admit the normal no-block slice independently. Equipped shield,
-		// GreatSword and staff blocks retain their existing service admission.
+		// No-block and possessed entries retain their early tail admission.
+		// An equipped normal player can return from a shield/weapon block
+		// without needing any armor, DefaultDamage or Quest tail services.
 		normalNoBlock := !observe && armorFlags&0x3000000 == 0 &&
 			(typ != object.DamageBlade || weaponFlags&(0x400|0x7ff8000) == 0)
-		if observe || normalNoBlock {
-			exclusion := r.BlockSourceExcluded
-			if weapon == nil {
-				exclusion = r.BlockSourceOnlyExcluded
-			}
-			if (observe && r.ObserveClear == nil) || exclusion == nil || r.BlockDirection == nil || r.DefaultDamage == nil {
-				return playerDamageUnsupported4E17B0(r, "missing player melee prefix service", target, source, weapon, damage, typ)
-			}
-			// Read-only service admission precedes stores in the normal slice;
-			// armor lookup/Defend and carry are still read at their native stage.
-			if normalNoBlock && !playerDamageArmorReady4E17B0(target, r) {
-				return playerDamageUnsupported4E17B0(r, "melee armor durability callback", target, source, weapon, damage, typ)
-			}
-			if r.QuestDamageScale == nil && r.QuestMode != nil && r.QuestMode() {
-				return playerDamageUnsupported4E17B0(r, "missing quest damage service", target, source, weapon, damage, typ)
-			}
-			hasPlayerPrefix = true
-			r.playerPrefix = &playerDamagePrefix4E17B0{update: ud, armorFlags: armorFlags, weaponFlags: weaponFlags}
-			// 004E18C4 clears only the cached marker, even without possession.
-			// New live observer/equipment data must not restart this prefix.
-			*marker = 0
-			if observe {
-				r.ObserveClear(target)
-			}
-			if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
-				return playerDamageUnsupported4E17B0(r, "unsupported live player melee record", target, source, weapon, damage, typ)
-			}
-			if applicable, h, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, r); applicable {
-				return h, result
-			}
-			attack := weapon
-			if attack == nil {
-				attack = source
-			}
-			// 004E1A49/004E1ABE snapshot PrevPos before exclusions;
-			// 004E1AA2/004E1B02 then read the live type for attribution.
-			pos := attack.PrevPos
-			excluded := exclusion(attack)
-			*marker, *markerType = 1, uint32(attack.TypeInd)
-			front := !excluded && r.BlockDirection(target, pos)
-			r.BlockSourceExcluded = func(*Object) bool { return excluded }
-			r.BlockSourceOnlyExcluded = r.BlockSourceExcluded
-			r.BlockDirection = func(*Object, types.Pointf) bool { return front }
-			state = ud.State
+		exclusion := r.BlockSourceExcluded
+		if weapon == nil {
+			exclusion = r.BlockSourceOnlyExcluded
+		}
+		if (observe && r.ObserveClear == nil) || exclusion == nil || r.BlockDirection == nil ||
+			((observe || normalNoBlock) && r.DefaultDamage == nil) {
+			return playerDamageUnsupported4E17B0(r, "missing player melee prefix service", target, source, weapon, damage, typ)
+		}
+		// Read-only service admission precedes stores in the no-block slice;
+		// armor lookup/Defend and carry are still read at their native stage.
+		if normalNoBlock && !playerDamageArmorReady4E17B0(target, r) {
+			return playerDamageUnsupported4E17B0(r, "melee armor durability callback", target, source, weapon, damage, typ)
+		}
+		if (observe || normalNoBlock) && r.QuestDamageScale == nil && r.QuestMode != nil && r.QuestMode() {
+			return playerDamageUnsupported4E17B0(r, "missing quest damage service", target, source, weapon, damage, typ)
+		}
+		hasPlayerPrefix = true
+		r.playerPrefix = &playerDamagePrefix4E17B0{update: ud, armorFlags: armorFlags, weaponFlags: weaponFlags}
+		// 004E18C4 clears only the cached marker, for every player entry.
+		// New live observer/equipment data must not restart this prefix.
+		*marker = 0
+		if observe {
+			r.ObserveClear(target)
+		}
+		if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(r, "unsupported live player melee record", target, source, weapon, damage, typ)
+		}
+		if applicable, h, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, r); applicable {
+			return h, result
+		}
+		attack := weapon
+		if attack == nil {
+			attack = source
+		}
+		// 004E1A49/004E1ABE snapshot PrevPos before exclusions;
+		// 004E1AA2/004E1B02 then read the live type for attribution.
+		pos := attack.PrevPos
+		excluded := exclusion(attack)
+		*marker, *markerType = 1, uint32(attack.TypeInd)
+		front := !excluded && r.BlockDirection(target, pos)
+		r.BlockSourceExcluded = func(*Object) bool { return excluded }
+		r.BlockSourceOnlyExcluded = r.BlockSourceExcluded
+		r.BlockDirection = func(*Object, types.Pointf) bool { return front }
+		// 004E1B56 reads the cached stance only after the facing callback.
+		state = ud.State
+		if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(r, "unsupported live player melee block record", target, source, weapon, damage, typ)
 		}
 	} else {
 		ud := target.UpdateDataMonster()

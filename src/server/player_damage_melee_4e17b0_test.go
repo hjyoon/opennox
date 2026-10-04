@@ -374,7 +374,7 @@ func TestPlayerDamageMonsterBlockReady534340(t *testing.T) {
 	}
 }
 
-func TestPlayerDamageMeleeNative4E17B0UnsupportedBeforeMutation(t *testing.T) {
+func TestPlayerDamageMeleeNative4E17B0UnsupportedAdmission(t *testing.T) {
 	for _, tc := range []struct {
 		name  string
 		setup func(*Object, *PlayerDamageRuntime4E17B0)
@@ -410,8 +410,17 @@ func TestPlayerDamageMeleeNative4E17B0UnsupportedBeforeMutation(t *testing.T) {
 			var reason string
 			r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why }
 			h, result := PlayerDamageMeleeNative4E17B0(target, source, &Object{ObjClass: object.ClassWeapon}, 9, object.DamageBlade, r)
+			if tc.name == "missing block item" {
+				// 004E22A0's live inventory lookup follows the common
+				// 004E18C4/004E1AA2 marker and 004E1B40 facing stage.
+				// It rejects before wear/HP, not before that hit prefix.
+				updateBefore.Field76, updateBefore.Field75 = 1, 0
+				if reason != "missing equipped melee block item" {
+					t.Fatalf("missing live block item was rejected at the wrong stage: %q", reason)
+				}
+			}
 			if h || result || reason == "" || *target != targetBefore || *target.UpdateDataPlayer() != updateBefore || *armor != armorBefore || armor.HealthData.Cur != 25 {
-				t.Fatalf("unsupported branch mutated state: handled=%t result=%t reason=%q", h, result, reason)
+				t.Fatalf("unsupported branch mutated state beyond its admission phase: handled=%t result=%t reason=%q", h, result, reason)
 			}
 		})
 	}

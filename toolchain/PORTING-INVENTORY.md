@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 빙의 플레이어 근접·SIMPLE CRUSH 피해 — native 연결
+
+기존 production 본체는 `PlayerDamageMeleeNative4E17B0` 하나만 변경했다. 기존 두 unit source의 검·MorningStar·WarHammer·나무 지팡이·맨손 CLAW/CRUSH·SIMPLE Fist admission에서 빙의 해제 전 armor/equipment/marker base를 유지한다. cached marker만 clear → 실제 ObserveClear → live Reflect Shield 조회 → 공격 PrevPos snapshot → weapon 6개 또는 source-only 4개 exclusion → live 공격 type attribution → facing 한 번 → cached update의 방어 자세 재조회 순서를 복원했다. 새 live player의 장비/observer가 이전 prefix를 다시 시작하지 않으며 exclusion이 공격 type/position을 바꿔도 snapshot과 원래 callback 순서를 유지한다. 이후 carry와 armor denominator는 live update, hit marker는 cached update를 사용한다. 원본 `004E2025..004E2032`처럼 wear/fallback/minimum 뒤 GodMode flag를 먼저 조회하고 그 뒤 live Player class를 확인하며, 남은 Quest flag/scale과 DefaultDamage를 이어간다. 기존 non-possession/NPC 경로는 유지한다.
+
+새 server 400회귀는 방어 78개·signed/zero/minimum/marker/live Quest/God tail 126개·ObserveClear/facing 뒤 잘못된 live record 거부 56개·missing-service 및 early-gate 각 70개다. 초기 176개는 수정 전 명시적 `possessed player melee` 거부를 재현했고, 추가 God flag/live class 조회 trap 28개도 잘못된 순서를 재현한 뒤 수정했다. armor lookup/Defend는 signed/zero에서도 실행되고, rounded positive wear에서만 실제 armor Damage가 호출되며 unarmed armor callback은 nil weapon을 받는 원본 계약을 검사한다. 최초 fixture의 이 두 기대값과 SIMPLE Fist의 자체 PrevPos 기대값은 원본에 맞춰 교정했으며 준비 실패를 새로운 production red로 세지 않는다.
+
+새 root C-owned 14회귀는 각 shape의 Player/NPC source와 4 GiB 초과 object/update/player/health/modifier pointer를 실제 registered C dispatcher→PlayerDamage→root ObserveClear→C status 해제→CameraUnlock→normal player update 복원→DefaultDamage/UnitSetHP로 처리한다. 이 경계에서 피해/HP/ObserveClear callback을 대체하지 않고 status 0x22→0x20·camera=nil·HP 60→56/55·fractional carry·source/weapon attribution과 두 source의 record 보존을 확인했다. 이는 synthetic C fixture이며 stock-map/GUI 빙의 입력·status packet transport·자율 NPC 공격 검증으로 확대하지 않는다.
+
+관련 root/server/legacy PlayerDamage·DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle이 통과했다. 별도 JSON 결과의 leaf case도 server 400/root 14, 실패 0이다. 원본 code 2,935/data 638개·strict NXZ 50쌍·stock 자산·개인 Save/config·기존 golden은 유지한다. 아래 빙의 melee 연결 대기는 해소했으며 clean ARM64 3제품과 일반/HD 비밀벽·해머·나무 지팡이·맨손·Fist 및 기존 마법 headless 회귀는 후속 검증이다. 다른 미복원 피해 분기·경쟁 모드 death·원본 Windows runtime/물리 화면 전체는 여전히 별도다.
+
 ## 근접 지팡이 방어 — 반복 방어 자세 복원
 
 `playerDamageMeleeBlockPlan4E17B0` 한 기존 본체의 플레이어 지팡이 자세 판정을 원본 `004E1D35..004E1D40`의 13/21로 복원했다. 대검 전용 18/19/20을 지팡이에도 적용해 첫 방어 후 상태 21에서 다음 명중을 막지 못하던 오류와, 대검 방어 자세를 지팡이 방어로 인정하던 오류를 새 네 회귀가 수정 전 재현했다. 기존 NPC action 판정과 walking-staff 옵션은 유지한다. root/server/legacy 피해 회귀 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 및 원본 oracle이 통과했다. 빙의 melee 진입점과 clean 제품·headless 회귀는 후속 단위다.

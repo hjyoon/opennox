@@ -430,7 +430,7 @@ func TestPlayerDamageMeleeNative4E17B0EarlyGatesAndReflect(t *testing.T) {
 			s.ObjOwner = o
 			r.CoopMode = func() bool { return true }
 		}, true, false, 0},
-		{"possession unported", func(o, _ *Object, _ *PlayerDamageRuntime4E17B0) {
+		{"possession missing services", func(o, _ *Object, _ *PlayerDamageRuntime4E17B0) {
 			p := o.UpdateDataPlayer().Player
 			p.Field3680 |= 2
 			p.CameraFollowObj = &Object{}

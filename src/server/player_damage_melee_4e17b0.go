@@ -4,6 +4,7 @@ import (
 	"math"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
@@ -201,10 +202,10 @@ func playerDamageMeleeApplyBlock4E17B0(
 // CLAW/CRUSH slice for players and NPC-subclass monsters. Armor and block
 // defenses also serve unit-sourced SIMPLE CRUSH, including stock Fists whose
 // type IDs bypass ordinary shield blocking via BlockSourceExcluded.
-// durability precede the original GodMode/Quest/DefaultDamage tail. Reflect
+// Durability precedes the original GodMode/Quest/DefaultDamage tail. Reflect
 // Shield does not intercept these non-missile, non-electric hits in GAME.EXE.
-// The native possession prefix is kept fail-closed until its live update-data
-// replacement ordering is ported separately.
+// Possession keeps the entry armor/equipment/marker base, but reads state from
+// that base after facing and carry from the live update after ObserveClear.
 func PlayerDamageMeleeNative4E17B0(
 	target, source, weapon *Object, damage int32, typ object.DamageType,
 	r PlayerDamageRuntime4E17B0,
@@ -237,6 +238,7 @@ func PlayerDamageMeleeNative4E17B0(
 	var armorValue float32
 	var weaponFlags, armorFlags uint32
 	var state PlayerState
+	possessed := false
 	if player {
 		ud := target.UpdateDataPlayer()
 		if ud.Player == nil {
@@ -245,12 +247,47 @@ func PlayerDamageMeleeNative4E17B0(
 		if ud.Player.Field3680&1 != 0 {
 			return true, false
 		}
-		if ud.Player.ObserveTarget() != nil {
-			return playerDamageUnsupported4E17B0(r, "possessed player melee", target, source, weapon, damage, typ)
-		}
 		carry, marker, markerType = &ud.Field21, &ud.Field76, &ud.Field75
 		armorValue = math.Float32frombits(ud.Field57)
 		weaponFlags, armorFlags, state = ud.Player.WeaponEquip, ud.Player.ArmorEquip, ud.State
+		if ud.Player.ObserveTarget() != nil {
+			exclusion := r.BlockSourceExcluded
+			if weapon == nil {
+				exclusion = r.BlockSourceOnlyExcluded
+			}
+			if r.ObserveClear == nil || exclusion == nil || r.BlockDirection == nil || r.DefaultDamage == nil {
+				return playerDamageUnsupported4E17B0(r, "missing possessed player melee prefix service", target, source, weapon, damage, typ)
+			}
+			if r.QuestDamageScale == nil && r.QuestMode != nil && r.QuestMode() {
+				return playerDamageUnsupported4E17B0(r, "missing quest damage service", target, source, weapon, damage, typ)
+			}
+			possessed = true
+			r.playerPrefix = &playerDamagePrefix4E17B0{update: ud, armorFlags: armorFlags, weaponFlags: weaponFlags}
+			// 004E18C4 clears only the cached marker before ObserveClear.
+			// New live observer/equipment data must not restart this prefix.
+			*marker = 0
+			r.ObserveClear(target)
+			if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+				return playerDamageUnsupported4E17B0(r, "unsupported live possessed player record", target, source, weapon, damage, typ)
+			}
+			if applicable, h, result := playerDamageReflectShield4E17B0(target, source, weapon, damage, typ, r); applicable {
+				return h, result
+			}
+			attack := weapon
+			if attack == nil {
+				attack = source
+			}
+			// 004E1A49/004E1ABE snapshot PrevPos before exclusions;
+			// 004E1AA2/004E1B02 then read the live type for attribution.
+			pos := attack.PrevPos
+			excluded := exclusion(attack)
+			*marker, *markerType = 1, uint32(attack.TypeInd)
+			front := !excluded && r.BlockDirection(target, pos)
+			r.BlockSourceExcluded = func(*Object) bool { return excluded }
+			r.BlockSourceOnlyExcluded = r.BlockSourceExcluded
+			r.BlockDirection = func(*Object, types.Pointf) bool { return front }
+			state = ud.State
+		}
 	} else {
 		ud := target.UpdateDataMonster()
 		carry, marker, markerType = &ud.Field1, &ud.Field547, &ud.Field546
@@ -262,18 +299,30 @@ func PlayerDamageMeleeNative4E17B0(
 		return playerDamageUnsupported4E17B0(r, reason, target, source, weapon, damage, typ)
 	}
 	if block.item != nil {
-		*marker = 1
-		attack := weapon
-		if attack == nil {
-			attack = source
+		if !possessed {
+			*marker = 1
+			attack := weapon
+			if attack == nil {
+				attack = source
+			}
+			*markerType = uint32(attack.TypeInd)
 		}
-		*markerType = uint32(attack.TypeInd)
 		playerDamageMeleeApplyBlock4E17B0(block, target, source, weapon, damage, typ, player, r)
 		return true, false
 	}
-	quest := r.QuestMode != nil && r.QuestMode()
+	quest := !possessed && r.QuestMode != nil && r.QuestMode()
 	if r.DefaultDamage == nil || (quest && r.QuestDamageScale == nil) {
 		return playerDamageUnsupported4E17B0(r, "missing melee damage tail service", target, source, weapon, damage, typ)
+	}
+	if possessed {
+		if !playerDamageArmorReady4E17B0(target, r) {
+			return playerDamageUnsupported4E17B0(r, "melee armor durability callback", target, source, weapon, damage, typ)
+		}
+		if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(r, "unsupported live possessed player carry", target, source, weapon, damage, typ)
+		}
+		// 004E20F0 uses the live update, not the prefix marker's base.
+		carry = &target.UpdateDataPlayer().Field21
 	}
 	absorption := float64(armorValue)
 	if typ == object.DamageCrush {
@@ -283,17 +332,19 @@ func PlayerDamageMeleeNative4E17B0(
 	accumulated := scaled + math.Float32frombits(*carry)
 	effective := playerDamageRound4E17B0(accumulated)
 	remaining := damage - effective
-	if !playerDamageArmorReady4E17B0(target, r) {
+	if !possessed && !playerDamageArmorReady4E17B0(target, r) {
 		return playerDamageUnsupported4E17B0(r, "melee armor durability callback", target, source, weapon, damage, typ)
 	}
-	// The hit marker is already 1 at 004E1A4D/004E1AD7; it is visible to
+	// The hit marker is already 1 at 004E1AA2/004E1B02; it is visible to
 	// armor effects and persists unless a durability callback clears it.
-	*marker = 1
-	attack := weapon
-	if attack == nil {
-		attack = source
+	if !possessed {
+		*marker = 1
+		attack := weapon
+		if attack == nil {
+			attack = source
+		}
+		*markerType = uint32(attack.TypeInd)
 	}
-	*markerType = uint32(attack.TypeInd)
 	*carry = math.Float32bits(accumulated - float32(effective))
 	playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, r)
 	if *marker == 0 {
@@ -302,8 +353,23 @@ func PlayerDamageMeleeNative4E17B0(
 	if damage > 0 && effective == 0 {
 		effective = 1
 	}
-	if player && r.GodMode != nil && r.GodMode() {
+	god := false
+	if possessed {
+		// 004E2025 reads GodMode before 004E202E's live class test.
+		god = r.GodMode != nil && r.GodMode() && target.Class().Has(object.ClassPlayer)
+	} else {
+		god = player && r.GodMode != nil && r.GodMode()
+	}
+	if god {
 		return true, true
+	}
+	if possessed {
+		// 004E2046 observes Quest only after armor, fallback/minimum and
+		// GodMode. A wear callback may have changed the mode meanwhile.
+		quest = r.QuestMode != nil && r.QuestMode()
+		if quest && r.QuestDamageScale == nil {
+			return playerDamageUnsupported4E17B0(r, "missing live quest damage service", target, source, weapon, damage, typ)
+		}
 	}
 	if quest {
 		before := effective

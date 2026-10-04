@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반·빙의 CRUSH prefix의 clean ARM64 제품·20 headless 회귀 완료
+
+native entry 커밋 `9e332a766682c2c9fe05e84e3d7c1fd5065e7468`와 remote가 일치하는 clean source에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 기존 production 본체 변경은 AST 비교로 `PlayerDamageNative4E17B0` 하나다. 아래 복원 단위의 server callback 계약 111개와 C-owned native 6개, 합계 117개 및 관련 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle이 통과했다. synthetic 일반/빙의 raw 1/5/21 결과와 실제 stock-map GUI 결과를 구별한다.
+
+기존 공개 YAML의 일반/HD headless/mock 중 비밀벽·해머·나무 지팡이·맨손·Fist·대검·Spider shield·Urchin·차지 player/wall·차지 NPC의 10개씩, 합계 20실행은 정상 exit 0이며 각 observer의 완료 수를 확인했다. stock G_Crypts의 `(91,71)` dir=1·`(111,57)` dir=0 비밀벽은 각 제품 실제 queued 이동의 접촉→state 1→4→3·delay 1..23 mask `0xfffffe`·열림 효과음 한 번·server/client 양방향 통과 및 열린 상태 유지 10관찰, 합계 20개가 통과했다. gameplay 수정 `068c4cf64`의 native secret field 복원을 유지하고 wall state/flags·속도/force·audio·packet/client 좌표를 공급하지 않았다.
+
+차지 player 및 NPC는 각 제품 실제 스킬 입력과 충돌 두 번씩으로 target HP `2000→1850`·실제 피해 150·source HP 150 보존을 확인했다. wall 두 번은 source HP `150→120`·`125→100`, 기대 피해 30/25 및 held 종료를 관찰했다. player/wall 4회·NPC 2회 각각 cooldown 중 재시도 거부·자연 종료·재사용 준비까지 완료했다. 이 stock-map 양수 무방어 결과를 새 equipped/observer native 계약이나 다른 CRUSH source/zero/signed·실제 GUI 빙의 입력의 증거로 확대하지 않는다.
+
+해머는 각 제품 두 cycle·두 대상 HP `2000→1872→1747`·animation 39·quake·효과음·무기 유지·자연 완료가 통과했고 나무 지팡이와 맨손은 실제 공격의 Spider HP 80→0을 각각 확인했다. Fist 양방향 1..5레벨은 각 제품 10회 명중·실제 client 피해·world/owned/drawable 자연 제거가 통과했다. 대검은 각 제품 정면 11·후면 10의 21 missile 방어 결과, Spider는 실제 자율 공격의 shield wear·player HP 감소, Urchin은 실제 monster-owned ThrowingStone 명중의 client HealthChange `-12`·자연 flee·player Magic Missile 피해·후속 death를 확인했다. shield wear를 완전 무피해 막기라고 하거나 이 회귀를 모든 자율 NPC 공격/방어로 확대하지 않는다.
+
+계획한 나머지 FlagBall 일반/HD 2실행은 통과가 아니다. 두 제품 모두 실제 차지 활성 frame 710→frame 715의 첫 명중에서 carrier HP `2000→1850`·GameBall owner nil·carrier team 2/ball team 1·velocity `{6.4131503 -6.6625624}`를 관찰했지만 직후 기존 `charge_an_enemy_gameball_carrier_attempt_1_dropped_ball.png`의 strict Screen 비교가 실패해 exit 2로 중단했다. 두 번째 명중·cooldown 재시도·종료/재사용과 후속 화면은 실행하지 못했으며 22실행 전체 통과로 기록하지 않는다. 공개 YAML/기준 PNG는 entry 커밋 전후 동일하다. 최초 별도 worktree binary는 자동 VCS metadata가 없어 release 검증 증거로 쓰지 않았고, 이후 별도 clean clone의 이전 커밋 `9ae774cf1f3091a5bcc5af232678f5963a8fb5f5` normal ARM64 binary를 full revision/clean metadata로 검증하여 같은 입력을 다시 실행했다. 그 이전 제품도 같은 첫 HP/drop/frame/velocity와 동일한 Screen 실패가 재현됐다. private got/diff는 보존했으나 화면 불일치의 원인·수정은 아직 확인하지 않았고 기준 이미지 갱신/비교 우회로 성공시키지 않는다.
+
+Screen이 YAML 옆에 missing baseline 및 mismatch PNG를 쓰는 것을 첫 normal 실행에서 확인했다. 자동 생성된 untracked 7개 PNG(차지 5개·FlagBall got/diff 2개)는 private 증거 폴더로 이동해 보존했고 기존 tracked golden은 변경하지 않았다. 이후 private runner는 원본과 byte-identical인 YAML과 기존 testdata를 새 private 출력 폴더에 복사해 실행하므로 생성 PNG/차이는 그 폴더에만 남는다. Save/config/runtime을 분리하고 원본 stock map/자산은 읽기 전용 링크로 사용하며 `NOX_E2E_OVERRIDE`는 쓰지 않는다. private 로그/PNG·원본 자산·개인 파일은 공개하지 않는다.
+
+20개 성공 실행 및 FlagBall 진단 전후 oracle의 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 동일하다. 새 원본 byte/range/manifest·자산·golden·공개 YAML은 추가하거나 변경하지 않았다. CRUSH prefix 단위의 clean 제품 및 20실행 회귀는 완료했으며 FlagBall 화면 비교/미실행 후속, 다른 미복원 entry/tail·실제 GUI 빙의·모든 자율 NPC 방어·원격 client·원본 Windows runtime·물리 출력 전체는 별도 남은 경계다. 전체 ARM64 포팅 목표는 계속 진행한다.
+
 ## 일반·빙의 플레이어 self-weapon CRUSH의 entry prefix·live hurt 복원
 
 기존 production 본체는 AST 비교로 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 접속된 양수 Player-source·source==weapon·type 2 CRUSH(차지)의 일반/빙의 경로에 공통 prefix를 연결하며 source/type/zero/signed admission은 확대하지 않는다. 다른 근접·BITE·IMPACT·전기/missile·Sentry·환경 피해 및 NPC 본체는 유지한다. 봉인된 `004E18C4` cached marker clear → 조건부 ObserveClear → Reflect의 non-missile 통과 → `004E1A49` PrevPos snapshot → weapon 6개 exclusion → facing 한 번 → `004E1B56` cached equipment/post-facing stance 순서를 따른다. self-weapon에는 distinct marker를 쓰지 않는다. 방패는 entry mask와 live inventory를 사용하며, 성공한 block은 unused friendly-fire/hurt/HP/armor/Quest 서비스 없이 marker 0/type 보존으로 반환한다. replacement observer로 prefix를 반복하지 않고 잘못된 live class/nil update는 효과나 carry 이전에 거부한다.
@@ -12,7 +28,7 @@
 
 최초 실행의 전용 Go cache 용량 부족과 새 boundary fixture의 class 변경 후 typed getter 오류를 교정한 뒤, production이 HEAD와 같은 상태의 검증 가능한 115 baseline은 pass 32/fail 83이었다. native 숫자 피해 6개는 baseline부터 통과했으며 callback order/live record 실패와 혼동하지 않는다. 복원 뒤 그 115개 및 추가 late-service guard 2개, 합계 117개가 모두 통과했다. root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle도 통과했다. 정리한 전용 빌드 cache는 재생성 가능한 파생물이며 source·Save/config·검증 로그는 보존했다.
 
-원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 유지한다. 새 원본 byte/range/manifest·자산·golden·공개 YAML을 추가하거나 변경하지 않는다. clean ARM64 일반·highres·server 3제품 및 기존 일반/HD 비밀벽·해머·나무 지팡이·맨손·Fist·대검·Spider shield·Urchin·차지 player/wall·NPC·FlagBall 22 headless 실행은 후속 검증이다. 개인 Save/config와 private 로그/PNG를 격리·보존하고 공개하지 않는다. 다른 CRUSH source/zero/signed, 다른 미복원 entry/tail, 실제 GUI 빙의·모든 자율 NPC 방어·원격 client·원본 Windows runtime·물리 출력 전체는 별도 경계이며 전체 ARM64 포팅 목표는 계속 진행한다.
+원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 유지한다. 새 원본 byte/range/manifest·자산·golden·공개 YAML을 추가하거나 변경하지 않는다. clean ARM64 일반·highres·server 3제품과 기존 일반/HD 20개 headless 실행의 후속 대기는 위 완료 기록으로 마무리했다. 계획한 FlagBall 2실행은 첫 HP/drop 관찰 뒤 기존 Screen 비교 실패로 중단했으며 이전 clean 제품에서도 재현됐다. 이를 22개 전체 통과로 처리하지 않고 화면 및 미실행 후속 경계를 남긴다. 개인 Save/config와 private 로그/PNG를 격리·보존하고 공개하지 않는다. 다른 CRUSH source/zero/signed, 다른 미복원 entry/tail, 실제 GUI 빙의·모든 자율 NPC 방어·원격 client·원본 Windows runtime·물리 출력 전체는 별도 경계이며 전체 ARM64 포팅 목표는 계속 진행한다.
 
 ## 일반·빙의 IMPACT prefix의 clean ARM64 제품·headless 완료
 

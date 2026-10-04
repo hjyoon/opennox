@@ -143,11 +143,11 @@ func TestMapTraceObstacles50B580TestsBoxEdgesInOriginalOrder(t *testing.T) {
 	obj.Shape.Box.RightBottom2 = 7
 	obj.Shape.Box.RightTop2 = 8
 
-	wantLine := types.Rectf{Min: types.Ptf(1, 2), Max: types.Ptf(9, 8)}
+	wantLine := types.Rectf{Min: types.Ptf(9, 8), Max: types.Ptf(1, 2)}
 	wantEdges := []types.Rectf{
 		{Min: types.Ptf(101, 202), Max: types.Ptf(103, 204)},
 		{Min: types.Ptf(101, 202), Max: types.Ptf(105, 206)},
-		{Min: types.Ptf(105, 206), Max: types.Ptf(107, 208)},
+		{Min: types.Ptf(107, 208), Max: types.Ptf(105, 206)},
 	}
 	var gotEdges []types.Rectf
 	clear := mapTraceObstacles50B580(new(Object), types.Ptf(9, 8), types.Ptf(1, 2), mapTraceObstaclesHooks50B580{

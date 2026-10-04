@@ -17,9 +17,11 @@ type mapTraceObstaclesHooks50B580 struct {
 // keeps visiting objects after the callback clears its global result; later
 // callbacks become no-ops but still advance the iterator's visitation state.
 func mapTraceObstacles50B580(from *Object, p1, p2 types.Pointf, hooks mapTraceObstaclesHooks50B580) bool {
-	line := types.RectFromPointsf(p1, p2)
+	line := types.Rectf{Min: p1, Max: p2}
 	searching := true
-	hooks.eachObject(line, func(it *Object) {
+	// Search bounds are canonical; 0050B580/0050B600 retain the ray and
+	// box edges as directed endpoint pairs for the intersection helper.
+	hooks.eachObject(types.RectFromPointsf(p1, p2), func(it *Object) {
 		if !searching || from == it {
 			return
 		}
@@ -54,22 +56,22 @@ func mapTraceObstacles50B580(from *Object, p1, p2 types.Pointf, hooks mapTraceOb
 			}
 		case ShapeKindBox:
 			edges := [...]types.Rectf{
-				types.RectFromPointsf(
-					pos.Add(types.Ptf(shape.Box.LeftTop, shape.Box.LeftBottom)),
-					pos.Add(types.Ptf(shape.Box.LeftBottom2, shape.Box.LeftTop2)),
-				),
-				types.RectFromPointsf(
-					pos.Add(types.Ptf(shape.Box.LeftTop, shape.Box.LeftBottom)),
-					pos.Add(types.Ptf(shape.Box.RightTop, shape.Box.RightBottom)),
-				),
-				types.RectFromPointsf(
-					pos.Add(types.Ptf(shape.Box.RightBottom2, shape.Box.RightTop2)),
-					pos.Add(types.Ptf(shape.Box.RightTop, shape.Box.RightBottom)),
-				),
-				types.RectFromPointsf(
-					pos.Add(types.Ptf(shape.Box.RightBottom2, shape.Box.RightTop2)),
-					pos.Add(types.Ptf(shape.Box.LeftBottom2, shape.Box.LeftTop2)),
-				),
+				{
+					Min: pos.Add(types.Ptf(shape.Box.LeftTop, shape.Box.LeftBottom)),
+					Max: pos.Add(types.Ptf(shape.Box.LeftBottom2, shape.Box.LeftTop2)),
+				},
+				{
+					Min: pos.Add(types.Ptf(shape.Box.LeftTop, shape.Box.LeftBottom)),
+					Max: pos.Add(types.Ptf(shape.Box.RightTop, shape.Box.RightBottom)),
+				},
+				{
+					Min: pos.Add(types.Ptf(shape.Box.RightBottom2, shape.Box.RightTop2)),
+					Max: pos.Add(types.Ptf(shape.Box.RightTop, shape.Box.RightBottom)),
+				},
+				{
+					Min: pos.Add(types.Ptf(shape.Box.RightBottom2, shape.Box.RightTop2)),
+					Max: pos.Add(types.Ptf(shape.Box.LeftBottom2, shape.Box.LeftTop2)),
+				},
 			}
 			for _, edge := range edges {
 				if hooks.lineTrace(line, edge) {

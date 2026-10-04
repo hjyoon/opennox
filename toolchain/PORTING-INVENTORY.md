@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 몬스터 혼란·인버전 prefix와 native 인버전 시전 복원
+
+LookAt 크래시 수정의 후속 AI 검토에서 `005473EA..0054742A`의 혼란 dependency/action push와 `0054742D`의 ANTI_MAGIC 뒤 인버전 probe를 복원했다. 혼란을 예약한 직후 반환하지 않으며 인버전이 이를 선점할 수 있는 원본 순서를 보존한다. 기존 throttle·uninterruptible·dead·conversation gate는 앞에, fear/flee/retreat 처리는 뒤에 남는다. 기존 production 본체는 AST 대조로 `MonsterMainNativeRuntime547210` 하나만 바꿨다. 새 `005408D0` selector는 enable/status·unsigned cooldown·head-only cast action gate, shared scan DWORD reset, `InversionRange` 절반의 binary32 탐색 반경, 모든 missile 순회, ascending ID 1..136 mask/registry 선택, logic RNG·self-cast를 연결한다. cast 뒤 cached update의 ushort cooldown bounds를 읽고 RNG 뒤 live frame을 더하며 DWORD wrap을 유지한다. `00540B60`의 class/subclass 선행 gate·모든 match의 scan store·native residual return도 보존한다. ANTI_MAGIC을 selector 자체에 중복 gate로 넣지 않는다.
+
+이 selector를 연결하기 전에 실제 기존 `Sub_52BEB0` 시전 경로의 별도 pointer truncation을 재현했다. 4 GiB 위 C-owned caster `0x135e047c0`가 center `0x35e047f8`로, owner `0x135e04420`가 callback argument `0x35e04420`로 잘려 SIGSEGV가 발생했다. six-argument bridge가 아니라 old four-int C callee가 원인이었다. 먼저 `677119791952b16dfba0c70370ab33258d3cbf1b`에서 기존 production 본체 `Sub_52BEB0` 하나만 native Go 경로로 연결하고 즉시 push했다. 원본 `0052BEB0..0052BEFB`의 전체 InversionRange spill→caster live position→기존 ownership 서비스의 전체 순회→caster audio→return 1을 보존한다. owner와 caster를 혼동하거나 level scaling·null 선행 성공을 추가하지 않는다. 기존 ownership 서비스의 magic/SWAP/target gate는 재작성하지 않는다. 이어 위 AI prefix를 `725afc7b454122d1ae34c6f5919656c350529803`로 별도 커밋·즉시 push했다.
+
+새 64 leaf는 executor 계약·C-owned native wrapper·실제 ownership 서비스 18개와 selector/callback·server action stack·실제 legacy MainAI wrapper 46개다. 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 합계 960 pass/fail·skip 0이며, 관련 전체 inversion/MainAI/fight/confused 시험 2,640 leaf도 통과했다. cached/live update 교체·post-RNG frame·binary32 edge·full stack·caller/selector gate·native self-cast args·투사체 target/owner/linked-list/frame 및 inert missile 경계를 확인한다. 전체 일반/strict와 fresh server-tag root/server/legacy도 통과했다. 원본 byte/range/manifest·기존 YAML/PNG/golden/자산을 추가하거나 바꾸지 않았다.
+
+source/origin이 일치하는 clean `725afc7b454122d1ae34c6f5919656c350529803`에서 일반·실제 highres·전용 server 3제품을 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 검증이 통과했다. 기존 public 무자극 선제공격 YAML을 새 일반/HD 제품에서 각각 private Save/config/maps·headless/mock audio·override 없음으로 실행했다. Spider/Troll/Urchin/적대 NPC × ascending/descending × clear/off-ray-box 각 16조합, 합계 32조합이 exit 0이다. incoming-hit 없이 30..47 tick에 획득/FIGHT/첫 피해가 발생했으며 server HP 감소와 정상 client 음수 delta가 일치했다. 새 private PNG 32개를 보존했고 일반 Troll(-31)·HD NPC(-7) 프레임을 직접 확인했다.
+
+제품 실행 전 code 2,935/data 638·strict NXZ 50쌍·stock 전 트리 검증과 실행 후 stock 재검증이 통과했다. 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`와 clean source/origin은 불변이다. 검증 중 정리한 구형 전용 Go cache는 재생성 가능한 파생물뿐이며 소스·개인 Save/config·원본·로그/PNG는 보존했다. 실제 객체의 새 인버전 계약과 기존 stock-map 선제공격 회귀를 구별하며, 인버전 전용 stock-map 자율시전/반사 GUI observer를 추가한 것은 아니다. 남은 미포팅 MainAI·모든 campaign/원격/Windows runtime 동등성이나 무제한 ARM64 포팅 목표 완료로 확대하지 않는다.
+
 ## LookAtDirection의 clean ARM64 제품·선제공격 회귀 검증 완료
 
 source/origin이 일치하는 clean `89c367a97b5271383dda9fd73dc9319013738214`에서 일반·실제 highres·전용 server 3개를 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 검증이 통과했다. 아래 새 LookAt 54 leaf×5모드×3회=810 pass, 관련 1,515 pass, 전체 일반/strict·fresh server-tag 및 ARM64/i386 header 검사 결과를 유지한다. i386 header 타입 검사는 원본 Windows/386 runtime 검증과 구별한다.

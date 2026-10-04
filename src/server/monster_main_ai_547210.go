@@ -39,10 +39,9 @@ type MonsterMainRuntime547210 struct {
 	UseByNetCode       func(owner, item *Object) int32
 }
 
-// MonsterMainNative547210 handles the pointer-safe portions of GAME.EXE
-// 00547210 whose result is an immediate return or a provable no-op. It leaves
-// every state-changing branch to the legacy implementation until that branch
-// has been ported separately.
+// MonsterMainNative547210 handles the independently restored pointer-safe
+// portions of GAME.EXE 00547210. It leaves the remaining state-changing
+// branches to the legacy implementation until each is ported separately.
 //
 // The first three cases are exact early returns from the original function:
 // the staggered IDLE/GUARD throttle, an uninterruptible dependency below the
@@ -74,6 +73,15 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 		return true
 	}
 	if s.monsterMainConversation547210(unit, update, runtime) {
+		return true
+	}
+	// 005473EA..0054742A schedules confusion before the inversion probe;
+	// do not return here, since an inversion cast can preempt that action.
+	if unit.HasEnchant(ENCHANT_CONFUSED) && !update.HasAction(ai.ACTION_CONFUSED) {
+		unit.MonsterPushAction(ai.DEPENDENCY_IS_ENCHANTED, uint32(ENCHANT_CONFUSED))
+		unit.MonsterPushAction(ai.ACTION_CONFUSED)
+	}
+	if !unit.HasEnchant(ENCHANT_ANTI_MAGIC) && s.MonsterCastInversion5408D0(unit) {
 		return true
 	}
 	if s.monsterMainFlee547210(unit, update, runtime) {

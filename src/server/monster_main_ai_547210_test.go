@@ -104,9 +104,11 @@ func TestMonsterMainNative547210RejectsUnportedPassiveBranches(t *testing.T) {
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
+			s := unitFollowTestServer5158C0(t)
 			unit := passiveMonsterTestObject547210(t)
+			unit.serverHandle = s.handle
 			tc.setup(unit, unit.UpdateDataMonster())
-			if new(Server).MonsterMainNative547210(unit) {
+			if s.MonsterMainNative547210(unit) {
 				t.Fatal("unported main-AI branch was handled")
 			}
 		})

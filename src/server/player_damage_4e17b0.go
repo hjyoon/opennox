@@ -897,7 +897,7 @@ func playerDamageMissilePierce4E17B0(
 
 // PlayerDamageNative4E17B0 restores ordinary player/NPC melee, unit-sourced SIMPLE
 // CRUSH (including stock Fists), Spider BITE, monster-fired
-// missile IMPACT, player/monster-fired missile PIERCE, Berserker Charge CRUSH,
+// missile IMPACT, Troll self-weapon IMPACT, player/monster-fired missile PIERCE, Berserker Charge CRUSH,
 // SentryGlobe ZAP_RAY, world FLAME,
 // unarmed player/monster and unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC,
 // and source-less LAVA/POISON branches of
@@ -1100,9 +1100,10 @@ func PlayerDamageNative4E17B0(
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
+	monsterImpact := playerDamageMonsterImpactShape4E17B0(source, weapon, typ)
 	playerCharge := typ == object.DamageCrush && damage > 0 && source != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassPlayer) && !source.ObjClass.HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand)
-	fullArmorHit := bite || missileImpact
+	fullArmorHit := bite || missileImpact || monsterImpact
 	armorPrefixHit := fullArmorHit || playerCharge
 	nativePrefixHit := armorPrefixHit
 	observe := player.ObserveTarget() != nil
@@ -1123,7 +1124,7 @@ func PlayerDamageNative4E17B0(
 				reason = "missing player electric prefix service"
 			} else if bite {
 				reason = "missing player bite prefix service"
-			} else if missileImpact {
+			} else if missileImpact || monsterImpact {
 				reason = "missing player impact prefix service"
 			} else if playerCharge {
 				reason = "missing player charge prefix service"
@@ -1184,12 +1185,18 @@ func PlayerDamageNative4E17B0(
 		// Exclusion/facing can replace the live record. The entry marker and
 		// equipment stay cached, but never read a non-player/nil live carry.
 		reason := "unsupported live player bite record"
-		if missileImpact {
+		if missileImpact || monsterImpact {
 			reason = "unsupported live player impact record"
 		} else if playerCharge {
 			reason = "unsupported live player charge record"
 		}
 		return playerDamageUnsupported4E17B0(runtime, reason, target, source, weapon, damage, typ)
+	}
+	if monsterImpact {
+		// A Troll's ordinary strike passes itself as both source and weapon.
+		// Full armor/carry is shared with PIERCE, but the marker stays clear
+		// through defenses and no projectile reflection is applicable.
+		return playerDamageMonsterImpactTail4E17B0(target, source, weapon, greatSword, pierceArmorValue, damage, typ, runtime)
 	}
 	if applicable, handled, result := playerDamageGreatSwordMissileBlock4E17B0(target, source, weapon, greatSword, damage, typ, runtime); applicable {
 		return handled, result

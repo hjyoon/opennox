@@ -575,7 +575,7 @@ func TestPlayerDamageImpactPrefixEarlyGate4E17B0(t *testing.T) {
 
 func TestPlayerDamageImpactPrefixShapeBoundary4E17B0(t *testing.T) {
 	bitePrefixCases4E17B0(t, func(t *testing.T, observe bool) {
-		for _, shape := range []string{"zero", "negative", "nil-source", "nil-weapon", "self-weapon", "player-source", "nil-source-update", "non-missile"} {
+		for _, shape := range []string{"zero", "negative", "nil-source", "nil-weapon", "mixed-self-weapon", "player-source", "nil-source-update", "non-missile"} {
 			t.Run(shape, func(t *testing.T) {
 				target, source, missile, cached, r := impactPrefixFixture4E17B0(t, observe)
 				weapon, raw := missile, int32(5)
@@ -588,7 +588,8 @@ func TestPlayerDamageImpactPrefixShapeBoundary4E17B0(t *testing.T) {
 					source = nil
 				case "nil-weapon":
 					weapon = nil
-				case "self-weapon":
+				case "mixed-self-weapon":
+					source.ObjClass |= object.ClassWeapon
 					weapon = source
 				case "player-source":
 					source.ObjClass = object.ClassPlayer

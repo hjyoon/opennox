@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## PlayerDamage의 Troll self-weapon IMPACT entry·full armor·방어
+
+기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. type 11 self-MONSTER를 기존 entry reset/ObserveClear/PrevPos snapshot/한 번의 exclusion·facing에 추가하고 별도 새 full-armor helper로 연결했다. cached entry armor/equipment/state/marker와 live carry/inventory를 구별하며, 자신을 distinct projectile로 기록하거나 반사하지 않는다. 원본 일반 shield·Berserker shield·GreatSword·staff nonmissile IMPACT 방어, audio/state/balance 뒤 live item 선택, 양수에만 적용되는 minimum, wear 뒤 GodMode/live Player gate/Quest/Default 순서를 복원했다. NPC entry dispatch는 별도 후속 단위다.
+
+새 65 leaf(armor × signed/zero raw × Quest/God, Observe/live update replacement, 세 방어구의 front/rear·stance, 실제 Go HP tail)는 수정 전 전부 실패, 수정 후 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 975 pass/fail·skip 0이다. 기존 전체 PlayerDamage/DefaultDamage도 같은 실행에서 통과했다. 기존 missile boundary의 두 self-weapon negative fixture는 mixed MONSTER|WEAPON self-weapon으로 좁혀 기존 malformed 경계를 유지했고, 정상 self-MONSTER는 새 양성·signed 계약으로 검증한다. AST로 다른 기존 production 본체 불변을 확인했다. 첫 강제 checkptr 빌드는 디스크 부족으로 중단됐고, 검증용 구형 재생성 가능 Go 캐시 20개 정리 뒤 전체 5모드를 재실행했다. 자산/Save/config/기존 YAML/PNG/golden/oracle은 보존했다.
+
 ## Troll self-weapon IMPACT의 기본 피해 tail
 
 기존 production 본체는 `DefaultDamageWorld4E0B30` 하나만 변경했다. 실제 stock Troll은 공격 시 자신을 source와 weapon으로 함께 전달하는 type 11이며, projectile/CRUSH가 아니었다. 원본 004E0C55의 qualifying self-MONSTER friendly gate를 NoUpdate 앞에 복원하고 player/NPC/ordinary monster의 기존 Shock·late Defend·hit sound·GameBall·hurt·source combat latch·live Shield·HP tail에 연결했다. raw zero/signed 값을 양수로 바꾸지 않고 player charge/missile의 서로 다른 friendly 판정도 보존했다.

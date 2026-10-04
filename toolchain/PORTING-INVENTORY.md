@@ -1,5 +1,9 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## FLAME 빙의 해제 prefix — player wrapper
+
+`playerDamagePlayerMissileFlame4E17B0` 한 기존 본체만 소비한 prefix의 ObserveTarget 재조회를 생략한다. cached update에는 이전 관찰 대상이, 교체된 live update에는 새 관찰 대상·shield 자세/장비가 남아 있어도 다시 해제하거나 새 방패를 소급 선택하지 않는다. 두 unit owner·direct/splash 네 회귀의 명시적 빙의 거부 red를 수정했고 raw HP 200→195·양쪽 carry 불변·cached marker/live marker 분리를 확인했다. 관련 server PlayerDamage/DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회가 통과했다. entry 연결은 아직 후속이며 원본 자산·범위·개인 파일은 유지한다.
+
 ## FLAME 빙의 해제 prefix — raw durability tail
 
 기존 production 본체는 `playerDamageMissileFlameTail4E17B0` 하나만 변경했다. 이미 소비한 entry prefix에서는 marker reset·missile type 재저장을 반복하지 않는다. 원본 `004E1DC7`의 raw signed armor wear·live armor denominator와 armor callback 뒤 cached marker fallback, GodMode→live Quest→DefaultDamage 순서는 유지한다. 두 unit owner·direct/splash·marker 유지/삭제/교체 12회귀에서 live carry 0.5와 cached carry 0.125가 불변이고 armor HP 30→27·Quest 뒤 실제 HP 200→198임을 확인했다. 최초 splash fixture의 armor callback weapon 기대값은 원본의 nil 전달에 맞게 바로잡았고 그 준비 실패를 production red로 세지 않는다. 교정된 direct 여섯 경우는 수정 전 type 777을 695로 덮어쓰는 red였다.

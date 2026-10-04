@@ -8,6 +8,7 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 )
 
 func TestPlayerDamageFlamePrefixLiveTail4E17B0(t *testing.T) {
@@ -73,6 +74,36 @@ func TestPlayerDamageFlamePrefixLiveTail4E17B0(t *testing.T) {
 					}
 				})
 			}
+		}
+	}
+}
+
+func TestPlayerDamageFlamePrefixWrapper4E17B0(t *testing.T) {
+	for _, playerSource := range []bool{false, true} {
+		for _, splash := range []bool{false, true} {
+			t.Run(fmt.Sprintf("player-source-%t/splash-%t", playerSource, splash), func(t *testing.T) {
+				target, source, weapon, missile := damageFlameFixture4E17B0(t, playerSource, true, splash)
+				cached := target.UpdateDataPlayer()
+				cached.Player.Field3680, cached.Player.CameraFollowObj = 2, source
+				cached.Field21, cached.Field76, cached.Field75 = math.Float32bits(0.125), 1, 777
+				if splash {
+					cached.Field76, cached.Field75 = 0, 77
+				}
+				live := &PlayerUpdateData{Player: &Player{Field3680: 2, CameraFollowObj: missile, ArmorEquip: 0x1000000}, State: PlayerState16, Field21: math.Float32bits(0.5), Field76: 31, Field75: 33}
+				target.UpdateData = unsafe.Pointer(live)
+				r := damageFlameRuntime4E17B0(t, 0)
+				r.playerPrefix = &playerDamagePrefix4E17B0{update: cached}
+				r.ObserveClear = func(*Object) { t.Fatal("FLAME wrapper repeated ObserveClear") }
+				r.BlockDirection = func(*Object, types.Pointf) bool { t.Fatal("FLAME wrapper selected new live shield"); return false }
+				h, result := playerDamagePlayerMissileFlame4E17B0(target, source, weapon, cached, 5, object.DamageFlame, r)
+				marker, markerType := uint32(1), uint32(777)
+				if splash {
+					marker, markerType = 2, uint32(object.DamageFlame)
+				}
+				if !h || !result || target.HealthData.Cur != 195 || cached.Field76 != marker || cached.Field75 != markerType || cached.Field21 != math.Float32bits(0.125) || live.Field21 != math.Float32bits(0.5) || live.Field76 != 31 || live.Field75 != 33 {
+					t.Fatalf("FLAME wrapper=%t/%t HP=%d cached marker=%d/%d", h, result, target.HealthData.Cur, cached.Field76, cached.Field75)
+				}
+			})
 		}
 	}
 }

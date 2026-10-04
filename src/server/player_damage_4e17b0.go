@@ -806,9 +806,16 @@ func PlayerDamageNative4E17B0(
 		weaponFlags: player.WeaponEquip, armorFlags: player.ArmorEquip,
 		state: &update.State, marker: &update.Field76, markerType: &update.Field75,
 	}
-	if playerDamageMissilePierceShape4E17B0(source, weapon, typ) && player.ObserveTarget() != nil {
-		if runtime.ObserveClear == nil || runtime.BlockSourceExcluded == nil || runtime.BlockDirection == nil || runtime.DefaultDamage == nil {
-			return playerDamageUnsupported4E17B0(runtime, "missing possessed player PIERCE prefix service", target, source, weapon, damage, typ)
+	pierceMissile := playerDamageMissilePierceShape4E17B0(source, weapon, typ)
+	flameMissile := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
+	explosionMissile := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
+	if (pierceMissile || flameMissile || explosionMissile) && player.ObserveTarget() != nil {
+		excluded := runtime.BlockSourceExcluded
+		if weapon == nil {
+			excluded = runtime.BlockSourceOnlyExcluded
+		}
+		if runtime.ObserveClear == nil || excluded == nil || runtime.BlockDirection == nil || runtime.DefaultDamage == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing possessed player missile prefix service", target, source, weapon, damage, typ)
 		}
 		if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 			return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)
@@ -828,27 +835,35 @@ func PlayerDamageNative4E17B0(
 		return handled, result
 	}
 	if runtime.playerPrefix != nil {
-		// 004E1A49 snapshots PrevPos and 004E1AA2 attributes the missile,
-		// before the exclusion/facing branch at 004E1B2A shared by defenses.
-		pos := weapon.PrevPos
-		update.Field76, update.Field75 = 1, uint32(weapon.TypeInd)
-		excluded := runtime.BlockSourceExcluded(weapon)
+		// Direct hits snapshot the weapon and attribute it at 004E1AA2.
+		// Splash uses the source at 004E1ABE and only four exclusions;
+		// FLAME/EXPLOSION leave its marker clear until the switch fallback.
+		attack, exclusion := weapon, runtime.BlockSourceExcluded
+		if attack == nil {
+			attack, exclusion = source, runtime.BlockSourceOnlyExcluded
+		}
+		pos := attack.PrevPos
+		if weapon != nil {
+			update.Field76, update.Field75 = 1, uint32(weapon.TypeInd)
+		}
+		excluded := exclusion(attack)
 		front := !excluded && runtime.BlockDirection(target, pos)
 		// Both specialized defenses consume the original pair's answer;
 		// never invoke the external services twice or reset the prefix again.
 		runtime.BlockSourceExcluded = func(*Object) bool { return excluded }
+		runtime.BlockSourceOnlyExcluded = runtime.BlockSourceExcluded
 		runtime.BlockDirection = func(*Object, types.Pointf) bool { return front }
 	}
 	if applicable, handled, result := playerDamageGreatSwordMissileBlock4E17B0(target, source, weapon, greatSword, damage, typ, runtime); applicable {
 		return handled, result
 	}
-	if playerDamageMissileFlameShape4E17B0(source, weapon, typ) {
+	if (runtime.playerPrefix != nil && flameMissile) || playerDamageMissileFlameShape4E17B0(source, weapon, typ) {
 		return playerDamagePlayerMissileFlame4E17B0(target, source, weapon, update, damage, typ, runtime)
 	}
-	if playerDamageMissileExplosionShape4E17B0(source, weapon, typ) {
+	if (runtime.playerPrefix != nil && explosionMissile) || playerDamageMissileExplosionShape4E17B0(source, weapon, typ) {
 		return playerDamagePlayerMissileExplosion4E17B0(target, source, weapon, update, pierceArmorValue, damage, typ, runtime)
 	}
-	if runtime.playerPrefix != nil || playerDamageMissilePierceShape4E17B0(source, weapon, typ) {
+	if (runtime.playerPrefix != nil && pierceMissile) || playerDamageMissilePierceShape4E17B0(source, weapon, typ) {
 		// Stock GolemArrow is also WEAPON, subclass 0x10. Admit its
 		// ranged predicate without silently including melee Shock shapes.
 		// 004E1F84 accepts either unit source and raw signed damage; the

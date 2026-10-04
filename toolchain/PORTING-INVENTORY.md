@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 빙의 플레이어 FLAME/EXPLOSION — native 진입점 연결
+
+기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 복원한 PIERCE prefix에 pure spell missile FLAME/EXPLOSION의 직접 명중·source-only splash를 연결한다. cached armor/equipment/state/marker → marker clear → 실제 ObserveClear → live Reflect Shield → PrevPos snapshot/직접 명중 attribution → weapon 6개 또는 source-only 4개 exclusion/facing 한 번 → 기존 방패/대검/해당 signed damage switch 순서를 보존한다. callback 뒤 missile type/position이 바뀌어도 캐시한 attribution/facing과 admission damage type을 유지하고 splash는 switch의 type fallback까지 marker=0이다. 아래 네 준비 단위의 entry 연결 대기는 해소했다.
+
+새 server 128회귀(두 damage type·두 unit owner·direct/splash·6 defense 48개, missing-service 및 early-gate 각 40개)는 ObserveClear의 live update 교체·새 관찰 대상·buff/equipment/type/position 변경을 포함한다. raw FLAME HP 200→195/carry 불변, cached absorption EXPLOSION HP 200→196/live carry 0.5→0.25 및 cached/live marker 분리를 확인했다. 새 root C-owned 8회귀는 4 GiB 초과 pointer의 실제 registered C dispatcher→PlayerDamage→root ObserveClear→C status 해제→CameraUnlock→normal player update 복원→DefaultDamage/UnitSetHP를 대체 callback 없이 실행하여 status 0x22→0x20·camera=nil·HP 60→55/56을 확인했다. 이 synthetic fixture는 stock-map/GUI possession 시연이나 status packet transport 검증을 뜻하지 않는다.
+
+관련 root/server/legacy PlayerDamage·DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle이 통과했다. 원본 code 2,935/data 638개·strict NXZ 50쌍 및 stock 자산·개인 Save/config·기존 golden은 불변이다. clean ARM64 3제품·일반/HD stock 비밀벽과 기존 양방향 마법 headless 회귀는 후속 검증이다. 빙의 melee 등 다른 미복원 분기·경쟁 모드 death·원본 Windows runtime/물리 화면 전체 검증은 별도다.
+
 ## EXPLOSION 빙의 해제 prefix — player wrapper
 
 `playerDamagePlayerMissileExplosion4E17B0` 한 기존 본체만 소비한 prefix의 ObserveTarget 재조회를 생략한다. 두 unit owner·direct/splash 네 회귀에서 교체된 live update의 새 관찰 대상·방패를 다시 선택하지 않으며 cached absorption 0.25·live carry 0.5→0.25·실제 HP 200→196·cached/live marker 분리를 확인했다. 수정 전 네 경우 모두 명시적 빙의 거부 red였다. 관련 server PlayerDamage/DefaultDamage 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회가 통과했다. entry 연결은 후속이며 원본 자산·개인 파일은 유지한다.

@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 선제공격 시야 검토: directed 선분과 원본 cross-product spill
+
+기존 production 본체는 `LineTraceXxx` 하나만 변경했다. GAME.EXE 00427980의 canonical 검색 bounds와 실제 directed endpoints를 분리하고, binary32 delta 이후 x87 cross-product 차이의 최종 binary32 spill을 유지했다. 기존 Canon은 내려가는 대각선을 반대 대각선으로 바꿨고, 각 곱의 조기 binary32 반올림은 거의 평행한 실제 교차를 parallel로 오인했다. 원본 horizontal overlap·endpoint·parallel/zero rejection gates는 보존했다. 새 32 leaf의 수정 전 pass 11/fail 21, 수정 후 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 합계 480 pass/fail·skip 0이다. 다른 기존 함수 본체의 AST 불변을 확인했다. caller의 Canon도 별도 단위로 수정·검증해야 하므로 이 helper만으로 시야 수정 완료라고 세지 않는다.
+
+새 stock headless/mock first-attack observer는 enemy/current/preferred/seen/FIGHT/Injured 또는 damage를 넣지 않고 stock 생성·위치·방향 및 NPC 정상 공격성/장비 설정만 한다. clear Spider와 옆 Tower가 있는 ascending Spider는 스스로 적을 획득하고 실제 HP/client 피해를 냈다. 같은 off-ray Tower를 둔 descending Spider는 600 tick 동안 HP 2000 유지·seen/current 0·IDLE·CanInteract=false로 timeout하여 문제를 재현했다. 독의 다음 시험 유입은 정상 cure cleanup으로 차단했으며 초기 오염 실행은 성공 증거로 합치지 않는다. 별도로 stock Troll은 정상 획득/공격 동작 뒤 native PlayerDamage가 self-weapon IMPACT(type 11)를 거부함을 확인했고, 해당 공격 tail은 후속 단위다. 시험 실패를 oracle/golden 합격으로 바꾸거나 자산/manifest를 갱신하지 않았다.
+
+직전 Sentry 단위의 clean 후속 검증은 `2aaa87594962ac6abce7ecc9c9ee3f2c02c2abb9`와 origin 일치 source에서 완료했다. 일반·HD·전용 server 3개 Mach-O arm64/Go 1.26.5/full revision/`vcs.modified=false`/help·불변 oracle을 확인했고, 일반/HD headless/mock 각각 stock 6조합의 실제 피해·광선·비활성화·ordinary 삭제가 exit 0이다. 아래 Sentry observer 절의 clean 후속 대기 항목은 이 결과로 완료했다. AI 경로 및 모든 마법 전체가 완료된 것으로 확대하지 않는다.
+
 ## 실제 Sentry 피해·network 광선·비활성화·삭제 observer
 
 기존 production 본체는 `e2eScenario.Load`의 새 `check-sentry-globe` dispatch 하나만 변경했다. 새 bounded observer/YAML은 stock Sentry를 public Enable로 켜고 실제 update→HP→hit audio→정상 client damage packet→기존 render→비활성화→DelayedDelete를 관측한다. world→Player/NPC/Troll, Player→NPC, NPC→Player 및 NPC→Player-owned Troll의 6조합을 구별한다. unowned NPC와 unowned 몬스터는 원래 ally이므로 마지막 조합은 정상 소환 소유권으로 적대 관계를 준비하고 검증한다. Spider의 Short/regular-game 제외 gate는 보존했으며 결과용 damage/marker/endpoint/packet/버프/pixel을 주입하지 않는다. Monster Injured는 normal update가 같은 tick에 소비하므로 실제 hit audio에서 관측한다. 준비·짧은 실제 피해 대기·client 대기·종료 대기는 각각 명시된 timeout이 있다.

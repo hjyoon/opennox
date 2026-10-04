@@ -586,9 +586,10 @@ func (s *Server) MapTraceVision(obj1, obj2 *Object) bool {
 }
 
 func LineTraceXxx(r1, r2 types.Rectf) bool {
-	r1 = r1.Canon()
-	r2 = r2.Canon()
-	if r1.Max.X < r2.Min.X || r1.Min.X > r2.Max.X || r1.Max.Y < r2.Min.Y || r1.Min.Y > r2.Max.Y {
+	// GAME.EXE 00427980 sorts separate search bounds, not the directed
+	// segment endpoints. Sorting an endpoint pair changes a falling diagonal.
+	r1c, r2c := r1.Canon(), r2.Canon()
+	if r1c.Max.X < r2c.Min.X || r1c.Min.X > r2c.Max.X || r1c.Max.Y < r2c.Min.Y || r1c.Min.Y > r2c.Max.Y {
 		return false
 	}
 	if r1.Min.Y == r1.Max.Y && r2.Min.Y == r2.Max.Y {
@@ -600,9 +601,11 @@ func LineTraceXxx(r1, r2 types.Rectf) bool {
 	a2h := r2.Max.Y - r2.Min.Y
 	dx := r2.Min.X - r1.Min.X
 	dy := r2.Min.Y - r1.Min.Y
-	dd1 := dy*a1w - dx*a1h
-	dd2 := a2w*a1h - a2h*a1w
-	dd3 := dy*a2w - dx*a2h
+	// Original deltas and final differences are binary32 spills. The x87
+	// products are not individually rounded before their subtraction.
+	dd1 := float32(float64(dy)*float64(a1w) - float64(dx)*float64(a1h))
+	dd2 := float32(float64(a2w)*float64(a1h) - float64(a2h)*float64(a1w))
+	dd3 := float32(float64(dy)*float64(a2w) - float64(dx)*float64(a2h))
 	if dd1 == 0.0 || dd2 == 0.0 || dd1 < 0.0 && dd2 > 0.0 {
 		return false
 	}

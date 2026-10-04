@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 일반 플레이어 PIERCE/FLAME/EXPLOSION의 entry prefix 복원
+
+기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. 이미 복원된 Player/NPC source의 stock/pure PIERCE 및 두 unit owner의 pure FLAME/EXPLOSION direct/splash, 합계 12개 shape를 일반 플레이어도 공통 entry prefix에 연결한다. 봉인된 `004E18C4`의 unconditional cached marker clear와 conditional ObserveClear를 구별하고, live Reflect current-position → PrevPos snapshot → weapon 6개/source-only 4개 exclusion → callback 뒤 distinct live weapon type attribution → facing 한 번 순서를 보존한다. cached equipment/armor/marker와 live carry를 분리하며 기존 signed damage 숫자 계산과 admission 범위는 변경하지 않는다.
+
+일반 missile의 armor read-only 준비 검사는 marker 이동 전에 유지한다. 기존 대검 앞면 차단은 HP switch 이전에 끝나므로 DefaultDamage가 없어도 동작하는 계약을 보존한다. 대검을 가진 후면/비차단 경로의 HP 서비스 검사는 기존 tail에서 수행하며, 이를 모든 missing-service 조합이 prefix mutation 전에 거부된다는 주장으로 확대하지 않는다. 반사나 callback이 live update를 교체해도 marker를 다시 지우거나 replacement observer를 재해제하지 않는다.
+
+새 server contract 444개 leaf는 12 shape×signed/zero/positive×7개 방어 252개, exclusion/facing 뒤 live update 교체와 cached marker 분리 72개, 일반 non-GreatSword missing-service 60개, early-gate 60개다. DefaultDamage는 전달된 signed 입력을 기록할 뿐 실제 HP를 변경하지 않는다. 실제 C-owned normal PIERCE 56회귀의 high-pointer registered dispatcher·native armor/wear·DefaultDamage/UnitSetHP 검사는 기존 회귀 재실행이며 새 444개로 세지 않는다. 실제 C-owned 전기/빙의 및 다른 피해 회귀도 함께 유지한다.
+
+production 본체가 HEAD와 정확히 같은 상태의 확장 baseline은 pass 96/fail 348이고 복원 후 새 444개 모두 통과했다. 최초 전체 gate에서 드러난 기존 방패 fixture의 장비 데이터/armor 서비스 누락은 준비 오류로 보완했으며, 기존 Reflect/cached-live 회귀는 current-position 반사 이후 공통 previous-position facing의 정확한 순서·호출 수를 검사하도록 교정했다. 기존 대검의 nil DefaultDamage 차단 회귀는 변경하지 않았다. 관련 root/server/legacy PlayerDamage·DefaultDamage·UnitDamageClear 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회, 전체 일반/strict·fresh-process server-tag 각 1회와 oracle이 통과했다.
+
+원본 code 2,935/data 638·strict NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이며 새 원본 byte/range/manifest·자산·golden은 추가하거나 변경하지 않는다. clean ARM64 3제품과 기존 일반/HD 비밀벽·해머·Shock·duration-ray·대검·Fireball·Magic Missile 14 headless 실행은 후속 검증이다. 개인 Save/config·private 로그/PNG는 보존하고 공개하지 않는다. 다른 미복원 entry/tail 및 손상된 live record의 추가 guard·실제 GUI 빙의 입력·원격 client·원본 Windows runtime/물리 출력 전체는 별도 경계다.
+
 ## 일반 ELECTRIC prefix의 clean ARM64 제품·headless 완료
 
 native entry 커밋 `60cb448065a702ee4d0dcb090a35de41e033a144`와 remote가 일치하는 clean 상태에서 ARM64 일반·실제 highres·server 3제품을 빌드했다. 모두 Mach-O arm64·Go 1.26.5·tuple/full revision/`vcs.modified=false`·도움말 실행이 통과했다. 아래 normal ELECTRIC entry의 clean 제품/headless 후속 대기는 완료했다. 새 server contract 336개와 기존 실제 C-owned signed 전기 48개의 API 경계 검사는 stock-map 회귀와 구별한다.

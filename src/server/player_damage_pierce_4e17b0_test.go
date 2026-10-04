@@ -117,8 +117,10 @@ func TestPlayerDamageNative4E17B0PierceShieldPreservesMissileMarker(t *testing.T
 		target, source, arrow, r, damages := playerDamagePierceFixture4E17B0(t, playerSource)
 		update := target.UpdateDataPlayer()
 		update.State, update.Player.ArmorEquip = PlayerState16, 0x1000000
-		shield := &Object{ObjClass: object.ClassArmor, ObjSubClass: 2, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 10}}
+		shield := &Object{ObjClass: object.ClassArmor, ObjSubClass: 2, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 10},
+			Damage: unsafe.Pointer(new(byte)), InitData: unsafe.Pointer(&ModifierInitData{}), UpdateData: unsafe.Pointer(damageArmorCarryFixture4E17B0(0))}
 		target.InvFirstItem = shield
+		damageMeleeArmorRuntime4E17B0(&r, shield, 0.25)
 		r.BlockDirection = func(v *Object, p types.Pointf) bool { return v == target && p == arrow.PrevPos }
 		r.BlockDamagePercent = func() float64 { return 0.5 }
 		r.CanDamageBlockItem = func(item *Object) bool { return item == shield }
@@ -179,11 +181,22 @@ func TestPlayerDamageNative4E17B0PierceReflectShield(t *testing.T) {
 				target, source, arrow, r, damages := playerDamagePierceFixture4E17B0(t, playerSource)
 				target.Buffs |= 1 << playerDamageReflectEnchant4E17B0
 				var events []string
+				directions := 0
 				r.BlockDirection = func(v *Object, p types.Pointf) bool {
-					if v != target || p != arrow.PosVec {
-						t.Fatal("Reflect Shield uses current missile position")
+					directions++
+					if v != target {
+						t.Fatal("wrong Reflect Shield target")
 					}
-					return front
+					if directions == 1 {
+						if p != arrow.PosVec || target.UpdateDataPlayer().Field76 != 0 {
+							t.Fatal("Reflect Shield uses current position after the entry reset")
+						}
+						return front
+					}
+					if front || directions != 2 || p != arrow.PrevPos || target.UpdateDataPlayer().Field76 != 1 {
+						t.Fatal("rear Reflect must continue to the attributed previous-position facing once")
+					}
+					return false
 				}
 				r.ProjectileReflect = func(w, v *Object) {
 					if w != arrow || v != target {
@@ -211,6 +224,13 @@ func TestPlayerDamageNative4E17B0PierceReflectShield(t *testing.T) {
 				}
 				if h, result := PlayerDamageNative4E17B0(target, source, arrow, 3, object.DamageImpale, r); !h || result == front {
 					t.Fatalf("reflect PIERCE = %t/%t", h, result)
+				}
+				wantDirections := 2
+				if front {
+					wantDirections = 1
+				}
+				if directions != wantDirections {
+					t.Fatalf("Reflect/common direction calls=%d want=%d", directions, wantDirections)
 				}
 				if front {
 					if !reflect.DeepEqual(events, []string{"reflect", "clear", "owner", "audio"}) || len(*damages) != 0 || target.HealthData.Cur != 20 || target.UpdateDataPlayer().Field76 != 0 || target.UpdateDataPlayer().Field21 != 0 {

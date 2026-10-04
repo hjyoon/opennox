@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
@@ -15,9 +16,11 @@ func TestPlayerDamageNative4E17B0MissileFlameShieldMarker(t *testing.T) {
 			ud := target.UpdateDataPlayer()
 			ud.Field76, ud.Field75 = 99, 77
 			ud.State, ud.Player.ArmorEquip = PlayerState16, 0x1000000
-			shield := &Object{ObjClass: object.ClassArmor, ObjSubClass: 2, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 10}}
+			shield := &Object{ObjClass: object.ClassArmor, ObjSubClass: 2, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 10},
+				Damage: unsafe.Pointer(new(byte)), InitData: unsafe.Pointer(&ModifierInitData{}), UpdateData: unsafe.Pointer(damageArmorCarryFixture4E17B0(0))}
 			target.InvFirstItem = shield
 			r := damageFlameRuntime4E17B0(t, 0)
+			damageMeleeArmorRuntime4E17B0(&r, shield, 0.25)
 			r.BlockDirection = func(got *Object, p types.Pointf) bool { return got == target && p == missile.PrevPos }
 			r.BlockSourceExcluded = func(*Object) bool { return false }
 			r.ProjectileReflect = func(got, owner *Object) {

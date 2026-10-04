@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/opennox/libs/object"
+	"github.com/opennox/libs/types"
 )
 
 func damageFlameRuntime4E17B0(t *testing.T, protection float64) PlayerDamageRuntime4E17B0 {
@@ -14,7 +15,10 @@ func damageFlameRuntime4E17B0(t *testing.T, protection float64) PlayerDamageRunt
 	world := damageMeleeWorldRuntime4E0B30(t)
 	world.FireProtection = func(*Object) float64 { return protection }
 	return PlayerDamageRuntime4E17B0{
-		Frame: world.Frame,
+		Frame:                   world.Frame,
+		BlockSourceExcluded:     func(*Object) bool { return false },
+		BlockSourceOnlyExcluded: func(*Object) bool { return false },
+		BlockDirection:          func(*Object, types.Pointf) bool { return false },
 		DefaultDamage: func(target, source, weapon *Object, damage int32, typ object.DamageType) bool {
 			return DefaultDamageWorld4E0B30(target, source, weapon, damage, typ, world)
 		},

@@ -834,13 +834,17 @@ func PlayerDamageNative4E17B0(
 	explosionMissile := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
 	electricHit := playerDamageElectricShape4E17B0(source, weapon, typ)
 	observe := player.ObserveTarget() != nil
-	if electricHit || ((pierceMissile || flameMissile || explosionMissile) && observe) {
+	if electricHit || pierceMissile || flameMissile || explosionMissile {
 		excluded := runtime.BlockSourceExcluded
 		if weapon == nil {
 			excluded = runtime.BlockSourceOnlyExcluded
 		}
-		if (observe && runtime.ObserveClear == nil) || excluded == nil || runtime.BlockDirection == nil || runtime.DefaultDamage == nil {
-			reason := "missing possessed player missile prefix service"
+		// The existing normal GreatSword defense can finish before the HP
+		// switch without DefaultDamage. Its unblocked tail still checks that
+		// service; do not make an unused HP callback a block prerequisite.
+		defaultRequired := electricHit || observe || greatSword.weaponFlags&0x400 == 0
+		if (observe && runtime.ObserveClear == nil) || excluded == nil || runtime.BlockDirection == nil || (defaultRequired && runtime.DefaultDamage == nil) {
+			reason := "missing player missile prefix service"
 			if electricHit {
 				reason = "missing player electric prefix service"
 			}
@@ -848,6 +852,11 @@ func PlayerDamageNative4E17B0(
 		}
 		if electricHit && (runtime.ElectricArmorScale == nil || !playerDamageArmorReady4E17B0(target, runtime)) {
 			return playerDamageUnsupported4E17B0(runtime, "missing player electric armor service", target, source, weapon, damage, typ)
+		}
+		if !electricHit && !observe && !playerDamageArmorReady4E17B0(target, runtime) {
+			// Preserve normal missile admission's read-only armor checks before
+			// moving its marker stores into the common entry prefix.
+			return playerDamageUnsupported4E17B0(runtime, "missing player missile armor service", target, source, weapon, damage, typ)
 		}
 		if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
 			return playerDamageUnsupported4E17B0(runtime, "missing quest damage service", target, source, weapon, damage, typ)

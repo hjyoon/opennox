@@ -50,7 +50,7 @@ func TestPlayerDamageNative4E17B0NPCMissileExplosionArmor(t *testing.T) {
 // entry-time base, whereas fractional carry and durability use the live base.
 func damageExplosionCachedLiveOrder4E17B0(t *testing.T, toPlayer bool) {
 	t.Helper()
-	target, source, weapon, _ := damageExplosionFixture4E17B0(t, !toPlayer, toPlayer, false)
+	target, source, weapon, missile := damageExplosionFixture4E17B0(t, !toPlayer, toPlayer, false)
 	armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0.4)
 	var cachedMarker, cachedType, oldCarry, liveCarry *uint32
 	var replace func()
@@ -70,8 +70,21 @@ func damageExplosionCachedLiveOrder4E17B0(t *testing.T, toPlayer bool) {
 	r := damageFlameRuntime4E17B0(t, 0)
 	damageMeleeArmorRuntime4E17B0(&r, armor, 0.25)
 	var events []string
-	r.BlockDirection = func(*Object, types.Pointf) bool {
-		events = append(events, "defense")
+	r.BlockDirection = func(v *Object, pos types.Pointf) bool {
+		if v != target {
+			t.Fatal("wrong defense target")
+		}
+		if len(events) == 0 {
+			if pos != missile.PosVec || (toPlayer && *cachedMarker != 0) {
+				t.Fatal("Reflect must use current position after player entry reset")
+			}
+			events = append(events, "defense")
+		} else {
+			if !toPlayer || len(events) != 1 || pos != missile.PrevPos || *cachedMarker != 1 || *cachedType != uint32(missile.TypeInd) {
+				t.Fatal("normal player common facing must follow attribution once")
+			}
+			events = append(events, "facing")
+		}
 		replace()
 		return false
 	}
@@ -111,7 +124,7 @@ func damageExplosionCachedLiveOrder4E17B0(t *testing.T, toPlayer bool) {
 	h, result := PlayerDamageNative4E17B0(target, source, weapon, 9, object.DamageExplosion, r)
 	want := []string{"defense", "armor", "quest", "scale", "default"}
 	if toPlayer {
-		want = []string{"defense", "armor", "god", "quest", "scale", "default"}
+		want = []string{"defense", "facing", "armor", "god", "quest", "scale", "default"}
 	}
 	if !h || result || target.HealthData.Cur != 200 || !slices.Equal(events, want) {
 		t.Fatalf("handled=%t result=%t HP=%d events=%v", h, result, target.HealthData.Cur, events)

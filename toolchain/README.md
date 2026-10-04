@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+2026-10-04 비밀벽 접촉 `00548100`의 PE32 필드 접근을 native `nox_secret_wall_t`로 복원했다. LP64에서 기존 +20/+21/+22는 flags/state/delay가 아니라 wall 포인터 내부였으며, 실제 필드는 +28/+29/+30이다. 한 C 본체만 변경해 원래 플레이어/몬스터 접촉 gate, 닫힘→열리는 중 전환, delay=0, signed DWORD 좌표 wrap과 tile별 open sound 순서를 유지한다. 원본 177바이트·뒤 15-NOP 해시를 구현 전에 확인해 봉인했다. 실제 production 본체·layout/header를 독립 C 실행 파일로 컴파일하는 회귀는 수정 전 닫힘 유지 red와 수정 후 256×256×8 class/flag/state 조합, 반복 무중복, 음수/overflow 좌표 및 고주소 레코드의 인접 필드/포인터 불변을 확인한다. 관련 일반/실제 cgocheck2/race/checkptr/실제 highres 각 3회, 전체 일반/strict·server-tag 각 1회와 oracle이 통과했다. 이 단계는 외부 서비스를 가로채는 본체 계약 검사이며 실제 맵 접촉/GUI는 후속 단계다. code 2,935/data 638개·stock tree·NXZ 50쌍 및 개인 파일은 유지한다.
+
+이전 Quest key observer `d36a7dabd`의 후속 clean 검증도 완료했다. ARM64 3제품 build/revision/help, 일반/HD 실제 Quest key 각 16회/합계 32회와 양방향 마법 8실행/106결과 및 전후 oracle이 통과했고 source/remote revision과 stock 자산은 불변이다. 아래 observer의 clean 검증 대기 기록은 이 결과로 마무리한다.
+
 이 포팅 브랜치의 유일한 지원 도구체인은 `go1.26.5`이다. 버전의 단일 텍스트 기준은 `go-version.txt`이며, `src/go.mod`에는 언어 기준 `go 1.26.0`과 권장 도구체인 `toolchain go1.26.5`를 함께 선언한다.
 
 빌드와 테스트는 다음 래퍼로 실행한다.

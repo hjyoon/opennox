@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## 비밀벽 접촉 `00548100`
+
+본체 177바이트 SHA-256 `09d20eb49334ad101a9ef326b499063c395883118427c547208dc568a3554c59`와 뒤 15-NOP SHA-256 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 구현 전에 확인해 봉인했다. 이미 봉인한 `00582C5C` binary32 11.5도 원래 signed DWORD grid-center wrap 뒤 사용한다. 한 C 본체의 typed secret 필드 복원으로 LP64 wall 포인터 바이트를 flags/state/delay로 오해하는 접촉 실패를 해결한다. lookup/class/state/flag gate, state=4/delay=0 뒤 tile별 sound lookup→ID→positional audio 순서는 유지한다.
+
+production body/layout/header 자체를 컴파일한 고주소 C-owned 회귀의 수정 전 closed red 및 수정 후 exhaustive class/flags/state·wrap 좌표·반복 무중복·인접 포인터/전체 레코드 불변을 구별해 기록한다. 외부 lookup/audio만 가로채는 본체 계약 검사이며 actual stock 맵 접촉/GUI 증거는 아직 후속 단계다. 일반/실제 cgocheck2/race/checkptr/highres 각 3회·전체 일반/strict/server-tag·oracle이 통과했다. code 2,935/data 638개·stock tree·NXZ 50쌍과 개인 파일은 불변이며 원본 자산/private 로그/PNG/golden을 공개하거나 변경하지 않는다.
+
+앞선 key observer `d36a7dabd`의 clean ARM64 3제품 및 일반/HD Quest key 32관찰·마법 8실행/106결과와 전후 oracle, source/remote revision 불변도 완료했다. 아래의 observer clean 대기 기록은 이 검증으로 마무리한다.
+
 ## Quest 열쇠 receiver 관찰의 범위
 
 별도 공개 headless scenario와 읽기 전용 observer로 정상 stock grant·queued inventory drag/수량 확인·금지된 drop·stock stage 전환의 실제 server/client inventory와 self-report cache·기존 native C decoder tail 바이트를 대조했다. 최종 일반/HD 진단 각 16회/합계 32회가 통과했다. 최초 수량 확인 누락과 다음 stage의 무조건 ClassKey 삭제 기대값은 테스트 준비 오류로 기록하며 game을 바꿔 성공시키지 않았다. Quest save 필터와 stage exit의 다른 class-bit 드롭은 서로 다르다.

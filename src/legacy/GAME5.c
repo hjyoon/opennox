@@ -1789,19 +1789,19 @@ int nox_xxx_BuildWaypointPath_547F70(uint32_t* a1, int a2, uint32_t* a3, int a4)
 void sub_548100(int2* a1, nox_object_t* a2) {
 	nox_wall_native_t* wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
 	if (wall && (wall->flags & 4) && (a2->obj_class & 6)) {
-		uint8_t* data = wall->data;
-		if (data && data[21] == 1 && (data[20] & 2)) {
-			data[21] = 4;
-			uint32_t grid_x = *(uint32_t*)(data + 4);
-			data[22] = 0;
-			uint32_t grid_y = *(uint32_t*)(data + 8);
+		nox_secret_wall_t* data = wall->data;
+		if (data && data->state == 1 && (data->flags & 2)) {
+			data->state = 4;
+			uint32_t grid_x = (uint32_t)data->x;
+			data->open_delay = 0;
+			uint32_t grid_y = (uint32_t)data->y;
 			float2 pos = {
-				23.0f * grid_x + 11.5f,
-				23.0f * grid_y + 11.5f,
+				(float)((double)(int32_t)(23U * grid_x) + 11.5),
+				(float)((double)(int32_t)(23U * grid_y) + 11.5),
 			};
 			char* sound = nox_xxx_wallFindOpenSound_410EE0(wall->tile);
 			nox_xxx_audCreate_501A30(nox_xxx_utilFindSound_40AF50(sound), &pos, 0, 0);
-					}
+		}
 	}
 }
 

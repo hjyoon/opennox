@@ -19894,6 +19894,20 @@
       "purpose": "the exact seven NOP bytes separating waypoint breadth-first routing from collision helpers at 00548100"
     },
     {
+      "name": "sub_548100",
+      "address": "0x00548100",
+      "size": 177,
+      "sha256": "09d20eb49334ad101a9ef326b499063c395883118427c547208dc568a3554c59",
+      "purpose": "look up the contacted wall, admit secret walls and monster/player class bits, change a closed touch-enabled secret record to opening with delay zero, then emit its tile's open sound at both signed wrapped grid centers"
+    },
+    {
+      "name": "sub_548100_padding",
+      "address": "0x005481B1",
+      "size": 15,
+      "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
+      "purpose": "the exact fifteen NOP bytes separating secret-wall contact from unit collision dispatch at 005481C0"
+    },
+    {
       "name": "nox_xxx_collSysAddCollision_548630",
       "address": "0x00548630",
       "size": 160,
@@ -20551,7 +20565,7 @@
       "address": "0x00582C5C",
       "size": 4,
       "sha256": "8e021905e9d459aa9b52cdbb2b52dfc14f5d645e54d759c1c6ddd13d8426e423",
-      "purpose": "the exact binary32 11.5 added to both grid coordinates by blocked AI source-cell correction at 0050C8D0"
+      "purpose": "the exact binary32 11.5 added to both grid coordinates by blocked AI source-cell correction at 0050C8D0 and after signed DWORD grid-center scaling by secret-wall contact at 00548100"
     },
     {
       "name": "unit_give_xp_one",

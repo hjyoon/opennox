@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 비밀벽 접촉 `00548100`의 native 필드 복원
+
+닫힌 touch-enabled 비밀벽에 접촉한 플레이어의 실제 production 본체 회귀가 수정 전 state=1/delay=21로 남는 red를 재현했다. 이미 40바이트 native 구조로 확장된 secret record를 여전히 PE32 +20/+21/+22로 읽고 써 wall 포인터 일부를 flags/state/delay로 취급하던 것이 원인이다. 이번 한 C 본체 변경은 typed `nox_secret_wall_t`의 state/flags/open_delay와 X/Y를 사용한다. wall lookup→secret/class 2|4→closed=1/flag 2→state=4→X 읽기→delay=0→Y 읽기→tile sound lookup/ID/audio 순서를 보존하며 원래 signed DWORD 23배 wrap→11.5→binary32 좌표도 유지한다. 다른 충돌 함수·자동 열림/닫힘·네트워크·원본 map/flags는 바꾸지 않는다.
+
+원본 본체 177바이트와 뒤 15-NOP의 해시만 봉인하고 이미 봉인된 11.5 constant의 사용 설명을 확장했다. production 본체와 native wall 정의를 직접 추출하고 production secret header를 포함하는 외부 C 실행 회귀는 256 state×256 flag×8 class, 256 wall flag, 49 signed/overflow 좌표, 반복 contact의 효과음 무중복, 조회 후 tile 읽기, null/non-secret no-op 및 고주소 unit/wall/secret/next의 전체 레코드 보존을 검사한다. lookup/audio만 가로채는 본체 계약 검사이며 실제 CGo 맵 접촉/queued GUI 결과와 구별한다.
+
+관련 일반/실제 cgocheck2/race/checkptr/실제 highres 각 3회, 전체 일반/strict 및 fresh-process server-tag 각 1회와 oracle이 통과했다. code 2,935/data 638개·NXZ 50쌍 및 stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 유지한다. 실제 stock 비밀벽의 접촉→23-frame 열림→통과 관찰은 후속 단위다. 원본/개인 파일·private 로그/PNG·기존 golden은 변경하거나 공개하지 않는다.
+
+앞선 Quest key observer `d36a7dabd`의 clean ARM64 3제품 build/revision/help, 일반/HD Quest key 32관찰과 마법 8실행/106결과, 전후 oracle 및 clean source/remote 일치 검증도 완료했다. 아래의 해당 후속 대기 기록은 완료된 것으로 갱신한다.
+
 ## 실제 Quest 은·금 열쇠 수신의 읽기 전용 관찰
 
 `host-quest-key-report.yaml`은 실제 Quest 메뉴의 Warrior 시작과 정상 stock SilverKey/GoldKey 지급을 사용한다. baseline, 은만 보유, 둘 다 보유, 각 중복 2개, 실제 queued inventory drag·수량 확인을 거친 금지된 수동 드롭, 정상 stock stage 전환까지 server/client의 실제 수량 및 Boolean presence를 읽기만 한다. 새 typed C tail reader는 기존 decoder가 쓴 바이트를 native Player 바인딩으로 읽으며 65,536개 수신 조합·4GiB 초과 C-owned 레코드·인접 바이트/전체 레코드 불변을 검사한다. 결과 오염 감도, bounded schedule, 공개 action 연결과 AST 금지 write/call 검사도 추가했다. 기존 production 본체 변경은 scenario loader 연결 하나이며 보고·패킷·inventory·mode 결과를 주입하지 않는다.

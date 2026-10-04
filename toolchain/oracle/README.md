@@ -2,6 +2,12 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## Stock 비밀벽의 실제 접촉 관찰 범위
+
+새 공개 Warrior host scenario는 정상 G_Crypts 로드 뒤 원래 접촉 열림 flag가 있는 닫힌 비밀벽을 선택한다. player 시작 위치만 준비하고 queued 실제 이동이 collision→`00548100`→정상 wall update를 구동한다. 일반/HD headless/mock 진단 각 5관찰/합계 10개·exit 0은 closed 1/0, 실제 CollisionWall, opening 4의 모든 delay 1..23, open 3/23, delay>11의 정상 trace 통과, server/client drawable의 왕복 통과와 tile sound event 한 번을 확인한다. native wall/secret/unit/update의 고주소 binding 및 원래 연결/좌표/방향/tile/flags/wait는 유지한다. wall 상태·충돌 기록·force·audio·packet·client 위치나 helper 결과를 주입하지 않는다.
+
+최초 War01a 준비 실패는 모든 stock secret flags=0인 스크립트식 벽을 접촉식으로 가정한 테스트 선택 오류다. stock metadata를 read-only로 확인해 G_Crypts로 옮겼으며 원본 파일/flag를 바꾸지 않았다. outcome 감도·geometry·bounded/public/AST 회귀와 일반/실제 cgocheck2/race/checkptr/highres 각 3회·전체 일반/strict/server-tag·oracle이 통과했다. clean observer 제품과 이전 key/양방향 마법 실행은 후속 검증이며 이 dirty 진단과 구별한다. 전체 wall-animation 픽셀·remote client·물리 화면/스피커·원본 Windows runtime 증명은 아니다. 새 원본 byte/range/asset/PNG는 추가하지 않아 code 2,935/data 638개·stock tree·NXZ 50쌍과 개인 파일/golden이 불변이다.
+
 ## 비밀벽 접촉 `00548100`
 
 본체 177바이트 SHA-256 `09d20eb49334ad101a9ef326b499063c395883118427c547208dc568a3554c59`와 뒤 15-NOP SHA-256 `40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838`를 구현 전에 확인해 봉인했다. 이미 봉인한 `00582C5C` binary32 11.5도 원래 signed DWORD grid-center wrap 뒤 사용한다. 한 C 본체의 typed secret 필드 복원으로 LP64 wall 포인터 바이트를 flags/state/delay로 오해하는 접촉 실패를 해결한다. lookup/class/state/flag gate, state=4/delay=0 뒤 tile별 sound lookup→ID→positional audio 순서는 유지한다.

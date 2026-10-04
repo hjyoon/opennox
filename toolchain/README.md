@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+2026-10-04 공개 `host-warrior-secret-wall-touch.yaml`과 읽기 전용 observer로 stock G_Crypts의 닫힌 접촉식 비밀벽을 확인했다. 실제 Warrior host 메뉴·정상 맵 로드·queued 이동으로 접촉하며, player 위치 준비 외에 wall state/flags/delay·CollisionWall·force·오디오·packet·client 위치를 공급하지 않는다. 일반/HD headless/mock 진단 모두 closed 1/0→실제 CollisionWall 기록→opening 4의 delay 1..23→open 3/23, delay>11의 정상 trace 통과, 서버/client drawable의 왕복 통과 및 정확히 한 tile open sound event를 확인했다. 각 5개 관찰/합계 10개와 정상 exit 0이다. native wall/secret/unit/update 포인터는 4GiB를 넘고 원래 연결·좌표·방향·tile·flags·wait를 유지한다.
+
+첫 War01a 진단은 해당 맵의 모든 비밀벽이 flags=0인 스크립트식이라 준비 조건에서 실패했다. stock 맵을 read-only로 확인해 원래 touch flag가 있는 G_Crypts를 선택했으며 맵/플래그나 게임 동작을 바꿔 테스트를 통과시키지 않았다. 결과 오염 감도·geometry·bounded schedule·공개 action 연결·AST 결과 주입 금지 회귀와 일반/실제 cgocheck2/race/checkptr/highres 각 3회, 전체 일반/strict·server-tag·oracle 각 1회도 통과했다. 이 observer 단위의 clean 3제품 및 이전 Quest key/양방향 마법 재검증은 후속 단계이며 dirty 진단과 구별한다. 전체 wall-animation 픽셀·remote client·물리 화면/스피커·원본 Windows runtime을 검증했다는 주장은 아니다. 원본 자산·개인 Save/config·기존 PNG/golden은 불변이다.
+
 2026-10-04 비밀벽 접촉 `00548100`의 PE32 필드 접근을 native `nox_secret_wall_t`로 복원했다. LP64에서 기존 +20/+21/+22는 flags/state/delay가 아니라 wall 포인터 내부였으며, 실제 필드는 +28/+29/+30이다. 한 C 본체만 변경해 원래 플레이어/몬스터 접촉 gate, 닫힘→열리는 중 전환, delay=0, signed DWORD 좌표 wrap과 tile별 open sound 순서를 유지한다. 원본 177바이트·뒤 15-NOP 해시를 구현 전에 확인해 봉인했다. 실제 production 본체·layout/header를 독립 C 실행 파일로 컴파일하는 회귀는 수정 전 닫힘 유지 red와 수정 후 256×256×8 class/flag/state 조합, 반복 무중복, 음수/overflow 좌표 및 고주소 레코드의 인접 필드/포인터 불변을 확인한다. 관련 일반/실제 cgocheck2/race/checkptr/실제 highres 각 3회, 전체 일반/strict·server-tag 각 1회와 oracle이 통과했다. 이 단계는 외부 서비스를 가로채는 본체 계약 검사이며 실제 맵 접촉/GUI는 후속 단계다. code 2,935/data 638개·stock tree·NXZ 50쌍 및 개인 파일은 유지한다.
 
 이전 Quest key observer `d36a7dabd`의 후속 clean 검증도 완료했다. ARM64 3제품 build/revision/help, 일반/HD 실제 Quest key 각 16회/합계 32회와 양방향 마법 8실행/106결과 및 전후 oracle이 통과했고 source/remote revision과 stock 자산은 불변이다. 아래 observer의 clean 검증 대기 기록은 이 결과로 마무리한다.

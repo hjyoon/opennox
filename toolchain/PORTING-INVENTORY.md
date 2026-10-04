@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 stock 비밀벽 접촉·열림·왕복 통과 관찰
+
+`host-warrior-secret-wall-touch.yaml`은 실제 Warrior host 메뉴와 정상 G_Crypts 맵 로드를 거친다. stock touch-enabled/non-timed closed wall의 양쪽 clear lane을 읽기만 하여 선택하고 player 시작 위치만 준비한다. 실제 queued 오른쪽 mouse 이동이 C 충돌과 복원한 `00548100`을 호출한다. observer는 native CollisionWall·state 1→4→3·모든 delay 1..23·delay>11 뒤 collision/MapTrace 통과·서버와 실제 수신 client drawable의 두 방향 통과·tile open sound event 한 번 및 native 연결/좌표/방향/tile/flags/wait 보존을 읽는다. wall/secret/unit/update는 모두 4GiB 초과다. wall 결과·속도/force·audio·packet/client 위치를 공급하거나 collision helper를 직접 호출하지 않는다.
+
+일반/HD headless/mock 진단은 각각 baseline/open/two crossings/stability 5관찰, 합계 10개 및 정상 exit 0이다. 최초 War01a 진단의 실패는 stock walls가 flags=0인 스크립트식이라는 잘못된 준비 선택이었다. 원본 맵 목록을 read-only로 확인해 G_Crypts를 선택했으며 production/map/flags를 변경하여 성공시키지 않았다. 새 결과 오염 감도·geometry·bounded schedule·공개 action 연결/AST 금지 writes/calls 회귀와 관련 일반/실제 cgocheck2/race/checkptr/실제 highres 각 3회, 전체 일반/strict·fresh-process server-tag·oracle 각 1회가 통과했다. 이번 기존 본체 변경은 YAML Load dispatch 하나이며 gameplay는 앞선 별도 본체 커밋 `068c4cf64`다.
+
+observer의 clean ARM64 3제품 및 Quest key/양방향 마법 handoff는 별도 후속 검증이다. timing/client 수신 관찰이지 전체 wall-animation 픽셀·remote client·물리 화면/스피커·원본 Windows runtime 전체의 증거는 아니다. code 2,935/data 638개·NXZ 50쌍·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7` 및 개인 Save/config·기존 PNG/golden을 유지한다. 원본 자산·private 로그/PNG를 공개하지 않는다.
+
 ## 비밀벽 접촉 `00548100`의 native 필드 복원
 
 닫힌 touch-enabled 비밀벽에 접촉한 플레이어의 실제 production 본체 회귀가 수정 전 state=1/delay=21로 남는 red를 재현했다. 이미 40바이트 native 구조로 확장된 secret record를 여전히 PE32 +20/+21/+22로 읽고 써 wall 포인터 일부를 flags/state/delay로 취급하던 것이 원인이다. 이번 한 C 본체 변경은 typed `nox_secret_wall_t`의 state/flags/open_delay와 X/Y를 사용한다. wall lookup→secret/class 2|4→closed=1/flag 2→state=4→X 읽기→delay=0→Y 읽기→tile sound lookup/ID/audio 순서를 보존하며 원래 signed DWORD 23배 wrap→11.5→binary32 좌표도 유지한다. 다른 충돌 함수·자동 열림/닫힘·네트워크·원본 map/flags는 바꾸지 않는다.

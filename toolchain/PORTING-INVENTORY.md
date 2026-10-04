@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## NPC PlayerDamage의 self-MONSTER IMPACT entry
+
+기존 production 본체는 `playerDamageMonster4E17B0` 하나만 변경했다. stock Troll의 자신을 source/weapon으로 함께 전달하는 nonmissile type 11을 cached NPC marker clear → PrevPos snapshot → 한 번의 exclusion/facing → 기존 새 full-armor helper에 연결했다. NPC action·cached equipment·live carry/inventory를 구별하고, unused Default 서비스가 없는 shield/GreatSword/staff의 정상 block도 처리한다. self-weapon에 distinct missile marker/반사/소유권 변경을 넣지 않으며, signed/zero 입력·wear 뒤 God의 live Player gate·Quest·Default 순서를 유지한다.
+
+새 48 leaf(armor/signed/zero/Quest/God, callback update replacement, 세 방어구 front/rear, 실제 Go HP·Injured·attribution)는 수정 전 전부 실패했고, 수정 후 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회 합계 720 pass/fail·skip 0이다. 기존 전체 PlayerDamage/DefaultDamage도 같은 5모드·3회 통과했고 AST에서 다른 기존 production 본체의 불변을 확인했다. stock 무자극 first-attack observer의 clean 일반/HD 제품 검증은 별도 후속이며 모든 AI·모든 맵 전체 합격으로 확대하지 않는다. 자산/Save/config/기존 YAML/PNG/golden/oracle은 보존했다.
+
 ## PlayerDamage의 Troll self-weapon IMPACT entry·full armor·방어
 
 기존 production 본체는 `PlayerDamageNative4E17B0` 하나만 변경했다. type 11 self-MONSTER를 기존 entry reset/ObserveClear/PrevPos snapshot/한 번의 exclusion·facing에 추가하고 별도 새 full-armor helper로 연결했다. cached entry armor/equipment/state/marker와 live carry/inventory를 구별하며, 자신을 distinct projectile로 기록하거나 반사하지 않는다. 원본 일반 shield·Berserker shield·GreatSword·staff nonmissile IMPACT 방어, audio/state/balance 뒤 live item 선택, 양수에만 적용되는 minimum, wear 뒤 GodMode/live Player gate/Quest/Default 순서를 복원했다. NPC entry dispatch는 별도 후속 단위다.

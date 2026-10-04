@@ -520,6 +520,33 @@ func playerDamageMonster4E17B0(
 		weaponFlags: update.WeaponEquipFlags, armorFlags: update.ArmorEquipFlags,
 		marker: &update.Field547, markerType: &update.Field546,
 	}
+	// A stock Troll supplies itself as both source and weapon for case 11.
+	// Nonmissile IMPACT skips Reflect, but keeps the original cached marker
+	// clear, PrevPos snapshot and one exclusion/facing check before shields,
+	// GreatSword/staff and the shared full-armor tail.
+	if playerDamageMonsterImpactShape4E17B0(source, weapon, typ) {
+		update.Field547 = 0
+		attackPos := weapon.PrevPos
+		if runtime.BlockSourceExcluded == nil {
+			return playerDamageUnsupported4E17B0(runtime, "missing NPC self-weapon IMPACT exclusion service", target, source, weapon, damage, typ)
+		}
+		excluded := runtime.BlockSourceExcluded(weapon)
+		if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC self-weapon IMPACT block record", target, source, weapon, damage, typ)
+		}
+		front := false
+		if !excluded {
+			if runtime.BlockDirection == nil {
+				return playerDamageUnsupported4E17B0(runtime, "missing NPC self-weapon IMPACT direction service", target, source, weapon, damage, typ)
+			}
+			front = runtime.BlockDirection(target, attackPos)
+		}
+		if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC self-weapon IMPACT tail record", target, source, weapon, damage, typ)
+		}
+		runtime.BlockDirection = func(*Object, types.Pointf) bool { return front }
+		return playerDamageMonsterImpactTail4E17B0(target, source, weapon, greatSword, armorValue, damage, typ, runtime)
+	}
 	// Stock SentryGlobe is SIMPLE|IMMOBILE, not MISSILE or an electric
 	// weapon. Its terminal owner is either a unit or the unowned globe
 	// itself. Restore this bounded NPC prefix before the generic defenses:

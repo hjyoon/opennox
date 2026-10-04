@@ -4,7 +4,9 @@
 
 공개 secret-wall scenario가 G_Crypts의 두 닫힌 접촉식 벽을 차례로 관찰한다. 첫 벽의 실제 열린 상태를 유지한 채 남은 닫힌 벽을 선택하며 wall 상태를 초기화하지 않는다. 기존 `prepare` 한 본체만 새 읽기 전용 lane helper에 연결했다. 기본 radius+36 접근이 가까운 다른 벽 때문에 불가능할 때 radius+16 접근을 사용하되, 닫힌 crossing trace·양쪽 접근 trace·각 시작점의 16방향 radius+4 clearance와 기존 radius+16 완전 통과 기준은 그대로 유지한다. 최초 두 번째 벽의 준비 실패는 넓은 fixture 접근선의 제한이지 gameplay 실패가 아니며 원래 map/collision/flags를 바꿔 통과시키지 않았다.
 
-일반/HD headless/mock 진단은 각 10관찰, 합계 20개로 정상 exit 0이다. 실제 stock `(91,71)` dir=1과 `(111,57)` dir=0 각각의 native CollisionWall·state 1→4→3·delay 1..23 전체 mask `0xfffffe`·효과음 한 번·server/client 왕복과 안정 상태를 확인했다. 두 방향/세 radius/두 접근선 선택, 32개 radial obstruction과 잘못된 geometry·서비스 거부 회귀를 추가했고 관련 일반/실제 cgocheck2/race/강제 checkptr/highres 각 3회·전체 일반/strict 및 oracle 각 1회가 통과했다. committed clean ARM64 3제품과 두 방향의 재실행은 후속 검증으로 이 진단과 구별한다.
+일반/HD headless/mock 진단은 각 10관찰, 합계 20개로 정상 exit 0이다. 실제 stock `(91,71)` dir=1과 `(111,57)` dir=0 각각의 native CollisionWall·state 1→4→3·delay 1..23 전체 mask `0xfffffe`·효과음 한 번·server/client 왕복과 안정 상태를 확인했다. 두 방향/세 radius/두 접근선 선택, 32개 radial obstruction과 잘못된 geometry·서비스 거부 회귀를 추가했고 관련 일반/실제 cgocheck2/race/강제 checkptr/highres 각 3회·전체 일반/strict 및 oracle 각 1회가 통과했다.
+
+후속 clean `a08194beb2d26fe373aa81b5f766a9cbb46bd3d2`가 remote와 일치하는 상태에서 일반·실제 highres·server ARM64 3제품 build/Go 1.26.5/full revision/`vcs.modified=false`/help를 확인했다. 같은 committed scenario의 일반/HD 재실행도 각 10관찰/합계 20개·정상 exit 0이다. 전후 oracle과 source/remote revision·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이며 clean 후속 대기를 마무리했다. 이 완료 기록은 문서만 변경하며 검증한 runtime과 scenario를 유지한다.
 
 gameplay·원본 byte/range·manifest/asset/PNG는 이번 단위에서 변경하지 않는다. code 2,935/data 638개·strict NXZ 50쌍·stock tree와 개인 Save/config·기존 golden을 유지한다. 실제 접촉/진행·host-client 통과와 sound event의 관찰이며 모든 벽 animation 픽셀·원격 client·물리 출력·원본 Windows runtime 전체의 증명은 아니다.
 

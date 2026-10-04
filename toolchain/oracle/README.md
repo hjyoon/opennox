@@ -6,7 +6,9 @@
 
 공개 scenario에서 실제 닫힌 stock G_Crypts 벽 두 개를 순차 접촉하여 dir=1 `(91,71)`과 dir=0 `(111,57)` 모두 검증했다. 가까운 벽으로 기존 넓은 fixture 접근이 실패한 경우만 짧은 radius+16 후보를 사용하며 원래 닫힌 trace·양쪽 접근·두 16방향 radius+4 clearance 검사는 유지한다. 원래 벽/충돌/flags나 결과를 쓰거나 열린 첫 벽을 초기화하지 않는다. 일반/HD headless/mock 진단 각 10관찰/합계 20개·exit 0에서 실제 contact·delay 1..23·open 3/23·server/client 왕복·효과음 한 번을 읽었다.
 
-lane 선택/거부·결과 오염·bounded/public/AST 회귀와 일반/실제 cgocheck2/race/checkptr/highres 각 3회·전체 일반/strict 및 oracle을 통과했다. 이 dirty 진단과 committed clean 3제품 후속 실행은 구별한다. 새 원본 byte/range·manifest/asset/PNG는 없고 code 2,935/data 638개·strict NXZ 50쌍·stock tree·개인 파일·기존 golden은 불변이다. 전체 wall frame 픽셀·remote client·물리 출력·Windows runtime 전체 검증으로 확대하지 않는다.
+lane 선택/거부·결과 오염·bounded/public/AST 회귀와 일반/실제 cgocheck2/race/checkptr/highres 각 3회·전체 일반/strict 및 oracle을 통과했다. 후속 clean `a08194beb2d26fe373aa81b5f766a9cbb46bd3d2`의 source/remote 일치 상태에서 ARM64 3제품 build/Go 1.26.5/full revision/`vcs.modified=false`/help와 일반/HD 각 10관찰/합계 20개·exit 0을 별도로 확인해 clean 대기도 완료했다. 전후 oracle·source/remote revision·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다.
+
+완료 기록은 문서만 변경하며 검증한 runtime/scenario를 유지한다. 새 원본 byte/range·manifest/asset/PNG는 없고 code 2,935/data 638개·strict NXZ 50쌍·개인 파일·기존 golden은 불변이다. 전체 wall frame 픽셀·remote client·물리 출력·Windows runtime 전체 검증으로 확대하지 않는다.
 
 ## 비밀벽 최종 clean 검증 완료
 

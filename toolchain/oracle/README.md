@@ -2,6 +2,14 @@
 
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
+## SIMPLE·IMMOBILE ZAP_RAY DefaultDamage의 검증 범위
+
+기존 봉인 `004E0B30/004E1400`과 stock SentryGlobe class를 읽기 전용으로 대조해 몬스터 기본 피해의 type 16 ray tail을 복원했다. production 본체 변경은 `DefaultDamageWorld4E0B30` 하나다. stock class와 같은 SIMPLE·IMMOBILE non-unit/non-weapon ray 및 self-world/Player/Monster source의 admission이며 type-ID 전용 또는 PlayerDamage/NPC 전용 entry 전체 복원이 아니다. campaign owner gate·NoUpdate 앞 enemy 조회를 유지하고 non-melee ray에 Shock/별도 melee gate나 electric/fire immunity·resistance·carry/wear를 잘못 적용하지 않는다. 기존 attribution·live metadata·late Defend·흡혈·field guide·Shield·signed HP tail을 사용한다.
+
+새 server 152개/native 27개, 합계 179개 leaf는 수정 전 pass 47/fail 132, 최종 다섯 모드 각 3회/2,685 pass·fail/skip 0이다. 실제 등록 C dispatcher와 4 GiB 위 C-owned records의 HP `2000→1999/1981/1500`·carry `0.125`·state 88 및 source/ray/인접 필드 불변을 확인했다. server의 recorded HP/Shield/흡혈 계약·ray geometry 연결과 native 숫자 피해를 구별하며 stock-map GUI Sentry/자율 NPC 입력 증명으로 확대하지 않는다. 전체 일반/strict Go 시험·fresh-process server-tag·oracle도 통과했다.
+
+새 원본 byte/range/manifest·C 코드·asset·golden·공개 YAML은 없고 code 2,935/data 638개·strict NXZ 50쌍·stock tree는 불변이다. 앞선 `58286ec9e`의 clean ARM64 3제품/일반·HD 비밀벽/Fist/Spider/Urchin 8실행도 후속 확인을 완료했다. 이 커밋의 clean 제품/8실행은 별도 후속 검증이다. FlagBall Screen mismatch/중단된 입력 경계와 NPC 전용 PlayerDamage 등 다른 미복원 마법 entry/tail을 남긴다. private 자료·원본·개인 Save/config를 변경하거나 공개하지 않는다. 상세 범위는 [포팅 인벤토리](../PORTING-INVENTORY.md)에 기록했다.
+
 ## Player-owned Sentry ZAP_RAY prefix의 검증 범위
 
 봉인된 `004E18C4/004E18EB`의 cached marker clear/ObserveClear를 Reflect 앞에, `004E1A49/004E1AA2`의 snapshot/exclusion/live type marker와 한 번의 facing을 일반/Observe Sentry 경로에 연결했다. case 16은 armor/carry pass를 하지 않는다. cached equipment·post-facing state/live inventory를 유지하며 rear/excluded는 layout 읽기 전 건너뛴다. live weapon-like class는 미복원 retaliation으로 넘기지 않고 거부하며 실행한 prefix를 롤백하지 않는다. `004E1136/004E1147`의 late callback 뒤 live class/update/state를 사용해 effective damage ≥20의 state 1/15 hurt 보호를 복원한다. 기존 production 본체 변경은 `PlayerDamageNative4E17B0` 하나이며 helpers는 불변이다.

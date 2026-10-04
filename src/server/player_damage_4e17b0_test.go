@@ -479,11 +479,11 @@ func TestPlayerDamageNative4E17B0SentryGlobeZapRay(t *testing.T) {
 		InitData: unsafe.Pointer(&ModifierInitData{}),
 	}
 	target.InvFirstItem = armor
-	source := &Object{ObjClass: object.ClassPlayer}
+	source := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: &Player{}})}
 	const sentryType = uint16(0x51)
 	sentry := &Object{
 		TypeInd:  sentryType,
-		ObjClass: object.ClassImmobile,
+		ObjClass: object.ClassSimple | object.ClassImmobile,
 		PrevPos:  types.Pointf{X: 91, Y: 37},
 	}
 	var damages []int32
@@ -524,7 +524,7 @@ func TestPlayerDamageNative4E17B0SentryGlobeZapRay(t *testing.T) {
 		got.HealthData.Cur -= uint16(damage)
 		events = append(events, "damage")
 	}
-
+	bindPlayerZapRayDefault4E17B0(&runtime)
 	if handled, result := PlayerDamageNative4E17B0(target, source, sentry, 500, object.DamageZapRay, runtime); !handled || !result {
 		t.Fatalf("SentryGlobe ZAP_RAY = handled:%t result:%t", handled, result)
 	}
@@ -547,9 +547,9 @@ func TestPlayerDamageNative4E17B0SentryGlobeSuppressesFriendlyZapRay(t *testing.
 	target, _, sound := playerDamageFixture4E17B0(t)
 	target.HealthData = &HealthData{Cur: 600, Max: 600}
 	target.Pos132 = types.Pointf{X: 12, Y: 34}
-	source := &Object{ObjClass: object.ClassPlayer}
+	source := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: &Player{}})}
 	const sentryType = uint16(0x51)
-	sentry := &Object{TypeInd: sentryType, ObjClass: object.ClassImmobile}
+	sentry := &Object{TypeInd: sentryType, ObjClass: object.ClassSimple | object.ClassImmobile}
 	var damages []int32
 	runtime := playerDamageRuntime4E17B0(t, sound, &damages)
 	runtime.GameplayFlag1 = func() bool { return false }
@@ -568,7 +568,7 @@ func TestPlayerDamageNative4E17B0SentryGlobeSuppressesFriendlyZapRay(t *testing.
 		return false
 	}
 	runtime.DamageClear = func(*Object, int32) { t.Fatal("friendly SentryGlobe hit dealt damage") }
-
+	bindPlayerZapRayDefault4E17B0(&runtime)
 	if handled, result := PlayerDamageNative4E17B0(target, source, sentry, 500, object.DamageZapRay, runtime); !handled || !result {
 		t.Fatalf("friendly SentryGlobe ZAP_RAY = handled:%t result:%t", handled, result)
 	}
@@ -584,12 +584,12 @@ func TestPlayerDamageNative4E17B0SentryGlobeSuppressesFriendlyZapRay(t *testing.
 func TestPlayerDamageNative4E17B0SentryGlobeGameBallFailsClosed(t *testing.T) {
 	target, _, sound := playerDamageFixture4E17B0(t)
 	target.HealthData = &HealthData{Cur: 600, Max: 600}
-	source := &Object{ObjClass: object.ClassPlayer}
+	source := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: &Player{}})}
 	const (
 		sentryType   = uint16(0x51)
 		gameBallType = uint16(0x52)
 	)
-	sentry := &Object{TypeInd: sentryType, ObjClass: object.ClassImmobile}
+	sentry := &Object{TypeInd: sentryType, ObjClass: object.ClassSimple | object.ClassImmobile}
 	target.Field129 = &Object{TypeInd: gameBallType}
 	beforeTarget := *target
 	beforeUpdate := *target.UpdateDataPlayer()
@@ -598,13 +598,14 @@ func TestPlayerDamageNative4E17B0SentryGlobeGameBallFailsClosed(t *testing.T) {
 	runtime.GameplayFlag1 = func() bool { return false }
 	runtime.SentryGlobeType = sentryType
 	runtime.GameBallType = gameBallType
+	runtime.PlayerDamageSound = func(*Object, *Object) { t.Fatal("unsupported GameBall reached damage sound") }
 	runtime.PlayerSetState = func(*Object, PlayerState) bool {
 		t.Fatal("unsupported GameBall drop changed player state")
 		return false
 	}
 	runtime.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
-
-	if handled, result := PlayerDamageNative4E17B0(target, source, sentry, 500, object.DamageZapRay, runtime); handled || result {
+	bindPlayerZapRayDefault4E17B0(&runtime)
+	if handled, result := PlayerDamageNative4E17B0(target, source, sentry, 500, object.DamageZapRay, runtime); !handled || !result {
 		t.Fatalf("SentryGlobe GameBall = handled:%t result:%t", handled, result)
 	}
 	if reason != "GameBall drop" {

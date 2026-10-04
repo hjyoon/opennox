@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## PlayerDamage의 일반 ZAP_RAY 입구 복원
+
+기존 production 본체는 AST 비교로 `PlayerDamageNative4E17B0` 하나만 변경했다. 봉인된 `004E17B0..004E2098`의 기존 범위를 대조해 SIMPLE·IMMOBILE non-unit/non-weapon/non-wand/non-missile ray와 world-self/Player/Monster source를 Player 전용 입구에 연결했다. Sentry type-ID·양수 피해만으로 제한하지 않으며 다른 damage branch·NPC 본체·helpers는 유지한다. entry cached marker/equipment → ObserveClear → Reflect의 current Pos/FX 132/audio 122 → PrevPos snapshot → exclusion/live type marker → ordinary facing 한 번 → cached shield flags/stance 순서를 지킨다. shield audio 뒤 live missile/subclass와 owner, balance 뒤 live inventory를 다시 읽고 nil shield wear no-op 및 destroyed shield state를 처리한다. case 16은 melee-only Berserker block·armor/carry/wear·elemental resistance를 사용하지 않는다. fallback marker → God/live Player class → Quest binary32/ties-to-even/양수 최소 1 → 기존 DefaultDamage tail로 이어지며 필수 서비스는 사용 지점에서 검사한다. unused 서비스는 요구하지 않고 이미 실행한 prefix를 롤백하거나 PE32로 재시도하지 않는다.
+
+새 server 계약 434개와 실제 등록 C dispatcher를 거친 C-owned native 108개, 합계 542개 leaf를 검사했다. native는 world/Player/NPC source·일반/Observe·state 13/1/15·raw -7/0/1/19/20/500의 4 GiB 위 object/update/player/health/source/ray를 사용한다. 실제 HP `2000→2007/2000/1999/1981/1980/1500`, state 13→30 또는 state 1/15 보존, hurt frame/State2·marker·attribution, Observe status `0x22→0x20`/camera clear, electric word·armor·carry·source/ray/인접 HP 필드 보존을 확인했다. server recorded callback 계약과 실제 native HP 결과를 구별하며 합성 records를 stock-map ray 설치·GUI 빙의 입력 증거로 확대하지 않는다. signed 음수는 원본 API 계약이지 stock balance의 음수 피해 주장이 아니다.
+
+처음 측정한 동일한 514개 baseline은 모두 실패했고, 후속 boundary 28개는 baseline 수에 합치지 않는다. 최종 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회는 542×3×5=8,130 leaf pass·fail/skip 0이다. 전체 일반/strict Go 시험과 fresh-process server-tag root/server/legacy 각 1회, oracle·AST one-body·diff 검사도 통과했다. 임시 Go cache와 private 원본 검증 사본의 누락을 발견해 기존 폴더를 덮어쓰지 않고 새 Go 1.26.5 cache 및 매니페스트 일치 사본으로 재검증했다. `nc.obj`/`nox.cfg`는 보유 installer에서 새 private 폴더로 추출한 원본을 사용하며 개인 설치본은 변경하지 않았다. stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code 2,935/data 638개·strict NXZ 50쌍은 불변이다. 새 원본 byte/range/manifest·C 코드·asset·golden·공개 YAML은 없다.
+
+앞선 `798dcf2de15f7c7ca75a2085bb4d02d4195176e0`의 clean source/remote 일치 ARM64 일반·highres·server 3제품 full revision/Go 1.26.5/`vcs.modified=false`/help와 일반·HD 비밀벽/Fist/Spider/Urchin 8 headless 실행은 완료했다. 이 새 source의 clean 3제품/같은 8실행은 커밋·push 뒤 별도 확인한다. 다음 우측 하단 회복·해독 아이콘의 native viewport 검증은 이 피해 단위와 분리한다. 실제 GUI Sentry/빙의·모든 마법·원격 client·Windows runtime 전체 및 ARM64 포팅 목표는 계속 검증하며 기존 FlagBall Screen mismatch/중단된 입력을 합격으로 바꾸지 않는다. 개인 Save/config·원본·private 로그/PNG와 공개 baseline을 격리·보존한다.
+
 ## Player 대상 SIMPLE·IMMOBILE ZAP_RAY의 DefaultDamage 의존 경로 복원
 
 기존 production 본체는 AST 비교로 `DefaultDamageWorld4E0B30` 하나만 변경했다. 봉인된 기존 `004E0B30/004E1400` 범위를 읽기 전용으로 대조해 SIMPLE·IMMOBILE non-unit/non-weapon/non-wand/non-missile ray의 world-self/Player/Monster source를 Player 대상 기본 피해에 연결했다. type-ID 전용 admission이 아니며 native Player update/health가 필요하다. 기존 몬스터 tail/helpers와 PlayerDamage 전용 입구는 바꾸지 않는다. 이전의 unsupported Player target 시험은 missing native update 경계로 좁히고, 새 정상 경로를 별도 baseline 실패/최종 통과로 검증했다.

@@ -18,10 +18,11 @@ import (
 func sentryPrefixFixture4E17B0(t *testing.T, observe bool) (*Object, *Object, *Object, *PlayerUpdateData, PlayerDamageRuntime4E17B0) {
 	t.Helper()
 	target, source, cached, r := chargePrefixFixture4E17B0(t, observe)
-	weapon := &Object{ObjClass: object.ClassImmobile, TypeInd: 71, PrevPos: types.Ptf(20, 0), PosVec: types.Ptf(-20, 0)}
+	weapon := &Object{ObjClass: object.ClassSimple | object.ClassImmobile, TypeInd: 71, PrevPos: types.Ptf(20, 0), PosVec: types.Ptf(-20, 0)}
 	r.SentryGlobeType = weapon.TypeInd
 	r.ItemArmorValue = func(*Object) float32 { t.Fatal("ZAP_RAY entered armor wear"); return 0 }
 	r.ElectricArmorScale = func(*Object) float32 { t.Fatal("ZAP_RAY entered electric armor scale"); return 0 }
+	r.PlayerDamageSound = func(*Object, *Object) {}
 	return target, source, weapon, cached, r
 }
 
@@ -119,6 +120,8 @@ func TestPlayerDamageSentryPrefixOrder4E17B0(t *testing.T) {
 							// None of these unexecuted HP-tail services may be a
 							// prerequisite for an intact shield's early return.
 							r.GameplayFlag1, r.IsEnemy, r.DefaultDamage, r.DamageClear, r.BuffOff, r.QuestDamageScale = nil, nil, nil, nil, nil, nil
+						} else {
+							bindPlayerZapRayDefault4E17B0(&r)
 						}
 						h, result := PlayerDamageNative4E17B0(target, source, weapon, raw, object.DamageZapRay, r)
 						want := []string{"excluded"}
@@ -129,7 +132,7 @@ func TestPlayerDamageSentryPrefixOrder4E17B0(t *testing.T) {
 							want = append(want, "direction")
 						}
 						if blocked {
-							want = append(want, "block-admission", "block-audio", "block-percent", "block-wear")
+							want = append(want, "block-audio", "block-percent", "block-admission", "block-wear")
 						} else {
 							want = append(want, "god", "quest", "gameplay", "buff", "sound", "ball")
 							if raw >= 20 {
@@ -244,6 +247,7 @@ func TestPlayerDamageSentryPrefixLiveHurt4E17B0(t *testing.T) {
 						}
 						hp++
 					}
+					bindPlayerZapRayDefault4E17B0(&r)
 					h, result := PlayerDamageNative4E17B0(target, source, weapon, 20, object.DamageZapRay, r)
 					wantHurt := 0
 					if state == PlayerState13 {
@@ -291,7 +295,18 @@ func TestPlayerDamageSentryPrefixLiveModes4E17B0(t *testing.T) {
 				r.GameplayFlag1 = func() bool { return mode != "friendly" }
 				r.IsEnemy = func(*Object, *Object) bool { return false }
 				r.DamageClear = func(_ *Object, amount int32) { hp = amount }
+				reason := ""
+				r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why }
+				bindPlayerZapRayDefault4E17B0(&r)
 				h, result := PlayerDamageNative4E17B0(target, source, weapon, 19, object.DamageZapRay, r)
+				if mode == "non-player-god" {
+					// The bounded stock ray slice cannot interpret a callback's
+					// replacement non-player record as PlayerUpdateData.
+					if h || result || reason != "unsupported live player ZAP_RAY tail record" || hp != -1 || scaleCalls != 0 || cached.Field76 != 0 || cached.Field75 != 77 {
+						t.Fatalf("live boundary=%t/%t reason=%s HP=%d marker=%d/%d", h, result, reason, hp, cached.Field76, cached.Field75)
+					}
+					return
+				}
 				wantHP, wantScale := int32(19), 0
 				if mode == "quest" {
 					wantHP, wantScale = 5, 1
@@ -325,13 +340,31 @@ func TestPlayerDamageSentryPrefixMissingServices4E17B0(t *testing.T) {
 				r.DamageClear = func(*Object, int32) { hp++ }
 				var reason string
 				r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why }
+				bindPlayerZapRayDefault4E17B0(&r)
 				h, result := PlayerDamageNative4E17B0(target, source, weapon, 19, object.DamageZapRay, r)
 				if missing == "observe" && !observe {
 					if !h || !result || hp != 1 || reason != "" {
 						t.Fatalf("unexecuted ObserveClear was required: %t/%t/%s", h, result, reason)
 					}
-				} else if h || result || hp != 0 || reason != "missing player sentry prefix service" || *target != before || *cached != beforeCached || *cached.Player != beforePlayer {
-					t.Fatalf("missing prefix=%t/%t reason=%s HP calls=%d", h, result, reason, hp)
+				} else {
+					// Availability is checked at the executed service, not before
+					// the original marker/ObserveClear prefix.
+					beforeCached.Field76 = 0
+					wantReason := "missing player ZAP_RAY observe service"
+					if missing == "exclude" {
+						wantReason = "missing player ZAP_RAY exclusion service"
+					}
+					if missing == "direction" {
+						wantReason = "missing player ZAP_RAY block direction service"
+						beforeCached.Field76, beforeCached.Field75 = 1, 71
+					}
+					if observe && missing != "observe" {
+						beforePlayer.Field3680 &^= 2
+						beforePlayer.CameraFollowObj = nil
+					}
+					if h || result || hp != 0 || reason != wantReason || *target != before || *cached != beforeCached || *cached.Player != beforePlayer {
+						t.Fatalf("missing prefix=%t/%t reason=%s HP calls=%d", h, result, reason, hp)
+					}
 				}
 			})
 		}
@@ -358,17 +391,18 @@ func TestPlayerDamageSentryPrefixLiveHurtFault4E17B0(t *testing.T) {
 			hp, reason := 0, ""
 			r.DamageClear = func(*Object, int32) { hp++ }
 			r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why }
+			bindPlayerZapRayDefault4E17B0(&r)
 			h, result := PlayerDamageNative4E17B0(target, source, weapon, 20, object.DamageZapRay, r)
 			if fault == "non-player" {
 				if !h || !result || reason != "" || hp != 1 {
 					t.Fatalf("non-player hurt=%t/%t reason=%s hp=%d", h, result, reason, hp)
 				}
 			} else {
-				want := "unsupported live player sentry hurt record"
+				want := "unsupported live player hurt update"
 				if fault == "missing-service" {
-					want = "missing live player sentry hurt-state service"
+					want = "unsupported live player hurt-state service"
 				}
-				if h || result || reason != want || hp != 0 || cached.Field76 != 1 || cached.Field75 != 71 || target.Obj130 != weapon || target.Field131 != uint32(object.DamageZapRay) || target.Frame134 != 700 {
+				if !h || !result || reason != want || hp != 0 || cached.Field76 != 1 || cached.Field75 != 71 || target.Obj130 != weapon || target.Field131 != uint32(object.DamageZapRay) || target.Frame134 != 700 {
 					t.Fatalf("live fault=%t/%t reason=%s marker=%d/%d attribution=%p hp=%d", h, result, reason, cached.Field76, cached.Field75, target.Obj130, hp)
 				}
 			}
@@ -386,7 +420,7 @@ func TestPlayerDamageSentryPrefixLiveClassBoundary4E17B0(t *testing.T) {
 				r.DamageClear = func(*Object, int32) { hp++ }
 				r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why }
 				h, result := PlayerDamageNative4E17B0(target, source, weapon, 19, object.DamageZapRay, r)
-				if h || result || reason != "unexpected SentryGlobe class" || hp != 0 || cached.Field76 != 1 || cached.Field75 != 71 || cached.Field21 != math.Float32bits(0.125) || cached.Player.ObserveTarget() != nil || target.Obj130 != nil || *target.HealthData != (HealthData{Cur: 200, Field2: 200, Max: 200}) {
+				if h || result || reason != "unsupported live player ZAP_RAY tail record" || hp != 0 || cached.Field76 != 1 || cached.Field75 != 71 || cached.Field21 != math.Float32bits(0.125) || cached.Player.ObserveTarget() != nil || target.Obj130 != nil || *target.HealthData != (HealthData{Cur: 200, Field2: 200, Max: 200}) {
 					t.Fatalf("live class=%v handled=%t/%t reason=%s hp=%d marker=%d/%d", class, h, result, reason, hp, cached.Field76, cached.Field75)
 				}
 			})

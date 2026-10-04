@@ -64,7 +64,8 @@ func TestPlayerDamageNative4E17B0GameBallUsesFinalDefaultDamage(t *testing.T) {
 			switch tc.typ {
 			case object.DamageZapRay:
 				r.SentryGlobeType = 51
-				weapon = &Object{TypeInd: 51, ObjClass: object.ClassImmobile}
+				weapon = &Object{TypeInd: 51, ObjClass: object.ClassSimple | object.ClassImmobile}
+				r.PlayerDamageSound = func(*Object, *Object) {}
 			case object.DamageBite, object.DamageImpact:
 				_, source, _ = playerDamageFixture4E17B0(t)
 				weapon = source
@@ -98,6 +99,9 @@ func TestPlayerDamageNative4E17B0GameBallUsesFinalDefaultDamage(t *testing.T) {
 					ball.ObjOwner = nil
 					target.Field129 = nil
 				}
+			}
+			if tc.typ == object.DamageZapRay {
+				bindPlayerZapRayDefault4E17B0(&r)
 			}
 			if h, result := PlayerDamageNative4E17B0(target, source, weapon, tc.damage, tc.typ, r); !h || !result {
 				t.Fatalf("handled=%t result=%t", h, result)

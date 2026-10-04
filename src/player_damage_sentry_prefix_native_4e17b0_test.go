@@ -79,7 +79,7 @@ func TestPlayerDamageSentryPrefixNative4E17B0(t *testing.T) {
 				*health = server.HealthData{Cur: 2000, Field2: 2000, Max: 2000}
 				target.ObjClass, target.ObjFlags, target.UpdateData, target.HealthData, target.Material, target.TypeInd = object.ClassPlayer, 0, unsafe.Pointer(ud), health, 0x4000, 71
 				source.ObjClass, source.ObjFlags, source.UpdateData, source.TypeInd = object.ClassPlayer, 0, unsafe.Pointer(sourceUD), 777
-				weapon.ObjClass, weapon.ObjFlags, weapon.TypeInd, weapon.PrevPos, weapon.PosVec = object.ClassImmobile, 0, uint16(s.Types.ByID("SentryGlobe").Ind()), types.Ptf(44, 7), types.Ptf(-20, 0)
+				weapon.ObjClass, weapon.ObjFlags, weapon.TypeInd, weapon.PrevPos, weapon.PosVec = object.ClassSimple|object.ClassImmobile, 0, uint16(s.Types.ByID("SentryGlobe").Ind()), types.Ptf(44, 7), types.Ptf(-20, 0)
 				for _, pointer := range []unsafe.Pointer{unsafe.Pointer(target), unsafe.Pointer(source), unsafe.Pointer(weapon), unsafe.Pointer(ud), unsafe.Pointer(player), unsafe.Pointer(sourceUD), unsafe.Pointer(sourcePlayer), unsafe.Pointer(health)} {
 					if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(pointer) <= math.MaxUint32 {
 						t.Fatalf("pointer=%p, want above 4 GiB", pointer)

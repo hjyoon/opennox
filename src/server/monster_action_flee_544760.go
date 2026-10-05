@@ -105,5 +105,6 @@ func (s *Server) MonsterActionFlee544760(unit *Object, generatePath func([]types
 		actuallyMove: func(unit *Object) bool { return monsterCreatureActuallyMove50D3B0(unit, s.MapTraceRay) },
 		moveAudio:    s.monsterMoveAudio534030,
 		pop:          unit.MonsterPopAction,
+		trySpell:     s.monsterFleeTrySpell544760,
 	})
 }

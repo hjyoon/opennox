@@ -405,7 +405,7 @@ type MonsterUpdateData struct {
 	Field543_1            byte                 // 543, 2173
 	Field543_2            uint16               // 543, 2174
 	BombCollideTarget     *Object              // 544, 2176
-	Field545              uint32               // 545, 2180
+	Field545              *PlayerUpdateData    // 545, 2180; original bot's player update record
 	Field546              uint32               // 546, 2184
 	Field547              uint32               // 547, 2188
 	Field548              *Object              // 548, 2192; owning MonsterGenerator

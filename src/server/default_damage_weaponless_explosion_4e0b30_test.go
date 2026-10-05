@@ -187,6 +187,8 @@ func TestDefaultDamageWorld4E0B30WeaponlessExplosionKeepsPlayerPrefixSeparate(t 
 	for _, sourceKind := range []string{"none", "player", "npc"} {
 		t.Run(sourceKind, func(t *testing.T) {
 			target := damageMeleeUnitFixture4E17B0(t, true)
+			update := target.UpdateDataPlayer()
+			update.Field76, update.Field75, update.Field21, update.Field57 = 99, 77, 0x3e800000, 0x3f000000
 			var source *Object
 			if sourceKind != "none" {
 				source = damageMeleeUnitFixture4E17B0(t, sourceKind == "player")
@@ -196,8 +198,9 @@ func TestDefaultDamageWorld4E0B30WeaponlessExplosionKeepsPlayerPrefixSeparate(t 
 			var unsupported string
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { unsupported = reason }
 			DefaultDamageWorld4E0B30(target, source, nil, 45, object.DamageExplosion, r)
-			if unsupported != "non-monster unit target" || target.HealthData.Cur != 200 || target.Obj130 != nil {
-				t.Fatal("monster admission unexpectedly bypassed PlayerDamage's dedicated prefix")
+			if unsupported != "" || target.HealthData.Cur != 155 || target.Obj130 != source ||
+				update.Field76 != 99 || update.Field75 != 77 || update.Field21 != 0x3e800000 || update.Field57 != 0x3f000000 {
+				t.Fatal("DefaultDamage re-ran PlayerDamage's dedicated armor/carry/marker prefix")
 			}
 		})
 	}

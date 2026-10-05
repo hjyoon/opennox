@@ -154,7 +154,7 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // weapon-less player/monster electric damage against players, and unit-self-weapon
 // ELECTRIC/AIRBORNE_ELECTRIC tails used by Shock Glyphs, plus SIMPLE|IMMOBILE
 // ZAP_RAY (including stock SentryGlobe) against monsters/NPCs
-// and weapon-less unit/source-less EXPLOSION (including Meteor) against monsters
+// and weapon-less unit/source-less EXPLOSION (including Meteor) against units
 // from GAME.EXE 004E0B30
 // without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
@@ -250,7 +250,14 @@ func DefaultDamageWorld4E0B30(
 		(source == weapon || (source != nil && source.UpdateData != nil &&
 			source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 			!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)))
-	playerTail := playerElectric || worldImpale || ((missilePierce || missileFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
+	// Meteor's radial callback supplies the terminal owner (or nil), not a
+	// missile weapon. This player tail still performs fire protection, live
+	// Defend/sound/hurt/Shield and HP; a nil weapon skips 004E0C61's second
+	// enemy query and Shock, but not 004E0C03's campaign owner gate.
+	playerWeaponlessExplosion := target.Class().Has(object.ClassPlayer) && weapon == nil && typ == object.DamageExplosion &&
+		(source == nil || (source.UpdateData != nil && source.Class().HasAny(object.MaskUnits) &&
+			!source.Class().HasAny(object.ClassMissile|object.ClassWeapon|object.ClassWand)))
+	playerTail := playerElectric || worldImpale || playerWeaponlessExplosion || ((missilePierce || missileFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -379,6 +386,10 @@ func DefaultDamageWorld4E0B30(
 	if worldImpale && (runtime.BuffOff == nil || runtime.DamageClear == nil ||
 		(source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player world IMPALE tail service", target, source, weapon, damage, typ)
+	}
+	if playerWeaponlessExplosion && (runtime.DamageClear == nil || (source != nil &&
+		(runtime.BuffOff == nil || (source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)))) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing weapon-less player EXPLOSION tail service", target, source, weapon, damage, typ)
 	}
 	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
 		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&

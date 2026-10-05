@@ -154,6 +154,7 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // weapon-less player/monster electric damage against players, and unit-self-weapon
 // ELECTRIC/AIRBORNE_ELECTRIC tails used by Shock Glyphs, plus SIMPLE|IMMOBILE
 // ZAP_RAY (including stock SentryGlobe) against monsters/NPCs
+// and weapon-less unit/source-less EXPLOSION (including Meteor) against monsters
 // from GAME.EXE 004E0B30
 // without narrowing Object pointers.
 // Player targets use their dedicated damage callback in normal data; other
@@ -382,6 +383,15 @@ func DefaultDamageWorld4E0B30(
 	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
 		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
+	// Meteor passes its terminal player owner (or nil) with no weapon.
+	// 004E0C55's melee gate requires both source and weapon; 004E0D55
+	// still applies EXPLOSION fire immunity/protection and the ordinary tail.
+	monsterWeaponlessExplosion := monsterUpdate != nil && weapon == nil && typ == object.DamageExplosion &&
+		(source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster))
+	if monsterWeaponlessExplosion && (runtime.DamageClear == nil || (source != nil &&
+		(runtime.BuffOff == nil || (source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)))) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing weapon-less monster EXPLOSION tail service", target, source, weapon, damage, typ)
+	}
 	// Campaign scripts use source-less BLADE damage for set-piece kills. The
 	// original enters its no-source branch and still reaches DamageClear.
 	sourceLessMonsterBlade := monsterUpdate != nil && source == nil && weapon == nil && typ == object.DamageBlade
@@ -427,7 +437,7 @@ func DefaultDamageWorld4E0B30(
 			weapon == source && typ == object.DamageBite
 		// Armed NPCs and ordinary monster/player targets share the restored
 		// ordinaryMelee path, including WAND melee and the Hammer exception.
-		if !ordinaryMelee && !monsterImpact && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !sourceLessMonsterBlade && !sourceLessMonsterPoison && !monsterWeaponCrush && !playerCharge && !zapRay {
+		if !ordinaryMelee && !monsterImpact && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !monsterElectric && !monsterWeaponlessExplosion && !sourceLessMonsterBlade && !sourceLessMonsterPoison && !monsterWeaponCrush && !playerCharge && !zapRay {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -441,7 +451,8 @@ func DefaultDamageWorld4E0B30(
 		// SIMPLE CRUSH, SIMPLE|IMMOBILE ray or PLAYER-class charge weapon
 		// (004E1400 is false).
 		// The earlier campaign owner gate still applies to a friendly charge.
-		if source != nil && !ordinaryMelee && !monsterImpact && !simpleCrush && !missileDamage && !playerCharge && !unitSelfWeaponElectric && !zapRay && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		// A weapon-less explosion never enters that second melee gate.
+		if source != nil && !ordinaryMelee && !monsterImpact && !simpleCrush && !missileDamage && !monsterWeaponlessExplosion && !playerCharge && !unitSelfWeaponElectric && !zapRay && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 	}
@@ -482,7 +493,7 @@ func DefaultDamageWorld4E0B30(
 	if missileFlame && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		return true
 	}
-	if missileExplosion && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
+	if (missileExplosion || monsterWeaponlessExplosion) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		// 004E0D5A..004E0D63: signed division truncates toward zero,
 		// before fire protection's separate binary32 rounding/minimum.
 		damage /= 2
@@ -504,7 +515,7 @@ func DefaultDamageWorld4E0B30(
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil && nonUnit
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
-		!ordinaryMelee && !monsterImpact && !simpleCrush && !missileDamage && !nonUnit && !monsterElectric && !sourceLessMonsterPoison && !playerTail && !monsterWeaponCrush && !playerCharge && !zapRay {
+		!ordinaryMelee && !monsterImpact && !simpleCrush && !missileDamage && !nonUnit && !monsterElectric && !monsterWeaponlessExplosion && !sourceLessMonsterPoison && !playerTail && !monsterWeaponCrush && !playerCharge && !zapRay {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion

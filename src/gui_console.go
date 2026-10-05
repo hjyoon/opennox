@@ -73,7 +73,10 @@ func (c *guiConsole) Enable(v bool) {
 }
 
 func (c *guiConsole) Enabled(ctx context.Context, level slog.Level) bool {
-	const cur = slog.LevelWarn
+	cur := slog.LevelWarn
+	if noxflags.HasEngine(noxflags.EngineLogToConsole) {
+		cur = slog.LevelDebug
+	}
 	return c.enabled && level >= cur
 }
 

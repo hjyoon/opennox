@@ -330,8 +330,16 @@ func (c *guiConsole) inputProc(win *gui.Window, ev gui.WindowEvent) gui.WindowEv
 				legacy.Nox_xxx_consoleEsc_49B7A0()
 			}
 			return gui.RawEventResp(1)
-		case keybind.KeyEnter:
+		case keybind.KeyEnter, keybind.KeyKpEnter:
 			if ev.Pressed {
+				// SDL emits committed text separately from key events, and
+				// unlike Windows WM_CHAR it does not emit CR for Return.
+				// Keep a composing IME's first Return out of command dispatch;
+				// otherwise complete the stock on-char latch before Enter.
+				if cl.Inp != nil && cl.Inp.GetTextEditBuf() != "" {
+					return gui.RawEventResp(1)
+				}
+				gui.EntryFieldOnChar(win, '\r')
 				c.nox_gui_console_Enter_450FD0()
 			}
 			return gui.RawEventResp(1)

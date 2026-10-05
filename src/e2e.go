@@ -9438,6 +9438,9 @@ func (sc *e2eScenario) Load(path string) {
 		switch l.Action {
 		case "quit":
 			sc.Quit(dt)
+		case "check-console-commands":
+			sc.Wait(dt, "")
+			sc.CheckConsoleCommands(l.Name)
 		case "check-warrior-ability":
 			sc.Wait(dt, "")
 			sc.CheckWarriorAbility(server.Ability(l.Spell), l.Name, l.Text)

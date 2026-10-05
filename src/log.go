@@ -28,10 +28,9 @@ func closeLog() {
 
 func setLogFile(w io.WriteCloser) {
 	if f := logFile; f != nil {
-		defer func() {
-			logBuf.Flush()
-			f.Close()
-		}()
+		// Flush the old buffer before Reset changes its destination.
+		_ = logBuf.Flush()
+		_ = f.Close()
 	}
 	if w == nil {
 		logFile = nil

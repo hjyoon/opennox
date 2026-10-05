@@ -1041,6 +1041,9 @@ func PlayerDamageNative4E17B0(
 	if target.Class().Has(object.ClassPlayer) && playerDamageWorldImpaleShape4E17B0(source, weapon, typ) {
 		return playerDamagePlayerWorldImpale4E17B0(target, source, weapon, damage, typ, runtime)
 	}
+	if target.Class().Has(object.ClassPlayer) && playerDamagePlayerWeaponlessExplosionShape4E17B0(source, weapon, typ) {
+		return playerDamagePlayerWeaponlessExplosion4E17B0(target, source, weapon, damage, typ, runtime)
+	}
 	// SIMPLE spell missiles (stock Pixie) need the terminal-parent path;
 	// keep the already ported bare monster-missile slice below disjoint.
 	if target.Class().Has(object.ClassPlayer) && playerDamageSpellMissileImpactShape4E17B0(source, weapon, typ) &&

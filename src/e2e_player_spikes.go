@@ -27,6 +27,56 @@ func e2ePlayerSpikeKind(typeID string) (damage uint8, switched, ok bool) {
 	}
 }
 
+// A spike contact needs its own footprint and an outside baseline, not the
+// unrelated 160-unit attack lane. Search a bounded neighborhood, checking
+// walls/props independently of the collision dispatcher under observation.
+func e2ePlayerSpikeArena(original types.Pointf, radius float32, trace func(types.Pointf, types.Pointf) bool) (types.Pointf, types.Pointf, error) {
+	if radius <= 0 || radius > 70 || math.IsNaN(float64(radius)) || trace == nil {
+		return types.Pointf{}, types.Pointf{}, fmt.Errorf("invalid spike fixture radius %g", radius)
+	}
+	for ring := 0; ring <= 552; ring += 23 {
+		for y := -ring; y <= ring; y += 23 {
+			for x := -ring; x <= ring; x += 23 {
+				if ring != 0 && x != -ring && x != ring && y != -ring && y != ring {
+					continue
+				}
+				center := original.Add(types.Ptf(float32(x), float32(y)))
+				clear := true
+				for dir := 0; dir < 256; dir++ {
+					cx, cy := server.SinCosDir(byte(dir))
+					if !trace(center, center.Add(types.Ptf(radius*cx, radius*cy))) {
+						clear = false
+						break
+					}
+				}
+				if !clear {
+					continue
+				}
+				for dir := 0; dir < 256; dir += 32 {
+					cx, cy := server.SinCosDir(byte(dir))
+					direction := types.Ptf(cx, cy)
+					outside := center.Add(direction.Mul(80))
+					if !trace(center, outside) {
+						continue
+					}
+					clear = true
+					for around := 0; around < 256; around += 16 {
+						ax, ay := server.SinCosDir(byte(around))
+						if !trace(outside, outside.Add(types.Ptf(16*ax, 16*ay))) {
+							clear = false
+							break
+						}
+					}
+					if clear {
+						return center, direction, nil
+					}
+				}
+			}
+		}
+	}
+	return types.Pointf{}, types.Pointf{}, fmt.Errorf("no independent spike footprint near %v (radius=%g)", original, radius)
+}
+
 type e2ePlayerSpikeFixture struct {
 	typeID                      string
 	damage                      uint8
@@ -46,17 +96,27 @@ func (f *e2ePlayerSpikeFixture) prepare() {
 		return
 	}
 	f.original = f.host.PosVec
+	f.hazard = noxServer.NewObjectByTypeID(f.typeID)
+	if f.hazard == nil || f.hazard.CollideData == nil {
+		e2eError(fmt.Errorf("spike fixture has no stock %s collide data", f.typeID))
+		return
+	}
+	var extent float32
+	switch f.hazard.Shape.Kind {
+	case server.ShapeKindCircle:
+		extent = f.hazard.Shape.Circle.R
+	case server.ShapeKindBox:
+		extent = float32(math.Hypot(float64(f.hazard.Shape.Box.W), float64(f.hazard.Shape.Box.H)) / 2)
+	default:
+		e2eError(fmt.Errorf("unsupported stock spike fixture shape %d", f.hazard.Shape.Kind))
+		return
+	}
 	var err error
-	f.origin, f.direction, err = e2eWarriorAbilityArena(f.original, f.host.Shape.Circle.R+65, func(from, to types.Pointf) bool {
+	f.origin, f.direction, err = e2ePlayerSpikeArena(f.original, extent+f.host.Shape.Circle.R+6, func(from, to types.Pointf) bool {
 		return e2eWarriorLaneClear(f.host, from, to)
 	})
 	if err != nil {
 		e2eError(err)
-		return
-	}
-	f.hazard = noxServer.NewObjectByTypeID(f.typeID)
-	if f.hazard == nil || f.hazard.CollideData == nil {
-		e2eError(fmt.Errorf("spike fixture has no stock %s collide data", f.typeID))
 		return
 	}
 	if f.switched {

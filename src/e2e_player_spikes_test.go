@@ -1,13 +1,65 @@
 package opennox
 
 import (
+	"fmt"
+	"math"
 	"os"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/opennox/libs/types"
 	"gopkg.in/yaml.v2"
 )
+
+func TestE2EPlayerSpikeArena(t *testing.T) {
+	original := types.Ptf(200, 300)
+	t.Run("stock footprint at original", func(t *testing.T) {
+		pos, direction, err := e2ePlayerSpikeArena(original, 58.5, func(types.Pointf, types.Pointf) bool { return true })
+		if err != nil || pos != original || direction != types.Ptf(1, 0) {
+			t.Fatalf("arena=%v/%v/%v", pos, direction, err)
+		}
+	})
+	t.Run("nearby unconfined footprint", func(t *testing.T) {
+		pos, _, err := e2ePlayerSpikeArena(original, 19, func(from, to types.Pointf) bool { return from != original })
+		if err != nil || pos == original {
+			t.Fatalf("arena=%v/%v", pos, err)
+		}
+	})
+	t.Run("bounded search beyond old attack lane", func(t *testing.T) {
+		pos, _, err := e2ePlayerSpikeArena(original, 19, func(from, to types.Pointf) bool { return from.X >= 400 && to.X >= 400 })
+		if err != nil || pos.X < 419 || pos.X-original.X > 552 {
+			t.Fatalf("arena=%v/%v", pos, err)
+		}
+	})
+	t.Run("blocked footprint fails closed", func(t *testing.T) {
+		if _, _, err := e2ePlayerSpikeArena(original, 19, func(types.Pointf, types.Pointf) bool { return false }); err == nil {
+			t.Fatal("selected blocked footprint")
+		}
+	})
+	t.Run("center line cannot hide narrow footprint", func(t *testing.T) {
+		if _, _, err := e2ePlayerSpikeArena(original, 19, func(from, to types.Pointf) bool { return from.Y == original.Y && to.Y == original.Y }); err == nil {
+			t.Fatal("selected undersized footprint")
+		}
+	})
+	t.Run("outside baseline must also be clear", func(t *testing.T) {
+		if _, _, err := e2ePlayerSpikeArena(original, 19, func(from, to types.Pointf) bool { return from == original && to.Sub(original).Len() < 70 }); err == nil {
+			t.Fatal("selected blocked outside baseline")
+		}
+	})
+	for _, radius := range []float32{-1, 0, 71, float32(math.NaN()), float32(math.Inf(1))} {
+		t.Run("invalid-radius-"+fmt.Sprint(radius), func(t *testing.T) {
+			if _, _, err := e2ePlayerSpikeArena(original, radius, func(types.Pointf, types.Pointf) bool { t.Fatal("invalid radius traced"); return true }); err == nil {
+				t.Fatal("invalid radius accepted")
+			}
+		})
+	}
+	t.Run("nil trace", func(t *testing.T) {
+		if _, _, err := e2ePlayerSpikeArena(original, 19, nil); err == nil {
+			t.Fatal("nil trace accepted")
+		}
+	})
+}
 
 func TestE2EPlayerSpikeSchedule(t *testing.T) {
 	for _, tc := range []struct {

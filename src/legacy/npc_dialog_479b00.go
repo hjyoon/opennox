@@ -19,6 +19,9 @@ import (
 
 //export nox_xxx_guiDialog_479B00
 func nox_xxx_guiDialog_479B00(windowArg int32, event int32, buttonp *int32, reservedArg int32) int32 {
+	if event != 0x4007 {
+		return 0
+	}
 	return int32(gui.NPCDialogProc479B00(int(event), (*gui.Window)(unsafe.Pointer(buttonp)), npcDialogRuntime479B00()))
 }
 

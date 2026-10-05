@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 음식 선택 정밀도·후퇴 follow-up 원본 순서 복원과 ARM64 회귀 완료
+
+`7e67d1183`는 기존 production 본체 `monsterSearchEdible544A00` 하나만 원본 `00544A00/00544A40`의 거리 계산·비교에 맞춘다. 좌표 차·제곱·합을 binary64 단계로 분리해 조기 binary32 spill/FMA를 막고, best distance의 원래 binary32 spill 및 unordered/NaN 비교를 유지한다. 클래스·온라인·NPC/poison·상호작용 gate나 radius는 바꾸지 않았다. literal identity 기대값을 사용하는 새 26 leaf는 반올림 up/down·동률·거리 상한·NaN/무한대·signed zero/subnormal·callback 이후 live 좌표·native identity/search reset을 검사하며, food/subclass low-byte 조합 2,048개도 포함한다. 실제 수정 전 compiled 실행은 기존 nearest 시험을 포함해 6실패·21통과였다.
+
+`4d81e4b7d`는 기존 production 본체 `monsterRetreatCheckEdibles5455E0` 하나만 원본 `005455E0`에 맞춘다. cached food identity를 유지하며 NOT_HEALTHY → NO_ENEMY → VISIBLE_LOCATION → PICKUP → MOVE_TO를 payload 없이 push한 뒤, 성공한 slot에만 Cancel 이후 live 좌표/포인터를 저장한다. 각 거절은 자기 payload만 건너뛰며 후속 push는 소비한다. 음식이 없으면 NOT_HEALTHY → NO_ENEMY → NO_FOOD → ROAM을 유지하고, ROAM arg0=0·arg2 low BYTE=0x80만 기록해 arg1/나머지 byte를 보존한다. 원래 BYTE store 근거로 기존 fresh-slot unit 기대값 `0xffffff80`을 `0x80`으로 교정했으며 기존 YAML/PNG/golden 변경은 아니다. 새 110 leaf는 모든 Quest/accepted-mask 조합과 실제 server push/Cancel의 남은 stack slot 0..6, 4GiB 위 음식 포인터, raw NaN/-0 좌표를 검사한다. 수정 전 compiled 실행은 기존 두 시험을 포함해 99실패·13통과였고 green은 모두 통과했다.
+
+원본 전체 SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`를 직접 disassemble해 대조했다. 새 sealed byte/range/manifest와 production C는 추가하지 않았다. 각 기능 수정은 AST로 기존 production 본체 하나만 변경함을 확인하고 검증 후 즉시 origin `port/go1.26-multiarch`에 push했다. selector/order의 독립 실패 증거는 `/private/tmp/opennox-edible-search.biRP3p`의 `selection-red.jsonl`/`order-red.jsonl`에 보존했다.
+
+최종 새 regression은 selector 26·follow-up 110, 총 136 leaf다. 관련 음식/후퇴/AI/Repeat focused 1,070 leaf는 일반·실제 cgocheck2·race·강제 checkptr=2·highres·server-tag 각각 3회, 합계 19,260 pass·fail/skip 0이며 새 136개만 2,448 pass다. 전체 root/server/legacy/gui/input/dialog 일반 및 실제 strict는 각각 28,847 leaf pass·fail 0이다. 기존 선택 실행 skip 12개는 이전 matrix와 동일한 test identity이며 통과 수에서 제외했다. 두 strict stderr의 `go1.26.5 GOEXPERIMENT=cgocheck2 CGO_ENABLED=1`, JSONL terminal leaf 및 모든 tracked src/scripts/toolchain의 전후 SHA·clean status/HEAD/origin 불변을 확인했다. `matrix-validation.log`/`matrix` runner는 실제 terminal exit 0이다.
+
+clean functional revision `4d81e4b7d4b506b18ac15baef5759cf8a46330bd`에서 일반·실제 highres·전용 server 3제품을 23.414215209초에 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 및 실행 전후 product verifier를 통과했다. 일반/HD 각각 기존 RETREAT 4·stock 선공 16·Blink 6사례가 headless exit 0이며 fatal/panic/unsupported Player damage는 없다. RETREAT의 실제 incoming hit·native self target·queued/cast frame·300-frame deadline·power 3·server/client buff·on-sound를 다시 확인했다. 일반 Troll/NPC PNG `1127258186/1393054681`, HD `2626416629/100125580`을 직접 확인했다. 준비용 host max-health 2,000으로 나타나는 큰 HP bar나 이 캡처를 정상 HUD geometry/모든 상태이상 효과의 증명으로 확대하지 않는다.
+
+새 실행은 기존 byte-identical private YAML·private Save/config/maps·unset `NOX_DATA`/`NOX_E2E_OVERRIDE`와 원래 headless/mock audio를 사용했다. 전후 full oracle-test의 code 2,935/data 638·strict NXZ compression/decompression·stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 최종 증거는 `clean-ai-validation.log`/`clean-ai-evidence`에 보존했다. Repeat의 실제 OpenAL 자연 종료/busy click/Done 정상·HD 증거는 바로 아래 이전 clean revision 기록이며 이번 변경은 GUI/음성 본체를 수정하지 않았고 현재 Repeat unit/GUI 회귀도 통과했다. 음식까지 실제로 이동·습득·섭취하는 world/headless 경로, 다른 callback-mutation reflect shape·player mana/incantation·모든 campaign/원격/다른 OS 및 무제한 ARM64 포팅 목표 전체는 아직 남았다. 아래 당시 미완료 표시는 역사적 증거로 유지한다.
+
 ## RETREAT 자기 버프 연결·원래 push/RNG 순서와 일반·HD Repeat 회귀 완료
 
 `a1fb600de`는 기존 production 본체 `Server.MonsterActionRetreat545440` 하나에 실제 `monsterFleeCastRelated541050`/stock spell-book binding을 복원한다. 체력 후퇴가 적을 자연 획득한 뒤 related 자기 버프를 정상 action stack에 예약하고, 실제 selector가 재사용 대기 시간을 기록한다. 원래 mob-cast flag·관련 주문 bit·active enchant/AntiMagic·cast head·ready deadline gate를 유지한다. 새 server fixture 19 leaf에서 binding 제거 red는 6실패·13통과였으며, green은 전부 통과했다.

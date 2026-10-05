@@ -11,16 +11,7 @@ import (
 )
 
 func nox_xxx_netServerCmd_440950(id byte, cmd string) {
-	buf := make([]byte, 5+2*(len(cmd)+1))
-	buf[0] = byte(netmsg.MSG_SERVER_CMD)
-	buf[1] = id
-	binary.LittleEndian.PutUint16(buf[2:], uint16(legacy.ClientPlayerNetCode()))
-	buf[4] = 0
-	if cmd != "" {
-		buf[4] = byte(len(cmd) + 1)
-		alloc.StrCopy16B(buf[5:], cmd)
-	}
-	binary.LittleEndian.PutUint16(buf[5+2*len(cmd):], 0)
+	buf := consoleServerCommandPacket(id, uint16(legacy.ClientPlayerNetCode()), cmd)
 	nox_xxx_netClientSend2_4E53C0(server.HostPlayerIndex, buf, nil, 1)
 }
 

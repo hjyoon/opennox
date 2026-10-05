@@ -96,7 +96,7 @@ func init() {
 			if len(tokens) != 1 {
 				return false
 			}
-			path := strings.ToLower(tokens[0])
+			path := tokens[0]
 			if !strings.HasSuffix(strings.ToLower(path), ".rul") {
 				path += ".rul"
 			}

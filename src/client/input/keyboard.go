@@ -133,6 +133,12 @@ func (h *keyboardHandler) Keyboard(ev *seat.KeyboardEvent) {
 		}
 		return
 	}
+	// Record IME ownership at key arrival, before a later TextInput event
+	// clears the composition buffer in the same SDL input tick. That Return
+	// confirms composition only; the next Return can submit a command.
+	if ev.Pressed && (ev.Key == keybind.KeyEnter || ev.Key == keybind.KeyKpEnter) && h.imeBuffer != "" {
+		return
+	}
 	h.pushKeyEvent(noxKeyEvent{
 		Code:    ev.Key,
 		Pressed: ev.Pressed,

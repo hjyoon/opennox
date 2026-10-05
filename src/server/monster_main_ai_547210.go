@@ -554,9 +554,19 @@ func (s *Server) monsterMainActiveCombatStable547210(unit *Object, update *Monst
 // real hit; notably, the recorded source is CurrentEnemy rather than the
 // object returned by the radius query.
 func (s *Server) monsterMainGuardEnemyStimulus547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210, head ai.ActionType) {
-	if runtime.guardStimulusDone || !monsterMainCanAcquireEnemy547210(update.Aggression) || byte(s.Frame())&0xf != 0 ||
-		!update.HasAction(ai.ACTION_GUARD) ||
-		head == ai.ACTION_GUARD || update.HasAction(ai.ACTION_HUNT) {
+	if runtime.guardStimulusDone || unit == nil || unit.UpdateData == nil || update == nil || byte(s.Frame())&0xf != 0 {
+		return
+	}
+	// 005474CE..00547567 calls the aggression and action services on the live
+	// record, but writes the hit stimulus through MainAI's entry-cached record.
+	live := unit.UpdateDataMonster()
+	liveHead := live.AIStackHead()
+	if liveHead == nil {
+		return
+	}
+	head = liveHead.Type()
+	if !monsterMainCanAcquireEnemy547210(live.Aggression) || !live.HasAction(ai.ACTION_GUARD) ||
+		head == ai.ACTION_GUARD || live.HasAction(ai.ACTION_HUNT) {
 		return
 	}
 	enemyAggro := runtime.EnemyAggro

@@ -667,7 +667,7 @@ func execConsoleCmd(ctx context.Context, cmd string) bool { // nox_server_parseC
 }
 
 func execConsoleCmdAuthed(ctx context.Context, cmd string) bool {
-	cmd = strings.TrimSpace(cmd)
+	cmd = normalizeConsoleInput(noxConsole, cmd)
 	if len(cmd) == 0 {
 		return false
 	}

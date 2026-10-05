@@ -121,15 +121,24 @@ func monsterActionRetreat545440(unit *Object, hooks monsterActionRetreatHooks545
 		hooks.pop()
 		return
 	}
-	if enemy := update.CurrentEnemy; enemy != nil {
+	if update.CurrentEnemy != nil {
 		castRelated := false
 		if !unit.HasEnchant(ENCHANT_ANTI_MAGIC) && hooks.castRelated != nil {
 			castRelated = hooks.castRelated(unit)
 		}
 		if !castRelated {
-			delay := hooks.random(4*int(hooks.tickRate()), 6*int(hooks.tickRate()))
-			hooks.push(ai.DEPENDENCY_TIME, hooks.frame()+uint32(delay))
-			hooks.push(ai.ACTION_FLEE, enemy.PosVec, uint32(0))
+			if time := hooks.push(ai.DEPENDENCY_TIME); time != nil {
+				// The original reads FPS once after the successful push and
+				// passes wrapped signed DWORD bounds to RNG, then reads frame.
+				fps := hooks.tickRate()
+				delay := hooks.random(int(int32(4*fps)), int(int32(6*fps)))
+				time.SetArgs(hooks.frame() + uint32(delay))
+			}
+			if flee := hooks.push(ai.ACTION_FLEE); flee != nil {
+				// Push may invoke Cancel. Reload from the entry-cached update,
+				// only after acceptance, preserving the raw position DWORDs.
+				flee.SetArgs(update.CurrentEnemy.PosVec, uint32(0))
+			}
 		}
 		return
 	}

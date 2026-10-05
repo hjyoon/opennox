@@ -332,18 +332,29 @@ func (s *Server) monsterMainFrustrated547210(unit *Object, update *MonsterUpdate
 		return false
 	}
 
+	if noxflags.HasEngine(noxflags.EngineShowAI) {
+		ai.Log.Printf("%d: %s(#%d) FRUSTRATED\n", s.Frame(), unit, unit.NetCode)
+	}
 	update.StatusFlags |= object.MonStatusFrustrated
-	if update.HasAction(ai.ACTION_RETREAT) || update.HasAction(ai.ACTION_RETREAT_TO_MASTER) ||
-		update.HasAction(ai.ACTION_FLEE) {
+	// 0050A0D0 reloads the unit's live update record. Only the progress
+	// counters and status bit below belong to the entry-cached record.
+	if unit.UpdateDataMonster().HasAction(ai.ACTION_RETREAT) || unit.UpdateDataMonster().HasAction(ai.ACTION_RETREAT_TO_MASTER) ||
+		unit.UpdateDataMonster().HasAction(ai.ACTION_FLEE) {
 		update.Field127 = s.Frame()
 	}
 
-	if update.HasAction(ai.ACTION_FIGHT) {
+	if unit.UpdateDataMonster().HasAction(ai.ACTION_FIGHT) {
 		s.monsterMainCheckDodgeables547C50(unit, runtime)
 	} else if s.monsterMainRandomInt547210(runtime, 0, 100) >= 33 ||
 		!s.monsterMainCheckDodgeables547C50(unit, runtime) {
-		unit.MonsterPushAction(ai.ACTION_WAIT,
-			s.Frame()+uint32(s.monsterMainRandomInt547210(runtime, int(s.TickRate()/2), int(2*s.TickRate()))))
+		if wait := unit.MonsterPushAction(ai.ACTION_WAIT); wait != nil {
+			// The original push precedes both the FPS read and duration RNG;
+			// failed pushes consume no duration RNG. The upper bound remains
+			// a signed 32-bit argument, and the frame is read after the RNG.
+			fps := s.TickRate()
+			duration := s.monsterMainRandomInt547210(runtime, int(fps>>1), int(int32(2*fps)))
+			wait.SetArgs(s.Frame() + uint32(duration))
+		}
 	}
 	update.Field124 = s.Frame()
 	update.Field125 = math.Float32bits(unit.PosVec.X)

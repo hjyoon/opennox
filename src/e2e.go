@@ -9926,6 +9926,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckSentryGlobe(l.Text, l.Name)
+		case "check-player-spike-collision":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerSpikeCollision(l.Item, l.Name)
 		case "check-ai-first-attack":
 			if dt != 0 {
 				sc.Wait(dt, "")

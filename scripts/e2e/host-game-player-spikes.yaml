@@ -1,0 +1,85 @@
+# Stock thing.bin hazards and their untouched DamageCollide bytes/types.
+# Position is a fixture; normal spatial collision must damage the player,
+# preserve stock data and deliver a fresh client damage-number event.
+# Spike/PeriodicSpike first overlap while disabled. No callback, HP loss,
+# hit marker, packet, drawable or pixel result is injected.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-player-spike-collision
+    item: Spike
+    name: Spike against Player
+  - action: check-player-spike-collision
+    item: PeriodicSpike
+    name: PeriodicSpike against Player
+  - action: check-player-spike-collision
+    item: SpikeBlock
+    name: SpikeBlock against Player
+  - action: check-player-spike-collision
+    item: SpikeBlockImmobile
+    name: SpikeBlockImmobile against Player
+  - action: check-player-spike-collision
+    item: RotatingSpikes
+    name: RotatingSpikes against Player
+  - action: check-player-spike-collision
+    item: RotatingSpikesImmobile
+    name: RotatingSpikesImmobile against Player
+  - action: quit
+    dt: 1

@@ -20,6 +20,7 @@ type textHandler struct {
 }
 
 func (h *Handler) SetLanguage(code int) { // nox_xxx_initKeyboard_47FB10
+	h.language = code
 	h.capsState = h.KeyModShift()
 	h.textMap = make(map[keybind.Key]inputCharMap, 256)
 	for k, v := range noxInputMapGeneric {

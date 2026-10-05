@@ -17,9 +17,9 @@ type monsterActionPickupObjectHooks544B90 struct {
 
 // monsterActionPickupObject544B90 restores GAME.EXE 00544B90 without passing
 // either the monster or its AI-stack target through the original PE32 int ABI.
-// The action always completes, even when the target disappeared or cannot be
-// reached. A successfully reached health potion is used after the pickup call,
-// matching the original callback order and ignored pickup return value.
+// An absent entry target or failed range/visibility check completes the action.
+// Callback-invalidated targets preserve the original fault prefix instead.
+// Placement and use reload the entry-cached slot, ignoring callback results.
 func monsterActionPickupObject544B90(unit *Object, hooks monsterActionPickupObjectHooks544B90) int {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) || hooks.pop == nil {
 		return 0
@@ -30,16 +30,20 @@ func monsterActionPickupObject544B90(unit *Object, hooks monsterActionPickupObje
 	}
 	target := head.ArgObj(0)
 	if target != nil {
-		delta := target.PosVec.Sub(unit.PosVec)
-		if delta.X*delta.X+delta.Y*delta.Y < monsterPickupObjectRangeSquared544B90 &&
-			hooks.canInteract != nil && hooks.canInteract(unit, target, 0) {
-			if hooks.placeInventory != nil {
-				hooks.placeInventory(unit, target, 1, 1)
-			}
-			// The original reloads the object argument from the same stack item
-			// after inventory placement instead of retaining its earlier value.
+		// 00544BB4..00544BD9 retains x87 53-bit intermediates until FCOM.
+		// Explicit boundaries prevent binary32 spills and ARM64 FMA fusion.
+		dx := logicRandomFloatSub64_416030(float64(target.PosVec.X), float64(unit.PosVec.X))
+		dy := logicRandomFloatSub64_416030(float64(target.PosVec.Y), float64(unit.PosVec.Y))
+		ySquared := logicRandomFloatMul64_416030(dy, dy)
+		xSquared := logicRandomFloatMul64_416030(dx, dx)
+		distance := logicRandomFloatAdd64_416030(ySquared, xSquared)
+		// The original tests C0 alone: unordered also enters visibility.
+		if !(distance >= float64(monsterPickupObjectRangeSquared544B90)) && hooks.canInteract(unit, target, 0) {
+			hooks.placeInventory(unit, head.ArgObj(0), 1, 1)
+			// Both reloads use the cached item even if a callback changes the
+			// unit's update record or stack index. The byte read has no nil gate.
 			target = head.ArgObj(0)
-			if target != nil && target.ObjSubClass.AsFood().Has(object.FoodHealthPotion) && hooks.useByNetCode != nil {
+			if byte(target.ObjSubClass)&0x10 != 0 {
 				hooks.useByNetCode(unit, target)
 			}
 		}

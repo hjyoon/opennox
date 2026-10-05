@@ -189,6 +189,11 @@ func TestMonsterMainFear547210DoesNotDuplicateExistingFlee(t *testing.T) {
 			update.AIStack[5].Action = uint32(ai.ACTION_WAIT)
 			update.AIStack[index].Action = uint32(ai.ACTION_FLEE)
 			before := *update
+			if index == 5 {
+				// An existing moving FLEE skips fear scheduling, but the common
+				// tail still records this tick's displacement in the original.
+				before.Field124, before.Field125, before.Field126 = s.Frame(), math.Float32bits(unit.PosVec.X), math.Float32bits(unit.PosVec.Y)
+			}
 			calls := 0
 			s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{AudioEvent: func(uint32, *Object) { calls++ }})
 			if *update != before || s.AI.StackChanged || calls != 0 {

@@ -44,14 +44,9 @@ type MonsterMainRuntime547210 struct {
 	guardStimulusDone  bool // the entry prefix already performed this tick's GUARD probe
 }
 
-// MonsterMainNative547210 handles the independently restored pointer-safe
-// portions of GAME.EXE 00547210. It leaves the remaining state-changing
-// branches to the legacy implementation until each is ported separately.
-//
-// The first three cases are exact early returns from the original function:
-// the staggered IDLE/GUARD throttle, an uninterruptible dependency below the
-// stack head, and FlagDead. The final case covers passive monsters for which
-// every later branch predicate is known to be false.
+// MonsterMainNative547210 runs GAME.EXE 00547210 with no optional services.
+// It returns false when a reachable branch needs a service absent from this
+// runtime. The production legacy wrapper supplies the complete service set.
 func (s *Server) MonsterMainNative547210(unit *Object) bool {
 	return s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{})
 }
@@ -80,6 +75,10 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	// The entry prefix retains this pointer across conversation, confusion and
 	// inversion callbacks; the fear sound entry itself is loaded later.
 	soundSet := update.SoundSet122
+	if (runtime.GUICursorActive == nil || runtime.FindObjectAtCursor == nil) &&
+		!s.monsterMainConversationImpossible547210(unit, update) {
+		return false
+	}
 	if s.monsterMainConversation547210(unit, update, runtime) {
 		return true
 	}
@@ -97,71 +96,32 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	}
 	s.monsterMainGuardEnemyStimulus547210(unit, update, runtime, head.Type())
 	runtime.guardStimulusDone = true
+	// Missing services are not evidence that an optional Blink was skipped.
+	// The production runtime binds both; incomplete callers remain conservative.
+	if update.StatusFlags.Has(object.MonStatusCanCastSpells) && update.Field376 != 0 &&
+		!unit.HasEnchant(ENCHANT_ANTI_MAGIC) &&
+		(runtime.CastSpell == nil || runtime.RandomInt == nil && s.Rand.Logic == nil) {
+		return false
+	}
 	if s.monsterMainThreatFlee547210(unit, update, soundSet, runtime) {
 		return true
 	}
 	if s.monsterMainHealthRetreat547210(unit, update, soundSet, runtime) {
 		return true
 	}
+	if !monsterMainBlockServicesAvailable547210(unit, update, head, runtime) {
+		return false
+	}
 	if s.monsterMainBlock547210(unit, update, head, runtime) {
 		return true
+	}
+	if !s.monsterMainDodgeServicesAvailable547210(unit, update, runtime) {
+		return false
 	}
 	if s.monsterMainDodge547210(unit, update, runtime) {
 		return true
 	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainActiveCombatStable547210(unit, update, runtime)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainActiveStable547210(unit, update, runtime)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainPassiveCasterNoop547210(unit, update)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainPassiveAfterConversation547210(unit, update, runtime)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainLowAggressionRandomWalkNoop547210(unit, update)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainPassiveRetreatRoamTrackingRuntime547210(unit, update, runtime)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainPassiveRetreatStackNoop547210(unit, update)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainRoamTracking547210(unit, update)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainAmbientIdleNoop547210(unit, update)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainDialogNoop547210(unit, update)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainScriptedFaceNoop547210(unit, update)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainWaitNoop547210(unit, update)) {
-		return true
-	}
-	if s.monsterMainStableWithFood547210(unit, update, runtime,
-		s.monsterMainQuiescentNoop547210(unit, update)) {
-		return true
-	}
-	return s.MonsterMainPassiveShopkeeper547210(unit)
+	return s.monsterMainProgressTail547210(unit, update, head, runtime)
 }
 
 // monsterMainStableWithFood547210 supplies the final periodic food check from

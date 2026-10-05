@@ -80,14 +80,15 @@ func TestMonsterMainNative547210ExactEarlyReturns(t *testing.T) {
 	})
 }
 
-func TestMonsterMainNative547210RejectsUnportedPassiveBranches(t *testing.T) {
+func TestMonsterMainNative547210RestoredCapabilitiesAndMissingServices(t *testing.T) {
 	tests := []struct {
-		name  string
-		setup func(*Object, *MonsterUpdateData)
+		name    string
+		handled bool
+		setup   func(*Object, *MonsterUpdateData)
 	}{
-		{name: "buff", setup: func(unit *Object, _ *MonsterUpdateData) { unit.Buffs = 1 << ENCHANT_CONFUSED }},
-		{name: "moderate aggression", setup: func(_ *Object, update *MonsterUpdateData) { update.Aggression = 0.08 }},
-		{name: "casting", setup: func(_ *Object, update *MonsterUpdateData) { update.StatusFlags |= object.MonStatusCanCastSpells }},
+		{name: "buff", handled: true, setup: func(unit *Object, _ *MonsterUpdateData) { unit.Buffs = 1 << ENCHANT_CONFUSED }},
+		{name: "moderate aggression", handled: true, setup: func(_ *Object, update *MonsterUpdateData) { update.Aggression = 0.08 }},
+		{name: "casting", handled: true, setup: func(_ *Object, update *MonsterUpdateData) { update.StatusFlags |= object.MonStatusCanCastSpells }},
 		{name: "blocking", setup: func(_ *Object, update *MonsterUpdateData) { update.StatusFlags |= object.MonStatusCanBlock }},
 		{name: "mimic bot", setup: func(_ *Object, update *MonsterUpdateData) { update.StatusFlags |= object.MonStatusBot }},
 		{name: "NPC weapon block", setup: func(unit *Object, update *MonsterUpdateData) {
@@ -98,7 +99,7 @@ func TestMonsterMainNative547210RejectsUnportedPassiveBranches(t *testing.T) {
 			unit.ObjSubClass |= object.SubClass(object.MonsterNPC)
 			update.ArmorEquipFlags = 0x1000000
 		}},
-		{name: "active fight", setup: func(_ *Object, update *MonsterUpdateData) {
+		{name: "active fight", handled: true, setup: func(_ *Object, update *MonsterUpdateData) {
 			update.AIStack[0].Action = uint32(ai.ACTION_FIGHT)
 		}},
 	}
@@ -107,9 +108,19 @@ func TestMonsterMainNative547210RejectsUnportedPassiveBranches(t *testing.T) {
 			s := unitFollowTestServer5158C0(t)
 			unit := passiveMonsterTestObject547210(t)
 			unit.serverHandle = s.handle
-			tc.setup(unit, unit.UpdateDataMonster())
-			if s.MonsterMainNative547210(unit) {
-				t.Fatal("unported main-AI branch was handled")
+			update := unit.UpdateDataMonster()
+			tc.setup(unit, update)
+			before := *update
+			if got := s.MonsterMainNative547210(unit); got != tc.handled {
+				t.Fatalf("restored main-AI handled=%t, want %t", got, tc.handled)
+			}
+			if tc.name == "buff" {
+				if update.AIStackInd != 1 || update.AIStack[0].Type() != ai.DEPENDENCY_IS_ENCHANTED ||
+					update.AIStack[0].ArgU32(0) != uint32(ENCHANT_CONFUSED) || update.AIStackHead().Type() != ai.ACTION_CONFUSED {
+					t.Fatal("original confusion prefix was not scheduled")
+				}
+			} else if *update != before {
+				t.Fatal("inactive branch or missing-service containment changed state")
 			}
 		})
 	}
@@ -153,7 +164,11 @@ func TestMonsterMainNative547210RejectsCoopConversationCandidate(t *testing.T) {
 	})
 	unit := passiveMonsterTestObject547210(t)
 	unit.Field5 = 0x10
-	if new(Server).MonsterMainNative547210(unit) {
+	s := new(Server)
+	player := &Player{}
+	host := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: player})}
+	s.Players.SetHost(player, host)
+	if s.MonsterMainNative547210(unit) {
 		t.Fatal("co-op conversation candidate was handled as passive")
 	}
 }
@@ -228,7 +243,16 @@ func TestMonsterMainNative547210QuiescentDodgeMonster(t *testing.T) {
 	unit.UpdateDataMonster().StatusFlags = object.MonStatusCanDodge
 	unit.UpdateDataMonster().MonsterDef = &MonsterDef{StatusFlags92: object.MonStatusCanDodge}
 	before := *unit.UpdateDataMonster()
-	if !s.MonsterMainNative547210(unit) {
+	if s.MonsterMainNative547210(unit) {
+		t.Fatal("qualified dodge without its missile/runtime services was silently handled")
+	}
+	queries := 0
+	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
+		TestShield:  func(*Object) int { queries++; return 0 },
+		TileAt:      func(types.Pointf) int { t.Fatal("missile miss reached tiles"); return 0 },
+		RandomInt:   func(int, int) int { t.Fatal("missile miss consumed RNG"); return 0 },
+		RandomFloat: func(float32, float32) float64 { t.Fatal("missile miss consumed RNG"); return 0 },
+	}) || queries != 1 {
 		t.Fatal("quiescent dodge monster was not handled")
 	}
 	if *unit.UpdateDataMonster() != before {
@@ -800,6 +824,10 @@ func TestMonsterMainNative547210WizardModerateScriptedFace(t *testing.T) {
 	if !s.MonsterMainNativeRuntime547210(unit, MonsterMainRuntime547210{
 		GUICursorActive:    func() bool { return false },
 		FindObjectAtCursor: func(*Object) *Object { return nil },
+		TestShield:         func(*Object) int { return 0 },
+		TileAt:             func(types.Pointf) int { t.Fatal("missile miss reached tiles"); return 0 },
+		RandomInt:          func(int, int) int { t.Fatal("missile miss consumed RNG"); return 0 },
+		RandomFloat:        func(float32, float32) float64 { t.Fatal("missile miss consumed RNG"); return 0 },
 	}) {
 		t.Fatal("Wiz01A moderate-aggression scripted face was not handled")
 	}
@@ -1149,19 +1177,21 @@ func TestMonsterMainNative547210ScriptedFaceObject(t *testing.T) {
 	}
 
 	for _, tc := range []struct {
-		name  string
-		setup func(*MonsterUpdateData)
+		name    string
+		handled bool
+		setup   func(*MonsterUpdateData)
 	}{
-		{"weapon block", func(update *MonsterUpdateData) { update.WeaponEquipFlags |= 0x400 }},
-		{"shield block", func(update *MonsterUpdateData) { update.ArmorEquipFlags |= 0x1000000 }},
-		{"definition dodge", func(update *MonsterUpdateData) { update.MonsterDef.StatusFlags92 |= object.MonStatusCanDodge }},
+		{"weapon block", false, func(update *MonsterUpdateData) { update.WeaponEquipFlags |= 0x400 }},
+		{"shield block", false, func(update *MonsterUpdateData) { update.ArmorEquipFlags |= 0x1000000 }},
+		{"definition dodge", true, func(update *MonsterUpdateData) { update.MonsterDef.StatusFlags92 |= object.MonStatusCanDodge }},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			copyUpdate := before
 			tc.setup(&copyUpdate)
 			unit.UpdateData = unsafe.Pointer(&copyUpdate)
-			if s.MonsterMainNative547210(unit) {
-				t.Fatal("active FACE_OBJECT branch was treated as a no-op")
+			initial := copyUpdate
+			if got := s.MonsterMainNative547210(unit); got != tc.handled || copyUpdate != initial {
+				t.Fatal("passive dodge must be skipped; an unavailable weapon/shield probe must remain unhandled")
 			}
 		})
 	}
@@ -1272,12 +1302,13 @@ func TestMonsterMainNative547210RoamTracking(t *testing.T) {
 			t.Fatal("far enemy ambient roam was not handled")
 		}
 	})
-	t.Run("rejects nearby enemy flee branch", func(t *testing.T) {
+	t.Run("nearby enemy move-attempt cooldown still permits progress", func(t *testing.T) {
 		s, unit, update := newFish()
 		update.FleeRange = 50
 		update.CurrentEnemy = &Object{PosVec: types.Ptf(120, 200)}
-		if s.MonsterMainNative547210(unit) {
-			t.Fatal("nearby enemy flee branch was handled")
+		if !s.MonsterMainNative547210(unit) || update.Field124 != 1 || update.Field125 != math.Float32bits(100) ||
+			update.Field126 != math.Float32bits(200) || update.AIStackInd != 0 || update.AIStackHead().Type() != ai.ACTION_ROAM {
+			t.Fatal("original move-attempt cooldown must suppress FLEE, not movement tracking")
 		}
 	})
 	t.Run("rejects frustration branch", func(t *testing.T) {
@@ -1551,6 +1582,12 @@ func TestMonsterMainNative547210ConversationNPCSoundWait(t *testing.T) {
 	}
 
 	runtime.FindObjectAtCursor = nil
+	if !s.MonsterMainNativeRuntime547210(unit, runtime) || *unit != beforeUnit || *update != beforeUpdate {
+		t.Fatal("absent host must skip conversation without a cursor oracle")
+	}
+	player := &Player{}
+	host := &Object{ObjClass: object.ClassPlayer, UpdateData: unsafe.Pointer(&PlayerUpdateData{Player: player})}
+	s.Players.SetHost(player, host)
 	if s.MonsterMainNativeRuntime547210(unit, runtime) {
 		t.Fatal("conversation NPC WAIT without a cursor oracle was handled")
 	}

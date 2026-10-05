@@ -72,8 +72,8 @@ func (f *e2eAIRetreatFixture) configure() {
 	target, host := f.combat.enemy, f.combat.host
 	if !f.combat.hit || !f.combat.acquired || !f.combat.fought || target.Buffs != 0 ||
 		!e2eObjectInWorld(target) || noxflags.HasGame(noxflags.GameModeCoop|noxflags.GameModeQuest) ||
-		!noxServer.Spells.HasFlags(spell.SPELL_HASTE, things.SpellMobsCanCast) {
-		e2eError(fmt.Errorf("RETREAT probe requires natural first combat and stock mob-castable Haste"))
+		!noxServer.Spells.HasFlags(e2eAIRetreatSpell, things.SpellMobsCanCast) {
+		e2eError(fmt.Errorf("RETREAT probe requires natural first combat and stock mob-castable Fire Protection"))
 		return
 	}
 	f.update = target.UpdateDataMonster()
@@ -90,19 +90,19 @@ func (f *e2eAIRetreatFixture) configure() {
 		return
 	}
 	// Configure normal map/script ability and health-threshold properties on a
-	// stock body. This does not claim stock Troll/NPC has Haste enabled. Do not
+	// stock body. This does not claim stock Troll/NPC has the spell enabled. Do not
 	// select an enemy, push an action, damage/heal a unit, reset a timer, change
 	// spell definitions or write the buff/network/animation result.
 	f.update.StatusFlags |= object.MonStatusCanCastSpells
-	*(*uint32)(unsafe.Add(unsafe.Pointer(&f.update.Field372), 4*uintptr(spell.SPELL_HASTE))) |= 0x80000000
+	*(*uint32)(unsafe.Add(unsafe.Pointer(&f.update.Field372), 4*uintptr(e2eAIRetreatSpell))) |= 0x80000000
 	f.update.Field370_0, f.update.Field370_2 = 300, 300
 	asObjectS(target).SetRetreatLevel(0.98)
 	asObjectS(target).SetRegroupLevel(1)
-	f.power = noxServer.S().SpellPower4FE7B0(spell.SPELL_HASTE, target)
-	f.duration = int(noxServer.Balance.Float("HasteEnchantDuration"))
-	f.castSound = noxServer.Spells.DefByInd(spell.SPELL_HASTE).GetCastSound()
+	f.power = noxServer.S().SpellPower4FE7B0(e2eAIRetreatSpell, target)
+	f.duration = int(noxServer.Balance.Float("ProtectFireEnchantDuration"))
+	f.castSound = noxServer.Spells.DefByInd(e2eAIRetreatSpell).GetCastSound()
 	if f.duration <= 0 || f.castSound == 0 {
-		e2eError(fmt.Errorf("RETREAT stock Haste duration/sound unavailable"))
+		e2eError(fmt.Errorf("RETREAT stock Fire Protection duration/sound unavailable"))
 		return
 	}
 	f.missiles = make(map[*server.Object]bool)

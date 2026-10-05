@@ -436,8 +436,9 @@ func TestMonsterMainNative547210FleeTransitionGates(t *testing.T) {
 		{name: "enemy at flee boundary", setup: func(_ *Server, unit *Object, update *MonsterUpdateData, enemy *Object) {
 			enemy.PosVec = unit.PosVec.Add(types.Ptf(update.FleeRange, 0))
 		}},
-		{name: "caster", setup: func(_ *Server, _ *Object, update *MonsterUpdateData, _ *Object) {
+		{name: "eligible Blink without immediate service", setup: func(_ *Server, _ *Object, update *MonsterUpdateData, _ *Object) {
 			update.StatusFlags |= object.MonStatusCanCastSpells
+			update.Field376 = 1
 		}},
 		{name: "spell action", setup: func(_ *Server, _ *Object, update *MonsterUpdateData, _ *Object) {
 			update.AIStack[0].Action = uint32(ai.ACTION_CAST_SPELL_ON_OBJECT)
@@ -454,7 +455,7 @@ func TestMonsterMainNative547210FleeTransitionGates(t *testing.T) {
 			s, unit, update, enemy := newMonsterMainFleeTest547210(t)
 			tc.setup(s, unit, update, enemy)
 			before := *update
-			if s.monsterMainFlee547210(unit, update, MonsterMainRuntime547210{RandomInt: func(int, int) int { return 1 }}) {
+			if s.monsterMainThreatFlee547210(unit, update, nil, MonsterMainRuntime547210{RandomInt: func(int, int) int { return 1 }}) {
 				t.Fatal("ineligible flee transition was handled")
 			}
 			if *update != before {

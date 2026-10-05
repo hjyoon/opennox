@@ -186,11 +186,12 @@ func (s *Server) monsterMainEatNearbyFood547210(
 	update *MonsterUpdateData,
 	runtime MonsterMainRuntime547210,
 ) bool {
-	if unit == nil || update == nil || update.Aggression < monsterMainPassiveAggressionLimit547210 ||
+	// 00534440 reads live aggression and treats unordered (NaN) as passive.
+	// No FLEE, RETREAT, MASTER or FRUSTRATED gate exists in this final branch.
+	if unit == nil || update == nil || unit.UpdateData == nil ||
+		!(unit.UpdateDataMonster().Aggression >= monsterMainPassiveAggressionLimit547210) ||
 		unit.HealthData == nil || unit.HealthData.Max == 0 || unit.HealthData.Cur >= unit.HealthData.Max ||
-		byte(s.Frame())&0xf != 0 || update.StatusFlags.Has(object.MonStatusFrustrated) ||
-		update.HasAction(ai.ACTION_FLEE) || update.HasAction(ai.ACTION_RETREAT) ||
-		update.HasAction(ai.ACTION_RETREAT_TO_MASTER) {
+		byte(s.Frame())&0xf != 0 {
 		return true
 	}
 	if runtime.SearchEdible == nil || runtime.PlaceInventory == nil {
@@ -200,12 +201,12 @@ func (s *Server) monsterMainEatNearbyFood547210(
 	if food == nil {
 		return true
 	}
-	useImmediately := food.SubClass().AsFood().Has(object.FoodHealthPotion | object.FoodMushroom)
-	if useImmediately && runtime.UseByNetCode == nil {
-		return false
-	}
 	runtime.PlaceInventory(unit, food, 1, 1)
-	if useImmediately {
+	// The subclass byte is loaded after placement, whose result is ignored.
+	if byte(food.ObjSubClass)&0x90 != 0 {
+		if runtime.UseByNetCode == nil {
+			return false
+		}
 		runtime.UseByNetCode(unit, food)
 	}
 	return true

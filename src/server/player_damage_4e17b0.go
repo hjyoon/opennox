@@ -520,6 +520,101 @@ func playerDamageMonster4E17B0(
 		weaponFlags: update.WeaponEquipFlags, armorFlags: update.ArmorEquipFlags,
 		marker: &update.Field547, markerType: &update.Field546,
 	}
+	// Meteor's radial call passes its terminal owner (or nil), with no
+	// weapon. Case 7 still enters 004E1F84's full armor/carry/wear switch;
+	// it is not restricted to missile-shaped sources. Keep this prefix
+	// separate so marker reset, cached equipment and the one ordinary
+	// facing check precede callbacks, without reselecting live equipment.
+	if weapon == nil && typ == object.DamageExplosion &&
+		(source == nil || (source.Class().HasAny(object.MaskUnits) &&
+			!source.Class().HasAny(object.ClassMissile|object.ClassWeapon|object.ClassWand))) {
+		update.Field547 = 0
+		if source != nil {
+			attackPos := source.PrevPos
+			if runtime.BlockSourceOnlyExcluded == nil {
+				return playerDamageUnsupported4E17B0(runtime, "missing NPC weapon-less EXPLOSION exclusion", target, source, weapon, damage, typ)
+			}
+			excluded := runtime.BlockSourceOnlyExcluded(source)
+			front := false
+			if !excluded {
+				if runtime.BlockDirection == nil {
+					return playerDamageUnsupported4E17B0(runtime, "missing NPC weapon-less EXPLOSION direction", target, source, weapon, damage, typ)
+				}
+				front = runtime.BlockDirection(target, attackPos)
+			}
+			if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+				return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC weapon-less EXPLOSION block record", target, source, weapon, damage, typ)
+			}
+			if front && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK && greatSword.armorFlags&0x3000000 != 0 {
+				if runtime.Audio == nil || runtime.BlockDamagePercent == nil {
+					return playerDamageUnsupported4E17B0(runtime, "missing NPC weapon-less EXPLOSION shield effect", target, source, weapon, damage, typ)
+				}
+				runtime.Audio(878, target)
+				// 004E1BA7/004E1BBE read the attack's live class/subclass
+				// after audio and reflection, even for a nonmissile entry.
+				if source.Class().Has(object.ClassMissile) && uint32(source.SubClass())&0x70 == 0 {
+					if runtime.ProjectileReflect == nil {
+						return playerDamageUnsupported4E17B0(runtime, "missing NPC weapon-less EXPLOSION reflection", target, source, weapon, damage, typ)
+					}
+					runtime.ProjectileReflect(source, target)
+					if source.Class().Has(object.ClassMissile) && uint32(source.SubClass())&2 == 0 {
+						if runtime.ClearOwner == nil || runtime.SetOwner == nil {
+							return playerDamageUnsupported4E17B0(runtime, "missing NPC weapon-less EXPLOSION shield owner", target, source, weapon, damage, typ)
+						}
+						runtime.ClearOwner(source)
+						runtime.SetOwner(target, source)
+					}
+				}
+				amount := float32(runtime.BlockDamagePercent() * float64(damage))
+				shield := playerDamageShieldItem4E17B0(target)
+				if runtime.DamageBlockItem == nil || (shield != nil && (runtime.CanDamageBlockItem == nil || !runtime.CanDamageBlockItem(shield))) {
+					return playerDamageUnsupported4E17B0(runtime, "unsupported NPC weapon-less EXPLOSION live shield wear", target, source, weapon, damage, typ)
+				}
+				if !runtime.DamageBlockItem(shield, target, source, weapon, amount, typ) && runtime.Unsupported != nil {
+					runtime.Unsupported("NPC weapon-less EXPLOSION shield wear failed", target, source, weapon, damage, typ)
+				}
+				if shield != nil && shield.Flags().Has(object.FlagDestroyed) {
+					if runtime.Melee.MonsterPopBlockAction == nil {
+						return playerDamageUnsupported4E17B0(runtime, "missing NPC weapon-less EXPLOSION broken shield action", target, source, weapon, damage, typ)
+					}
+					runtime.Melee.MonsterPopBlockAction(target)
+				}
+				return true, false
+			}
+		}
+		if runtime.DefaultDamage == nil || !playerDamageArmorReady4E17B0(target, runtime) {
+			return playerDamageUnsupported4E17B0(runtime, "missing NPC weapon-less EXPLOSION armor/default service", target, source, weapon, damage, typ)
+		}
+		if runtime.QuestDamageScale == nil && runtime.QuestMode != nil && runtime.QuestMode() {
+			return playerDamageUnsupported4E17B0(runtime, "missing NPC weapon-less EXPLOSION quest scale", target, source, weapon, damage, typ)
+		}
+		if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC weapon-less EXPLOSION carry record", target, source, weapon, damage, typ)
+		}
+		carry := &target.UpdateDataMonster().Field1
+		scaled := float32((1 - float64(armorValue)) * float64(damage))
+		accumulated := scaled + math.Float32frombits(*carry)
+		effective := playerDamageRound4E17B0(accumulated)
+		*carry = math.Float32bits(accumulated - float32(effective))
+		playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, runtime)
+		if update.Field547 == 0 {
+			update.Field547, update.Field546 = 2, uint32(typ)
+		}
+		if damage > 0 && effective == 0 {
+			effective = 1
+		}
+		if runtime.QuestMode != nil && runtime.QuestMode() {
+			if runtime.QuestDamageScale == nil {
+				return playerDamageUnsupported4E17B0(runtime, "missing live NPC weapon-less EXPLOSION quest scale", target, source, weapon, damage, typ)
+			}
+			before := effective
+			effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+			if before > 0 && effective < 1 {
+				effective = 1
+			}
+		}
+		return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
+	}
 	// A stock Troll supplies itself as both source and weapon for case 11.
 	// Nonmissile IMPACT skips Reflect, but keeps the original cached marker
 	// clear, PrevPos snapshot and one exclusion/facing check before shields,

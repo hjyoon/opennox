@@ -51,12 +51,27 @@ func (f *e2eMeteorShowerFixture) prepare() {
 	// A five-second shower has many independently randomized impacts. This
 	// is fixture durability, not an expected or supplied damage/HP result.
 	asObjectS(f.units.target).SetMaxHealth(30000)
+	// Nil-weapon player Explosion now applies real self splash as well. Give
+	// the isolated host durable starting HP, never replenish it during a cast.
+	asObjectS(f.units.host).SetMaxHealth(30000)
+	lastHostHP := f.units.host.HealthData.Cur
 	if ext := f.units.target.GetExt(); ext.HealthRegenToMax > 0 || ext.HealthRegenPerFrame >= 0 {
 		e2eError(fmt.Errorf("MeteorShower fixture unexpectedly overrides ordinary monster regeneration"))
 		return
 	}
 	noxServer.Audio.OnSound(f.observeSound)
 	noxServer.TickHook(f.observeTick)
+	noxServer.TickHook(func() {
+		if !f.active || f.units.host.HealthData.Cur == lastHostHP {
+			return
+		}
+		current := f.units.host.HealthData.Cur
+		if current < lastHostHP {
+			e2eLog.Printf("METEOR SHOWER HOST HIT: mode=%s level=%d HP=%d->%d type=%d source=%p frame=%d",
+				f.units.mode, f.units.actualLevel, lastHostHP, current, f.units.host.Field131, f.units.host.Obj130, noxServer.Frame())
+		}
+		lastHostHP = current
+	})
 }
 
 func (f *e2eMeteorShowerFixture) beginCast() {

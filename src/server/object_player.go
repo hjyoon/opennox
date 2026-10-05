@@ -53,83 +53,83 @@ const (
 type QuestSoulGate = Object
 
 type PlayerUpdateData struct {
-	Field0              uint32         // 0, 0
-	ManaCur             uint16         // 1, 4
-	ManaPrev            uint16         // 1, 6
-	ManaMax             uint16         // 2, 8
-	Field2_1            uint16         // 2, 10
-	HealthSamples       [32]uint16     // 3..18, 12..75; initialized by GAME.EXE 004EE730
-	HealthSampleCur     uint16         // 19, 76; separately reloaded trailing sample
-	Field19_1           uint16         // 19, 78
-	Field20_0           uint16         // 20, 80
-	Field20_1           uint16         // 20, 82
-	Field21             uint32         // 21, 84
-	State               PlayerState    // 22, 88
-	State2              PlayerState    // 22, 89
-	Field22_2           uint8          // 22, 90
-	Stamina             uint8          // 22, 91; current player stamina
-	Field23             uint32         // 23, 92
-	Field24             uint32         // 24, 96
-	Field25             uint32         // 25, 100
-	EquippedWeapon      *Object        // 26, 104; current player weapon
-	Field27             uint32         // 27, 108
-	Field28             uint32         // 28, 112
-	Field29             [4]*Object     // 29, 116, TODO: teleport markers? traps?
-	HarpoonTarg         *Object        // 33, 132
-	HarpoonBolt         *Object        // 34, 136
-	Harpoon35           uint32         // 35, 140
-	HarpoonTargX        float32        // 36, 144
-	HarpoonTargY        float32        // 37, 148
-	HarpoonFrame        uint32         // 38, 152
-	Field39             uint32         // 39, 156
-	Field40_0           uint16         // 40, 160
-	Field40_1           uint16         // 40, 162
-	Field41             uint32         // 41, 164
-	CustomWaypoints     [3]*Object     // 42..44, 168; PlayerWaypoint objects
-	CustomWaypointWrite uint8          // 45, 180
-	CustomWaypointRead  uint8          // 45, 181
-	Field45_2           uint16         // 45, 182
-	SpellPhonemeLeaf    *PhonemeLeaf   // 46, 184
-	Field47_0           uint8          // 47, 188
-	Field47_1           uint8          // 47, 189
-	Field47_2           uint16         // 47, 190
-	TrapSpells          [5]uint32      // 48, 192
-	TrapSpellsCnt       uint32         // 53, 212
-	SpellCastStart      uint32         // 54, 216
-	Field55             int            // 55, 220, TODO: spell-related? x coord?
-	Field56             int            // 56, 224, TODO: spell-related? y coord?
-	Field57             uint32         // 57, 228
-	Field58             uint32         // 58, 232
-	Field59_0           uint8          // 59, 236, TODO: frame index?
-	Field59_1           uint8          // 59, 237
-	Field59_2           uint16         // 59, 238
-	MovementFlags       uint32         // 60, 240; movement modifier and direction bits
-	CurTraps            uint32         // 61, 244
-	Field62             uint32         // 62, 248
-	Field63             uint32         // 63, 252
-	Field64             uint32         // 64, 256
-	IsCamping           uint32         // 65, 260
-	Field66             uint32         // 66, 264
-	Field67             uint32         // 67, 268
-	Field68             uint32         // 68, 272
-	Player              *Player        // 69, 276
-	Trade70             *TradeSession  // 70, 280
-	DialogWith          *Object        // 71, 284
-	CursorObj           *Object        // 72, 288
-	Field73             uint32         // 73, 292
-	CollisionWall       *Wall          // 74, 296; last wall recorded by movement collision
-	Field75             uint32         // 75, 300
-	Field76             uint32         // 76, 304
-	SoulGate            *QuestSoulGate // 77, 308
-	QuestExit           *Object        // 78, 312; Quest exit currently occupied by the player
-	QuestWarpGate       *Object        // 79, 316; Quest warp gate currently occupied by the player
-	ExtraLives          uint32         // 80, 320; tradable Ankhs currently held
-	QuestPlayerState    [32]uint32     // 81..112, 324..451; indexed by PlayerInd
-	RespawnMarkers      [32]byte       // 113..120, 452..483; indexed by PlayerInd in Quest respawn
-	QuestPlayerFlagsA   [32]byte       // 121..128, 484..515; indexed by PlayerInd
-	QuestPlayerFlagsB   [32]byte       // 129..136, 516..547; indexed by PlayerInd
-	Field137            uint32         // 137, 548, TODO: some timestamp
-	Field138            uint32         // 138, 552
+	Field0              uint32             // 0, 0
+	ManaCur             uint16             // 1, 4
+	ManaPrev            uint16             // 1, 6
+	ManaMax             uint16             // 2, 8
+	Field2_1            uint16             // 2, 10
+	HealthSamples       [32]uint16         // 3..18, 12..75; initialized by GAME.EXE 004EE730
+	HealthSampleCur     uint16             // 19, 76; separately reloaded trailing sample
+	Field19_1           uint16             // 19, 78
+	Field20_0           uint16             // 20, 80
+	Field20_1           uint16             // 20, 82
+	Field21             uint32             // 21, 84
+	State               PlayerState        // 22, 88
+	State2              PlayerState        // 22, 89
+	Field22_2           uint8              // 22, 90
+	Stamina             uint8              // 22, 91; current player stamina
+	Field23             uint32             // 23, 92
+	Field24             uint32             // 24, 96
+	Field25             uint32             // 25, 100
+	EquippedWeapon      *Object            // 26, 104; current player weapon
+	Field27             uint32             // 27, 108
+	Field28             uint32             // 28, 112
+	Field29             [4]*Object         // 29, 116, TODO: teleport markers? traps?
+	HarpoonTarg         *Object            // 33, 132
+	HarpoonBolt         *Object            // 34, 136
+	Harpoon35           uint32             // 35, 140
+	HarpoonTargX        float32            // 36, 144
+	HarpoonTargY        float32            // 37, 148
+	HarpoonFrame        uint32             // 38, 152
+	Field39             uint32             // 39, 156
+	Field40_0           uint16             // 40, 160
+	Field40_1           uint16             // 40, 162
+	Field41             uint32             // 41, 164
+	CustomWaypoints     [3]*Object         // 42..44, 168; PlayerWaypoint objects
+	CustomWaypointWrite uint8              // 45, 180
+	CustomWaypointRead  uint8              // 45, 181
+	Field45_2           uint16             // 45, 182
+	SpellPhonemeLeaf    *PhonemeLeaf       // 46, 184
+	Field47_0           uint8              // 47, 188
+	Field47_1           uint8              // 47, 189
+	Field47_2           uint16             // 47, 190
+	TrapSpells          [5]uint32          // 48, 192
+	TrapSpellsCnt       uint32             // 53, 212
+	SpellCastStart      uint32             // 54, 216
+	Field55             int                // 55, 220, TODO: spell-related? x coord?
+	Field56             int                // 56, 224, TODO: spell-related? y coord?
+	Field57             uint32             // 57, 228
+	Field58             uint32             // 58, 232
+	Field59_0           uint8              // 59, 236, TODO: frame index?
+	Field59_1           uint8              // 59, 237
+	Field59_2           uint16             // 59, 238
+	MovementFlags       uint32             // 60, 240; movement modifier and direction bits
+	CurTraps            uint32             // 61, 244
+	Field62             uint32             // 62, 248
+	Field63             uint32             // 63, 252
+	Field64             uint32             // 64, 256
+	IsCamping           uint32             // 65, 260
+	Field66             uint32             // 66, 264
+	Field67             uint32             // 67, 268
+	Field68             uint32             // 68, 272
+	Player              *Player            // 69, 276
+	Trade70             *TradeSession      // 70, 280
+	DialogWith          *Object            // 71, 284
+	CursorObj           *Object            // 72, 288
+	Field73             *MonsterUpdateData // 73, 292; original bot's monster update record
+	CollisionWall       *Wall              // 74, 296; last wall recorded by movement collision
+	Field75             uint32             // 75, 300
+	Field76             uint32             // 76, 304
+	SoulGate            *QuestSoulGate     // 77, 308
+	QuestExit           *Object            // 78, 312; Quest exit currently occupied by the player
+	QuestWarpGate       *Object            // 79, 316; Quest warp gate currently occupied by the player
+	ExtraLives          uint32             // 80, 320; tradable Ankhs currently held
+	QuestPlayerState    [32]uint32         // 81..112, 324..451; indexed by PlayerInd
+	RespawnMarkers      [32]byte           // 113..120, 452..483; indexed by PlayerInd in Quest respawn
+	QuestPlayerFlagsA   [32]byte           // 121..128, 484..515; indexed by PlayerInd
+	QuestPlayerFlagsB   [32]byte           // 129..136, 516..547; indexed by PlayerInd
+	Field137            uint32             // 137, 548, TODO: some timestamp
+	Field138            uint32             // 138, 552
 }
 
 func (obj *Object) ChangeScore(val int) {

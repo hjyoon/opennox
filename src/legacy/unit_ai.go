@@ -1104,10 +1104,13 @@ func Nox_xxx_monsterMainAIFn_547210(a1 *server.Object) {
 		FindObjectAtCursor: Nox_xxx_findObjectAtCursor_54AF40,
 		TileAt:             Nox_xxx_tileNFromPoint_411160,
 		SearchEdible:       GetServer().S().MonsterSearchEdible544A00,
-		PlaceInventory:     Nox_xxx_inventoryServPlace_4F36F0,
-		UseByNetCode:       GetServer().S().UseByNetCode53F8E0,
-		Distance:           objectDistance_4E6C00,
-		TestShield:         Nox_xxx_monsterTestBlockShield_533E70,
+		SearchWeapon: func(unit *server.Object, radius float32) *server.Object {
+			return GetServer().S().MonsterSearchWeapon544AE0(unit, radius, Nox_xxx_playerClassCanUseItem_57B3D0)
+		},
+		PlaceInventory: Nox_xxx_inventoryServPlace_4F36F0,
+		UseByNetCode:   GetServer().S().UseByNetCode53F8E0,
+		Distance:       objectDistance_4E6C00,
+		TestShield:     Nox_xxx_monsterTestBlockShield_533E70,
 		CastSpell: func(id int32, unit *server.Object, arg *server.SpellAcceptArg) {
 			server.MonsterCastDirect541300(id, unit, arg, Nox_xxx_castSpellByUser_4FDD20)
 		},

@@ -52,13 +52,15 @@ func e2eAIRetreatFoodMoveStack(update *server.MonsterUpdateData, food *server.Ob
 // Model only the unchanged classic regeneration on a bounded live-world
 // probe. Script DamageTrue does not set the ordinary injury-pause timestamp.
 // No health/action service is called and no observed HP is used as an input.
+// The deferred tick hook reads frame AFTER server_E increments it, so the
+// completed update frames are [start, frame), not (start, frame].
 func e2eAIRetreatFoodRegenerationHP(start, frame, injury, fps uint32, maximum, initial uint16) (uint16, bool) {
 	elapsed := frame - start
 	if elapsed > 600 || fps == 0 || maximum == 0 || initial > maximum {
 		return 0, false
 	}
 	health := int32(initial)
-	for offset := uint32(1); offset <= elapsed; offset++ {
+	for offset := uint32(0); offset < elapsed; offset++ {
 		health += e2eMeteorShowerRegenAmount(start+offset, injury, fps, int32(maximum), health)
 	}
 	return uint16(health), true

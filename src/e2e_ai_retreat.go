@@ -181,7 +181,7 @@ func (f *e2eAIRetreatFixture) observeSound(id sound.ID, kind int, owner *server.
 	f.observeQueue()
 	if !f.queued || kind != 0 || f.update.MonsterDef == nil || f.update.Field120_2 != 0 ||
 		uint32(f.update.Field120_1) != f.update.MonsterDef.MissileAttackFrame216 {
-		e2eError(fmt.Errorf("RETREAT Haste did not use the real self-cast animation: %s", f.mode))
+		e2eError(fmt.Errorf("RETREAT Fire Protection did not use the real self-cast animation: %s", f.mode))
 		return
 	}
 	f.castSounds++

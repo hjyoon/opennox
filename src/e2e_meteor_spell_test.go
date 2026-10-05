@@ -152,3 +152,56 @@ func TestE2EMeteorObserverDoesNotSupplyResults(t *testing.T) {
 		})
 	}
 }
+
+func TestE2EMeteorPrepareWaitsForNaturalSpawnProtection(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_meteor_spell.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var guarded func(ast.Expr) bool
+	guarded = func(expr ast.Expr) bool {
+		binary, ok := expr.(*ast.BinaryExpr)
+		if !ok {
+			return false
+		}
+		if binary.Op == token.LAND {
+			return guarded(binary.X) || guarded(binary.Y)
+		}
+		selector, ok := binary.X.(*ast.SelectorExpr)
+		if !ok || selector.Sel.Name != "Buffs" || binary.Op != token.EQL {
+			return false
+		}
+		unit, ok := selector.X.(*ast.Ident)
+		zero, isZero := binary.Y.(*ast.BasicLit)
+		return ok && unit.Name == "host" && isZero && zero.Kind == token.INT && zero.Value == "0"
+	}
+	found := 0
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Name.Name != "CheckMeteorSpell" {
+			continue
+		}
+		ast.Inspect(fn.Body, func(node ast.Node) bool {
+			call, ok := node.(*ast.CallExpr)
+			if !ok || len(call.Args) != 5 {
+				return true
+			}
+			selector, ok := call.Fun.(*ast.SelectorExpr)
+			timeout, literal := call.Args[2].(*ast.BasicLit)
+			ready, predicate := call.Args[3].(*ast.FuncLit)
+			if !ok || selector.Sel.Name != "addWhen" || !literal || timeout.Value != "1200" || !predicate {
+				return true
+			}
+			for _, stmt := range ready.Body.List {
+				result, ok := stmt.(*ast.ReturnStmt)
+				if ok && len(result.Results) == 1 && guarded(result.Results[0]) {
+					found++
+				}
+			}
+			return true
+		})
+	}
+	if found != 1 {
+		t.Fatalf("prepare readiness has %d mandatory natural-enchant guards, want one", found)
+	}
+}

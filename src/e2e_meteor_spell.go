@@ -285,7 +285,10 @@ func (sc *e2eScenario) CheckMeteorSpell(level int, mode, name string) {
 	}
 	f := &e2eMeteorFixture{level: level, mode: mode}
 	sc.addWhen(0, name+" prepare", 1200, func() bool {
-		return noxServer.Players.HostUnit() != nil && noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
+		// Arena respawn grants five seconds of invulnerability. Observe its
+		// normal expiry rather than clearing a production enchant as setup.
+		host := noxServer.Players.HostUnit()
+		return host != nil && host.Buffs == 0 && noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
 	}, f.prepare)
 	sc.Wait(12, name+" publish units")
 	sc.add(0, name+" cast", f.beginCast)

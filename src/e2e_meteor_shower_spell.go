@@ -203,10 +203,8 @@ func (f *e2eMeteorShowerFixture) observeSound(id sound.ID, kind int, owner *serv
 		f.impacts++
 		// Independent stock radial calculation with the actual live aim and
 		// ordinary map occlusion. No RNG, aim, HP or damage packet is supplied.
-		effective, inside := e2eMeteorRadialDamage(f.units.damage, pos, f.units.target.PosVec)
-		if !inside || !noxServer.MapTraceRay(pos, f.units.target.PosVec, server.MapTraceFlag1) {
-			effective = 0
-		}
+		effective := e2eMeteorShowerImpactDamage(f.units.damage, pos, f.units.target.PosVec,
+			noxServer.MapTraceRay(pos, f.units.target.PosVec, server.MapTraceFlag1))
 		if effective > 0 {
 			f.expected += effective
 			f.lastDelta = effective

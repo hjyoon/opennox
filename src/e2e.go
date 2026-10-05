@@ -2622,8 +2622,7 @@ func (sc *e2eScenario) AssertPlayerFlameDamage(name string) {
 			e2eError(fmt.Errorf("Flame fixture killed player: health=%d flags=%#x", after, uint32(player.Flags())))
 			return
 		}
-		if update.Field76 != 2 || update.Field75 != math.Float32bits(float32(object.DamageFlame)) ||
-			player.Obj130 != flame || player.Field131 != uint32(object.DamageFlame) || player.Pos132 != (types.Pointf{}) {
+		if !e2ePlayerFlameMetadata(player, flame) {
 			e2eError(fmt.Errorf("Flame metadata = marker:%#x/%#x source:%p want:%p type:%d hit-pos:%v",
 				update.Field75, update.Field76, player.Obj130, flame, player.Field131, player.Pos132))
 			return

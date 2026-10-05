@@ -63,3 +63,70 @@ func TestMeteorCastNativeServiceUsesCSharedCache52D9D0(t *testing.T) {
 		t.Fatalf("Meteor native duplicate changed state: result=%d cache=%d blob=%d", got, *cache, *retired)
 	}
 }
+
+func TestMeteorCastGoDispatchPreservesNativeArguments52D9D0(t *testing.T) {
+	second, freeSecond := alloc.New(server.Object{})
+	defer freeSecond()
+	owner, freeOwner := alloc.New(server.Object{})
+	defer freeOwner()
+	caster, freeCaster := alloc.New(server.Object{})
+	defer freeCaster()
+	arg, freeArg := alloc.New(server.SpellAcceptArg{})
+	defer freeArg()
+	*arg = server.SpellAcceptArg{Obj: second, Pos: types.Ptf(101.5, -202.25)}
+	before := *arg
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		for _, ptr := range []unsafe.Pointer{unsafe.Pointer(second), unsafe.Pointer(owner), unsafe.Pointer(caster), unsafe.Pointer(arg)} {
+			if uintptr(ptr) <= math.MaxUint32 {
+				t.Fatalf("Meteor dispatch pointer=%p, want >4 GiB", ptr)
+			}
+		}
+	}
+	previous := meteorCastCall52D9D0
+	t.Cleanup(func() { meteorCastCall52D9D0 = previous })
+	for _, level := range []int{3, 0, -3, math.MinInt32, math.MaxInt32} {
+		calls := 0
+		meteorCastCall52D9D0 = func(id spell.ID, gotSecond, gotOwner, gotCaster *server.Object, gotArg *server.SpellAcceptArg, gotLevel int) int {
+			calls++
+			if id != spell.SPELL_METEOR || gotSecond != second || gotOwner != owner || gotCaster != caster || gotArg != arg || gotLevel != level {
+				t.Fatalf("Meteor native dispatch=%s/%p/%p/%p/%p/%d", id, gotSecond, gotOwner, gotCaster, gotArg, gotLevel)
+			}
+			return -17
+		}
+		if got := Nox_xxx_castMeteor_52D9D0(spell.SPELL_METEOR, second, owner, caster, arg, level); got != -17 || calls != 1 || *arg != before {
+			t.Fatalf("Meteor dispatch result/calls/arg=%d/%d/%+v", got, calls, *arg)
+		}
+	}
+}
+
+// Exercise the public entry without replacing its dispatch hook. The reported
+// six-int C callee faults at owner+0x204 before finding this owned Meteor.
+func TestMeteorCastGoEntryWalksNativeOwnedPointers52D9D0(t *testing.T) {
+	last, freeLast := alloc.New(server.Object{})
+	defer freeLast()
+	first, freeFirst := alloc.New(server.Object{})
+	defer freeFirst()
+	owner, freeOwner := alloc.New(server.Object{})
+	defer freeOwner()
+	*last = server.Object{TypeInd: 321}
+	*first = server.Object{TypeInd: 99, Field128: last}
+	*owner = server.Object{Field129: first}
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		for _, ptr := range []unsafe.Pointer{unsafe.Pointer(first), unsafe.Pointer(last), unsafe.Pointer(owner)} {
+			if uintptr(ptr) <= math.MaxUint32 {
+				t.Fatalf("Meteor entry pointer=%p, want >4 GiB", ptr)
+			}
+		}
+	}
+	cache := Get_dword_5d4594_2487804_ptr()
+	previousCache, previousServer := *cache, GetServer
+	t.Cleanup(func() { *cache, GetServer = previousCache, previousServer })
+	*cache = 321
+	GetServer = func() Server { return &meteorCastLegacyServer52D9D0{srv: new(server.Server)} }
+	beforeOwner, beforeFirst, beforeLast := *owner, *first, *last
+	// The duplicate check precedes accesses to caster and arg in GAME.EXE.
+	if got := Nox_xxx_castMeteor_52D9D0(spell.SPELL_METEOR, nil, owner, nil, nil, 3); got != 0 ||
+		*cache != 321 || *owner != beforeOwner || *first != beforeFirst || *last != beforeLast {
+		t.Fatalf("Meteor native entry result/cache=%d/%d", got, *cache)
+	}
+}

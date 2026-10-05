@@ -533,7 +533,7 @@ func Sub_52CBD0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcc
 }
 
 func Nox_xxx_castMeteor_52D9D0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castMeteor_52D9D0, spellID, a2, a3, a4, sa, lvl)
+	return meteorCastCall52D9D0(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Nox_xxx_castMeteorShower_52D8A0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

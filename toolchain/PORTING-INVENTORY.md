@@ -1,5 +1,40 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## F1 콘솔 원본 명령어·SDL 입력 복원과 clean ARM64 검증 완료
+
+이전 FLEE·Spike 후속 작업을 마친 뒤 F1 콘솔을 원본 `GAME.EXE`의 24-byte command table과 대조했다. root `0059EC58`, set `0059E5C8`, unset `0059E550`, show `0059E808`, list `0059E9A0`, cheat `0059EAF0`, allow `0059E958`, log `0059EA90`, menu `0059EA48`, macros `0059EBC8`, telnet `0059EC10`, quality `0059E4C0` 기준 **105개 경로와 숨김 `racoiaws` 등록·dispatch·도움말 조회**를 검사했다. 기존 OpenNox 확장은 유지하고 누락된 설정/목록/매크로/로그/시삽/Telnet을 Go handler로 복원했다. 기존 production 함수 본체는 커밋마다 하나씩 변경하고 검증 후 즉시 `origin/port/go1.26-multiarch`에 push했다.
+
+다음은 원본 명령어 경로 목록이며, 상위 명령 뒤에 해당 항목을 붙인다. `help`, `help set`, `help cheat`로 실제 콘솔 도움말을 볼 수 있다. 권한·server/client·전용 서버·치트 gate와 숨김/NoHelp 조건은 유지되므로 목록의 모든 명령을 일반 클라이언트에서 무조건 실행할 수 있다는 의미는 아니다.
+
+| 상위 경로 | 원본 항목 |
+| --- | --- |
+| root | `allow audtest ban bind broadcast cheat clear exec execrul exit gamma help image kick list lock load log macros menu mute quit say set show sysop telnet unset unmute unbind unlock watch window startSoloQuest ques` |
+| `set` | `armor cycle frameratelimiter god lessons monsters name netdebug ob players quality sage savedebugcmd spell spellpoints staff staffs sysop time weapon weapons team mode` |
+| `unset` | `god frameratelimiter netdebug sage` |
+| `show` | `bindings game motd rank perfmon extents gui ai info mem netstat mmx seq` |
+| `list` | `armor maps spells staffs weapons users` |
+| `cheat` | `ability goto health mana level spells gold re-enter` |
+| `allow` | `user IP` |
+| `log` | `console file stop` |
+| `menu` | `vidopt options` |
+| `macros` | `on off` |
+| `telnet` | `on off` |
+| `set quality` | `modem isdn cable T1 LAN` |
+
+명령/알려진 switch·ID만 대소문자를 정규화하고 이름·채팅·비밀번호·따옴표·파일 경로 payload는 보존한다. `frameratelimiter`와 `savedebugcmd`는 원본의 정확한 토큰이다. console packet은 원본 255 UTF-16 units(NUL 포함) 한계를 지키며 surrogate pair 중간을 자르지 않는다. native map 목록과 실제 spell registry ID, 서버명 15-byte UTF-8 제한, mute/bind 상태를 사용한다. `log file` 교체/`log stop`은 기존 buffer를 flush한 뒤 닫고, `log console` flag는 실제 widget 출력에도 반영된다. `set sysop`은 원본 20-byte buffer의 9 UTF-16 units+NUL 한계를 검사해 인접 game password를 덮지 않으며 출력에 비밀번호를 남기지 않는다. `show mmx`는 native flag를 조회하고 ARM64에서 존재하지 않는 MMX ISA를 구현했다고 주장하지 않는다.
+
+`b52247cfe`는 SDL text input 뒤 native entry의 `Field_1044` latch가 남아 Return이 명령을 실행하지 않는 원인을 수정했다. 원래 `EntryFieldOnChar('\r')` 경로를 거친 다음 기존 native Enter handler를 호출하며 keypad Enter도 처리한다. `618c2ff0d`는 active IME composition에서 발생한 Return을 이벤트 enqueue 시점에 구분해, 같은 tick의 TextInput이 IME buffer를 비운 뒤 조합 확정 Return이 명령까지 실행하는 문제를 막았다. key release·다음 Return·Alt+Enter는 보존한다. native entry와 실제 input event 순서의 회귀 시험은 통과했지만 물리 키보드/운영체제 IME 전체를 GUI 검증했다고 확대하지 않는다.
+
+Telnet은 실제 TCP parser·인증·native game-loop queue·종료 정리를 복원했다. 비암호화 프로토콜이므로 **`127.0.0.1`에만 listen**하고 nonempty sysop password, 4-client 제한, bounded UTF-16/UTF-8 command, CRLF/CRNUL/backspace/IAC 처리와 취소/timeout을 검사한다. socket goroutine이 game state를 직접 변경하지 않고 인증 후에도 기존 권한 gate를 우회하지 않는다. 외부 인터페이스 공개는 활성화하지 않았다. 원본부터 미구현/무동작인 `audtest`, `allow user`, `allow IP`, `set spellpoints`, `set sage`, `unset sage`는 원래 안내/동작을 보존했다. 기존 `cheat sage` 확장과 혼동하지 않는다. 콘솔 밖 config/UI의 기존 비밀번호 setter까지 이번 buffer 수정 범위에 포함하지 않는다.
+
+source/origin이 일치하는 clean 코드 revision `b35b8333e7a748fa4a82c2ce1519f0927bb68c3b`에서 일반·실제 `highres`·전용 server 3제품을 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help/product verifier를 통과했다. 새 `host-game-console.yaml`은 F1 → 실제 text/key input → native entry/scroll widget·game state 관찰만 사용한다. 일반과 HD에서 각각 **44개의 콘솔 assertion**, 별도 private `log file` flush 검증과 실제 F2 매크로 실행을 통과하고 frame 924에 새 PNG를 저장했다. `RACOIAWS`, 한국어 도움말, 따옴표 포함 한글 이름, 설정 on/off, 실제 목록, 치트 HP/mana/gold, spell switch, 매크로, 로그, MMX가 확인됐다. 두 PNG `/private/tmp/opennox-e2e-magic-frame-3504915175.png`와 `/private/tmp/opennox-e2e-magic-frame-987538829.png`를 직접 확인했다. 44 assertion에는 반복 `clear`가 포함되며, 105개 경로 전부의 gameplay 효과를 GUI 실행했다는 주장은 아니다.
+
+`SET/UNSET FRAMERATELIMITER`는 둘 다 실제 F1 입력으로 native state 변화를 검증한다. 테스트 종료 시 기존 E2E가 사용하는 limiter-disabled 상태로 되돌리도록 중복 마지막 SET만 제거했다. synthetic clock에서 마지막 SET 뒤 잔여 GUI tick이 과도하게 지연된 초기 실행은 중단 로그로 보존했으며, production clock·게임 동작·E2E override로 통과를 만들지 않았다. 한국어 HELP 출력에 영어 문자열을 기대했던 초기 실패 역시 별도 보존하고 native localized help 조회로 검증을 교정했다.
+
+최종 focused root/legacy/input 콘솔 검사는 일반·race·강제 `checkptr=2`·highres·실제 `cgocheck2` 각각 `-count=3`으로 통과했으며 실패/skip은 0이다. 실제 strict는 `scripts/test-cgocheck2.sh`의 `GOEXPERIMENT=cgocheck2 CGO_ENABLED=1` header를 확인했다. 전용 server-tag 콘솔도 3회 통과했다. 전체 root/server/legacy/input의 일반과 실제 strict 회귀는 각각 exit 0이며, opt-in native audio/stock asset 검사와 subprocess-only child 등 기존 12개 skip은 통과 수에 포함하지 않는다. clean build/headless/oracle 증거는 `/private/tmp/opennox-console-restore.b5QNFU/clean-evidence-restored-clock`, 최종 matrix는 같은 private directory의 `final-tests-matrix`에 보존했다. 앞선 실패/중단 실행은 성공 증거와 합산하지 않았다.
+
+headless/mock 실행은 private Save/config/maps와 새 YAML의 byte-identical private copy를 사용했고 `NOX_E2E_OVERRIDE`는 unset이다. 직접 handler 실행·출력 주입·게임 결과 교체 없이 검증했다. 실행 전후 oracle 검증이 통과했고 stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 기존 YAML/PNG/golden·개인 자산은 그대로다. 이 F1 복원 범위는 완료했지만 모든 command의 원격/Windows/campaign runtime 동등성과 무제한 ARM64 포팅 목표 전체의 완료를 의미하지 않는다.
+
 ## FLEE caster의 주문 선택·이동 연결과 clean ARM64 회귀 완료
 
 Spike 검증 뒤 남았던 FLEE caster branch를 복원했다. `f6cff9a04`는 기존 `monsterActionFlee544760` 본체 하나만, `890c49839134540c16c6275bf9cf119d0207f263`은 기존 `(*Server).MonsterActionFlee544760` binding 본체 하나만 변경하고 각각 즉시 origin에 push했다. 원본 `00544760`의 NaN/speed·binary64 거리 비교·XY-only head 갱신·cached update/path와 live eligibility 조회를 보존한다. 주문 성공 뒤에도 이동을 계속하며 failed spell 뒤 enemy를 재조회한다. whole-stack action 6에 따른 `00541050` selector와 self buff selector를 연결했고, unsigned cooldown·1..136 registry/mask·active enchant 거부·RNG/후속 frame·DWORD wrap·full stack의 원래 성공 의미를 유지했다.

@@ -151,7 +151,7 @@ func (f *e2eAIRetreatFoodFixture) tick() {
 	update := f.unit.UpdateDataMonster()
 	if update.CurrentEnemy != nil || update.PreferredEnemy != nil || f.unit.Buffs != 0 ||
 		update.Aggression >= 0.08 || f.host.HealthData.Cur != f.hostHP || f.host.HealthData.Max != f.hostMax {
-		e2eError(fmt.Errorf("RETREAT food received unrelated combat/effect: %s", f.mode))
+		e2eError(fmt.Errorf("RETREAT food received unrelated combat/effect: %s current=%p preferred=%p host=%p buffs=%x aggression=%g host-HP=%d/%d expected=%d/%d stack=%v", f.mode, update.CurrentEnemy, update.PreferredEnemy, f.host, f.unit.Buffs, update.Aggression, f.host.HealthData.Cur, f.host.HealthData.Max, f.hostHP, f.hostMax, update.GetAIStack()))
 		return
 	}
 	dx, dy := float64(f.unit.PosVec.X)-float64(f.origin.X), float64(f.unit.PosVec.Y)-float64(f.origin.Y)

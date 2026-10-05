@@ -235,6 +235,12 @@ func EntryFieldProc(win *Window, ev WindowEvent) WindowEventResp {
 			}
 			return RawEventResp(1)
 		}
+		// Korean and Chinese fields receive committed characters through
+		// EntryFieldOnChar. SDL also sends the underlying key event, so that
+		// event must not append a second character or leak an IME scan code.
+		if lang := win.GUI().inp.Language(); lang == 6 || lang == 8 {
+			return RawEventResp(1)
+		}
 		entryFieldAppend(d, ch)
 		return RawEventResp(1)
 	}

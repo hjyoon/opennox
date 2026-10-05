@@ -138,19 +138,19 @@ func monsterActionRetreat545440(unit *Object, hooks monsterActionRetreatHooks545
 	}
 }
 
-// MonsterActionRetreat545440 binds the native-width retreat action to the
-// live server. The self-buff branch of 00541050 is conservatively treated as
-// unavailable here; non-casters (including the War01A retreating creatures)
-// therefore match the original path exactly.
+// MonsterActionRetreat545440 binds the native-width retreat action and the
+// original 00541050 related-spell selector to the live server.
 func (s *Server) MonsterActionRetreat545440(unit *Object) {
 	monsterActionRetreat545440(unit, monsterActionRetreatHooks545440{
-		frame:       s.Frame,
-		tickRate:    s.TickRate,
-		random:      s.Rand.Logic.IntClamp,
-		castRelated: func(*Object) bool { return false },
-		searchFood:  s.MonsterSearchEdible544A00,
-		quest:       noxflags.HasGame(noxflags.GameModeQuest),
-		push:        unit.MonsterPushAction,
-		pop:         unit.MonsterPopAction,
+		frame:    s.Frame,
+		tickRate: s.TickRate,
+		random:   s.Rand.Logic.IntClamp,
+		castRelated: func(unit *Object) bool {
+			return monsterFleeCastRelated541050(unit, s.monsterFightSpellHooks540B90(nil))
+		},
+		searchFood: s.MonsterSearchEdible544A00,
+		quest:      noxflags.HasGame(noxflags.GameModeQuest),
+		push:       unit.MonsterPushAction,
+		pop:        unit.MonsterPopAction,
 	})
 }

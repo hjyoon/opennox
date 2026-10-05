@@ -225,7 +225,7 @@ func (f *e2eAIRetreatFixture) observe() bool {
 	}
 	dr := noxClient.Objs.ByNetCode(uint16(noxServer.GetUnitNetCode(f.combat.enemy)))
 	if !f.injured || !f.queued || !f.cast || !f.applied || f.castSounds == 0 || dr == nil ||
-		dr.Buffs&(uint32(1)<<uint(server.ENCHANT_HASTED)) == 0 {
+		dr.Buffs&(uint32(1)<<uint(e2eAIRetreatEnchant)) == 0 {
 		return false
 	}
 	if f.update.Field371 != f.queuedFrame+300 || f.castFrame < f.queuedFrame {
@@ -238,7 +238,7 @@ func (f *e2eAIRetreatFixture) observe() bool {
 		return true
 	}
 	f.completed, f.active = true, false
-	e2eLog.Printf("AI RETREAT PASS: mode=%s first-attack=natural incoming=player-projectile HP=%d->%d queued=%d cast=%d deadline=%d self-target=native buff=server/client power=%d duration=%d/%d sound=%d path=%s", f.mode, f.combat.enemyHP, f.combat.enemy.HealthData.Cur, f.queuedFrame, f.castFrame, f.update.Field371, f.combat.enemy.EnchantPower(server.ENCHANT_HASTED), f.combat.enemy.EnchantDur(server.ENCHANT_HASTED), f.duration, f.castSounds, path)
+	e2eLog.Printf("AI RETREAT PASS: mode=%s first-attack=natural incoming=player-projectile HP=%d->%d queued=%d cast=%d deadline=%d self-target=native buff=server/client power=%d duration=%d/%d sound=%d path=%s", f.mode, f.combat.enemyHP, f.combat.enemy.HealthData.Cur, f.queuedFrame, f.castFrame, f.update.Field371, f.combat.enemy.EnchantPower(e2eAIRetreatEnchant), f.combat.enemy.EnchantDur(e2eAIRetreatEnchant), f.duration, f.castSounds, path)
 	return true
 }
 

@@ -36,11 +36,11 @@ type monsterActionFleeHooks544760 struct {
 	actuallyMove func(*Object) bool
 	moveAudio    func(*Object)
 	pop          func() int
+	trySpell     func(*Object, *MonsterUpdateData)
 }
 
-// monsterActionFlee544760 restores the native-width movement portion of
-// GAME.EXE 00544760. The spell side branch is inactive for aggression below
-// 0.08, which is the War01A retreat path that first reaches this routine.
+// monsterActionFlee544760 preserves GAME.EXE 00544760, including movement
+// after spell selection. The entry update and action stay cached across calls.
 func monsterActionFlee544760(unit *Object, hooks monsterActionFleeHooks544760) {
 	if unit == nil || unit.UpdateData == nil || hooks.pop == nil {
 		return
@@ -50,16 +50,21 @@ func monsterActionFlee544760(unit *Object, hooks monsterActionFleeHooks544760) {
 	if head == nil || head.Type() != ai.ACTION_FLEE {
 		return
 	}
-	if unit.SpeedBase < 0.0099999998 {
+	if !(unit.SpeedBase >= 0.0099999998) {
 		hooks.pop()
 		return
 	}
 	if enemy := update.CurrentEnemy; enemy != nil {
-		head.SetArgs(enemy.PosVec, uint32(0))
-		delta := enemy.PosVec.Sub(unit.PosVec)
-		if update.FleeRange*update.FleeRange > delta.X*delta.X+delta.Y*delta.Y &&
+		head.SetArgs(enemy.PosVec)
+		dx := float64(enemy.PosVec.X) - float64(unit.PosVec.X)
+		dy := float64(enemy.PosVec.Y) - float64(unit.PosVec.Y)
+		radius := float64(update.FleeRange)
+		if radius*radius > dx*dx+dy*dy &&
 			hooks.frame()-update.Field70 > hooks.tickRate()/2 {
 			update.Field2 = 0
+		}
+		if hooks.trySpell != nil {
+			hooks.trySpell(unit, update)
 		}
 	}
 	frame := hooks.frame()
@@ -69,13 +74,15 @@ func monsterActionFlee544760(unit *Object, hooks monsterActionFleeHooks544760) {
 	}
 	move := update.Field2 != 0 || frame-update.Field70 <= 10
 	if !move && hooks.generatePath != nil {
-		count := hooks.generatePath(update.Path[:], unit, &types.Pointf{X: head.ArgPos(0).X, Y: head.ArgPos(0).Y})
+		target := head.ArgPos(0)
+		count := hooks.generatePath(update.Path[:], unit, &target)
+		head.SetArgs(target)
 		update.Field2 = uint32(count)
 		update.Field70 = hooks.frame()
 		update.Field67 = 0
 		move = count > 1
 		if !move {
-			head.SetArgs(unit.PosVec, uint32(0))
+			head.SetArgs(unit.PosVec)
 		}
 	}
 	if move {

@@ -1,6 +1,8 @@
 package server
 
 import (
+	"math"
+
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
@@ -103,15 +105,32 @@ func monsterRetreatCheckEdibles5455E0(unit *Object, hooks monsterActionRetreatHo
 	if food != nil {
 		hooks.push(ai.DEPENDENCY_NOT_HEALTHY)
 		hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
-		hooks.push(ai.DEPENDENCY_OBJECT_AT_VISIBLE_LOCATION, food.PosVec, food)
-		hooks.push(ai.ACTION_PICKUP_OBJECT, food)
-		hooks.push(ai.ACTION_MOVE_TO, food.PosVec, food)
+		if visible := hooks.push(ai.DEPENDENCY_OBJECT_AT_VISIBLE_LOCATION); visible != nil {
+			// Push may invoke Cancel. Read each live coordinate only after
+			// acceptance, then store the cached native food identity.
+			visible.Args[0] = uintptr(math.Float32bits(food.PosVec.X))
+			visible.Args[1] = uintptr(math.Float32bits(food.PosVec.Y))
+			visible.Args[2] = uintptr(food.CObj())
+		}
+		if pickup := hooks.push(ai.ACTION_PICKUP_OBJECT); pickup != nil {
+			pickup.Args[0] = uintptr(food.CObj())
+		}
+		if move := hooks.push(ai.ACTION_MOVE_TO); move != nil {
+			move.Args[0] = uintptr(math.Float32bits(food.PosVec.X))
+			y := uintptr(math.Float32bits(food.PosVec.Y))
+			move.Args[2] = uintptr(food.CObj())
+			move.Args[1] = y // 0054566A stores the pointer before the saved Y.
+		}
 		return
 	}
 	hooks.push(ai.DEPENDENCY_NOT_HEALTHY)
 	hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
 	hooks.push(ai.DEPENDENCY_NO_VISIBLE_FOOD)
-	hooks.push(ai.ACTION_ROAM, uint32(0), uint32(0), int32(-128))
+	if roam := hooks.push(ai.ACTION_ROAM); roam != nil {
+		roam.Args[0] = 0
+		// 0054569E writes a BYTE, not a sign-extended direction DWORD.
+		roam.Args[2] = roam.Args[2]&^uintptr(0xff) | 0x80
+	}
 }
 
 // monsterActionRetreat545440 restores GAME.EXE 00545440 through 005455E0.

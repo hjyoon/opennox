@@ -150,7 +150,8 @@ func TestMonsterActionRetreat545440RoamStack(t *testing.T) {
 			t.Fatalf("events = %v, want %v", events, want)
 		}
 	}
-	if roam == nil || roam.ArgU32(0) != 0 || roam.ArgU32(1) != 0 || roam.ArgU32(2) != uint32(0xffffff80) {
+	// GAME.EXE 0054569E stores only a BYTE in a freshly zeroed stack slot.
+	if roam == nil || roam.ArgU32(0) != 0 || roam.ArgU32(1) != 0 || roam.ArgU32(2) != 0x80 {
 		t.Fatalf("roam args = %#v", roam)
 	}
 }

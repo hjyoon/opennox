@@ -7,6 +7,7 @@ import (
 
 	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/libs/console"
+	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/strman"
 )
 
@@ -105,15 +106,32 @@ func consoleInputArgument(c *console.Console, path string, index int, token stri
 		if index == 0 {
 			return consoleInputKeyword(c, token, "all")
 		}
-	case "cheat god", "cheat equip.all", "cheat charm.all", "cheat summon.nolimit", "cheat spells", "cheat scrolls", "set maps allow.all":
+	case "cheat spells":
 		if index == 0 {
-			switch consoleInputKeyword(c, token, "on", "off") {
-			case "on":
-				return "true"
-			case "off":
-				return "false"
+			if consoleInputKeyword(c, token, "all") == "all" {
+				return "all"
+			}
+			upper := strings.ToUpper(token)
+			if spell.ParseID(upper) != spell.SPELL_INVALID || spell.ParseID("SPELL_"+upper) != spell.SPELL_INVALID {
+				return upper
 			}
 		}
+		// A spell ID/all and optional level precede the boolean switch.
+		return consoleInputBool(c, token)
+	case "cheat god", "cheat sage", "cheat equip.all", "cheat charm.all", "cheat summon.nolimit", "cheat scrolls", "set maps allow.all":
+		if index == 0 {
+			return consoleInputBool(c, token)
+		}
+	}
+	return token
+}
+
+func consoleInputBool(c *console.Console, token string) string {
+	switch consoleInputKeyword(c, token, "on", "off", "true", "false") {
+	case "on", "true":
+		return "true"
+	case "off", "false":
+		return "false"
 	}
 	return token
 }

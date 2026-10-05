@@ -20,6 +20,11 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+const (
+	e2eAIRetreatSpell   = spell.SPELL_PROTECTION_FROM_FIRE
+	e2eAIRetreatEnchant = server.ENCHANT_PROTECT_FROM_FIRE
+)
+
 func e2eAIRetreatMode(mode string) (kind string, descending, ok bool) {
 	kind, slope, found := strings.Cut(mode, "/")
 	if !found || (kind != "Troll" && kind != "NPC") {
@@ -42,7 +47,7 @@ func e2eAIRetreatSelfCast(update *server.MonsterUpdateData, unit *server.Object)
 	}
 	head := update.AIStackHead()
 	return head != nil && head.Type() == ai.ACTION_CAST_SPELL_ON_OBJECT &&
-		head.ArgU32(0) == uint32(spell.SPELL_HASTE) && head.ArgObj(2) == unit
+		head.ArgU32(0) == uint32(e2eAIRetreatSpell) && head.ArgObj(2) == unit
 }
 
 type e2eAIRetreatFixture struct {

@@ -62,7 +62,7 @@ func TestE2EAIRetreatSelfCastIdentity(t *testing.T) {
 			update.AIStack[0].Action = uint32(ai.ACTION_RETREAT)
 			update.AIStack[1].Action = uint32(ai.DEPENDENCY_UNINTERRUPTABLE)
 			update.AIStack[2].Action = uint32(ai.ACTION_CAST_SPELL_ON_OBJECT)
-			update.AIStack[2].SetArgs(uint32(spell.SPELL_HASTE), uint32(0), unit)
+			update.AIStack[2].SetArgs(uint32(e2eAIRetreatSpell), uint32(0), unit)
 			switch mode {
 			case "nil-update":
 				update = nil
@@ -75,11 +75,11 @@ func TestE2EAIRetreatSelfCastIdentity(t *testing.T) {
 			case "other-action":
 				update.AIStack[2].Action = uint32(ai.ACTION_CAST_SPELL_ON_LOCATION)
 			case "other-spell":
-				update.AIStack[2].SetArgs(uint32(spell.SPELL_INVERSION))
+				update.AIStack[2].SetArgs(uint32(spell.SPELL_HASTE))
 			case "other-target":
-				update.AIStack[2].SetArgs(uint32(spell.SPELL_HASTE), uint32(0), other)
+				update.AIStack[2].SetArgs(uint32(e2eAIRetreatSpell), uint32(0), other)
 			case "nil-target":
-				update.AIStack[2].SetArgs(uint32(spell.SPELL_HASTE), uint32(0), (*server.Object)(nil))
+				update.AIStack[2].SetArgs(uint32(e2eAIRetreatSpell), uint32(0), (*server.Object)(nil))
 			}
 			var before server.MonsterUpdateData
 			if update != nil {

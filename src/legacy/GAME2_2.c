@@ -1376,6 +1376,7 @@ int sub_4799A0() {
 }
 
 //----- (00479B00) --------------------------------------------------------
+#if 0 // Native Go entry in npc_dialog_479b00.go; retain the PE32 body for provenance.
 int nox_xxx_guiDialog_479B00(int a1, int a2, int* a3, int a4) {
 	int v3;     // esi
 	int result; // eax
@@ -1415,6 +1416,7 @@ int nox_xxx_guiDialog_479B00(int a1, int a2, int* a3, int a4) {
 	}
 	return result;
 }
+#endif
 // 479B4D: variable 'v4' is possibly undefined
 
 //----- (00479BE0) --------------------------------------------------------

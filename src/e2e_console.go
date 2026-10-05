@@ -154,7 +154,8 @@ func (sc *e2eScenario) CheckConsoleCommands(name string) {
 	sc.consoleCommand("SET QUALITY lan", "", func() bool { return legacy.Get_nox_server_connectionType_3596() == 1 })
 	sc.consoleCommand("SET FRAMERATELIMITER", "", func() bool { return useFrameLimit })
 	sc.consoleCommand("UNSET FRAMERATELIMITER", "", func() bool { return !useFrameLimit })
-	sc.consoleCommand("SET FRAMERATELIMITER", "", func() bool { return useFrameLimit })
+	// E2E starts with the limiter disabled for its deterministic clock. Both
+	// real commands above are verified; leave it restored for the next inputs.
 	sc.consoleCommand("SHOW MMX", "", func() bool { return strings.Contains(e2eConsoleLines(), "MMX") })
 	sc.consoleCommand("CLEAR", "", func() bool { return e2eConsoleLines() == "" })
 	sc.consoleCommand("LIST MAPS", "", e2eConsoleListsMaps)

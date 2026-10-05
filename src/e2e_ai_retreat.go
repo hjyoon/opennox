@@ -203,11 +203,11 @@ func (f *e2eAIRetreatFixture) tick() {
 	f.observeMissiles()
 	f.observeDamage()
 	f.observeQueue()
-	if target.HasEnchant(server.ENCHANT_HASTED) {
-		if !f.queued || target.EnchantDur(server.ENCHANT_HASTED) <= 0 ||
-			target.EnchantDur(server.ENCHANT_HASTED) > f.duration ||
-			target.EnchantPower(server.ENCHANT_HASTED) != int(f.power) {
-			e2eError(fmt.Errorf("RETREAT Haste has wrong natural source/duration/power: %s", f.mode))
+	if target.HasEnchant(e2eAIRetreatEnchant) {
+		if !f.queued || target.EnchantDur(e2eAIRetreatEnchant) <= 0 ||
+			target.EnchantDur(e2eAIRetreatEnchant) > f.duration ||
+			target.EnchantPower(e2eAIRetreatEnchant) != int(f.power) {
+			e2eError(fmt.Errorf("RETREAT Fire Protection has wrong natural source/duration/power: %s", f.mode))
 			return
 		}
 		f.applied = true

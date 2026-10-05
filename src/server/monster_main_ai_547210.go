@@ -35,6 +35,7 @@ type MonsterMainRuntime547210 struct {
 	TraceObstacles     func(unit *Object, from, to types.Pointf) bool
 	TileAt             func(pos types.Pointf) int
 	SearchEdible       func(unit *Object, radius float32) *Object
+	SearchWeapon       func(unit *Object, radius float32) *Object
 	PlaceInventory     func(owner, item *Object, arg3, arg4 int) bool
 	UseByNetCode       func(owner, item *Object) int32
 	Distance           func(unit, target *Object) float64

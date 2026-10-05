@@ -89,7 +89,10 @@ func (f *e2eMeteorFixture) prepare() {
 			e2eError(fmt.Errorf("Meteor requires the stock NPC caster"))
 			return
 		}
-		noxServer.CreateObjectAt(f.caster, nil, origin)
+		// A neutral NPC and Troll are allies under the original owner gate.
+		// Use ordinary host ownership for this allied NPC casting fixture;
+		// never bypass IsEnemy or supply an expected HP result.
+		noxServer.CreateObjectAt(f.caster, f.host, origin)
 		asObjectS(f.host).SetPos(origin.Sub(direction.Mul(80)))
 	} else {
 		asObjectS(f.host).SetPos(origin)
@@ -97,6 +100,10 @@ func (f *e2eMeteorFixture) prepare() {
 	f.host.VelVec, f.host.ForceVec, f.host.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
 	noxServer.CreateObjectAt(f.target, nil, origin.Add(direction.Mul(112)))
 	noxServer.ObjectsAddPending()
+	if !noxServer.S().IsEnemyTo(f.target, f.caster.FindOwnerChainPlayer()) {
+		e2eError(fmt.Errorf("Meteor fixture does not have an enemy damage target"))
+		return
+	}
 	// Placement, durable target health and ordinary WAIT are fixture setup.
 	// Cast power, aim RNG, animation frame, Meteor state and HP results are stock.
 	asObjectS(f.target).SetMaxHealth(2000)

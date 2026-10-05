@@ -153,6 +153,52 @@ func TestE2EMeteorObserverDoesNotSupplyResults(t *testing.T) {
 	}
 }
 
+func TestE2EMeteorNPCFixtureUsesOrdinaryOwnerAndEnemyCheck(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_meteor_spell.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	field := func(expr ast.Expr, name string) bool {
+		sel, ok := expr.(*ast.SelectorExpr)
+		if !ok || sel.Sel.Name != name {
+			return false
+		}
+		base, ok := sel.X.(*ast.Ident)
+		return ok && base.Name == "f"
+	}
+	owned, enemy := false, false
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Name.Name != "prepare" {
+			continue
+		}
+		ast.Inspect(fn.Body, func(n ast.Node) bool {
+			call, ok := n.(*ast.CallExpr)
+			if !ok {
+				return true
+			}
+			sel, ok := call.Fun.(*ast.SelectorExpr)
+			if !ok {
+				return true
+			}
+			if sel.Sel.Name == "CreateObjectAt" && len(call.Args) == 3 && field(call.Args[0], "caster") {
+				owned = field(call.Args[1], "host")
+			}
+			if sel.Sel.Name == "IsEnemyTo" && len(call.Args) == 2 && field(call.Args[0], "target") {
+				chain, ok := call.Args[1].(*ast.CallExpr)
+				if ok && len(chain.Args) == 0 {
+					get, ok := chain.Fun.(*ast.SelectorExpr)
+					enemy = ok && get.Sel.Name == "FindOwnerChainPlayer" && field(get.X, "caster")
+				}
+			}
+			return true
+		})
+	}
+	if !owned || !enemy {
+		t.Fatalf("NPC fixture host-owned=%t independent enemy check=%t", owned, enemy)
+	}
+}
+
 func TestE2EMeteorPrepareWaitsForNaturalSpawnProtection(t *testing.T) {
 	file, err := parser.ParseFile(token.NewFileSet(), "e2e_meteor_spell.go", nil, 0)
 	if err != nil {

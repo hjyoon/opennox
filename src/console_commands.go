@@ -40,7 +40,7 @@ func consoleCommandAt(c *console.Console, path string) *console.Command {
 // flags remain on the registered command objects.
 func restoreConsoleCommands(c *console.Console) {
 	for path, fn := range map[string]console.CommandFunc{
-		"set name": consoleSetName, "set monsters": consoleSetMonsters,
+		"set name": consoleSetName, "set monsters": consoleSetMonsters, "set sysop": consoleSetSysop,
 		"set spell": consoleSetSpell, "set mode": consoleDedicatedOnly(consoleSetMode),
 		"mute": consoleMute, "unmute": consoleUnmute,
 		"list users": consoleListUsers, "list maps": consoleListMaps,

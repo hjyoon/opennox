@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## FLEE caster의 주문 선택·이동 연결과 clean ARM64 회귀 완료
+
+Spike 검증 뒤 남았던 FLEE caster branch를 복원했다. `f6cff9a04`는 기존 `monsterActionFlee544760` 본체 하나만, `890c49839134540c16c6275bf9cf119d0207f263`은 기존 `(*Server).MonsterActionFlee544760` binding 본체 하나만 변경하고 각각 즉시 origin에 push했다. 원본 `00544760`의 NaN/speed·binary64 거리 비교·XY-only head 갱신·cached update/path와 live eligibility 조회를 보존한다. 주문 성공 뒤에도 이동을 계속하며 failed spell 뒤 enemy를 재조회한다. whole-stack action 6에 따른 `00541050` selector와 self buff selector를 연결했고, unsigned cooldown·1..136 registry/mask·active enchant 거부·RNG/후속 frame·DWORD wrap·full stack의 원래 성공 의미를 유지했다.
+
+새 서버 binding 시험은 실제 native MonsterCast와 action stack을 사용해 related/self × instant/duration 4조합의 4 GiB 위 self target·cast action 40/42·dependency/time·FLEE 좌표/Arg2·cooldown·path 결과를 검사했다. HP/시전 성공을 대체하지 않았다. focused 일반·실제 cgocheck2·race·강제 checkptr·highres 각 3회와 전체 일반 및 실제 strict root/server/legacy, 관련 server-tag 검사가 통과했다. `scripts/go.sh`가 GOEXPERIMENT를 비운 초기 실행은 strict 증거에서 제외하고 `scripts/test-cgocheck2.sh`로 재검증했다. 전체 server-tag 확장의 noxmovie setup 및 legacy/dialog 오디오 상태 실패, 디스크 부족 실행은 진단 로그에 남기고 통과 수에 합치지 않았다.
+
+source/origin이 일치하는 clean `890c49839134540c16c6275bf9cf119d0207f263`에서 일반·실제 highres·전용 server 3제품을 새로 빌드했다. 세 제품 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help와 product verifier를 통과했다. 일반/HD의 기존 stock 무자극 선제공격 각 16조합, 합계 32조합은 실제 HP 감소·client 음수 delta와 함께 exit 0이다. 새 private PNG 32개를 보존하고 일반 Troll -31·HD NPC -7 프레임을 직접 확인했다. 이 GUI 회귀를 FLEE caster 전용 자연 시전 GUI 증명으로 확대하지 않는다.
+
+headless/mock 실행은 private Save/config/maps·byte-identical private YAML·override 없음으로 격리했다. 실행 전후 불변 oracle 검증이 통과했고 stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`와 기존 public YAML/PNG/golden·개인 파일은 그대로다. 이번 후속 검증 중 종료된 작업의 오래된 전용 재생성 Go cache 아카이브 88개만 정리했고 소스·로그/PNG·자산을 보존했다. 위 FLEE branch는 완료했으며 이제 사용자 요청의 F1 콘솔 복원을 진행한다. 모든 MainAI/campaign/원격/Windows runtime 동등성과 무제한 ARM64 포팅 목표 전체는 미완료다.
+
 ## Stock Spike·SpikeBlock의 Player IMPALE 피해·정상 충돌·일반/HD 검증 완료
 
 앞선 Pixie 피해 검증을 마무리한 뒤, stock `Spike`/`PeriodicSpike`/`SpikeBlock`/`SpikeBlockImmobile`/`RotatingSpikes`/`RotatingSpikesImmobile`의 Player world IMPALE(type 3) 누락을 복원했다. 수정 전 실제 C-owned Default 3조합과 등록된 DamageCollide의 6종×self/Player/NPC owner 18조합 모두 HP 60이 변하지 않았다. `1296b531a`에서 기존 production 본체 `DefaultDamageWorld4E0B30` 하나, `1f8d437b0`에서 `PlayerDamageNative4E17B0` 하나만 새 경로에 연결하고 각각 즉시 origin에 push했다. AST 대조로 각 단일 기존 본체 변경을 확인했다. admission은 Dangerous·non-unit IMPALE와 source/weapon identity·live unit owner 형태에 한정하며 type ID나 SIMPLE 필수 조건, positive-only gate를 추가하지 않는다. stock DamageCollide의 8-byte record·byte 2/3/8의 우측 shift·frame parity·owner query·정상 Damage 호출은 불변이다. 기존 native Switch/Loop dispatch와 활성/NoCollide 제어도 유지한다.

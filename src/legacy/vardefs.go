@@ -1466,6 +1466,12 @@ func Get_dword_5d4594_2488620() uint32 {
 func Get_dword_5d4594_2487712_ptr() *uint32 {
 	return (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487712))
 }
+
+// Meteor casts share this original C-owned DWORD, not its retired blob slot.
+func Get_dword_5d4594_2487804_ptr() *uint32 {
+	return (*uint32)(unsafe.Pointer(&C.dword_5d4594_2487804))
+}
+
 func Set_dword_5d4594_2488620(v uint32) {
 	C.dword_5d4594_2488620 = C.uint32_t(v)
 }

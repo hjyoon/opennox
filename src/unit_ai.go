@@ -66,9 +66,12 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 			ok = st.ArgU32(0) > a.s.Frame()
 		case ai.DEPENDENCY_ALIVE:
 			obj := st.ArgObj(0)
-			h := obj.HealthData
-			if obj == nil || !obj.Class().HasAny(object.MaskUnits) || (h.Cur == 0) && h.Max != 0 {
-				ok = false
+			ok = obj != nil && obj.Class().HasAny(object.MaskUnits)
+			if ok {
+				h := obj.HealthData
+				ok = h.Cur != 0 || h.Max == 0
+			}
+			if !ok {
 				ud.Field97 = 0
 				ud.Field101 = a.s.Frame() + a.s.SecToFrames(1)
 			}

@@ -4,6 +4,7 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"math"
 	"os"
 	"runtime"
 	"strings"
@@ -223,5 +224,48 @@ func TestE2EAIRetreatFoodPreparesOrdinaryOwnership(t *testing.T) {
 	}
 	if ownedCreates != 1 {
 		t.Fatalf("ordinary owned unit creations=%d want=1", ownedCreates)
+	}
+}
+
+func TestE2EAIRetreatFoodIndependentRegeneration(t *testing.T) {
+	for _, tc := range []struct {
+		name                      string
+		start, frame, injury, fps uint32
+		maximum, initial, want    uint16
+		valid                     bool
+	}{
+		{"no-tick", 580, 580, 0, 30, 80, 75, 75, true},
+		{"troll-before-gate", 580, 602, 0, 30, 80, 75, 75, true},
+		{"troll-first-gate", 580, 603, 0, 30, 80, 75, 76, true},
+		{"troll-between-gates", 580, 669, 0, 30, 80, 75, 76, true},
+		{"troll-second-gate", 580, 670, 0, 30, 80, 75, 77, true},
+		{"troll-clamp", 580, 980, 0, 30, 80, 75, 80, true},
+		{"npc-before-gate", 580, 611, 0, 30, 150, 145, 145, true},
+		{"npc-first-gate", 580, 612, 0, 30, 150, 145, 146, true},
+		{"npc-second-gate", 580, 648, 0, 30, 150, 145, 147, true},
+		{"script-injury-no-new-pause", 580, 603, 0, 30, 80, 75, 76, true},
+		{"ordinary-injury-pause", 580, 603, 580, 30, 80, 75, 75, true},
+		{"ordinary-injury-later-gate", 580, 670, 580, 30, 80, 75, 76, true},
+		{"last-pause-frame", 576, 603, 573, 30, 80, 75, 75, true},
+		{"first-unpaused-gate", 576, 603, 572, 30, 80, 75, 76, true},
+		{"alternate-fps", 580, 603, 0, 60, 80, 75, 75, true},
+		{"alternate-fps-gate", 580, 675, 0, 60, 80, 75, 76, true},
+		{"full-health", 580, 670, 0, 30, 80, 80, 80, true},
+		{"multiple-per-frame", 580, 612, 580, 30, 30000, 29790, 29800, true},
+		{"multiple-clamp", 580, 612, 580, 30, 30000, 29999, 30000, true},
+		{"wrapped-clock", math.MaxUint32 - 1, 0, math.MaxUint32 - 30, 30, 30000, 29990, 29995, true},
+		{"bounded-last-frame", 580, 1180, 0, 30, 80, 75, 80, true},
+		{"past-bound", 580, 1181, 0, 30, 80, 75, 0, false},
+		{"backwards-clock", 580, 579, 0, 30, 80, 75, 0, false},
+		{"zero-fps", 580, 603, 0, 0, 80, 75, 0, false},
+		{"zero-maximum", 580, 603, 0, 30, 0, 0, 0, false},
+		{"invalid-initial", 580, 603, 0, 30, 80, 81, 0, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			got, valid := e2eAIRetreatFoodRegenerationHP(tc.start, tc.frame, tc.injury, tc.fps, tc.maximum, tc.initial)
+			if got != tc.want || valid != tc.valid {
+				t.Fatalf("regeneration HP=%d/%t want=%d/%t", got, valid, tc.want, tc.valid)
+			}
+		})
 	}
 }

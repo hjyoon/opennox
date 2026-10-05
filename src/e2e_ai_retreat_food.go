@@ -49,6 +49,21 @@ func e2eAIRetreatFoodMoveStack(update *server.MonsterUpdateData, food *server.Ob
 		pickup.ArgObj(0) == food && move.ArgObj(2) == food && move.ArgPos(0) == pos
 }
 
+// Model only the unchanged classic regeneration on a bounded live-world
+// probe. Script DamageTrue does not set the ordinary injury-pause timestamp.
+// No health/action service is called and no observed HP is used as an input.
+func e2eAIRetreatFoodRegenerationHP(start, frame, injury, fps uint32, maximum, initial uint16) (uint16, bool) {
+	elapsed := frame - start
+	if elapsed > 600 || fps == 0 || maximum == 0 || initial > maximum {
+		return 0, false
+	}
+	health := int32(initial)
+	for offset := uint32(1); offset <= elapsed; offset++ {
+		health += e2eMeteorShowerRegenAmount(start+offset, injury, fps, int32(maximum), health)
+	}
+	return uint16(health), true
+}
+
 type e2eAIRetreatFoodFixture struct {
 	mode, kind, item               string
 	descending                     bool
@@ -169,9 +184,18 @@ func (f *e2eAIRetreatFoodFixture) tick() {
 	}
 	f.unitDrawn = f.unitDrawn || noxClient.Objs.ByNetCode(f.unitWire) != nil
 	f.foodDrawn = f.foodDrawn || noxClient.Objs.ByNetCode(f.foodWire) != nil
-	if !f.ate && (f.unit.HealthData.Cur != f.injuredHP || !e2eObjectInWorld(f.food)) {
-		e2eError(fmt.Errorf("RETREAT food healed/deleted outside observed PICKUP: %s", f.mode))
+	ext := f.unit.GetExt()
+	wantHP, validHP := e2eAIRetreatFoodRegenerationHP(f.start, noxServer.Frame(), f.unit.Frame134, noxServer.TickRate(), f.initialHP, f.injuredHP)
+	if f.unit.HealthData.Max != f.initialHP || ext.HealthRegenToMax > 0 || ext.HealthRegenPerFrame >= 0 ||
+		!f.ate && (!validHP || f.unit.HealthData.Cur != wantHP || !e2eObjectInWorld(f.food)) {
+		e2eError(fmt.Errorf("RETREAT food HP/definition/deletion differs from classic regeneration or observed PICKUP: %s frame=%d injury=%d HP=%d expected=%d valid=%t food-live=%t ate=%t stack=%v", f.mode, noxServer.Frame(), f.unit.Frame134, f.unit.HealthData.Cur, wantHP, validHP, e2eObjectInWorld(f.food), f.ate, update.GetAIStack()))
 		return
+	}
+	if !f.ate {
+		before, validBefore := e2eAIRetreatFoodRegenerationHP(f.start, noxServer.Frame()-1, f.unit.Frame134, noxServer.TickRate(), f.initialHP, f.injuredHP)
+		if validBefore && wantHP > before {
+			e2eLog.Printf("AI RETREAT FOOD REGEN: mode=%s HP=%d->%d frame=%d injury=%d", f.mode, before, wantHP, noxServer.Frame(), f.unit.Frame134)
+		}
 	}
 	if noxServer.Frame()-f.lastLog >= 30 {
 		f.lastLog = noxServer.Frame()

@@ -367,6 +367,9 @@ func (s *Server) monsterMainRandomFloat547210(runtime MonsterMainRuntime547210, 
 // one-second DODGE when walls, objects, and lava all permit the move.
 func (s *Server) monsterMainCheckDodgeables547C50(unit *Object, runtime MonsterMainRuntime547210) bool {
 	cos, sin := SinCosDir(byte(unit.Direction1))
+	// GAME.EXE 00547C6D..00547C88 caches the ray's start before either RNG
+	// callback. Each destination still reads the live position afterwards.
+	origin := unit.PosVec
 	for i := 0; i < 5; i++ {
 		rawDistance := s.monsterMainRandomFloat547210(runtime, 2, 3) * float64(unit.SpeedCur)
 		distance := float32(rawDistance)
@@ -389,14 +392,21 @@ func (s *Server) monsterMainCheckDodgeables547C50(unit *Object, runtime MonsterM
 		if traceObstacles == nil {
 			traceObstacles = s.MapTraceObstacles
 		}
-		if !traceRay(unit.PosVec, destination, MapTraceFlag1) ||
-			!traceObstacles(unit, unit.PosVec, destination) || runtime.TileAt(destination) == 6 {
+		if !traceRay(origin, destination, MapTraceFlag1) ||
+			!traceObstacles(unit, origin, destination) || runtime.TileAt(destination) == 6 {
 			continue
 		}
 
 		s.monsterMainPopAttackActions5471B0(unit)
-		unit.MonsterPushAction(ai.DEPENDENCY_TIME, s.Frame()+s.TickRate())
-		unit.MonsterPushAction(ai.ACTION_DODGE, destination, uint32(0))
+		if timer := unit.MonsterPushAction(ai.DEPENDENCY_TIME); timer != nil {
+			// A normal push can cancel a live action and advance the clock.
+			timer.Args[0] = uintptr(s.Frame() + s.TickRate())
+		}
+		if dodge := unit.MonsterPushAction(ai.ACTION_DODGE); dodge != nil {
+			dodge.Args[0] = uintptr(math.Float32bits(destination.X))
+			dodge.Args[1] = uintptr(math.Float32bits(destination.Y))
+			dodge.Args[2] = 0
+		}
 		return true
 	}
 	return false

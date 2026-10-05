@@ -75,6 +75,7 @@ func nox_game_exit_xxx_43DE60() {
 }
 
 func nox_game_exit_xxx2() {
+	noxTelnet.stop()
 	nox_xxx_setContinueMenuOrHost_43DDD0(0)
 	nox_game_exit_xxx_43DE60()
 }

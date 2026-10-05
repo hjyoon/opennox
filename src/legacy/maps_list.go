@@ -60,3 +60,15 @@ func noxCommonMaplistFreeNative() {
 	head.prev = head
 	head.head = head
 }
+
+// ConsoleMapNames4D09B0 reads the native list and bounded Name field, rather
+// than the original PE32 byte offset twelve used by the old console command.
+func ConsoleMapNames4D09B0() []string {
+	head := (*nativeListItem)(unsafe.Pointer(&C.nox_common_maplist))
+	var names []string
+	for it := head.next; it != nil && it != head; it = it.next {
+		mp := (*Nox_map_list_item)(unsafe.Pointer(it))
+		names = append(names, alloc.GoStringS(mp.Name[:]))
+	}
+	return names
+}

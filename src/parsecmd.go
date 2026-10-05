@@ -21,6 +21,7 @@ var (
 )
 
 func initConsole(sm *strman.StringManager) {
+	restoreConsoleCommands(noxConsole)
 	if env.IsDevMode() {
 		noxConsole.SetCheats(true)
 	}

@@ -100,7 +100,9 @@ func (f *e2eAIRetreatFixture) configure() {
 	asObjectS(target).SetRegroupLevel(1)
 	f.power = noxServer.S().SpellPower4FE7B0(e2eAIRetreatSpell, target)
 	f.duration = int(noxServer.Balance.Float("ProtectFireEnchantDuration"))
-	f.castSound = noxServer.Spells.DefByInd(e2eAIRetreatSpell).GetCastSound()
+	// BuffApply4FF380 emits selector 1 before the real cast frame returns;
+	// the distinct cast-sound slot is not emitted by this self-buff path.
+	f.castSound = noxServer.Spells.DefByInd(e2eAIRetreatSpell).GetOnSound()
 	if f.duration <= 0 || f.castSound == 0 {
 		e2eError(fmt.Errorf("RETREAT stock Fire Protection duration/sound unavailable"))
 		return

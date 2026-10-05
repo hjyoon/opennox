@@ -678,6 +678,11 @@ func execConsoleCmdAuthed(ctx context.Context, cmd string) bool {
 	}
 	if noxflags.HasEngine(noxflags.EngineNoRendering) {
 		ctx = console.AsDedicated(ctx)
+		if noxflags.HasGame(noxflags.GameHost) {
+			// The dedicated operator historically has cheat permission. The
+			// dependency's AsDedicated mistakenly stores a false flag.
+			ctx = console.WithCheats(ctx)
+		}
 	}
 	return noxConsole.Exec(ctx, cmd)
 }

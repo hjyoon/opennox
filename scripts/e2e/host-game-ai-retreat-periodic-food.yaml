@@ -1,0 +1,90 @@
+# Separate original-cadence consumption probe, NOT a replacement for the
+# unsuccessful passive PICKUP probe. Stock body/food; ordinary script injury,
+# ownership and map properties; live RETREAT/MOVE stack, travel, FoodPickup
+# auto-use, actual healing/sound/deletion and client drawables are observed.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-ai-retreat-periodic-food
+    text: Troll/ascending/RedApple
+    name: RETREAT periodic Troll ascending apple
+  - action: check-ai-retreat-periodic-food
+    text: Troll/descending/RedApple
+    name: RETREAT periodic Troll descending apple
+  - action: check-ai-retreat-periodic-food
+    text: Troll/ascending/Meat
+    name: RETREAT periodic Troll ascending meat
+  - action: check-ai-retreat-periodic-food
+    text: Troll/descending/Meat
+    name: RETREAT periodic Troll descending meat
+  - action: check-ai-retreat-periodic-food
+    text: NPC/ascending/RedApple
+    name: RETREAT periodic NPC ascending apple
+  - action: check-ai-retreat-periodic-food
+    text: NPC/descending/RedApple
+    name: RETREAT periodic NPC descending apple
+  - action: check-ai-retreat-periodic-food
+    text: NPC/ascending/Meat
+    name: RETREAT periodic NPC ascending meat
+  - action: check-ai-retreat-periodic-food
+    text: NPC/descending/Meat
+    name: RETREAT periodic NPC descending meat
+  - action: quit
+    dt: 1

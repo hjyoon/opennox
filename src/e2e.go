@@ -9981,6 +9981,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckAIRetreatFood(l.Text, l.Name)
+		case "check-ai-retreat-periodic-food":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckAIRetreatPeriodicFood(l.Text, l.Name)
 		case "check-fireball-unit-damage":
 			if dt != 0 {
 				sc.Wait(dt, "")

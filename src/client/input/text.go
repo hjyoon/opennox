@@ -13,6 +13,7 @@ type inputCharMap struct {
 }
 
 type textHandler struct {
+	language  int
 	capsState bool
 	modKey    keybind.Key
 	textMap   map[keybind.Key]inputCharMap

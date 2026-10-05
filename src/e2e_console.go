@@ -219,6 +219,7 @@ func (sc *e2eScenario) CheckConsoleCommands(name string) {
 	})
 	sc.consoleCommand("CLEAR", "", func() bool { return e2eConsoleLines() == "" })
 	sc.consoleCommand("HELP SET", "", func() bool { return e2eConsoleHasHelp("set sysop") })
+	sc.checkConsoleKeyboardText()
 	sc.add(2, "capture actual rendered F1 console", func() {
 		path, err := e2eWriteMagicFrame("", noxClient.r.CopyPixBuffer())
 		if err != nil {

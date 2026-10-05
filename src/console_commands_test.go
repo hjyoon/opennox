@@ -82,12 +82,42 @@ func TestConsoleRestoredLeavesKeepPermissions(t *testing.T) {
 		if before == nil || after == nil || after.Func == nil || after.LegacyFunc != nil {
 			t.Fatalf("missing native handler for %s", path)
 		}
-		if before.Flags != after.Flags || before.HelpID != after.HelpID {
+		flags := before.Flags
+		if path == "set mode" {
+			flags &^= console.FlagDedicated // enforced by the runtime wrapper
+		}
+		if flags != after.Flags || before.HelpID != after.HelpID {
 			t.Fatalf("metadata changed for %s", path)
 		}
 	}
 	if cmd := consoleCommandAt(c, "show mmx"); cmd == nil || cmd.Flags != console.ClientServer || cmd.Func == nil {
 		t.Fatal("missing original show mmx")
+	}
+}
+
+func TestConsoleDedicatedModeRuntimeGate(t *testing.T) {
+	consoleCommandTestFlags(t)
+	c, _ := consoleCommandTestConsole(t)
+	settings := getSettings2ByInd(1)
+	old := settings.Field52
+	t.Cleanup(func() { settings.Field52 = old })
+	settings.Field52 = 0x1234
+	consoleCommandTestExec(c, "SET MODE Arena")
+	if settings.Field52 != 0x1234 {
+		t.Fatal("dedicated-only command ran in a graphical host")
+	}
+	noxflags.SetEngine(noxflags.EngineNoRendering)
+	c.Exec(console.AsClient(context.Background()), normalizeConsoleInput(c, "SET MODE Arena"))
+	if settings.Field52 != 0x1234 {
+		t.Fatal("dedicated-only command ran for a client")
+	}
+	consoleCommandTestExec(c, "SET MODE Arena")
+	if settings.Field52 != 0x1234&0xE80F|0x100 {
+		t.Fatalf("dedicated mode was silently ignored: %#x", settings.Field52)
+	}
+	team := consoleCommandAt(c, "set team")
+	if team == nil || team.LegacyFunc == nil || team.Flags.Has(console.FlagDedicated) || !team.Flags.Has(console.Server|console.Cheat) {
+		t.Fatal("dedicated team lost its server/cheat runtime gate")
 	}
 }
 

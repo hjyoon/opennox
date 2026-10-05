@@ -41,7 +41,7 @@ func consoleCommandAt(c *console.Console, path string) *console.Command {
 func restoreConsoleCommands(c *console.Console) {
 	for path, fn := range map[string]console.CommandFunc{
 		"set name": consoleSetName, "set monsters": consoleSetMonsters,
-		"set spell": consoleSetSpell, "set mode": consoleSetMode,
+		"set spell": consoleSetSpell, "set mode": consoleDedicatedOnly(consoleSetMode),
 		"mute": consoleMute, "unmute": consoleUnmute,
 		"list users": consoleListUsers, "list maps": consoleListMaps,
 		"list spells": consoleListSpells, "bind": consoleBind,
@@ -51,8 +51,32 @@ func restoreConsoleCommands(c *console.Console) {
 			cmd.Func, cmd.LegacyFunc = fn, nil
 		}
 	}
+	// libs/console.AsDedicated stores false in its context. Preserve the
+	// original dedicated-only gate explicitly, without modifying that module.
+	for _, path := range []string{"set mode", "set team"} {
+		if cmd := consoleCommandAt(c, path); cmd != nil && cmd.Flags.Has(console.FlagDedicated) {
+			cmd.Flags &^= console.FlagDedicated
+			if fn := cmd.LegacyFunc; fn != nil {
+				cmd.LegacyFunc = func(ctx context.Context, c *console.Console, ind int, tokens []string) bool {
+					if console.IsClient(ctx) || !noxflags.HasEngine(noxflags.EngineNoRendering) {
+						return true
+					}
+					return fn(ctx, c, ind, tokens)
+				}
+			}
+		}
+	}
 	if show := consoleCommandAt(c, "show"); show != nil && consoleCommandAt(c, "show mmx") == nil {
 		show.Register(&console.Command{Token: "mmx", HelpID: "showmmxhelp", Flags: console.ClientServer, Func: consoleShowMMX})
+	}
+}
+
+func consoleDedicatedOnly(fn console.CommandFunc) console.CommandFunc {
+	return func(ctx context.Context, c *console.Console, args []string) bool {
+		if console.IsClient(ctx) || !noxflags.HasEngine(noxflags.EngineNoRendering) {
+			return true
+		}
+		return fn(ctx, c, args)
 	}
 }
 

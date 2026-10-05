@@ -100,7 +100,7 @@ func (sc *e2eScenario) consoleCommand(line string, output string, check func() b
 			e2eError(fmt.Errorf("console lacks focused empty input before %q", line))
 		}
 	})
-	sc.Input(0, "type console command", &seat.TextInputEvent{Text: line})
+	sc.consoleTypeKeyboardText(line)
 	sc.add(2, "verify console entry", func() {
 		if !e2eConsoleFocused() || e2eConsoleInput() != line {
 			e2eError(fmt.Errorf("console text event did not reach the entry for %q", line))

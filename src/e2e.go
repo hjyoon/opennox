@@ -9971,6 +9971,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckAIBlink(l.Text, l.Name)
+		case "check-ai-retreat":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckAIRetreat(l.Text, l.Name)
 		case "check-fireball-unit-damage":
 			if dt != 0 {
 				sc.Wait(dt, "")

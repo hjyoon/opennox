@@ -239,6 +239,7 @@ func DefaultDamageWorld4E0B30(
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	spellMissileExplosion := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
 	spellMissileImpact := playerDamageSpellMissileImpactShape4E17B0(source, weapon, typ)
+	worldImpale := target.Class().Has(object.ClassPlayer) && playerDamageWorldImpaleShape4E17B0(source, weapon, typ)
 	// Stock SentryGlobe is SIMPLE|IMMOBILE, not an electric spell or melee
 	// weapon. Its terminal owner can be the globe itself or a unit. Keep this
 	// admission in DefaultDamage; PlayerDamage retains its separate prefix.
@@ -248,7 +249,7 @@ func DefaultDamageWorld4E0B30(
 		(source == weapon || (source != nil && source.UpdateData != nil &&
 			source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 			!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)))
-	playerTail := playerElectric || ((missilePierce || missileFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
+	playerTail := playerElectric || worldImpale || ((missilePierce || missileFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
 	if playerTail {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -290,6 +291,18 @@ func DefaultDamageWorld4E0B30(
 			return defaultDamageUnsupported4E0B30(runtime, "missing monster self-weapon IMPACT enemy service", target, source, weapon, damage, typ)
 		}
 		if !runtime.IsEnemy(target, source) {
+			return true
+		}
+	}
+	if worldImpale {
+		if runtime.IsEnemy == nil {
+			return defaultDamageUnsupported4E0B30(runtime, "missing player world IMPALE enemy service", target, source, weapon, damage, typ)
+		}
+		// 004E0C61 queries world hazards before NoUpdate, then reloads the
+		// qualifier. A non-weapon spike does not qualify 004E1400, so the
+		// false enemy result alone cannot make it harmless.
+		if !runtime.IsEnemy(target, source) && target.Class().HasAny(object.MaskUnits) &&
+			defaultDamageAttackQualifies4E1400(source, weapon) && !defaultDamageFriendlyException4E1470(weapon) {
 			return true
 		}
 	}
@@ -361,6 +374,10 @@ func DefaultDamageWorld4E0B30(
 	if spellMissileImpact && playerTail && (runtime.BuffOff == nil || runtime.DamageClear == nil ||
 		(source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing player spell-missile IMPACT tail service", target, source, weapon, damage, typ)
+	}
+	if worldImpale && (runtime.BuffOff == nil || runtime.DamageClear == nil ||
+		(source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing player world IMPALE tail service", target, source, weapon, damage, typ)
 	}
 	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
 		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&

@@ -37,6 +37,9 @@ type MonsterMainRuntime547210 struct {
 	SearchEdible       func(unit *Object, radius float32) *Object
 	PlaceInventory     func(owner, item *Object, arg3, arg4 int) bool
 	UseByNetCode       func(owner, item *Object) int32
+	Distance           func(unit, target *Object) float64
+	CastSpell          func(id int32, unit *Object, arg *SpellAcceptArg)
+	guardStimulusDone  bool // the entry prefix already performed this tick's GUARD probe
 }
 
 // MonsterMainNative547210 handles the independently restored pointer-safe
@@ -551,7 +554,7 @@ func (s *Server) monsterMainActiveCombatStable547210(unit *Object, update *Monst
 // real hit; notably, the recorded source is CurrentEnemy rather than the
 // object returned by the radius query.
 func (s *Server) monsterMainGuardEnemyStimulus547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210, head ai.ActionType) {
-	if !monsterMainCanAcquireEnemy547210(update.Aggression) || byte(s.Frame())&0xf != 0 ||
+	if runtime.guardStimulusDone || !monsterMainCanAcquireEnemy547210(update.Aggression) || byte(s.Frame())&0xf != 0 ||
 		!update.HasAction(ai.ACTION_GUARD) ||
 		head == ai.ACTION_GUARD || update.HasAction(ai.ACTION_HUNT) {
 		return

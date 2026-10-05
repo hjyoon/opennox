@@ -187,3 +187,41 @@ func TestE2EAIRetreatFoodDoesNotSupplyResults(t *testing.T) {
 		})
 	}
 }
+
+func TestE2EAIRetreatFoodPreparesOrdinaryOwnership(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_ai_retreat_food.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ownedCreates := 0
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Name.Name != "prepare" {
+			continue
+		}
+		ast.Inspect(fn.Body, func(n ast.Node) bool {
+			call, ok := n.(*ast.CallExpr)
+			if !ok {
+				return true
+			}
+			method, ok := call.Fun.(*ast.SelectorExpr)
+			if !ok || method.Sel.Name != "CreateObjectAt" || len(call.Args) != 3 {
+				return true
+			}
+			unit, ok := call.Args[0].(*ast.SelectorExpr)
+			if !ok || unit.Sel.Name != "unit" {
+				return true
+			}
+			owner, ok := call.Args[1].(*ast.SelectorExpr)
+			if !ok || owner.Sel.Name != "host" {
+				t.Error("food fixture must create the unit through ordinary host ownership")
+				return true
+			}
+			ownedCreates++
+			return true
+		})
+	}
+	if ownedCreates != 1 {
+		t.Fatalf("ordinary owned unit creations=%d want=1", ownedCreates)
+	}
+}

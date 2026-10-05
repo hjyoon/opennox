@@ -88,7 +88,9 @@ func (f *e2eAIRetreatFoodFixture) prepare() {
 	}
 	asObjectS(f.host).SetPos(to)
 	f.host.VelVec, f.host.ForceVec, f.host.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}
-	noxServer.CreateObjectAt(f.unit, nil, from)
+	// Ordinary ownership prevents the host from becoming a sight enemy. Low
+	// aggression alone only excludes periodic nearby-food consumption.
+	noxServer.CreateObjectAt(f.unit, f.host, from)
 	noxServer.CreateObjectAt(f.food, nil, to)
 	noxServer.ObjectsAddPending()
 	// Stock hosted-game food cannot be picked up by incidental contact. Keep
@@ -117,6 +119,7 @@ func (f *e2eAIRetreatFoodFixture) prepare() {
 	f.initialHP = f.unit.HealthData.Cur
 	loss := min(10, int(f.food.UseDataConsume().Value))
 	if f.initialHP != f.unit.HealthData.Max || int(f.initialHP) <= loss || loss <= 0 ||
+		f.unit.Owner() != f.host || f.unit.IsEnemyTo(f.host) || f.host.IsEnemyTo(f.unit) ||
 		update.CurrentEnemy != nil || update.PreferredEnemy != nil || update.HasAction(ai.ACTION_RETREAT) ||
 		!noxServer.S().CanInteract(f.unit, f.food, 0) {
 		e2eError(fmt.Errorf("RETREAT food initial stock state invalid: %s", f.mode))
@@ -137,7 +140,7 @@ func (f *e2eAIRetreatFoodFixture) prepare() {
 	f.start, f.active = noxServer.Frame(), true
 	noxServer.Audio.OnSound(f.observeSound)
 	noxServer.TickHook(f.tick)
-	e2eLog.Printf("AI RETREAT FOOD PREPARED: mode=%s frame=%d native=%p/%p food=%p wire=%d/%d pos=%v->%v HP=%d->%d stock-heal=%d aggression=%g threshold=%g/%g stack=unforced injury=script", f.mode, f.start, f.unit, update, f.food, f.unitWire, f.foodWire, f.origin, f.foodPos, f.initialHP, f.injuredHP, f.food.UseDataConsume().Value, update.Aggression, update.RetreatLevel, update.ResumeLevel)
+	e2eLog.Printf("AI RETREAT FOOD PREPARED: mode=%s frame=%d native=%p/%p food=%p wire=%d/%d pos=%v->%v HP=%d->%d stock-heal=%d aggression=%g threshold=%g/%g ordinary-owner=%p stack=unforced injury=script", f.mode, f.start, f.unit, update, f.food, f.unitWire, f.foodWire, f.origin, f.foodPos, f.initialHP, f.injuredHP, f.food.UseDataConsume().Value, update.Aggression, update.RetreatLevel, update.ResumeLevel, f.unit.Owner())
 }
 
 func (f *e2eAIRetreatFoodFixture) tick() {

@@ -98,7 +98,7 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if s.monsterMainThreatFlee547210(unit, update, soundSet, runtime) {
 		return true
 	}
-	if s.monsterMainRetreat547210(unit, update, runtime) {
+	if s.monsterMainHealthRetreat547210(unit, update, soundSet, runtime) {
 		return true
 	}
 	if s.monsterMainStableWithFood547210(unit, update, runtime,

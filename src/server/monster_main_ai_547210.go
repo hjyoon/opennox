@@ -105,6 +105,9 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	if s.monsterMainBlock547210(unit, update, head, runtime) {
 		return true
 	}
+	if s.monsterMainDodge547210(unit, update, runtime) {
+		return true
+	}
 	if s.monsterMainStableWithFood547210(unit, update, runtime,
 		s.monsterMainActiveCombatStable547210(unit, update, runtime)) {
 		return true

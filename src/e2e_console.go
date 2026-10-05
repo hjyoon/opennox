@@ -10,6 +10,7 @@ import (
 
 	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/libs/client/seat"
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/opennox/v1/client/gui"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -42,6 +43,52 @@ func e2eConsoleLines() string {
 func e2eConsoleFocused() bool {
 	return guiCon.root != nil && guiCon.input != nil && guiCon.scrollbox != nil &&
 		!guiCon.root.GetFlags().IsHidden() && noxClient.GUI.Focused() == guiCon.input
+}
+
+func e2eConsoleHasHelp(path string) bool {
+	cmd := consoleCommandAt(noxConsole, path)
+	if cmd == nil {
+		return false
+	}
+	help := noxConsole.HelpString(cmd)
+	return help != "" && strings.Contains(e2eConsoleLines(), help)
+}
+
+func e2eConsoleListsMaps() bool {
+	names := legacy.ConsoleMapNames4D09B0()
+	if len(names) == 0 {
+		return false
+	}
+	lines := e2eConsoleLines()
+	for _, name := range names {
+		if !strings.Contains(lines, name+".map") {
+			return false
+		}
+	}
+	return true
+}
+
+func e2eConsoleListsClass(class object.Class) bool {
+	var entries []string
+	for _, typ := range noxServer.Types.List() {
+		if typ.Class().Has(class) {
+			entries = append(entries, fmt.Sprintf("%d\t%s\t", typ.Ind(), typ.ID()))
+		}
+	}
+	if len(entries) == 0 {
+		return false
+	}
+	// The native console retains 128 lines, including the command echo.
+	if len(entries) > 127 {
+		entries = entries[len(entries)-127:]
+	}
+	lines := e2eConsoleLines()
+	for _, entry := range entries {
+		if !strings.Contains(lines, entry) {
+			return false
+		}
+	}
+	return true
 }
 
 // Commands enter only through seat text/keyboard events. The observer reads
@@ -91,8 +138,8 @@ func (sc *e2eScenario) CheckConsoleCommands(name string) {
 		}
 	})
 	sc.consoleCommand("RACOIAWS", "", func() bool { return noxConsole.Cheats() })
-	sc.consoleCommand("HELP LIST", "maps", nil)
-	sc.consoleCommand("HELP TELNET ON", "telnet", nil)
+	sc.consoleCommand("HELP LIST", "", func() bool { return e2eConsoleHasHelp("list maps") })
+	sc.consoleCommand("HELP TELNET ON", "", func() bool { return e2eConsoleHasHelp("telnet on") })
 	sc.consoleCommand(`SET NAME "한글Console"`, "", func() bool { return legacy.Nox_xxx_serverOptionsGetServername_40A4C0() == "한글Console" })
 	for _, setting := range []struct {
 		name string
@@ -109,11 +156,18 @@ func (sc *e2eScenario) CheckConsoleCommands(name string) {
 	sc.consoleCommand("UNSET FRAMERATELIMITER", "", func() bool { return !useFrameLimit })
 	sc.consoleCommand("SET FRAMERATELIMITER", "", func() bool { return useFrameLimit })
 	sc.consoleCommand("SHOW MMX", "", func() bool { return strings.Contains(e2eConsoleLines(), "MMX") })
-	sc.consoleCommand("LIST MAPS", "", func() bool { return len(e2eConsoleLines()) > 30 })
+	sc.consoleCommand("CLEAR", "", func() bool { return e2eConsoleLines() == "" })
+	sc.consoleCommand("LIST MAPS", "", e2eConsoleListsMaps)
+	sc.consoleCommand("CLEAR", "", func() bool { return e2eConsoleLines() == "" })
 	sc.consoleCommand("LIST USERS", "", func() bool { return strings.Contains(e2eConsoleLines(), noxServer.Players.Host().Name()) })
+	sc.consoleCommand("CLEAR", "", func() bool { return e2eConsoleLines() == "" })
 	sc.consoleCommand("LIST SPELLS", "SPELL_", nil)
-	for _, group := range []string{"ARMOR", "WEAPONS", "STAFFS"} {
-		sc.consoleCommand("LIST "+group, "", func() bool { return len(e2eConsoleLines()) > 30 })
+	for _, group := range []struct {
+		name  string
+		class object.Class
+	}{{"ARMOR", object.ClassArmor}, {"WEAPONS", object.ClassWeapon}, {"STAFFS", object.ClassWand}} {
+		sc.consoleCommand("CLEAR", "", func() bool { return e2eConsoleLines() == "" })
+		sc.consoleCommand("LIST "+group.name, "", func() bool { return e2eConsoleListsClass(group.class) })
 	}
 	sc.consoleCommand("CHEAT GOLD 25", "", func() bool {
 		return noxServer.Players.Host().GoldVal == gold+25 && legacy.Nox_client_gold_4674A0() == gold+25
@@ -163,7 +217,7 @@ func (sc *e2eScenario) CheckConsoleCommands(name string) {
 		return err == nil && strings.Contains(string(data), "MMX") && !noxflags.HasEngine(noxflags.EngineLogToFile|noxflags.EngineLogToConsole)
 	})
 	sc.consoleCommand("CLEAR", "", func() bool { return e2eConsoleLines() == "" })
-	sc.consoleCommand("HELP SET", "sysop", nil)
+	sc.consoleCommand("HELP SET", "", func() bool { return e2eConsoleHasHelp("set sysop") })
 	sc.add(2, "capture actual rendered F1 console", func() {
 		path, err := e2eWriteMagicFrame("", noxClient.r.CopyPixBuffer())
 		if err != nil {

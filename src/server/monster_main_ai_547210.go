@@ -39,6 +39,7 @@ type MonsterMainRuntime547210 struct {
 	UseByNetCode       func(owner, item *Object) int32
 	Distance           func(unit, target *Object) float64
 	CastSpell          func(id int32, unit *Object, arg *SpellAcceptArg)
+	TestShield         func(unit *Object) int
 	guardStimulusDone  bool // the entry prefix already performed this tick's GUARD probe
 }
 
@@ -84,7 +85,7 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 	// 005473EA..0054742A schedules confusion before the inversion probe;
 	// do not return here, since an inversion cast can preempt that action.
 	if unit.HasEnchant(ENCHANT_CONFUSED) && !update.HasAction(ai.ACTION_CONFUSED) {
-		unit.MonsterPushAction(ai.DEPENDENCY_IS_ENCHANTED, uint32(ENCHANT_CONFUSED))
+		head = unit.MonsterPushAction(ai.DEPENDENCY_IS_ENCHANTED, uint32(ENCHANT_CONFUSED))
 		unit.MonsterPushAction(ai.ACTION_CONFUSED)
 	}
 	if !unit.HasEnchant(ENCHANT_ANTI_MAGIC) && s.MonsterCastInversion5408D0(unit) {
@@ -99,6 +100,9 @@ func (s *Server) MonsterMainNativeRuntime547210(unit *Object, runtime MonsterMai
 		return true
 	}
 	if s.monsterMainHealthRetreat547210(unit, update, soundSet, runtime) {
+		return true
+	}
+	if s.monsterMainBlock547210(unit, update, head, runtime) {
 		return true
 	}
 	if s.monsterMainStableWithFood547210(unit, update, runtime,

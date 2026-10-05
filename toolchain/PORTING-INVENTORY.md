@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## MainAI 협동 모드 투사체 회피·원본 547C50 순서와 clean ARM64 회귀 완료
+
+체력 후퇴·무기/방패 대응을 마친 뒤 `GAME.EXE 00547994..005479F9`의 협동 모드 투사체 회피와 `00547C50..00547DAF`의 목적지 탐색 순서를 대조했다. `67a342deb`는 기존 `monsterMainCheckDodgeables547C50` 본체 하나의 cached origin·post-push clock을 수정하고, `4319f5bb7`는 기존 `MonsterMainNativeRuntime547210` 본체 하나에 새 Go 회피 helper를 연결했다. layout/C production 변경은 없으며 각각 정상/실제 strict 검증 뒤 즉시 `origin/port/go1.26-multiarch`에 push했다.
+
+`547C50`은 방향과 ray origin을 RNG 전에 cache하고 5회 탐색 동안 유지하되 목적지 계산은 RNG 뒤 live position/speed를 읽는다. binary64 거리·binary32 spill, 15 상한과 음수/NaN 순서, `0..100 < 50`의 좌우 선택, ray → obstacle → lava short-circuit를 보존한다. 성공은 정상 attack pop → TIME 41 push → 그 뒤 `Frame+TickRate` 조회 → DODGE 9 push 순서이다. 실패 5회는 stack을 바꾸지 않고, push 거절은 원본처럼 branch 성공으로 처리한다. 새 service 27 leaf는 RNG/probe callback의 position 변경과 push callback의 clock 변경을 포함한다. 기존 구현에서 올바른 red 8실패/19통과를 보존했다.
+
+새 MainAI entry 분기는 원본처럼 체력 후퇴와 weapon/shield block 뒤에 실행한다. live Coop·ordered aggression `>= float32(0.08)`·혼란·whole-stack DODGE와 entry-cached MonsterDef의 CanDodge를 구분하고, 실제 `533E70` missile query의 nonzero 반환 뒤 `547C50`을 실행한다. query callback 뒤 admission을 재검사하지 않으며 speed/recent-move/cast-head/다른 buff/enable/destroyed gate를 추가하지 않았다. 필요한 runtime hook이 없는 경우는 clear probe로 간주하지 않는다. 새 server 61 leaf는 원본 허용/거부·cached definition과 교체된 live update·query mutation·앞선 branch 우선순위·실제 default RNG·목적지 탐색 실패를 검사한다. entry 연결 전 올바른 red 30실패를 보존했고 NaN struct equality 및 zero-server RNG 초기화 누락의 fixture 진단 실패는 별도 보존해 red 수와 합산하지 않았다.
+
+새 legacy 6 leaf는 C-owned 4 GiB 위 unit/update/health/missile/definition, 실제 native missile index·C `533E70`·native map ray/obstacle·실제 tile/RNG를 사용한다. incoming/outgoing/own-missile/not-indexed/non-Coop/definition-disabled를 검사하며 성공 probe나 AI 결과는 공급하지 않는다. incoming에서 실제 wrapper의 정상 TIME/DODGE stack과 deadline/destination을 확인한 뒤 실제 `MonsterActionDodge544640`이 그 stack을 소비해 횡방향 velocity를 계산하는 것도 검사했다. isolated binary에서 로드되지 않은 방향 0의 원래 1/0 테이블 entry만 초기화·복원했다. 이는 실제 세계 좌표 이동·피해 회피·화면 animation의 headless 증거가 아니다. 새 94 leaf를 포함한 MainAI 전체는 일반/실제 cgocheck2 각각 432 leaf × 3회, 1,296 pass·fail/skip 0이다.
+
+최종 focused root/server/legacy/input 527 leaf는 일반·실제 cgocheck2·race·강제 checkptr=2·highres·server-tag 각각 3회, 합계 9,486 pass·fail/skip 0이다. 전체 4패키지의 일반 및 실제 strict는 각각 27,702 leaf pass·fail 0이며 기존 opt-in asset/audio 및 subprocess-only child skip 12개는 통과 수에서 제외했다. 두 strict 실행의 `go1.26.5 GOEXPERIMENT=cgocheck2 CGO_ENABLED=1` header를 확인했다. 처음 두 matrix의 디스크 공간 부족으로 인한 checkptr link 실패는 성공으로 합산하지 않았다. red/green·fixture 진단·최종 matrix는 `/private/tmp/opennox-main-dodge.ObDAWQ`와 그 아래 `final-dodge-matrix-complete`에 보존했다.
+
+source/origin이 일치하는 clean 코드 revision `4319f5bb780b1526d4cb1a1c808836fdbf069d5f`에서 일반·실제 highres·전용 server 3제품을 74.328초에 새로 빌드했다. 모두 Mach-O arm64·Go 1.26.5·full revision·`vcs.modified=false`·help 및 실행 전후 product verifier를 통과했다. 일반/HD 각각 Blink 6·공포 8·stock 무자극 선공 16, 합계 60개 대상 AI 사례와 F1 console 각 44개 assertion·실제 F2 macro가 exit 0이다. 이는 앞선 Blink/FLEE/선공/F1의 회귀 검증이며 새 투사체 회피 전체의 gameplay 검증이라는 뜻은 아니다. 새 일반 F1 `/private/tmp/opennox-e2e-magic-frame-918744420.png`와 HD `/private/tmp/opennox-e2e-magic-frame-2349165519.png`의 도움말·입력란을 직접 확인했고 모든 PNG를 보존했다. clean 증거는 같은 private directory의 `clean-dodge-evidence`에 있다.
+
+모든 headless/mock 실행은 private Save/config/maps와 기존 YAML의 byte-identical private copy, unset `NOX_DATA`/`NOX_E2E_OVERRIDE`를 사용했다. 실행 전후 full oracle-test의 code 2,935/data 638·strict NXZ 50쌍·stock 전 트리 검증이 통과했다. stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 원본 byte/range/manifest·기존 YAML/PNG/golden·개인 Save/config/자산은 불변이다. 공간 확보에는 모든 작업 종료 후 정확히 검증한 오래된 전용 재생성 Go cache 아카이브 120개/6,090,658,338바이트만 정리했고 소스·개인 데이터·실패/성공 로그 및 PNG는 보존했다. 이 협동 MainAI 투사체 회피 연결 범위는 완료했지만 남은 MainAI 공격/이동·raw bot engine·모든 campaign/원격/Windows 및 무제한 ARM64 포팅 목표는 미완료다.
+
 ## MainAI 체력 후퇴·무기/방패 투사체 대응과 clean ARM64 회귀 완료
 
 F1 콘솔과 앞선 Blink/FLEE 복원에 이어 `GAME.EXE 00547772..005478AE`의 체력 후퇴와 `005478AF..00547993`의 투사체 대응 분기를 복원했다. `afa899678`/`61bc7b2ff`는 각각 기존 `MonsterMainNativeRuntime547210` 본체 하나를 새 Go helper에 연결했고, `fc24bc27c`는 기존 legacy MainAI wrapper 본체 하나에 실제 `533E70` probe binding만 추가했다. layout 변경과 C production 변경은 없다. 각 커밋은 정상/실제 strict 검증 뒤 즉시 `origin/port/go1.26-multiarch`에 push했다.

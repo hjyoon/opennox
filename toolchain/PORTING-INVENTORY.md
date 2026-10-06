@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## MainAI 진행 거리의 ARM64 FMA·chop 경계 복원
+
+clean `5a9fa8426`의 ARM64 MainAI progress tail에서 X-square와 Y-square의 합이 FMADDD로 결합됨을 직접 확인했다. 원본 GAME.EXE `00547A19..00547A35`는 old/live X·Y 차, Y-square, X-square, FADDP를 각각 계산하고 225와 ordered strict greater를 비교한다. CRT `004031F2→004020D3→0040209E/0040217B`의 precision 53과 gameplay frame `0043E2C1`의 round-toward-zero도 다시 대조했다. 기존 production 본체 `monsterMainProgressTail547210` 하나에서 이미 검증된 local chop helper를 재사용한다. thread FPU 환경을 바꾸지 않으며 FMA는 helper의 square residual 판정에만 쓰고 거리 합을 contract하지 않는다. cached progress/head·action gate·half-FPS unsigned timeout·frustration/RNG 및 음식/무기 tail은 그대로다.
+
+새 native regression은 15 raw vector × moving action 5종 × elapsed 14/15/16, 총 225 leaf다. FMA 경계 4종·chop 경계 4종·225 미만/동일/초과·NaN/Inf를 포함한다. 4GiB 위 C-owned records의 실제 legacy MainAI wrapper와 서버 스택·Logic RNG를 호출한다. 독립 `big.Float` precision 53·ToZero reference와 literal distance words를 대조하고 progress/WAIT deadline·Frustrated·FLEE timer·stack·unit/health/Other RNG 불변을 검사한다. HEAD와 byte-identical인 production 본체의 corrected red는 actual exit 1, 120 fail·105 pass이며 control case 실패는 없다. 최종 chop 구현은 같은 기대값의 225 leaf가 모두 pass·actual exit 0이다. 초기 nearest-even 모델 후보와 fixture 오류·compile 실패 로그도 보존하며 최종 검증 수에 합산하지 않는다. 원본 일반 gameplay context의 국소 복원이지 GAME.EXE world 실행이나 전체 float domain 전수 검증은 아니다.
+
+최종 focused 일반·실제 cgocheck2·highres·server-tag 각각 3회는 모드마다 9,102 leaf pass, 새 native 및 기존 captured-Golem 회귀의 race/checkptr=2 각각 3회는 684 pass다. 합계 37,776 pass·fail/skip 0이며 새 225개만 6모드×3회 4,050 pass다. 전체 root/server/legacy/gui/input/noxrender/legacy-dialog 일반 및 strict는 각각 32,568 leaf pass·fail 0, 이전 15 skip identity가 정확히 같다. strict header는 `go1.26.5 GOEXPERIMENT=cgocheck2 CGO_ENABLED=1`이다. existing-body AST audit는 1개만 변경됨을 확인했다. 원본 oracle-test의 strict NXZ·code 2,935/data 638·stock 1,556파일/570,653,750바이트 및 기존 tree SHA-256도 actual exit 0으로 유지됐다.
+
+실제 passive RETREAT 음식 소비 실패의 원본 arrival/NOT_CORNERED/periodic-food 분기를 read-only로 조사했으나 이 수정이 그 world 실패나 Quest20 stage-3 맵 순서를 해결했다는 주장은 하지 않는다. nonnil tracked-object arrival·public YAML·Quest seed/history·HP 기대값·sealed oracle/manifest/range·stock asset은 변경하지 않았다. 사용자 Repeat 수정 `b829e977d`와 event gate `7ac859a59`도 그대로다. 모든 precommit build/test session의 actual terminal 종료 후 이 기록을 작성했으며 새 clean 제품 및 headless GUI 검증은 기능 커밋 push 뒤 진행한다. 원본 disassembly·red/green·final test JSON·오류 로그는 `/private/tmp/opennox-food-arrival.SZp6pW`에 보존한다. 무제한 ARM64 포팅 목표는 미완료다.
+
 ## MOVE_TO 공통 경로의 push/RNG·live 상태 순서 복원
 
 Quest20 RNG 후속 조사에서 공유 MOVE_TO 본체의 실제 원본 불일치를 별도로 발견했다. GAME.EXE `00544527/00544588`은 TIME/WAIT push가 성공한 뒤에만 Logic RNG를 호출한다. 기존 Go 코드는 push 인자를 먼저 계산해 꽉 찬 native AI 스택에서도 두 draw를 소비했다. `0054452B/0054458C`의 push 후 FPS 1회 읽기·signed DWORD bounds, `00544547/005445A4`의 RNG 후 frame 읽기, `005444E8`의 entry frame 재사용도 복원했다. `00544571`은 callback 후 entry-cached update의 Field71 low byte를 다시 읽으며, `00544502`는 path-reset 후 cached head의 live X/Y를 사용한다. 해당 순서도 맞췄다. 이동 가능 판정 `00534324..0053433F`와 상수 `00583A9C=3C23D70A`를 대조해 NaN 속도를 원본처럼 이동 불가로 처리한다.

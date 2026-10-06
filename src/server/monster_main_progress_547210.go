@@ -39,9 +39,14 @@ func (s *Server) monsterMainDodgeServicesAvailable547210(unit *Object, update *M
 func (s *Server) monsterMainProgressTail547210(unit *Object, update *MonsterUpdateData, head *AIStackItem, runtime MonsterMainRuntime547210) bool {
 	switch head.Type() {
 	case ai.ACTION_MOVE_TO, ai.ACTION_FAR_MOVE_TO, ai.ACTION_MOVE_TO_HOME, ai.ACTION_ROAM, ai.ACTION_FLEE:
-		dx := float64(math.Float32frombits(update.Field125)) - float64(unit.PosVec.X)
-		dy := float64(math.Float32frombits(update.Field126)) - float64(unit.PosVec.Y)
-		if dx*dx+dy*dy > 225 {
+		// 00547A19..00547A35 retains each operation at precision 53.
+		// Gameplay's 0043E2C1 control word selects round-toward-zero;
+		// preserve those boundaries without contracting the sum into FMA.
+		dx := monsterMoveToRunAddChop53_544434(float64(math.Float32frombits(update.Field125)), -float64(unit.PosVec.X))
+		dy := monsterMoveToRunAddChop53_544434(float64(math.Float32frombits(update.Field126)), -float64(unit.PosVec.Y))
+		ySquared := monsterMoveToRunSquareChop53_544434(dy)
+		xSquared := monsterMoveToRunSquareChop53_544434(dx)
+		if monsterMoveToRunAddChop53_544434(ySquared, xSquared) > 225 {
 			update.Field124 = s.Frame()
 			update.Field125 = math.Float32bits(unit.PosVec.X)
 			update.Field126 = math.Float32bits(unit.PosVec.Y)

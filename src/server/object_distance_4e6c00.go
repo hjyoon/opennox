@@ -11,7 +11,13 @@ func objectDistanceShapeExtent4E6C00(shape *Shape) float64 {
 		return float64(shape.Circle.R)
 	case ShapeKindBox:
 		width := float64(shape.Box.W) * 0.5
-		height := shape.Box.H * 0.5
+		// 004E6C54/004E6CA1 spill height/2 under x87 ToZero, including
+		// odd subnormal significands. Width/2 stays in the register.
+		exactHeight := float64(shape.Box.H) * 0.5
+		height := float32(exactHeight)
+		if math.Abs(float64(height)) > math.Abs(exactHeight) {
+			height = math.Nextafter32(height, 0)
+		}
 		if width > float64(height) {
 			return width
 		}

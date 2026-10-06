@@ -169,8 +169,7 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 		case ai.DEPENDENCY_IS_ENCHANTED:
 			ok = u.HasEnchant(server.EnchantID(st.Args[0]))
 		case ai.DEPENDENCY_ENEMY_CLOSER_THAN:
-			enemy := asObjectS(ud.CurrentEnemy)
-			ok = enemy != nil && nox_xxx_calcDistance_4E6C00(u, enemy) <= st.ArgF32(0)
+			ok = aiDependencyEnemyDistance546E8E(u, ud, st, true)
 		case ai.DEPENDENCY_NOT_HEALTHY:
 			h := u.HealthData
 			perc := float32(1.0)
@@ -185,10 +184,7 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 				ok = false
 			}
 		case ai.DEPENDENCY_ENEMY_FARTHER_THAN:
-			enemy := asObjectS(ud.CurrentEnemy)
-			if enemy != nil && nox_xxx_calcDistance_4E6C00(u, enemy) < st.ArgF32(0) {
-				ok = false
-			}
+			ok = aiDependencyEnemyDistance546E8E(u, ud, st, false)
 		case ai.DEPENDENCY_UNDER_CURSOR:
 			if hu := a.s.Players.HostUnit(); hu == nil || legacy.Nox_xxx_findObjectAtCursor_54AF40(hu) != u {
 				ok = false

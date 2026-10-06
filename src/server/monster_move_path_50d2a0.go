@@ -168,12 +168,19 @@ func monsterCreatureSetMovePath50D5A0(unit *Object, target types.Pointf, hooks m
 		return false
 	}
 	update := unit.UpdateDataMonster()
-	dx := float64(target.X) - float64(unit.PosVec.X)
-	dy := float64(target.Y) - float64(unit.PosVec.Y)
-	distance := math.Sqrt(dx*dx + dy*dy)
+	// 0050D5BA..0050D5EB retain the differences and both squares at
+	// precision 53 with chop rounding; unlike 0050D3B0, there is no
+	// binary32 spill. Preserve Y-square, X-square, sum and square-root order.
+	dx := monsterMoveToRunAddChop53_544434(float64(target.X), -float64(unit.PosVec.X))
+	dy := monsterMoveToRunAddChop53_544434(float64(target.Y), -float64(unit.PosVec.Y))
+	ySquare := monsterMoveToRunSquareChop53_544434(dy)
+	xSquare := monsterMoveToRunSquareChop53_544434(dx)
+	square := monsterMoveToRunAddChop53_544434(ySquare, xSquare)
+	distance := monsterMoveForceSqrtChop53_50D50C(square)
+	biasedDistance := monsterMoveToRunAddChop53_544434(distance, monsterMoveDistanceBias50D3B0)
 	// 0050D5F3 tests C0|C3 after comparing against eight. The x87
 	// unordered result therefore shares the original arrival branch.
-	if math.IsNaN(distance) || distance+monsterMoveDistanceBias50D3B0 <= 8.0 {
+	if math.IsNaN(biasedDistance) || biasedDistance <= 8.0 {
 		return true
 	}
 
@@ -187,10 +194,13 @@ func monsterCreatureSetMovePath50D5A0(unit *Object, target types.Pointf, hooks m
 				X: math.Float32frombits(update.Field92),
 				Y: math.Float32frombits(update.Field93),
 			}
-			waypointDX := float64(lastWaypointTarget.X) - float64(target.X)
-			waypointDY := float64(lastWaypointTarget.Y) - float64(target.Y)
+			waypointDX := monsterMoveToRunAddChop53_544434(float64(lastWaypointTarget.X), -float64(target.X))
+			waypointDY := monsterMoveToRunAddChop53_544434(float64(lastWaypointTarget.Y), -float64(target.Y))
+			waypointYSquare := monsterMoveToRunSquareChop53_544434(waypointDY)
+			waypointXSquare := monsterMoveToRunSquareChop53_544434(waypointDX)
+			waypointSquare := monsterMoveToRunAddChop53_544434(waypointYSquare, waypointXSquare)
 			if update.Field74 == 0 || frame-update.Field70 > 10 &&
-				waypointDX*waypointDX+waypointDY*waypointDY > 10000.0 {
+				waypointSquare > 10000.0 {
 				_, status, statusSet := monsterBuildMoveWaypointPath50D2A0(unit, target, hooks.findWaypoint)
 				if statusSet && hooks.setPathStatus != nil {
 					hooks.setPathStatus(status)
@@ -209,10 +219,13 @@ func monsterCreatureSetMovePath50D5A0(unit *Object, target types.Pointf, hooks m
 			}
 		}
 	} else {
-		lastDX := float64(update.Field68.X) - float64(target.X)
-		lastDY := float64(update.Field68.Y) - float64(target.Y)
+		lastDX := monsterMoveToRunAddChop53_544434(float64(update.Field68.X), -float64(target.X))
+		lastDY := monsterMoveToRunAddChop53_544434(float64(update.Field68.Y), -float64(target.Y))
+		lastYSquare := monsterMoveToRunSquareChop53_544434(lastDY)
+		lastXSquare := monsterMoveToRunSquareChop53_544434(lastDX)
+		lastSquare := monsterMoveToRunAddChop53_544434(lastYSquare, lastXSquare)
 		if pathCount == 0 || frame-update.Field70 > 10 &&
-			lastDX*lastDX+lastDY*lastDY > 2500.0 {
+			lastSquare > 2500.0 {
 			if hooks.setDetailedPath != nil {
 				hooks.setDetailedPath(unit, &target)
 			}

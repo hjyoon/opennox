@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Toxic Cloud cast `0052DB60`의 native-width 진입 복원
+
+사용자 Linux 로그의 caster `0x7fb555dd5b10`이 `0x55dd5b10`으로 잘린 뒤 +0x3c에서 충돌하는 경로를 확인했다. 기존 public Go wrapper가 호출하던 C 본체의 owner/caster/SpellAcceptArg가 모두 int였다. 고주소 C-owned records로 같은 public entry를 subprocess에서 직접 호출한 red는 실제 CGo SIGSEGV·child exit 2·test exit 1이며, macOS에서는 caster `0x127606870`의 low DWORD +0x38인 `0x276068a8`에 fault했다. 기대값이나 cast/trace 결과를 바꿔 red를 만들지 않았다.
+
+기존 production 본체 변경은 `legacy.Nox_xxx_castToxicCloud_52DB60` 하나다. 새 Go model에 연결해 pointer 폭을 보존하고 실제 shared cache `5D4594+2487808`은 DWORD로 유지했다. SHA-256으로 검증한 원본 GAME.EXE `0052DB60..0052DC78`을 read-only 대조했다. zero-cache lookup/publish → position snapshot → trace flags 9 → live cache reload/allocation → cached cloud update/owner placement → balance/FPS/duration → object audio 순서, blocked live Player BYTE notification 0/2, allocation nil에서도 sound lookup/audio·success 1을 유지한다. second/argument Obj/level은 원본처럼 사용하지 않으며 별도 admission/level scaling/owner gate를 추가하지 않는다. 원본 C 본체·header·sealed range/manifest/asset은 변경하지 않았다.
+
+원본 `00419D40`의 FLDS balance, `0052DC3F` signed-DWORD FIMUL와 단 한 번 binary32 FSTPS, `00419A70`의 control-word reset 없는 FISTP를 대조했다. CRT precision 53과 gameplay frame round-toward-zero를 국소 계산으로 보존하며 FMA는 곱셈 residual에만 사용한다. 독립 big.Float 53/24-bit ToZero 모델과 NaN/Inf·signed FPS·integer overflow·절삭 tie 등 348 조합 및 literal 결과를 비교한다. 외부 FPU context나 전체 float domain의 증명으로 확대하지 않는다.
+
+새 388 leaf는 high-address native entry·실제 empty-map trace/type/audio·unused levels, callback의 cache/position/update/class 변화, full DWORD cache·allocation failure·retry·fault-prefix와 수명 계산을 검사한다. 최초 green과 최종 일반·실제 cgocheck2·race·checkptr=2·highres·server-tag 각 3회가 actual exit 0이다. 최종 기존 ToxicCloudUpdate 포함 matrix는 각 1,242 pass, 합계 7,452 pass·fail/skip 0이며 새 테스트만 6,984 pass다. 전체 root/server/legacy/gui/input/noxrender/dialog 일반과 strict는 각각 32,956 leaf pass·fail 0, 기존 15 skip identity가 정확히 같다. strict header는 Go 1.26.5·cgocheck2·CGO_ENABLED=1이다. AST audit는 기존 본체 1개, oracle-test는 code 2,935/data 638·stock 1,556파일/570,653,750바이트와 기존 tree SHA-256·strict NXZ 불변을 확인했다.
+
+앞선 clean `834fa88d5`의 일반·HD Repeat 실제 재생 두 번/busy 억제/Done 종료와 AI 선공격 각 16사례의 실제 native exit 0 검증도 마무리했다. 위 Toxic Cloud 계약 검사를 stock world cast/GUI 증명으로 혼동하지 않으며 clean 제품과 해당 headless 관찰은 커밋·push 뒤 별도 검증한다. 모든 precommit build/test session 종료 뒤 이 기록을 작성했다. red/green·matrix·전체 test JSON·oracle 로그는 `/private/tmp/opennox-toxic-cloud.ZjrFm0`에 보존한다. Quest20 stage-3 순서와 passive RETREAT 음식 소비 실패, 전체 ARM64 포팅 목표는 미완료다.
+
 ## MainAI 진행 거리의 ARM64 FMA·chop 경계 복원
 
 clean `5a9fa8426`의 ARM64 MainAI progress tail에서 X-square와 Y-square의 합이 FMADDD로 결합됨을 직접 확인했다. 원본 GAME.EXE `00547A19..00547A35`는 old/live X·Y 차, Y-square, X-square, FADDP를 각각 계산하고 225와 ordered strict greater를 비교한다. CRT `004031F2→004020D3→0040209E/0040217B`의 precision 53과 gameplay frame `0043E2C1`의 round-toward-zero도 다시 대조했다. 기존 production 본체 `monsterMainProgressTail547210` 하나에서 이미 검증된 local chop helper를 재사용한다. thread FPU 환경을 바꾸지 않으며 FMA는 helper의 square residual 판정에만 쓰고 거리 합을 contract하지 않는다. cached progress/head·action gate·half-FPS unsigned timeout·frustration/RNG 및 음식/무기 tail은 그대로다.

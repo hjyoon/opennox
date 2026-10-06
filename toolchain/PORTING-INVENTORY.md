@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Toxic Cloud script/NPC의 stock world 관찰 시나리오
+
+기능 수정 `7028a700d` 뒤 새 `host-game-toxic-cloud-spell.yaml`과 독립 관찰 fixture를 추가한다. 기존 production 본체 변경은 `*e2eScenario.Load`의 새 action dispatch 하나뿐이며 Toxic Cloud cast/update/damage/poison 본체는 다시 바꾸지 않는다. 위치→위치 기본-power script API의 실제 ImaginaryCaster, 플레이어 object→position script level 1..5, 정상 tick/animation/cast-frame을 통과하는 NPC CAST_ON_OBJECT를 각각 구분한다. 위치 API 검사는 보고된 acceptance 경로를 사용하지만 전체 VM builtin 0x86/timer 실행이라고 주장하지 않는다. player incantation/mana·NPC autonomous spell selection도 관찰 범위가 아니다.
+
+stock Wizard host에서 Troll 위치/내구도/WAIT와 host-owned NPC의 배치만 준비한다. 실제 구름 생성/ownership·4GiB 위 object/update pointer·원본 수명 계산·cast object audio, 실제 server poison-type HP 감소와 client HP notification, 자연 duration countdown 및 world/owned list/client drawable 소멸을 읽는다. 구름/Duration/HP 결과/Poison540/animation frame/aim RNG/packet/pixel을 쓰지 않으며 cleanup은 구름의 자연 소멸 뒤 fixture unit만 제거한다. screenshot은 private diagnostic PNG다. 원본/기존 public YAML·golden·개인 Save/config는 변경하지 않는다.
+
+새 관찰 계약 검사 56 leaf는 mode/level bounds, bounded 10-step schedule, 독립 big.Float precision 53/24 ToZero의 literal 수명 결과, public YAML 7개 unique fixture/dispatch, AST result-write 금지 및 실제 ImaginaryCaster/ownership/enemy/animation 경로를 확인한다. 기존 Toxic Cloud 회귀와 함께 일반·실제 cgocheck2·race·checkptr=2·highres·server-tag 각각 3회는 각 1,410 pass, 합계 8,460 pass·fail/skip 0·actual exit 0이다. 전체 7 package 일반/strict는 각 33,012 leaf pass·fail 0이고 baseline 15 skip identity가 정확히 같다. strict header는 Go 1.26.5·cgocheck2·CGO_ENABLED=1이다.
+
+초기 full 일반/strict 및 server-tag는 디스크 공간 부족으로 compiler/linker가 중단한 actual exit 1이며 성공 수에 넣지 않는다. 실패 JSON을 보존하고, 검증한 task-owned `/private/tmp/opennox-gocache`의 재생성 가능한 Go build cache만 `go clean -cache`로 정리했다. source/asset/Save는 삭제하지 않았다. 중단한 세 검사의 동일 소스를 `-p 2`로 직렬 재실행한 결과가 위 최종 성공이며 기대값이나 검사 범위를 완화하지 않았다. oracle-test는 stock 1,556파일/570,653,750바이트·기존 tree SHA-256, GAME.EXE code 2,935/data 638·strict NXZ 불변을 actual exit 0으로 유지했다.
+
+모든 build/test session의 terminal 종료를 확인한 뒤 이 기록을 작성했다. clean 일반/HD/server 제품과 해당 native headless 관찰은 커밋·즉시 push 뒤 별도 실행하며 위 unit/AST 검사를 world 성공으로 집계하지 않는다. test JSON/stderr·oracle 및 isolated headless runner는 `/private/tmp/opennox-toxic-cloud.ZjrFm0`에 보존한다. 앞선 Repeat 검증은 마무리됐으나 passive RETREAT 음식 소비·Quest20 stage-3 순서 및 전체 ARM64 포팅 목표는 여전히 미완료다.
+
 ## Toxic Cloud cast `0052DB60`의 native-width 진입 복원
 
 사용자 Linux 로그의 caster `0x7fb555dd5b10`이 `0x55dd5b10`으로 잘린 뒤 +0x3c에서 충돌하는 경로를 확인했다. 기존 public Go wrapper가 호출하던 C 본체의 owner/caster/SpellAcceptArg가 모두 int였다. 고주소 C-owned records로 같은 public entry를 subprocess에서 직접 호출한 red는 실제 CGo SIGSEGV·child exit 2·test exit 1이며, macOS에서는 caster `0x127606870`의 low DWORD +0x38인 `0x276068a8`에 fault했다. 기대값이나 cast/trace 결과를 바꿔 red를 만들지 않았다.

@@ -9926,6 +9926,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckMeteorSpell(l.Count, l.Text, l.Name)
+		case "check-toxic-cloud-spell":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckToxicCloudSpell(l.Count, l.Text, l.Name)
 		case "check-meteor-player-damage":
 			if dt != 0 {
 				sc.Wait(dt, "")

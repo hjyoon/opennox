@@ -93,6 +93,35 @@ func TestE2ECleansingFlameTerminationRequiresActualOriginalStop(t *testing.T) {
 	}
 }
 
+func TestE2ECleansingFlameTerminationsRequireEveryActualStop(t *testing.T) {
+	for _, tc := range []struct {
+		name           string
+		flames         []e2eCleansingFlameRecord
+		expired, early int
+		want           bool
+	}{
+		{"no flames", nil, 0, 0, false},
+		{"deadline", []e2eCleansingFlameRecord{{removed: true, termination: "deadline"}}, 1, 0, true},
+		{"wall before deadline", []e2eCleansingFlameRecord{{removed: true, termination: "blocked-ray"}}, 0, 1, true},
+		{"stationary before deadline", []e2eCleansingFlameRecord{{removed: true, termination: "stationary"}}, 0, 1, true},
+		{"all original stops", []e2eCleansingFlameRecord{
+			{removed: true, termination: "deadline"}, {removed: true, termination: "blocked-ray"},
+			{removed: true, termination: "stationary"},
+		}, 1, 2, true},
+		{"missing actual deletion witness", []e2eCleansingFlameRecord{{removed: true}}, 0, 1, false},
+		{"unknown early deletion", []e2eCleansingFlameRecord{{removed: true, termination: "forced"}}, 0, 1, false},
+		{"still in world", []e2eCleansingFlameRecord{{termination: "deadline"}}, 1, 0, false},
+		{"misclassified removal", []e2eCleansingFlameRecord{{removed: true, termination: "blocked-ray"}}, 1, 0, false},
+		{"missing removal count", []e2eCleansingFlameRecord{{removed: true, termination: "deadline"}}, 0, 0, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := e2eCleansingFlameTerminationsComplete(tc.flames, tc.expired, tc.early); got != tc.want {
+				t.Fatalf("complete=%t want=%t", got, tc.want)
+			}
+		})
+	}
+}
+
 func TestE2ECleansingFlameStockTypes(t *testing.T) {
 	for _, name := range []string{"SmallFlameCleanse", "MediumFlameCleanse", "FlameCleanse", "LargeFlameCleanse",
 		"SmallBlueFlameCleanse", "MediumBlueFlameCleanse", "BlueFlameCleanse", "LargeBlueFlameCleanse"} {

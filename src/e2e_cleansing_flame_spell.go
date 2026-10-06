@@ -82,6 +82,27 @@ func e2eCleansingFlameTermination(input e2eCleansingFlameUpdateInput, deadline, 
 	return ""
 }
 
+func e2eCleansingFlameTerminationsComplete(flames []e2eCleansingFlameRecord, expired, early int) bool {
+	if len(flames) == 0 {
+		return false
+	}
+	deadlines, stops := 0, 0
+	for _, p := range flames {
+		if !p.removed {
+			return false
+		}
+		switch p.termination {
+		case "deadline":
+			deadlines++
+		case "blocked-ray", "stationary":
+			stops++
+		default:
+			return false
+		}
+	}
+	return deadlines == expired && stops == early
+}
+
 type e2eCleansingFlameFixture struct {
 	level, castAudio, expired, early int
 	mode                             string
@@ -425,7 +446,7 @@ func (f *e2eCleansingFlameFixture) complete() bool {
 			f.hit, f.predicted(), f.natural, castAction)
 	}
 	if !f.hit || !f.predicted() || f.castAudio != 1 || f.expired+f.early != len(f.flames) ||
-		f.expired == 0 || len(f.ownedFlames()) != 0 ||
+		!e2eCleansingFlameTerminationsComplete(f.flames, f.expired, f.early) || len(f.ownedFlames()) != 0 ||
 		f.mode != "red-player" && (!f.natural || f.caster.MonsterActionIsScheduled(ai.ACTION_CAST_SPELL_ON_OBJECT)) {
 		return false
 	}

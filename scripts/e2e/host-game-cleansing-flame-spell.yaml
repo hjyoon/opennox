@@ -1,0 +1,95 @@
+# Stock Wizard startup. Five red player script powers, then a normal animated
+# NPC red cast at the player and an NPC blue mana cast. Setup only places
+# durable targets and WAIT actions. No flame, RNG, cast-frame, damage, mana,
+# packet, drawable, expiry or pixel result is supplied. Captures are private.
+# This does not simulate player incantation or autonomous NPC spell choice.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-cleansing-flame-spell
+    count: 1
+    text: red-player
+    name: Cleansing Flame player level one
+  - action: check-cleansing-flame-spell
+    count: 2
+    text: red-player
+    name: Cleansing Flame player level two
+  - action: check-cleansing-flame-spell
+    count: 3
+    text: red-player
+    name: Cleansing Flame player level three
+  - action: check-cleansing-flame-spell
+    count: 4
+    text: red-player
+    name: Cleansing Flame player level four
+  - action: check-cleansing-flame-spell
+    count: 5
+    text: red-player
+    name: Cleansing Flame player level five
+  - action: check-cleansing-flame-spell
+    count: 0
+    text: red-npc
+    name: Cleansing Flame animated NPC to player
+  - action: check-cleansing-flame-spell
+    count: 0
+    text: blue-npc
+    name: Cleansing Mana Flame animated NPC to player
+  - action: quit
+    dt: 1

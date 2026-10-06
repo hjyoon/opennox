@@ -236,3 +236,71 @@ func TestE2ECleansingFlameCastFollowsServerPacketReset(t *testing.T) {
 		t.Fatalf("queued=%d actual-casts=%d publications=%d", queued, casts, publishes)
 	}
 }
+
+func TestE2ECleansingFlameRemovalNeverReadsPlayerAI(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_cleansing_flame_spell.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	isNPCGuard := func(expr ast.Expr) bool {
+		binary, ok := expr.(*ast.BinaryExpr)
+		if !ok || binary.Op != token.NEQ {
+			return false
+		}
+		mode, ok := binary.X.(*ast.SelectorExpr)
+		if !ok || mode.Sel.Name != "mode" {
+			return false
+		}
+		value, ok := binary.Y.(*ast.BasicLit)
+		return ok && value.Kind == token.STRING && value.Value == `"red-player"`
+	}
+	guarded := make(map[*ast.CallExpr]bool)
+	var complete *ast.FuncDecl
+	for _, decl := range file.Decls {
+		if fn, ok := decl.(*ast.FuncDecl); ok && fn.Name.Name == "complete" {
+			complete = fn
+		}
+	}
+	if complete == nil {
+		t.Fatal("missing actual removal observer")
+	}
+	ast.Inspect(complete.Body, func(n ast.Node) bool {
+		var body ast.Node
+		switch n := n.(type) {
+		case *ast.IfStmt:
+			if isNPCGuard(n.Cond) {
+				body = n.Body
+			}
+		case *ast.BinaryExpr:
+			if n.Op == token.LAND && isNPCGuard(n.X) {
+				body = n.Y
+			}
+		}
+		if body != nil {
+			ast.Inspect(body, func(n ast.Node) bool {
+				if call, ok := n.(*ast.CallExpr); ok {
+					if sel, ok := call.Fun.(*ast.SelectorExpr); ok && sel.Sel.Name == "MonsterActionIsScheduled" {
+						guarded[call] = true
+					}
+				}
+				return true
+			})
+		}
+		return true
+	})
+	calls := 0
+	ast.Inspect(complete.Body, func(n ast.Node) bool {
+		if call, ok := n.(*ast.CallExpr); ok {
+			if sel, ok := call.Fun.(*ast.SelectorExpr); ok && sel.Sel.Name == "MonsterActionIsScheduled" {
+				calls++
+				if !guarded[call] {
+					t.Error("removal observer reads MonsterUpdateData for a player")
+				}
+			}
+		}
+		return true
+	})
+	if calls != 2 {
+		t.Fatalf("NPC removal/action observations=%d want=2", calls)
+	}
+}

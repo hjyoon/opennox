@@ -360,9 +360,13 @@ func (f *e2eCleansingFlameFixture) complete() bool {
 				client++
 			}
 		}
+		castAction := false
+		if f.mode != "red-player" {
+			castAction = f.caster.MonsterActionIsScheduled(ai.ACTION_CAST_SPELL_ON_OBJECT)
+		}
 		e2eLog.Printf("CLEANSING FLAME REMOVAL STATE: mode=%s requested=%d age=%d spawned=%d expired=%d early=%d owned=%d world=%d client=%d hit=%t predicted=%t natural-NPC=%t cast-action=%t",
 			f.mode, f.level, age, len(f.flames), f.expired, f.early, len(f.ownedFlames()), world, client,
-			f.hit, f.predicted(), f.natural, f.caster.MonsterActionIsScheduled(ai.ACTION_CAST_SPELL_ON_OBJECT))
+			f.hit, f.predicted(), f.natural, castAction)
 	}
 	if !f.hit || !f.predicted() || f.castAudio != 1 || f.expired+f.early != len(f.flames) ||
 		f.expired == 0 || len(f.ownedFlames()) != 0 ||

@@ -171,14 +171,7 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 		case ai.DEPENDENCY_ENEMY_CLOSER_THAN:
 			ok = aiDependencyEnemyDistance546E8E(u, ud, st, true)
 		case ai.DEPENDENCY_NOT_HEALTHY:
-			h := u.HealthData
-			perc := float32(1.0)
-			if h.Max != 0 {
-				perc = float32(h.Cur) / float32(h.Max)
-			}
-			if perc >= ud.ResumeLevel {
-				ok = false
-			}
+			ok = aiDependencyNotHealthy546EC4(u, ud)
 		case ai.DEPENDENCY_WAIT_FOR_STAMINA:
 			if int32(ud.Stamina) >= server.WeaponStaminaByType4F7E80(ud.WeaponEquipFlags) {
 				ok = false

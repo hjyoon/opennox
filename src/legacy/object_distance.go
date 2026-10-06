@@ -1,8 +1,6 @@
 package legacy
 
 import (
-	"math"
-
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -29,19 +27,9 @@ func objectDistanceShapeExtent_4E6C00(shape *server.Shape) float64 {
 }
 
 // objectDistance_4E6C00 returns the distance between object collision
-// surfaces. Position and shape values originate as float32 in GAME.EXE; using
-// float64 here preserves their exact differences and products before sqrt.
+// surfaces with the same retained x87 precision contract as the server entry.
 func objectDistance_4E6C00(a, b *server.Object) float64 {
-	dx := float64(a.PosVec.X) - float64(b.PosVec.X)
-	dy := float64(a.PosVec.Y) - float64(b.PosVec.Y)
-	distance := math.Sqrt(dx*dx + dy*dy)
-	distance -= objectDistanceShapeExtent_4E6C00(&a.Shape)
-	distance -= objectDistanceShapeExtent_4E6C00(&b.Shape)
-	minimum := float64(objectDistanceMinimum4E6C00)
-	// GAME.EXE tests x87 C0 only. C0 is set for both less-than and
-	// unordered comparisons, so a surviving NaN is clamped as well.
-	if math.IsNaN(distance) || distance < minimum {
-		return minimum
-	}
-	return distance
+	// Keep the exported double result and native objects on the same
+	// precision-53/ToZero path as MainAI, including both shape subtractions.
+	return server.ObjectDistance4E6C00(a, b)
 }

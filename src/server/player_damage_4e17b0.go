@@ -497,8 +497,9 @@ func playerDamageMonster4E17B0(
 	if target.ObjFlags.HasAny(object.FlagNoUpdate | object.FlagDead) {
 		return true, false
 	}
+	cloudPoison := playerDamageCloudPoisonShape4E17B0(weapon, typ)
 	frame := uint32(0)
-	if runtime.Frame != nil {
+	if runtime.Frame != nil && (!cloudPoison || target.HasEnchant(playerDamageInvulnerableEnchant4E17B0)) {
 		frame = runtime.Frame()
 	}
 	if target.HasEnchant(playerDamageInvulnerableEnchant4E17B0) {
@@ -519,6 +520,9 @@ func playerDamageMonster4E17B0(
 	greatSword := playerDamageGreatSwordContext4E17B0{
 		weaponFlags: update.WeaponEquipFlags, armorFlags: update.ArmorEquipFlags,
 		marker: &update.Field547, markerType: &update.Field546,
+	}
+	if cloudPoison {
+		return playerDamageMonsterCloudPoison4E17B0(target, source, weapon, update, greatSword, damage, runtime)
 	}
 	// Meteor's radial call passes its terminal owner (or nil), with no
 	// weapon. Case 7 still enters 004E1F84's full armor/carry/wear switch;

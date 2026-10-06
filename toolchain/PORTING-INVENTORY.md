@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## MOVE_TO 공통 경로의 push/RNG·live 상태 순서 복원
+
+Quest20 RNG 후속 조사에서 공유 MOVE_TO 본체의 실제 원본 불일치를 별도로 발견했다. GAME.EXE `00544527/00544588`은 TIME/WAIT push가 성공한 뒤에만 Logic RNG를 호출한다. 기존 Go 코드는 push 인자를 먼저 계산해 꽉 찬 native AI 스택에서도 두 draw를 소비했다. `0054452B/0054458C`의 push 후 FPS 1회 읽기·signed DWORD bounds, `00544547/005445A4`의 RNG 후 frame 읽기, `005444E8`의 entry frame 재사용도 복원했다. `00544571`은 callback 후 entry-cached update의 Field71 low byte를 다시 읽으며, `00544502`는 path-reset 후 cached head의 live X/Y를 사용한다. 해당 순서도 맞췄다. 이동 가능 판정 `00534324..0053433F`와 상수 `00583A9C=3C23D70A`를 대조해 NaN 속도를 원본처럼 이동 불가로 처리한다.
+
+기존 production 본체 변경은 `monsterActionMoveToForAction5443F0` 하나다. MOVE_TO/HOME/FAR와 FAR에서 FIGHT로 바뀌는 기존 공유 경로를 유지한다. tracked object가 nonnil이면 arrival pop을 억제하는 원래 조건은 변경하지 않았다. RETREAT/PICKUP 실패를 숨기려고 이 조건을 제거하거나 action/HP/food 선택을 주입하지 않는다.
+
+새 C-owned 4GiB 위 fixture 148 leaf는 raw speed 16종×4 action, 실제 서버 스택의 free slot 0..3과 실제 Logic/Other RNG, callback 순서·signed FPS overflow·DWORD deadline, status-1 unsigned timeout 경계, cached update 교체/live low byte 및 live arrival 좌표를 검사한다. 수정 전 실제 exit 1에 92 fail·56 pass, 수정 후 같은 기대값의 148 leaf가 전부 pass다. 관련 이동/정지 focused 일반·strict·highres 각 3회 5,421 leaf, server-tag 3회 5,412 leaf, 새 native 회귀 race/checkptr=2 각 3회 444 leaf가 모두 actual terminal exit 0·fail/skip 0이다. 합계 22,563 pass이며 새 148개만 6모드×3회 2,664 pass다.
+
+전체 root/server/legacy/gui/input/noxrender/dialog 일반·실제 cgocheck2는 각각 32,343 leaf pass·fail 0이고 이전 15 skip의 identity도 정확히 같다. AST audit는 기존 production 본체 1개를 확인했다. 원본 oracle-test는 code 2,935/data 638, strict NXZ와 stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 그대로 통과했다. public YAML·oracle range/manifest·stock asset·Quest seed/history를 변경하지 않았다.
+
+이 수정은 별개의 원본 계약 회복이다. 앞 항목의 Quest20 stage-3 고정 맵 순서와 passive RETREAT→MOVE_TO→PICKUP 실제 world의 미완료를 해결했다고 주장하지 않는다. Repeat 사용자 수정 `b829e977d`와 event gate `7ac859a59`는 그대로이며 전체 테스트에 포함된다. 커밋·푸시 후 clean 세 제품 빌드와 headless 실제 회귀 결과는 별도로 기록한다.
+
 ## Quest20 RNG 최초 분기 추적·native 정지 회귀·Repeat 클린 확인
 
 이전 항목에 미확정으로 남긴 Quest20의 최초 RNG 차이를 별도 read-only 진단으로 추적했다. 현재 `f9f148a70`과 과거 `6c4eea974eeaa5cc7773035caf8a05444fdc2374`를 같은 public YAML로 실행했으며 첫 두 selector의 history·clock·Logic/Other index와 결과 `g_templd→g_castld`는 같았다. stage 2의 다음 selector 직전 Other index 3905와 history도 같지만 Logic은 현재 2754/과거 2712다. selector에서 현재 `g_crypts`, 과거 `g_lotdd`를 선택하는 +42 draw 차이는 selector 자체나 stage 초기 RNG reset의 차이가 아니다. 최초로 다른 event 5881은 frame 996, Logic index 1496에서 현재 MainAI의 `Random(0,100)`과 `Random(15,60)`이 추가되는 지점이다. 이후 stage-2 집계 차이는 MainAI int +24·float +4, MOVE_TO +11, sight +3이며 나머지 종류의 event 수는 양쪽 모두 43,621개다. 이 집계가 모든 후속 AI 분기의 원본 동등성을 증명하는 것은 아니다.

@@ -33,7 +33,7 @@ func monsterActionMoveToForAction5443F0(unit *Object, action ai.ActionType, hook
 	if head == nil || head.Type() != action {
 		return false
 	}
-	if unit.SpeedBase < 0.0099999998 {
+	if !(unit.SpeedBase >= 0.0099999998) {
 		hooks.pop()
 		return true
 	}
@@ -52,25 +52,34 @@ func monsterActionMoveToForAction5443F0(unit *Object, action ai.ActionType, hook
 	}
 	if hooks.setMovePath(unit, target) {
 		status := byte(update.Field71)
-		retry := status == 2 || status == 1 && hooks.frame()-update.Field135 < 5*hooks.tickRate()
+		frame := hooks.frame()
+		retry := status == 2 || status == 1 && frame-update.Field135 < 5*hooks.tickRate()
 		if status == 1 {
-			update.Field135 = hooks.frame()
+			update.Field135 = frame
 		}
 		pathReset := false
 		if status == 0 && hooks.pathReset != nil {
 			pathReset = hooks.pathReset()
 		}
 		if status == 0 && !pathReset && head.ArgObj(2) == nil {
-			unit.Direction2 = DirFromVec(target.Sub(unit.PosVec))
+			unit.Direction2 = DirFromVec(head.ArgPos(0).Sub(unit.PosVec))
 			hooks.pop()
 		}
 		if retry {
-			hooks.push(ai.DEPENDENCY_TIME, hooks.frame()+uint32(hooks.random(2*int(hooks.tickRate()), 4*int(hooks.tickRate()))))
+			if timed := hooks.push(ai.DEPENDENCY_TIME); timed != nil {
+				fps := hooks.tickRate()
+				delay := hooks.random(int(int32(2*fps)), int(int32(4*fps)))
+				timed.SetArgs(hooks.frame() + uint32(delay))
+			}
 			hooks.push(ai.ACTION_RANDOM_WALK)
 			update.StatusFlags |= object.MonStatusFrustrated
 		}
-		if status != 0 {
-			hooks.push(ai.ACTION_WAIT, hooks.frame()+uint32(hooks.random(int(hooks.tickRate()/2), int(hooks.tickRate()))))
+		if byte(update.Field71) != 0 {
+			if waited := hooks.push(ai.ACTION_WAIT); waited != nil {
+				fps := hooks.tickRate()
+				delay := hooks.random(int(fps>>1), int(int32(fps)))
+				waited.SetArgs(hooks.frame() + uint32(delay))
+			}
 		}
 	}
 	if hooks.moveAudio != nil {

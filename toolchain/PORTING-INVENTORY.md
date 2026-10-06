@@ -10,7 +10,17 @@ Quest20 RNG 후속 조사에서 공유 MOVE_TO 본체의 실제 원본 불일치
 
 전체 root/server/legacy/gui/input/noxrender/dialog 일반·실제 cgocheck2는 각각 32,343 leaf pass·fail 0이고 이전 15 skip의 identity도 정확히 같다. AST audit는 기존 production 본체 1개를 확인했다. 원본 oracle-test는 code 2,935/data 638, strict NXZ와 stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 그대로 통과했다. public YAML·oracle range/manifest·stock asset·Quest seed/history를 변경하지 않았다.
 
-이 수정은 별개의 원본 계약 회복이다. 앞 항목의 Quest20 stage-3 고정 맵 순서와 passive RETREAT→MOVE_TO→PICKUP 실제 world의 미완료를 해결했다고 주장하지 않는다. Repeat 사용자 수정 `b829e977d`와 event gate `7ac859a59`는 그대로이며 전체 테스트에 포함된다. 커밋·푸시 후 clean 세 제품 빌드와 headless 실제 회귀 결과는 별도로 기록한다.
+이 수정은 별개의 원본 계약 회복이다. 앞 항목의 Quest20 stage-3 고정 맵 순서와 passive RETREAT→MOVE_TO→PICKUP 실제 world의 미완료를 해결했다고 주장하지 않는다. Repeat 사용자 수정 `b829e977d`와 event gate `7ac859a59`는 그대로이며 전체 테스트에 포함된다.
+
+기능 커밋 `d280d5a4598647936220d80a7ef9abeffbd90f9a`를 실제 exit 0으로 origin에 푸시한 뒤 clean `make build-darwin-arm64`를 53.510691375초·actual exit 0으로 완료했다. 일반·HD·server 세 제품 모두 Go 1.26.5/Mach-O arm64, 해당 full revision 및 `vcs.modified=false`이며 각각 `-h`와 실행 전·후 all-product verifier가 actual exit 0이다. 실제 Repeat 이름을 포함하는 `^Test(NPCDialog|E2ENPCDialogRepeat)`를 clean 일반/실제 cgocheck2에서 각각 3회 실행해 300 leaf pass·fail/skip 0·actual exit 0을 확인했다.
+
+2026-10-06 clean 일반·HD의 Repeat를 real OpenAL Soft null headless로 직렬 실행했다. stock 음성 `f1cap12k`의 자연 종료 뒤 실제 버튼 입력으로 두 번 재생하고 각 재생 중 같은 버튼을 다시 눌렀다. 두 world 모두 3회 자연 종료·2회 새 stream·2회 busy same-stream 유지, 대화 text 316바이트/choice 0 불변 및 실제 Done 닫기를 확인하고 actual terminal exit 0으로 끝났다. 일반 root/button/filename은 `0x1600eaf70/0x1600ec070/0x6000025d9940`, HD는 `0x3080a33b0/0x3080a44b0/0x60000208cc70`으로 모두 4GiB 위다. 최종 native playback은 일반 opened/queued/processed `4/763/761`, HD `4/764/762`다. 일반·HD의 원래 대화와 두 번째 replay PNG 네 장을 직접 확인해 한국어 본문·초상·Repeat/Done 버튼이 유지됨을 확인했다. 이는 native decode/buffer 진행 검증이지 실제 스피커 청취 검증은 아니다.
+
+같은 clean 일반·HD로 public `host-game-ai-first-attack.yaml`을 실행해 Spider/Troll/Urchin/NPC × ascending/descending × clear/off-ray-box 16개씩, 총 32개 선제공격 case가 actual terminal exit 0으로 통과했다. incoming-hit 없이 자연 acquire/FIGHT 및 실제 server/client HP 감소를 확인했으며 Urchin missile과 NPC stock 장비도 그대로다. Repeat 두 world와 AI 두 world만 이번 headless 성공 4개로 센다.
+
+나머지 headless 3개는 통과가 아니다. 일반 passive food의 첫 `Troll/ascending/RedApple`은 MOVE_TO 후 food에서 약 2.21 떨어진 위치까지 이동하지만 먹지 못한다. HP 75→80은 자연 회복이며 food가 남은 채 600 tick 소비 대기 assertion으로 actual exit 2다. 일반·HD Quest20은 두 map `g_templd→g_castld` 다음 stage 3에서 예상 `g_lotdd` 대신 `g_crypts`를 선택해 각각 actual exit 2다. 이때 HP 450/450, connected=true, loading/briefing=false, server/client/draw code 2다. 세 실패는 관찰된 assertion이고 새 SIGSEGV는 없었으며, 8개 food case나 20-stage 완료로 집계하지 않는다. 원본에서 요구하는 RNG 및 nonnil tracked-object arrival 조건을 약화해 기대 맵/PICKUP을 강제하지 않았다.
+
+7개 world 모두 public YAML과 byte-identical인 private 사본 및 새 Save/config/maps로 직렬 실행했으며 개인 Save/config는 사용하지 않았다. NOX_DATA/NOX_E2E_OVERRIDE는 unset이고 Repeat 외 world는 mock audio다. 각 실행의 실제 terminal exit를 확인한 뒤에만 다음 world/수정을 진행했다. 실행 전·후 tracked src/scripts/toolchain SHA-256 목록은 동일하며 후속 oracle-test도 code 2,935/data 638·strict NXZ·stock tree를 다시 actual exit 0으로 통과했다. 원본 oracle/manifest/range/stock asset/public YAML/Quest seed와 HP 기대값은 변경하지 않았다. 로그·test JSON·private runner 및 source hash 증거는 `/private/tmp/opennox-move-retry.hFke0S`에 보존했다. Quest20 맵 순서와 passive food PICKUP 미완료는 별도 후속 조사로 남긴다.
 
 ## Quest20 RNG 최초 분기 추적·native 정지 회귀·Repeat 클린 확인
 

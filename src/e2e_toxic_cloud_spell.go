@@ -77,11 +77,15 @@ func (f *e2eToxicCloudFixture) prepare() {
 		return
 	}
 	f.source = origin
-	f.target = noxServer.NewObjectByTypeID("Troll")
-	if f.target == nil || f.target.HealthData == nil || f.target.UpdateData == nil {
-		e2eError(fmt.Errorf("Toxic Cloud requires the stock Troll target"))
+	// The stock Troll has IMMUNE_POISON (0x200). Use an ordinary stock
+	// Wolf and verify its live subtype, without changing immunity flags.
+	f.target = noxServer.NewObjectByTypeID("Wolf")
+	if f.target == nil || f.target.HealthData == nil || f.target.UpdateData == nil ||
+		!f.target.Class().Has(object.ClassMonster) || f.target.SubClass().Has(0x200) {
+		e2eError(fmt.Errorf("Toxic Cloud requires a stock poison-susceptible Wolf target"))
 		return
 	}
+	fmt.Printf("TOXIC CLOUD TARGET: type=%s class=%#x subclass=%#x poison-immune=false\n", f.target.ObjectTypeC().ID(), uint32(f.target.Class()), uint32(f.target.SubClass()))
 	f.caster = f.host
 	switch f.mode {
 	case "script-pos-pos":
@@ -97,7 +101,7 @@ func (f *e2eToxicCloudFixture) prepare() {
 			return
 		}
 		// Ordinary ownership makes this NPC allied to the host and hostile to
-		// the unowned Troll. No enemy or damage outcome is supplied.
+		// the unowned Wolf. No enemy or damage outcome is supplied.
 		noxServer.CreateObjectAt(f.caster, f.host, origin)
 		f.caster.UpdateDataMonster().SetAggression(0)
 		f.caster.ClearActionStack()

@@ -59,6 +59,56 @@ func TestE2EToxicCloudModesAndBoundedSchedule(t *testing.T) {
 	}
 }
 
+func TestE2EToxicCloudFixtureRejectsPoisonImmuneTargets(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_toxic_cloud_spell.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	stockWolf, immunityGate := false, false
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok {
+			continue
+		}
+		ast.Inspect(fn.Body, func(n ast.Node) bool {
+			if assignment, ok := n.(*ast.AssignStmt); ok {
+				for _, lhs := range assignment.Lhs {
+					if field, ok := lhs.(*ast.SelectorExpr); ok && field.Sel.Name == "ObjSubClass" {
+						t.Error("Toxic Cloud fixture writes immunity flags")
+					}
+				}
+			}
+			call, ok := n.(*ast.CallExpr)
+			if !ok || fn.Name.Name != "prepare" {
+				return true
+			}
+			method, ok := call.Fun.(*ast.SelectorExpr)
+			if !ok || len(call.Args) != 1 {
+				return true
+			}
+			arg, ok := call.Args[0].(*ast.BasicLit)
+			if !ok {
+				return true
+			}
+			stockWolf = stockWolf || method.Sel.Name == "NewObjectByTypeID" && arg.Kind == token.STRING && arg.Value == `"Wolf"`
+			if method.Sel.Name == "Has" && arg.Kind == token.INT && arg.Value == "0x200" {
+				query, ok := method.X.(*ast.CallExpr)
+				if ok && len(query.Args) == 0 {
+					get, ok := query.Fun.(*ast.SelectorExpr)
+					if ok && get.Sel.Name == "SubClass" {
+						field, ok := get.X.(*ast.SelectorExpr)
+						immunityGate = immunityGate || ok && field.Sel.Name == "target"
+					}
+				}
+			}
+			return true
+		})
+	}
+	if !stockWolf || !immunityGate {
+		t.Fatalf("stock susceptible target=%t live immunity guard=%t", stockWolf, immunityGate)
+	}
+}
+
 func TestE2EToxicCloudIndependentLifetime(t *testing.T) {
 	for _, tc := range []struct {
 		name string

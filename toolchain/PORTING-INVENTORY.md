@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Toxic Cloud 관찰 대상의 원본 독 면역 구분
+
+clean `edd33d51a` 일반 제품의 첫 위치→위치 script cast는 high-address 객체로 구름 생성·원본 수명 450·client drawable까지 진행했으나 HP 대기에서 actual exit 2로 종료했다. 이 world 실패는 성공 수에 포함하지 않는다. 원본 GAME.EXE `004E0D29..004E0D38`과 변경하지 않은 `thing.bin`을 읽기 전용 대조하면 Troll의 subclass `0x10202`에는 IMMUNE_POISON `0x200`이 있다. 따라서 Troll HP 감소를 요구했던 새 관찰 fixture도 잘못된 대상이었다. 당시 native 피해 admission의 `unsupported monster damage shape` 로그는 별도의 미구현 경로이며 면역 몬스터의 HP 기대값을 강제로 바꾸는 근거가 아니다.
+
+이 독립 변경은 기존 production 본체 `*e2eToxicCloudFixture.prepare` 하나에서 stock poison-susceptible Wolf를 사용하고 live MONSTER class/독 면역 bit를 읽어 확인한다. 원본 `thing.bin` SHA-256 `436f6545169e07abc3eb143b0b8909e67061ceebe13b5eaa45396d3cd5a78768`의 Wolf는 MEDIUM_MONSTER이며 IMMUNE_POISON이 없다. immunity flag·damage·HP result·Poison540·cloud duration을 쓰지 않는다. public YAML의 7개 cast 경로와 실제 HP 감소·client replay·자연 소멸 기대값은 변경하지 않는다.
+
+관찰 계약 검사 일반/실제 cgocheck2는 각각 57 leaf pass·fail/skip 0·actual exit 0이며 새 AST 검사는 stock Wolf 선택·live immunity guard·subclass write 금지를 확인한다. 최초 잘못된 TypeID method 사용의 compile exit 1도 별도 로그에 보존하며 성공 검사 수에 넣지 않았다. 기존 cast/update/damage/poison 본체와 oracle/asset/기존 YAML·golden은 불변이다. clean 제품 재빌드 및 실제 HP 경로 복원/normal·HD world 검증은 이 커밋의 unit 성공으로 집계하지 않고 별도로 진행한다. 모든 build/test terminal 종료 뒤 기록했으며 `/private/tmp/opennox-toxic-cloud.ZjrFm0`의 기존 실패 로그와 PNG를 보존했다.
+
 ## Toxic Cloud script/NPC의 stock world 관찰 시나리오
 
 기능 수정 `7028a700d` 뒤 새 `host-game-toxic-cloud-spell.yaml`과 독립 관찰 fixture를 추가한다. 기존 production 본체 변경은 `*e2eScenario.Load`의 새 action dispatch 하나뿐이며 Toxic Cloud cast/update/damage/poison 본체는 다시 바꾸지 않는다. 위치→위치 기본-power script API의 실제 ImaginaryCaster, 플레이어 object→position script level 1..5, 정상 tick/animation/cast-frame을 통과하는 NPC CAST_ON_OBJECT를 각각 구분한다. 위치 API 검사는 보고된 acceptance 경로를 사용하지만 전체 VM builtin 0x86/timer 실행이라고 주장하지 않는다. player incantation/mana·NPC autonomous spell selection도 관찰 범위가 아니다.

@@ -122,6 +122,47 @@ func TestE2ECleansingFlameTerminationsRequireEveryActualStop(t *testing.T) {
 	}
 }
 
+func TestE2ECleansingFlameSnapshotAccountsForPostIncrementHook(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_cleansing_flame_spell.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	frames := 0
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Name.Name != "e2eCleansingFlameInput" {
+			continue
+		}
+		ast.Inspect(fn.Body, func(n ast.Node) bool {
+			field, ok := n.(*ast.KeyValueExpr)
+			if !ok {
+				return true
+			}
+			key, ok := field.Key.(*ast.Ident)
+			if !ok || key.Name != "frame" {
+				return true
+			}
+			frames++
+			binary, ok := field.Value.(*ast.BinaryExpr)
+			if !ok || binary.Op != token.SUB {
+				t.Fatal("tick hook observes the next frame after server_E.IncFrame; snapshot is off by one")
+			}
+			frame, ok := binary.X.(*ast.Ident)
+			if !ok || frame.Name != "frame" {
+				t.Fatal("snapshot does not preserve the actual observed frame")
+			}
+			one, ok := binary.Y.(*ast.BasicLit)
+			if !ok || one.Kind != token.INT || one.Value != "1" {
+				t.Fatal("snapshot does not account for exactly one server frame increment")
+			}
+			return true
+		})
+	}
+	if frames != 1 {
+		t.Fatalf("actual snapshot frame fields=%d want=1", frames)
+	}
+}
+
 func TestE2ECleansingFlameStockTypes(t *testing.T) {
 	for _, name := range []string{"SmallFlameCleanse", "MediumFlameCleanse", "FlameCleanse", "LargeFlameCleanse",
 		"SmallBlueFlameCleanse", "MediumBlueFlameCleanse", "BlueFlameCleanse", "LargeBlueFlameCleanse"} {

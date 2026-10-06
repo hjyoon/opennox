@@ -53,8 +53,11 @@ type e2eCleansingFlameUpdateInput struct {
 }
 
 func e2eCleansingFlameInput(obj *server.Object, frame uint32) e2eCleansingFlameUpdateInput {
+	// server_E increments Frame before the deferred TickHook runs. Label
+	// these post-physics values with the completed update frame, so the
+	// next original 0053D510 call and DeletedAt are exactly frame+1.
 	return e2eCleansingFlameUpdateInput{
-		frame: frame, created: obj.Field32, current: obj.PosVec, previous: obj.PrevPos,
+		frame: frame - 1, created: obj.Field32, current: obj.PosVec, previous: obj.PrevPos,
 		rayClear: noxServer.MapTraceRay(obj.Pos39, obj.PosVec, server.MapTraceFlags(65)),
 	}
 }

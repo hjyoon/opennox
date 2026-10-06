@@ -746,7 +746,17 @@ func (s *Server) newSession() error {
 	legacy.Sub_421B10()
 	sub_4DB0A0()
 	legacy.Sub_4D0F30()
-	return s.StartServices(isDedicatedServer)
+	startupFlags := noxflags.GetGame()
+	startupMap := s.nox_server_currentMapGetFilename_409B30()
+	return completeServerSessionStartup(func() error {
+		return s.StartServices(isDedicatedServer)
+	}, s.nox_xxx_servEndSession_4D3200, func() {
+		// Normal session teardown selects the menu/default map and mode. A
+		// startup retry must retain the caller's original selection instead.
+		s.nox_xxx_gameSetMapPath_409D70(startupMap)
+		noxflags.UnsetGame(noxflags.GetGame() &^ startupFlags)
+		noxflags.SetGame(startupFlags)
+	})
 }
 
 func (s *Server) nox_xxx_servEndSession_4D3200() {

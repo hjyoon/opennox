@@ -238,13 +238,16 @@ func (f *e2eToxicCloudFixture) observeTick() {
 		f.removed = true
 		e2eLog.Printf("TOXIC CLOUD EXPIRED: mode=%s level=%d last-duration=%d elapsed=%d", f.mode, f.level, f.previousDuration, noxServer.Frame()-f.frame)
 	}
-	if !f.hit && e2eObjectInWorld(f.target) && f.target.HealthData.Cur < f.health {
+	// Source-less periodic poison also lowers HP, but carries no cloud
+	// attribution. Require this live cloud so that timer damage alone
+	// cannot satisfy the instant world-POISON observation.
+	if !f.hit && e2eObjectInWorld(f.target) && f.target.Obj130 == f.cloud && f.target.HealthData.Cur < f.health {
 		if f.target.HealthData.Cur == 0 || f.target.Field131 != uint32(object.DamagePoison) {
 			e2eError(fmt.Errorf("Toxic Cloud target was damaged by another type"))
 			return
 		}
 		f.hit = true
-		e2eLog.Printf("TOXIC CLOUD HIT: mode=%s level=%d HP=%d->%d poison=%d elapsed=%d", f.mode, f.level, f.health, f.target.HealthData.Cur, f.target.Poison540, noxServer.Frame()-f.frame)
+		e2eLog.Printf("TOXIC CLOUD HIT: mode=%s level=%d cloud-attribution=%p HP=%d->%d poison=%d elapsed=%d", f.mode, f.level, f.target.Obj130, f.health, f.target.HealthData.Cur, f.target.Poison540, noxServer.Frame()-f.frame)
 	}
 }
 

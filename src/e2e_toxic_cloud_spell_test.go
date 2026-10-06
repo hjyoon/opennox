@@ -287,3 +287,61 @@ func TestE2EToxicCloudFixtureUsesNormalScriptAndNPCAcceptance(t *testing.T) {
 		t.Fatalf("normal fixture owned=%t enemy=%t imaginary=%t pospos=%t object=%t animation=%t frame=%t", owned, enemy, imaginary, pospos, objectCast, animation, frameGate)
 	}
 }
+
+func TestE2EToxicCloudHitRequiresLiveCloudAttribution(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_toxic_cloud_spell.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var path func(ast.Expr) string
+	path = func(expr ast.Expr) string {
+		switch expr := expr.(type) {
+		case *ast.Ident:
+			return expr.Name
+		case *ast.SelectorExpr:
+			return path(expr.X) + "." + expr.Sel.Name
+		default:
+			return ""
+		}
+	}
+	var conjunct func(ast.Expr, token.Token, string, string) bool
+	conjunct = func(expr ast.Expr, op token.Token, left, right string) bool {
+		binary, ok := expr.(*ast.BinaryExpr)
+		if !ok {
+			return false
+		}
+		if binary.Op == token.LAND {
+			return conjunct(binary.X, op, left, right) || conjunct(binary.Y, op, left, right)
+		}
+		return binary.Op == op && path(binary.X) == left && path(binary.Y) == right
+	}
+	hits := 0
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Name.Name != "observeTick" {
+			continue
+		}
+		ast.Inspect(fn.Body, func(n ast.Node) bool {
+			branch, ok := n.(*ast.IfStmt)
+			if !ok {
+				return true
+			}
+			for _, statement := range branch.Body.List {
+				assignment, ok := statement.(*ast.AssignStmt)
+				if !ok || len(assignment.Lhs) != 1 || len(assignment.Rhs) != 1 ||
+					path(assignment.Lhs[0]) != "f.hit" || path(assignment.Rhs[0]) != "true" {
+					continue
+				}
+				hits++
+				if !conjunct(branch.Cond, token.EQL, "f.target.Obj130", "f.cloud") ||
+					!conjunct(branch.Cond, token.LSS, "f.target.HealthData.Cur", "f.health") {
+					t.Error("cloud hit accepts timer/other-source damage without matching cloud attribution and HP loss")
+				}
+			}
+			return true
+		})
+	}
+	if hits != 1 {
+		t.Fatalf("guarded observed hit assignments=%d want=1", hits)
+	}
+}

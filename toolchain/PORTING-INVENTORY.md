@@ -1,5 +1,11 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Toxic Cloud 즉시 피해 관찰의 cloud attribution 필수 조건
+
+피해 복원 `38145abdc`와 분리하여 기존 production `*e2eToxicCloudFixture.observeTick` 본체 하나를 강화한다. 실제 HP 감소뿐 아니라 live victim `Obj130 == f.cloud`를 AND gate로 확인하고 읽은 attribution을 로그에 남긴다. source-less periodic poison의 HP 감소만으로는 즉시 cloud hit 성공을 만들지 않는다. damage type 확인, client HP replay, 원본 수명/자연 소멸, 7개 public cast 경로와 bounded 10-step schedule은 유지하며 HP/Obj130/Field131/Poison540/clock/packet/pixel 결과를 쓰지 않는다.
+
+새 AST 계약 검사는 실제 `f.hit = true` assignment의 지배 조건에 cloud attribution 일치와 HP 감소가 각각 필수 conjunction인지 확인한다. 변경 전 actual exit 1·1 fail이며 변경 후 관찰 58 leaf pass·fail/skip 0·actual exit 0이다. 일반/실제 cgocheck2/race/checkptr=2/highres/server-tag 각 3회는 각각 174 pass, 합계 1,044 pass·fail/skip 0·actual exit 0이다. 기존 본체 1개 AST audit·diff check actual exit 0 및 모든 build/test terminal 종료 뒤 기록했다. 상세 로그는 `/private/tmp/opennox-toxic-cloud.ZjrFm0/attribution-*`에 보존한다. 게임 cast/update/damage/poison/input 본체와 oracle/asset/기존 YAML·golden은 불변이고 아직 clean normal·HD world 완료를 주장하지 않는다.
+
 ## Toxic Cloud의 monster world POISON 즉시 피해 복원
 
 cast 포인터 수정 `7028a700d`와 stock susceptible Wolf 관찰 `bb3dcad19` 이후, clean 일반 world는 구름의 즉시 damage 3..10을 `unsupported monster damage shape`로 거부했다. 당시 HP 2000→1999는 cloud hit가 아니라 별도로 동작하는 source-less Poison timer 피해였으며, 마지막 NPC 준비는 기존 online/non-Quest 유휴 입력 감지(2,700-frame 초과)의 관전자 전환으로 actual exit 2였다. 이 실패와 PNG를 보존하며 world 성공으로 집계하지 않는다. cloud attribution 관찰 강화와 정상 mouse-motion 입력을 통한 fixture 유휴 방지는 별도 본체 변경으로 진행한다.

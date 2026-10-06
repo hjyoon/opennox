@@ -1030,104 +1030,10 @@ void sub_4D0F30() {
 }
 
 //----- (004D0F60) --------------------------------------------------------
+extern char* nox_server_questMapFile_native_4D0F60(void);
 char* nox_xxx_getQuestMapFile_4D0F60() // quest setup 2
 {
-	int v1;             // esi
-	unsigned char* v2;  // ecx
-	int v3;             // edx
-	int v4;             // ebx
-	unsigned char* v5;  // esi
-	int v6;             // ebp
-	unsigned char* v7;  // eax
-	int v8;             // ecx
-	int v9;             // edx
-	int v10;            // ecx
-	unsigned char* v11; // eax
-	int v12;            // eax
-	int v13;            // edi
-	int v14;            // edx
-	unsigned char* i;   // ecx
-	int v16;            // [esp+4h] [ebp-8h]
-
-	if (!dword_5d4594_1548476) {
-		return 0;
-	}
-	if (dword_5d4594_1548476 == 1) {
-		return (char*)getMemAt(0x5D4594, 1525136);
-	}
-	v1 = 0;
-	v16 = 0;
-	if (*(int*)&dword_5d4594_1548476 <= 0) {
-		return (char*)getMemAt(0x5D4594, 1525136 + 32 * nox_common_randomInt_415FA0(0, dword_5d4594_1548476 - 1));
-	}
-	v2 = getMemAt(0x5D4594, 1525156);
-	v3 = dword_5d4594_1548476;
-	do {
-		if (*(uint32_t*)v2 > v1) {
-			v16 = *(uint32_t*)v2;
-			v1 = *(uint32_t*)v2;
-		}
-		v2 += 32;
-		--v3;
-	} while (v3);
-	if (!v1) {
-		return (char*)getMemAt(0x5D4594, 1525136 + 32 * nox_common_randomInt_415FA0(0, dword_5d4594_1548476 - 1));
-	}
-	v4 = 1;
-	v5 = getMemAt(0x5D4594, 1525156);
-	v6 = dword_5d4594_1548476;
-	do {
-		if (dword_5d4594_1548476 > 1) {
-			v7 = getMemAt(0x5D4594, 1525188);
-			v8 = dword_5d4594_1548476 - 1;
-			do {
-				if (*(uint32_t*)v5 != *(uint32_t*)v7) {
-					v4 = 0;
-				}
-				v7 += 32;
-				--v8;
-			} while (v8);
-		}
-		v5 += 32;
-		--v6;
-	} while (v6);
-	if (v4 == 1) {
-		++v16;
-	}
-	v9 = 0;
-	v10 = 0;
-	v11 = getMemAt(0x5D4594, 1525132);
-	do {
-		if (*((uint32_t*)v11 + 6) < v16 && v10 != *getMemU32Ptr(0x587000, 191880) &&
-			*(uint32_t*)v11 != *getMemU32Ptr(0x5D4594, 1525132 + 32 * *getMemU32Ptr(0x587000, 191880)) &&
-			dword_5d4594_1548480 - *((uint32_t*)v11 + 7) > 4) {
-			++v9;
-		}
-		++v10;
-		v11 += 32;
-	} while (v10 < *(int*)&dword_5d4594_1548476);
-	v12 = nox_common_randomInt_415FA0(0, v9 - 1);
-	v13 = 0;
-	v14 = 0;
-	if (*(int*)&dword_5d4594_1548476 <= 0) {
-		return (char*)getMemAt(0x5D4594, 1525136 + 32 * v12);
-	}
-	for (i = getMemAt(0x5D4594, 1525132);; i += 32) {
-		if (*((uint32_t*)i + 6) >= v16 || v14 == *getMemU32Ptr(0x587000, 191880) ||
-			*(uint32_t*)i == *getMemU32Ptr(0x5D4594, 1525132 + 32 * *getMemU32Ptr(0x587000, 191880)) ||
-			dword_5d4594_1548480 - *((uint32_t*)i + 7) <= 4) {
-			goto LABEL_36;
-		}
-		if (v13 == v12) {
-			break;
-		}
-		++v13;
-	LABEL_36:
-		if (++v14 >= *(int*)&dword_5d4594_1548476) {
-			return (char*)getMemAt(0x5D4594, 1525136 + 32 * v12);
-		}
-	}
-	return (char*)getMemAt(0x5D4594, 1525136 + 32 * v14);
+	return nox_server_questMapFile_native_4D0F60();
 }
 
 // GAME.EXE stores this remote-console authorization list in a 12-byte PE32

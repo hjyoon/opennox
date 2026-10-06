@@ -120,11 +120,9 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 		case ai.DEPENDENCY_OBJECT_AT_VISIBLE_LOCATION:
 			ok = aiDependencyObjectAtVisibleLocation546E0A(u, st, a.s.CanInteract, a.s.MapTraceRay)
 		case ai.DEPENDENCY_OBJECT_FARTHER_THAN:
-			obj, r := st.ArgObj(2), st.ArgF32(0)
-			ok = obj != nil && nox_xxx_calcDistance_4E6C00(u, obj) > r
+			ok = aiDependencyObjectDistance546B13(u, st, false)
 		case ai.DEPENDENCY_OBJECT_CLOSER_THAN:
-			obj, r := st.ArgObj(2), st.ArgF32(0)
-			ok = obj != nil && nox_xxx_calcDistance_4E6C00(u, obj) <= r
+			ok = aiDependencyObjectDistance546B13(u, st, true)
 		case ai.DEPENDENCY_LOCATION_FARTHER_THAN:
 			ok = aiDependencyLocation546B63(u, st, false)
 		case ai.DEPENDENCY_LOCATION_CLOSER_THAN:

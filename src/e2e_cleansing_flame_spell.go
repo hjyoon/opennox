@@ -350,6 +350,20 @@ func (f *e2eCleansingFlameFixture) clientHit() bool {
 }
 
 func (f *e2eCleansingFlameFixture) complete() bool {
+	if age := noxServer.Frame() - f.frame; age == 100 || age == 200 || age == 360 || age == 500 || age == 660 {
+		world, client := 0, 0
+		for _, p := range f.flames {
+			if e2eFistInWorld(p.obj, p.wire, p.script) {
+				world++
+			}
+			if noxClient.Objs.ByNetCode(uint16(p.wire)) != nil {
+				client++
+			}
+		}
+		e2eLog.Printf("CLEANSING FLAME REMOVAL STATE: mode=%s requested=%d age=%d spawned=%d expired=%d early=%d owned=%d world=%d client=%d hit=%t predicted=%t natural-NPC=%t cast-action=%t",
+			f.mode, f.level, age, len(f.flames), f.expired, f.early, len(f.ownedFlames()), world, client,
+			f.hit, f.predicted(), f.natural, f.caster.MonsterActionIsScheduled(ai.ACTION_CAST_SPELL_ON_OBJECT))
+	}
 	if !f.hit || !f.predicted() || f.castAudio != 1 || f.expired+f.early != len(f.flames) ||
 		f.expired == 0 || len(f.ownedFlames()) != 0 ||
 		f.mode != "red-player" && (!f.natural || f.caster.MonsterActionIsScheduled(ai.ACTION_CAST_SPELL_ON_OBJECT)) {

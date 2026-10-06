@@ -70,8 +70,10 @@ func monsterActionRefresh50A910(unit *Object, canInteract func(*Object, *Object,
 			}
 		case ai.ACTION_MOVE_TO, ai.ACTION_FAR_MOVE_TO:
 			if target := monsterActionArgObject50A910(item, 1); target != nil {
-				if canInteract(unit, target, 0) || update.HasAction(ai.ACTION_ESCORT) {
-					monsterActionSetPos50A910(item, target)
+				if canInteract(unit, target, 0) || unit.UpdateDataMonster().HasAction(ai.ACTION_ESCORT) {
+					// 0050AA1C checks the live unit stack, then 0050AA2D
+					// reloads the target from the entry-cached slot.
+					monsterActionSetPos50A910(item, monsterActionArgObject50A910(item, 1))
 				} else {
 					item.Args[2] = 0
 				}
@@ -82,7 +84,9 @@ func monsterActionRefresh50A910(unit *Object, canInteract func(*Object, *Object,
 			}
 		case ai.ACTION_MISSILE_ATTACK:
 			if target := monsterActionArgObject50A910(item, 1); target != nil && canInteract(unit, target, 0) {
-				monsterActionSetPos50A910(item, target)
+				// 0050A9E9 reloads the slot after visibility; there is
+				// no additional nil gate at the coordinate read.
+				monsterActionSetPos50A910(item, monsterActionArgObject50A910(item, 1))
 			}
 		}
 	}

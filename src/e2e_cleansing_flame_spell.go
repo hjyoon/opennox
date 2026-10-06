@@ -290,6 +290,18 @@ func (f *e2eCleansingFlameFixture) observeTick() {
 			continue
 		}
 		if e2eFistInWorld(p.obj, p.wire, p.script) {
+			if p.obj.Flags().Has(object.FlagDestroyed) {
+				if p.termination == "" {
+					p.termination = e2eCleansingFlameTermination(p.input, p.deadline, p.obj.DeletedAt)
+					if p.termination == "" {
+						e2eError(fmt.Errorf("Cleansing Flame unexplained deletion: wire=%d deleted=%d deadline=%d snapshot=%+v", p.wire, p.obj.DeletedAt, p.deadline, p.input))
+						return
+					}
+					e2eLog.Printf("CLEANSING FLAME TERMINATION: mode=%s requested=%d wire=%d cause=%s deleted=%d deadline=%d previous-snapshot=%d",
+						f.mode, f.level, p.wire, p.termination, p.obj.DeletedAt, p.deadline, p.input.frame)
+				}
+				continue
+			}
 			p.last = now
 			p.moved = p.moved || p.obj.PosVec != p.position
 			if p.obj.Field34 != p.deadline || p.obj.ObjOwner != f.caster {
@@ -328,9 +340,14 @@ func (f *e2eCleansingFlameFixture) observeTick() {
 					p.clientMoved = true
 				}
 			}
+			p.input = e2eCleansingFlameInput(p.obj, now)
 		} else {
+			if p.termination == "" {
+				e2eError(fmt.Errorf("Cleansing Flame disappeared without an original delayed-delete witness: wire=%d", p.wire))
+				return
+			}
 			p.removed = true
-			if p.last+1 >= p.deadline {
+			if p.termination == "deadline" {
 				f.expired++
 			} else {
 				f.early++

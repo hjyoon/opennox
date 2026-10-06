@@ -43,12 +43,30 @@ func monsterActionRetreatToMaster5456D0(unit *Object, hooks monsterActionRetreat
 		hooks.pop()
 		return true
 	}
-	dx := float64(unit.PosVec.X - owner.PosVec.X)
-	dy := float64(unit.PosVec.Y - owner.PosVec.Y)
-	radius := float64(update.Field329) + 30
-	if radius*radius < dx*dx+dy*dy {
-		hooks.push(ai.DEPENDENCY_OBJECT_FARTHER_THAN, update.Field329, uint32(0), owner)
-		hooks.push(ai.ACTION_MOVE_TO, owner.PosVec, owner)
+	// 005456FB reloads the owner after the retreat predicate. FSUB/FADD
+	// and Y-square/X-square/sum retain precision 53 / ToZero until
+	// FCOMPP, with no binary32 spill or contracted distance sum.
+	owner = unit.ObjOwner
+	dx := monsterMoveToRunAddChop53_544434(float64(unit.PosVec.X), -float64(owner.PosVec.X))
+	dy := monsterMoveToRunAddChop53_544434(float64(unit.PosVec.Y), -float64(owner.PosVec.Y))
+	radius := monsterMoveToRunAddChop53_544434(float64(update.Field329), 30)
+	ySquared := monsterMoveToRunSquareChop53_544434(dy)
+	xSquared := monsterMoveToRunSquareChop53_544434(dx)
+	distance := monsterMoveToRunAddChop53_544434(ySquared, xSquared)
+	// 0054572F tests C0 alone: less and unordered both schedule movement.
+	if !(monsterMoveToRunSquareChop53_544434(radius) >= distance) {
+		if dependency := hooks.push(ai.DEPENDENCY_OBJECT_FARTHER_THAN); dependency != nil {
+			// Push may invoke Cancel. The range remains entry-cached, but
+			// the owner is live; 00545745..00545754 writes no Args[1].
+			dependency.SetArgs(update.Field329)
+			dependency.Args[2] = uintptr(unit.ObjOwner.CObj())
+		}
+		if move := hooks.push(ai.ACTION_MOVE_TO); move != nil {
+			// 00545766..0054577F loads raw X/Y after successful push,
+			// then reloads the native owner identity for the final store.
+			move.SetArgs(unit.ObjOwner.PosVec)
+			move.Args[2] = uintptr(unit.ObjOwner.CObj())
+		}
 	}
 	return true
 }

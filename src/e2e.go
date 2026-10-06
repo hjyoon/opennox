@@ -9632,6 +9632,15 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertQuestStage(l.Count, l.Map, l.Name)
+		case "observe-quest-map-selection":
+			sc.Wait(dt, "")
+			sc.ObserveQuestMapSelection(l.Name)
+		case "assert-quest-selected-map":
+			sc.Wait(dt, "")
+			sc.AssertQuestSelectedMap(l.Count, l.Name)
+		case "capture-quest-map-audit-frame":
+			sc.Wait(dt, "")
+			sc.CaptureQuestMapAuditFrame(l.Name)
 		case "walk-quest":
 			sc.WalkQuest(l.Ang, dt, l.Name)
 		case "assert-quest-minion":

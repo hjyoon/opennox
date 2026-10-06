@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"unsafe"
 
+	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
@@ -70,6 +71,11 @@ func (f *e2eToxicCloudFixture) prepare() {
 		e2eError(fmt.Errorf("Toxic Cloud requires a live unenchanted host"))
 		return
 	}
+	// Each natural cloud expiry takes hundreds of ticks. A normal motion
+	// event at the current cursor keeps this fixture from activating the
+	// unchanged online game's idle-observer command. Do not reset input
+	// clocks or force observer flags, and do not click or cast here.
+	e2eQueueInput(&seat.MouseMoveEvent{Pos: noxClient.Inp.GetMousePos()})
 	f.original = f.host.PosVec
 	origin, direction, err := e2eWarriorAbilityArena(f.original, f.host.Shape.Circle.R+24, func(from, to types.Pointf) bool { return e2eWarriorLaneClear(f.host, from, to) })
 	if err != nil {

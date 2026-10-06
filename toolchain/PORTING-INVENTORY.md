@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Toxic Cloud 장시간 fixture의 정상 input으로 유휴 관전자 전환 예방
+
+기존 production `*e2eToxicCloudFixture.prepare` 본체 하나에서 실제 cursor 좌표의 `seat.MouseMoveEvent` 한 건을 기존 canvas-space `e2eQueueInput`으로 보낸다. 기존 `Client.nox_client_processInput_4308A0`은 online/non-Quest에서 `Inp.SeqDelay()>2700`이면 정상 관전자 명령을 수행한다. 앞선 no-input cloud 6회의 자연 수명 뒤 발생한 관전자 전환/host invisibility와 NPC 준비 timeout을 이 정상 입력으로 예방한다. 게임 idle 판정·sequence·observer flag·buff·HP·cast timing·public YAML의 7개 cast 경로/10-step schedule을 변경하지 않는다. click/keyboard input 없이 각 fixture setup 한 건만 보내며 관찰 hook에는 입력을 추가하지 않는다.
+
+새 AST는 이 input이 prepare에서만, actual cursor를 읽는 motion 한 건이며 reset/sequence 조작이 없는지 검사한다. 새 real headless input test는 실제 2,701회 무입력 Tick으로 원래 threshold를 초과한 뒤 동일 좌표 mouse event를 queue→InputTick→mouse buffer→Handler.Tick으로 소비해 SeqDelay 1을 확인한다. 실제 cursor/relative delta/button/keyboard는 그대로이고 다음 무입력 tick에서 delay 2로 정상 증가한다. 변경 전 AST actual exit 1·1 fail이고 이 독립 input test는 pass였다. 최종 일반/실제 cgocheck2/race/checkptr=2/highres/server-tag 각 3회는 root observer 59 + input 1 = 각 180 pass, 합계 1,080 pass·fail/skip 0·actual exit 0이다.
+
+전체 7 package 일반/strict는 각각 33,435 leaf pass·fail 0·actual exit 0이고 baseline 15 skip identity가 정확히 같으며 Quest map-selector는 51 pass·skip 0이다. 기존 본체 1개 AST audit·diff check actual exit 0, 기존 cloud YAML SHA-256도 불변이다. 모든 build/test terminal 종료 뒤 기록하며 `/private/tmp/opennox-toxic-cloud.ZjrFm0/idle-motion-*`에 red/최종 JSON/stderr를 보존한다. 게임 input/cast/update/damage/poison 본체와 stock oracle/asset/golden은 수정하지 않았고 clean normal·HD world 재실행은 커밋·즉시 push 뒤 별도 확인한다.
+
 ## Toxic Cloud 즉시 피해 관찰의 cloud attribution 필수 조건
 
 피해 복원 `38145abdc`와 분리하여 기존 production `*e2eToxicCloudFixture.observeTick` 본체 하나를 강화한다. 실제 HP 감소뿐 아니라 live victim `Obj130 == f.cloud`를 AND gate로 확인하고 읽은 attribution을 로그에 남긴다. source-less periodic poison의 HP 감소만으로는 즉시 cloud hit 성공을 만들지 않는다. damage type 확인, client HP replay, 원본 수명/자연 소멸, 7개 public cast 경로와 bounded 10-step schedule은 유지하며 HP/Obj130/Field131/Poison540/clock/packet/pixel 결과를 쓰지 않는다.

@@ -345,3 +345,69 @@ func TestE2EToxicCloudHitRequiresLiveCloudAttribution(t *testing.T) {
 		t.Fatalf("guarded observed hit assignments=%d want=1", hits)
 	}
 }
+
+func TestE2EToxicCloudSetupUsesNormalMotionForIdleInput(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_toxic_cloud_spell.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	motions := 0
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok {
+			continue
+		}
+		ast.Inspect(fn.Body, func(n ast.Node) bool {
+			if field, ok := n.(*ast.SelectorExpr); ok && (field.Sel.Name == "nox_input_seq" || field.Sel.Name == "nox_input_seq_prev") {
+				t.Error("fixture bypasses normal input sequence")
+			}
+			call, ok := n.(*ast.CallExpr)
+			if !ok {
+				return true
+			}
+			if method, ok := call.Fun.(*ast.SelectorExpr); ok && (method.Sel.Name == "Reset" || method.Sel.Name == "ResetInput") {
+				t.Error("fixture resets idle state instead of queueing a normal event")
+			}
+			queue, ok := call.Fun.(*ast.Ident)
+			if !ok || queue.Name != "e2eQueueInput" {
+				return true
+			}
+			if fn.Name.Name != "prepare" || len(call.Args) != 1 {
+				t.Fatal("idle input must be one setup-only mouse-motion event")
+			}
+			address, ok := call.Args[0].(*ast.UnaryExpr)
+			if !ok || address.Op != token.AND {
+				t.Fatal("idle input is not an ordinary event pointer")
+			}
+			event, ok := address.X.(*ast.CompositeLit)
+			if !ok || len(event.Elts) != 1 {
+				t.Fatal("idle input supplies unexpected event fields")
+			}
+			kind, ok := event.Type.(*ast.SelectorExpr)
+			if !ok || kind.Sel.Name != "MouseMoveEvent" {
+				t.Fatal("idle input clicks or types instead of moving the mouse")
+			}
+			position, ok := event.Elts[0].(*ast.KeyValueExpr)
+			if !ok {
+				t.Fatal("idle mouse position missing")
+			}
+			key, ok := position.Key.(*ast.Ident)
+			if !ok || key.Name != "Pos" {
+				t.Fatal("idle event changes a field other than position")
+			}
+			get, ok := position.Value.(*ast.CallExpr)
+			if !ok || len(get.Args) != 0 {
+				t.Fatal("idle event does not read the actual cursor position")
+			}
+			method, ok := get.Fun.(*ast.SelectorExpr)
+			if !ok || method.Sel.Name != "GetMousePos" {
+				t.Fatal("idle event does not preserve the actual cursor position")
+			}
+			motions++
+			return true
+		})
+	}
+	if motions != 1 {
+		t.Fatalf("normal setup-only mouse motions=%d want=1", motions)
+	}
+}

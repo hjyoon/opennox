@@ -1,8 +1,6 @@
 package server
 
 import (
-	"math"
-
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
@@ -41,15 +39,15 @@ func monsterActionMoveToForAction5443F0(unit *Object, action ai.ActionType, hook
 	}
 	target := head.ArgPos(0)
 	if monsterActionPrevious5443F0(update) == ai.ACTION_ESCORT {
-		runDistance := update.Field329 * 3
-		delta := target.Sub(unit.PosVec)
-		distance := float32(math.Sqrt(float64(delta.X*delta.X + delta.Y*delta.Y)))
-		if distance < runDistance {
+		switch monsterMoveToRunBand544434(unit.PosVec, target, update.Field329) {
+		case -1:
 			if !update.StatusFlags.Has(object.MonStatusAlwaysRun) {
 				update.StatusFlags &^= object.MonStatusRunning
 			}
-		} else if distance > runDistance+30 && !update.StatusFlags.Has(object.MonStatusNeverRun) {
-			update.StatusFlags |= object.MonStatusRunning
+		case 1:
+			if !update.StatusFlags.Has(object.MonStatusNeverRun) {
+				update.StatusFlags |= object.MonStatusRunning
+			}
 		}
 	}
 	if hooks.setMovePath(unit, target) {

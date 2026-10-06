@@ -481,7 +481,7 @@ func Nox_xxx_spellArachna_52DC80(spellID spell.ID, a2, a3, a4 *server.Object, sa
 }
 
 func Nox_xxx_castBurn_52C3E0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castBurn_52C3E0, spellID, a2, a3, a4, sa, lvl)
+	return burnCastCall52C3E0(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Nox_xxx_spellCastCleansingFlame_52D5C0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

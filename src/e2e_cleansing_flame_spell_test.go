@@ -5,10 +5,13 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"math"
 	"os"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/opennox/libs/types"
 
 	"gopkg.in/yaml.v2"
 )
@@ -55,6 +58,38 @@ func TestE2ECleansingFlameModesAndBoundedSchedule(t *testing.T) {
 				}
 			})
 		}
+	}
+}
+
+func TestE2ECleansingFlameTerminationRequiresActualOriginalStop(t *testing.T) {
+	for _, tc := range []struct {
+		name                string
+		frame, created      uint32
+		deadline, deletedAt uint32
+		current, previous   types.Pointf
+		rayClear            bool
+		want                string
+	}{
+		{"actual deadline", 109, 100, 110, 110, types.Ptf(1, 2), types.Ptf(0, 1), true, "deadline"},
+		{"deadline before ray", 109, 100, 110, 110, types.Ptf(1, 2), types.Ptf(0, 1), false, "deadline"},
+		{"blocked before deadline", 104, 100, 200, 105, types.Ptf(1, 2), types.Ptf(0, 1), false, "blocked-ray"},
+		{"stationary age four", 103, 100, 200, 104, types.Ptf(1, 2), types.Ptf(1, 2), true, "stationary"},
+		{"stationary age three rejected", 102, 100, 200, 103, types.Ptf(1, 2), types.Ptf(1, 2), true, ""},
+		{"moving clear ray rejected", 104, 100, 200, 105, types.Ptf(1, 2), types.Ptf(0, 1), true, ""},
+		{"one moving axis rejected", 104, 100, 200, 105, types.Ptf(1, 2), types.Ptf(1, 1), true, ""},
+		{"stale snapshot rejected", 103, 100, 105, 105, types.Ptf(1, 2), types.Ptf(1, 2), false, ""},
+		{"same frame rejected", 105, 100, 105, 105, types.Ptf(1, 2), types.Ptf(1, 2), false, ""},
+		{"unordered x87 stationary", 104, 100, 200, 105, types.Ptf(float32(math.NaN()), 2), types.Ptf(1, 2), true, "stationary"},
+		{"wrapped frame and age", math.MaxUint32, math.MaxUint32 - 3, 10, 0, types.Ptf(1, 2), types.Ptf(1, 2), true, "stationary"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			input := e2eCleansingFlameUpdateInput{
+				frame: tc.frame, created: tc.created, current: tc.current, previous: tc.previous, rayClear: tc.rayClear,
+			}
+			if got := e2eCleansingFlameTermination(input, tc.deadline, tc.deletedAt); got != tc.want {
+				t.Fatalf("termination=%q want=%q", got, tc.want)
+			}
+		})
 	}
 }
 

@@ -42,6 +42,44 @@ type e2eCleansingFlameRecord struct {
 	position, velocity                     types.Pointf
 	clientPosition                         image.Point
 	predicted, moved, clientMoved, removed bool
+	input                                  e2eCleansingFlameUpdateInput
+	termination                            string
+}
+
+type e2eCleansingFlameUpdateInput struct {
+	frame, created    uint32
+	current, previous types.Pointf
+	rayClear          bool
+}
+
+func e2eCleansingFlameInput(obj *server.Object, frame uint32) e2eCleansingFlameUpdateInput {
+	return e2eCleansingFlameUpdateInput{
+		frame: frame, created: obj.Field32, current: obj.PosVec, previous: obj.PrevPos,
+		rayClear: noxServer.MapTraceRay(obj.Pos39, obj.PosVec, server.MapTraceFlags(65)),
+	}
+}
+
+// Read-only snapshots are taken after physics, before the next ordinary
+// flame update. Require its actual delayed-delete frame and one of the
+// three original 0053D510 conditions, not merely disappearance. A wall can
+// stop every random ray in a stock room; a deadline survivor is not assured.
+func e2eCleansingFlameTermination(input e2eCleansingFlameUpdateInput, deadline, deletedAt uint32) string {
+	if input.frame+1 != deletedAt {
+		return ""
+	}
+	if deletedAt >= deadline {
+		return "deadline"
+	}
+	if !input.rayClear {
+		return "blocked-ray"
+	}
+	equal := func(a, b float32) bool {
+		return a == b || math.IsNaN(float64(a)) || math.IsNaN(float64(b))
+	}
+	if deletedAt-input.created > 3 && equal(input.previous.X, input.current.X) && equal(input.previous.Y, input.current.Y) {
+		return "stationary"
+	}
+	return ""
 }
 
 type e2eCleansingFlameFixture struct {
@@ -234,6 +272,7 @@ func (f *e2eCleansingFlameFixture) observeSound(id sound.ID, kind int, source *s
 			obj: obj, wire: obj.NetCode, script: obj.ScriptIDVal, kind: obj.TypeInd,
 			deadline: obj.Field34, last: now, direction: obj.Direction1,
 			position: obj.PosVec, velocity: obj.VelVec,
+			input: e2eCleansingFlameInput(obj, now),
 		})
 	}
 	e2eLog.Printf("CLEANSING FLAME CAST: mode=%s requested=%d caster=%p target=%p flames=%d HP=%d mana=%d natural-NPC=%t",

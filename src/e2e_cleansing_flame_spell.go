@@ -252,6 +252,17 @@ func (f *e2eCleansingFlameFixture) observeTick() {
 				return
 			}
 			dr := noxClient.Objs.ByNetCode(uint16(p.wire))
+			if !p.clientMoved && i < 3 && (now == f.frame+1 || now == f.frame+6 || now == f.frame+12 || now == f.frame+30) {
+				// Read-only witnesses distinguish an absent real packet from
+				// a replaced secondary callback or a stalled client update.
+				e2eLog.Printf("CLEANSING FLAME PREDICTION STATE: mode=%s age=%d flame=%p wire=%d published=%d class=%x server=%v initial=%v velocity=%v drawable=%p",
+					f.mode, now-f.frame, p.obj, p.wire, noxServer.GetUnitNetCode(p.obj), uint32(p.obj.Class()), p.obj.PosVec, p.position, p.velocity, dr)
+				if dr != nil {
+					e2eLog.Printf("CLEANSING FLAME DRAWABLE STATE: wire=%d class=%x secondary=%p expected=%p listed=%d client=%v initial=%d,%d velocity=%x,%x damping=%x frame=%d start=%d",
+						p.wire, uint32(dr.Class()), dr.Field_115, legacy.Get_nox_xxx_sprite_4CA540(), dr.InClientUpdateList, dr.PosVec,
+						dr.Field_81, dr.Field_82, dr.Field_117, dr.Field_118, dr.Field_119, now, dr.AnimStart)
+				}
+			}
 			if dr != nil && dr.Field_115 == legacy.Get_nox_xxx_sprite_4CA540() && dr.InClientUpdateList != 0 {
 				if dr.TypeIDVal != uint32(p.kind) || uint16(dr.Field_127) != uint16(p.direction) ||
 					dr.Field_81 != uint32(uint16(p.position.X)) || dr.Field_82 != uint32(uint16(p.position.Y)) ||

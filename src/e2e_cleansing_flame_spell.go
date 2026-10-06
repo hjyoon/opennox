@@ -82,7 +82,10 @@ func (f *e2eCleansingFlameFixture) prepare() {
 	e2eQueueInput(&seat.MouseMoveEvent{Pos: noxClient.Inp.GetMousePos()})
 	f.original, f.hostHP, f.hostMax = f.host.PosVec, f.host.HealthData.Cur, f.host.HealthData.Max
 	f.hostMana = f.host.UpdateDataPlayer().ManaCur
-	origin, direction, err := e2eWarriorAbilityArena(f.original, f.host.Shape.Circle.R+40,
+	// Stock large flames have radius 12 and spawn four units beyond the
+	// caster's radius. This clearance covers that ring and the target lane;
+	// a wider Warrior charge arena needlessly rejects the stock spawn room.
+	origin, direction, err := e2eWarriorAbilityArena(f.original, f.host.Shape.Circle.R+24,
 		func(from, to types.Pointf) bool { return e2eWarriorLaneClear(f.host, from, to) })
 	if err != nil {
 		e2eError(err)

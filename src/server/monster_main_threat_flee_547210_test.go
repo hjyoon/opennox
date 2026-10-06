@@ -25,7 +25,8 @@ func TestMonsterMainThreatFlee547210OriginalGatesAndBlinkFallbacks(t *testing.T)
 		{"empty-blink-slot", func(_ *Server, _ *Object, u *MonsterUpdateData) { u.Field376 = 0 }, 20, flee},
 		{"anti-magic-falls-back", func(_ *Server, o *Object, _ *MonsterUpdateData) { o.Buffs = 1 << ENCHANT_ANTI_MAGIC }, 20, flee},
 		{"half-range-equality", nil, 32.5, flee},
-		{"half-range-float32-spill", nil, 32.4999999, flee},
+		// 005475D5 FSTS uses ToZero: the cached word is below 32.5.
+		{"half-range-float32-spill", nil, 32.4999999, blink},
 		{"half-range-next-binary32-below", nil, float64(math.Nextafter32(32.5, 0)), blink},
 		{"outer-retains-unrounded-distance", nil, 64.9999999, flee},
 		{"outer-boundary", nil, 65, reject},

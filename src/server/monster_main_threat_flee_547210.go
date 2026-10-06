@@ -34,6 +34,9 @@ func (s *Server) monsterMainThreatFlee547210(unit *Object, update *MonsterUpdate
 		distanceService = ObjectDistance4E6C00
 	}
 	distance := distanceService(unit, update.CurrentEnemy)
+	// 005475D5 FSTS stores under ToZero before the retained outer FCOMP;
+	// 00547635 compares this cached binary32 word, not nearest-even distance.
+	spilledDistance := monsterMoveToRunSpill544440(distance)
 	fleeRange := float64(update.FleeRange)
 	// x87 C0 alone admits unordered values at the outer comparison.
 	if !(distance < fleeRange) && !math.IsNaN(distance) && !math.IsNaN(fleeRange) {
@@ -41,7 +44,7 @@ func (s *Server) monsterMainThreatFlee547210(unit *Object, update *MonsterUpdate
 	}
 	if update.StatusFlags.Has(object.MonStatusCanCastSpells) && update.Field376 != 0 &&
 		!unit.HasEnchant(ENCHANT_ANTI_MAGIC) && s.Frame() >= update.Field371 &&
-		fleeRange*0.5 > float64(float32(distance)) {
+		fleeRange*0.5 > spilledDistance {
 		random := runtime.RandomInt
 		if random == nil && s.Rand.Logic != nil {
 			random = s.Rand.Logic.IntClamp
@@ -65,7 +68,10 @@ func (s *Server) monsterMainThreatFlee547210(unit *Object, update *MonsterUpdate
 	}
 	unit.MonsterPushAction(ai.DEPENDENCY_NOT_CORNERED)
 	if action := unit.MonsterPushAction(ai.DEPENDENCY_ENEMY_CLOSER_THAN); action != nil {
-		action.Args[0] = uintptr(math.Float32bits(float32(float64(update.FleeRange) + 30)))
+		// 005476F8..00547704 reads the cached record after the accepted push,
+		// retains FADDS at precision 53/ToZero, then FSTPS to binary32 ToZero.
+		rangeSum := monsterMoveToRunAddChop53_544434(float64(update.FleeRange), 30)
+		action.Args[0] = uintptr(math.Float32bits(float32(monsterMoveToRunSpill544440(rangeSum))))
 	}
 	if action := unit.MonsterPushAction(ai.ACTION_FLEE); action != nil {
 		enemy := update.CurrentEnemy // the push may cancel an action and replace it

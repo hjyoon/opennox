@@ -126,17 +126,9 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 			obj, r := st.ArgObj(2), st.ArgF32(0)
 			ok = obj != nil && nox_xxx_calcDistance_4E6C00(u, obj) <= r
 		case ai.DEPENDENCY_LOCATION_FARTHER_THAN:
-			pos := u.Pos()
-			pos2 := st.ArgPos(2)
-			dx := pos2.X - pos.X
-			dy := pos2.Y - pos.Y
-			ok = float32(math.Sqrt(float64(dy*dy+dx*dx))) >= st.ArgF32(0)
+			ok = aiDependencyLocation546B63(u, st, false)
 		case ai.DEPENDENCY_LOCATION_CLOSER_THAN:
-			pos := u.Pos()
-			pos2 := st.ArgPos(2)
-			dx := pos2.X - pos.X
-			dy := pos2.Y - pos.Y
-			ok = float32(math.Sqrt(float64(dy*dy+dx*dx))) <= st.ArgF32(0)
+			ok = aiDependencyLocation546B63(u, st, true)
 		case ai.DEPENDENCY_VISIBLE_ENEMY:
 			ok = ud.CurrentEnemy != nil
 		case ai.DEPENDENCY_NO_VISIBLE_ENEMY:

@@ -142,28 +142,7 @@ func (a *aiData) nox_xxx_mobActionDependency(u *server.Object) {
 				ok = false
 			}
 		case ai.DEPENDENCY_NO_NEW_ENEMY:
-			old := st.ArgObj(0)
-			if old == nil {
-				ok = false
-				break
-			}
-			enemy := asObjectS(ud.CurrentEnemy)
-			if enemy == nil {
-				break
-			}
-			pos := u.Pos()
-
-			pos2 := old.Pos()
-			dx1 := pos2.X - pos.X
-			dy1 := pos2.Y - pos.Y
-			rOld := dx1*dx1 + dy1*dy1
-
-			pos3 := enemy.Pos()
-			dx2 := pos3.X - pos.X
-			dy2 := pos3.Y - pos.Y
-			rNew := dx2*dx2 + dy2*dy2
-
-			ok = rNew >= rOld
+			ok = aiDependencyNoNewEnemy546D1B(u, ud, st)
 		case ai.DEPENDENCY_UNINTERRUPTABLE:
 			return
 		case ai.DEPENDENCY_IS_ENCHANTED:

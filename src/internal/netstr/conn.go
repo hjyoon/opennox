@@ -180,6 +180,12 @@ func (ns *Conn) SendServerClose() {
 	ns.Flush()
 	ns.accepted--
 	ns.reliable.Clear()
+	if ns.g.lis.Conn == ns {
+		// The listener owns the socket. Close it before reset discards pc;
+		// accepted peers only release their stream and share this socket.
+		_ = ns.Close()
+		return
+	}
 	ns.reset()
 	ns.g.streams[ns.ind] = nil
 }

@@ -13,6 +13,36 @@ import (
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
+func TestPlayerDamageWorldFlame4E17B0ClassAdmission(t *testing.T) {
+	bits := []object.Class{object.ClassFire, object.ClassSimple, object.ClassDangerous}
+	for subset := 0; subset < 8; subset++ {
+		var class object.Class
+		for bit, flag := range bits {
+			if subset&(1<<bit) != 0 {
+				class |= flag
+			}
+		}
+		t.Run(fmt.Sprintf("class-%x", uint32(class)), func(t *testing.T) {
+			w := &Object{ObjClass: class}
+			if got := playerDamageWorldFlameShape4E17B0(w, object.DamageFlame); got != (subset == 7) {
+				t.Fatalf("world FIRE admission=%t class=%v", got, class)
+			}
+		})
+	}
+	for _, forbidden := range []object.Class{object.ClassPlayer, object.ClassMonster, object.ClassWeapon, object.ClassWand, object.ClassMissile} {
+		t.Run(forbidden.String(), func(t *testing.T) {
+			w := &Object{ObjClass: object.ClassFire | object.ClassSimple | object.ClassDangerous | forbidden}
+			if playerDamageWorldFlameShape4E17B0(w, object.DamageFlame) {
+				t.Fatalf("unported source class admitted: %v", w.Class())
+			}
+		})
+	}
+	if playerDamageWorldFlameShape4E17B0(nil, object.DamageFlame) ||
+		playerDamageWorldFlameShape4E17B0(&Object{ObjClass: object.ClassFire | object.ClassSimple | object.ClassDangerous}, object.DamageLava) {
+		t.Fatal("nil/non-FLAME shape admitted")
+	}
+}
+
 func worldFlameArmorFixture4E17B0(t *testing.T, target *Object) *Object {
 	t.Helper()
 	item, freeItem := alloc.New(Object{})

@@ -178,3 +178,61 @@ func TestE2ECleansingFlamePredictionRequiresServerAndClientMovement(t *testing.T
 		t.Fatal("actual network and server/client movement observations rejected")
 	}
 }
+
+func TestE2ECleansingFlameCastFollowsServerPacketReset(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_cleansing_flame_spell.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var begin *ast.FuncDecl
+	for _, decl := range file.Decls {
+		if fn, ok := decl.(*ast.FuncDecl); ok && fn.Name.Name == "beginCast" {
+			begin = fn
+		}
+	}
+	if begin == nil {
+		t.Fatal("missing actual cast step")
+	}
+	queued, casts, publishes := 0, 0, 0
+	ast.Inspect(begin.Body, func(n ast.Node) bool {
+		call, ok := n.(*ast.CallExpr)
+		if !ok {
+			return true
+		}
+		sel, ok := call.Fun.(*ast.SelectorExpr)
+		if !ok {
+			return true
+		}
+		if sel.Sel.Name == "CastSpellLvl" || sel.Sel.Name == "ObjectsAddPending" {
+			t.Fatal("cast/publication precedes the real server packet reset")
+		}
+		if sel.Sel.Name != "TickCallback" {
+			return true
+		}
+		queued++
+		if len(call.Args) != 1 {
+			t.Fatal("invalid server callback")
+		}
+		callback, ok := call.Args[0].(*ast.FuncLit)
+		if !ok {
+			t.Fatal("missing queued cast body")
+		}
+		ast.Inspect(callback.Body, func(n ast.Node) bool {
+			if call, ok := n.(*ast.CallExpr); ok {
+				if sel, ok := call.Fun.(*ast.SelectorExpr); ok {
+					switch sel.Sel.Name {
+					case "CastSpellLvl":
+						casts++
+					case "ObjectsAddPending":
+						publishes++
+					}
+				}
+			}
+			return true
+		})
+		return false
+	})
+	if queued != 1 || casts != 1 || publishes != 1 {
+		t.Fatalf("queued=%d actual-casts=%d publications=%d", queued, casts, publishes)
+	}
+}

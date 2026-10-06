@@ -161,9 +161,15 @@ func (f *e2eCleansingFlameFixture) beginCast() {
 		f.caster.MonsterPushAction(ai.ACTION_CAST_SPELL_ON_OBJECT, uint32(f.id), 0, f.target)
 		return
 	}
-	api := noxServer.noxScriptP()
-	api.CastSpellLvl(nsp.Spell("SPELL_CLEANSING_FLAME"), f.level, api.toObj(f.caster), api.toObj(f.target))
-	noxServer.ObjectsAddPending()
+	// E2E steps run before the server tick clears Kind1. Use its normal
+	// callback queue so the real cast packet survives that reset and is
+	// consumed by the host's following client update. Do not replay or
+	// synthesize a prediction packet, or change the production reset.
+	noxServer.TickCallback(func() {
+		api := noxServer.noxScriptP()
+		api.CastSpellLvl(nsp.Spell("SPELL_CLEANSING_FLAME"), f.level, api.toObj(f.caster), api.toObj(f.target))
+		noxServer.ObjectsAddPending()
+	})
 }
 
 func (f *e2eCleansingFlameFixture) observeSound(id sound.ID, kind int, source *server.Object, _ types.Pointf) {

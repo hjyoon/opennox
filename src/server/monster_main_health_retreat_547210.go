@@ -25,7 +25,9 @@ func (s *Server) monsterMainHealthRetreat547210(unit *Object, update *MonsterUpd
 		return false
 	}
 	health := unit.HealthData
-	ratio := float32(float64(health.Cur) / float64(health.Max))
+	// FIDIV 00547803 uses precision 53, then FSTP 00547807 spills to
+	// binary32 under gameplay's ToZero rounding, not host nearest-even.
+	ratio := monsterMoveToRunSpill544440(monsterMoveForceDivChop53_50D581(float64(health.Cur), float64(health.Max)))
 	antiMagicCaster := update.StatusFlags.Has(object.MonStatusCanCastSpells) && unit.HasEnchant(ENCHANT_ANTI_MAGIC)
 	if float64(ratio) > float64(update.RetreatLevel) && !antiMagicCaster {
 		return false

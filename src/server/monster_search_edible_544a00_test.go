@@ -14,10 +14,11 @@ import (
 
 // GAME.EXE 00544A9E..00544ACB keeps the distance unspilled until FCOM,
 // tests only C0 (less or unordered), then spills the winning distance to F32.
+// Both retained arithmetic and FSTP use gameplay's round-toward-zero mode.
 // The expected identities below are independent of the Go distance helper.
 func TestMonsterSearchEdible544A00Arithmetic(t *testing.T) {
 	for _, mode := range []string{
-		"nearest", "exact-tie", "best-rounds-up", "rounded-tie-replaces",
+		"nearest", "exact-tie", "best-chops-cache", "rounded-tie-keeps-first",
 		"best-rounds-down", "unspilled-subtraction", "exact-limit",
 		"beyond-limit", "NaN-last", "NaN-middle", "NaN-then-infinity",
 		"infinite", "infinity-minus-infinity", "signed-zero", "subnormal",
@@ -30,10 +31,10 @@ func TestMonsterSearchEdible544A00Arithmetic(t *testing.T) {
 			switch mode {
 			case "exact-tie":
 				second.PosVec, want = types.Ptf(40, 30), first
-			case "best-rounds-up":
-				first.PosVec, second.PosVec = types.Ptf(1, 0.0003), types.Ptf(1, 0.00034)
-			case "rounded-tie-replaces":
-				first.PosVec, second.PosVec = types.Ptf(1, 0.0003), types.Ptf(1, 0.0003)
+			case "best-chops-cache":
+				first.PosVec, second.PosVec, want = types.Ptf(1, 0.0003), types.Ptf(1, 0.00034), first
+			case "rounded-tie-keeps-first":
+				first.PosVec, second.PosVec, want = types.Ptf(1, 0.0003), types.Ptf(1, 0.0003), first
 			case "best-rounds-down":
 				first.PosVec, second.PosVec, want = types.Ptf(1, 0.0002), types.Ptf(1, 0.0001), first
 			case "unspilled-subtraction":

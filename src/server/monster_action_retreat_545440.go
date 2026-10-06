@@ -47,16 +47,18 @@ func monsterSearchEdible544A00(unit *Object, radius float32, hooks monsterSearch
 			return true
 		}
 		// 00544A9E..00544ACB retains x87 53-bit intermediates through
-		// FCOM, then spills only the winning distance to binary32. Keep
-		// the Y-square/X-square/add boundaries separate to prohibit FMA.
-		dx := logicRandomFloatSub64_416030(float64(candidate.PosVec.X), float64(unit.PosVec.X))
-		dy := logicRandomFloatSub64_416030(float64(candidate.PosVec.Y), float64(unit.PosVec.Y))
-		ySquared := logicRandomFloatMul64_416030(dy, dy)
-		xSquared := logicRandomFloatMul64_416030(dx, dx)
-		distance := logicRandomFloatAdd64_416030(ySquared, xSquared)
+		// FCOM, then spills only the winning distance to binary32. Both
+		// stages use gameplay's round-toward-zero mode, including ties
+		// against the spilled cache. Preserve the Y-square/X-square/add
+		// boundaries without changing thread state or contracting the sum.
+		dx := monsterMoveToRunAddChop53_544434(float64(candidate.PosVec.X), -float64(unit.PosVec.X))
+		dy := monsterMoveToRunAddChop53_544434(float64(candidate.PosVec.Y), -float64(unit.PosVec.Y))
+		ySquared := monsterMoveToRunSquareChop53_544434(dy)
+		xSquared := monsterMoveToRunSquareChop53_544434(dx)
+		distance := monsterMoveToRunAddChop53_544434(ySquared, xSquared)
 		// The original tests C0 alone: unordered also replaces the winner.
 		if !(distance >= float64(nearestDistance)) {
-			nearestDistance = float32(distance)
+			nearestDistance = float32(monsterMoveToRunSpill544440(distance))
 			nearest = candidate
 		}
 		return true

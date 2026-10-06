@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Toxic Cloud clean ARM64 normal·HD의 실제 world 검증 완료
+
+기능 `7028a700d`(cast pointer)·`38145abdc`(monster world POISON tail)와 관찰 `d672a94ae`·`cc7be8954`를 반영한 clean source `cc7be8954524c234e1112eb27deaf79d906ed78b`에서 공식 `make build-darwin-arm64` actual exit 0(22.174초)으로 일반/HD/server 세 제품을 빌드했다. 각 제품의 Go 1.26.5·darwin/arm64·동일 vcs.revision·vcs.modified=false를 world 전후 공식 verifier로 확인했고 세 제품 `-h`도 actual exit 0이다. source가 dirty인 임시 바이너리나 대체 제품을 사용하지 않았다.
+
+기존 public `host-game-toxic-cloud-spell.yaml`을 byte-identical private copy로 실행한 isolated headless normal·HD는 각각 actual native exit 0이다. 위치→위치 기본-power script API 1회, player object→position script level 1..5, 정상 game tick/animation/cast-frame을 통과한 NPC 1회, 합계 각 7회/두 제품 14회가 모두 실제 cloud attribution의 즉시 피해·client HP notification·원본 수명 countdown·world/owned-list/client drawable 자연 소멸까지 완료했다. caster/cloud/owner/update 주소는 모두 4GiB 위였다. player incantation/mana·전체 VM timer builtin·NPC의 자율 spell 선택, PlayerDamage victim의 모든 sourced cloud 경로를 검증했다고 확대하지 않는다.
+
+두 제품에서 fresh Wolf HP 2000의 최초 cloud damage는 순서대로 3/7/5/9/4/8/7이며 script/player 6회는 cast+2 tick, NPC는 natural animation 4/cast+11 tick 뒤 최초 hit+13 tick이었다. 이 성공은 source-less periodic poison으로 대체되지 않는다. 최종 실제 HP는 1647/1679/1651/1628/1658/1664/1687이며 결과값을 주입하지 않았다. 수명 450은 그대로 감소하여 script/player elapsed 451, NPC elapsed 463에 zero-duration/deferred world deletion을 관찰했다. 각 cast의 object audio event 1, 각 제품 client HP replay 7 및 private diagnostic PNG 14도 확인했다. normal player/NPC와 HD 위치 script/NPC의 실제 damage frame PNG를 직접 열어 녹색 cloud·피해 숫자·호스트 HUD 렌더링을 확인했다. SIGSEGV·cloud damage admission rejection·유휴 관전자 전환은 없었다. 이 audio event 관찰은 mock/noaudio 실행에서 실제 출력 장치 청음을 했다는 뜻이 아니다.
+
+normal port 18746/pprof 28746와 HD 18747/28747의 fresh runtime은 개인 Save/config를 쓰지 않았고 oracle stock source는 symlink/read-only로 사용했다. NOX_DATA/NOX_E2E_OVERRIDE를 unset했으며 기존 public YAML SHA-256 `1b50cc4f096377b84788c3f97d5f03390c1f3b61f51eac56c13021345f166762`와 모든 tracked src/scripts/oracle file hash가 world 전후 같다. post-world oracle-test actual exit 0: stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, GAME.EXE code 2,935/data 638·strict NXZ 불변이다. 이전 실패 world·red/green·full/matrix JSON을 지우거나 성공으로 집계하지 않았다.
+
+실행 중 source/private script/doc를 편집하지 않았고 두 GUI·post-world test의 terminal 종료 및 port 해제를 확인한 뒤 이 documentation-only 기록을 작성했다. 마지막 전체 일반/strict의 각 33,435 leaf pass·기존 15 skip identity와 각 6-mode matrix 성공은 아래 독립 커밋의 기록과 같다. 상세 runner/log/readonly world checks/source hashes는 `/private/tmp/opennox-toxic-cloud.ZjrFm0`에 보존한다. 이 actual world 성공은 macOS ARM64이며 사용자 Linux 프로세스를 직접 실행한 검증은 아니다. 이전 Repeat 버튼 검증은 완료됐지만 passive RETREAT 음식 소비·Quest20 stage-3 순서와 전체 ARM64 포팅 목표는 아직 미완료다. 기록 커밋·즉시 push 뒤 최종 HEAD의 clean 제품 metadata를 다시 빌드/확인한다.
+
 ## Toxic Cloud 장시간 fixture의 정상 input으로 유휴 관전자 전환 예방
 
 기존 production `*e2eToxicCloudFixture.prepare` 본체 하나에서 실제 cursor 좌표의 `seat.MouseMoveEvent` 한 건을 기존 canvas-space `e2eQueueInput`으로 보낸다. 기존 `Client.nox_client_processInput_4308A0`은 online/non-Quest에서 `Inp.SeqDelay()>2700`이면 정상 관전자 명령을 수행한다. 앞선 no-input cloud 6회의 자연 수명 뒤 발생한 관전자 전환/host invisibility와 NPC 준비 timeout을 이 정상 입력으로 예방한다. 게임 idle 판정·sequence·observer flag·buff·HP·cast timing·public YAML의 7개 cast 경로/10-step schedule을 변경하지 않는다. click/keyboard input 없이 각 fixture setup 한 건만 보내며 관찰 hook에는 입력을 추가하지 않는다.

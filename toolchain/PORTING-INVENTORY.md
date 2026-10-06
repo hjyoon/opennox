@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Toxic Cloud의 monster world POISON 즉시 피해 복원
+
+cast 포인터 수정 `7028a700d`와 stock susceptible Wolf 관찰 `bb3dcad19` 이후, clean 일반 world는 구름의 즉시 damage 3..10을 `unsupported monster damage shape`로 거부했다. 당시 HP 2000→1999는 cloud hit가 아니라 별도로 동작하는 source-less Poison timer 피해였으며, 마지막 NPC 준비는 기존 online/non-Quest 유휴 입력 감지(2,700-frame 초과)의 관전자 전환으로 actual exit 2였다. 이 실패와 PNG를 보존하며 world 성공으로 집계하지 않는다. cloud attribution 관찰 강화와 정상 mouse-motion 입력을 통한 fixture 유휴 방지는 별도 본체 변경으로 진행한다.
+
+이 기능 커밋은 기존 production `DefaultDamageWorld4E0B30` 본체 하나만 수정한다. 변경하지 않은 stock ToxicCloud class는 `0x190008`(OBSTACLE|LIGHT|DANGEROUS|SIMPLE)이며 MISSILE이 아니다. SIMPLE|DANGEROUS world POISON을 monster DefaultDamage victim에 admission하고 unit/weapon/wand/missile shapes는 제외한다. terminal owner가 nil/cloud-self/class-zero ImaginaryCaster/player/NPC/proxy-NPC인 경우를 다룬다. GAME.EXE `004E0C61` enemy query→NoUpdate→Shock→`004E0D20..004E0D38` live poison immunity→visibility/late Defend/attribution/sound/field-guide/live parent combat latch→기존 raw HP suffix 순서를 유지한다. stock Troll `0x10202`의 IMMUNE_POISON `0x200`은 HP를 변경하지 않으며 poison에 Shield/fire/electric protection을 적용하지 않는다. PlayerDamage callback을 가진 player/NPC victim의 sourced cloud 피해를 이 변경의 복원 범위로 주장하지 않는다.
+
+새 server 323 + 실제 C dispatcher/native adapter/UnitSetHP 96 = 419 leaf는 C-owned high-address object/update/health, class boundary, raw -3/0/3/10/25, 실제 immune gate 및 callback이 class/subclass/UpdateData/frame을 바꾸는 순서까지 검사한다. susceptible red는 actual exit 1, 354 fail/44 pass였다. 최초 잘못된 MISSILE admission과 live WEAPON으로 바뀐 새 fixture의 누락 InitData panic도 별도 actual exit 1 로그로 보존하며 성공 수에서 제외했다. 최종 focused 446 pass·fail/skip 0·actual exit 0, 일반/실제 cgocheck2/race/checkptr=2/highres/server-tag 각 3회는 각 6,252 pass, 합계 37,512 pass·fail/skip 0·actual exit 0이다.
+
+전체 7 package 일반/strict는 각각 33,432 leaf pass·fail 0·actual exit 0이며 baseline 15 skip identity가 정확히 같고 Quest map-selector 51 pass는 skip이 없다. strict header는 Go 1.26.5·GOEXPERIMENT=cgocheck2·CGO_ENABLED=1이다. oracle-test actual exit 0: stock 1,556파일/570,653,750바이트·tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, GAME.EXE code 2,935/data 638·strict NXZ가 불변이다. 기존 oracle seals/ranges/manifests/assets/HP expectations/YAML/golden은 수정하지 않았고 public cloud YAML SHA-256 `1b50cc4f096377b84788c3f97d5f03390c1f3b61f51eac56c13021345f166762`도 같다.
+
+기존 본체 1개 AST audit·diff check actual exit 0 및 모든 build/test terminal 종료 뒤 이 기록을 작성했다. 상세 JSON/stderr/oracle/기존 실패 world는 `/private/tmp/opennox-toxic-cloud.ZjrFm0`에 보존한다. 커밋·즉시 push 뒤 clean 일반/HD/server 제품과 actual cloud attribution·자연 NPC animation·자연 expiry의 isolated headless 재검증을 별도 진행하며 위 unit 성공을 world 성공으로 대신하지 않는다. passive RETREAT 음식 소비·Quest20 stage-3 순서 및 전체 ARM64 포팅 목표는 미완료다.
+
 ## Toxic Cloud 관찰 대상의 원본 독 면역 구분
 
 clean `edd33d51a` 일반 제품의 첫 위치→위치 script cast는 high-address 객체로 구름 생성·원본 수명 450·client drawable까지 진행했으나 HP 대기에서 actual exit 2로 종료했다. 이 world 실패는 성공 수에 포함하지 않는다. 원본 GAME.EXE `004E0D29..004E0D38`과 변경하지 않은 `thing.bin`을 읽기 전용 대조하면 Troll의 subclass `0x10202`에는 IMMUNE_POISON `0x200`이 있다. 따라서 Troll HP 감소를 요구했던 새 관찰 fixture도 잘못된 대상이었다. 당시 native 피해 admission의 `unsupported monster damage shape` 로그는 별도의 미구현 경로이며 면역 몬스터의 HP 기대값을 강제로 바꾸는 근거가 아니다.

@@ -1,7 +1,6 @@
 package server
 
 import (
-	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -283,23 +282,34 @@ func monsterCreatureActuallyMove50D3B0(unit *Object, trace func(types.Pointf, ty
 	// 0050D4DA publishes the scalar debug cursor before the cached path cursor.
 	*memmap.PtrUint32(0x5D4594, 2386204) = uint32(selected)
 	update.Field67 = uint32(selected)
-	targetDelta := update.Path[selected].Sub(unit.PosVec)
-	var segment types.Pointf
-	if selected <= 0 {
-		segment = update.Path[1].Sub(update.Path[0])
-	} else {
-		segment = update.Path[selected].Sub(update.Path[selected-1])
+	// 0050D4EF spills X, but 0050D4FA retains Y after also spilling it.
+	// The length uses retained-Y * spilled-Y, not two spilled squares.
+	dx := monsterMoveToRunSpill544440(monsterMoveToRunAddChop53_544434(float64(update.Path[selected].X), -float64(unit.PosVec.X)))
+	dyRetained := monsterMoveToRunAddChop53_544434(float64(update.Path[selected].Y), -float64(unit.PosVec.Y))
+	dy := monsterMoveToRunSpill544440(dyRetained)
+	ySquare := monsterMoveForceMulChop53_50D4FE(dyRetained, dy)
+	xSquare := monsterMoveToRunSquareChop53_544434(dx)
+	square := monsterMoveToRunAddChop53_544434(ySquare, xSquare)
+	root := monsterMoveForceSqrtChop53_50D50C(square)
+	distance := monsterMoveToRunSpill544440(monsterMoveToRunAddChop53_544434(root, monsterMoveDistanceBias50D3B0))
+	// Slot zero deliberately uses slot one even for a one-point path.
+	from, to := update.Path[0], update.Path[1]
+	if selected > 0 {
+		from, to = update.Path[selected-1], update.Path[selected]
 	}
+	segment := types.Ptf(
+		float32(monsterMoveToRunSpill544440(monsterMoveToRunAddChop53_544434(float64(to.X), -float64(from.X)))),
+		float32(monsterMoveToRunSpill544440(monsterMoveToRunAddChop53_544434(float64(to.Y), -float64(from.Y)))),
+	)
 	direction := DirFromVec(segment)
 	unit.Direction1 = direction
 	unit.Direction2 = direction
 	speed := float64(unit.SpeedCur)
 	if update.StatusFlags.Has(object.MonStatusRunning) && update.MonsterDef != nil {
-		speed *= float64(update.MonsterDef.RunMultiplier96)
+		speed = monsterMoveForceMulChop53_50D4FE(float64(update.MonsterDef.RunMultiplier96), speed)
 	}
-	distance := float32(math.Sqrt(float64(targetDelta.X)*float64(targetDelta.X)+float64(targetDelta.Y)*float64(targetDelta.Y)) + monsterMoveDistanceBias50D3B0)
-	unit.ForceVec.X = float32(speed * float64(targetDelta.X) / float64(distance))
-	unit.ForceVec.Y = float32(speed * float64(targetDelta.Y) / float64(distance))
+	unit.ForceVec.X = float32(monsterMoveToRunSpill544440(monsterMoveForceDivChop53_50D581(monsterMoveForceMulChop53_50D4FE(speed, dx), distance)))
+	unit.ForceVec.Y = float32(monsterMoveToRunSpill544440(monsterMoveForceDivChop53_50D581(monsterMoveForceMulChop53_50D4FE(speed, dy), distance)))
 	return false
 }
 

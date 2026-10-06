@@ -423,9 +423,11 @@ func TestMonsterCreatureActuallyMove50D3B0RunningVelocity(t *testing.T) {
 	}) {
 		t.Fatal("unfinished path reported completion")
 	}
-	distance := float32(50 + monsterMoveDistanceBias50D3B0)
-	wantX := float32(float64(3) * 30 / float64(distance))
-	wantY := float32(float64(3) * 40 / float64(distance))
+	// Literal 0050D57D..0050D590 under the original precision-53/ToZero
+	// environment. The previous nearest-even expression rounded X up by
+	// one binary32 ULP. Keep an exact expectation, not a wider tolerance.
+	wantX := math.Float32frombits(0x3fe65a9b)
+	wantY := math.Float32frombits(0x401991bd)
 	if traceCalls != 2 || update.Field67 != 1 || unit.ForceVec.X != wantX || unit.ForceVec.Y != wantY {
 		t.Fatalf("movement = traces:%d index:%d force:%v, want force {%g %g}", traceCalls, update.Field67, unit.ForceVec, wantX, wantY)
 	}

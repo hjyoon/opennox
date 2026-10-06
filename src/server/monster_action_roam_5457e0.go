@@ -7,6 +7,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
@@ -225,14 +226,17 @@ func monsterActionRoam5457E0(unit *Object, hooks monsterActionRoamHooks5457E0) {
 
 func monsterCreatureActuallyMove50D3B0(unit *Object, trace func(types.Pointf, types.Pointf, MapTraceFlags) bool) bool {
 	update := unit.UpdateDataMonster()
-	pathCount := int(update.Field2)
-	if pathCount <= 0 {
+	if update.Field2 == 0 {
 		return false
 	}
+	// 0050D3CC caches the trace origin, but 0050D42A reads the live unit
+	// position after each callback. Retain the entry update-data pointer too.
+	origin := unit.PosVec
+	pathCount := int(int32(update.Field2))
 	if pathCount > len(update.Path) {
 		pathCount = len(update.Path)
 	}
-	start := int(update.Field67)
+	start := int(int32(update.Field67))
 	if start >= pathCount || start < 0 {
 		update.Field2 = 0
 		return false
@@ -241,22 +245,28 @@ func monsterCreatureActuallyMove50D3B0(unit *Object, trace func(types.Pointf, ty
 	selected := -1
 	closePoint := -1
 	bestDistance := float32(10000000.0)
-	for i := start; i < pathCount; i++ {
+	// The original signed loop reloads Field2 after every ray trace, including
+	// rejected rays. Preserve the native array bound for malformed counts.
+	for i := start; i < len(update.Path) && i < int(int32(update.Field2)); i++ {
 		point := update.Path[i]
-		if !trace(unit.PosVec, point, MapTraceFlags(132)) {
+		if !trace(origin, point, MapTraceFlags(132)) {
 			continue
 		}
-		dx := float64(point.X) - float64(unit.PosVec.X)
-		dy := float64(point.Y) - float64(unit.PosVec.Y)
-		distance := dx*dx + dy*dy
+		// 0050D42A..0050D480 retains precision-53 / ToZero differences,
+		// Y-square then X-square and the sum; only the best distance spills.
+		dx := monsterMoveToRunAddChop53_544434(float64(point.X), -float64(unit.PosVec.X))
+		dy := monsterMoveToRunAddChop53_544434(float64(point.Y), -float64(unit.PosVec.Y))
+		ySquare := monsterMoveToRunSquareChop53_544434(dy)
+		xSquare := monsterMoveToRunSquareChop53_544434(dx)
+		distance := monsterMoveToRunAddChop53_544434(ySquare, xSquare)
 		if distance > 64.0 {
 			if selected < 0 || float64(bestDistance) > distance {
-				bestDistance = float32(distance)
+				bestDistance = float32(monsterMoveToRunSpill544440(distance))
 				selected = i
 			}
 			continue
 		}
-		if i == pathCount-1 {
+		if i == int(int32(update.Field2))-1 {
 			update.Field2 = 0
 			return true
 		}
@@ -270,6 +280,8 @@ func monsterCreatureActuallyMove50D3B0(unit *Object, trace func(types.Pointf, ty
 		selected = closePoint
 	}
 
+	// 0050D4DA publishes the scalar debug cursor before the cached path cursor.
+	*memmap.PtrUint32(0x5D4594, 2386204) = uint32(selected)
 	update.Field67 = uint32(selected)
 	targetDelta := update.Path[selected].Sub(unit.PosVec)
 	var segment types.Pointf

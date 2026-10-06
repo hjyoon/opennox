@@ -1042,6 +1042,12 @@ func PlayerDamageNative4E17B0(
 	if target == nil {
 		return playerDamageUnsupported4E17B0(runtime, "non-player target", target, source, weapon, damage, typ)
 	}
+	// Keep the stock FIRE|SIMPLE|DANGEROUS route disjoint from the
+	// earlier bare-FIRE and NPC SIMPLE shield slices. Class.Has is ANY-bit.
+	const stockWorldFlame = object.ClassFire | object.ClassSimple | object.ClassDangerous
+	if playerDamageWorldFlameShape4E17B0(weapon, typ) && weapon.Class()&stockWorldFlame == stockWorldFlame {
+		return playerDamageWorldFlame4E17B0(target, source, weapon, damage, typ, runtime)
+	}
 	if target.Class().Has(object.ClassPlayer) && playerDamageWorldImpaleShape4E17B0(source, weapon, typ) {
 		return playerDamagePlayerWorldImpale4E17B0(target, source, weapon, damage, typ, runtime)
 	}

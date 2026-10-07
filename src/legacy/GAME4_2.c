@@ -10498,6 +10498,7 @@ int nox_xxx_castEquake_52DE40(int a1, int a2, int a3, int a4, int a5, int a6) {
 #endif
 
 //----- (0052DEC0) --------------------------------------------------------
+#if 0
 short nox_xxx_equakeDamage_52DEC0(int a1, int a2) {
 	int v2;    // edi
 	int v3;    // eax
@@ -10524,6 +10525,7 @@ short nox_xxx_equakeDamage_52DEC0(int a1, int a2) {
 	}
 	return v3;
 }
+#endif
 
 //----- (0052E020) --------------------------------------------------------
 unsigned int nox_xxx_isObjectMovable_52E020(int a1) {

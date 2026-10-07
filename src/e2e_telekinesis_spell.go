@@ -27,6 +27,7 @@ type e2eTelekinesisFixture struct {
 	host, caster, hand                   *server.Object
 	original                             types.Pointf
 	aims                                 [2]types.Pointf
+	cursorInputs                         [2]e2eTelekinesisCursorInput
 	health, mana                         uint16
 	wire, created, duration, previousAge uint32
 	scriptID                             int32

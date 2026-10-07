@@ -280,6 +280,18 @@ func TestPlayerDamageNative4E17B0NPCShieldSourceOnlyMarkerAndExclusion(t *testin
 				if !self {
 					r.BlockSourceExcluded = func(*Object) bool { t.Fatal("source-only used six weapon exclusions"); return true }
 				}
+				if self && typ == object.DamageImpact {
+					// Restored caster case 11 clears the cached hit marker
+					// before facing/audio and selects the live shield after
+					// audio/balance, not the old admission-only preflight.
+					r.CanDamageBlockItem = func(got *Object) bool {
+						if got != shield || target.UpdateDataMonster().Field547 != 0 ||
+							!slices.Equal(events, []string{"audio", "percent"}) {
+							t.Fatal("caster IMPACT shield admission preceded real block effects")
+						}
+						return true
+					}
+				}
 				marker, markerType := uint32(0), uint32(77)
 				if !self && (typ == object.DamageClaw || typ == object.DamageCrush) {
 					marker, markerType = 1, uint32(source.TypeInd)

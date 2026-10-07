@@ -223,7 +223,13 @@ func (sc *e2eScenario) CheckRestoreSpell(level int, mode, name string) {
 	}
 	f := &e2eRestoreSpellFixture{id: id, npc: npc, mode: mode, level: level}
 	sc.addWhen(0, name+" prepare", 1200, func() bool {
-		return noxServer.Players.HostUnit() != nil && noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
+		host := noxServer.Players.HostUnit()
+		// The normal host spawn protection must expire naturally before
+		// injury, just as in the other unenchanted-host spell observers.
+		return host != nil && host.ControllingPlayer() != nil && host.UpdateData != nil &&
+			host.HealthData != nil && host.HealthData.Cur > 7 && host.Buffs == 0 && host.Poison540 == 0 &&
+			!host.Flags().HasAny(object.FlagDead|object.FlagDestroyed|object.FlagNoUpdate) &&
+			noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
 	}, f.prepare)
 	sc.Wait(12, name+" publish injury")
 	sc.add(0, name+" instant dispatch", f.cast)

@@ -9949,6 +9949,9 @@ int nox_xxx_castLock_52CE90(int a1, int a2, int a3, int a4) {
 #endif
 
 //----- (0052CF90) --------------------------------------------------------
+// Native-width candidate callback: server/spell_lock_52ce90.go.
+// Preserve the original integer-pointer body as disabled provenance.
+#if 0
 void sub_52CF90(int a1, int a2) {
 	int v2;    // esi
 	double v3; // st7
@@ -9977,6 +9980,7 @@ void sub_52CF90(int a1, int a2) {
 		}
 	}
 }
+#endif
 
 //----- (0052D060) --------------------------------------------------------
 void sub_52D060(int a1, int a2) {

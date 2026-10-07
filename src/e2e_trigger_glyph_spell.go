@@ -143,9 +143,12 @@ func (f *e2eTriggerGlyphFixture) observeSound(id sound.ID, kind int, obj *server
 	switch id {
 	case sound.SoundTriggerGlyphCast:
 		f.castAudio++
+		// The fixture's script cast precedes Audio.Reset, so its queued
+		// callback observes the real death. NPC casts run inside the audio
+		// loop, where this callback runs before the real death instead.
 		if f.castAudio != 1 || f.detonateAudio != 0 || obj != f.caster || kind != 0 || pos != f.caster.PosVec ||
-			!e2eFistInWorld(f.selected, f.wire, f.scriptID) || f.selected.Flags().Has(object.FlagDestroyed) {
-			e2eError(fmt.Errorf("TriggerGlyph cast audio did not precede actual death"))
+			!e2eFistInWorld(f.selected, f.wire, f.scriptID) || !e2eTriggerGlyphCastAudioState(f.mode, f.selected.Flags().Has(object.FlagDestroyed)) {
+			e2eError(fmt.Errorf("TriggerGlyph cast audio observed outside its queued/immediate death phase"))
 			return
 		}
 		if f.mode == "npc-animated" {

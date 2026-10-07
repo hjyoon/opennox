@@ -9945,6 +9945,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckTelekinesisSpell(l.Count, l.Text, l.Name)
+		case "check-earthquake-spell":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckEarthquakeSpell(l.Count, l.Text, l.Name)
 		case "check-cleansing-flame-spell":
 			if dt != 0 {
 				sc.Wait(dt, "")

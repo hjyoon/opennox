@@ -28,17 +28,17 @@ func logicRandomFloatMul64_416030(a, b float64) float64 { return a * b }
 // exactly once. The original C3-only x87 comparison treats both zero and
 // unordered ranges as the no-step path and returns the binary32 max bound.
 func logicRandomFloat416030(random *prand.Rand, min, max float32) float64 {
-	delta := logicRandomFloatSub64_416030(float64(max), float64(min))
+	delta := logicRandomFloatAddChop53_416030(float64(max), -float64(min))
 	if delta == 0 || math.IsNaN(delta) {
 		return float64(max)
 	}
 	value := int32(random.Int(0, logicRandomFloatTableMax416030))
-	scaled := logicRandomFloatMul64_416030(
+	scaled := logicRandomFloatMulChop53_416030(
 		float64(value),
 		float64(logicRandomFloatTableScale416030),
 	)
-	return logicRandomFloatAdd64_416030(
-		logicRandomFloatMul64_416030(delta, scaled),
+	return logicRandomFloatAddChop53_416030(
+		logicRandomFloatMulChop53_416030(delta, scaled),
 		float64(min),
 	)
 }

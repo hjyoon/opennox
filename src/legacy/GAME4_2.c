@@ -9983,6 +9983,9 @@ void sub_52CF90(int a1, int a2) {
 #endif
 
 //----- (0052D060) --------------------------------------------------------
+// Native-width door-group traversal: server/spell_lock_52ce90.go.
+// Preserve the original integer-pointer body as disabled provenance.
+#if 0
 void sub_52D060(int a1, int a2) {
 	int v2;    // eax
 	int v3;    // eax
@@ -9998,6 +10001,7 @@ void sub_52D060(int a1, int a2) {
 	nox_xxx_getUnitsInRect_517C10(&v5, sub_52CE60, 0);
 	*getMemU32Ptr(0x5D4594, 2487716) = 0;
 }
+#endif
 
 //----- (0052D330) --------------------------------------------------------
 // Native-width implementation: server/spell_telekinesis_52d330.go, selected

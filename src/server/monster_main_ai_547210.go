@@ -347,18 +347,26 @@ func (s *Server) monsterMainCheckDodgeables547C50(unit *Object, runtime MonsterM
 	// callback. Each destination still reads the live position afterwards.
 	origin := unit.PosVec
 	for i := 0; i < 5; i++ {
-		rawDistance := s.monsterMainRandomFloat547210(runtime, 2, 3) * float64(unit.SpeedCur)
-		distance := float32(rawDistance)
+		// 00547CA2..00547CB5 retains the FMUL at precision 53 and
+		// FSTS spills under gameplay ToZero. The cap compares the
+		// unspilled register, including its original unordered branch.
+		rawDistance := monsterMoveForceMulChop53_50D4FE(s.monsterMainRandomFloat547210(runtime, 2, 3), float64(unit.SpeedCur))
+		distance := float32(monsterMoveToRunSpill544440(rawDistance))
 		if rawDistance > 15 {
 			distance = 15
 		}
 		if s.monsterMainRandomInt547210(runtime, 0, 100) < 50 {
 			distance = -distance
 		}
-		destination := types.Ptf(
-			float32(float64(distance)*float64(-sin)+float64(unit.PosVec.X)),
-			float32(float64(distance)*float64(cos)+float64(unit.PosVec.Y)),
-		)
+		// 00547CE4..00547D01 keeps each FMUL/FADD separate before
+		// the two FSTPS stores. Nearest-even spills or a contracted FMA
+		// can move a probe across a wall/lava boundary and consume
+		// additional RNG attempts. Coordinates remain live after RNG.
+		x := monsterMoveForceMulChop53_50D4FE(float64(distance), float64(-sin))
+		x = monsterMoveToRunAddChop53_544434(x, float64(unit.PosVec.X))
+		y := monsterMoveForceMulChop53_50D4FE(float64(distance), float64(cos))
+		y = monsterMoveToRunAddChop53_544434(y, float64(unit.PosVec.Y))
+		destination := types.Ptf(float32(monsterMoveToRunSpill544440(x)), float32(monsterMoveToRunSpill544440(y)))
 
 		traceRay := runtime.TraceRay
 		if traceRay == nil {

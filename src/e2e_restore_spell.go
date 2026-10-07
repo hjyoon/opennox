@@ -82,6 +82,9 @@ func (f *e2eRestoreSpellFixture) prepare() {
 			return
 		}
 		// Ordinary placement, ownership and waiting AI are inputs only.
+		// Register the ordinary BecomePet monitor before injury, so the
+		// client's stock ally HP record can observe 004EE4C0's owner report.
+		legacy.Nox_xxx_unitBecomePet_4E7B00(f.host, f.target)
 		f.target.UpdateDataMonster().SetAggression(0)
 		f.target.ClearActionStack()
 		f.target.MonsterPushAction(ai.ACTION_WAIT, noxServer.Frame()+250000)

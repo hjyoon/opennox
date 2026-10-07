@@ -191,15 +191,21 @@ func (f *e2eRestoreSpellFixture) complete() bool {
 		if !ready || meter.Current != uint32(maximum) || meter.Maximum != uint32(maximum) {
 			return false
 		}
-	} else if f.id != spell.SPELL_RESTORE_MANA {
+	} else {
 		drawable := noxClient.Objs.ByNetCode(uint16(noxServer.GetUnitNetCode(f.target)))
 		if drawable == nil {
 			return false
 		}
-		delta, ready := legacy.HealthChangeForDrawable(drawable.NetCode32)
-		if !ready || delta <= 0 {
+		// GAME.EXE 004D8760 emits only negative damage numbers. Healing
+		// instead reaches the monitored ally through 004EE4C0 -> 004D8620:
+		// a current-HP byte, decoded by the real client as twice that byte.
+		current, maximum, _, ready := legacy.Sub_495180(int(drawable.NetCode32))
+		want := e2eRestoreNPCClientHP(f.id, f.health, f.maxHP)
+		if !ready || current != int(want) || maximum != int(f.maxHP) {
 			return false
 		}
+		e2eLog.Printf("RESTORE CLIENT ALLY: mode=%s level=%d target=%p drawable=%p HP=%d/%d server-HP=%d original-packed=true recovery=%t",
+			f.mode, f.level, f.target, drawable, current, maximum, f.target.HealthData.Cur, f.id != spell.SPELL_RESTORE_MANA)
 	}
 	e2eLog.Printf("RESTORE COMPLETE: mode=%s level=%d audio=%d target=%p elapsed=%d client-resource-observed=%t",
 		f.mode, f.level, f.audio, f.target, noxServer.Frame()-f.frame, !(f.npc && f.id == spell.SPELL_RESTORE_MANA))

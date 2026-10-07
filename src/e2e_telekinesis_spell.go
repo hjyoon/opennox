@@ -181,14 +181,22 @@ func (f *e2eTelekinesisFixture) observeTick() {
 	age := noxServer.Frame() - 1 - f.created
 	if e2eFistInWorld(f.hand, f.wire, f.scriptID) {
 		duration := f.host.EnchantDur(server.ENCHANT_TELEKINESIS)
-		if age > f.duration || duration > f.previousDuration || f.previousDuration-duration > 1 {
+		destroyed := f.hand.Flags().Has(object.FlagDestroyed)
+		if age > f.duration+1 || age <= f.duration && destroyed ||
+			age == f.duration+1 && (!destroyed || f.hand.DeletedAt != f.created+age || f.previousAge != f.duration) ||
+			duration > f.previousDuration || f.previousDuration-duration > 1 {
 			e2eError(fmt.Errorf("Telekinesis hand/timer changed before the original lifetime boundary: age=%d timer=%d->%d", age, f.previousDuration, duration))
 			return
 		}
+		if age == f.duration+1 {
+			e2eLog.Printf("TELEKINESIS DELETE QUEUED: mode=%s level=%d age=%d destroyed=%t deletedAt=%d", f.mode, f.level, age, destroyed, f.hand.DeletedAt)
+		}
 		f.previousAge, f.previousDuration = age, duration
 	} else {
-		if age != f.duration+1 || f.previousAge != f.duration {
-			e2eError(fmt.Errorf("Telekinesis hand removed at age=%d after age=%d, want strict >%d", age, f.previousAge, f.duration))
+		// Original 004E5E20 retains a current-frame deletion and finalizes it
+		// on the following tick. The strict hand expiry is a separate event.
+		if age != f.duration+2 || f.previousAge != f.duration+1 {
+			e2eError(fmt.Errorf("Telekinesis hand removed at age=%d after age=%d, want queued=%d finalized=%d", age, f.previousAge, f.duration+1, f.duration+2))
 			return
 		}
 		f.removed = true

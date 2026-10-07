@@ -20570,7 +20570,7 @@
       "address": "0x0057C8A0",
       "size": 251,
       "sha256": "f07293f8b70c8df1a887692598d51cb696cc467c14f4480838f7e5e416dd74de",
-      "purpose": "project a point onto a directed segment, retain the x delta and dot product in x87, preserve the five binary32 spills for y delta, squared length, dot product, y quotient and output coordinates, then test the projected segment bounds in original C0/C3 order"
+      "purpose": "project a point onto a directed segment, retain the x delta and dot product in x87, preserve the six binary32 stores for y delta, squared length, dot product, y quotient and separate x/y output coordinates, then test the projected segment bounds in original C0/C3 order"
     },
     {
       "name": "nox_xxx_mathPointOnTheLine_57C8A0_padding",

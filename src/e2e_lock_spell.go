@@ -123,7 +123,7 @@ func (f *e2eLockFixture) prepare() {
 func (f *e2eLockFixture) unchangedOutsideAndUnits() {
 	if f.doors[2].ObjOwner != f.outsideOwner || f.doors[2].Field34 != f.outsideExpiry ||
 		f.host.HealthData.Cur != f.health || f.host.UpdateDataPlayer().ManaCur != f.mana || f.npc.HealthData.Cur != f.npcHP {
-		e2eError(fmt.Errorf("Lock changed outside Door ownership/expiry or live HP/mana"))
+		e2eError(fmt.Errorf("Lock changed outside Door ownership/expiry or live HP/mana: outside=%p owner=%p want=%p expiry=%d want=%d HP=%d want=%d mana=%d want=%d NPC-HP=%d want=%d", f.doors[2], f.doors[2].ObjOwner, f.outsideOwner, f.doors[2].Field34, f.outsideExpiry, f.host.HealthData.Cur, f.health, f.host.UpdateDataPlayer().ManaCur, f.mana, f.npc.HealthData.Cur, f.npcHP))
 	}
 }
 

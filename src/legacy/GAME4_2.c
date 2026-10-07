@@ -10478,6 +10478,7 @@ int sub_52DD50(int a1, int a2, int a3, int a4, void* a5) {
 }
 
 //----- (0052DE40) --------------------------------------------------------
+#if 0
 int nox_xxx_castEquake_52DE40(int a1, int a2, int a3, int a4, int a5, int a6) {
 	int v6;    // eax
 	int v7;    // eax
@@ -10494,6 +10495,7 @@ int nox_xxx_castEquake_52DE40(int a1, int a2, int a3, int a4, int a5, int a6) {
 	nox_xxx_earthquakeSend_4D9110((float*)(a4 + 56), v7);
 	return 1;
 }
+#endif
 
 //----- (0052DEC0) --------------------------------------------------------
 short nox_xxx_equakeDamage_52DEC0(int a1, int a2) {

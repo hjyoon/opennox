@@ -573,7 +573,7 @@ func Nox_xxx_castStun_52C2C0(spellID spell.ID, a2, a3, a4 *server.Object, sa *se
 }
 
 func Nox_xxx_castTelekinesis_52D330(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castTelekinesis_52D330, spellID, a2, a3, a4, sa, lvl)
+	return telekinesisCastCall52D330(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Nox_xxx_castToxicCloud_52DB60(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

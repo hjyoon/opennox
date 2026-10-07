@@ -18116,6 +18116,20 @@
       "purpose": "the exact eight NOP bytes after the NPC weapon-block action predicate before the following routine at 00534390"
     },
     {
+      "name": "sub_534440",
+      "address": "0x00534440",
+      "size": 38,
+      "sha256": "cac926f4037c51da38dfd5b9520859f626b8a1f8d18266949d883fcca87ac4ed",
+      "purpose": "the complete original live-aggression predicate: x87 C0 admits aggression below binary32 0.079999998 and unordered as passive, including the gate used by the periodic food tail"
+    },
+    {
+      "name": "sub_534440_padding",
+      "address": "0x00534466",
+      "size": 10,
+      "sha256": "bde559b24d3a5302d82a4e56eb6f4b12d39057d100fd0ca81b337f5c1aa80cba",
+      "purpose": "the exact ten NOP alignment bytes after the passive-aggression predicate before the next routine at 00534470"
+    },
+    {
       "name": "nox_xxx_monsterMimicCheckMorph_534950",
       "address": "0x00534950",
       "size": 178,
@@ -19472,6 +19486,20 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "the exact thirteen NOP alignment bytes after the one-qualifier name helper"
+    },
+    {
+      "name": "nox_xxx_mobActionMoveTo_5443F0",
+      "address": "0x005443F0",
+      "size": 463,
+      "sha256": "5240dcc4e8a0ad66535a4624f0f09963fabbdd9347c6275db1c671c4aa558c23",
+      "purpose": "the complete original MOVE_TO update: ordered speed admission, escort run band, actual path arrival, retained tracked-target pop guard, status-dependent retry and WAIT RNG, and movement audio"
+    },
+    {
+      "name": "nox_xxx_mobActionMoveTo_5443F0_padding",
+      "address": "0x005445BF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact single NOP alignment byte between MOVE_TO and FAR_MOVE_TO at 005445C0"
     },
     {
       "name": "nox_xxx_mobActionMoveToFar_5445C0",

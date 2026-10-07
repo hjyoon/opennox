@@ -9824,6 +9824,10 @@ int sub_52CBD0(int a1, int a2, int a3, int a4) {
 // 52CBD0: using guessed type int var_C8[39];
 
 //----- (0052CCD0) --------------------------------------------------------
+// Native-width implementation: server/spell_trigger_glyph_52ccd0.go, selected
+// through legacy/spell_trigger_glyph_52ccd0.go. Keep the original body as
+// provenance; the three-int entry truncates world objects and the caster.
+#if 0
 int sub_52CCD0(int a1, int a2, int a3) {
 	int v3;        // ebx
 	double v4;     // st7
@@ -9859,6 +9863,7 @@ int sub_52CCD0(int a1, int a2, int a3) {
 	nox_xxx_dieGlyph_54DF30(Tm);
 	return 1;
 }
+#endif
 
 //----- (0052CDB0) --------------------------------------------------------
 int nox_xxx_castCurePoison_52CDB0(int a1, int a2, int a3, int a4, int* a5, int a6) {

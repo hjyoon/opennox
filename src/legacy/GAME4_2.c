@@ -9906,12 +9906,16 @@ int nox_xxx_castCurePoison_52CDB0(int a1, int a2, int a3, int a4, int* a5, int a
 #endif
 
 //----- (0052CE60) --------------------------------------------------------
+// Native-width group callback: server/spell_lock_52ce90.go.
+// Preserve the original integer-pointer body as disabled provenance.
+#if 0
 void sub_52CE60(int a1) {
 	if (*(uint8_t*)(a1 + 8) & 0x80) {
 		*(uint32_t*)(a1 + 508) = *getMemU32Ptr(0x5D4594, 2487716);
 		*(uint32_t*)(a1 + 136) = gameFrame() + 60 * gameFPS();
 	}
 }
+#endif
 
 //----- (0052CE90) --------------------------------------------------------
 // Native-width entry: legacy/spell_lock_52ce90.go and server/spell_lock_52ce90.go.

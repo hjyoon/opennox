@@ -521,7 +521,7 @@ func Sub_52DD50(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcc
 }
 
 func Nox_xxx_castLock_52CE90(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castLock_52CE90, spellID, a2, a3, a4, sa, lvl)
+	return lockCastCall52CE90(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Sub_52CA80(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

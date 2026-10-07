@@ -9767,6 +9767,10 @@ int sub_52CA80(int a1, int a2, int a3, int a4) {
 #endif
 
 //----- (0052CBD0) --------------------------------------------------------
+// Native-width implementation: server/spell_mark_slots_52cbd0.go, selected
+// through legacy/spell_mark_slots_52cbd0.go. Preserve the original body as
+// provenance; its four-int entry truncates both caster and marker pointers.
+#if 0
 int sub_52CBD0(int a1, int a2, int a3, int a4) {
 	int v4;       // eax
 	int v5;       // ebx
@@ -9825,6 +9829,7 @@ int sub_52CBD0(int a1, int a2, int a3, int a4) {
 	}
 	return 1;
 }
+#endif
 // 52CBD0: using guessed type int var_C8[39];
 
 //----- (0052CCD0) --------------------------------------------------------

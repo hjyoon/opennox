@@ -309,6 +309,25 @@ func TestPlayerDamageNPCHarpoon4E17B0AdjacentShapes(t *testing.T) {
 			before := *target.UpdateDataMonster()
 			why := ""
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { why = reason }
+			if tc.selfWeapon {
+				// This is not a HarpoonBolt, but it is the original case 11
+				// caller shape used by a player's Earthquake. Its restored
+				// caster path must now damage the NPC rather than reject it.
+				beforeSource, beforePlayer := *source, *source.UpdateDataPlayer()
+				godQueries := 0
+				r.GodMode = func() bool { godQueries++; return true }
+				if h, result := PlayerDamageNative4E17B0(target, source, bolt, 20, tc.typ, r); !h || !result || why != "" ||
+					target.HealthData.Cur != 180 || target.Obj130 != source || target.Pos132 != source.PrevPos ||
+					target.Field131 != uint32(object.DamageImpact) || target.Frame134 != 1400 || godQueries != 1 {
+					t.Fatalf("caster IMPACT handled/result=%t/%t reason=%q HP=%d God queries=%d", h, result, why, target.HealthData.Cur, godQueries)
+				}
+				before.Field547, before.Field546 = 2, uint32(object.DamageImpact)
+				before.StatusFlags |= object.MonStatusInjured
+				if *target.UpdateDataMonster() != before || *source != beforeSource || *source.UpdateDataPlayer() != beforePlayer {
+					t.Fatal("caster IMPACT changed unrelated NPC/player state")
+				}
+				return
+			}
 			if h, result := PlayerDamageNative4E17B0(target, source, bolt, 20, tc.typ, r); h || result || why != "unsupported monster damage shape" ||
 				target.HealthData.Cur != 200 || *target.UpdateDataMonster() != before {
 				t.Fatalf("handled/result=%t/%t reason=%q", h, result, why)

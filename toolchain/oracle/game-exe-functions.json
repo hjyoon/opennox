@@ -16870,6 +16870,20 @@
       "purpose": "the exact decoded direct rel32 call at 0052C773 targeting buff application at 004FF380"
     },
     {
+      "name": "nox_xxx_castFireball_52C790",
+      "address": "0x0052C790",
+      "size": 312,
+      "sha256": "cdddcb0b3ec6986588b0eb532392ed448cb9fdadb5df807d1fcf80b0973cc9f0",
+      "purpose": "the entire Fireball cast body: level-indexed allocation and null-allocation return, cached direction/radius/position, distinct X/Y binary32 spawn spills before the flags-5 trace and cached blocked fallback, placement then balance lookup and live projectile speed, retained 53-bit speed/Y versus spilled X products, live caster velocity and final direction, cast audio and return one"
+    },
+    {
+      "name": "nox_xxx_castFireball_52C790_padding",
+      "address": "0x0052C8C8",
+      "size": 8,
+      "sha256": "9e8376b4aa602de084708bf231f7ab5bd700e3d623bcf47a3851ce49cbe46f08",
+      "purpose": "the exact eight NOP bytes separating the Fireball cast body from Haste at 0052C8D0"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_52C8F4",
       "address": "0x0052C8F4",
       "size": 5,

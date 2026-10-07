@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Fireball 원본 계산·spill·콜백 읽기 순서 복원
+
+기준 clean/pushed `113522b7d34ded3d0dc842aff2ecda3af705767f`에서 원본 `0052C790..0052C8C7` 312바이트와 뒤의 8 NOP를 읽기 전용으로 대조했다. 기존 production 본체 변경은 `castFireballNative52C790` 하나다. entry/type/할당 실패 검사·public typed binding·FloatInd 조회·음향 서비스는 그대로 두고, 발사 위치의 radius×direction→position→velocity 순서, X의 중간 binary32 spill과 Y의 retained register, flags5 trace의 pre-trace 위치 fallback, placement/balance 이후 live speed/velocity와 마지막 direction 읽기를 복원했다. speed/Y의 non-popping FST는 retained53, X velocity product는 binary32 temporary를 다시 읽는다. 새 private helpers는 53-bit/ToZero와 binary32 chopped spill을 모델링하며 FMA는 multiplication residual만 구한다. 원본 CRT/gameplay FP seals와 기존 256개 direction pair seal을 사용하고 thread FPU를 바꾸지 않는다.
+
+새 계약은 >4GiB C-owned caster/projectile, 네 finite binary32 kinematic 입력×256 direction×trace 두 결과(2,048 leaf) 및 allocation/trace/placement/balance callback-time 변경 50 leaf다. math/big의 precision53/ToZero와 exact rational subnormal store로 독립 예상 값을 계산하며 production rounding helpers를 사용하지 않는다. 실제 수정 전 exit1의 pass152/fail1,946와 byte-identical 수정 후 2,098 pass/exit0를 보존했다. callback 변경은 synthetic input이며 spy world services를 실제 stock-map collision, 원본 Windows 프로그램 실행이나 player incantation 입력으로 집계하지 않는다. 기존 valid direction 범위·nil/invalid-level guard와 balance parsing은 이 단위에서 변경하지 않았다. 오래된 미사용 legacy C Fireball entry 전체를 폐기했다고 주장하지 않는다.
+
+일반·실제 cgocheck2·race·checkptr=2·highres·server focused 각 count3에서 9,254 distinct leaf/27,762 pass·fail/skip0, 전체 일곱 package 일반/strict 각 42,205 pass/기존 skip15·actual exit0다. 새 2,098 leaf를 제외한 기존 node/outcome/multiplicity는 이전 R12와 동일하며 새 focused 범위에 포함한 기존 Fireball 15 leaf도 이전 full 결과×3으로 대조했다. 정확히 두 역사적 ASLR-label family만 주소를 정규화하고 collision 횟수를 유지했다. source/test/build input과 private runner hash를 실행 전후 확인했고 managed handle이 live인 동안 수정하지 않았다. AST에서 변경 본체 외 선언/import/signature/type helper/typed binding/다른 본체 불변을 확인했다.
+
+원본 tree 1,556파일/570,653,750바이트·SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, 기존 code2,943/data638 기록과 순서는 불변이다. 새 두 disjoint code seal만 추가해 code2,945/data638이며 strict NXZ와 pre/post oracle은 actual exit0이다. 새 원본 byte/asset/PNG/golden/public YAML을 추가하거나 변경하지 않는다. R13 private red/green JSON·TSV·hash·audit를 보존하고 커밋·즉시 push 후 clean ARM64 세 제품 및 byte-identical 일반/HD Fireball/ToxicCloud/AI·기존 음식/고정 Quest gate를 별도 검증한다. 앞선 정상 ToxicCloud 수정은 유지하며 기존 passive-food timeout 및 fixed Quest stage3 mismatch를 해결했다고 주장하지 않는다.
+
 ## 보이는 음식 앞 MOVE_TO·passive 섭취의 원본 계약 회귀
 
 기준 revision `001244b2cf9f6c3c1985e6e2d5a332776e851905`에서 기존 production/test/build inputs는 모두 byte-identical이다. 이번 변경은 새 `TestMonsterRetreatFoodArrival5443F0VisiblePassiveContract` 하나와 네 원본 code seal, 이 기록뿐이다. 실제 C-owned unit/update/health/food의 full pointer가 64비트에서 모두 >4GiB임을 확인하고, 실제 health-retreat·공간 인덱스 음식 탐색·RETREAT의 일곱 action stack·Refresh·bound MOVE_TO를 연결한다. NPC flag 두 값·Apple/SimpleFood·네 가까운 위치·초기 frame656/672의 32 leaf가 count3/96 pass다. captured-stop 이외 위치와 원형 반경12/4는 명시적 synthetic 입력이다. 같은 frame에서 세 번 확인하며 frame/RNG를 진행시키거나 HP·stack·섭취 결과를 강제하지 않는다. 실제 travel, 전체 game tick, stock 세계 재현이나 원본 Windows 프로그램 실행의 증거는 아니다.

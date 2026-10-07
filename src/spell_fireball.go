@@ -53,18 +53,38 @@ func castFireballNative52C790(
 	}
 
 	cosine, sine := server.SinCosDir(byte(caster.Direction1))
-	direction := types.Ptf(cosine, sine)
-	spawn := caster.PosVec.Add(caster.VelVec).Add(direction.Mul(2 * caster.Shape.Circle.R))
-	if !hooks.traceRay(caster.PosVec, spawn) {
-		spawn = caster.PosVec
+	radius := float64(caster.Shape.Circle.R)
+	radius2 := fireballAddChop53_52C790(radius, radius)
+	from := caster.PosVec
+	// X is spilled at 0052C7FD before velocity is added. Y remains in the
+	// x87 register through both additions and is spilled only at 0052C816.
+	x := fireballMulChop53_52C790(radius2, float64(cosine))
+	x = fireballAddChop53_52C790(x, float64(from.X))
+	x = float64(fireballSpill32_52C790(x))
+	x = fireballAddChop53_52C790(x, float64(caster.VelVec.X))
+	y := fireballMulChop53_52C790(radius2, float64(sine))
+	y = fireballAddChop53_52C790(y, float64(from.Y))
+	y = fireballAddChop53_52C790(y, float64(caster.VelVec.Y))
+	spawn := types.Ptf(fireballSpill32_52C790(x), fireballSpill32_52C790(y))
+	if !hooks.traceRay(from, spawn) {
+		spawn = from // The original fallback uses the pre-trace snapshot.
 	}
 	hooks.createAt(projectile, caster, spawn)
 
-	speed := float32(hooks.speedCoeff(level-1) * float64(projectile.SpeedCur))
-	projectile.SpeedCur = speed
-	projectile.VelVec = caster.VelVec.Add(direction.Mul(speed))
-	projectile.Direction1 = caster.Direction1
-	projectile.Direction2 = caster.Direction1
+	coefficient := hooks.speedCoeff(level - 1)
+	speed := fireballMulChop53_52C790(coefficient, float64(projectile.SpeedCur))
+	projectile.SpeedCur = fireballSpill32_52C790(speed)
+	// The non-popping speed/Y stores retain their 53-bit register values;
+	// X alone is reloaded from its binary32 temporary at 0052C884.
+	xProduct := fireballSpill32_52C790(fireballMulChop53_52C790(speed, float64(cosine)))
+	projectile.VelVec.X = xProduct
+	yProduct := fireballMulChop53_52C790(speed, float64(sine))
+	projectile.VelVec.Y = fireballSpill32_52C790(yProduct)
+	projectile.VelVec.X = fireballSpill32_52C790(fireballAddChop53_52C790(float64(xProduct), float64(caster.VelVec.X)))
+	projectile.VelVec.Y = fireballSpill32_52C790(fireballAddChop53_52C790(yProduct, float64(caster.VelVec.Y)))
+	direction := caster.Direction1
+	projectile.Direction1 = direction
+	projectile.Direction2 = direction
 	hooks.playCastAudio(spellID, caster)
 	return 1
 }

@@ -203,7 +203,8 @@ func (sc *e2eScenario) CheckLockSpell(level int, name string) {
 	}
 	f := &e2eLockFixture{level: level}
 	sc.addWhen(0, name+" prepare", 1200, func() bool {
-		return noxServer.Players.HostUnit() != nil && noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
+		host := noxServer.Players.HostUnit()
+		return host != nil && host.Buffs == 0 && noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
 	}, f.prepare)
 	sc.Wait(12, name+" publish stock units")
 	sc.add(0, name+" player cast", f.begin)

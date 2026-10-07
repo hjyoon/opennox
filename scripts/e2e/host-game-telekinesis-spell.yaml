@@ -5,6 +5,8 @@
 # the client player's buff must still be published and naturally removed.
 # The original strict >20*FPS hand expiry, next-tick delayed finalization and
 # two on/two off audio events are observed with unchanged HP/mana.
+# The targeted NPC path must release a real Magic projectile at its stock
+# animation gate before the player's on-sound and hand appear on impact.
 # This is not incantation/mana spending or
 # autonomous NPC selection. Screenshots are diagnostic, never new goldens.
 steps:

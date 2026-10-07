@@ -147,7 +147,49 @@ func (f *e2eTelekinesisFixture) observeCreation() {
 }
 
 func (f *e2eTelekinesisFixture) observeSound(id sound.ID, kind int, target *server.Object, _ types.Pointf) {
-	if !f.active || id != f.onSound && id != f.offSound {
+	if !f.active {
+		return
+	}
+	// A targeted NPC cast releases Magic at the animation gate. The target's
+	// on-sound occurs later on impact, not during that release animation.
+	if f.mode == "npc-animated" && id == noxServer.Spells.DefByInd(spell.SPELL_TELEKINESIS).GetCastSound() && target == f.caster {
+		ud, head := f.caster.UpdateDataMonster(), f.caster.UpdateDataMonster().AIStackHead()
+		if kind != 0 || f.natural || head == nil || head.Type() != ai.ACTION_CAST_SPELL_ON_OBJECT || head.ArgObj(2) != f.host ||
+			head.ArgU32(0) != uint32(spell.SPELL_TELEKINESIS) || ud.MonsterDef == nil || ud.Field120_2 != 0 ||
+			uint32(ud.Field120_1) != ud.MonsterDef.MissileAttackFrame216 {
+			e2eError(fmt.Errorf("Telekinesis NPC bypassed natural animation/cast frame"))
+			return
+		}
+		projectiles := 0
+		for obj, remaining := f.caster.Field129, 4096; obj != nil; obj, remaining = obj.Field128, remaining-1 {
+			if remaining == 0 {
+				e2eError(fmt.Errorf("Telekinesis NPC projectile list did not terminate"))
+				return
+			}
+			if typ := obj.ObjectTypeC(); typ == nil || typ.ID() != "Magic" || obj.Flags().Has(object.FlagDestroyed) {
+				continue
+			}
+			data := obj.UpdateDataSpellProjectile()
+			if data == nil || data.Spell12 != uint32(spell.SPELL_TELEKINESIS) {
+				continue
+			}
+			if obj.ObjOwner != f.caster || obj.Field32 != noxServer.Frame() || data.Target != f.host ||
+				data.Field0 != f.caster || data.Field8 != f.caster || data.Level16 != uint32(f.power) ||
+				unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(obj)) <= math.MaxUint32 || uintptr(obj.UpdateData) <= math.MaxUint32) {
+				e2eError(fmt.Errorf("Telekinesis NPC projectile lost native source/target/power"))
+				return
+			}
+			projectiles++
+			e2eLog.Printf("TELEKINESIS NPC RELEASE: animation=%d frame=%d projectile=%p update=%p caster=%p target=%p power=%d", ud.Field120_1, noxServer.Frame(), obj, obj.UpdateData, f.caster, data.Target, data.Level16)
+		}
+		if projectiles != 1 {
+			e2eError(fmt.Errorf("Telekinesis NPC released %d real Magic projectiles", projectiles))
+			return
+		}
+		f.natural = true
+		return
+	}
+	if id != f.onSound && id != f.offSound {
 		return
 	}
 	if kind != 0 || target != f.host {
@@ -157,15 +199,12 @@ func (f *e2eTelekinesisFixture) observeSound(id sound.ID, kind int, target *serv
 	if id == f.onSound {
 		f.onAudio++
 		if f.mode == "npc-animated" && f.onAudio == 1 {
-			ud, head := f.caster.UpdateDataMonster(), f.caster.UpdateDataMonster().AIStackHead()
-			if head == nil || head.Type() != ai.ACTION_CAST_SPELL_ON_OBJECT || head.ArgObj(2) != f.host ||
-				head.ArgU32(0) != uint32(spell.SPELL_TELEKINESIS) || ud.Field120_2 != 0 || uint32(ud.Field120_1) != ud.MonsterDef.MissileAttackFrame216 {
-				e2eError(fmt.Errorf("Telekinesis NPC bypassed natural animation/cast frame"))
+			if !f.natural {
+				e2eError(fmt.Errorf("Telekinesis NPC effect preceded its real projectile release"))
 				return
 			}
-			f.natural = true
 			f.observeCreation()
-			e2eLog.Printf("TELEKINESIS NPC ANIMATION: animation=%d target=%p", ud.Field120_1, head.ArgObj(2))
+			e2eLog.Printf("TELEKINESIS NPC IMPACT: frame=%d target=%p power=%d", noxServer.Frame(), target, f.host.EnchantPower(server.ENCHANT_TELEKINESIS))
 		}
 	} else {
 		f.offAudio++

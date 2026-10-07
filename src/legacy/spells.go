@@ -497,7 +497,7 @@ func Nox_xxx_castCurePoison_52CDB0(spellID spell.ID, a2, a3, a4 *server.Object, 
 }
 
 func Nox_xxx_castEquake_52DE40(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.nox_xxx_castEquake_52DE40, spellID, a2, a3, a4, sa, lvl)
+	return earthquakeCastCall52DE40(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Nox_xxx_castFireball_52C790(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

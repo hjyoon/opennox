@@ -35,6 +35,7 @@ func TestRestoreHealth52BF20PreservesNativeWidthAndOrder(t *testing.T) {
 	want := []string{
 		"target:0x7fb8ed1723d0",
 		"max-hp:0x7fb8ed1723d0",
+		"target:0x7fb8ed1723d0",
 		"audio:754:0x7fb8ed1723d0",
 	}
 	if !reflect.DeepEqual(events, want) {

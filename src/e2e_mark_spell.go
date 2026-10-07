@@ -65,7 +65,7 @@ func (f *e2eMarkFixture) prepare() {
 		e2eError(fmt.Errorf("Mark requires a stock NPC for the original non-player no-op"))
 		return
 	}
-	noxServer.CreateObjectAt(f.npc, nil, f.origin.Sub(f.direction.Mul(24)))
+	noxServer.CreateObjectAt(f.npc, nil, e2eMarkNPCPosition(f.origin, f.direction, f.host.Shape.Circle.R, f.npc.Shape.Circle.R))
 	f.npc.UpdateDataMonster().SetAggression(0)
 	f.npc.ClearActionStack()
 	f.npc.MonsterPushAction(ai.ACTION_WAIT, noxServer.Frame()+250000)
@@ -74,6 +74,16 @@ func (f *e2eMarkFixture) prepare() {
 		e2eError(fmt.Errorf("Mark NPC fixture is not in the live world"))
 		return
 	}
+	laneEnd := f.origin.Add(f.direction.Mul(48))
+	laneClear := e2eWarriorLaneClear(f.host, f.origin, laneEnd)
+	oldPoint := f.origin.Sub(f.direction.Mul(24))
+	bound := f.host.Shape.Circle.R + f.npc.Shape.Circle.R + 4
+	old24Intersects := !e2eWarriorLaneMissesCircle(f.origin, laneEnd, oldPoint, bound)
+	if !laneClear {
+		e2eError(fmt.Errorf("Mark stock NPC placement still obstructs the verified player input lane: host-radius=%g NPC-radius=%g NPC-position=%v", f.host.Shape.Circle.R, f.npc.Shape.Circle.R, f.npc.PosVec))
+		return
+	}
+	e2eLog.Printf("MARK INPUT LAYOUT: level=%d host-radius=%g npc-radius=%g old24-intersects=%t actual-lane-clear=%t", f.level, f.host.Shape.Circle.R, f.npc.Shape.Circle.R, old24Intersects, laneClear)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		for _, ptr := range []unsafe.Pointer{unsafe.Pointer(f.host), f.host.UpdateData, unsafe.Pointer(f.npc), f.npc.UpdateData} {
 			if uintptr(ptr) <= math.MaxUint32 {

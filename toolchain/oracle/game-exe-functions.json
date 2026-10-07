@@ -7,6 +7,13 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "gameplay_precision_53_4031F2",
+      "address": "0x004031F2",
+      "size": 18,
+      "sha256": "e387205e111882b2e30d2ff33bd79a2de217c56e228fb967fd597181acef2ff8",
+      "purpose": "the CRT initialization call setting the x87 precision-control mask to 53-bit significands before gameplay"
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_40A9D6",
       "address": "0x0040A9D6",
       "size": 5,
@@ -1251,6 +1258,13 @@
       "size": 5,
       "sha256": "616606b71d98bd07ceba72f3ca5abee4e180edfae7b45d8990287a8096d2d006",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "gameplay_round_toward_zero_43E2C1",
+      "address": "0x0043E2C1",
+      "size": 18,
+      "sha256": "a0c1982da2466215ded0b245fee13d1637c5e1733b570870715c77467633b17c",
+      "purpose": "the main-loop prefix setting the x87 rounding-control mask to round toward zero before simulation"
     },
     {
       "name": "nox_xxx_playerCancelAbils_4FC180_call_441D58",
@@ -20550,6 +20564,20 @@
       "size": 1,
       "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
       "purpose": "the exact one-byte NOP separating map-group iteration from index lookup at 0057C0A0"
+    },
+    {
+      "name": "nox_xxx_mathPointOnTheLine_57C8A0",
+      "address": "0x0057C8A0",
+      "size": 251,
+      "sha256": "f07293f8b70c8df1a887692598d51cb696cc467c14f4480838f7e5e416dd74de",
+      "purpose": "project a point onto a directed segment, retain the x delta and dot product in x87, preserve the five binary32 spills for y delta, squared length, dot product, y quotient and output coordinates, then test the projected segment bounds in original C0/C3 order"
+    },
+    {
+      "name": "nox_xxx_mathPointOnTheLine_57C8A0_padding",
+      "address": "0x0057C99B",
+      "size": 5,
+      "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
+      "purpose": "the exact five NOP bytes separating point-on-segment projection from the next function at 0057C9A0"
     }
   ],
   "data": [

@@ -67,18 +67,15 @@ func (f *e2eLockFixture) prepare() {
 	f.npc.UpdateDataMonster().SetAggression(0)
 	f.npc.ClearActionStack()
 	f.npc.MonsterPushAction(ai.ACTION_WAIT, noxServer.Frame()+250000)
-	center := origin.Add(direction.Mul(64))
-	center = types.Ptf(float32(math.Round(float64(center.X)/23)*23), float32(math.Round(float64(center.Y)/23)*23))
-	for i, distance := range []float32{0, 16, 70} {
-		pos := center.Add(direction.Mul(distance))
+	for i, pos := range e2eLockLayout(origin, direction) {
 		door := noxServer.NewObjectByTypeID(doorType.ID())
 		if door == nil || door.UpdateData == nil {
 			e2eError(fmt.Errorf("Lock stock Door was not initialized"))
 			return
 		}
 		// Only map-record inputs are placed here. Direction 16 has positive
-		// X/Y half-offsets; the grid-aligned first Door is centered in its
-		// original tile*23 +/-34 group rectangle.
+		// X/Y half-offsets; the first Door's grid record defines its original
+		// tile*23 +/-34 group rectangle. Its collision footprint matters too.
 		update := door.UpdateDataDoor()
 		update.CurrentDirection, update.TargetDirection, update.SyncedDirection, update.FractionalDir = 16, 16, 16, 128
 		update.TileX = e2eDoorTileCoordinate4F4CB0(server.DoorDirectionX(16), pos.X)
@@ -100,6 +97,21 @@ func (f *e2eLockFixture) prepare() {
 			return
 		}
 	}
+	groupBounds := e2eLockGroupBounds(f.doors[0].UpdateDataDoor())
+	var groupSeen [3]bool
+	noxServer.Map.EachObjInRect(groupBounds, func(obj *server.Object) bool {
+		for index, door := range f.doors {
+			if obj == door {
+				groupSeen[index] = true
+			}
+		}
+		return true
+	})
+	if groupSeen != [3]bool{true, true, false} {
+		e2eError(fmt.Errorf("Lock stock collision footprints do not isolate nearest/group/outside Doors: seen=%v bounds=%v", groupSeen, groupBounds))
+		return
+	}
+	e2eLog.Printf("LOCK LAYOUT: level=%d group=%v actual-footprints-included=%v", f.level, groupBounds, groupSeen)
 	f.outsideOwner, f.outsideExpiry = f.doors[2].ObjOwner, f.doors[2].Field34
 	f.castSound = noxServer.Spells.DefByInd(spell.SPELL_LOCK).GetCastSound()
 	if f.castSound == 0 || noxServer.TickRate() == 0 || noxServer.TickRate() > 60 {

@@ -206,6 +206,18 @@ func (f *e2eTelekinesisFixture) queueCursor(index int) {
 }
 
 func (f *e2eTelekinesisFixture) cursorMoved(index int) bool {
+	if f.hand != nil && !f.removed && e2eFistInWorld(f.hand, f.wire, f.scriptID) {
+		age := noxServer.Frame() - f.created
+		if age == 30 || age == 60 || age == 120 {
+			drawable := noxClient.Objs.ByNetCode(uint16(f.wire))
+			var drawPos image.Point
+			if drawable != nil {
+				drawPos = drawable.Pos()
+			}
+			host := noxClient.Objs.ByNetCode(uint16(noxServer.GetUnitNetCode(f.host)))
+			e2eLog.Printf("TELEKINESIS CURSOR STATE: age=%d sample=%d aim=%v cursor=%v mouse=%v position=%v drawable=%p drawPos=%v host=%p clientBuff=%t timer=%d power=%d HP=%d mana=%d on/off=%d/%d", age, index+1, f.aims[index], f.host.ControllingPlayer().CursorVec, noxClient.Inp.GetMousePos(), f.hand.PosVec, drawable, drawPos, host, host != nil && host.HasEnchant(server.ENCHANT_TELEKINESIS), f.host.EnchantDur(server.ENCHANT_TELEKINESIS), f.host.EnchantPower(server.ENCHANT_TELEKINESIS), f.host.HealthData.Cur, f.host.UpdateDataPlayer().ManaCur, f.onAudio, f.offAudio)
+		}
+	}
 	if f.hand == nil || f.removed || !e2eFistInWorld(f.hand, f.wire, f.scriptID) || f.onAudio != 2 {
 		return false
 	}

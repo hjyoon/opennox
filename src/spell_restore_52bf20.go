@@ -49,7 +49,9 @@ func restoreMana52BF50[O comparable, A any](arg A, hooks restoreManaHooks52BF50[
 	}
 	if hooks.loadClassLow(target)&0x04 != 0 {
 		hooks.addMana(target, hooks.loadMaxMana(target))
-		hooks.audio(sound.SoundRestoreMana, target)
+		// 0052BF76 reloads after adding mana. Only the entry target is
+		// class-gated; audio receives the live target even when it is nil.
+		hooks.audio(sound.SoundRestoreMana, hooks.loadTarget(arg))
 	}
 	return 1
 }

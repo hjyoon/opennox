@@ -23,7 +23,10 @@ func restoreHealth52BF20[O comparable, A any](arg A, hooks restoreHealthHooks52B
 		return 0
 	}
 	hooks.setMaxHP(target)
-	hooks.audio(sound.SoundRestoreHealth, target)
+	// 0052BF33 reloads the acceptance target after the recovery callback.
+	// This is not another nil/class gate; the original audio call receives
+	// the live target, including nil, before reporting success.
+	hooks.audio(sound.SoundRestoreHealth, hooks.loadTarget(arg))
 	return 1
 }
 

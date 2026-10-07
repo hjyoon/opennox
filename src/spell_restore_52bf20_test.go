@@ -86,6 +86,7 @@ func TestRestoreMana52BF50PlayerPreservesNativeWidthAndOrder(t *testing.T) {
 		"class:0x7fb8ed1723d0",
 		"max-mana:0x7fb8ed1723d0",
 		"add:0x7fb8ed1723d0:0xfedc",
+		"target:0x7fb8ed1723d0",
 		"audio:755:0x7fb8ed1723d0",
 	}
 	if !reflect.DeepEqual(events, want) {

@@ -9914,6 +9914,9 @@ void sub_52CE60(int a1) {
 }
 
 //----- (0052CE90) --------------------------------------------------------
+// Native-width entry: legacy/spell_lock_52ce90.go and server/spell_lock_52ce90.go.
+// Keep the original integer-pointer body as disabled provenance.
+#if 0
 int nox_xxx_castLock_52CE90(int a1, int a2, int a3, int a4) {
 	int v5;    // ecx
 	int v7;    // eax
@@ -9943,6 +9946,7 @@ int nox_xxx_castLock_52CE90(int a1, int a2, int a3, int a4) {
 	nox_xxx_aud_501960(v7, v8, 0, 0);
 	return 1;
 }
+#endif
 
 //----- (0052CF90) --------------------------------------------------------
 void sub_52CF90(int a1, int a2) {

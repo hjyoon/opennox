@@ -68,6 +68,7 @@ func (sc *e2eScenario) AssertQuestStage(stage int, mapName, name string) {
 			e2eError(err)
 			return
 		}
+		e2eQuestTraceFixedMaps4D0F60(stage, mapName)
 		e2eLog.Printf("QUEST STAGE PLAYABLE: map=%q stage=%d frame=%d wire=%d phase=%d status=%#x observer=false briefing=false health=%d/%d pos=%v",
 			state.mapName, state.stage, noxServer.Frame(), state.serverCode, state.phase, state.status, state.health, state.maxHealth, state.position)
 	})

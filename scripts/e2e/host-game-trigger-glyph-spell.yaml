@@ -1,0 +1,93 @@
+# Stock Wizard startup, five ordinary player script levels and one naturally
+# animated NPC CAST_ON_OBJECT. Create two empty stock Glyphs as setup only.
+# The nearer unowned Glyph must survive; the owned Glyph must really detonate
+# and disappear from the world, owned list and client. Then cast with no owned
+# Glyph. No stored spells, cast frames, death flags, effects or packets are
+# supplied. Contained-spell damage, player mana/incantations and NPC autonomous
+# selection are not claimed. Captures are private diagnostics, never goldens.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-trigger-glyph-spell
+    count: 1
+    text: player-script
+    name: Trigger Glyph level one script
+  - action: check-trigger-glyph-spell
+    count: 2
+    text: player-script
+    name: Trigger Glyph level two script
+  - action: check-trigger-glyph-spell
+    count: 3
+    text: player-script
+    name: Trigger Glyph level three script
+  - action: check-trigger-glyph-spell
+    count: 4
+    text: player-script
+    name: Trigger Glyph level four script
+  - action: check-trigger-glyph-spell
+    count: 5
+    text: player-script
+    name: Trigger Glyph level five script
+  - action: check-trigger-glyph-spell
+    count: 0
+    text: npc-animated
+    name: Trigger Glyph NPC natural animated cast
+  - action: quit
+    dt: 1

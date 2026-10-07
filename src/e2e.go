@@ -9940,6 +9940,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckToxicCloudSpell(l.Count, l.Text, l.Name)
+		case "check-trigger-glyph-spell":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckTriggerGlyphSpell(l.Count, l.Text, l.Name)
 		case "check-telekinesis-spell":
 			if dt != 0 {
 				sc.Wait(dt, "")

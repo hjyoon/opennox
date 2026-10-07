@@ -9866,6 +9866,10 @@ int sub_52CCD0(int a1, int a2, int a3) {
 #endif
 
 //----- (0052CDB0) --------------------------------------------------------
+// Native-width implementation: server/spell_cure_poison_52cdb0.go, shared
+// by the public legacy selector and the game spell dispatcher. Keep the
+// original body as provenance; its int* target load truncates native objects.
+#if 0
 int nox_xxx_castCurePoison_52CDB0(int a1, int a2, int a3, int a4, int* a5, int a6) {
 	int result; // eax
 	int v7;     // eax
@@ -9899,6 +9903,7 @@ int nox_xxx_castCurePoison_52CDB0(int a1, int a2, int a3, int a4, int* a5, int a
 	}
 	return result;
 }
+#endif
 
 //----- (0052CE60) --------------------------------------------------------
 void sub_52CE60(int a1) {

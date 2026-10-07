@@ -214,6 +214,7 @@ func (sc *e2eScenario) CheckLockSpell(level int, name string) {
 		return
 	}
 	f := &e2eLockFixture{level: level}
+	var idleInput e2eLockIdleInput
 	sc.addWhen(0, name+" prepare", 1200, func() bool {
 		host := noxServer.Players.HostUnit()
 		return host != nil && host.Buffs == 0 && noxClient.ClientPlayerUnit() != nil && nox_client_isConnected()
@@ -225,6 +226,9 @@ func (sc *e2eScenario) CheckLockSpell(level int, name string) {
 	sc.addWhen(1, name+" refresh audio", 120, func() bool { return f.audio == 2 }, func() { f.denied(f.npc, "live-foreign") })
 	sc.CaptureMagicFrame(name + " player lock frame")
 	sc.addWhen(1, name+" natural expiry", 4000, func() bool {
+		if idleInput.observe(noxServer.Frame(), noxClient.Inp.GetMousePos(), e2eQueueInput) {
+			e2eLog.Printf("LOCK ACTIVE INPUT: level=%d frame=%d cursor=%v delay=%d", f.level, noxServer.Frame(), noxClient.Inp.GetMousePos(), noxClient.Inp.SeqDelay())
+		}
 		f.unchangedOutsideAndUnits()
 		for _, door := range f.doors[:2] {
 			if door.ObjOwner != f.host || door.Field34 != f.expiry {

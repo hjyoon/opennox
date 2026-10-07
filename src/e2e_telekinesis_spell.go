@@ -223,11 +223,13 @@ func (f *e2eTelekinesisFixture) cursorMoved(index int) bool {
 	if f.hand == nil || f.removed || !e2eFistInWorld(f.hand, f.wire, f.scriptID) || f.onAudio != 2 {
 		return false
 	}
-	want := image.Pt(int(f.aims[index].X), int(f.aims[index].Y))
 	handDrawable := noxClient.Objs.ByNetCode(uint16(f.wire))
 	hostDrawable := noxClient.Objs.ByNetCode(uint16(noxServer.GetUnitNetCode(f.host)))
-	return f.host.ControllingPlayer().CursorVec == want && f.hand.PosVec == types.Ptf(float32(want.X), float32(want.Y)) &&
-		handDrawable != nil && handDrawable.Pos() == want && hostDrawable != nil && hostDrawable.HasEnchant(server.ENCHANT_TELEKINESIS) &&
+	// Stock TelekinesisHand has CLASS NULL and no draw record. Its position
+	// follows the actual client MSG_MOUSE world point, which can differ from
+	// the queued aim when the normal camera scrolls before consuming input.
+	return e2eTelekinesisCursorMatches(f.cursorInputs[index], noxClient.Inp.GetMousePos(), noxClient.netPrevMouse, f.host.ControllingPlayer().CursorVec, f.hand.PosVec) &&
+		f.hand.ObjClass == 0 && handDrawable == nil && hostDrawable != nil && hostDrawable.HasEnchant(server.ENCHANT_TELEKINESIS) &&
 		f.host.HasEnchant(server.ENCHANT_TELEKINESIS) && f.host.EnchantPower(server.ENCHANT_TELEKINESIS) == f.power &&
 		f.host.HealthData.Cur == f.health && f.host.UpdateDataPlayer().ManaCur == f.mana
 }

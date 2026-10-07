@@ -1,6 +1,8 @@
 # Five player self-cast script levels and an NPC's normal animated cast onto
 # the player. No hand, buff, duration, cursor packet or removal is supplied.
-# Actual mouse-motion events must move the native hand and its client drawable.
+# Actual mouse-motion events must move the native hand to the client's actual
+# MSG_MOUSE world coordinate. The stock CLASS NULL hand has no draw record;
+# the client player's buff must still be published and naturally removed.
 # The original strict >20*FPS hand lifetime and two on/two off audio events are
 # observed with unchanged HP/mana. This is not incantation/mana spending or
 # autonomous NPC selection. Screenshots are diagnostic, never new goldens.

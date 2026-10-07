@@ -1,0 +1,85 @@
+# Stock host startup and five levels through the normal Lock script API.
+# Stock Doors/NPC, map-record positions/directions and WAIT are input setup.
+# Owner/timer/audio/HP/mana outputs are never supplied. Nearest/group locking,
+# same-owner refresh, live/expired foreign denial and NPC reclamation follow
+# the original 60*FPS lifetime. Expiry is released by the registered DoorCollide
+# callback, not forced owner/timer writes and not physical contact simulation.
+# This is not incantation/mana spending, autonomous AI or audible audio proof.
+# Captures are private diagnostic frames, never replacement goldens.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-lock-spell
+    count: 1
+    name: Lock level one
+  - action: check-lock-spell
+    count: 2
+    name: Lock level two
+  - action: check-lock-spell
+    count: 3
+    name: Lock level three
+  - action: check-lock-spell
+    count: 4
+    name: Lock level four
+  - action: check-lock-spell
+    count: 5
+    name: Lock level five
+  - action: quit
+    dt: 1

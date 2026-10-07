@@ -30,13 +30,13 @@ func monsterActionPickupObject544B90(unit *Object, hooks monsterActionPickupObje
 	}
 	target := head.ArgObj(0)
 	if target != nil {
-		// 00544BB4..00544BD9 retains x87 53-bit intermediates until FCOM.
-		// Explicit boundaries prevent binary32 spills and ARM64 FMA fusion.
-		dx := logicRandomFloatSub64_416030(float64(target.PosVec.X), float64(unit.PosVec.X))
-		dy := logicRandomFloatSub64_416030(float64(target.PosVec.Y), float64(unit.PosVec.Y))
-		ySquared := logicRandomFloatMul64_416030(dy, dy)
-		xSquared := logicRandomFloatMul64_416030(dx, dx)
-		distance := logicRandomFloatAdd64_416030(ySquared, xSquared)
+		// 00544BB4..00544BD9 retains each operation at x87 precision 53
+		// under gameplay ToZero, with no binary32 spill or FMA contraction.
+		dx := monsterMoveToRunAddChop53_544434(float64(target.PosVec.X), -float64(unit.PosVec.X))
+		dy := monsterMoveToRunAddChop53_544434(float64(target.PosVec.Y), -float64(unit.PosVec.Y))
+		ySquared := monsterMoveToRunSquareChop53_544434(dy)
+		xSquared := monsterMoveToRunSquareChop53_544434(dx)
+		distance := monsterMoveToRunAddChop53_544434(ySquared, xSquared)
 		// The original tests C0 alone: unordered also enters visibility.
 		if !(distance >= float64(monsterPickupObjectRangeSquared544B90)) && hooks.canInteract(unit, target, 0) {
 			hooks.placeInventory(unit, head.ArgObj(0), 1, 1)

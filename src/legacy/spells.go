@@ -581,7 +581,7 @@ func Nox_xxx_castToxicCloud_52DB60(spellID spell.ID, a2, a3, a4 *server.Object, 
 }
 
 func Sub_52CCD0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.sub_52CCD0, spellID, a2, a3, a4, sa, lvl)
+	return triggerGlyphCastCall52CCD0(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Get_nox_xxx_spellBlink2_530310() unsafe.Pointer {

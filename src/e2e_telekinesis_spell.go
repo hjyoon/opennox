@@ -203,6 +203,7 @@ func (f *e2eTelekinesisFixture) queueCursor(index int) {
 		e2eError(fmt.Errorf("Telekinesis cursor aim is outside the viewport"))
 		return
 	}
+	f.cursorInputs[index] = e2eTelekinesisCursorInput{canvas: mouse, previousWorld: noxClient.netPrevMouse}
 	e2eQueueInput(&seat.MouseMoveEvent{Pos: mouse})
 }
 

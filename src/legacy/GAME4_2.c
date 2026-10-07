@@ -10373,6 +10373,10 @@ LABEL_6:
 }
 
 //----- (0052DB60) --------------------------------------------------------
+// Native-width implementation: server/spell_toxic_cloud_52db60.go, selected
+// through legacy/spell_toxic_cloud_52db60.go. Preserve the original body as
+// provenance; its five-int entry truncates caster, owner and acceptance pointers.
+#if 0
 int nox_xxx_castToxicCloud_52DB60(int a1, int a2, int a3, int a4, int a5) {
 	int v5;        // esi
 	int v6;        // edi
@@ -10420,6 +10424,7 @@ int nox_xxx_castToxicCloud_52DB60(int a1, int a2, int a3, int a4, int a5) {
 	}
 	return result;
 }
+#endif
 
 //----- (0052DC80) --------------------------------------------------------
 int nox_xxx_spellArachna_52DC80(int a1, int a2, int a3, int a4, int a5) {

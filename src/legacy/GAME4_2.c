@@ -9686,6 +9686,9 @@ int nox_xxx_castFireball_52C790(int a1, int a2, int a3, int a4, int a5, int a6) 
 }
 
 //----- (0052CA80) --------------------------------------------------------
+// Retired: the public Mark selector uses native Go pointers. Keep the
+// original four-int implementation only as disabled reference provenance.
+#if 0
 int sub_52CA80(int a1, int a2, int a3, int a4) {
 	int v4;             // eax
 	int v5;             // eax
@@ -9761,6 +9764,7 @@ int sub_52CA80(int a1, int a2, int a3, int a4) {
 	}
 	return 1;
 }
+#endif
 
 //----- (0052CBD0) --------------------------------------------------------
 int sub_52CBD0(int a1, int a2, int a3, int a4) {

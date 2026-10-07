@@ -9982,6 +9982,10 @@ void sub_52D060(int a1, int a2) {
 }
 
 //----- (0052D330) --------------------------------------------------------
+// Native-width implementation: server/spell_telekinesis_52d330.go, selected
+// through legacy/spell_telekinesis_52d330.go. Retain the body as provenance
+// without compiling an entry whose integer target and argument truncate pointers.
+#if 0
 int nox_xxx_castTelekinesis_52D330(int a1, int a2, int a3, int a4, int* a5, char a6) {
 	int result;   // eax
 	uint32_t* v7; // eax
@@ -10007,6 +10011,7 @@ int nox_xxx_castTelekinesis_52D330(int a1, int a2, int a3, int a4, int* a5, char
 	}
 	return result;
 }
+#endif
 
 //----- (0052D3C0) --------------------------------------------------------
 // Native-width implementation: server/spell_fist_52d3c0.go, selected through

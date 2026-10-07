@@ -529,7 +529,7 @@ func Sub_52CA80(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcc
 }
 
 func Sub_52CBD0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {
-	return Nox_spells_call_intint6_go(C.sub_52CBD0, spellID, a2, a3, a4, sa, lvl)
+	return markSlotCastCall52CBD0(spellID, a2, a3, a4, sa, lvl)
 }
 
 func Nox_xxx_castMeteor_52D9D0(spellID spell.ID, a2, a3, a4 *server.Object, sa *server.SpellAcceptArg, lvl int) int {

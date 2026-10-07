@@ -50,7 +50,7 @@ func (f *e2eTriggerGlyphFixture) prepare() {
 	}
 	e2eQueueInput(&seat.MouseMoveEvent{Pos: noxClient.Inp.GetMousePos()})
 	f.original = f.host.PosVec
-	origin, direction, err := e2eWarriorAbilityArena(f.original, f.host.Shape.Circle.R+104,
+	origin, direction, err := e2eWarriorAbilityArena(f.original, f.host.Shape.Circle.R+32,
 		func(from, to types.Pointf) bool { return e2eWarriorLaneClear(f.host, from, to) })
 	if err != nil {
 		e2eError(err)
@@ -82,12 +82,12 @@ func (f *e2eTriggerGlyphFixture) prepare() {
 		e2eError(fmt.Errorf("TriggerGlyph requires the stock Glyph type"))
 		return
 	}
-	// The nearer unowned Glyph must survive. The 200-unit separation keeps
-	// even diagonal placements outside the original 100-unit chain rectangle.
-	// Newly created
-	// Glyphs have no stored spells; do not inject a contained-spell outcome.
-	noxServer.CreateObjectAt(f.selected, f.caster, origin.Add(direction.Mul(160)))
-	noxServer.CreateObjectAt(f.foreign, nil, origin.Sub(direction.Mul(40)))
+	// The nearer unowned Glyph must survive outside the original 100-unit
+	// chain rectangle, including diagonal lanes. New stock Glyphs have no
+	// stored spells; do not inject a contained-spell outcome.
+	selectedPos, foreignPos := e2eTriggerGlyphLayout(origin, direction)
+	noxServer.CreateObjectAt(f.selected, f.caster, selectedPos)
+	noxServer.CreateObjectAt(f.foreign, nil, foreignPos)
 	noxServer.ObjectsAddPending()
 	for _, glyph := range []*server.Object{f.selected, f.foreign} {
 		if !e2eObjectInWorld(glyph) || glyph.InitData == nil || glyph.InitDataGlyph().SpellsCnt != 0 ||

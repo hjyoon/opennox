@@ -491,6 +491,9 @@ func playerDamageMonster4E17B0(
 	typ object.DamageType,
 	runtime PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
+	if defaultDamageCasterImpactShape4E0B30(weapon, typ) && !playerDamageMonsterImpactShape4E17B0(source, weapon, typ) {
+		return playerDamageCasterImpact4E17B0(target, source, weapon, damage, typ, runtime)
+	}
 	if target.UpdateData == nil || uint32(target.SubClass())&0x10 == 0 {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported monster target", target, source, weapon, damage, typ)
 	}

@@ -203,6 +203,14 @@ func (f *e2eAIRetreatFoodFixture) tick() {
 		f.lastLog = noxServer.Frame()
 		e2eLog.Printf("AI RETREAT FOOD TICK: mode=%s elapsed=%d pos=%v HP=%d moving=%t moved=%t ate=%t draw=%t/%t stack=%v", f.mode, noxServer.Frame()-f.start, f.unit.PosVec, f.unit.HealthData.Cur, f.moving, f.moved, f.ate, f.unitDrawn, f.foodDrawn, update.GetAIStack())
 	}
+	// TickHook runs after IncFrame. Record the just-executed tick, including
+	// named actions, without another visibility probe or gameplay callback.
+	// Keep the existing consumption assertion and timeout unchanged.
+	if noxServer.Frame()-f.start <= 240 && !f.ate {
+		if snapshot, ok := e2eAIRetreatFoodSnapshot(f.unit, f.food, noxServer.Frame()-1, noxServer.TickRate()); ok {
+			e2eLog.Printf("AI RETREAT FOOD TRACE: mode=%s %s", f.mode, snapshot)
+		}
+	}
 }
 
 func (f *e2eAIRetreatFoodFixture) observeSound(id sound.ID, kind int, owner *server.Object, _ types.Pointf) {

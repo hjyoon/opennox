@@ -9955,6 +9955,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckLockSpell(l.Count, l.Name)
+		case "check-mark-spell":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckMarkSpell(l.Count, l.Name)
 		case "check-earthquake-spell":
 			if dt != 0 {
 				sc.Wait(dt, "")

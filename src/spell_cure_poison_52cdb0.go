@@ -62,28 +62,12 @@ func castCurePoison(
 	level int,
 ) int {
 	s := noxServer
-	return curePoison52CDB0(spellID, caster, arg.Obj, int32(level), curePoisonHooks52CDB0[*server.Object]{
-		loadPoison: func(target *server.Object) uint8 {
-			return target.Poison540
+	return int(s.S().CastCurePoison52CDB0(int32(spellID), caster, nil, nil, arg, int32(level), server.CurePoisonCastRuntime52CDB0{
+		PriorityMessage: func(target *server.Object, message string, value uint8) {
+			s.NetPriMsgToPlayer(target, strman.ID(message), value)
 		},
-		update: func(target *server.Object, amount int32) {
-			s.S().UpdatePoison4EE8F0(target, amount)
+		RefundMana: func(target *server.Object, amount int16) uint16 {
+			return sub_4FD030(target, int(amount))
 		},
-		remove: func(target *server.Object) {
-			s.S().RemovePoison4EE9D0(target)
-		},
-		message: func(target *server.Object, message string) {
-			s.NetPriMsgToPlayer(target, strman.ID(message), 0)
-		},
-		audio: func(id spell.ID, target *server.Object) {
-			aud := s.Spells.DefByInd(id).GetOnSound()
-			s.Audio.EventObj(aud, target, 0, 0)
-		},
-		manaCost: func(id spell.ID, level int) int {
-			return s.Spells.ManaCost(id, level)
-		},
-		refundMana: func(target *server.Object, amount int) {
-			sub_4FD030(target, amount)
-		},
-	})
+	}))
 }

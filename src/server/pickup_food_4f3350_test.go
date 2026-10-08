@@ -123,7 +123,6 @@ func pickupFoodAppleTrace4F3350() []string {
 		"rule-material:0=0001",
 		"material:item=0000",
 		"rule-sound:1=0344",
-		"subclass:item=00000002",
 		"rule-subclass:1=00000002",
 		"rule-sound:1=0344",
 		"audio:836:owner:0:00000000",

@@ -81,8 +81,8 @@ func pickupFood4F3350[O comparable, U any](
 	if hooks.loadRuleSound(row) == 0 {
 		return result
 	}
+	subClass := hooks.loadSubClass(item)
 	for {
-		subClass := hooks.loadSubClass(item)
 		if subClass&hooks.loadRuleSubClassMask(row) != 0 {
 			sound := hooks.loadRuleSound(row)
 			hooks.audio(uint32(sound), owner, 0, 0)

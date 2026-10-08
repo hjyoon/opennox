@@ -1,5 +1,44 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## FoodDrop/Pickup 원본 읽기 순서 복원과 일반·HD 효과음 재검증
+
+R24는 R22가 별도 차이로 남긴 FoodDrop/Pickup subclass cached-read order를 원본 명령과 대조하여 복원했다. `ee8cb4827`은 기존 `foodDrop4EDE50` body 하나, `b6b918f2342091c25695346c020fee4ee8edcb19`는 기존 `pickupFood4F3350` body 하나만 변경했고 각각 commit 직후 origin/port/go1.26-multiarch에 push했다. signature/types/imports/comments/나머지 production bodies가 byte-identical인 별도 AST masking 대조 actual0을 commit 전후에 보존한다. 사운드 ID/table/Material WORD accessors/DefaultPickup·DefaultDrop 결과/Use·Decay callbacks/owner Audio 인자/게임 규칙은 바꾸지 않았다. 이 읽기 순서 차이를 별도 audible stock failure의 원인으로 확대하지 않는다.
+
+read-only GAME.EXE SHA `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`에서 original Drop `004EDE50..004EDEFD`173 bytes SHA `1ab18a2b4d7458741753a793038ca6c892b666ff1ab5a13ff577c781ab2fa94a`, Pickup `004F3350..004F3400`176 bytes SHA `29c29d5bb03f51a241399c87935c9512219af5d6d29c22a66f5c895355a8df37`를 직접 확인했다. 첫 sound WORD sentinel 뒤 subclass DWORD는 각각 `004EDEBD`/`004F33C0`에서 한 번만 읽어 ECX에 캐시하고, `004EDED6`/`004F33D9` backedge는 그 load를 반복하지 않는다. 반면 Material WORD `004EDEC8`/`004F33CB`는 각 subclass miss에서 live read하며 match 뒤 sound WORD를 다시 읽고 cached owner로 Audio를 요청한다. C/Go 부호 또는 참/거짓 정규화로 full int32 callback result를 바꾸지 않는다.
+
+private original-x86 실행24개와 독립 Ruby table/opcode/code-hash/read-PC/audio/callback 대조 actual0, 같은12개씩의 새 read-order leaves를 일반/실제 pinned Go1.26.5 cgocheck2/race+checkptr2/highres 네 모드로 실행한96 leaf-mode passes actual0을 확인했다. no-match·flesh·apple·jug·high-bit mushroom·class read 직후/첫 material read 뒤 class 변경·live material 변경·callback zero·첫 zero sentinel·post-default 변경을 포함한다. read-boundary 변경은 통제된 diagnostic fixtures이며 stock gameplay 자산 변경이 아니다. 기존 production에서는 새 leaf8개씩 실패하는 red actual1을 먼저 보존했고 같은 새 기대값이 수정 후 통과했다.
+
+기존 trace tests의 비원본 반복 subclass load5곳과 그 load에만 해당하는 fault endpoints(Drop no-match fault26/27/28·Drop apple fault15·Pickup apple fault13)를 원본에 맞게 제거했다. 나머지 fault prefixes/read widths/callback traces를 유지했다. root/server/legacy 전체 일반·실제 cgocheck2는 각각 actual0·42,242 independent leaves(42,228pass/14skip)이며 이전42,223에서 비원본 fault5개 제거+새24개로 정확히19개 증가했다. 기존 두 ASLR 주소 가족만 정규화한 독립 비교에서 그 외 모든 test node/outcome/multiplicity가 동일하다. GUI 결과와 unit-test leaves를 합산하지 않는다.
+
+clean/pushed `b6b918f2342091c25695346c020fee4ee8edcb19`의 공식 ARM64 Go1.26.5 일반 제품 세 게임이 자연 종료한 뒤 HD 세 게임을 순차 실행했다. 기존 공개 `host-game-meat-pickup-drop`, `host-game-food-pickup-drop`, `host-game-gameplay-audio` actual game exits는 양쪽 모두 `0,0,0`, batch wrapper actual exits도 `0,0`이다. headless·실제 OpenAL null(real sources16)·fresh Save/config/maps·read-only stock links·unset NOX_E2E_OVERRIDE·byte-identical public YAML copies를 유지했다. LIVE 중 source/test/build inputs/private runners를 편집하지 않았다. 각 batch 전후 및 terminal 별도 대조에서 functional inputs5,943개·원래 native runners3개·추가 evidence runners8개·제품3개·stock4개 SHA가 actual0이고, 네 native ports도 비활성이다. 기존 R21 HD29개 전체를 다시 실행했다는 기록은 아니다.
+
+일반·HD 모두 stock Meat/Mushroom의 handler/sound/HP/소비량 override 없이 실제 mouse/MSG_TRY_GET pickup과 inventory drag/drop을 수행했다. 동일 native object/owner/callback pointers >4GiB·wire499·server/client inventory `0→1→0`·owner/holder clear·world drawable 재등장을 독립 로그로 대조했다. `MeatPickup→papplpub`4096 bytes, `MeatDrop→pmeatdrc`3072 bytes, `ShroomPickup→papplpub`4096 bytes, `ShroomDrop→pshoedra`4096 bytes가 모두22050Hz·A7 volume100/pan0/submitted=true이다. Material 기반 육류 드롭 수정과 subclass 기반 버섯 소리를 모두 보존했다.
+
+basic gameplay의 각 checkpoint에서 bank1,780·enabled definitions1,004·sample references2,657·intentionally empty definitions118을 감사했다. 이번 실행의 여섯 구간은 다음과 같다.
+
+| 구간 | 일반 새 queued/processed | HD 새 queued/processed | 구간 내 양수 native sample 제출 ID |
+| --- | --- | --- | --- |
+| pickup | 39/39 | 39/39 | MetalWeaponPickup |
+| drop | 15/15 | 15/15 | MetalWeaponDrop |
+| attack | 178/170 | 182/174 | HammerMissing 2회(원본 unconditional effect 이름) |
+| hurt | 370/378 | 366/374 | HumanMaleHurtLight, HumanMaleHurtHeavy |
+| walk | 35/35 | 35/35 | WalkOnStone 5회 |
+| run | 53/53 | 53/53 | RunOnStone 7회 |
+
+구간별 새 queued/processed는 실제16-source pool의 양수 completion으로 독립 대조했으며 per-sound 완료 횟수는 아니다. 앞선 구간의 in-flight buffer 때문에 attack/hurt의 두 수가 다를 수 있고, 음식 fixture는 sound별 양수 native submission까지 검증했다. 원래 무음인 callbacks/empty definitions에 소리를 주입하지 않았다. R20의 stock1,780개 full-length replay·R21의 확대27개 actual0·R22의 일반/HD6개 actual0과 이번6개 actual0을 구분한다. 물리 스피커 청취·모든 world trigger acoustic 인증·pixel golden 인증·전체 port goal 완료 선언은 아니다.
+
+native 전 clean three-product build/metadata/help/verifier, native 전후 oracle actual0을 보존했다. 원본1556 files/570653750 bytes·tree SHA `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`·GAME.EXE2951 code/638 data ranges·strict NXZ gate가 유지된다. 문서-only revision의 최종 clean build/metadata 갱신은 이 native 실행 revision과 구분하여 `final-handoff-<revision>` receipts에 보존한다. 자연 종료한 이번6개 private raw logs4,554,557,031 bytes는 gzip 복원 bytes/SHA까지 확인한13,596,760 bytes의 recoverable copies로 대체했고 LIVE logs·원본 자산·소스는 삭제하지 않았다.
+
+독립 original/full/native 증거는 `/private/tmp/opennox-food-read-order-r24.2Xbzct/original-food-independent-audit.json`, `full-independent-audit.json`, `native-final-independent-audit.json`, 압축 proof는 `native-archives-verified.json`에 보존한다. baseline R22 압축 로그를 새 auditor로 읽은 parser 검증 actual0은 이번 실제 게임 실행 증거와 따로 둔다. 이 prepend-only section은 아래 이전 ledger suffix bytes를 보존하며 아래의 당시 미완료 subclass-read 상태를 새 증거로 갱신하는 기록이다.
+
+
+## 남은 후퇴 음식 AI gate의 선택된 원본 분기 진단
+
+R23는 기존 passive-retreat-food actual2를 고치기 위한 행동 변경 전에 read-only GAME.EXE의 선택된 original-x8642 cases·code ranges11개와 native arrival contract32 leaves(2 NPC×2 food×4 positions×2 frames)를 독립 대조하여 actual0을 확인했다. food tracking pointer가 있는 MOVE_TO arrival의 pop 제한, passive aggression의 periodic food-search 제한, strict unsigned corner-clock/wrap 분기가 captured 조건에서 원본 명령과 일치한다. 통제된 engine-service hooks/stack/search fixtures와 x87 설정을 receipt에 명시했으며 이는 Windows/full-game/physics 또는 AI 전체 행동 동등성 인증이 아니다. 최초 auditor가32개를64개로 잘못 기대한 diagnostic actual1도 보존했고, native fixtures/production을 변경하지 않고 정확한 Cartesian count32로 대조했다.
+
+독립 proof는 `/private/tmp/opennox-retained-gates-r23.B4ZzTg/original-ai-independent-audit.json`이다. 기존 public YAML·HP·aggression·RNG seeds·timeout·golden·production AI를 바꾸지 않았다. 아래 R21 passive-retreat-food actual2와 old fixedQuest20 golden actual2는 여전히 별도 미해결 gate이며 이번 SFX 성공으로 재분류하지 않는다. 원본과 달라지는 AI 개선 여부에 대한 사용자 선택도 아직 반영하지 않았고 전체 port goal은 active로 유지한다.
+
+
 ## 효과음 수정의 일반·HD 실제 게임 재검증 완료
 
 R22는 clean/pushed `e433937d6079065b228438e7e9485408f9e51047`의 공식 ARM64 일반 제품 세 게임이 자연 종료한 뒤 HD 제품 세 게임을 순차 실행했다. `host-game-meat-pickup-drop`, 기존 `host-game-food-pickup-drop`, 기존 `host-game-gameplay-audio`의 actual game exits는 양쪽 모두 `0,0,0`, batch wrapper actual exits도 `0,0`이다. headless·실제 OpenAL null(real sources)·fresh Save/config/maps·read-only stock links·unset NOX_E2E_OVERRIDE·byte-identical public YAML copies를 유지했다. 두 batch의 전후 및 별도 terminal recheck에서 source/test/build inputs5,941개·원래 private runners3개·제품3개·stock hashes가 모두 actual0이고 LIVE 중 source/test/build inputs/private runners를 편집하지 않았다. 아래 R21의 HD29개 전체 실행을 새로 선언하는 기록은 아니다.

@@ -557,7 +557,8 @@ void sub_45D870() {
 			v4 += v10;
 			--v5;
 		} while (v5);
-		nox_xxx_book_45DBE0(*(void**)getMemAt(0x5D4594, 1046676), *(int*)&dword_5d4594_1047524,
+		// The reward kind is a PE32 scalar followed by a separate trail count.
+		nox_xxx_book_45DBE0((void*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1046676), *(int*)&dword_5d4594_1047524,
 							*(int*)&dword_5d4594_1046852);
 		sub_45D810();
 	}

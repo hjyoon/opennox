@@ -184,7 +184,6 @@ func TestDefaultDamageWorld4E0B30BerserkerChargeNPCDefense(t *testing.T) {
 func TestDefaultDamageWorld4E0B30BerserkerChargeAdmissionBoundary(t *testing.T) {
 	player := &Object{ObjClass: object.ClassPlayer}
 	otherPlayer := &Object{ObjClass: object.ClassPlayer}
-	monster := &Object{ObjClass: object.ClassMonster, UpdateData: unsafe.Pointer(&MonsterUpdateData{})}
 	for _, tc := range []struct {
 		name           string
 		source, weapon *Object
@@ -192,7 +191,6 @@ func TestDefaultDamageWorld4E0B30BerserkerChargeAdmissionBoundary(t *testing.T) 
 	}{
 		{"source-less crush", nil, nil, object.DamageCrush},
 		{"different player weapon", player, otherPlayer, object.DamageCrush},
-		{"monster self crush", monster, monster, object.DamageCrush},
 		{"player self blade", player, player, object.DamageBlade},
 		{"player self bite", player, player, object.DamageBite},
 	} {

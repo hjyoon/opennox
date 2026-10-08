@@ -237,7 +237,10 @@ func DefaultDamageWorld4E0B30(
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon)
 	ordinaryMelee := playerDamageMeleeShape4E17B0(source, weapon, typ)
-	monsterImpact := playerDamageMonsterImpactShape4E17B0(source, weapon, typ)
+	// Physical self-strikes and Ghost DRAIN share IMPACT's qualifying
+	// monster weapon/hostility/Defend/sound/HP tail (004E0C55 onward).
+	monsterImpact := playerDamageMonsterImpactShape4E17B0(source, weapon, typ) ||
+		playerDamageMonsterSelfStrikeShape4E17B0(source, weapon, typ)
 	// The terminal owner and Earthquake caster need not be the same object.
 	// Keep the already restored monster self-strike on its existing path;
 	// PLAYER and class-zero self-casters do not qualify the melee predicate.

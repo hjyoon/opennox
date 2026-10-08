@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## stock 효과음 1,780개 전체 native 디코딩·재생 검증
+
+R20의 `d889555ee036fcb4dfb2a12f95e1d5f6a10b36c7`는 새 opt-in `audio_stock_bank_integration_test.go` 한 파일만 추가한다. 이전 A6/A7 복원 이후 production 본체·기존 test/fixture·게임 로직·기대값·자산은 그대로이며 commit 직후 origin `port/go1.26-multiarch` push actual exit0이다. 기존 R19의 실제 여섯 게임 실행과 구분해, 이번에는 GUI 없이 사운드 뱅크의 모든 샘플을 별도 locked-thread subprocess/실제 OpenAL null로 검사했다.
+
+`NOX_TEST_STOCK_FX_DIR`로 명시한 read-only stock 경로의 GABA v2 index를 production root bank loader와 독립적으로 순회한다. 전체 1,780개 entry/44,663개 ADPCM block의 범위·채널 layout·predictor index·디코딩 길이·초기 predictor를 확인했으며 PCM 값 46,599,736개 중 nonzero 45,579,914개를 관찰했다. observed PCM SHA256은 `b8b6dbaa6a10e14b44f5e9048aa105efa266311b2a94199c5688ea06d8926ba7`이다. 이 hash는 세 실행의 동일성 기록이지 독립 Windows/Miles PCM oracle이나 새 음질 golden이 아니다.
+
+일반/실제 Go1.26.5 `cgocheck2`/highres 각 한 번, 합계 세 native 실행은 모두 actual exit0이다. >4GiB driver/sample handles와 실제 OpenAL Soft 16 sources에서 모든 샘플을 stock rate·전체 길이로 재생했다. 각 batch의 queued/processed는 해당 batch의 블록 수와 같고 최종 누적은 각각 정확히44,663개, 잔여 playing/stream source는0이다. voice release 뒤 source0과 처리 이력 보존도 확인했다. 길이 순서의 batch 배치는 이 isolated test에만 적용하며 sample 단축·재생 속도 변경·gameplay RNG/priority 변경은 없다. 전체 재생 시간은 각각142.283/142.633/142.132초였다.
+
+root/audio 표적 일반·실제 cgocheck2·race+checkptr=2·highres 각 count3은35 distinct leaves/54 pass/51 skip·actual exit0이다. 실제 network FX 및 enabled/live volume/live service parent는 각3회 통과했고, 새 stock opt-in 두 skip과 기본 OpenAL opt-in skip을 통과로 세지 않았다. 별도 `NOX_TEST_OPENAL=true`/null의 AIL 전체 일반·strict는 각각20 leaves/16 pass/4 skip·actual exit0이며 pause/drain/discard/external movie/source·driver close/shutdown도 실행했다. 이전 R19 focused의 AIL node/outcome은3회→1회 정규화로 보존됐다. 첫 대조는 AIL을 포함하지 않았던 R19 full log를 잘못 baseline으로 골라 auditor exit1이었다. 그 로그를 보존하고 실제 AIL이 있는 focused baseline으로 대조했으며 test 결과/기대값을 수정하지 않았다.
+
+세 native 실행 전후 bank file 및 memory bytes의 SHA256은 불변이다. Audio.idx(64,092 bytes)는 `75a5f0feeabc2db9a436706d33c9b022cf3be6cc51016cfb88738539c0667743`, Audio.bag(23,459,328 bytes)는 `f557bad64402ab9cce2f0705a43c9fae73262bc0624af94dafd64c86d8bea32a`다. native-strict/highres 및 회귀·build 단계의 source/test/build inputs와 private runner before/after hash 대조도 actual exit0이다. 실행 중 입력을 수정하지 않았고 원본 자산·개인 Save/config·OLD YAML/PNG golden을 변경하지 않았다.
+
+clean/pushed test commit의 공식 일반/HD/server ARM64 빌드·full revision/Go1.26.5/vcs.modified=false 검사·도움말은 actual exit0이다. post-native `oracle-test`도 code2,951/data638 ranges 및 strict NXZ 재검증 actual exit0이다. scoped 세 product lsof는 actual exit1/stdout·stderr empty로 남은 game handle이 없다. 이 test-only 단계에서 여섯 gameplay GUI를 다시 실행했다고 하거나 모든 trigger/물리 speaker·acoustic pan/독립 원본 PCM까지 검증했다고 하지 않는다. 앞선 R19의 게임 실행 증거와 이번 전수 bank 시험을 구분한다. 이전 passive-food/fixed-Quest actual exit2 gate는 미해결로 유지하며 전체 ARM64 포팅 완료를 선언하지 않는다.
+
+테스트·독립 결과 대조·frozen hashes·clean three-product build/metadata/help·oracle receipts는 `/private/tmp/opennox-stock-fx-r20.FyvZfk`에 보존한다. 이 prepend-only 기록 뒤의 이전 ledger suffix bytes를 유지한다. 문서-only 최종 clean build는 같은 디렉터리의 `final-*`로 따로 기록하며 test commit의 제품과 revision을 혼동하지 않는다.
+
 ## 게임플레이 효과음 A6/A7의 native OpenAL 경로 복원
 
 R19에서 UI `452D80`는 이미 초기화된 native FX pool을 사용하지만 실제 게임플레이 `MSG_AUDIO_EVENT`(A6)/`MSG_AUDIO_PLAYER_EVENT`(A7)는 root packet switch에서 dormant C `452DC0`/`452E10`으로 내려가 초기화되지 않은 legacy definition flag 때문에 조용히 반환하는 원인을 확인했다. 실제 공개 packet switch의 수정 전 red는 valid A6 event를 소비하면서 sample metadata/queued buffer가 생기지 않아 actual exit1이다. 두 opcode를 기존 native bank/16 voices로 연결했으며 PE32 allocator를 다시 활성화하지 않았다. 걸음·달리기·공격/피격·장비 획득/드롭뿐 아니라 같은 서버 event 수신 경로를 쓰는 NPC·주문·문/벽·환경 효과음에 적용된다.

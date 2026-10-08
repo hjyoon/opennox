@@ -27,7 +27,7 @@ func (s NoxScriptNS) Time() time.Duration {
 }
 
 func (s NoxScriptNS) RandomFloat(min float32, max float32) float32 {
-	return float32(s.s.Rand.Logic.FloatClamp(float64(min), float64(max)))
+	return float32(s.s.RandomFloat416030(min, max))
 }
 
 func (s NoxScriptNS) Random(min int, max int) int {

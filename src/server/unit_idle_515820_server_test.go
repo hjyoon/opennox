@@ -43,8 +43,8 @@ func TestUnitIdleNative515820PreservesHighPointerAndRestoresStack(t *testing.T) 
 	}
 	if head := update.AIStackHead(); head == nil || head.Type() != ai.ACTION_IDLE {
 		t.Fatalf("head = %#v, want ACTION_IDLE", head)
-	} else if head.Args != ([4]uintptr{}) || head.Field5 != 0 {
-		t.Fatalf("idle payload = args %#v field5 %d, want zero", head.Args, head.Field5)
+	} else if head.Args != ([4]uintptr{1, 2, 3, 4}) || head.Field5 != 0 {
+		t.Fatalf("idle payload = args %#v field5 %d, want original arguments and reset Field5", head.Args, head.Field5)
 	}
 	if !s.AI.StackChanged {
 		t.Fatal("native action-stack callbacks did not mark the stack changed")

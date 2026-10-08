@@ -147,7 +147,10 @@ func TestMonsterLookAtNative5125A0StackBoundaries(t *testing.T) {
 				t.Fatal("LookAt cleared the existing WAIT")
 			}
 			head := update.AIStackHead()
-			if head.Type() != ai.ACTION_FACE_LOCATION || head.Args != [4]uintptr{0x3d918bf0, 0x41612318, 0, 0} || unit.Direction1 != 64 || unit.Direction2 != 64 {
+			// 00512601/00512604 store only the two coordinate arguments.
+			wantArgs := oldStack[wantIndex].Args
+			wantArgs[0], wantArgs[1] = 0x3d918bf0, 0x41612318
+			if head.Type() != ai.ACTION_FACE_LOCATION || head.Args != wantArgs || unit.Direction1 != 64 || unit.Direction2 != 64 {
 				t.Fatalf("face action/direct directions = %+v/%d/%d", head, unit.Direction1, unit.Direction2)
 			}
 		})

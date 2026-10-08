@@ -41,7 +41,7 @@ func TestUnitHuntNative5157A0StackAndUnrelatedFlags(t *testing.T) {
 		s.AI.StackChanged = false
 		s.UnitHunt5157A0(unit)
 		if update.AIStackInd != 0 || update.AIStack[0].Type() != ai.ACTION_HUNT ||
-			update.AIStack[0].Args != ([4]uintptr{}) || update.AIStack[0].Field5 != 0 || !s.AI.StackChanged {
+			update.AIStack[0].Args != ([4]uintptr{1, 2, 3, 4}) || update.AIStack[0].Field5 != 0 || !s.AI.StackChanged {
 			t.Fatalf("flags=%#x stack=%+v index=%d changed=%t", flags, update.AIStack[0], update.AIStackInd, s.AI.StackChanged)
 		}
 		if update.Field2 != 0 || update.Field67 != 0 || update.Field74 != 0 || update.Field91 != 0 ||

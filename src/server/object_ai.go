@@ -103,9 +103,10 @@ func (obj *Object) MonsterPushActionImpl(act ai.ActionType, file string, line in
 		}
 	}
 	ud.AIStackInd++
-	ud.AIStack[ud.AIStackInd] = AIStackItem{
-		Action: uint32(act), Field5: 0,
-	}
+	// Original 0050A30F/0050A311 overwrite only the action and start flag.
+	// Arguments in a reused slot survive until the caller explicitly sets them.
+	ud.AIStack[ud.AIStackInd].Action = uint32(act)
+	ud.AIStack[ud.AIStackInd].Field5 = 0
 	obj.MonsterActionReset()
 	if noxflags.HasEngine(noxflags.EngineShowAI) {
 		ai.Log.Printf("%d: PushActionStack( %s(#%d), %s ), result: (%s:%d)\n", s.Frame(), obj, obj.NetCode, act, file, line)

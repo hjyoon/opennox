@@ -70,8 +70,8 @@ func TestUnitFollowNative5158C0PreservesPointersAndExactPayload(t *testing.T) {
 	if got := head.Args[2]; got != uintptr(unsafe.Pointer(target)) {
 		t.Fatalf("target = %#x, want native pointer %#x", got, uintptr(unsafe.Pointer(target)))
 	}
-	if head.Args[3] != 0 || head.Field5 != 0 {
-		t.Fatalf("untouched action tail = %#x/%d, want zero", head.Args[3], head.Field5)
+	if head.Args[3] != 4 || head.Field5 != 0 {
+		t.Fatalf("untouched action tail = %#x/%d, want original fourth argument and reset Field5", head.Args[3], head.Field5)
 	}
 	if !s.AI.StackChanged {
 		t.Fatal("native action-stack callbacks did not mark the stack changed")

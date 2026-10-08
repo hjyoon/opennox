@@ -58,8 +58,8 @@ func TestMonsterWanderNative512930BuildsExactActionStack(t *testing.T) {
 	if report.Type() != ai.ACTION_REPORT {
 		t.Fatalf("first action = %s, want ACTION_REPORT", report.Type())
 	}
-	if report.Args != [4]uintptr{10, 0, 0, 0} || report.Field5 != 0 {
-		t.Fatalf("REPORT payload = %#v/%d, want [10 0 0 0]/0", report.Args, report.Field5)
+	if report.Args != [4]uintptr{10, 2, 3, 4} || report.Field5 != 0 {
+		t.Fatalf("REPORT payload = %#v/%d, want [10 2 3 4]/0 (original Arg0-only store)", report.Args, report.Field5)
 	}
 	roam := &update.AIStack[1]
 	if roam.Type() != ai.ACTION_ROAM {

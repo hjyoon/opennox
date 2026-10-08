@@ -54,7 +54,7 @@ func TestUnitHuntRealCWrapper5157A0NativeStack(t *testing.T) {
 	t.Logf("real C Hunt: unit=%p update=%p", unit, update)
 	Nox_xxx_unitHunt_5157A0(unit)
 	if update.AIStackInd != 0 || update.AIStack[0].Type() != ai.ACTION_HUNT ||
-		update.AIStack[0].Args != ([4]uintptr{}) || update.AIStack[0].Field5 != 0 || !srv.AI.StackChanged {
+		update.AIStack[0].Args != ([4]uintptr{1, 2, 3, 4}) || update.AIStack[0].Field5 != 0 || !srv.AI.StackChanged {
 		t.Fatalf("Hunt stack index=%d head=%+v changed=%t", update.AIStackInd, update.AIStack[0], srv.AI.StackChanged)
 	}
 	if update.Field2 != 0 || update.Field67 != 0 || update.Field74 != 0 || update.Field91 != 0 ||

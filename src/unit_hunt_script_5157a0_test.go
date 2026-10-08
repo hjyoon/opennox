@@ -124,7 +124,7 @@ func TestUnitHuntScriptCallback5157A0NativeCallerAndTrigger(t *testing.T) {
 				other.UpdateDataMonster().AIStack[0].Args != ([4]uintptr{1, 2, 3, 4}) {
 				t.Fatalf("Hunt VM selected=%+v other=%+v want action=%v", update.AIStack[0], other.UpdateDataMonster().AIStack[0], tc.want)
 			}
-			if tc.want == ai.ACTION_HUNT && (update.AIStack[0].Args != ([4]uintptr{}) || update.Field124 != 702 || update.Field137 != 702) {
+			if tc.want == ai.ACTION_HUNT && (update.AIStack[0].Args != ([4]uintptr{1, 2, 3, 4}) || update.Field124 != 702 || update.Field137 != 702) {
 				t.Fatal("script Hunt skipped the native stack-reset services")
 			}
 			if tc.want == ai.ACTION_WAIT && update.AIStack[0].Args != ([4]uintptr{1, 2, 3, 4}) {

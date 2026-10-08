@@ -111,8 +111,14 @@ func TestMonsterMainFear547210Transition(t *testing.T) {
 				index += 2
 			}
 			dependency, flee := &update.AIStack[index], &update.AIStack[index+1]
+			dependencyArgs := [4]uintptr{uintptr(ENCHANT_AFRAID)}
+			if mode == "idle" {
+				// 0054748B writes only Arg0 after reusing the idle slot.
+				dependencyArgs = base.Args
+				dependencyArgs[0] = uintptr(ENCHANT_AFRAID)
+			}
 			if update.AIStackInd != int8(index+1) || dependency.Type() != ai.DEPENDENCY_IS_ENCHANTED ||
-				dependency.Args != [4]uintptr{uintptr(ENCHANT_AFRAID)} || dependency.Field5 != 0 ||
+				dependency.Args != dependencyArgs || dependency.Field5 != 0 ||
 				flee.Type() != ai.ACTION_FLEE || flee.Args != [4]uintptr{uintptr(math.Float32bits(unit.PosVec.X)), uintptr(math.Float32bits(unit.PosVec.Y)), 0, 0} || flee.Field5 != 0 {
 				t.Fatalf("fear stack = %+v", update.GetAIStack())
 			}

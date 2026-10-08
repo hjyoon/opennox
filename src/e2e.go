@@ -9566,6 +9566,9 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertOpenALPlayback(l.Full, l.Name)
+		case "check-gameplay-audio":
+			sc.Wait(dt, "")
+			sc.CheckGameplayAudio(l.Mode, l.Text, l.Name)
 		case "interact":
 			if dt != 0 {
 				sc.Wait(dt, "")

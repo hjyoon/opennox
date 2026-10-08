@@ -1,0 +1,197 @@
+# Real host menus/input and stock sound definitions on a native OpenAL driver.
+# Each phase observes queued AND consumed effect buffers. Debug network sound
+# IDs identify the requested category; no sound, result, or pixel is injected.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-gameplay-audio
+    mode: 0
+    text: walk
+    name: observe walking baseline and all loaded audio definitions
+  - action: walk
+    ang: 0.5
+    dt: 90
+    name: walk through real movement input
+  - action: wait
+    dt: 90
+    name: drain walking effect buffers
+  - action: check-gameplay-audio
+    mode: 1
+    text: walk
+    name: verify walking OpenAL playback
+  - action: check-gameplay-audio
+    mode: 0
+    text: run
+    name: observe running baseline
+  - action: run
+    ang: 3.641592653589793
+    dt: 90
+    name: run through real movement input
+  - action: wait
+    dt: 90
+    name: drain running effect buffers
+  - action: check-gameplay-audio
+    mode: 1
+    text: run
+    name: verify running OpenAL playback
+  - action: spawn-ground-item
+    item: GreatSword
+    handler: WeaponPickup
+    expect-handler: WeaponPickup
+    drop-handler: WeaponDrop
+    x: 40
+    y: 0
+    name: spawn a stock weapon beside the player
+  - action: wait
+    dt: 30
+    name: receive weapon drawable
+  - action: check-gameplay-audio
+    mode: 0
+    text: pickup
+    name: observe equipment pickup baseline
+  - action: pickup-ground-item
+    name: pick up weapon through mouse and MSG_TRY_GET
+  - action: assert-ground-item-picked
+    name: verify server and client weapon pickup state
+  - action: wait
+    dt: 90
+    name: drain pickup effect buffers
+  - action: check-gameplay-audio
+    mode: 1
+    text: pickup
+    name: verify equipment pickup OpenAL playback
+  - action: inventory
+    name: open inventory
+  - action: wait
+    dt: 90
+    name: settle inventory animation
+  - action: check-gameplay-audio
+    mode: 0
+    text: drop
+    name: observe equipment drop baseline
+  - action: drag-inventory-item-out
+    item: GreatSword
+    name: drag weapon from inventory into the world
+  - action: assert-ground-item-dropped
+    name: verify native WeaponDrop and world reappearance
+  - action: wait
+    dt: 90
+    name: drain drop effect buffers
+  - action: check-gameplay-audio
+    mode: 1
+    text: drop
+    name: verify equipment drop OpenAL playback
+  - action: inventory
+    name: close inventory
+  - action: wait
+    dt: 90
+    name: settle after inventory
+  - action: grant-item
+    item: WarHammer
+    count: 1
+    name: grant stock hammer for combat
+  - action: wait
+    dt: 30
+    name: receive hammer inventory report
+  - action: inventory
+    name: open inventory
+  - action: wait
+    dt: 90
+    name: settle inventory animation
+  - action: click-inventory-item
+    item: WarHammer
+    name: equip hammer through actual inventory input
+  - action: wait
+    dt: 30
+    name: settle equipment report
+  - action: inventory
+    name: close inventory
+  - action: wait
+    dt: 60
+    name: settle after inventory
+  - action: check-gameplay-audio
+    mode: 0
+    text: attack
+    name: observe combat effect baseline
+  - action: check-player-hammer
+    name: real hammer attacks against a Troll and NPC
+  - action: wait
+    dt: 120
+    name: drain combat effect buffers
+  - action: check-gameplay-audio
+    mode: 1
+    text: attack
+    name: verify attack and target impact OpenAL playback
+  - action: check-gameplay-audio
+    mode: 0
+    text: hurt
+    name: observe player hit baseline
+  - action: check-ai-first-attack
+    text: Spider/ascending/clear
+    name: let a stock hostile spider attack the player first
+  - action: wait
+    dt: 120
+    name: drain player hurt effect buffers
+  - action: check-gameplay-audio
+    mode: 1
+    text: hurt
+    name: verify player hit OpenAL playback
+  - action: quit
+    dt: 1

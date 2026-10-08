@@ -17,7 +17,7 @@ type clientDurationRay48EA70 struct {
 }
 
 var clientDurationRayNames48EA70 = [...]string{
-	"PlasmaRay", "OrbRay", "DynamicChainLightning", "DynamicEnergyBolt",
+	"PlasmaRay", "CharmRay", "DynamicChainLightning", "DynamicEnergyBolt",
 	"DrainManaRay", "HealRay", "HarpoonRope",
 }
 

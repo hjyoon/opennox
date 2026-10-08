@@ -9,6 +9,53 @@ import (
 	"github.com/opennox/opennox/v1/client"
 )
 
+// Independently decoded from GAME.EXE 0049C160's jump table, not copied
+// from the production array. In particular wire kind 2 is CharmRay; OrbRay
+// has a different updater and cannot display the CharmCreature stream.
+func TestDurationRayNative48EA70AllWireKinds(t *testing.T) {
+	names := []string{"PlasmaRay", "CharmRay", "DynamicChainLightning", "DynamicEnergyBolt", "DrainManaRay", "HealRay", "HarpoonRope"}
+	for index, expected := range names {
+		t.Run(expected, func(t *testing.T) {
+			from, to, ray := new(client.Drawable), new(client.Drawable), new(client.Drawable)
+			var slots [96]clientDurationRay48EA70
+			spawned := false
+			hooks := durationRayHooks48EA70{
+				connected: func() bool { return true },
+				byCode: func(code uint16) *client.Drawable {
+					if code == 0x1234 {
+						return from
+					}
+					if code == 0x9234 {
+						return to
+					}
+					t.Fatalf("unexpected endpoint %#x", code)
+					return nil
+				},
+				typeID: func(i int, name string) int {
+					if i != index || name != expected {
+						t.Fatalf("wire kind %d resolved %d/%q; want %q", index+1, i, name, expected)
+					}
+					return 100 + index
+				},
+				spawn: func(typ int, pos image.Point) *client.Drawable {
+					if typ != 100+index {
+						t.Fatalf("spawn type %d", typ)
+					}
+					spawned = true
+					return ray
+				},
+			}
+			if n := handleDurationRayNative48EA70([]byte{0x9e, byte(index + 1), 3, 0x34, 0x12, 0x34, 0x92}, &slots, hooks); n != 7 || !spawned || slots[0].drawable != ray {
+				t.Fatalf("wire ray not registered: consumed=%d spawned=%t slot=%+v", n, spawned, slots[0])
+			}
+			data := unsafe.Slice((*byte)(unsafe.Pointer(&ray.Union)), 13)
+			if data[0] != 1 || binary.LittleEndian.Uint32(data[1:]) != 3 || binary.LittleEndian.Uint32(data[5:]) != 0x1234 || binary.LittleEndian.Uint32(data[9:]) != 0x9234 {
+				t.Fatalf("ray endpoints/level payload %x", data)
+			}
+		})
+	}
+}
+
 func TestDurationRayNative48EA70HighAddressLifecycle(t *testing.T) {
 	from := &client.Drawable{PosVec: image.Pt(10, 20)}
 	to := &client.Drawable{PosVec: image.Pt(51, 61)}

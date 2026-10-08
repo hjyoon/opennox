@@ -1,5 +1,13 @@
 # 비공개 원본 오라클 매니페스트
 
+## 재사용 AI 슬롯과 선택된 MainAI entry의 후속 대조
+
+R31은 기존 봉인 원본 `0050A260`의 action/start-flag만 쓰는 계약을 대조해 `Object.MonsterPushActionImpl` 한 Go 본체의 argument 보존을 복원했다. push28개 조건과 실제 호출자6개 fixture, 새 native 회귀27개 leaf를 구분해 검증했으며 새로운 original range/manifest나 원본 자산을 추가하지 않는다. 기존 Idle/Hunt/Follow/Wander/LookAt/Fear 및 script/C wrapper 시험도 원본의 partial store 기대값을 사용한다. Cancel body/whole engine 실행으로 확대하지 않는다.
+
+수정 전 food600개 호출의 원본 대조에서 frame593/748의 사용하지 않는 Arg0 두 차이를 raw 상태 그대로 기록했다. clean/pushed `29deffcb4`의 새 read-only capture는 Quest12개/28 RNG step/14 callback과 food600개/4 RNG step/4 callback 모두24개 슬롯·관찰 scalar 차이0이다. 실제 world-service 결과/호출 순서를 재생하고 pointer identity를 PE32 fixture로 재배치하지만 원본 map/physics·audio/script body·inter-call 상태나 모든 MainAI branch의 증명은 아니다. 원본 script의3 stack word와 native event4를 구분한다. fixed Quest/passive-food 두 scenario의 actual2/2와 미실행 후속 조건은 유지하며 argument 복원을 그 실패 해결로 보고하지 않는다.
+
+공식 ARM643제품의 clean build/revision 및 다섯 이슈의 일반·HD headless/mock 총16실행 actual0은 별도 receipt다.6,006 tracked inputs/3 products와 private observer inputs6개는 LIVE 전후 불변이며 모든 private 자료는 저장소 밖에 보존한다. 전후 oracle-test actual0, code2,968/data650·strict NXZ50쌍·stock1,556files/570,653,750bytes/tree SHA `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`를 유지한다. 원본 자산·개인 Save/config·공개 YAML/golden/RNG를 변경하지 않았고 전체 포팅 완료나 원본 Windows/물리 출력 동등성은 주장하지 않는다. [상세 실패 이력과 검증 범위](../PORTING-INVENTORY.md#ai-행동-슬롯-인자-보존과-다섯-이슈의-후속-clean-검증)에 기록했다.
+
 이 디렉터리에는 사용자가 보유한 `nox/` 기준본의 **경로, 바이트 수, SHA-256**만 보관한다. `GAME.EXE`, 맵, 음성, 영상 등 원본 자산 자체를 소스 저장소나 공개 CI에 복사하지 않는다.
 
 ## Player 대상 ZAP_RAY DefaultDamage 의존 경로의 검증 범위

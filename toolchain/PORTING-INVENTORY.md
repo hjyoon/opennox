@@ -1,5 +1,22 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## AI 행동 슬롯 인자 보존과 다섯 이슈의 후속 clean 검증
+
+R31의 기능 revision은 clean/pushed `29deffcb4ffb8f99e54162e282f400588fdfbcc0`이다. production 변경은 `Object.MonsterPushActionImpl` 한 기존 본체뿐이며 Go AST의 body를 제외한 파일 바이트가 이전 `ce6e2ae04`와 동일함을 확인했다. 원본 `0050A30F/0050A311`은 새 action과 시작 flag만 기록한다. 재사용 슬롯의 네 인자를 struct 전체 대입으로 지우던 Go 구현을 필드별 기록으로 복원했다. 호출자가 명시적으로 쓰지 않은 timer/native pointer/상위 DWORD를 보존하며 reset·Cancel·full/dead gate·stack-changed 순서를 바꾸지 않는다.
+
+수정 전 새 회귀27개 leaf가 모두 실패했고, 수정 후 일반/실제 cgocheck2/지원 server 범위 각1회와 highres/race+checkptr2 각3회의 합계243개 새 leaf가 통과했다. 각 모드의 `. ./server ./legacy` 전체 또는 표적 실행은 actual0이다. 일반·strict 전체의14개, server 전체의2개 unrelated optional-data/child test skip은 독립 JSON receipt에 그대로 남겼으며 전체 skip0으로 보고하지 않는다. 표적 HD/race 검사와 변경한 계약은 fail/skip0이다. 기존 Idle/Hunt/Follow/Wander/LookAt/Fear 및 실제 script/C Hunt 시험의 잘못된 zero-argument 기대값도 원본의 명시적인 부분 store에 맞춰 바로잡았다. unchanged GAME.EXE의 push28개 조건과 실제 호출자6개 제어 fixture를 재생해24개 슬롯과 반환 슬롯을 대조했다. 이 fixture는 Cancel callback body/전체 engine의 실행 증명이 아니다. 첫 Fear fixture의 idle cadence 준비 오류와 초기 optional-skip audit 거부도 원래 로그로 보존했다.
+
+앞선 clean `ce6e2ae04`의 공식 normal retained-gate 실행은 fixed Quest20와 passive-retreat-food 각각 actual2였다. 별도 read-only MainAI observer의 두 실행도 각각2이며 실제 전후 상태와 world-service 결과를 기록했다. observer는 기존 서비스를 한 번 호출하고 반환을 그대로 전달하며 RNG draw/game record write가 없다. 현재 native Quest12개 호출의 full original entry 대조는 처음부터 일치했고, food600개 중 frame593/748에서만 DEPENDENCY_NOT_CORNERED68의 사용하지 않는 Arg0가 원본580/655 대신0으로 지워졌다. 다른24-slot payload나 관찰한 scalar 차이는 없었다. 이 두 raw 차이는 정규화해 숨기지 않았고 먹이 소비 실패의 원인으로 해석하지 않는다.
+
+수정 후 fresh Save/config의 private observer를 다시 빌드해 같은 공개 YAML을 순차 실행했다. 두 retained scenario의 actual2/2와 batch1은 그대로다. Quest는 stage3의 실제 `g_crypts`가 고정 기대값 `g_lotdd`와 다르고, food는 첫 Troll/ascending/RedApple의600tick consumption timeout이라 나머지7조건은 미실행이다. 해당 failure는 SIGSEGV가 아니라 기존 assertion/timeout이다. 새 실제 capture를 unchanged PE32 MainAI entry에 재생하여 Quest12개/28 RNG step/14 callback과 food600개/4 RNG step/4 callback 모두 raw24-slot·관찰 scalar 차이0을 확인했다. food의 SearchEdible 호출은 없고 audio/script 두 쌍만 기록됐다. pointer는 PE32 fixture에 identity로 재배치하며 잘라내지 않는다. world 결과는 실제 기록값을 사용하지만 원본 map/physics 구현이나 audio/script body를 실행한 것은 아니며 inter-call 상태·모든 branch·원본 Windows 전체 runtime의 동등성으로 확대하지 않는다. 원본 script ABI의3개 stack word와 Go bridge의 별도 retreat event4도 구분했다. YAML·RNG·aggression·timeout·golden을 바꿔 gate를 통과시키지 않는다.
+
+기능 revision의 공식 Go1.26.5 Darwin/ARM64 일반·HD·server3제품을 clean rebuild하여 전체 revision/`vcs.modified=false`를 검증했다. R30의 같은8개 공개 시나리오를 일반·HD 각8회 순차 headless/mock 실행한 총16개 actual exits와 batch가 모두0이다. 전투11종×방향2×lane2의44조건에서 각각3회, 제품마다132개/합계264개 실제 선제·후속 타격과 HP 감소를 다시 확인했다. Bow/CrossBow는 각각 실제3발/명중·탄약20→17·Troll HP1814/1263, Charm은 녹색 입자·45frame 자연 owner 전환/ray 제거, 캠페인 상점/일반 대화는30frame 이동 잠금과 실제 Exit/Done 뒤 이동 재개를 확인했다. 일반 멀티플레이 상점의 원래 이동 허용과 콘솔44 selected commands/8 text modes도 보존됐다. Charm의 normal/HD 새 PNG를 직접 열어 확인했고 SHA는 둘 다 `e5c76949914d87b1d515b8988df97622fb2b894dec940bb3af10fc8c500b5502`다. 원본 픽셀·물리 SDL/OpenAL 검증으로 확대하지 않는다.
+
+LIVE 동안 tracked inputs6,006개·공식 products3개, 별도 observer batch의 private inputs6개가 전후 불변이었다. 독립 receipt는 실제 exit·44조건/고유 hit·charge/source·Charm owner/PNG·잠금 해제 후 위치·raw replay 차이와 해시를 검증했다. `/private/tmp/opennox-retained-gates-r31.GOKPmD/r31-independent-final-evidence.json`의 SHA-256은 `3c86d37bad22dfa1a38ac91926f1ab90b4e4ac35fe38df6b91b90b7c2669e44d`다. 원래 red/green/실패 로그와 baseline/post-fix captures는 같은 private 디렉터리에 분리 보존하고 저장소에 원본 자산이나 private source/log/PNG를 추가하지 않는다.
+
+전후 `oracle-test` actual0이며 code2,968/data650·strict NXZ50쌍·stock1,556files/570,653,750bytes/tree SHA `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`는 불변이다. 새 original range/manifest·C code·asset·공개 YAML 변경은 없다. 이 기록은 prepend-only로 이전 ledger suffix를 보존한다. 최종 documentation-only revision의3제품은 별도 `r31-final-handoff-*` build/revision/help 로그로 검증하며 기능 revision의16개 성공과 구별한다. 사용자 다섯 이슈의 후속 검증은 완료했지만 fixed Quest/passive-food gate와 전체 port goal은 여전히 active다.
+
+
 ## 참 크리처·상점 이동·활·몬스터 피해 및 반복 공격 복원
 
 R30은 다섯 사용자 이슈를 원본 1.2b 계약에 맞춰 함수별 커밋으로 복원하고 즉시 `origin/port/go1.26-multiarch`에 push했다. 기능 검증 revision은 clean/pushed `9de4193e557c9ed8cbed450d48b702f7e2f7f123`이다. 공식 Go1.26.5 Darwin/ARM64 일반·HD·server 3제품의 build와 전체 revision/`vcs.modified=false` 검사를 통과했다. 일반·HD 각각 아래 8개 공개 시나리오를 순차 실행한 총16개 actual exits가 모두0이며 batch도0이다. headless/mock audio·fresh Save/config/maps·read-only stock links·unset NOX_E2E_OVERRIDE를 사용했고 LIVE 동안 tracked inputs6,005개와 제품3개의 SHA가 불변이었다.

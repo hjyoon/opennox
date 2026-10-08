@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+2026-10-09 후속 clean 기능 revision `29deffcb4`에서 AI push가 재사용 슬롯의 인자를 지우던 문제를 원본 `0050A30F/0050A311`의 action/start-flag 부분 기록으로 복원했다. production 본체는 하나만 변경했다. 새27개 leaf의 red와 수정 후 일반/실제 cgocheck2/지원 server 및 highres/race+checkptr2 검사, 원본 push28개/호출자6개 fixture를 구분해 보존했다. 새 실제 MainAI capture Quest12개·food600개의 original entry replay는 raw24-slot/관찰 scalar 차이0이다. world 결과는 기록값이며 원본 Windows 전체 engine 실행의 증명은 아니다.
+
+공식 ARM643제품 rebuild/revision 검사와 다섯 이슈의 일반·HD headless/mock 각8개/총16개 시나리오가 모두 actual0이다. 몬스터의 실제264타격, Bow/CrossBow3발·탄약20→17, Charm 녹색 효과/owner 전환, 캠페인 상점/대화 잠금과 종료 후 이동을 재확인했다. LIVE 동안6,006 tracked inputs/3 products는 불변이다. 별도 retained Quest 고정 맵/패시브 먹이 소비 scenario는 각각 actual2를 유지하며 성공으로 세지 않는다. conditional optional/child test skip과 원본 대조의 한계도 [상세 기록](PORTING-INVENTORY.md#ai-행동-슬롯-인자-보존과-다섯-이슈의-후속-clean-검증)에 남겼다. 전체 port goal은 active다.
+
 2026-10-09 참 크리처 효과·캠페인 Shopkeeper 이동 잠금·Bow/CrossBow 발사·몬스터의 실제 플레이어 피해와 반복 공격을 원래1.2b 계약에 맞춰 복원했다. clean/pushed 기능 revision `9de4193e5`의 공식 ARM64 일반·HD·server3제품과 전체 일반/실제 cgocheck2, 표적 highres/race+checkptr2 및 지원 server 패키지 검사가 통과했다. 두 client 제품의 headless/mock 순차8개씩 총16실행이 actual0이며 입력6,005개·제품3개의 해시는 전후 불변이다. [상세 원인·실패 이력·검증 범위](PORTING-INVENTORY.md#참-크리처상점-이동활몬스터-피해-및-반복-공격-복원)를 구분해 기록했다.
 
 새 공개 시나리오는 `host-conjurer-charm-effect.yaml`, `host-conjurer-bow.yaml`, `host-conjurer-crossbow.yaml`, `host-game-ai-sustained-attack.yaml`, `solo-conjurer-map-shop-movement.yaml`, `solo-warrior-dialog-movement.yaml`, `host-game-shop-movement.yaml`이다. Charm의 녹색 입자·자연 owner 전환/제거, 실제 inventory/mouse 발사3회와 탄약20→17, 몬스터11종×방향2×lane2의44조건에서 각각3회 선제 타격을 검사한다. poison DOT를 반복 타격으로 계산하지 않으며 적에게 먼저 공격하지 않는다. 캠페인 상점과 대화는30프레임 실제 이동 입력에도 잠기고 Exit/Done 뒤 이동이 재개된다. 일반 멀티플레이 상점의 원래 이동 허용은 보존한다. 기존 콘솔44명령/8text-mode도 두 제품에서 통과했다.

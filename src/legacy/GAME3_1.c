@@ -1951,7 +1951,23 @@ int sub_4C0030(nox_window* win, void* draw) {
 	nox_client_drawImageAt_47D2C0(base, x, y);
 	nox_gui_itemAmount_item_1319256->pos.x = (int)x + (int)dword_587000_183456;
 	nox_gui_itemAmount_item_1319256->pos.y = (int)y + (int)dword_587000_183460;
-	nox_gui_itemAmount_item_1319256->draw_func((uint32_t*)getMemAt(0x5D4594, 1319108), nox_gui_itemAmount_item_1319256);
+	// The saved viewport is thirteen PE32 words, not a native-width record.
+	nox_draw_viewport_t viewport = {
+		.x1 = *getMemIntPtr(0x5D4594, 1319108),
+		.y1 = *getMemIntPtr(0x5D4594, 1319112),
+		.x2 = *getMemIntPtr(0x5D4594, 1319116),
+		.y2 = *getMemIntPtr(0x5D4594, 1319120),
+		.field_4 = *getMemIntPtr(0x5D4594, 1319124),
+		.field_5 = *getMemIntPtr(0x5D4594, 1319128),
+		.field_6 = *getMemIntPtr(0x5D4594, 1319132),
+		.field_7 = *getMemIntPtr(0x5D4594, 1319136),
+		.width = *getMemIntPtr(0x5D4594, 1319140),
+		.height = *getMemIntPtr(0x5D4594, 1319144),
+		.field_10 = *getMemU32Ptr(0x5D4594, 1319148),
+		.field_11 = *getMemU32Ptr(0x5D4594, 1319152),
+		.field_12 = *getMemIntPtr(0x5D4594, 1319156),
+	};
+	nox_gui_itemAmount_item_1319256->draw_func((uint32_t*)&viewport, nox_gui_itemAmount_item_1319256);
 	if (nox_xxx_wndGetChildByID_46B0C0(nox_gui_itemAmount_dialog_1319228, 3603)->draw_data.field_0 & 4) {
 		nox_client_drawImageAt_47D2C0(nox_gui_itemAmount_images_1319196[NOX_ITEM_AMOUNT_IMAGE_DOWN_LIT], x, y);
 	}

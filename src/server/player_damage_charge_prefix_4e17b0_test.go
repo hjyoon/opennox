@@ -369,7 +369,9 @@ func TestPlayerDamageChargePrefixEarlyGate4E17B0(t *testing.T) {
 
 func TestPlayerDamageChargePrefixShapeBoundary4E17B0(t *testing.T) {
 	bitePrefixCases4E17B0(t, func(t *testing.T, observe bool) {
-		for _, shape := range []string{"zero", "negative", "nil-source", "monster", "player-monster", "player-weapon", "player-wand", "simple"} {
+		// Pure MONSTER self-weapons have their own native CRUSH route;
+		// PlayerDamageMonsterSelfStrike tests cover its positive admission.
+		for _, shape := range []string{"zero", "negative", "nil-source", "player-monster", "player-weapon", "player-wand", "simple"} {
 			t.Run(shape, func(t *testing.T) {
 				target, source, cached, r := chargePrefixFixture4E17B0(t, observe)
 				sourceUpdate := source.UpdateDataPlayer()
@@ -381,8 +383,6 @@ func TestPlayerDamageChargePrefixShapeBoundary4E17B0(t *testing.T) {
 					raw = -5
 				case "nil-source":
 					attacker = nil
-				case "monster":
-					source.ObjClass = object.ClassMonster
 				case "player-monster":
 					source.ObjClass |= object.ClassMonster
 				case "player-weapon":

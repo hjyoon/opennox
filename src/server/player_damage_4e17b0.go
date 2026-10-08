@@ -1249,9 +1249,10 @@ func PlayerDamageNative4E17B0(
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
 	monsterImpact := playerDamageMonsterImpactShape4E17B0(source, weapon, typ)
+	monsterSelfStrike := playerDamageMonsterSelfStrikeShape4E17B0(source, weapon, typ)
 	playerCharge := typ == object.DamageCrush && damage > 0 && source != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassPlayer) && !source.ObjClass.HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand)
-	fullArmorHit := bite || missileImpact || monsterImpact
+	fullArmorHit := bite || missileImpact || monsterImpact || monsterSelfStrike
 	armorPrefixHit := fullArmorHit || playerCharge
 	nativePrefixHit := armorPrefixHit
 	observe := player.ObserveTarget() != nil
@@ -1272,7 +1273,7 @@ func PlayerDamageNative4E17B0(
 				reason = "missing player electric prefix service"
 			} else if bite {
 				reason = "missing player bite prefix service"
-			} else if missileImpact || monsterImpact {
+			} else if missileImpact || monsterImpact || monsterSelfStrike {
 				reason = "missing player impact prefix service"
 			} else if playerCharge {
 				reason = "missing player charge prefix service"
@@ -1333,12 +1334,15 @@ func PlayerDamageNative4E17B0(
 		// Exclusion/facing can replace the live record. The entry marker and
 		// equipment stay cached, but never read a non-player/nil live carry.
 		reason := "unsupported live player bite record"
-		if missileImpact || monsterImpact {
+		if missileImpact || monsterImpact || monsterSelfStrike {
 			reason = "unsupported live player impact record"
 		} else if playerCharge {
 			reason = "unsupported live player charge record"
 		}
 		return playerDamageUnsupported4E17B0(runtime, reason, target, source, weapon, damage, typ)
+	}
+	if monsterSelfStrike {
+		return playerDamageMonsterSelfStrikeTail4E17B0(target, source, weapon, greatSword, pierceArmorValue, damage, typ, prefixFront, runtime)
 	}
 	if monsterImpact {
 		// A Troll's ordinary strike passes itself as both source and weapon.

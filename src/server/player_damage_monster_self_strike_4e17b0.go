@@ -20,7 +20,7 @@ func playerDamageMonsterSelfStrikeShape4E17B0(source, weapon *Object, typ object
 }
 
 // Only BLADE (case 0) reaches these sword/staff blocks. CRUSH, IMPALE and
-// CLAW skip them, though all four can still be blocked by an ordinary shield.
+// CLAW and DRAIN skip them, though all five accept an ordinary shield block.
 func playerDamageMonsterSelfBladeBlock4E17B0(target, source, weapon *Object, cached playerDamageGreatSwordContext4E17B0, damage int32, typ object.DamageType, r PlayerDamageRuntime4E17B0) (applicable, handled, result bool) {
 	mask, sound := uint32(0), 0
 	state := *cached.state

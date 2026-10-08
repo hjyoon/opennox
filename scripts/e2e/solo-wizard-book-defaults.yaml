@@ -74,9 +74,9 @@ steps:
     active: true
     name: wizard Protection from Fire book default
   - action: check-book-reward-default
-    spell: 30
-    active: true
-    name: wizard Force Field book default
+    spell: 51
+    active: false
+    name: wizard Shield book default
   - action: check-book-reward-default
     spell: 71
     active: false

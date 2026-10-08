@@ -117,6 +117,13 @@ steps:
     amount: 1
     max: 2
     name: verify gold-limited purchase amount
+  - action: move
+    x: 20
+    y: 20
+    name: move cursor clear of purchase item silhouette
+  - action: wait
+    dt: 2
+    name: redraw purchase item without cursor overlap
   - action: assert-item-amount-icon
     item: RedPotion
     name: verify gold-limited purchase amount rendered item silhouette
@@ -171,6 +178,13 @@ steps:
     max: 1
     price: 40
     name: verify native server sell quote
+  - action: move
+    x: 20
+    y: 20
+    name: move cursor clear of sale item silhouette
+  - action: wait
+    dt: 2
+    name: redraw sale item without cursor overlap
   - action: assert-item-amount-icon
     item: RedPotion
     name: verify native server sell quote rendered item silhouette
@@ -236,6 +250,13 @@ steps:
     max: 1
     price: 50
     name: verify native server repair quote
+  - action: move
+    x: 20
+    y: 20
+    name: move cursor clear of repair item silhouette
+  - action: wait
+    dt: 2
+    name: redraw repair item without cursor overlap
   - action: assert-item-amount-icon
     item: Longsword
     name: verify native server repair quote rendered item silhouette

@@ -66,9 +66,9 @@ steps:
     dt: 60
     name: settle after conjurer opening dialog
   - action: check-book-reward-default
-    spell: 36
+    spell: 62
     active: true
-    name: conjurer Haste book default
+    name: conjurer Protection from Fire book default
   - action: check-book-reward-default
     spell: 64
     active: true

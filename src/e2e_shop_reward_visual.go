@@ -81,7 +81,7 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 		}
 		flags = noxServer.Spells.Flags(id)
 		if flags&0x15000 != 0 {
-			e2eError(fmt.Errorf("book award spell is a family source: %d flags=%x", id, flags))
+			e2eError(fmt.Errorf("book award spell is a family source: %d flags=%x", id, uint32(flags)))
 			return
 		}
 		index = -1
@@ -109,7 +109,7 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 			e2eError(fmt.Errorf("server book award failed: spell=%d result=%d", id, got))
 			return
 		}
-		e2eLog.Printf("BOOK AWARD PREPARED: spell=%d flags=%x row=%d slot=%d real_server_packet=true", id, flags, index/5, index%5)
+		e2eLog.Printf("BOOK AWARD PREPARED: spell=%d flags=%x row=%d slot=%d real_server_packet=true", id, uint32(flags), index/5, index%5)
 	})
 	sc.addWhen(0, name+" observe normal reward completion", 1200, func() bool {
 		if trail := int(memmap.Uint32(0x5D4594, 1046680)); trail > maxTrail {
@@ -126,11 +126,11 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 			want[index][1] |= 1
 		}
 		if !ok || entries != want || gotRow != index/5 || legacy.Get_dword_8531A0_2576().SpellLvl[id] != 1 {
-			e2eError(fmt.Errorf("book default/preservation mismatch: spell=%d flags=%x row=%d want_row=%d entries=%v want=%v", id, flags, gotRow, index/5, entries, want))
+			e2eError(fmt.Errorf("book default/preservation mismatch: spell=%d flags=%x row=%d want_row=%d entries=%v want=%v", id, uint32(flags), gotRow, index/5, entries, want))
 			return
 		}
 		self := entries[index][1]&1 != 0
-		e2eLog.Printf("BOOK DEFAULT VERIFIED: spell=%d stock_flags=%x cast_on_self=%t max_natural_trail=%d preserved_other_entries=true", id, flags, self, maxTrail)
+		e2eLog.Printf("BOOK DEFAULT VERIFIED: spell=%d stock_flags=%x cast_on_self=%t max_natural_trail=%d preserved_other_entries=true", id, uint32(flags), self, maxTrail)
 	})
 	// Close the book through its normal input before testing the real toggle.
 	sc.Key(keybind.KeyB, name+" close book with B")
@@ -141,7 +141,7 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 	sc.add(0, name+" press actual target toggle", func() {
 		win := legacy.ClientQuickbarNugget(index % 5)
 		if flags&0x200400 != 0 || win == nil || win.GetFlags().IsHidden() {
-			e2eError(fmt.Errorf("award target toggle unavailable: spell=%d flags=%x win=%p", id, flags, win))
+			e2eError(fmt.Errorf("award target toggle unavailable: spell=%d flags=%x win=%p", id, uint32(flags), win))
 			return
 		}
 		pos := win.GlobalPos().Add(win.Size().Div(2))

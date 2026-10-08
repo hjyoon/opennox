@@ -2611,6 +2611,27 @@
       "purpose": "the exact fifteen NOP bytes separating Escape-key dispatch from the function at 0049B950"
     },
     {
+      "name": "duration_ray_create_49C160",
+      "address": "0x0049C160",
+      "size": 565,
+      "sha256": "5b2b46e2962ac577e961243662977ad552e126f5c539d1905f16ad5e260d9062",
+      "purpose": "the exact original duration-ray constructor; selector 2 looks up CharmRay, not OrbRay"
+    },
+    {
+      "name": "duration_ray_jump_table_49C398",
+      "address": "0x0049C398",
+      "size": 36,
+      "sha256": "7749a6f182d5fa3d1e70e6e142432f5a4ce3204e611fb8dec0b00e711b8958bb",
+      "purpose": "the exact original nine-entry duration-ray switch jump table"
+    },
+    {
+      "name": "duration_ray_selectors_49C3BC",
+      "address": "0x0049C3BC",
+      "size": 140,
+      "sha256": "2f15ce672ed65cb1651fe1c0611fe44fd12b191c0b910e2338fa4630646221cc",
+      "purpose": "the exact original duration-ray selector dispatch including CharmRay at selector 2"
+    },
+    {
       "name": "nox_client_copyRect_49F6F0",
       "address": "0x0049F6F0",
       "size": 135,
@@ -14760,7 +14781,7 @@
       "address": "0x0050EF10",
       "size": 471,
       "sha256": "1dc4a1c0af457b776a381557eb865e9ed207a5ef1e04a2ac00c070900443104b",
-      "purpose": "the source trade starter whose native-width player-to-shopkeeper and player-to-player sessions, Quest cache reuse, start packets, trade slots, frame, item lists, and online freeze path are restored"
+      "purpose": "the source trade starter whose native-width player-to-shopkeeper and player-to-player sessions, Quest cache reuse, start packets, trade slots, frame, item lists, and Coop/campaign 0x800 freeze path are restored"
     },
     {
       "name": "nox_xxx_servShopStart_50EF10_trade_padding",
@@ -20034,6 +20055,20 @@
       "purpose": "the exact eleven NOP alignment bytes separating dialog completion from shop-dialog startup at 00548DE0"
     },
     {
+      "name": "monster_strike_ogre_549220",
+      "address": "0x00549220",
+      "size": 80,
+      "sha256": "dc5a1f6ee53bb65eaedd10a9db84de61897fa6223111410c8572a759e5a9f291",
+      "purpose": "the exact original Ogre area setup, radius and result"
+    },
+    {
+      "name": "monster_strike_ogre_each_549270",
+      "address": "0x00549270",
+      "size": 272,
+      "sha256": "c5f7718bbb60b568f80e33e5d1f1c81d74d3ddc085a0f5ee476d90745dd03f80",
+      "purpose": "the exact original Ogre range/facing, trace, damage, unconditional force and result"
+    },
+    {
       "name": "nox_xxx_strikeMonsterDefault_549380",
       "address": "0x00549380",
       "size": 180,
@@ -20055,6 +20090,20 @@
       "purpose": "the complete original melee-target selector interval: padded rectangle scan, target gates, facing dot product, edge distance, and nearest replacement"
     },
     {
+      "name": "monster_strike_scorpion_5495B0",
+      "address": "0x005495B0",
+      "size": 224,
+      "sha256": "1c4d5a87ea72c8c62df0a6de111d6af17da7619e9c563c9e8779d6685d5eeba3",
+      "purpose": "the exact original Scorpion damage, force and poison order"
+    },
+    {
+      "name": "monster_strike_poison_head_549690",
+      "address": "0x00549690",
+      "size": 80,
+      "sha256": "ab4ad8558e496183d3b7e99ef10e466f692f5aeec4da6b9d3737b1f923ea83d8",
+      "purpose": "the exact original cached poison definition, conditional RNG, live signed chance/strength/maximum"
+    },
+    {
       "name": "nox_xxx_activatePoison_4EE7E0_call_5496E0",
       "address": "0x005496E0",
       "size": 5,
@@ -20062,11 +20111,81 @@
       "purpose": "the exact decoded direct rel32 call from the scorpion and vile-zombie poison helper that passes configured increment and cap and returns whether activation succeeded"
     },
     {
+      "name": "monster_strike_poison_tail_5496E5",
+      "address": "0x005496E5",
+      "size": 27,
+      "sha256": "04c46d04fbd2dff8160363519e87f7155acad08d97dab7eecdb3656d06571a61",
+      "purpose": "the exact original poison result and priority-message tail after separately sealed call"
+    },
+    {
+      "name": "monster_strike_zombie_549700",
+      "address": "0x00549700",
+      "size": 224,
+      "sha256": "22810350de4c9510a5d49ebe71695390f298423090a00d7339892e2ea17787e2",
+      "purpose": "the exact original VileZombie damage, force and poison order"
+    },
+    {
+      "name": "monster_strike_stone_golem_5497E0",
+      "address": "0x005497E0",
+      "size": 32,
+      "sha256": "75ffa4988e070aad9d81ff5ce4d2d62c032ae081f3ca4120a8da41e6a8ee7590",
+      "purpose": "the exact original StoneGolem mode zero and area delegation"
+    },
+    {
+      "name": "monster_strike_golem_area_549800",
+      "address": "0x00549800",
+      "size": 96,
+      "sha256": "a31508957b3196d04401dcecc9d09173b5b25685fdd317943c593338b3bf47c0",
+      "purpose": "the exact original golem area radius, result and earthquake after iteration"
+    },
+    {
+      "name": "monster_strike_golem_each_549860",
+      "address": "0x00549860",
+      "size": 256,
+      "sha256": "3bc87fcfd57d1156065e3cc35eaf6fb86767a6bc190dd5a46fc72c98f6a277d0",
+      "purpose": "the exact original golem facing, inclusive/unordered range, trace, damage, live class result, positive force"
+    },
+    {
+      "name": "monster_strike_mech_golem_549960",
+      "address": "0x00549960",
+      "size": 32,
+      "sha256": "7e3aa0cd51703e1beb8f9c66e29f563537d99fa3598d4622068fbfd7b550e6de",
+      "purpose": "the exact original MechanicalGolem mode one and area delegation"
+    },
+    {
+      "name": "monster_strike_wasp_549980",
+      "address": "0x00549980",
+      "size": 224,
+      "sha256": "4a310bd3f8c6beba6f5b927a05f4665e9b24ee719dae7b8cad461ba13de8d6f3",
+      "purpose": "the exact original Wasp missing-target zero and poison before positive force"
+    },
+    {
+      "name": "monster_strike_ghost_head_549A60",
+      "address": "0x00549A60",
+      "size": 181,
+      "sha256": "3e3aaad6b85829a75889ec118074bf4af1d368acdc5c3c1e1e7679814b19b2c5",
+      "purpose": "the exact original Ghost DRAIN/force then buff 5 with DWORD twice FPS and power 3"
+    },
+    {
       "name": "nox_xxx_buffApplyTo_4FF380_call_549B15",
       "address": "0x00549B15",
       "size": 5,
       "sha256": "8e3e955f7050bdf8187d4166302f7614676da03e9aced682cd507576d015c78c",
       "purpose": "the exact decoded direct rel32 call at 00549B15 targeting buff application at 004FF380"
+    },
+    {
+      "name": "monster_strike_ghost_tail_549B1A",
+      "address": "0x00549B1A",
+      "size": 150,
+      "sha256": "77e5e52de1bea31e188f7e1bbb49df95bb18aac1514b83cb488cd2d0ae455029",
+      "purpose": "the exact original Ghost literal actions 25/41/24 with conditional signed RNG and live frame"
+    },
+    {
+      "name": "monster_strike_bomber_549BB0",
+      "address": "0x00549BB0",
+      "size": 16,
+      "sha256": "5a9bd1333a736806794087fa4c01765e17a6ad5adb9bf4b29fe6565e591b0e6f",
+      "purpose": "the exact original Bomber strike returns one; damage is a separate suicide action"
     },
     {
       "name": "nox_xxx_monsterStrikeSpider_549BC0",
@@ -21588,6 +21707,90 @@
       "size": 16,
       "sha256": "bcaf838e4e012c44769bd0392476c7e3461cb2c819a32ea8ce5a78f0086cf028",
       "purpose": "the exact NUL-terminated UTF-16 percent-s, hyphen, percent-d format passed to Quest result timer swprintf at 0049B774"
+    },
+    {
+      "name": "duration_effect_name_DynamicLightning_5AF1F8",
+      "address": "0x005AF1F8",
+      "size": 17,
+      "sha256": "fdb5493a4eef80c80e63c8e198996f1678efd9d773387894511fcd3f2191c171",
+      "purpose": "the original NUL-terminated effect type lookup name DynamicLightning"
+    },
+    {
+      "name": "duration_effect_name_DynamicChainLightning_5AF20C",
+      "address": "0x005AF20C",
+      "size": 22,
+      "sha256": "bd404364853e08cb74045ca5be067939257a820eeb85df66295b91b283101a14",
+      "purpose": "the original NUL-terminated effect type lookup name DynamicChainLightning"
+    },
+    {
+      "name": "duration_effect_name_DynamicEnergyBolt_5AF224",
+      "address": "0x005AF224",
+      "size": 18,
+      "sha256": "a06e4197851ff7e59698f5cbfda77ecf77b0cd1be527cb9a2e93543bab833f28",
+      "purpose": "the original NUL-terminated effect type lookup name DynamicEnergyBolt"
+    },
+    {
+      "name": "duration_effect_name_OrbRay_5AF238",
+      "address": "0x005AF238",
+      "size": 7,
+      "sha256": "eb2ba2a3de4b800ce24182681cd2fb25a2856d532478296966f4e1c6fc1021a8",
+      "purpose": "the original NUL-terminated effect type lookup name OrbRay"
+    },
+    {
+      "name": "duration_effect_name_PlasmaRay_5AF240",
+      "address": "0x005AF240",
+      "size": 10,
+      "sha256": "53d0861313630a46deac2dce5612d2b2bcf4d7646dc944196808a59011bb4985",
+      "purpose": "the original NUL-terminated effect type lookup name PlasmaRay"
+    },
+    {
+      "name": "duration_effect_name_DrainManaRay_5AF24C",
+      "address": "0x005AF24C",
+      "size": 13,
+      "sha256": "90bd58468e534ffa98fb07d420b9e3968652ea03d4b9e35167a78eb596716375",
+      "purpose": "the original NUL-terminated effect type lookup name DrainManaRay"
+    },
+    {
+      "name": "duration_effect_name_HealRay_5AF25C",
+      "address": "0x005AF25C",
+      "size": 8,
+      "sha256": "bc4035ce24bb372edc780d51f92aefb44c266ef59e53664bcb4399a35eaed832",
+      "purpose": "the original NUL-terminated effect type lookup name HealRay"
+    },
+    {
+      "name": "duration_effect_name_CharmRay_5AF264",
+      "address": "0x005AF264",
+      "size": 9,
+      "sha256": "dcc34c9b735268d2d0f91768522033dfb96fb633e0d499b68f8aa6290189bde0",
+      "purpose": "the original NUL-terminated effect type lookup name CharmRay"
+    },
+    {
+      "name": "duration_effect_name_DrainManaOrb_5AF270",
+      "address": "0x005AF270",
+      "size": 13,
+      "sha256": "76e6dbf40b1b6d17ca1ba9a17013ffddeae10e90c23b6b4d7cd4927533d1efaf",
+      "purpose": "the original NUL-terminated effect type lookup name DrainManaOrb"
+    },
+    {
+      "name": "duration_effect_name_HealOrb_5AF280",
+      "address": "0x005AF280",
+      "size": 8,
+      "sha256": "37e2c9f12ec14ad67021eddc6f3684c14c8f7f07b36b42c17b8c830e1384bc8a",
+      "purpose": "the original NUL-terminated effect type lookup name HealOrb"
+    },
+    {
+      "name": "duration_effect_name_CharmOrb_5AF288",
+      "address": "0x005AF288",
+      "size": 9,
+      "sha256": "4b532f1f7245550dc532e6f7826bc1758647f5a889f1ecc5ee6bcf2f7edc0834",
+      "purpose": "the original NUL-terminated effect type lookup name CharmOrb"
+    },
+    {
+      "name": "duration_effect_name_HarpoonRope_5AF294",
+      "address": "0x005AF294",
+      "size": 12,
+      "sha256": "00fbe8b34293f64f5599cb64745ad5de100a612e25c6649d629630fde2579204",
+      "purpose": "the original NUL-terminated effect type lookup name HarpoonRope"
     },
     {
       "name": "class_initial_spell_rows",

@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+2026-10-09 R32의 clean 기능 revision `ef8a3181c`에서 기존 waypoint 도착 판정 한 본체의 연산을 원본 x87 precision53/ToZero 순서로 복원했다. 새80조건의 수정 전32실패/48통과, 수정 후960leaf 통과와 unchanged original206byte의80개 제어 fixture를 구분해 보존했다. 일반/실제 cgocheck2/지원 server의 `. ./server ./legacy`와 highres/race+checkptr2 표적은 actual0이며 unrelated optional/child skip도 기록했다. 원본 map/physics 전체 실행으로 확대하지 않는다.
+
+공식 ARM643제품 clean build/revision/help 및 일반·HD headless/mock 각8개/총16개 실제 종료는0이다. 실제 몬스터264타격·활/석궁3발·Charm PNG/owner 전환·캠페인 대화 잠금/종료 후 이동을 재확인했고 LIVE inputs6007/제품3/helper4는 불변이다. 별도 retained Quest 고정 맵/패시브 음식 검증은 actual2/2, batch1로 여전히 실패한다. 최종 unchanged stock/code2968/data650/strict NXZ 검사를 통과했으며 [R32 상세 근거와 한계](PORTING-INVENTORY.md#ai-웨이포인트-도착-판정의-원본-반올림-복원)를 남겼다. 이전 ledger는 수정하지 않고 전체 port goal을 active로 유지한다.
+
 2026-10-09 후속 clean 기능 revision `29deffcb4`에서 AI push가 재사용 슬롯의 인자를 지우던 문제를 원본 `0050A30F/0050A311`의 action/start-flag 부분 기록으로 복원했다. production 본체는 하나만 변경했다. 새27개 leaf의 red와 수정 후 일반/실제 cgocheck2/지원 server 및 highres/race+checkptr2 검사, 원본 push28개/호출자6개 fixture를 구분해 보존했다. 새 실제 MainAI capture Quest12개·food600개의 original entry replay는 raw24-slot/관찰 scalar 차이0이다. world 결과는 기록값이며 원본 Windows 전체 engine 실행의 증명은 아니다.
 
 공식 ARM643제품 rebuild/revision 검사와 다섯 이슈의 일반·HD headless/mock 각8개/총16개 시나리오가 모두 actual0이다. 몬스터의 실제264타격, Bow/CrossBow3발·탄약20→17, Charm 녹색 효과/owner 전환, 캠페인 상점/대화 잠금과 종료 후 이동을 재확인했다. LIVE 동안6,006 tracked inputs/3 products는 불변이다. 별도 retained Quest 고정 맵/패시브 먹이 소비 scenario는 각각 actual2를 유지하며 성공으로 세지 않는다. conditional optional/child test skip과 원본 대조의 한계도 [상세 기록](PORTING-INVENTORY.md#ai-행동-슬롯-인자-보존과-다섯-이슈의-후속-clean-검증)에 남겼다. 전체 port goal은 active다.

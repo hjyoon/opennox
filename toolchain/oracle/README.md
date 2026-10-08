@@ -1,5 +1,11 @@
 # 비공개 원본 오라클 매니페스트
 
+## 웨이포인트 8-unit 경계의 원본 반올림 대조
+
+R32 clean 기능 revision `ef8a3181c`는 기존 봉인 `sub_50D2E0`(address `0x0050D2E0`, size206, SHA-256 `b6235caac2cc9627c5b0565b12eb04c2ea724c1c60649f1de02c92db103cb44e`)의 전체 body를 unchanged GAME.EXE에서80개 좌표/status/movement 조건으로 재생했다. x87 `0x0e7f`의 precision53/ToZero 차·Y 제곱·X 제곱·합에 맞춰 기존 Go waypoint 본체 하나를 복원했다. native 회귀의 독립 math/big 기준, 수정 전32실패/48통과 및 수정 후960leaf 통과, body 밖 동일 바이트 감사를 함께 보존했다. DetailedPath/ActuallyMove는 제어 boundary이므로 원본 map/physics·전체 Windows runtime 동등성의 증거로 확대하지 않는다.
+
+normal/HD clean headless16개 actual0과 별도 retained Quest/food actual2/2(batch1)를 혼합하지 않는다. LIVE inputs6007/제품3/helper4 불변이고 retained 맵 기대 불일치/먹이 소비 timeout은 미해결이다. 최종 oracle-test actual0의 stock1556파일/570653750bytes/tree `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`과 code2968/data650/strict NXZ를 유지했다. 새 original range/manifest나 원본 자산은 추가하지 않았다. 비공개 `/private/tmp/opennox-ai-path-r32.SIMhZJ/final-independent-audit.json` SHA-256 `b91cf847aac5416a48d405c9978446d7733d8bc71a198cc2d80507746f77bf6e`; [상세 R32 ledger](../PORTING-INVENTORY.md#ai-웨이포인트-도착-판정의-원본-반올림-복원).
+
 ## 재사용 AI 슬롯과 선택된 MainAI entry의 후속 대조
 
 R31은 기존 봉인 원본 `0050A260`의 action/start-flag만 쓰는 계약을 대조해 `Object.MonsterPushActionImpl` 한 Go 본체의 argument 보존을 복원했다. push28개 조건과 실제 호출자6개 fixture, 새 native 회귀27개 leaf를 구분해 검증했으며 새로운 original range/manifest나 원본 자산을 추가하지 않는다. 기존 Idle/Hunt/Follow/Wander/LookAt/Fear 및 script/C wrapper 시험도 원본의 partial store 기대값을 사용한다. Cancel body/whole engine 실행으로 확대하지 않는다.

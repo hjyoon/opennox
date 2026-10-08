@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## AI 웨이포인트 도착 판정의 원본 반올림 복원
+
+R32의 clean/pushed 기능 revision은 `ef8a3181c1aa99856f0d054858b6fdaaf70ecf52`이다. production 변경은 기존 `monsterAdvanceWaypointPath50D2E0` 한 본체뿐이다. 웨이포인트 좌표 차·Y 제곱·X 제곱·합의 계산을 기존 precision53/ToZero helper로 연결해 원본 x87 control word `0x0e7f`의 순서와 반올림을 복원했다. binary32 중간 spill을 추가하지 않았고, 거리8 경계·unordered arrival·cursor/status/경로 record와 hook 순서를 보존했다. Go AST body 밖의 모든 바이트가 이전 `aa982a592`와 동일하다.
+
+새 회귀는 10개 좌표 조건×마지막 waypoint 여부2×status/movement4의80개 leaf다. 독립 math/big precision53/ToZero 기준, 4GiB 초과 C-owned object/update/waypoint, 원본이 쓰는 필드 외의 full record와 native hook 인자/순서를 검사한다. 수정 전32개 실패/48개 통과, 수정 후 일반 표적3회·일반/실제 cgocheck2/지원 server의 `. ./server ./legacy` 각1회·highres/race+checkptr2 표적 각3회의 합계960개 새 leaf가 통과했다. 전체 실행의 unrelated optional/child skip은 일반·strict14개/server2개이며 표적 fail/skip은0이다. 첫 test fixture의 uintptr 타입 오류와 초기 private auditor 경로/문법 오류 로그도 보존했다.
+
+기존 봉인 `sub_50D2E0`의206byte(SHA-256 `b6235caac2cc9627c5b0565b12eb04c2ea724c1c60649f1de02c92db103cb44e`)를 unchanged original GAME.EXE에서 재생해 같은80개 조건을 대조했다. DetailedPath/ActuallyMove는 제어된 service boundary이며 원본 map/physics 또는 전체 Windows runtime의 증명이 아니다. 새로운 range/manifest·원본 자산을 추가하지 않았다. 최종 oracle-test actual0: stock1556파일/570653750bytes/tree SHA-256 `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, code2968/data650 및 strict NXZ 검사 유지.
+
+공식 Go1.26.5 Darwin ARM64 normal/HD/server3제품의 clean 기능 revision 검사·help actual0 이후 fresh Save/config의 headless/mock normal·HD 각8개/총16개가 모두 자연 종료 actual0, batch0이었다. 몬스터11종/방향2/lane2의44조건에서 각3회 실제 HP 감소를 normal/HD 각각132회(합계264회) 확인했다. Bow/CrossBow 각3발과 탄약20→17, Charm 녹색 orb의 PNG 직접 검토 및45frame owner 전환/레이 종료, 캠페인 shop/dialog 입력30frame 잠금과 종료 후 이동, 원본 arena shop의 이동 허용, console44선택 명령/8text mode를 재검증했다. 두 Charm PNG의 SHA-256은 `e5c76949914d87b1d515b8988df97622fb2b894dec940bb3af10fc8c500b5502`이며 normal/HD의 일치이지 원본 Windows golden 또는 물리 SDL/스피커 출력 증명이 아니다.
+
+같은 기능 revision의 공개 retained Quest·passive-food YAML은 별도 순차 실행 actual2/2, batch1이다. Quest stage3의 실제 `g_crypts`와 고정 기대 `g_lotdd` 불일치, 첫 Troll/ascending/RedApple의600tick 소비 timeout이 남았고 나머지 음식7조건은 미실행이다. SIGSEGV가 아닌 assertion/timeout이며 YAML·golden·RNG·aggression·wait를 바꿔 통과시키지 않았다. 두 LIVE batch 동안 tracked inputs6007/제품3/private helper4의 hash guard와 추가 auditor hash가 불변이다. 전체 port goal은 active다. 비공개 근거 `/private/tmp/opennox-ai-path-r32.SIMhZJ/final-independent-audit.json`의 SHA-256은 `b91cf847aac5416a48d405c9978446d7733d8bc71a198cc2d80507746f77bf6e`다. 이전 R31 이하 ledger는 바이트 그대로 보존한다.
+
 ## AI 행동 슬롯 인자 보존과 다섯 이슈의 후속 clean 검증
 
 R31의 기능 revision은 clean/pushed `29deffcb4ffb8f99e54162e282f400588fdfbcc0`이다. production 변경은 `Object.MonsterPushActionImpl` 한 기존 본체뿐이며 Go AST의 body를 제외한 파일 바이트가 이전 `ce6e2ae04`와 동일함을 확인했다. 원본 `0050A30F/0050A311`은 새 action과 시작 flag만 기록한다. 재사용 슬롯의 네 인자를 struct 전체 대입으로 지우던 Go 구현을 필드별 기록으로 복원했다. 호출자가 명시적으로 쓰지 않은 timer/native pointer/상위 DWORD를 보존하며 reset·Cancel·full/dead gate·stack-changed 순서를 바꾸지 않는다.

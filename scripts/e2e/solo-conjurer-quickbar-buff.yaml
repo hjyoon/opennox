@@ -1,0 +1,60 @@
+# Real Solo caster; casts use seat input, stock book defaults and mana.
+# Award and waiting NPC placement are starting fixtures only. No cast/effect,
+# packet, cursor-object, mana or expiry result is supplied by the scenario.
+# Poison starts in a fresh session with stock mana; Fire is covered by Wizard.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: settle chapter one gameplay
+  - action: click-npc-dialog-done
+    name: dismiss opening dialog
+  - action: wait
+    dt: 60
+    name: settle after opening dialog
+  - action: check-quickbar-buff-cast
+    spell: 64
+    name: conjurer Protection from Poison actual self and other quickbar casts
+  - action: quit
+    dt: 1

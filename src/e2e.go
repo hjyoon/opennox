@@ -9447,6 +9447,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-book-reward-default":
 			sc.Wait(dt, "")
 			sc.CheckBookRewardDefault(spell.ID(l.Spell), l.Active, l.Name)
+		case "check-quickbar-buff-cast":
+			sc.Wait(dt, "")
+			sc.CheckQuickbarBuffCast(spell.ID(l.Spell), l.Name)
 		case "check-npc-dialog-repeat":
 			sc.Wait(dt, "")
 			sc.CheckNPCDialogRepeat(l.Count, l.Name)

@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 AI action 시작 처리의 원본 대조
+
+R40은 clean/pushed `26f9b69478ad9ef046d860e3df70703eeff9f02c`에서 R39의 기존600tick 기록을 재사용했다. 새 GUI·native test는 실행하지 않았으며 production/test/YAML/manifest·원본 자산을 변경하지 않았다. 이번 문서 밖 source6,023개와 이전 captured private inputs13개는 같은 SHA를 유지한다.
+
+원본 monster update의 inline Start `0050A746..0050A7B0`와 실제 IDLE Start `00546820..00546841`의 unchanged PE bytes를 실행했다. caller의 ESI=unit·EDI=update·EBX=0 및 pending argument cleanup16bytes를 원본에서 확인했다. Start/Update table의 IDLE0=`00546820`/`00546850`, RETREAT6=0/`00545440`, MOVE_TO7=0/`005443F0`도 별도 PE reader로 확인한다. 관찰 입력만 로드하며 post-state·service 결과 주입이나 강제 action pop은 없다.
+
+600진입·9,074instructions에서 native와 원본의 전체 전후 상태1,200개가 일치했다. 새 시작은 frame580/593/594/655/748/749/764의7회, 그중 실제 IDLE callback은580/655/764의3회이고 RETREAT/MOVE_TO는 원본 NULL Start4회다. 나머지593회는 이미 started 상태다. 모든24slot의 미사용 인자·full native pointer identity·health·reset bytes·경로/힘/방향·StackChanged·cached Update action 및 실제 다음 Action stage의 연결을 확인했다. 원본 text·x87 `0x0e7f`와 누락된 object/update/definition/reference 입력 read도 검사한다. 해당 Start 처리에 차이가 없어 gameplay 본체를 수정하지 않는다.
+
+독립 Ruby receipt `/private/tmp/opennox-ai-start-r40.CW76CL/independent-start-audit-1.json` SHA는 `b028ffeccce668fdc09843cbc2777e516554151a618e68b3e6861679e8241893`다. 같은 디렉터리의 raw replay `original-start-replay-2.json` SHA는 `dacc36268b7b8975e4a884ef24ac7217bc236f349dae67be4f73340786bf85fa`, reused R39 capture SHA는 `4a2d681b1c3b53af2ba83d26e01a4a3f6ecf04678458cd1cf65041b14507d91c`다. 첫 replay도 actual0이며 두 번째는 독립 감사용 진입 상태 보존만 추가했다. 두 replay와 독립 감사의 실제 terminal0을 확인했고 public range/manifest는 추가·완화하지 않았다. 이 documentation-only revision의 공식3제품 build/full revision/clean metadata/help는 별도 handoff 로그로 구별한다.
+
+이는 관찰한 Start 경로만의 증거다. animation·Action.Update·spatial geometry·physics·전체 Windows 실행의 동등성이나 음식 소비 성공을 주장하지 않는다. 기존 passive-food의 actual2/600tick timeout은 미해결이며 나머지7음식 조건과 retained fixed Quest는 이번에 실행하지 않았다. aggression·RNG·golden·wait·timeout·기대값을 바꾸지 않는다. R35의 판매 아이콘·기본 자기 시전6개 headless 성공/12개 실제 key cast/6개 자연 expiry는 이전 revision의 증거로 유지하고 새 실행으로 세지 않는다. 이전 ledger suffix를 바이트 그대로 보존하며 남은 retained gates와 전체 port goal은 active다.
+
 ## 실제 RETREAT·음식 후보 선택의 원본 대조
 
 R39는 clean/pushed `c557901aa9083e1b47b95876d23b4a86e3f77e21`의 남은 passive-food timeout을 이어 진단했다. 저장소 production/test/YAML/manifest는 변경하지 않았다. private read-only overlay9개가 후퇴·음식 검색·실제 공간 열거 후보의 진입/종료와 subclass/poison 입력을 추가 관찰한다. native service는 원래대로 한 번 실행하며 별도 RNG draw, 후보/winner/result 주입 또는 강제 action pop은 없다.

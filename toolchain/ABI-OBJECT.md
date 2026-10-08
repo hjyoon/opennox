@@ -2,6 +2,12 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## 수량 아이콘 viewport와 주문 보상 scalar tag 폭 분리
+
+`004C0030`의 saved viewport는 `0x5D4594+1319108`부터13개의 PE32 word(52bytes)다. 실제 callback의 native `nox_draw_viewport_t`는13개의 pointer-width 수치(32bit52/64bit104bytes)이며 포인터가 들어 있는 record가 아니다. 따라서 blob 주소를 callback에 그대로 넘기는 대신 C stack record에 각 필드를 복사한다. field10/11만 unsigned DWORD→uintptr, 나머지는 signed DWORD→intptr로 확장한다. native item/draw/window pointers는 full width를 유지하고, callback이 local viewport를 바꾸어도 saved PE32 record나 인접 state를 덮지 않는다.960조건에서 signed/unsigned 경계·다섯 viewport·버튼 overlay·순서·record 보존을 확인했고 실제 normal/HD 구매·판매·수리 아이콘6건의 opaque pixel 일치를 관찰했다.
+
+`0045C7D0/0045D870`의 보상 종류 `1046676`과 trail count `1046680`은 각각 DWORD scalar다. receiver `0045DBE0`의 `void*` 인자는 객체 주소가 아니라2/3/4 종류 tag이므로 native pointer로 blob을 읽으면 안 된다. 원본 DWORD를 읽은 뒤 `(void*)(uintptr_t)`로 확장해 adjacent trail bits를 제외한다. 원래 종류2·유효 row/slot·spell `0x600` gate와 entry flag byte만 변경하는 동작을 유지한다. 즉시12,178/자연 draw48,161 native C 조건 및 normal/HD 자연 보상18건, 실제 manual toggle8건·재습득 보존8건이 통과했다. 기존13word/quickbar numeric 배치·수동 설정·공격 주문 기본값은 그대로다. clean 기능 revision과 실패/skip/원본 대조의 한계는 [R33 인벤토리](PORTING-INVENTORY.md#상점-판매-아이콘과-주문-자기-시전-기본값-복원)에 기록했다.
+
 ## AI 경로 저장소 native pointer 결속
 
 `0050AB50`의 `AIMapIndexNode`는 pointer가 없는 고정 12바이트 record다. `Index0/IndexGen4/Flags8/Field10`의 offset은 모든 대상에서 `0/4/8/10`이고 flag 폭은 uint16이다. 활성 accessor는 잘못된 좌표를 backing array pointer로 만들지 않고 원본처럼 0을 반환한다.

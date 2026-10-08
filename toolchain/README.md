@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+2026-10-09 R33에서 Shopkeeper 판매 수량 창의 아이템 아이콘과 주문 습득 시 원본 자기 시전 기본값을 복원했다. 기존 GUI C 본체3개를 각각 별도 커밋으로 수정하고 즉시 push했다. PE32의52byte viewport를 native104byte 그리기 인자로 변환하고, 주문 보상 종류 DWORD를 옆의 입자 수와 함께 pointer 폭으로 읽던 오류를 제거했다. 원본 `0x600` 기본값·공격 주문의 다른 대상 기본값·수동 대상 설정은 유지한다.
+
+clean/pushed 기능 revision `b6c1eecbe`의 공식 ARM64 일반·HD·server3제품 build/revision/help와 모든 Go 패키지 일반/실제 cgocheck2, 지원 server, 표적 highres/race+checkptr2 검사를 통과했다. 일반·HD headless/mock 각3개/총6개 actual exits는0이며, 실제 구매·판매·수리 아이콘6건, 자연 주문 보상 기본값18건, 실제 mouse 대상 변경8건과 재습득 후 설정 보존8건을 확인했다. LIVE inputs6019/제품3/helper2는 불변이다. 초기 fixture·검증 코드 오류와 optional/child skip, 원본 대조의 범위는 [R33 상세 근거](PORTING-INVENTORY.md#상점-판매-아이콘과-주문-자기-시전-기본값-복원)에 구분해 기록했다. 기존 Quest/passive-food 미해결 gate와 전체 port goal은 별도로 active를 유지한다.
+
 2026-10-09 R32의 clean 기능 revision `ef8a3181c`에서 기존 waypoint 도착 판정 한 본체의 연산을 원본 x87 precision53/ToZero 순서로 복원했다. 새80조건의 수정 전32실패/48통과, 수정 후960leaf 통과와 unchanged original206byte의80개 제어 fixture를 구분해 보존했다. 일반/실제 cgocheck2/지원 server의 `. ./server ./legacy`와 highres/race+checkptr2 표적은 actual0이며 unrelated optional/child skip도 기록했다. 원본 map/physics 전체 실행으로 확대하지 않는다.
 
 공식 ARM643제품 clean build/revision/help 및 일반·HD headless/mock 각8개/총16개 실제 종료는0이다. 실제 몬스터264타격·활/석궁3발·Charm PNG/owner 전환·캠페인 대화 잠금/종료 후 이동을 재확인했고 LIVE inputs6007/제품3/helper4는 불변이다. 별도 retained Quest 고정 맵/패시브 음식 검증은 actual2/2, batch1로 여전히 실패한다. 최종 unchanged stock/code2968/data650/strict NXZ 검사를 통과했으며 [R32 상세 근거와 한계](PORTING-INVENTORY.md#ai-웨이포인트-도착-판정의-원본-반올림-복원)를 남겼다. 이전 ledger는 수정하지 않고 전체 port goal을 active로 유지한다.

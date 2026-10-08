@@ -1,5 +1,11 @@
 # Go 도구체인 정책
 
+2026-10-09 참 크리처 효과·캠페인 Shopkeeper 이동 잠금·Bow/CrossBow 발사·몬스터의 실제 플레이어 피해와 반복 공격을 원래1.2b 계약에 맞춰 복원했다. clean/pushed 기능 revision `9de4193e5`의 공식 ARM64 일반·HD·server3제품과 전체 일반/실제 cgocheck2, 표적 highres/race+checkptr2 및 지원 server 패키지 검사가 통과했다. 두 client 제품의 headless/mock 순차8개씩 총16실행이 actual0이며 입력6,005개·제품3개의 해시는 전후 불변이다. [상세 원인·실패 이력·검증 범위](PORTING-INVENTORY.md#참-크리처상점-이동활몬스터-피해-및-반복-공격-복원)를 구분해 기록했다.
+
+새 공개 시나리오는 `host-conjurer-charm-effect.yaml`, `host-conjurer-bow.yaml`, `host-conjurer-crossbow.yaml`, `host-game-ai-sustained-attack.yaml`, `solo-conjurer-map-shop-movement.yaml`, `solo-warrior-dialog-movement.yaml`, `host-game-shop-movement.yaml`이다. Charm의 녹색 입자·자연 owner 전환/제거, 실제 inventory/mouse 발사3회와 탄약20→17, 몬스터11종×방향2×lane2의44조건에서 각각3회 선제 타격을 검사한다. poison DOT를 반복 타격으로 계산하지 않으며 적에게 먼저 공격하지 않는다. 캠페인 상점과 대화는30프레임 실제 이동 입력에도 잠기고 Exit/Done 뒤 이동이 재개된다. 일반 멀티플레이 상점의 원래 이동 허용은 보존한다. 기존 콘솔44명령/8text-mode도 두 제품에서 통과했다.
+
+GUI 검사는 아래 기존 headless runner에 해당 YAML을 전달하고 일반/HD를 순차 실행한다. stock 지급·위치/HP·통상 aggression 등의 명시적인 fixture와 실제 게임 결과 관찰은 구분하며, personal Save/config·원본 자산·기존 PNG/golden은 바꾸지 않는다. 물리 SDL/OpenAL·원본 Windows runtime 전체를 검증했다는 주장은 아니다. 이전 fixed-map Quest/passive-retreat-food 미해결 gate와 전체 포팅 목표는 별도로 남아 있다.
+
 비밀벽 observer `7b68b3bb0`의 최종 clean 검증을 완료했다. source/remote revision이 일치하는 ARM64 일반·highres·server 3제품 build/revision/help와 전후 oracle이 통과했다. 일반/HD headless/mock 실제 비밀벽 각 5관찰/합계 10개, Quest key 각 16관찰/합계 32개 및 대검 21·Fireball 11·Magic Missile 11·상태효과 10의 양방향 마법 각 53결과/합계 106개, 총 12실행이 정상 exit 0이다. 종료 후 clean source/remote·code 2,935/data 638개·NXZ 50쌍·stock tree·개인 파일 불변을 확인했다. 아래의 비밀벽 observer clean 후속 대기 기록은 이 결과로 마무리하며, 새 단위는 문서 기록만 갱신하고 runtime/manifest는 변경하지 않는다.
 
 2026-10-04 공개 `host-warrior-secret-wall-touch.yaml`과 읽기 전용 observer로 stock G_Crypts의 닫힌 접촉식 비밀벽을 확인했다. 실제 Warrior host 메뉴·정상 맵 로드·queued 이동으로 접촉하며, player 위치 준비 외에 wall state/flags/delay·CollisionWall·force·오디오·packet·client 위치를 공급하지 않는다. 일반/HD headless/mock 진단 모두 closed 1/0→실제 CollisionWall 기록→opening 4의 delay 1..23→open 3/23, delay>11의 정상 trace 통과, 서버/client drawable의 왕복 통과 및 정확히 한 tile open sound event를 확인했다. 각 5개 관찰/합계 10개와 정상 exit 0이다. native wall/secret/unit/update 포인터는 4GiB를 넘고 원래 연결·좌표·방향·tile·flags·wait를 유지한다.

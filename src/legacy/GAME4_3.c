@@ -4353,6 +4353,9 @@ int nox_xxx_playerAttackNativeData_538960(
 			sound = 883;
 			damage_type = 0;
 			field_24 = 1;
+		} else if (equipment & 0xCu) {
+			return nox_xxx_playerAttackBowNative_538960(
+				unit, weapon, update, equipment, previous_frame);
 		} else {
 			return 0;
 		}

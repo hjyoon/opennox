@@ -131,9 +131,11 @@ func foodDropEntryEvents4EDE50() []string {
 }
 
 func appendFoodDropMissRowEvents4EDE50(events []string, row int, sound uint16) []string {
+	events = append(events, fmt.Sprintf("rule-sound:%d=%04x", row, sound))
+	if row == 0 {
+		events = append(events, "subclass:food-a=00000000")
+	}
 	return append(events,
-		fmt.Sprintf("rule-sound:%d=%04x", row, sound),
-		"subclass:food-a=00000000",
 		fmt.Sprintf("rule-subclass:%d=%08x", row, foodDropSoundRules4EDE50[row].subClassMask),
 		fmt.Sprintf("rule-flags:%d=%04x", row, foodDropSoundRules4EDE50[row].flagsLowMask),
 		"flags:food-a=0000",
@@ -163,7 +165,6 @@ func foodDropAppleEvents4EDE50() []string {
 	)
 	return append(events,
 		"rule-sound:1=0345",
-		"subclass:food-a=00000002",
 		"rule-subclass:1=00000002",
 		"rule-sound:1=0345",
 		"audio:837:owner-a:0:00000000",

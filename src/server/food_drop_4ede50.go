@@ -71,12 +71,12 @@ func foodDrop4EDE50[O, P comparable](hooks foodDropHooks4EDE50[O, P]) int32 {
 		hooks.setDecay(food, hooks.loadGameFPS()*foodDropSeconds4EDE50)
 	}
 
-	for row := 0; ; row++ {
-		if hooks.loadRuleSound(row) == 0 {
-			return result
-		}
-
-		subClass := hooks.loadSubClass(food)
+	row := 0
+	if hooks.loadRuleSound(row) == 0 {
+		return result
+	}
+	subClass := hooks.loadSubClass(food)
+	for {
 		if subClass&hooks.loadRuleSubClassMask(row) != 0 {
 			sound := hooks.loadRuleSound(row)
 			hooks.audio(uint32(sound), owner, 0, 0)
@@ -87,6 +87,11 @@ func foodDrop4EDE50[O, P comparable](hooks foodDropHooks4EDE50[O, P]) int32 {
 		if flagsLowMask&hooks.loadFlagsLow(food) != 0 {
 			sound := hooks.loadRuleSound(row)
 			hooks.audio(uint32(sound), owner, 0, 0)
+			return result
+		}
+
+		row++
+		if hooks.loadRuleSound(row) == 0 {
 			return result
 		}
 	}

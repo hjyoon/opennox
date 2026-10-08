@@ -85,7 +85,7 @@ func (c *Client) drawMagicOrb4B98A0(dr *client.Drawable, vp *noxrender.Viewport,
 	c.r.Data().SetColor2(magicDrawWhite4B98A0)
 	c.r.DrawRectFilledOpaque(point.X-radius/2, point.Y-radius/2, radius, radius, magicDrawWhite4B98A0)
 	dr.SetLightColor(byte(light.R), byte(light.G), byte(light.B))
-	dr.SetLightIntensity(float32(c.srv.Rand.Other.Float(0, 100)))
+	dr.SetLightIntensity(magicDrawSpill32_4B98A0(c.srv.RandomFloat416090(0, 100)))
 	return 1
 }
 

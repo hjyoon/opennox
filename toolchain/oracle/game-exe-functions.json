@@ -3003,6 +3003,34 @@
       "purpose": "the exact ten NOP bytes after the equipped weapon palette selector and before 004B8EB0"
     },
     {
+      "name": "nox_thing_magic_draw_4B98A0",
+      "address": "0x004B98A0",
+      "size": 335,
+      "sha256": "dfdc3260c5802dbbb7297ccdf96bfb284e77c1803d6c941541c14ab1fc4f5e28",
+      "purpose": "the complete magic-orb draw routine: signed viewport and Z geometry, four clip gates before randomness, other-stream radius then glow and white rectangle, light color, unspilled random-float result stored by FSTPS before light intensity"
+    },
+    {
+      "name": "nox_thing_magic_draw_4B98A0_padding",
+      "address": "0x004B99EF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "the exact one NOP separating the magic-orb and magic-missile draw routines"
+    },
+    {
+      "name": "nox_thing_magic_missle_draw_4B99F0",
+      "address": "0x004B99F0",
+      "size": 332,
+      "sha256": "089c883615f62c2b2d27b4c8f92ba32c56589e69f00ed45b076b9518810bdc3c",
+      "purpose": "the complete magic-missile draw routine: identical signed geometry, clipping and two other-stream steps, original yellow glow and light color, and FSTPS of the random-float result before light intensity"
+    },
+    {
+      "name": "nox_thing_magic_missle_draw_4B99F0_padding",
+      "address": "0x004B9B3C",
+      "size": 4,
+      "sha256": "e61d6a793b42951d4e466a18683567c9011cd840b03559c0cc9e94c761995098",
+      "purpose": "the exact four NOP bytes after the magic-missile draw routine"
+    },
+    {
       "name": "nox_thing_monster_gen_draw_4BC750",
       "address": "0x004BC750",
       "size": 425,

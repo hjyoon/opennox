@@ -1,5 +1,22 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 RETREAT·음식 후보 선택의 원본 대조
+
+R39는 clean/pushed `c557901aa9083e1b47b95876d23b4a86e3f77e21`의 남은 passive-food timeout을 이어 진단했다. 저장소 production/test/YAML/manifest는 변경하지 않았다. private read-only overlay9개가 후퇴·음식 검색·실제 공간 열거 후보의 진입/종료와 subclass/poison 입력을 추가 관찰한다. native service는 원래대로 한 번 실행하며 별도 RNG draw, 후보/winner/result 주입 또는 강제 action pop은 없다.
+
+fresh Save/config/maps, read-only stock links의 headless/mock/noaudio 실행은 frame580..1179의600ticks를 기록했고 기존 첫 음식 소비 timeout의 실제 종료는2였다. live source6,024·공식 products3·frozen private inputs13의 전후 seal과 기존 YAML copy가 불변이다. R38의 stage Before/After6,000개와 unit/update/food/definition 및 hex reference key의 명시적인 ASLR identity4개만 재배치하면 상태가 같다. 새 Subclass/Poison은 이전 capture 비교에서만 제외하며 ResetBytes는 포함한다. 실제 Main RNG4회와 index 진행도 그대로다.
+
+frame593/748의 실제 RETREAT2·RetreatEdibles2·SearchEdible2·SearchCandidate48(19+29)을 unchanged GAME.EXE bytes로 재실행했다. 1,710instructions·108state checks에서 모든24slot의 미사용 인자와 full native pointer identity, scalar·health·reset bytes·경로·힘·방향 및 각 후보 직후의 nearest pointer/distance binary32 cache가 일치했다. 두 번 모두 동일한 실제 사과를 선택했다. 원본 wrapper/classifier/distance/cache/push/reset 본체는 실행하며 관찰한 공간 후보 순서와 CanInteract의 실제2반환은 명시적인 world boundary다. 이 geometry/visibility 본체나 Start/physics/RNG 내부·전체 Windows runtime의 동등성, 소비 성공을 주장하지 않는다.
+
+private PE32 range12개의 bytes/SHA는 독립 Ruby reader로 대조했고 실제 실행 범위는9개다. 원본 x87 control word `0x0e7f`, 누락된 object/update/definition/candidate 입력의 원본 read, 원본 text 불변도 검사한다. name/debug 출력만 inert fixture다. 첫 private replay는 조건 번호64/56/48을 action cancel table index로 읽는 잘못된 진단 가정 때문에 actual1이었다. 원본 조건 분기는 table을 우회하고 실제 started RETREAT6의 cancel만0이므로 이 reachable dispatch 검사만 수정했으며 두 번째 replay actual0이다. 실패 로그를 보존하고 gameplay/원본 입력/기대값을 수정한 성공으로 세지 않는다.
+
+기존 retreat/resume/search/arrival 표적 server/legacy 테스트는 normal·실제 cgocheck2·race+checkptr2 각 count3/actual0, 각351개 test pass records/2package pass/skip0이다. 별도 RetreatCheckEdibles 표적 normal count3도 actual0/339pass/2package pass/skip0이며 이 별도 표적의 strict/race 실행으로 세지 않는다. 합계1,392개 pass records는 고유 테스트 수나 전체 패키지 전수 run이 아니다. 올바른 기존 자산 경로의 make oracle-test actual0은 stock1,556files/570,653,750bytes/tree SHA `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, public code2,968/data650와 strict cnxz를 유지한다. public range/manifest 및 원본 자산은 변경하지 않았다.
+
+독립 receipt `/private/tmp/opennox-retreat-search-r39.YpV2JL/independent-retreat-audit-1.json` SHA는 `549e3810b4bdec596ec47ce873c2a3c3cad56ccf24c8cbeabf54f620c25e7759`다. 같은 경로의 raw capture SHA는 `4a2d681b1c3b53af2ba83d26e01a4a3f6ecf04678458cd1cf65041b14507d91c`, raw original replay SHA는 `92cab39510e81ce36a9c9beae8cdfd07ddfc495171d0a582f85925a0dbada6fc`이며 실제 terminal exit와 첫 실패를 보존한다. 문서 밖 저장소 파일과 이전 ledger suffix는 바이트 그대로 유지한다. documentation-only handoff의 공식 normal/HD/server3제품 build/clean revision metadata/help 결과는 별도 로그로 구별한다.
+
+관찰된 후퇴·음식 선택 경로에는 수정 근거가 없어 production 본체를 바꾸지 않았다. 첫 음식 조건 actual2·나머지7조건 미실행·retained fixed Quest 미재실행이며 aggression·RNG·golden·wait·timeout을 완화하지 않는다. R35의 판매 아이콘·자기 시전6개 성공 실행/12실제 key cast/6자연 expiry는 이전 revision 증거로 유지하고 이번 GUI 실행으로 세지 않는다. 남은 retained gates와 전체 port goal은 active다.
+
+
 ## Passive-food 실제 MainAI 진행·WAIT 분기의 원본 대조
 
 R38은 clean/pushed `004a2749843bad529d18dac6a221efb0cdb1d3c7`에서 남은 음식 소비 timeout을 추가 진단했다. 저장소 production/test/YAML/manifest는 변경하지 않았다. 기존 read-only observer를 private Go overlay8개로 확장하여 Main progress·frustration 진입/종료와 기존 RandomInt의 실제 인자·반환을 기록한다. RNG는 원래 서비스가 한 번만 호출되고 별도의 draw나 AI state/result 주입이 없다. 새 reset byte4개도 관찰한다. 이 제품은 공식 clean 제품과 구별한다.

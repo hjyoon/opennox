@@ -128,9 +128,13 @@ func monsterAdvanceWaypointPath50D2E0(unit *Object, hooks monsterMovePathHooks50
 			update.Field74 = 0
 			return false
 		}
-		dx := float64(waypoint.PosVec.X) - float64(unit.PosVec.X)
-		dy := float64(waypoint.PosVec.Y) - float64(unit.PosVec.Y)
-		distance2 := dx*dx + dy*dy
+		// 0050D305..0050D325 retain both differences and squares at
+		// x87 precision 53 with chop rounding; there is no binary32 spill.
+		dx := monsterMoveToRunAddChop53_544434(float64(waypoint.PosVec.X), -float64(unit.PosVec.X))
+		dy := monsterMoveToRunAddChop53_544434(float64(waypoint.PosVec.Y), -float64(unit.PosVec.Y))
+		ySquare := monsterMoveToRunSquareChop53_544434(dy)
+		xSquare := monsterMoveToRunSquareChop53_544434(dx)
+		distance2 := monsterMoveToRunAddChop53_544434(ySquare, xSquare)
 		// 0050D329 tests only x87 C0 after FCOMP. Unordered values set C0,
 		// so a NaN follows the same branch as a waypoint inside eight units.
 		if distance2 < 64.0 || math.IsNaN(distance2) {

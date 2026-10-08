@@ -1,0 +1,198 @@
+# Stock AI must choose its own enemy and deal damage before any incoming hit.
+# Only placement/facing/durable player HP and the hostile NPC's ordinary
+# aggression/equipment properties are setup. No SeenEnemies, CurrentEnemy,
+# PreferredEnemy, FIGHT, Injured, damage callback, packet or pixels are injected.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-ai-sustained-attack
+    text: Spider/ascending/clear
+    name: Spider ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Spider/ascending/off-ray-box
+    name: Spider ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Spider/descending/clear
+    name: Spider descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Spider/descending/off-ray-box
+    name: Spider descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Troll/ascending/clear
+    name: Troll ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Troll/ascending/off-ray-box
+    name: Troll ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Troll/descending/clear
+    name: Troll descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Troll/descending/off-ray-box
+    name: Troll descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Urchin/ascending/clear
+    name: Urchin ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Urchin/ascending/off-ray-box
+    name: Urchin ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Urchin/descending/clear
+    name: Urchin descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Urchin/descending/off-ray-box
+    name: Urchin descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: NPC/ascending/clear
+    name: NPC ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: NPC/ascending/off-ray-box
+    name: NPC ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: NPC/descending/clear
+    name: NPC descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: NPC/descending/off-ray-box
+    name: NPC descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: OgreBrute/ascending/clear
+    name: OgreBrute ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: OgreBrute/ascending/off-ray-box
+    name: OgreBrute ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: OgreBrute/descending/clear
+    name: OgreBrute descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: OgreBrute/descending/off-ray-box
+    name: OgreBrute descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Scorpion/ascending/clear
+    name: Scorpion ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Scorpion/ascending/off-ray-box
+    name: Scorpion ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Scorpion/descending/clear
+    name: Scorpion descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Scorpion/descending/off-ray-box
+    name: Scorpion descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: VileZombie/ascending/clear
+    name: VileZombie ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: VileZombie/ascending/off-ray-box
+    name: VileZombie ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: VileZombie/descending/clear
+    name: VileZombie descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: VileZombie/descending/off-ray-box
+    name: VileZombie descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: StoneGolem/ascending/clear
+    name: StoneGolem ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: StoneGolem/ascending/off-ray-box
+    name: StoneGolem ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: StoneGolem/descending/clear
+    name: StoneGolem descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: StoneGolem/descending/off-ray-box
+    name: StoneGolem descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: MechanicalGolem/ascending/clear
+    name: MechanicalGolem ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: MechanicalGolem/ascending/off-ray-box
+    name: MechanicalGolem ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: MechanicalGolem/descending/clear
+    name: MechanicalGolem descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: MechanicalGolem/descending/off-ray-box
+    name: MechanicalGolem descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Wasp/ascending/clear
+    name: Wasp ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Wasp/ascending/off-ray-box
+    name: Wasp ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Wasp/descending/clear
+    name: Wasp descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Wasp/descending/off-ray-box
+    name: Wasp descending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Ghost/ascending/clear
+    name: Ghost ascending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Ghost/ascending/off-ray-box
+    name: Ghost ascending off-ray-box unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Ghost/descending/clear
+    name: Ghost descending clear unforced three attacks
+  - action: check-ai-sustained-attack
+    text: Ghost/descending/off-ray-box
+    name: Ghost descending off-ray-box unforced three attacks
+  - action: quit
+    dt: 1

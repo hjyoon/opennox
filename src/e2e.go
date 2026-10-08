@@ -10016,6 +10016,36 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckAIFirstAttack(l.Text, l.Name)
+		case "check-ai-sustained-attack":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckAISustainedAttack(l.Text, l.Name)
+		case "check-player-bow":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerBow(l.Item, l.Name)
+		case "check-charm-effect":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckCharmEffect(l.Name)
+		case "check-shop-movement":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckShopMovement(false, true, l.Name)
+		case "check-arena-shop-movement":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckShopMovement(false, false, l.Name)
+		case "check-dialog-movement":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckShopMovement(true, true, l.Name)
 		case "check-ai-inversion":
 			if dt != 0 {
 				sc.Wait(dt, "")

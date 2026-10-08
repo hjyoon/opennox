@@ -1,0 +1,60 @@
+# Ordinary input against Con02a's stock Mystic shopkeeper. Map switch is setup;
+# opening, attempted movement and closing use the actual client GUI protocol.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+  - action: wait
+    dt: 1000
+  - action: click
+    x: 512
+    y: 384
+  - action: wait
+    dt: 620
+  - action: click-npc-dialog-done
+    name: close stock opening dialogue
+  - action: wait
+    dt: 60
+  - action: switch-map
+    map: Con02a
+  - action: wait-map
+    map: Con02a
+  - action: click-chapter-briefing
+  - action: wait-forced-coop-autosave
+  - action: wait
+    dt: 180
+  - action: open-map-shopkeeper
+    item: Con02a:Mystic
+    name: talk to the actual map shopkeeper
+  - action: wait
+    dt: 120
+  - action: check-shop-movement
+    name: campaign map shopkeeper movement lock and unlock
+  - action: quit
+    dt: 1

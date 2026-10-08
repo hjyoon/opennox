@@ -852,7 +852,7 @@ func (s *Server) shopStartNative50EF10(playerUnit, merchant *server.Object) *ser
 		packet := server.BuildShopItemPacket50F2B0(item.Item0, item.Cost4)
 		s.NetSendPacketXxx1(update.Player.Index(), packet[:], nil, 1)
 	}
-	if noxflags.HasGame(noxflags.GameOnline) {
+	if shopMovementFrozen50EF10(noxflags.GetGame()) {
 		legacy.Nox_xxx_unitFreeze_4E79C0(playerUnit, 0)
 	}
 	return session

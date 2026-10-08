@@ -1,5 +1,48 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 게임 효과음 확대 감사와 FoodDrop 재질 판정 정정
+
+R21은 clean/pushed `4635b8cbce13fa3a7b52ad31833a6333acddcf25`의 공식 ARM64 일반 제품을 headless/실제 OpenAL null(real sources)로 실행했다. 원래 공개 YAML29개를 byte-identical private copies·fresh Save/config/maps·read-only stock links·unset NOX_E2E_OVERRIDE로 순차 실행했으며 actual game exits는27개0, 두 기존 gate는2다. 정상 종료/실패를 모두 기다린 batch wrapper actual exit1을 보존했다. 실행 전후 source/test/build inputs5,940개·private runners3개·제품3개·stock hashes 대조와 clean worktree가 actual exit0이며 LIVE 중 입력을 편집하지 않았다. R21에서 HD29개를 재실행한 기록은 아니다. R19의 일반/HD 여섯 실제 게임 및 R20의 stock1,780개 full-length native 재생 증거와 구분한다.
+
+27개 통과는 gameplay pickup/drop/attack/hurt/walk/run, 캠페인 music/dialog/Repeat, 열 가지 item callback, 슈리켄·채크럼·해머·버저커 차지·작살, 여섯 spikes, Fireball·Magic Missile·ToxicCloud, 선제 AI, 메뉴/게임 옵션, F1 콘솔 및20단계 original-map-oracle Quest다. 실제 callback→A6/A7→native sample의 양수 길이/rate·server/client inventory/HP/world state를 독립 로그로 대조했다. OpenAL null은 mock이 아니지만 물리 스피커/청취·모든 trigger의 acoustic 인증은 아니다. pool queued/processed 누적을 개별 ID completion으로 확대하지 않았다.
+
+기본 여섯 gameplay phase의 실제 FX pool new queued/processed는 pickup39/39, drop15/15, attack191/183, hurt357/365, walk35/35, run53/53이다. 별도 Repeat는 natural dialogue3회/재시작2회, 새 stream source1/queued192/processed192와 busy 재클릭 시 기존 stream 유지, actual Done/close0을 확인했다. 전체445xx 노드 같은 unit-test 집계를 이 실제 game 결과와 혼합하지 않는다.
+
+| 원래 item callback 경로 | 실제 stock network/native sample 확인 |
+| --- | --- |
+| weapon/armor/ammo | MetalWeaponPickup/Drop, LeatherArmorPickup/Drop, QuiverPickup/Drop 및 ammo reacquire |
+| Mushroom FoodPickup/FoodDrop | ShroomPickup/ShroomDrop와 실제 world 재등장 |
+| RedPotion ItemPickup/명시 DefaultDrop | PotionPickup, DefaultDrop의 원래 item drop 무음 유지 |
+| Bread UsePickup | full-health Use 실패 뒤 DefaultPickup/inventory; own pickup 무음은 원본 계약 |
+| RedPotion TreasurePickup/PotionDrop | 원래 TreasurePickup 무음, PotionDrop 실제 sample |
+| Diamond AudEventPickup/AudEventDrop | ApplePickup/Drop table이 아닌 지정 GemPickup/GemDrop sample 및 reacquire |
+| BearTrap Pickup/Drop | player-owned Pickup/ApplePickup; 성공 Drop은 원래 무음·owner 유지 |
+| CommonSpellBook2 | BookPickup/BookDrop, inventory/world/reacquire |
+
+슈리켄은 NPC HP2000→1970/charge20→19·projectile 제거, 채크럼은2000→1962/return 및 실제 ChakramCatch(A6), 해머는 NPC/Troll 각각 두 타격의 실제 HP 감소와 quake/animation·HammerMissing 원래 무조건 sample을 확인했다. 버저커 차지는 두 실제 A 입력/각 damage150·cooldown/ended/ready와 Invoke/FleshHit/NpcHurt/Fizzle, 작살은 두 D 입력/원래 damage1·실제 pull 거리>8·duration/bolt impact/release와 Invoke/MetalHit/Reel/NpcHurt/Fizzle을 확인했다. balance·damage·HP·wait·RNG·aggression은 통과에 맞춰 바꾸지 않았다.
+
+Spike/PeriodicSpike 두 종류는 stock MaterialNone(0x4000)라 material impact sound가 없는 것이 원본이다. read-only thing.bin export와 GAME.EXE `00532E4C`의 `66 81 7f 18 00 40`/equal→return1을 대조했다. 네 block/rotating 종류는 StoneHit/MetalHit이고 모든 여섯 contact에서 실제 player hurt와 HP 감소가 관찰됐다. 이를 고치겠다며 의도된 무음을 새 효과음으로 바꾸지 않았다. 원본 player hurt는 `004F8200`에서 cooldown WORD7을 설정하므로 rapid impact마다 hurt sample이 나지 않는 것이 맞다. NPC/Wolf의 별도 cadence 전체 동등성 주장과 구분한다.
+
+Fireball11시전(양방향 level1..5 + 실제 NPC animation1) 모두 HP/client delta/projectile 제거와 Cast/Explode11 sample을, Magic Missile11시전/44 impacts 모두 native Detonate44를 확인했다. player/NPC hurt counts를 impact 수로 강제하지 않았다. ToxicCloud는 script position→position/default·level1..5/NPC animation의7시전에서 실제 cloud/poison/HP/natural expiry와 CastToxicCloud7/Poison7 sample을 확인했다. 강제 damage/poison/sound injection은 없다. 선제 AI의 Spider/Troll/Urchin/NPC×방향×clear/off-ray-box16개는 incoming hit 없이 실제 autonomous acquire/공격/negative client HP delta 및 해당 recognize/move/attack/impact/player-hurt sample을 확인했다. 후속 fixture cleanup hurt를 combat sound 증거로 세지 않았다.
+
+옵션의 실제 mouse/key audits는 메뉴226·게임201 assertions, failed0이다. ShellMouseBoom/Click/Select/SlideIn/SlideOut의 양수 native sample과 volume target/mute/FX startup 값 보존을 확인했다. inactive Dialog/music timer의 current 값은 target과 다를 수 있으며 이 시험만으로 disk roundtrip/물리 gain을 인증하지 않는다. R19의 별도 live FX gain/mute 재생 검사는 그대로다. F1 콘솔은 실제44 ordered commands·8 paired text cases·Backspace clear·F2 macro·개인 console log/MMX 및 diagnostic PNG가 통과했다. 외부 telnet 명령들을 모두 실행한 시험은 아니다.
+
+20단계 map-oracle Quest는 raw snapshots를 별도 Ruby의 signed DWORD/cooldown·4096-word private RNG table modulo와 비교했다.20 selectors의 정확한 Logic 소비·Other/frame/history 불변, 실제 loaded map/client phase3/HP450,19 mouse walks/거리>=8 및 stock-exit contact fixture 뒤19 natural server/client transitions,2,709 native generators의 모든 rate/cap·stage20 강화/selector3 제외, stage5 Hecubah/Necromancer 및 stage20 Hecubah가 통과했다. 진단 PNG5장은 golden pixel 인증이 아니며 출구는 원래 collision callback을 검사하기 위한 위치 fixture다. 실제 WalkOnStone44/WalkOnWood20/WalkOnDirt16 sample을 관찰했고 이 walk-only scenario에 run sound를 요구하지 않는다.
+
+기존 passive-food 첫 Troll/ascending/RedApple은 aggression0.01·ordinary script injury HP80→75에서600tick 섭취 timeout/actual2다. 이동 뒤 target distance-squared5.00445276·ACTION_IDLE·food/draw 남음·HP의 idle recovery80을 섭취 성공으로 취급하지 않았다. 뒤 일곱 case는 미실행이다. 고정-map Quest는 stage1 g_templd/stage2 g_castld playable 뒤 stage3 expected g_lotdd/actual g_crypts·HP450/client phase3 assertion으로actual2다. 독립 original-map-oracle20 성공을 고정 golden 통과로 재분류하거나 강제 섭취/RNG·map·timeout 변경으로 두 gate를 숨기지 않았다. SIGSEGV가 아니라 기존 assertion 실패이며 전체 ARM64 포팅 목표도 미완료다.
+
+R21 offline auditors의 잘못된 NPC aggression regex, minion 단계/순서, walk-only scenario에 run 요구, 작은 JSON output cap 등 최초 diagnostic failures는 보존하고 동일 raw logs/YAML에 독립적으로 재검증했다. game assertion은 수정하지 않았다. read-only stock exporter의 최초 unpinned Go toolchain mismatch actual1도 보존했고 scripts/go.sh의 pinned Go1.26.5로 같은 CLI export actual0/source input hash 불변을 확인했다. stock thing.bin SHA `436f6545169e07abc3eb143b0b8909e67061ceebe13b5eaa45396d3cd5a78768`,2874 things export에서 Meat/RottenMeat는 FLESH·FoodPickup/FoodDrop였다. 성공한22개 대형 raw logs는 gzip decompression의 원래 bytes/SHA를 확인한 뒤 recoverable compressed copies만 남겼으며 LIVE logs를 삭제/압축하지 않았다.
+
+새 확인된 FoodDrop sound 누락의 원인은 original `004EDEC8`의 `66 85 56 18`가 object+24의 Material WORD를 읽는데 native binding이 ObjFlags low WORD를 읽는 것이었다. native Material offset28/Flags20도 별도 layout test로 확인했다. 아래의 초기 FoodDrop 기록에서 ObjFlags/FlagBelow를 원본 판정으로 설명한 부분은 잘못된 해석이며 이 기록으로 정정한다. 원본173byte SHA `1ab18a2b4d7458741753a793038ca6c892b666ff1ab5a13ff577c781ab2fa94a`와 table `005B9388`의 (0,1,835)/(2,0,837)/(4,0,833)/(0x80,0,839)/sentinel을 다시 대조했다.
+
+R22 기능 `73b52d2c8`는 기존 `foodDropNative4EDE50` 본체의 word accessor만 `food.Material`로 변경했다. signature/type/import/다른 본체는 byte-identical·worktree/index/commit AST audit0이고 직후 origin port/go1.26-multiarch push0이다. 기존 vacuous wrong-flags test는 exact audio-count·Material-vs-Flags·high-bit·row priority·post-DefaultDrop/post-decay live fields의12개 독립 leaf로 교체/강화했다. unchanged production red는 육류 누락/비육류 오재생으로actual1이고 같은 tests의 수정 후 일반/실제 cgocheck2/race+checkptr2/highres 표적 각1회는actual0이다. nil guard·full-width noncanonical result·cached owner/native pointer identity·Coop/25*FPS decay는 유지했다.
+
+root/server/legacy full normal/actual cgocheck2는 각각42,223 distinct leaves/42,209 pass/14 skip·actual0이다. R19의 관련 세 package 전체 기존 nodes/outcomes/multiplicity는 교체한 잘못된 한 leaf 이외 모두 보존했고 새 material12 leaf는 모두 pass다. 두 과거 audited ASLR-label family만 정규화했다. 최초 offline comparator가 정규화 이후3/2개 raw labels를 한 노드로 합친 뒤 count1을 잘못 요구한actual1도 보존했으며 최종은 raw multiplicity1 + 기존 normalized multiplicity 동일을 각각 검증했다. 반복 source/test edits나 golden 완화로 통과시킨 기록은 아니다. FoodDrop/Pickup generic hook의 subclass cache read order는 별도 확인된 후속 계약 단위이며 이 accessor 수정만으로 전체 원본 read-order 동등성을 선언하지 않는다.
+
+별도 test-only `ae46f665e`는 stock Meat의 원래 Material/flags/subclass/FoodPickup/FoodDrop/use data를 유지한 `host-game-meat-pickup-drop.yaml`을 추가하고 직후 push0이다. 기존 Mushroom fixture와 item/name 외 byte-identical, 실제 mouse/MSG_TRY_GET/inventory drag/drop assertions 그대로이며 handler/drop/sound/HP/food-consumption overrides가 없다. R22 clean three-product build와 일반/HD의 Meat·Mushroom·basic gameplay native 순차 재검증은 이 문서 시점 후속 작업으로 아직 통과를 선언하지 않는다.
+
+R21 모든 실제 case/압축 로그·frozen manifest는 `/private/tmp/opennox-gameplay-audio-expanded-r21.YLbxVC`에, 독립 전체 receipt JSON·stock material/original proof·retained failures·R22 red/green/full/AST audit 및 후속 build/native receipts는 `/private/tmp/opennox-food-material-r22.lPdrs4`에 보존한다. prepend-only로 이전 ledger suffix bytes를 유지한다.
+
 ## stock 효과음 1,780개 전체 native 디코딩·재생 검증
 
 R20의 `d889555ee036fcb4dfb2a12f95e1d5f6a10b36c7`는 새 opt-in `audio_stock_bank_integration_test.go` 한 파일만 추가한다. 이전 A6/A7 복원 이후 production 본체·기존 test/fixture·게임 로직·기대값·자산은 그대로이며 commit 직후 origin `port/go1.26-multiarch` push actual exit0이다. 기존 R19의 실제 여섯 게임 실행과 구분해, 이번에는 GUI 없이 사운드 뱅크의 모든 샘플을 별도 locked-thread subprocess/실제 OpenAL null로 검사했다.

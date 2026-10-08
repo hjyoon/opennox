@@ -147,6 +147,20 @@
       "purpose": "the exact fifteen NOP alignment bytes separating the logic random-float routine from the other-stream routine at 00416090"
     },
     {
+      "name": "nox_common_randomFloatXxx_416090",
+      "address": "0x00416090",
+      "size": 58,
+      "sha256": "d77ee8a850b882c468ac99dfd62728a061786a46f4e9db816cd31888d993c1f5",
+      "purpose": "subtract exact binary32 bounds in x87, always advance and wrap the other RNG index through the shared 4096-entry dword table even for zero or unordered ranges, scale the selected integer, add min, and return the unspilled x87 result"
+    },
+    {
+      "name": "nox_common_randomFloatXxx_416090_padding",
+      "address": "0x004160CA",
+      "size": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564",
+      "purpose": "the exact six NOP bytes separating the other-stream random-float routine from the network-error lookup at 004160D0"
+    },
+    {
       "name": "nox_xxx_playerForceSendLessons_416E50",
       "address": "0x00416E50",
       "size": 74,

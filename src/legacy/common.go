@@ -42,5 +42,5 @@ func nox_common_randomFloat_416030(min, max C.float) C.double {
 
 //export nox_common_randomFloatXxx_416090
 func nox_common_randomFloatXxx_416090(min, max C.float) C.double {
-	return C.double(GetServer().S().Rand.Other.Float(float64(min), float64(max)))
+	return C.double(GetServer().S().RandomFloat416090(float32(min), float32(max)))
 }

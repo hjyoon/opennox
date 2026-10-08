@@ -1,5 +1,24 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Passive-food 실제 MainAI 진행·WAIT 분기의 원본 대조
+
+R38은 clean/pushed `004a2749843bad529d18dac6a221efb0cdb1d3c7`에서 남은 음식 소비 timeout을 추가 진단했다. 저장소 production/test/YAML/manifest는 변경하지 않았다. 기존 read-only observer를 private Go overlay8개로 확장하여 Main progress·frustration 진입/종료와 기존 RandomInt의 실제 인자·반환을 기록한다. RNG는 원래 서비스가 한 번만 호출되고 별도의 draw나 AI state/result 주입이 없다. 새 reset byte4개도 관찰한다. 이 제품은 공식 clean 제품과 구별한다.
+
+fresh Save/config/maps, read-only stock links의 headless/mock/noaudio 실행은 frame580..1179의600ticks를 기록했다. 기존600tick 소비 timeout의 실제 종료는2이며 관찰 장치의 SIGSEGV가 아니다. live source6,024·공식 products3·frozen private inputs12의 전후 seal이 불변이고, 원래 YAML의 private copy도 바이트가 같다. MainProgress109·MainFrustrated2·MainRandomInt4의 실제 span이 기록됐다. R37 수정 후 기록의 각 stage Before/After6,000개는 unit/update/food/definition의 명시적인 ASLR identity4개와 reference key를 재배치하면 나머지 상태가 모두 같다. R37에서 미관찰한 새 ResetBytes는 이 이전-capture 비교에서만 제외한다.
+
+unchanged GAME.EXE의 `005479FA..00547C45` 및 selected stack/classifier/reset helper bytes를109회 재실행했다. 5,144instructions·230state checks에서 새 reset byte·관찰 scalar·모든24slots의 미사용 인자까지 포함한 full pointer identity·경로·힘·방향이 일치했다. 원본 x87 control word `0x0e7f`와 실제 읽힌 unit/update/definition 입력의 누락 여부, 원본 text의 불변을 별도 검사한다. 원본의 inline frustration은 `00547A67` 진입과 `00547B69` 종료로 native helper의 경계와 대조하며, PE call인 것처럼 주장하지 않는다. name/debug 출력만 inert output fixture다.
+
+실제 RNG boundary는 frame655에서 [0,100]→41(index2766→2767), [15,60]→34(2767→2768), frame764에서 [0,100]→35(4089→4090), [15,60]→58(4090→4091)이다. 원본 call 인자·순서·각 한 번의 index 진행을 확인하고 이4개 실제 결과만 재생했다. 두 admission 값이33 이상이라 이번 selected path에는 Dodge가 실행되지 않는다. 원본도 WAIT timer689/822를 넣고 경로·action reset을 수행하며 Field127을 현재frame으로 갱신했다. R36에서 확인된 같은 두 frame의 NOT_CORNERED 실패와 모순되지 않는다. 이 분기들에 수정 근거가 발견되지 않아 production 본체를 바꾸지 않았다.
+
+이는 실제 cached-head tail 진입과 관찰한 passive WAIT 경로의 검증이다. 앞선 MainAI prefix·Start/RETREAT Action body·RNG 내부 알고리즘·food search/physics·모든 Dodge branch·전체 Windows runtime의 동등성이나 음식 소비 성공을 주장하지 않는다. private range7개의 PE32 bytes/SHA는 독립 Ruby reader로 확인하며 public range/manifest를 추가·완화하지 않는다. 원본 GAME.EXE SHA는 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
+기존 MainProgress/Frustrated 표적 server/legacy 테스트는 normal·실제 cgocheck2·race+checkptr2 각 count3에서 actual0이다. 각954개 test pass records/2개 package pass/skip0, 합계2,862개 pass records이며 전체 패키지 전수 run은 아니다. 올바른 기존 자산 경로의 make oracle-test actual0은 stock1,556files/570,653,750bytes/tree SHA `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, public code2,968/data650와 strict cnxz를 확인했다. 첫 기본 oracle root의 부재로 actual2인 로그를 보존했으며 기존 검증 자산 경로만 명시했다. 첫 private cross-capture audit은 최초 snapshot에 아직 food reference가 없는 점과 hex reference key를 놓쳐 actual1이었다. 이후 모든 실제 snapshot의 단일 food identity를 확인해 explicit mapping만 수정했고 두 번째 audit actual0이다. gameplay/expected state를 수정한 성공이 아니다.
+
+독립 receipt `/private/tmp/opennox-ai-main-r38.Wqf6hb/independent-main-audit-2.json` SHA는 `2755603047976b50a7cc54c4b96cfc91299d0daa75509566be47011ee3c80e1e`다. 같은 디렉터리의 raw capture SHA는 `2ef493dcbc51fda526e43197ae8d285f3771a4310669d5ea39808e143f067c2b`, raw original replay SHA는 `4f411bc11f12f278a04246e8e59663ea05376e3b8cd4d07a26130107f2bb5b07`이며 실패 로그와 실제 terminal exit도 보존한다. 문서 밖의 저장소 파일과 이전 ledger suffix는 바이트 그대로 유지한다. 이 documentation-only handoff의 공식 normal/HD/server3제품 build/full revision/clean metadata/help는 별도 로그로 구별한다.
+
+음식 첫 조건은 여전히 actual2이고 나머지7조건은 미실행이며 retained fixed Quest는 이번에 재실행하지 않았다. aggression·RNG·golden·wait·timeout·기존 기대값을 바꾸지 않는다. R35의 판매 아이콘·기본 자기 시전6개 성공 실행과12개 실제 key cast/6개 자연 expiry는 이전 revision의 증거로 유지하고 이번 GUI 재실행으로 세지 않는다. 남은 retained gates와 전체 port goal은 미해결/active다.
+
+
 ## 실제 이동 방향의 gameplay rounding 복원
 
 R37은 clean/pushed base a398c9b70d3c0b6546844ce73ce5f08de2bde7ad의 retained passive-food를 private observer로 다시 기록한 뒤, 기존 production 본체 한 곳인 monsterCreatureActuallyMove50D3B0의 방향 변환만 수정했다. 변경 전 frame623..628에서 원본 방향22와 native23의 차이가 확인됐고, 힘의 binary32 words·경로 cursor·반환은 이미 일치했다. 공용 DirFromVec의 nearest-even 계약은 그대로 두고 이 호출부만 원본 gameplay precision53/ToZero의 add·multiply·binary32 spill·integer truncation으로 복원했다. 기존 force/RNG/AI action/arrival 로직은 바꾸지 않았다.

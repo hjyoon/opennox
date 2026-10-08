@@ -12,10 +12,13 @@ import (
 	"github.com/opennox/libs/strman"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
+
+// Extracted MMX status (original VA 0x699160). The portable renderer leaves
+// it disabled; the corresponding mapped-variable blob bytes remain reserved.
+var dword_5d4594_805836 uint32
 
 func consoleCommandAt(c *console.Console, path string) *console.Command {
 	commands := c.Commands()
@@ -318,7 +321,7 @@ func consoleLogStop(_ context.Context, _ *console.Console, args []string) bool {
 
 func consoleShowMMX(_ context.Context, c *console.Console, _ []string) bool {
 	id := strman.ID("MMXNotEnabled")
-	if memmap.Uint32(0x5D4594, 805836) != 0 {
+	if dword_5d4594_805836 != 0 {
 		id = "MMXEnabled"
 	}
 	consoleMessage(c, id)

@@ -18,7 +18,6 @@ import (
 	"github.com/opennox/libs/things"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
@@ -291,7 +290,7 @@ func TestConsoleLogFileStopAndMMX(t *testing.T) {
 	if consoleLogFile(context.Background(), c, nil) || consoleLogStop(context.Background(), c, []string{"invalid"}) {
 		t.Fatal("log arity")
 	}
-	mmx := memmap.PtrUint32(0x5D4594, 805836)
+	mmx := &dword_5d4594_805836
 	oldMMX := *mmx
 	t.Cleanup(func() { *mmx = oldMMX })
 	for _, enabled := range []uint32{0, 1} {

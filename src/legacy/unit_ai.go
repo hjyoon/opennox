@@ -20,7 +20,6 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/object"
-	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/types"
 
 	noxflags "github.com/opennox/opennox/v1/common/flags"
@@ -637,33 +636,16 @@ func monsterActionMeleeRuntime532130() server.MonsterActionMeleeRuntime532130 {
 		},
 		BuffOff:      Nox_xxx_spellBuffOff_4FF5B0,
 		PlayerAttack: Nox_xxx_playerAttack_538960,
-		CanStrike:    monsterActionMeleeCanStrike532440,
+		CanStrike: func(fnc unsafe.Pointer) bool {
+			_, ok := monsterStrikeNativeKind549220(fnc)
+			return ok
+		},
 		Strike: func(unit *server.Object, fnc unsafe.Pointer) int {
-			if !monsterActionMeleeCanStrike532440(fnc) {
+			kind, ok := monsterStrikeNativeKind549220(fnc)
+			if !ok {
 				return 0
 			}
-			if fnc == unsafe.Pointer(C.nox_xxx_strikeMonsterDefault_549380) {
-				return GetServer().S().MonsterStrikeDefault549380(unit, server.MonsterStrikeDefaultRuntime549380{
-					Damage: func(target, source, attacker *server.Object, damage int, damageType object.DamageType) bool {
-						return target.CallDamage(source, attacker, damage, damageType)
-					},
-					ApplyForce: func(target *server.Object, origin types.Pointf, force float64) {
-						GetServer().ApplyForce(target, origin, force)
-					},
-				})
-			}
-			return GetServer().S().MonsterStrikeSpider549BC0(unit, server.MonsterStrikeSpiderRuntime549BC0{
-				Damage: func(target, source, attacker *server.Object, damage int, damageType object.DamageType) bool {
-					return target.CallDamage(source, attacker, damage, damageType)
-				},
-				ApplyForce: func(target *server.Object, origin types.Pointf, force float64) {
-					GetServer().ApplyForce(target, origin, force)
-				},
-				ActivatePoison: Nox_xxx_activatePoison_4EE7E0,
-				PriorityMessage: func(target *server.Object, id strman.ID, value byte) {
-					GetServer().S().NetPriMsgToPlayer(target, id, value)
-				},
-			})
+			return GetServer().S().MonsterStrikeSpecial549220(unit, kind, monsterStrikeNativeSpecialRuntime549220())
 		},
 	}
 }

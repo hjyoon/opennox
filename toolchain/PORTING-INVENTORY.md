@@ -1,5 +1,31 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 효과음 수정의 일반·HD 실제 게임 재검증 완료
+
+R22는 clean/pushed `e433937d6079065b228438e7e9485408f9e51047`의 공식 ARM64 일반 제품 세 게임이 자연 종료한 뒤 HD 제품 세 게임을 순차 실행했다. `host-game-meat-pickup-drop`, 기존 `host-game-food-pickup-drop`, 기존 `host-game-gameplay-audio`의 actual game exits는 양쪽 모두 `0,0,0`, batch wrapper actual exits도 `0,0`이다. headless·실제 OpenAL null(real sources)·fresh Save/config/maps·read-only stock links·unset NOX_E2E_OVERRIDE·byte-identical public YAML copies를 유지했다. 두 batch의 전후 및 별도 terminal recheck에서 source/test/build inputs5,941개·원래 private runners3개·제품3개·stock hashes가 모두 actual0이고 LIVE 중 source/test/build inputs/private runners를 편집하지 않았다. 아래 R21의 HD29개 전체 실행을 새로 선언하는 기록은 아니다.
+
+stock Meat는 원래 FLESH material·FoodPickup/FoodDrop·flags/subclass/use data를 유지했고 handler/drop/sound/HP/consumption override가 없다. 실제 mouse/MSG_TRY_GET pickup과 inventory drag/drop에서 native object/owner pointers >4GiB·same callbacks·wire499·server/client inventory `0→1→0`·world drawable 재등장을 독립 대조했다. 두 제품 모두 `MeatPickup→papplpub`4096 bytes/22050Hz와 수정된 `MeatDrop→pmeatdrc`3072 bytes/22050Hz가 A7 volume100/pan0/submitted=true였다. 수정 `73b52d2c8`의 original `004EDEC8` Material WORD 판정이 실제 stock gameplay에서도 육류 드롭 소리를 복구한 증거다. 기존 Mushroom도 두 제품에서 `ShroomPickup→papplpub`4096/`ShroomDrop→pshoedra`4096 bytes/22050Hz·같은 A7 조건·실제 inventory/world assertions를 통과해 subtype 기반 소리를 보존했다.
+
+basic gameplay의 actual stock definitions audit는 모든 checkpoint에서 bank1,780·enabled definitions1,004·references2,657·intentionally empty definitions118이었다. 실제 장비 획득/드롭·hammer input/target impact·Spider의 선공격 후 player hit·walk/run 입력별 새 FX buffers queued/processed는 다음과 같다.
+
+| 구간 | 일반 새 queued/processed | HD 새 queued/processed | 같은 구간의 양수 sample 제출 ID |
+| --- | --- | --- | --- |
+| pickup | 39/39 | 39/39 | MetalWeaponPickup |
+| drop | 15/15 | 15/15 | MetalWeaponDrop |
+| attack | 177/171 | 182/175 | HammerMissing 2회(원본의 unconditional effect 이름) |
+| hurt | 371/377 | 366/373 | HumanMaleHurtLight, HumanMaleHurtHeavy |
+| walk | 35/35 | 35/35 | WalkOnStone 5회 |
+| run | 53/53 | 53/53 | RunOnStone 7회 |
+
+누적 queued/processed는 실제16-source FX pool의 completion이며 개별 sound ID 완료 횟수로 확대하지 않았다. 이전 구간의 in-flight buffers가 다음 구간에서 처리될 수 있으므로 attack/hurt의 queued/processed 차이를 실패 또는 개별 hurt buffer count로 해석하지 않았다. Meat/Mushroom fixtures의 sound별 증거는 양수 native submission까지이며 해당 fixture에 별도 per-ID drain 계측을 추가했다고 주장하지 않는다. 물리 스피커 청취·모든 world trigger의 acoustic 인증·pixel golden 인증은 아니다.
+
+일반·실제 cgocheck2·race+checkptr2·highres FoodDrop/Pickup 표적검증 actual0과 root/server/legacy 전체 일반·실제 cgocheck2 각42,223 independent leaves(42,209pass/14skip) actual0은 아래 상세 기록과 같다. native 전 clean three-product build/Go1.26.5 metadata/help/verifier 및 native 전후 oracle actual0도 보존한다. 원본1556 files/570653750 bytes·tree SHA `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`·GAME.EXE2951 code/638 data ranges·strict NXZ50 pairs는 그대로다. 최종 문서-only commit 뒤 제품 metadata를 갱신하는 별도 clean rebuild는 native 게임 실행 revision과 구분하며 `final-handoff-<revision>` receipts에 보존한다.
+
+R19의 A6/A7 shared native admission/gain/pan 수정, R20의 stock1,780 full-length real-source replay, R21의 확대 native27개 actual0, R22의 Material word 정정 후 일반/HD6개 actual0을 각각 구분한다. 원본에서 silent인 callbacks/empty definitions는 임의로 sound를 주입하지 않았다. 기존 R21 passive-retreat-food actual2와 old fixedQuest20 golden actual2는 이 성공에 섞지 않고 미해결 gate로 유지한다. FoodDrop/Pickup subclass cached-read order의 별도 원본 계약 차이도 추가 audible stock failure나 이번 수정 완료로 주장하지 않는다. 전체 port goal 완료 선언은 아니다.
+
+검증이 자연 종료한6개 raw logs 총4,534,204,385 bytes는 각 raw bytes/SHA와 gzip 복원 bytes/SHA를 대조한 후 recoverable compressed copies만 남겼다. LIVE logs를 삭제/압축하지 않았고 원본 자산/소스는 삭제하지 않았다. 실제 exits와 독립 native receipt는 `/private/tmp/opennox-food-material-r22.lPdrs4/native-final-independent-audit.json`, 압축 proof는 `native-archives-verified.json`, 표적/full/original proof 및 immutable source/runner/product/stock manifests도 같은 디렉터리에 보존한다. 이 section은 prepend-only이며 앞선 ledger suffix bytes를 유지한다.
+
+
 ## 실제 게임 효과음 확대 감사와 FoodDrop 재질 판정 정정
 
 R21은 clean/pushed `4635b8cbce13fa3a7b52ad31833a6333acddcf25`의 공식 ARM64 일반 제품을 headless/실제 OpenAL null(real sources)로 실행했다. 원래 공개 YAML29개를 byte-identical private copies·fresh Save/config/maps·read-only stock links·unset NOX_E2E_OVERRIDE로 순차 실행했으며 actual game exits는27개0, 두 기존 gate는2다. 정상 종료/실패를 모두 기다린 batch wrapper actual exit1을 보존했다. 실행 전후 source/test/build inputs5,940개·private runners3개·제품3개·stock hashes 대조와 clean worktree가 actual exit0이며 LIVE 중 입력을 편집하지 않았다. R21에서 HD29개를 재실행한 기록은 아니다. R19의 일반/HD 여섯 실제 게임 및 R20의 stock1,780개 full-length native 재생 증거와 구분한다.

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -301,7 +302,19 @@ func monsterCreatureActuallyMove50D3B0(unit *Object, trace func(types.Pointf, ty
 		float32(monsterMoveToRunSpill544440(monsterMoveToRunAddChop53_544434(float64(to.X), -float64(from.X)))),
 		float32(monsterMoveToRunSpill544440(monsterMoveToRunAddChop53_544434(float64(to.Y), -float64(from.Y)))),
 	)
-	direction := DirFromVec(segment)
+	// 0050D549 calls 00509ED0 in the gameplay precision-53 / ToZero
+	// environment. The shared DirFromVec models default nearest-even;
+	// using it here rounds the final 00419A70 FISTP up for some segments.
+	angle := math.Atan2(float64(segment.Y), float64(segment.X))
+	angle = monsterMoveToRunAddChop53_544434(angle, float64(math.Float32frombits(boomDirectionTauBits509ED0)))
+	angle = monsterMoveForceMulChop53_50D4FE(angle, float64(math.Float32frombits(boomDirectionScaleBits509ED0)))
+	angle = monsterMoveToRunAddChop53_544434(angle, float64(math.Float32frombits(boomDirectionHalfBits509ED0)))
+	value := monsterMoveToRunSpill544440(angle)
+	direction := Dir16(0)
+	if value >= -2147483648.0 && value < 2147483648.0 {
+		// The original modulo-256 suffix also maps integer-indefinite to 0.
+		direction = Dir16(uint8(int32(value)))
+	}
 	unit.Direction1 = direction
 	unit.Direction2 = direction
 	speed := float64(unit.SpeedCur)

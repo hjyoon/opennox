@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 이동 방향의 gameplay rounding 복원
+
+R37은 clean/pushed base a398c9b70d3c0b6546844ce73ce5f08de2bde7ad의 retained passive-food를 private observer로 다시 기록한 뒤, 기존 production 본체 한 곳인 monsterCreatureActuallyMove50D3B0의 방향 변환만 수정했다. 변경 전 frame623..628에서 원본 방향22와 native23의 차이가 확인됐고, 힘의 binary32 words·경로 cursor·반환은 이미 일치했다. 공용 DirFromVec의 nearest-even 계약은 그대로 두고 이 호출부만 원본 gameplay precision53/ToZero의 add·multiply·binary32 spill·integer truncation으로 복원했다. 기존 force/RNG/AI action/arrival 로직은 바꾸지 않았다.
+
+변경 전과 후의 fresh Save/config/maps, read-only stock links, headless/mock/noaudio 실행은 각각 frame580..1179의600ticks를 기록했다. 각 실행의 source6,023·공식 products3·private inputs10/11 전후 seal은 불변이다. 변경 후 capture는 수정된 working tree의 별도 diagnostic 제품이지 clean 공식 제품이 아니다. 각각 MoveTo76·SetMovePath76·ActuallyMove45·PathReset31을 unchanged GAME.EXE bytes로 재실행했다. 228entries/55,565instructions/2,368state checks에서 수정 전 차이는 위6frames의 Direction1/2뿐이었으며, 수정 후 strict replay는 관찰한 scalar·full native pointer identity·모든24slot·경로·힘·방향이 일치했다. ray242·detailed path1·movement audio76은 실제 기록의 명시적인 world boundary이며 전체 Windows/world/physics 동등성으로 확대하지 않는다.
+
+새 native 테스트는 수정 전 실제 입력45건의 원본 방향·힘·cursor·false return을 literal로 고정했다. 별도 감사가 두 capture와 원본 결과를 직접 비교하여 이 literal을 확인한다. 단위 테스트는 수정 전6건만 red였고 수정 후 normal/race/HD+checkptr 각각 count3가 actual0, 전체 server actual0, 추가 normal JSON run은1,990test pass records/skip0이었다. 기존 force 기대값은 그대로이며 방향 참고식만 production residual helper를 호출하지 않는 math/big precision53/ToZero로 분리했다. Atan2는 기존 port의 cross-platform approximation을 유지하므로 관찰되지 않은 모든 각도의 x87 transcendental bit-equivalence를 주장하지 않는다.
+
+private range9개의 실제 PE32 bytes/SHA를 별도 Ruby reader로 확인했다. 그중7개는 unchanged public manifest의 exact tuple과 일치하고 can_move/reset_path의 더 넓은2개 window는 private receipt로만 남긴다. public range/manifest는 추가·완화하지 않았다. 원본 GAME.EXE SHA는 0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a다. stock1,556files/570,653,750bytes·public code2,968/data650ranges·strict cnxz의 make oracle-test도 actual0이다. 초기 private import 누락·잘못 옮긴 fixture speed word·audit의 exact-manifest 가정 실패 로그는 보존했고, 최종 원본 입력·기대값·manifest를 고쳐서 성공을 만든 것은 아니다.
+
+/private/tmp/opennox-ai-movement-r37.SwBjlG/independent-movement-audit-2.json SHA는 c7a4b25b8a32d1be177b199ba5328a8fcc66582542296ad0c3805f5cb87cb8c0다. 같은 디렉터리의 before raw capture/replay와 after/original-replay.json을 보존하며 후자 SHA는 eb8786d9078dda44909a1d89bfc6e146ac6289570fc7a8f36b3cbeb27d1c69d4다. 실제 game exit는 전후 모두 기존600tick 소비 timeout/actual2이고 나머지 음식7조건은 미실행이다. retained fixed Quest는 이번에 재실행하지 않았다. aggression·RNG·YAML·golden·wait·timeout을 바꾸지 않았으며 두 retained gate와 전체 port goal은 여전히 미해결/active다. R35의 판매 아이콘·기본 자기 시전6개 성공 실행은 이전 revision의 증거로 유지한다. 이전 ledger suffix는 바이트 그대로 보존하고, 이 기능 revision의 공식 normal/HD/server3제품은 별도 clean handoff build/revision/help 로그로 구별한다.
+
 ## Passive-food 실제 틱의 Refresh·Dependency 원본 대조
 
 R36은 clean/pushed `44a855b326cb75681f28d78a475d5223e32f23a0`에서 이전 미해결 음식 소비 gate의 관찰 범위를 확장했다. 저장소 production/test/YAML/manifest는 수정하지 않고 private Go overlay만 빌드했다. 기존 monster update의 Refresh·Main·Dependency·Start·Action 전후와 기존 CanInteract/TraceRay 호출의 실제 인자·반환을 기록하며, 원래 서비스를 한 번만 호출한다. RNG draw·AI action·game record를 추가하거나 결과를 주입하지 않는다. 이 diagnostic 제품을 공식 clean 제품으로 세지 않는다.

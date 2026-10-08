@@ -119,7 +119,7 @@ func monsterMoveForceAssertNative50D3B0(t *testing.T, unit *Object, update *Mons
 	}
 	wantForce, segment := monsterMoveForceReference50D3B0(unit.PosVec, update.Path[selected], from, to, unit.SpeedCur, multiplier, update.StatusFlags.Has(object.MonStatusRunning))
 	beforeUnit.ForceVec = wantForce
-	beforeUnit.Direction1, beforeUnit.Direction2 = DirFromVec(segment), DirFromVec(segment)
+	beforeUnit.Direction1, beforeUnit.Direction2 = monsterMoveDirectionReference50D3B0(segment), monsterMoveDirectionReference50D3B0(segment)
 	beforeUpdate.Field67 = uint32(selected)
 	*memmap.PtrUint32(0x5D4594, 2386204) = 0xfedcba98
 	calls := 0

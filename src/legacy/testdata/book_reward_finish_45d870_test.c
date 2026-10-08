@@ -50,10 +50,10 @@ static bool nox_xxx_spellHasFlags_424A50(int spell, int flags) {
 
 // The existing receiver casts its boolean result to the legacy void* return
 // type. Keep that unrelated production expression unchanged in this fixture.
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wint-to-pointer-cast"
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
 // PRODUCTION_BOOK_INSERT
-#pragma clang diagnostic pop
+#pragma GCC diagnostic pop
 
 static int nox_float2int(float value) { return (int)value; }
 static int nox_common_randomIntMinMax_415FF0(int min, int max, const char* file, int line) {

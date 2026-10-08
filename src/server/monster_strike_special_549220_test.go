@@ -10,6 +10,7 @@ import (
 	"github.com/opennox/libs/strman"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/common/unit/ai"
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
 
 // The PE pushes literal actions 25, 41, 24, not MOVE_TO (7). Exercise the
@@ -20,7 +21,12 @@ func TestMonsterStrikeSpecial549220GhostNativeStack(t *testing.T) {
 		for _, fps := range []uint32{30, 0x80000001, 0xffffffff} {
 			t.Run(fmt.Sprintf("slots-%d/fps-%08x", slots, fps), func(t *testing.T) {
 				_, unit, update := moveToNativeRetryFixture5443F0(t, ai.ACTION_MELEE_ATTACK)
-				update.MonsterDef = &MonsterDef{MeleeAttackDamage116: 10, MeleeAttackDamageType124: 4, MeleeAttackImpact120: 2}
+				// The update record is C-owned, as in the game. Its definition
+				// must also have a native lifetime before publishing the pointer.
+				def, freeDef := alloc.New(MonsterDef{})
+				t.Cleanup(freeDef)
+				*def = MonsterDef{MeleeAttackDamage116: 10, MeleeAttackDamageType124: 4, MeleeAttackImpact120: 2}
+				update.MonsterDef = def
 				update.AIStackInd = int8(len(update.AIStack) - 1 - slots)
 				update.AIStackHead().Action = 16
 				base := int(update.AIStackInd)

@@ -70,7 +70,7 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 	var index, row, maxTrail int
 	var flags things.SpellFlags
 	sc.addWhen(0, name+" prepare actual award", 1200, func() bool {
-		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_8531A0_2576() != nil && memmap.Uint32(0x5D4594, 1047520) == 0
+		return noxServer.Players.HostUnit() != nil && legacy.Get_dword_8531A0_2576() != nil && legacy.Sub_45D9B0() == 0
 	}, func() {
 		var ok bool
 		before, row, ok = legacy.ClientQuickbarSnapshot()
@@ -116,7 +116,7 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 			maxTrail = trail
 		}
 		entries, _, ok := legacy.ClientQuickbarSnapshot()
-		return ok && index >= 0 && entries[index][0] == uint32(id) && memmap.Uint32(0x5D4594, 1047520) == 0
+		return ok && index >= 0 && entries[index][0] == uint32(id) && legacy.Sub_45D9B0() == 0
 	}, func() {
 		entries, gotRow, ok := legacy.ClientQuickbarSnapshot()
 		want := before
@@ -170,7 +170,7 @@ func (sc *e2eScenario) CheckBookRewardDefault(id spell.ID, toggle bool, name str
 		}
 	})
 	sc.addWhen(0, name+" verify existing manual choice survives repeated award", 1200, func() bool {
-		return legacy.Get_dword_8531A0_2576().SpellLvl[id] == 2 && memmap.Uint32(0x5D4594, 1047520) == 0
+		return legacy.Get_dword_8531A0_2576().SpellLvl[id] == 2 && legacy.Sub_45D9B0() == 0
 	}, func() {
 		entries, _, ok := legacy.ClientQuickbarSnapshot()
 		if !ok || entries != manual {

@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Passive-food 실제 틱의 Refresh·Dependency 원본 대조
+
+R36은 clean/pushed `44a855b326cb75681f28d78a475d5223e32f23a0`에서 이전 미해결 음식 소비 gate의 관찰 범위를 확장했다. 저장소 production/test/YAML/manifest는 수정하지 않고 private Go overlay만 빌드했다. 기존 monster update의 Refresh·Main·Dependency·Start·Action 전후와 기존 CanInteract/TraceRay 호출의 실제 인자·반환을 기록하며, 원래 서비스를 한 번만 호출한다. RNG draw·AI action·game record를 추가하거나 결과를 주입하지 않는다. 이 diagnostic 제품을 공식 clean 제품으로 세지 않는다.
+
+fresh Save/config/maps와 read-only stock links의 headless/mock/noaudio 실행에서 첫 Troll/ascending/RedApple의 frame580..1179, 600ticks/3,000stage snapshots를 기록했다. 실제 종료는 기존600tick 소비 timeout/actual2이며 나머지 음식7조건은 미실행이다. Refresh CanInteract78개, Dependency CanInteract78개·TraceRay78개는 모두 true였고 Action CanInteract2개도 true였다. source6,023·공식 products3·frozen private inputs7의 전후 SHA는 불변이다. 기존 R32 normal의240개 TRACE·20개 TICK 기록도 timestamp와 네 명시적인 ASLR object identity만 재배치하면 모든 수치·행동 payload가 일치했다. 전체 실행의 무관찰 동등성으로 확대하지 않는다.
+
+unchanged GAME.EXE에서 Refresh600건과 Dependency600건, 합계1,200건/89,114instructions를 재실행했다. 234개의 world-service boundary에는 해당 실제 기록의 인자·반환을 순서대로 한 번씩 사용했다. 원본 condition classifier·destroyed-pointer clear·corner clock·PopAction·Reset·empty-idle는 실제 x86 bytes로 실행하며 name/debug/stack printing만 inert output fixture다. 모든24slot의 사용하지 않는 인자까지 포함한 full native pointer identity와 관찰 scalar, RNG index, stack-changed, reference 상태가 일치했다. 실제 읽힌 unit/update 입력에는 누락된 capture field가 없음을 별도 memory-read guard로 검사했다. 원본은 frame655/764에서 Field127가 각각 현재frame과 같아 NOT_CORNERED가 실패하고 stack index7→0으로 내려가는 동일한 결과를 냈다. 이 두 pop을 새 포팅 차이로 해석하지 않는다.
+
+이는 선택된 Refresh/Dependency 경로의 증거이며 Main·Start·Action·physics는 이번 receipt에서 재실행하지 않았다. 원본 world geometry/audio/script body, reset-only 미관찰 필드, 전체 Windows runtime·모든 AI branch의 동등성도 주장하지 않는다. 신규 Dependency1572bytes와 관련 helper 범위의 SHA는 private receipt로만 남겼고 public original range/manifest를 추가하지 않았다. 기존 MOVE_TO Args[2]의 `tracked`를 별도 MovTarget 필드와 혼동하지 않는다.
+
+첫 private 집계의 잘못된 JSON key와 두 restricted-sandbox replay 초기화 actual132도 숨기지 않았다. 후자의 별도 faulthandler 기록은 Unicorn의 mem_map 단계에서 종료됐음을 보여 준다. 승인된 unsandboxed 읽기 전용 replay actual0과 별도 Ruby audit actual0으로 실제 범위·counts·원본 SHA·전후 seal·이전 checkpoint 기록·빈 종료 포트를 확인했다. 원본 GAME.EXE SHA는 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다. `/private/tmp/opennox-ai-lifecycle-r36.qKNngd/independent-lifecycle-audit.json`의 SHA는 `f66ddb9ab40deb79a8a9a114a08256054e47045e6257a4490f7f8ba4871ada7e`이며 원래 실패 로그/전체 capture/raw replay는 같은 private 디렉터리에 보존했다.
+
+R35의 같은44a855b3 공식 normal/HD shop·Wizard·Conjurer6개 headless actual0과 판매 아이콘·기본 자기 시전 검증은 그대로 유지된다. 이번 진단은 그6개 GUI를 재실행한 것이 아니다. passive-food는 여전히 actual2이고 retained fixed Quest는 이번에 재실행하지 않았다. aggression·RNG·golden·wait·timeout·기존 기대값을 바꾸지 않으며 두 retained gate와 전체 port goal은 미해결/active다. 이전 ledger suffix는 바이트 그대로 보존한다. 이후 documentation-only revision의 공식3제품은 별도 handoff build/revision/help 로그로 구별한다.
+
 ## 실제 단축키 입력의 자기/타인 시전과 자연 만료 회귀
 
 R34의 clean/pushed 기능 revision은 `4dd8e74f740c2aa6692d8bc70ebb6568807b6589`다. R33의 판매 아이콘·보상 기본값 수정을 유지하고 실제 키 입력 이후의 시전 경로까지 검증을 확장했다. 변경은 새 Go observer/단위 테스트·두 새 Solo YAML과 기존 `e2eScenario.Load` 한 본체의 dispatch3줄뿐이다. 그3줄을 제외한 기존 dispatcher 바이트가 `03e12a2a1`과 동일하고, 기존 game/server/C 본체·YAML·golden·원본 range/manifest는 바뀌지 않았다. 이 test-only 커밋도 직후 `origin/port/go1.26-multiarch`에 실제 push0을 확인했다.

@@ -2,6 +2,12 @@
 
 기준 소스는 upstream `b184030e76be2b681a7f6d2bcdef52b091d94b9b`, 도구체인은 `go1.26.5`, 원본 데이터 오라클은 `nox-2023-1003-01`이다. 이 문서는 64비트 포팅의 첫 구조체 변경을 재검토할 수 있도록 근거, 배치와 검증 결과를 기록한다.
 
+## 실제 quickbar 시전의 numeric payload와 native queue 관찰
+
+R34는 ABI/시전 production 배치를 새로 바꾸지 않는다. 실제 shortcut 입력으로 만들어지는 `MagicEntityClass.Spells8`은 pointer 배열이 아닌 `[5]int32`이고 `Field48` target mode도 uint32 scalar다. 한 주문 입력은 `[spellID,0,0,0,0]`이며 default self1·real nugget 선택 others0을 관찰한다. 반면 node·`Obj4` player·`Field32` phoneme leaf·`Next52/Prev56`은 native pointer다. 새 read-only observer는 LP64의 실제 node/player/leaf 주소가4GiB 이상임을 요구하고 진행한 leaf와 player `SpellPhonemeLeaf`가 같은지 확인한다. target `Player.Obj3640`도 실제 self/NPC full-width 주소와 대조한다. scalar를 pointer 폭으로 읽거나 target을 fixture에서 주입하지 않는다.
+
+normal/HD 실제 keyboard self/others12cast의 native queue·phoneme 진행·원본 mana debit·server/client target buff·untouched control·25quickbar entries·자연 expiry6건이 통과했다. 기다리는 stock NPC와 서버 book award는 시작 fixture일 뿐이다. 새 AST 검사와 세 native GUI 회귀도 일반/실제 strict CGo·지원 server/highres/race+checkptr2에서 유지됐다. source/products/원본 hash·미확정 최초 HD 종료·확인 재실행·초기 fixture 실패와 한계는 [R34 인벤토리](PORTING-INVENTORY.md#실제-단축키-입력의-자기타인-시전과-자연-만료-회귀)에 기록했다. 기존13word viewport·book scalar tag·numeric quickbar·network protocol 배치는 그대로다.
+
 ## 수량 아이콘 viewport와 주문 보상 scalar tag 폭 분리
 
 `004C0030`의 saved viewport는 `0x5D4594+1319108`부터13개의 PE32 word(52bytes)다. 실제 callback의 native `nox_draw_viewport_t`는13개의 pointer-width 수치(32bit52/64bit104bytes)이며 포인터가 들어 있는 record가 아니다. 따라서 blob 주소를 callback에 그대로 넘기는 대신 C stack record에 각 필드를 복사한다. field10/11만 unsigned DWORD→uintptr, 나머지는 signed DWORD→intptr로 확장한다. native item/draw/window pointers는 full width를 유지하고, callback이 local viewport를 바꾸어도 saved PE32 record나 인접 state를 덮지 않는다.960조건에서 signed/unsigned 경계·다섯 viewport·버튼 overlay·순서·record 보존을 확인했고 실제 normal/HD 구매·판매·수리 아이콘6건의 opaque pixel 일치를 관찰했다.

@@ -59,6 +59,15 @@ NOX_E2E_SEAT=sdl scripts/run-headless-gui-e2e.sh \
 
 Set `NOX_E2E_CLIENT_TARGET=client-hd` to test the HD client. Scripted clicks retain the existing 1024×768 reference-screen coordinates and adapt to canvas size, window scaling, letterboxing, and Retina displays; raw recorded events keep their original coordinates. SDL mode requires the platform's native graphics dependencies and access to the desktop window service. The default test driver disables audio; E2E audio-handle tests do not verify hardware sound playback.
 
+The Solo quickbar scenarios verify the real keyboard-to-incantation path, not just the target-mode indicator:
+
+```sh
+NOX_E2E_SEAT=headless NOX_E2E_AUDIO=mock scripts/run-headless-gui-e2e.sh \
+  /path/to/nox scripts/e2e/solo-wizard-quickbar-buff.yaml /tmp/opennox-quickbar-wizard
+```
+
+Use `solo-conjurer-quickbar-buff.yaml` with a separate output directory for Protection from Poison; the Wizard scenario covers Haste and Protection from Fire. Each uses stock book-award insertion, the default self-target bit, a real nugget click to switch targets, and a real spell shortcut. Observations check incantation progress, one stock mana debit, server/client buffs, HUD mana, an unaffected control NPC, preserved quickbar entries, and natural expiry. The explicit starting fixtures are a book award and two ordinary waiting NPCs; these tests do not inject casts, target pointers, mana, or buff timers. They do not establish all spell damage, movement-speed effects, autonomous combat AI, or hardware audio behavior. See [the verification record](toolchain/PORTING-INVENTORY.md#실제-단축키-입력의-자기타인-시전과-자연-만료-회귀).
+
 To verify real OpenAL playback of the original menu effects, chapter music, and speech, enable audio explicitly:
 
 ```sh

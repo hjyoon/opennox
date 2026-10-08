@@ -27,9 +27,11 @@ func defaultFoodDropNativeDeps4EDE50() foodDropNativeDeps4EDE50 {
 func TestFoodDrop4EDE50NativeLayout(t *testing.T) {
 	wantSubClass := uintptr(12)
 	wantFlags := uintptr(16)
+	wantMaterial := uintptr(24)
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		wantSubClass = 16
 		wantFlags = 20
+		wantMaterial = 28
 	}
 	checks := []struct {
 		name string
@@ -38,8 +40,10 @@ func TestFoodDrop4EDE50NativeLayout(t *testing.T) {
 	}{
 		{"Object.ObjSubClass offset", unsafe.Offsetof(Object{}.ObjSubClass), wantSubClass},
 		{"Object.ObjFlags offset", unsafe.Offsetof(Object{}.ObjFlags), wantFlags},
+		{"Object.Material offset", unsafe.Offsetof(Object{}.Material), wantMaterial},
 		{"Object.ObjSubClass size", unsafe.Sizeof(Object{}.ObjSubClass), 4},
 		{"Object.ObjFlags size", unsafe.Sizeof(Object{}.ObjFlags), 4},
+		{"Object.Material size", unsafe.Sizeof(Object{}.Material), 2},
 		{"Pointf size", unsafe.Sizeof(types.Pointf{}), 8},
 		{"Pointf.X offset", unsafe.Offsetof(types.Pointf{}.X), 0},
 		{"Pointf.Y offset", unsafe.Offsetof(types.Pointf{}.Y), 4},
@@ -53,7 +57,8 @@ func TestFoodDrop4EDE50NativeLayout(t *testing.T) {
 
 func TestFoodDrop4EDE50NativeSoundTableMatchesOracleAndEnums(t *testing.T) {
 	want := [...]foodDropSoundRule4EDE50{
-		{subClassMask: 0, flagsLowMask: uint16(object.FlagBelow), sound: uint16(sound.SoundMeatDrop)},
+		// GAME.EXE 004EDEC8 tests the material WORD at object+24, not flags.
+		{subClassMask: 0, flagsLowMask: uint16(object.MaterialFlesh), sound: uint16(sound.SoundMeatDrop)},
 		{subClassMask: uint32(object.FoodApple), sound: uint16(sound.SoundAppleDrop)},
 		{subClassMask: uint32(object.FoodJug), sound: uint16(sound.SoundPotionDrop)},
 		{subClassMask: uint32(object.FoodMushroom), sound: uint16(sound.SoundShroomDrop)},
@@ -108,20 +113,107 @@ func TestFoodDropNative4EDE50BindsPointersLiveFieldsAndServices(t *testing.T) {
 	}
 }
 
-func TestFoodDropNative4EDE50ReadsLowObjectFlags(t *testing.T) {
-	owner := &Object{}
-	food := &Object{ObjFlags: object.FlagBelow | object.FlagMarked}
-	point := &types.Pointf{}
-	deps := defaultFoodDropNativeDeps4EDE50()
-	deps.defaultDrop = func(*Object, *Object, *types.Pointf) int32 { return -1 }
-	deps.gameFlag = func(uint32) int32 { return 1 }
-	deps.audio = func(id uint32, gotOwner *Object, kind int32, code uint32) {
-		if id != uint32(sound.SoundMeatDrop) || gotOwner != owner || kind != 0 || code != 0 {
-			t.Fatalf("audio args = %d/%p/%d/%08x", id, gotOwner, kind, code)
-		}
+func TestFoodDropNative4EDE50ReadsMaterialNotObjectFlags(t *testing.T) {
+	tests := []struct {
+		name     string
+		material uint16
+		flags    object.Flags
+		subClass object.SubClass
+		want     sound.ID
+	}{
+		{name: "flesh without flag bit", material: uint16(object.MaterialFlesh), want: sound.SoundMeatDrop},
+		{name: "flag bit without flesh", flags: object.FlagBelow | object.FlagMarked},
+		{name: "metal with flag bit", material: uint16(object.MaterialMetal), flags: object.FlagBelow},
+		{name: "high material bit", material: 0x8000, flags: object.FlagBelow},
+		{name: "high and flesh material bits", material: 0x8001, want: sound.SoundMeatDrop},
+		{name: "material precedes apple", material: uint16(object.MaterialFlesh), subClass: object.SubClass(object.FoodApple), want: sound.SoundMeatDrop},
+		{name: "apple ignores flag bit", flags: object.FlagBelow, subClass: object.SubClass(object.FoodApple), want: sound.SoundAppleDrop},
+		{name: "mushroom ignores flag bit", flags: object.FlagBelow, subClass: object.SubClass(object.FoodMushroom), want: sound.SoundShroomDrop},
 	}
-	if got := foodDropNative4EDE50(owner, food, point, deps); got != -1 {
-		t.Fatalf("result = %d, want -1", got)
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			owner := &Object{}
+			food := &Object{Material: tc.material, ObjFlags: tc.flags, ObjSubClass: tc.subClass}
+			point := &types.Pointf{}
+			deps := defaultFoodDropNativeDeps4EDE50()
+			deps.defaultDrop = func(gotOwner, gotFood *Object, gotPoint *types.Pointf) int32 {
+				if gotOwner != owner || gotFood != food || gotPoint != point {
+					t.Fatalf("default args = %p/%p/%p", gotOwner, gotFood, gotPoint)
+				}
+				return -1
+			}
+			deps.gameFlag = func(uint32) int32 { return 1 }
+			calls := 0
+			deps.audio = func(id uint32, gotOwner *Object, kind int32, code uint32) {
+				calls++
+				if id != uint32(tc.want) || gotOwner != owner || kind != 0 || code != 0 {
+					t.Fatalf("audio args = %d/%p/%d/%08x, want sound %d on owner %p", id, gotOwner, kind, code, tc.want, owner)
+				}
+			}
+			if got := foodDropNative4EDE50(owner, food, point, deps); got != -1 {
+				t.Fatalf("result = %d, want -1", got)
+			}
+			wantCalls := 0
+			if tc.want != 0 {
+				wantCalls = 1
+			}
+			if calls != wantCalls {
+				t.Fatalf("audio calls = %d, want exactly %d", calls, wantCalls)
+			}
+		})
+	}
+}
+
+func TestFoodDropNative4EDE50ReadsLiveMaterialAfterDefaultAndDecay(t *testing.T) {
+	for _, phase := range []string{"default", "decay"} {
+		for _, flesh := range []bool{false, true} {
+			t.Run(fmt.Sprintf("%s/flesh=%t", phase, flesh), func(t *testing.T) {
+				owner := &Object{}
+				food := &Object{}
+				if !flesh {
+					food.Material = uint16(object.MaterialFlesh)
+				}
+				mutate := func() {
+					food.Material = 0
+					if flesh {
+						food.Material = uint16(object.MaterialFlesh)
+					}
+				}
+				deps := defaultFoodDropNativeDeps4EDE50()
+				deps.defaultDrop = func(*Object, *Object, *types.Pointf) int32 {
+					if phase == "default" {
+						mutate()
+					}
+					return math.MinInt32
+				}
+				deps.loadGameFPS = func() uint32 { return 30 }
+				deps.setDecay = func(gotFood *Object, delay uint32) {
+					if gotFood != food || delay != 750 {
+						t.Fatalf("decay args = %p/%d", gotFood, delay)
+					}
+					if phase == "decay" {
+						mutate()
+					}
+				}
+				calls := 0
+				deps.audio = func(id uint32, gotOwner *Object, kind int32, code uint32) {
+					calls++
+					if id != uint32(sound.SoundMeatDrop) || gotOwner != owner || kind != 0 || code != 0 {
+						t.Fatalf("audio args = %d/%p/%d/%08x", id, gotOwner, kind, code)
+					}
+				}
+				if got := foodDropNative4EDE50(owner, food, &types.Pointf{}, deps); got != math.MinInt32 {
+					t.Fatalf("result = %d, want full-width noncanonical success", got)
+				}
+				wantCalls := 0
+				if flesh {
+					wantCalls = 1
+				}
+				if calls != wantCalls {
+					t.Fatalf("audio calls = %d, want exactly %d", calls, wantCalls)
+				}
+			})
+		}
 	}
 }
 

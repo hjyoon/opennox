@@ -53,7 +53,9 @@ func foodDropNative4EDE50(
 			return foodDropSoundRules4EDE50[row].flagsLowMask
 		},
 		loadFlagsLow: func(food *Object) uint16 {
-			return uint16(food.ObjFlags)
+			// The legacy hook name denotes the WORD tested at object+24 in
+			// GAME.EXE 004EDEC8. That field is Material, not ObjFlags.
+			return food.Material
 		},
 		audio: deps.audio,
 	})

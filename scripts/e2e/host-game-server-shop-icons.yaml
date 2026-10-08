@@ -1,0 +1,276 @@
+# Real server buy, sell, and repair; read-only icon checks against live frames.
+# Quote/gold/inventory assertions retain the existing server-shop scenario.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: open-server-shop-fixture
+    item: RedPotion
+    count: 3
+    name: create merchant and send client shop request
+  - action: wait
+    dt: 60
+    name: process server shop start and client packet
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 3
+    name: verify native server shop session
+  - action: assert-shop
+    active: true
+    mode: 1
+    count: 3
+    name: verify server-started client shop
+  - action: screen
+    name: host game server shop
+  - action: click
+    x: 786
+    y: 665
+    name: select server shop buy mode
+  - action: wait
+    dt: 10
+    name: settle server shop buy mode
+  - action: assert-shop
+    active: true
+    mode: 2
+    count: 3
+    name: verify server shop buy action
+  - action: screen
+    name: host game server shop buy mode
+  - action: assert-inventory-count
+    item: RedPotion
+    count: 0
+    name: verify inventory before purchase
+  - action: set-player-gold
+    gold: 100
+    name: fund actual server purchase
+  - action: wait
+    dt: 20
+    name: receive server gold report
+  - action: assert-player-gold
+    gold: 100
+    name: verify server and client purchase funds
+  - action: click
+    x: 418
+    y: 684
+    name: select server shop potion
+  - action: wait
+    dt: 20
+    name: settle server shop amount dialog
+  - action: assert-item-amount
+    amount: 1
+    max: 2
+    name: verify gold-limited purchase amount
+  - action: assert-item-amount-icon
+    item: RedPotion
+    name: verify gold-limited purchase amount rendered item silhouette
+  - action: click-item-amount-accept
+    x: -1
+    y: 1
+    name: accept one server shop potion
+  - action: wait
+    dt: 60
+    name: process native server purchase
+  - action: assert-item-amount-closed
+    name: verify purchase amount dialog closed
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 2
+    name: verify server shop item removal
+  - action: assert-shop
+    active: true
+    mode: 2
+    count: 2
+    name: verify client shop item removal
+  - action: assert-inventory-count
+    item: RedPotion
+    count: 1
+    name: verify purchased server inventory object
+  - action: assert-player-gold
+    gold: 60
+    name: verify purchase gold subtraction
+  - action: screen
+    name: host game server shop purchased
+  - action: click
+    x: 786
+    y: 695
+    name: select server shop sell mode
+  - action: wait
+    dt: 10
+    name: settle server shop sell mode
+  - action: assert-shop
+    active: true
+    mode: 3
+    count: 2
+    name: verify server shop sell action
+  - action: click-inventory-item
+    item: RedPotion
+    name: quote purchased potion sale
+  - action: wait
+    dt: 30
+    name: receive native server sell quote
+  - action: assert-item-amount
+    amount: 1
+    max: 1
+    price: 40
+    name: verify native server sell quote
+  - action: assert-item-amount-icon
+    item: RedPotion
+    name: verify native server sell quote rendered item silhouette
+  - action: screen
+    name: host game server shop sell quote
+  - action: click-item-amount-accept
+    name: accept purchased potion sale
+  - action: wait
+    dt: 60
+    name: process native server sale
+  - action: assert-item-amount-closed
+    name: verify sell amount dialog closed
+  - action: assert-inventory-count
+    item: RedPotion
+    count: 0
+    name: verify sold item left server and client inventory
+  - action: assert-player-gold
+    gold: 100
+    name: verify native sale gold addition
+  - action: assert-server-shop
+    active: true
+    item: RedPotion
+    count: 2
+    name: verify sale preserved server merchant stock
+  - action: assert-shop
+    active: true
+    mode: 3
+    count: 2
+    name: verify sale preserved client merchant stock
+  - action: screen
+    name: host game server shop sold
+  - action: damage-inventory-item
+    item: Longsword
+    health: 160
+    name: damage real inventory weapon for repair
+  - action: wait
+    dt: 20
+    name: receive damaged item health report
+  - action: assert-inventory-health
+    item: Longsword
+    health: 160
+    name: verify damaged weapon on server and client
+  - action: click
+    x: 786
+    y: 723
+    name: select server shop repair mode
+  - action: wait
+    dt: 10
+    name: settle server shop repair mode
+  - action: assert-shop
+    active: true
+    mode: 4
+    count: 2
+    name: verify server shop repair action
+  - action: click-inventory-item
+    item: Longsword
+    name: quote damaged longsword repair
+  - action: wait
+    dt: 30
+    name: receive native server repair quote
+  - action: assert-item-amount
+    amount: 1
+    max: 1
+    price: 50
+    name: verify native server repair quote
+  - action: assert-item-amount-icon
+    item: Longsword
+    name: verify native server repair quote rendered item silhouette
+  - action: screen
+    name: host game server shop repair quote
+  - action: click-item-amount-accept
+    name: accept damaged longsword repair
+  - action: wait
+    dt: 60
+    name: process native server repair
+  - action: assert-item-amount-closed
+    name: verify repair amount dialog closed
+  - action: assert-inventory-health
+    item: Longsword
+    full: true
+    name: verify repaired weapon on server and client
+  - action: assert-player-gold
+    gold: 50
+    name: verify native repair gold subtraction
+  - action: screen
+    name: host game server shop repaired
+  - action: click
+    x: 786
+    y: 752
+    name: send actual server shop exit
+  - action: wait
+    dt: 60
+    name: process server exit and close acknowledgement
+  - action: assert-server-shop
+    active: false
+    name: verify native server session release
+  - action: assert-shop
+    active: false
+    mode: 0
+    count: 0
+    name: verify server close acknowledgement
+  - action: quit
+    dt: 1

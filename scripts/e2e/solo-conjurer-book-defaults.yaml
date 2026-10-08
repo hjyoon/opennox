@@ -1,0 +1,87 @@
+# Natural Solo book rewards, original 0x600 defaults, real manual toggles,
+# repeated awards, and preservation of every other quickbar entry.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept conjurer class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept conjurer color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: screen
+    name: conjurer chapter one before click
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss conjurer chapter one briefing
+  - action: wait
+    dt: 20
+    name: observe conjurer transition start
+  - action: screen
+    name: conjurer chapter one click plus 20 ticks
+  - action: wait
+    dt: 100
+    name: observe conjurer transition completion
+  - action: screen
+    name: conjurer chapter one click plus 120 ticks
+  - action: wait
+    dt: 500
+    name: settle conjurer gameplay
+  - action: screen
+    name: conjurer gameplay after chapter one click
+  - action: click-npc-dialog-done
+    name: dismiss conjurer opening dialog
+  - action: wait
+    dt: 60
+    name: settle after conjurer opening dialog
+  - action: check-book-reward-default
+    spell: 36
+    active: true
+    name: conjurer Haste book default
+  - action: check-book-reward-default
+    spell: 64
+    active: true
+    name: conjurer Protection from Poison book default
+  - action: check-book-reward-default
+    spell: 41
+    active: false
+    name: conjurer Lesser Heal book default
+  - action: check-book-reward-default
+    spell: 60
+    active: false
+    name: conjurer Poison book default
+  - action: screen
+    name: conjurer natural book defaults and manual preferences
+  - action: quit
+    dt: 1

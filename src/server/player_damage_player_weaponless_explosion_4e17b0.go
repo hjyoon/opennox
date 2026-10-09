@@ -158,8 +158,10 @@ func playerDamagePlayerWeaponlessExplosionTail4E17B0(
 	reject := func(reason string) (bool, bool) {
 		return playerDamageUnsupported4E17B0(r, reason, target, source, nil, damage, typ)
 	}
+	worldExplosion := playerDamageWorldExplosionShape4E17B0(source, nil, typ)
 	if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil ||
-		!playerDamagePlayerWeaponlessExplosionShape4E17B0(source, nil, typ) || (source != nil && source.UpdateData == nil) {
+		(!worldExplosion && !playerDamagePlayerWeaponlessExplosionShape4E17B0(source, nil, typ)) ||
+		(!worldExplosion && source != nil && source.UpdateData == nil) {
 		return reject("unsupported live weapon-less EXPLOSION armor/carry record")
 	}
 	if !playerDamageArmorReady4E17B0(target, r) {

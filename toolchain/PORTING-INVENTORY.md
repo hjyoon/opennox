@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 레벨업·새 스펠·Oblivion 무기 업그레이드의 일시정지 프레임 제한
+
+R54는 레벨업, 새 스펠 습득 및 SetHalberd의 네 stock Oblivion 업그레이드 중 FPS가 갑자기 증가하는 경로를 검사했다. 실제 GamePause는 server.Frame을 멈추지만 렌더링은 계속한다. 기존 host/client/Flag29 동기화 분기는 멈춘 simulation frame의 nox_ticks_getNext deadline을 사용하여 wait가 0이 됐다. `5b13f138d`는 `(*Client).mainloopFrameLimit` 한 본체에서 GamePause 동안 기존 server.RateWait의 독립 렌더 제한을 적용한다. EnginePause의 기존 catchup, 평상시 frame 동기화, limiter 비활성화와 다른 topology의 계약은 유지한다. GamePause와 EnginePause를 동일한 상태로 취급하지 않는다.
+
+고정 독립 platform clock과 실제 Go timer를 사용한 수정 전 회귀는 actual1이며 paused iteration이 수십 ns에 끝나는 현상을 재현했다. 수정 후 일반·공식 highres·server strict cgocheck2 count3는 모두 actual0이고, 반복 paused iteration은 약33.4..35.4ms 기다리며 Frame480은 불변이다. stale EnginePause, 자연 재개 후 원래 catchup, 비활성화 및 네 topology를 포함한다. 새 테스트12개 identity와 live E2E 관찰기12개 identity만 추가했으며 기존 테스트는 바꾸지 않았다.
+
+`8000ad870`의 새 `solo-wizard-award-frame-pacing.yaml`은 untouched Wiz01a의 실제 SoloWizard host/client 렌더 경로에서 original XPTable/plyrGiveExp를 통한 level1→2, stock Haste spellGrant/book/quickbar 자기시전 기본값, SetHalberd0..3의 OblivionHalberd·Heart·Wierdling·Orb pickup/auto-equip을 관찰한다. registration의 기존 본체는 Load 하나만 변경한다. E2E의 인위적 slow delay를 제거하고 실제 limiter를 켠 뒤, 실제 Time.Now wall time·DrawCnt·simulation Frame·위치·PauseFX를15 live iteration 동안 비교한다. observer에 Sleep/RateWait를 넣거나 frame/timer/pause/HP/packet 결과를 주입하지 않는다. 보상 입력은 명시적 fixture이며 자연 PauseFX 완료와 필요한 실제 B 입력 뒤 게임 Frame이12 이상 진행되는 것을 별도로 확인한다. 모든 phase 뒤 원래 limiter/slow 설정을 복원한다.
+
+clean 기능 revision의 일반 및 실제 HD headless/mock는 각각 terminal actual0이다. 두 lane의 여섯 보상 모두15 draw/15 iteration, 실제731..780ms, 약19.2..20.5FPS, 일시정지 중 Frame/위치 불변 및 자연 resume를 통과했다. 이는 headless renderer의 측정값이지 물리 화면의 정확한30FPS 인증이 아니다. 실제 HD는 NOX_E2E_CLIENT_TARGET=client-hd, 공식 -tags highres 및 opennox-hd로 확인했다. 최초 E2E preflight의 missing import compile actual1은 timer red와 구분하며 import 수정 후 strict preflight actual0이다. 기존 YAML/golden과 production award/AI/RNG/cooldown은 불변이다.
+
+repository/private YAML SHA는 `d48ea60edf170fd61385d6cf1551b32aedb0fc7ffbf22d7b47683724bb2e9155`로 동일하고 Screen은 private YAML 옆에만 생성했다. 두 GUI 전후와 최종 테스트 후 source6105파일/83416325bytes/tree `01e714b87696b748bb3aba05eb267b601f5ba8b7bb5550742129eba1a4bce019`, GUI stock1562파일/571159691bytes/tree `4b811dec1a7d92d95d83e95569a7610fe854d6e63e3d8464c12ab8eaadd3250a`가 동일하다. 실제 GUI terminal 종료 뒤에만 다음 source/build-input/git 변경을 수행했다. normal의 실제 level/book/Orb PNG도 확인했으나 Windows 픽셀 동등성으로 확대하지 않는다.
+
+최종 고정 Go1.26.5·GOEXPERIMENT=cgocheck2 count1 전체 일반·highres는 각각 actual0/test pass48109/skip34/package pass37, server는 actual0/test pass47600/skip7/package pass35다. 별도20 no-test package는 test skip에 넣지 않는다. R53의 기존 pass/skip identity 전부와 신규24개를 multiset으로 확인했고 기존 세 nonzero ASLR 이름만 정규화하며 고정0x0 이름은 유지했다. strict race/checkptr count3와 clean8000ad870의 공식 Darwin ARM64 일반·HD·server build84.6초, metadata verify 및 세 help도 실제 terminal actual0이다. 이후 documentation-only revision과 구별한다. 각 기능 commit 직후 push actual0을 확인했다.
+
+이전 ledger2823347bytes/SHA `ab8116fa5da1245aa0861a2a2eaa9e835831f2642d03ebb916f098c610f23b8b`를 이 prepend 뒤 byte-exact 보존한다. stock/oracle ranges·개인 Save/config는 변경하지 않았고 retained passive-food/fixed Quest gate와 전체 port goal은 active다. 이는 해당 보상 렌더 제한의 macOS ARM64 증거이며 모든 campaign·remote topology·Linux runtime·물리 음향의 인증이 아니다. 새 monsterActionRefresh50A910 크래시는 다음 별도 수정으로 진행한다.
+
 ## 플라즈마 지속 스펠의 native64 크래시와 충전·광선 수명주기
 
 R53은 spell59/PLASMA의 stock OblivionOrb에서 duration create callback이 caster 고주소를 PE32로 잘라 `addr=0x193793d8`을 읽던 보고 경로를 검사했다. `301c04d16`·`8addb19c1`·`d393e87b7`는 각각 `callCreate4FEBA0`·`callUpdate4FEEF0`·`callDestroy4FEDA0` 한 본체에서 해당 원본 callback을 native-width 구현으로 연결하고, `45a1f65a1`는 Free 한 본체에서 weapon/ray sidecar를 정리한다. 기존 scalar·signature·selector와 RNG 및 대상 획득/충전 계약은 유지한다. sealed GAME.EXE의 create/update/destroy 및 이동 취소 disassembly를 대조했으며 이를 실제 Linux 실행 또는 Unicorn Plasma replay로 세지 않는다.

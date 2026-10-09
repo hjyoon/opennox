@@ -214,22 +214,23 @@ func npcNormalizeEquipped52BA70(obj *server.Object) {
 	}
 }
 
-// npcRestoreEquipped52ADE0 restores the synchronized NPC appearance without
-// placing a native pointer in the original PE32 Field516 slot. The inventory
-// links and equipped flags remain native-width state.
+// npcRestoreEquipped52ADE0 replays the original equip operations, restoring
+// clothing's NoAutoDrop flag, armor value, engage effects, and appearance.
+// The native equip helpers never narrow inventory or update-data pointers.
 func npcRestoreEquipped52ADE0(obj *server.Object) {
 	if obj == nil || obj.UpdateData == nil {
 		return
 	}
-	ud := obj.UpdateDataMonster()
-	ud.WeaponEquipFlags = 0
-	ud.ArmorEquipFlags = 0
 	for item := obj.InvFirstItem; item != nil; item = item.InvNextItem {
 		if !item.ObjFlags.Has(object.FlagEquipped) {
 			continue
 		}
-		if uint8(obj.ObjSubClass)&0x10 != 0 {
-			obj.SetNPCItemEquipFlags(item, true, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
+		class := item.ObjClass
+		item.ObjFlags &^= object.FlagEquipped
+		if class.HasAny(object.ClassWeapon | object.ClassWand) {
+			npcWeaponEquipNative53A2C0(obj, item)
+		} else {
+			npcArmorEquipNative53E520(obj, item)
 		}
 	}
 }

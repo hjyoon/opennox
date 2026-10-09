@@ -8,6 +8,7 @@ import (
 
 	"github.com/opennox/libs/object"
 
+	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -63,6 +64,7 @@ func TestNPCNormalizeEquipped52BA70(t *testing.T) {
 }
 
 func TestNPCRestoreEquipped52ADE0(t *testing.T) {
+	srv := npcRestoreTestServer52ADE0(t)
 	oldWeaponFlags := objectNPCWeaponEquipFlags
 	oldArmorFlags := objectNPCArmorEquipFlags
 	defer func() {
@@ -82,26 +84,43 @@ func TestNPCRestoreEquipped52ADE0(t *testing.T) {
 		return 0x34
 	}
 
-	ud := &server.MonsterUpdateData{WeaponEquipFlags: 0xffffffff, ArmorEquipFlags: 0xffffffff}
-	weapon := &server.Object{ObjClass: object.ClassWeapon, ObjFlags: object.FlagEquipped}
-	armor := &server.Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped}
-	ignored := &server.Object{ObjClass: object.ClassFood}
+	ud, freeUD := alloc.New(server.MonsterUpdateData{})
+	*ud = server.MonsterUpdateData{
+		WeaponEquipFlags: 0x80000000, ArmorEquipFlags: 0x80000000,
+		Field516: 0x12345678, Field517: 0x11223344,
+	}
+	attrs, freeAttrs := alloc.New(server.ModifierInitData{})
+	t.Cleanup(freeUD)
+	t.Cleanup(freeAttrs)
+	weapon := npcRestoreTestObject52ADE0(t)
+	weapon.ObjClass, weapon.ObjSubClass, weapon.ObjFlags = object.ClassWeapon, object.SubClass(object.WeaponBow), object.FlagEquipped
+	weapon.InitData = unsafe.Pointer(attrs)
+	armor := npcRestoreTestObject52ADE0(t)
+	armor.ObjClass, armor.ObjSubClass, armor.ObjFlags = object.ClassArmor, object.SubClass(object.ArmorBreastplate), object.FlagEquipped
+	armor.TypeInd, armor.InitData = uint16(srv.Types.IndByID("LeatherArmor")), unsafe.Pointer(attrs)
+	ignored := npcRestoreTestObject52ADE0(t)
+	ignored.ObjClass = object.ClassFood
 	weapon.InvNextItem = armor
 	armor.InvNextItem = ignored
-	owner := &server.Object{
+	owner := npcRestoreTestObject52ADE0(t)
+	*owner = server.Object{
 		ObjClass:     object.ClassMonster | object.ClassClientPersist,
 		ObjSubClass:  0x10,
 		InvFirstItem: weapon,
 		UpdateData:   unsafe.Pointer(ud),
 	}
+	weapon.InvHolder, armor.InvHolder, ignored.InvHolder = owner, owner, owner
 
 	npcRestoreEquipped52ADE0(owner)
 
-	if ud.WeaponEquipFlags != 0x12 || ud.ArmorEquipFlags != 0x34 {
-		t.Fatalf("appearance flags = (%#x, %#x), want (0x12, 0x34)", ud.WeaponEquipFlags, ud.ArmorEquipFlags)
+	if ud.WeaponEquipFlags != 0x80000012 || ud.ArmorEquipFlags != 0x80000034 {
+		t.Fatalf("appearance flags = (%#x, %#x), want original equip OR updates (0x80000012, 0x80000034)", ud.WeaponEquipFlags, ud.ArmorEquipFlags)
 	}
 	if !weapon.ObjFlags.Has(object.FlagEquipped) || !armor.ObjFlags.Has(object.FlagEquipped) {
 		t.Fatal("restore changed inventory equipped flags")
+	}
+	if unsafe.Sizeof(uintptr(0)) == 8 && ud.Field516 != 0 || ud.Field517 != 0x11223300 {
+		t.Fatalf("weapon restoration did not run native equip: compatibility=%#x animation=%#x", ud.Field516, ud.Field517)
 	}
 }
 

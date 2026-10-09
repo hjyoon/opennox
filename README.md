@@ -72,6 +72,8 @@ Use `solo-conjurer-quickbar-buff.yaml` with a separate output directory for Prot
 
 `host-game-trap-projectile-damage.yaml` checks stock ArrowTrap1/2, Skull1..4 and Polyp against players, monsters and NPCs (21 cases). `solo-wizard-chapter8-tower-damage.yaml` checks all three victims against the untouched Wiz08e Force of Nature timer. Both use the same headless/mock wrapper and observe natural launches/collisions, server/client damage and the cloud's first poison tick. Victim placement, durable HP and waiting AI are fixtures; projectile/cast/damage/network outputs are not injected. See [the verification record](toolchain/PORTING-INVENTORY.md#arrowtrapskullpolyp와-원본-챕터8-force-of-nature-피해) for the precise limits.
 
+`host-warrior-switch-visual.yaml` checks six on/off transitions of an original G_Crypts Spike, both secret-wall diagonals through repeated opening/closing and minimap reopening, and ordinary wall creation/deletion/pool reuse. Normal map-script enable calls and wall APIs supply inputs; the live network frame, stock SlaveDraw and actual C minimap raster supply results. The observer's position, minimap zoom and three temporary empty-grid walls are explicit fixtures; client frames/packets, secret-wall states and expected pixels are not injected. Normal and HD headless/mock runs each passed six Spike checks and 50 minimap pixel checks. This does not establish every map, remote-client topology, Windows pixel equivalence or hardware audio. See [the verification record](toolchain/PORTING-INVENTORY.md#스파이크-onoff-외형과-벽-미니맵-수명주기).
+
 To verify real OpenAL playback of the original menu effects, chapter music, and speech, enable audio explicitly:
 
 ```sh

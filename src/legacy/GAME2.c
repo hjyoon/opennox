@@ -6514,11 +6514,13 @@ int sub_460B90(int a1) {
 	void* trap_data = getMemAt(0x5D4594, 1047940);
 	int trap_hidden = !a1 || !dword_5d4594_1049484;
 	nox_window_set_hidden(nox_quickbar_root(trap_data), trap_hidden);
-	for (int i = 0; i < 3; ++i) {
-		nox_window_set_hidden(nox_quickbar_button(trap_data, i), trap_hidden);
-		nox_window_set_hidden(nox_quickbar_nugget(trap_data, i), trap_hidden);
-	}
 	if (a1 && dword_5d4594_1049484) {
+		// Hiding the root hides the tray; opening it later only shows the root.
+		// Preserve the children's visibility while the HUD or tray is closed.
+		for (int i = 0; i < 3; ++i) {
+			nox_window_set_hidden(nox_quickbar_button(trap_data, i), 0);
+			nox_window_set_hidden(nox_quickbar_nugget(trap_data, i), 0);
+		}
 		nox_window_set_hidden(dword_5d4594_1049512, 1);
 	}
 	return 1;

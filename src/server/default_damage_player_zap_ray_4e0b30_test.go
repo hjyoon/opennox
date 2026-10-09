@@ -487,14 +487,17 @@ func TestDefaultDamageWorld4E0B30PlayerZapRayEarlyGatesAndBoundary(t *testing.T)
 			}
 		})
 	}
-	for _, invalid := range []string{"nil source", "nil ray", "distinct world", "nil source update", "source weapon", "no simple", "no immobile", "ray weapon", "ray wand", "ray missile", "ray unit", "wrong type", "nil target update", "nil health"} {
+	for _, invalid := range []string{"nil source", "nil ray with world source", "distinct world", "nil source update", "source weapon", "no simple", "no immobile", "ray weapon", "ray wand", "ray missile", "ray unit", "wrong type", "nil target update", "nil health"} {
 		t.Run("boundary/"+invalid, func(t *testing.T) {
 			target, source, ray := defaultDamagePlayerZapRayFixture4E0B30(t, "Player")
 			typ := object.DamageZapRay
 			switch invalid {
 			case "nil source":
 				source = nil
-			case "nil ray":
+			case "nil ray with world source":
+				// A terminal unit with no weapon is Death Ray, now restored.
+				// A separate non-unit world source remains outside that slice.
+				source = &Object{ObjClass: object.ClassSimple}
 				ray = nil
 			case "distinct world":
 				source = &Object{ObjClass: object.ClassSimple}

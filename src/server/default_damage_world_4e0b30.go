@@ -155,6 +155,7 @@ func (s *Server) DefaultDamageFieldGuide4E0B30(source, target *Object, damage in
 // ELECTRIC/AIRBORNE_ELECTRIC tails used by Shock Glyphs, plus SIMPLE|IMMOBILE
 // ZAP_RAY (including stock SentryGlobe) against monsters/NPCs
 // and weapon-less unit/source-less EXPLOSION (including Meteor) against units,
+// and weapon-less raw MANA_BOMB/ZAP_RAY (including Mana Bomb/Death Ray),
 // plus SIMPLE|DANGEROUS world POISON (including ToxicCloud) against monsters,
 // and non-weapon caster IMPACT (including Earthquake) against units/world objects
 // from GAME.EXE 004E0B30
@@ -270,6 +271,11 @@ func DefaultDamageWorld4E0B30(
 	playerWeaponlessExplosion := target.Class().Has(object.ClassPlayer) && weapon == nil && typ == object.DamageExplosion &&
 		(worldExplosion || source == nil || (source.UpdateData != nil && source.Class().HasAny(object.MaskUnits) &&
 			!source.Class().HasAny(object.ClassMissile|object.ClassWeapon|object.ClassWand)))
+	// Death Ray (16) and Mana Bomb (15) enter the ordinary signed raw tail,
+	// not fire/electric protection. Nil weapons skip the second melee enemy
+	// query and Shock, but retain the campaign owner gate and late defense.
+	weaponlessRawSpell := playerDamageWeaponlessRawSpellShape4E17B0(source, weapon, typ) &&
+		(source == nil || source.Class() == 0 || source.UpdateData != nil)
 	// 0053D8C0 supplies the terminal owner, including a class-zero
 	// ImaginaryCaster or the cloud itself. Do not require a unit source or a
 	// particular type ID. Stock ToxicCloud is OBSTACLE|LIGHT|DANGEROUS|
@@ -278,7 +284,7 @@ func DefaultDamageWorld4E0B30(
 	monsterCloudPoison := monsterUpdate != nil && typ == object.DamagePoison && weapon != nil &&
 		weapon.Class().Has(object.ClassSimple) && weapon.Class().Has(object.ClassDangerous) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile)
-	playerTail := playerElectric || playerWeaponlessExplosion || ((worldImpale || missilePierce || missileFlame || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
+	playerTail := playerElectric || playerWeaponlessExplosion || ((weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
 	if playerTail && !casterImpact {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -453,6 +459,11 @@ func DefaultDamageWorld4E0B30(
 		(runtime.BuffOff == nil || (source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)))) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing weapon-less player EXPLOSION tail service", target, source, weapon, damage, typ)
 	}
+	if weaponlessRawSpell && target.Class().HasAny(object.MaskUnits) && (runtime.DamageClear == nil ||
+		(playerTail && runtime.PlayerSetState == nil) || (source != nil && (runtime.BuffOff == nil ||
+		(source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)))) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing weapon-less raw spell tail service", target, source, weapon, damage, typ)
+	}
 	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
 		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
@@ -514,7 +525,7 @@ func DefaultDamageWorld4E0B30(
 			weapon == source && typ == object.DamageBite
 		// Armed NPCs and ordinary monster/player targets share the restored
 		// ordinaryMelee path, including WAND melee and the Hammer exception.
-		if !ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !worldFlame && !worldImpale && !monsterWorldLava && !monsterCloudPoison && !monsterElectric && !monsterWeaponlessExplosion && !sourceLessMonsterBlade && !sourceLessMonsterPoison && !monsterWeaponCrush && !playerCharge && !zapRay {
+		if !ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !playerMelee && !monsterBite && !missileDamage && !worldFlame && !worldImpale && !monsterWorldLava && !monsterCloudPoison && !monsterElectric && !monsterWeaponlessExplosion && !weaponlessRawSpell && !sourceLessMonsterBlade && !sourceLessMonsterPoison && !monsterWeaponCrush && !playerCharge && !zapRay {
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
@@ -529,7 +540,7 @@ func DefaultDamageWorld4E0B30(
 		// (004E1400 is false).
 		// The earlier campaign owner gate still applies to a friendly charge.
 		// A weapon-less explosion never enters that second melee gate.
-		if source != nil && !ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !missileDamage && !worldFlame && !worldImpale && !monsterCloudPoison && !monsterWeaponlessExplosion && !playerCharge && !unitSelfWeaponElectric && !zapRay && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		if source != nil && !ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !missileDamage && !worldFlame && !worldImpale && !monsterCloudPoison && !monsterWeaponlessExplosion && !weaponlessRawSpell && !playerCharge && !unitSelfWeaponElectric && !zapRay && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 	}
@@ -629,7 +640,7 @@ func DefaultDamageWorld4E0B30(
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
 	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
-		!ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !missileDamage && !worldFlame && !worldImpale && !monsterWorldLava && !monsterCloudPoison && !nonUnit && !monsterElectric && !monsterWeaponlessExplosion && !sourceLessMonsterPoison && !playerTail && !monsterWeaponCrush && !playerCharge && !zapRay {
+		!ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !missileDamage && !worldFlame && !worldImpale && !monsterWorldLava && !monsterCloudPoison && !nonUnit && !monsterElectric && !monsterWeaponlessExplosion && !weaponlessRawSpell && !sourceLessMonsterPoison && !playerTail && !monsterWeaponCrush && !playerCharge && !zapRay {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)
 	}
 	fireProtected := typ == object.DamageFlame || typ == object.DamageLava || typ == object.DamageExplosion

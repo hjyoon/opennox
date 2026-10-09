@@ -288,14 +288,16 @@ func TestDefaultDamageWorld4E0B30ZapRayMissingServices(t *testing.T) {
 }
 
 func TestDefaultDamageWorld4E0B30ZapRayKeepsShapeBoundary(t *testing.T) {
-	for _, invalid := range []string{"nil source", "nil ray", "distinct world source", "nil unit update", "mixed source weapon", "no simple", "no immobile", "weapon ray", "wand ray", "missile ray", "unit ray", "wrong type", "player without update"} {
+	for _, invalid := range []string{"nil source", "nil ray with world source", "distinct world source", "nil unit update", "mixed source weapon", "no simple", "no immobile", "weapon ray", "wand ray", "missile ray", "unit ray", "wrong type", "player without update"} {
 		t.Run(invalid, func(t *testing.T) {
 			target, source, ray := defaultDamageZapRayFixture4E0B30(t, "Player", 0x202)
 			typ := object.DamageZapRay
 			switch invalid {
 			case "nil source":
 				source = nil
-			case "nil ray":
+			case "nil ray with world source":
+				// Weaponless terminal units use Death Ray's restored raw tail.
+				source = &Object{ObjClass: object.ClassSimple}
 				ray = nil
 			case "distinct world source":
 				source = &Object{ObjClass: object.ClassImmobile}

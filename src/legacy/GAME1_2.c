@@ -1922,94 +1922,54 @@ void sub_42ABF0(int a1, int a2, int a3) {
 
 //----- (0042AC50) --------------------------------------------------------
 uint8_t* sub_42AC50(uint8_t* a1, size_t* a2) {
-	size_t* v2;        // esi
-	void* v3;          // ebp
-	size_t v4;         // ecx
-	uint8_t* v5;       // edi
-	uint8_t* result;   // eax
-	time_t v7;         // eax
-	int v8;            // ebx
-	u_long v9;         // eax
-	time_t v10;        // eax
-	unsigned char v11; // al
-	int v12;           // ebp
-	int v13;           // ecx
-	uint8_t* v14;      // edx
-	int v15;           // ebx
-	char v16;          // al
-	int v17;           // [esp-Ch] [ebp-28h]
-	void* v18;         // [esp-8h] [ebp-24h]
-	time_t v19;        // [esp+Ch] [ebp-10h]
-	void* lpMem;       // [esp+10h] [ebp-Ch]
-	int v21;           // [esp+14h] [ebp-8h]
-	u_long v22;        // [esp+18h] [ebp-4h]
-	float v23;         // [esp+24h] [ebp+8h]
-	unsigned char v24; // [esp+24h] [ebp+8h]
-
-	v2 = a2;
-	v19 = 0;
-	v3 = calloc(1, *a2);
-	v4 = *a2 + 5;
-	lpMem = v3;
-	v5 = calloc(1, v4);
-	if ((int)*a2 >= 15) {
-		v7 = time(0);
-		v8 = v7;
-		if (v7 > 0) {
-			v8 = -v7;
-		}
-		v9 = htonl(v8);
-		v17 = *a2;
-		v22 = v9;
-		sub_42ABF0((int)v3, v17, v8);
-		v10 = time(0);
-		v19 = v10;
-		if (v10 > 0) {
-			v19 = -v10;
-		}
-		if ((int)*a2 >= 241) {
-			v23 = 241.0;
-		} else {
-			v23 = (double)(int)(*a2 - 14);
-		}
-		v11 = (unsigned long long)(long long)(sub_42AAA0(&v19) * v23) + 10;
-		v12 = 0;
-		v13 = 0;
-		v24 = v11;
-		if ((int)*v2 > 0) {
-			v21 = v11;
-			v14 = a1;
-			v15 = (uint8_t*)lpMem - a1;
-			while (1) {
-				if (v13 == 5) {
-					v5[5] = v11;
-					v13 = 6;
-				}
-				if (v13 == v21) {
-					*(uint32_t*)&v5[v13] = v22;
-					v13 += 4;
-				}
-				v16 = *v14 ^ v14[v15];
-				++v13;
-				++v12;
-				++v14;
-				v5[v13 - 1] = v16;
-				if (v12 >= (int)*v2) {
-					break;
-				}
-				v11 = v24;
-			}
-		}
-		v18 = lpMem;
-		*v2 += 5;
-		free(v18);
-		result = v5;
-	} else {
-		*a2 = -2;
-		free(v3);
-		free(v5);
-		result = 0;
+	// The legacy signature carries a DWORD length, not a native size_t field.
+	uint32_t* length = (uint32_t*)a2;
+	uint8_t* mask = calloc(1, *length);
+	uint8_t* result = calloc(1, (uint32_t)(*length + 5u));
+	if ((int32_t)*length < 15) {
+		*length = UINT32_C(0xfffffffe);
+		free(mask);
+		free(result);
+		return 0;
 	}
+
+	int32_t maskSeed = (int32_t)(uint32_t)time(0);
+	if (maskSeed > 0) {
+		maskSeed = (int32_t)(0u - (uint32_t)maskSeed);
+	}
+	uint32_t key = htonl((uint32_t)maskSeed);
+	uint32_t maskCount = *length;
+	// Inline 0042ABF0's loop: its int buffer argument truncates native pointers.
+	// Preserve the initial RNG draw and the draw after the final mask byte.
+	double random = sub_42AAA0(&maskSeed);
+	for (uint32_t i = 0; (int32_t)i < (int32_t)maskCount; ++i) {
+		int32_t value = (int32_t)(uint32_t)(int64_t)(random * 255.0);
+		if (value < 0) {
+			value = (int32_t)(0u - (uint32_t)value);
+		}
+		mask[i] = (uint8_t)value;
+		random = sub_42AAA0(&maskSeed);
+	}
+
+	int32_t selectorSeed = (int32_t)(uint32_t)time(0);
+	if (selectorSeed > 0) {
+		selectorSeed = (int32_t)(0u - (uint32_t)selectorSeed);
+	}
+	float factor = (int32_t)*length >= 241 ? 241.0f : (float)(int32_t)(*length - 14u);
+	uint8_t selector = (uint8_t)((uint64_t)(int64_t)(sub_42AAA0(&selectorSeed) * factor) + 10u);
+	uint32_t pos = 0;
+	for (uint32_t i = 0; (int32_t)i < (int32_t)*length; ++i) {
+		if (pos == 5) {
+			result[pos++] = selector;
+		}
+		if (pos == selector) {
+			memcpy(result + pos, &key, sizeof(key));
+			pos += 4;
+		}
+		result[pos++] = a1[i] ^ mask[i];
+	}
+	*length += 5u;
+	free(mask);
 	return result;
 }
 

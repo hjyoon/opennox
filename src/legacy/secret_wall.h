@@ -41,4 +41,10 @@ _Static_assert(offsetof(nox_secret_wall_t, player_bits) == (sizeof(void*) == 4 ?
 _Static_assert(sizeof(nox_secret_wall_t) == (sizeof(void*) == 4 ? 32 : 40),
 	"wrong native size of secret-wall record");
 
+// The original minimap hides closing (2) and fully open (3) secret walls.
+// State is byte 21 on PE32, but byte 29 when the two pointers are native-width.
+static inline int nox_secret_wall_hidden_minimap_472600(const nox_secret_wall_t* wall) {
+	return wall->state == 2 || wall->state == 3;
+}
+
 #endif // NOX_SECRET_WALL_H

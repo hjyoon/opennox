@@ -20,6 +20,7 @@
 #include "common__object__modifier.h"
 #include "common__system__team.h"
 #include "operators.h"
+#include "secret_wall.h"
 
 #include "client__gui__gamewin__gamewin.h"
 #include "client__gui__gui_ctf.h"
@@ -4363,8 +4364,6 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 	int v25;                            // ecx
 	int v26;                            // et1
 	char v27;                           // al
-	char v28;                           // dl
-	uint8_t* wallData;
 	int v29;                            // edi
 	char* v30;                          // esi
 	float* v31;                         // esi
@@ -4554,7 +4553,7 @@ int nox_xxx_cliDrawMinimap_472600(nox_drawable* a1, int a2) {
 				v76.field_4 = yTop + 100 * (v80 - v9) / v26;
 				v27 = *(uint8_t*)(v11 + 4);
 				if (!(v27 & 4) ||
-					(wallData = (uint8_t*)nox_server_wallData(v11), v28 = wallData[21], v28 != 3) && v28 != 2) {
+					!nox_secret_wall_hidden_minimap_472600((const nox_secret_wall_t*)nox_server_wallData(v11))) {
 					if (!(v27 & 0x20)) {
 						sub_4730D0(&v76, *(uint8_t*)v11, 2300 / v25);
 					}

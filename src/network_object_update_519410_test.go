@@ -102,10 +102,10 @@ func TestNetSpriteUpdateStateNative518AE0MatchesFixedObjectProtocols(t *testing.
 			obj: &server.Object{
 				TypeInd:  12,
 				ObjClass: object.ClassImmobile,
-				ObjFlags: 0,
+				ObjFlags: object.FlagEnabled,
 			},
 			opcode: netmsg.MSG_DRAW_FRAME,
-			value:  1,
+			value:  0,
 		},
 		{
 			name: "spike lowered",
@@ -115,7 +115,7 @@ func TestNetSpriteUpdateStateNative518AE0MatchesFixedObjectProtocols(t *testing.
 				ObjFlags: object.FlagEquipped,
 			},
 			opcode: netmsg.MSG_DRAW_FRAME,
-			value:  0,
+			value:  1,
 		},
 		{
 			name: "pressure plate",

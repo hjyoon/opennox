@@ -476,7 +476,7 @@ func netSpriteUpdateStateNative518AE0(obj *server.Object, hooks netSpriteUpdateH
 		if ind := hooks.typeIndex("Spike"); ind != 0 && int(obj.TypeInd) == ind {
 			return netSpriteUpdateState518AE0{
 				opcode: netmsg.MSG_DRAW_FRAME,
-				value:  ^byte(uint32(obj.Flags())>>8) & 1,
+				value:  ^byte(uint32(obj.Flags())>>24) & 1,
 			}, true
 		}
 		if ind := hooks.typeIndex("PressurePlate"); ind != 0 && int(obj.TypeInd) == ind {

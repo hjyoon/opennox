@@ -427,7 +427,9 @@ func playerAttackNativeNPCData538960(unit *server.Object) int {
 	if update == nil {
 		return 0
 	}
-	storedFrame := C.uint8_t(update.Field481)
+	// GAME.EXE 005389BB reads byte +481, not DWORD field index 481.
+	// This same native byte is sent in complex NPC animation packets.
+	storedFrame := C.uint8_t(update.Field120_1)
 	originalAnimation := uint8(update.Field517)
 	storedAnimation := C.uint8_t(update.Field517)
 	result := C.nox_xxx_playerAttackNativeNPCData_538960(
@@ -439,7 +441,7 @@ func playerAttackNativeNPCData538960(unit *server.Object) int {
 		&storedFrame,
 		&storedAnimation,
 	)
-	update.Field481 = update.Field481&^0xff | uint32(storedFrame)
+	update.Field120_1 = uint8(storedFrame)
 	if uint8(storedAnimation) != originalAnimation {
 		update.Field517 = update.Field517&^0xff | uint32(storedAnimation)
 	}

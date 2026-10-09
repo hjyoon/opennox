@@ -201,9 +201,8 @@ func TestPlayerAttackExport538960RestoresNPCWandUseWithNativePointers(t *testing
 	if useCalls != 1 || useData.Charge != 1 {
 		t.Fatalf("NPC wand use = calls:%d charge:%d, want 1/1", useCalls, useData.Charge)
 	}
-	if update.Field481 != 0xaabbcc01 || update.Field517 != 0x11223344 {
-		t.Fatalf("NPC wand state = frame:%#x animation:%#x, want %#x/%#x",
-			update.Field481, update.Field517, uint32(0xaabbcc01), uint32(0x11223344))
+	if update.Field120_1 != 1 || update.Field481 != 0xaabbcc00 || update.Field517 != 0x11223344 {
+		t.Fatalf("NPC wand state = frame:%d unrelated:%#x animation:%#x", update.Field120_1, update.Field481, update.Field517)
 	}
 	if weapon.PosVec != unit.PosVec || weapon.PrevPos != unit.PosVec {
 		t.Fatalf("NPC wand position = current:%+v previous:%+v, want %+v",
@@ -312,9 +311,8 @@ func TestPlayerAttackExport538960RestoresNPCExhaustedWandDequipWithNativePointer
 		t.Fatalf("NPC exhausted wand equipment = flags:%#x field516:%#x, want 0/0",
 			update.WeaponEquipFlags, update.Field516)
 	}
-	if update.Field481 != 0x55667701 || update.Field517 != 0xaabbcc00 {
-		t.Fatalf("NPC exhausted wand state = frame:%#x animation:%#x, want %#x/%#x",
-			update.Field481, update.Field517, uint32(0x55667701), uint32(0xaabbcc00))
+	if update.Field120_1 != 1 || update.Field481 != 0x55667700 || update.Field517 != 0xaabbcc00 {
+		t.Fatalf("NPC exhausted wand state = frame:%d unrelated:%#x animation:%#x", update.Field120_1, update.Field481, update.Field517)
 	}
 	runtime.KeepAlive(unit)
 	runtime.KeepAlive(update)
@@ -359,6 +357,7 @@ func TestPlayerAttackExport538960RestoresNPCStaffHitWithNativePointers(t *testin
 	update := &server.MonsterUpdateData{
 		Field331:         37,
 		Field481:         0x55667701,
+		Field120_1:       1,
 		WeaponEquipFlags: uint32(object.WeaponStaff),
 		Field516:         0xf6b88ee0,
 		Field517:         0x99aabbcc,
@@ -395,9 +394,8 @@ func TestPlayerAttackExport538960RestoresNPCStaffHitWithNativePointers(t *testin
 	if got := playerAttackNativeEntry538960(unit); got != 1 {
 		t.Fatalf("NPC staff attack result = %d, want active middle frame", got)
 	}
-	if update.Field481 != 0x55667702 || update.Field517 != 0x99aabbcc {
-		t.Fatalf("NPC staff state = frame:%#x animation:%#x, want %#x/%#x",
-			update.Field481, update.Field517, uint32(0x55667702), uint32(0x99aabbcc))
+	if update.Field120_1 != 2 || update.Field481 != 0x55667701 || update.Field517 != 0x99aabbcc {
+		t.Fatalf("NPC staff state = frame:%d unrelated:%#x animation:%#x", update.Field120_1, update.Field481, update.Field517)
 	}
 	if bridge.wallDamageCalls != 1 || bridge.wallDamageAttacker != weapon {
 		t.Fatalf("NPC staff wall damage = calls:%d attacker:%p, want 1/%p",

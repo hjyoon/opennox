@@ -127,11 +127,12 @@ func TestPlayerAttackExport538960NPCWarHammerKeepsQuakePlayersNativeWidth(t *tes
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			update.Field331, update.Field481 = tc.strength, 0x55667701
+			update.Field120_1 = 1
 			if got := playerAttackNativeEntry538960(unit); got != 1 {
 				t.Fatalf("NPC hammer attack = %d, want active middle frame", got)
 			}
-			if update.Field481 != 0x55667702 || update.Field517 != 0x99aabbcc {
-				t.Fatalf("NPC hammer packed state = %#x/%#x", update.Field481, update.Field517)
+			if update.Field120_1 != 2 || update.Field481 != 0x55667701 || update.Field517 != 0x99aabbcc {
+				t.Fatalf("NPC hammer state = %d/%#x/%#x", update.Field120_1, update.Field481, update.Field517)
 			}
 			for i, player := range players {
 				var want []byte
@@ -216,6 +217,7 @@ func TestPlayerAttackExport538960WarHammerRoundsAllStrengthBytes(t *testing.T) {
 	player.Pos3632Vec = unit.PosVec
 	for strength := 0; strength <= math.MaxUint8; strength++ {
 		update.Field331, update.Field481 = uint32(strength), 0x55667701
+		update.Field120_1 = 1
 		if got := playerAttackNativeEntry538960(unit); got != 1 {
 			t.Fatalf("strength %d attack = %d, want active middle frame", strength, got)
 		}
@@ -228,8 +230,8 @@ func TestPlayerAttackExport538960WarHammerRoundsAllStrengthBytes(t *testing.T) {
 		if !bytes.Equal(got, want) {
 			t.Errorf("strength %d quake packet = % x, want % x", strength, got, want)
 		}
-		if update.Field481 != 0x55667702 {
-			t.Fatalf("strength %d packed frame = %#x", strength, update.Field481)
+		if update.Field120_1 != 2 || update.Field481 != 0x55667701 {
+			t.Fatalf("strength %d frame/unrelated = %d/%#x", strength, update.Field120_1, update.Field481)
 		}
 	}
 	if bridge.wallDamageCalls != 256 || bridge.wallDamageAttacker != weapon {

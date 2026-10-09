@@ -100,6 +100,7 @@ func TestPlayerAttackExport538960LaunchesNPCRoundChakramWithNativePointers(t *te
 	update := &server.MonsterUpdateData{
 		Field331:         25,
 		Field481:         0xaabbcc01,
+		Field120_1:       1,
 		WeaponEquipFlags: uint32(object.WeaponChakram),
 		Field517:         0x11223344,
 	}
@@ -192,9 +193,8 @@ func TestPlayerAttackExport538960LaunchesNPCRoundChakramWithNativePointers(t *te
 		t.Fatalf("round chakram state = reflections:%d owner:%+v return:%d",
 			projectileData.Reflections, projectileData.OwnerPos, projectileData.ReturnState)
 	}
-	if audio != sound.ID(891) || update.Field481 != 0xaabbcc02 || update.Field517 != 0x11223344 {
-		t.Fatalf("round chakram result state = audio:%d frame:%#x animation:%#x",
-			audio, update.Field481, update.Field517)
+	if audio != sound.ID(891) || update.Field120_1 != 2 || update.Field481 != 0xaabbcc01 || update.Field517 != 0x11223344 {
+		t.Fatalf("round chakram result state = audio:%d frame:%d unrelated:%#x animation:%#x", audio, update.Field120_1, update.Field481, update.Field517)
 	}
 	runtime.KeepAlive(unit)
 	runtime.KeepAlive(update)
@@ -244,6 +244,7 @@ func TestPlayerAttackExport538960LaunchesNPCBowAndCrossbowWithNativePointers(t *
 			update := &server.MonsterUpdateData{
 				Field331:         20,
 				Field481:         0x33445500 | uint32(tc.previous),
+				Field120_1:       tc.previous,
 				WeaponEquipFlags: uint32(tc.weaponFlag),
 			}
 			weaponAmmo := &server.AmmoUseData{}
@@ -362,8 +363,8 @@ func TestPlayerAttackExport538960LaunchesNPCBowAndCrossbowWithNativePointers(t *
 			if quiverAmmo.Charge1 != 5 {
 				t.Fatalf("%s NPC quiver charge = %d, want unchanged 5", tc.name, quiverAmmo.Charge1)
 			}
-			if uint8(update.Field481) != tc.wantStored {
-				t.Fatalf("%s stored frame = %d, want %d", tc.name, uint8(update.Field481), tc.wantStored)
+			if update.Field120_1 != tc.wantStored || update.Field481 != 0x33445500|uint32(tc.previous) {
+				t.Fatalf("%s stored frame/unrelated = %d/%#x, want %d/unchanged", tc.name, update.Field120_1, update.Field481, tc.wantStored)
 			}
 			cosine, sine := server.SinCosDir(byte(unit.Direction1))
 			if projectile.VelVec != types.Ptf(cosine*projectile.SpeedCur, sine*projectile.SpeedCur) ||
@@ -397,6 +398,7 @@ func TestPlayerAttackExport538960LaunchesNPCFanChakramAndEquipsNextWithNativePoi
 	update := &server.MonsterUpdateData{
 		Field331:         30,
 		Field481:         0x77889901,
+		Field120_1:       1,
 		WeaponEquipFlags: uint32(object.WeaponShuriken),
 	}
 	ammo := &server.AmmoUseData{Charge1: 1}
@@ -491,8 +493,8 @@ func TestPlayerAttackExport538960LaunchesNPCFanChakramAndEquipsNextWithNativePoi
 		t.Fatalf("fan chakram result = trace:%d owner:%p delete:%p equip:%p charge:%d audio:%d",
 			traceFlags, collide.Owner, deleted, equipped, ammo.Charge1, audio)
 	}
-	if uint8(update.Field481) != 2 {
-		t.Fatalf("fan chakram stored frame = %d, want 2", uint8(update.Field481))
+	if update.Field120_1 != 2 || update.Field481 != 0x77889901 {
+		t.Fatalf("fan chakram stored frame/unrelated = %d/%#x, want 2/unchanged", update.Field120_1, update.Field481)
 	}
 	runtime.KeepAlive(unit)
 	runtime.KeepAlive(update)

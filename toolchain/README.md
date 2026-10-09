@@ -1,5 +1,7 @@
 # Go 도구체인 정책
 
+2026-10-10 R61의 `dd8ecbffb`는 통계 포장 node/cursor의 native 포인터, `b14f3f51f`는 압축의 BYTE 비교를 각각 기존 production 본체 하나씩 복원했다. unchanged 원본 envelope155조건·compressor2879조건의 전체 output/길이/순서가 native와 일치하고 원래 WORD/DWORD/run wrap·fault 경계도 유지한다. 일반·HD·실제 strict 전체48179pass/34skip, 지원 server47670pass/7skip과 sanitizer·race/checkptr2·unchanged oracle 및 clean ARM643제품 build/revision/help가 통과했다. allocator/time/RNG 등 제어 서비스와 이전154/155 불일치·red·auditor counter 정정은 [R61 근거와 범위](PORTING-INVENTORY.md#통계-포장-노드의-native-폭과-압축-byte-비교-보존)에 구별한다. 이번 GUI 실행은 없고 기존 Trap Set 아이콘 수정·tests/자산/Save/config/ledger를 보존한다. online bulk caller·retained Quest/passive-food와 전체 port goal은 여전히 미완료다.
+
 2026-10-10 R60의 `2821ad417`에서 통계 패킷 난독화 한 C 본체의 native buffer와 packed DWORD 길이를 복원했다. 원본 packet/mask/CRT 변환 코드의750개 제어 fixture와 전체 output·length·호출 순서가 일치한다. allocation/time/RNG 등은 명시적인 외부 서비스이며 원본 전체 engine/online 통계 실행의 인증은 아니다. 일반·HD·실제 strict 전체48170pass/34skip, 지원 server47661pass/7skip과 sanitizer·race/checkptr2·unchanged oracle 및 clean ARM643제품 build/revision/help가 통과했다. 기존 tests·자산·Save/config·ledger를 보존하고, 아직 ABI32인 bulk caller 및 retained Quest/passive-food는 [별도 미완료 항목](PORTING-INVENTORY.md#통계-패킷-난독화의-native-버퍼와-dword-길이-보존)으로 남긴다. 전체 port goal은 active다.
 
 2026-10-09 R48에서 원본 sound별 동시 event 제한을 복원해 과적 HeavyExertion의 반복 재시작/중첩을 막고, Monster/NPC의 world IMPALE·LAVA 피해 입구를 복원했다. 각 기능은 기존 production 본체 하나씩 수정한 뒤 즉시 push했다. stock 보호/immune/방패·armor carry·Quest 판정은 유지한다. real OpenAL null strict 회귀는 lifecycle만 확인하며 물리 청취로 확대하지 않는다.

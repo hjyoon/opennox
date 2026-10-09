@@ -161,6 +161,7 @@ type nativeAudioEffectsState struct {
 	bank     *nativeAudioBank
 	defs     [nativeSoundDefCount]nativeSoundDef
 	voices   []ail.Sample
+	events   []*nativeAudioEffectEvent
 	next     int
 	sequence uint32
 }

@@ -31,21 +31,40 @@ func (s *nativeAudioEffectsState) playPanned(id sound.ID, requestedVolume, pan i
 		return false
 	}
 
+	samples := def.sampleIDs
+	if def.behavior&4 == 0 {
+		choice := 0
+		if def.behavior&2 != 0 && len(samples) > 1 {
+			if noxServer != nil && noxServer.Rand.Other != nil {
+				choice = noxServer.Rand.Other.Int(0, len(samples)-1)
+			} else {
+				choice = int(s.sequence % uint32(len(samples)))
+				s.sequence++
+			}
+		}
+		samples = samples[choice : choice+1]
+	}
+	if !s.hasPlayableEventSamplesLocked(samples) {
+		return false
+	}
+	volume := uint32((uint64(163*requestedVolume) * uint64(def.volume)) >> 14)
+	s.pruneAudioEventsLocked()
+	if !s.admitAudioEventLocked(id, def, volume) {
+		return false
+	}
+	event := &nativeAudioEffectEvent{id: id, bank: s.bank, volume: volume}
 	played := false
-	if def.behavior&4 != 0 {
-		for _, sample := range def.sampleIDs {
-			played = s.playSamplePannedLocked(id, def, sample, requestedVolume, pan) || played
-		}
-		return played
-	}
-	choice := 0
-	if def.behavior&2 != 0 && len(def.sampleIDs) > 1 {
-		if noxServer != nil && noxServer.Rand.Other != nil {
-			choice = noxServer.Rand.Other.Int(0, len(def.sampleIDs)-1)
-		} else {
-			choice = int(s.sequence % uint32(len(def.sampleIDs)))
-			s.sequence++
+	for _, sample := range samples {
+		if s.playSamplePannedLocked(id, def, sample, requestedVolume, pan) {
+			s.trackAudioEventVoiceLocked(event)
+			played = true
 		}
 	}
-	return s.playSamplePannedLocked(id, def, def.sampleIDs[choice], requestedVolume, pan)
+	if played {
+		index := s.audioEventInsertionLocked(id, def, volume)
+		s.events = append(s.events, nil)
+		copy(s.events[index+1:], s.events[index:])
+		s.events[index] = event
+	}
+	return played
 }

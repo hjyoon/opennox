@@ -1,4 +1,4 @@
-# Actual stock OblivionOrb grant/inventory equip and held mouse attacks.
+# Stock OblivionOrb pickup/autoequip and actual held mouse attacks.
 # Observe native duration/ray/damage/charge state, release and full exhaustion.
 steps:
   - action: slow

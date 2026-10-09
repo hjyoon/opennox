@@ -32,6 +32,9 @@ func TestE2EPlayerPlasmaUsesRealInputWithoutInjectedResults(t *testing.T) {
 		if assign, ok := n.(*ast.AssignStmt); ok {
 			for _, lhs := range assign.Lhs {
 				if sel, ok := lhs.(*ast.SelectorExpr); ok {
+					if sel.Sel.Name == "EquippedWeapon" {
+						t.Error("E2E overwrites actual equipped weapon")
+					}
 					if id, ok := sel.X.(*ast.Ident); ok && id.Name == "data" {
 						t.Errorf("E2E overwrites stock wand data.%s", sel.Sel.Name)
 					}
@@ -40,7 +43,7 @@ func TestE2EPlayerPlasmaUsesRealInputWithoutInjectedResults(t *testing.T) {
 		}
 		return true
 	})
-	for _, name := range []string{"e2eQueueInput", "Input", "ClickInventoryItem", "playerPlasmaInventory", "Nox_client_inventoryAnimationState", "Screen", "e2ePlayerPlasmaRecord", "e2ePlayerPlasmaRay", "addWhen", "IsEnemyTo"} {
+	for _, name := range []string{"e2eQueueInput", "Input", "playerPlasmaInventory", "Nox_client_inventoryAnimationState", "Screen", "e2ePlayerPlasmaRecord", "e2ePlayerPlasmaRay", "addWhen", "IsEnemyTo"} {
 		if calls[name] == 0 {
 			t.Errorf("missing real input/outcome observer: %s", name)
 		}
@@ -66,7 +69,7 @@ func TestE2EPlayerPlasmaStockEquipmentAndEndConditions(t *testing.T) {
 		t.Fatal(err)
 	}
 	s = string(data)
-	for _, required := range []string{"playerPlasmaInventory(true", "ClickInventoryItem(\"OblivionOrb\"", "playerPlasmaInventory(false", "state != wantState", "Key: keybind.KeyI, Pressed: true", "observed visibility", "data.Charge != 250", "data.MaxCharge != 250", "data.Charge == 0", "data.Flags&4 == 0", "natural stock charge exhaustion", "no damage after natural stop", "durationRayTargets[record] == nil", "plasmaWeapons[record] == nil"} {
+	for _, required := range []string{"release setup mouse", "naturally equipped by pickup", "playerPlasmaInventory(false", "state != wantState", "Key: keybind.KeyI, Pressed: true", "observed visibility", "data.Charge != 250", "data.MaxCharge != 250", "data.Charge == 0", "data.Flags&4 == 0", "natural stock charge exhaustion", "no damage after natural stop", "durationRayTargets[record] == nil", "plasmaWeapons[record] == nil"} {
 		if !strings.Contains(s, required) {
 			t.Errorf("missing stock lifecycle check: %s", required)
 		}

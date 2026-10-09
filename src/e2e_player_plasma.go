@@ -59,20 +59,13 @@ func (sc *e2eScenario) playerPlasmaInventory(open bool, name string) {
 	}, nil)
 }
 
-// CheckPlayerPlasma uses inventory-equipped stock OblivionOrb and actual
+// CheckPlayerPlasma uses stock OblivionOrb, naturally equipped by pickup, and actual
 // mouse input. Only the starting arena/target is arranged; no cast, damage,
 // duration, charge, ray packet or cancellation result is injected.
 func (sc *e2eScenario) CheckPlayerPlasma(name string) {
-	sc.playerPlasmaInventory(true, name+" open inventory")
-	sc.ClickInventoryItem("OblivionOrb", name+" equip stock wand through inventory input")
-	sc.addWhen(1, name+" receive equipped weapon report", 120, func() bool {
-		unit := noxServer.Players.HostUnit()
-		if unit == nil {
-			return false
-		}
-		weapon := unit.UpdateDataPlayer().EquippedWeapon
-		return weapon != nil && weapon.ObjectTypeC().ID() == "OblivionOrb" && weapon.Flags().Has(object.FlagEquipped)
-	}, nil)
+	// Stock pickup already selects this wand. Do not click its inventory cell
+	// again: that would unequip it. Release setup input before observing combat.
+	sc.Input(0, name+" release setup mouse", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
 	sc.playerPlasmaInventory(false, name+" close inventory")
 	var unit, weapon, target *server.Object
 	var original types.Pointf
@@ -87,7 +80,7 @@ func (sc *e2eScenario) CheckPlayerPlasma(name string) {
 		unit = noxServer.Players.HostUnit()
 		weapon = unit.UpdateDataPlayer().EquippedWeapon
 		if weapon == nil || weapon.ObjectTypeC().ID() != "OblivionOrb" || !weapon.Flags().Has(object.FlagEquipped) {
-			e2eError(fmt.Errorf("stock OblivionOrb not equipped through inventory"))
+			e2eError(fmt.Errorf("stock OblivionOrb not naturally equipped by pickup"))
 			return
 		}
 		data = weapon.UseData.AsWand()

@@ -7,6 +7,12 @@ import (
 )
 
 func monsterWanderStoreArgU32512930(action *AIStackItem, index int, value uint32) {
+	if action.Type() == ai.ACTION_ROAM && index == 0 {
+		// GAME.EXE 00512975 clears a waypoint pointer. Preserve partial
+		// scalar stores, but clear the entire pointer in a reused native slot.
+		action.Args[index] = uintptr(value)
+		return
+	}
 	action.Args[index] = action.Args[index]&^uintptr(0xffffffff) | uintptr(value)
 }
 

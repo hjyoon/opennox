@@ -1,5 +1,25 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## AI 이동·배회 인자 재사용 중 native64 포인터 크래시
+
+R55는 `monsterActionRefresh50A910`의 ObjFlags 읽기에서 `addr=0x7f5a00000014`가 발생한 보고를 추적했다. 원본 AI push/pop은 reused Args를 지우지 않는다. ScriptMove의 FAR_MOVE_TO target clear가 scalar U32 부분 쓰기를 사용하면 이전 native object 주소의 상위32비트가 남아 `(oldTarget & ~0xffffffff) + ObjFlags offset20`을 읽는다. 이는 보고 주소의 형태와 일치하며 실제 C-owned 고주소로 수정 전 재현했다. 보고된 Linux 실행이나 해당 사용자 맵에서의 재현을 확보했다고 주장하지 않는다.
+
+`dc8899a5a`는 `scriptMoveStoreArgU325123C0` 한 본체에서 FAR_MOVE_TO Args[2] object slot만 native uintptr 전체로 저장하고, `100280ba8`는 `monsterWanderStoreArgU32512930` 한 본체에서 ROAM Args[0] waypoint slot만 같은 방식으로 고친다. sealed GAME.EXE의 00512441 `movl $0,0xc(%eax)`와 00512975 `movl $0,4(%eax)`는 각각 원래 PE32 object/waypoint 포인터 전체를 비우는 쓰기다. scalar dword/low-byte 쓰기, 좌표 상위 바이트, Args[3], inactive slots, 원본 reused stack 동작 및 모든 signature는 그대로 유지한다. reader의 guard/metadata/visibility callback 순서와 기존 fault 계약을 완화하거나 전체 AIStack을 초기화하지 않는다.
+
+수정 전 Move 회귀는 actual1이며 두 unit subclass×simple/linked×이전 일곱 pointer-bearing action의28 subtest 모두 실제 고주소의 low32만 비워 `0x100000000`이 남는 것을 안전한 선행 assertion으로 확인했다. Wander도 두 subclass에서 같은 actual1이다. 수정 후 각 Move case64회, 총1792회 및 Wander128회 실제 production adapter→refresh를 반복한다. C-owned object/update/waypoint는4GiB보다 높으며 임의 주소나 fresh zero-filled slot에 의존하지 않는다. 전체24개 slot과 native enemy/roam flags/object/waypoint 불변을 비교한다. 일반·공식 highres·server strict cgocheck2 count3 및 관련 original callback/fault/stack 회귀는 모두 terminal actual0이다.
+
+`46902a5df`는 새 `host-game-ai-script-slot-reuse.yaml`과 관찰기를 추가하며 기존 registration 변경은 Load 한 본체뿐이다. untouched stock Troll/NPC, ordinary ownership/placement 및 새 native waypoint가 입력 fixture다. 실제 MonsterPushAction으로 old object/waypoint slot을 준비한 뒤 공개 script Move/Wander native API를 호출한다. 결과 Args, action index, HP, enemy pointer, frame이나 update callback을 주입하지 않는다. 각 Move 뒤 실제 server.Frame64틱에서 자연 이동32 이상·HP 불변·live world/client drawable을 확인하고, 이어서 Wander의 native waypoint 소비와 실제 AI 업데이트64틱 생존을 관찰한다. 이는 자율 AI의 최초 목표 선택이나 모든 campaign script의 인증이 아니다.
+
+clean 기능 revision의 일반 및 실제 HD headless/mock가 각각 terminal actual0이다. 네 mode(Troll/NPC×simple/linked) 모두 old native target/waypoint가 full nil이 된 직후 정상 게임 loop를 통과했고 Move 거리는78.7245..107.2159였다. 두 lane은 각각 Move4·Wander4 및64틱 관찰을 통과했다. 실제 HD는 `NOX_E2E_CLIENT_TARGET=client-hd`, 공식 `-tags highres`, `opennox-hd`로 확인했다. 초기 E2E preflight의 Screen 인자 수 compile actual1은 production red와 별도로 보존하며 한 인자 호출로 정정한 뒤 세 lane strict preflight actual0이다. 일반 Troll/NPC 및 HD NPC의 private PNG도 확인했으나 Windows pixel equivalence를 주장하지 않는다.
+
+repository/private YAML SHA는 `35476b0f8e50c9a5c16fa5bd63f11356fbc05ba564b84509e41e00f96b7f3976`로 같고 `NOX_E2E_OVERRIDE=true`의 Screen은 private YAML 옆에만 생성했다. 두 GUI 전후와 최종 strict 테스트 뒤 source6110파일/83442032bytes/tree `a24cb9afcd8efe0c47341b6d97cb6045cbb24f593f879416a38da0b9376266c8`, GUI stock1562파일/571159691bytes/tree `4b811dec1a7d92d95d83e95569a7610fe854d6e63e3d8464c12ab8eaadd3250a`는 불변이다. 모든 GUI/wrapper의 실제 terminal 종료 뒤에만 다음 source/build-input/git 변경을 수행했다. 기존 YAML/golden/oracle ranges 및 개인 Save/config는 바꾸지 않았다.
+
+고정 Go1.26.5·GOEXPERIMENT=cgocheck2 count1 전체 일반·highres는 각각 actual0/test pass48144/skip34/package pass37, server는 actual0/test pass47635/skip7/package pass35다. 별도20 no-test package를 test skip으로 세지 않는다. R54의 모든 pass/skip identity를 multiset으로 보존하고 새35개(Move29·Wander3·E2E3)만 추가했으며 기존 세 nonzero ASLR 이름만 정규화하고 fixed0x0 계약을 유지했다. 관련 strict race/checkptr count3도 실제 terminal actual0이다. 공식 Darwin ARM64 일반·HD·server build42.016초 및 세 help, 일반/HD GUI 제품까지 다섯 metadata verify가 모두 actual0이고 clean46902a5df/Go1.26.5이다. 이후 docs-only revision과 기능 제품을 구별한다. 세 기능 commit 직후 push actual0을 확인했다.
+
+sealed oracle-test 전체 chain도 terminal actual0이며 stock1556파일/570653750bytes/tree `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`, GAME.EXE code2968/data650와 strict NXZ 비교를 전후 확인했다. 이동·배회 원본 범위 SHA는 각각 `546f87ec151ee7368c2088ed2370a92880d8e3cd828bf8b545e353f997bfb06e` 및 `05603d4c4937b8e63d30f0a47b982384e1cf0d72477de577797b311cea22363b`로 유지한다. 이는 원본 disassembly와 native adapter의 증거이며 별도 Unicorn replay를 수행했다고 세지 않는다.
+
+이전 ledger2828107bytes/SHA `e0ebe7fc4084d3bb091cffedd22df403e6735443ee938641be9fe9308856ff19`의 전체 바이트를 이 prepend 뒤 보존한다. R54 보상 프레임 문제는 이미 완료된 별도 증거로 유지한다. retained passive-food/fixed Quest gate 및 전체 port goal은 active다. 이 회귀는 확인한 native64 script-slot producer와 macOS ARM64 게임 업데이트 경로의 검증이며 모든 invalid pointer 원인, Linux runtime, 모든 campaign/remote topology 또는 물리 음향을 인증하지 않는다.
+
 ## 레벨업·새 스펠·Oblivion 무기 업그레이드의 일시정지 프레임 제한
 
 R54는 레벨업, 새 스펠 습득 및 SetHalberd의 네 stock Oblivion 업그레이드 중 FPS가 갑자기 증가하는 경로를 검사했다. 실제 GamePause는 server.Frame을 멈추지만 렌더링은 계속한다. 기존 host/client/Flag29 동기화 분기는 멈춘 simulation frame의 nox_ticks_getNext deadline을 사용하여 wait가 0이 됐다. `5b13f138d`는 `(*Client).mainloopFrameLimit` 한 본체에서 GamePause 동안 기존 server.RateWait의 독립 렌더 제한을 적용한다. EnginePause의 기존 catchup, 평상시 frame 동기화, limiter 비활성화와 다른 topology의 계약은 유지한다. GamePause와 EnginePause를 동일한 상태로 취급하지 않는다.

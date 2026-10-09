@@ -74,15 +74,16 @@ func (sc *e2eScenario) CheckTrapQuickbarIcons(name string) {
 			entries, gotRow, gotOpen := legacy.ClientTrapQuickbarSnapshot()
 			main, gotMainRow, ok := legacy.ClientQuickbarSnapshot()
 			root := legacy.ClientTrapQuickbarRoot()
+			visible := open && rendered // F11 hides the root but keeps the selected tray open.
 			if entries != want || gotRow != row || gotOpen != open || !ok ||
 				main != mainBefore || gotMainRow != mainRow || root == nil ||
-				e2eTrapWindowVisible(root) != open || nox_client_renderGUI_80828 != rendered {
-				e2eError(fmt.Errorf("Trap Set state mismatch: phase=%s row=%d/%d open=%t/%t rendered=%t/%t entries=%v want=%v", label, gotRow, row, gotOpen, open, nox_client_renderGUI_80828, rendered, entries, want))
+				e2eTrapWindowVisible(root) != visible || nox_client_renderGUI_80828 != rendered {
+				e2eError(fmt.Errorf("Trap Set state mismatch: phase=%s row=%d/%d open=%t/%t rendered=%t/%t root_visible=%t/%t main_row=%d/%d main_unchanged=%t entries=%v want=%v", label, gotRow, row, gotOpen, open, nox_client_renderGUI_80828, rendered, e2eTrapWindowVisible(root), visible, gotMainRow, mainRow, main == mainBefore, entries, want))
 				return
 			}
 			for slot := 0; slot < 3; slot++ {
 				win := legacy.ClientTrapQuickbarButton(slot)
-				if win == nil || win.GetFlags().IsHidden() || e2eTrapWindowVisible(win) != open {
+				if win == nil || win.GetFlags().IsHidden() || e2eTrapWindowVisible(win) != visible {
 					e2eError(fmt.Errorf("Trap Set slot remains hidden: phase=%s slot=%d win=%p", label, slot, win))
 					return
 				}

@@ -10119,6 +10119,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckEnvironmentDamage(l.Item, l.Name)
+		case "check-spell-unit-matrix":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckSpellUnitMatrix(l.Text, l.Name)
 		case "check-greatsword-missile-defense":
 			if dt != 0 {
 				sc.Wait(dt, "")

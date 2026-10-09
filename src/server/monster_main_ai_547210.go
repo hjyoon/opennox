@@ -940,7 +940,7 @@ func (s *Server) monsterMainConversationImpossible547210(unit *Object, update *M
 		return true
 	}
 	host := s.Players.HostUnit()
-	if host == nil || host.ObjFlags.Has(object.FlagNoUpdate) || update.HasAction(ai.DEPENDENCY_TIME) {
+	if host == nil || host.ObjFlags.Has(object.FlagNoUpdate) || update.HasAction(ai.ACTION_WAIT_RELATIVE) {
 		return true
 	}
 	if !host.ObjClass.Has(object.ClassPlayer) || host.UpdateData == nil {

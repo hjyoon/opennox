@@ -1771,9 +1771,9 @@ func TestMonsterMainConversationImpossible547210(t *testing.T) {
 		t.Fatal("near cursor may select the NPC")
 	}
 	update.AIStackInd = 1
-	update.AIStack[1].Action = uint32(ai.DEPENDENCY_TIME)
+	update.AIStack[1].Action = uint32(ai.ACTION_WAIT_RELATIVE)
 	if !s.monsterMainConversationImpossible547210(unit, update) {
-		t.Fatal("wait dependency should suppress conversation")
+		t.Fatal("relative wait should suppress conversation")
 	}
 }
 

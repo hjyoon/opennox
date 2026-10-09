@@ -107,3 +107,38 @@ func TestMonsterMainConversation547210OriginalWaitActionGate(t *testing.T) {
 		})
 	}
 }
+
+func TestMonsterMainConversationImpossible547210OriginalWaitActionGate(t *testing.T) {
+	// The eligibility predicate must agree with the literal action 2 check
+	// in GAME.EXE 005472D7, even while FACE_OBJECT is the current action.
+	for _, tc := range []struct {
+		name   string
+		action uint32
+		head   bool
+		want   bool
+	}{
+		{"relative wait head", 2, true, true},
+		{"scheduled relative wait", 2, false, true},
+		{"time dependency head", 41, true, false},
+		{"scheduled time dependency", 41, false, false},
+		{"absolute wait", 1, true, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			s, unit, _, _ := monsterConversationFixture547210(t)
+			update := unit.UpdateDataMonster()
+			update.AIStackInd = 1
+			update.AIStack[1].Action = tc.action
+			if !tc.head {
+				update.AIStackInd = 2
+				update.AIStack[2].Action = uint32(ai.ACTION_FACE_OBJECT)
+			}
+			before := *update
+			if got := s.monsterMainConversationImpossible547210(unit, update); got != tc.want {
+				t.Fatalf("action %d at head=%v: conversation impossible = %v, want %v", tc.action, tc.head, got, tc.want)
+			}
+			if *update != before {
+				t.Fatal("conversation eligibility check changed the AI stack")
+			}
+		})
+	}
+}

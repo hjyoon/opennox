@@ -273,3 +273,17 @@ char* nox_stats_bulk_flush_native(void) {
 	}
 	return result;
 }
+
+// New bridge for the startup/end roots. Mode zero forgets exactly the five
+// original header slots cleared by 426150, without adding frees. The other
+// three player columns and the shared count intentionally survive startup.
+int nox_stats_session_report_native(int mode) {
+	if (mode == 0) {
+		nox_stats_columns.names = NULL;
+		nox_stats_columns.ips = NULL;
+		nox_stats_columns.teams = NULL;
+		nox_stats_columns.classes = NULL;
+		nox_stats_columns.pairs = NULL;
+	}
+	return nox_stats_report(&nox_stats_columns, getMemAt(0x5D4594, 599476), mode);
+}

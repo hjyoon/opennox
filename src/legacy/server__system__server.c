@@ -47,6 +47,9 @@ extern uint32_t dword_5d4594_1548476;
 
 //----- (00426060) --------------------------------------------------------
 void sub_426060() {
+	extern void nox_stats_start_header_native(void);
+	extern void* nox_stats_quest_columns_clear_native(void);
+	extern int nox_stats_session_report_native(int mode);
 	char* v0;     // eax
 	nox_playerInfo* host;
 	void* result; // eax
@@ -75,7 +78,7 @@ void sub_426060() {
 				*getMemU8Ptr(0x5D4594, 739691) = 0;
 				strncpy((char*)getMemAt(0x5D4594, 739420), v6, 8u);
 				*getMemU8Ptr(0x5D4594, 739428) = 0;
-				sub_4289D0((void**)getMemAt(0x5D4594, 739396));
+				nox_stats_quest_columns_clear_native();
 			}
 		}
 	} else {
@@ -93,8 +96,8 @@ void sub_426060() {
 				sub_425F10(player);
 			}
 		}
-		sub_426150();
-		sub_428810((int)getMemAt(0x5D4594, 599476), 0);
+		nox_stats_start_header_native();
+		nox_stats_session_report_native(0);
 		*getMemU16Ptr(0x5D4594, 599482) = 0;
 	}
 }

@@ -6,9 +6,27 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/server"
 	"gopkg.in/yaml.v2"
 )
+
+func TestE2EPowderBarrelArenaChecksRadialFootprints(t *testing.T) {
+	trace := func(from, to types.Pointf) bool {
+		return math.Abs(float64(from.X)) <= 180 && math.Abs(float64(to.X)) <= 180 &&
+			math.Abs(float64(from.Y)) <= 80 && math.Abs(float64(to.Y)) <= 80
+	}
+	if _, _, err := e2eWarriorAbilityArena(types.Pointf{}, 96, trace); err == nil {
+		t.Fatal("test room unexpectedly fits a 96-wide warrior charge lane")
+	}
+	center, direction, err := e2ePowderBarrelArena(types.Pointf{}, 12, trace)
+	if err != nil || center != (types.Pointf{}) || direction != types.Ptf(1, 0) {
+		t.Fatalf("clear radial fixture rejected: center=%v direction=%v err=%v", center, direction, err)
+	}
+	if _, _, err := e2ePowderBarrelArena(types.Pointf{}, 12, func(types.Pointf, types.Pointf) bool { return false }); err == nil {
+		t.Fatal("blocked radial fixture accepted")
+	}
+}
 
 func TestE2EPowderBarrelTracksRecycledObjectIdentity(t *testing.T) {
 	unit := &server.Object{ScriptIDVal: 12}

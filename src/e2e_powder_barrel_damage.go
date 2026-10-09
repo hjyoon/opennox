@@ -53,6 +53,56 @@ func e2ePowderBarrelUnitDamage(raw int32, armored, immune bool, armor, carry flo
 	return damage, remainder
 }
 
+// A blast fixture needs three clear radial spokes and one outside-radius
+// control, not the 96-wide, 160-long charge lane used by warrior abilities.
+// Check the real placements (including their footprints) without changing
+// walls, collision, visibility or damage falloff.
+func e2ePowderBarrelArena(original types.Pointf, radius float32, trace func(types.Pointf, types.Pointf) bool) (types.Pointf, types.Pointf, error) {
+	for ring := 0; ring <= 368; ring += 23 {
+		for y := -ring; y <= ring; y += 23 {
+			for x := -ring; x <= ring; x += 23 {
+				if ring != 0 && x != -ring && x != ring && y != -ring && y != ring {
+					continue
+				}
+				center := original.Add(types.Ptf(float32(x), float32(y)))
+				if center != original && !trace(original, center) {
+					continue
+				}
+				for angle := 0; angle < 256; angle += 32 {
+					cosine, sine := server.SinCosDir(byte(angle))
+					direction := types.Ptf(cosine, sine)
+					side := types.Ptf(-sine, cosine)
+					clear := true
+					for _, offset := range []types.Pointf{direction.Mul(64), direction.Mul(-64), side.Mul(64), direction.Mul(128), {}} {
+						position, footprint := center.Add(offset), radius
+						if offset == (types.Pointf{}) {
+							footprint = max(footprint, 26) // Real flame spawn radius is 10..25.
+						}
+						if !trace(center, position) {
+							clear = false
+							break
+						}
+						for edge := 0; edge < 256; edge += 16 {
+							cx, sy := server.SinCosDir(byte(edge))
+							if !trace(position, position.Add(types.Ptf(footprint*cx, footprint*sy))) {
+								clear = false
+								break
+							}
+						}
+						if !clear {
+							break
+						}
+					}
+					if clear {
+						return center, direction, nil
+					}
+				}
+			}
+		}
+	}
+	return types.Pointf{}, types.Pointf{}, fmt.Errorf("no clear powder barrel radial placements near %v", original)
+}
+
 type e2ePowderBarrelVictim struct {
 	name    string
 	unit    *server.Object
@@ -84,7 +134,14 @@ func (f *e2ePowderBarrelFixture) prepare() {
 		return
 	}
 	f.original, f.hostHP, f.hostMax = f.host.PosVec, f.host.HealthData.Cur, f.host.HealthData.Max
-	origin, direction, err := e2eWarriorAbilityArena(f.original, 96, func(from, to types.Pointf) bool {
+	npc, monster := noxServer.NewObjectByTypeID("NPC"), noxServer.NewObjectByTypeID("Troll")
+	f.control, f.barrel = noxServer.NewObjectByTypeID("Troll"), noxServer.NewObjectByTypeID(f.kind)
+	if npc == nil || monster == nil || f.control == nil || f.barrel == nil {
+		e2eError(fmt.Errorf("powder barrel requires stock NPC, Troll and %s definitions", f.kind))
+		return
+	}
+	radius := max(f.host.Shape.Circle.R, npc.Shape.Circle.R, monster.Shape.Circle.R, f.control.Shape.Circle.R) + 4
+	origin, direction, err := e2ePowderBarrelArena(f.original, radius, func(from, to types.Pointf) bool {
 		return e2eWarriorLaneClear(f.host, from, to)
 	})
 	if err != nil {
@@ -92,12 +149,6 @@ func (f *e2ePowderBarrelFixture) prepare() {
 		return
 	}
 	f.center = origin
-	npc, monster := noxServer.NewObjectByTypeID("NPC"), noxServer.NewObjectByTypeID("Troll")
-	f.control, f.barrel = noxServer.NewObjectByTypeID("Troll"), noxServer.NewObjectByTypeID(f.kind)
-	if npc == nil || monster == nil || f.control == nil || f.barrel == nil {
-		e2eError(fmt.Errorf("powder barrel requires stock NPC, Troll and %s definitions", f.kind))
-		return
-	}
 	side := types.Ptf(-direction.Y, direction.X)
 	asObjectS(f.host).SetPos(origin.Add(direction.Mul(64)))
 	f.host.VelVec, f.host.ForceVec, f.host.Pos24 = types.Pointf{}, types.Pointf{}, types.Pointf{}

@@ -28,6 +28,17 @@ func TestE2EPowderBarrelArenaChecksRadialFootprints(t *testing.T) {
 	}
 }
 
+func TestE2EPowderBarrelCompletionWaitsForQueuedSound(t *testing.T) {
+	for _, f := range []e2ePowderBarrelFixture{
+		{audio: 0, fuse: 25}, // EventObj queued outside the audio loop.
+		{audio: 1, fuse: 0},  // Sound delivered, natural fuse not yet observed.
+	} {
+		if f.complete() {
+			t.Fatal("barrel completed before its real sound and natural fuse")
+		}
+	}
+}
+
 func TestE2EPowderBarrelTracksRecycledObjectIdentity(t *testing.T) {
 	unit := &server.Object{ScriptIDVal: 12}
 	f := e2ePowderBarrelFixture{existing: map[*server.Object]int32{unit: 12}}

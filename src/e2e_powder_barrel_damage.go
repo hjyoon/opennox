@@ -265,8 +265,11 @@ func (f *e2ePowderBarrelFixture) ignite() {
 		}
 		f.source = unit
 	}
-	if f.source == nil || f.audio != 1 {
-		e2eError(fmt.Errorf("powder barrel produced no real breaking object/audio: source=%p count=%d", f.source, f.audio))
+	// mainloopPre runs outside the audio loop: EventObj legitimately queues
+	// the death sound until the next Audio.Reset. The observer/complete gate
+	// must require that real event, not an immediate synchronous callback.
+	if f.source == nil {
+		e2eError(fmt.Errorf("powder barrel produced no real breaking object"))
 	}
 }
 

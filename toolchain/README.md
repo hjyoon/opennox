@@ -1,5 +1,7 @@
 # Go 도구체인 정책
 
+2026-10-10 R60의 `2821ad417`에서 통계 패킷 난독화 한 C 본체의 native buffer와 packed DWORD 길이를 복원했다. 원본 packet/mask/CRT 변환 코드의750개 제어 fixture와 전체 output·length·호출 순서가 일치한다. allocation/time/RNG 등은 명시적인 외부 서비스이며 원본 전체 engine/online 통계 실행의 인증은 아니다. 일반·HD·실제 strict 전체48170pass/34skip, 지원 server47661pass/7skip과 sanitizer·race/checkptr2·unchanged oracle 및 clean ARM643제품 build/revision/help가 통과했다. 기존 tests·자산·Save/config·ledger를 보존하고, 아직 ABI32인 bulk caller 및 retained Quest/passive-food는 [별도 미완료 항목](PORTING-INVENTORY.md#통계-패킷-난독화의-native-버퍼와-dword-길이-보존)으로 남긴다. 전체 port goal은 active다.
+
 2026-10-09 R48에서 원본 sound별 동시 event 제한을 복원해 과적 HeavyExertion의 반복 재시작/중첩을 막고, Monster/NPC의 world IMPALE·LAVA 피해 입구를 복원했다. 각 기능은 기존 production 본체 하나씩 수정한 뒤 즉시 push했다. stock 보호/immune/방패·armor carry·Quest 판정은 유지한다. real OpenAL null strict 회귀는 lifecycle만 확인하며 물리 청취로 확대하지 않는다.
 
 기능 revision `ce88d2456`의 공식 ARM64 일반·HD·server3제품 build/clean revision/help와 unchanged stock/code2968/data650/strict NXZ oracle를 통과했다. 최종 전체 일반·HD·실제 cgocheck2는 각각47322pass/34skip, server는46813pass/7skip이다. 일반·HD headless/mock에서8종 환경 피해×Player/Monster/NPC의24개 실제 충돌과 client HP를 각각 확인했다. 초기 fixture의 actual2, 전사의 정상 shield block, spectator 위치 및 원본 정수 marker 기대값 보정은 [R48 근거와 한계](PORTING-INVENTORY.md#과적-효과음-동시-재생-제한과-세-unit-종류의-환경-피해)에 구분했다. 개인 Save/config·원본 assets·기존 ledger/golden을 보존하고 retained Quest/passive-food 및 전체 goal은 완료로 바꾸지 않는다.

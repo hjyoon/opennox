@@ -1698,42 +1698,79 @@ int nox_server_mapRWMapInfo_42A6E0() {
 
 //----- (0042A8B0) --------------------------------------------------------
 uint16_t* sub_42A8B0(uint8_t* a1, int* a2) {
-	int v2;                // eax
-	uint8_t* v3;           // esi
-	uint8_t* v4;           // ebx
-	uint16_t* result;      // eax
-	int v6;                // esi
-	void* v7;              // eax
-	int v8;                // eax
-	uint16_t* v9;          // esi
-	unsigned char v10[12]; // [esp+Ch] [ebp-Ch]
-
-	*(uint16_t*)v10 = 0;
-	*(uint16_t*)&v10[2] = 0;
-	v2 = *a2;
-	*(uint32_t*)&v10[4] = 0;
-	v3 = calloc(v2, 2);
-	sub_42A970(a1, v3, a2);
-	v4 = sub_42AC50(v3, (size_t*)a2);
-	if (v3) {
-		free(v3);
+	// This packet has one CNTL field. Keep the original node lifecycle and
+	// serializer here: their int-based entry points cannot carry LP64 pointers.
+	typedef struct packet_field {
+		char name[4];
+		uint16_t type, length;
+		void* data;
+		struct packet_field* next;
+	} packet_field;
+	struct {
+		uint16_t length, type;
+		packet_field* first;
+	} packet = {0};
+	uint32_t* length = (uint32_t*)a2;
+	uint32_t initial_length = *length;
+	uint8_t* compressed = calloc(1, (uint32_t)(initial_length * 2u));
+	sub_42A970(a1, compressed, a2);
+	uint8_t* encoded = sub_42AC50(compressed, (size_t*)a2);
+	if (compressed) {
+		free(compressed);
 	}
-	if (v4) {
-		v6 = *a2;
-		v7 = calloc(1, 0x10u);
-		if (v7) {
-			v8 = sub_42C910((int)v7, (char*)getMemAt(0x587000, 71480), v4, v6);
-		} else {
-			v8 = 0;
-		}
-		sub_42C360(v10, v8);
-		free(v4);
-		v9 = sub_42C480(v10, (unsigned int*)a2);
-		sub_42C330(v10);
-		result = v9;
-	} else {
-		sub_42C330(v10);
-		result = 0;
+	if (!encoded) {
+		return 0; // The original empty-list destructor has no service calls.
+	}
+
+	uint16_t field_length = (uint16_t)*length;
+	packet_field* field = calloc(1, sizeof(*field));
+	if (field) {
+		field->data = 0;
+		free(field->data);
+		strcpy(field->name, (const char*)getMemAt(0x5D4594, 741688));
+		field->type = field->length = 0;
+		field->data = 0;
+		field->next = 0;
+		strncpy(field->name, (const char*)getMemAt(0x587000, 71480), 4u);
+		field->type = 20;
+		field->length = field_length;
+		field->data = calloc(1, field_length);
+		memcpy(field->data, encoded, field->length);
+		field->next = 0;
+	}
+	// Preserve the original unguarded link after a failed node allocation.
+	field->next = packet.first;
+	packet.first = field;
+	free(encoded);
+
+	*length = 4;
+	for (field = packet.first; field; field = field->next) {
+		*length += 8;
+		*length = field->length + *length + ((0u - ((field->length + *length) & 3u)) & 3u);
+	}
+	uint16_t* result = calloc(1, *length);
+	result[0] = htons((uint16_t)*length);
+	result[1] = htons(packet.type);
+	uint8_t* output = (uint8_t*)(result + 2);
+	for (field = packet.first; field; field = field->next) {
+		field->type = htons(field->type);
+		field->length = htons(field->length);
+		memcpy(output, field->name, 8);
+		output += 8;
+		memcpy(output, field->data, ntohs(field->length));
+		output += ntohs(field->length) + ((0u - (ntohs(field->length) & 3u)) & 3u);
+		field->type = ntohs(field->type);
+		field->length = ntohs(field->length);
+	}
+	for (field = packet.first; field;) {
+		packet_field* next = field->next;
+		free(field->data);
+		strcpy(field->name, (const char*)getMemAt(0x5D4594, 741688));
+		field->type = field->length = 0;
+		field->data = 0;
+		field->next = 0;
+		free(field);
+		field = next;
 	}
 	return result;
 }

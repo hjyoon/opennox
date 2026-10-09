@@ -16,6 +16,12 @@ type ScriptMoveRuntime5123C0 struct {
 }
 
 func scriptMoveStoreArgU325123C0(action *AIStackItem, index int, value uint32) {
+	if action.Type() == ai.ACTION_FAR_MOVE_TO && index == 2 {
+		// GAME.EXE 00512441 clears an object pointer, not a scalar dword.
+		// A reused native slot must not retain the previous pointer's high half.
+		action.Args[index] = uintptr(value)
+		return
+	}
 	action.Args[index] = action.Args[index]&^uintptr(0xffffffff) | uintptr(value)
 }
 

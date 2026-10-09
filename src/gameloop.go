@@ -85,6 +85,12 @@ func (c *Client) mainloopFrameLimit() {
 		return
 	}
 	if noxflags.HasGame(noxflags.GameHost) && noxflags.HasGame(noxflags.GameClient) && !noxflags.HasEngine(noxflags.EngineNoRendering) && noxflags.HasGame(noxflags.GameFlag29) {
+		// Award/book effects freeze the server frame, so its synchronization
+		// deadline cannot pace rendering while gameplay is paused.
+		if noxflags.HasGame(noxflags.GamePause) {
+			c.srv.RateWait()
+			return
+		}
 		if noxflags.HasEngine(noxflags.EnginePause) {
 			return
 		}

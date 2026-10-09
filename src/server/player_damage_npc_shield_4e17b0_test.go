@@ -292,6 +292,25 @@ func TestPlayerDamageNative4E17B0NPCShieldSourceOnlyMarkerAndExclusion(t *testin
 						return true
 					}
 				}
+				if !self && typ == object.DamageExplosion {
+					// 004E18D1 clears the marker before facing; 004E1BFD
+					// selects the live shield after audio/balance and passes
+					// the original nil a3, not the source as a fake weapon.
+					r.CanDamageBlockItem = func(got *Object) bool {
+						if got != shield || target.UpdateDataMonster().Field547 != 0 ||
+							!slices.Equal(events, []string{"audio", "percent"}) {
+							t.Fatal("world EXPLOSION shield admission preceded real block effects")
+						}
+						return true
+					}
+					r.DamageBlockItem = func(item, owner, attacker, effective *Object, wear float32, gotType object.DamageType) bool {
+						if item != shield || owner != target || attacker != source || effective != nil || wear != float32(0.2*9) || gotType != typ {
+							t.Fatal("world EXPLOSION shield durability arguments")
+						}
+						events = append(events, "durability")
+						return true
+					}
+				}
 				marker, markerType := uint32(0), uint32(77)
 				if !self && (typ == object.DamageClaw || typ == object.DamageCrush) {
 					marker, markerType = 1, uint32(source.TypeInd)

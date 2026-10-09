@@ -532,7 +532,9 @@ func playerDamageMonster4E17B0(
 	// it is not restricted to missile-shaped sources. Keep this prefix
 	// separate so marker reset, cached equipment and the one ordinary
 	// facing check precede callbacks, without reselecting live equipment.
-	if weapon == nil && typ == object.DamageExplosion &&
+	// Powder-barrel breaking objects are SIMPLE|LIGHT world sources,
+	// without a unit update record, and use the same case-7 prefix.
+	if playerDamageWorldExplosionShape4E17B0(source, weapon, typ) || weapon == nil && typ == object.DamageExplosion &&
 		(source == nil || (source.Class().HasAny(object.MaskUnits) &&
 			!source.Class().HasAny(object.ClassMissile|object.ClassWeapon|object.ClassWand))) {
 		update.Field547 = 0

@@ -1833,7 +1833,7 @@ LABEL_10:
 		*a3 = 1;
 	} else {
 		do {
-			if (v10[v11] != v12 || v11 >= v14) {
+			if (v10[v11] != (uint8_t)v12 || v11 >= v14) {
 				if ((unsigned char)v4 <= 3u) {
 					if ((int)v18 > 0) {
 						v16 = v18;

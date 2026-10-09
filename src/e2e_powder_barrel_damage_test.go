@@ -6,10 +6,28 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/server"
 	"gopkg.in/yaml.v2"
 )
+
+func TestE2EPowderBarrelPostAIStatus(t *testing.T) {
+	for _, tc := range []struct {
+		status object.MonsterStatus
+		want   bool
+	}{
+		{object.MonStatusOnFire, true},
+		{object.MonStatusOnFire | object.MonStatusAlert, true},
+		{0, false},
+		{object.MonStatusInjured, false},
+		{object.MonStatusInjured | object.MonStatusOnFire, false},
+	} {
+		if got := e2ePowderBarrelPostAIStatus(uint32(tc.status)); got != tc.want {
+			t.Fatalf("post-AI status=%#x accepted=%t want=%t", tc.status, got, tc.want)
+		}
+	}
+}
 
 func TestE2EPowderBarrelArenaChecksRadialFootprints(t *testing.T) {
 	trace := func(from, to types.Pointf) bool {

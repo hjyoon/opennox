@@ -53,6 +53,14 @@ func e2ePowderBarrelUnitDamage(raw int32, armored, immune bool, armor, carry flo
 	return damage, remainder
 }
 
+// RunTickHooks is after ordinary 0050A5C0 AI: it consumes INJURED in the
+// same tick and retains ON_FIRE for three seconds after Frame134. Native
+// damage-entry tests separately require both bits before that AI update.
+func e2ePowderBarrelPostAIStatus(status uint32) bool {
+	mask := uint32(object.MonStatusInjured | object.MonStatusOnFire)
+	return status&mask == uint32(object.MonStatusOnFire)
+}
+
 // A blast fixture needs three clear radial spokes and one outside-radius
 // control, not the 96-wide, 160-long charge lane used by warrior abilities.
 // Check the real placements (including their footprints) without changing
@@ -314,9 +322,9 @@ func (f *e2ePowderBarrelFixture) observeHit() {
 			}
 		}
 		if v.unit.Class().Has(object.ClassMonster) {
-			mask := object.MonStatusInjured | object.MonStatusOnFire
-			if v.unit.UpdateDataMonster().StatusFlags&mask != mask {
-				e2eError(fmt.Errorf("powder barrel %s lacks injured/on-fire status", v.name))
+			status := uint32(v.unit.UpdateDataMonster().StatusFlags)
+			if !e2ePowderBarrelPostAIStatus(status) {
+				e2eError(fmt.Errorf("powder barrel %s post-AI injury/fire status mismatch: %#x", v.name, status))
 				return
 			}
 		}

@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Passive-food 미실행 일곱 조건의 분리 관찰
+
+R56은 R55 크래시 수정 뒤 clean/pushed `5f3422bba00d50d51eb1a52a8fbcf294070bedaf`에서 음식 gate의 기존 미실행 범위를 확인했다. production/test/build inputs 및 원래 YAML은 수정하지 않았다. Troll/ascending/RedApple은 byte-identical 전체 eight-case YAML로 일반·HD를 재실행했고, 첫 case에서 원래600tick 소비 timeout/terminal actual2로 끝나 뒤 일곱 case는 이 두 전체 실행에서도 미실행이다. 나머지7조건(Troll/NPC×ascending/descending×RedApple/Meat 중 첫 조건 제외)은 원본 startup prefix·해당3줄 case·quit tail을 byte-exact 유지한 private one-case YAML로 각 lane에서 분리 실행했다. 이14개 실행을 원래 전체 gate의 통과나 원래 scenario와 같은 실행 순서로 세지 않는다.
+
+일반8·실제 HD8, 총16개 actual terminal 모두 소비 timeout/exit2다. 각각 Frame580의 stock Troll/NPC·food·update·ordinary owner가4GiB 위였으며 자연 RETREAT/MOVE_TO와 이동16 이상·server/client drawable을 관찰했다. 각240개의 just-executed frame580..819 TRACE 및20개의 elapsed1/31/..571 TICK, 합계TRACE3840·TICK320을 확인했다. PICKUP/PASS는0이고 모든 TICK의 ate=false이며 기존 classic regeneration guard를 통과했다. Troll/Meat는 마지막 TICK에서 HP79/80, NPC/Meat는150/150이므로 모든 조건이 완전히 회복했다고 확대하지 않는다. 원래 timeout panic과 SIGSEGV를 구분하며 이번16개 로그의 SIGSEGV는0이다.
+
+각 mode의 일반/HD observation payload267/271/272개, lane당2154개는 timestamp 제외와 PREPARED의 네 실제 native identity(unit/update/food/owner)의 정확한 hex/decimal token mapping 뒤 모두 일치했다. 다른 scalar/RNG/frame/AI action을 정규화하거나 기대값을 바꾸지 않았다. fresh defaults config와 서로 다른16개 isolated runtime view의 실제 cleanup도 확인했다. 출력/소비/health/stack을 주입하지 않았고 새로운 PNG/golden을 추가하지 않았다. 이것은 해당 fixture의 두 macOS renderer lane 관찰이지 별도 원본 Windows/world geometry 또는 모든 자율 음식 AI의 동등성 증거가 아니다.
+
+기존 `TestMonsterRetreatFoodArrival5443F0VisiblePassiveContract`를 고정 Go1.26.5·실제 GOEXPERIMENT=cgocheck2로 일반·공식 highres·server 및 race+checkptr2에서 각각 count3 실행했다. 네 actual terminal0, lane당99 pass records/33 unique identities/skip0이다. 이는 nonnil tracked target 유지와 aggression0.01 periodic-food skip의 기존 좁은 원본 계약이며16개 GUI의 소비 실패를 통과로 바꾸지 않는다. R56에서 원본 emulator를 새로 실행했다고 세지 않는다. R55의 전체 strict suite/oracle/세 공식 제품 증거는 이전 별도 완료 기록으로 유지하며 이번 표적 run을 전체 suite 재실행으로 확대하지 않는다.
+
+독립 private auditor actual0의 receipt는 `/private/tmp/opennox-passive-unreached-r56.otro9d/audit-receipt.json`, SHA `9af56e29cc654eefe45cf0ee2cae567f427777ec49f6373537c662ba398aa387`다. 각 실제 tool session/terminal exit2·16개 log SHA·정확한 case identity·timeout·native pointer·관찰 payload와 contract JSON을 교차 대조한다. 전체 원래 YAML SHA `79af8cb825a73659ed38db31f1cfb5ace15de61c7c1762cf2500481755311663`, observer SHA `56a0c2225d473a78bd7b0fddf3ebb9141b477c15b1a8e0706e02038ad4bdb1a6`, source6110files/83449183bytes/tree `37fa09ad7423534ffbbdb55cce10c457131b53fffc32fa3312f37c502d73a332`, GUI stock1562files/571159691bytes/tree `4b811dec1a7d92d95d83e95569a7610fe854d6e63e3d8464c12ab8eaadd3250a`가 전후 불변이다. 두 GUI 제품은 위 clean revision/Go1.26.5/darwin-arm64이며 HD는 실제 NOX_E2E_CLIENT_TARGET=client-hd·-tags highres·opennox-hd로 metadata verify actual0이다.
+
+모든 GUI/wrapper의 실제 terminal 종료와 표적 테스트 종료 뒤에만 이 docs-only prepend를 수행한다. 기존 ledger2834288bytes/SHA `4e14c6758e1d961db9d09739be7cce1fa343c99d481069111014f1e59bcdf6ab`의 전체 suffix를 byte-exact 유지한다. 개인 Save/config·stock/oracle range·기존 기대값/aggression/WAIT/RNG/600tick 제한은 바꾸지 않는다. fixed Quest는 이번에 재실행하지 않았고 R52의 actual2 및 원본 이전 전체 world RNG history 미입증을 유지한다. R55 크래시 수정은 별도로 완료되어 있다. 소비 개선을 위해 기존 원본 동작을 바꿀지에 관한 사용자 방향 확인은 미응답이며 retained 두 gate와 전체 port goal은 아직 active다.
+
 ## AI 이동·배회 인자 재사용 중 native64 포인터 크래시
 
 R55는 `monsterActionRefresh50A910`의 ObjFlags 읽기에서 `addr=0x7f5a00000014`가 발생한 보고를 추적했다. 원본 AI push/pop은 reused Args를 지우지 않는다. ScriptMove의 FAR_MOVE_TO target clear가 scalar U32 부분 쓰기를 사용하면 이전 native object 주소의 상위32비트가 남아 `(oldTarget & ~0xffffffff) + ObjFlags offset20`을 읽는다. 이는 보고 주소의 형태와 일치하며 실제 C-owned 고주소로 수정 전 재현했다. 보고된 Linux 실행이나 해당 사용자 맵에서의 재현을 확보했다고 주장하지 않는다.

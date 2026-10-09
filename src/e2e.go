@@ -10057,6 +10057,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckPlayerBow(l.Item, l.Name)
+		case "check-player-plasma":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPlayerPlasma(l.Name)
 		case "check-charm-effect":
 			if dt != 0 {
 				sc.Wait(dt, "")

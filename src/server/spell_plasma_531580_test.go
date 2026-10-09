@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"reflect"
+	"strings"
 	"testing"
 	"unsafe"
 
@@ -463,5 +464,45 @@ func TestPlasmaBalanceInt531600ChopAndIndefinite(t *testing.T) {
 		if got := plasmaBalanceInt531600(tc.value); got != tc.want {
 			t.Fatalf("chop(%g) = %d, want %d", tc.value, got, tc.want)
 		}
+	}
+}
+
+func TestSpellPlasmaUpdate531600DepletedWandStillStrikesBeforeCancel(t *testing.T) {
+	w := newPlasmaTestWorld531580()
+	caster := w.unit("caster", object.ClassPlayer, 0, 0)
+	target := w.unit("target", object.ClassMonster, 100, 0)
+	_, data := w.staff(caster, 0)
+	r := &DurSpell{Caster16: caster}
+	rt := w.runtime()
+	SpellPlasmaCreate531580(r, rt)
+	r.Target48 = target
+	if got := SpellPlasmaUpdate531600(r, rt); got != 1 {
+		t.Fatal(got)
+	}
+	if data.Charge != 0 {
+		t.Fatal("empty charge wrapped")
+	}
+	seen := false
+	for _, e := range w.events {
+		if e == "damage:target:2" {
+			seen = true
+		}
+		if strings.HasPrefix(e, "charge:") {
+			t.Fatal("depleted wand reported extra consumption")
+		}
+	}
+	if !seen {
+		t.Fatal("original pre-charge damage order changed")
+	}
+}
+
+func TestSpellPlasmaUpdate531600ExpiryUsesDWORDWrap(t *testing.T) {
+	w := newPlasmaTestWorld531580()
+	w.frame = math.MaxUint32 - 4
+	caster := w.unit("caster", object.ClassPlayer, 0, 0)
+	target := w.unit("target", object.ClassMonster, 100, 0)
+	r := &DurSpell{Caster16: caster, Target48: target}
+	if got := SpellPlasmaUpdate531600(r, w.runtime()); got != 0 || r.Frame68 != 7 {
+		t.Fatalf("expiry = %d, result=%d", r.Frame68, got)
 	}
 }

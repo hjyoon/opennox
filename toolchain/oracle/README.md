@@ -1,5 +1,11 @@
 # 비공개 원본 오라클 매니페스트
 
+## NPC 공격·피격 복원 뒤의 원본 계약 및 gameplay 확인
+
+R45의 네 기능 커밋은 각각 기존 production 본체 하나만 바꾼다. NPC 공격 완료 BYTE의 원본 `0050A87E` 순서, 무기 프레임의 native BYTE 선택과 callback 뒤 재조회, NPC에서 native monster self-strike BLADE/CRUSH/IMPALE/DRAIN/BITE/CLAW 입구를 복원했다. 방어·armor/carry/wear·Quest·실제 HP tail은 원본 계약을 유지하며 GodMode를 NPC 무적으로 확대하지 않는다. 수정 전 계약 실패와 일반·HD의 실제 세 무기×세 완전한 cycle/여섯 적×세 NPC 피격, 관련 count3 일반·HD·실제 cgocheck2 재검사를 [상세 R45/R46 ledger](../PORTING-INVENTORY.md#npc-공격-프레임과-몬스터에게-받는-피해-복원)에 구분해 기록했다.
+
+같은 clean 기능 revision의 일반·HD Quest map-oracle20단계와 periodic food8조건도 각각 actual0이며 raw snapshot·기존 독립 Ruby RNG/이력 감사·실제 client/HP/이동/음식 삭제를 대조했다. 이 성공은 별도 aggression0.01 passive/PICKUP timeout/actual2와 이전 fixed-map Quest 기대값 실패를 대체하지 않는다. code2968/data650 검증 actual0, 기존 manifest·range·자산·PNG/golden 불변을 유지하며 전체 port 완료·원본 Windows 전체 runtime·물리 화면/음향 동등성은 주장하지 않는다. 이번 문서 추가 전후의 이전 본문은 보존한다.
+
 ## 원본 자산 선택형 검사의 후속 검증
 
 R44의 일반·HD·실제 cgocheck2 count3 자산 검사는 각각 actual0/1,218개 test pass/skip0이다. 기존 PNG MD5 270개·원본 pixdata sprite126,687개·reported sprite의 clipping/truncation·strict NXZ50쌍·encrypted monster 정의 solo/arena를 확인한다. stock1,556파일/tree·code2,968/data650·production/test 입력과 기존 expected hashes는 불변이고 새 original range/자산은 없다. GUI·Windows 전체 runtime·물리 출력 검증으로 확대하지 않는다.

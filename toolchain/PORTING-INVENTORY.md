@@ -1,5 +1,25 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## NPC 공격 프레임과 몬스터에게 받는 피해 복원
+
+R45의 후속 NPC 수정은 사용자가 확인한 "NPC가 공격받아도 피해를 안 받음"과 공격 동작이 끝까지 진행되지 않는 두 문제를 대상으로 한다. `6a992ebc8`은 `MonsterUpdateNPCAnim50A850` 한 본체에서 원본 `0050A87E`처럼 근접/원거리 공격의 완료 BYTE를 먼저 지우고 무기 타이밍에 종료를 맡긴다. `684946994`는 `playerAttackNativeNPCData538960` 한 본체의 잘못된 DWORD `Field481` 선택을 원본 프레임 BYTE에 대응하는 native `Field120_1`로 돌리고, `69c3ca407`은 thrown-attack callback 뒤 같은 native BYTE 재조회를 복원한다. NPC와 Player의 서로 다른 update layout을 섞지 않으며 client animation cache와 전송은 기존 서비스를 사용한다.
+
+`2e3b121c0`은 `playerDamageMonster4E17B0` 한 본체의 native monster self-strike 입구를 복원한다. 몬스터 자신의 몸을 source와 weapon으로 함께 전달하는 BLADE/CRUSH/IMPALE/DRAIN/BITE/CLAW 타격이 NPC에서 거부되던 문제다. 방패와 검/지팡이 차단, cached absorption·live carry/armor wear, marker/type, 양수 최소 피해, Quest 배율 및 기존 실제 DefaultDamage/HP/injury/attribution tail을 유지한다. DRAIN은 원본처럼 armor/carry/wear를 건너뛰고 CRUSH는 절반 absorption을 쓴다. GodMode를 NPC 무적으로 확대하지 않는다. 수정 전 server 계약의 fail 기록316개와 실제 native HP 계약의 fail 기록19개를 성공 결과와 분리해 보존했다.
+
+`f062884b1`의 테스트 전용 headless scenario `host-game-npc-combat.yaml`은 일반·HD 두 실행에서 actual0이다. 실제 stock LongSword/StaffWooden/WarHammer의 각각 세 완전한 공격 cycle, 정확한 중간 프레임의 실제 HP 감소 한 번, client의 시작/중간/마지막 프레임 수신을 확인했다. 무기별 frame-count는8/6/8이고 상대 HP는2000→1979/1982/1792다. 여섯 stock 적 GruntAxe/StoneGolem/Scorpion/Ghost/Spider/VileZombie는 실제 자율 enemy 선택·FIGHT를 거쳐 각 세 차례 NPC HP를 감소시켰다. 두 제품에서 NPC HP는 각각2000→1968/1739/1915/1990/1970/1910이며 negative client delta도 수신됐다. 적에게 선행 피해·CurrentEnemy/FIGHT·타격/HP/animation 결과를 공급하지 않았다. 위치·소유 관계·HP2000·통상 map aggression 준비는 fixture이고 모든 원격 client·NPC 종류·방어구·마법의 전수 gameplay 인증은 아니다. mock/noaudio는 음향 청취 증거가 아니다.
+
+같은 clean/pushed revision의 이전 전체 검사 actual0은 일반·HD 각각 actual test pass46524/skip32 및 package pass37, server·실제 `GOEXPERIMENT=cgocheck2` 각각 test pass46015/skip7 및 package pass35다. R46에서 관련 root/server/legacy 표적 검사를 일반·HD·실제 cgocheck2 각 count3으로 다시 실행해 각각 test pass 기록1191/skip0/fail0/package pass3을 확인했다. 이 표적 재실행을 새 전체 검사로 세지 않는다. 공식 normal/HD/server 세 제품은 Mach-O ARM64이며 기능 revision `f062884b1`의 build actual0과 구별하여 documentation-only handoff 제품을 빌드한다. 기능별 한 본체 커밋과 직후 origin push를 유지했고 원본 자산·기존 PNG/golden·개인 Save/config는 변경하거나 공개하지 않았다.
+
+## NPC 수정 뒤 Quest 20단계와 음식 소비 경로 재검증
+
+R46은 같은 `f062884b1`에서 production/test/YAML/manifest를 바꾸지 않고 fresh Save/config/maps·read-only stock links의 headless/mock 실행을 했다. `host-quest-twenty-stages-map-oracle.yaml`은 일반·HD 각각 actual0이다. 별도 기존 Ruby auditor가 raw snapshots와4096-word RNG table로20개 selector의 signed DWORD/cooldown·정확한 Logic 소비·Other/frame/history 불변을 재검산했다. 실제 loaded/client phase3·HP450/450의20개 playable stages,19 mouse walks와 stock-exit contact 뒤19 stage transitions,20개 generator summary, stage5 Hecubah/Necromancer 및 stage20 Hecubah를 확인했다. 일반·HD의 pointer 주소를 제외한 raw snapshot20개와 private 진단 PNG5쌍은 각각 동일하다. PNG를 골든 pixel 인증으로 확대하거나 기존 고정-map 기대값을 덮어쓰지 않는다.
+
+별도 `host-game-ai-retreat-periodic-food.yaml`은 일반·HD 각각 actual0이며 각8개 조합(Troll/NPC×ascending/descending×RedApple/Meat)이 모두 통과했다. ordinary script injury와 aggression0.3의 기존 map properties 뒤 실제 RETREAT/MOVE_TO 이동, 원본16-frame cadence의 stock FoodPickup 소비, 실제 HP 회복·MonsterEatFood event334·server/client food 삭제·RETREAT 종료를 확인한다. 예를 들어 Troll 사과는80→75→80, NPC 고기는150→140→150이다. 이 소비를 강제한 action/이동/HP/음식 삭제 결과 주입은 없다. 별도 passive/PICKUP 검사와 조건이 달라 그 실패를 이 성공으로 대체하지 않는다.
+
+변경하지 않은 `host-game-ai-retreat-food.yaml`도 현재 revision에서 재실행했으며 첫 Troll/ascending/RedApple은 기존600tick timeout/actual2다. aggression0.01, 이동 후 distance-squared5.00445276, frame655/764의 ACTION_IDLE 전환 및 자연 회복80/80·음식 잔존이 그대로다. 가까운 tracked MOVE_TO가 유지되는 분기는 선택된 원본과 일치하지만 이것만으로 전체 원본 Windows/physics 동등성이나 소비 성공을 주장하지 않는다. 뒤7개 passive 조건은 이 실행에서 도달하지 않았다. 이전 fixed-map Quest의 stage3 `g_lotdd` 기대/`g_crypts` 실제 불일치도 새 map-oracle 성공으로 고정 골든 통과라 재분류하지 않는다. 기존 두 retained gate와 전체 port goal은 active이며 gameplay·aggression·RNG·wait·timeout·기대값을 통과에 맞춰 바꾸지 않았다.
+
+후속 `oracle-code-verify` actual0은 기존 GAME.EXE code2968/data650 ranges를 재확인했다. 새 원본 range나 manifest 완화는 없다. private 실행 로그·진단 PNG는 저장소 밖에 보존하고, 위 결과와 이번 documentation-only commit 이후의 build/stock 검사 결과는 구분한다. 이전 ledger 내용은 바이트 그대로 보존한다.
+
 ## 원본 자산 선택형 검사의 후속 실행
 
 R44는 clean/pushed `afcdc70c851047b9cc5758ec3432e92e84bfb677`에서 R43 기본 전체 검사에 포함되지 않았던 자산 검사를 명시적으로 활성화했다. 실제 Go 1.26.5 Darwin/ARM64에서 production/test/build input 5,688개의 SHA seal `8d40d0c6c21bf859f8109da00421a03e0085f23245cc70fc80d9fe1242167615`가 실행 전후 같다. 이번에는 gameplay·AI·RNG·wait·timeout·골든·기대값·자산·개인 Save/config를 변경하지 않고 GUI도 실행하지 않았다.

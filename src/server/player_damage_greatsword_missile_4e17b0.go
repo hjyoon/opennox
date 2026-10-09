@@ -12,6 +12,7 @@ type playerDamageGreatSwordContext4E17B0 struct {
 	weaponFlags, armorFlags uint32
 	state                   *PlayerState
 	marker, markerType      *uint32
+	prefixed                bool // A native player/NPC prefix already stored the hit marker.
 }
 
 func playerDamageGreatSwordItem4E22A0(target *Object) *Object {
@@ -98,7 +99,7 @@ func playerDamageGreatSwordMissileBlock4E17B0(
 	if uint32(attack.SubClass())&2 == 0 && (r.ClearOwner == nil || r.SetOwner == nil) {
 		return reject("missing GreatSword missile ownership service")
 	}
-	if r.playerPrefix == nil {
+	if r.playerPrefix == nil && !cached.prefixed {
 		*cached.marker = 0
 		if (weapon != nil && source != weapon) || (weapon == nil && (typ == object.DamageClaw || typ == object.DamageCrush)) {
 			*cached.marker, *cached.markerType = 1, uint32(attack.TypeInd)

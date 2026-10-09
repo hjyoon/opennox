@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 원본 자산 선택형 검사의 후속 실행
+
+R44는 clean/pushed `afcdc70c851047b9cc5758ec3432e92e84bfb677`에서 R43 기본 전체 검사에 포함되지 않았던 자산 검사를 명시적으로 활성화했다. 실제 Go 1.26.5 Darwin/ARM64에서 production/test/build input 5,688개의 SHA seal `8d40d0c6c21bf859f8109da00421a03e0085f23245cc70fc80d9fe1242167615`가 실행 전후 같다. 이번에는 gameplay·AI·RNG·wait·timeout·골든·기대값·자산·개인 Save/config를 변경하지 않고 GUI도 실행하지 않았다.
+
+일반 baseline count1은 actual0/406개 test pass/3package pass/skip0이었다. 일반·highres·실제 cgocheck2 count3은 각각 actual0/1,218개 test pass/3package pass/skip0이며 같은 406개 test identity의 세 번 실행을 독립 raw JSON 감사로 검사했다. 각 실행은 기존 PNG MD5 270개 leaf, 원본 126,687개 pixdata sprite의 모든 row, reported sprite `PRCS0002.pcx`의 clipping·두 interlacing phase/truncation, strict NXZ 50쌍의 압축·해제 및 encrypted `monster.bin`의 solo/arena 정의 로딩·해제를 포함한다. 기존 RGB5551 golden serializer와 expected hashes는 불변이다. 이는 renderer/data API 검사이며 GUI·원본 Windows 전체 픽셀 출력 동등성의 증거가 아니다.
+
+별도 전체 `TestAudioDecode` 자산 probe는 actual1/1,170개 test run/29pass/1,141fail/skip0이다. 한국어 보유본의 dialog WAV 1,137개는 기존 영문 PCM 기대 hash가 없어 빈 expected hash와 비교해 실패했고 추가 `music/chap1.mp3` 한 leaf는 WAV-only entry에서 unsupported였다. 나머지 세 failure는 부모 집계다. 이 실행을 통과로 바꾸거나 기준값을 새 decoder 출력으로 채우지 않았다. production music table은 `.wav`를 요청한다. 기존 기대값이 존재하는 29개 music WAV만 이름을 명시해 선택한 후속 일반·highres·실제 cgocheck2 count3은 각각 actual0/93개 test pass/87개 leaf pass/skip0이다. 이는 PCM hash·길이 확인이지 물리 스피커·실제 재생 event gate 검증이 아니며 한국어 대사 PCM 기준과 standalone MP3 지원은 미검증/미지원으로 남긴다.
+
+`oracle-test`의 전후 검증 및 모든 자산 검사 뒤 `oracle-code-verify`는 actual0이다. 원본 1,556파일/570,653,750bytes/tree `161675279c5a9a6e5e8da4ae539ad80f9033d608b32ad620a052866ecc1e61b7`와 GAME.EXE code2,968/data650 범위를 유지한다. 새 원본 byte/range/manifest나 자산을 추가하지 않았다. 독립 감사 `/private/tmp/opennox-stock-assets-r44.IUETKw/independent-stock-assets-audit-1.json` SHA는 `ff79ef6664fac261d83fd99ecde2795844ab44d03b838561bb37814c9fcba168`이며 실제 terminal exit·test identity·raw log SHA·source seal·이전 R35 판매 아이콘/기본 자기 시전 증거의 불변을 확인한다. retained passive-food/fixed-Quest와 전체 port goal은 완료하지 않았고 이전 ledger suffix는 바이트 그대로 보존한다. clean 공식 3제품의 후속 build/revision/help는 별도 handoff 로그로 구별한다.
+
 ## 서버·클라이언트 음성 테스트의 backend 계약 구분
 
 R43은 clean/pushed `0561cad1d`에서 R42 서버 전체 검사의 남은 `TestDialogIntegration` 실패를 처리했다. 원래 서버 backend는 `WaveOutOpen=0`으로 음성이 비활성이고 클라이언트 backend는 `!server`의 OpenAL이다. 기존 재생 검사의 파일에 `!server`만 추가했다. 헤더를 제외한 기존 파일 SHA `a2443d874ca2b7fba90e95e9e56090d3f1d5443aac07e3976e57766c1d6aa519`와 production dialog/audio 본체는 불변이다. 수정 전 클라이언트 재생 검사 count3도 actual0으로 확인했다.

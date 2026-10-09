@@ -1,5 +1,11 @@
 # 비공개 원본 오라클 매니페스트
 
+## 원본 자산 선택형 검사의 후속 검증
+
+R44의 일반·HD·실제 cgocheck2 count3 자산 검사는 각각 actual0/1,218개 test pass/skip0이다. 기존 PNG MD5 270개·원본 pixdata sprite126,687개·reported sprite의 clipping/truncation·strict NXZ50쌍·encrypted monster 정의 solo/arena를 확인한다. stock1,556파일/tree·code2,968/data650·production/test 입력과 기존 expected hashes는 불변이고 새 original range/자산은 없다. GUI·Windows 전체 runtime·물리 출력 검증으로 확대하지 않는다.
+
+전체 음성 자산 probe의 actual1은 남겨 둔다. 한국어 dialog1,137개의 영문 기준 hash 부재와 추가 standalone MP3 한 leaf의 unsupported를 원본 음악 WAV29개 hash/길이 검사(세 모드 count3 각각 actual0/93pass/skip0)와 구분한다. 새 출력으로 기대값을 덮어쓰지 않았다. 독립 raw-JSON/terminal/source/stock 감사와 retained passive-food/fixed-Quest 경계는 [상세 R44 ledger](../PORTING-INVENTORY.md#원본-자산-선택형-검사의-후속-실행)에 기록했다.
+
 ## 웨이포인트 8-unit 경계의 원본 반올림 대조
 
 R32 clean 기능 revision `ef8a3181c`는 기존 봉인 `sub_50D2E0`(address `0x0050D2E0`, size206, SHA-256 `b6235caac2cc9627c5b0565b12eb04c2ea724c1c60649f1de02c92db103cb44e`)의 전체 body를 unchanged GAME.EXE에서80개 좌표/status/movement 조건으로 재생했다. x87 `0x0e7f`의 precision53/ToZero 차·Y 제곱·X 제곱·합에 맞춰 기존 Go waypoint 본체 하나를 복원했다. native 회귀의 독립 math/big 기준, 수정 전32실패/48통과 및 수정 후960leaf 통과, body 밖 동일 바이트 감사를 함께 보존했다. DetailedPath/ActuallyMove는 제어 boundary이므로 원본 map/physics·전체 Windows runtime 동등성의 증거로 확대하지 않는다.

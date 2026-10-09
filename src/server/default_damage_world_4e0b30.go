@@ -266,8 +266,9 @@ func DefaultDamageWorld4E0B30(
 	// missile weapon. This player tail still performs fire protection, live
 	// Defend/sound/hurt/Shield and HP; a nil weapon skips 004E0C61's second
 	// enemy query and Shock, but not 004E0C03's campaign owner gate.
+	worldExplosion := playerDamageWorldExplosionShape4E17B0(source, weapon, typ)
 	playerWeaponlessExplosion := target.Class().Has(object.ClassPlayer) && weapon == nil && typ == object.DamageExplosion &&
-		(source == nil || (source.UpdateData != nil && source.Class().HasAny(object.MaskUnits) &&
+		(worldExplosion || source == nil || (source.UpdateData != nil && source.Class().HasAny(object.MaskUnits) &&
 			!source.Class().HasAny(object.ClassMissile|object.ClassWeapon|object.ClassWand)))
 	// 0053D8C0 supplies the terminal owner, including a class-zero
 	// ImaginaryCaster or the cloud itself. Do not require a unit source or a
@@ -455,11 +456,12 @@ func DefaultDamageWorld4E0B30(
 	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
 		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
-	// Meteor passes its terminal player owner (or nil) with no weapon.
+	// Meteor passes its terminal player owner (or nil) with no weapon;
+	// BlackPowderBarrelUpdate passes the SIMPLE|LIGHT breaking object.
 	// 004E0C55's melee gate requires both source and weapon; 004E0D55
 	// still applies EXPLOSION fire immunity/protection and the ordinary tail.
 	monsterWeaponlessExplosion := monsterUpdate != nil && weapon == nil && typ == object.DamageExplosion &&
-		(source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster))
+		(worldExplosion || source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster))
 	if monsterWeaponlessExplosion && (runtime.DamageClear == nil || (source != nil &&
 		(runtime.BuffOff == nil || (source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)))) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing weapon-less monster EXPLOSION tail service", target, source, weapon, damage, typ)

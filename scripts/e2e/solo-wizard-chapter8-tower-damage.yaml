@@ -1,0 +1,66 @@
+# Original Wiz08e MapInitialize -> InitializeFONtraps -> FireFONTrap01 timer.
+# Only the victims are placed; original Towers, waypoints and casts are intact.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select unshielded wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept wizard
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept wizard color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: settle wizard gameplay
+  - action: click-npc-dialog-done
+    name: close opening dialog normally
+  - action: wait
+    dt: 60
+    name: opening dialog settled
+  - action: switch-map
+    map: Wiz08e
+    name: load untouched original chapter eight map
+  - action: wait-map
+    map: Wiz08e
+    name: await original solo chapter eight initialization
+  - action: wait-forced-coop-autosave
+    name: finish normal map-entry autosave
+  - action: check-trap-projectile-damage
+    item: chapter8-tower
+    name: original Tower automatic Force of Nature
+  - action: quit
+    dt: 1

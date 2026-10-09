@@ -9450,6 +9450,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-award-frame-pacing":
 			sc.Wait(dt, "")
 			sc.CheckAwardFramePacing(l.Name)
+		case "check-ai-script-slot-reuse":
+			sc.Wait(dt, "")
+			sc.CheckAIScriptSlotReuse(l.Text, l.Name)
 		case "check-quickbar-buff-cast":
 			sc.Wait(dt, "")
 			sc.CheckQuickbarBuffCast(spell.ID(l.Spell), l.Name)

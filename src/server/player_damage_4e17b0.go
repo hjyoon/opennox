@@ -622,11 +622,10 @@ func playerDamageMonster4E17B0(
 		}
 		return true, runtime.DefaultDamage(target, source, weapon, effective, typ)
 	}
-	// A stock Troll supplies itself as both source and weapon for case 11.
-	// Nonmissile IMPACT skips Reflect, but keeps the original cached marker
-	// clear, PrevPos snapshot and one exclusion/facing check before shields,
-	// GreatSword/staff and the shared full-armor tail.
-	if playerDamageMonsterImpactShape4E17B0(source, weapon, typ) {
+	// Native monster strikes supply themselves as both source and weapon.
+	// Nonmissile strikes skip Reflect, but keep the cached marker clear,
+	// PrevPos snapshot and one exclusion/facing check before defenses.
+	if playerDamageMonsterImpactShape4E17B0(source, weapon, typ) || playerDamageNPCMonsterSelfStrikeShape4E17B0(source, weapon, typ) {
 		update.Field547 = 0
 		attackPos := weapon.PrevPos
 		if runtime.BlockSourceExcluded == nil {
@@ -647,7 +646,10 @@ func playerDamageMonster4E17B0(
 			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC self-weapon IMPACT tail record", target, source, weapon, damage, typ)
 		}
 		runtime.BlockDirection = func(*Object, types.Pointf) bool { return front }
-		return playerDamageMonsterImpactTail4E17B0(target, source, weapon, greatSword, armorValue, damage, typ, runtime)
+		if typ == object.DamageImpact {
+			return playerDamageMonsterImpactTail4E17B0(target, source, weapon, greatSword, armorValue, damage, typ, runtime)
+		}
+		return playerDamageNPCMonsterSelfStrikeTail4E17B0(target, source, weapon, greatSword, armorValue, damage, typ, runtime)
 	}
 	// Stock SentryGlobe is SIMPLE|IMMOBILE, not MISSILE or an electric
 	// weapon. Its terminal owner is either a unit or the unowned globe

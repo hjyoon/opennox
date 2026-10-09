@@ -68,17 +68,7 @@ func flagPickupFlagWinner4D8C80(s *server.Server, team *server.Team, kind uint32
 }
 
 func flagPickupObserverUpdate425CA0(first, second *server.Player) {
-	// sub_425CA0 still owns a broad ranking/statistics subsystem whose C body
-	// takes ABI32 integer addresses. Keeping this conversion in one callback
-	// makes the remaining dependency visible to the cross-architecture audit.
-	var firstAddr, secondAddr uintptr
-	if first != nil {
-		firstAddr = uintptr(first.C())
-	}
-	if second != nil {
-		secondAddr = uintptr(second.C())
-	}
-	C.sub_425CA0(C.int(firstAddr), C.int(secondAddr))
+	server.PlayerKillStats425CA0(first, second, playerKillStatsRuntime425CA0())
 }
 
 func flagPickupTeamEligible418BC0(s *server.Server, team *server.Team) int32 {

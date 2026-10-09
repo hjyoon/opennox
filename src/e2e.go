@@ -9444,6 +9444,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "assert-item-amount-icon":
 			sc.Wait(dt, "")
 			sc.AssertItemAmountIcon(l.Item, l.Name)
+		case "check-trap-quickbar-icons":
+			sc.Wait(dt, "")
+			sc.CheckTrapQuickbarIcons(l.Name)
 		case "check-book-reward-default":
 			sc.Wait(dt, "")
 			sc.CheckBookRewardDefault(spell.ID(l.Spell), l.Active, l.Name)

@@ -1,0 +1,55 @@
+# Real spell drag/drop and independent live-frame icon checks. The main quickbar
+# spell is a starting fixture; all Trap Set data/visibility changes are input.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 104
+  - action: wait
+    dt: 400
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+  - action: wait
+    dt: 30
+  - action: click
+    x: 700
+    y: 380
+  - action: wait
+    dt: 120
+  - action: set-quickbar-spell
+    spell: 27
+    slot: 0
+    name: prepare stock Fireball in real quickbar
+  - action: check-trap-quickbar-icons
+    name: verify Trap Set live spell icons
+  - action: quit
+    dt: 1

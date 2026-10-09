@@ -445,7 +445,7 @@ func TestPlayerDamagePlayerZapRayEntryGates4E17B0(t *testing.T) {
 }
 
 func TestPlayerDamagePlayerZapRayAdmission4E17B0(t *testing.T) {
-	for _, shape := range []string{"nil-source", "nil-weapon", "no-simple", "no-immobile", "ray-player", "ray-npc", "ray-weapon", "ray-wand", "ray-missile", "source-simple", "source-nil-update", "source-weapon", "source-missile"} {
+	for _, shape := range []string{"nil-source", "nil-weapon-world-source", "no-simple", "no-immobile", "ray-player", "ray-npc", "ray-weapon", "ray-wand", "ray-missile", "source-simple", "source-nil-update", "source-weapon", "source-missile"} {
 		t.Run(shape, func(t *testing.T) {
 			target, source, ray, cached, r := playerZapRayFixture4E17B0(t, "Player", false)
 			r.Frame = func() uint32 { return 1400 }
@@ -453,8 +453,9 @@ func TestPlayerDamagePlayerZapRayAdmission4E17B0(t *testing.T) {
 			switch shape {
 			case "nil-source":
 				source = nil
-			case "nil-weapon":
+			case "nil-weapon-world-source":
 				ray = nil
+				source = &Object{ObjClass: object.ClassSimple}
 			case "no-simple":
 				ray.ObjClass &^= object.ClassSimple
 			case "no-immobile":

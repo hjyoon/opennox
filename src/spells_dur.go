@@ -23,6 +23,7 @@ type spellsDuration struct {
 	forceOfNatureCharges  map[*server.DurSpell]*server.Object
 	manaBombCharges       map[*server.DurSpell]*server.Object
 	chainLightningWeapons map[*server.DurSpell]*server.Object
+	plasmaWeapons         map[*server.DurSpell]*server.Object
 	durationRayTargets    map[*server.DurSpell]*server.Object
 	// A projectile may collide and disappear before the next E2E poll.
 	forceOfNatureLaunches uint64
@@ -241,6 +242,9 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 	}
 	if callback == legacy.Get_nox_xxx_spellEnergyBoltStop_52E820() {
 		return server.SpellEnergyBoltCreate52E820(record, sp.energyBoltRuntime52E820())
+	}
+	if callback == legacy.Get_nox_xxx_plasmaSmth_531580() {
+		return server.SpellPlasmaCreate531580(record, sp.plasmaRuntime531580())
 	}
 	traceCDurationCall("create", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))

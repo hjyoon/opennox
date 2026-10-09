@@ -11,7 +11,7 @@ import (
 // in their existing prefixes. Do not require update data before the original
 // NoUpdate/invulnerability/Coop gates, which never dereference that record.
 func playerDamagePlayerWeaponlessExplosionShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
-	return typ == object.DamageExplosion && weapon == nil &&
+	return playerDamageWorldExplosionShape4E17B0(source, weapon, typ) || typ == object.DamageExplosion && weapon == nil &&
 		(source == nil || (source.Class().HasAny(object.MaskUnits) &&
 			!source.Class().HasAny(object.ClassMissile|object.ClassWeapon|object.ClassWand)))
 }

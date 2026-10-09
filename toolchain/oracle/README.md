@@ -1,5 +1,11 @@
 # 비공개 원본 오라클 매니페스트
 
+## 화약통 world-source 폭발과 실제 HP 검증
+
+R47의 네 기능 커밋은 각각 DefaultDamage, Player weaponless-explosion armor tail, Player 입구 shape, NPC 입구의 기존 본체 하나만 수정한다. 실제 stock Breaking의 SIMPLE·LIGHT/owner 없음/UpdateData=nil/nil weapon EXPLOSION을 거부하던 unit-source 가정을 좁게 보완하고 guard·Shield·armor/carry/wear·immune/protection·Quest·HP/attribution 계약은 유지한다. C/native 회귀와 수정 전 실패, original marker/shield 순서 및 AI의 `0050A7DC` Injured 소비/`0050A83D` OnFire 수명을 [상세 R47 ledger](../PORTING-INVENTORY.md#화약통-폭발의-playermonsternpc-피해-복원)에 구분했다. 새 fixture의 초기 arena/queued-audio/post-AI latch 실패 세 건을 통과 기록과 섞지 않는다.
+
+clean 기능 revision `d55154a5d`에서 일반·HD 실제 headless 두 stock 화약통×세 대상은 각각 actual0이며 natural fuse, 정확한 server/client HP와 반경 밖 control 불변, explosion event1/flame4를 확인했다. 전체 normal/highres/실제 cgocheck2 각각46657pass/32skip, server46148pass/7skip 및 oracle-test는 actual0이다. 원본 stock1556파일/tree·code2968/data650·기존 manifest/range/PNG/golden은 불변이다. 실제 음향 청취·원본 Windows 전체 runtime·모든 배치나 knockback 수치 인증은 아니며 retained passive-food/fixed-map Quest와 전체 port 완료는 주장하지 않는다. 아래 이전 문서 바이트는 보존한다.
+
 ## NPC 공격·피격 복원 뒤의 원본 계약 및 gameplay 확인
 
 R45의 네 기능 커밋은 각각 기존 production 본체 하나만 바꾼다. NPC 공격 완료 BYTE의 원본 `0050A87E` 순서, 무기 프레임의 native BYTE 선택과 callback 뒤 재조회, NPC에서 native monster self-strike BLADE/CRUSH/IMPALE/DRAIN/BITE/CLAW 입구를 복원했다. 방어·armor/carry/wear·Quest·실제 HP tail은 원본 계약을 유지하며 GodMode를 NPC 무적으로 확대하지 않는다. 수정 전 계약 실패와 일반·HD의 실제 세 무기×세 완전한 cycle/여섯 적×세 NPC 피격, 관련 count3 일반·HD·실제 cgocheck2 재검사를 [상세 R45/R46 ledger](../PORTING-INVENTORY.md#npc-공격-프레임과-몬스터에게-받는-피해-복원)에 구분해 기록했다.

@@ -10109,6 +10109,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckFireballUnitDamage(l.Count, l.Text, l.Name)
+		case "check-powder-barrel-damage":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckPowderBarrelDamage(l.Item, l.Name)
 		case "check-greatsword-missile-defense":
 			if dt != 0 {
 				sc.Wait(dt, "")

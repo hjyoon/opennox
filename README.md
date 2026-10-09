@@ -70,6 +70,8 @@ Use `solo-conjurer-quickbar-buff.yaml` with a separate output directory for Prot
 
 `host-game-spell-unit-matrix.yaml` checks nine spell families in all six directions between players, ordinary monsters, and scripted NPCs (54 cases). Run it with the same headless/mock wrapper; use a separate output directory and `NOX_E2E_CLIENT_TARGET=client-hd` for HD. It observes real script casts, projectile hits or duration processing, server/client HP and buffs, selected FX, natural status expiry, and unaffected casters/spectators. Position, durable health, waiting AI and ownership are explicit starting fixtures; damage, hit callbacks and network results are not injected. This is not coverage of every spell, keyboard/mana casting, autonomous AI, every campaign encounter, or hardware audio. See [the verification record](toolchain/PORTING-INVENTORY.md#세-unit-종류-사이의-스펠-피해상태자연-만료-검증).
 
+`host-game-trap-projectile-damage.yaml` checks stock ArrowTrap1/2, Skull1..4 and Polyp against players, monsters and NPCs (21 cases). `solo-wizard-chapter8-tower-damage.yaml` checks all three victims against the untouched Wiz08e Force of Nature timer. Both use the same headless/mock wrapper and observe natural launches/collisions, server/client damage and the cloud's first poison tick. Victim placement, durable HP and waiting AI are fixtures; projectile/cast/damage/network outputs are not injected. See [the verification record](toolchain/PORTING-INVENTORY.md#arrowtrapskullpolyp와-원본-챕터8-force-of-nature-피해) for the precise limits.
+
 To verify real OpenAL playback of the original menu effects, chapter music, and speech, enable audio explicitly:
 
 ```sh

@@ -521,7 +521,7 @@ func (s *serverWalls) deleteByY(pos image.Point, wl *Wall) {
 }
 
 func (s *serverWalls) find(wl *Wall) (cur, prev *Wall) {
-	for it := s.head; it != nil; it = it.NextByY24 {
+	for it := s.head; it != nil; it = it.Next20 {
 		if it == wl {
 			return it, prev
 		}

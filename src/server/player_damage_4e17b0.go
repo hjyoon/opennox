@@ -1052,6 +1052,9 @@ func PlayerDamageNative4E17B0(
 	if target == nil {
 		return playerDamageUnsupported4E17B0(runtime, "non-player target", target, source, weapon, damage, typ)
 	}
+	if target.Class().Has(object.ClassPlayer) && playerDamageCloudPoisonShape4E17B0(weapon, typ) {
+		return playerDamagePlayerCloudPoison4E17B0(target, source, weapon, damage, runtime)
+	}
 	if playerDamageWorldProjectileShape4E17B0(source, weapon, typ) {
 		return playerDamageWorldProjectile4E17B0(target, source, weapon, damage, typ, runtime)
 	}

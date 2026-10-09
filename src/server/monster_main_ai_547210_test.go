@@ -1708,9 +1708,9 @@ func TestMonsterMainConversation547210RejectsFailedGates(t *testing.T) {
 		{name: "far cursor", setup: func(_ *Object, _ *MonsterUpdateData, _ *Object, player *Player, _ *MonsterMainRuntime547210) {
 			player.CursorVec = image.Pt(120, 100)
 		}},
-		{name: "timed dependency", setup: func(_ *Object, update *MonsterUpdateData, _ *Object, _ *Player, _ *MonsterMainRuntime547210) {
+		{name: "relative wait", setup: func(_ *Object, update *MonsterUpdateData, _ *Object, _ *Player, _ *MonsterMainRuntime547210) {
 			update.AIStackInd = 1
-			update.AIStack[1].Action = uint32(ai.DEPENDENCY_TIME)
+			update.AIStack[1].Action = uint32(ai.ACTION_WAIT_RELATIVE)
 		}},
 		{name: "host no update", setup: func(_ *Object, _ *MonsterUpdateData, host *Object, _ *Player, _ *MonsterMainRuntime547210) {
 			host.ObjFlags |= object.FlagNoUpdate

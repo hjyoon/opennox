@@ -179,7 +179,7 @@ func (s *Server) monsterMainEatNearbyFood547210(
 func (s *Server) monsterMainConversation547210(unit *Object, update *MonsterUpdateData, runtime MonsterMainRuntime547210) bool {
 	if !noxflags.HasGame(noxflags.GameModeCoop) ||
 		runtime.GUICursorActive == nil || runtime.GUICursorActive() ||
-		unit.Field5&0x10 == 0 || update.HasAction(ai.DEPENDENCY_TIME) {
+		unit.Field5&0x10 == 0 || update.HasAction(ai.ACTION_WAIT_RELATIVE) {
 		return false
 	}
 	host := s.Players.HostUnit()

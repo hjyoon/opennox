@@ -19,8 +19,9 @@ func TestPlayerAttackNPC538960CompleteFrameCycle(t *testing.T) {
 		class     object.Class
 		animation int
 	}{
-		{"LongSword", object.WeaponSword, object.ClassWeapon, 27},
-		{"WoodenStaff", object.WeaponStaff, object.ClassWand, 29},
+		{"Sword", object.WeaponSword, object.ClassWeapon, 27},
+		{"LongSword", object.WeaponLongSword, object.ClassWeapon, 28},
+		{"StaffWooden", object.WeaponStaff, object.ClassWand, 29},
 	} {
 		for _, duration := range []int{0, 2} {
 			t.Run(fmt.Sprintf("%s/duration-%d", weaponKind.name, duration), func(t *testing.T) {

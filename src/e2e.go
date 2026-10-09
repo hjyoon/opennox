@@ -10039,6 +10039,16 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckAISustainedAttack(l.Text, l.Name)
+		case "check-npc-attack-animation":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckNPCAttackAnimation(l.Item, l.Name)
+		case "check-npc-incoming-attack":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.CheckNPCIncomingAttack(l.Item, l.Name)
 		case "check-player-bow":
 			if dt != 0 {
 				sc.Wait(dt, "")

@@ -6,11 +6,13 @@ import (
 	"math"
 	"unsafe"
 
+	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/libs/client/seat"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/common/unit/ai"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -33,10 +35,45 @@ func e2ePlayerPlasmaRay(unit, target *server.Object) bool {
 	return false
 }
 
+// The initial inventory may already be open. Observe its settled state before
+// sending the real toggle key; never overwrite animation or window state.
+func (sc *e2eScenario) playerPlasmaInventory(open bool, name string) {
+	wantState, wantOffset := 0, -225
+	if open {
+		wantState, wantOffset = 2, 0
+	}
+	sc.addWhen(0, name+" settled state", 120, func() bool {
+		state := legacy.Nox_client_inventoryAnimationState()
+		return legacy.InventoryWindow() != nil && (state == 0 || state == 2)
+	}, func() {
+		state := legacy.Nox_client_inventoryAnimationState()
+		press := state != wantState
+		e2eLog.Printf("PLAYER PLASMA INVENTORY INPUT: open=%t state=%d offset=%d toggle=%t", open, state, legacy.Nox_client_inventoryAnimationOffset(), press)
+		if press {
+			e2eQueueInput(&seat.KeyboardEvent{Key: keybind.KeyI, Pressed: true})
+		}
+	})
+	sc.Input(1, name+" release inventory key", &seat.KeyboardEvent{Key: keybind.KeyI, Pressed: false})
+	sc.addWhen(1, name+" observed visibility", 120, func() bool {
+		return legacy.Nox_client_inventoryAnimationState() == wantState && legacy.Nox_client_inventoryAnimationOffset() == wantOffset
+	}, nil)
+}
+
 // CheckPlayerPlasma uses inventory-equipped stock OblivionOrb and actual
 // mouse input. Only the starting arena/target is arranged; no cast, damage,
 // duration, charge, ray packet or cancellation result is injected.
 func (sc *e2eScenario) CheckPlayerPlasma(name string) {
+	sc.playerPlasmaInventory(true, name+" open inventory")
+	sc.ClickInventoryItem("OblivionOrb", name+" equip stock wand through inventory input")
+	sc.addWhen(1, name+" receive equipped weapon report", 120, func() bool {
+		unit := noxServer.Players.HostUnit()
+		if unit == nil {
+			return false
+		}
+		weapon := unit.UpdateDataPlayer().EquippedWeapon
+		return weapon != nil && weapon.ObjectTypeC().ID() == "OblivionOrb" && weapon.Flags().Has(object.FlagEquipped)
+	}, nil)
+	sc.playerPlasmaInventory(false, name+" close inventory")
 	var unit, weapon, target *server.Object
 	var original types.Pointf
 	var data *server.WandUseData

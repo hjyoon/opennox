@@ -67,22 +67,6 @@ steps:
   - action: wait
     dt: 30
     name: receive inventory packet
-  - action: inventory
-    name: open inventory
-  - action: wait
-    dt: 90
-    name: settle inventory animation
-  - action: click-inventory-item
-    item: OblivionOrb
-    name: equip stock Plasma wand through inventory input
-  - action: wait
-    dt: 30
-    name: receive weapon report
-  - action: inventory
-    name: close inventory
-  - action: wait
-    dt: 60
-    name: settle after inventory
   - action: check-player-plasma
     name: stock Plasma wand
   - action: quit

@@ -1,0 +1,96 @@
+# Normal spatial collision -> stock damage callback -> server/client HP.
+# Player, Troll and NPC are checked separately for every listed hazard.
+# The player is an unshielded Wizard: a Warrior's normal held shield may
+# legitimately block front-facing IMPALE and is not an HP-loss fixture.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 768
+    y: 208
+    name: select unshielded wizard
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: check-environment-damage
+    item: Flame
+    name: ordinary stock flame
+  - action: check-environment-damage
+    item: Spike
+    name: disabled and enabled stock spike
+  - action: check-environment-damage
+    item: PeriodicSpike
+    name: disabled and enabled periodic spike
+  - action: check-environment-damage
+    item: SpikeBlock
+    name: movable spike block
+  - action: check-environment-damage
+    item: SpikeBlockImmobile
+    name: immobile spike block
+  - action: check-environment-damage
+    item: RotatingSpikes
+    name: movable rotating spikes
+  - action: check-environment-damage
+    item: RotatingSpikesImmobile
+    name: immobile rotating spikes
+  - action: switch-map
+    map: Inferno
+    name: switch to original lava map
+  - action: wait-map
+    map: Inferno
+    name: wait for original lava map
+  - action: check-environment-damage
+    item: Lava
+    name: source-less lava collision token 6
+  - action: quit
+    dt: 1

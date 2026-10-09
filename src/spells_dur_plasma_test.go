@@ -49,3 +49,15 @@ func TestSpellsDurationPlasmaCreateNativeDispatch(t *testing.T) {
 		t.Fatal("native record initialization missing")
 	}
 }
+
+func TestSpellsDurationPlasmaUpdateNativeDispatch(t *testing.T) {
+	assertPlasmaNativeDispatch(t, "callUpdate4FEEF0", "SpellPlasmaUpdate531600")
+	sp := &spellsDuration{s: &Server{Server: &server.Server{}}}
+	r := &server.DurSpell{Field36: 0xabcdef, Field72: 0x123456, Field76: 0x87654321}
+	if got := sp.callUpdate4FEEF0(legacy.Get_nox_xxx_plasmaShot_531600(), r); got != 1 {
+		t.Fatal(got)
+	}
+	if r.Field36 != 0xabcdef || r.Field72 != 0x123456 || r.Field76 != 0x87654321 {
+		t.Fatal("orphan cancellation changed PE32 scalar slots")
+	}
+}

@@ -186,6 +186,9 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 	if callback == legacy.Get_nox_xxx_spellDrainMana_52E210() {
 		return server.SpellDrainManaUpdate52E210(record, sp.drainManaRuntime52E210())
 	}
+	if callback == legacy.Get_nox_xxx_plasmaShot_531600() {
+		return server.SpellPlasmaUpdate531600(record, sp.plasmaRuntime531580())
+	}
 	traceCDurationCall("update", callback, record)
 	return int32(ccall.CallIntPtr(callback, record.C()))
 }

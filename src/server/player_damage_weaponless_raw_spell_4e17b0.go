@@ -5,11 +5,12 @@ import (
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
-// Death Ray and Mana Bomb's radial calls supply a terminal unit owner, nil,
-// or the class-zero ImaginaryCaster, and no weapon. They are not the electric
-// armor/protection cases 9/17, nor SentryGlobe's nonnil-weapon ray prefix.
+// Plasma, Death Ray and Mana Bomb supply a terminal unit owner, nil, or
+// the class-zero ImaginaryCaster, and no weapon. The sealed PE type switch
+// maps 14/15/16 to the same signed raw HP tail at 004E1E83, not electric
+// armor/protection cases 9/17 or SentryGlobe's nonnil-weapon ray prefix.
 func playerDamageWeaponlessRawSpellShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
-	return weapon == nil && (typ == object.DamageManaBomb || typ == object.DamageZapRay) &&
+	return weapon == nil && (typ == object.DamagePlasma || typ == object.DamageManaBomb || typ == object.DamageZapRay) &&
 		(source == nil || source.Class() == 0 || (source.Class().HasAny(object.MaskUnits) &&
 			!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)))
 }

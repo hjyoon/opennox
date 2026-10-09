@@ -146,6 +146,9 @@ func TestDefaultDamageWorld4E0B30LiveFrameSkippedPaths(t *testing.T) {
 				r.IsEnemy = func(*Object, *Object) bool { return false }
 			case "unsupported":
 				typ = object.DamagePlasma
+				// Unit-owned weaponless Plasma is restored. Keep this skipped
+				// path on the still-unported missile-source Plasma shape.
+				source.ObjClass = object.ClassMissile
 				r.Unsupported = func(string, *Object, *Object, *Object, int32, object.DamageType) {}
 			}
 			DefaultDamageWorld4E0B30(target, source, nil, 8, typ, r)

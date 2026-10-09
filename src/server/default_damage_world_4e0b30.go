@@ -248,6 +248,7 @@ func DefaultDamageWorld4E0B30(
 	casterImpact := !monsterImpact && defaultDamageCasterImpactShape4E0B30(weapon, typ)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
+	worldProjectile := playerDamageWorldProjectileShape4E17B0(source, weapon, typ)
 	// FIRE|SIMPLE|DANGEROUS colliders (Flame/FlameCleanse) also reach
 	// case 1 with signed raw damage, without the missile/melee qualifier.
 	worldFlame := playerDamageWorldFlameShape4E17B0(weapon, typ)
@@ -284,7 +285,7 @@ func DefaultDamageWorld4E0B30(
 	monsterCloudPoison := monsterUpdate != nil && typ == object.DamagePoison && weapon != nil &&
 		weapon.Class().Has(object.ClassSimple) && weapon.Class().Has(object.ClassDangerous) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile)
-	playerTail := playerElectric || playerWeaponlessExplosion || ((weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
+	playerTail := playerElectric || playerWeaponlessExplosion || ((weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldProjectile || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
 	if playerTail && !casterImpact {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
@@ -314,6 +315,18 @@ func DefaultDamageWorld4E0B30(
 	zapRayTarget := "monster"
 	if playerTail {
 		zapRayTarget = "player"
+	}
+	if worldProjectile && weapon != nil {
+		if runtime.IsEnemy == nil {
+			return defaultDamageUnsupported4E0B30(runtime, "missing world projectile enemy service", target, source, weapon, damage, typ)
+		}
+		// 004E0C61 queries before NoUpdate, including non-unit owners.
+		// A false result only excludes a LIVE qualifying melee attack;
+		// the ordinary arrow/fireball/DeathBall classes do not qualify.
+		if !runtime.IsEnemy(target, source) && target.Class().HasAny(object.MaskUnits) &&
+			defaultDamageAttackQualifies4E1400(source, weapon) && !defaultDamageFriendlyException4E1470(weapon) {
+			return true
+		}
 	}
 	if zapRay {
 		if runtime.IsEnemy == nil {
@@ -506,14 +519,14 @@ func DefaultDamageWorld4E0B30(
 	missileSourcedExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMissile) &&
 		!source.Class().HasAny(object.MaskUnits) && weapon == nil && typ == object.DamageExplosion
 	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion || spellMissileExplosion
-	missileDamage := missileImpact || missileExplosion || missilePierce || missileFlame
+	missileDamage := missileImpact || missileExplosion || missilePierce || missileFlame || worldProjectile
 	if monsterUpdate != nil {
 		// GAME.EXE rejects type 5 for poison-immune subclass 0x200 before
 		// health, defense callbacks or attribution are touched.
 		if sourceLessMonsterPoison && uint32(target.SubClass())&0x200 != 0 {
 			return true
 		}
-		if target.HealthData == nil && !monsterCloudPoison && !worldFlame && !casterImpact && !monsterWorldLava {
+		if target.HealthData == nil && !monsterCloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
 		}
 		// GAME.EXE 004E0EA1 handles WEAPON|WAND (0x1001000) alike,
@@ -602,8 +615,13 @@ func DefaultDamageWorld4E0B30(
 	}
 	// 004E0D20 reloads class/subclass after Shock; 004E0D3E..004E0D52
 	// rejects FLAME for fire-immune monsters before protection or attribution.
-	if (missileFlame || worldFlame || monsterWorldLava) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
+	if (missileFlame || worldFlame || monsterWorldLava || (worldProjectile && typ == object.DamageFlame)) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		return true
+	}
+	if worldProjectile && (target.HealthData == nil || runtime.BuffOff == nil || runtime.DamageClear == nil ||
+		(playerTail && runtime.PlayerSetState == nil) ||
+		(source.Class().Has(object.ClassMonster) && source.UpdateData != nil && runtime.MonsterHasHitSound == nil)) {
+		return defaultDamageUnsupported4E0B30(runtime, "missing world projectile tail service", target, source, weapon, damage, typ)
 	}
 	if monsterWorldLava && (target.HealthData == nil || runtime.BuffOff == nil || runtime.DamageClear == nil) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing monster world LAVA tail service", target, source, weapon, damage, typ)

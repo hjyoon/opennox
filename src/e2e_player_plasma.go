@@ -109,7 +109,9 @@ func (sc *e2eScenario) CheckPlayerPlasma(name string) {
 		}
 		noxServer.CreateObjectAt(target, nil, origin.Add(direction.Mul(112)))
 		noxServer.ObjectsAddPending()
-		asObjectS(target).SetMaxHealth(2000)
+		// The stock 250 charges deal 10 damage each. Arrange durable starting
+		// HP once so this same target survives natural charge exhaustion.
+		asObjectS(target).SetMaxHealth(5000)
 		target.UpdateDataMonster().SetAggression(0)
 		target.ClearActionStack()
 		target.MonsterPushAction(ai.ACTION_WAIT, noxServer.Frame()+250000)

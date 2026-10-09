@@ -69,9 +69,12 @@ func TestE2EPlayerPlasmaStockEquipmentAndEndConditions(t *testing.T) {
 		t.Fatal(err)
 	}
 	s = string(data)
-	for _, required := range []string{"release setup mouse", "naturally equipped by pickup", "playerPlasmaInventory(false", "state != wantState", "Key: keybind.KeyI, Pressed: true", "observed visibility", "data.Charge != 250", "data.MaxCharge != 250", "data.Charge == 0", "data.Flags&4 == 0", "natural stock charge exhaustion", "no damage after natural stop", "durationRayTargets[record] == nil", "plasmaWeapons[record] == nil"} {
+	for _, required := range []string{"release setup mouse", "naturally equipped by pickup", "playerPlasmaInventory(false", "state != wantState", "Key: keybind.KeyI, Pressed: true", "observed visibility", "SetMaxHealth(5000)", "data.Charge != 250", "data.MaxCharge != 250", "data.Charge == 0", "data.Flags&4 == 0", "natural stock charge exhaustion", "no damage after natural stop", "durationRayTargets[record] == nil", "plasmaWeapons[record] == nil"} {
 		if !strings.Contains(s, required) {
 			t.Errorf("missing stock lifecycle check: %s", required)
 		}
+	}
+	if strings.Count(s, ".SetMaxHealth(") != 1 || strings.Index(s, ".SetMaxHealth(") > strings.Index(s, "actual held attack") {
+		t.Fatal("target HP must only be arranged once, before any actual attack")
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"go/parser"
 	"go/token"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
@@ -59,5 +60,20 @@ func TestSpellsDurationPlasmaUpdateNativeDispatch(t *testing.T) {
 	}
 	if r.Field36 != 0xabcdef || r.Field72 != 0x123456 || r.Field76 != 0x87654321 {
 		t.Fatal("orphan cancellation changed PE32 scalar slots")
+	}
+}
+
+func TestSpellsDurationPlasmaDestroyNativeDispatch(t *testing.T) {
+	assertPlasmaNativeDispatch(t, "callDestroy4FEDA0", "SpellPlasmaDestroy5319E0")
+	sp := &spellsDuration{s: &Server{Server: &server.Server{}}}
+	r := &server.DurSpell{Field72: 0x13579}
+	data := &server.WandUseData{Flags: 0x87654324}
+	wand := &server.Object{}
+	wand.UseData.Ptr = unsafe.Pointer(data)
+	rt := sp.plasmaRuntime531580()
+	rt.StoreWeapon(r, wand)
+	sp.callDestroy4FEDA0(legacy.Get_sub_5319E0(), r)
+	if rt.LoadWeapon(r) != nil || data.Flags != 0x87654320 || r.Field72 != 0x13579 {
+		t.Fatal("native destroy lost flags or retained wand")
 	}
 }

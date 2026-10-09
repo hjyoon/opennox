@@ -93,6 +93,10 @@ func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *ser
 		server.SpellChainLightningDestroy530100(record, sp.chainLightningRuntime52F820())
 		return
 	}
+	if callback == legacy.Get_sub_5319E0() {
+		server.SpellPlasmaDestroy5319E0(record, sp.plasmaRuntime531580())
+		return
+	}
 	traceCDurationCall("destroy", callback, record)
 	ccall.CallVoidPtr(callback, record.C())
 }

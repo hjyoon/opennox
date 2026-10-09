@@ -10029,6 +10029,9 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckPlayerSpikeCollision(l.Item, l.Name)
+		case "check-spike-switch-visual":
+			sc.Wait(dt, "")
+			sc.CheckSpikeSwitchVisual(l.Name)
 		case "check-ai-first-attack":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -10194,6 +10197,9 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.CheckSecretWallTouch(l.Name)
+		case "check-wall-switch-minimap":
+			sc.Wait(dt, "")
+			sc.CheckWallSwitchMinimap(l.Mode, l.Name)
 		case "check-player-item-enchantment-report":
 			if dt != 0 {
 				sc.Wait(dt, "")

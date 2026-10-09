@@ -1,0 +1,87 @@
+# Normal map-script Enable API, untouched stock Spike SlaveDraw, and the actual
+# C minimap raster for both original G_Crypts secret-wall diagonals. No client
+# flags, frames, packets, wall states or expected pixels are injected.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept warrior color
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: switch-map
+    map: G_Crypts
+    name: load original stock secret-wall map
+  - action: wait-map
+    map: G_Crypts
+    name: wait for normal map and player binding
+  - action: wait
+    dt: 60
+    name: settle after map entry
+  - action: check-spike-switch-visual
+    name: stock spike off on on off on off
+  - action: minimap
+    name: open minimap through Tab
+  - action: wait
+    dt: 20
+    name: settle minimap
+  - action: check-wall-switch-minimap
+    mode: 0
+    name: original upward diagonal secret wall
+  - action: check-wall-switch-minimap
+    mode: 1
+    name: original downward diagonal secret wall
+  - action: quit
+    dt: 20

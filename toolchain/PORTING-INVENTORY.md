@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 서버·클라이언트 음성 테스트의 backend 계약 구분
+
+R43은 clean/pushed `0561cad1d`에서 R42 서버 전체 검사의 남은 `TestDialogIntegration` 실패를 처리했다. 원래 서버 backend는 `WaveOutOpen=0`으로 음성이 비활성이고 클라이언트 backend는 `!server`의 OpenAL이다. 기존 재생 검사의 파일에 `!server`만 추가했다. 헤더를 제외한 기존 파일 SHA `a2443d874ca2b7fba90e95e9e56090d3f1d5443aac07e3976e57766c1d6aa519`와 production dialog/audio 본체는 불변이다. 수정 전 클라이언트 재생 검사 count3도 actual0으로 확인했다.
+
+새 공통 회귀 검사는 9개 OS/architecture와 4개 build mode의 36조건에서 실제 client/server 테스트·backend의 build tags를 대조한다. 수정 전 actual1/18개 server 조건 실패를 보존했다. 새 server 전용 검사는 기존 fixture에 실제 재생 대상이 존재함을 확인하고, 서버의 초기화·재초기화·재생 요청·3회 update·종료에서 음성 queue/stream/device가 없는 계약과 초기화의 idempotence를 확인한다. client 검사를 무조건 skip하거나 서버가 재생하는 것으로 기대값을 바꾸지 않는다.
+
+normal·highres·실제 cgocheck2의 dialog count3은 각각 actual0/114pass/skip0, server·server+highres는 각각 actual0/132pass/skip0이다. dialog/movie 표적 race+checkptr2 count3은 actual0/225pass/2package pass/skip0이다. 전체 `./...` count1의 normal·highres는 각각 actual0/46,133개 test pass/32개 기존 선택형 skip/37package pass이고 server·실제 cgocheck2 server는 각각 actual0/45,624pass/7skip/35package pass이다. 각 전체 실행에는 테스트 파일 없는20package가 별도로 있으며 이를 test skip으로 섞지 않는다. 자산·실제 장치·subprocess 전용 조건의 skip은 성공 실행으로 세지 않는다. 다른 플랫폼의 matrix는 build-tag parsing이며 실제 플랫폼 실행 증거가 아니다.
+
+독립 raw-JSON/terminal/identity 감사 `/private/tmp/opennox-dialog-tags-r43.tb2s2V/independent-dialog-build-audit-1.json`은 actual0이고 SHA `ca8437445fb40787bdb02594e120f7f64eaa1eb57a9dd43480431cbb6b4af8b8`다. 수정 전후의 같은37개 build-test identity와 기존 client 검사 및 새 server 검사의 선택을 각각 검사했다. 이번에 GUI·원본 자산·gameplay·AI·RNG·golden·wait·timeout을 변경하지 않았다. R35 판매 아이콘·기본 자기 시전 headless 성공은 이전 revision의 증거로 유지한다. 이전 ledger suffix를 바이트 그대로 보존하며 retained passive-food/fixed-Quest와 전체 port goal은 아직 완료되지 않았다. clean 공식 제품의 build/full revision/help 결과는 별도 handoff 로그로 구별한다.
+
 ## 전용 서버에서 클라이언트 영상 명령 제외
 
 R42는 clean/pushed `0572203f8025a53968364514320639ade860ba9c`에서 `go test -tags server ./...`의 범위를 확인했다. 클라이언트 전용 `client/noxmovie` 라이브러리와 달리 `cmd/noxmovie/main.go`에 `!server` 조건이 없어 실제 서버 컴파일이 실패했다. 명령 파일에 같은 조건만 추가하며 기존 본문 SHA `e54edbff204e086bebe48d40254cd019c7af3c33f4a4e55cf5ec561c306a87c6`는 유지한다. gameplay·AI·원본 자산·기존 테스트/YAML/manifest를 변경하지 않는다.

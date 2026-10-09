@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## AI 슬롯 크래시 수정 뒤 fixed Quest의 일반·HD 실패 보존
+
+R57은 R55의 native AI 인자 재사용 크래시 수정과 R56 기록이 포함된 clean/pushed `f16ecf16f952b20f7ae11016034c409185ae2857`에서 원래 `host-quest-twenty-stages.yaml`을 byte-identical private 사본으로 일반·공식 highres HD headless/mock에서 직렬 실행했다. 두 actual terminal은 기존 stage3 expected `g_lotdd`/actual `g_crypts` assertion의 exit2다. stage1 `g_templd` Frame928·stage2 `g_castld` Frame1375의 playable player와 stage3 briefing 종료 뒤 HP450/450·connected·phase3·loading/briefing=false를 확인했다. 새 게임 SIGSEGV는0이며 stage4..20과 원래 Screens는 미실행이다. 이 두 실패를 Quest 통과나 모든 map/script callback의 안정성 증거로 집계하지 않는다.
+
+실제 두 selector의 before/after scalar·전체13개 history·ResultIndex는 R52와 같고 일반/HD 사이에서도 같았다. Frame928의 Logic3826→3827/Other1960·Clock1001·LastIndex11은 G_CastlD/index0, Frame1480의 Logic2754→2755/Other3905·Clock1002·LastIndex0은 G_Crypts/index3다. 정확한 ResultPointer만 별도로 비교했고 두 lane 모두4GiB 위·native stride96이었다. 각 lane의 native 생성기 관찰은 stage1 106개·stage2 126개이며 stage3 이후 생성기 검사로 확대하지 않는다. 독립 validator가 RNG/history를 보정하지 않았고 private trace의 scalar 비교에서 frame·RNG·health·action을 정규화하지 않았다.
+
+새 일반/HD snapshot 각각에 기존 read-only PE32 audit를 적용해 원본 selector `004D0F60..004D10E4`(RET 포함)와 원본 integer RNG `00415FA0..00415FEF`를 그대로 실행했다. 각 actual0·instruction1344/1378·원래 RNG1회씩·원래 두 지도/Logic 결과가 일치했다. 결과/service hook은 없고 TEXT·4096-word RNG table·history·clock·last 및 Other 불변을 확인했다. 최초 sandbox 두 replay와 최소 mapping probe는 exit132였고 최소 probe는 Uc 생성 뒤 mem_map에서 종료됐다. 승인된 sandbox 밖 최소 probe의 eax42/exit0을 확인한 뒤 같은 기존 audit를 각각 재실행했다. 최초 로그를 보존하며 sandbox 오류를 게임 SIGSEGV나 성공 run으로 세지 않는다. 이 검증은 캡처된 두 선택 호출뿐이며 initial seed부터 모든 원본 world tick·geometry·전체 upstream RNG 소비의 동등성을 입증하지 않는다.
+
+기존 재사용 포인터·captured Quest Golem stall·fixed-map observer·independent selection·slot-reuse E2E 계약을 고정 Go1.26.5/실제 GOEXPERIMENT=cgocheck2로 일반·highres·server·race+checkptr2에서 각 count3 실행했다. 네 actual0, lane당108 identity(16 parent+92 leaf)/324 pass records·fail/skip0이고 네 lane의 전체 identity multiplicity가 같다. 총1296 test pass records 중1104는 leaf이며 package pass12는 별도다. 전체 suite/oracle나 사용자 Linux 실행을 이번에 재실행했다고 세지 않는다. 실제 두 GUI 제품도 위 clean revision/darwin-arm64 metadata verify actual0다.
+
+증거는 `/private/tmp/opennox-fixed-quest-after-slot-r57.e8ekpa`의 실제 session/terminal receipt·원래 두 실패 log·four-mode JSON·원본 replay와 sandbox 오류·독립 audit에 보존한다. `audit-receipt.json` SHA는 `5eff1b844d70c30a41015eb56c281b986cd0a8f63666aa9e988d6623054609c7`이다. GUI/check 전후 source6110files/83453803bytes/tree `042aecb00d25c1bcc9df28a5b76c3e8cf1db4bf6f78c8a7377a9fbdeef67a8ab`와 stock1562files/571159691bytes/tree `4b811dec1a7d92d95d83e95569a7610fe854d6e63e3d8464c12ab8eaadd3250a`가 불변이다. 원래 YAML SHA `58ebc1e3cf025005d16705fe7551320469eeef4d0c912b58f979acbc5beab2c8`, map/seed/history/RNG/HP/기대값·원본 oracle/manifest/range·PNG/golden·개인 Save/config를 바꾸지 않았다.
+
+모든 GUI/wrapper/test의 실제 terminal 종료 뒤 이 docs-only prepend를 수행하며 기존 ledger2838908bytes/SHA `3108ab817dc5f7b207ab08f205c8e56056bacdb9b9da8c8bf072cb414d648cde`의 전체 suffix를 byte-exact 보존한다. 과거 최초 RNG 차이인 Frame996 MechanicalGolem의 정지 처리/두 draw와 과거 ARM64 MainAI no-op의 생략은 앞선 진단 기록으로 유지하며 새 whole-world 추적이라고 주장하지 않는다. R55 크래시 수정은 완료되어 있으나 fixed Quest와 passive food gate·전체 ARM64 port goal은 미완료다. 음식 소비 AI의 원본 동작을 바꾸는 방향 확인은 아직 미응답이며 여기서 새 게임 동작 변경은 수행하지 않았다.
+
 ## Passive-food 미실행 일곱 조건의 분리 관찰
 
 R56은 R55 크래시 수정 뒤 clean/pushed `5f3422bba00d50d51eb1a52a8fbcf294070bedaf`에서 음식 gate의 기존 미실행 범위를 확인했다. production/test/build inputs 및 원래 YAML은 수정하지 않았다. Troll/ascending/RedApple은 byte-identical 전체 eight-case YAML로 일반·HD를 재실행했고, 첫 case에서 원래600tick 소비 timeout/terminal actual2로 끝나 뒤 일곱 case는 이 두 전체 실행에서도 미실행이다. 나머지7조건(Troll/NPC×ascending/descending×RedApple/Meat 중 첫 조건 제외)은 원본 startup prefix·해당3줄 case·quit tail을 byte-exact 유지한 private one-case YAML로 각 lane에서 분리 실행했다. 이14개 실행을 원래 전체 gate의 통과나 원래 scenario와 같은 실행 순서로 세지 않는다.

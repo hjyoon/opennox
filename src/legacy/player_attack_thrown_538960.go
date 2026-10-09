@@ -77,7 +77,7 @@ func playerAttackThrownFinish538960(
 	} else if owner.Class().Has(object.ClassMonster) && owner.MonsterClass().Has(object.MonsterNPC) {
 		// As in 00539AE3, the cached update pointer survives callbacks, but
 		// the live owner class chooses which one-byte frame slot is stored.
-		stored = (*uint8)(unsafe.Pointer(&(*server.MonsterUpdateData)(unsafe.Pointer(update)).Field481))
+		stored = &(*server.MonsterUpdateData)(unsafe.Pointer(update)).Field120_1
 	}
 	return playerAttackProjectileFinish538960(current, frames, stored)
 }

@@ -502,7 +502,8 @@ func TestPlayerAttackThrown538960KeepsOriginalFaultsAndLiveClassStores(t *testin
 	}
 	monster := (*server.MonsterUpdateData)(unsafe.Pointer(f.update))
 	monster.Field481 = 0xdeadbe01
-	if got := f.call(); got != 1 || f.update.Field59_0 != 1 || monster.Field481 != 0xdeadbe02 {
-		t.Fatalf("live NPC frame store = %d/%d/%#x", got, f.update.Field59_0, monster.Field481)
+	monster.Field120_1 = 1
+	if got := f.call(); got != 1 || f.update.Field59_0 != 1 || monster.Field120_1 != 2 || monster.Field481 != 0xdeadbe01 {
+		t.Fatalf("live NPC frame store = %d/player-%d/NPC-%d/unrelated-%#x", got, f.update.Field59_0, monster.Field120_1, monster.Field481)
 	}
 }

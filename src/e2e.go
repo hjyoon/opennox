@@ -9498,6 +9498,15 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-object-hover-cursor":
 			sc.Wait(dt, "")
 			sc.CheckObjectHoverCursor(l.Item, l.Mode, l.Name)
+		case "audit-npc-clothing":
+			sc.Wait(dt, "")
+			sc.AuditNPCClothing(l.Name)
+		case "check-npc-hover-sound":
+			sc.Wait(dt, "")
+			sc.CheckNPCHoverSound(l.Item, l.Name)
+		case "check-clothing-death":
+			sc.Wait(dt, "")
+			sc.CheckClothingDeath(l.Mode == 1, l.Item, l.Name)
 		case "minimap":
 			sc.Wait(dt, "")
 			sc.Key(keybind.KeyTab, l.Name)

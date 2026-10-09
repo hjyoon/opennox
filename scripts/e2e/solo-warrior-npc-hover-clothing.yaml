@@ -1,0 +1,76 @@
+# Headless native FX check: NOX_E2E_AUDIO=openal NOX_DEBUG_AUDIO=true
+# ALSOFT_DRIVERS=null (real OpenAL queue/consumption, not speaker audibility).
+# Stock War01A NPC clothing is observed without repairing its equipment flags.
+# Lethal script damage checks death dispatch/drop behavior, not combat damage.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept warrior color
+  - action: wait
+    dt: 1000
+    name: wait for briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss opening dialog
+  - action: wait
+    dt: 60
+    name: settle opening dialog
+  - action: audit-npc-clothing
+    name: audit untouched stock map clothing
+  - action: check-gameplay-audio
+    mode: 0
+    text: stock-npc-hover
+    name: begin actual NPC greeting FX playback phase
+  - action: check-npc-hover-sound
+    item: Tyler
+    name: stock Tyler hover greeting
+  - action: check-gameplay-audio
+    mode: 1
+    text: stock-npc-hover
+    name: verify native NPC greeting FX queue and consumption
+  - action: check-clothing-death
+    item: F2Gearhart
+    mode: 0
+    name: map-loaded NPC real death clothing and ordinary loot
+  - action: check-clothing-death
+    mode: 1
+    name: player real death medieval clothing and ordinary loot
+  - action: quit

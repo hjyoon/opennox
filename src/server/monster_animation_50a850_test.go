@@ -126,20 +126,38 @@ func TestMonsterUpdateNPCAnim50A850UsesPlayerFrames(t *testing.T) {
 	}
 }
 
-func TestMonsterUpdateNPCAnim50A850AttackCompletesImmediately(t *testing.T) {
-	s := &Server{}
-	update := &MonsterUpdateData{AIStackInd: 0, Field120_0: 7, Field120_1: 3, Field120_2: 2}
-	update.AIStack[0].Action = uint32(ai.ACTION_MELEE_ATTACK)
-	unit := &Object{
-		ObjClass:    object.ClassMonster,
-		ObjSubClass: object.SubClass(object.MonsterNPC),
-		UpdateData:  unsafe.Pointer(update),
+func TestMonsterUpdateNPCAnim50A850AttackDefersCompletionToWeapon(t *testing.T) {
+	// Sealed GAME.EXE 0050A87E clears byte +483 for BOTH attacks before
+	// testing its previous value. PlayerAttack owns their frame/completion.
+	for _, action := range []ai.ActionType{ai.ACTION_MELEE_ATTACK, ai.ACTION_MISSILE_ATTACK} {
+		for _, done := range []byte{0, 1, 255} {
+			s := &Server{}
+			update := &MonsterUpdateData{AIStackInd: 0, Field120_0: 7, Field120_1: 3, Field120_2: 2, Field120_3: done}
+			update.AIStack[0].Action = uint32(action)
+			unit := &Object{
+				ObjClass:    object.ClassMonster,
+				ObjSubClass: object.SubClass(object.MonsterNPC),
+				UpdateData:  unsafe.Pointer(update),
+			}
+			want := *update
+			want.Field120_3 = 0
+			for tick := 0; tick < 6; tick++ {
+				if !s.MonsterUpdateNPCAnim50A850(unit) || *update != want {
+					t.Fatalf("action=%v prior-done=%d tick=%d attack animation=%d/%d/%d/%d, want 7/3/2/0 with no other stores", action, done, tick, update.Field120_0, update.Field120_1, update.Field120_2, update.Field120_3)
+				}
+			}
+		}
 	}
+}
 
-	if !s.MonsterUpdateNPCAnim50A850(unit) {
-		t.Fatal("NPC animation was not handled natively")
-	}
-	if update.Field120_0 != 7 || update.Field120_1 != 3 || update.Field120_2 != 2 || update.Field120_3 != 1 {
-		t.Fatalf("attack animation = %d/%d/%d/%d, want 7/3/2/1", update.Field120_0, update.Field120_1, update.Field120_2, update.Field120_3)
+func TestMonsterUpdateNPCAnim50A850CompletedNonAttackRemainsStopped(t *testing.T) {
+	for _, action := range []ai.ActionType{ai.ACTION_GUARD, ai.ACTION_CAST_SPELL_ON_OBJECT, ai.ACTION_DYING} {
+		update := &MonsterUpdateData{AIStackInd: 0, Field120_0: 7, Field120_1: 3, Field120_2: 2, Field120_3: 1}
+		update.AIStack[0].Action = uint32(action)
+		unit := &Object{ObjClass: object.ClassMonster, ObjSubClass: object.SubClass(object.MonsterNPC), UpdateData: unsafe.Pointer(update)}
+		before := *update
+		if !new(Server).MonsterUpdateNPCAnim50A850(unit) || *update != before {
+			t.Fatalf("completed nonattack action %v advanced", action)
+		}
 	}
 }

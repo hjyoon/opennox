@@ -114,12 +114,14 @@ func (s *Server) MonsterUpdateNPCAnim50A850(unit *Object) bool {
 	}
 	update := unit.UpdateDataMonster()
 	if unit.ObjSubClass.AsMonster().Has(object.MonsterNPC) {
-		if update.Field120_3 != 0 {
-			return true
-		}
 		switch update.AIStackHead().Type() {
 		case ai.ACTION_MELEE_ATTACK, ai.ACTION_MISSILE_ATTACK:
-			update.Field120_3 = 1
+			// 0050A87E clears +483 even when a previous animation was
+			// complete. Weapon attack owns the +481 frame and finish.
+			update.Field120_3 = 0
+			return true
+		}
+		if update.Field120_3 != 0 {
 			return true
 		}
 		anim := s.monsterNPCActionAnim533D00(update)

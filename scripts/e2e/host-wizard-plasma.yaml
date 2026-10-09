@@ -1,5 +1,6 @@
 # Stock OblivionOrb pickup/autoequip and actual held mouse attacks.
-# Observe native duration/ray/damage/charge state, release and full exhaustion.
+# Observe native duration/ray/damage/charge state, retained target after release,
+# ordinary movement cancellation, and full exhaustion.
 steps:
   - action: slow
     dur: 5ms

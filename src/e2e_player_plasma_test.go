@@ -9,6 +9,25 @@ import (
 	"testing"
 )
 
+func TestE2EPlayerPlasmaPreservesOriginalReleaseAndMovementContract(t *testing.T) {
+	data, err := os.ReadFile("e2e_player_plasma.go")
+	if err != nil {
+		t.Fatal(err)
+	}
+	s := string(data)
+	for _, required := range []string{
+		"release keeps the acquired Plasma target",
+		"actual movement cancels Plasma",
+		"Button: seat.MouseButtonRight, Pressed: true",
+		"Button: seat.MouseButtonRight, Pressed: false",
+		"PLAYER PLASMA RELEASE CONTINUES:",
+	} {
+		if !strings.Contains(s, required) {
+			t.Errorf("missing original Plasma input contract: %s", required)
+		}
+	}
+}
+
 func TestE2EPlayerPlasmaUsesRealInputWithoutInjectedResults(t *testing.T) {
 	f, err := parser.ParseFile(token.NewFileSet(), "e2e_player_plasma.go", nil, 0)
 	if err != nil {

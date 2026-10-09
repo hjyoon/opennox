@@ -61,7 +61,8 @@ func (sc *e2eScenario) playerPlasmaInventory(open bool, name string) {
 
 // CheckPlayerPlasma uses stock OblivionOrb, naturally equipped by pickup, and actual
 // mouse input. Only the starting arena/target is arranged; no cast, damage,
-// duration, charge, ray packet or cancellation result is injected.
+// duration, charge, ray packet or cancellation result is injected. Original
+// Plasma retains its acquired target after release; real movement cancels it.
 func (sc *e2eScenario) CheckPlayerPlasma(name string) {
 	// Stock pickup already selects this wand. Do not click its inventory cell
 	// again: that would unequip it. Release setup input before observing combat.
@@ -72,6 +73,8 @@ func (sc *e2eScenario) CheckPlayerPlasma(name string) {
 	var data *server.WandUseData
 	var record *server.DurSpell
 	var beforeCharge uint8
+	var releaseCharge uint8
+	var releaseHP uint16
 	var beforeHP, stoppedHP uint16
 	var started, stopped uint32
 	sc.addWhen(0, name+" stock equipment", 1200, func() bool {
@@ -151,7 +154,26 @@ func (sc *e2eScenario) CheckPlayerPlasma(name string) {
 				e2eLog.Printf("PLAYER PLASMA EXHAUSTED: charges=%d/%d HP=%d->%d elapsed=%d", data.Charge, data.MaxCharge, beforeHP, target.HealthData.Cur, noxServer.Frame()-started)
 			})
 		}
+		sc.add(0, label+" snapshot before release", func() {
+			releaseCharge, releaseHP = data.Charge, target.HealthData.Cur
+		})
 		sc.Input(0, label+" actual attack release", &seat.MouseButtonEvent{Button: seat.MouseButtonLeft, Pressed: false})
+		if !exhaust {
+			// GAME.EXE 00531600 has no mouse-release cancellation. It retains
+			// the acquired target until ordinary movement (004F9344 calls
+			// 004FEE90, whose selected list includes Plasma ID59) or exhaustion.
+			sc.Wait(3, label+" release keeps the acquired Plasma target")
+			sc.add(0, label+" observe release continuation", func() {
+				if e2ePlayerPlasmaRecord(unit) != record || !e2ePlayerPlasmaRay(unit, target) || data.Charge >= releaseCharge || target.HealthData.Cur >= releaseHP {
+					e2eError(fmt.Errorf("Plasma release did not preserve the original acquired-target attack"))
+					return
+				}
+				e2eLog.Printf("PLAYER PLASMA RELEASE CONTINUES: charges=%d->%d HP=%d->%d", releaseCharge, data.Charge, releaseHP, target.HealthData.Cur)
+			})
+			sc.Input(0, label+" actual movement cancels Plasma", &seat.MouseButtonEvent{Button: seat.MouseButtonRight, Pressed: true})
+			sc.Wait(4, label+" ordinary movement cancellation")
+			sc.Input(0, label+" actual movement release", &seat.MouseButtonEvent{Button: seat.MouseButtonRight, Pressed: false})
+		}
 		sc.addWhen(1, label+" natural duration and ray cleanup", 120, func() bool {
 			return e2ePlayerPlasmaRecord(unit) == nil && !e2ePlayerPlasmaRay(unit, target) && data.Flags&4 == 0 && noxServer.spells.duration.plasmaWeapons[record] == nil && noxServer.spells.duration.durationRayTargets[record] == nil
 		}, func() {

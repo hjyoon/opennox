@@ -1,5 +1,13 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 전용 서버에서 클라이언트 영상 명령 제외
+
+R42는 clean/pushed `0572203f8025a53968364514320639ade860ba9c`에서 `go test -tags server ./...`의 범위를 확인했다. 클라이언트 전용 `client/noxmovie` 라이브러리와 달리 `cmd/noxmovie/main.go`에 `!server` 조건이 없어 실제 서버 컴파일이 실패했다. 명령 파일에 같은 조건만 추가하며 기존 본문 SHA `e54edbff204e086bebe48d40254cd019c7af3c33f4a4e55cf5ec561c306a87c6`는 유지한다. gameplay·AI·원본 자산·기존 테스트/YAML/manifest를 변경하지 않는다.
+
+새 build-constraint 회귀 검사는 9개 OS/architecture와 client·highres·server·server+highres의 36조건을 실제 소스 파일에 적용한다. 수정 전 actual1의 18개 server 조건 실패를 보존했다. 수정 후 normal·highres·실제 cgocheck2의 count3 실행은 각각 actual0/111개 test pass records/skip0이며 수정 전의 37개 test identity를 각각 세 번 검증했다. 이는 build-tag 판정이며 다른 플랫폼의 실제 실행 성공으로 세지 않는다.
+
+`/private/tmp/opennox-server-tags-r42.ytdHZE`에 실제 red/green JSON 로그를 보존한다. 수정 후 서버 전체 실행은 컴파일 오류 없이 45,580개 test pass/7skip/1fail, actual1이었다. 남은 `legacy/dialog/TestDialogIntegration`은 음성 장치가 없는 서버 backend에 클라이언트 재생 기대를 적용한다. 이 실패를 전체 성공으로 세지 않으며 별도 수정 대상으로 구별한다. GUI는 이번에 실행하지 않았다. R35의 판매 아이콘·기본 자기 시전 headless 성공은 이전 증거이며 retained passive-food/fixed-Quest와 전체 port goal은 아직 완료되지 않았다. 이전 ledger suffix는 바이트 그대로 보존한다.
+
 ## 실제 AI action 시작 처리의 원본 대조
 
 R40은 clean/pushed `26f9b69478ad9ef046d860e3df70703eeff9f02c`에서 R39의 기존600tick 기록을 재사용했다. 새 GUI·native test는 실행하지 않았으며 production/test/YAML/manifest·원본 자산을 변경하지 않았다. 이번 문서 밖 source6,023개와 이전 captured private inputs13개는 같은 SHA를 유지한다.

@@ -77,3 +77,18 @@ func TestSpellsDurationPlasmaDestroyNativeDispatch(t *testing.T) {
 		t.Fatal("native destroy lost flags or retained wand")
 	}
 }
+
+func TestSpellsDurationPlasmaFreeClearsNativeSidecars(t *testing.T) {
+	sp := &spellsDuration{s: &Server{Server: &server.Server{}}}
+	r, wand, target := &server.DurSpell{}, &server.Object{}, &server.Object{}
+	rt := sp.plasmaRuntime531580()
+	rt.StoreWeapon(r, wand)
+	rt.StoreRayTarget(r, target)
+	if rt.LoadWeapon(r) != wand || rt.LoadRayTarget(r) != target {
+		t.Fatal("native pointers lost")
+	}
+	sp.Free()
+	if rt.LoadWeapon(r) != nil || rt.LoadRayTarget(r) != nil {
+		t.Fatal("Free retained Plasma sidecars")
+	}
+}

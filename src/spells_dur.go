@@ -39,6 +39,7 @@ func (sp *spellsDuration) Free() {
 	sp.forceOfNatureCharges = nil
 	sp.manaBombCharges = nil
 	sp.chainLightningWeapons = nil
+	sp.plasmaWeapons = nil
 	sp.durationRayTargets = nil
 	sp.forceOfNatureLaunches = 0
 }

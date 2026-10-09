@@ -5385,41 +5385,8 @@ void sub_426150() {
 
 //----- (004263C0) --------------------------------------------------------
 char* nox_xxx_net_4263C0() {
-	char* result; // eax
-	nox_playerInfo* host;
-
-	result = (char*)nox_common_gameFlags_check_40A5C0(0x2000);
-	if (result) {
-		result = (char*)nox_common_gameFlags_check_40A5C0(4096);
-		if (!result) {
-			sub_4282F0((int)getMemAt(0x5D4594, 599476), (int)getMemAt(0x5D4594, 600124),
-					   *(size_t*)&dword_5d4594_608316);
-			sub_428540((int)getMemAt(0x5D4594, 599476), (char*)getMemAt(0x5D4594, 608320), *(int*)&dword_5d4594_739392);
-			*getMemU32Ptr(0x5D4594, 599504) = time(0) - dword_5d4594_600116;
-			sub_428810((int)getMemAt(0x5D4594, 599476), 1);
-			memset(getMemAt(0x5D4594, 600124), 0, 0x2000u);
-			memset(getMemAt(0x5D4594, 608320), 0, 0x20000u);
-			dword_5d4594_608316 = 0;
-			dword_5d4594_739392 = 0;
-			for (nox_playerInfo* player = nox_common_playerInfoGetFirst_416EA0(); player;
-				 player = nox_common_playerInfoGetNext_416EE0(player)) {
-				player->field_4648 = -1;
-			}
-			host = nox_common_playerInfoFromNum_417090(31);
-			if (host) {
-				sub_425F10(host);
-			}
-			result = (char*)nox_common_playerInfoGetFirst_416EA0();
-			while (result) {
-				nox_playerInfo* player = (nox_playerInfo*)result;
-				if (player->playerInd != 31) {
-					sub_425F10(player);
-				}
-				result = (char*)nox_common_playerInfoGetNext_416EE0(player);
-			}
-		}
-	}
-	return result;
+	extern char* nox_stats_bulk_flush_native(void);
+	return nox_stats_bulk_flush_native();
 }
 
 //----- (004264D0) --------------------------------------------------------

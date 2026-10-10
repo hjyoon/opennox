@@ -251,8 +251,9 @@ func DefaultDamageWorld4E0B30(
 	// including the reported armed NPC -> Skeleton hit. Reuse only the
 	// ordinary weapon-shape predicate, never change the actual damage type:
 	// case 7 still owns fire resistance, half-immunity, effects and Shield.
-	// Keep this slice on monster targets; PlayerDamage has its own prefix.
-	armedExplosion := monsterUpdate != nil && typ == object.DamageExplosion &&
+	// Player targets share this tail after their separate PlayerDamage
+	// armor/carry prefix; never run that prefix again in DefaultDamage.
+	armedExplosion := (monsterUpdate != nil || target.Class().Has(object.ClassPlayer)) && typ == object.DamageExplosion &&
 		source != nil && source.UpdateData != nil &&
 		!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
 		weapon != nil && playerDamageMeleeShape4E17B0(source, weapon, object.DamageBlade)
@@ -303,8 +304,8 @@ func DefaultDamageWorld4E0B30(
 	cloudPoison := (monsterUpdate != nil || target.Class().Has(object.ClassPlayer)) && typ == object.DamagePoison && weapon != nil &&
 		weapon.Class().Has(object.ClassSimple) && weapon.Class().Has(object.ClassDangerous) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile)
-	playerTail := playerElectric || playerWeaponlessExplosion || ((cloudPoison || weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldProjectile || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
-	if playerTail && !casterImpact {
+	playerTail := playerElectric || playerWeaponlessExplosion || ((armedExplosion || cloudPoison || weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldProjectile || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
+	if playerTail && !casterImpact && !armedExplosion {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
 		}

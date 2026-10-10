@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 음식 접근의 원본 콜백·충돌 검사와 type7 피해 재검증 (R83)
+
+R83은 문서에 조사 결과만 추가한다. 기존 production 본체·테스트·fixture·oracle·게임 데이터·캐시는 변경하지 않았다. 변조하지 않은 stock GAME.EXE 전체 digest와 기존 sealed root suffix/refresh/arrival/충돌/metadata 범위를 확인하고, 원본 root `0050A5C0`의 refresh→listen→regen→sight→Main→dependency→animation→action start/update 순서를 native와 대조했다. retreat food producer `005455E0`는 음식 identity를 PICKUP Args[0], MOVE_TO Args[2]에 기록한다. 원본 dispatch의 MOVE_TO/PICKUP start/end/cancel은 모두 0이며 update는 각각 `005443F0`/`00544B90`다. 72개 action metadata의 object mask가 native와 일치한다. 이번 root/producer/충돌 검사는 disassembly·data audit이며, 원본 전체 root나 실제 월드 물리를 새로 실행했다는 뜻은 아니다.
+
+원본 pickup collision `004E8DF0`은 MONSTER class byte 0x02에서 frame/인벤토리 service 전에 반환한다. monster collision `004E83B0`도 script callback 전달만 하며 음식 소비나 action pop을 추가하지 않는다. 따라서 이 경로에 몬스터 자동 소비를 넣거나 살아 있는 음식 Args[2]를 강제로 지워 공개 음식 게이트를 통과시킬 근거를 얻지 못했다. 기존 R82 close-pipeline 원본 26개 row와 이번 네 native lane의 반복 312개 phase row는 일치하지만, 실제 접근·물리·전체 RNG 스트림과 자연 소비를 인증하지 않는다.
+
+기존 피해·AI·이동·충돌 회귀를 일반/HD/실제 cgocheck2/race+checkptr=2에서 각 count3 실행했다. 각 lane은 같은 636 test identity/1,908 pass event, fail/skip 0과 실제 exit0이다. 별도 native pickup-collision strict count3도 5 identity/15 pass, fail/skip 0이다. 보고된 NPC type1343/subclass69778→Skeleton type1314/subclass70210, Sword type1174, raw3/EXPLOSION(7) 조건은 각 lane에서 실제 C dispatcher→SkeletonDamage→DefaultDamage→UnitSetHP를 통해 HP `2000→1997→1994→1991`을 유지했다. type7을 BLADE로 바꾸거나 직접 HP를 공급하지 않으며 무적·fire immunity·armor/carry 및 callback mutation 음성 경계도 기존 테스트대로 유지한다. 이는 앞선 R79/R80/R81 기능의 재검증이지 R83에서 새 피해 분기를 수정한 결과가 아니다.
+
+테스트 전후 source 6,193파일/84,112,010바이트 tree `32139ca2d7d90b56ae149defc71d9885f3f250b2fc8b603b7c42e047a034d6ef`, 보호 대상 tree `976dc074a2da1fae29f71191362f349653aded4a70fd9e68002e6d45c8350139`, 개인 설치 tree `449822ffe5e665254c29f1ccc9857c7c306d92810c0712af0e75d036cbf65868`는 동일하다. 실제 종료값·로그 digest·원본 bytes/metadata·반복 HP와 이전 원본 phase 비교는 `/private/tmp/opennox-passive-move-r83.Qji3qe/audit-diagnosis.log`, SHA-256 `9201b5c27cbfe84803adf66656e3e181a485cdbf7cbf0dc9814be56b6e2f6942`에 봉인했다. 기존 R82 음식 600tick timeout과 고정 Quest stage3 기대 g_lotdd/실제 g_crypts의 actual2 기록은 유지하며 이번에 새로 실행하거나 해결했다고 주장하지 않는다. 기대값·RNG·aggression·HP·WAIT·timeout·golden을 변경하지 않았고 전체 포팅 목표도 미완료다.
+
 ## 수동적 RETREAT 음식 접근의 원본 상태 전이 고정 (R82)
 
 이번 반복은 생산 로직 수정이 아닌 진단·회귀 테스트 추가다. 테스트 커밋 `72dd429054b980de144a57cd9b687e4f5dfdc74c`은 `src/unit_ai_passive_food_pipeline_547210_native_test.go` 한 파일만 추가한다. 기존 생산 함수, 테스트, e2e YAML/PNG, oracle manifest, 게임 데이터의 바이트는 모두 그대로다. 새 파일은 182줄/7,976바이트이며 SHA-256은 `acbf7a0a0a16ac7617d47330f683f0c81808f39a406a89b518fa2d8227a14cf0`이다. 이번 결과를 음식 소비 버그 해결이나 새 damage 분기 수정으로 분류하지 않는다.

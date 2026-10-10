@@ -1,5 +1,11 @@
 # Go 도구체인 정책
 
+## R83: 콜백·충돌 감사 및 NPC Sword 피해 재검증
+
+기존 코드·테스트·e2e/oracle·자산을 바꾸지 않은 읽기 전용 조사에서 원본 root 갱신 순서, 음식 producer의 native-width 인자, MOVE_TO/PICKUP dispatch와 72개 action metadata를 대조했다. 원본 음식 충돌은 몬스터 자동 줍기를 처리하지 않는다. 이 근거만으로 강제 pop/소비를 추가하지 않았다. 원본 전체 root·월드 물리를 새로 replay한 결과나 공개 음식 게이트 해결로 분류하지 않는다.
+
+일반/HD/cgocheck2/race+checkptr=2의 관련 회귀는 각 count3/636 identity/1,908 pass·fail/skip0·actual0이며, native pickup collision strict도 5 identity/15 pass·actual0이다. 보고된 NPC→Skeleton Sword raw3/type7은 실제 C 피해 경로에서 HP `2000→1997→1994→1991`을 네 lane 모두 유지한다. R79/R80/R81 기능 재검증이며 이번 production 변경은 없다. 원본 phase 26개와 반복 native 312개 phase 비교·불변 checkpoint·actual terminal은 인벤토리 R83 절과 `/private/tmp/opennox-passive-move-r83.Qji3qe/audit-diagnosis.log`(SHA-256 `9201b5c27cbfe84803adf66656e3e181a485cdbf7cbf0dc9814be56b6e2f6942`)를 따른다. R82 음식 소비 timeout·고정 Quest stage3 actual2와 전체 목표 미완료는 유지한다.
+
 ## R82: 수동적 음식 접근 진단과 남은 실행 게이트
 
 `72dd429054b980de144a57cd9b687e4f5dfdc74c`은 새 AI 회귀 테스트 한 파일만 추가한 커밋이다. 기존 생산 코드·테스트·e2e 기대값·oracle·게임 데이터는 수정하지 않았다. Troll의 두 stall 구간과 NPC/synthetic due-tick 조합에서 원본 Main→dependency→close MOVE_TO의 26개 상태와 native가 일치했다. 원본도 해당 제한 입력에서 WAIT 후 IDLE로 전환하며 음식을 소비하지 않았다. 이는 실제 월드 이동·물리·regen·전체 RNG 스트림의 동등성 또는 음식 소비 버그 해결을 뜻하지 않는다.

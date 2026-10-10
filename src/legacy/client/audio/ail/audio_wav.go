@@ -131,6 +131,9 @@ func (r *wavReader) open() error {
 	if err != nil {
 		return err
 	}
+	if d, ok := dec.(*mp3Decoder); ok {
+		dec = &mp3FrameDecoder{mp3Decoder: d}
+	}
 	r.dec = dec
 	return nil
 }

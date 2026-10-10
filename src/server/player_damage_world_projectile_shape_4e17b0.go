@@ -18,6 +18,12 @@ func playerDamageWorldProjectileShape4E17B0(source, weapon *Object, typ object.D
 	}
 	switch typ {
 	case object.DamageImpale:
+		// A terminal ranged arrow can itself be both source and weapon.
+		// Keep melee/unit/wand shapes outside the no-Shock projectile tail.
+		if source == weapon && source.Class().Has(object.ClassMissile) && source.Class().Has(object.ClassWeapon) &&
+			!source.Class().HasAny(object.MaskUnits|object.ClassWand) && !defaultDamageAttackQualifies4E1400(source, weapon) {
+			return true
+		}
 		return world && source.Class().Has(object.ClassImmobile) && source != weapon && weapon != nil && weapon.Class().Has(object.ClassMissile) &&
 			!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 			!defaultDamageAttackQualifies4E1400(source, weapon)

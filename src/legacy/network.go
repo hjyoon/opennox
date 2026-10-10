@@ -131,17 +131,19 @@ func sub_554240(a1_cgo int32) int32 { a1 := int(a1_cgo); return int32(Sub_554240
 
 //export nox_xxx_net_getIP_554200
 func nox_xxx_net_getIP_554200(a1_cgo int32) uint32 {
-	a1 := int(a1_cgo)
-	if a1 < 0 || a1 >= 31 {
-		panic("unexpected index")
+	index := uint32(a1_cgo)
+	// The original uses an unsigned connection-table index, not a player
+	// limit. Its extra slot 128 cannot be allocated by native Streams.
+	if index >= 128 {
+		return 0
 	}
-	var conn *netstr.Conn
-	if a1 == 0 {
-		conn = GetServer().S().NetStr.Host()
-	} else {
-		conn = GetServer().S().NetStr.ConnByPlayerInd(ntype.PlayerInd(a1) + 1)
+	srv := GetServer().S()
+	if index == 0 {
+		return ip2int(srv.OwnIP)
 	}
-	return ip2int(GetServer().S().GetExtIP(conn))
+	// ConnByPlayerInd adds one internally. Connection 1 is player 0.
+	var conn *netstr.Conn = srv.NetStr.ConnByPlayerInd(ntype.PlayerInd(index - 1))
+	return ip2int(conn.IP())
 }
 
 //export nox_xxx_netOnPacketRecvCli_48EA70

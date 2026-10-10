@@ -4970,85 +4970,12 @@ LABEL_38:
 
 //----- (0054D7A0) --------------------------------------------------------
 void nox_xxx_playerHandleElimDeath_54D7A0(int a1, int a2) {
-	int v2;   // edi
-	int v3;   // ebx
-	char* v4; // ebp
-	int v5;   // eax
-	int v6;   // [esp-4h] [ebp-18h]
-	int v7;   // [esp-4h] [ebp-18h]
-	char* v8; // [esp+10h] [ebp-4h]
-	int v9;   // [esp+18h] [ebp+4h]
-
-	v2 = a1;
-	v3 = 0;
-	v4 = 0;
-	v8 = 0;
-	v6 = a1 + 48;
-	v9 = *(uint32_t*)(a1 + 748);
-	if (nox_xxx_servObjectHasTeam_419130(v6)) {
-		v8 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(v2 + 52));
-	}
-	if (a2) {
-		v3 = *(uint32_t*)(a2 + 748);
-		if (nox_xxx_servObjectHasTeam_419130(a2 + 48)) {
-			v4 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(a2 + 52));
-		}
-	}
-	if (a2 == v2) {
-		nox_xxx_playerSubLessons_4D8EC0(v2, 1);
-		nox_xxx_playerIncrementElimDeath_4D8D40(v2);
-		nox_xxx_netReportLesson_4D8EF0(v2);
-		if (v8) {
-			nox_xxx_netChangeTeamID_419090((nox_team_t*)v8, ((nox_team_t*)v8)->lessons + 1);
-		}
-		if (dword_5d4594_2650652) {
-			if (v3) {
-				sub_425CA0(*(uint32_t*)(v3 + 276), *(uint32_t*)(v3 + 276));
-			}
-		}
-		return;
-	}
-	if (a2) {
-		if (*(uint8_t*)(a2 + 8) & 4) {
-			if (v4) {
-				if (v4 == v8) {
-					nox_xxx_playerSubLessons_4D8EC0(a2, 1);
-					nox_xxx_netReportLesson_4D8EF0(a2);
-					if (dword_5d4594_2650652 && v3) {
-						sub_425CA0(*(uint32_t*)(v3 + 276), *(uint32_t*)(v3 + 276));
-					}
-					goto LABEL_32;
-				}
-			} else if (!v8) {
-				nox_xxx_changeScore_4D8E90(a2, 1);
-				nox_xxx_netReportLesson_4D8EF0(a2);
-				if (dword_5d4594_2650652 && v3 && v9) {
-					sub_425CA0(*(uint32_t*)(v3 + 276), *(uint32_t*)(v9 + 276));
-				}
-				goto LABEL_32;
-			}
-			nox_xxx_changeScore_4D8E90(a2, 1);
-			nox_xxx_netReportLesson_4D8EF0(a2);
-			if (dword_5d4594_2650652) {
-				if (v3 && v9) {
-					v5 = *(uint32_t*)(v3 + 276);
-					v7 = *(uint32_t*)(v9 + 276);
-					sub_425CA0(v5, v7);
-					goto LABEL_32;
-				}
-			}
-		}
-	} else if (dword_5d4594_2650652 && v9) {
-		v5 = *(uint32_t*)(v9 + 276);
-		v7 = *(uint32_t*)(v9 + 276);
-		sub_425CA0(v5, v7);
-	}
-LABEL_32:
-	nox_xxx_playerIncrementElimDeath_4D8D40(v2);
-	nox_xxx_netReportLesson_4D8EF0(v2);
-	if (v8) {
-		nox_xxx_netChangeTeamID_419090((nox_team_t*)v8, ((nox_team_t*)v8)->lessons + 1);
-	}
+	extern void nox_server_player_handle_elim_death_native_54D7A0(nox_object_t*, nox_object_t*);
+	// Retain this signature only for ABI32 callers. A native caller must use
+	// nox_player_handle_elim_death_native_call_54D7A0 before any int conversion;
+	// high pointer bits already lost by a caller cannot be recovered here.
+	nox_server_player_handle_elim_death_native_54D7A0(
+		(nox_object_t*)(uintptr_t)(uint32_t)a1, (nox_object_t*)(uintptr_t)(uint32_t)a2);
 }
 
 //----- (0054D980) --------------------------------------------------------

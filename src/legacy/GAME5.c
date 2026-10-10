@@ -4993,122 +4993,13 @@ void nox_xxx_playerUpdateScore_54D980(int a1, int a2, int a3, int a4) {
 
 //----- (0054DC40) --------------------------------------------------------
 void nox_xxx_playerHandleKotrDeath_54DC40(int a1, int a2) {
-	char* v2;     // edi
-	char* v3;     // ebx
-	char* result; // eax
-	int v5;       // ebp
-	double v6;    // st7
-	int v7;       // ebx
-	int v8;       // ebx
-	int v9;       // eax
-	double v10;   // st7
-	int v11;      // eax
-	float v12;    // [esp+0h] [ebp-18h]
-	float v13;    // [esp+0h] [ebp-18h]
-	int v14;      // [esp+0h] [ebp-18h]
-	float v15;    // [esp+0h] [ebp-18h]
-	int v16;      // [esp+14h] [ebp-4h]
-
-	v2 = 0;
-	v3 = 0;
-	v16 = *(uint32_t*)(a1 + 748);
-	result = (char*)nox_xxx_servObjectHasTeam_419130(a1 + 48);
-	if (result) {
-		result = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(a1 + 52));
-		v3 = result;
-	}
-	if (a2) {
-		v5 = *(uint32_t*)(a2 + 748);
-		result = (char*)nox_xxx_servObjectHasTeam_419130(a2 + 48);
-		if (result) {
-			result = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(a2 + 52));
-			v2 = result;
-		}
-		if (*(uint8_t*)(a2 + 8) & 4) {
-			if (a2 == a1 || v3 == v2 && v3) {
-				if (!nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a2)) {
-					nox_xxx_playerIncrementElimDeath_4D8D40(a1);
-					nox_xxx_netReportLesson_4D8EF0(a1);
-					return;
-				}
-				nox_xxx_playerSubLessons_4D8EC0(a2, 1);
-				nox_xxx_netReportLesson_4D8EF0(a2);
-				if (v2) {
-					nox_xxx_netChangeTeamID_419090((nox_team_t*)v2, ((nox_team_t*)v2)->lessons - 1);
-				}
-				if (!dword_5d4594_2650652 || !v5) {
-					nox_xxx_playerIncrementElimDeath_4D8D40(a1);
-					nox_xxx_netReportLesson_4D8EF0(a1);
-					return;
-				}
-				v9 = *(uint32_t*)(v5 + 276);
-				v14 = *(uint32_t*)(v5 + 276);
-			} else {
-				if (!v2 || v2 == v3) {
-					if (nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a2) ||
-						nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1)) {
-						if (nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a2)) {
-							v10 = nox_xxx_gamedataGetFloat_419D40("KotRKingKillsPawnPoints");
-						} else {
-							v10 = nox_xxx_gamedataGetFloat_419D40("KotRPawnKillsKingPoints");
-						}
-						v15 = v10;
-						v11 = nox_float2int(v15);
-						nox_xxx_changeScore_4D8E90(a2, v11);
-						nox_xxx_netReportLesson_4D8EF0(a2);
-						if (dword_5d4594_2650652 && v5 && v16) {
-							sub_425CA0(*(uint32_t*)(v5 + 276), *(uint32_t*)(v16 + 276));
-						}
-						if (!nox_xxx_CheckGameplayFlags_417DA0(4) &&
-							nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1)) {
-							sub_4ED050(
-								(nox_object_t*)(uintptr_t)(uint32_t)a1,
-								(nox_object_t*)(uintptr_t)(uint32_t)a2);
-						}
-					}
-					nox_xxx_playerIncrementElimDeath_4D8D40(a1);
-					nox_xxx_netReportLesson_4D8EF0(a1);
-					return;
-				}
-				if (nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a2)) {
-					if (nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1)) {
-						v6 = nox_xxx_gamedataGetFloat_419D40("KotRKingKillsKingPoints");
-					} else {
-						v6 = nox_xxx_gamedataGetFloat_419D40("KotRKingKillsPawnPoints");
-					}
-					v12 = v6;
-					v7 = nox_float2int(v12);
-					nox_xxx_changeScore_4D8E90(a2, v7);
-					nox_xxx_netChangeTeamID_419090((nox_team_t*)v2, v7 + ((nox_team_t*)v2)->lessons);
-					nox_xxx_netReportLesson_4D8EF0(a2);
-					if (dword_5d4594_2650652 && v5) {
-						if (v16) {
-							sub_425CA0(*(uint32_t*)(v5 + 276), *(uint32_t*)(v16 + 276));
-						}
-					}
-					nox_xxx_playerIncrementElimDeath_4D8D40(a1);
-					nox_xxx_netReportLesson_4D8EF0(a1);
-					return;
-				}
-				if (!nox_xxx_unitIsCrown_4E7BE0((const nox_object_t*)(uintptr_t)(uint32_t)a1) ||
-					(v13 = nox_xxx_gamedataGetFloat_419D40("KotRPawnKillsKingPoints"), v8 = nox_float2int(v13),
-					 nox_xxx_changeScore_4D8E90(a2, v8),
-					 nox_xxx_netChangeTeamID_419090((nox_team_t*)v2, v8 + ((nox_team_t*)v2)->lessons),
-					 nox_xxx_netReportLesson_4D8EF0(a2), !dword_5d4594_2650652) ||
-					!v5 || !v16) {
-					nox_xxx_playerIncrementElimDeath_4D8D40(a1);
-					nox_xxx_netReportLesson_4D8EF0(a1);
-					return;
-				}
-				v9 = *(uint32_t*)(v5 + 276);
-				v14 = *(uint32_t*)(v16 + 276);
-			}
-			sub_425CA0(v9, v14);
-			nox_xxx_playerIncrementElimDeath_4D8D40(a1);
-			nox_xxx_netReportLesson_4D8EF0(a1);
-			return;
-		}
-	}
+	extern void nox_server_player_handle_kotr_death_native_54DC40(nox_object_t*, nox_object_t*);
+	// Retain this signature only for ABI32 callers. A native caller must use
+	// nox_player_handle_kotr_death_native_call_54DC40 before any int conversion;
+	// high pointer bits already lost by a caller cannot be recovered here.
+	nox_server_player_handle_kotr_death_native_54DC40(
+		(nox_object_t*)(uintptr_t)(uint32_t)a1,
+		(nox_object_t*)(uintptr_t)(uint32_t)a2);
 }
 
 //----- (0054DF00) --------------------------------------------------------

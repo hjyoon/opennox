@@ -146,7 +146,9 @@ func playerDamageArmedExplosion4E17B0(
 			// A pure case-7 attack cannot use the GreatSword/staff branch.
 			// A callback-created missile needs that separate live weapon block.
 			if weaponFlags&0x400 != 0 && weapon.Class().Has(object.ClassMissile) {
-				return reject("unsupported live armed EXPLOSION GreatSword missile")
+				if applicable, h, ok := playerDamageArmedExplosionGreatSword4E17B0(target, source, weapon, damage, typ, cachedState, r); applicable {
+					return h, ok
+				}
 			}
 			// Retain OpenNox's optional gameex berserker-shield extension.
 			// Stock GAME.EXE has no such branch; its replay never enables it.

@@ -524,6 +524,9 @@ func playerDamageMonster4E17B0(
 		weaponFlags: update.WeaponEquipFlags, armorFlags: update.ArmorEquipFlags,
 		marker: &update.Field547, markerType: &update.Field546,
 	}
+	if source == nil && weapon == nil && typ == object.DamageBlade {
+		return playerDamageNPCScriptBlade4E17B0(target, greatSword, armorValue, damage, runtime)
+	}
 	if source == nil && weapon == nil && typ == object.DamageLava || playerDamageWorldImpaleShape4E17B0(source, weapon, typ) {
 		return playerDamageNPCEnvironment4E17B0(target, source, weapon, greatSword, armorValue, damage, typ, runtime)
 	}

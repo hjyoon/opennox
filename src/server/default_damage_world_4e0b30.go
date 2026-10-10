@@ -223,6 +223,15 @@ func DefaultDamageWorld4E0B30(
 		source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 		!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
 		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
+	// OblivionHeart supplies a distinct WEAPON, not a missile or WAND.
+	// Admit unit-fired armed electric hits by shape rather than type/name;
+	// the live 004E1400 predicate still owns melee friendliness and Shock.
+	armedElectric := monsterUpdate != nil && source != nil && source != weapon && source.UpdateData != nil &&
+		source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
+		!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
+		weapon != nil && weapon.Class().HasAny(object.ClassWeapon|object.ClassWand) &&
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassMissile) &&
+		(typ == object.DamageElectric || typ == object.DamageAirborneElectric)
 	playerElectric := target.Class().Has(object.ClassPlayer) &&
 		(unitSelfWeaponElectric || (source != nil && source.Class().HasAny(object.ClassPlayer|object.ClassMonster) &&
 			source.UpdateData != nil && weapon == nil &&
@@ -407,6 +416,18 @@ func DefaultDamageWorld4E0B30(
 			return true
 		}
 	}
+	if armedElectric {
+		if runtime.IsEnemy == nil {
+			return defaultDamageUnsupported4E0B30(runtime, "missing armed electric enemy service", target, source, weapon, damage, typ)
+		}
+		// 004E0C61 queries even a ranged weapon BEFORE NoUpdate. Reload
+		// the qualifier after that callback: a false enemy result rejects
+		// qualifying attacks as dictated by each WEAPON/WAND subclass.
+		if !runtime.IsEnemy(target, source) && target.Class().HasAny(object.MaskUnits) &&
+			defaultDamageAttackQualifies4E1400(source, weapon) && !defaultDamageFriendlyException4E1470(weapon) {
+			return true
+		}
+	}
 	if target.ObjFlags.Has(object.FlagNoUpdate) {
 		return true
 	}
@@ -477,7 +498,7 @@ func DefaultDamageWorld4E0B30(
 		(source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)))) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing weapon-less raw spell tail service", target, source, weapon, damage, typ)
 	}
-	monsterElectric := monsterUpdate != nil && (unitSelfWeaponElectric ||
+	monsterElectric := monsterUpdate != nil && (armedElectric || unitSelfWeaponElectric ||
 		(weapon == nil && (source == nil || source.Class().HasAny(object.ClassPlayer|object.ClassMonster)) &&
 			(typ == object.DamageElectric || typ == object.DamageAirborneElectric)))
 	// Meteor passes its terminal player owner (or nil) with no weapon;
@@ -526,7 +547,7 @@ func DefaultDamageWorld4E0B30(
 		if sourceLessMonsterPoison && uint32(target.SubClass())&0x200 != 0 {
 			return true
 		}
-		if target.HealthData == nil && !cloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {
+		if target.HealthData == nil && !armedElectric && !cloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
 		}
 		// GAME.EXE 004E0EA1 handles WEAPON|WAND (0x1001000) alike,
@@ -542,7 +563,7 @@ func DefaultDamageWorld4E0B30(
 			return defaultDamageUnsupported4E0B30(runtime, "unsupported monster damage shape", target, source, weapon, damage, typ)
 		}
 		// This monster subclass ignores both electric damage types.
-		if monsterElectric && !unitSelfWeaponElectric && uint32(target.SubClass())&0x800 != 0 {
+		if monsterElectric && !armedElectric && !unitSelfWeaponElectric && uint32(target.SubClass())&0x800 != 0 {
 			return true
 		}
 		if monsterBite && runtime.MonsterHasHitSound == nil {
@@ -553,7 +574,7 @@ func DefaultDamageWorld4E0B30(
 		// (004E1400 is false).
 		// The earlier campaign owner gate still applies to a friendly charge.
 		// A weapon-less explosion never enters that second melee gate.
-		if source != nil && !ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !missileDamage && !worldFlame && !worldImpale && !cloudPoison && !monsterWeaponlessExplosion && !weaponlessRawSpell && !playerCharge && !unitSelfWeaponElectric && !zapRay && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
+		if source != nil && !armedElectric && !ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !missileDamage && !worldFlame && !worldImpale && !cloudPoison && !monsterWeaponlessExplosion && !weaponlessRawSpell && !playerCharge && !unitSelfWeaponElectric && !zapRay && (runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 			return true
 		}
 	}
@@ -588,6 +609,20 @@ func DefaultDamageWorld4E0B30(
 	// This ordering becomes reachable when a MONSTER self-weapon is retained.
 	if unitSelfWeaponElectric && monsterUpdate != nil && uint32(target.SubClass())&0x800 != 0 {
 		return true
+	}
+	if armedElectric {
+		// 004E0D20 reloads the live class/subclass AFTER Shock. The
+		// original fire-immunity branch takes precedence over its else-if
+		// electric-immunity branch, even when both bits are present.
+		if target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0xc00 == 0x800 {
+			return true
+		}
+		// Nil health is guarded by UnitDamageClear only after the ordinary
+		// protection/attribution/effect tail; immunity needs no tail services.
+		if runtime.BuffOff == nil || runtime.DamageClear == nil ||
+			(source.Class().Has(object.ClassMonster) && source.UpdateData != nil && runtime.MonsterHasHitSound == nil) {
+			return defaultDamageUnsupported4E0B30(runtime, "missing armed electric tail service", target, source, weapon, damage, typ)
+		}
 	}
 	if casterImpact && (runtime.DamageClear == nil || (source != nil && (runtime.BuffOff == nil ||
 		(source.Class().Has(object.ClassMonster) && source.UpdateData != nil && runtime.MonsterHasHitSound == nil)))) {

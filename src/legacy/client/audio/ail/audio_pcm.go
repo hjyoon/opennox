@@ -59,8 +59,29 @@ func (d *pcmDecoder) Decode(out []int16) (int, bool) {
 }
 
 func (d *pcmDecoder) Seek(position int) {
-	// TODO
 	d.position = 0
+	position = max(position, 0)
+	frameBytes := 2 * d.channels
+	if frameBytes <= 0 {
+		return
+	}
+	// wavReader.Seek has rewound the RIFF chunks. Consume complete frames
+	// through its buffered reader so read-ahead and truncated data stay honest.
+	for d.position < position {
+		size, err := d.r.ChunkSize()
+		if err != nil {
+			return
+		}
+		frames := min(position-d.position, size/frameBytes)
+		if frames == 0 {
+			return
+		}
+		n, err := io.CopyN(io.Discard, d.r, int64(frames)*int64(frameBytes))
+		d.position += int(n) / frameBytes
+		if err != nil {
+			return
+		}
+	}
 }
 
 func (d *pcmDecoder) Position() int {

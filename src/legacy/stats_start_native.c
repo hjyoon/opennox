@@ -87,3 +87,8 @@ void* nox_stats_quest_columns_clear_native(void) {
 	if (result) { free(columns->scores[7]); columns->scores[7] = NULL; }
 	return result;
 }
+
+// The end root shares the native columns owned by Quest startup/cleanup.
+nox_stats_quest_columns_native* nox_stats_quest_columns_native_get(void) {
+	return &nox_stats_quest_columns;
+}

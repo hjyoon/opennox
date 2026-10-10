@@ -287,3 +287,21 @@ int nox_stats_session_report_native(int mode) {
 	}
 	return nox_stats_report(&nox_stats_columns, getMemAt(0x5D4594, 599476), mode);
 }
+
+// Quest uses the same native field nodes and original serializer. These new
+// bridges leave the existing online packet/bulk/start bodies unchanged.
+void* nox_stats_field_native_prepend(void* head, const char* name, uint16_t type,
+									uint16_t length, const void* data) {
+	nox_stats_field_native* field = head;
+	nox_stats_field_add(&field, name, type, length, data);
+	return field;
+}
+
+uint16_t* nox_stats_packet_native_finish(void* head, uint32_t* length, uint32_t* sequence) {
+	uint16_t* packet = nox_stats_serialize(head, length);
+	// GAME.EXE 42B810 increments the full DWORD after serialization and before
+	// destroying the list, including on zero/signed-negative player counts.
+	++*sequence;
+	nox_stats_fields_destroy(head);
+	return packet;
+}

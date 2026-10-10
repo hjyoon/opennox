@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R85: Turn Undead 충돌의 공통 피해 경로 복원
+
+기능 `babe3832dd50af3dc434946cf8af26537a6b9c7e`은 기존 `DefaultDamageWorld4E0B30` production 본체 하나만 변경하고 새 테스트 두 파일을 추가했다. MISSILE이 아닌 stock LIGHT|CLIENT_PREDICT collider의 type6/DISPEL_UNDEAD와 무소유 terminal-owner identity를 공통 damage tail에 연결한다. 수정 전 실제 C 충돌은 예산을 소모하고도 HP를 줄이지 않았다. signed raw type6·원래 적대/무적/NoUpdate/Shield·피격/효과음/attribution 순서는 유지하며 PLAYER 전용 type6 tail 또는 전체 사망/삭제 lifecycle을 새로 이식했다고 주장하지 않는다.
+
+unchanged PE32 원본576행/49,252바이트의 결과·필드·순서와 native가 일치했다. SHA-256 `98d9f58f6d869d60a99d9c4bd9eb9c8a22e51371ef4b15543389911d63025587`이며 명시된 game/enchant/enemy/sound/guide/Shield/HP 외부 서비스를 쓰는 bounded 비교다. 별도 실제 C-owned 고주소 C collision→등록 SkeletonDamage→DefaultDamage→UnitSetHP에서 player/NPC/unowned source의 입력 예산7마다 HP `2000→1993→1986→1979`를 확인했다. 피해/HP 결과는 대체하지 않으며 DelayedDelete만 월드 서비스 관찰 경계다. 무적·NoUpdate·non-undead 음성 조건과 source metadata도 검증했다. 기존 NPC→Skeleton Sword raw3/type7의 실제 C 경로는 HP `2000→1997→1994→1991`을 유지했다.
+
+새36 test identity는 일반/HD/실제 cgocheck2/race+checkptr=2 각각 count3 통과했다. 각 표적 lane actual0·570 정규화 ID/1,716 pass·fail0/skip0이다. 주소만 정규화한 기존 한 fault ID는9회, 나머지는3회이며 R84 표적477 ID/횟수를 보존했다. full 일반/HD/strict는 각각49,249 pass/41 skip, server48,485 pass/7 skip·actual0이고 기존 모든 ID/횟수·skip은 불변이다. compiled red와 새 private enchant hook/InitData fixture 실패도 별도 로그에 보존했다.
+
+clean 기능 revision의 공식 ARM64 일반/HD/서버3제품 build/metadata/help 및 기존 Turn Undead 일반·HD headless/mock 시나리오는 actual0이다. GUI는43개 투사체의 생성/FX/갱신/취소를 검증하며 자연 target 피해나 실제 화면/스피커 인증은 아니다. 실제 피해 검사는 위 C 충돌 테스트와 구분한다. 개인 Save/config·원본 자산·기존 테스트/YAML/golden은 불변이고 캐시는 삭제하지 않았다. 최종 docs revision 제품은 별도 handoff다.
+
+자세한 범위와 한계는 인벤토리 R85 절 및 `/private/tmp/opennox-turn-undead-damage-r85.xnmwfD/audit-tests.log`(SHA-256 `6b6f427f2c86c4bcaa4e5bb7049f048456bb7523c572254f1ed2ca1dba7068f1`), `audit-games.log`(`550f4d4b31bad269046e99138463685e30f2b77e18897db90b4379aaae42308c`)를 따른다. R82 음식/고정 Quest actual2는 재실행하거나 해결했다고 주장하지 않으며 전체 포팅 목표도 미완료다. 아래 모든 기존 기록의 바이트는 그대로 유지한다.
+
 ## R84: armed EXPLOSION GreatSword 방어 후속 완료
 
 기능 `903de8ca0a58f807d4c524d168b56415332d13bc`은 기존 armed EXPLOSION 한 production 본체의 rejection 한 줄만 finisher 호출 세 줄로 교체하고 새 helper 1개/테스트 3파일을 추가했다. admission 뒤 callback-created MISSILE의 GreatSword reflection·owner·sound·state/action·live inventory·실제 내구도와 broken-item 종료를 원본 순서대로 처리하며 prefix를 반복하거나 type7을 다른 피해 유형으로 바꾸지 않는다. ordinary stock Sword가 자연스럽게 MISSILE로 바뀐다는 주장은 아니다.

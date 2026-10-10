@@ -239,7 +239,7 @@ func (m *Module) Init() {
 }
 
 func (m *Module) Update() {
-	current_block := m.blocks[m.block_idx]
+	current_block := &m.blocks[m.block_idx]
 	if *m.dword_5d4594_816340 == 0 {
 		return
 	}

@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R82: 수동적 음식 접근 진단과 남은 실행 게이트
+
+`72dd429054b980de144a57cd9b687e4f5dfdc74c`은 새 AI 회귀 테스트 한 파일만 추가한 커밋이다. 기존 생산 코드·테스트·e2e 기대값·oracle·게임 데이터는 수정하지 않았다. Troll의 두 stall 구간과 NPC/synthetic due-tick 조합에서 원본 Main→dependency→close MOVE_TO의 26개 상태와 native가 일치했다. 원본도 해당 제한 입력에서 WAIT 후 IDLE로 전환하며 음식을 소비하지 않았다. 이는 실제 월드 이동·물리·regen·전체 RNG 스트림의 동등성 또는 음식 소비 버그 해결을 뜻하지 않는다.
+
+고유 leaf 6개는 일반/HD/cgocheck2/race/checkptr=2 각 `-count=3`에서 통과했다. 네 full lane까지 합쳐 494개 phase row를 비교했다. 전체 일반·HD·strict CGo는 각각 actual exit 0, pass event 49,168/skip 41, 서버 전용은 pass 48,404/skip 7이다. 기존 pass/skip과 횟수는 유지됐고 새 leaf 및 parent의 pass event 7개만 추가됐다. 원본 비교의 서비스 입력과 검증 한계, raw evidence digest는 인벤토리 R82 절을 따른다.
+
+공식 client/client-hd/server 세 파일은 Go 1.26.5, darwin/arm64, clean 테스트 커밋의 metadata와 `-help` actual exit 0을 확인했다. headless/mock GUI 실행은 개인 Save/config를 격리했고 보호 대상 및 개인 설치 파일의 tree hash는 실행 전후 동일했다. 이번 반복에서 캐시는 제거하지 않았다.
+
+공개 게임 내 게이트는 아직 두 개가 실패한다. 음식 게이트는 production 동일 parent에서 첫 Troll ascending apple의 비강제 소비 600tick timeout으로 actual exit 2이며 나머지 조합의 완료를 주장하지 않는다. 고정 20단계 Quest는 이번 커밋으로 새로 실행하여 stage 3 기대 `g_lotdd`/실제 `g_crypts`, actual exit 2를 재현했다. 기대값·RNG·맵·timeout·golden을 바꾸지 않았으며 전체 포팅 목표도 완료로 표시하지 않는다. 다음 단계는 실제 음식 접근의 물리·충돌/완료 처리와 전체 runtime RNG 소비를 조사하는 것이다.
+
+통합 증거: `/private/tmp/opennox-passive-food-diagnosis-r82.jezZz5/audit-evidence.log`, SHA-256 `e4c57b48b3e5e73fe41f4e7e3437d2ba859734472ea9edf050b95f0d0d36d63f`.
+
 2026-10-11 R81 `fc8b903e2`는 R79/R80의 armed EXPLOSION(7) 공통 피해 복원에 이어 PLAYER 및 MONSTER NPC의 PlayerDamage 방어 진입을 복원했다. 기존 `PlayerDamageNative4E17B0` 본체에4줄만 추가하며 Sword/qualifying WAND/Hammer의 실제 type7·attribution을 그대로 유지한다. 원본7194조건/638529byte 결과·순서와 실제4GiB 초과 C-owned NPC/player의 방어구 흡수·fractional carry·내구도·반복 HP 감소를 확인했다. 새113 test identity의 strict count3/339pass, 이전 모든 identity/action/multiplicity/skip 보존, 일반·HD·strict 전체 각49161pass/41skip·server48397pass/7skip 및13개 직렬 gate가 actual0이다. clean/pushed ARM643제품과 일반·HD headless/mock의 기존 Wiz01a 사망·실제 Done 이후5tick 시체 이동도 유지됐다. [R81 근거와 한계](PORTING-INVENTORY.md#armed-explosion-공격의-playerdamage-방어-진입-복원)에 통제된 원본 replay·실제 C 피해 검증·기존 GUI 회귀를 구분한다. 기존 문서 모든 바이트·원본 자산·개인 Save/config는 보존하며 docs-only 제품은 별도 handoff다. 원본 nil-shield fault는 양성 pass가 아니고 optional gameex 방어는 stock oracle 인증이 아니다. 자연 전투 전체·retained R77 Quest/passive-food·원격 transport·전체 port goal은 여전히 미완료다.
 
 2026-10-11 R80 `78d392c6d`는 R79의 NPC Sword EXPLOSION(7) 복원에 이어 이미 계산된 피해를 받는 PLAYER의 공통 DefaultDamage 경로를 복원했다. 기존 `DefaultDamageWorld4E0B30` 본체 하나만 변경하며 PlayerDamage의 방어구 흡수·carry·hit marker·GodMode/Quest prefix를 다시 실행하지 않는다. unchanged GAME.EXE의774조건/78268byte 결과·순서가 일치하고 실제4GiB 초과 C-owned NPC/player의 Sword/Wand/Hammer raw3 반복 HP2000→1997→1994→1991 및 무적을 확인했다. 새30 test identity의 strict count3/90pass, 기존 모든 identity/action/multiplicity/skip 보존, 일반·HD·strict 전체 각49048pass/41skip·server48284pass/7skip와13개 직렬 gate는 actual0다. clean/pushed ARM643제품과 일반·HD headless/mock의 기존 Wiz01a 사망·실제 Done 이후5tick 시체 이동도 유지됐다. [R80 근거와 한계](PORTING-INVENTORY.md#플레이어의-armed-explosion-공통-피해-경로-복원)에 통제된 C DefaultDamage 검증과 자연 GUI 전투를 구분한다. 기존 문서 모든 바이트·원본 자산·개인 Save/config는 보존하며 docs-only 제품은 별도 handoff다. 같은 type7의 PlayerDamage 전용 PLAYER/NPC 방어 진입은 아직 미이식으로 다음 수정 단위이며 retained R77 Quest/passive-food·원격 transport·전체 port goal도 미완료다.

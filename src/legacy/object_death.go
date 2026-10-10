@@ -323,7 +323,7 @@ func nox_xxx_dieMonsterGen_54E630_go(source *nox_object_t) {
 
 var playerDieCall54D2B0 = func(unit *server.Object) {
 	s := GetServer().S()
-	handled := server.PlayerDieNative54D2B0(unit, server.PlayerDieRuntime54D2B0{
+	handled := server.PlayerDieCompetitiveNative54D2B0(unit, server.PlayerDieRuntime54D2B0{
 		GameFlag: func(flag uint32) bool {
 			return noxflags.HasGame(noxflags.GameFlag(flag))
 		},
@@ -396,7 +396,7 @@ var playerDieCall54D2B0 = func(unit *server.Object) {
 				)
 			}
 		},
-	})
+	}, playerDieCompetitiveRuntime54D2B0())
 	if handled {
 		return
 	}

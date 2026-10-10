@@ -28,8 +28,15 @@ func playerDamageWorldProjectileShape4E17B0(source, weapon *Object, typ object.D
 			!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 			!defaultDamageAttackQualifies4E1400(source, weapon)
 	case object.DamageFlame:
-		return world && source.Class().Has(object.ClassImmobile) && source != weapon && pureMissile(weapon)
+		// Scripted spell missiles can retain a class-zero ImaginaryCaster.
+		return (world && source.Class().Has(object.ClassImmobile) || source.Class() == 0) &&
+			source != weapon && pureMissile(weapon)
 	case object.DamageCrush:
+		// PressurePlate creates a distinct SIMPLE LargeFist, not a missile.
+		if world && source != weapon && weapon != nil && weapon.Class().Has(object.ClassSimple) &&
+			!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile) {
+			return true
+		}
 		if weapon == nil {
 			return pureMissile(source)
 		}

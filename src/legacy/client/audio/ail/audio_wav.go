@@ -210,6 +210,13 @@ func (r *wavReader) Seek(offset int) {
 	r.chunkSize = 0
 	r.chunkPos = 0
 	r.file.Seek(12, io.SeekStart)
+	if d, ok := r.dec.(*adpcmSeekDecoder); ok {
+		r.dec = d.adpcmDecoder
+	}
+	if d, ok := r.dec.(*adpcmDecoder); ok {
+		r.dec = adpcmSeekFrames(d, offset)
+		return
+	}
 	r.dec.Seek(offset)
 }
 

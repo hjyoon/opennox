@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R84: armed EXPLOSION GreatSword 방어 후속 완료
+
+기능 `903de8ca0a58f807d4c524d168b56415332d13bc`은 기존 armed EXPLOSION 한 production 본체의 rejection 한 줄만 finisher 호출 세 줄로 교체하고 새 helper 1개/테스트 3파일을 추가했다. admission 뒤 callback-created MISSILE의 GreatSword reflection·owner·sound·state/action·live inventory·실제 내구도와 broken-item 종료를 원본 순서대로 처리하며 prefix를 반복하거나 type7을 다른 피해 유형으로 바꾸지 않는다. ordinary stock Sword가 자연스럽게 MISSILE로 바뀐다는 주장은 아니다.
+
+unchanged 원본의 5,904개 제어 transcript와 nil-item 실제 fault 2개, native service-use와 invalid-layout 음성 경계, C-owned 고주소/등록 생산 HP·wear 검사가 통과했다. 새 45 test identity를 일반/HD/cgocheck2/race+checkptr=2 각각 count3 검증했으며 각 lane actual0·1,437 pass·fail0/skip0이다. 주소만 정규화한 477 ID 중 기존 한 fault ID는 9회, 나머지는 3회다. full 일반/HD/strict는 각49,213 pass/41 skip, server48,449 pass/7 skip·actual0이며 기존 ID/횟수는 불변이다. 보고된 NPC→Skeleton Sword raw3/type7의 실제 C 피해 경로도 각 lane에서 HP `2000→1997→1994→1991`을 유지했다. 새 CallDamage registry fixture와 이 실제 C-entry 검사는 구분한다.
+
+clean 기능 revision의 공식 macOS ARM64 3제품 build/metadata/help와 일반·HD headless/mock 기존 GreatSword 공개 시나리오 각21결과가 actual0이다. 정면11조건의 HP 보호·대검 wear와 후면10조건의 HP 피해·wear 없음, 자연 NPC Fireball을 관찰했다. 이 GUI는 공통 방어 회귀이며 callback-created armed-Sword의 자연 발생·실제 화면/스피커 인증은 아니다. 개인 Save/config·원본 assets·기존 테스트/YAML/golden은 불변이고 캐시는 삭제하지 않았다. 최종 docs revision 제품은 별도 handoff다.
+
+상세 scope·원본 경계·compiled red와 새 fixture의 GameBall registration 실패·private auditor 표시 공백 실패 보존은 인벤토리 R84 절을 따른다. 증거는 `/private/tmp/opennox-armed-greatsword-r84.v3Aob4/audit-tests.log`(SHA-256 `22c40feb6ebe7f6a2033988842e4e84dd7c30c7a688ca5cbc7666b1e8fc4be44`) 및 `audit-games-v2.log`(`857667c01b4b6345f1ae7149739aa70e1f3891a19117e9e7fb18f9ffd3805f89`)이다. 기존 R82 음식/고정 Quest actual2와 전체 포팅 목표 미완료는 유지한다. 아래 모든 기존 기록은 원래 바이트 그대로 보존한다.
+
 ## R83: 콜백·충돌 감사 및 NPC Sword 피해 재검증
 
 기존 코드·테스트·e2e/oracle·자산을 바꾸지 않은 읽기 전용 조사에서 원본 root 갱신 순서, 음식 producer의 native-width 인자, MOVE_TO/PICKUP dispatch와 72개 action metadata를 대조했다. 원본 음식 충돌은 몬스터 자동 줍기를 처리하지 않는다. 이 근거만으로 강제 pop/소비를 추가하지 않았다. 원본 전체 root·월드 물리를 새로 replay한 결과나 공개 음식 게이트 해결로 분류하지 않는다.

@@ -9462,6 +9462,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-npc-dialog-repeat":
 			sc.Wait(dt, "")
 			sc.CheckNPCDialogRepeat(l.Count, l.Name)
+		case "check-wounded-apprentice":
+			sc.Wait(dt, "")
+			sc.CheckWoundedApprentice(l.Name)
 		case "check-warrior-ability":
 			sc.Wait(dt, "")
 			sc.CheckWarriorAbility(server.Ability(l.Spell), l.Name, l.Text)

@@ -1,0 +1,150 @@
+# Starting spells are fixtures. Removal/move/swap/cancellation use real mouse
+# input; Screens are observations in an isolated private scenario directory.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+  - action: wait
+    dt: 600
+  - action: click
+    x: 448
+    y: 264
+  - action: wait
+    dt: 700
+  - action: click
+    x: 184
+    y: 104
+  - action: wait
+    dt: 400
+  - action: click
+    x: 768
+    y: 208
+    name: select wizard
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+  - action: wait
+    dt: 30
+  - action: click
+    x: 700
+    y: 380
+  - action: wait
+    dt: 120
+  - action: assert-quickbar-spell
+    spell: 0
+    slot: 0
+  - action: screen
+    name: quickbar empty before
+  - action: set-quickbar-spell
+    spell: 27
+    slot: 0
+  - action: wait
+    dt: 30
+  - action: screen
+    name: quickbar occupied before
+  - action: move
+    x: 438
+    y: 743
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: true}
+  - action: move
+    dt: 2
+    x: 700
+    y: 380
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: false}
+  - action: wait
+    dt: 30
+  - action: screen
+    name: quickbar after outside drop
+  - action: assert-quickbar-spell
+    spell: 0
+    slot: 0
+    name: outside drop clears shortcut
+  - action: set-quickbar-spell
+    spell: 27
+    slot: 0
+  - action: move
+    x: 438
+    y: 743
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: true}
+  - action: move
+    dt: 2
+    x: 360
+    y: 680
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: false}
+  - action: assert-quickbar-spell
+    dt: 30
+    spell: 27
+    slot: 0
+    name: reserved quickbar area cancels removal
+  - action: move
+    x: 438
+    y: 743
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: true}
+  - action: move
+    dt: 2
+    x: 475
+    y: 743
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: false}
+  - action: assert-quickbar-spell
+    dt: 30
+    spell: 0
+    slot: 0
+    name: moving shortcut clears source
+  - action: assert-quickbar-spell
+    spell: 27
+    slot: 1
+    name: moving shortcut fills destination
+  - action: set-quickbar-spell
+    spell: 43
+    slot: 0
+  - action: move
+    x: 438
+    y: 743
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: true}
+  - action: move
+    dt: 2
+    x: 475
+    y: 743
+  - action: raw
+    dt: 2
+    ev: {type: button, pressed: false}
+  - action: assert-quickbar-spell
+    dt: 30
+    spell: 27
+    slot: 0
+    name: swapping shortcuts preserves destination spell
+  - action: assert-quickbar-spell
+    spell: 43
+    slot: 1
+    name: swapping shortcuts preserves source spell
+  - action: quit
+    dt: 1

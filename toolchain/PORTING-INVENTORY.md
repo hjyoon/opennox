@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 스펠 단축 아이콘 창 밖 드롭의 원래 삭제 분기 (R106)
+
+clean/pushed 기준 `ca4ffbde4b1f997058290b0e1fbd1c35a4cf31c6`. 기존 production은 `GAME2.c:nox_xxx_quickBarWnd_45EF50` 한 본체만 수정한다. drop137이면 원래 inclusive reserved rectangle 밖·캡처 행 nil/current 조건에서 spell DWORD와 flag BYTE를0으로 저장한다. 영역 내/행 변경은 삭제 취소, non137 이동·교환은 반환값 유지, Trap 결과 저장/main-only repaint·capture cleanup도 원본대로다. 나머지24항목·padding/metadata·signature/imports/본체 밖 bytes 및 기존 테스트·입력·PNG·원본 자산/manifest·Save/config는 불변이다.
+
+unchanged 원본 `0045EF50`904B/486entries 및 `004281F0`48B/204entries의 bounded245조건(5행/5main슬롯/3Trap슬롯·좌표 경계·캡처/행·반환 flag·warrior/cast·25 swaps)을 명시적 window/drop/cast/repaint 서비스와 실행했다. 새 JSON=원본 stdout byte-identical SHA=`2ab9d21d12fa7c8ddf4ad3f87742b25b498b10f9e86554535c0d26c2baca1c73`. executable bytes 불변·memory fault0이며 전체 원본 GUI/world는 UNPROVEN이다. initial compile-only actual1을 남기고 새 C 선언 오류만 교정한 최초 compiled RED62pass/184fail/246IDs/actual1 뒤 test/C/JSON을 고정했다. 동일 frozen GREEN246pass/actual0. C-owned >4GiB 실제 handler/rect의201B×2 records·BYTE padding·window/metadata·callback order 검사다.
+
+새 frozen GUI v1은 기본 wizard 슬롯4를0으로 가정한 diagnostic actual2를 그대로 보존한다. 별개의 새 frozen v2는 starting spell27/43만 명시하며 삭제·cancel·move·swap은 실제 mouse input이다. production 수정 전 v2 RED actual2(got27 want0), 같은 입력 GREEN actual0. read-only private PNG ROI에서 삭제854/855pixels, 두 독립 빈 슬롯 pixels 동일이다. 기존 YAML/golden이나 실패 로그/입력을 덮거나 retune하지 않았다.
+
+normal/HD/실제cgocheck2 각각50,751pass/41skip/38packages, server49,987pass/7skip/35packages. 기존 전체 ID/outcome/multiplicity/skip/package terminal 불변+새246pass. strict count3/race+checkptr2 count3 각각1,305IDs/3,915pass·0fail/0skip·actual0, original2,968code/650data actual0. audit SHA=`4591da155246e67e5af77abb836542c272fe6f5e77f4954cdb1199a2843edf91`. functional/tested bytes 동일이며 기존 protected297rows+새YAML2rows/개인/stock 자산 보존, 삭제0. 커밋·즉시 push 후 clean ARM64 normal/HD/server와 normal/HD의 v2 및 unchanged Trap Set live-icon GUI는 독립 runtime 증거로 확인한다. 소환물 cheat-load·트롤 독구름 검토와 기존 Skeleton/Con02A/food/Quest 제한·full-port 목표는 미완료다.
+
 ## 플레이어 공격 바깥 원형 스캔의 원본 retained 경계 (R105)
 
 clean/pushed 기준 `9e9ad4e38d798f5260d80359cb19255a47368bc3`. 기존 production 변경은 `src/legacy/GAME4_3.c:nox_xxx_playerAttackScanCircle_538960` 한 본체다. 본체 밖 bytes/signature/imports 불변이고 기존 테스트·입력·golden·원본 manifest/설치/Save는 수정하지 않는다. 새 server math/legacy CGo bridge와 새 frozen test/fixture만 추가한다.

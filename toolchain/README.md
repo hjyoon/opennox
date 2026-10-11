@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R106: 단축 스펠을 창 밖으로 드롭할 때 원본 슬롯 삭제 복원
+
+- 기준은 clean/pushed `ca4ffbde4b1f997058290b0e1fbd1c35a4cf31c6`다. 기존 production은 `src/legacy/GAME2.c:nox_xxx_quickBarWnd_45EF50` **한 본체만** 변경한다. signature/imports/본체 밖 bytes, 기존 테스트·YAML·PNG·원본 manifest·게임 자산·개인 Save/config는 불변이다. 새 C-owned 회귀 테스트/원본 JSON 및 별개의 새 GUI 입력 두 개만 추가한다.
+- drop 반환 sentinel137의 누락된 원본 분기를 복원했다. 원래 inclusive reserved rectangle 밖이며 캡처 행이 nil 또는 현재 행일 때 spell DWORD와 self-cast BYTE만 0으로 지운다. reserved 영역·드래그 중 행 변경·다른 슬롯 이동/교환·Trap 복사 취소·capture cleanup 및 padding/나머지 항목은 보존한다. Trap의 non137 결과도 저장하되 원본처럼 main-bar repaint만 한다. 피해/HP·RNG·WAIT·golden은 조정하지 않는다.
+- unchanged PE32 원본 `0045EF50`(904B/486 entries, SHA=`efc70e90c3da32286f5406549a87beff49444ca45557cf569bc7cbf68ac402e2`) 및 `004281F0`(48B/204 entries, SHA=`5d0f3a029bde7d756ce503738f8a04cebe2cf2188d0a0c16e13a1a6f3a469bfa`)의 bounded245조건을 봉인했다. window/drop/cast/repaint는 명시적 서비스이며 원본 전체 GUI/world는 UNPROVEN이다. transcript와 새 JSON은 byte-identical, SHA=`2ab9d21d12fa7c8ddf4ad3f87742b25b498b10f9e86554535c0d26c2baca1c73`다.
+- 최초 private native probe actual1은 C fixture 선언 컴파일 오류로 native 실행 전이었다. 새 C fixture 선언만 교정한 뒤 최초 **compiled RED actual1: 62pass/184fail/246IDs**를 얻었고 이후 테스트/fixture를 고정했다. 동일 입력 GREEN246pass/0skip/actual0. 64-bit C-owned >4GiB record/window의 전체201B×2 payload와 metadata/padding·service order를 대조한다.
+- 새 GUI v1의 hosted wizard 기본 슬롯이4인 상태에서 빈 슬롯0을 가정한 actual2(`got4 want0`)는 diagnostic 실패로 보존하며 통과했다고 표시하지 않는다. 기대값/입력을 수정하지 않고 별개 explicit occupied fixture인 v2를 추가·동결했다. 같은 v2 mouse input의 genuine RED actual2(`got27 want0`)→GREEN actual0이며 삭제·reserved 취소·이동·교환을 검사한다. live Screen에서 Fireball 및 다른 스펠 제거가854/855pixels이고 두 빈 슬롯 ROI가 동일하다. PNG/golden/override를 쓰지 않는 read-only 비교다.
+- 일반·HD·실제cgocheck2 전체 각각 **50,751pass/41skip/38packages**, server49,987pass/7skip/35packages; strict 및 race/checkptr2는 각각 count3·1,305IDs/3,915pass·0skip/0fail·actual0이다. 기존 전체 ID/action/multiplicity/skip/package terminals를 유지했다. test audit SHA=`4591da155246e67e5af77abb836542c272fe6f5e77f4954cdb1199a2843edf91`. original code-verify2,968code/650data actual0 및 NPC Sword/분수 면역 회귀도 보존했다.
+- functional/tested checkpoint bytes 동일 SHA=`8aaf584802fa43e4822e0230504313da406b5b4699001869af3e33b0fbc8503d`. protected 기존297rows 불변+새 YAML2rows, 개인/stock 설치 불변, 삭제0이다. 증거 `/private/tmp/opennox-shortcut-drag-r106.SpGqvx`. 커밋 직후 push한 뒤 clean ARM643제품과 headless/mock normal/HD의 새 v2 및 기존 unchanged Trap Set live-icon 회귀를 별도 runtime ledger로 검증한다. 새 소환물 cheat-load/트롤 사망 독구름 검토, 기존 natural Skeleton timeout·Con02A frozen Screen actual2·passive-food·Quest stage3 및 전체 포팅 목표는 남는다.
+
 ## R105: 플레이어 공격의 바깥 원형 탐색 정밀도 보존
 
 - 기준은 clean/pushed `9e9ad4e38d798f5260d80359cb19255a47368bc3`다. 기존 `nox_xxx_playerAttackScanCircle_538960` **한 본체만** native Go bridge로 연결한다. signature/imports/본체 밖 및 기존 테스트·YAML·PNG·원본 자산은 변경하지 않는다. 새 bridge는 C stack center/userdata와 >4 GiB callback/candidate 포인터를 보존한다.

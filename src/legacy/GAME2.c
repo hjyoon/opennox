@@ -5617,10 +5617,21 @@ int nox_xxx_quickBarWnd_45EF50(nox_window* win, int event, unsigned int pos) {
 				nox_xxx_updateSpellIcons_45DDF0(data);
 			} else {
 				unsigned int dropped = nox_xxx_bookSpellDrop_45DCA0(*spell, row[8 * slot + 4], x, y, data);
-				if ((dropped >> 16) != 137 && data != getMemAt(0x5D4594, 1047940)) {
-					*spell = dropped >> 16;
+				unsigned int replacement = dropped >> 16;
+				if (replacement == 137) {
+					int2 point = {x, y};
+					if (!nox_xxx_pointInRect_4281F0(&point, (int4*)getMemAt(0x587000, 133656)) &&
+						(!dword_5d4594_1049696 || dword_5d4594_1049696 == row)) {
+						replacement = 0;
+						dropped = 0;
+					}
+				}
+				if (replacement != 137) {
+					*spell = replacement;
 					row[8 * slot + 4] = dropped;
-					nox_xxx_updateSpellIcons_45DDF0(data);
+					if (data != getMemAt(0x5D4594, 1047940)) {
+						nox_xxx_updateSpellIcons_45DDF0(data);
+					}
 				}
 			}
 		} else if (dword_5d4594_1047932 && target < 0) {

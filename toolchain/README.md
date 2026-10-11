@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R86: Quest 20단계 런타임 관찰과 NPC Sword 피해 재검증
+
+기존 clean revision `7ad4f63155e054142b4852a2023bad776bf53717`에서 변경하지 않은 보조 `host-quest-twenty-stages-map-oracle.yaml`을 일반·HD ARM64/headless/mock으로 각각 실행해 actual0을 확인했다. 각 실행은 실제 선택 맵과 로드된 맵의 일치, 20단계 플레이 가능 상태·generator 설정, 19회 일반 입력 이동, 19회 exit callback 전환, 5단계 Hecubah/Necromancer·20단계 Hecubah 생존을 관찰했다. exit 진입은 기존 시나리오의 명시적 위치 배치 fixture이며 전체 자연 Quest 전투 완료 주장이 아니다.
+
+별도 읽기 전용 audit는 총40개 detached 선택 전후 snapshot에서 signed DWORD 원본 선택 규칙·RNG table 결과·Logic 소비 및 history/frame/Other 불변을 확인했다. 일반/HD 입력·결과는 native 주소 외 동일하다. 진단 PNG10개는 5·6·20단계 플레이 화면과 직전 스테이지 score를 검사했고 기존 golden을 수정하지 않았다. 같은 입력에서 selector가 원본과 맞는다는 증거이지 전체 월드 RNG 소비의 Windows 동등성 인증은 아니다. 기존 고정 맵 검사는 재실행 actual2이며 3단계 `g_lotdd` 기대와 `g_crypts` 실제의 불일치를 그대로 보존한다. 보조 검증으로 이 실패를 대체하지 않는다.
+
+보고된 NPC1343/subclass69778 → Skeleton1314/subclass70210, Sword1174의 raw3/type7은 기존 기능 `15ae300d3bfa8af59932c01e236e55c2bbbe53fc` 이후 실제 C 경로에서 HP `2000→1997→1994→1991`이다. Go1.26.5·실제 cgocheck2/count3 재검증은19 identity/57 pass·fail0/skip0·actual0이다. 직접 C damage dispatcher의 제어 fixture이며 자연 NPC 전투 전체 검증과 구분한다. 이번에는 production·기존 테스트·YAML·기대값·RNG·HP·자산을 편집하지 않았고 모든 wrapper 종료 뒤 문서만 덧붙인다. 음식 실패와 전체 포팅 목표는 미완료다.
+
+독립 기록은 `/private/tmp/opennox-quest-stage-r86.c65oUK/audit-runtime-v1.log`, SHA-256 `032c6dc8baa759392829445b314853e2ffa0d018ea8f78a64079a008f49c512c`이다. source·보호 대상·개인 설치는 게임 전후 byte-identical이며 stock oracle tree도 기존 봉인값과 같다. 첫 strict 실행의 상대 경로 launch 오류는 child 미실행으로 기록하고 루트에서 실행한 v2 통과와 구분했다. 캐시·제품·실패 증거를 삭제하지 않았다. 아래 모든 기존 기록의 바이트를 그대로 유지한다.
+
 ## R85: Turn Undead 충돌의 공통 피해 경로 복원
 
 기능 `babe3832dd50af3dc434946cf8af26537a6b9c7e`은 기존 `DefaultDamageWorld4E0B30` production 본체 하나만 변경하고 새 테스트 두 파일을 추가했다. MISSILE이 아닌 stock LIGHT|CLIENT_PREDICT collider의 type6/DISPEL_UNDEAD와 무소유 terminal-owner identity를 공통 damage tail에 연결한다. 수정 전 실제 C 충돌은 예산을 소모하고도 HP를 줄이지 않았다. signed raw type6·원래 적대/무적/NoUpdate/Shield·피격/효과음/attribution 순서는 유지하며 PLAYER 전용 type6 tail 또는 전체 사망/삭제 lifecycle을 새로 이식했다고 주장하지 않는다.

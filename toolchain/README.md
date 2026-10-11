@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R88: 사망 파편의 원본 float 저장 복원과 NPC Sword 피해 재검증
+
+기능 `59131f3b4458fa54a3f6e1882ec276bb8a559f32`는 기존 `monsterActionDeadRuntime544D80` 본체의 `DeadFunc.RandomFloat` 연결 한 줄만 새 native helper로 교체한다. 원본 `00416030`의 binary32 scale·53-bit chop 연산과 사망 호출부 `FSTPS`의 round-toward-zero 저장을 유지하며 RNG 소비 횟수·전역 FPU 모드·기존 사망 callback/테스트/자산은 바꾸지 않는다. 실제 등록 `MECHGOLEMDEAD` 연결의 높이·수직 속도 오차를 compiled strict red로 재현했다.
+
+변경하지 않은 GAME.EXE의 `00416030`과 실제 `00549F20` 저장 명령을 hook 없이 실행한20,480개 결과가 새 helper와 일치한다. 결과 SHA-256은 `e5368033a096fdb9a47afa2d3171d9f9ae45c91499fddb8994e7ed4b95ca2425`다. C-owned 고주소 객체를 쓰는 실제 native 사망 연결은 두 시작 index에서8개 파편씩 만들고 Logic `0→32`, `4090→26`·Other17·frame1400·HP19·파편 수명을 유지한다. 배치는 명시된 외부 관찰 서비스이며 전체 원본 사망/월드 물리 replay 인증은 아니다.
+
+일반·HD·실제 cgocheck2 전체는 각각49,374 pass/41 skip·38 package, server는48,610 pass/7 skip·35 package·actual0이다. 기존 두 테스트 이름의 ASLR 주소만 정규화하여 모든 이전 ID/횟수/skip 불변을 확인했고 새32 identity만 추가됐다. strict 표적 및 cgocheck2+race+checkptr2는 각각 count3·152 identity/456 pass·fail0/skip0이다. 보고된 NPC1343/subclass69778·Sword1174의 raw3/type7→Skeleton1314/subclass70210은 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP에서 `2000→1997→1994→1991`이다. 이 피해 수정은 기존 R79이며 이번에 피해 production을 다시 편집하지 않았다.
+
+clean ARM64 일반/HD/서버3제품의 공식 build/metadata/help와 기존 거미 전투 headless/mock 일반·HD는 actual0이다. 두 게임 모두 frame764에 거미 HP0/12·플레이어 HP14/20을 확인하고 정상 종료했다. 별도 새 private 스켈레톤8입력 진단은 플레이어 사망 뒤 처치 대기2400tick timeout·actual2이며 사망 후 진단 화면에는 도달하지 못했다. 이 실패를 삭제하거나 HP/공격성/입력/timeout을 재조정해 통과시키지 않았고 NPC Sword C 검증 또는 사망 파편 연결 성공으로 대신 분류하지 않는다. 전용 서버의3맵 전환·4회 loop/tick 증가·실제 quit exit0도 확인했다.
+
+모든 wrapper의 실제 종료 뒤 source/protected/personal 및 stock의 전체 row 불변을 확인했다. compiled red 이전 두 새 fixture 오류와 sandbox emulator SIGILL4도 host 승인 실행 actual0과 구분해 보존한다. 통합 기록은 `/private/tmp/opennox-death-rng-r88.zTNeq7/audit-runtime.log`, SHA-256 `fa9b38bcc109a53f29fa3ffe21b319596c7a15e3e97708318ec6683142d673d8`다. 개인 Save/config·기존 tests/YAML/PNG/oracle·캐시·실패 증거는 삭제/변경하지 않았다. 최종 docs-only revision 제품은 별도 handoff로 검증한다. 추가 스켈레톤 진단·passive-food·고정 Quest 기대맵 및 전체 포팅 목표는 미완료이며, 아래 모든 기존 문서 바이트를 유지한다.
+
 ## R87: 공개 RoamFlag 스크립트 API와 clean ARM64 제품 검증
 
 ns/v4 단일 객체와 그룹의 `SetRoamFlag` panic을 실제 호출로 재현한 뒤 각각 기존 함수 본문 하나씩만 변경하여 native low-byte store/원본 no-stop 그룹 순회에 연결했다. 기능 커밋은 `5030576b7a6f315e91eeb7f765b6ada4c788720a`와 `f9d28d684b484785a35f995bd1bfda9023e06ed8`이며 기존 classic builtin·기존 테스트·기대값·자산은 변경하지 않았다. 새 C 소유 high-address 테스트는 중첩 그룹/ABI32 ID·nil/destroyed/nonmonster·wide/음수 flag에서 전체 객체/list/update byte 불변과 실제 SCRIPT03 결과 일치를 확인한다. 그룹 포함 strict/count3은97 identity/291 pass·fail0/skip0이다.

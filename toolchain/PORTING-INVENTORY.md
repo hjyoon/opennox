@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 공개 스크립트 상점 문구 API의 미구현 panic 제거 (R123)
+
+기준 clean/pushed `4d34521fbbbe76e4fdadc2e8d5f96d2b0f50e19a`다. 기존 production은 `src/script_ns_dialog.go:(noxScriptNS).SetShopkeeperText` 한 본체만 바꾼다. 공개 v3/v4 localized API의 unconditional `panic("implement me")`를 기존 객체 `SetShopText`에 연결하고 nil 객체는 반환한다. signature/imports/본체 밖 bytes, 기존 객체 setter·SCRIPT03 builtin195·다른 API·테스트·YAML/PNG/golden/oracle manifest·자산·Save/config는 불변이다. 현대 API의 연결 누락을 고친 것이며 원본 Windows 전체 게임을 실행한 증거는 아니다.
+
+새 `script_ns_shopkeeper_text_test.go`는 C-owned Object/MonsterUpdateData/guarded ShopkeeperInitData의 실제4GiB 초과 포인터를 사용한다.9개 class/subclass×5개 flags×8개 문구 ID의360조건에서 기존 객체 setter, 실제 SCRIPT03 parser/builtin, runtime method·공개v4·실제 v3 handle/cache resolver를 비교한다. InitData의32바이트 문구 필드만 바뀌고60개 상품/modifier token·배율·주변 guard·Object/update 전체 bytes는 보존된다. 빈/짧은/31·32·63바이트/embedded NUL/UTF8 ID를 기존 bounded byte-copy 계약으로 검사하며 suffix/terminator 의미를 바꾸지 않는다. 직접 객체 API의 flags 비검사와 v3/classic resolver의 Destroyed 제외는 구별한다. nil·empty native object·미해결 handle 및 정확히 한 번 verbatim ID를 전달하는 API probe도 포함해374 test IDs다. native 문구 setter/결과 callback은 공급하지 않았고 foreign API probe는 delegation만 검사한다; UI/localization loader/audio 서비스는 이 fixture에 없다.
+
+최초 compiled strict RED는0pass/374fail/1package-fail·actual1이며 같은 실행의 기존 객체/classic control 오류는0이다. 첫 RED 후 새 테스트 파일 SHA=`4eeca7df3b10c50c2ab4b1b0c59a1dc231f871f50d9fb01d9e9f36c3ca4eefab`를 동결했다. 같은 검사의 실제 Go1.26.5 `GOEXPERIMENT=cgocheck2`+race+checkptr2 count3 GREEN은374IDs/1122pass/0skip·actual0이다. 기대값·클래스/상태/문구·입력/WAIT/RNG/timeout/golden을 retune하지 않았다.
+
+전체 일반/HD/실제cgocheck2는 각각51,907pass/41skip/38packages, server는51,068pass/7skip/35packages·actual0이다. R121의 모든 기존 ID/action/횟수/skip/package terminal을 그대로 유지하고 새374pass만 더했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다. 한-본체·동결 파일·실제 실패/성공·전체 source/protected/personal rows를 연결한 test audit SHA=`d60920f9de3a1cd5fdb4030b03c273aebfb84e02f7dd08cdb92014d7aa98089f`·actual0이다.
+
+증거 `/private/tmp/opennox-shoptext-r123.NJvD7q`에서 커밋·즉시 push 후 clean ARM64 일반/HD/server3제품·clean revision metadata/help와 unchanged 상점 아이콘/거래·캠페인 대화 이동 잠금의 일반/HD headless/mock4실행을 별도 runtime ledger로 검증한다. GUI는 기존 lifecycle 회귀이며 새 localized API의 직접 GUI 호출이나 실제 청음/Repeat 재생 증거로 확대하지 않는다. Repeat 입력은 보존하지만 실제 native OpenAL을 요구하므로 mock GUI에서 실행하지 않는다. source6264files의 허용 변경은 기존 본체1개+새 테스트1개이며 protected304files·stock1556files·개인1562files/Save/config 불변·삭제0이다. 문서는 제목 직후 삽입분 밖의 과거 suffix bytes를 보존한다.
+
+`SetShopkeeperTextStr`/`TellStoryStr`의 nonlocalized API·그 밖의 남은 panic, Solo Quest SKU/WOL 공백·마법사 frozen Screen actual2·원본 Windows 전체 runtime/실제 장치·기존 Skeleton/Con02A/passive-food/Quest stage3 제한과 전체 ARM64 포팅 목표는 여전히 UNPROVEN/미완료다. 한 API의 복원을 전체 포팅 완료나 해당 보존 실패의 해결로 보고하지 않는다.
+
 ## Solo Quest 저장 단계·마법사 화면의 후속 감사 (R122)
 
 기준 clean/pushed `c368d56a9946f70e7f8da63f6fac9f03c10f4705`다. 아래 R121에서 예고한 clean ARM64 일반/HD/server3제품과 동일 frozen 신규·저장 일반/HD4 GUI의 후속 actual0·clean revision 검사도 완료되어 `postcommit-audit.log` SHA=`45fbd0e77ae48242eabf32a2723b903540dd829751deee7a072da7385387db79`에 보존되어 있다. 이번 추가 감사는 게임 동작 수정이 아니다. production·기존 테스트·YAML/PNG/golden/manifest는 불변이며 문서만 삽입한다. 원본 전체 GAME.EXE identity와 정적 명령 대조는 `pe_executed:false`이고 원본 Windows 게임 실행 인증이 아니다.

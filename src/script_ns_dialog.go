@@ -9,8 +9,10 @@ import (
 )
 
 func (s noxScriptNS) SetShopkeeperText(obj ns.Obj, text ns.StringID) {
-	//TODO implement me
-	panic("implement me")
+	if obj == nil {
+		return
+	}
+	obj.SetShopText(text)
 }
 
 func (s noxScriptNS) SetShopkeeperTextStr(obj ns.Obj, text string) {

@@ -724,6 +724,17 @@ func beginNoxWorldJoin(srv discover.Server) error {
 // The original controller stores most child windows in 32-bit integer globals,
 // which truncates their addresses on 64-bit hosts before the first frame.
 func noxGameShowGameSelNative() int {
+	// GAME.EXE 4379F0 clears both Quest mode words and, on request 2,
+	// backs out of the retained Nox World screen twice. The native owner
+	// has already closed that screen for character selection; return via
+	// its cleanup before recreating a server browser or starting discovery.
+	if memmap.Uint32(0x5D4594, 1556104) == 2 {
+		noxServer.nox_xxx_setQuest_4D6F60(0)
+		legacy.Sub_4D6F80(0)
+		closeNoxWorldToMainMenu()
+		return 1
+	}
+
 	if winNoxWorld != nil && !winNoxWorld.GetFlags().Has(gui.StatusDestroyed) {
 		winNoxWorld.ShowModal()
 		gui.SetAnimGlobalState(gui.AnimInDone)

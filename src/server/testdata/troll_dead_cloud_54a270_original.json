@@ -1,0 +1,738 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "callback_sha256": "c21a25775cdac2ec64520866b21071063b02b89aaa5818ebfb511a685cc3f79e",
+  "float2int_sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+  "caller_cw": 639,
+  "rows": [
+    {
+      "name": "stock-style-tie-37.5",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "tie-75",
+      "lifetime_bits": 1075838976,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 75,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "zero",
+      "lifetime_bits": 0,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 0,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "half-to-even-zero",
+      "lifetime_bits": 1056964608,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 0,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "half-to-even-two",
+      "lifetime_bits": 1069547520,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 2,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "half-to-even-two-down",
+      "lifetime_bits": 1075838976,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 2,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "negative-half-zero",
+      "lifetime_bits": 3204448256,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 0,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "negative-half-two",
+      "lifetime_bits": 3217031168,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -2,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "tie-below",
+      "lifetime_bits": 1067450367,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 37,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "tie-above",
+      "lifetime_bits": 1067450369,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "zero-fps",
+      "lifetime_bits": 1067450368,
+      "fps": 0,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 0,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 0,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "negative-fps",
+      "lifetime_bits": 1067450368,
+      "fps": 4294967295,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -1,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 4294967295,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "signed-high-fps",
+      "lifetime_bits": 1056964608,
+      "fps": 2147483648,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -1073741824,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 2147483648,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "near-positive-int-limit",
+      "lifetime_bits": 1325400063,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 2147483520,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "positive-int-overflow",
+      "lifetime_bits": 1325400064,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -2147483648,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "negative-int-limit",
+      "lifetime_bits": 3472883712,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -2147483648,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "negative-int-overflow",
+      "lifetime_bits": 3472883713,
+      "fps": 1,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -2147483648,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "positive-infinity",
+      "lifetime_bits": 2139095040,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -2147483648,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "negative-infinity",
+      "lifetime_bits": 4286578688,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -2147483648,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "quiet-nan",
+      "lifetime_bits": 2143289345,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": -2147483648,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "subnormal",
+      "lifetime_bits": 1,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 0,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "create-replace",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "create-replace",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "replacement",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "create-nil",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "create-nil",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "nil",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "audio-replace",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "audio-replace",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "replacement",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "audio-nil",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "audio-nil",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "nil",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "balance-replace",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "balance-replace",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "replacement",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "balance-nil",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "balance-nil",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "nil",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "position-read-before-create-callback",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "create-position",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 38,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "fps-read-after-balance-callback",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "balance-fps",
+      "allocation_failure": false,
+      "returned": 1,
+      "old_duration": 39,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 31,
+      "placed_position": [
+        1088421888,
+        1090519040
+      ],
+      "events": [
+        "new:SmallToxicCloud",
+        "create",
+        "audio:644",
+        "balance:SmallToxicCloudLifetime",
+        "fps"
+      ],
+      "guarded_bytes_unchanged": true
+    },
+    {
+      "name": "ordinary-allocation-failure",
+      "lifetime_bits": 1067450368,
+      "fps": 30,
+      "mutation": "",
+      "allocation_failure": true,
+      "returned": 1,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "new:SmallToxicCloud"
+      ],
+      "guarded_bytes_unchanged": true
+    }
+  ],
+  "unhooked_entries": {
+    "0x54a270": 30,
+    "0x419a70": 29
+  },
+  "declared_services": {
+    "lookup": 30,
+    "new": 30,
+    "create": 29,
+    "audio": 29,
+    "balance": 29
+  },
+  "memory_faults": [],
+  "executable_bytes_unchanged": true,
+  "scope": "bounded unchanged PE32 callback and float2int, declared constructor/CreateAt/audio/binary32-balance services; native constructor aliases name/type cache boundary; no original fullworld/CW capture"
+}

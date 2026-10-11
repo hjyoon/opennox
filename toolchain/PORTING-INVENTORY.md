@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 트롤 사후 독구름 lifetime의 cached 참조와 실제 DOT (R108)
+
+기준 clean/pushed `e3e6f3dce72aac481e72b1c9c38de886460be40c`다. 기존 `src/server/monster_dead_callback_549d80.go:monsterDeadTroll54A270` 한 본체에서 cloud update-data를 CreateObjectAt/Audio/Balance 전에 보관하고 그 cached 참조에 Duration을 저장하는 원본 순서를 복원한다. callback 후 재조회하던 replace/nil 경계만 수정한다. signature/imports/본체 밖·nil/할당 실패·소유자/위치·float 수명 계산 및 기존 테스트/입력/자산/Save/config는 불변이다.
+
+unchanged PE3254A270(154B/30entries)·419A70(17B/29entries)의 bounded30조건을 declared constructor/CreateAt/audio/binary32-balance 서비스와 supplied CW027f로 실행했다. executable bytes/guard 불변·memory fault0; stdout SHA=`64f78433d1b1e8b82e4f45bcc1ca8fa46d4fd87542cc75d7f961490269f3752f`. native name/type-cache alias·실제 caller CW·원본 전체 world/GUI는 UNPROVEN이다. 원본 transcript와 새 pretty JSON은 의미상 동일이며 byte-identical로 확대하지 않는다. private JIT signal4/API actual1은 retained diagnostic이다.
+
+최초 compiled RED actual1은42pass/7fail/49IDs이고 같은 frozen GREEN은49pass·actual0이다. C-owned >4GiB 전체 객체 bytes·cached store·6개 callback pointer replace/nil·서비스 순서·수명/guards를 검사한다. 기존 GUI v1의 배치 실패 actual2와 v2의 DOT 이전 partial HUD 가정 actual2는 그대로 보존한다. 별개 v3는 actual DOT/client 뒤 pixels를 검사할 뿐 assertion/HP/RNG/WAIT/입력/3600tick timeout을 조정하지 않는다. initial v3 missing-import compile-only actual1은 수정 전 source를 보존하고 실행 전 import만 교정했다. 새 각 버전 source/입력은 별도로 동결했으며 실패 fixture/YAML/golden을 덮지 않는다.
+
+frozen 일반·HD headless/mock actual0은 실제 Troll80→0/DYING 뒤 자연 생성 SmallToxicCloud(owner/position·450tick), player150→149/Wolf40→39/NPC150→149의 source-less POISON DOT와 client HP/drawable, 녹색 cloud/HUD1860pixels를 확인한다. contact dose1/즉시 피해0은 원래 Small cloud 동작이며 Big cloud와 섞지 않는다. immune Troll80 유지, age452/configured450 world/client 소멸·정상 해독 cleanup·새 private PNG를 검사했다. 물리 오디오 장치 인증은 아니다.
+
+일반·HD·실제cgocheck2 전체 각각50,825pass/41skip/38packages, server50,061pass/7skip/35packages·actual0이다. 모든 R107 ID/action/횟수/skip/package terminal 불변+새49pass다. strict 및 cgocheck2+race+checkptr2 count3 각각3,344IDs/10,032pass·0skip/0fail/3packages·actual0; NPC Sword HP2000→1997→1994→1991도 보존한다. test audit SHA=`3e6351eb7492dbe4ba53cf836547425037f6b388de19f07243fb615176a48b8c`, functional-ready/tested checkpoint bytes SHA=`f809971bc79a94f7223e96baab93c3374e371020b5ef293e08c78084fe127ea2`로 동일하다. original2,968code/650data verifier actual0 및 protected 기존300+새3YAML rows/개인/stock 설치는 불변·삭제0이다.
+
+증거 `/private/tmp/opennox-troll-cloud-r108.mxcNZ3`에서 one-body/outside-bytes·frozen files·실제 실패/성공 terminal을 연결 감사한다. 아래 과거 문서 suffix bytes를 보존하고 커밋 직후 push 후 clean ARM64 일반/HD/서버와 같은 frozen cloud GUI2개를 별도 runtime ledger로 검사한다. R107 소환물 cheat-load와 이 트롤 독구름 검토는 완료했지만 natural Skeleton timeout·Con02A frozen Screen actual2·passive-food·Quest stage3 및 전체 포팅 목표는 남는다.
+
 ## 캠페인 콘솔 load와 동반 소환물 재배치 (R107)
 
 기준 clean/pushed `03708475c3eda1774697812108276fc510347799`다. 기존 `src/parsecmd_maps.go:noxLoadMap` 한 본체에서 모든 모드/파일 검증 후 busy flag를 설정하고, 오프라인 Coop에만 정상 출구의 companion relocation flag를 설정한 뒤 기존 map queue/pause/notification을 실행한다. 원본 콘솔도 이 flag를 누락하므로 요청된 캠페인 치트 편의 개선이며 원본 콘솔 동등성 또는 전체 원본 GUI/world 인증은 아니다. 성공/실패·Force·generated map·online/Quest/chat/team·기존 pending 경계를24조건으로 검사한다. 기존 signature/imports/본체 밖·테스트/YAML/PNG/oracle manifest/game assets·개인 Save/config는 불변이다.

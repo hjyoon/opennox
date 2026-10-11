@@ -228,12 +228,13 @@ func monsterDeadTroll54A270(unit *Object, runtime MonsterDeadCallbackRuntime549D
 	if cloud == nil {
 		return true
 	}
+	data := (*ToxicCloudUpdateData)(cloud.UpdateData)
 	runtime.CreateObjectAt(cloud, unit, unit.PosVec)
 	runtime.Audio(sound.SoundTrollFlatus, unit)
 	lifetime := float32(runtime.BalanceFloat("SmallToxicCloudLifetime"))
 	duration := poisonGasTrapRound4EB910(poisonGasTrapMultiply4EB910(lifetime, runtime.TickRate()))
-	if cloud.UpdateData != nil {
-		(*ToxicCloudUpdateData)(cloud.UpdateData).Duration = duration
+	if data != nil {
+		data.Duration = duration
 	}
 	return true
 }

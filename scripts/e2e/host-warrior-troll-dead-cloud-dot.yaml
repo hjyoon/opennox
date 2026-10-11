@@ -1,0 +1,124 @@
+# Separate DOT/client-replay pixel observer; original and placement-only
+# diagnostics remain frozen. No HP, poison, lifetime, RNG or timing retuning.
+# Separate explicit stock PlayerStart placement; the first frozen scene and
+# its failed placement diagnostic remain unchanged. All cloud assertions match.
+# Natural stock Troll death, actual SmallToxicCloud owner/lifetime, dose-one
+# poison and periodic HP loss on player/Wolf/NPC, plus stock immune Troll.
+# Console command is available only under NOX_E2E; input remains F1/text/Enter.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 184
+    y: 104
+    name: host regular game
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait
+    dt: 400
+    name: wait for host startup
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss chat area help
+  - action: wait
+    dt: 30
+    name: settle after help
+  - action: click
+    x: 700
+    y: 380
+    name: apply server options
+  - action: wait
+    dt: 120
+    name: settle after server options
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-troll-cloud-place}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-troll-cloud-dot start}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 3600
+    name: natural death cloud poison DOT and expiry without idle observer
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: e2e-troll-cloud-dot finish}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: wait
+    dt: 12
+    name: ordinary cure and deletion replay
+  - action: quit
+    dt: 1

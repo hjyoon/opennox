@@ -657,8 +657,7 @@ func (obj nsObj) AggressionLevel(level float32) {
 }
 
 func (obj nsObj) SetRoamFlag(flags int) {
-	//TODO implement me
-	panic("implement me")
+	obj.Object.SObj().SetRoamFlag515C80(uint8(flags))
 }
 
 func (obj nsObj) RetreatLevel(percent float32) {

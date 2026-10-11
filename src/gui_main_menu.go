@@ -577,7 +577,7 @@ func nox_xxx_windowMainMenuProc_4A1DC0(a1 *gui.Window, ev gui.WindowEvent) gui.W
 				nox_client_gui_flag_815132 = 0
 				return nil
 			}
-			winMainMenuAnimTop.Func13Ptr = legacy.Get_nox_game_showGameSel_4379F0()
+			winMainMenuAnimTop.Func13Ptr = legacy.GetNoxGameShowConnection4AA270()
 			legacy.Sub_43AF50()
 			clientPlaySoundSpecial(sound.SoundShellClick, 100)
 		default:

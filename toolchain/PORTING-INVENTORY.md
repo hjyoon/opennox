@@ -1,5 +1,29 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Solo Quest의 원본 Connection 단계 복원 및 재검증 (R121)
+
+기준 clean/pushed `3c9db68970f14baf10a993c027f78c723981f532`다. R120에서 확인한 Solo Quest의 next=`4379F0` shortcut을 원본 next=`4AA270`의 Connection 단계로 복원한다. 기존 production 변경은 `src/gui_main_menu.go:nox_xxx_windowMainMenuProc_4A1DC0`의 ID131 callback 한 줄뿐이다. ID112 Multiplayer, signature/imports, 기존 본체 밖 bytes와 다른 기존 production/테스트는 불변이다. Go-owned 연결 owner와 세 native C trampoline을 새 두 production 파일에 둔다. 원본 PE를 실행한 것이 아니며 identity-checked 정적 분석은 `pe_executed:false`다.
+
+원본 GAME.EXE SHA=`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a` 및 stock ArnaMain.wnd SHA=`9a3c876eaced288de9635361a06dbc177482adb8316addd0dbae5425e9c1dd5c`는 그대로다. 4AA270/4AA450/4AA490/4AA4D0, mode setter 43AF50와 hover tail을 instruction/string/IAT로 대조했다. 원본 primary mode(59C56C)와 WOL predicate(85B7B0, mode==1)는 다른 값이다. 이미 extracted 목록에 있는 primary word는 blob에 다시 접근하지 않고 새 Go uint32로 소유하며 legacy WOL boolean과 별도로 관리한다.
+
+| 클릭 뒤 단계 | 복원·검사한 내용 | 판정 범위 |
+| --- | --- | --- |
+| Solo Quest ID131 | 기존 announce/admin/god/Online/NotQuest/Coop·request1/stage0·minimap/gamedata 준비 유지 후 Connection callback | 본체 한 줄 외 byte-identical; 실제 gamedata 실패 branch는 미검증 |
+| Connection 생성 | dialog close → state400 → Options enable → mode2 → ArnaMain root400/top410/bottom420; shared key handler·Back 문자열·modal; 원본 in/out vector와 C 완료 callback | 실제 native-width Window/Anim/C callback 단위 검사 및 stock GUI 실행 |
+| 자동 LAN421 | GameFlag26가 없고 request1이면 slide-in 완료 전에 클릭; mode2→0·GameFlag25 clear·slide-out/click sound; 두 animation과 root 해제 후 Nox World callback 한 번 | 원본처럼 연결 창이 반드시 완전히 보인다고 주장하지 않음; 실제 청음은 미검증 |
+| 조건부 WOL/Back | GameFlag26가 request1/2보다 먼저411 선택; request2는 shared Back152 dispatch; ordinary click은 in-done/flag26/Solo guard | fixture 분기 검증; WOL availability==0 Error/WOLAPIINIT_Failed 분기만 명시적으로 유지, 정상 API/version/login·이전 WOL cleanup은 미구현/UNPROVEN |
+| 새·저장 캐릭터 진입 | Connection → ServerList → 자동 Host → ClassSelect 또는 CharSelect; 신규 Warrior는 ColorSelect까지; public discovery0 | unchanged 신규/자연 생성 저장 입력, 일반·HD 모두 actual0 |
+| 플레이·종료·취소 | 신규 Quest stage1/2, 저장 Load stage1의 원본 reference selector/RNG/history·stock generator cap·HP450/450·실제 이동; Class Esc/Back·Color Esc→Class→Main·저장 Esc/Back/reentry | 최종 코드12 headless/mock GUI actual0; original Windows 전체 GUI/모든 클래스·모든 save 인증은 아님 |
+| 일반 Multiplayer | 기존 직접 native browser/discovery 유지, real Esc→Main→reentry→Esc | 일반·HD 회귀 actual0; Solo 복원으로 WOL 지원을 추가했다고 하지 않음 |
+
+새 테스트는 최초 실패한 v1(18pass/10fail/28IDs·actual1)을 보존했다. dead window의 GetFlags()가0을 반환하는 관찰 오류 때문에 raw Destroyed flag 읽기 두 곳만 교정한 별도 v2 RED는26pass/2fail·actual1이며 Solo callback parent/subtest만 남았다. v2 strict count3은84pass였으나 전체 normal suite는 기존 TestCodeStatic에서 forbidden extracted-word blob 접근 네 곳을 잡아 actual1이었다. 기대값/입력/WAIT/RNG/golden을 바꾸지 않고 production의 mode storage와 테스트의 세 읽기를 Go-owned primary mode로 교정한 별도 v3를 사용한다. v1/v2는 private archive에 원래 bytes로 보존했고 v3의 첫 compiled RED도26pass/2fail·actual1, 같은 strict cgocheck2+race+checkptr2 count3 GREEN은84pass/0skip/28IDs·actual0이다. 기존 TestCodeStatic도 변경 없이 통과한다.
+
+최종 일반/HD/실제cgocheck2 전체는 각각51,533pass/41skip/38packages, server는50,694pass/7skip/35packages·actual0이다. R119의 모든 기존 test ID/action/횟수/package terminal을 보존하고 새28pass만 더했다. 메뉴/save/listbox/Quest selector의 strict race/checkptr2 count3은165IDs/495pass/0skip/3packages·actual0이며 original oracle-test는 stock1556files/570653750bytes·code2968/data650·cnxz strict actual0이다. 최종 코드12 GUI는 실제 mouse/keys 및 frozen 입력을 사용하고 headless/mock·AUDIO_HANDLES=false·COMBAT_TRACE=false·inner actual0·normal cleanup·관련 native fault0이다. 각 Save/maps/config runtime을 격리·보존했고 개인 Save를 가져오지 않았다. 앞선 v2 코드의12 GUI GREEN도 별도 로그로 보존하되 최종 코드 증거와 혼동하지 않는다.
+
+증거는 `/private/tmp/opennox-connection-r121.MDt2Sb`의 실제 terminal ledger, frozen v1/v2/v3·입력/helper, disassembly, build info, diagnostic PNG와 whole checkpoint다. runtime audit SHA=`e70384a06543f067b8cddac2e57e35b46d97f5f8540a7b7b3000b1ba0153b1d3`·actual0이다. 최종 functional-ready/runtime source6263files는 byte-identical이고 protected304files/stock1556files/개인1562files·Save/config는 불변이다. 커밋 전12제품은 Go1.26.5/darwin/arm64/base revision/modified=true로 직접 읽었다. clean-only verifier의 커밋 전 거부(actual1)는 보존하며 GREEN으로 세지 않는다. 커밋 직후 push하고 새 clean ARM64 일반/HD/server3제품 및 동일 신규·저장 일반/HD4 GUI 제품의 full revision metadata/runtime을 별도로 검증한다. 과거 문서 suffix, 기존 YAML/PNG/golden/manifest를 변경하지 않으며 캐시·사용자 자료 삭제0이다.
+
+원본 Host Quest의 registry/SKU expansion-absent guard는 여전히 누락되어 있다. WOL 정상 서비스·정리, 저장 목록 Stage2와 runtime Stage1의 복원 의미, 다른 클래스/손상 저장/Options·create/detail/error 왕복, 원본 retained controller와 취소 중간 단계, 기존 campaign manual Screen 차이, 원본 Windows 전체 GUI/pixel/실제 음향 동일성은 UNPROVEN이다. 따라서 주요 경로 GREEN과 Connection 복원을 전체 원본 동일성 또는 전체 포팅 완료로 확대하지 않는다.
+
 ## Solo Quest 클릭 이후 원본 대비 분기 감사 (R120)
 
 기준 clean/pushed `55234963985d82ab8eba193a7504a9b8f23a11d3`에서 재검사했다. 이번은 동작 수정이 아닌 감사 기록이며 production/테스트/공개 YAML/PNG/golden/원본 manifest를 변경하지 않는다. 아래 R119에서 예고했던 clean ARM64 일반/HD/server3제품 및 frozen 일반 browser Esc/reentry2제품의 clean revision metadata와 두 runtime actual0도 완료되어 별도 `clean-audit.log` SHA=`4e23fba88f5e2aec3a39177dedb7112dd11ba1c0c4239bf168b8a232d49f2612`에 보존되어 있다. R120의 정상 진입 GREEN을 전체 원본 동일성으로 확대하지 않는다.

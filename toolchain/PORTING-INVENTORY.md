@@ -1,5 +1,23 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Con02A 현재 무기 아이콘 차이의 원인 확정과 R94 위치 정정 (R95)
+
+기준은 clean/pushed R94 `6152217b92bcfc5acb305cc7c4afe2decdd4489a`다. 아래 R94의 “minimap169”는 위치를 잘못 식별한 설명이며, **169픽셀은 좌측 하단 현재 무기 HUD의 지팡이 아이콘**이다. 원래 minimap472600은 1024×768에서 y299..469에 그려지므로 y703..739의 이 성분을 미니맵으로 분류할 수 없다. 이전 문서·원시 로그·PNG를 변경하지 않고 이번 추가 절로 정정한다. 생산 코드·기존 테스트·YAML/PNG·oracle/game assets 변경은0이다.
+
+원인 분리를 위해 `0df9319a82bdc7d68782f3561eedf8a917116d69`와 바로 다음 `1992e03068e30320304b8245122470b71f6f231d`를 새 clean local clone 두 개에서 직렬 headless/mock 실행했다. 두 source의 유일한 차이는 기존 C `sub_465D50_draw` 본체에서 draw callback의 52바이트 packed viewport 인수를104바이트 native view로 교체한 한 줄이다. 동일 frozen YAML SHA-256 `9f976d58646c29f61475f3ec0f739173869610eeb7c56300242ee0e66bb2234d`와 golden `35109f05b4680304251613095a5819510fb59f086154dbb08a49f5535e856fb2`를 새 private 입력 디렉터리에 복사했고 재실행·기대값 수정으로 이전 이미지를 덮거나 삭제하지 않았다.
+
+직전 시나리오는 **actual0·frozen Screen PASS**, 직후는 **actual2·frozen Screen FAIL**다. 직후 got은 기준과 정확히169픽셀/단일 성분 `[31,703)..[66,739)`만 다르다. 원본137바이트 `00465D50`의 봉인된 계약은 parent 위치+51/+81에서 같은 shared viewport로 장착 무기를 그리는 것이다. 기존 실제 C raster/native viewport 검증과 이번 한 줄 인과 비교를 대조하면, 누락됐던 정상 아이콘의 복구로 판별할 수 있다. 아이콘을 다시 지우거나 golden을 갱신해 Screen을 통과시키지 않았다. 직후 got과 R94 material got의 차이는 player 영역417픽셀/3성분 `[500,343)..[523,389)`뿐이다. 현재 R93 got의 추가78,208픽셀에 대한 NPC 위치·조명 원인은 여전히 **UNPROVEN**이다.
+
+두 실행 모두 ready693·시작695·도착761·dialog762·Done795·소환1039·Clyde Sword prefix1077·release1257/elapsed564와 player HP20/20·drawables1695가 같다. alive/client-visible Spider12/12와 NPC 제거/player/dialog/cinematic release는 확인했지만 dormant 대상 HP0/0의 검 prefix를 양수 피해 증거로 세지 않는다. 직후는 Screen panic에서 끝나 quit 미도달이며 원본 전체 world 화면/자연 캠페인 인증은 아니다.
+
+새 clone은 `.git` 디렉터리를 사용하는 정규 저장소다. 두 과거 ARM64 제품 모두 공식 `noxbuild -verify` **actual0·Go1.26.5·darwin/arm64·full revision·vcs.modified=false**와 Mach-O ARM64를 확인했다. R94 worktree 제품의 기존 metadata actual1은 그대로 보존하며 SDK/verifier/provenance를 바꾸지 않았다. 직전 제품 SHA-256은 `cc97b9c1b2fc2ce9ceea03c05bc10d1df86d72dc988ef50c5be3fb158e01c68b`, 직후는 `c6db0edce8c80cddc75a229cd5b5cb27ad532369fe2eac94f2bbca6ad772bd4f`다.
+
+보고된 NPC1343/class2097154/subclass69778/flags16777732·Sword1174/class85458944/subclass256/flags17301776→Skeleton1314/class2097154/subclass70210/flags17302020의 raw3/type7(EXPLOSION)은 기존 R79 `15ae300d3bfa8af59932c01e236e55c2bbbe53fc` 복원 상태다. unchanged native viewport6 identity와 실제 C 피해19 identity의 합계25개를 일반·HD·실제cgocheck2·cgocheck2+race+checkptr2 각각 count3·75 raw pass·fail0/skip0·1package·actual0으로 재확인했다. 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP는 각 lane3회 **`2000→1997→1994→1991`**이며 type7을 변경하지 않았다. HP2000·team2/1은 기존 통제 C fixture이고 전체 suite 재실행·자연 Skeleton 전투 완료로 확대하지 않는다.
+
+근거는 `/private/tmp/opennox-con02-minimap-r95.bWuUiR`다. 직전/직후 stderr SHA-256은 `c486be5a9a501f71dabf0d2ba9179ea1bd30524f5d8c33162a0b23019bf71378`·`bc4adfab436b767676d11fc45c2fb8ce5ced09ea4ad9825d8027a47f749fd4a6`, 직후 got/diff는 `f3cb901481d65fa73670328bd9152f6042ec36913033239430f719b0b5e3926b`·`a41cad0999b8109e52a2f839b0817efd8525f1257169eb8a388d9b54edaf71c2`다. 읽기 전용 pixel 진단 stdout은 `6082787a996ba581955dc3d455fe3b38700c8a2d2bb6daff93217f8b961b2268`·`39c0136e70c334eeb764626ae9065149f065c70fd1d8cb10cf10319f95dbbbc4`이며 actual0을 frozen Screen PASS로 바꾸지 않는다. 네 test stdout은 일반 `5f295f2636922d0b56e807fe3d7a7d1fd8b12d8f4322de00a77e9209d2421953`, HD `dd95daaa241675fcfc9b534f76330d82aca6fcb4384cd7accdecd44125921354`, strict `bea4bc85a58e3bc90d3afa8145ebe06113e5743d53c88a1c8131da36fb5894a1`, strict/race `36e23d6c7bac1e4be9d1fd875cdf451b5a841dae571b92727160ce64f3e32c38`다.
+
+unchanged stock oracle의2,968 code/650 data range 검증과 source/protected/personal/stock 전체 row 불변을 확인했다. before/after checkpoint JSON SHA-256은 개인 `6581bc00ba0943973200ee209dd8be521a4f6975cdbef4b1a343dcb165c1276c`, stock `ca6387c8b6121efb4fc673e395b994b06d1ff93bccaa973275f8bea1686e44c0`다. 통합 감사 `audit-runtime.log`는 **actual0** SHA-256 `67a9f75ca1462d0e11f8c3b7827cb6dc1ff0e82c472d9b0a68961dbfe7808bb2`다. R94 metadata actual1·R93 Con02A actual2·R89 Skeleton timeout 및 모든 기존 증거·제품·캐시·개인 Save/config를 보존했다. 현재 NPC 위치/조명·passive-food·고정 Quest stage3·전체 포팅 목표는 미완료이며 이번 docs-only 커밋 후 최신 clean3제품은 별도 handoff로 검증한다. 아래 과거 suffix bytes를 그대로 유지한다.
+
 ## Con02A 역사적 화면 진단과 worktree provenance 한계 (R94)
 
 기준은 clean/pushed R93 `47348fcbcbd0f1b0adae3e18f342d5e686d42abd`다. production 본체·기존 테스트·YAML/PNG·oracle/game assets는 변경하지 않았다. frozen Con02A 입력 SHA-256 `9f976d58646c29f61475f3ec0f739173869610eeb7c56300242ee0e66bb2234d`와 기준 PNG `35109f05b4680304251613095a5819510fb59f086154dbb08a49f5535e856fb2`를 byte-identical private 디렉터리3개에 분리했다. 과거 source worktree도 clean 상태로 유지하여 headless/mock·audio-handles=false·combat-trace=false로 직렬 실행했다. 같은 시나리오 디렉터리를 재실행하여 이전 got/diff를 지우지 않았다.

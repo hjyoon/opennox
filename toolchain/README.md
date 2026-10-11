@@ -1,5 +1,13 @@
 # Go 도구체인 정책
 
+## R95: Con02A 무기 HUD 인과 비교와 미니맵 설명 정정
+
+- 기준은 clean/pushed R94 `6152217b92bcfc5acb305cc7c4afe2decdd4489a`다. 아래 R94의 “minimap169”는 잘못된 위치 식별이다. **169픽셀은 좌측 하단 현재 무기 HUD의 지팡이 아이콘**이고, 실제 minimap472600은 이 해상도에서 y299..469에 그려진다. 기존 문서·이미지·raw 로그는 보존하고 이 추가 절로 정정한다.
+- 새 clean clone에서 `0df9319a8`와 직후 `1992e0306`를 같은 frozen YAML/golden으로 headless/mock 실행했다. 두 source의 유일한 차이는 기존 current-weapon C drawer의 packed52바이트 viewport 인수를 native104바이트 view로 바꾸는 한 줄이다. 직전 actual0/Screen PASS, 직후 actual2/Screen FAIL이며 차이는 정확히169픽셀/1성분 `[31,703)..[66,739)`뿐이다. 원본의 parent+51/+81 계약 및 기존 실제 C raster와 일치하는 아이콘 복구이므로 되돌리거나 golden을 바꾸지 않았다. 직후→R94 material의417픽셀은 player 영역만이며, 현재 R93의 추가 NPC 위치·조명 차이는 UNPROVEN이다.
+- 두 실행의 소환1039·Clyde Sword prefix1077·release1257과 player HP20/20·drawables1695는 같다. dormant 대상 HP0/0이므로 실제 양수 피해 증거는 아니고 직후 quit도 미도달이다. 두 정규 `.git` 디렉터리 clone 제품은 공식 metadata actual0·Go1.26.5/ARM64·full revision·clean이며, R94 worktree metadata actual1과 원시 실패는 그대로 보존했다. SDK/verifier/provenance 변경은 없다.
+- 보고된 NPC Sword raw3/type7→Skeleton은 기존 R79 `15ae300d3` 복원 상태를 다시 확인했다. unchanged viewport·C 피해 표적25 identity는 일반·HD·실제cgocheck2·strict+race/checkptr2 각각 count3/75pass·fail0/skip0·actual0이다. 정확한 class/subclass/flags를 유지한 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP는 **`2000→1997→1994→1991`**이며 production·기존 테스트/입력·자산 변경은0이다. 통제 fixture와 전체 suite/자연 전투는 구분한다.
+- unchanged oracle2,968 code/650 data range 및 source/protected/personal/stock 전체 rows 불변을 확인했다. 감사 `/private/tmp/opennox-con02-minimap-r95.bWuUiR/audit-runtime.log` actual0 SHA-256 `67a9f75ca1462d0e11f8c3b7827cb6dc1ff0e82c472d9b0a68961dbfe7808bb2`는 Screen actual2를 PASS로 바꾸지 않는다. 상세 입력/로그/PNG/제품 해시는 인벤토리 R95 절에 기록했다. 기존 증거·캐시·제품·개인 Save/config와 아래 suffix bytes를 보존한다. 현재 Con02A 위치/조명·Skeleton timeout·passive-food·Quest stage3·전체 목표는 미완료이며 docs-only 최신3제품은 별도 handoff다.
+
 ## R94: Con02A 과거 화면 비교와 worktree provenance 한계
 
 - 기준은 clean/pushed R93 `47348fcbcbd0f1b0adae3e18f342d5e686d42abd`다. production/test/fixture를 바꾸지 않고 같은 frozen Con02A 입력과 golden으로 과거3개 clean source를 headless/mock 실행했다. c76594677·ed39bef3a는 Screen/cleanup actual0, 3c7abc0fa는 Screen actual2다. 세 실행의 소환1039·Clyde Sword prefix1077·release1257은 같으나 대상 HP0/0이어서 양수 피해 증거는 아니다.

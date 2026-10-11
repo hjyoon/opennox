@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R89: 읽기 전용 전투 프레임 관찰과 NPC Sword 피해 유지 검증
+
+기능 `e7bf3260514b8d0ef582469681a9638f9bd0faf6`는 기존 `e2eRun` 본체에 한 줄을 추가하고 새 관찰/테스트 파일만 도입했다. `NOX_E2E_COMBAT_TRACE=true`인 E2E 재생에서 실제 game frame과 detached player/monster 상태·native 주소·binary32 bits·Logic/Other index를 읽는다. holder 외 게임 상태·입력·HP·AI·inventory·clock을 쓰거나 추가 RNG draw를 하지 않는다. 240-frame cap은 최대 기록 범위이지 최소 sample 수나 변경된 timeout이 아니다. 피해 코드/기존 테스트/자산은 이번에 편집하지 않았다.
+
+보고된 NPC1343/subclass69778·Sword1174→Skeleton1314/subclass70210의 raw3/type7은 기존 R79 복원 이후 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP에서 `2000→1997→1994→1991`이다. 두 strict count3 lane에서 정확한 metadata·방어/무적 제어를 재검증했으며 type7을 다른 피해 유형으로 바꾸지 않았다. 전체 일반/HD/실제cgocheck2는 각49,390 pass/41skip·38package, server48,626 pass/7skip·35package·actual0이다. 모든 R88 ID/횟수/skip을 유지하고 새16개 관찰 identity만 추가했다. strict 표적 및 cgocheck2+race+checkptr2는 각45identity/135pass·fail0/skip0·3package·actual0이다.
+
+보존된 같은8입력 Skeleton 진단은 일반/HD 모두 실제 C-owned 고주소 graph에서97개 실행 frame663..759를 기록했다. 플레이어 `20→12→4→0`, Skeleton `40→35→30→25→20`으로 양쪽 피해가 적용됐다. 사망 후 game frame이 멈춘 상태에서 기존2400tick 처치 대기가 timeout하여 둘 다 actual2다. 일반은 precommit dirty 관찰 제품, HD는 위 clean 기능 revision이다. target death/후속 Screen/PNG에는 미도달이다. 실제 snapshot scalar와 Logic/Other index는 두 lane이 같지만 원본 Windows 전투 타이밍·전체 RNG draw 횟수/월드 동등성은 아직 증명하지 않았다. 이 실패를 HP/seed/장비/공격성/입력/timeout 또는 기존 fixture 수정으로 통과시키지 않는다. 최초 private 분석기의240개 필수-sample 오해로 인한 actual1도 보존하고 분석기만 upper-bound 검사로 고쳤다.
+
+clean 공식 ARM64 일반/HD/서버3제품의 Go1.26.5·revision·clean metadata와 help actual0을 확인했다. 실제 게임 실행 제품3개까지 총6개 metadata를 검증했다. 관찰을 끈 변경하지 않은 거미 전투는 일반/HD 모두 actual0·frame764·거미 HP0/12·플레이어 HP14/20·정상 cleanup이다. 전용 서버의3맵 전환·4회 loop/tick 증가·실제 quit exit0도 통과했다. 거미 회귀나 감사 actual0을 Skeleton actual2의 성공으로 대신 분류하지 않는다. GUI는 headless/mock/noaudio로 실행했으며 실제 장치 인증은 아니다.
+
+모든 wrapper 종료 후 source/protected/personal 및 stock 전체 row 불변을 확인했다. 개인 Save/config·tests/YAML/PNG/oracle·캐시·실패 증거를 삭제/변경하지 않았다. 통합 기록은 `/private/tmp/opennox-combat-trace-r89.LkkHs3/audit-runtime.log`, SHA-256 `85bb50047d3f4c058f99e1b30c4cffb544fbb7ea9dda32004dcfa1448d459689`다. 최종 docs revision 제품은 별도 handoff로 검증하며 아래 기존 문서의 모든 바이트를 유지한다. Skeleton 처치/원본 타이밍·passive-food·고정 Quest 기대맵 불일치 및 전체 포팅 목표는 미완료다.
+
 ## R88: 사망 파편의 원본 float 저장 복원과 NPC Sword 피해 재검증
 
 기능 `59131f3b4458fa54a3f6e1882ec276bb8a559f32`는 기존 `monsterActionDeadRuntime544D80` 본체의 `DeadFunc.RandomFloat` 연결 한 줄만 새 native helper로 교체한다. 원본 `00416030`의 binary32 scale·53-bit chop 연산과 사망 호출부 `FSTPS`의 round-toward-zero 저장을 유지하며 RNG 소비 횟수·전역 FPU 모드·기존 사망 callback/테스트/자산은 바꾸지 않는다. 실제 등록 `MECHGOLEMDEAD` 연결의 높이·수직 속도 오차를 compiled strict red로 재현했다.

@@ -1,5 +1,30 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Solo Quest 저장 단계·마법사 화면의 후속 감사 (R122)
+
+기준 clean/pushed `c368d56a9946f70e7f8da63f6fac9f03c10f4705`다. 아래 R121에서 예고한 clean ARM64 일반/HD/server3제품과 동일 frozen 신규·저장 일반/HD4 GUI의 후속 actual0·clean revision 검사도 완료되어 `postcommit-audit.log` SHA=`45fbd0e77ae48242eabf32a2723b903540dd829751deee7a072da7385387db79`에 보존되어 있다. 이번 추가 감사는 게임 동작 수정이 아니다. production·기존 테스트·YAML/PNG/golden/manifest는 불변이며 문서만 삽입한다. 원본 전체 GAME.EXE identity와 정적 명령 대조는 `pe_executed:false`이고 원본 Windows 게임 실행 인증이 아니다.
+
+원본 전체 SHA=`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`, 기존 봉인 Nox World 여섯 함수와 Attrib `0041A590`의1183B/SHA=`34a80dbcdc8a35139d18f835d7abe9f6e2f42f66f09b89a27f6a6bee39f333b6`를 확인했다. 저장 Load→메뉴 이후 full session→pending reset→Quest map 선택/current stage 초기화와 최고 단계 read/report의17개 정확한 bytes 및 native 서비스 순서를 대조했다. pending stage의 direct operand 세 곳·getter의 direct call/absolute pointer 부재는 읽기 범위의 관찰이며 모든 계산된 indirect 경로를 배제했다는 뜻은 아니다.
+
+| 구분 | 원본·현재에서 확인한 내용 | 판정 범위 |
+| --- | --- | --- |
+| Solo 클릭부터 선택 화면 | ID131 → Connection/ArnaMain → request1 자동 LAN → Nox World/ServerList → 자동 Host Quest → 빈 Save는 ClassSelect, 저장 Save는 CharSelect | R121의 복원·취소/재진입 증거와 이번 일반/HD 저장2실행에서 확인; Solo public discovery0 |
+| 목록에 보이는 저장 단계 | 자연 생성 frozen J00.plr1136B/SHA=`c19cdfc442053a0e8cfd0da9de81f14b76fa1f48020dc0cbdbfd52fe00dc97d8`의 FileInfo v12 Stage BYTE는2, map은 `g_swamp`다 | 파일의12개 section을 read-only 복호화해 실제 바이트를 확인; 개인 Save를 가져오지 않음 |
+| pending stage/map | 원본 Load는 header BYTE1277을 `4DCE60`에 전달하고 map 이름을 기록한다. 일반 host의 full session `4D1660` → `4DB0A0`는 pending DWORD `751F70`을0으로 초기화한다. map 첫 byte `751F74`도 초기화한다 | native 동일 호출 순서; 원본 map 초기값 공급 byte `751F98`은 PE loader zero-fill이지만 실제 runtime 값은 UNPROVEN |
+| 현재 플레이 단계 | 원본 Quest 시작 `4D6FD0`은 설정 전 map 이름을 읽고 빈 문자열이면 selector를 사용하며 `4E3CD0(0)`으로 current stage를 초기화한다 | frozen 저장 Load의 일반/HD 실제 선택 `G_Forest.map`, playable stage1·HP450/450·stock generator cap·이동136.868·정상 cleanup을 확인; Stage2 목록만으로 stage2 재개 계약을 추정하지 않음 |
+| 최고 도달 단계 | Attrib v5의 별도 DWORD는2다. 원본 Player+`1258`과 native Player.QuestStage는 목록 BYTE/current global과 다른 값이며 resetQuest 뒤 read/report한다 | 기존 Attrib read/write strict count3 통과; 해당 GUI에서 살아 있는 player의 최고 단계 값 자체는 UNPROVEN |
+| 마법사 선택 화면 | R115의 frozen 입력·세 기준 PNG를 그대로 재사용했으나 일반/HD 모두 첫 `selected wizard class` Screen에서 actual2 | 이후 색상·마법사 playable 단계는 실행되지 않아 UNPROVEN; 기준 PNG는 과거 port 캡처이지 원본 Windows 캡처가 아님 |
+
+HD의 보존된 got/expected 차이는25픽셀, bounds `(571,316)-(583,320)`이다. 원본 PE의 eye table `005B0380` 240B/SHA=`3cf911696d89f78bc2cc30205dab4bb5ac91e3d4f195eb60c80a2ba75edbe882`와 기존 blob/table을 직접 대조했다. 네 번째 BlinkEyeD의 `(569,313)` 및 stock thing.bin→video.bag index14563/type3/header offset `(2,3)`의 불투명25픽셀 영역이 차이 영역과 정확히 같다. 원본 sprite raw SHA=`2db9ec06000f2560041115b6870a54988174e4cb2d1a85d44ad84be5b314e7a6`다. 이 읽기 전용 공간 대조는 배경 눈 애니메이션 전환 시점 차이라는 추론을 뒷받침하지만 정확한 native/original runtime phase의 증명이나 Screen GREEN이 아니다. 일반 got/diff는 후속 HD 실행에서 같은 진단 경로에 덮어써졌으므로25픽셀 관찰은 HD에만 귀속한다. 입력의 기존 manual Host click·wait·RNG·Screen·golden을 바꾸거나 mask로 통과시키지 않았으며 두 actual2 로그를 보존한다.
+
+메뉴/save/listbox/Quest selector와 기존 Attrib read/write의 실제 Go1.26.5 `GOEXPERIMENT=cgocheck2`+race+checkptr2 count3은167IDs/501pass/0skip/3packages·actual0다. R121의165개 test ID/action/횟수/package terminal을 모두 유지하고 Attrib2IDs×3회만 추가해 검사했다. 기존 eye table 검사도 같은 strict 조건3pass/0skip/1package·actual0다. fresh oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이며 이번에 전체 suite를 다시 실행했다고 주장하지 않는다. GUI4제품의 metadata는 Go1.26.5/darwin/arm64/full base revision/`vcs.modified=false`다.
+
+첫 stage-flow observer는 raw-backed PE 범위만 허용하여 virtual zero-fill byte를 읽을 때 actual1이었다. 별도 v2는 PE loader의 초기 zero-fill 접근만 교정하며17개 expected bytes와 서비스 순서는 byte-identical하다. 첫 저장 HD 재실행의 actual1은 지정 cache 환경 누락으로 기본 `Library/Caches/go-build` 접근이 거부된 실행 준비 실패다. 같은 frozen helper/YAML/save를 명시적 기존 port 환경으로 실행한 별도 `gui-saved-hd-env-v2`는 actual0이며 기대값/시나리오/동작 변경이 아니다. 실패 observer·환경 receipt와 GUI actual2를 삭제하거나 GREEN에 합치지 않는다.
+
+증거는 `/private/tmp/opennox-quest-load-r122.NbH78y`의 실제 terminal ledger·동결 helper/input/제품·whole checkpoint·원본 disassembly·진단 PNG/runtime이다. runtime audit SHA=`9bdb324bb3938976a354f314402ba8964b2b8d6f1697783c1de2a2143c332bc0`·actual0이다. 실행 전후 source6263files·protected304files·stock1556files·개인1562files/Save/config는 byte-identical하며 개인 자료 import·캐시/자료 삭제0이다. 이 문서 삽입 뒤에는 source 차이를 이 문서 한 파일로 제한하고 이전 본문 suffix bytes를 보존한다.
+
+확인된 원본 대비 공백은 Host Quest의 registry/SKU expansion-absent guard 누락과 WOL 정상 API/version/login·이전 WOL cleanup 미구현이다. WOL availability==0 안내 경로와 정상 서비스 구현을 혼동하지 않으며 Windows registry 조건을 근거 없는 파일/버전 추정으로 대체하지 않았다. 다른 클래스의 전체 진행·모든 save/손상 파일·Options/create/detail/error 왕복·원본 retained controller와 취소 중간 단계·원본 Windows 전체 GUI/pixel/실제 음향 동일성은 여전히 UNPROVEN이다. 따라서 주요 진입/플레이 GREEN을 전체 원본 동일성 또는 전체 port goal 완료로 확대하지 않는다.
+
 ## Solo Quest의 원본 Connection 단계 복원 및 재검증 (R121)
 
 기준 clean/pushed `3c9db68970f14baf10a993c027f78c723981f532`다. R120에서 확인한 Solo Quest의 next=`4379F0` shortcut을 원본 next=`4AA270`의 Connection 단계로 복원한다. 기존 production 변경은 `src/gui_main_menu.go:nox_xxx_windowMainMenuProc_4A1DC0`의 ID131 callback 한 줄뿐이다. ID112 Multiplayer, signature/imports, 기존 본체 밖 bytes와 다른 기존 production/테스트는 불변이다. Go-owned 연결 owner와 세 native C trampoline을 새 두 production 파일에 둔다. 원본 PE를 실행한 것이 아니며 identity-checked 정적 분석은 `pe_executed:false`다.

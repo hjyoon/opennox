@@ -421,7 +421,7 @@ func nox_xxx_findAutosaves_4A5150() {
 		legacy.Nox_xxx_wnd_46ABB0(v22, 0)
 		legacy.Nox_xxx_wnd_46ABB0(v23, 1)
 	}
-	if int32(*(*uint16)(unsafe.Add(wnames.WidgetData, 46))) != 0 { // TODO: check widget type
+	if (*gui.ScrollListBoxData)(wnames.WidgetData).Field_11_1 != 0 {
 		wnames.Func94(gui.AsWindowEvent(0x4013, 0, 0))
 		wstyle.Func94(gui.AsWindowEvent(0x4013, 0, 0))
 	}

@@ -192,12 +192,18 @@ func monsterActionMeleeUpdate532440(unit *Object, hooks monsterActionMeleeUpdate
 	}
 	if uint32(update.Field120_1) == def.MeleeAttackFrame108 && update.Field120_2 == 0 {
 		hit := hooks.strike(unit, strike)
-		if hooks.audio != nil && update.SoundSet122 != nil {
+		// Original 00424300 reloads the live class and UpdateData after strike;
+		// only the animation-completion read below retains the entry update.
+		var soundSet unsafe.Pointer
+		if unit.Class().Has(object.ClassMonster) {
+			soundSet = unit.UpdateDataMonster().SoundSet122
+		}
+		if hooks.audio != nil && soundSet != nil {
 			index := uintptr(9)
 			if hit != 0 {
 				index = 8
 			}
-			hooks.audio(*(*uint32)(unsafe.Add(update.SoundSet122, index*4)), unit)
+			hooks.audio(*(*uint32)(unsafe.Add(soundSet, index*4)), unit)
 		}
 	}
 	if update.Field120_3 != 0 {

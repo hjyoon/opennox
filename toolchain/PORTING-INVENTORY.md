@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## NPC palette tail 및 top-effect 순서의 bounded 원본 비교 (R112)
+
+기준 clean/pushed `cc732b2eb38ce79c2a27c7ee6f6352902e808f29`에서 기존 production은 `src/drawable_npc.go:(*Client).DrawNPC` 한 본체만 바꾼다. 원본처럼 top effects/HP 뒤 slots0..5를 white로 초기화하며 slot6 유지/early return은 그대로다. 기존의 효과 이전 slots1..6 reset만 교체한다. signature/imports/본체 밖 bytes 및 기존 테스트/시나리오/PNG/golden/자산/Save/config는 불변이다.
+
+unchanged GAME.EXE NPCDraw `004B9050`1047B SHA=`f5d3eb7b66c8b8cec76784cf0b1f1e1e3d34a075491a57511650bbe387ac545c`의74entries를 ordinary/poison/frozen/invulnerability 조합·none/skull/crown/both·방향0/4/6 및 missing-NPC/zero-frame으로 비교했다. original transcript SHA=`079ba9fe21d1084dee49fc941d2933ca5d52f6d4a9c30f589bb329d4397b1178`, code/guards/입력 bytes 불변·memory fault0이다. renderer/frame/empty equipment/5551/cached effects/non-ally는 선언한 공급 서비스다. blue001f/white7fff는 통제 입력이며 stock blue RGB/stock sprite renderer·HP bar·preview·negative-frame·fullworld 동등성은 UNPROVEN이다.
+
+compiled RED75IDs/2pass/73fail/actual1 뒤 새 test·C-owned opaque read-only recorder·JSON·original probe4파일을 동결했다. 같은 GREEN75pass/actual0은 native pointers >4GiB·whole-record 불변, 실제 C top-effect callback72회, 실제 indexed renderer9344pixels/headless palette frame146회를 확인한다. callback 자체는 공급된 palette 관찰 서비스이지 stock skull/crown pixels가 아니다. 일반/HD/실제cgocheck2 전체50,981pass/41skip/38tested-packages, server50,142pass/7skip/35tested-packages·actual0이다. R110 기존 모든 ID/action/횟수/skip/package terminal을 보존하며 !server의75pass와 no-test-files helper terminal 하나만 새로 추가했다. strict 및 cgocheck2+race+checkptr2 count3은3,969IDs/11,907pass·0skip/0fail/5packages·actual0이며 NPC Sword HP2000→1997→1994→1991도 보존한다.
+
+test audit SHA=`20e21bee2af5d0d4ebe865d243e5d34ce245340a7e4c6e170cee478a69867fe0`, one-body audit SHA=`1f2f528e4714ce0e24327efd270f794bd4613db0c3930ecbe903dcedf6bb8326`, functional/tested 동일 bytes SHA=`8d6717bb1409f2a02f40312636c62f1ccaa1e866804d20d0d6b4a730ad7d7f7d`다. original code2,968/data650 verifier actual0이며 protected303rows·개인/stock 설치·Save/config 불변·삭제0이다. 증거 `/private/tmp/opennox-npc-palette-r112.HZ84s7`에서 커밋·즉시 push 후 clean ARM643제품, unchanged WoundedApprentice/death-spawns/cheat-load/Troll-cloud 일반·HD headless/mock 및 frozen Con02A 진단을 별도 runtime ledger로 검사한다. 기존 Screen 실패/미실행 단계를 완료로 간주하거나 입력/HP/RNG/WAIT/timeout/golden을 retune하지 않는다. R107/R108 요청은 완료됐으나 natural Skeleton timeout·Con02A·passive-food·Quest stage3와 전체 포팅 목표는 남는다. 아래 과거 suffix bytes를 보존한다.
+
 ## 공개 스크립트 객체 그룹 삭제의 미구현 panic 제거 (R110)
 
 기준 clean/pushed `ebf476047b2eea1b55a018f58a885cc9edfc9e4f`다. 기존 production은 `src/script_ns_object.go:(nsObjGroup).Delete` 한 본체만 바꾼다. 현대 ns/v4 API의 unconditional `panic("implement me")`를 unchanged SCRIPT03 `GroupDelete`와 같은 recursive EachObject/객체 Delete 경로에 연결한다. 고전 builtin은 이미 동작하던 경로이며 이번 수정 대상으로 주장하지 않는다. signature/imports/본체 밖 bytes, 기존 테스트/YAML/PNG/oracle manifest/자산/Save/config는 불변이다.

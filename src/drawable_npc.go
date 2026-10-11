@@ -59,9 +59,6 @@ func (c *Client) DrawNPC(vp *noxrender.Viewport, dr *client.Drawable) int {
 	frames := panim.FramesSlice(panim.Naked.Frames[dr.AnimDir])
 	legacy.Nox_xxx_drawObject_4C4770_draw(vp, dr, frames[fi])
 	c.DrawArmorAndWeapon(vp, dr, npc, panim, fi)
-	for i := range colors {
-		c.r.Data().SetMaterial(i+1, nox_color_white_2523948)
-	}
 	var tm *server.Team
 	if t := nox_xxx_objGetTeamByNetCode_418C80(int(dr.NetCode32)); t != nil {
 		tm = c.Server.Teams.ByID(t.ID)
@@ -69,6 +66,10 @@ func (c *Client) DrawNPC(vp *noxrender.Viewport, dr *client.Drawable) int {
 	c.DrawObjectName(vp, dr, tm, "")
 	c.DrawEnchantsTop(vp, dr)
 	c.DrawMonsterHP(vp, dr)
+	// GAME.EXE 4B9442 resets slots 0..5 only after the top effects and HP.
+	for i := range colors {
+		c.r.Data().SetMaterial(i, nox_color_white_2523948)
+	}
 	return 1
 }
 func (c *Client) nox_xxx_spriteNPCInfo_49A4B0(dr *client.Drawable, weapons, armor uint32) int {

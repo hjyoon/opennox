@@ -3745,22 +3745,8 @@ static void nox_xxx_playerAttackScanCandidate_538960(nox_object_t* candidate, vo
 
 static void nox_xxx_playerAttackScanCircle_538960(
 	float2* center, float radius, void (*callback)(nox_object_t*, void*), void* data) {
-	if (!center || !callback) {
-		return;
-	}
-	nox_player_attack_scan_native_t scan = {
-		.center = *center,
-		.radius = radius,
-		.callback = callback,
-		.data = data,
-	};
-	float4 rect = {
-		.field_0 = center->field_0 - radius,
-		.field_4 = center->field_4 - radius,
-		.field_8 = center->field_0 + radius,
-		.field_C = center->field_4 + radius,
-	};
-	nox_xxx_getUnitsInRect_517C10(&rect, nox_xxx_playerAttackScanCandidate_538960, &scan);
+	extern void nox_xxx_playerAttackScanCircleNative_518040(float2*, float, void*, void*);
+	nox_xxx_playerAttackScanCircleNative_518040(center, radius, (void*)callback, data);
 }
 
 static void nox_xxx_playerAttackApplyEffects_538960(

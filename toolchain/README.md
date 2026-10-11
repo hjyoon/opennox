@@ -1,5 +1,14 @@
 # Go 도구체인 정책
 
+## R105: 플레이어 공격의 바깥 원형 탐색 정밀도 보존
+
+- 기준은 clean/pushed `9e9ad4e38d798f5260d80359cb19255a47368bc3`다. 기존 `nox_xxx_playerAttackScanCircle_538960` **한 본체만** native Go bridge로 연결한다. signature/imports/본체 밖 및 기존 테스트·YAML·PNG·원본 자산은 변경하지 않는다. 새 bridge는 C stack center/userdata와 >4 GiB callback/candidate 포인터를 보존한다.
+- 원본 PE32 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 변경 없는 `00518040`(108B, 56 entries)·`005180B0`(181B, 45 entries)을 56개 bounded 사례로 실행했다. rectangle enumeration55/box6/visit26은 명시적 services다. 공급 CW=`0e7f`이며 실제 caller CW, 원본 map/box/damage tail 및 wholeworld 동등성은 **UNPROVEN**이다. 원본 transcript/새 fixture SHA=`c940e2a9fbf6d69b4a5b58962527cf338c5ce8af16fa4225355f071cd1795710`.
+- 기존 sqrtf 이른 binary32 store는 retained-positive circle 경계를 0으로 잘라 공격 대상을 누락했다. X FSTP/Y retained×storedY, FSQRT retained, strict positive·unordered 배제와 binary32 rect stores를 복원한다. live center mutation, point/circle/box, nil/negative/zero/NaN 및 callback 순서를 유지한다. HP·공격 프레임·피해량/유형·RNG/WAIT를 조정하지 않는다.
+- 최초 compiled RED는 71 ID 중 69pass/2fail(해당 +0 boundary 및 부모), 실제 exit1이다. 이후 frozen 테스트/fixture를 수정하지 않았으며 같은 71 ID GREEN actual0이다. C-owned >4 GiB 실제 C attack/frame/index/ray/registered receiver 경로의 9 경계 사례를 각각 3주기 검사했다. 해당 경계는 주기당 한 번, raw36/BLADE와 RNG index 불변이다. 4-frame animation/receiver는 fixture service이며 원본 Windows HP/death 인증은 아니다.
+- normal/HD/strict 각각 50,505pass/41skip/38packages, server 49,741pass/7skip/35packages, strict count3 및 race/checkptr count3 각각 1,050 IDs/3,150pass actual0이다. 기존 ID/action/multiplicity/skip/package terminals를 전부 보존했다. 원본 code-verify도 actual0(2,968 code/650 data)다. 검사 audit SHA=`ec254f1bc8333f7a9ab50c127977e8e0a1c2680dd74afd0f09213e5d1d90b507`.
+- NPC Sword raw3/type7 실제 HP2000→1997→1994→1991, fountain 비면역 HP60→57→54→51 및 데몬 화염 면역 HP60 유지 회귀를 보존했다. 커밋 직후 push하고 clean ARM64 3제품·기존 unchanged headless NPC combat normal/HD 시나리오를 별도 runtime ledger로 검증한다. 과거 natural Skeleton timeout, Con02A frozen Screen actual2, passive-food·Quest stage3 및 전체 포팅 목표는 완료로 표시하지 않는다.
+
 ## R104: 용암 분수 FLAME 피해 경계와 원래 화염 면역 보존
 
 - 기준은 clean/pushed `e907e6ef2b2a61e0de3cf938651dfabeaf97ccf5`다. `LavaFountain3`의 class4259840/`0x410000`은 **DANGEROUS|IMMOBILE**이며 FIRE|SIMPLE이 아니다. 보고된 raw3/type1은 FLAME이고 LAVA/type12로 바꾸지 않는다. 공통 `playerDamageWorldFlameShape4E17B0` 본체와 그 뒤 중복 FIRE|SIMPLE|DANGEROUS 검사를 하던 `PlayerDamageNative4E17B0` 본체를 **각각 별도의 한-본체 기능 커밋**으로 수정한다. 첫 shape-only 경계는 DefaultDamage만 복원하며 Player/NPC 경로 완료로 기록하지 않는다. signature/imports/본체 밖·피해량/유형·기존 테스트/입력/자산은 불변이다.

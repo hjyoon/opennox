@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 플레이어 공격 바깥 원형 스캔의 원본 retained 경계 (R105)
+
+clean/pushed 기준 `9e9ad4e38d798f5260d80359cb19255a47368bc3`. 기존 production 변경은 `src/legacy/GAME4_3.c:nox_xxx_playerAttackScanCircle_538960` 한 본체다. 본체 밖 bytes/signature/imports 불변이고 기존 테스트·입력·golden·원본 manifest/설치/Save는 수정하지 않는다. 새 server math/legacy CGo bridge와 새 frozen test/fixture만 추가한다.
+
+원본 `00518040` SHA=`c9387db9841d77f239f0a4b9a73b93c191f23304982eb3c2f6545b3d7357fc88`(108B/56 entries), `005180B0` SHA=`a0d7a262119c6f7914ce1c0df40904b652de67d5d1b59ce9fbb19449478737ae`(181B/45 entries), unchanged PE32 56 cases/zero memory faults. supplied CW0e7f, declared enumeration55/box6/visit26; caller CW·원본 전체 world/HP/death equivalence는 UNPROVEN이다. 원본 fixture SHA=`c940e2a9fbf6d69b4a5b58962527cf338c5ce8af16fa4225355f071cd1795710`.
+
+circle-retained-edge +0에서 이른 sqrtf binary32 spill이 원본의 양수 penetration을 0으로 만들었다. C native pointer center를 live로 유지하고 원본 rect stores 및 X FSTP/Y retained×storedY/FSQRT retained/strict-positive filter를 새 Go 함수에서 모델링한다. 원본 callback 순서/box retained return/NaN guard를 보존한다. 최초 실제 compiled RED 69pass/2fail/71IDs 후 테스트와 fixture를 동결했고 한-본체 연결 후 71pass actual0. 9 C-owned indexed C attack cases ×3주기 raw36/BLADE; RNG/animation deadline 유지. animation4frames/registered receiver services는 wholeworld proof가 아니다.
+
+전체 normal/HD/strict 50,505pass/41skip/38packages, server49,741pass/7skip/35packages. 이전 전체 ID/action/multiplicity/skip/package terminals 불변이다. strict count3 및 race/checkptr count3 각각1,050 IDs/3,150pass actual0, code-verify2,968code/650data actual0. audit SHA=`ec254f1bc8333f7a9ab50c127977e8e0a1c2680dd74afd0f09213e5d1d90b507`. NPC Sword/type7 HP2000→1997→1994→1991 및 fountain 면역/비면역 회귀 유지. clean ARM64 normal/HD/server 및 unchanged headless NPC combat runtime는 커밋·즉시 push 후 독립 ledger에서 검사한다. 기존 natural Skeleton/Con02A/food/Quest 제한과 full-port 목표는 남는다.
+
 ## LavaFountain3 피해 admission 및 데몬의 live 화염 면역 (R104)
 
 기준은 clean/pushed `e907e6ef2b2a61e0de3cf938651dfabeaf97ccf5`다. 보고된 LavaFountain3/type1202/class4259840/subclass0/flags16777748, source==weapon, raw3/type1(FLAME)은 FIRE|SIMPLE|DANGEROUS 전용 shape에서 거절됐다. 실제 class `0x410000`은 DANGEROUS|IMMOBILE이다. 공통 `playerDamageWorldFlameShape4E17B0` 본체에 stationary dangerous fountain을 수용하고 unit/weapon/wand/missile 및 다른 damage type 배제는 유지한다. 이어서 `PlayerDamageNative4E17B0` 본체의 중복 stock-fire guard를 공통 predicate로 연결한다. **두 기존 본체는 별도의 기능 커밋과 즉시 push로 분리한다.** signature/imports/본체 밖 및 기존 source/test/입력/자산은 다른 변경이 없다.

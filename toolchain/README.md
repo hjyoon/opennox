@@ -1,5 +1,14 @@
 # Go 도구체인 정책
 
+## R102: 근접 대상 선택의 원본 정밀도와 live 콜백 복원
+
+- 기준은 clean/pushed `c8c8b3e80a3c836520200b02ca39acb5908160be`다. 기존 `monsterPickMeleeTarget549440` 본체 하나만 수정한다. 원본의 precision53/ToZero retained radius·X delta·제곱/합/제곱근·dot·edge와 지정된 binary32 저장을 복원한다. friendly 허용 때도 allegiance를 호출한 뒤 live 위치를 읽으며, cone의 ordered strict >와 edge의 C0-only unordered 수용을 구분한다. signature/imports/본체 밖·피해량/유형·기존 테스트/입력/자산은 불변이다.
+- unchanged GAME.EXE에서 picker/candidate/default-strike 및 두 조건의 실제 rect/round walker를 제한 실행한 23개 결과를 봉인했다. 첫 private trampoline은 번역 캐시 때문에 다중 후보를 잘못 순회해 감사 actual1이며, 원본 script/log를 보존하고 별도 v2에서 해당 emulator cache만 무효화했다. 원본 code bytes를 바꾸지 않았다. 원본 world의 allegiance/trace/damage는 공급 경계이며 기록된 전투 좌표의 radius12와 CW0E7F도 공급 값이다. 전체 원본 전투 인증은 아니다.
+- 새 test/JSON 두 파일을 최초 compiled red 뒤 고정했다. red actual1은 21pass·6 test fail+1 package fail로, 네 원본 조건(cone-+3/friendly live-position/unordered radius/retained search radius)과 독립 256방향 비교에서 차이를 재현했다. 같은 입력 green은 기존 control 포함27pass·actual0이다. 방향 표256쌍과 독립 math/big의768점을 검사하며 두 indexed 조건은 실제 native map 순회와 strike 전달까지 비교한다.
+- 일반·HD·실제cgocheck2 전체는 각각 **50,166pass/41skip·38package**, server49,402pass/7skip·35package·actual0이다. R98의 모든 기존 ID/횟수/skip/package terminal을 보존하고 새26개만 추가했다. strict 및 cgocheck2+race+checkptr2는 각각 count3·195 identity/585pass·fail0/skip0·2package·actual0이다. test 감사 actual0 SHA-256 `4de0990c3fb35838ad0093721e71b26c143c7c44a8e997c680179d9824da66b2`다.
+- 보고된 NPC1343/subclass69778·Sword1174/subclass256→Skeleton1314/subclass70210의 raw3/type7(EXPLOSION)은 R79 `15ae300d3bfa8af59932c01e236e55c2bbbe53fc` 복원 상태다. 두 strict lane에서 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP를 각각3회 실행해 **`2000→1997→1994→1991`**을 확인했다. HP2000/team2/1은 기존 통제 fixture이며 type7을 Blade로 재해석하지 않았다.
+- 원본2,968 code/650 data range 및 protected/personal/stock 전체 rows를 유지했다. functional/tested checkpoint bytes는 동일하다. 증거는 `/private/tmp/opennox-melee-target-r102.OSTz4Q`다. 커밋·즉시 push 뒤 clean ARM64 일반/HD/서버3제품과 headless/mock 후속 회귀를 별도로 검증한다. 이번 경계 수정만으로 기존 Skeleton timeout·Con02A Screen actual2·passive-food·Quest stage3나 전체 포팅 완료를 주장하지 않는다. 기존 증거/캐시/제품/개인 Save/config와 아래 suffix bytes를 보존한다.
+
 ## R98: NPC 무기 교체 콜백 뒤 live subclass 재조회 복원
 
 - 기준은 clean/pushed `021f8be94ab135a88d2c19daf747a31c45726b4d`다. 기존 `npcWeaponEquipNative53A2C0` 본체 하나에서 화살통 해제 콜백 뒤와 장비 표시 콜백 뒤의 subclass를 다시 읽도록 복원했다. 원본 `0053A330`·`0053A390`의 live load와 같으며 signature/imports/본체 밖·피해 유형·기존 테스트/입력/자산은 불변이다. 새 테스트와 봉인한 원본 결과 파일만 추가했다.

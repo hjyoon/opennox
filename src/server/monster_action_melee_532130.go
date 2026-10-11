@@ -372,10 +372,16 @@ func monsterPickMeleeTarget549440(unit *Object, allowFriendly bool, hooks monste
 	if def == nil {
 		return nil
 	}
-	searchRadius := def.MeleeAttackRange112 + unit.Shape.Circle.R + monsterMeleeTargetPadding549440
+	// 00549459..00549495 retains the radius at precision 53 / ToZero;
+	// only the four rectangle coordinates are stored as binary32.
+	add := pointOnLineAddChop53_57C8A0
+	mul := pointOnLineMulChop53_57C8A0
+	div := pointOnLineDivChop53_57C8A0
+	spill := pointOnLineSpill57C8A0
+	searchRadius := add(add(float64(def.MeleeAttackRange112), float64(unit.Shape.Circle.R)), float64(monsterMeleeTargetPadding549440))
 	rect := types.Rectf{
-		Min: unit.PosVec.Sub(types.Ptf(searchRadius, searchRadius)),
-		Max: unit.PosVec.Add(types.Ptf(searchRadius, searchRadius)),
+		Min: types.Ptf(spill(add(float64(unit.PosVec.X), -searchRadius)), spill(add(float64(unit.PosVec.Y), -searchRadius))),
+		Max: types.Ptf(spill(add(searchRadius, float64(unit.PosVec.X))), spill(add(searchRadius, float64(unit.PosVec.Y)))),
 	}
 	bestRange := def.MeleeAttackRange112
 	var best *Object
@@ -390,18 +396,28 @@ func monsterPickMeleeTarget549440(unit *Object, allowFriendly bool, hooks monste
 			(candidate.HealthData == nil || candidate.HealthData.Max == 0) {
 			return true
 		}
-		if !allowFriendly && !hooks.isEnemy(unit, candidate) {
+		// 00549508 calls allegiance even when friendly targets are allowed.
+		// Candidate positions are live loads after that callback.
+		if !hooks.isEnemy(unit, candidate) && !allowFriendly {
 			return true
 		}
-		delta := candidate.PosVec.Sub(unit.PosVec)
-		distance := float32(math.Sqrt(float64(delta.X*delta.X+delta.Y*delta.Y))) + 0.001
+		// X remains in x87; Y and sqrt(square)+the original binary32
+		// epsilon have FSTP stores. Do not round each delta/product/dot
+		// to binary32 or change the calling thread's floating-point mode.
+		dx := add(float64(candidate.PosVec.X), -float64(unit.PosVec.X))
+		dy := float64(spill(add(float64(candidate.PosVec.Y), -float64(unit.PosVec.Y))))
+		square := add(mul(dy, dy), mul(dx, dx))
+		distance := float64(spill(add(monsterMoveForceSqrtChop53_50D50C(square), float64(math.Float32frombits(0x3a83126f)))))
 		facing := unit.Direction1.Vec()
-		if delta.Y/distance*facing.Y+delta.X/distance*facing.X <= 0.5 {
+		dot := add(mul(div(dy, distance), float64(facing.Y)), mul(div(dx, distance), float64(facing.X)))
+		if !(dot > 0.5) {
 			return true
 		}
-		edgeDistance := distance - (candidate.Shape.Circle.R + unit.Shape.Circle.R)
-		if edgeDistance < bestRange {
-			bestRange = edgeDistance
+		edgeDistance := add(distance, -add(float64(candidate.Shape.Circle.R), float64(unit.Shape.Circle.R)))
+		// 00549590 tests C0 alone: an unordered edge comparison is also
+		// accepted. The cone above instead requires ordered strict >.
+		if !(edgeDistance >= float64(bestRange)) {
+			bestRange = spill(edgeDistance)
 			best = candidate
 		}
 		return true

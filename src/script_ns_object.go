@@ -821,8 +821,10 @@ func (g nsObjGroup) Idle() {
 }
 
 func (g nsObjGroup) Wander() {
-	//TODO implement me
-	panic("implement me")
+	g.EachObject(true, func(obj ns4.Obj) bool {
+		obj.Wander()
+		return true
+	})
 }
 
 func (g nsObjGroup) Hunt() {

@@ -434,7 +434,7 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 				},
 				RandomInt: s.Rand.Logic.IntClamp,
 				RandomFloat: func(minimum, maximum float32) float32 {
-					return float32(s.Rand.Logic.FloatClamp(float64(minimum), float64(maximum)))
+					return s.MonsterDeadRandomFloat549D80(minimum, maximum)
 				},
 				PushUnits: func(position types.Pointf, outer, inner, force float32, _ *server.Object) {
 					s.MapPushUnitsAround52E040(position, outer, inner, force, server.MapPushUnitsAroundRuntime52E040{

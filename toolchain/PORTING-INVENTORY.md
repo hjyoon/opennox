@@ -1,5 +1,23 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Con02A 역사적 화면 진단과 worktree provenance 한계 (R94)
+
+기준은 clean/pushed R93 `47348fcbcbd0f1b0adae3e18f342d5e686d42abd`다. production 본체·기존 테스트·YAML/PNG·oracle/game assets는 변경하지 않았다. frozen Con02A 입력 SHA-256 `9f976d58646c29f61475f3ec0f739173869610eeb7c56300242ee0e66bb2234d`와 기준 PNG `35109f05b4680304251613095a5819510fb59f086154dbb08a49f5535e856fb2`를 byte-identical private 디렉터리3개에 분리했다. 과거 source worktree도 clean 상태로 유지하여 headless/mock·audio-handles=false·combat-trace=false로 직렬 실행했다. 같은 시나리오 디렉터리를 재실행하여 이전 got/diff를 지우지 않았다.
+
+| 과거 source revision | 실제 시나리오 종료 / frozen Screen | 공식 제품 metadata 검증 |
+| --- | --- | --- |
+| `c765946779d93f8762ce05b9d4126cd006da6e59` | actual0·정상 cleanup / PASS | **actual1·vcs.revision 누락** |
+| `ed39bef3ab94cf8b04b2e4d032eec3153f4bb3a0` | actual0·정상 cleanup / PASS | **actual1·vcs.revision 누락** |
+| `3c7abc0fa1708198da42bd2f46cbd834fe69af5a` | **actual2·Screen mismatch / FAIL** | **actual1·vcs.revision 누락** |
+
+세 진단 모두 ready693·시작695·도착761·Done795·소환1039·Clyde Sword prefix1077·완료1257/elapsed564다. 소환된 Spider의 native-width server/client 고주소·HP12/12와 NPC 제거/player/dialog/cinematic release는 확인했다. dormant 대상 HP0/0의 검 prefix를 양수 HP 감소로 세지 않는다. material got SHA-256은 `8bd33ac51c693d4affb12559d4c2a5817848fb6854c4d97784e14a8d435e9998`, diff는 `181de2d218e16e1f2ac523bb425821af8caa3e5c3f2a93c99e498fc9c381836a`다. 기준과 비교한586 pixel은 player 영역417·minimap169로 분리된다. 현재 R93 got과 이 과거 got은78,208 pixel, 현재 got과 기준은78,693 pixel이 다르다. 읽기 전용 비교는 mismatch를 허용/필터링하지 않는다. clip snapshot인 ed39bef3a가 PASS하므로 현재 차이를 clip 수정 탓으로 단정하지 않는다. palette 수정과 관련된 관찰은 있으나 minimap169·현재 NPC 위치/조명의 원인 및 전체 원본 world 동등성은 **UNPROVEN**이다. golden·게임 동작·WAIT/HP/RNG/입력으로 실패를 통과시키지 않았다.
+
+과거 ARM64 제품3개는 Go1.26.5·darwin/arm64·Mach-O와9자리 ldflags stamp는 확인했지만 **검증된 clean release 제품이 아니다**. 고정 SDK의 `cmd/go/internal/vcs/vcs.go`는 `.git`의 `isDir:true` 및 `fi.IsDir()==root.isDir`로 저장소를 찾으며 `.git`이 파일인 worktree는 인식하지 않는다. 작은 실제 빌드의 `-buildvcs=true`도 worktree에서는 full revision을 누락했고 일반 `.git` 디렉터리인 주 저장소에서는 full R93 revision·vcs.modified=false를 기록했다. SDK detector SHA-256은 `9094655f5a7dfedf7133dec5b1600688112ea2bae1b6fcf786112370e0144b35`다. 세 공식 `noxbuild -verify`의 actual1을 보존하고 verifier/toolchain을 약화·변조하거나 provenance를 위조하지 않았다. 과거 Screen PASS를 clean release 인증으로 확대하지 않는다.
+
+현재 palette/clip/secret-wall 및 NPC Sword의 frozen 표적 회귀는 일반·HD·실제cgocheck2·cgocheck2+race+checkptr2 각각 **214 identity·count3·642 raw pass·fail0/skip0·2package·actual0**다. palette 두 함수의 각81 identity, clip C entry25·pixel6, secret-wall 두1 및 NPC Sword19 identity를 유지했다. palette/clip/minimap 검증은 선언된 C/native fixture와 픽셀 경계이지 원본 전체 world 화면 인증은 아니다. 보고된 NPC1343/subclass69778·Sword1174/subclass256→Skeleton1314/subclass70210의 raw3/type7(EXPLOSION)은 기존 R79 `15ae300d3bfa8af59932c01e236e55c2bbbe53fc` 복원을 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP로 lane마다3회 확인해 **`2000→1997→1994→1991`**이다. type7·class/flags·source/weapon attribution을 유지하며 HP2000·team2/1은 기존 통제 fixture다. damage 본체를 다시 수정하거나 전체 suite를 새로 실행했다고 주장하지 않는다.
+
+wrapper 전후 source/protected/personal/stock 전체 rows와 checkpoint JSON bytes는 불변이다. 보호297files/47,455,351bytes tree `976dc074a2da1fae29f71191362f349653aded4a70fd9e68002e6d45c8350139`, 개인1,562files/571,159,691bytes `449822ffe5e665254c29f1ccc9857c7c306d92810c0712af0e75d036cbf65868`, stock1,556files/570,653,750bytes `d54e061e05a2706f654f8d6ac8303b5fe5b0c85614a8bb20b3d3ced57abdf050`를 유지했다. 개인/stock JSON SHA-256은 `4475948233ecc656894e2a65d48c135eeaf5e9e6591aa36061d47ee174e34ec6`·`10c23b763fa4f6f83c1d58eb278f88ff6bbb95d3ed0d4fe5257e7f1168b72db5`다. 통합 감사 `/private/tmp/opennox-con02-visual-r94.KZ4w1r/audit-runtime.log`는 **actual0** SHA-256 `e60cd7c094f77031638a9bee5eb380614a7884bd3bb57ef4a4a740e74fa21c97`이며 이는 무결성 감사 성공이지 위 actual1/actual2의 PASS 전환이 아니다. R93 Con02A 일반/HD·R89 Skeleton 처치 actual2와 모든 raw 로그/PNG를 보존했다. 화면 원인·Skeleton timeout·passive-food·고정 Quest stage3·전체 목표는 미완료다. 캐시·기존 제품·자료·개인 Save/config를 삭제하지 않았다. 아래 과거 suffix bytes를 보존하는 docs-only 커밋과 주 저장소의 최신 clean3제품은 별도 handoff로 검증한다.
+
 ## 실제 캠페인 트리거·피해·소환 검증과 미해결 화면 기준 차이 (R93)
 
 실행 기준은 clean/pushed R92 docs revision `2730ef8ed514fa22f60dd2f8e9fd8445e88287b6`이다. 이번에는 기존 production 본체·테스트·YAML/PNG·oracle/game assets를 변경하지 않았다. 먼저 개인 설치/stock 및 source 전체 rows가 R92 handoff와 동일함을 확인하고, Go1.26.5 macOS/ARM64 일반·HD를 headless/mock·audio-handles=false·combat-trace=false로 차례로 실행했다. Save/config/user.rul은 wrapper의 isolated runtime에서만 사용했다.

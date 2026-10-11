@@ -1,5 +1,13 @@
 # Go 도구체인 정책
 
+## R94: Con02A 과거 화면 비교와 worktree provenance 한계
+
+- 기준은 clean/pushed R93 `47348fcbcbd0f1b0adae3e18f342d5e686d42abd`다. production/test/fixture를 바꾸지 않고 같은 frozen Con02A 입력과 golden으로 과거3개 clean source를 headless/mock 실행했다. c76594677·ed39bef3a는 Screen/cleanup actual0, 3c7abc0fa는 Screen actual2다. 세 실행의 소환1039·Clyde Sword prefix1077·release1257은 같으나 대상 HP0/0이어서 양수 피해 증거는 아니다.
+- 과거 material 화면은 기준과586 pixel(player417/minimap169), 현재 R93 화면은 기준과78,693 pixel 차이다. clip snapshot은 통과했으므로 clip 수정 탓으로 단정하지 않는다. minimap 및 현재 NPC 위치/조명의 원인은 UNPROVEN이며 golden/WAIT/HP/RNG/입력으로 실패를 통과시키지 않았다.
+- 과거 worktree 제품3개는 **공식 metadata actual1·vcs.revision 누락**으로 clean release 인증이 아니다. 고정 Go1.26.5의 `.git` 디렉터리 검사 때문에 worktree 파일을 인식하지 못하며 실제 `-buildvcs=true` probe도 누락을 재현했다. 일반 주 저장소 probe는 full R93 revision·clean을 기록했다. verifier/SDK/provenance를 변조하지 않고 실패를 보존했다.
+- 현재 palette/clip/secret-wall/NPC Sword 표적은 일반·HD·strict·strict+race/checkptr2 각각 count3·214 identity/642 pass·fail0/skip0·actual0이다. 기존 R79의 보고된 NPC Sword raw3/type7→Skeleton 실제 C route는 `2000→1997→1994→1991`이며 damage 본체·피해 유형은 재변경하지 않았다. 통제 fixture이며 전체 suite/original world 인증으로 확대하지 않는다.
+- source/protected/personal/stock 전체 rows는 wrapper 전후 불변이다. 감사 `/private/tmp/opennox-con02-visual-r94.KZ4w1r/audit-runtime.log` actual0 SHA-256 `e60cd7c094f77031638a9bee5eb380614a7884bd3bb57ef4a4a740e74fa21c97`는 위 actual1/actual2를 PASS로 바꾸지 않는다. 상세 해시는 인벤토리 R94 절에 기록하며 기존 문서 suffix·실패 로그/PNG·캐시·개인 Save/config를 보존한다. 화면 차이·Skeleton timeout·passive-food·Quest stage3·전체 목표는 미완료다. 최신 주 저장소 clean3제품은 별도 handoff다.
+
 ## R93: 실제 캠페인 피해·소환 확인과 frozen Screen 실패 보존
 
 - 기준은 clean/pushed `2730ef8ed514fa22f60dd2f8e9fd8445e88287b6`이며 이번 production·기존 테스트/시나리오/자산 변경은0이다. Go1.26.5 ARM64 일반/HD의 기존 Wiz01A 트리거·Horvath 번개는 Urchin12 생성·6 직접 명중·12 처치, Con01A 곰 낙석은 HP200→0·client -200·player release를 확인해 각각 actual0이다. 기존 player 위치/polygon 통제 helper를 사용하므로 전체 자연 캠페인 인증은 아니다.

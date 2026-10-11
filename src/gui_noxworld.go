@@ -1194,6 +1194,13 @@ func nox_client_setConnError_43AFA0(err noxnet.ConnectError) {
 }
 
 func sub_4373A0() {
+	// GAME.EXE routes the shared MainBG Escape key here. Native browser
+	// windows have their own owner, not the old C controller globals.
+	if noxWorldNative != nil {
+		closeNoxWorldToMainMenu()
+		return
+	}
+
 	c := noxClient
 	if win := legacy.Get_dword_5d4594_815000(); !win.GetFlags().IsHidden() {
 		win.Hide()

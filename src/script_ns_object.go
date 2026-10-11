@@ -906,8 +906,9 @@ func (g nsObjGroup) AggressionLevel(level float32) {
 }
 
 func (g nsObjGroup) SetRoamFlag(flags int) {
-	//TODO implement me
-	panic("implement me")
+	g.s.Server.ForEachGroup502670(g.g, server.MapGroupObjects, func(value any) {
+		value.(*server.Object).SetRoamFlag515C80(uint8(flags))
+	})
 }
 
 func (g nsObjGroup) RetreatLevel(percent float32) {

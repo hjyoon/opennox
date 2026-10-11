@@ -3841,49 +3841,14 @@ static void nox_xxx_playerAttackDamageCandidate_538960(nox_object_t* target, voi
 }
 
 static void nox_xxx_playerAttackSelectCandidate_538960(nox_object_t* candidate, void* data) {
+	extern void nox_xxx_playerAttackSelectCandidateNative_5386A0(
+		nox_object_t*, nox_object_t*, float*, nox_object_t**);
 	nox_player_attack_select_native_t* select = data;
-	if (!candidate || !select || !select->attacker || candidate == select->attacker) {
+	if (!select) {
 		return;
 	}
-	uint32_t flags = candidate->obj_flags;
-	if ((flags & 0x8049) ||
-		(!(candidate->obj_class & 6) && (flags & 0x10) && !(flags & 0x80)) ||
-		((candidate->obj_class & 6) && !nox_xxx_unitIsEnemyTo_5330C0(select->attacker, candidate)) ||
-		(flags & 0x8000) ||
-		!nox_xxx_unitCanInteractWith_5370E0(select->attacker, candidate, 1) || select->distance <= 0.0f) {
-		return;
-	}
-
-	float dx = candidate->x - select->attacker->x;
-	float dy = candidate->y - select->attacker->y;
-	float distance = sqrtf(dx * dx + dy * dy);
-	if (distance == 0.0f) {
-		return;
-	}
-	float* direction = getMemFloatPtr(0x587000, 194136 + 8 * select->attacker->direction1);
-	if (dy / distance * direction[1] + dx / distance * direction[0] <= 0.5f) {
-		return;
-	}
-	if (candidate->shape.kind == NOX_SHAPE_CIRCLE) {
-		distance -= candidate->shape.circle_r;
-	} else if (candidate->shape.kind == NOX_SHAPE_BOX) {
-		float2 normal;
-		float edge = sub_54A990(
-			(float2*)&select->attacker->x, select->distance, candidate, &normal);
-		if (edge < 0.0f) {
-			return;
-		}
-		distance = select->distance - edge;
-	}
-	if (distance < 0.0f) {
-		distance = 0.0f;
-	}
-	if ((distance < select->distance ||
-		 (select->closest && !(select->closest->obj_class & 2) && (candidate->obj_class & 2))) &&
-		(!select->closest || !(select->closest->obj_class & 2))) {
-		select->distance = distance;
-		select->closest = candidate;
-	}
+	nox_xxx_playerAttackSelectCandidateNative_5386A0(
+		candidate, select->attacker, &select->distance, &select->closest);
 }
 
 static int nox_xxx_playerTraceAttackNative_538330(

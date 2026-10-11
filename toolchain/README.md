@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R103: 플레이어 근접 대상 선택의 retained 정밀도 복원
+
+- 기준은 clean/pushed `cb8e09c1afc6d0fbd995cb39e46233fcbce74bc7`다. 기존 `nox_xxx_playerAttackSelectCandidate_538960` 본체 하나만 native-width Go 경계로 연결했다. 원본 `005386A0`의 precision53/ToZero retained Y·제곱/합/제곱근·dot·edge, X/Y와 최종 거리의 지정된 binary32 저장, box의 binary64 반환, strict ordered cone와 unordered edge 판정·첫 monster 유지/monster 우선 선택을 복원했다. allegiance를 prop에도 호출하며 콜백 뒤 live class/flags/위치를 읽는다. signature/imports/본체 밖·피해량/유형·기존 테스트/입력/자산은 불변이다.
+- unchanged GAME.EXE의 unhooked candidate 413bytes를 제한 실행한58조건/65진입을 봉인했다. 원본 방향512word와 서비스 호출 순서를 비교한다. allegiance63/interaction60/box3는 공급 서비스 경계이며 CW0E7F도 공급 값이다. 실제 original caller CW·원본 전체 world/전투는 미증명이다. 독립 math/big의256방향/768점과 실제 C-owned >4GiB indexed 공격의3개 frame cycle도 검사한다.
+- 최초 compiled red actual1은 package-only 방향 표 초기화 누락으로62pass·5 test fail이다. 기존 새 test/JSON3파일은 그대로 고정하고 별도 test-only 원본 방향 초기화 파일을 추가했다. 해당 파일도 다음 compiled red 뒤 고정했다. 초기화된 genuine red actual1은64pass·3 test fail로 cone miss와 retained edge 뒤 잘못된 대상 선택을 재현했다. 같은 frozen 입력 green은67pass·actual0이다. 기존 test ID/outcome/횟수/skip/package terminal을 모두 보존했다.
+- Go1.26.5/GOMAXPROCS2/`-p=2` 직렬 일반·HD·실제cgocheck2 전체는 각각 **50,233pass/41skip·38package**, server49,469pass/7skip·35package·actual0이다. strict 표적 및 cgocheck2+race+checkptr2는 각각 count3·263 identity/789pass·fail0/skip0·2package·actual0이다. test 감사 v2 actual0 SHA-256은 `f13f393b67c9ac9572d6dec6ab764542e5375ae8ade1f6c8cca0c12f2937cf83`다.
+- 첫 strict 전체와 별도 serial server preflight는 컴파일 archive/링커의 ENOSPC·errno28로 actual1이었다. 두 실패 로그를 삭제하거나 PASS로 바꾸지 않았다. 사용자의 캐시 정리·재개 지시에 따라 검증한 전용 GOCACHE에 Go1.26.5 `clean -cache`만 실행해54,920,852KiB를 비웠다. module/SDK/GOPATH·소스·게임 데이터·개인 Save/config·로그·기존 제품은 삭제하지 않았다. 전후 source/protected/personal checkpoint bytes는 동일하며 캐시는 빌드로 재생성된다. 캐시 감사 actual0은 `6ce0c4c1228e7a5182fc0a57cd9384a39ef72ab58b10ed32c508ac8ae9e6c180`다. 공간 확보 후 strict 재실행 actual0과 원래 actual1은 별도 기록이다.
+- 보고된 NPC Sword raw3/type7(EXPLOSION)→Skeleton은 R79 `15ae300d3bfa8af59932c01e236e55c2bbbe53fc`의 복원 상태다. 두 strict lane의 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP가 각각3회 **`2000→1997→1994→1991`**임을 확인했다. type7을 Blade로 재해석하거나 HP/team·입력·RNG·WAIT·golden을 바꾸지 않았다. HP2000/team2/1 통제 fixture는 자연 전투 인증과 구분한다.
+- 원본2,968 code/650 data range 및 protected/personal/stock 전체 rows를 유지했다. functional/tested-final checkpoint bytes는 동일하다. 증거는 `/private/tmp/opennox-player-target-r103.zmYEUF`다. 커밋·즉시 push 뒤 clean ARM64 일반/HD/서버 제품과 headless/mock 실행은 별도 private handoff로 검증한다. 외곽 circle enumeration의 정밀도·기존 Skeleton timeout·Con02A Screen actual2·passive-food·Quest stage3·전체 포팅은 미완료다. 아래 과거 문서 suffix bytes 및 모든 기존 실패 증거/제품을 보존한다.
+
 ## R102: 근접 대상 선택의 원본 정밀도와 live 콜백 복원
 
 - 기준은 clean/pushed `c8c8b3e80a3c836520200b02ca39acb5908160be`다. 기존 `monsterPickMeleeTarget549440` 본체 하나만 수정한다. 원본의 precision53/ToZero retained radius·X delta·제곱/합/제곱근·dot·edge와 지정된 binary32 저장을 복원한다. friendly 허용 때도 allegiance를 호출한 뒤 live 위치를 읽으며, cone의 ordered strict >와 edge의 C0-only unordered 수용을 구분한다. signature/imports/본체 밖·피해량/유형·기존 테스트/입력/자산은 불변이다.

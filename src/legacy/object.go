@@ -489,10 +489,11 @@ func npcWeaponEquipNative53A2C0(owner, item *server.Object) int {
 
 	update := owner.UpdateDataMonster()
 	update.Field517 &^= 0xff
-	newSubclass := uint32(item.ObjSubClass)
-	if newSubclass&0xC == 0 {
+	if uint32(item.ObjSubClass)&0xC == 0 {
 		C.sub_53A0F0(asObjectC(owner), 1, 1)
 	}
+	// Original 0053A330 reloads after quiver-dequip callbacks.
+	newSubclass := uint32(item.ObjSubClass)
 	if newSubclass&2 == 0 {
 		for equipped := owner.InvFirstItem; equipped != nil; equipped = equipped.InvNextItem {
 			if !equipped.Flags().Has(object.FlagEquipped) ||
@@ -509,7 +510,8 @@ func npcWeaponEquipNative53A2C0(owner, item *server.Object) int {
 	if uint32(owner.ObjSubClass)&0x10 != 0 {
 		owner.SetNPCItemEquipFlags(item, true, objectNPCWeaponEquipFlags, objectNPCArmorEquipFlags)
 	}
-	if newSubclass&2 == 0 {
+	// Original 0053A390 rereads the subclass after appearance/dequip callbacks.
+	if uint32(item.ObjSubClass)&2 == 0 {
 		if unsafe.Sizeof(uintptr(0)) == 4 {
 			update.Field516 = uint32(uintptr(unsafe.Pointer(item)))
 		} else {

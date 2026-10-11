@@ -1,5 +1,14 @@
 # Go 도구체인 정책
 
+## R98: NPC 무기 교체 콜백 뒤 live subclass 재조회 복원
+
+- 기준은 clean/pushed `021f8be94ab135a88d2c19daf747a31c45726b4d`다. 기존 `npcWeaponEquipNative53A2C0` 본체 하나에서 화살통 해제 콜백 뒤와 장비 표시 콜백 뒤의 subclass를 다시 읽도록 복원했다. 원본 `0053A330`·`0053A390`의 live load와 같으며 signature/imports/본체 밖·피해 유형·기존 테스트/입력/자산은 불변이다. 새 테스트와 봉인한 원본 결과 파일만 추가했다.
+- 변경하지 않은 GAME.EXE의 실제 공개 equip 진입점과 NPC equip/dequip·화살통/방패 순회를 제한 실행한60조건 중21조건이 표시 서비스 경계에서 arriving item을 변경한다. 실제 C 소유 >4GiB 객체의 public C equip 경로에서 **compiled red actual1·8조건 실패**, 같은 frozen 입력의 green61 identity/pass·actual0을 확인했다. 전체 owner/update/item/modifier bytes·콜백 순서·equipment/호환 word/효과 보존을 비교한다. PE32 포인터 word는 기존 native64 inventory/bit 계약대로0이며 포인터를32비트로 자르지 않는다. 제한 서비스 경계 비교이지 전체 원본 world나 자연 stock 콜백 변이 인증은 아니다.
+- 일반·HD·실제cgocheck2 전체는 각각 **50,140pass/41skip·38package**, server49,376pass/7skip·35package·actual0이다. 이전 모든 ID/횟수/skip·패키지 결과를 유지하고 새61개만 추가했다. strict 표적 및 cgocheck2+race+checkptr2는 count3·143 identity/429pass·fail0/skip0·2package·actual0이다. 결과 집계기의 최초 actual1은 count3을 패키지 수도3배로 센 private 오류였으며 원본 집계기·로그를 보존하고 별도 v2만 교정했다.
+- 보고된 NPC1343/subclass69778·Sword1174/subclass256→Skeleton1314/subclass70210의 raw3/type7(EXPLOSION)은 기존 R79 `15ae300d3bfa8af59932c01e236e55c2bbbe53fc` 복원 상태다. 두 strict lane에서 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP가 각각3회 **`2000→1997→1994→1991`**임을 확인했다. type7을 Blade로 재해석하거나 HP/team·fixture를 바꾸지 않았다. 통제 C fixture와 자연 전체 전투는 구분한다.
+- 원본2,968 code/650 data ranges·protected/personal/stock 전체 rows를 확인했다. 새 테스트/JSON은 최초 compiled red 뒤 고정했다. 원본 실행의 python/인수 오류 actual1 및 sandbox JIT SIGILL4는 그대로 보존하며 같은 script의 승인 실행 actual0과 구분한다. 증거는 `/private/tmp/opennox-npc-equip-r98.4TFZ9r`; test 감사 v2 actual0 SHA-256 `7e28d44075f1af27cab9e77fa6b9b57b553acb25bb1401cf88e8b8486ce73820`다. 커밋·즉시 push 뒤 clean3제품 및 headless 회귀는 별도 handoff로 검증한다.
+- 앞선 R96/R97의 동일 frozen Con02A 인과 비교는 NPC equipment replay53e2eef96과 frame BYTE684946994의 변화만 확인했다. completion clear6a992ebc·thrown frame69c3ca40은 각각0픽셀 차이다. 원본과 일치하는 equipment/frame 복원을 되돌리거나 golden을 갱신하지 않았으며 이번 콜백 수정이 Con02A를 해결했다고 주장하지 않는다. 기존 Screen actual2·Skeleton timeout·passive-food·Quest stage3·전체 포팅 목표는 미완료다. 캐시/증거/개인 Save/config 및 아래 기존 suffix bytes를 보존한다.
+
 ## R95: Con02A 무기 HUD 인과 비교와 미니맵 설명 정정
 
 - 기준은 clean/pushed R94 `6152217b92bcfc5acb305cc7c4afe2decdd4489a`다. 아래 R94의 “minimap169”는 잘못된 위치 식별이다. **169픽셀은 좌측 하단 현재 무기 HUD의 지팡이 아이콘**이고, 실제 minimap472600은 이 해상도에서 y299..469에 그려진다. 기존 문서·이미지·raw 로그는 보존하고 이 추가 절로 정정한다.

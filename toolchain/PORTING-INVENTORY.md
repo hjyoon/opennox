@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 공개 객체 타입 Subclass 조회의 미구현 panic 제거 (R125)
+
+기준 clean/pushed `1e1393d3bb3d42e57e3a53678fe4fd060eb94926`다. 기존 production은 `src/script_ns_object.go:(nsObjType).HasSubclass` 한 본체만 변경한다. unconditional `panic("implement me")`를 기존 instance API와 같은 single-name `object.ParseSubClass` 및 metadata bit predicate에 연결한다. signature/imports/본체 밖 bytes와 다른 기존 production/테스트/YAML/PNG/golden/oracle manifest·자산·Save/config는 불변이다. 대소문자 변환·빈/NULL·invalid name의 기존 계약을 유지하며 임의 class gate, whitespace trim, combined-name/numeric parser, valid-name nil-type guard를 추가하지 않는다. SDK가 명시한 overlapping subclass bits 때문에 먼저 HasClass를 확인하는 책임도 그대로다.
+
+새 `script_ns_type_subclass_test.go`는 실제 Go-owned ObjectType registry metadata와 C-owned instance control을 구별한다. 두 주소 모두4GiB 초과를 확인하며 Go pointer/string을 C-owned type record에 복사하지 않는다.9개 ordered namespace와 empty/5개 overlapping class를 포함한15개 실제 등록 type×207개 query(97개 unique 이름의 upper/lower 및13개 empty/NULL/invalid 형태)를 direct/public-name/public-index 조회로 비교한다. 기대 mask는 ParseSubClass가 아닌 원래 ordered name tables로 독립 구성하며 기존 instance control·type/instance/auxiliary health/update 전체 bytes 불변도 검사한다. 별도 invalid-before-type-read5조건과 부모2개를 합쳐3112IDs다. 공급한 subclass callback·원본 PE 실행·UI 자산 loader 증거는 아니다.
+
+최초 compiled strict RED는0pass/3112fail/1package-fail·actual1이고 instance/metadata/mutation control 오류는0이다. 새 테스트6432B/SHA=`2057bf1748747fbe044e833e96684d27b3ad459fd1e7c635d1e276274427d3a4`와 관련 입력은 첫 RED 후 불변이다. 같은 실제 Go1.26.5 `GOEXPERIMENT=cgocheck2`+race+checkptr2 count3 GREEN은9336pass/0skip/3112IDs·actual0이다. 기대값/fixture/class/flags·입력/WAIT/RNG/timeout/golden retune은 없다.
+
+전체 일반/HD/실제cgocheck2는 각각55,019pass/41skip/38packages, server는54,180pass/7skip/35packages·actual0이다. R123의 모든 기존 ID/action/횟수/skip/package terminal을 유지하고 새3112pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. 한-본체·동결 입력·실제 RED/GREEN·전체 source/protected/stock/personal을 연결한 test audit SHA=`d9d5370e2ed0a87603379593f25cad7b31c4af2161c76567e3d3edcbd6e9a564`·actual0이다. source6264→6265files의 허용 기능 차이는 본체1개+새 테스트1개이며 protected304files·stock1556files·개인1562files/Save/config 불변·삭제0이다. 문서는 제목 직후 삽입분 밖의 과거 suffix bytes를 보존한다.
+
+증거 `/private/tmp/opennox-type-subclass-r125.1Rt0kD`에서 커밋·즉시 push 뒤 clean ARM64 일반/HD/server3제품의 Go1.26.5/darwin/arm64/full revision/`vcs.modified=false`·Mach-O·help와 unchanged `solo-quest-new-warrior.yaml`의 일반/HD headless/mock 두-stage lifecycle을 별도 runtime receipt로 검증한다. 이 GUI는 기존 Solo Quest 진입/selector/RNG/history/stock generator/실제 이동/출구 collision 회귀이며 새 subclass API 직접 GUI 호출이나 원본 Windows/pixel/audio 전체 동일성 증거로 확대하지 않는다. isolated runtime을 보존하고 개인 Save/config는 가져오지 않는다.
+
+R124의 latest docs-only revision3제품 clean 확인·상점 GUI 첫 Screen actual2와 후속 미실행 단계·nonlocalized API 및 다른 panic·Solo Quest SKU/WOL/마법사 frozen Screen·기존 Skeleton/Con02A/passive-food/Quest stage3·원본 Windows 전체 runtime/실제 장치와 전체 ARM64 포팅 목표의 UNPROVEN/미완료 상태는 유지한다. 이번 API 복원을 해당 보존 실패의 해결이나 전체 목표 완료로 보고하지 않는다.
+
 ## 상점 문구 API의 clean 제품 및 혼합 GUI 결과 보존 (R124)
 
 기능 `6d4810e633bc330ed3db1f5dd4e6b86798181937`는 R123의 기존 localized API 한 본체+동결 새 테스트+기록만 커밋하고 다음 도구에서 즉시 origin `port/go1.26-multiarch`로 push한 revision이다. clean 공식 ARM64 일반/HD/server3제품의 build·Mach-O·Go1.26.5/darwin/arm64/full revision/`vcs.modified=false`·각 help actual0과 같은 revision GUI4제품 metadata도 확인했다. R123의 strict1122pass 및 네 모드 전체 회귀 성공은 유지되며 이번은 동작 코드 변경이 아닌 후속 기록이다.

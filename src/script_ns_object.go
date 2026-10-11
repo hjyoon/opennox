@@ -255,8 +255,11 @@ func (typ nsObjType) HasClass(class class.Class) bool {
 }
 
 func (typ nsObjType) HasSubclass(subclass subclass.SubClass) bool {
-	//TODO implement me
-	panic("implement me")
+	cls, err := object.ParseSubClass(string(subclass))
+	if err != nil {
+		return false
+	}
+	return typ.t.SubClass().Has(cls)
 }
 
 func (typ nsObjType) Flags() object.Flags {

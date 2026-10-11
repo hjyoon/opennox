@@ -1,5 +1,30 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Solo Quest 클릭 이후 원본 대비 분기 감사 (R120)
+
+기준 clean/pushed `55234963985d82ab8eba193a7504a9b8f23a11d3`에서 재검사했다. 이번은 동작 수정이 아닌 감사 기록이며 production/테스트/공개 YAML/PNG/golden/원본 manifest를 변경하지 않는다. 아래 R119에서 예고했던 clean ARM64 일반/HD/server3제품 및 frozen 일반 browser Esc/reentry2제품의 clean revision metadata와 두 runtime actual0도 완료되어 별도 `clean-audit.log` SHA=`4e23fba88f5e2aec3a39177dedb7112dd11ba1c0c4239bf168b8a232d49f2612`에 보존되어 있다. R120의 정상 진입 GREEN을 전체 원본 동일성으로 확대하지 않는다.
+
+원본 GAME.EXE 전체 SHA=`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`와 기존 봉인 Nox World 여섯 함수 identity, stock ArnaMain.wnd SHA=`9a3c876eaced288de9635361a06dbc177482adb8316addd0dbae5425e9c1dd5c`를 확인했다. 원본 PE32의 연결 진입/handler/host guard/registry predicate를 정적으로 읽고 정확한 instruction bytes와 IAT/string을 대조했다. 새 private helper의 `pe_executed:false` 결과 SHA=`6e08189721cf2f65f84cb4c41142e88cfdc88ede4b31533493af4081d0a44eb9`다. 여섯 diagnostic 범위는 whole-PE identity로 뒷받침한 읽기 범위일 뿐 새 sealed manifest entry도 원본 실행 증거도 아니다.
+
+| 클릭 이후 단계 | 원본 및 현재 비교 | 검증 범위 |
+| --- | --- | --- |
+| 메인 메뉴 ID131 | announce 중지, admin/god·Online/NotQuest/Coop flag, request1·stage0, minimap·gamedata 준비 후 다음 화면 | 현재 소스와 원본 callback 대조; gamedata 실패의 실제 GUI는 미검증 |
+| 연결 창 | 원본 next=`4AA270`은 ArnaMain/state400과 두 animation을 생성한다. GameFlag26가 없고 request1이면 LAN421을 animation 완료 전에 자동 클릭한다. 현재 next=`4379F0`는 직접 native Nox World로 간다 | 창/state/animation 및 연결 전환 처리 생략 확인; 원본에서 반드시 연결 창 animation을 끝까지 보여 준다고 주장하지 않음 |
+| 연결 조건/정리 | 원본 GameFlag26는 request1보다 먼저 WOL411을 선택한다. LAN421은 mode2→0 전환과 GameFlag25/`0x01000000` clear, slide-out/click sound를 거쳐 Nox World로 간다. native shortcut은 이 연결 분기를 생략한다 | 특정 flags/WOL 재진입·실제 음향 결과는 미검증; 411의 network/version 검사와 expansion 검사를 혼동하지 않음 |
+| Host Quest 허용 | 원본 Host Quest10003은 expansion predicate가 false면 안내·cleanup 후 create/Quest mode store 전에 반환한다. 현재 native host는 이 guard가 없고 Quest를 허용한다 | guard 누락은 정적으로 확인; expansion-absent 실제 실행은 미검증 |
+| 빈 Save → 새 캐릭터 | request1 자동 host → ClassSelect → Warrior → ColorSelect → Quest 안내 → 생성 맵 | unchanged 공개 신규 Warrior 입력, 일반/HD headless 둘 다 actual0; 다른 클래스의 모든 경로는 미검증 |
+| 저장 캐릭터 → Load | Quest Save04 목록·기본 행 강조 → 행 선택 입력 없는 Load → 생성 맵 | 동일 자연 생성 J00.plr/frozen private 입력, 일반/HD 둘 다 actual0; 모든 저장 포맷/삭제/손상 파일은 미검증 |
+| 생성 맵·이동·다음 단계 | 실제 호출 snapshot을 원본 reference selector/RNG/history와 비교하고 stock generator cap 및 live 이동을 검사 | 신규 stage1/2 및 저장 Load stage1은 일반/HD 통과; 전체 Quest 진행/모든 map·combat 인증은 아님 |
+| 취소·재진입 | native owner/socket/window/state cleanup은 원본 retained controller와 구현 방식이 다르다 | R118 클래스·저장·색상 Back/Esc와 R119 일반 browser 공용 MainBG Esc/reentry의 별도 frozen clean 증거; options Back152 및 모든 create/detail/error 왕복은 미검증 |
+
+원본 expansion 함수 `004D7700..004D778E`는 HKLM의 `SOFTWARE\Westwood\Nox`에서 `SKU`를 읽고 signed DWORD `>=0x2500`을 비교한다. ADVAPI32의 RegOpenKeyExA/RegQueryValueExA/RegCloseKey IAT를 확인했으며 `Version` 값이나 단순 파일 존재 검사로 대체해 동등성이라고 하지 않는다. `0043A3C7..0043A413`의 false 경로는 GeneralPrint:InformExpansion(flags33), sub_44A360(0), sub_44A4B0(), return0이다. registry open/query 실패와 원본 local 값의 실제 결과, macOS에서의 동등한 설치 상태 판정은 UNPROVEN이다.
+
+이번 fresh 일반/HD 네 GUI 제품은 Go1.26.5/darwin/arm64/revision552349639/clean metadata를 직접 확인했다. 신규 둘은 G_LOTDD→G_Swamp 단계1/2의 reference match, Logic3204→3205 및3519→3520, Other2100/1486·clock1000/1001·history 불변, stock generator cap와 실제 이동292.321/243.987, HP450/450을 확인했다. 저장 둘은 default 강조 diagnostic PNG가 byte-identical(SHA=`5f22e3910ca9cc46ef957b1f126500614f18170070363183237d3f3f8fed793d`), G_Forest 단계1·Logic2442→2443·Other1338·clock1000·history 불변, generator cap·이동136.868·HP450/450을 확인했다. 저장 목록의 Stage2 표시/세션 Stage1 관찰은 그대로이며 원본 전체 복원 의미는 미검증이다. PNG는 original golden이 아니다. 최초 entry의 host는 class/save 선택 전에 발생하며 public discovery0; 종료 시 host/CharSelect가 다시 발생한 로그를 누락하거나 전 실행 host1회라고 세지 않는다.
+
+메뉴/save/listbox/Quest selector의 실제 cgocheck2+race+checkptr2 count3은137IDs/411pass/0skip/3packages·actual0이며 R119의 각 test ID/action/횟수와 같다. original oracle-test도 stock1556files/570653750bytes·code2968/data650·기존 cnxz strict actual0이다. 네 GUI 모두 headless/mock·inner actual0·signal 없음·정상 cleanup이며 관련 panic/SIGSEGV/unsupported-damage 로그0이다. 전체 suite를 이번에 재실행했다고 주장하지 않는다. source6260files 및 protected304files/stock1556files/개인1562files·Save/config는 네 실행 전후 whole checkpoint byte-identical이다. frozen helper/입력/자연 생성 Save/공식 wrapper는 불변이며 isolated runtime을 보존했다.
+
+증거 `/private/tmp/opennox-solo-entry-parity-r120.SASCsk`에 disassembly/정적 감사/실제 terminal/metadata/체크포인트를 보존한다. 변경은 이 새 문서 절 삽입뿐이며 기존 과거 suffix bytes를 유지한다. 캐시·사용자 자료 삭제0이다. 문서 커밋 직후 push한다. 연결 animation/conditional flags·expansion-absent 처리, 저장 세션 복원 의미, 다른 클래스/손상 저장/모든 실패 branch, 원본 Windows 전체 GUI/pixels/실제 음향과 기존 campaign manual Screen 차이는 여전히 UNPROVEN이다.
+
 ## Nox World 공용 MainBG Esc의 native owner 복귀 연결 (R119)
 
 기준 clean/pushed `6ebcb93d179ce819ca0524a16007ac4b73634af2`다. unchanged GAME.EXE 전체 SHA=`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`와 기존 봉인 Nox World 여섯 함수 identity를 확인했다. 원본 MainBG `4A18E0`는 Esc 눌림(arg4=2)·state10000에서 `4373A0`을 호출하며 browser `439D00`도 같은 Back 함수에 연결된다. 현재 native browser의 창·discovery·socket은 원본 C globals에 설치되지 않으므로 공용 경로가 예전 controller만 정리해 화면/state를 남긴다. 기존 `src/gui_noxworld.go:sub_4373A0` 한 본체 시작에 live native owner → 기존 `closeNoxWorldToMainMenu` → return만 추가한다. nil-owner의 모든 legacy body·signature/imports·본체 밖 bytes는 불변이다. focus 강제·Esc release 전환·새 helper·원본 sealed 범위/manifest 추가는 없다.

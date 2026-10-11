@@ -11,8 +11,11 @@ import (
 // case 1 is admitted here; weapon/wand/unit/missile damage keeps its own path.
 func playerDamageWorldFlameShape4E17B0(weapon *Object, typ object.DamageType) bool {
 	const worldFire = object.ClassFire | object.ClassSimple | object.ClassDangerous
+	// Lava fountains are DANGEROUS|IMMOBILE, without FIRE or SIMPLE.
+	// Their FLAME hits share the original world-fire tail and immunity gate.
+	const fountain = object.ClassDangerous | object.ClassImmobile
 	return typ == object.DamageFlame && weapon != nil &&
-		weapon.Class()&worldFire == worldFire &&
+		(weapon.Class()&worldFire == worldFire || weapon.Class()&fountain == fountain) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile)
 }
 

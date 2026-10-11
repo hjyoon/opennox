@@ -14,8 +14,12 @@ func playerDamageWorldFlameShape4E17B0(weapon *Object, typ object.DamageType) bo
 	// Lava fountains are DANGEROUS|IMMOBILE, without FIRE or SIMPLE.
 	// Their FLAME hits share the original world-fire tail and immunity gate.
 	const fountain = object.ClassDangerous | object.ClassImmobile
+	// Stock LavaFountain is IMMOBILE|VISIBLE_ENABLE without DANGEROUS,
+	// FIRE or SIMPLE. Its incoming type 1 still uses the same FLAME path.
+	const visibleFountain = object.ClassImmobile | object.ClassVisibleEnable
 	return typ == object.DamageFlame && weapon != nil &&
-		(weapon.Class()&worldFire == worldFire || weapon.Class()&fountain == fountain) &&
+		(weapon.Class()&worldFire == worldFire || weapon.Class()&fountain == fountain ||
+			weapon.Class()&visibleFountain == visibleFountain) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile)
 }
 

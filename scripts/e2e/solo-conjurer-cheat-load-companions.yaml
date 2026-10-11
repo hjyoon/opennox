@@ -1,0 +1,106 @@
+# Real spell completion and actual F1/text/Enter load cheat. Keep stock input,
+# migration flags, HP, RNG, waits and companion/client identities untouched.
+steps:
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 512
+    y: 208
+    name: select conjurer
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept conjurer class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept conjurer color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss opening dialog
+  - action: wait
+    dt: 60
+    name: settle after opening dialog
+  - action: create-transition-spell-pets
+    name: complete Summon Wolf Summon Urchin and Charm
+  - action: create-transition-pixies
+    name: complete actual Pixie Swarm
+  - action: assert-transition-summons
+    name: observe starting five companions
+  - action: screen
+    name: before console load companions
+  - action: raw
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: RACOIAWS}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: text_input, text: load con02a}
+  - action: raw
+    dt: 2
+    ev: {type: key, key: 28, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 28, pressed: false}
+  - action: raw
+    dt: 4
+    ev: {type: key, key: 59, pressed: true}
+  - action: raw
+    dt: 1
+    ev: {type: key, key: 59, pressed: false}
+  - action: click-chapter-briefing
+    name: dismiss destination chapter briefing
+  - action: wait
+    dt: 30
+    name: settle destination network updates
+  - action: assert-transition-summons
+    name: five same companions beside player after actual load cheat
+  - action: screen
+    name: after console load companions
+  - action: wait
+    dt: 240
+    name: continue real gameplay without delayed companion loss
+  - action: assert-transition-summons
+    name: five same companions after 270 destination ticks
+  - action: quit
+    dt: 1

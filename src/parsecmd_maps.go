@@ -106,6 +106,10 @@ func noxLoadMap(name string, opts mapLoadOptions) error {
 		}
 	}
 	legacy.Nox_xxx_mapLoadOrSaveMB_4DCC70(1)
+	if noxflags.HasGame(noxflags.GameModeCoop) && !noxflags.HasGame(noxflags.GameOnline) {
+		// Restore companions beside the player as on a normal campaign exit.
+		sub_4DCBF0(1)
+	}
 	noxServer.SwitchMap(fname)
 	legacy.Sub_41D650()
 	str := strMan.GetStringInFile("maploaded", "parsecmd.c")

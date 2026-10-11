@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 캠페인 콘솔 load와 동반 소환물 재배치 (R107)
+
+기준 clean/pushed `03708475c3eda1774697812108276fc510347799`다. 기존 `src/parsecmd_maps.go:noxLoadMap` 한 본체에서 모든 모드/파일 검증 후 busy flag를 설정하고, 오프라인 Coop에만 정상 출구의 companion relocation flag를 설정한 뒤 기존 map queue/pause/notification을 실행한다. 원본 콘솔도 이 flag를 누락하므로 요청된 캠페인 치트 편의 개선이며 원본 콘솔 동등성 또는 전체 원본 GUI/world 인증은 아니다. 성공/실패·Force·generated map·online/Quest/chat/team·기존 pending 경계를24조건으로 검사한다. 기존 signature/imports/본체 밖·테스트/YAML/PNG/oracle manifest/game assets·개인 Save/config는 불변이다.
+
+새 테스트와 서비스 fixture의 최초 compiled RED actual1은18pass/7fail/25IDs다. 이후 새 테스트/fixture/YAML 및5개 private GUI 입력을 동결했으며 같은 GREEN은25pass·actual0이다. private 명령 경로 오류 actual127은 별도 retained diagnostic이고 GREEN이 아니다. genuine headless GUI RED actual2는 실제 소환·참·픽시 생성 후 F1/text/Enter `load con02a`에서 Wolf health40/40·owner 유지·거리1210.474로 발생했다. 같은 frozen 일반/HD GUI는 실제 서버/클라이언트 Con02a 로드와 chapter briefing 완료,5개 native >4GiB 동반 객체의 동일 owner/wire/HP40,8,8·Pixie deadline·live drawable을30/270 destination ticks에 확인한다. unit≤80/Pixie≤150 거리, 서버/클라이언트 위치, 플레이어 HP20/20을 보존한다. 새 private PNG만 생성하며 결과·HP·RNG/seed·WAIT/aggression·입력/timeout·golden을 조정하지 않는다.
+
+일반·HD·실제cgocheck2 전체 각각50,776pass/41skip/38packages, server50,012pass/7skip/35packages·actual0이다. 모든 R106 ID/action/횟수/skip/package terminal을 유지하고 새25pass만 추가했다. strict 및 cgocheck2+race+checkptr2 count3 각각1,446IDs/4,338pass·0skip/0fail/3packages·actual0이다. 기존 NPC Sword 실제 HP2000→1997→1994→1991 및 fountain 면역 회귀도 유지했다. test audit SHA=`434b9147f6acba06c94453845c2a1cb9fac0c5c6a4ffc7f685fe5e326d584370`; functional/tested checkpoint bytes SHA=`3d67444870be59c20e52f59448775053b5f437efd2b5dcf371813c2ae9b37579`로 동일하다. unchanged 원본 code2,968/data650 verifier actual0이며 protected 기존299rows+새 YAML1row·개인/stock 설치와 아래 문서 suffix bytes를 보존한다. 삭제0이다.
+
+증거 `/private/tmp/opennox-cheat-load-pets-r107.rCN17a`에서 one-body/outside-bytes·frozen 입력·실제 실패/성공 terminal을 연결 감사한다. 커밋 직후 push 후 clean ARM64 일반/HD/서버3제품 및 같은 frozen headless/mock 일반/HD 로드를 별도 runtime ledger로 검사한다. 트롤 사후 독구름 동작 확인, 기존 natural Skeleton timeout·Con02A frozen Screen actual2·passive-food·Quest stage3 및 전체 포팅 목표는 아직 남는다.
+
 ## 스펠 단축 아이콘 창 밖 드롭의 원래 삭제 분기 (R106)
 
 clean/pushed 기준 `ca4ffbde4b1f997058290b0e1fbd1c35a4cf31c6`. 기존 production은 `GAME2.c:nox_xxx_quickBarWnd_45EF50` 한 본체만 수정한다. drop137이면 원래 inclusive reserved rectangle 밖·캡처 행 nil/current 조건에서 spell DWORD와 flag BYTE를0으로 저장한다. 영역 내/행 변경은 삭제 취소, non137 이동·교환은 반환값 유지, Trap 결과 저장/main-only repaint·capture cleanup도 원본대로다. 나머지24항목·padding/metadata·signature/imports/본체 밖 bytes 및 기존 테스트·입력·PNG·원본 자산/manifest·Save/config는 불변이다.

@@ -1,0 +1,92 @@
+// The unchanged production noxLoadMap body is inserted below. File checks,
+// mode lookup, map queueing and notification are declared service boundaries;
+// this fixture is not a replacement map loader or a whole-world oracle.
+package main
+
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"os"
+	"strings"
+)
+
+type gameFlag uint32
+func (f gameFlag) Has(mask gameFlag) bool { return f&mask != 0 }
+type mapLoadOptions struct { Force bool }
+type input struct {
+	Name string
+	Game, Mode gameFlag
+	Force, CheckError, StatError, Pending bool
+	Teams int
+}
+type result struct {
+	Error string
+	Pending bool
+	Busy int
+	Map string
+	Calls []string
+}
+var in input
+var out result
+func call(name string) { out.Calls = append(out.Calls, name) }
+var noxflags = struct {
+	GameOnline, GameModeCoop, GameModeCoopTeam, GameModeChat, GameModeCTF, GameModeFlagBall gameFlag
+	HasGame func(gameFlag) bool
+	GetGame func() gameFlag
+}{0x2000, 0x800, 0x200, 0x80, 0x20, 0x40,
+	func(f gameFlag) bool { return in.Game.Has(f) }, func() gameFlag { return in.Game },
+}
+var memmap = struct { PtrOff func(int, int) int }{func(base, offset int) int {
+	if base != 0x973F18 || offset != 2408 { panic("mode address differs") }
+	return 1
+}}
+func nox_common_checkMapFile(name string) error {
+	call("check:"+name)
+	if in.CheckError { return errors.New("check failed") }
+	return nil
+}
+func nox_xxx_mapGetTypeMB_4CFFA0(pointer int) gameFlag {
+	if pointer != 1 { panic("mode pointer differs") }
+	call("mode")
+	return in.Mode
+}
+func nox_xxx_printCentered_445490(text string) { call("message:"+text) }
+var strMan = struct { GetStringInFile func(string, string) string }{func(key, file string) string {
+	if file != "parsecmd.c" { panic("message resource differs") }
+	call("string:"+key)
+	return key+":%S"
+}}
+var maps = struct { Ext string }{".map"}
+var datapath = struct { Maps func(string, string) string }{func(name, filename string) string {
+	call("path:"+name+"/"+filename)
+	return name+"/"+filename
+}}
+var ifs = struct { Stat func(string) (int, error) }{func(path string) (int, error) {
+	call("stat:"+path)
+	if in.StatError { return 0, errors.New("stat failed") }
+	return 1, nil
+}}
+var legacy = struct {
+	Nox_xxx_wndGuiTeamCreate_4185B0 func()
+	Nox_xxx_mapLoadOrSaveMB_4DCC70 func(int)
+	Sub_41D650 func()
+}{func() { call("create-teams") }, func(v int) { call("busy"); out.Busy=v }, func() { call("pause") }}
+func sub_4DCBF0(v int) { call("relocate"); out.Pending=v!=0 }
+var noxServer = struct {
+	Teams struct { Count func() int }
+	SwitchMap func(string)
+}{struct { Count func() int }{func() int { call("teams"); return in.Teams }}, func(name string) {
+	call("queue")
+	out.Map=name
+	if out.Busy != 1 { panic("map was queued before busy state") }
+}}
+
+// PRODUCTION_NOX_LOAD_MAP
+
+func main() {
+	if err:=json.NewDecoder(os.Stdin).Decode(&in); err!=nil { panic(err) }
+	out.Pending=in.Pending
+	if err:=noxLoadMap(in.Name,mapLoadOptions{Force:in.Force}); err!=nil { out.Error=err.Error() }
+	if err:=json.NewEncoder(os.Stdout).Encode(out); err!=nil { panic(err) }
+}

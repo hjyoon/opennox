@@ -1,5 +1,14 @@
 # Go 도구체인 정책
 
+## R107: 캠페인 `load` 치트의 소환물 재배치 연결
+
+- 기준 clean/pushed `03708475c3eda1774697812108276fc510347799`에서 기존 production은 `src/parsecmd_maps.go:noxLoadMap` 한 본체만 변경한다. 성공한 오프라인 Coop 로드에 정상 출구의 `sub_4DCBF0(1)` 재배치 플래그를 연결한다. 모드/파일 검증 실패, 온라인·Quest, team 생성, 강제 로드 및 기존 pending 상태는 보존한다. signature/imports/본체 밖 bytes·기존 테스트/자산/Save/config는 불변이다.
+- 원본 PE32의 setter/getter/busy flag 및 console/exit call sites를 읽기 전용으로 확인했다. 원본 콘솔에도 재배치 flag가 없으므로 원본 콘솔 동등성 복원이 아니라 사용자 요청 캠페인 동작 개선이다. 전체 원본 GUI/world는 UNPROVEN이다.
+- 최초 compiled RED actual1은 25IDs 중18pass/7fail이다. 새 테스트·서비스 fixture·YAML 및 private 입력은 이후 고정했다. 동일 입력 GREEN25pass·actual0. 잘못된 private 호출 경로의 actual127도 보존하며 통과로 세지 않는다. 실제 F1/text/Enter의 `load con02a` GUI RED actual2는 살아 있는 Wolf가 소유자를 유지한 채 거리1210.474에 남은 실패다.
+- 같은 frozen GUI의 일반·HD GREEN actual0은 실제 Summon Wolf/Summon Urchin/Charm 완료 및 Pixie Swarm의5개 객체가 전환 뒤에도 같은 owner/wire/HP·deadline을 유지함을 확인한다. 30/270 destination ticks에 각각 unit 거리≤80, Pixie≤150, native >4GiB 및 실제 client drawable을 검사하고 플레이어 HP20/20을 유지했다. 새 private PNG만 생성하며 golden/override/HP/RNG/WAIT/timeout을 조정하지 않는다.
+- 일반·HD·실제cgocheck2 전체 각각50,776pass/41skip/38packages, server50,012pass/7skip/35packages·actual0. strict 및 cgocheck2+race+checkptr2 count3 각각1,446IDs/4,338pass·fail0/skip0/3packages·actual0. 이전 ID/action/multiplicity/skip/package terminal을 모두 보존했다. test audit SHA=`434b9147f6acba06c94453845c2a1cb9fac0c5c6a4ffc7f685fe5e326d584370`, functional/tested checkpoint bytes 동일 SHA=`3d67444870be59c20e52f59448775053b5f437efd2b5dcf371813c2ae9b37579`다. 원본 code-verify2,968code/650data도 actual0이다.
+- 증거 `/private/tmp/opennox-cheat-load-pets-r107.rCN17a`. protected 기존299rows+새 YAML1row, 개인/stock 불변·삭제0. 커밋 직후 push한 뒤 clean ARM643제품과 같은 frozen headless/mock normal/HD cheat-load를 별도 runtime ledger로 검증한다. 트롤 사후 독구름 검토와 기존 natural Skeleton timeout·Con02A frozen Screen actual2·passive-food·Quest stage3·전체 포팅 목표는 남는다. 아래 과거 문서 suffix bytes는 보존한다.
+
 ## R106: 단축 스펠을 창 밖으로 드롭할 때 원본 슬롯 삭제 복원
 
 - 기준은 clean/pushed `ca4ffbde4b1f997058290b0e1fbd1c35a4cf31c6`다. 기존 production은 `src/legacy/GAME2.c:nox_xxx_quickBarWnd_45EF50` **한 본체만** 변경한다. signature/imports/본체 밖 bytes, 기존 테스트·YAML·PNG·원본 manifest·게임 자산·개인 Save/config는 불변이다. 새 C-owned 회귀 테스트/원본 JSON 및 별개의 새 GUI 입력 두 개만 추가한다.

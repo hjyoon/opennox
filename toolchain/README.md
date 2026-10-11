@@ -1,5 +1,13 @@
 # Go 도구체인 정책
 
+## R91: 시작 능력치 제한 비교와 공격 후 live sound 조회 복원
+
+- 기능 `0242df01c475c6f5e6bd3a8cc0429b053d5b8aa9`는 기존 `monsterActionMeleeUpdate532440` 본체 하나만 수정하고 새 테스트 파일만 추가했다. strike callback 뒤 원본424300 getter처럼 live class/UpdateData에서 sound set을 다시 읽으며, audio 뒤 완료 byte는 entry update에서 읽는 순서를 유지한다. signature/imports/다른 기존 본문·테스트·시나리오·자산은 그대로이고 커밋 직후 즉시 push actual0 후 clean ARM64 제품을 빌드했다.
+- 변조하지 않은 원본 player-read-values와 x87 helper의 **24개 제한 실행**은 stock SOLO/ARENA·level1·max-stat off·세 class·명시적 max-health endpoint scale1/3 모델이다. nearest027F의12개는 HP20/20와 나머지 관찰값이 native와 같았다. toward-zero0E7F는 carry만1424/1425로 달랐으나 실제 원본 caller CW/world가 미증명이므로 전역 rounding/carry를 바꾸지 않았다. 원본 melee와 후킹하지 않은 getter의 **288개 제한 실행**에서 callback 후 live 상태 차이를 확인했다. strike/audio/pop만 격리 경계이며 전체 원본 전투는 **UNPROVEN**이다.
+- 새 Go/C-owned 고주소 시험603 identity는 callback matrix와 audio/quiet/admission/fault 경계를 검사한다. compiled red **actual1**(237 pass·366 test fail+1package fail)을 보존하고 같은 frozen 테스트로 green603 pass를 확인했다. 최초 private Counter 집계 TypeError actual1도 보존했으며 private key 집계만 교정했다. 일반·HD·실제cgocheck2 전체49,993 pass/41skip·38package, server49,229 pass/7skip·35package·actual0이고 기존 ID/횟수/skip는 모두 같다. strict 및 cgocheck2+race+checkptr2는 각각 count3·641 identity/1,923 pass·3package·fail0/skip0다.
+- 보고된 NPC Sword raw3/type7→Skeleton은 기존 R79 복원을 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP로 재검증해 `2000→1997→1994→1991`이다. type7이나 피해 코드를 다시 바꾸지 않았다. clean Go1.26.5 ARM64 제품3개/help와 GUI 제품4개까지7개 metadata를 확인했다. 변경하지 않은 일반/HD headless 거미 전투는 frame764·거미 HP0/12·플레이어 HP14/20·actual0이고, 일반/HD 지속 공격44조건도 각각132개 distinct nonpoison 피해·반격 없이 각3회·actual0이다. 전용 서버의3맵 전환·4회 loop/tick 증가·quit exit0도 통과했다. 선언된 기존 fixture 범위이며 고정 golden/실제 오디오 장치/전체 자연 world 인증은 아니다.
+- source/protected/personal/stock 전체 rows와 과거 문서 suffix를 보존했다. 통합 감사는 `/private/tmp/opennox-player-start-r91.9faufS/audit-runtime.log`, actual0 SHA-256 `143a4c90af8232efbce57c6ddc097b08ab29cd54a26a58770b8b2a9dda874c40`다. R89 Skeleton 일반/HD 처치 **actual2**·2400tick timeout은 여전히 보존·미해결이고 이번에 재실행하지 않았다. 성공한 제한 비교/GUI로 실패를 green화하거나 HP/seed/aggression/입력/timeout/기대값을 바꾸지 않는다. passive-food·고정 Quest stage3 맵 불일치 및 전체 포팅 목표도 아직 미완료다. 상세 경계·해시는 인벤토리 R91 절을 참조하며 최신 docs revision 제품은 별도 handoff로 검증한다.
+
 ## R90: 원본 공격 주기·Sword 산술의 제한 실행 비교
 
 - 기준 문서 HEAD `22f4ae2f30c49aa474654eab31d5bc4ad5327701`, 기능 revision `e7bf3260514b8d0ef582469681a9638f9bd0faf6`의 생산 코드·테스트·자산은 이번 회차에서 변경하지 않았다. NPC Sword raw3/type7→Skeleton의 기존 R79 수정도 유지한다.

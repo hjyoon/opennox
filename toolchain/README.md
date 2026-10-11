@@ -1,5 +1,12 @@
 # Go 도구체인 정책
 
+## R90: 원본 공격 주기·Sword 산술의 제한 실행 비교
+
+- 기준 문서 HEAD `22f4ae2f30c49aa474654eab31d5bc4ad5327701`, 기능 revision `e7bf3260514b8d0ef582469681a9638f9bd0faf6`의 생산 코드·테스트·자산은 이번 회차에서 변경하지 않았다. NPC Sword raw3/type7→Skeleton의 기존 R79 수정도 유지한다.
+- R89 clean HD의 97-frame trace와 봉인된 원본 PE32/thing.bin을 이용했다. 원본 animation50A850, melee532440, player-attack538960, bolt-damage4EF1E0 명령의 타격/종료 게이트와 산술을 후킹하지 않고, 격리 서비스 경계만 공급하여 **86개 제한 실행**(monster60/player26)을 비교했다. Sword asset은 6 frames/duration0, Skeleton은 8 frames/duration2/Slave다.
+- Skeleton 타격677/703/729, Sword 타격677/690/703/716, melee pop689/715, Sword float32 피해5/type0이 기록된 실행과 일치했다. 최초 private 분석 actual1의 count-reset 가정 오류와 원본 로그를 보존한 뒤 private 분석만 교정했다. v2 **actual0** SHA-256 `2c54c17173cc489eb159571b0978dbd060864bec31c50833ad4de26f140d6d40`이며, 기존 생산 함수·테스트·기대값을 수정하지 않았다.
+- **전체 원본 전투 동등성은 UNPROVEN**이다. 실제 world 충돌/초기 능력치/AI/RNG/사망 이후를 이 실험에서 증명하지 않았다. 기존 normal/HD Skeleton 처치 E2E의 **actual2**와 2400-tick timeout은 여전히 미해결이며 새 GUI 성공으로 세지 않는다. 상세 범위·해시·증거 경로는 `PORTING-INVENTORY.md`의 R90 절을 참조한다.
+
 ## R89: 읽기 전용 전투 프레임 관찰과 NPC Sword 피해 유지 검증
 
 기능 `e7bf3260514b8d0ef582469681a9638f9bd0faf6`는 기존 `e2eRun` 본체에 한 줄을 추가하고 새 관찰/테스트 파일만 도입했다. `NOX_E2E_COMBAT_TRACE=true`인 E2E 재생에서 실제 game frame과 detached player/monster 상태·native 주소·binary32 bits·Logic/Other index를 읽는다. holder 외 게임 상태·입력·HP·AI·inventory·clock을 쓰거나 추가 RNG draw를 하지 않는다. 240-frame cap은 최대 기록 범위이지 최소 sample 수나 변경된 timeout이 아니다. 피해 코드/기존 테스트/자산은 이번에 편집하지 않았다.

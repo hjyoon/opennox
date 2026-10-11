@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 원본 PE32 공격 게이트·피해 계산의 제한된 실행 비교 (R90)
+
+- 코드 기준은 R89 문서 HEAD `22f4ae2f30c49aa474654eab31d5bc4ad5327701`, 기능 revision `e7bf3260514b8d0ef582469681a9638f9bd0faf6`이다. 이번 회차는 생산 함수·테스트·시나리오·자산을 수정하지 않은 진단/문서 회차다. 이미 수정한 NPC1343/subclass69778 Sword1174 raw3/type7→Skeleton1314/subclass70210 경로(R79)도 변경하지 않았다.
+- R89 clean HD의 보존된 실제 C-owned 전투 trace SHA-256 `ccd878a8ce03a696a495aaaf6aad49ffaa9b56e0967f0f473e9da46a108110b7`(97개 연속 frame663..759)를 입력으로 사용했다. R90에서 GUI 또는 전체 테스트를 새로 실행한 것으로 세지 않는다. 기존 normal/HD Skeleton 처치 E2E는 둘 다 **actual2**이고, 사망 후 2400-tick timeout·미생성 PNG·실패 로그를 유지한다.
+- 원본 `GAME.EXE` SHA-256 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 변조하지 않은 x86 명령을 격리된 PE32 CPU에서 실행했다. 함수 범위는 animation50A850(187 bytes), melee-update532440(248), player-attack538960(4,642), bolt-damage4EF1E0(142)이다. 코드 bytes 불변·cdecl stack·20,000-instruction 상한·x87 CW0e7f를 확인했다. 타격 게이트·피해 산술·x87 변환·결과 저장 명령을 후킹하지 않았다.
+- 봉인된 `thing.bin` SHA-256 `436f6545169e07abc3eb143b0b8909e67061ceebe13b5eaa45396d3cd5a78768`를 기존 Go asset parser로 읽었다(Windows asset loader 실행 증거가 아님). NewPlayer action27 `SWORD_STRIKE`는 6 frames/duration0, Skeleton melee는 8 frames/duration2/`Slave`이며 모두 8방향 길이를 확인했다. 추출 로그 SHA-256 `2a90819478905b2f4dbd401b7a53289aadb4bc73f910f7ecffeb849777e146f7`이다.
+- 조회·strength20·비활성 ability·애니메이션 descriptor·충돌 경계·음향·AI pop은 명시적 격리 서비스로 공급했다. Sword modifier는 Req20/계수0.21f/min5, 기하 입력은 radius10으로 한정했다. 실제 원본 world의 충돌/HP/AI/RNG/초기 상태를 실행한 것이 아니며, RNG 호출을 대체하거나 소비하지 않았다. 원본 공격 호출의 game frame은 완료된 native snapshot의 `Frame-1`로 맞췄다.
+- 일치한 범위는 사망까지의 기존 melee head16 update60개와 기존 player attack state1 update26개, 합계 **86개 제한 실행**이다. Skeleton 타격 frame677/703/729, Sword 타격 frame677/690/703/716, melee pop frame689/715와 기록된 애니메이션/종료 시점이 일치했다. Sword의 원본 pre-collision 피해는 float32 5/type0이며 실제 trace의 Skeleton HP 감소5와 일치했다. 이는 별도 NPC Sword raw3/type7 경로를 type0으로 바꾸는 근거가 아니다.
+- 최초 private 분석 actual1(stdout SHA-256 `17baf38ded65e6cb9134311dbf013bd6e2de409b4c9effde1448a4ab7b724c01`, stderr `36df5244261e075dbaafdecd5a0e06f0d8138320925705b09d37b568b599d00a`)도 보존한다. 이는 AI pop이 descriptor count까지 0으로 만든다는 분석 가정 오류였다. 기존 reset 구현과 trace는 count8을 유지하고 frame/subcounter/done만 reset한다. private 분석만 수정했고 게임/기존 테스트/기대값은 변경하지 않았다. v2 **actual0** stdout SHA-256 `2c54c17173cc489eb159571b0978dbd060864bec31c50833ad4de26f140d6d40`, stderr empty다.
+- 이 제한 비교에서 공격 주기나 Sword 피해 산술의 생산 코드 오류는 발견되지 않았다. **전체 원본 전투 동등성은 UNPROVEN**, Skeleton 처치 timeout은 미해결이다. 시작 능력치·원본 world 갱신/충돌·AI 선택/실제 RNG 순서·사망 이후 경로의 원인 조사를 이어간다. HP/무기/seed/aggression/입력/timeout을 조정하거나 기존 실패를 성공으로 재분류하지 않았다.
+- 증거는 `/private/tmp/opennox-combat-timing-r90.rSJ6QN`에 유지한다. 보호 YAML/PNG/oracle JSON·개인 설치·stock 원본을 전체 path/size/SHA-256 rows로 비교하고, 두 문서는 제목 직후 추가분 이외의 기존 suffix를 byte-exact로 유지한다. 이 기록은 캠페인 완주, 전체 포팅 완료, 물리 GPU/OpenAL 또는 원격 실제 transport 검증을 선언하지 않는다.
+
 ## 통제된 Skeleton 전투의 읽기 전용 프레임 관찰 (R89)
 
 기능 revision `e7bf3260514b8d0ef582469681a9638f9bd0faf6`는 parent `26094aa1167f3e3c5de6cb31598b643f13ab8703`의 기존 production 함수 `e2eRun` 본체에 `e2eCombatTraceTick()` 한 줄만 추가한다. signature/imports/본체 밖 바이트와 기존 피해·AI·입력·시간·RNG 구현은 불변이며 새 관찰 파일과 새 테스트 파일만 추가했다. `NOX_E2E_COMBAT_TRACE=true`인 E2E 재생에서만 활성화한다. 일반 게임과 recording/비활성 재생에는 관찰을 수행하지 않는다. 커밋 바로 다음 도구는 오직 `git push origin HEAD:port/go1.26-multiarch`였으며 actual0을 소비한 뒤 clean 공식 제품을 빌드했다. 이번 변경은 새 피해 복원이나 스켈레톤 처치 timeout 해결로 분류하지 않는다.

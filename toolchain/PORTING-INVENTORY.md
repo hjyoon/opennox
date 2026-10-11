@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 체력 없는 맵 오브젝트의 DeathBall 충돌 tail (R113)
+
+기준 clean/pushed `38e40db852504c979b07901b4770e674878d7c8b`에서 `src/server/default_damage_world_4e0b30.go:DefaultDamageWorld4E0B30` 한 본체만 변경한다. PlayerStart/type714/class0/flags16781893/raw1 및 InvisibleTeleportPentagram/type717/class4195328/flags150995469/raw50, DeathBall/type706/class1572865/flags553665028 source/weapon=nil, damage_type2의 실제 보고 형태를 비교한다. non-unit nil-health의 잘못된 missing-service gate만 제거하고 위치·출처·buff/sound 뒤 실제 UnitDamageClear의 nil/zero-Max gate를 실행한다. unit-health와 필수 callback 검사는 유지하며 맵 객체에 체력·삭제 가능성을 추가하지 않는다. signature/imports/본체 밖·기존 테스트/시나리오/PNG/golden/oracle/게임 자료/Save/config는 불변이다.
+
+unchanged DefaultDamage1792B SHA=`6f045c2910bfb5e4a1100b5daaed3aeb5695bb401d3b447c63245c3543e0b871`, UnitDamageClear264B SHA=`2aa2fdff219fdcd15ffdaaf41783e5b00e412ad76fa4a7fdf74baf4449f8fbdf` 및 sealed11범위의160조건을 실행했다. root return/metadata/health gate는 원본 명령이며 flags/buffs/enemy/audio/Shield는 명시한 서비스 경계다. supplied CW027f·code/health/source/guard 불변·memory fault0, transcript SHA=`33de3f05a3c6afef6509c925e27d72529d574ab8af3a86cb35249eeb6c687fdd`다. repo probe의 private 대비 EOF blank line 하나 차이를 그대로 동결하고 재실행 JSON byte-identical을 확인했다. 전체 원본 world/Windows HP·death/GUI 동등성은 UNPROVEN이다.
+
+최초 compiled RED193IDs/151pass/42fail/actual1 이후 새4파일 동결, 같은 GREEN193pass/0skip/actual0이다. C-owned >4GiB의 실제 C dispatcher→registered DefaultDamage→UnitDamageClear24조건·2hits에서 nil/zero-Max HP120→120→120와 ordinary120→119→118 또는120→70→20, whole-record native attribution/sync를 검증한다. 공급된 damage/HP no-op은 없다. 일반/HD/cgocheck2 전체51,174pass/41skip/38packages, server50,335pass/7skip/35packages·actual0이다. R112 기존 모든 ID/action/횟수/skip/package 결과를 유지하고193pass만 추가했다. strict 및 race+checkptr2+cgocheck2 count3은4,162IDs/12,486pass·0skip/0fail/5packages·actual0, 기존 NPC Sword HP2000→1997→1994→1991 불변이다.
+
+test audit SHA=`ec68b93923167da2e57c4f006e117aab063db3619baa3da2194c1519fec8bf1d`, one-body audit SHA=`6b99375f3f28d3797e67f1262f10dee46691f8bca9892b7dd417671741c401ee`, functional/tested 동일 SHA=`db8567790c454c0be4282d97d1d55a65db062a71b6aaafbbf1ab368fc88da539`다. audit의 정보성 Log 집계/EOF 차이 오판 actual1 두 건과 원문은 보존했다. original2,968code/650data verifier·protected303files·개인/stock 설치 불변·삭제0이다. 증거 `/private/tmp/opennox-world-projectile-r113.ROjfA1`에서 즉시 push 후 clean ARM643제품과 unchanged 투사체/환경/Wiz08e Tower timer 일반·HD headless/mock를 별도 검증한다. 입력/HP/RNG/WAIT/timeout/golden retune은 없으며 실제 no-health object encounter 또는 원본 전체 GUI 인증이라고 주장하지 않는다. LavaFountain/type788/class12582912의 raw3/type1 보고는 다음 별도 작업이고 기존 포팅 미완료 게이트와 아래 과거 suffix bytes는 유지한다.
+
 ## NPC palette tail 및 top-effect 순서의 bounded 원본 비교 (R112)
 
 기준 clean/pushed `cc732b2eb38ce79c2a27c7ee6f6352902e808f29`에서 기존 production은 `src/drawable_npc.go:(*Client).DrawNPC` 한 본체만 바꾼다. 원본처럼 top effects/HP 뒤 slots0..5를 white로 초기화하며 slot6 유지/early return은 그대로다. 기존의 효과 이전 slots1..6 reset만 교체한다. signature/imports/본체 밖 bytes 및 기존 테스트/시나리오/PNG/golden/자산/Save/config는 불변이다.

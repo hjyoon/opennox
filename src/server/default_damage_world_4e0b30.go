@@ -701,7 +701,10 @@ func DefaultDamageWorld4E0B30(
 	if (missileFlame || worldFlame || monsterWorldLava || (worldProjectile && typ == object.DamageFlame)) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		return true
 	}
-	if worldProjectile && (target.HealthData == nil || runtime.BuffOff == nil || runtime.DamageClear == nil ||
+	// Non-unit map objects can have no health. The original tail still
+	// records attribution/effects; UnitDamageClear owns the nil-health gate.
+	if worldProjectile && ((target.HealthData == nil && target.Class().HasAny(object.MaskUnits)) ||
+		runtime.BuffOff == nil || runtime.DamageClear == nil ||
 		(playerTail && runtime.PlayerSetState == nil) ||
 		(source.Class().Has(object.ClassMonster) && source.UpdateData != nil && runtime.MonsterHasHitSound == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing world projectile tail service", target, source, weapon, damage, typ)

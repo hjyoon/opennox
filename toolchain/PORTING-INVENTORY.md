@@ -1,5 +1,25 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 실제 캠페인 트리거·피해·소환 검증과 미해결 화면 기준 차이 (R93)
+
+실행 기준은 clean/pushed R92 docs revision `2730ef8ed514fa22f60dd2f8e9fd8445e88287b6`이다. 이번에는 기존 production 본체·테스트·YAML/PNG·oracle/game assets를 변경하지 않았다. 먼저 개인 설치/stock 및 source 전체 rows가 R92 handoff와 동일함을 확인하고, Go1.26.5 macOS/ARM64 일반·HD를 headless/mock·audio-handles=false·combat-trace=false로 차례로 실행했다. Save/config/user.rul은 wrapper의 isolated runtime에서만 사용했다.
+
+| 기존 frozen 시나리오 | 일반 / HD 실제 종료 | 관찰 결과 |
+| --- | --- | --- |
+| Wiz01A UrchinSetup/Horvath | actual0 / actual0 | frame922에 새 Urchin12·alive25→37·HP200→296, frame1091 번개 명중6, frame2391 alive37→25·HP296→200; 정상 cleanup |
+| Con01A 곰 낙석 setpiece | actual0 / actual0 | start665→end901·236ticks, 실제 Bear 고주소·HP200→0·client delta -200, player released; 정상 cleanup |
+| Con02A Necromancer summon setpiece | **actual2 / actual2** | 소환1035·Spider HP12/12·server/client 고주소, 실제 Clyde Sword prefix1071, NPC 제거·player/dialog/cinematic release1250까지 확인; 마지막 frozen Screen 비교에서 실패 |
+
+Wizard/Bear는 각각 SHA-256 `30cf67d30c6fa3fef7ddbf3c8822dc5b43ed2cabdccd6fc8ff4a17639270b263`·`a86272e3c279960dec88424259c3e2490144f1373da1453926dbc65d8799c4e4`인 기존 YAML을 그대로 실행했다. 기존 helper의 player trigger/Horvath 위치 이동 및 client/server polygon 경계 배치는 명시적 통제 입력이다. Con02A도 SHA-256 `9f976d58646c29f61475f3ec0f739173869610eeb7c56300242ee0e66bb2234d`의 byte-identical private YAML 두 개로 실행하며, 기존 explicit switch-map과 start-trigger placement를 유지했다. 자연 출구를 통한 전체 캠페인 진행이나 full original world의 증거로 확대하지 않는다.
+
+Con02A의 대상 Necromancer는 원본 맵의 dormant HP0/0이다. 실제 Sword damage prefix의 weapon1174·hit-latch1과 맵의 후속 퇴장/release를 확인했지만 이 기록 자체를 양수 HP의 감소 증거로 세지 않는다. 화면 비교의 기존 golden은 그대로 복사해 byte 비교하고 overwrite/override하지 않았다. 기준 PNG SHA-256 `35109f05b4680304251613095a5819510fb59f086154dbb08a49f5535e856fb2`, 현재 got `8ae21798ba3f333005c1cb68a5c669ffe0a49fff9f289930ce7963e5c1821ddf`, diff `a36e2fb7ee6f79cf58a6f7b4f434e325ec5fdacb6aa603ff24d85bd1ea1734e6`이며 세1024×768 이미지 모두 일반/HD 간 byte-identical이다. 직접 본 화면에서는 NPC 위치/조명 및 미니맵 표시 차이가 있다. 이식 결함인지 과거 캡처와 실행 상태 차이인지는 아직 **UNPROVEN**이고 기준 갱신이나 production 동작 변경으로 통과시키지 않았다. 두 raw 실패 로그 stderr SHA-256은 `cfe84bccecc5642a48df3101777daf4b8ea8c696064982bed7c5f6e92726ce8a`·`d432301a90b6014c434e7e05ee998085a224004b942a155d543ba328eb7fc794`다. 마지막 quit action에는 미도달하므로 이 두 시나리오를 정상 종료/전체 pass라고 기록하지 않는다.
+
+보고된 NPC1343/subclass69778·Sword1174/subclass256→Skeleton1314/subclass70210·raw3/type7(EXPLOSION)은 기존 R79 `15ae300d3bfa8af59932c01e236e55c2bbbe53fc` native 복원을 재검증했다. 일반·HD·실제 cgocheck2 및 cgocheck2+race+checkptr2의 네 lane은 각각 count3·19 identity·57 raw pass·fail0/skip0·actual0이다. 정확한 NPC/Skeleton 사례도 lane마다3회 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP로 **`2000→1997→1994→1991`**이다. 보고된 class/subclass/flags·source/weapon attribution 및 native-width C-owned 고주소를 유지하며 type7을 다른 유형으로 바꾸지 않았다. hostile team2/1·durable HP2000은 기존 직접 C fixture이고 자연 전체 NPC 전투 인증은 아니다.
+
+실행한 GUI6제품과 기존 R92 latest client/HD/server3제품의9개 metadata는 모두 같은 clean `2730ef8ed514fa22f60dd2f8e9fd8445e88287b6`·Go1.26.5/darwin/arm64/Mach-O ARM64다. wrapper 전후 source/protected/personal 및 stock 전체 rows와 checkpoint JSON bytes를 비교해 모두 동일했다. 보호297files/47,455,351bytes tree `976dc074a2da1fae29f71191362f349653aded4a70fd9e68002e6d45c8350139`, 개인1,562files/571,159,691bytes `449822ffe5e665254c29f1ccc9857c7c306d92810c0712af0e75d036cbf65868`, sealed stock1,556files/570,653,750bytes `d54e061e05a2706f654f8d6ac8303b5fe5b0c85614a8bb20b3d3ced57abdf050`를 유지한다. 개인/stock checkpoint SHA-256은 `551e0f96a69fd12b9d347524f83635a9ed6ad2decface20fa87043300b374f77`·`837753816a48bab1a49d29b053a63f5a0b05f1055e0c18cb52ad254f54ffe339`다.
+
+통합 감사 `/private/tmp/opennox-campaign-r93.5varBt/audit-campaign.log`는 **actual0**, SHA-256 `9fe06527b7725234ce8d586c9e48a3ee7f77c4e7c7326a16c6a177c55078a14d`다. Con02A의 두 actual2 및 generated got/diff를 보존하고 R89 Skeleton 처치의 두 actual2 로그도 해시 불변으로 보존했다. Skeleton 처치·passive-food·고정 Quest stage3 맵 기대 불일치·Con02A frozen Screen·전체 원본 전투 동등성 및 전체 포팅 목표는 미완료다. HP/seed/RNG/WAIT/aggression/입력/timeout/기대값·캐시·제품·기존 증거를 변경/삭제하지 않았다. 아래 과거 문서 bytes를 유지하는 docs-only 커밋과 최신 clean3제품은 별도 handoff로 확인한다.
+
 ## 객체 그룹 Wander 공개 API 복원과 NPC Sword 피해 유지 검증 (R92)
 
 기준 HEAD는 R91 `f130ba444e86d73dbf17a5beed45758765d5d581`이다. 기능 revision `5e0e66f47feb04b8979e9abf6b95e3dd036dd585`는 기존 `nsObjGroup.Wander` 본체 하나만 수정하고 새 `script_ns_group_wander_512930_test.go`만 추가했다. signature/imports/본체 밖 bytes·다른 기존 함수·테스트·YAML/PNG/oracle/game assets는 불변이다. 기존 classic GroupWander가 사용하는 것과 동일하게 `EachObject(true)`의 각 멤버에 `obj.Wander()`를 호출한다. 단일 객체의 native roam/AI stack 구현을 다시 변경하지 않았다. 본체 SHA-256은 수정 전 `fa45158880de26dc3e434d08f7c00203c3e19b14e4bdda313c8539a62502e5eb`, 후 `2a9792816250a6b612606ba96b026ee779cde3996ce82b4c5ecbf1b599a12321`이다. 기능 커밋 바로 다음 도구는 오직 `git push origin HEAD:port/go1.26-multiarch`였고 실제 actual0 뒤 clean 제품을 빌드했다.

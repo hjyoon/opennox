@@ -1,5 +1,12 @@
 # Go 도구체인 정책
 
+## R93: 실제 캠페인 피해·소환 확인과 frozen Screen 실패 보존
+
+- 기준은 clean/pushed `2730ef8ed514fa22f60dd2f8e9fd8445e88287b6`이며 이번 production·기존 테스트/시나리오/자산 변경은0이다. Go1.26.5 ARM64 일반/HD의 기존 Wiz01A 트리거·Horvath 번개는 Urchin12 생성·6 직접 명중·12 처치, Con01A 곰 낙석은 HP200→0·client -200·player release를 확인해 각각 actual0이다. 기존 player 위치/polygon 통제 helper를 사용하므로 전체 자연 캠페인 인증은 아니다.
+- Con02A도 소환1035·alive/client-visible Spider12/12·Clyde의 실제 Sword prefix1071·NPC 제거/player/dialog/cinematic release1250까지 도달했으나, 두 frozen 시나리오는 마지막 Screen에서 **actual2**다. byte-identical private YAML과 기존 golden을 그대로 유지했고 두 got/diff 화면은 일반/HD 간 byte-identical이다. NPC 위치/조명·미니맵 차이 원인은 **UNPROVEN**이며 기대값·대기·HP·RNG를 바꾸지 않았다. 대상 dormant NPC의 HP0/0이므로 이 검 명중을 양수 체력 감소로 세지 않는다. quit에는 미도달했다.
+- 보고된 NPC Sword raw3/type7(EXPLOSION)→Skeleton은 기존 R79 native 복원 상태를 일반/HD/cgocheck2 및 cgocheck2+race+checkptr2로 각각 count3·19 identity/57 pass·fail0/skip0·actual0으로 재확인했다. 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP는 **`2000→1997→1994→1991`**이며 type7을 변경하지 않았다. team2/1·HP2000은 기존 직접 C fixture이고 full original battle은 UNPROVEN이다.
+- GUI6 및 기존 최신 release3제품의9개 metadata가 clean2730 revision·Go1.26.5/darwin/arm64/Mach-O ARM64다. headless/mock·audio-handles=false·trace=false로 실행했고 wrapper 전후 source/protected/personal/stock 전체 rows/JSON bytes가 불변이다. 통합 감사 `/private/tmp/opennox-campaign-r93.5varBt/audit-campaign.log`는 actual0 SHA-256 `9fe06527b7725234ce8d586c9e48a3ee7f77c4e7c7326a16c6a177c55078a14d`다. 두 Con02A actual2·got/diff와 기존 Skeleton actual2를 보존하며 passive-food·Quest stage3·전체 포팅도 미완료다. 상세 입력/로그/이미지 해시는 인벤토리 R93 절에 기록하고 아래 과거 suffix bytes를 유지한다.
+
 ## R92: 객체 그룹 Wander 복원과 NPC Sword 피해 유지 검증
 
 - 기능 `5e0e66f47feb04b8979e9abf6b95e3dd036dd585`는 기존 `nsObjGroup.Wander` 본체 하나만 변경하고 새 테스트 파일만 추가했다. frozen classic GroupWander와 같은 recursive 멤버별 `obj.Wander()` dispatch를 복원하며 signature/imports/본체 밖·기존 테스트/시나리오/자산은 불변이다. 커밋 바로 다음 도구로 push actual0을 확인했다.

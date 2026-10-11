@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 공개 스크립트 객체 그룹 삭제의 미구현 panic 제거 (R110)
+
+기준 clean/pushed `ebf476047b2eea1b55a018f58a885cc9edfc9e4f`다. 기존 production은 `src/script_ns_object.go:(nsObjGroup).Delete` 한 본체만 바꾼다. 현대 ns/v4 API의 unconditional `panic("implement me")`를 unchanged SCRIPT03 `GroupDelete`와 같은 recursive EachObject/객체 Delete 경로에 연결한다. 고전 builtin은 이미 동작하던 경로이며 이번 수정 대상으로 주장하지 않는다. signature/imports/본체 밖 bytes, 기존 테스트/YAML/PNG/oracle manifest/자산/Save/config는 불변이다.
+
+최초 compiled RED actual1은 81IDs 모두 fail(79개 leaf의 미구현 panic과 부모2개)이고 이후 새 테스트를 동결했다. 같은 frozen GREEN은81pass/0skip/actual0이다. C-owned >4GiB 객체/업데이트/그룹/멤버의 전체 bytes, 중첩/중복/없는 extent, dead/destroyed/NoUpdate, unsigned group/extent와 frame0/64/ffffffff, 기존 deleted-list sentinel 및 반복 삭제의 멱등성을 검사한다. 현대 API와 unchanged SCRIPT03 VM builtin을 각각 실제 native delayed-delete에 연결하며 공급된 삭제 callback은 없다. 새 fixture에는 active duration/player/team/inventory/monitored owner/Quest 상태가 없으며 이 서비스들의 기존 lifecycle 회귀만 유지한다. 새 원본 PE 실행 또는 wholeworld 동등성 인증은 아니다.
+
+일반·HD·실제cgocheck2 전체 각각50,906pass/41skip/38packages, server50,142pass/7skip/35packages·actual0이다. R108의 모든 기존 ID/action/횟수/skip/package terminal은 불변이고 새81pass만 추가됐다. strict 및 cgocheck2+race+checkptr2 count3 각각3,707IDs/11,121pass·0skip/0fail/3packages·actual0이다. NPC Sword 실제 HP2000→1997→1994→1991도 보존한다. test audit SHA=`83364dc023ece28f027b03f7d89a728ada4752a5e2a524c4495455ba69c9f1df`, one-body audit SHA=`20431700f9c774a060d8bf274cf6e0f0f268d7424dcf445aa025f834f88c3f39`, functional/tested checkpoint bytes SHA=`4968aeee35b4d2c779590ba02a58fa53290b5fc389ed56ea92042f9978d3802a`로 동일하다. original code2,968/data650 verifier actual0이며 protected303rows·개인/stock 설치는 불변·삭제0이다.
+
+증거 `/private/tmp/opennox-script-group-delete-r110.M5n0dy`. 아래 과거 문서 suffix bytes를 보존한다. 커밋 직후 push 후 clean ARM64 일반/HD/서버3제품 및 기존 unchanged WoundedApprentice와 object-death-spawns YAML의 일반/HD headless/mock 회귀를 별도 runtime ledger로 확인한다. 이 GUI는 기존 대화/사망 lifecycle 회귀이며 현대 group Delete 직접 GUI 증거로 확대하지 않는다. R107/R108 요청은 완료됐지만 natural Skeleton timeout·Con02A frozen Screen actual2·passive-food·Quest stage3와 전체 포팅 목표는 남는다.
+
 ## 트롤 사후 독구름 lifetime의 cached 참조와 실제 DOT (R108)
 
 기준 clean/pushed `e3e6f3dce72aac481e72b1c9c38de886460be40c`다. 기존 `src/server/monster_dead_callback_549d80.go:monsterDeadTroll54A270` 한 본체에서 cloud update-data를 CreateObjectAt/Audio/Balance 전에 보관하고 그 cached 참조에 Duration을 저장하는 원본 순서를 복원한다. callback 후 재조회하던 replace/nil 경계만 수정한다. signature/imports/본체 밖·nil/할당 실패·소유자/위치·float 수명 계산 및 기존 테스트/입력/자산/Save/config는 불변이다.

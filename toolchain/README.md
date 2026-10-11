@@ -1,5 +1,12 @@
 # Go 도구체인 정책
 
+## R110: 현대 스크립트의 recursive 객체 그룹 Delete 연결
+
+- 기준 clean/pushed `ebf476047b2eea1b55a018f58a885cc9edfc9e4f`에서 `src/script_ns_object.go:(nsObjGroup).Delete` 한 본체의 unconditional 미구현 panic만 제거한다. unchanged SCRIPT03 GroupDelete와 같은 recursive EachObject/객체 Delete를 사용하며, 고전 builtin 자체를 이번에 고쳤다고 주장하지 않는다. signature/imports/본체 밖·기존 테스트/입력/자산/Save/config는 불변이다.
+- 최초 compiled RED81fail/0pass/81IDs·actual1 뒤 새 테스트를 동결했고 동일 GREEN81pass/0skip·actual0이다. 79leaf와 부모2개에서 C-owned >4GiB 전체 native records·중첩/중복/없는 extent·dead/destroyed/NoUpdate·비객체/빈/없는 그룹·native delayed-list 순서·unsigned ID/frame 경계 및 repeated Delete를 현대 API와 unchanged SCRIPT03 VM 양쪽에서 검사한다. 공급된 삭제 callback은 없지만 fixture의 active duration/player/team/inventory/monitored owner/Quest 분기는 새 증명이 아니라 기존 lifecycle 회귀 유지다. 새 원본 PE 실행/전체 world 동등성은 UNPROVEN이다.
+- 일반·HD·실제cgocheck2 각각50,906pass/41skip/38packages, server50,142pass/7skip/35packages·actual0. R108의 기존 ID/action/multiplicity/skip/package outcomes를 모두 보존하고 새81pass만 추가했다. strict 및 cgocheck2+race+checkptr2 count3 각각3,707IDs/11,121pass·0skip/0fail/3packages·actual0이며 NPC Sword HP2000→1997→1994→1991도 유지한다. test audit SHA=`83364dc023ece28f027b03f7d89a728ada4752a5e2a524c4495455ba69c9f1df`, one-body audit SHA=`20431700f9c774a060d8bf274cf6e0f0f268d7424dcf445aa025f834f88c3f39`; functional/tested bytes 동일 SHA=`4968aeee35b4d2c779590ba02a58fa53290b5fc389ed56ea92042f9978d3802a`다.
+- 증거 `/private/tmp/opennox-script-group-delete-r110.M5n0dy`. original2,968code/650data verifier actual0, protected303rows·개인/stock 설치 불변·삭제0이다. 아래 과거 문서 suffix bytes를 보존한다. 커밋 직후 push 후 clean ARM643제품과 기존 unchanged WoundedApprentice/object-death-spawns 일반·HD headless/mock를 별도 runtime ledger로 검사한다. GUI는 기존 lifecycle 회귀이며 현대 API 직접 GUI 증거가 아니다. R107 소환물 cheat-load/R108 Troll cloud 요청은 완료했으나 natural Skeleton timeout·Con02A frozen Screen actual2·passive-food·Quest stage3 및 full-port 목표는 미완료다.
+
 ## R108: 트롤 사후 독구름의 원본 lifetime 참조와 실제 중독 검증
 
 - 기준 clean/pushed `e3e6f3dce72aac481e72b1c9c38de886460be40c`다. 기존 production은 `src/server/monster_dead_callback_549d80.go:monsterDeadTroll54A270` 한 본체만 변경한다. constructor가 반환한 cloud update-data를 CreateObjectAt/Audio/Balance 콜백 전에 보관하여 원본과 같은 cached 참조에 Duration을 저장한다. callback 이후 바뀐 참조를 다시 읽던 경계를 수정하며 nil/할당 실패·소유자/위치·수명 계산·signature/imports/본체 밖 bytes는 보존한다.

@@ -809,8 +809,10 @@ func (g nsObjGroup) Damage(source ns4.Obj, amount int, typ damage.Type) {
 }
 
 func (g nsObjGroup) Delete() {
-	//TODO implement me
-	panic("implement me")
+	g.EachObject(true, func(obj ns4.Obj) bool {
+		obj.Delete()
+		return true
+	})
 }
 
 func (g nsObjGroup) Idle() {

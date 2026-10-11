@@ -1,0 +1,74 @@
+# Enter Solo Quest directly from the main menu with an empty isolated Save.
+# There is deliberately no Host Quest click: GAME.EXE 4379F0 handles request 1
+# automatically. The observers only validate actual selector/RNG history and
+# stock generator limits; they never inject maps, stages, HP, or balance values.
+steps:
+  - action: observe-quest-map-selection
+    name: observe actual Solo Quest selector calls
+  - action: slow
+    dur: 1ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+  - action: click
+    x: 512
+    y: 364
+    name: enter Solo Quest directly
+  - action: wait
+    dt: 700
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior class
+  - action: wait
+    dt: 700
+  - action: click
+    x: 352
+    y: 608
+    name: accept character color
+  - action: wait
+    dt: 400
+  - action: click
+    x: 512
+    y: 487
+    name: dismiss Quest guide
+  - action: wait
+    dt: 530
+  - action: assert-quest-selected-map
+    count: 1
+    name: initial Solo Quest map and RNG history
+  - action: assert-quest-generators
+    count: 1
+    name: initial Solo Quest stock generator limits
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: ordinary movement in initial Solo Quest stage
+  - action: enter-quest-exit
+    name: use loaded Solo Quest exit via normal collision
+  - action: wait
+    dt: 400
+  - action: click-chapter-briefing
+    name: dismiss next Solo Quest stage briefing
+  - action: assert-quest-selected-map
+    count: 2
+    name: next Solo Quest map and RNG history
+  - action: assert-quest-generators
+    count: 2
+    name: next Solo Quest stock generator limits
+  - action: walk-quest
+    ang: 1
+    dt: 100
+    name: ordinary movement in next Solo Quest stage
+  - action: quit
+    dt: 30

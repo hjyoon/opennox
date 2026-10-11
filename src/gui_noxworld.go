@@ -762,6 +762,16 @@ func noxGameShowGameSelNative() int {
 	sub4A24C0(true)
 	sub_4A1BE0(0)
 	gui.SetAnimGlobalState(gui.AnimInDone)
+	// GAME.EXE 4379F0 handles request 1 by entering create mode, setting
+	// Quest mode, and clicking map region (408, 239). The native host path
+	// performs those same steps and chooses the Quest character picker.
+	if memmap.Uint32(0x5D4594, 1556104) == 1 {
+		if err := noxWorldNative.host(true); err != nil {
+			noxClient.Log.Error("cannot enter Solo Quest character selection", "err", err)
+			return 0
+		}
+		return 1
+	}
 	noxWorldNative.startRefresh()
 	return 1
 }

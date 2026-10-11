@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Solo Quest 메인 메뉴 감사와 자동 캐릭터 선택 진입 복원 (R115/R116)
+
+기준 clean/pushed `99c31e31ca38c4eb8700178565c843646d6b6e4d`에서 메인 메뉴 ID131 → 연결 화면 → 퀘스트 호스팅 → 저장 캐릭터/새 클래스 선택 → 색상 → 안내 → 첫 맵/다음 단계 경로를 대조했다. unchanged GAME.EXE SHA=`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a` 및 기존 봉인 Nox World 여섯 함수의 identity를 확인했다. 원본 `004381DD..00438230`은 request1에서 create mode·Quest flag·map region `(408,239)`를 자동으로 선택한다. native `noxGameShowGameSelNative`에는 이 처리가 빠져 일반·HD 모두 서버 목록에서 수동 Host Quest 클릭을 요구했다. 이번 기능 변경은 이 기존 본체 하나에서 request1을 기존 native host 경로에 연결하는 10줄만 추가하며 signature/imports/본체 밖은 불변이다. 새 helper나 원본 함수/range/manifest를 추가하지 않는다.
+
+새 `scripts/e2e/solo-quest-new-warrior.yaml` SHA=`7d017da6171cf64a822bd51f846a19db932ef73f59a5a4b6ec403cfb9dd9d757`는 별도 Host Quest 입력 없이 빈 isolated Save에서 실제 Solo Quest → Warrior → 색상 → 안내 → 두 단계의 이동/exit를 실행한다. 첫 compiled RED는 첫 맵의 verified selection0으로 actual2이며 native SIGSEGV가 아니다. 의도한 클래스 클릭이 당시 서버 목록의 Host Quest로 해석된 순서도 원문에 남겼다. 이후 YAML/기존 입력/HP/RNG/WAIT/timeout/PNG/golden은 수정하지 않았다. 같은 frozen 시나리오의 일반·HD GREEN은 각각 actual0, 자동 host가 클래스 클릭보다 앞서고 단계별 실제 selector 이력·Logic RNG/Other/history·stock generator cap·이동을 검증했다. 기존 멀티플레이 수동 Host Quest의 map-oracle20단계 시나리오도 그대로 actual0이며 일반 server discovery 경로는 유지된다.
+
+전체 일반/HD/실제cgocheck2 각각51,480pass/41skip/38packages, server50,641pass/7skip/35packages·actual0이다. R114의 모든 test identity/action/횟수 및 package terminal과 동일하다. 관련 Nox World/save 선택/Quest map reference 회귀는 실제 cgocheck2 count3도 통과했다. 원본 자산/개인 Save/config·기존 공개 YAML/PNG/golden/manifest 불변과 단일 본체 밖 동일 바이트는 private ledger에서 따로 확인한다. 증거는 `/private/tmp/opennox-solo-quest-audit-r115.SdXmgf`와 `/private/tmp/opennox-solo-quest-entry-r116.g9eLAR`에 보존한다. 커밋·즉시 push 후 clean ARM64 제품 metadata와 frozen 자동 진입 실행을 별도로 확인한다.
+
+완전한 원본 동일성은 아직 아니다. R115에서 Esc가 돌아가지 않는 keyboard-focus 경로, LP64 saved-character list의 PE32 offset46 사용으로 첫 행이 기본 선택되지 않는 문제, 원본 ArnaMain 연결/animation·expansion guard 누락을 확인했다. 마지막 둘의 exact animation timing과 expansion-absent 오류 runtime은 미실행이며 이번 변경 범위가 아니다. 실제 Stage2 저장 캐릭터를 검증된 마우스 선택으로 Load했을 때 Stage1/다른 맵으로 시작한 진단 timeout actual2도 보존한다. 원본 세션 initializer 역시 퀘스트 상태를 reset하므로 전체 원본 복원 의미가 확인되지 않은 이 관찰을 확정적인 원본 차이로 분류하지 않는다. original Windows 전체 GUI 실행·pixel-exact·실제 음향 동등성과 corrupted-save/모든 실패 branch는 UNPROVEN이다. R115 감사 당시 source/assets 변경0과 기존 포팅 미완료 경계, 아래 과거 suffix bytes를 유지한다.
+
 ## visible LavaFountain의 native 화염 피해 분류 (R114)
 
 기준 clean/pushed `e3789507db24f36ac8b284ac5461b3674f01e87b`다. NewPlayer/type713/class2621444/flags16777732, source==weapon LavaFountain/type788/class12582912/subclass0/flags16777748, raw3/damage_type1의 정확한 보고 형태다. IMMOBILE|VISIBLE_ENABLE(`0xc00000`)은 기존 LavaFountain3의 DANGEROUS|IMMOBILE(`0x410000`)과 다르다. 기존 `src/server/player_damage_world_flame_4e17b0.go:playerDamageWorldFlameShape4E17B0` 한 본체만 수정해 새 stationary-visible FLAME subset을 공통 PlayerDamage/DefaultDamage 경로에 수용한다. 이름/ID·피해량/유형·HP·불 면역은 수정하지 않으며 units/weapon/wand/missile·다른 damage types는 계속 배제한다. signature/imports/본체 밖·기존 테스트/시나리오/PNG/golden/원본 자료/Save/config는 불변이다.

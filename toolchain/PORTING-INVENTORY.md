@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 공개 스크립트 RoamFlag 연결과 ARM64 AI 회귀 검증 (R87)
+
+미구현 panic이 남아 있던 ns/v4의 단일 객체·그룹 `SetRoamFlag`를 연결했다. `5030576b7a6f315e91eeb7f765b6ada4c788720a`는 기존 `nsObj.SetRoamFlag` 본문 하나만 바꾸어 `SetRoamFlag515C80(uint8(flags))`를 호출하고, `f9d28d684b484785a35f995bd1bfda9023e06ed8`는 기존 `nsObjGroup.SetRoamFlag` 본문 하나만 바꾸어 classic SCRIPT03과 같은 `ForEachGroup502670` object 순회를 사용한다. 각 기능 커밋에는 새 테스트 파일 하나만 추가했다. 시그니처·import·다른 기존 본문·기존 테스트는 그대로다. 이전 classic builtin은 이미 연결되어 있었으며 이번에 재구현하거나 변경하지 않았다.
+
+단일/그룹 모두 수정 전 실제 `panic: implement me`를 재현하고 수정 후 엄격 CGo/count3으로 검증했다. 초기 단일 객체 테스트의 컴파일 실패도 보존했으며, fixture의 VM 선택을 수정한 뒤 별도 compiled-red를 기록했다. C 소유 4GiB 초과 객체·update·그룹·item에 대해 native int/음수·ABI32 상위 비트 ID·중첩/중복 그룹·nil/누락/잘못된 kind·destroyed/nonmonster·update 없는 객체·그룹 밖 객체를 검사한다. 단일 경로는 50 identity/150 pass, 그룹과 기존 순회 회귀를 합친 경로는 97 identity/291 pass이며 fail0/skip0다. 전체 객체·그룹/list·몬스터 update byte를 비교하여 대상 `Field333`의 하위 1바이트 외 변경이 없음을 확인했다. 실제 SCRIPT03 parser/resolver/builtin 결과와 ns/v4 결과도 같으며 RNG·AI action·aggression·WAIT·HP를 고쳐 통과시키지 않았다.
+
+clean 기능 revision `f9d28d684b484785a35f995bd1bfda9023e06ed8`에서 Go1.26.5 일반·HD(highres)·실제 cgocheck2 전체 테스트는 각각 49,342 pass/41 skip/38 package, server 전체 테스트는 48,578 pass/7 skip/35 package이고 모두 actual0/fail0다. 기존 조건부 skip을 실행했다고 주장하지 않는다. 별도 실제 cgocheck2+race+checkptr2/count3은 116 identity/348 pass/4 package·fail0/skip0·actual0이다. 여기에는 보고된 NPC1343/subclass69778 → Skeleton1314/subclass70210, Sword1174의 raw3/type7을 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP로 호출하는 회귀가 포함되며 매 실행 HP `2000→1997→1994→1991`이다. 이 피해 수정은 기존 `15ae300d3bfa8af59932c01e236e55c2bbbe53fc`의 유지 검증이며 이번 두 본문 변경의 새 피해 로직이 아니다.
+
+공식 client·client-hd·server를 darwin/arm64 Mach-O로 빌드했다. 실제 실행한 GUI 바이너리까지 총6개를 Go1.26.5·위 clean revision·`vcs.modified=false`로 검증했다. 변경하지 않은 `host-game-ai-first-attack.yaml`은 일반·HD 모두 headless/mock/audio-handles=false에서 actual0이며 각각16개 조건에서 stock Spider/Troll/Urchin/NPC가 피격 전 스스로 enemy/FIGHT를 획득하고 실제 HP 감소·client damage delta·native drawable을 만들었다. 기존 fixture의 위치·방향·durable HP2000·NPC aggression/equipment 설정은 유지하며 SeenEnemies/CurrentEnemy/FIGHT·피해 callback을 주입하지 않는다. 이는 배치된 조건의 선제공격 검증이지 전체 자연 캠페인 전투 인증이 아니다.
+
+기존 `host-game-ai-script-slot-reuse.yaml`은 byte-identical private copy(SHA-256 `35476b0f8e50c9a5c16fa5bd63f11356fbc05ba564b84509e41e00f96b7f3976`)로 일반 headless/mock 실행해 actual0이다. 기존 `Screen`이 없는 PNG를 자동 생성하므로 출력만 private 경로로 격리했으며 원본 YAML/golden은 바꾸지 않았다. Troll/NPC × simple/linked의4조건에서 Move/Wander 각각64 ordinary tick·native slot 재사용·drawable·HP 불변을 확인했다. 해당 GUI는 기존 Move/Wander 회귀이지 새 ns/v4 RoamFlag 호출을 GUI에서 직접 실행한 증거가 아니다. 선제공격 PNG32개와 script PNG4개를 보존했고 NPC 선제공격 일반/HD2개 및 script4개의1024×768 진단 화면을 직접 확인했다. private script PNG 생성은 기존 고정 golden 비교의 통과로 계산하지 않는다.
+
+전용 서버는 검증한 제품으로 기동하여 `so_beach→estate→trilevel→estate`의3맵 전환·4회 실제 mainloop/game tick 증가·인증된 콘솔 quit 후 process exit0을 확인했다. GUI/server wrapper의 실제 종료를 모두 소비한 뒤에만 문서를 덧붙였다. runtime 전후 전체 source/protected/personal checkpoint는 동일하고 stock 자산 checkpoint도 동일하다. private receipt는 `/private/tmp/opennox-script-roam-r87.IYOmJ3`; `audit-runtime-v1` actual0 stdout SHA-256 `9f102ef26b50cac6abd63da37f7e0d51e662f15cb8e198ddc4b4c6a513150544`다. 기존 실패 로그·자산·캐시를 삭제하지 않았다. passive-food와 고정 Quest3단계 기대맵 불일치는 여전히 미해결이며 이번 연결로 해결되었다고 주장하지 않는다. 전체 포팅 목표도 아직 미완료다.
+
 ## Quest 20단계의 읽기 전용 런타임 감사와 NPC Sword 회귀 확인 (R86)
 
 테스트 대상은 clean `7ad4f63155e054142b4852a2023bad776bf53717`이다. 변경하지 않은 공개 고정 `host-quest-twenty-stages.yaml` 재실행은 actual2/43.868초이며 처음 실패는3단계다. 기대 `g_lotdd`와 실제 `g_crypts`가 다르지만 실제 플레이어는 connected·loading=false·observer=false·briefing=false·wire2·phase3·HP450/450이다. 당시 native selector는 Logic2754→2755·Other3905·clock1002·last0에서 `G_Crypts.map`을 골랐다. 로그 SHA-256 stdout `52c7e45905e7a8fd1b73f15083dce58df2adb180d2b764be81db0b68899b1bf0`, stderr `68284004fd7aef79e8370c30559880db1f5e98bcf76a021bb259119ee517056c`를 보존했다. 고정 gate의4..20단계는 이 실행에서 미도달이며 기대 맵·golden·RNG 소비·WAIT·timeout을 변경하지 않았다.

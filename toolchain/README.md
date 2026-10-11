@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R87: 공개 RoamFlag 스크립트 API와 clean ARM64 제품 검증
+
+ns/v4 단일 객체와 그룹의 `SetRoamFlag` panic을 실제 호출로 재현한 뒤 각각 기존 함수 본문 하나씩만 변경하여 native low-byte store/원본 no-stop 그룹 순회에 연결했다. 기능 커밋은 `5030576b7a6f315e91eeb7f765b6ada4c788720a`와 `f9d28d684b484785a35f995bd1bfda9023e06ed8`이며 기존 classic builtin·기존 테스트·기대값·자산은 변경하지 않았다. 새 C 소유 high-address 테스트는 중첩 그룹/ABI32 ID·nil/destroyed/nonmonster·wide/음수 flag에서 전체 객체/list/update byte 불변과 실제 SCRIPT03 결과 일치를 확인한다. 그룹 포함 strict/count3은97 identity/291 pass·fail0/skip0이다.
+
+같은 clean 기능 revision에서 일반·HD·strict 전체 테스트 각각49,342 pass/41 skip, server48,578 pass/7 skip이며 actual0/fail0다. 조건부 기존 skip은 미실행으로 남긴다. 별도 실제 cgocheck2+race+checkptr2/count3은116 identity/348 pass·fail0/skip0이고, 보고된 NPC Sword raw3/type7 → Skeleton의 실제 C 체력 `2000→1997→1994→1991`을 유지한다. 공식 일반/HD/서버 제품3종과 실제 GUI 실행 제품을 Go1.26.5·darwin/arm64·위 revision·clean metadata로 검증했다.
+
+headless/mock 일반·HD의 기존 선제공격16조건씩은 actual0이며 enemy가 먼저 맞지 않은 상태에서 스스로 대상을 획득하고 실제 HP/client delta를 만들었다. 기존 배치·durable HP·NPC aggression/equipment fixture를 바꾸지 않았다. 기존 Move/Wander4조건은 동일 YAML을 private copy로 실행해 actual0·ordinary tick·native slot 재사용·HP 불변이다. 이 private copy는 `Screen`의 자동 PNG 생성이 저장소에 쓰이지 않도록 격리한 것으로 기존 golden 비교를 대신하지 않는다. GUI는 기존 AI 경로의 회귀이고 새 ns/v4 API는 직접 native/SCRIPT03 비교 테스트로 검증했다. 전용 서버는 기동·3맵 전환·4회 loop/tick 증가·실제 콘솔 quit exit0을 통과했다.
+
+모든 runtime wrapper 종료 후 source/protected/personal 및 stock checkpoint의 불변을 확인하고 문서만 덧붙였다. receipt는 `/private/tmp/opennox-script-roam-r87.IYOmJ3`, runtime audit stdout SHA-256은 `9f102ef26b50cac6abd63da37f7e0d51e662f15cb8e198ddc4b4c6a513150544`다. passive-food·고정 Quest 기대맵 불일치 및 전체 포팅 목표는 아직 미완료다. 이 연결을 음식/Quest 해결이나 전체 Windows 월드 동등성으로 확대 해석하지 않는다.
+
 ## R86: Quest 20단계 런타임 관찰과 NPC Sword 피해 재검증
 
 기존 clean revision `7ad4f63155e054142b4852a2023bad776bf53717`에서 변경하지 않은 보조 `host-quest-twenty-stages-map-oracle.yaml`을 일반·HD ARM64/headless/mock으로 각각 실행해 actual0을 확인했다. 각 실행은 실제 선택 맵과 로드된 맵의 일치, 20단계 플레이 가능 상태·generator 설정, 19회 일반 입력 이동, 19회 exit callback 전환, 5단계 Hecubah/Necromancer·20단계 Hecubah 생존을 관찰했다. exit 진입은 기존 시나리오의 명시적 위치 배치 fixture이며 전체 자연 Quest 전투 완료 주장이 아니다.

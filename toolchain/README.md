@@ -1,5 +1,13 @@
 # Go 도구체인 정책
 
+## R92: 객체 그룹 Wander 복원과 NPC Sword 피해 유지 검증
+
+- 기능 `5e0e66f47feb04b8979e9abf6b95e3dd036dd585`는 기존 `nsObjGroup.Wander` 본체 하나만 변경하고 새 테스트 파일만 추가했다. frozen classic GroupWander와 같은 recursive 멤버별 `obj.Wander()` dispatch를 복원하며 signature/imports/본체 밖·기존 테스트/시나리오/자산은 불변이다. 커밋 바로 다음 도구로 push actual0을 확인했다.
+- 새 C-owned 고주소 matrix는7 group×4 flag×3 initial action의84 leaf와 root/malformed lookup을 합친 **86 identity**다. nested/missing/duplicate/nonobject 및 eligible/dead/destroyed/player 멤버, 전체 record bytes, recycled native waypoint slot과 roam flag 보존을 실제 public handle/API·SCRIPT03 classic VM에서 비교한다. real C group entry·중복 callback 순서/횟수·전체 원본 world는 **UNPROVEN**이다.
+- 최초 missing first-child fixture fault 두 actual1과 v2 compile overflow actual1은 compiled target red로 세지 않고 보존했다. 새 fixture를 분리해 기존 malformed lookup fault도 검사했으며, compiled v3 red **actual1·1 pass·85 test fail+1 package fail** 뒤 같은 frozen 테스트로 green86 pass·actual0을 확인했다. 일반·HD·실제cgocheck2 전체50,079 pass/41skip·38package, server49,315 pass/7skip·35package·actual0이다. 기존 ID/횟수/skip를 유지하고 새86 pass만 추가했다. strict 및 cgocheck2+race+checkptr2는 count3·183 identity/549 pass·fail0/skip0·3package다.
+- 보고된 NPC Sword raw3/type7→Skeleton은 기존 R79 복원을 두 strict lane에서 실제 C→SkeletonDamage→DefaultDamage→UnitSetHP로 다시 확인해 **`2000→1997→1994→1991`**이다. 피해 유형이나 production을 다시 바꾸지 않았다. clean ARM64 제품3개/help·GUI 제품4개까지7개 metadata를 검증했다. 일반/HD 단일 객체 Move/Wander4조건씩은64tick·native 슬롯 clear·HP 불변·actual0이며 새 group API의 live world 검증으로 확대하지 않는다. byte-identical YAML의 private Screen PNG8개는 fixed golden이 아닌 관찰 자료다. 기존 거미 전투도 frame764·거미 HP0/12·플레이어 HP14/20·actual0이고 전용 서버3맵 전환·4회 loop/tick 증가·quit exit0이다.
+- headless/mock·audio-handles=false·trace=false로 실행하고 모든 wrapper 뒤 source/protected/personal/stock 전체 rows 불변을 확인했다. 감사 `/private/tmp/opennox-group-wander-r92.U1JyAF/audit-runtime.log`는 actual0 SHA-256 `eacb30ecf6dee0035d7e5b64f6f415e046203c8e5c1ddfc90181bede58622ec2`다. 별도 Skeleton 처치 actual2·2400tick timeout은 보존·미해결이며 이번에 재실행하지 않았다. HP/seed/RNG/WAIT/공격성/입력/timeout/기대값·캐시·기존 자료를 바꾸거나 삭제하지 않는다. passive-food·고정 Quest stage3 맵 불일치 및 전체 포팅 목표도 미완료다. 상세 해시/경계는 인벤토리 R92 절에 기록하고 과거 문서 suffix bytes를 보존한다.
+
 ## R91: 시작 능력치 제한 비교와 공격 후 live sound 조회 복원
 
 - 기능 `0242df01c475c6f5e6bd3a8cc0429b053d5b8aa9`는 기존 `monsterActionMeleeUpdate532440` 본체 하나만 수정하고 새 테스트 파일만 추가했다. strike callback 뒤 원본424300 getter처럼 live class/UpdateData에서 sound set을 다시 읽으며, audio 뒤 완료 byte는 entry update에서 읽는 순서를 유지한다. signature/imports/다른 기존 본문·테스트·시나리오·자산은 그대로이고 커밋 직후 즉시 push actual0 후 clean ARM64 제품을 빌드했다.

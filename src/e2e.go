@@ -11189,6 +11189,7 @@ func e2eRun() {
 	if e2e.recording {
 		return
 	}
+	e2eCombatTraceTick()
 	if len(e2e.steps) == 0 {
 		if e2e.done != nil {
 			close(e2e.done)

@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 상점 문구 API의 clean 제품 및 혼합 GUI 결과 보존 (R124)
+
+기능 `6d4810e633bc330ed3db1f5dd4e6b86798181937`는 R123의 기존 localized API 한 본체+동결 새 테스트+기록만 커밋하고 다음 도구에서 즉시 origin `port/go1.26-multiarch`로 push한 revision이다. clean 공식 ARM64 일반/HD/server3제품의 build·Mach-O·Go1.26.5/darwin/arm64/full revision/`vcs.modified=false`·각 help actual0과 같은 revision GUI4제품 metadata도 확인했다. R123의 strict1122pass 및 네 모드 전체 회귀 성공은 유지되며 이번은 동작 코드 변경이 아닌 후속 기록이다.
+
+unchanged `solo-warrior-dialog-movement.yaml`의 일반/HD headless/mock는 각각 actual0이다. stock War01a 대화 중30프레임 같은 실제 우클릭 입력에서 server/client 위치와 velocity0·NoUpdate 동기화를 확인했고, 실제 Done 뒤 같은 입력으로 `(4404.5,2104.5)→(4432.8203,2104.5)` 이동을 확인했다. 정상 cleanup·관련 memory fault/unsupported branch0이다. 새 문구 API를 해당 GUI에서 직접 호출했다거나 실제 음향/Repeat를 검사한 증거는 아니다.
+
+unchanged `host-game-server-shop-icons.yaml`는 일반/HD 모두 native shop active/item RedPotion3/cost40·client shop 상태까지 진행했지만 첫 `host game server shop` Screen에서 actual2다. 후속 구매/판매/수리·금액 아이콘 단계는 실행되지 않아 UNPROVEN이다. 기준에는 비어 있는 인벤토리 인물·장비가 실제 화면에는 표시되지만 이 관찰을 원본 Windows 화면 동일성 인증이나 기준 PNG 갱신 사유로 삼지 않는다. 새 실제 got/diff는 생성 전 source checkpoint에서 없던 두 파일임을 확인하고 저장소 밖 private `shop-normal-frames`/`shop-hd-frames`로 이동·보존했다. 원본 expected PNG는 불변이다.
+
+기능 전 코드와 같은 보존된 clean `c368d56a9946f70e7f8da63f6fac9f03c10f4705` 일반 제품도 같은 frozen 입력의 첫 Screen에서 actual2다. 이 제품에서 작업 parent `4d34521fbbbe76e4fdadc2e8d5f96d2b0f50e19a`까지의 유일한 diff는 문서다. baseline 제품의 동결 SHA=`36f716f5ea7ce13a2bf15fc1434f6811f38f72aefc5c5b8bba862b4c34b6babc`를 확인하고 build만 생략한 별도 격리 wrapper로 실행했다. baseline/현재 normal 실제 PNG363759B는 byte-identical/SHA=`6e3782dd122ea1c53c06f838e81809dc38a476d97d755a6fb9b0a6085aa5a677`다. 따라서 이 첫 화면 차이는 localized API 복원으로 새로 생긴 회귀가 아니다. baseline wrapper v1의 잘못된 문자열 anchor 준비 실패 actual1과 v2의 macro 접근 교정도 별도 보존하며 기대값/입력/WAIT/RNG/제품 bytes를 바꾸지 않았다.
+
+동결된 R123 strict postcommit 감사는 GUI 전부 actual0을 요구하므로 실제 actual1이다. 이 실패를 숨기거나 helper를 덮어쓰지 않았다. 별도 qualified audit actual0/SHA=`cadaff9a10a54de68ce0a328e9b348355d13680c876e828dceb2e4047844c9c9`는 `all_GUI_green:false`, GUI2개의0/2개의2 및 baseline2·준비 실패1·원 strict audit1을 명시하는 증거 무결성 검사다. GUI GREEN 전환이나 전체 목표 완료가 아니다. runtime/source/protected/stock/personal 전체 checkpoint는 R123 문서 단계와 byte-identical이고 Cache·기존 제품·실패 자료·개인 Save/config 삭제0이다. 증거 `/private/tmp/opennox-shoptext-r123.NJvD7q`의 모든 terminal/PNG/runtime을 보존한다.
+
+이 문서만 삽입하여 기존 suffix bytes를 보존하고 커밋 직후 push한다. 최신 docs-only revision의 clean ARM643제품 build/metadata/help는 별도 후속 receipt로 확인하며 실제 GUI는 위 기능 revision의 관찰로 귀속한다. nonlocalized 문자열 API·상점 frozen Screen 및 그 이후 미실행 단계·Solo Quest SKU/WOL/마법사 Screen·기존 Skeleton/Con02A/passive-food/Quest stage3·원본 Windows 전체 runtime/실제 장치·전체 ARM64 포팅 목표는 미완료 상태를 유지한다.
+
 ## 공개 스크립트 상점 문구 API의 미구현 panic 제거 (R123)
 
 기준 clean/pushed `4d34521fbbbe76e4fdadc2e8d5f96d2b0f50e19a`다. 기존 production은 `src/script_ns_dialog.go:(noxScriptNS).SetShopkeeperText` 한 본체만 바꾼다. 공개 v3/v4 localized API의 unconditional `panic("implement me")`를 기존 객체 `SetShopText`에 연결하고 nil 객체는 반환한다. signature/imports/본체 밖 bytes, 기존 객체 setter·SCRIPT03 builtin195·다른 API·테스트·YAML/PNG/golden/oracle manifest·자산·Save/config는 불변이다. 현대 API의 연결 누락을 고친 것이며 원본 Windows 전체 게임을 실행한 증거는 아니다.

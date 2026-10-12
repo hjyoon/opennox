@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 공개 객체 SetTeam(nil)의 실제 native 팀 해제 경로 복원 (R130)
+
+기준 clean/pushed `97a73644f26e10f500a9906795c077b3cf461aef`다. 기존 production은 `src/object.go:(*Object).SetTeam` 한 본체만 변경한다. 무시하던 nil-team 요청을 실제 `legacy.Nox_xxx_netChangeTeamMb_419570(obj.TeamPtr(), obj.NetCode)`에 연결한다. ID만 강제로 지우거나 별도 membership/packet/relation 구현을 만들지 않으며 기존 native team service의 멤버 수·플레이어/소유 객체 관계·Important packet·빈 팀 삭제/이름 초기화·stale/unteamed guard를 유지한다. nil receiver+nil team의 기존 무접근과 non-nil assignment 본문은 그대로이며 imports/signature/본체 밖 bytes·다른 기존 production은 불변이다.
+
+새 `object_team_clear_native_419570_test.go`는 C service와 public setter를 별도 실제 subprocess에서 실행한다.13조건은 offline monster·host-only·online nonhost·online host/high netcode·online/offline player와 Monster/Player/Simple 소유 객체·빈 팀 제거2/이름 유지1·stale ID·unteamed·nil receiver·기존 non-nil 지정이다. 실제 C-owned object/player/update/team, native membership sidecar와 Important→NetList wire를 사용하고 결과/송신/관계 hook을 공급하지 않는다. 전체 record의 byte delta·팀/멤버 수·활성 상태·packet 순서/sequence/payload·반복 호출 불변 및 native fixture 주소4GiB 초과를 비교한다. player-owned와 monster-owned의 관계를 동일한 것으로 가정하지 않으며 현재 C service와의 wrapper parity 범위다.
+
+R129의 초기 team fixture/잘못된 owned-player 관계 기대 및 실패 버전은 private 경로에 보존했다. 새 fixture는 실제30FPS service를 초기화하고 malloc-only `alloc.New` 뒤 전체 update bytes를 명시적으로 초기화한다. 첫 compiled Go1.26.5 cgocheck2 RED는4pass/10test-fail/1package-fail/14IDs·actual1이다. 실제 C 통제는 모두 성공하고 public nil 해제9조건만 noop으로 실패했다. stale/unteamed/nil/non-nil 지정4통제는 통과했다. 이후 새 테스트11807B/SHA=`5b8a0169f106e332739db6aa52cef971f41564622f64cf64c8d83a5581e9c155`는 불변이며 같은 cgocheck2+race+checkptr2 count3 GREEN은42pass/0skip/14IDs·actual0이다. 기대값/입력/flags/HP/RNG/timeout/golden retune은 없다.
+
+전체 일반/HD/실제cgocheck2는 각각55,113pass/41skip/38packages, server는54,274pass/7skip/35packages·actual0이다. R129의 모든 기존 ID/action/횟수/skip/package terminal을 유지하고 새14pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. original419570 disassembly의 NULL/active-team/membership gate·Host+Online 송신·418E40·빈 팀 삭제/이름 분기를 정적 확인했다. 현재 C의 WOL 성공 부가 서비스는 미구현이므로 original WOL/전체 Windows world 실행 동등성은 주장하지 않는다.
+
+통합 test audit actual0/SHA=`e128d65247df2e933b3e77f81757838a566d4511177b2d99719c88e0d49de0fb`는 한 본체+새 테스트 차이/source6266→6267files와 protected304files·stock1556files·개인1562files/Save/config 전체 checkpoint 불변을 확인했다. 문서는 제목 직후 삽입해 이전 suffix bytes를 유지한다. Cache·실패 자료·기존 제품·개인 Save/config 삭제0이며 증거 `/private/tmp/opennox-object-team-r130.XxGZR6`에 모든 terminal/동결 입력/관찰 helper를 보존한다.
+
+커밋 다음 도구에서 즉시 origin `port/go1.26-multiarch`로 push하고 해당 clean revision의 공식 ARM64 일반/HD/server3제품 build·metadata·Mach-O·help 및 unchanged `solo-quest-new-warrior.yaml` 일반/HD headless/mock 두-stage 회귀·공식 dedicated-server3-map/quit 실행은 별도 후속 receipt로 검증한다. GUI는 selector/RNG/history·generator·실제 이동/출구 collision 회귀이며 새 API 직접 GUI 호출이나 원본 pixel/audio 인증으로 확대하지 않는다. 격리 runtime/Save/maps/config를 보존한다.
+
+`nsObj.SetTeam(nil)` wrapper는 아직 nil을 무시하므로 별도 한-본체 후속 변경이 필요하다. Solo Quest SKU 검사 두 곳·WOL 성공/정리·Wizard frozen Screen, 기존 상점 Screen/Con02A·Skeleton/passive-food/고정 Quest stage3 실패 및 전체 원본 runtime/실제 음향/remote transport와 전체 ARM64 포팅 목표는 미완료/UNPROVEN 상태로 유지한다.
+
 ## CGo 플레이어 ID 조회의 raw DWORD 비교와 원본 슬롯 기록 복원 (R129)
 
 기준 clean/pushed revision은 `471a237fd89be8f2164d19e7d6b9f6bb26d56acf`다. 기존 production은 `src/legacy/player.go:nox_common_playerInfoGetByID_417040` 한 본체만 변경한다. CGo `int32`를 LP64 `int`로 부호 확장해 양수 `uint32 NetCodeVal`과 비교하던 실패를 raw DWORD equality로 복원하고, 원본처럼 첫 활성 일치 슬롯의 `PlayerInd`를 실제 배열 번호로 기록한다. 기존 `ByIndRaw`로 C-owned 실제 슬롯을 순서대로 확인하여 lookup에 목록 할당을 추가하지 않는다. nil/missing 반환·첫 일치 우선·비활성 건너뛰기와 native pointer 전체 폭을 유지하며 imports/signature/본체 밖 bytes 및 다른 기존 production은 불변이다.

@@ -1217,7 +1217,10 @@ func (obj *Object) TeamEqual(tm *server.Team) bool {
 
 func (obj *Object) SetTeam(tm *server.Team) {
 	if tm == nil {
-		return // TODO: support clearing the team
+		if obj != nil {
+			legacy.Nox_xxx_netChangeTeamMb_419570(obj.TeamPtr(), obj.NetCode)
+		}
+		return
 	}
 	// TODO: check arg3 and arg5
 	legacy.Nox_xxx_createAtImpl_4191D0(tm.ID(), obj.TeamPtr(), 1, int(obj.NetCode), 0)

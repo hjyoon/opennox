@@ -275,7 +275,29 @@ func partfxDraw(p *particleFx) {
 }
 
 func muldiv(a, b, c int) int {
-	panic("TODO")
+	// 004B0020 imports Win32 MulDiv, including its signed SAR rounding
+	// quirk for denominator INT_MIN. Keep DWORD inputs on native 64-bit.
+	x, y, z := int32(a), int32(b), int32(c)
+	abs := func(v int32) uint64 {
+		if v < 0 {
+			return uint64(-int64(v))
+		}
+		return uint64(v)
+	}
+	den := abs(z)
+	if den == 0 {
+		return -1
+	}
+	half := uint64(uint32(int32(den) >> 1))
+	q := (abs(x)*abs(y) + half) / den
+	if q > math.MaxInt32 {
+		return -1
+	}
+	result := int(q)
+	if x^y^z < 0 {
+		result = -result
+	}
+	return result
 }
 
 func cfshl(x, y int) int {

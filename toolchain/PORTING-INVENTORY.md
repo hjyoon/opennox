@@ -1,5 +1,25 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 파티클 감쇠·반사의 Win32 MulDiv 미구현 복원 (R147)
+
+기준 clean/pushed `daa078d5e0f2658a3035281b817daa2b84b1c75a`다. 기존 production 변경은 `src/draw_particlefx.go:muldiv` 한 본체뿐이다. TODO panic을 원본 PE32 scalar 계약의 부호 있는 DWORD 입력·unsigned magnitude64bit product·Win32 rounding term·unsigned quotient sign-bit overflow 검사·결과 부호 적용·zero-divisor -1 반환으로 교체한다. ARM64 native int의 상위 비트를 numeric DWORD로 정규화하며 포인터를 DWORD로 축소하지 않는다. 기존 imports/signature/본체 밖 bytes·particle factory/등록/기본 update/draw/free/RNG·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다.
+
+실제 GAME.EXE 전체 SHA·PE32 magic·import table의005811A4 KERNEL32.dll!MulDiv와004B00D6/004B00E9/004B00FC 반사·004B011A/004B0130/004B0146 세축감쇠의 여섯 call bytes 및 각 분모 PUSH65536을 재검증했다. [Microsoft API 계약](https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-muldiv)의 최근접 정수·positive/negative half·오류 -1과 [Microsoft의 역사적 Win32 설명](https://devblogs.microsoft.com/oldnewthing/20120514-00/?p=7633)의 INT_MIN 분모 SAR 문제를 구분한다. 후자는 absolute DWORD0x80000000의 반쪽이0xc0000000으로 들어가므로 원래 MulDiv(1,INT_MIN,INT_MIN)=2인 특성을 보존한다. 수학적으로1로 보정하거나 Win64 kernelbase/Wine 동작을 PE32 기대값으로 바꾸지 않는다. 독립 big.Int reference와 literal 경계값은 이 문서화된32bit 알고리즘에서 도출했으며 원본 Windows DLL/게임을 직접 실행한 증거는 아니다.
+
+새 frozen 테스트2개는74IDs다.38literal cases의 부호·half 전후·넓은 product·오류·INT_MIN 분모·native64 상위DWORD aliases와14값의2744 exact-integer matrix를 검사한다. 원본 scalar 결과를 production muldiv에서 복사하지 않으며 독립 big.Int quotient/remainder와 literal SAR 특성을 사용한다. 실제 factory/default update의8감쇠 mask×bounce 유무16조합은 원래 지연·좌표·세축속도·중력·반사→감쇠 순서·expiry/free·active handle·C-owned >4GiB source drawable 전체 bytes 보존을 검사한다. 실제 hidden input은 draw를 생략하지만 update를 대체하지 않는다.
+
+동일16조합은 R146의 변경 없는 실제 noxrender pixbuffer→render upload→headless seat fixture로도 실행하여 complete pixels·상태·free를 검사한다. draw/update/allocator/result callback 교체·p.C() 강제 등록0이다. 첫 compiled strict RED2pass/72fail·actual1은 실제 MulDiv TODO panic이며 같은 동결 입력의 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN222pass/0skip·actual0다. exact matrix8232calls와 실제 headless384frames를 확인했다. 입력·expected·flags/HP/RNG/WAIT/timeout/golden retune0이다.
+
+일반/HD/실제cgocheck2 전체는 각각69776pass/41skip/38packages, server68904pass/7skip/35packages·actual0다. R146의 모든 기존 ID/action/횟수/skip/package 결과가 같고 client 새74pass·server 새57pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다. source6668→6670files의 기능 차이는 위 한 본체+새 tests2개다. 보호304files·stock1556files·개인1562files/Save/config의 whole checkpoint는 byte-identical이며 R134 Destroy patch와 기대값도 사용자 유지 선택대로 원래 worktree에 보존한다.
+
+디스크 여유 약3GiB에서 이전 사용자 캐시 정리 요청 범위로 실제 GOCACHE 경로를 확인하고 해당 `/private/tmp/opennox-trap-icons-r59.svLZQj/gocache`의 재생성 가능한 Go build/test cache만 go clean -cache -testcache로 비웠다. 약21GiB가 확보됐으며 module cache·소스·원본/개인 자료·기존 제품/실패/성공/evidence/동결 입력을 삭제하지 않았다. 이후 실제 재빌드와 전체 회귀는 위 결과로 검증했다.
+
+통합 `muldiv-test-audit.log` SHA=`18f69d765b5347d06d93011ade442283cb87aedd2fee139456e876cd9d334540`·actual0다. RED/GREEN·동결 입력·원본/수정 본체·checkpoint·cache-clean receipt·후속 제품/GUI는 `/private/tmp/opennox-particle-muldiv-r147.zFx7AX`에 보존한다. 문서는 제목 직후 삽입하여 과거 suffix bytes를 유지하고 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push한다. 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help와 unchanged conjurer spell-pet map-transition 일반/HD headless/mock는 별도 후속 receipt로 검증한다. GUI는 원래 summon/Charm/Pixie/동반자 map transition 회귀이며 위 synthetic damping/bounce 값의 직접 검사는 새 native/headless fixture다. audio-handles=false·combat-trace=false와 격리 runtime 보존을 유지한다.
+
+원본004AFD40은 active bitmap0xff를 낮은 slot부터 찾아 draw→update하고 현재 capacity를 다시 읽어 다음slot 이후를 검색한다. 원본 allocator는 가장 낮은 inactive slot을 재사용하므로 Go map iteration이나 opaque handle 정렬만으로 full order 동등성을 인증할 수 없다. 이는 다음 독립 검증으로 남긴다.004AFDDE의 type field1 감소 가설도 실제 instruction을 확인해 철회했다. 감소는 EAX 임시값뿐이고 callback 전 field1 store가 없어 현재 Go field1==1 조건과 callback 관측값이 맞는다. 해당 조건을 수정하지 않는다.
+
+이번은 MulDiv panic 복원이며 particle active-slot allocation/sweep order·R134·Solo Quest SKU/WOL·raw dialogue·PLAYER SetColor·다른 historical frozen 실패와 original Windows 전체 runtime/pixel/가청 음향/remote transport 및 전체 포팅 목표는 미완료/UNPROVEN이다.
+
 ## 새 파티클의 자동 활성 등록과 실제 headless lifecycle 복원 (R146)
 
 기준 clean/pushed `a83a42c5a8ce5c5e09649f907e5be309477c9908`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).newParticlefx` 한 본체의 등록 분기와 주석뿐이다. 기존 pool.Get·owner 연결을 유지하고 `byHandle[p.C()]=p`로 새 opaque native handle을 할당·등록하며, 이미 handle이 있는 실제 pool 재사용도 다시 등록한다. Go callback/reference를 가진 particleFx를 C heap에 할당하지 않는다. imports/signature/본체 밖 bytes·C/free/factory/RNG/update/draw body·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다.

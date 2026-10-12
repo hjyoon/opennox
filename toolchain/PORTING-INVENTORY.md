@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## CGo 플레이어 ID 조회의 raw DWORD 비교와 원본 슬롯 기록 복원 (R129)
+
+기준 clean/pushed revision은 `471a237fd89be8f2164d19e7d6b9f6bb26d56acf`다. 기존 production은 `src/legacy/player.go:nox_common_playerInfoGetByID_417040` 한 본체만 변경한다. CGo `int32`를 LP64 `int`로 부호 확장해 양수 `uint32 NetCodeVal`과 비교하던 실패를 raw DWORD equality로 복원하고, 원본처럼 첫 활성 일치 슬롯의 `PlayerInd`를 실제 배열 번호로 기록한다. 기존 `ByIndRaw`로 C-owned 실제 슬롯을 순서대로 확인하여 lookup에 목록 할당을 추가하지 않는다. nil/missing 반환·첫 일치 우선·비활성 건너뛰기와 native pointer 전체 폭을 유지하며 imports/signature/본체 밖 bytes 및 다른 기존 production은 불변이다.
+
+새 `player_info_get_by_id_417040_native_test.go`는 8개 raw code×3개 슬롯(0/17/31)×3개 활성값(0/1/2)의72조건에서 duplicate 첫 일치·전체32 record bytes와 selected index store를 검사한다. 별도 inactive/missing 조건과 실제 C `419570→417040→418E40` 소비자5조건 및 부모를 합쳐80IDs다. 공급한 player/membership/관계/송신 결과 hook 없이 실제 registry·team·native Important queue를 사용한다. 실제 queued player refresh `36` 및 team removal `c4 02 code:u32LE`·packet metadata·중복 탈퇴의 추가 송신 없음·Player/UpdateData bytes 보존과4GiB 초과 native fixture 주소를 확인했다. 이는 실제 C 소비자 fixture이며 GUI/network peer/full original world 인증으로 확대하지 않는다.
+
+최초 준비 단계의 `Active` uint32/byte compile 오류와 이전 team fixture 실패 버전/terminal은 private 증거에 보존했다. 실제 선언에 맞춰 입력0/1/2를 byte로 교정한 뒤 첫 compiled strict RED는3pass/77test-fail/1package-fail·actual1이다. 상위 bit ID의 player refresh 누락과 전체72조건의 index store 누락을 확인했다. 그 후 새 테스트7646B/SHA=`7102e74fe949200b8a400af28c49c962043a9df6b175f8812e758048c6ac2204`는 불변이며 동일 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN은240pass/0skip/80IDs·actual0이다. 기대값/입력/flags/HP/RNG/timeout/golden retune은 없다.
+
+전체 일반/HD/실제cgocheck2는 각각55,099pass/41skip/38packages, server는54,260pass/7skip/35packages·actual0이다. R125의 모든 기존 ID/action/횟수/skip/package terminal을 그대로 유지하고 새80pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. 전체 GAME.EXE SHA 확인과417040의32bit 입력·활성 후 raw equality·원본 stride/bound·nil 반환·선택 index byte store를 정적 재확인했으며 원본 PE 실행과 native Active의 원본 DWORD 상위 byte 동등성은 주장하지 않는다.
+
+통합 test audit actual0/SHA=`704258060ac3ce0b3100c9c58981e92dd6dbefbfe71e1c724edf3c646acdc81e`는 본체1개+새 테스트1개의 기능 차이와 source6265→6266files를 확인했다. protected304files·stock1556files·개인1562files/Save/config 전체 checkpoint는 불변이고 삭제0이다. 문서는 제목 직후 삽입하며 과거 suffix bytes를 유지한다. 증거 `/private/tmp/opennox-team-removal-r129.vc6YpR`에 모든 실패/성공 로그와 동결 fixture·관찰 helper를 보존한다.
+
+커밋 다음 도구에서 즉시 origin `port/go1.26-multiarch`로 push한 뒤 해당 clean revision의 공식 ARM64 일반/HD/server3제품 build·metadata·Mach-O·help 및 unchanged `solo-quest-new-warrior.yaml` 일반/HD headless/mock 두-stage 회귀는 별도 후속 receipt로 검증한다. GUI는 원래 selector/RNG/history·stock generator·실제 이동/출구 collision의 회귀이며 새 고bit 조회를 GUI에서 직접 재현한 것으로 보고하지 않는다. audio-handles=false·combat-trace=false·격리 Save/maps/config를 사용하고 runtime을 보존한다.
+
+`Object.SetTeam(nil)`과 ns wrapper의 누락된 해제는 아직 미구현이며 이번은 그 실제 C 소비자에서 드러난 공통 조회 선행 결함만 복원했다. Solo Quest 확장팩 SKU 검사 두 곳·WOL 성공/정리·Wizard frozen Screen, 기존 상점 Screen/Con02A·Skeleton/passive-food/고정 Quest stage3 실패 및 원본 Windows 전체 runtime/실제 음향/remote transport와 전체 ARM64 포팅 목표는 미완료/UNPROVEN 상태로 유지한다.
+
 ## 현재 ARM64 제품의 Quest 20단계 및 보존된 전투·음식 실패 재검증 (R126)
 
 테스트 revision은 clean/pushed `8adefafe11ed20c417f44392464ff385d05731e5`다. 이번은 게임 동작 수정이 아닌 읽기 전용 실행 감사이며 production·기존 테스트/YAML/PNG/golden/oracle manifest·자산·개인 Save/config는 변경하지 않는다. 실제 GUI6제품 모두 Go1.26.5/darwin/arm64/full revision/`vcs.modified=false`를 확인했다. 모든 실행은 headless/mock/audio-handles=false이고 isolated runtime을 삭제하지 않는다. Skeleton 관찰 재실행만 기존 read-only 240-frame combat trace를 켰으며 같은 동결 시나리오·입력/HP/타이밍/timeout을 유지한다.

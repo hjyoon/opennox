@@ -215,8 +215,17 @@ func nox_common_playerInfoCount_416F40() int32 {
 
 //export nox_common_playerInfoGetByID_417040
 func nox_common_playerInfoGetByID_417040(id_cgo int32) *nox_playerInfo {
-	id := int(id_cgo)
-	return (*nox_playerInfo)(GetServer().S().Players.ByID(id).C())
+	players := &GetServer().S().Players
+	for i := 0; ; i++ {
+		p := players.ByIndRaw(ntype.PlayerInd(i))
+		if p == nil {
+			return nil
+		}
+		if p.IsActive() && p.NetCodeVal == uint32(id_cgo) {
+			p.PlayerInd = byte(i)
+			return (*nox_playerInfo)(p.C())
+		}
+	}
 }
 
 //export nox_common_playerInfoFromNum_417090

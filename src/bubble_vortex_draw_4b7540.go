@@ -267,10 +267,27 @@ func (c *Client) drawVortex4B9F50(dr *client.Drawable, vp *noxrender.Viewport) i
 		c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
 		return 0
 	}
-	pointColor := noxcolor.RGBA5551(state.pointColor)
-	c.r.DrawGlow(state.point, pointColor, state.glowSize, state.glowSize+2)
+	// The existing state colors describe the glow's first color slot. The
+	// original point and tail use the independent second slot (+436), with
+	// gray selected separately when each point is behind the orbit center.
+	effect := dr.UnionEffect()
+	center := image.Pt(int(int32(effect.Field_110)), int(int32(effect.Field_111)))
+	centerY := vp.ToScreenPos(center).Y - int(int16(dr.ZVal))
+	pointColor := noxcolor.RGBA5551(effect.Field_109)
+	tailColor := pointColor
+	if state.point.Y < centerY {
+		pointColor = noxcolor.RGBA5551(vortexGray4B9F50)
+	}
+	if state.tail.Y < centerY {
+		tailColor = noxcolor.RGBA5551(vortexGray4B9F50)
+	}
+	c.r.DrawGlow(state.point, noxcolor.RGBA5551(state.pointColor), state.glowSize, state.glowSize+2)
+	c.r.Data().SetColor2(pointColor)
 	c.r.DrawPoint(state.point, state.pointRadius, pointColor)
-	c.r.DrawLine(state.point, state.tail, noxcolor.RGBA5551(state.tailColor))
+	c.r.AddPoint(state.point)
+	c.r.AddPoint(state.tail)
+	c.r.Data().SetColor2(tailColor)
+	c.r.DrawLineFromPoints(tailColor)
 	applyVortexDrawState4B9F50(dr, state)
 	if !state.alive {
 		c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)

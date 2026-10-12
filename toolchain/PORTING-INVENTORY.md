@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 구형 Lua Mute의 native 말풍선 제거 lifecycle 연결 (R136)
+
+기준 clean/pushed `c38ce44f825897be7e6f573327802bb97ac542a2`다. Go1.26.5가 .git 파일 worktree에 VCS metadata를 붙이지 않는 경계를 피하려고 같은 커밋의 conventional .git directory를 갖는 별도 clean clone을 사용한다. 기존 production 변경은 `src/script_compat.go:(scrObject).Mute` 한 본체뿐이다. nil underlying Object는 무접근이고 실제 객체는 기존 `Object.DestroyChat`→server `Nox_xxx_netKillChat_528D00`에 연결한다. imports/signature/본체 밖 bytes·다른 production·SDK380files/workspace·기존 tests/YAML/PNG/golden/oracle manifest는 그대로다. R134 Destroy patch·frozen 기대값/실패는 원래 worktree에 보존하며 승인 없이 고치거나 이 커밋에 섞지 않는다.
+
+새 frozen v3 fixture는5classes×3flags×6net/extent cases×3recipient counts×4bubble positions×2connected×2coop의4320leaf+parent+typed-empty4322IDs다. native namespace control, legacy Game/Chatty interface, 실제 mapv0 Lua VM의 target:Mute를 각각 두 번 실행한다. 실제 C-owned >4GiB server object/player/update의 whole records, 실제 NetList의32수신자 payload와 queue, actual C allocator/list constructor로 생성한 한글/surrogate 말풍선, 기존 native MSG_CHAT_KILL 수신 decoder를 사용한다. sender/recipient/decoder/allocator/list/연결 상태 결과 hook은 없다. 연결 상태는 실제 shared scalar의 fixture 초기화이며 decoder의 원래 연결 검사 callback을 사용한다. frame37/tick60·server records/flags/list·audio는 불변이다.
+
+literal packet은 `CA <unit-code-u16LE>`이며 dynamic/static namespace, 두 dword의 invalid>=8000→0, zero/max code, static5EAD→예약DEAD 의미를 유지한다. 수신 전에는 client bubble을 직접 지우지 않으며 connected 수신 뒤 target의 head/middle/tail 제거·없는 target·두 반복·다른 namespace/무관한 bubble 유지·disconnected 무변경을 검사한다. 예약 DEAD는 원래처럼 모든 bubble을 지우며 object code를 sanitize하여 다른 의미로 바꾸지 않는다. 생존 bubble의 전체 payload/expiry/drawable/scalar bytes는 같고 linked-list의 마지막 두 native pointer slot만 원래 unlink가 바꿀 수 있다. C-created input과 실제 제거 lifecycle 증거이지 pixel draw·UDP transport 또는 stock 세계 전체의 증거는 아니다.
+
+최초 RED actual1은 새 fixture의 NetList.Init 누락으로 ResetAll→InitByInd nil fault였으며2failed IDs와 source/log를 보존한다. v2는 실제 queue init/free 두 줄만 보완했다. v2 actual1의 native-control 오판은 모든 bubble 연결이 끝나기 전에 첫 bubble의 next/prev bytes를 snapshot한 observer 순서 때문이며 원문/log를 보존했다. v3는 snapshot을 전체 native list 구성 뒤로 옮기는 두 줄만 추가한다. inputs/expected values/text/code/class/flags/HP/RNG/WAIT/timeout/golden은 바꾸지 않는다. 동일 corrected frozen v3의 baseline RED는4322fail/0pass·actual1이고 실제 native controls는 모두 정상이다. 수정 source의 실제 Go1.26.5 cgocheck2 GREEN은4322pass·actual0, 실제cgocheck2+race+checkptr2 count3은12966pass/0skip/4322IDs·actual0이다.
+
+전체 일반/HD/실제cgocheck2 각각68288pass/41skip/38packages, server67449pass/7skip/35packages·actual0이다. R135의 모든 기존 ID/action/횟수/skip/package terminal을 그대로 유지하고 새4322pass만 추가한다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. source6657→6658은 한 기존 본체+새 test 하나뿐이며 protected304files·stock1556files·개인1562files/Save/config는 전체 checkpoint 불변이다. 모든 실패/성공·동결 입력·감사 helper와 receipt는 /private/tmp/opennox-lua-mute-r136.fuRDQG에 보존한다. Cache·제품·개인 자료 삭제0이다.
+
+문서는 제목 직후 삽입해 기존 suffix bytes를 유지한다. 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push하고 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help, unchanged Solo Quest 일반/HD headless/mock 두-stage와 dedicated-server3-map/quit를 별도 후속 receipt로 검증한다. 격리 runtime/Save/maps/config를 보존한다. 후속 GUI는 이 새 Mute를 직접 호출한 증거가 아니다. Guard/raw dialogue/PlayerSetColor·R134 승인·Solo Quest SKU/WOL·다른 frozen 실패 및 원본 Windows 전체 world/pixel/가청 음향/remote transport와 전체 ARM64 포팅 목표는 미완료/UNPROVEN이다.
+
 ## 구형 Lua Say의 native 대화 패킷과 Duration 변환 복원 (R135)
 
 기준 clean/pushed `0df871c011618c3dea1cd39b35c72e42df51d9d5`다. 별도 clean task worktree에서 기존 production `src/script_compat.go:(scrObject).Say` 한 본체만 바꾼다. nil underlying Object는 무접근이며 나머지는 기존 `ChatStrTimer`로 전달한다. imports/signature/본체 밖 bytes·다른 기존 production·root go.mod/go.sum은 그대로다. R134 Destroy patch와 frozen 실패/기대값은 원래 worktree에 보존하고 승인 없는 기대값 교정이나 이번 커밋에 혼합하지 않는다.

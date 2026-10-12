@@ -113,7 +113,10 @@ func (obj scrObject) Say(text string, dur script.Duration) {
 }
 
 func (obj scrObject) Mute() {
-	panic("implement me")
+	if obj.Object == nil {
+		return
+	}
+	obj.Object.DestroyChat()
 }
 
 func (obj scrObject) Follow(targ script.Positioner) {

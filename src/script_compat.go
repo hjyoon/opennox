@@ -292,7 +292,7 @@ func (noxScriptImpl) Console(error bool) script.Printer {
 }
 
 func (noxScriptImpl) AudioEffect(name string, pos script.Positioner) {
-	// FIXME: trigger audio event
+	scriptCompatAudioEffect(name, pos)
 }
 
 type scriptGlobalPrint struct{}

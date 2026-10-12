@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 구형 Lua 효과음 API의 native 이벤트·패킷 경로 복원 (R132)
+
+기준 clean/pushed `744b3707d874aabb45a63e395e29f95f9a0a4f87`다. 기존 production은 `src/script_compat.go:(noxScriptImpl).AudioEffect` 한 본체만 바꾼다. 호출을 버리던 FIXME 대신 새 `scriptCompatAudioEffect`에서 active game의 기존 공개 namespace AudioEvent에 연결한다. 구형 Global/HostPlayer/CinemaPlayers와 같은 active-game 소유를 유지하며 이름·좌표·프레임 밖 queue/replay·억제 조건·packet 구현을 복제하지 않는다. nil Positioner는 namespace와 같은 무접근이다. imports/signature/본체 밖 bytes 및 다른 기존 production은 불변이다.
+
+새 `script_compat_audio_native_test.go`는 실제 AUD parser로5개 sound descriptor를 공급하고5가지 위치(nil/coordinates/native object/destroyed object/custom Go Positioner)×10개 이름×5가지 immediate/delayed/억제·해제 timing×loaded/unloaded의500leaf+parent501IDs를 실행한다. actual public namespace·legacy Game interface·실제 Lua VM의 Nox.Audio.Effect를 비교하고 arbitrary Go Positioner는 Lua constructor가 없어 두 Go interface 경로로만 검사한다. 실제 C-owned >4GiB event·Object/Player/Update/name, 초기화된 event 필드·정확한 Pos 읽기·반복 요청, 실제501FD0→NetList4-byte payload/수신자와 관련 native record bytes/frame 불변을 확인한다. sound lookup/event creation/packet enqueue/result hook은 없으며 AUD sample 이름 test는 선언된 synthetic 입력이지 stock 음원·가청 출력의 증거가 아니다.
+
+첫 compiled RED는355pass/146test-fail/1package-fail/501IDs·actual1이다. 실제 namespace control은 모두 정상이고 legacy/Lua event·wire 누락 및 custom Positioner 읽기 누락만 실패했다. 그 뒤 새 테스트12385B/SHA=`c1303dab666600a7e4a08ca220da1a1aeae0959df6def8f1768aba659f6f70c6`·namespace·기존 fixture를 동결했다. 최초 strict라고 이름 붙인 GREEN은 기본 go.sh가 GOEXPERIMENT를 지워 ordinary race+checkptr2 count3의1503pass일 뿐 cgocheck2가 아니었다. 그 로그는 보존했고 실제 test-cgocheck2.sh의 Go1.26.5/GOEXPERIMENT=cgocheck2/CGO_ENABLED=1을 확인한 별도 race+checkptr2 count3도 동일1503pass/0skip/501IDs·actual0이다. 입력/기대값/HP/RNG/WAIT/timeout/golden을 retune하지 않는다.
+
+전체 일반/HD/실제cgocheck2 각각55,634pass/41skip/38packages, server54,795pass/7skip/35packages·actual0이다. R131의 모든 기존 ID/action/횟수/skip/package terminal을 유지하고 새501pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. 별도 unchanged TestNativeNetworkAudioPlayback은 실제cgocheck2·NOX_TEST_NATIVE_FX=true·ALSOFT_DRIVERS=null의 isolated child에서 OpenAL Soft renderer·native >4GiB driver/sample·A6/A7 mono/stereo1024 submissions와 gain/pan/guard/queue/drain을 통과했다. 이는 Lua fixture의 실제 native queue/packet prefix와 분리된 downstream 수신·재생 검사이며 같은 Lua 이벤트를 물리 장치에서 청음한 증거로 합치지 않는다.
+
+첫 private 집계 helper는 serialized JSON의 escaped quote를 문자열로 대조하여 renderer를 오판한 actual1이었다. 원문/helper를 유지하고 별도 v2에서 Output을 JSON decode한 뒤 같은 renderer/child PASS를 확인했으며 게임 코드·검사 기대는 변경하지 않았다. 통합 audit-test-v2 actual0/SHA=`4104a273a723a5bcee41fffa55808ff27b2e4015bf43d43b69de5efcd6c1970f`는 한 본체+새2파일(source6268→6270), protected304files/stock1556files/개인1562files·Save/config 불변과 모든 terminal hash를 확인했다. 증거 `/private/tmp/opennox-lua-audio-r132.nBJiiB`에 동결 입력·helper·실패/성공을 보존하고 사망 처리 조사도 별도 private 경로에 유지했다. Cache·기존 제품·사용자 자료 삭제0이다.
+
+문서는 제목 직후 삽입하며 이전 suffix bytes를 유지한다. 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push하고 해당 clean revision의 공식 ARM64 일반/HD/server3제품·metadata/Mach-O/help 및 unchanged Solo Quest 일반/HD headless/mock 두-stage 회귀·dedicated-server3-map/quit 실행은 별도 후속 receipt로 검증한다. GUI는 새 Lua Audio.Effect를 직접 실행한 증거가 아니며 runtime/Save/maps/config를 격리·보존한다.
+
+raw 문자열 dialogue API와 PLAYER SetColor panic, 구형 Destroy/Kill/Break 및 SetHealth(0)의 death-effect 공백은 그대로 미구현이다. Destroyable 계약은 HP0+사망/파괴 효과이므로 Delete에만 연결하는 축소 구현은 하지 않았다. Solo Quest SKU 두 검사·WOL 성공/정리·Wizard frozen Screen 및 다른 보존 실패, 원본 Windows 전체 world/pixel/실제 음향·remote transport와 전체 ARM64 포팅 목표는 미완료/UNPROVEN 상태를 유지한다.
+
 ## NoxScript 객체 SetTeam(nil)의 native 해제 전달 복원 (R131)
 
 기준 clean/pushed `5bcb49b71ce223ee926231b5f84732f6901d3222`다. 기존 production은 `src/script_ns_object.go:(nsObj).SetTeam` 한 본체만 변경한다. 무시하던 nil interface 요청을 R130의 `obj.Object.SetTeam(nil)`로 전달하여 actual419570/418E40·membership/관계/packet/빈 팀 처리까지 동일한 경로를 사용한다. non-nil `t.(nsTeam)` type guard와 assignment 본문, signature/imports/본체 밖 및 다른 기존 production은 불변이다. nil underlying Object의 이전 무접근도 R130의 guard로 유지한다.

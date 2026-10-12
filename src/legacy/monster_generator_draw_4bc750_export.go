@@ -25,6 +25,19 @@ type monsterGeneratorDrawDataNative4BC750 struct {
 	kind   [5]uint32
 }
 
+// PrepareMonsterGeneratorStatus4BC720 uses the same native conditional data
+// as the registered C parser and generator drawer. The original byte32/27
+// reads are delay/count for state3, not offsets into widened image pointers.
+func PrepareMonsterGeneratorStatus4BC720(dr *client.Drawable) {
+	if dr == nil || dr.DrawData == nil {
+		return
+	}
+	data := (*monsterGeneratorDrawDataNative4BC750)(dr.DrawData)
+	delay := uint32(data.delay[3])
+	count := uint32(data.count[3])
+	dr.UnionEffect().Field_108 = count * (delay + 1)
+}
+
 func monsterGeneratorDrawNativeHooks4BC750(vp *noxrender.Viewport, dr *client.Drawable) monsterGeneratorDrawHooks4BC750[*monsterGeneratorDrawDataNative4BC750, *noxrender.ImageHandle, noxrender.ImageHandle] {
 	return monsterGeneratorDrawHooks4BC750[*monsterGeneratorDrawDataNative4BC750, *noxrender.ImageHandle, noxrender.ImageHandle]{
 		flags: func() uint32 { return dr.Flags70Val },

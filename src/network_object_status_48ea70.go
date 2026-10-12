@@ -263,7 +263,7 @@ func (c *Client) objectStatusHooksNative48EA70() objectStatusPacketHooks48EA70 {
 		connected:        nox_client_isConnected,
 		byNetCode:        c.Objs.ByNetCode,
 		localDrawable:    c.ClientPlayerUnit,
-		prepareGenerator: prepareMonsterGeneratorStatus48EA70,
+		prepareGenerator: legacy.PrepareMonsterGeneratorStatus4BC720,
 		modifierByID: func(id byte) *server.ModifierEff {
 			return c.srv.Modif.Nox_xxx_modifGetDescById413330(int(id))
 		},

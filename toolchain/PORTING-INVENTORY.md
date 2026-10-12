@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## NoxScript 객체 SetTeam(nil)의 native 해제 전달 복원 (R131)
+
+기준 clean/pushed `5bcb49b71ce223ee926231b5f84732f6901d3222`다. 기존 production은 `src/script_ns_object.go:(nsObj).SetTeam` 한 본체만 변경한다. 무시하던 nil interface 요청을 R130의 `obj.Object.SetTeam(nil)`로 전달하여 actual419570/418E40·membership/관계/packet/빈 팀 처리까지 동일한 경로를 사용한다. non-nil `t.(nsTeam)` type guard와 assignment 본문, signature/imports/본체 밖 및 다른 기존 production은 불변이다. nil underlying Object의 이전 무접근도 R130의 guard로 유지한다.
+
+새 `script_ns_team_clear_native_419570_v3_test.go`는 R130의 기존13 literal 입력을 유지한 별도 native fixture와 foreign value/foreign typed-nil/native pointer/native typed-nil pointer/recognized nil payload/foreign team+nil object6조건을 합쳐19leaf+parent20IDs다. 정상 객체는 actual namespace factory, 정상 non-nil 팀은 public `NoxScript().Teams()`에서 얻은 `ns4` interface로 호출한다. 별도 subprocess C control과 SDK route의 전체 C-owned record byte delta·팀/멤버 수/활성·Important→NetList sequence/payload/순서·반복 호출 불변·4GiB 초과 주소를 비교하고 public `Team()`/`HasTeam()` 결과도 실제 registry와 대조한다. 공급한 membership/relation/packet/result hook은 없다.
+
+준비 v1 unused-import compile actual1과 v2 manual object의 server association 누락에 의한 getter fixture fault actual1은 source 밖에 원본 bytes/terminal을 보존했다. 실제 `serverObjects.NewObject`처럼 genuinely registered server의 native uintptr handle만 초기화한 v3로 접근을 교정했으며19개 입력/flags/ID·기대값/timeout은 유지했다. C-owned record에 Go pointer를 넣지 않는다. v3 RED는10pass/10test-fail/1package-fail/20IDs·actual1이며 actual C control은 모두 성공하고 SDK nil 해제9조건만 noop으로 실패했다. 그 후 새 테스트12130B/SHA=`9ea0a4b3ec6b9b1620f59f7b3309dbe93e13ae373f718486d351075ef4f7b84b`와 R130 fixture는 불변이다. 동일 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN은60pass/0skip/20IDs·actual0이다. 기대값/입력/flags/HP/RNG/timeout/golden retune은 없다.
+
+전체 일반/HD/실제cgocheck2는 각각55,133pass/41skip/38packages, server는54,294pass/7skip/35packages·actual0이다. R130의 모든 기존 ID/action/횟수/skip/package terminal을 그대로 유지하고 새20pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. 통합 test audit actual0/SHA=`eecaff2a59f2786c5a58636d3da306a8c57bab0b59642a501a12ed0516ea8d53`는 한 본체+새 파일의 기능 차이/source6267→6268files와 protected304files·stock1556files·개인1562files/Save/config 전체 checkpoint 불변을 확인했다.
+
+문서는 제목 직후 삽입하며 이전 suffix bytes를 유지한다. 실패 fixture/terminal·Cache·기존 제품·개인 Save/config 삭제0이고 증거 `/private/tmp/opennox-ns-team-r131.q3U82K`에 모든 실패/성공 및 동결 입력/관찰 helper를 보존한다. 커밋 다음 도구에서 즉시 origin `port/go1.26-multiarch`로 push한 뒤 해당 clean revision의 공식 ARM64 일반/HD/server3제품 build·metadata/Mach-O/help, unchanged Solo Quest 일반/HD headless/mock 두-stage 회귀와 dedicated-server3-map/quit 실행은 별도 후속 receipt로 검증한다. 격리 runtime/Save/maps/config를 보존한다.
+
+이번은 실제 public SDK interface와 native C 소비자의 통제 fixture다. interpreter/full original world·원본 Windows 전체 실행/pixel/실제 음향/remote transport의 동등성 인증이 아니며 후속 GUI도 새 SDK nil call을 직접 실행한 것으로 확대하지 않는다. public root와 SDK wrapper의 nil-team 공백은 연결됐으나 Solo Quest SKU 검사 두 곳·WOL 성공/정리·Wizard frozen Screen, 기존 상점 Screen/Con02A·Skeleton/passive-food/고정 Quest stage3 실패와 전체 ARM64 포팅 목표는 미완료/UNPROVEN 상태를 유지한다.
+
 ## 공개 객체 SetTeam(nil)의 실제 native 팀 해제 경로 복원 (R130)
 
 기준 clean/pushed `97a73644f26e10f500a9906795c077b3cf461aef`다. 기존 production은 `src/object.go:(*Object).SetTeam` 한 본체만 변경한다. 무시하던 nil-team 요청을 실제 `legacy.Nox_xxx_netChangeTeamMb_419570(obj.TeamPtr(), obj.NetCode)`에 연결한다. ID만 강제로 지우거나 별도 membership/packet/relation 구현을 만들지 않으며 기존 native team service의 멤버 수·플레이어/소유 객체 관계·Important packet·빈 팀 삭제/이름 초기화·stale/unteamed guard를 유지한다. nil receiver+nil team의 기존 무접근과 non-nil assignment 본문은 그대로이며 imports/signature/본체 밖 bytes·다른 기존 production은 불변이다.

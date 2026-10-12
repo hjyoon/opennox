@@ -331,7 +331,8 @@ func (obj nsObj) HasTeam(t ns4.Team) bool {
 
 func (obj nsObj) SetTeam(t ns4.Team) {
 	if t == nil {
-		return // TODO: support clearing the team
+		obj.Object.SetTeam(nil)
+		return
 	}
 	tm, ok := t.(nsTeam)
 	if !ok {

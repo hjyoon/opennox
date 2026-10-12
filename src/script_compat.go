@@ -97,7 +97,10 @@ func (obj scrObject) CanSee(obj2 script.Object) bool {
 }
 
 func (obj scrObject) Guard() {
-	panic("implement me")
+	if obj.Object == nil {
+		return
+	}
+	legacy.Nox_xxx_orderUnit_533900(obj.SObj(), obj.SObj(), 3)
 }
 
 func (obj scrObject) Destroy() {

@@ -1,5 +1,23 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 구형 Lua Guard의 원본 no-arg GUARD native 명령 연결 (R143)
+
+기준 clean/pushed `152e8a3d090177f9ebc2ee196a0bd31f9b919271`다. 기존 production 변경은 `src/script_compat.go:(scrObject).Guard` 한 본체뿐이다. unconditional panic을 없애고 nil underlying Object는 무접근으로 반환하며 나머지는 기존 native `Nox_xxx_orderUnit_533900(unit, unit, 3)`에 전달한다. imports/signature/본체 밖 bytes·다른 production·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다. 사용자 선택대로 R134 Destroy patch와 기대값을 원래 worktree에 보존하고 네 파일 SHA를 별도로 동결한다.
+
+no-arg SDK Guard는 location을 경비하는 계약이다. 이미 복원된 원본 GUARD command를 사용하여 임의 radius·새 owner/player 선택·새 AI 조건을 도입하지 않는다. 원래 moving speed 0.01 gate·0x8000 blocked gate·monster/NPC can-shoot 구분·shoot status OR0x40·aggression0.5·sight250·현재 위치와 signed facing WORD·stack clear/push/reset·SoundSet+68 order sound를 그대로 따른다. explicit creature 경로라 owner/owned-list를 새로 순회하거나 player local order/bubble을 만들지 않는다. PE32 GAME.EXE 전체 SHA와 실제 sound slot load·aggression/status/sight/action/direction의 일곱 instruction bytes를 재검증했다.
+
+새 `script_compat_guard_native_v2_test.go`는 C-owned >4GiB object/update/definition/sound records와 server-associated 실제 allocator, 원래 AUD parser, native order/action/audio queue, 실제 mapv0 Lua VM의 `Nox.Object(...):Guard()`를 사용한다. 6classes×5speed words(negative/threshold-1/threshold/normal/NaN)×2blocked states×4signed direction words×2sound inputs의480leaf와 nil wrapper·empty/member group을 포함한485IDs다. 각 객체의 두 반복 native control/legacy interface/Lua 호출을 독립 literal WORD/DWORD·floatbits oracle와 complete update/object/owner/owned-list/definition/sound bytes로 검증한다. 원래 action reset·unused native-width argument·Frame/Tick/flags·실제 order sound 두 event도 확인한다. service/result hook이나 expected state injection은 없다. SDK group의 nil interface member 자동 skip 계약을 새로 추가하지 않는다.
+
+첫 v1 compiled RED485fail·actual1과 수정 source strict v1의1446pass/9fail·actual1을 보존한다. 두 group 실패는 SDK constructor에 nil member를 넣어 empty/typed-empty wrapper로 간주한 테스트 준비 오류였다. 별도 v2는 empty group을 실제 빈 list로 만들고 member group의 empty wrapper를 typed `scrObject{}`로 만드는 두 constructor 준비와 구분용 테스트명만 교정한다. 게임 입력·native oracle·assertions·HP/flags/RNG/WAIT/timeout/golden은 retune하지 않는다. exact baseline Guard 본체만 사용하는 overlay의 corrected v2 RED는1pass/484fail·actual1이며 native control 오류0이다. 동결 v2의 실제 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN은1455pass/0skip·actual0다. 이전 v1 파일·실패와 baseline overlay를 private evidence root에 그대로 보존한다.
+
+전체 일반/HD/실제cgocheck2 각각69520pass/41skip/38packages, server68681pass/7skip/35packages·actual0다. R142의 모든 기존 ID/action/횟수/skip/package 결과가 같고 새485pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다. source6663→6664files의 기능 차이는 위 한 본체+새 test1개뿐이며 protected304files·원본 stock1556files·개인1562files/Save/config는 whole checkpoint 불변이다.
+
+통합 `lua-guard-test-audit.log` SHA=`92fed0b0c27b0b1de97aceffe5934659fa355339e6e0da2b64d677b0e14014fb`·actual0다. 동결 입력·전체 실패/성공·원본 body·before/after checkpoint·후속 제품/GUI receipt를 `/private/tmp/opennox-lua-guard-call-r143.4kL47z`에 보존한다. Cache·제품·원본/개인 자료 삭제0이다. 문서는 제목 직후 삽입하여 과거 suffix bytes를 유지하고 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push한다.
+
+해당 clean revision의 공식 ARM64 일반/HD/server3제품 build·metadata·Mach-O/help와 unchanged conjurer spell-pet map-transition 일반/HD headless/mock를 후속 receipt로 실행한다. 최근 사용자가 확인한 Host Game→saved character Load의 지속 반투명 수정도 이전 R140의 unchanged private scenario와632B gameplay-created character fixture로 일반/HD clean replay한다. 원래1249/1849/2094 gameplay frames와 R140 fixed-display pixels를 비교하며 개인 Save를 import하지 않는다. 격리 runtime/Save/maps/config를 보존하고 audio-handles=false·combat-trace=false를 사용한다. 후속 GUI는 이 새 Guard를 직접 호출한 증거가 아니며 실제 Lua API 실행의 증거는 위 native VM test다. 후속 실패는 입력/기대값 수정 없이 보존한다.
+
+이 변경으로 구형 Lua Guard panic 연결은 완료한다. raw 문자열 dialogue API·PLAYER SetColor·보존 중인 R134·Solo Quest SKU/WOL·다른 historical frozen 실패 및 original Windows 전체 world/pixel/가청 음향/remote transport와 전체 ARM64 포팅 목표는 미완료/UNPROVEN이다.
+
 ## 공통 GUARD 명령의 native 방향 WORD 부호 확장 복원 (R142)
 
 기준 clean/pushed `1e1164b1707e1a1845f8a628b83710cb26bf52a1`다. 구형 Lua Guard panic 연결을 준비하다 공통 원본 GUARD 처리의 선행 차이를 확인했다. 기존 production 변경은 `src/server/unit_order_533900_server.go:(*Server).enactUnitOrder5339A0` 한 본체의 setGuardArgs 안 한 변환과 주석뿐이다. imports/signature/본체 밖 bytes와 다른 production·기존 tests/YAML/PNG/golden/oracle manifest·개인 Save/config는 불변이다. R134 Destroy patch와 기대값은 사용자의 유지 선택대로 별도 원래 worktree에 보존한다.

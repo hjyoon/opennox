@@ -159,27 +159,35 @@ func (pfx *partFXes) Draw() {
 		}
 	}
 	if first != nil {
-		frontier := handles.FrontierPtr()
-		for handle := first; ; handle = unsafe.Add(handle, unsafe.Alignof(uintptr(0))) {
-			if p := pfx.byHandle[handle]; p != nil {
-				if p.flags&8 == 0 {
-					if p.drawFunc != nil {
-						p.drawFunc(p)
+		if particleSparseRange4AFD40(first, last, len(pfx.byHandle)) {
+			pfx.drawSparseParticles4AFD40(nil)
+		} else {
+			frontier := handles.FrontierPtr()
+			for handle := first; ; handle = unsafe.Add(handle, unsafe.Alignof(uintptr(0))) {
+				if p := pfx.byHandle[handle]; p != nil {
+					if p.flags&8 == 0 {
+						if p.drawFunc != nil {
+							p.drawFunc(p)
+						}
+					}
+					if p.updateFunc != nil {
+						if !p.updateFunc(p) {
+							p.free()
+						}
+					}
+					// 004AFDA3 reloads capacity after callbacks. New tail slots
+					// run now; reactivated slots behind the cursor run next frame.
+					if current := handles.FrontierPtr(); current != frontier {
+						frontier, last = current, current
+						if particleSparseRange4AFD40(handle, last, len(pfx.byHandle)) {
+							pfx.drawSparseParticles4AFD40(handle)
+							break
+						}
 					}
 				}
-				if p.updateFunc != nil {
-					if !p.updateFunc(p) {
-						p.free()
-					}
+				if uintptr(handle) >= uintptr(last) {
+					break
 				}
-				// 004AFDA3 reloads capacity after callbacks. New tail slots
-				// run now; reactivated slots behind the cursor run next frame.
-				if current := handles.FrontierPtr(); current != frontier {
-					frontier, last = current, current
-				}
-			}
-			if uintptr(handle) >= uintptr(last) {
-				break
 			}
 		}
 	}

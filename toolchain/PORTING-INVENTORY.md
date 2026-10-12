@@ -1,5 +1,25 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 희소 native-handle 파티클 순회 비용 저감 (R150)
+
+기준 clean/pushed `5964001f633497125298c871702695a2fe2cb22e`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).Draw` 한 본체의 dense/sparse 선택과 callback 뒤 전환뿐이다. 새 Go helper `src/particle_sparse_sweep_4afd40.go`를 추가하며 기존 imports/signature/types/본체 밖 bytes·type-table phase·allocator/C/free/factory/RNG/default draw/update·handle arena 함수·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다.
+
+R149의 native-stride 순회는 다른 객체의 opaque keys 간격도 조회했다. 새 동결 benchmark는 실제 factory/default draw/update를17/512/1025records×foreign gap0/16/256/1024의12조건, 각50iterations×3samples로 측정한다. pointSize0의 실제 default 경로이므로 whole renderer/FPS benchmark가 아니다. 첫 compiled 기존 동작의21새 기능 검사도 이미GREEN63pass/0skip·actual0였고, 이번 문제를 기능 RED나 하드웨어 시간 제한 실패로 꾸미지 않는다. default1025/gap1024의 중앙값은4,919,188ns, gap0은18,343ns로 namespace 간격의 실제 비용을 확인했다.
+
+간격이 active records당64native keys를 넘으면 sparse helper로 분기하며 이 수치는 비용 선택일 뿐 순서/수명/상태 계약을 바꾸지 않는다. 미래 records 전체를 먼저 검사해 default update 또는 nil과, hidden/nil draw 또는 이미지·render particle·외부 drawable callback이 없는 default point draw의 감사된 scalar-color subset만 sorted active-key 순회를 사용한다. 그 경로는 현재 record의 update/self-free만 가능하여 미래 slot을 만들거나 변경하지 않는다. 임의 color.Color.RGBA도 callback이므로 제외한다. 알려지지 않은 Go/C/image/color/update callback이 하나라도 있으면 원래 R149 live native frontier 순회를 유지한다. dense callback이 namespace를 크게 늘리면 현재 cursor 뒤에서 같은 판단으로 전환하며 지난slot 재사용·미래slot 재활성화·tail 생성·type-table next-frame emit의 원래 순서를 유지한다.
+
+초기 prototype의 unknown callback마다 map을 재정렬하는 방식은 custom effect update가 많은 경우의 비용을 피하려고 최종 코드에서 채택하지 않았다. prototype source와 측정도 삭제하지 않고 보존했다. 실제 type-1/type-2 update가 별도 closure임을 source에서 확인했으며 arbitrary callback을 default로 간주하지 않는다. 추가 동결 benchmark는 unknown update function이 실제 default update로 위임하는 두조건(1025records/gap256·1024)이다. baseline은 보존한 R149 whole-source file 하나만 지정하는 private Go overlay로 실행했으며 production 실행·입력·원본 자산을 수정하지 않았다. 이는 stock type-1 emitter 실행으로 인증하지 않는다.
+
+같은 default 동결 입력의 최종1025/gap1024 중앙값은73,728ns(약0.074ms), baseline 대비약66.7배 빠르다.512/gap1024는2,393,229→33,897ns,17/gap1024는62,008→815.8ns다. unknown callback은 gap256에서1,277,545→1,274,098ns, gap1024에서4,731,114→5,026,628ns였다. 후자의약6.2% 증가를 감추거나 모든 경로의 무회귀/실제 FPS 증가를 주장하지 않는다. dense 조건도 raw samples를 모두 남긴다. `benchmark-comparison.log`는14고정 shapes×3samples×50iterations의 before/after·중앙값·비율을 기록하며 하드웨어-specific 시간 assert/기대값 retune은 없다. FPS limiter·GC 정책·RNG·게임 속도는 변경하지 않는다.
+
+새 frozen tests3개와 추가 barrier benchmark1개 중 기능 ID는21개다. default17/64records와1024gap,4096gap의 draw/update tail 생성·앞slot 재사용·미래/current 교체/삭제, dense callback 중16384foreign keys 증가를 검사한다. 다른색7rotation×16frames의 실제 factory/default draw/update/free·noxrender raster→render upload→headless seat 전체 pixels와, default point draw의 임의 color callback이 생성한 blue tail이 같은 frame에 그려지는 경우를 확인했다. 입력/expected/flags/HP/RNG/wait/timeout/golden retune0이다. 같은21IDs의 baseline/final 일반 검사는 각각63pass/0skip·actual0, 기존 R14955IDs와 합친 실제 Go1.26.5 cgocheck2+race+checkptr2 count3은228pass/0skip·76IDs·actual0다. 신규339real headless frames와 기존 overlap1008frames를 함께 유지했다.
+
+일반/HD/실제cgocheck2 전체는 각각69876pass/41skip/38packages, server68966pass/7skip/35packages·actual0다. R149의 모든 기존 test ID/action/횟수/skip/package 결과가 동일하고 client 새21pass·server 새12pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다. source6682files의 기능 차이는 위 한 본체+새 helper1개/tests4개이며 protected304files·stock1556files·개인1562files/Save/config의 whole checkpoint는 byte-identical이다. R134 Destroy patch/기대값도 사용자 유지 선택대로 보존하며 cache/원본/개인 자료/제품/실패 evidence 삭제0이다.
+
+통합 `sparse-test-audit.log` SHA=`402cd8b9381904636f413b302c99c80b8bb40590f60e8690d28d75aad64b6499`·actual0다. 첫 compiled baseline·prototype/final benchmarks·추가 barrier overlay·strict/전체 검사·동결 입력·source/checkpoint·후속 receipt는 `/private/tmp/opennox-particle-sparse-r150.jYehjB`에 보존한다. 문서는 제목 직후 삽입하여 과거 suffix bytes를 유지하고 commit 다음 도구에서 즉시 origin port/go1.26-multiarch에 push한다. 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help와 unchanged conjurer spell-pet map-transition 일반/HD headless/mock는 별도 후속 receipt로 검증한다. 이 GUI는 synthetic namespace gaps의 직접 증거가 아니며 격리 runtime/Save/maps/config·audio-handles=false·combat-trace=false를 유지한다.
+
+이번은 audited default sparse 경로의 비용 개선이며 임의 callback의 namespace 비용·모든 sprite/alpha/packet effect·original Windows 전체 runtime/pixels/가청 음향/remote transport와 전체 ARM64 포팅 목표의 완료 인증이 아니다. R134 보존·Solo Quest SKU/WOL·raw dialogue·PLAYER SetColor 및 historical frozen 실패도 계속 남아 있다.
+
 ## 파티클의 원본 dynamic forward draw/update 순회 복원 (R149)
 
 기준 clean/pushed `cc29ac59d8f75b4dc8f462fa78acaf8494a968db`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).Draw` 한 본체의 particle 순회뿐이며 type-table phase의 기존 bytes는 그대로다. 새 `src/legacy/common/alloc/handles/frontier.go`는 allocation 없이 마지막 발급된 native-width opaque key를 읽는다. 기존 imports/signature/types/본체 밖 bytes·R148 allocator·C/free/factory/RNG/update/default draw·handles Init/Release/New/NewPtr·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다.

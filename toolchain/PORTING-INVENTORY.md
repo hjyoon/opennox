@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 직접 체력 0 대입의 native 사망 lifecycle 연결 (R133)
+
+기준 clean/pushed `73aaf449143e7490697a6dc8c7113e84ae8ad259`다. 기존 production 변경은 `src/object.go:(*Object).SetHealth` 한 본체의 clamp 뒤 zero 분기뿐이다. imports/signature/본체 밖 bytes·positive 대입·nil receiver·Sudden Death 제한은 유지한다. 새 legacy/server 두 파일은 기존 native4EE5E0의 전체 HP/Harpoon/Buff16/SoloReward/MonsterDie/Death/DelayedDelete/owner-HP 서비스에 연결한다. 직접 SetHealth가 기존에도 GodMode에서 HP0을 대입하던 의미를 유지하며 global engine flag를 바꾸지 않는다. 일반 피해 entry의 original GodMode gate는 그대로다. Harpoon callback 뒤 live uint16 HP도 0이 되도록 65535 범위를 사용한다. nil/zero-Max health는 기존 raw setter와 owner report를 유지하고 native lethal lifecycle의 제외 조건을 존중한다.
+
+첫 `object_health_zero_native_test.go`의 compiled RED는984pass/97test-fail/1package-fail/1081IDs·actual1이다. 실제 native lethal control은 정상이며 직접 root/public SDK/legacy interface만 HP0 뒤 death/audio/delete를 누락했다. 동결 입력의 Simple/Player·세 등록 death handler·네 health 상태·세 object flags·normal/God/SuddenDeath·다섯 대입값은 그대로다. 실제 C-owned >4GiB Object/Health/Player/Update/event, 실제 AUD parser·PotionDie/ImpEggDie·DelayedDelete·반복 대입과 전체 native record bytes/frame/list를 확인한다. Player fixture의 handler는 명시적 Potion/Egg/none이며 stock PlayerDie/respawn을 실행한 것으로 확대하지 않는다.
+
+추가 Monster fixture는 세 subclass×두 AI action×dead/live×God on/off×-1/0의48leaf+parent49IDs다. 실제 완전한 MonsterDie runtime의 DEAD/DYING stack·buff/shadow/owner/slave/inventory 서비스와 whole native records를 독립 native lethal control과 대조한다. 첫 실행 actual1은 테스트의 없는 server.ObjectSubClass 이름에 대한 build failure(0test IDs)로 보존한다. 별도 v2는 그 타입 참조 하나만 실제 object.SubClass로 교정하며 입력/기대값/HP/RNG/WAIT/timeout을 바꾸지 않는다. exact HEAD object.go를 사용하는 source overlay의 실제 baseline RED는24pass/25test-fail/1package-fail/49IDs·actual1이며 native controls는 모두 정상이다. 수정 source의 combined 실제cgocheck2+race+checkptr2 count3은3390pass/0skip/1130IDs·actual0이다.
+
+전체 일반/HD/실제cgocheck2 각각56,764pass/41skip/38packages, server55,925pass/7skip/35packages·actual0이다. R132의 모든 기존 ID/action/횟수/skip/package terminal을 유지하고 새1130pass만 추가한다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. source6270→6274는 한 기존 본체+새 production2/test2 파일뿐이며 protected304files·stock1556files·개인1562files/Save/config와 기존 테스트/YAML/PNG/golden/manifest는 불변이다. 실패 source/로그와 모든 동결 입력·독립 감사는 `/private/tmp/opennox-health-zero-r133.BZYXAo`에 보존한다.
+
+문서는 제목 직후 삽입하여 이전 suffix bytes를 유지한다. 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push하고 해당 clean revision의 공식 ARM64 일반/HD/server3제품·metadata/Mach-O/help, unchanged Solo Quest 일반/HD headless/mock 두-stage 및 dedicated-server3-map/quit 실행은 별도 후속 receipt로 검증한다. GUI는 이 새 zero-health API를 직접 실행한 증거가 아니며 isolated runtime/Save/maps/config를 보존한다. Cache·기존 제품·사용자 자료 삭제0이다.
+
+이 복원은 구형 Destroy/Kill/Break의 panic 자체를 바꾸지 않는다. raw dialogue 문자열 API·PLAYER SetColor·Solo Quest SKU 두 검사/WOL 성공·정리·Wizard 및 다른 frozen 실패·원본 Windows 전체 world/pixel/실제 음향/remote transport와 전체 ARM64 포팅 목표는 여전히 미완료/UNPROVEN이다. 직접 setter의 복원을 전체 original runtime 인증이나 전체 goal 완료로 보고하지 않는다.
+
 ## 구형 Lua 효과음 API의 native 이벤트·패킷 경로 복원 (R132)
 
 기준 clean/pushed `744b3707d874aabb45a63e395e29f95f9a0a4f87`다. 기존 production은 `src/script_compat.go:(noxScriptImpl).AudioEffect` 한 본체만 바꾼다. 호출을 버리던 FIXME 대신 새 `scriptCompatAudioEffect`에서 active game의 기존 공개 namespace AudioEvent에 연결한다. 구형 Global/HostPlayer/CinemaPlayers와 같은 active-game 소유를 유지하며 이름·좌표·프레임 밖 queue/replay·억제 조건·packet 구현을 복제하지 않는다. nil Positioner는 namespace와 같은 무접근이다. imports/signature/본체 밖 bytes 및 다른 기존 production은 불변이다.

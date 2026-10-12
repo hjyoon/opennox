@@ -407,7 +407,10 @@ func (obj *Object) SetHealth(v int) {
 	if _, max := obj.Health(); v > max {
 		v = max
 	}
-	// TODO: if 0, trigger death
+	if v == 0 {
+		legacy.UnitSetHealthZero4EE5E0(obj.SObj())
+		return
+	}
 	legacy.Nox_xxx_unitSetHP_4E4560(obj.SObj(), uint16(v))
 	if obj.Class().Has(object.ClassMonster) {
 		legacy.Nox_xxx_mobInformOwnerHP_4EE4C0(obj.SObj())

@@ -21,6 +21,18 @@ const (
 	bubbleVortexDrawVortex4B9F50
 )
 
+func init() {
+	// Registered callbacks are also invoked directly through Drawable.CallDraw,
+	// outside the world's native draw dispatch. Both routes must use the same
+	// native-width state, raster and lifetime implementation.
+	legacy.Nox_thing_bubble_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawBubble4B7540(dr, vp)
+	}
+	legacy.Nox_thing_vortex_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawVortex4B9F50(dr, vp)
+	}
+}
+
 func bubbleVortexDrawKindFor4B7540(fn unsafe.Pointer) bubbleVortexDrawKind4B7540 {
 	switch fn {
 	case legacy.Get_nox_thing_bubble_draw():

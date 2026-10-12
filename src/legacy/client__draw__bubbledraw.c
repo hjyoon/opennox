@@ -4,6 +4,9 @@
 #include "GAME2_3.h"
 #include "GAME3.h"
 
+// Retain the decoded PE32 body for provenance. The active symbol is the
+// native-width Go export in client_draw_all.go.
+#if 0
 //----- (004B7540) --------------------------------------------------------
 int nox_thing_bubble_draw(uint32_t* a1, nox_drawable* dr) {
 	unsigned int v2;  // eax
@@ -103,3 +106,4 @@ int nox_thing_bubble_draw(uint32_t* a1, nox_drawable* dr) {
 	nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr);
 	return 0;
 }
+#endif

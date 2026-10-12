@@ -130,6 +130,8 @@ var (
 	Nox_thing_particle_draw       func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_boulder_draw        func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_undead_killer_draw  func(vp *noxrender.Viewport, dr *client.Drawable) int
+	Nox_thing_bubble_draw         func(vp *noxrender.Viewport, dr *client.Drawable) int
+	Nox_thing_vortex_draw         func(vp *noxrender.Viewport, dr *client.Drawable) int
 )
 
 func wrapDrawParseC(fnc unsafe.Pointer) client.ThingFieldFunc {
@@ -197,6 +199,16 @@ func nox_thing_undead_killer_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int
 		return 1
 	}
 	return int32(Nox_thing_undead_killer_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_bubble_draw
+func nox_thing_bubble_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_bubble_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_vortex_draw
+func nox_thing_vortex_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_vortex_draw(asViewport(vp), asDrawable(dr)))
 }
 
 func Nox_xxx_drawObject_4C4770_draw(vp *noxrender.Viewport, dr *client.Drawable, img noxrender.ImageHandle) {

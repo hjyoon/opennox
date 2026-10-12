@@ -10,6 +10,9 @@
 
 extern uint32_t dword_5d4594_1313816;
 
+// Retain the decoded PE32 body for provenance. The active symbol is the
+// native-width Go export in client_draw_all.go.
+#if 0
 //----- (004B9F50) --------------------------------------------------------
 int nox_thing_vortex_draw(int* a1, nox_drawable* dr) {
 	int v2;     // ecx
@@ -86,3 +89,4 @@ int nox_thing_vortex_draw(int* a1, nox_drawable* dr) {
 		return 1;
 	}
 }
+#endif

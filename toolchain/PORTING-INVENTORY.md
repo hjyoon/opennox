@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Bubble/Vortex 등록 콜백의 네이티브 직접 호출 복원 (R156)
+
+기준 clean/pushed `4cee3d74f2d3cc8aa4cce4de12419f8e7bde5410`다. 월드 렌더링은 이미 typed Go 효과 구현을 선택하지만, 등록된 C 함수 포인터를 사용하는 `Drawable.CallDraw`는 Bubble/Vortex의 PE32 `int a2 = dr` 본체를 그대로 호출했다. 이번은 두 C symbol을 실제 Go export→기존 native-width 효과 본체로 연결하고 viewport 선언을 native type으로 바꾼다. 기존 월드 geometry/state/raster/lifetime 본체는 byte-identical이며 기존 디코딩 C 본문도 #if0 아래 원래 bytes로 보존한다. root init/legacy export·두 header·두 C provenance guard의6production files와 새 test1개가 기능 범위다. nil 서비스의 silent no-op이나 별도 단순화 효과를 추가하지 않는다.
+
+새 frozen `effect_registered_callback_native_4b7540_test.go`6882B SHA=`db7c1d26fa3abb75229e8e2a9d1a598415d50bd52116d70eebb1e9f758381bea`는 첫 compiled RED 전에 동결했다. real native C-owned drawable pool/viewport를4GiB 초과 주소로 할당하고 real registered C callback→Drawable.CallDraw→전체 raster/headless upload를 기존 월드 경로와 대조한다. Bubble 성장·축소·deadline·그리기 전/후 삭제·음수 고도6조건, Vortex 앞/뒤·각도 wrap·만료·화면 밖/경계6조건이다. real pool/list/count/decay cleanup, 전체 live drawable/render state, viewport/frame/Logic/Other RNG 불변을 검사한다. 프로세스별 격리는 old C crash를 그대로 관찰하기 위한 것이며 source·fixture·기대값/HP/RNG/wait/timeout 변경0이다.
+
+수정 전12child 모두 실제 cgo SIGSEGV로 종료하며 parent13fail/0pass·actual1이었다. 예를 들어 실제 Drawable `0x13e010610`가 절단되어 fault `0x3e0107c9`에 접근했다. 같은 고정 입력의 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN39pass/0skip·actual0이며36개 actual headless callback frames다. 이 검사는 기존 production world service와의 routing/state/pixel/lifetime 동등성이고 independent original Windows pixel oracle이나 stock world replay가 아니다. 이전 decoded C body와 현재 native scalar/color 계산은 이번에 바꾸지 않았다.
+
+전체 일반/HD/실제cgocheck2는 각각70448pass/41skip/38packages, server69031pass/7skip/35packages·actual0다. R155의 모든 기존 ID/action/횟수/skip/package 결과가 같으며 client 새13pass만 추가했다. unchanged oracle-test code2968/data650·strict NXZ actual0, source6688→6689files·protected304files·stock1556files/570653750B·개인1562files/Save/config whole checkpoints를 확인했다. R134 Destroy patch/기대값은 사용자 유지 선택대로 불변이다. 통합 `effect-test-audit.log` SHA=`2e052f114e8636e145ce3e7b17145384c4f94380f19b07c810759dc222006752`·actual0이며 동결 입력·12SIGSEGV/성공·whole source/data 증거는 `/private/tmp/opennox-effect-callback-r156.nMaCUU`에 보존한다. 캐시/제품/원본/개인/evidence 삭제0이다.
+
+문서는 제목 뒤 삽입하여 이전 suffix bytes를 보존한다. commit 다음 도구에서 즉시 origin port/go1.26-multiarch로 push하고 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help와 unchanged conjurer spell-pet map-transition 일반/HD headless/mock를 별도 후속 receipt로 검증한다. 해당 GUI는 새 직접 콜백 fixture를 실행했다는 주장으로 확대하지 않으며 직접 경로 증거는 위36native/headless frames다. runtime/Save/maps/config 보존·audio-handles=false·combat-trace=false·개인 Save import0을 유지한다.
+
+읽기 전용 원본 Vortex disassembly에서004BA064는 glow의 Drawable+432,004BA079는 중심 point의+436을 구별한다. 현재 native world state/draw는 Field_108을 재사용하므로 distinct center/tail colors는 별도 original execution/primitive/raster 대조 후보로 남긴다. 이번 routing fixture를 그 색상 계약의 원본 oracle로 인증하지 않는다. Windows registry SKU 설치 권한과 정상 WOL 서비스, historical frozen Screen/전투/음식 실패 및 raw dialogue/PLAYER SetColor·R134, original Windows/world/pixel/가청 음향/remote transport 전체 동등성과 전체 ARM64 포팅 목표는 계속 미완료/UNPROVEN이다.
+
 ## headless 격리 맵의 HTTP ZIP 배포 복원 (R155)
 
 기준 clean/pushed `ac3caa20b7500acef88776ae10312013b7c84777`다. 기존 변경은 `scripts/run-headless-gui-e2e.sh`의 맵 준비 한 줄과 설명뿐이다. runtime maps의 각 항목을 shallow symlink 대신 `cp -Rp`로 격리 복사한다. 게임·맵 HTTP library·native receiver·기존 tests/YAML/PNG/golden/oracle 변경0이다. 다른 immutable asset의 링크, 개인 Save/config/nc.obj 및 user.rul 제외 정책, input/seed/audio/headless 경로와 원래 정리 경계는 유지한다. HTTP 압축기의 nonregular/symlink 제외 정책을 완화하지 않는다.

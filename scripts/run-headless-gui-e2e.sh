@@ -77,9 +77,9 @@ echo "E2E audio: $audio_backend"
 	"$client_target"
 
 # Keep persistent player saves and generated configuration out of the source
-# data tree. Map directories get a shallow symlink view so the game can create
-# user.rul without writing through a maps/ symlink into the caller's data. All
-# immutable files still resolve to the exact input GAME.EXE and game assets.
+# data tree. Map assets get private copies so runtime saves cannot write through
+# symlinks and the map HTTP server can archive regular files. Other immutable
+# files still resolve to the exact input GAME.EXE and game assets.
 temp_root="$(cd "${TMPDIR:-/tmp}" && pwd -P)"
 runtime_data_dir="$(mktemp -d "$temp_root/opennox-headless-e2e-data.XXXXXX")"
 cleanup_runtime_data() {
@@ -111,7 +111,7 @@ while IFS= read -r -d '' source_map_path; do
 		case "$file_name" in
 		[Uu][Ss][Ee][Rr].[Rr][Uu][Ll]) continue ;;
 		esac
-		ln -s "$source_map_file" "$runtime_data_dir/maps/$map_name/$file_name"
+		cp -Rp "$source_map_file" "$runtime_data_dir/maps/$map_name/$file_name"
 	done < <(find "$source_map_path" -mindepth 1 -maxdepth 1 -print0)
 done < <(find "$data_dir/maps" -mindepth 1 -maxdepth 1 -print0)
 

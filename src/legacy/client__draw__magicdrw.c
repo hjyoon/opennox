@@ -11,6 +11,9 @@
 extern uint32_t dword_5d4594_1313804;
 extern uint32_t nox_color_white_2523948;
 
+// Retain the decoded PE32 bodies for provenance. The active symbols are
+// native-width Go exports in client_draw_all.go.
+#if 0
 //----- (004B98A0) --------------------------------------------------------
 int nox_thing_magic_draw(int* a1, nox_drawable* dr) {
 	int v2;   // esi
@@ -178,6 +181,8 @@ int nox_thing_magic_tail_link_draw(uint32_t* a1, nox_drawable* dr) {
 	}
 	return 1;
 }
+
+#endif
 
 //----- (004B9B40) --------------------------------------------------------
 int nox_thing_drain_mana_draw() { return 1; }

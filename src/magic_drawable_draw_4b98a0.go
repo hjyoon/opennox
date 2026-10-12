@@ -14,6 +14,23 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func init() {
+	// Direct registered callbacks share the world's native light, RNG and
+	// raster implementation rather than entering the decoded PE32 C bodies.
+	legacy.Nox_thing_magic_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawMagicOrb4B98A0(dr, vp, false)
+	}
+	legacy.Nox_thing_magic_missle_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawMagicOrb4B98A0(dr, vp, true)
+	}
+	legacy.Nox_thing_magic_missle_tail_link_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawMagicTail4B5E10(dr, vp, true)
+	}
+	legacy.Nox_thing_magic_tail_link_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawMagicTail4B5E10(dr, vp, false)
+	}
+}
+
 var (
 	magicDrawWhite4B98A0        = noxcolor.RGB5551Color(255, 255, 255)
 	magicDrawGlow4B98A0         = noxcolor.RGB5551Color(0, 200, 255)

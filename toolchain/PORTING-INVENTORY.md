@@ -1,5 +1,23 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 파티클의 원본 lowest-inactive slot 재사용 복원 (R148)
+
+기준 clean/pushed `5a42ef422e4006d7c963388d8804edbcab66fa3e`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).newParticlefx` 한 본체뿐이며 새 Go-owned helper `src/particle_slots_4b01b0.go`를 추가한다. 기존 imports/signature/types/본체 밖 bytes·Init/Free/C/free/factory/RNG/update/draw·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다. 원래 Go sync.Pool의 임의 free 순서는 GAME.EXE의 가장 낮은 inactive slot 재사용과 다르므로 allocation 정책을 owner-local logical arena로 연결한다.
+
+실제 원본 GAME.EXE 전체 SHA·PE32 magic와004AF8E5의 초기512slots·004B01BC의 zero 검색 인수·004B01BF의 first-zero bitmap 검색·004B01D1의512증가·004B0206의 active0xff 표시·004B0219의 slot index 저장 bytes를 재검증했다. helper는 기존 pool.New closure에 owner-local arena를 보관하여 낮은 inactive record부터 선택하고512단위로 늘린다. 기존 free의 pool.Put을 유지하며 pool.Get으로 cache를 비우되 그 임의 반환값을 slot 선택에 사용하지 않는다. cache가 비어 Get도 constructor를 호출하면 아직 등록되지 않은 동일 lowest slot을 다음 New가 반환한다. Go callbacks/references를 가진 particleFx를 C-owned memory에 할당하거나 전역 owner registry를 만들지 않는다.
+
+Init/Free가 교체하는 active map의 세대는 Go1.26.5 reflect.Value.Pointer의 Map 지원으로 구분한다. 이전/현재 map reference를 모두 유지하여 map storage 주소 재사용을 동일 세대로 오인하지 않는다. 세대 교체 시 첫512logical records를 zero-reset하고 새 opaque native-width handle을 발급하므로 C drawable에 남은 old handle이 새 효과로 alias되지 않는다. 두owner의 arena/active handles는 독립이다. 이는 logical record 순서·재사용 계약이며 원래 PE32 realloc의 물리적 주소 변화를 재현했다는 주장이 아니다.
+
+첫 frozen native/headless tests2개20IDs의 compiled strict RED는2pass/18fail·actual1이었다. 동일 입력의 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN은60pass/0skip·actual0다. 서로 다른 여덟 free 순서의 lowest-hole identity/handle,7/512/513/1025동시할당과 증가경계, 실제 runtime.GC 이후 재사용, 두owner와 reset을 검사한다. GC 호출은 실제 자극이며 GC/pool 정책 override가 아니다. 추가 세대/reset 안전 guard1개4IDs는 첫 compiled GREEN4pass 후 동결했고, 합24IDs의 같은 strict count3 검사72pass/0skip·actual0다. 모든24IDs를 RED였다고 설명하지 않는다.
+
+변경 없는 R146 noxrender pixbuffer→render upload→headless fixture로 세가지 free/refill 순서와 실제 default draw/update/free를 검사했다. 총54complete raster/upload frames이며 hook·명시적 p.C() 강제 등록0이다. 효과가 겹치지 않는 이 pixel 검사는 lowest-slot 재사용과 lifecycle의 직접 증거이고 overlap draw 순서를 인증하지 않는다. 세대 guard는 C-owned >4GiB drawable의 stale handle 입력·새 handle lookup·전체 source bytes 불변과 Init 후 좌표/수명/flags/custom/callbacks clearing을 검사한다. 입력/expected/flags/HP/RNG/wait/timeout/golden retune0이다.
+
+일반/HD/실제cgocheck2 전체는 각각69800pass/41skip/38packages, server68924pass/7skip/35packages·actual0다. R147의 모든 기존 test ID/action/횟수/skip/package 결과가 동일하고 client 새24pass·server 새20pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다. source6670→6674files의 기능 차이는 위 한 본체+새 helper1개/tests3개뿐이다. protected304files·stock1556files·개인1562files/Save/config whole checkpoint는 byte-identical이고 R134 Destroy patch/기대값도 사용자 유지 선택대로 보존한다. R148에서 cache/원본/개인 자료/제품/실패 evidence 삭제0이다.
+
+통합 `slots-test-audit.log` SHA=`46923d5d790a93bc3dd0eec8bf2c24882bccacba28c98f869ba7a82e67db1a62`·actual0다. RED/GREEN·추가 guard 첫 실행·동결 입력·original/green whole source·checkpoint·후속 receipt를 `/private/tmp/opennox-particle-slots-r148.fqXJLn`에 보존한다. 문서는 제목 직후 삽입하여 기존 suffix bytes를 유지하고 commit 직후 다음 도구에서 origin port/go1.26-multiarch에 push한다. 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help와 unchanged conjurer spell-pet map-transition 일반/HD headless/mock는 별도 후속 receipt로 검증한다. 이 GUI는 실제 summon/Charm/Pixie/동반자 map transition 회귀이며 synthetic low-hole 입력의 직접 검사는 위 native/headless fixture다. 격리 runtime/Save/maps/config를 보존하며 audio-handles=false·combat-trace=false를 유지한다.
+
+Draw의 Go map 순회는 이번에 변경하지 않았다. 원본004AFD40/004AFDA8의 낮은 active slot부터 draw→update하고 callbacks 뒤 현재 capacity와 다음slot 이후를 다시 조회하는 dynamic forward sweep은 다음 독립 포팅 단계다. type field1 감소 가설은 R147에서 임시 EAX 감소일 뿐임을 확인했으며 field1==1 조건을 수정하지 않는다. 이번 allocation 복원만으로 전체 effect/pixel order·original Windows 실행/가청 음향/remote transport 또는 전체 ARM64 포팅 목표를 완료했다고 인증하지 않는다.
+
 ## 파티클 감쇠·반사의 Win32 MulDiv 미구현 복원 (R147)
 
 기준 clean/pushed `daa078d5e0f2658a3035281b817daa2b84b1c75a`다. 기존 production 변경은 `src/draw_particlefx.go:muldiv` 한 본체뿐이다. TODO panic을 원본 PE32 scalar 계약의 부호 있는 DWORD 입력·unsigned magnitude64bit product·Win32 rounding term·unsigned quotient sign-bit overflow 검사·결과 부호 적용·zero-divisor -1 반환으로 교체한다. ARM64 native int의 상위 비트를 numeric DWORD로 정규화하며 포인터를 DWORD로 축소하지 않는다. 기존 imports/signature/본체 밖 bytes·particle factory/등록/기본 update/draw/free/RNG·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다.

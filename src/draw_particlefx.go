@@ -183,7 +183,12 @@ func (pfx *partFXes) Free() {
 }
 
 func (pfx *partFXes) newParticlefx() *particleFx {
-	p := pfx.pool.Get()
+	if pfx.pool.New == nil {
+		pfx.pool.New = pfx.particleSlots4B01B0()
+	}
+	// Drain free's cache, but 004B01BF chooses the lowest inactive slot.
+	pfx.pool.Get()
+	p := pfx.pool.New()
 	p.pfx = pfx
 	// 004B0206 marks every allocated slot active, including a fresh one.
 	pfx.byHandle[p.C()] = p

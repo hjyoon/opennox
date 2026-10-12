@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 구형 Lua 게임 시계의 프레임 정밀도·초기화 lifecycle 복원 (R138)
+
+기준 clean/pushed `66c19c2638fddecb597afe928c710795a7391aea`다. 기존 production 변경은 `src/script_compat.go:noxScriptImpl.Time` 한 본체뿐이며 imports/signature/본체 밖 bytes와 SDK·기존 tests/YAML/PNG/golden/원본 manifest는 불변이다. 별도 conventional clone에서 작업하여 사용자 R134 Destroy patch·frozen 기대값을 보존한다.
+
+기존 Lua Time은 초 단위 float를 time.Duration으로 먼저 바꾸어 소수 부분을 버렸다. SDK TimeSource의 상대 시간 계약과 기존 server.FrameTS/NoxScriptNS.Time은 프레임별 정밀도를 보존한다. 최종 본체는 원래 순서로 frame/rate를 한 번씩 읽고, rate0인 초기화 단계는 기존처럼0을 반환하며, 양수 rate에서는 기존 native clock과 같은 정수 나노초 계산을 사용한다. uint32 frame×1초는 int64 범위 내다. 기본 rate30을 임의 공급하거나 프레임·rate·다른 server 상태를 수정하지 않는다.
+
+새 동결 검사531IDs는14rates×12frame 경계의 exact big.Int 독립 시간 oracle와 whole native server snapshot, 실제 script.Timers의 deadline, 실제 mapv0 Lua VM의 SecondTimer/Timer(Sec), frame timer·취소·단일 실행·인자 전달이다. 대조군은 실제 기존 NoxScriptNS 시계이며 제공한 결과 hook이 아니다. 초기 fixture는 존재하지 않는 mapv0.Register 때문에 compiled tests0/build failure actual1이었다. 별도 v2는 API 생성자를 mapv0.New로만 교정했고 모든 입력/expected bytes는 동일하다. 수정 전 compiled v2 RED는103pass/428fail/531IDs·actual1이며 native-clock controls는 모두 정상이었다.
+
+첫 production의 무조건 FrameTS 호출은 양수 rate의531검사를 통과했지만 기존 전체 Lua audio fixture의 rate0 VM 생성에서 divide-by-zero를 일으켰다. 네 전체 suite actual1과 첫 production source를 보존하고 기존 테스트를 바꾸지 않는다. 별도 새 bootstrap6IDs의 VM 생성 RED actual1을 확인한 뒤 같은 Time 본체 안에서 기존 초기화-zero 동작을 복원했다. 최종537IDs의 cgocheck2 count1은537pass, 실제cgocheck2+race+checkptr2 count3은1611pass/0skip·actual0다. 초기화 전 frame timer와 설정 이후 seconds timer의 정확한 frame8 실행도 확인한다.
+
+최종 전체 일반/HD/실제cgocheck2 각각68825pass/41skip/38packages, server67986pass/7skip/35packages·actual0다. R136의 모든 기존 ID/action/횟수/skip/package 결과를 유지하고 새537pass만 추가했다. 원본 oracle 첫 actual2는 clone 옆의 기본 ../nox 경로가 없는 실행 준비 실패다. 동일 manifest와 실제 stock root를 명시한 최종 oracle-test는1556files/570653750B·code2968/data650·strict NXZ actual0다. 입력·기대값/스크립트·자산·원본 bytes/range를 변경하지 않는다.
+
+감사 `clock-test-audit.log` SHA=`26758a925a117ad07c98293d074b15a3746d08833d6f9168bc442d880b4d0378`·actual0다. 기존 source6658files의 차이는 Time 한 본체뿐이고 새 test2files로6660files다. protected304files·stock1556files·개인1562files/Save/config의 전체 checkpoint는 불변이다. 모든 실패/성공·동결 source·초기 partial production·감사 receipt는 `/private/tmp/opennox-lua-clock-r138.I0PHdH`에 보존한다. 캐시·기존 제품·개인 자료 삭제0이다.
+
+문서는 제목 직후 삽입하여 이전 suffix bytes를 유지한다. 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push하고 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help, unchanged Solo Quest 일반/HD headless/mock 두-stage와 dedicated-server3-map/quit는 별도 후속 receipt로 검증한다. 이 GUI는 새 Lua timer를 직접 호출한 증거가 아니다. 원본 Windows 전체 world/pixel/가청 음향/remote transport, Guard/raw dialogue/PlayerSetColor·R134 승인·Solo Quest SKU/WOL·보존된 다른 실패와 전체 포팅 목표는 여전히 미완료/UNPROVEN이다.
+
 ## 구형 Lua Mute의 native 말풍선 제거 lifecycle 연결 (R136)
 
 기준 clean/pushed `c38ce44f825897be7e6f573327802bb97ac542a2`다. Go1.26.5가 .git 파일 worktree에 VCS metadata를 붙이지 않는 경계를 피하려고 같은 커밋의 conventional .git directory를 갖는 별도 clean clone을 사용한다. 기존 production 변경은 `src/script_compat.go:(scrObject).Mute` 한 본체뿐이다. nil underlying Object는 무접근이고 실제 객체는 기존 `Object.DestroyChat`→server `Nox_xxx_netKillChat_528D00`에 연결한다. imports/signature/본체 밖 bytes·다른 production·SDK380files/workspace·기존 tests/YAML/PNG/golden/oracle manifest는 그대로다. R134 Destroy patch·frozen 기대값/실패는 원래 worktree에 보존하며 승인 없이 고치거나 이 커밋에 섞지 않는다.

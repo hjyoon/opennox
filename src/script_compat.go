@@ -172,8 +172,11 @@ func (s noxScriptImpl) Frame() int {
 }
 
 func (s noxScriptImpl) Time() time.Duration {
-	sec := float64(s.s.Frame()) / float64(s.s.TickRate())
-	return time.Duration(sec) * time.Second
+	frame, rate := s.s.Frame(), s.s.TickRate()
+	if rate == 0 {
+		return 0
+	}
+	return time.Second * time.Duration(frame) / time.Duration(rate)
 }
 
 func (noxScriptImpl) BlindPlayers(blind bool) {

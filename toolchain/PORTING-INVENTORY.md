@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Host Game 캐릭터 Load 후 지속되는 반투명 렌더링 복원 (R140)
+
+기준 clean/pushed `2c5d3ae8a3387b7ad579bd534f62872ffd6223d2`다. 기존 production 변경은 `src/legacy/GAME3_1.c:nox_xxx_drawObject_4C4770_draw` 한 본체의 세 줄뿐이다. raw `info[3680]` 조회를 실제 native `nox_playerInfo.field_3680` 조회로 바꾸며 원래 observer bit1·NULL guard·local/remote·팀·투명화 마법·fade 분기를 유지한다. signature/imports/본체 밖 bytes·다른 기존 production·테스트/YAML/PNG/golden/oracle manifest·원본 자산·개인 Save/config는 불변이다. R134 Destroy patch와 기대값은 사용자의 유지 선택에 따라 별도 원래 worktree에 그대로 보존한다.
+
+실제 Multiplayer→Host Game→저장 캐릭터 Load→옵션 완료→600frame 대기→이동 경로에서 server status0x10·일반 player update·client invisible=false인데 반투명이 유지됐다. native status offset은4976이며 구형 PE32 byte3680은64bit 장비 메모리의0x1이다. read-only private overlay는 이를 Load 직후/대기 후/이동 후 각 세 번 관찰했고 production observer나 상태를 주입하지 않는다. 원본 GAME.EXE 전체 SHA와4C47A0의 mask1·4C47D2/4C47E4의 원래0xe60 status 조회 instruction bytes를 재검증했다. 원래32bit field 의미를 native layout에 연결한 수정이며 Save 포맷·서버 flags·패킷·장비·spawn 무적 시간을 바꾸지 않는다.
+
+새 frozen 테스트는 real defs.h player layout과 변경 없는 실제 production C 본체를 컴파일·실행한다.8status×3구형byte poison×local/remote×정지/이동×투명화 유무의192leaf+parent193IDs로 실제 image call 횟수·alpha와 whole player record 불변을 검사한다. 처음 준비용 v1은 team 선언 헤더 누락으로 compiled leaf0·actual1이었다. 보존한 v2는 real team header 한 줄과 새 이름/경로만 추가하며 입력/expected bytes는 동일하다. 수정 전 compiled v2 RED132pass/61fail·actual1, 같은 동결 테스트의 실제 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN579pass/0skip·actual0다. 정상 local/remote opacity255·진짜 local observer alpha128·remote observer 비표시·원래 invisible 규칙을 유지한다.
+
+일반/HD/실제cgocheck2 전체는 각각69018pass/41skip/38packages, server 전체68179pass/7skip/35packages·actual0다. R138의 모든 기존 test ID/action/횟수/skip/package 결과가 같고 새193pass만 추가한다. 첫 server 부분 범위는 actual0였지만 package 비교 actual1이므로 이 두 receipt를 보존하고 기존과 같은 ./... 전체 범위로 다시 통과했다. unchanged oracle-test는1556files/570653750B·code2968/data650·strict NXZ actual0다. 기존 source6660files의 유일한 기능 차이는 위 한 본체이며 새2files로6662files다. protected304files·stock1556files·개인1562files/Save/config의 전체 실행 전후 checkpoint는 동일하다.
+
+고정 baseline GUI가 만든632B multiplayer save(SHA=`6e66f3eefb7778f94dad719bf2890099e4c1c81c77941cea11aa107dee4c9690`)와 입력을 유지한 수정 후 새 캐릭터·Load 일반/HD headless/mock4실행은 actual0다. 격리 runtime을 보존하고 audio-handles=false·combat-trace=false·개인 Save 가져오기0이다. before/after 같은 frame1849 화면의 차이는 캐릭터 영역777pixels·bounds(488,353)..(532,405)이며 실제 화면을 확인했다. 이는 포트의 수정 전후 진단이지 original Windows screenshot/golden 인증이 아니다. 이4실행은 private read-only overlay를 적용한 precommit 제품이며 clean 공식 제품 검증과 구별한다.
+
+통합 감사 `opacity-test-audit.log` SHA=`8a0df8b01813461c046b4265ecb4df8f737546d737011a68143e811b2184d3ac`·actual0다. 모든 실패/성공·동결 입력·관찰 helper·PNG·runtime은 `/private/tmp/opennox-host-load-opacity-r140.SIESFh`에 보존한다. 캐시·제품·개인 자료 삭제0이며 문서는 제목 직후 삽입하여 이전 suffix bytes를 유지한다. 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch에 push하고 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help 및 동일 Load 입력의 overlay 없는 일반/HD 실행은 별도 후속 receipt로 확인한다.
+
+선행 R139 Solo Quest 읽기 전용 감사는 같은2c5d3ae revision의 새3classes·Load·취소/재진입14실행과 focused strict501pass를 확인했다. 원본 확장팩 SKU gate 두 곳·WOL 일부 lifecycle 공백과 historical Wizard Screen25pixels/actual2는 그대로 남기며 완전한 원본 Windows 동등성을 주장하지 않는다. 기록은 `/private/tmp/opennox-solo-entry-review-r139.b046Cs/solo-quest-review.log`다. 이번 수정은 그 공백이나 다른 보존 실패를 해결한 것으로 확대하지 않고 전체 포팅 목표는 미완료다.
+
 ## 구형 Lua 게임 시계의 프레임 정밀도·초기화 lifecycle 복원 (R138)
 
 기준 clean/pushed `66c19c2638fddecb597afe928c710795a7391aea`다. 기존 production 변경은 `src/script_compat.go:noxScriptImpl.Time` 한 본체뿐이며 imports/signature/본체 밖 bytes와 SDK·기존 tests/YAML/PNG/golden/원본 manifest는 불변이다. 별도 conventional clone에서 작업하여 사용자 R134 Destroy patch·frozen 기대값을 보존한다.

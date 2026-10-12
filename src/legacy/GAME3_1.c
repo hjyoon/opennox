@@ -3583,12 +3583,12 @@ void nox_xxx_drawObject_4C4770_draw(nox_draw_viewport_t* vp, nox_drawable* dr, v
 	}
 
 	if (dr->flags28 & 4) {
-		char* info = nox_common_playerInfoGetByID_417040(dr->field_32);
+		nox_playerInfo* info = (nox_playerInfo*)nox_common_playerInfoGetByID_417040(dr->field_32);
 		if (nox_player_netCode_85319C == dr->field_32) {
-			if (info && (info[3680] & 1)) {
+			if (info && (info->field_3680 & 1)) {
 				observer_player = 1;
 			}
-		} else if (info && (info[3680] & 1)) {
+		} else if (info && (info->field_3680 & 1)) {
 			return;
 		}
 		nox_object_team_t* local_team = nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);

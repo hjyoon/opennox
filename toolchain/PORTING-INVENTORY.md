@@ -1,5 +1,23 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 새 파티클의 자동 활성 등록과 실제 headless lifecycle 복원 (R146)
+
+기준 clean/pushed `a83a42c5a8ce5c5e09649f907e5be309477c9908`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).newParticlefx` 한 본체의 등록 분기와 주석뿐이다. 기존 pool.Get·owner 연결을 유지하고 `byHandle[p.C()]=p`로 새 opaque native handle을 할당·등록하며, 이미 handle이 있는 실제 pool 재사용도 다시 등록한다. Go callback/reference를 가진 particleFx를 C heap에 할당하지 않는다. imports/signature/본체 밖 bytes·C/free/factory/RNG/update/draw body·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다.
+
+GAME.EXE 004AF990은 004B01B0을 호출하고 004B0206은 반환 전 active-slot bitmap에0xff를 저장하며004B0219는 slot index를 record+60에 기록한다. 실제 원본 전체 SHA와 이 call·bitmap store·index store bytes를 재검증했다. 기존 Go 코드의 fresh pool allocation은 chnd=nil이어서 활성 map에서 누락됐고, R145의 실제 type-1 emitter가 active_handles=0으로 끝났던 근거와 일치한다. Windows의 bitmap을 linked list라고 바꾸어 설명하거나 원본 Windows 실행 증거로 확대하지 않는다.
+
+새 frozen native/headless 테스트2개는24IDs다. fresh raw/factory·negative/zero/positive duration·두owner×32동시생성·실제 sync.Pool128반복·stable high-address opaque handle·free 후 lookup을 검사한다. allocator/creation/RNG/result hook·명시적 p.C() 강제 등록·GC/pool 정책 override는 없다. 실제 pool은 race에서 일부 객체를 버릴 수 있으므로 reuse 횟수를 특정 값으로 retune하지 않으며 실제 cached return 경로와 새 경로 모두 검증한다.
+
+실제 default particle draw/update/free의 여섯수명/hidden 조합과 real newPartfxT1의 두seed×count1/3/7을 실제 noxrender pixbuffer→render upload→headless seat로 실행한다. literal original RNG stream과004AF060의 독립 signed-DWORD delay/acceleration/IMUL/SAR2/expiry reference를 사용하고 production 상태를 기대값으로 복사하지 않는다. complete frame pixels·좌표/수명/활성 map·C-owned >4GiB source drawable 전체 bytes 불변을 검사한다. 같은 흰색 점 효과를 사용하므로 다른 색·alpha가 겹칠 때 Go map 순서의 원본 동등성을 인증하지 않는다. stock sprite나 packet 전체 effect audit도 아니다.
+
+첫 compiled strict RED24fail·actual1은 실제 fresh 등록 누락이었다. 같은 동결 입력의 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN72pass/0skip·actual0다. 실제 type-1 headless4680frames와 default60frames, 합4740frames를 검사했다. 입력·expected·flags/HP/RNG/WAIT/timeout/golden retune0이다. 일반/HD/실제cgocheck2 전체는 각각69702pass/41skip/38packages, server68847pass/7skip/35packages·actual0다. R145의 모든 기존 test ID/action/횟수/skip/package 결과가 동일하고 client 새24pass·server 새8pass만 추가했다.
+
+unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다. source6666→6668files의 기능 차이는 위 한 본체+새 tests2개다. 보호304files·stock1556files·개인1562files/Save/config의 전체 전후 checkpoint는 byte-identical이다. R134 Destroy patch와 기대값도 사용자의 유지 선택대로 원래 worktree에 그대로 보존한다. 통합 `registration-test-audit.log` SHA=`51fc05b4ff8789fb94e2b9dc9f7482739c08dab48f79da1bdff993b67ec2b3b4`·actual0이며 RED/GREEN·동결 입력·원본 body·checkpoint·후속 제품/GUI receipt를 `/private/tmp/opennox-particle-registration-r146.FAP3Vh`에 보존한다. 캐시/자산/개인 자료 삭제0이다.
+
+문서는 제목 직후 삽입하여 과거 suffix bytes를 유지하고 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch에 push한다. 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help와 unchanged conjurer spell-pet map-transition 일반/HD headless/mock는 별도 후속 receipt로 검증한다. GUI는 summon/Charm/Pixie/동반자 map transition 회귀이며 위 type-1 입력의 직접 rendering 증거는 새 native/headless 테스트다. 격리 runtime을 보존하고 audio-handles=false·combat-trace=false를 사용하며 후속 실패는 기존 입력/기대값과 함께 그대로 보존한다.
+
+원본 particle default update004B0020은 감쇠·반사에 IAT005811A4의 KERNEL32.dll!MulDiv를 호출하는 것도 실제 PE import table에서 확인했다. 현 `muldiv` TODO panic은 이번 한-본체 범위에서 변경하지 않으며 별도 원본 signed-DWORD/rounding/overflow/zero-divisor 검증으로 남긴다. 다른색 overlap draw 순서·R134·Solo Quest SKU/WOL·raw dialogue·PLAYER SetColor·historical frozen 실패 및 original Windows 전체 runtime/pixel/가청 음향/remote transport와 전체 포팅 목표는 미완료/UNPROVEN이다.
+
 ## 파티클 RNG16의 원본 WORD carry 복원과 실제 type-1 소비 검증 (R145)
 
 기준 clean/pushed `8de14509935ffe4707715563129b8118747d30f7`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).randU16` 한 본체의 carry 읽기 한 줄과 주석뿐이다. `cfshl(int(v0),1)` TODO panic 대신 원래 WORD bit15를 읽고 기존16회 rotl16/XOR0xa·state 저장·uint16 반환을 유지한다. imports/signature/본체 밖 bytes·다른 production·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다. 임의 seed·전역 서버 RNG·범위/수명 변화가 없다.

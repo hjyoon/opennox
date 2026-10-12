@@ -185,9 +185,8 @@ func (pfx *partFXes) Free() {
 func (pfx *partFXes) newParticlefx() *particleFx {
 	p := pfx.pool.Get()
 	p.pfx = pfx
-	if p.chnd != nil {
-		pfx.byHandle[p.chnd] = p
-	}
+	// 004B0206 marks every allocated slot active, including a fresh one.
+	pfx.byHandle[p.C()] = p
 	return p
 }
 

@@ -106,7 +106,10 @@ func (obj scrObject) Destroy() {
 }
 
 func (obj scrObject) Say(text string, dur script.Duration) {
-	panic("implement me")
+	if obj.Object == nil {
+		return
+	}
+	obj.Object.ChatStrTimer(text, dur)
 }
 
 func (obj scrObject) Mute() {

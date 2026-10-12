@@ -1,0 +1,3 @@
+github.com/opennox/libs v0.0.0-20241128194711-7857287f593a/go.mod h1:EQFPPj1sI/8PJq29sC102R+nw0BJeHlbOnAD1/e8PAc=
+github.com/opennox/noxscript/ns/v4 v4.21.4/go.mod h1:JKJYzbAfxTsDDkqCVnSa5ezr3xxlA5q76AAVOORAYLc=
+golang.org/x/net v0.55.0/go.mod h1:L5U2KuzuOe1lY7Z+aWVIKK6qEeJXnXV9yzGA+WCHJww=

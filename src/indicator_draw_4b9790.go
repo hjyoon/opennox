@@ -44,8 +44,9 @@ func playerWaypointDrawStateFor4B9790(dr *client.Drawable, vp *noxrender.Viewpor
 		dir1 := sincosTable16[angle]
 		dir2 := sincosTable16[next]
 		state.circle[i] = indicatorLine4B9790{
-			from: state.center.Add(image.Pt(10*dir1.X/16, 10*dir1.Y/16)),
-			to:   state.center.Add(image.Pt(10*dir2.X/16, 10*dir2.Y/16)),
+			// 004C32A0 uses SAR without the star's negative-value bias.
+			from: state.center.Add(image.Pt((10*dir1.X)>>4, (10*dir1.Y)>>4)),
+			to:   state.center.Add(image.Pt((10*dir2.X)>>4, (10*dir2.Y)>>4)),
 		}
 	}
 	angle := uint8(2 * uint8(frame))
@@ -69,11 +70,19 @@ func (c *Client) drawPlayerWaypoint4B9790(dr *client.Drawable, vp *noxrender.Vie
 	state := playerWaypointDrawStateFor4B9790(dr, vp, c.srv.Frame())
 	cl := noxcolor.RGBA5551(memmap.Uint32(0x85B3FC, 940))
 	draw := c.r.Data()
-	draw.SetAlphaEnabled(true)
 	draw.SetColor2(cl)
-	for _, line := range state.circle {
+	draw.SetAlphaEnabled(true)
+	for i, line := range state.circle {
+		if i == len(state.circle)-1 {
+			// 004C3364 closes from the first point to the last point.
+			// Alpha lines exclude their end point, so direction matters.
+			line.from, line.to = line.to, line.from
+		}
 		c.r.DrawLine(line.from, line.to, cl)
 	}
+	draw.SetAlphaEnabled(false)
+	draw.SetAlphaEnabled(true)
+	draw.SetColor2(cl)
 	for _, line := range state.lines {
 		c.r.DrawLine(line.from, line.to, cl)
 	}

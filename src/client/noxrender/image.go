@@ -156,7 +156,7 @@ func (r *NoxRender) nox_client_drawImg_bbb_4C7860(img Image16, pos image.Point) 
 	pixbuf := r.PixBuffer()
 	pitch := pixbuf.Stride
 	for i := 0; i < int(height); i++ {
-		dst := pixbuf.Pix[pitch*(pos.Y+1)+xoff:]
+		dst := pixbuf.Pix[pitch*(pos.Y+i)+xoff:]
 		src := data[ipitch*i:]
 		copy16b(dst[:wsz], src[:wsz*2])
 	}

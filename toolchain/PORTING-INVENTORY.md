@@ -1,5 +1,15 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 비압축 이미지의 원본 행 이동 복원 (R151 의존성)
+
+기준 clean/pushed `b29961a17bfc85a6e381ab752d6bd280e0370605`다. 메뉴 배경의 새 고정 검사에서 발견한 하위 렌더러 오류를 먼저 분리한다. 기존 production 변경은 `src/client/noxrender/image.go:nox_client_drawImg_bbb_4C7860` 한 본체의 `pitch*(pos.Y+1)`을 `pitch*(pos.Y+i)`로 바꾼 한 줄뿐이다. 모든 행이 같은 화면 행에 덮어써지던 오류다. 원본 GAME.EXE `004C79AB..004C79DB`는 목적 row table index를 매번4bytes 증가시키고 source도2*width bytes씩 이동한다. 기존 clip/crop/offset/색 처리·다른 본체·imports/signatures·기존 tests/YAML/PNG/golden/oracle와 자산은 불변이다. 별도 clipping source-offset 동작은 수정하지 않는다.
+
+새 frozen 검사65IDs는 type2/7×4크기×4위치×crop0/1의64leaf+parent이며 서로 다른 row/column 색의 전체 raster, 원본 image offset과 crop 및 source bytes/color2 불변을 검사한다. 첫 v1은 crop 인자의 Go int 변환 누락으로 compiled0·actual1이었다. 보존한 v2는 해당 int 변환만 추가하며 입력/expected는 그대로다. 첫 compiled RED8pass/57fail·actual1, 같은 고정 입력과 기존 noxrender 패키지 전체의 Go1.26.5 cgocheck2+race+checkptr2 count3은369pass/9skip·actual0다. 신규195pass/0skip이고 모든 기존 패키지 ID/action/skip/횟수는 R150 결과의3반복과 동일하다. stock 이미지 데이터 의존 검사3IDs의9skip을 실행 성공으로 인증하지 않는다.
+
+메뉴 수정 전 고정 검사25IDs는6pass/19fail이고, 메뉴 본체만 수정한 중간 cgocheck2 count3은69pass/6fail로 비압축 이미지 실패가 남았다. 기대값을 변경하거나 그 결과를 GREEN으로 보고하지 않는다. 해당 메뉴 변경은 다른 worktree에 보존하며 이 커밋에 섞지 않는다. 그 후 메뉴 한 본체를 별도 커밋으로 검증한다. 일반/HD Wizard chapter1의 기존 PNG 비교 actual2와 historical class-menu25pixel 비교는 서로 다른 실패이며 둘 다 원본 Windows 동등성 증거로 간주하지 않는다.
+
+준비 실패/compiled RED/GREEN·원본 disassembly·동결 파일과 whole source/data checkpoint는 `/private/tmp/opennox-wizard-gate-r151.swyOMv`에 보존한다. protected304files·stock1556files·개인1562files/Save/config 및 사용자가 유지하도록 선택한 R134 기대값을 변경하지 않는다. 이전 문서 suffix는 유지하며 commit 다음 도구에서 즉시 origin port/go1.26-multiarch에 push한다. 두 분리 수정 뒤 전체 일반/HD/strict/server·oracle·clean ARM64 제품·headless GUI를 후속 검증한다. 이번은 원본 행 순회 복원이며 전체 포팅 완료나 가청 음향/원본 Windows 실행/remote transport 인증이 아니다.
+
 ## 희소 native-handle 파티클 순회 비용 저감 (R150)
 
 기준 clean/pushed `5964001f633497125298c871702695a2fe2cb22e`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).Draw` 한 본체의 dense/sparse 선택과 callback 뒤 전환뿐이다. 새 Go helper `src/particle_sparse_sweep_4afd40.go`를 추가하며 기존 imports/signature/types/본체 밖 bytes·type-table phase·allocator/C/free/factory/RNG/default draw/update·handle arena 함수·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다.

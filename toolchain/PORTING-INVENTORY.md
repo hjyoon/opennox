@@ -1,5 +1,23 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 현재 ARM64 제품의 실제 OpenAL 경로·CoreAudio 접근 경계 검증 (R141)
+
+테스트 revision은 clean/pushed `ed73187ca1786da3b9e72b317627b1c22d583c94`다. 이번은 음향 코드 수정이 아닌 실행 감사다. 기존 production·테스트/YAML/PNG/golden/oracle manifest·원본 음원·개인 Save/config는 변경하지 않는다. R134 Destroy patch와 기대값은 사용자의 유지 선택대로 원래 worktree에 보존한다. 기록만 같은 revision의 별도 conventional clone에 제목 직후 삽입하며 과거 suffix bytes를 유지한다.
+
+초기 테스트 명령의 env -u 옵션 순서 오류는 actual127이며 테스트 실행 전 준비 실패다. 옵션 위치만 교정한 첫 ^TestOpenAL 선택은 실제 기본 장치 테스트와 반드시 null 출력을 요구하는 ADPCM/MP3/PCM 세 검사를 함께 선택하여13fail·actual1이었다. 세 검사의 null-only guard와10개의 장치 열기 실패를 구분하여 원문을 보존한다. 원본 테스트/입력/expected를 수정하지 않는다. 같은 sandbox의 실제 GUI 기본 OpenAL 시도도 audio init에서 actual1로 종료했고 이후 menu/chapter 검사는 미실행이다.
+
+system_profiler는 sandbox 안에서 장치0개, 승인된 읽기 전용 sandbox 밖 조회에서는 기본 MacBook Air 스피커와 다른 출력 장치를 확인했다. 처음의 장치 부재 추정은 접근 경계로 교정한다. 같은 기존 무음 PCM/ADPCM 재생·일시정지 position·짧은 clip drain·discard/external movie 계수 분리·32stream close·driver/shutdown 정리10IDs를 sandbox 밖 실제 기본 장치에서 Go1.26.5 cgocheck2+race+checkptr2로 실행하여10pass/0skip·actual0다. null-only 세 검사를 제외한 ID는 첫 실패의10개와 동일하다. 마이크 사용·OS 출력 장치/볼륨 변경0이며 일반 sandbox 실패를 GREEN으로 대체하지 않는다. 이 검사는 기본 장치 buffer 진행의 증거이지 사람이 실제 음향을 들었다는 인증은 아니다.
+
+unchanged Audio.idx64092B/SHA=`75a5f0feeabc2db9a436706d33c9b022cf3be6cc51016cfb88738539c0667743`·Audio.bag23459328B/SHA=`f557bad64402ab9cce2f0705a43c9fae73262bc0624af94dafd64c86d8bea32a`의 전체1780entries를 실제 OpenAL Soft null backend에서 원래 rate로 끝까지 재생했다. 완전한 ADPCM44663blocks의 queued=processed44663·playing0·voice release 후 source0과 OpenAL error0을 확인했다. PCM46599736values 중45579914nonzero이며 SHA=`b8b6dbaa6a10e14b44f5e9048aa105efa266311b2a94199c5688ea06d8926ba7`는 현재 디코딩 기록일 뿐 독립 Windows/Miles oracle가 아니다.16개 high-address native voices를 사용하며 정렬은 private 검사 scheduling일 뿐 clip 길이·rate·gameplay RNG/event를 바꾸지 않는다. 실제 strict count1 actual0·148.229244초다. 전체 음원 재생을 모든 게임 event gate/가청 출력 검증으로 확대하지 않는다.
+
+별도 실제 OpenAL null stream/PCM/ADPCM/MP3 frame·seek·rewind·EOF·pause·buffer format/정리와 stock music/chap1.wav·dialog/c1cap01k.wav의 unchanged opt-in은89IDs×3=267pass/0skip·actual0다. 같은 strict cgocheck2+race+checkptr2와 기존 expected/fixtures/timeout을 유지한다. 원본 음악의 전체 반복 주기나 모든 대사·Windows 음질을 인증하지 않는다.
+
+unchanged `solo-warrior-native-audio.yaml`의 headless/OpenAL-null 일반·HD는 각각293.998232초/296.579442초·actual0다. mock/virtual audio handles를 쓰지 않으며 audio-handles=false·combat-trace=false와 격리 runtime/Save/maps/config를 보존한다. 실제 VQA logo/intro/noxlogo 자연 재생 뒤 menu music+effects·War01a music+speech+effects·Esc pause/resume의 세 live playback checkpoint 및 정상 cleanup을 확인했다. script의 첫 skip 입력은 movie 종료 뒤 실행되어 이 감사로 movie skip를 검증하지 않는다. shell.wav/chap1.wav와 f1cap01k.wav/f1cap12k.wav가 실제 native queue를 통과했다. 일반 최종 sample357/357·stream708/702·dialog319/317, HD sample357/357·stream712/704·dialog322/318이며 종료 시 아직 진행 중인 stream을 전체 EOF로 세지 않는다. 두 제품은 Go1.26.5/darwin/arm64/full revision/vcs.modified=false를 확인했다. 이는 실제 game event→OpenAL buffer 경로이며 null 출력이라 스피커 가청 검증은 아니다.
+
+통합 `native-audio-runtime-audit.log` SHA=`d0c58de1ce915414210bbcf2a548f3c690bd7c571cfef7fcf944cc2517640024`·actual0다. source6662files·protected304files·stock1556files·개인1562files/Save/config의 전체 runtime 전후 checkpoint는 byte-identical이다. 모든 실패/성공·동결 helper/입력·native product·runtime·read-only movie profile은 `/private/tmp/opennox-arm64-native-audio-r141.b1t3jE`에 보존한다. 캐시/원본/개인 자료 삭제0이다. docs-only 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push하고 새 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help를 별도 후속 receipt로 검증한다. 이번 GUI/음향 검사의 revision은 위 ed73187ca로 유지한다.
+
+구형 Lua Guard/Destroy·raw dialogue·PLAYER SetColor의 현재 panic 공백과 Solo Quest SKU/WOL·보존된 다른 실패 및 전체 original Windows runtime/pixel/가청 음향/remote transport의 UNPROVEN 상태는 그대로다. 확인된 CoreAudio 접근 제한을 production의 silent mock/null fallback으로 바꾸거나 전체 포팅 목표 완료로 보고하지 않는다.
+
 ## Host Game 캐릭터 Load 후 지속되는 반투명 렌더링 복원 (R140)
 
 기준 clean/pushed `2c5d3ae8a3387b7ad579bd534f62872ffd6223d2`다. 기존 production 변경은 `src/legacy/GAME3_1.c:nox_xxx_drawObject_4C4770_draw` 한 본체의 세 줄뿐이다. raw `info[3680]` 조회를 실제 native `nox_playerInfo.field_3680` 조회로 바꾸며 원래 observer bit1·NULL guard·local/remote·팀·투명화 마법·fade 분기를 유지한다. signature/imports/본체 밖 bytes·다른 기존 production·테스트/YAML/PNG/golden/oracle manifest·원본 자산·개인 Save/config는 불변이다. R134 Destroy patch와 기대값은 사용자의 유지 선택에 따라 별도 원래 worktree에 그대로 보존한다.

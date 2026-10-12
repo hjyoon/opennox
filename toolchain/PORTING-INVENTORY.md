@@ -1,5 +1,25 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 파티클의 원본 dynamic forward draw/update 순회 복원 (R149)
+
+기준 clean/pushed `cc29ac59d8f75b4dc8f462fa78acaf8494a968db`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).Draw` 한 본체의 particle 순회뿐이며 type-table phase의 기존 bytes는 그대로다. 새 `src/legacy/common/alloc/handles/frontier.go`는 allocation 없이 마지막 발급된 native-width opaque key를 읽는다. 기존 imports/signature/types/본체 밖 bytes·R148 allocator·C/free/factory/RNG/update/default draw·handles Init/Release/New/NewPtr·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다.
+
+원본004AFD50/004AFD56은 active bitmap0xff의 가장 낮은 slot을 찾고,004AFD8E draw 뒤004AFD9E update를 호출한다.004AFDA3은 callback 뒤 현재 capacity를 다시 읽고004AFDA8/004AFDAE/004AFDB5는 현재slot+1 이후를 다시 검색한다.004AFDC3부터 별도32-entry type table을 처리한다. 실제 원본 GAME.EXE 전체 SHA·PE32 magic와 이 instruction bytes를 다시 검증했다. 시작 시 active map을 단순 정렬한 immutable snapshot으로 대체하지 않는다.
+
+R148의 lowest-inactive allocator는 첫 생성 순서가 logical slot 순서이고 재사용 시 같은 native handle을 유지한다. 실제 handles.New/NewPtr의 atomic native-stride 단조 발급 계약에 근거해 첫/마지막 active key를 구하고 live map을 그 순서로 조회한다. callback 중 발급 frontier가 증가하면 뒤쪽 범위를 즉시 확장하며, 이미 발급된 미래 빈slot의 재활성화도 현재 map에서 읽는다. cursor 뒤의 신규/재사용 slot은 같은 frame에 처리하고 앞의 재사용은 다음 frame에 처리한다. 다른 owner나 기타 opaque keys는 map에서 제외된다. uintptr 비교는 native-width 순서 비교뿐이며 주소를 DWORD로 줄이거나 정수에서 포인터를 재구성하지 않는다. 같은 protected arena 안의 unsafe.Add 이동과 실제 cgocheck2/race/checkptr2로 검증한다.
+
+이는 video Init/Free가 Draw 외부에서 수행되는 실제 production lifecycle 안의 logical slot 순회 계약이다. callback에서 handle arena를 Release/Init하거나 video arena 자체를 교체하는 경로는 현재 production 호출자가 아니며 이 테스트에서 원래 동작으로 인증하지 않는다. 원래 PE32 realloc의 물리적 포인터 이동·dangling address를 재현했다는 주장도 아니다. native handle namespace의 다른 key 사이 간격도 조회하므로 원본 bitmap과 동일한 storage/performance 구조라고 설명하지 않으며, 광범위한 성능 인증은 별도 범위다.
+
+새 frozen native/headless tests2개는55IDs다.6/17/64logical slots와 다른 owner·다른 native key interleave에서 각16frame의 draw→update 순서, draw/update에서 tail 생성, cursor 앞 재사용, 미래 빈slot 재활성화와 실제 GC, 미래/current 교체·삭제,512/513/1025active records의 마지막 callback에서3records 증가를 검사한다. hidden bit8와 nil draw/update의8조합, type interval0/1/2의 phase 순서·callback 관측값1·tail emit의 next-frame 처리를 검사한다. custom callbacks는 실제 Draw callback 계약의 관측/변이 fixture이며 stock packet 전체 effect 실행으로 확대하지 않는다.
+
+실제 factory/default draw/update/free와 변경 없는 R146 noxrender pixbuffer→render upload→headless seat를 사용해 다른 색의2×2완전 겹침을 검사했다.7색 rotation×low-hole reuse/all-reuse/원래 expiry의21조합·각16frames이며 literal RGB5551 highest-active-slot pixels와 전체 raster/upload를 비교한다. 이 pixel 검사는 callback 교체·명시적 p.C() 강제 등록0이다. 첫 compiled strict RED14pass/41fail·actual1, 같은 동결 입력의 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN165pass/0skip·actual0다. 총1008actual different-color headless frames다. 입력/expected/flags/HP/RNG/wait/timeout/golden retune0이다.
+
+일반/HD/실제cgocheck2 전체는 각각69855pass/41skip/38packages, server68954pass/7skip/35packages·actual0다. R148의 모든 기존 test ID/action/횟수/skip/package 결과가 동일하고 client 새55pass·server 새30pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다. source6674→6677files의 기능 차이는 위 한 본체+새 frontier helper1개/tests2개뿐이다. protected304files·stock1556files·개인1562files/Save/config whole checkpoint는 byte-identical이며 R134 Destroy patch/기대값도 사용자 유지 선택대로 보존한다. cache/원본/개인 자료/제품/실패 evidence 삭제0이다.
+
+통합 `sweep-test-audit.log` SHA=`ee4509f661fa76f2e7a914ed329c5767836e9c814182704e514c8b6a24bd67cd`·actual0다. RED/GREEN·동결 입력·original/green whole source·원본 disassembly·checkpoint·후속 receipt는 `/private/tmp/opennox-particle-sweep-r149.oLz2NN`에 보존한다. 문서는 제목 직후 삽입하여 과거 suffix bytes를 유지하고 commit 다음 도구에서 즉시 origin port/go1.26-multiarch에 push한다. 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help와 unchanged conjurer spell-pet map-transition 일반/HD headless/mock는 별도 후속 receipt로 검증한다. 이 GUI는 실제 summon/Charm/Pixie/동반자 map transition 회귀이며 synthetic cursor/겹침 입력의 직접 증거는 위 native/headless fixture다. 격리 runtime/Save/maps/config를 보존하며 audio-handles=false·combat-trace=false를 유지한다.
+
+원본 type field1 감소는 임시 EAX만 변경하는 것으로 확인했으므로 기존 field1==1 조건과 type callback phase를 유지했다. 이번 logical traversal/flat-color pixels만으로 모든 sprite/alpha/packet effect·original Windows 전체 runtime/pixels/가청 음향/remote transport나 전체 ARM64 포팅 목표를 완료했다고 인증하지 않는다. 다른 historical frozen 실패와 Solo Quest SKU/WOL·raw dialogue·PLAYER SetColor 및 전체 성능 검증은 계속 남아 있다.
+
 ## 파티클의 원본 lowest-inactive slot 재사용 복원 (R148)
 
 기준 clean/pushed `5a42ef422e4006d7c963388d8804edbcab66fa3e`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).newParticlefx` 한 본체뿐이며 새 Go-owned helper `src/particle_slots_4b01b0.go`를 추가한다. 기존 imports/signature/types/본체 밖 bytes·Init/Free/C/free/factory/RNG/update/draw·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다. 원래 Go sync.Pool의 임의 free 순서는 GAME.EXE의 가장 낮은 inactive slot 재사용과 다르므로 allocation 정책을 owner-local logical arena로 연결한다.

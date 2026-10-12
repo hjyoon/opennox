@@ -147,15 +147,39 @@ func (pfx *partFXes) registerParticleFx(fnc func(t *particlefxType) bool, p *par
 }
 
 func (pfx *partFXes) Draw() {
-	for _, p := range pfx.byHandle { // TODO: this gives random order
-		if p.flags&8 == 0 {
-			if p.drawFunc != nil {
-				p.drawFunc(p)
-			}
+	// First-issued handles follow logical slot order; low-slot reuse keeps
+	// its handle. Arena Init/Free occur outside this sweep (video lifecycle).
+	var first, last unsafe.Pointer
+	for handle := range pfx.byHandle {
+		if first == nil || uintptr(handle) < uintptr(first) {
+			first = handle
 		}
-		if p.updateFunc != nil {
-			if !p.updateFunc(p) {
-				p.free()
+		if last == nil || uintptr(handle) > uintptr(last) {
+			last = handle
+		}
+	}
+	if first != nil {
+		frontier := handles.FrontierPtr()
+		for handle := first; ; handle = unsafe.Add(handle, unsafe.Alignof(uintptr(0))) {
+			if p := pfx.byHandle[handle]; p != nil {
+				if p.flags&8 == 0 {
+					if p.drawFunc != nil {
+						p.drawFunc(p)
+					}
+				}
+				if p.updateFunc != nil {
+					if !p.updateFunc(p) {
+						p.free()
+					}
+				}
+				// 004AFDA3 reloads capacity after callbacks. New tail slots
+				// run now; reactivated slots behind the cursor run next frame.
+				if current := handles.FrontierPtr(); current != frontier {
+					frontier, last = current, current
+				}
+			}
+			if uintptr(handle) >= uintptr(last) {
+				break
 			}
 		}
 	}

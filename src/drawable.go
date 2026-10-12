@@ -149,7 +149,7 @@ func (c *Client) DestroyDrawable(code uint16) {
 	}
 	if dr.DrawFuncPtr == legacy.Get_nox_thing_animate_draw() {
 		if dd := dr.DrawData; dd != nil {
-			if *(*uint32)(unsafe.Add(dd, 12)) == 1 {
+			if animateDrawKindNative48EA70(dd) == 1 {
 				return
 			}
 		}

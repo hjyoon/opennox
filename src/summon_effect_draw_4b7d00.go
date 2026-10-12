@@ -4,24 +4,12 @@ package opennox
 
 import (
 	"image"
-	"unsafe"
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 )
-
-// summonAnimateDrawData4B7D00 mirrors nox_animate_draw_data_t. Go's native
-// pointer alignment intentionally matches the C parser on both 32- and
-// 64-bit targets.
-type summonAnimateDrawData4B7D00 struct {
-	size          uint32
-	images        unsafe.Pointer
-	frameCount    uint8
-	frameDelay    uint8
-	animationKind uint32
-}
 
 type summonEffectDrawHooks4B7D00 struct {
 	frame       func() uint32

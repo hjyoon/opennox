@@ -19,6 +19,7 @@ type objectOutOfSightHooks48EA70 struct {
 	deactivate      func(*client.Drawable)
 	deleteDrawable  func(*client.Drawable)
 	animateDrawFunc unsafe.Pointer
+	animationKind   func(unsafe.Pointer) uint32
 }
 
 type objectInShadowsHooks48EA70 struct {
@@ -31,6 +32,7 @@ type objectInShadowsHooks48EA70 struct {
 	deactivate      func(*client.Drawable)
 	deleteDrawable  func(*client.Drawable)
 	animateDrawFunc unsafe.Pointer
+	animationKind   func(unsafe.Pointer) uint32
 }
 
 func decodeObjectOutOfSightState48EA70(data []byte) (objectOutOfSightState48EA70, bool) {
@@ -61,6 +63,16 @@ func isOneShotObjectOutOfSightDrawable48EA70(dr *client.Drawable, animateDraw un
 	return dr.DrawFuncPtr == animateDraw && dr.DrawData != nil && *(*uint32)(unsafe.Add(dr.DrawData, 12)) == 1
 }
 
+// A nil reader preserves the PE32 service contract used by the original
+// branch fixtures. Native packet adapters always provide the compiler-aligned
+// parser layout; they must not interpret the high dword of images as kind.
+func isOneShotObjectOutOfSightWithReader48EA70(dr *client.Drawable, animateDraw unsafe.Pointer, readKind func(unsafe.Pointer) uint32) bool {
+	if readKind == nil {
+		return isOneShotObjectOutOfSightDrawable48EA70(dr, animateDraw)
+	}
+	return dr != nil && dr.DrawFuncPtr == animateDraw && dr.DrawData != nil && readKind(dr.DrawData) == 1
+}
+
 func handleObjectOutOfSightNative48EA70(data []byte, hooks objectOutOfSightHooks48EA70) int {
 	state, ok := decodeObjectOutOfSightState48EA70(data)
 	if !ok {
@@ -70,7 +82,7 @@ func handleObjectOutOfSightNative48EA70(data []byte, hooks objectOutOfSightHooks
 		return 3
 	}
 	dr := findObjectOutOfSightDrawable48EA70(hooks.firstDrawable(), state.Code)
-	if dr == nil || isOneShotObjectOutOfSightDrawable48EA70(dr, hooks.animateDrawFunc) {
+	if dr == nil || isOneShotObjectOutOfSightWithReader48EA70(dr, hooks.animateDrawFunc, hooks.animationKind) {
 		return 3
 	}
 	if dr == hooks.localDrawable() {
@@ -110,7 +122,7 @@ func handleObjectInShadowsNative48EA70(data []byte, hooks objectInShadowsHooks48
 		}
 		return 3
 	}
-	if isOneShotObjectOutOfSightDrawable48EA70(dr, hooks.animateDrawFunc) || dr == hooks.localDrawable() {
+	if isOneShotObjectOutOfSightWithReader48EA70(dr, hooks.animateDrawFunc, hooks.animationKind) || dr == hooks.localDrawable() {
 		return 3
 	}
 	if nox_xxx_netTestHighBit_578B70(state.Code) {
@@ -129,6 +141,7 @@ func (c *Client) handleObjectOutOfSightPacketNative48EA70(data []byte) int {
 		deactivate:      c.Nox_xxx_cliDestroyObj_45A9A0,
 		deleteDrawable:  c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable,
 		animateDrawFunc: legacy.Get_nox_thing_animate_draw(),
+		animationKind:   animateDrawKindNative48EA70,
 	})
 }
 
@@ -143,5 +156,6 @@ func (c *Client) handleObjectInShadowsPacketNative48EA70(data []byte) int {
 		deactivate:      c.Nox_xxx_cliDestroyObj_45A9A0,
 		deleteDrawable:  c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable,
 		animateDrawFunc: legacy.Get_nox_thing_animate_draw(),
+		animationKind:   animateDrawKindNative48EA70,
 	})
 }

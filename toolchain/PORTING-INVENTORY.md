@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 원본 메인 메뉴 배경색 상태와 독립 이미지 그리기 복원 (R151)
+
+첫 조사 기준은 clean/pushed R150 `b29961a17bfc85a6e381ab752d6bd280e0370605`다. 의존성인 비압축 이미지 행 이동 한 줄은 먼저 별도 `dcb23fc2f18e4509e370bb2b55425f103b2cd618`로 commit/push했다. 이번 기존 production 변경은 `src/gui_main_menu.go:drawMainMenuBackground` 한 본체의 두 분기뿐이다. 원본 `004A2321→00434460`처럼 non-image/non-transparent 배경색을 Color2에 저장한 뒤 fill한다. 빈/clip된 사각형에서도 저장하며 transparent sentinel `0x80000000`은 그대로다. 원본 `004A2347`의 first image=nil은 UPDATE만 건너뛰고 `004A2446`의 독립 DRAW로 이동하므로 다른 loaded eye도 그린다. 기존 update/RNG 순서·blink/phase 값·이미지 그리기 본체 bytes는 들여쓰기 외 동일하며 imports/signature/types/본체 밖·다른 production/기존 tests/YAML/PNG/golden/oracle는 불변이다.
+
+새 동결 메뉴 검사25IDs는4literal5551colors×clip/empty의16leaf+parent, transparent1, hidden/0·1·2blink의6partial-image leaf+parent다. 실제 native-width C-owned GUI window/data와 renderer를 사용하며 whole window/data 및 RNG index 불변, complete raster→upload→headless seat pixels를 검사한다. 첫 v1 문법 오류는 compiled0·actual1로 보존했다. v2는 추가 닫는 괄호만 제거하고 gofmt·새 경로를 사용하며 semantic 입력/expected는 동일하다. 첫 compiled v2 RED6pass/19fail·actual1, 메뉴만 수정한 중간 cgocheck2 count3은69pass/6fail·actual1이었다. 이는 하위 비압축 이미지 오류를 드러냈으며 실패나 기대값을 삭제/수정하지 않았다.
+
+분리한 렌더러 수정 후 동일 메뉴25+이미지65IDs의 실제 Go1.26.5 cgocheck2+race+checkptr2 count3은270pass/0skip·actual0다. 메뉴의 실제 complete headless frames는69개다. partial-image fixture는 합법적인 type2 raw image로 callback 계약을 검사하는 것이며 stock BlinkEyeD 전체 asset 재현이나 original Windows runtime 실행으로 확대하지 않는다. 전체 일반/HD/실제cgocheck2는 각각69966pass/41skip/38packages, server69031pass/7skip/35packages·actual0이며 모든 R150 기존 ID/action/횟수/skip/package 결과를 유지했다. client 새90pass·server 새65pass만 추가했다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다.
+
+source6684files·protected304files·stock1556files·개인1562files/Save/config의 전체 검사 전후 checkpoint는 byte-identical이다. 메뉴 커밋의 기능 차이는 위 한 본체+새 v2 test1개뿐이다. R134 Destroy patch/기대값은 사용자의 유지 선택대로 보존했다. 통합 `menu-test-audit.log` SHA=`92549fdf1be837681b94485a4da43f75378eae3b57b5db990ecfa7e0bde768d4`·actual0이며 모든 준비 실패/compiled RED/중간 실패/최종 GREEN·원본 disassembly·동결 입력·whole source/data 증거를 `/private/tmp/opennox-wizard-gate-r151.swyOMv`에 보존한다. 기존 문서는 제목 뒤 삽입만 하여 이전 suffix를 유지한다. cache/자산/개인 자료/제품/실패 evidence 삭제0이다.
+
+R150 clean 제품으로 재실행한 unchanged Wizard chapter1 일반/HD PNG 비교는 모두 actual2였다. chapter1 선택 직후 기대 이미지에서 NPC 색상/장비 아이콘 등과 차이가 있으며 정확한 원본 Windows 대조 없이 golden에 맞추려고 되돌리지 않는다. source에 생성된 OUR diagnostic got/diff PNG2개는 hash를 남긴 뒤 private `generated-source-diagnostics`로 이동하여 보존했으며 기대 PNG는 불변이다. historical R139 wizard class-selection의25pixel blink-eye 차이는 다른 경로다. 이번 메뉴 두 분기는 그 실패 원인/해결이나 Wizard 전체 원본 동등성으로 인증하지 않는다.
+
+commit 다음 도구에서 즉시 origin port/go1.26-multiarch에 push하고, 해당 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help 및 unchanged conjurer spell-pet map-transition 일반/HD headless/mock를 후속 확인한다. 사용자가 확인한 Host Game Load의 지속 반투명은 R140의 native player status offset4976 수정이며 그 C 본체는 불변이다. 같은632B gameplay-created Save와 고정 Load 입력으로 일반/HD clean replay하여1249/1849/2094frames의 로드 직후·600frame 대기 후·이동 후 pixels를 보존한 R140 fixed display와 비교한다. 개인 Save import·진단 overlay 없이 격리 runtime/Save/maps/config와 audio-handles=false·combat-trace=false를 유지한다. 후속 결과는 별도 receipt이며 전체 포팅 목표·가청 음향/remote transport/original Windows 동등성은 미완료다.
+
 ## 비압축 이미지의 원본 행 이동 복원 (R151 의존성)
 
 기준 clean/pushed `b29961a17bfc85a6e381ab752d6bd280e0370605`다. 메뉴 배경의 새 고정 검사에서 발견한 하위 렌더러 오류를 먼저 분리한다. 기존 production 변경은 `src/client/noxrender/image.go:nox_client_drawImg_bbb_4C7860` 한 본체의 `pitch*(pos.Y+1)`을 `pitch*(pos.Y+i)`로 바꾼 한 줄뿐이다. 모든 행이 같은 화면 행에 덮어써지던 오류다. 원본 GAME.EXE `004C79AB..004C79DB`는 목적 row table index를 매번4bytes 증가시키고 source도2*width bytes씩 이동한다. 기존 clip/crop/offset/색 처리·다른 본체·imports/signatures·기존 tests/YAML/PNG/golden/oracle와 자산은 불변이다. 별도 clipping source-offset 동작은 수정하지 않는다.

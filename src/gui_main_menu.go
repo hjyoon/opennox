@@ -63,6 +63,7 @@ func drawMainMenuBackground(win *gui.Window, draw *gui.WindowData) int {
 	pos := win.GlobalPos()
 	if !win.GetFlags().Has(gui.StatusImage) {
 		if draw.BgColorVal != 0x80000000 {
+			noxClient.r.Data().SetColor2(draw.BackgroundColor())
 			sz := win.Size()
 			noxClient.r.DrawRectFilledOpaque(pos.X, pos.Y, sz.X, sz.Y, draw.BackgroundColor())
 		}
@@ -77,32 +78,31 @@ func drawMainMenuBackground(win *gui.Window, draw *gui.WindowData) int {
 		}
 	}
 
-	if len(mainMenuEyes) == 0 || mainMenuEyes[0].image == nil {
-		return 1
-	}
-	rand := noxClient.srv.Rand.Other.Int
-	for i := range mainMenuEyes {
-		eye := &mainMenuEyes[i]
-		if eye.blinkCooldown != 0 {
-			eye.blinkCooldown--
-		}
-		if eye.blinkTicks != 0 {
-			eye.blinkTicks--
-			eye.blinkCooldown = uint32(rand(60, 120))
-		}
-		oldPhase := eye.phaseTicks
-		eye.phaseTicks--
-		if oldPhase == 1 {
-			if eye.hidden {
-				eye.hidden = false
-				eye.phaseTicks = uint32(rand(int(eye.spec.VisibleMin), int(eye.spec.VisibleMax)))
-				eye.blinkCooldown = uint32(rand(60, 90))
-			} else {
-				eye.hidden = true
-				eye.phaseTicks = uint32(rand(int(eye.spec.HiddenMin), int(eye.spec.HiddenMax)))
+	if len(mainMenuEyes) != 0 && mainMenuEyes[0].image != nil {
+		rand := noxClient.srv.Rand.Other.Int
+		for i := range mainMenuEyes {
+			eye := &mainMenuEyes[i]
+			if eye.blinkCooldown != 0 {
+				eye.blinkCooldown--
 			}
-		} else if !eye.hidden && eye.blinkCooldown == 0 && eye.blinkTicks == 0 && rand(0, 100) > 75 {
-			eye.blinkTicks = uint32(rand(4, 8))
+			if eye.blinkTicks != 0 {
+				eye.blinkTicks--
+				eye.blinkCooldown = uint32(rand(60, 120))
+			}
+			oldPhase := eye.phaseTicks
+			eye.phaseTicks--
+			if oldPhase == 1 {
+				if eye.hidden {
+					eye.hidden = false
+					eye.phaseTicks = uint32(rand(int(eye.spec.VisibleMin), int(eye.spec.VisibleMax)))
+					eye.blinkCooldown = uint32(rand(60, 90))
+				} else {
+					eye.hidden = true
+					eye.phaseTicks = uint32(rand(int(eye.spec.HiddenMin), int(eye.spec.HiddenMax)))
+				}
+			} else if !eye.hidden && eye.blinkCooldown == 0 && eye.blinkTicks == 0 && rand(0, 100) > 75 {
+				eye.blinkTicks = uint32(rand(4, 8))
+			}
 		}
 	}
 	for i := range mainMenuEyes {

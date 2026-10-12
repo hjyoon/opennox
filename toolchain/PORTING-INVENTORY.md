@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 현재 ARM64 제품의 Quest 20단계 및 보존된 전투·음식 실패 재검증 (R126)
+
+테스트 revision은 clean/pushed `8adefafe11ed20c417f44392464ff385d05731e5`다. 이번은 게임 동작 수정이 아닌 읽기 전용 실행 감사이며 production·기존 테스트/YAML/PNG/golden/oracle manifest·자산·개인 Save/config는 변경하지 않는다. 실제 GUI6제품 모두 Go1.26.5/darwin/arm64/full revision/`vcs.modified=false`를 확인했다. 모든 실행은 headless/mock/audio-handles=false이고 isolated runtime을 삭제하지 않는다. Skeleton 관찰 재실행만 기존 read-only 240-frame combat trace를 켰으며 같은 동결 시나리오·입력/HP/타이밍/timeout을 유지한다.
+
+unchanged `host-quest-twenty-stages-map-oracle.yaml`의 일반·HD는 각각159.426966초/147.809095초·actual0·정상 cleanup이다. 각20개 실제 selector snapshot을 process 밖에서4096-word RNG table과 signed DWORD maximum/equality/cooldown·ordered candidate 규칙으로 재검산했다. native 결과·정확한 Logic 소비가 일치하고 history/frame/Other/clock/last는 보존된다. 주소를 제외한 일반/HD snapshot도 동일하다. stage1..20의 loaded/client phase3·wire2·HP450/450·observer/briefing=false, stage2..20 mouse 이동19회·stock exit 위치 배치 뒤 정상 collision 전환19회·stock generator cap20회 및 stage5 Hecubah/Necromancer·stage20 Hecubah를 확인했다. 전체 맵 자연 이동이나 보스 처치·원본 Windows 전체 월드 실행으로 확대하지 않는다.
+
+각5개의1024×768 private 진단 PNG는 completed stage4/19 score와 stage5/6/20 gameplay다. 일반·HD5쌍은 byte-identical이며5개 unique 화면을 직접 확인했다. score·stage HUD·플레이어·맵·상점 공간의 실제 렌더 관찰이지 원본 Windows/golden/pixel/실제 장치 인증은 아니다. 기존 고정 `host-quest-twenty-stages.yaml`는42.929887초·actual2이며 stage3 expected `g_lotdd`/actual `g_crypts`에서 중단한다. 이후4..20/Screen은 미실행이며 별도 selector 검산 통과로 이 RED를 대체하지 않는다.
+
+동결 private Skeleton 처치 시나리오는 baseline93.104978초와 read-only trace86.310081초 모두2400tick 처치 대기 timeout·actual2다. 현재97개 실행 frame/FPS/RNG/HP/state/장비/AI stack은 pointer alias 관계를 보존해 주소만 정규화하면 R100의97개 관찰과 동일하다. 실제 player HP `20→12→4→0`, Skeleton `40→35→30→25→20`, frame729의 player State3/weapon=nil로 플레이어가 먼저 사망한다. 이는 현재 경로의 상호 피해 관찰이며 피해 누락의 증거나 full original combat parity·처치 게이트 GREEN이 아니다. HP·공격 간격·면역·기대 처치·timeout을 retune하지 않는다. 이후 death Screen은 미실행이다.
+
+unchanged passive `host-game-ai-retreat-food.yaml`도53.460328초·actual2다. 첫 Troll/ascending/RedApple는 aggression0.01·script injury80→75 뒤 frame594에 비강제 RETREAT/MOVE를 시작하고 food 인근까지 이동하지만 PICKUP 소비를600tick 안에 관측하지 못했다. classic regeneration으로80에 도달하며 이후7조건은 미실행이다. 원본 MOVE_TO/periodic-food와의 전체 world 동등성이나 engine 결함의 확정으로 확대하지 않고 기존 입력과 실패를 보존한다. 기존 NPC Sword/type7→Skeleton 실제 C dispatcher→등록 DefaultDamage→UnitSetHP의 Go1.26.5 cgocheck2+race+checkptr2 count3은19IDs/57pass/0skip·actual0이며 보고 metadata의 HP `2000→1997→1994→1991`을3회 유지한다. 전체 suite를 이번에 새로 실행한 것으로 보고하지 않는다; 직전 R125 전체 네 모드 검증은 유지된다.
+
+통합 runtime audit actual0/SHA=`3ee9e9c4b9049b2f2fd343838539f0eb9810936e64564fdbc28d819896267348`는 `all_GUI_green:false`와2개의0/4개의2를 명시한 증거 무결성 검사다. unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0다. 실행 전후 source6265files·protected304files·stock1556files·개인1562files/Save/config 전체 checkpoint는 byte-identical이며 삭제0이다. 증거 `/private/tmp/opennox-runtime-gates-r126.dAZLrE`의 로그·스냅샷·PNG·runtime·동결 입력/관찰 helper를 보존한다. 원본 PE 실행은 없고 전체 원본 Windows/실제 음향/remote transport는 UNPROVEN이다.
+
+문서만 제목 직후 삽입해 이전 suffix bytes를 보존하고 커밋 다음 도구에서 즉시 push한다. 새 docs-only revision의 clean ARM64 일반/HD/server3제품 build/metadata/Mach-O/help는 후속 receipt에서 별도로 확인하며 GUI는 위8adefafe revision에 귀속한다. SetColor의 PLAYER panic·raw dialogue API·nil team 해제의 두 wrapper 공백은 조사 후보로만 확인했으며 이번에 구현한 것으로 보고하지 않는다. Solo Quest SKU/WOL/마법사 Screen·기존 상점 Screen/Con02A·다른 미검증 경로와 전체 ARM64 포팅 목표는 미완료 상태를 유지한다.
+
 ## 공개 객체 타입 Subclass 조회의 미구현 panic 제거 (R125)
 
 기준 clean/pushed `1e1393d3bb3d42e57e3a53678fe4fd060eb94926`다. 기존 production은 `src/script_ns_object.go:(nsObjType).HasSubclass` 한 본체만 변경한다. unconditional `panic("implement me")`를 기존 instance API와 같은 single-name `object.ParseSubClass` 및 metadata bit predicate에 연결한다. signature/imports/본체 밖 bytes와 다른 기존 production/테스트/YAML/PNG/golden/oracle manifest·자산·Save/config는 불변이다. 대소문자 변환·빈/NULL·invalid name의 기존 계약을 유지하며 임의 class gate, whitespace trim, combined-name/numeric parser, valid-name nil-type guard를 추가하지 않는다. SDK가 명시한 overlapping subclass bits 때문에 먼저 HasClass를 확인하는 책임도 그대로다.

@@ -558,14 +558,18 @@ func (pfx *partFXes) randU16() uint16 {
 func (pfx *partFXes) randI32(a1, a2 int) int {
 	v2 := pfx.rand.u32
 	for v3 := 32; v3 != 0; v3-- {
-		v4 := cfshl(int(v2), 1)
+		// 0048C5EE rotates EAX and tests its original bit 31 carry.
+		v4 := v2 >> 31
 		v2 = rotl(v2, 1)
 		if v4 != 0 {
 			v2 ^= 0xA0A
 		}
 	}
 	pfx.rand.u32 = v2
-	return a1 + int((uint64(a2-a1)*uint64(v2))>>32)
+	// SUB/MUL/ADD use ABI32 words; the returned EAX is signed int32.
+	low := uint32(a1)
+	span := uint32(a2) - low
+	return int(int32(low + uint32((uint64(span)*uint64(v2))>>32)))
 }
 
 func (pfx *partFXes) newPartfxT0(fx *packetParticleFx) {

@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 파티클 전용 RNG32의 원본 carry·ABI32 범위 계산 복원 (R144)
+
+기준 clean/pushed `73f9dd48d3a0a878c77837517765a90ec0a3e015`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).randI32` 한 본체뿐이다. `cfshl` TODO panic 호출을 원래 EAX bit31 carry 읽기로 바꾸고 SUB/MUL/ADD를 ABI32 word로 계산하여 signed EAX 결과를 native int로 반환한다. imports/signature/본체 밖 bytes·다른 production·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다. R134 Destroy patch와 기대값은 사용자의 보존 선택대로 원래 worktree에 유지하고 R143의 네 파일 SHA를 다시 확인한다.
+
+GAME.EXE 0048C5E0은 32회 ROL32 후 carry가 있으면 XOR0xa0a를 수행하고 state를 저장한다. 0048C605의 SUB는 high-low를 DWORD wrap으로 계산하고 unsigned MUL의 상위 DWORD에 low를 ADD한다. 반환 EAX는 int32이며 원래 high-exclusive 범위·동일/역전 범위·overflow wrap을 그대로 유지한다. 새 clamp·bounds swap·inclusive +1·seed 변경·전역 서버 RNG 대체가 없다. 원본 전체 EXE SHA와 loop-count/ROL/JAE/XOR/loop·SUB/MUL/EDX/ADD의 실제 instruction bytes를 재검증했다. Windows registry SKU 검사는 macOS의 대체 설치 판별 근거가 없어 임의 SKU나 bypass 상태를 만들지 않는다.
+
+새 frozen `particle_rng32_native_48c5e0_test.go`는 원본 instruction interpretation으로 얻은 literal GF(2) basis32개와 초기 stream8개를 사용한다. 9seed×14range(negative/singleton/reversed/full signed32/high native int 포함)×8반복,32basis 전체,65536low-word seeds와 실제 randPoint→particle factory→native-width opaque handle→default movement/lifetime/free 경로의130IDs다. oracle는 rotl/cfshl/randI32나 supplied RNG callback을 호출하지 않는다. point fixture의321개 물리 backing table words는 explicit 입력이며 겹치는 원래 X/Y view를 반영하고 원상 복원한다. stock sprite pixels나 full packet/GUI 효과를 이 arithmetic/lifecycle fixture로 인증하지 않는다. 기존 16-bit stream·particle table·renderer/handle map도 불변으로 검사한다.
+
+첫 compiled RED130fail/0pass·actual1은 모두 TODO panic이었다. 입력·expected·flags/HP/RNG/WAIT/timeout/golden retune 없이 같은 동결 테스트의 실제 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN390pass/0skip·actual0이다. 전체 일반/HD/실제cgocheck2 각각69650pass/41skip/38packages, server68811pass/7skip/35packages·actual0다. R143의 모든 기존 ID/action/횟수/skip/package 결과가 같고 새130pass만 추가했다.
+
+unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. source6664→6665files의 기능 차이는 위 한 본체+새 test1개뿐이고 protected304files·원본1556files·개인1562files/Save/config의 whole checkpoint는 불변이다. 통합 `rng32-test-audit.log` SHA=`a1948722c6942449228dd236489b2637336684285e978ea672cdb0164cfe3a76`·actual0다. 모든 frozen 입력·원본 body·basis interpretation·실패/성공·before/after checkpoint·후속 제품/GUI receipt는 `/private/tmp/opennox-particle-rng32-r144.1zAS2X`에 보존한다. 캐시·제품·원본/개인 자료 삭제0이다.
+
+문서는 제목 직후 삽입하여 과거 suffix bytes를 유지하고 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push한다. 해당 clean revision의 공식 ARM64 일반/HD/server3제품 build·metadata·Mach-O/help, unchanged conjurer summon/Charm/Pixie/3-map-transition 일반/HD headless/mock를 별도 후속 receipt로 검증한다. 격리 runtime/Save/maps/config를 보존하고 audio-handles=false·combat-trace=false를 사용한다. 이 GUI는 위 synthetic RNG32 경계 입력을 직접 호출한 증거가 아니며 후속 실패는 입력/expected retune 없이 보존한다.
+
+이번은 원래 파티클 생성 경로를 막던 공통 RNG32의 복원이다. randU16의 carry-width TODO와 muldiv의 감쇠/bounce TODO는 아직 남아 있으며 파티클 효과 전체·원본 Windows runtime/pixels/가청 음향/remote transport를 완료한 것으로 보고하지 않는다. raw 문자열 dialogue·PLAYER SetColor·R134 보존·Solo Quest SKU/WOL·historical frozen 실패와 전체 ARM64 포팅 목표도 미완료/UNPROVEN이다.
+
 ## 구형 Lua Guard의 원본 no-arg GUARD native 명령 연결 (R143)
 
 기준 clean/pushed `152e8a3d090177f9ebc2ee196a0bd31f9b919271`다. 기존 production 변경은 `src/script_compat.go:(scrObject).Guard` 한 본체뿐이다. unconditional panic을 없애고 nil underlying Object는 무접근으로 반환하며 나머지는 기존 native `Nox_xxx_orderUnit_533900(unit, unit, 3)`에 전달한다. imports/signature/본체 밖 bytes·다른 production·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다. 사용자 선택대로 R134 Destroy patch와 기대값을 원래 worktree에 보존하고 네 파일 SHA를 별도로 동결한다.

@@ -117,7 +117,8 @@ func (s *Server) enactUnitOrder5339A0(source, unit *Object, order uint32, runtim
 			return obj.MonsterPushActionImpl(action, "go", 0)
 		},
 		setGuardArgs: func(action *AIStackItem, obj *Object) {
-			action.SetArgs(obj.PosVec, uint32(obj.Direction1))
+			// 00533B4E sign-extends the facing WORD to the original DWORD.
+			action.SetArgs(obj.PosVec, uint32(int16(obj.Direction1)))
 		},
 		setEscortArgs: func(action *AIStackItem, obj *Object) {
 			action.SetArgs(obj.PosVec, obj)

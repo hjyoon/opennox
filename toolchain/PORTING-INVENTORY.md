@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 공통 GUARD 명령의 native 방향 WORD 부호 확장 복원 (R142)
+
+기준 clean/pushed `1e1164b1707e1a1845f8a628b83710cb26bf52a1`다. 구형 Lua Guard panic 연결을 준비하다 공통 원본 GUARD 처리의 선행 차이를 확인했다. 기존 production 변경은 `src/server/unit_order_533900_server.go:(*Server).enactUnitOrder5339A0` 한 본체의 setGuardArgs 안 한 변환과 주석뿐이다. imports/signature/본체 밖 bytes와 다른 production·기존 tests/YAML/PNG/golden/oracle manifest·개인 Save/config는 불변이다. R134 Destroy patch와 기대값은 사용자의 유지 선택대로 별도 원래 worktree에 보존한다.
+
+GAME.EXE 00533B4E의 `0f bf 4e 7c`는 live object+124의 방향을 signed WORD로 읽고,00533B54의 `89 48 0c`는 그 sign-extended DWORD를 guard action에 저장한다. 실제 원본 EXE 전체 SHA와 두 instruction bytes를 재검증했다. native Dir16의 unsigned 값 직접 변환은0x8000/0xfffe/0xffff를00008000/0000fffe/0000ffff로 저장했다. 최종 `uint32(int16(obj.Direction1))`는 원본ffff8000/fffffffe/ffffffff를 보존한다. 위치·direction 읽기의 원래 callback 이후 순서·unused argument·원본 GUARD의250 sight/0.5 aggression·shoot flag·action stack/정리·명령 음향은 기존 경로를 유지하며 새 clamp·range·owner·AI 조건을 추가하지 않는다.
+
+새 frozen `unit_order_guard_direction_native_5339a0_test.go`는 실제 C-owned high-address source/unit/update/MonsterDef와 native OrderUnit533900을 사용한다. 일반 monster/NPC×8개의0/1/00ff/0100/7fff/8000/fffe/ffff literal signed-DWORD oracle로16leaf+parent17IDs를 검사한다. 실제 GUARD action/index·위치·unused fourth argument·원래 aggression/sight/status·unit/source/definition 전체 bytes 보존을 확인한다. fixture는 cached definition·nil SoundSet을 사용하며 actual world/음향 callback 실행의 증거로 확대하지 않는다. 수정 전 compiled strict RED10pass/7fail·actual1, 같은 동결 테스트의 실제 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN51pass/0skip·actual0다. 입력·기대값·flags/HP/RNG/WAIT/timeout/golden retune0이다.
+
+전체 일반/HD/실제cgocheck2 각각69035pass/41skip/38packages, server68196pass/7skip/35packages·actual0다. R140의 모든 기존 ID/action/횟수/skip/package 결과가 같고 새17pass만 추가했다. 그 이후 기준 R141은 docs-only였음을 whole source checkpoint로 확인한다. unchanged oracle-test는1556files/570653750B·code2968/data650·strict NXZ actual0다. source6662→6663files의 기능 차이는 위 한 본체+새 test1개이며 protected304files·stock1556files·개인1562files/Save/config의 whole checkpoint는 불변이다.
+
+통합 `guard-direction-test-audit.log` SHA=`c7e894e6410617de150d8bbc0ede0b2968e603a385f6561f0a2a08a4491061d6`·actual0다. 모든 RED/GREEN·동결 입력·원본 body·checkpoint·후속 제품/GUI receipt를 `/private/tmp/opennox-lua-guard-r142.lg6Bn7`에 보존한다. 캐시/자산/개인 자료 삭제0이다. 문서는 제목 직후 삽입하여 과거 suffix bytes를 유지하고 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push한다.
+
+해당 clean revision의 공식 ARM64 일반/HD/server3제품 build·metadata·Mach-O/help와 unchanged conjurer spell-pet map-transition 일반/HD headless/mock는 별도 후속 receipt로 실행한다. 이 GUI는 원래 summon/Charm/Pixie/동반자 저장·이동 경로의 회귀이며 위 synthetic high-bit 방향을 GUI에서 직접 만들거나 Lua Guard를 호출한 증거가 아니다. 격리 runtime을 보존하고 audio-handles=false·combat-trace=false를 사용한다. 후속 실패가 있으면 기존 입력/기대값과 실패를 그대로 보존한다.
+
+이 선행 복원은 아직 `scrObject.Guard()`의 panic 자체를 바꾸지 않는다. 구형 no-arg API 연결은 다음 한-본체 변경으로 남긴다. raw 문자열 dialogue API는 현재 원본135B StringID 전송/수신 계약에 직접 실을 수 없어 단순 ID cast나 host-only 표시로 대체하지 않는다. PLAYER SetColor·R134 보존 사항·Solo Quest SKU/WOL·다른 frozen 실패와 original Windows 전체 runtime/pixel/가청 음향/remote transport 및 전체 포팅 목표는 미완료/UNPROVEN이다.
+
 ## 현재 ARM64 제품의 실제 OpenAL 경로·CoreAudio 접근 경계 검증 (R141)
 
 테스트 revision은 clean/pushed `ed73187ca1786da3b9e72b317627b1c22d583c94`다. 이번은 음향 코드 수정이 아닌 실행 감사다. 기존 production·테스트/YAML/PNG/golden/oracle manifest·원본 음원·개인 Save/config는 변경하지 않는다. R134 Destroy patch와 기대값은 사용자의 유지 선택대로 원래 worktree에 보존한다. 기록만 같은 revision의 별도 conventional clone에 제목 직후 삽입하며 과거 suffix bytes를 유지한다.

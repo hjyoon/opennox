@@ -1,5 +1,19 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## Wizard 고정 화면 실패와 이후 플레이 흐름의 분리 검증 (R152)
+
+기준 clean/pushed `65dfc4ece445675e38c99306335a7ed3c78b018f`다. 이전 goal turn은 두 실제 본체 수정·분리 commit/push·전체 검사·clean ARM64 제품·Host Load opacity 회귀를 완료한 PROGRESS다. 이번은 production/test/YAML/PNG/golden/oracle 변경0인 읽기 전용 gate 검토이며 이 기록만 추가한다. 원래 `solo-wizard-chapter1.yaml`과 모든 기대 PNG를 새 private 일반/HD 디렉터리에 byte-identical 복사하여 headless/mock·audio-handles=false·combat-trace=false로 직렬 실행했다. 두 원래 실행은 각각47.909/45.946초·actual2이며 `wizard chapter one click plus 20 ticks` Screen에서 끝난다. 그 뒤의 미실행 단계를 이 실패 실행이 검증한 것으로 세지 않는다.
+
+현재 실패 got PNG SHA=`dc100cf99e7c54963c5a086fd29448986acf945215fe19abf12cc75b5a299fee`는 일반/HD 및 보존한 R150 got과 byte-identical이다. 따라서 R151의 메뉴/비압축 행 수정에 의한 새 회귀는 아니다. 읽기 전용 PNG 비교는1024×768에서1755pixels·전체 bounds `[15,26)..[1020,766)`·8-neighbor components를 기록하며 이미지 생성/쓰기0이다. 큰 성분은 health270pixels `[978,603)..[985,725)`, mana264 `[1005,603)..[1013,725)`, NPC186 `[506,343)..[518,369)`, 현재 무기118 `[32,703)..[66,737)`다. 이를 전부 NPC palette 한 원인이나 obsolete golden이라고 확정하지 않는다. R95의 native weapon viewport 복구와 R112의 bounded palette tail 비교는 관련 근거지만 전체 stock sprite/원본 Windows pixel 동등성은 여전히 UNPROVEN이다. R139 class-selection25pixel eye 차이와도 다른 화면이다.
+
+별도 private 관찰 YAML 두 개는 기존6개 `screen`만 `capture-quest-map-audit-frame`로 바꾸고 나머지 입력/위치/dt/속도/키/마법/기존 assertion bytes를 그대로 유지했다. Wait(0,"")은 source에서 no-op이고 두 액션 모두 add(0)에서 같은 CopyPixBuffer/png.Encode를 사용한다. 새 관찰은 원래 frozen Screen PASS가 아니며 원래 actual2를 계속 보존한다. 일반/HD 관찰은63.218/63.069초·actual0·정상 cleanup이다.6captures의 server frames는1/1/100/600/662/887이며 두 mode의 각 PNG bytes가 동일하다. 첫 실패 위치의 관찰 PNG도 원래 got과 동일하여 이 관찰이 실패 이전 렌더링을 바꾸지 않았음을 확인했다.
+
+관찰 실행은 개막 대화 종료·run/이동 이후까지 도달하고 원래14개 spell-set row assertions가 `0,1,0,4,0,0,1,2,3,4,4,2,4,2`로 통과한다. expanded quickbar true→false와 spell50/slot0 보존, loaded Wiz01a exit의 native save-location 및 cooperative-save assertions2개도 실제 통과한다. 마지막 두 검사는 원래 내장 assertion이 loaded exit로 save-location을 만들고 exit 전역/GameFlag28을 임시 설정하여 실제 saveCoopGame·격리 map/player 파일을 검사하는 통제 경로다. 플레이어가 자연스럽게 다음 맵 출구를 통과했거나 원본 전체 저장 lifecycle을 재현했다는 주장으로 확대하지 않는다.
+
+source6684files·protected304files·stock1556files/570653750B·개인1562files/Save/config의 review 전후 whole checkpoint는 byte-identical이다. 기존 metadata·YAML·golden·R134 Destroy patch/기대값·캐시·제품·실패 증거 삭제/retune0이다. unchanged oracle-test code2968/data650·strict NXZ actual0이며 통합 `wizard-review-audit.log` SHA=`4663415223d4da9800e3f0156c0914a3eecd1742437910ad525d6975d9e51c3c`·actual0다. 새 실패/관찰 입력·원본 실행·전체 pixel component report·12private frame PNG 참조·runtime/Save와 감사는 `/private/tmp/opennox-wizard-review-r152.Lfh7lv`에 보존한다.
+
+문서는 제목 뒤 삽입만 하여 이전 suffix를 유지하고 commit 다음 도구에서 즉시 origin port/go1.26-multiarch에 push한다. docs-only revision의 clean ARM64 일반/HD/server3제품 metadata/Mach-O/help를 별도 후속 receipt로 확인한다. production이 R151과 동일하므로 그 전체 일반/HD/strict69966pass/41skip 및 server69031pass/7skip를 새 실행으로 꾸미거나 불필요하게 재기록하지 않는다. 이 진단은 Wizard의 이후 기능 흐름이 막히지 않음을 새로 검증했지만 원래 고정 이미지 gate, Solo Quest SKU/WOL, R134·raw dialogue·PLAYER SetColor 및 전체 ARM64 포팅 완료·원본 Windows/가청 음향/remote transport 동등성은 여전히 미완료/UNPROVEN이다.
+
 ## 원본 메인 메뉴 배경색 상태와 독립 이미지 그리기 복원 (R151)
 
 첫 조사 기준은 clean/pushed R150 `b29961a17bfc85a6e381ab752d6bd280e0370605`다. 의존성인 비압축 이미지 행 이동 한 줄은 먼저 별도 `dcb23fc2f18e4509e370bb2b55425f103b2cd618`로 commit/push했다. 이번 기존 production 변경은 `src/gui_main_menu.go:drawMainMenuBackground` 한 본체의 두 분기뿐이다. 원본 `004A2321→00434460`처럼 non-image/non-transparent 배경색을 Color2에 저장한 뒤 fill한다. 빈/clip된 사각형에서도 저장하며 transparent sentinel `0x80000000`은 그대로다. 원본 `004A2347`의 first image=nil은 UPDATE만 건너뛰고 `004A2446`의 독립 DRAW로 이동하므로 다른 loaded eye도 그린다. 기존 update/RNG 순서·blink/phase 값·이미지 그리기 본체 bytes는 들여쓰기 외 동일하며 imports/signature/types/본체 밖·다른 production/기존 tests/YAML/PNG/golden/oracle는 불변이다.

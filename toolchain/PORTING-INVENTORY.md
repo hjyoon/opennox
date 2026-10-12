@@ -1,5 +1,21 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## 파티클 RNG16의 원본 WORD carry 복원과 실제 type-1 소비 검증 (R145)
+
+기준 clean/pushed `8de14509935ffe4707715563129b8118747d30f7`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).randU16` 한 본체의 carry 읽기 한 줄과 주석뿐이다. `cfshl(int(v0),1)` TODO panic 대신 원래 WORD bit15를 읽고 기존16회 rotl16/XOR0xa·state 저장·uint16 반환을 유지한다. imports/signature/본체 밖 bytes·다른 production·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다. 임의 seed·전역 서버 RNG·범위/수명 변화가 없다.
+
+GAME.EXE 0048C61E는 `66 d1 c0` ROL AX 후 carry를 검사하여 XOR0xa를 적용한다. DWORD/EAX bit31이나 native int bit63가 아니다. 실제 원본 EXE 전체 SHA와 count16·ROL16/JAE/XOR/loop·state store·마지막 AX load의 instruction bytes를 재검증했다. 새 frozen `particle_rng16_native_48c610_test.go`는 독립 literal GF(2)16basis와 초기 stream16개,10boundary seeds×64반복,전체65536WORD seeds,16/32 stream의 세 interleave128반복과 실제 type-1 emitter의 두seed×다섯count를 포함한28IDs다. 결과 oracle는 rotl16/cfshl/randU16이나 supplied random callback을 사용하지 않는다.
+
+실제 C-owned >4GiB drawable과 기존 newPartfxT1/particle factory를 호출하여 두 RNG의 원래 소비 순서·count0/negative 무접근·source drawable 전체 bytes 불변을 확인한다. 생성/난수/allocator 결과 hook은 없다. 생성 후 `active_handles=0`인 기존 등록 누락도 직접 관측했다. 이 테스트는 그것을 정상 rendering 결과로 대체하거나 lifecycle/stock sprite/full packet 효과로 인증하지 않는다. 원본 생성기는 004B0206에서 active-slot bitmap을0xff로 표시하며 현재 Go allocator는 새 slot에 handle이 아직 없으면 active map에 등록하지 않는다. 원본 생성·update entry와 실제 소비 결과를 다음 별도 수정의 근거로 유지한다.
+
+첫 compiled RED4pass/24fail·actual1은 positive-count emitter와 실제 RNG call의 TODO panic이었다. 같은 동결 입력의 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN84pass/0skip·actual0이다. 입력·expected·HP/flags/RNG/WAIT/timeout/golden retune0이다. 일반/HD/실제cgocheck2 각각69678pass/41skip/38packages, server68839pass/7skip/35packages·actual0다. R144의 모든 기존 ID/action/횟수/skip/package 결과가 같고 새28pass만 추가했다. 첫 비교 도구 actual1은 이전 로그 디렉터리의 rng32를 rng16으로 잘못 치환한 read-only 준비 오류였다. 별도 v2는 baseline path 하나만 교정하고 기존 comparator/실패를 보존하며 모든 test result 기대값은 그대로다.
+
+unchanged oracle-test는 stock1556files/570653750B·code2968/data650·strict NXZ actual0이다. source6665→6666files의 기능 차이는 위 한 본체+새 test1개뿐이다. protected304files·원본1556files·개인1562files/Save/config의 whole checkpoint는 불변이고 R134 네 파일 SHA/기대값도 보존한다. 통합 `rng16-test-audit.log` SHA=`78c07d08f1723d5353def77bce5be4d67caf43944c487eaded31a785e1e6d572`·actual0이다. 동결 입력·원본 body·basis interpretation·실패/성공·before/after checkpoint·후속 receipt는 `/private/tmp/opennox-particle-rng16-r145.ZgoABc`에 보존한다. 캐시·제품·원본/개인 자료 삭제0이다.
+
+문서는 제목 직후 삽입하여 과거 suffix bytes를 유지하고 커밋 다음 도구에서 즉시 origin port/go1.26-multiarch로 push한다. 해당 clean revision의 공식 ARM64 일반/HD/server3제품 build·metadata·Mach-O/help와 unchanged conjurer summon/Charm/Pixie/3-map-transition 일반/HD headless/mock는 별도 후속 receipt로 검증한다. 격리 runtime/Save/maps/config를 보존하며 audio-handles=false·combat-trace=false를 사용한다. 이 GUI는 위 synthetic WORD seeds나 type-1 생성 fixture를 직접 호출한 증거가 아니다. 후속 실패는 입력/expected retune 없이 보존한다.
+
+이번은 RNG16 panic 복원이며 active-map 등록 누락·muldiv 감쇠/bounce TODO는 남아 있다. unused cfshl helper의 panic을 조용한 임의 값으로 바꾸지 않는다. raw 문자열 dialogue·PLAYER SetColor·R134 보존·Solo Quest SKU/WOL·historical frozen 실패와 original Windows 전체 runtime/pixel/가청 음향/remote transport 및 전체 ARM64 목표는 미완료/UNPROVEN이다.
+
 ## 파티클 전용 RNG32의 원본 carry·ABI32 범위 계산 복원 (R144)
 
 기준 clean/pushed `73f9dd48d3a0a878c77837517765a90ec0a3e015`다. 기존 production 변경은 `src/draw_particlefx.go:(*partFXes).randI32` 한 본체뿐이다. `cfshl` TODO panic 호출을 원래 EAX bit31 carry 읽기로 바꾸고 SUB/MUL/ADD를 ABI32 word로 계산하여 signed EAX 결과를 native int로 반환한다. imports/signature/본체 밖 bytes·다른 production·기존 tests/YAML/PNG/golden/oracle manifest는 불변이다. R134 Destroy patch와 기대값은 사용자의 보존 선택대로 원래 worktree에 유지하고 R143의 네 파일 SHA를 다시 확인한다.

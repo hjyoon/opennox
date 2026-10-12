@@ -545,7 +545,8 @@ func (fx *packetParticleFx) updatePos() {
 func (pfx *partFXes) randU16() uint16 {
 	v0 := pfx.rand.u16
 	for i := 0; i < 16; i++ {
-		v2 := cfshl(int(v0), 1)
+		// 0048C61E rotates AX; its carry is the original WORD bit 15.
+		v2 := v0 >> 15
 		v0 = rotl16(v0, 1)
 		if v2 != 0 {
 			v0 ^= 0xA

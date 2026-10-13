@@ -38,6 +38,14 @@ func init() {
 	}
 }
 
+func init() {
+	// The registered PixieDraw entry keeps the existing altitude, RNG,
+	// tail geometry, clipping and raster implementation used by the world.
+	legacy.Nox_thing_pixie_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawPixie4B6E80(dr, vp)
+	}
+}
+
 func (c *Client) drawRegisteredGlowOrb4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
 	ids := glowOrbTypeIDs4B6B80{
 		heal:      c.Things.IndByID("HealOrb"),

@@ -84,6 +84,9 @@ int nox_thing_magic_sparkle_draw(int* a1, nox_drawable* dr) {
 }
 #endif
 
+// Retain the decoded PE32 pixie body for provenance. The active symbol
+// is the native-width Go export in client_draw_all.go.
+#if 0
 //----- (004B6E80) --------------------------------------------------------
 int nox_thing_pixie_draw(int* a1, nox_drawable* dr) {
 	bool v2;       // cc
@@ -137,6 +140,7 @@ int nox_thing_pixie_draw(int* a1, nox_drawable* dr) {
 	}
 	return 1;
 }
+#endif
 
 // Retain the decoded PE32 dust wrapper for provenance. The active symbol
 // is the native-width Go export in client_draw_all.go.

@@ -1,5 +1,17 @@
 # Go 1.26.5 멀티아키텍처 포팅 인벤토리
 
+## GlowOrb/GlowOrbMove의 직접 등록 콜백 복원 (R162)
+
+기준 clean/pushed `3f768323bd9c4badc6d34bade6b3c2b983b80af3`다. 월드 dispatch는 기존 typed Go palette/movement/raster/deletion을 사용하지만 두 실제 DRAW 등록은 C sub_4B6B80의 `int a2 = dr`로 진입했다. root2개 binding과 palette adapter·legacy2개 export/변수·header2선언·C wrapper provenance guard의4existing production files만 바꾼다. adapter는 기존7개 type lookup 순서와 glowOrbColors4B6B80/drawDrainHealOrb4B6B80을 그대로 사용한다. 기존 월드 body·색상/이동/clip/소멸 계산·등록 목록/다른 exports·C wrappers/사용되지 않는 core bytes는 불변이다. silent no-op이나 새 단순화 효과를 추가하지 않는다.
+
+새 `glow_orb_registered_callback_native_4b6b80_test.go`8346B SHA=`3234d23d8e20769c5137e292e30b79d8050d3d7e93b556c425fbb3a4ad0c414c`는 첫 compiled RED 전 동결했다. HealOrb/DrainManaOrb/CharmOrb/WhiteOrb/ManaBombOrb/WhiteMoveOrb/BlueMoveOrb/커스텀 기본색8종×두 actual callbacks×visible/outside/fade-last/arrival/frame-wrap5조건의80conditions다. 실제 DRAW parser/registry·4GiB 초과 C-owned type/drawable pool/viewport·production 이동/자연 삭제·whole live graph/scalar/union/callback/type/padding bytes·whole render state/raster를 기존 world route와 비교한다. live graph 연결 주소만 기존 R161 helper로 ordinal 정규화한다. shared type/viewport/frame/Logic/Other RNG 불변·actual pool/list cleanup·headless upload도 검사한다. private type registry는 선언한 service fixture이며 독립 original Windows pixel/full world/GAME.EXE replay가 아니다.
+
+첫 compiled RED81fail/0pass/0skip·actual1이며80child 전부 실제 CGo SIGSEGV다. 같은 동결 입력/expected의 실제 Go1.26.5 cgocheck2+race+checkptr2 count3 GREEN243pass/0skip·240actual headless frames·actual0다. 기존 HP/RNG/flags/wait/timeout/expected retune0·diagnostic overlay0이다. 전체 일반/HD/실제cgocheck2 각각72939pass/41skip/38packages, server69031pass/7skip/35packages·actual0다. R161의 모든 기존 ID/action/횟수/skip/package 결과가 같고 client 새81pass만 추가한다. unchanged oracle-test code2968/data650·strict NXZ actual0다.
+
+기존 source6701files의 변경은 위4production files뿐이며 새 test1개로6702files다. protected304files·stock1556files/570653750B·개인1562files/Save/config whole checkpoints와 사용자 선택대로 보존한 R134 patch/기대값은 불변이다. 캐시/원본/개인/제품/evidence 삭제0이다. 통합 `orb-test-audit.log` SHA=`60fbe2ededbd80aca5a50960b8247b2cde88778a22be25206d5e7f23664d1833`·actual0이며 동결 input·80SIGSEGV/성공·whole checkpoints는 `/private/tmp/opennox-glow-orb-callback-r162.rSpyPI`에 보존한다.
+
+문서는 제목 뒤 삽입하여 기존 suffix를 유지한다. commit 다음 도구에서 즉시 origin port/go1.26-multiarch로 push하고 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help 및 unchanged conjurer spell-pet map-transition 일반/HD headless/mock를 별도 runtime receipt로 검증한다. 아직 실행되지 않은 후속 계획을 성공으로 세지 않으며 해당 GUI가 새 direct orb fixture를 직접 실행했다고 확대하지 않는다. runtime/Save/maps/config 보존·audio-handles=false·combat-trace=false·개인 Save import0·release overlay0이다. 지속 Host Load 반투명의 기존 typed observer 수정은 유지한다. R134·SKU/WOL·historical frozen Screen/전투/음식 실패 및 전체 original Windows/world/pixel/가청 음향/remote transport 동등성과 전체 ARM64 포팅 목표는 계속 미완료/UNPROVEN이다.
+
 ## Rain/LevelUp/OblivionUp 직접 등록 콜백과 자연 착지 연결 복원 (R161)
 
 기준 clean/pushed `3c93930bb52d9c31234121fcb8e41e1ecbaf7295`다. 실제 등록된 BlueRainDraw/LevelUpDraw/OblivionUpDraw/RainOrbDraw는 월드의 typed Go dispatch와 달리 PE32 C의 `int a2 = dr`, viewport int 또는 falling-sparks helper의 `int a3 = dr`로 진입했다. root4개 binding·legacy4개 Go export/변수·두 header의 native viewport4선언·두 C provenance guard의6existing production files만 바꾼다. 기존 native 생성/RNG/geometry/raster/착지·이동 구체 전환 본체와 등록 목록/다른 export는 byte-identical이다. 네 decoded C bodies와 다른 glow bodies·사용되지 않는 falling-sparks helper도 원래 bytes로 보존한다. 직접 콜백은 같은 production 구현을 호출하며 silent no-op이나 새 단순화 효과는 없다.

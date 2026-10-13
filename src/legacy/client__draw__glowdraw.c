@@ -330,8 +330,12 @@ int nox_thing_particle_draw(nox_draw_viewport_t* vp, nox_drawable* dr) {
 	return nox_thing_particle_draw_native(vp, dr);
 }
 
+// Retain the decoded PE32 wrappers for provenance. The active symbols are
+// native-width Go exports in client_draw_all.go.
+#if 0
 //----- (004B6B60) --------------------------------------------------------
 int nox_thing_glow_orb_draw(int* a1, nox_drawable* dr) { return sub_4B6B80(a1, dr, 0); }
 
 //----- (004B6E20) --------------------------------------------------------
 int nox_thing_glow_orb_move_draw(int* a1, nox_drawable* dr) { return sub_4B6B80(a1, dr, 1); }
+#endif

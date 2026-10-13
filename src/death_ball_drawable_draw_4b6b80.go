@@ -14,6 +14,31 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func init() {
+	// Direct registered entries share the existing native palette, movement,
+	// raster and natural deletion implementation used by the world route.
+	legacy.Nox_thing_glow_orb_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawRegisteredGlowOrb4B6B80(dr, vp)
+	}
+	legacy.Nox_thing_glow_orb_move_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawRegisteredGlowOrb4B6B80(dr, vp)
+	}
+}
+
+func (c *Client) drawRegisteredGlowOrb4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
+	ids := glowOrbTypeIDs4B6B80{
+		heal:      c.Things.IndByID("HealOrb"),
+		drainMana: c.Things.IndByID("DrainManaOrb"),
+		charm:     c.Things.IndByID("CharmOrb"),
+		white:     c.Things.IndByID("WhiteOrb"),
+		manaBomb:  c.Things.IndByID("ManaBombOrb"),
+		whiteMove: c.Things.IndByID("WhiteMoveOrb"),
+		blueMove:  c.Things.IndByID("BlueMoveOrb"),
+	}
+	bright, dim, _ := glowOrbColors4B6B80(int(dr.TypeIDVal), ids)
+	return c.drawDrainHealOrb4B6B80(dr, vp, bright, dim)
+}
+
 var (
 	charmOrbBright4B6B80     = noxcolor.RGB5551Color(150, 255, 150)
 	charmOrbDim4B6B80        = noxcolor.RGB5551Color(0, 220, 0)

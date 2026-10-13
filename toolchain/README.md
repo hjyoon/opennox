@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R180: Glyph 직접 callback의 native 회귀 검사
+
+실제 C parser·고주소 local-player slot·C GlyphDraw/AnimateDraw·전체 raster/headless upload를 기존 게임 경로와15조건 비교했다. 같은 pointer의 fallback alpha와 실제 negative-height clip cache를 보존한 frozen 검사는 통과했다. 초기 새 테스트의 C allocation 초기값/연속 cache 준비 실패와 원문은 남긴다. 게임 production 수정 없이 새 test 한 파일만 추가하며 strict/race/checkptr2 반복57pass와 전체 일반/HD/CGo/server·원본 자료 대조가 통과했다. 이는 Windows stock pixel·physical SDL/GPU 인증이 아니다. 상세 범위는 [R180 인벤토리](./PORTING-INVENTORY.md#glyph-등록-c-경로의-고주소alpha애니메이션-검증-r180)를 따른다. 사용자 goenv Go1.26.9·R134 보류를 유지하고 R179 clean runtime 검증은 완료했다. 전체 포팅 목표는 계속 진행 중이다.
+
 ## R179: 실제 SDL resize event의 viewport 알림
 
 실제 SDL dummy queue/InputTick에서 호출되지 않던 resize callback을 연결했다. 해당 window의 drawable 크기를 조회해 같은 크기·다른 창을 제외하고 첫 mouse input 이전 renderer viewport를 갱신한다. SDL 두 production files와 release에서 제외되는 opt-in test/queue fixture 두 파일만 변경했으며 renderer geometry·FPS·기존 tests/기대값은 유지한다. 동일 frozen RED/GREEN, strict/race/checkptr2 33pass 및 전체 일반/HD/CGo/server와 원본 자료 대조가 통과했다. 새 테스트의 API/checkptr 준비 실패와 viewport 비교 교정은 보존한다. physical Retina/OpenGL 검증이 아닌 headless 검사이며 상세 범위는 [R179 인벤토리](./PORTING-INVENTORY.md#sdl-native-resize-알림과-첫-입력의-viewport-연결-r179)를 따른다. 사용자 goenv Go1.26.9 정책과 R134 보류를 유지하고 R178 clean runtime 검증은 완료했다. 전체 포팅 목표는 계속 진행 중이다.

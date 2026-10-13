@@ -71,6 +71,7 @@ type Window struct {
 	gl       opengl.Window
 	prevPos  image.Point
 	prevSz   image.Point
+	drawSz   image.Point
 	textInp  bool
 	mode     seat.ScreenMode
 	rel      bool
@@ -212,7 +213,27 @@ func (win *Window) SetGamma(v float32) {
 }
 
 func (win *Window) OnScreenResize(fnc func(sz image.Point)) {
+	if len(win.onResize) == 0 && win.win != nil {
+		win.drawSz = win.ScreenSize()
+	}
 	win.onResize = append(win.onResize, fnc)
+}
+
+func (win *Window) notifyScreenResize() {
+	if win.win == nil {
+		return
+	}
+	// Event data is in logical window units; consumers render in drawable
+	// pixels, which can differ on a Retina display. Sample the current size.
+	sz := win.ScreenSize()
+	if sz.X <= 0 || sz.Y <= 0 || sz == win.drawSz {
+		return
+	}
+	win.drawSz = sz
+	callbacks := append([]func(image.Point){}, win.onResize...)
+	for _, fnc := range callbacks {
+		fnc(sz)
+	}
 }
 
 func (win *Window) initGL() error {

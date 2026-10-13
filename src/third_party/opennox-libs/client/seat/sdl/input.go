@@ -100,6 +100,15 @@ func (win *Window) processQuitEvent(ev *sdl.QuitEvent) {
 
 func (win *Window) processWindowEvent(ev *sdl.WindowEvent) {
 	switch ev.Event {
+	case sdl.WINDOWEVENT_RESIZED, sdl.WINDOWEVENT_SIZE_CHANGED,
+		sdl.WINDOWEVENT_RESTORED, sdl.WINDOWEVENT_DISPLAY_CHANGED:
+		if win.win == nil {
+			return
+		}
+		id, err := win.win.GetID()
+		if err == nil && ev.WindowID == id {
+			win.notifyScreenResize()
+		}
 	case sdl.WINDOWEVENT_FOCUS_LOST:
 		win.inputEvent(seat.WindowUnfocused)
 	case sdl.WINDOWEVENT_FOCUS_GAINED:

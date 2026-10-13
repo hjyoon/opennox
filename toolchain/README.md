@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R179: 실제 SDL resize event의 viewport 알림
+
+실제 SDL dummy queue/InputTick에서 호출되지 않던 resize callback을 연결했다. 해당 window의 drawable 크기를 조회해 같은 크기·다른 창을 제외하고 첫 mouse input 이전 renderer viewport를 갱신한다. SDL 두 production files와 release에서 제외되는 opt-in test/queue fixture 두 파일만 변경했으며 renderer geometry·FPS·기존 tests/기대값은 유지한다. 동일 frozen RED/GREEN, strict/race/checkptr2 33pass 및 전체 일반/HD/CGo/server와 원본 자료 대조가 통과했다. 새 테스트의 API/checkptr 준비 실패와 viewport 비교 교정은 보존한다. physical Retina/OpenGL 검증이 아닌 headless 검사이며 상세 범위는 [R179 인벤토리](./PORTING-INVENTORY.md#sdl-native-resize-알림과-첫-입력의-viewport-연결-r179)를 따른다. 사용자 goenv Go1.26.9 정책과 R134 보류를 유지하고 R178 clean runtime 검증은 완료했다. 전체 포팅 목표는 계속 진행 중이다.
+
 ## R178: 소환 효과 직접 콜백의 native 수명 연결
 
 실제 고주소 소환 packet/파서/렌더러 검사에서 기존 world 경로는 통과했지만 직접 등록 콜백은 PE32 오프셋 때문에 여덟 조건 모두 SIGSEGV를 일으켰다. 해당 C entry를 기존 Go 소환 효과에 연결한 네 production files와 새 test 하나만 변경했다. 동일 v5 RED/GREEN, strict/race/checkptr2 45pass와 전체 일반/HD/CGo/server 회귀 및 원본 자료 대조가 통과했다. 새 테스트 준비 실패·할당 주소 관찰 수정도 보존하며 Windows/SDL/GPU 전체 인증으로 확대하지 않는다. 자세한 범위는 [R178 인벤토리](./PORTING-INVENTORY.md#summoneffect-직접-등록-콜백의-native-child수명-연결-r178)를 따른다. R177 clean runtime 검증은 완료됐고 전체 포팅 목표는 계속 진행 중이다.

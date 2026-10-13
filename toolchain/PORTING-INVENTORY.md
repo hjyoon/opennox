@@ -1,5 +1,17 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## SDL native resize 알림과 첫 입력의 viewport 연결 (R179)
+
+기준 clean/pushed Go1.26.9 revision은 6f9bb740305bc3f4c8c93ef8f45cb909148ad5c8이다. SDL Window.OnScreenResize는 callback을 보관했지만 실제 window event에서 호출하지 않았다. 실제 SDL dummy driver의 SetWindowSize/PollEvent/InputTick에서 resize 알림 일곱 조건이 누락됐으며, renderer의 다음 present 이전 첫 mouse input과 event-driven redraw가 이전 viewport를 사용했다. 기존 SDL input.go/window.go 두 파일에만 RESIZED/SIZE_CHANGED/RESTORED/DISPLAY_CHANGED dispatch를 연결한다. 해당 window ID의 현재 drawable 크기를 조회하고 0/same-size 알림을 제외한다. 첫 subscription의 크기와 callback snapshot을 사용하며 중복 event·다른 창·focus/quit의 기존 계약을 유지한다. renderer의 float32 geometry·GL 초기화·FPS·게임 동작은 변경하지 않았다.
+
+새 opt-in Go test와 C queue fixture 두 파일은 opennox_sdl_resize_test 태그에서만 포함된다. real SDL dummy hidden/resizable window와 SDL_Event C-stack union, 실제 renderer/input 및 production headless surface를 사용한다. GUI/OS window나 OpenGL context를 만들지 않으며 물리 Retina·GPU readback 인증은 아니다. api/duplicates/resized-payload/restored/display-change/other-window/mouse-order/retired-renderer/focus-quit/empty 열 조건에서 actual drawable 크기·두 observers·이미지/viewport·presentation 횟수·첫 mouse 위치·종료된 renderer를 검사한다. release Go list는 active vendored SDL 경로와 새 두 파일의 제외를 확인했다.
+
+첫 새 테스트의 API build failure와 go-sdl2 PushEvent의 작은 Go allocation을 SDL_Event union으로 변환하는 checkptr 준비 실패는 그대로 보존했다. C-stack queue adapter로 분리한 v3 RED는 일곱 missing callback을 재현했다. 수정 후 v3의 이상화된 viewport x=100 비교도 실패로 남겼다. 기존 renderer의 실제 float32 x=99를 바꾸지 않고 독립 headless control renderer/input과 비교하는 v4를 다시 동결했다. 동일 byte-identical v4는 baseline actual1/3pass/8test-fail(부모 포함), 수정 actual0/11pass이며 최종 RED에는 runtime fault가 없다. cgocheck2+race+checkptr2 count3는33pass/0skip·actual0으로 실제 child 조건30회를 수행했다. 이전 tests/expected/fixtures/YAML/PNG는 바꾸지 않았다.
+
+전체 일반/HD/cgocheck2는 각각73,584pass/47skip/39packages, server는69,042pass/7skip/35packages·actual0이다. nested module의 opt-in test는 root ./...에 포함되지 않으므로 R178의 모든 ID/action/횟수/skip/package 상태와 정확히 같다. 사용자 /Users/ghost/.goenv/versions/1.26.9/bin/go만 사용했다. unchanged 원본2,968code/650data·strict NXZ 대조, protected304files·stock1,556files/570653750B·개인1,562files/Save/config·사용자 보류 R134 bytes는 유지한다. source6,726files에 새 두 파일만 추가했다. 증거와 준비 실패 원문은 /private/tmp/opennox-sdl-resize-r179.uGTqpT에 보존한다.
+
+commit 바로 다음 도구에서 origin port/go1.26-multiarch에 push한 뒤 clean ARM64 일반/HD/server3제품 metadata/Mach-O/help, clean tagged native SDL 검사와 unchanged 소환/Charm/Pixie·맵 전환 일반/HD headless/mock를 별도 검증한다. headless 게임 회귀가 SDL driver 자체를 실행한 것이라고 확대하지 않으며, 아직 실행되지 않은 후속 계획을 성공으로 세지 않는다. 선행 R178 clean3제품·native summon·일반/HD headless·전후 whole checkpoint는 actual0, runtime SHA=5c45c6d3386f29a1b976d830fda53c5329726624e5d3342f3cfb1cd1f4ed1617로 완료됐다. 역사 suffix를 보존하고 물리 SDL/GPU·Windows 전체 동등성·R134와 전체 포팅 목표는 계속 미완료다.
+
 ## SummonEffect 직접 등록 콜백의 native child·수명 연결 (R178)
 
 기준 clean/pushed Go1.26.9 revision은 08e1641f8b1b65b4dcdbf08342bcd9bf5ba09a8b이다. HarpoonRope는 이미 typed native fields를 읽고 있음을 확인했다. SummonEffect의 world dispatcher는 Go 구현을 사용하지만 공개 Drawable.CallDraw 경로의 등록 C 본체는 drawable/animation/child를 PE32 DWORD 배열로 읽었다. 실제 C 파서가 만든 고주소 parent·child·animation·viewport와 MSG_FX_SUMMON packet을 통해 기존 world 경로가 통과한 뒤 직접 콜백 여덟 조건에서 잘못된 nil-child 삭제의 SIGSEGV를 재현했다.

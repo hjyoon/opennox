@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 원격 소환술사의 Toxic Cloud 시전과 자연 수명 검증 (R188)
+
+기준 clean/pushed revision은 `5c0569aa69417c9613c383f020fb14c1a6d2e3e0`이다. 사용자 goenv Go1.26.9를 계속 사용하고 게임 production/test·기존 YAML/PNG/golden·최소 언어 버전은 변경하지 않는다. 원본 `thing.bin`의 실제 decoder로 Toxic Cloud가 CLASS_CONJURER/CANT_TARGET_SELF/마나60임을 확인했다. 첫 진단 helper의 string/숫자 ID 비교 build failure는 원문·actual1과 함께 보존하고 새 v2 helper에서 API 타입만 교정했다.
+
+실제 hardware clock·기존 headless seat·일반 원격 메뉴/직업 선택/아레나 참가 입력으로 Conjurer와 Warrior를 접속시켰다. HP·마나·위치·주문 습득·RNG·clock·packet·damage callback·render 결과를 주입하지 않는다. 자연 기본 세트 `[87,74,128,58,41]`를 유지한 상태에서 B로 주문책을 열고 실제 index1/page0의 Toxic Cloud를 첫 단축 슬롯으로 드래그·release한 뒤 B로 닫았다. 해당 한 entry만 변경되고 나머지24개·row는 보존됐으며 이후 이동·조준·A 입력으로 시전했다.
+
+레벨3의 정상 시전 큐/음절·마나125→65 단일 소모60·native 고주소 cloud/update/owner·정상 cast audio event1을 확인했다. 전사는 최초 HP150→140과 실제 drawable/피해10/초록 중독 HUD를 수신했고 정상 right-button 입력으로 cloud 중심(3444,1911)에서 (3301,1911)로 벗어났다. cloud 귀속 피해 네 번의 실제 감소는10/10/9/7, 이후 source-less 주기 중독 피해는 일곱 번이었다. 정상 회복을 유지했으므로 이 값들을 단순 최종 HP 차이와 동일시하지 않는다.
+
+원본 수명450틱의 감소450회를 관찰했다. cloud 생성 frame1936→자연 world/owned 제거 frame2388의452틱에는 정상 pending/deferred 처리도 포함한다. 강제 삭제 없이 양쪽 client drawable 제거를 확인했고 frame2937에 중독과 player status0x400가 자연 해제됐다. 전사 화면의 초록 관→빨간 체력 관 복원과 실제 해독 문구를 확인했다. ready 접속자2명/frame2942의 기존 인증된 cmd quit는 양쪽 MSG_SERVER_QUIT199·서버 ACK200 두 건과 정상 종료로 이어졌다. client2/server1 process는 모두 actual0이고 정상15초 높이 갱신도 통과했다.
+
+관련 기존 Toxic Cloud/cloud poison/중독 활성화·해제 회귀를 strict cgocheck2+race+checkptr2로 3회 반복해4,506pass/0skip/0fail,1,502identities/3packages·actual0을 확인했다. 전체 source6,737개·보호304개·원본1,556개·개인1,562개와 R134 HOLD 네 입력은 실행 전후 동일하다. frozen private driver·입력/관찰 로그·PNG·실제 종료 ledger는 `/private/tmp/opennox-remote-cloud-r188.AYrcaW`에 보존하며 gameplay audit actual0/SHA는 `b382be003fba9af99165662ef86b8b989b987b820c271f35d799289b727e36ec`다.
+
+이 경로에 추가 기능 수정이 필요한 결함은 발견되지 않아 문서 두 파일만 추가한다. R186 전체 회귀를 이번 재실행으로 표시하지 않으며 모든 주문/직업 쌍/맵·물리 SDL/Retina/GPU·실제 가청 음향·Player SetColor 계약·R134 HOLD와 전체 포팅 완료를 주장하지 않는다.
+
 ## 원격 Magic Missile과 정상 주문책 입력 검증 (R187)
 
 기준 clean/pushed revision은 `df65c549c168afa56be1cf47da275283a64e769f`이다. 사용자 설치본 `/Users/ghost/.goenv/versions/1.26.9`를 사용하고, GO를 생략한 wrapper의 GOVERSION/GOROOT/GOTOOLCHAIN도 같은 Go1.26.9임을 확인했다. 전역 goenv·최소 언어 버전과 게임 production/test 소스는 변경하지 않는다.

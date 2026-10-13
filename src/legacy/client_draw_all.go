@@ -128,6 +128,13 @@ var (
 )
 
 var (
+	Nox_thing_blue_rain_draw   func(vp *noxrender.Viewport, dr *client.Drawable) int
+	Nox_thing_levelup_draw     func(vp *noxrender.Viewport, dr *client.Drawable) int
+	Nox_thing_oblivion_up_draw func(vp *noxrender.Viewport, dr *client.Drawable) int
+	Nox_thing_rain_orb_draw    func(vp *noxrender.Viewport, dr *client.Drawable) int
+)
+
+var (
 	Nox_thing_debug_draw          func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_monster_draw        func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_vector_animate_draw func(vp *noxrender.Viewport, dr *client.Drawable) int
@@ -236,6 +243,26 @@ func nox_thing_magic_missle_tail_link_draw(vp *nox_draw_viewport_t, dr *nox_draw
 //export nox_thing_magic_tail_link_draw
 func nox_thing_magic_tail_link_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
 	return int32(Nox_thing_magic_tail_link_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_blue_rain_draw
+func nox_thing_blue_rain_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_blue_rain_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_levelup_draw
+func nox_thing_levelup_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_levelup_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_oblivion_up_draw
+func nox_thing_oblivion_up_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_oblivion_up_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_rain_orb_draw
+func nox_thing_rain_orb_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_rain_orb_draw(asViewport(vp), asDrawable(dr)))
 }
 
 func Nox_xxx_drawObject_4C4770_draw(vp *noxrender.Viewport, dr *client.Drawable, img noxrender.ImageHandle) {

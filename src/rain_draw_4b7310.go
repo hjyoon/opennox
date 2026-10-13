@@ -15,6 +15,23 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+func init() {
+	// Registered C entries use the same native spawning, RNG, raster and
+	// natural landing implementation as the existing world dispatch.
+	legacy.Nox_thing_blue_rain_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return spawnBlueRain4B7810(dr, vp, noxflags.HasGame(noxflags.GameFlag22), noxClient.rainSpawnHooks4B7310())
+	}
+	legacy.Nox_thing_levelup_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return spawnFallingRainOrbs4B7740(dr, vp, "RainOrbWhite", noxClient.rainSpawnHooks4B7310())
+	}
+	legacy.Nox_thing_oblivion_up_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return spawnFallingRainOrbs4B7740(dr, vp, "RainOrbBlue", noxClient.rainSpawnHooks4B7310())
+	}
+	legacy.Nox_thing_rain_orb_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawRainOrb4B7310(dr, vp)
+	}
+}
+
 type rainDrawKind4B7310 uint8
 
 const (

@@ -5,6 +5,9 @@
 #include "GAME1.h"
 #include "GAME2.h"
 
+// Retain the decoded PE32 bodies for provenance. The registered callbacks
+// are native-width Go exports in client_draw_all.go.
+#if 0
 //----- (004B7810) --------------------------------------------------------
 int nox_thing_blue_rain_draw(int a1, nox_drawable* dr) {
 	int v3; // ebx
@@ -76,3 +79,4 @@ int nox_thing_oblivion_up_draw(int a1, nox_drawable* dr) {
 	nox_thing_falling_sparks_draw_4B7740(v2, a1, dr);
 	return 1;
 }
+#endif

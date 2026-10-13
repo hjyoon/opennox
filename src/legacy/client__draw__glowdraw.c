@@ -190,6 +190,9 @@ int nox_thing_blue_rain_spark_draw(uint32_t* a1, nox_drawable* dr) {
 	return result;
 }
 
+// Retain the decoded PE32 body for provenance. The active rain-orb symbol
+// is the native-width Go export in client_draw_all.go.
+#if 0
 //----- (004B7310) --------------------------------------------------------
 int nox_thing_rain_orb_draw(uint32_t* a1, nox_drawable* dr) {
 	int* v2;      // esi
@@ -279,6 +282,8 @@ int nox_thing_rain_orb_draw(uint32_t* a1, nox_drawable* dr) {
 	}
 	return result;
 }
+
+#endif
 
 //----- (004B6A60) --------------------------------------------------------
 int nox_thing_red_spark_draw(uint32_t* a1, nox_drawable* dr) {

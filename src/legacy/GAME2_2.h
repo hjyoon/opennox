@@ -211,6 +211,6 @@ nox_window* sub_489B80(nox_window* parent);
 void sub_489DC0();
 int nox_xxx_windowMplayFilterProc_489E70(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_arg2);
 int sub_489FB0();
-int nox_xxx_setSomeFunc_48A210(int a1);
+void* nox_xxx_setSomeFunc_48A210(void* a1);
 
 #endif // NOX_PORT_GAME2_2

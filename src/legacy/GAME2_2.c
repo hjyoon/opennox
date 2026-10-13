@@ -6040,10 +6040,7 @@ int sub_489FF0(int a1, int a2, const void* a3) {
 }
 
 //----- (0048A210) --------------------------------------------------------
-int nox_xxx_setSomeFunc_48A210(int a1) {
-	int result; // eax
-
-	result = a1;
-	*getMemU32Ptr(0x5D4594, 1193504) = a1;
-	return result;
+void* nox_xxx_setSomeFunc_48A210(void* a1) {
+	setMemPtr(0x5D4594, 1193504, a1);
+	return a1;
 }

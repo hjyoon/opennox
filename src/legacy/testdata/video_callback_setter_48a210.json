@@ -1,0 +1,425 @@
+{
+  "executable_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "ranges": [
+    {
+      "address": "0x48a210",
+      "bytes": 10,
+      "sha256": "d409dbe6189f298e6eb894a618842cd8bd05026792663930b1f1095d3857674e"
+    },
+    {
+      "address": "0x48a21a",
+      "bytes": 6,
+      "sha256": "ff35ffe14925642da6f3a258b35811e08101c03f8b5db346e5afcca448677564"
+    },
+    {
+      "address": "0x47fce0",
+      "bytes": 130,
+      "sha256": "0a5aea528486844378b90cd595ae465e842a5907b7528771a2548a2b0ddbb154"
+    },
+    {
+      "address": "0x47fd62",
+      "bytes": 14,
+      "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc"
+    }
+  ],
+  "callback_slot": "0x6f7bb4",
+  "descriptor_counter": "0x9753a0",
+  "descriptor_table": "0x9756e0",
+  "setter_rows": [
+    {
+      "initial": 0,
+      "value": 0,
+      "result": 0,
+      "stored": 0,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 0,
+      "value": 1,
+      "result": 1,
+      "stored": 1,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 0,
+      "value": 4717792,
+      "result": 4717792,
+      "stored": 4717792,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 0,
+      "value": 536870944,
+      "result": 536870944,
+      "stored": 536870944,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 0,
+      "value": 2147483647,
+      "result": 2147483647,
+      "stored": 2147483647,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 0,
+      "value": 2147483648,
+      "result": 2147483648,
+      "stored": 2147483648,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 0,
+      "value": 2309737967,
+      "result": 2309737967,
+      "stored": 2309737967,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 0,
+      "value": 4294967295,
+      "result": 4294967295,
+      "stored": 4294967295,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 287454020,
+      "value": 0,
+      "result": 0,
+      "stored": 0,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 287454020,
+      "value": 1,
+      "result": 1,
+      "stored": 1,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 287454020,
+      "value": 4717792,
+      "result": 4717792,
+      "stored": 4717792,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 287454020,
+      "value": 536870944,
+      "result": 536870944,
+      "stored": 536870944,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 287454020,
+      "value": 2147483647,
+      "result": 2147483647,
+      "stored": 2147483647,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 287454020,
+      "value": 2147483648,
+      "result": 2147483648,
+      "stored": 2147483648,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 287454020,
+      "value": 2309737967,
+      "result": 2309737967,
+      "stored": 2309737967,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 287454020,
+      "value": 4294967295,
+      "result": 4294967295,
+      "stored": 4294967295,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 4294967295,
+      "value": 0,
+      "result": 0,
+      "stored": 0,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 4294967295,
+      "value": 1,
+      "result": 1,
+      "stored": 1,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 4294967295,
+      "value": 4717792,
+      "result": 4717792,
+      "stored": 4717792,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 4294967295,
+      "value": 536870944,
+      "result": 536870944,
+      "stored": 536870944,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 4294967295,
+      "value": 2147483647,
+      "result": 2147483647,
+      "stored": 2147483647,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 4294967295,
+      "value": 2147483648,
+      "result": 2147483648,
+      "stored": 2147483648,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 4294967295,
+      "value": 2309737967,
+      "result": 2309737967,
+      "stored": 2309737967,
+      "neighbors_unchanged": true
+    },
+    {
+      "initial": 4294967295,
+      "value": 4294967295,
+      "result": 4294967295,
+      "stored": 4294967295,
+      "neighbors_unchanged": true
+    }
+  ],
+  "descriptor_rows": [
+    {
+      "fields": [
+        270544960,
+        541089920,
+        480,
+        640,
+        1352724800,
+        1623269760,
+        1893814720,
+        2164359680,
+        2434904640,
+        2705449600,
+        2975994560,
+        3246539520,
+        3517084480,
+        3787629440,
+        4058174400,
+        33752064,
+        304297024,
+        574841984,
+        845386944,
+        1115931904,
+        1386476864,
+        32,
+        1927566784,
+        2198111744,
+        2468656704,
+        2739201664,
+        0
+      ],
+      "ignored_arg": 0,
+      "result": 1,
+      "count": 1,
+      "table_hex": "80020000e00100002000000000000000a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+      "input_unchanged": true
+    },
+    {
+      "fields": [
+        19997009,
+        827421073,
+        480,
+        640,
+        1102176337,
+        1909469329,
+        1643135185,
+        2417005329,
+        2150671185,
+        2958095249,
+        2691892177,
+        3499315729,
+        3232981585,
+        4040405649,
+        3774071505,
+        319952145,
+        53618001,
+        861042065,
+        594707921,
+        1402131473,
+        1135797329,
+        32,
+        1677018321,
+        2450888465,
+        2184554321,
+        2991978385,
+        0
+      ],
+      "ignored_arg": 1,
+      "result": 1,
+      "count": 1,
+      "table_hex": "80020000e00100002000000000000000a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+      "input_unchanged": true
+    },
+    {
+      "fields": [
+        838996578,
+        39994018,
+        600,
+        800,
+        1921176418,
+        1122173858,
+        1388540898,
+        2737020962,
+        3003355234,
+        2204352674,
+        2470457570,
+        3818938658,
+        4085272930,
+        3286270370,
+        3552637410,
+        539043362,
+        805377634,
+        6375074,
+        272742114,
+        1621223202,
+        1887557474,
+        16,
+        1355184098,
+        2703664162,
+        2969998434,
+        2170995874,
+        1
+      ],
+      "ignored_arg": 4294967295,
+      "result": 1,
+      "count": 2,
+      "table_hex": "80020000e0010000200000000000000020030000580200001000000001000000a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+      "input_unchanged": true
+    },
+    {
+      "fields": [
+        588448627,
+        326325171,
+        480,
+        640,
+        1670627955,
+        1408373427,
+        1137861363,
+        2989666611,
+        2719121779,
+        2456998323,
+        2186355187,
+        4071714867,
+        3801170035,
+        3539046579,
+        3268534515,
+        825243443,
+        554698611,
+        292575155,
+        22063091,
+        1907422771,
+        1636877939,
+        32,
+        1104635635,
+        2956440883,
+        2685896051,
+        2423772595,
+        0
+      ],
+      "ignored_arg": 2147483648,
+      "result": 1,
+      "count": 2,
+      "table_hex": "80020000e0010000200000000000000020030000580200001000000001000000a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+      "input_unchanged": true
+    },
+    {
+      "fields": [
+        1415869444,
+        1677993156,
+        2147483648,
+        4294967295,
+        350532868,
+        612722116,
+        883234180,
+        3309684292,
+        3580229124,
+        3842352836,
+        4112930436,
+        2244347716,
+        2514892548,
+        2777081796,
+        3047593860,
+        1179074628,
+        1449619460,
+        1711743172,
+        1982320772,
+        113738052,
+        384282884,
+        305419896,
+        916459908,
+        3342910020,
+        3613454852,
+        3875578564,
+        2309737967
+      ],
+      "ignored_arg": 7,
+      "result": 1,
+      "count": 3,
+      "table_hex": "80020000e0010000200000000000000020030000580200001000000001000000ffffffff0000008078563412efcdab89a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+      "input_unchanged": true
+    },
+    {
+      "fields": [
+        1165321493,
+        1964324309,
+        2147483648,
+        4294967295,
+        99984405,
+        898921685,
+        632554645,
+        3562329941,
+        3295995669,
+        4094998485,
+        3828828053,
+        2497123925,
+        2230789653,
+        3029858005,
+        2763490965,
+        1465274709,
+        1198940437,
+        1997943253,
+        1731641749,
+        399937621,
+        133603349,
+        305419896,
+        665911445,
+        3595686741,
+        3329352469,
+        4128355285,
+        2309737967
+      ],
+      "ignored_arg": 0,
+      "result": 1,
+      "count": 3,
+      "table_hex": "80020000e0010000200000000000000020030000580200001000000001000000ffffffff0000008078563412efcdab89a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7a7",
+      "input_unchanged": true
+    }
+  ],
+  "unhooked_entries": {
+    "0x48a210": 24,
+    "0x47fce0": 6
+  },
+  "declared_services": {},
+  "memory_faults": [],
+  "executable_bytes_unchanged": true,
+  "guarded_inputs_unchanged": true,
+  "original_Windows_renderer_executed": false
+}

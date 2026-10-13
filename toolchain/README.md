@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R173: 비디오 초기화의 native 콜백 저장 ABI
+
+Go1.26.9 기준에서 렌더 타깃 초기화의 C 콜백 주소가 int/DWORD로 축소되던 setter·선언·Go 전달만 native pointer와 공용 side slot으로 복원했다. 동결된 compiled RED, 실제 C callback과 원본 descriptor 대조, strict/race/checkptr2 및 전체 일반/HD/cgocheck2/server·oracle 검사가 통과했다. 현재 renderer의 production slot-reader가 확인된 것은 아니며 화면/Windows renderer 전체 해결로 확대하지 않는다. 원본 도구의 환경/stack-guard 초기 실패와 최종 검증 범위는 [R173 인벤토리](./PORTING-INVENTORY.md#비디오-초기화-콜백-슬롯의-native-주소-보존-r173)를 따른다. R172의 clean 3제품·일반/HD headless·dedicated server 검증은 후속 완료됐고 사용자 goenv Go1.26.9 정책은 유지한다.
+
 ## R172: 사용자 설치 goenv Go 1.26.9
 
 현재 pin·프로젝트 .go-version·빌드/제품 검사와 launcher는 Go1.26.9다. 명시한 GO를 존중하고 이미 설치된 goenv 1.26.9를 우선 사용하며 전역 기본값 1.25.12는 보존한다. [ARM64 GC 공식 백포트](https://github.com/golang/go/issues/80394)가 포함된 설치본으로 공식 재현 100회, 기존 OptionsDialog GC 진단 300회, 전체 일반/HD/cgocheck2/server 테스트 및 원본 oracle 대조가 통과했다. 구 버전의 재현 실패·도구체인 선택 RED와 기존 기대값은 유지한다. 자세한 범위·횟수와 아직 미완료인 clean runtime 검증은 [R172 인벤토리](./PORTING-INVENTORY.md#go-1269-및-설치된-goenv-도구체인-선택-r172)를 따른다. 아래 과거 Go1.26.5 기록은 역사적 증거로 보존한다.

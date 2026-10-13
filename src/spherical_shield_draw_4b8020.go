@@ -8,6 +8,14 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func init() {
+	// Registered C entry shares the existing native target lookup, movement,
+	// real AnimateDraw image path and natural deletion used by world dispatch.
+	legacy.Nox_thing_spherical_shield_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawSphericalShield4B8020(dr, vp)
+	}
+}
+
 type sphericalShieldDrawHooks4B8020 struct {
 	byCode  func(uint16) *client.Drawable
 	move    func(*client.Drawable, int, int)

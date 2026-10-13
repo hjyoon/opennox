@@ -18,6 +18,10 @@ int nox_thing_weapon_animate_draw(int* a1, nox_drawable* dr) {
 	return nox_thing_animate_draw(a1, dr);
 }
 
+// Retain the decoded PE32 shield body for provenance. The active symbol is
+// the native-width Go export in client_draw_all.go. Weapon callbacks above
+// continue to use their existing implementations.
+#if 0
 //----- (004B8020) --------------------------------------------------------
 int nox_thing_spherical_shield_draw(int* a1, nox_drawable* dr) {
 	int v2;       // esi
@@ -45,3 +49,4 @@ int nox_thing_spherical_shield_draw(int* a1, nox_drawable* dr) {
 	}
 	return result;
 }
+#endif

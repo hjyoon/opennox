@@ -79,10 +79,12 @@ func sub_446190() {
 			sub_467440(0)
 			if dword_5d4594_825752 > 0 {
 				s.NetSendServerQuit()
-				v3 := strMan.GetStringInFile("ShuttingDown", "C:\\NoxPost\\src\\client\\Gui\\guiquit.c")
-				v2 := strMan.GetStringInFile("Wolchat.c:PleaseWait", "C:\\NoxPost\\src\\client\\Gui\\guiquit.c")
-				NewDialogWindow(nil, v2, v3, 0, nil, nil)
-				sub_44A360(1)
+				if !isDedicatedServer {
+					v3 := strMan.GetStringInFile("ShuttingDown", "C:\\NoxPost\\src\\client\\Gui\\guiquit.c")
+					v2 := strMan.GetStringInFile("Wolchat.c:PleaseWait", "C:\\NoxPost\\src\\client\\Gui\\guiquit.c")
+					NewDialogWindow(nil, v2, v3, 0, nil, nil)
+					sub_44A360(1)
+				}
 				goto LABEL_20
 			}
 		} else if !noxflags.HasGame(noxflags.GameOnline) {

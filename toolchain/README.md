@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R186: 원격 Fireball과 전용 서버 종료 검증
+
+사용자 goenv Go1.26.9로 계속 빌드·검사한다. 실제 시계/headless 입력의 Wizard→Warrior Fireball 두 실행에서 정상 시전 큐·단일 마나150→120 소모·서버와 client HP150→23 및 표시127을 확인했다. 실제 접속자2명인 전용 서버의 quit가 로컬 GUI 글꼴에서 nil 접근하던 크래시는 기존 GUI 네 작업만 dedicated build에서 제외해 수정했다. 같은 새 회귀 RED/GREEN과 실제 두 접속자의 quit/ack 및 정상 종료를 확인했고 전체 일반/HD/CGo 각각73,623pass/47skip·server69,065pass/7skip, 관련 엄격/race/checkptr2 반복111pass가 통과했다. 기존 결과·기대값·원본·개인 데이터·R134 보류와 초기 진단 실패를 유지한다. 모든 주문·직업 쌍·맵의 인증은 아니며 상세는 [R186 인벤토리](./PORTING-INVENTORY.md#원격-fireball-실전-검증과-전용-서버-종료-gui-분리-r186)를 따른다.
+
 ## R185: 전용 서버의 정상 멀티플레이 주문 초기화
 
 Goenv Go1.26.9를 계속 사용하고 GO 없는 wrapper 선택도 확인했다. 전용 서버가 메뉴 시작의 EngineAdmin 설정/God Mode 해제를 빠뜨려 실제 원격 캐릭터의 주문 레벨이0으로 남는 문제를 같은 두 flag 연결로 수정했다. 동일 실제 시계/headless 입력에서 투명화 시전 큐·마나150→120 단일 소모·server/client 효과·정상 종료를 확인했다. 관련 엄격/race/checkptr2 반복2,592pass, 전체 일반/HD/CGo 각각73,622pass/47skip·server69,064pass/7skip이며 기존 결과와 기대값은 그대로다. 초기 입력 오류와 RED를 보존하고 자체 작업 종료 뒤 재생성 가능한 프로젝트 빌드 캐시만 정리했다. 모든 원격 주문·전투나 전체 포팅 완료 인증이 아니며 상세 범위는 [R185 인벤토리](./PORTING-INVENTORY.md#전용-서버의-멀티플레이-주문-초기화-복원-r185)를 따른다.

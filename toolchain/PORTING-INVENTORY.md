@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 원격 Fireball 실전 검증과 전용 서버 종료 GUI 분리 (R186)
+
+기준 clean/pushed revision은 `6a4ee5a7180d0f3e9e95c49103e6b96706f2eee0`이다. R185의 clean ARM64 일반/HD/server3제품·unchanged 일반/HD headless Host GUI·후속 whole checkpoint는 완료됐고 runtime audit SHA는 `5c2b5b588d11b9f6d351d28c4afd106f137885069b3efed18ca7739f194c2c72`다. 사용자 goenv Go1.26.9를 계속 사용하며 GO를 생략한 wrapper의 GOVERSION/GOROOT/GOTOOLCHAIN도 이 설치본이다. 전역 goenv와 최소 언어 버전은 바꾸지 않는다.
+
+실제 hardware clock과 기존 headless seat를 쓰는 별도 Wizard/Warrior 두 client로 일반 메뉴·직업 선택·MOTD 확인·아레나 참가·right-button 이동·기본 단축바 F 입력을 실행했다. NOX_E2E/record/override는 해제했고 HP·마나·위치·주문 습득·RNG·game clock·damage callback·packet·렌더 결과를 주입하지 않는다. private 관찰 API는 기존 QueueInLoop로 실제 상태를 읽고, 관찰용 geometry 경로는 마우스 입력만 선택한다. 각 실행은 개인 Save를 가져오지 않는 새 private runtime과 원본 map의 regular copy를 사용한다.
+
+초기 server 진단의 uint16/uint32 컴파일 오류, static game_ip.txt/실행 cwd 누락으로 접속하지 못한 v1, 300ms client 위치 관찰 때문에 경유점 주변을 왕복한 Estate v2, 보수적 geometry에서 일부 Estate 스폰의 경로를 찾지 못한 v3를 보존한다. 이 입력/관찰 실패는 gameplay 피해 실패로 세지 않는다. v3부터 실제 서버 위치를 150ms 간격으로 읽어 일반 이동 입력을 선택하며, 이후 원본 BluDeath 아레나에서 v4/v5를 실행했다. 원래 v4의20초 post-hit 유지 뒤 quit 관찰에는 이미 접속자가 없었으므로 active shutdown 증거로 세지 않는다. 별도 v5는 실제 접속을 유지하고 두 ready remote와 양쪽 HUD·정상 높이 갱신을 읽기 전용으로 확인한 뒤 정상 authenticated quit를 요청한다.
+
+BluDeath v4/v5의 두 client와 서버, 합계6실제 process는 모두 actual0이다. 두 실행 모두 기본 Fireball/SPELL27·level3·self0의 phoneme progress1..3, stock cost30의 단일 마나150→120 소모, 실제 native TitanFireball/owner, target HP150→23·FLAME/type1·marker1/693을 관찰했다. 시전자 damage-number delta-127·단축바 보존과 피격자의 실제 HUD150→23/150이 일치했다. 실제 PNG에서 폭발·표시127·사용 알림·직업별 단축바도 확인했다. v4의 client 이동(2608,2892)→(3850,2024), v5의(3380,3668)→(3154,2296)은 강제 좌표 변경이 아닌 일반 입력 결과다. 피격 뒤에는 자연 HP/마나 회복도 진행됐다. 이 증거는 Wizard→Warrior Fireball 두 경로이며 모든 주문·직업 쌍·맵·physical SDL/GPU·원본 Windows 전체 동등성 인증이 아니다.
+
+Estate v2를 정상 quit로 종료할 때 실제 접속자2명인 전용 서버가 sub_446190→sub_44A360→nil Window.DrawData에서 SIGSEGV·actual2로 종료됐다. GUI 없는 서버에서도 로컬 종료 대화창을 만들고 글꼴을 적용하던 경로다. 새 source-wiring 회귀의 compiled RED actual1 뒤 gui_quit.go의 기존 네 GUI 작업만 `!isDedicatedServer` 안에 넣었다. NetSendServerQuit·기존 acknowledgement/countdown/timeout·LABEL_20 경로와 client GUI 작업은 바꾸지 않는다. 동일 새 회귀 GREEN actual0이며 v5는 frame1395·실제 ready remote2명인 상태에서 quit를 요청했고 양쪽 client의 MSG_SERVER_QUIT와 서버의 MSG_SERVER_QUIT_ACK2개 및 정상 actual0 종료를 확인했다. 원본 GAME.EXE identity와 code2,968/data650 매니페스트는 유지하고 새 original 범위를 추가하지 않는다.
+
+순차 전체 일반·HD·strict CGo는 각각73,623pass/47skip/39packages, server는69,065pass/7skip/35packages·actual0이다. 모든 R185 기존 ID/action/횟수/skip/package 결과를 유지하고 새 shutdown 회귀1pass만 추가됐다. 관련37IDs의 cgocheck2/race/checkptr2 count3는111pass/0skip/3packages·actual0이다. source6,737files·protected304files·stock1,556files·개인1,562files 및 R134 보류4입력을 유지한다. 자체 runtime과 일반/HD 검사 종료 뒤 검증한 프로젝트 Go build cache 약12GB, 이후 엄격/server 검사 종료 뒤 재생성된 약13GB만 clean -cache로 정리했으며 소스·모듈 캐시·자산·Save/config·증거는 삭제하지 않았다.
+
+실패/성공의 frozen private driver·실제 terminal/log/PNG·whole checkpoint는 `/private/tmp/opennox-remote-combat-r186.qR2PLV`에 보존한다. 동결 body audit SHA는 `e536f98fd83649873c7911eadaa7cda662fe538806875fa0fe0042ba066c6dd3`다. 기존 문서 본문은 유지하고 commit 직후 origin port/go1.26-multiarch로 push한 뒤 clean revision 공식 ARM643제품과 unchanged 일반/HD headless Host GUI를 후속 검증한다. R134·Player SetColor·다른 원격 주문/직업 쌍·역사적 frozen 실패 및 전체 포팅 목표는 계속 미완료다.
+
 ## 전용 서버의 멀티플레이 주문 초기화 복원 (R185)
 
 기준 clean/pushed revision은 `de0cf94c78fb21e3d058bbb6a049476e5960eb01`이다. 사용자 goenv Go1.26.9를 계속 사용하고, GO를 생략한 wrapper도 `/Users/ghost/.goenv/versions/1.26.9`를 선택함을 새로 확인했다. 전역 goenv와 최소 언어 버전은 변경하지 않는다. 원본 GAME.EXE identity `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a` 및 기존 code2,968/data650 매니페스트는 유지한다.

@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 전용 서버의 멀티플레이 주문 초기화 복원 (R185)
+
+기준 clean/pushed revision은 `de0cf94c78fb21e3d058bbb6a049476e5960eb01`이다. 사용자 goenv Go1.26.9를 계속 사용하고, GO를 생략한 wrapper도 `/Users/ghost/.goenv/versions/1.26.9`를 선택함을 새로 확인했다. 전역 goenv와 최소 언어 버전은 변경하지 않는다. 원본 GAME.EXE identity `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a` 및 기존 code2,968/data650 매니페스트는 유지한다.
+
+실제 시계/private headless Wizard로 전용 서버에 접속했다. 채팅 맵은 시전 금지이므로 정상 authenticated map API로 Estate 아레나를 로드한다. 초기 진단은 MOTD와 관전자 참가 입력을 빠뜨려 client/server actual1이었고, 이를 게임 결함으로 세지 않는다. 실제4202 확인 버튼과 일반 left-button 참가 입력을 추가한 뒤 이동·MSG_TRY_SPELL 도착은 확인됐으나 주문 큐·마나 변화가 없었다. 관찰만 확장한 frozen client v4/server v3의 수정 전 실행도 각각 actual1이며 engine0x400·방패/투명화 습득 레벨0·cast_start0·trade nil을 확인했다.
+
+메뉴의 `startServer`는 EngineAdmin을 설정하고 EngineGodMode를 해제하지만 전용 `MainLoop`는 이를 생략했다. 원본 봉인004EFC80..004EFD7B의 기존251바이트 disassembly는 engine bit0x10에 따라 index1..136의 주문 레벨을3 또는0으로 초기화함을 뒷받침한다. 새 source-wiring 회귀는 수정 전 MainLoop만 실패했다. production 변경은 `gameloop.go`에 같은 두 flag 호출과 설명 주석3줄을 추가하는 것이며, 주문·마나·위치·HP·패킷·RNG·시계를 주입하거나 God Mode를 활성화하지 않는다.
+
+동일 frozen v4/v3 입력의 수정 후 client/server는 모두 actual0이다. 원격 캐릭터는 engine0x410·주문 레벨3·HP75/75·mana150/150로 초기화됐다. 실제2초 이동에서 client 좌표(3234,2024)→(3412,2024), 기본 단축바의 A 입력에서 투명화 큐의 phoneme progress1..4·자기 자신 대상·기본 비용30의 단일 마나150→120 소모·power3/duration1800 효과를 관찰했다. client buff·HUD·단축바 보존과 렌더링 snapshot의 투명화 알림/효과 아이콘을 확인하고20초 더 유지한 뒤 정상 종료했다. NOX_E2E는 해제하고 동일 hardware platform과 실제20ms clock 진행을 검사한다. 초기 실패·RED/GREEN·입력 bytes와 모든 실제 terminal/log/PNG는 `/private/tmp/opennox-remote-spell-r185.gtHYk3`에 보존하며, RED runtime도 별도 경로로 옮겨 유지한다. 이는 원격 투명화 자기 시전 한 경로의 증거이지 모든 주문·원격 전투·physical SDL/GPU·원본 Windows 전체 동등성 인증이 아니다.
+
+관련864test IDs의 실제 cgocheck2/race/checkptr2 count3는2,592pass/0skip·3packages·actual0이다. 순차 전체 일반·HD·엄격 CGo는 각각73,622pass/47skip/39packages, 서버는69,064pass/7skip/35packages·actual0이며 R183의 모든 기존 ID/action/횟수/skip/package 결과와 동일하고 새3pass만 추가됐다. 보호304files·원본1,556files·개인1,562files·R134 보류4입력을 유지한다. 공간 확보는 검사와 자체 runtime 종료 뒤 검증된 프로젝트 Go build cache18GB, 이후 전체 검사에서 재생성된 약12GB만 clean -cache로 정리했으며 모듈 캐시/소스/자산/Save/config/증거를 삭제하지 않았다. 이후 캐시는 정상 빌드로 재생성된다.
+
+기능 코드와 새 테스트를 동결한 body audit SHA는 `658c6c780bbfcc4a7ca4def103e8bc74ce3246327cd161e13d91a28a9ce34ec5`다. 기존 문서 본문은 유지하고 commit 직후 origin port/go1.26-multiarch로 push한다. clean revision의 공식 ARM64 client/HD/server3제품 및 unchanged 일반/HD headless Host GUI는 별도 후속 검증한다. R134·Player SetColor·다른 원격 주문/전투·역사적 frozen 실패와 전체 포팅 목표는 계속 미완료다.
+
 ## 원격 마법사·소환술사의 실제 시계 접속 검증 (R184)
 
 기준 clean/pushed Go1.26.9 revision은 `0453eaa6ee71609666d5b7ef047a443de98ef47f`이다. R183의 clean ARM64 일반/HD/server3제품·전체 회귀·unchanged 일반/HD headless Host GUI와 후속 whole checkpoint는 완료됐고 runtime audit SHA는 `e5f02d6fb95992bda00bfbafa51f3dc155b7392dd3223127ed6a42fcf96908a1`이다. 이번은 같은 게임 소스의 원격 클래스 검증이며 production·기존 tests/기대값/YAML/PNG/golden·원본 자산을 수정하지 않는다.

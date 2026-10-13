@@ -219,6 +219,9 @@ func (s *Server) mainloopPre() {
 func (s *Server) MainLoop() error {
 	noxflags.SetGame(noxflags.GameHost)
 	noxflags.SetGame(noxflags.GameOnline)
+	// Match startServer so ordinary multiplayer spells/abilities are awarded.
+	noxflags.SetEngine(noxflags.EngineAdmin)
+	noxflags.UnsetEngine(noxflags.EngineGodMode)
 	s.nox_xxx_gameSetMapPath_409D70("so_beach.map")
 	setVersionCode(NOX_CLIENT_VERS_CODE)
 	// RunServerArgs bypasses the menu/startServer path. Initialize the same

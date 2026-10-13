@@ -512,7 +512,7 @@ func (s *Server) nox_xxx_netUpdate_518EE0(u *server.Object) {
 	pind := pl.PlayerIndex()
 	s.NetList.InitByInd(pind)
 	if pind != server.HostPlayerIndex && ((s.Frame()+uint32(pind))%s.SecToFrames(15)) == 0 {
-		legacy.Nox_xxx_netReportUnitHeight_4D9020(pind, u)
+		s.netReportUnitHeightNative4D9020(pind, u)
 	}
 	if legacy.Get_dword_5d4594_2650652() == 0 || (s.Frame()%uint32(nox_xxx_rateGet_40A6C0())) == 0 || noxflags.HasGame(noxflags.GameFlag4) {
 		if pl.Field3680&0x40 != 0 {

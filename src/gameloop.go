@@ -221,6 +221,11 @@ func (s *Server) MainLoop() error {
 	noxflags.SetGame(noxflags.GameOnline)
 	s.nox_xxx_gameSetMapPath_409D70("so_beach.map")
 	setVersionCode(NOX_CLIENT_VERS_CODE)
+	// RunServerArgs bypasses the menu/startServer path. Initialize the same
+	// balance, class stats, abilities and monster data before accepting players.
+	if nox_xxx_parseGamedataBinPre_4D1630() == 0 {
+		return errors.New("failed to initialize dedicated-server game data")
+	}
 	s.Rand.Reset()
 	s.SetInitialFrame()
 	if err := s.newSession(); err != nil {

@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 전용 서버 능력치 초기화와 원격 높이 갱신 (R183)
+
+기준 clean/pushed revision은 `329944ff92a70dbdf418d8f8661160f8927e2359`이다. 사용자 설치 `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 사용하며 실제 GOVERSION/GOTOOLCHAIN/GOROOT도 Go1.26.9와 이 설치 경로다. 전역 goenv 설정과 최소 지원 언어 버전은 바꾸지 않는다. 원본 GAME.EXE의 전체 identity·기존 code2,968/data650 매니페스트는 유지하고 새 범위를 추가하지 않는다.
+
+R182의 실제 시계/headless 원격 접속 이동 실패를 이어서 조사했다. baseline 서버 관찰에서 ready 상태0x10과 걷기 movement0x8까지 전환됐지만 플레이어의 HP0/0·speed0/0·좌표 불변을 확인했다. private client의 동일2초 이동 검사는 actual1이다. `RunServerArgs`는 메뉴/`startServer`를 거치지 않고 `MainLoop`를 호출하므로 balance·class stats·abilities·monster data 초기화가 누락됐다. 새 source-wiring 검사 actual1 뒤 기존 `nox_xxx_parseGamedataBinPre_4D1630`을 세션 생성 전에 연결하고 초기화 실패는 error로 반환한다. 직접 HP·속도·마나·좌표나 기본값을 주입하지 않는다.
+
+이 연결만 적용한 실제 client는 이동 actual0이었지만 서버는15초 높이 갱신의 C `nox_xxx_netReportUnitHeight_4D9020`에서 SIGSEGV·actual2로 종료됐다. native 객체0x15006a690을 int로 잘라0x5006a6a4를 읽은 기록을 보존한다. periodic caller 한 곳을 이미 visibility/object-update에서 쓰는 `netReportUnitHeightNative4D9020`으로 교체한다. 기존 C 본체·native packet builder·갱신 주기는 수정하지 않는다. 새 wiring RED는1fail/5pass이고0·양수·음수·탄도 네 조건의 C-owned >4GiB 객체와 실제 netlist의4/6바이트 packet, 대상 recipient, whole object 불변 검사는 통과했다. 원본004D9020..004D90E0의0x9f6바이트 및0x5e/0x5f4바이트 분기를 읽기 전용 disassembly로 대조했으며 independent Windows 실행 인증은 아니다.
+
+최종 private client/server는 모두 actual0이다. 실제 GUI 입력·loopback 접속·맵 수신·sanctuary 확인·2초 right-button 입력에서 Warrior HP150/150·speed2.1/2.1과 client 좌표(2952,3078)→(3168,3078)을 확인했다. 이동 assertion과90/120초 driver 한계는 그대로이고, 이동 측정 뒤20초 더 접속을 유지하여 정상 높이 갱신 scheduled900/current901프레임 통과 및 서버 정상 종료를 확인했다. 초기 ready snapshot은 fade 중 검은 화면이므로 표시 증거로 세지 않는다. 실제 moved snapshot의 맵·Jack·체력 HUD를 확인했다. 새 관찰은 state를 읽기만 하며 E2E platform·가상 clock·RNG·Sleep·게임 timeout·전투 동작을 바꾸지 않는다.
+
+관련108test IDs의 실제 cgocheck2/race/checkptr2 count3는324pass/0skip·3packages·actual0이다. 전체 일반/HD/엄격 CGo는 각각73,619pass/47skip/39packages, 캐시 정리 후 서버는69,061pass/7skip/35packages·actual0이다. R182의 기존 ID/action/횟수/skip/package 결과를 유지하며 새7pass만 추가했다. 원본1,556files·개인1,562files·protected304files·R134 보류4입력과 기능 코드/진단 동결 bytes를 유지한다. 초기 중단과 재실행 결과를 혼합하지 않는다.
+
+첫 서버 진단의240초 준비 timeout·actual2, baseline 이동 실패·actual1, 초기화만 연결한 서버 높이 크래시·actual2와 종료 후 curl7을 보존한다. 첫 전체 서버 검사는 여유 공간247MB에서 자체 Go 프로세스에 SIGINT를 보내 중단했고 actual1로 종료됐다. 성공으로 세지 않으며, 종료를 확인한 뒤 프로젝트 전용 재생성 가능 Go build cache22GB만 정리해27GB 여유를 확보하고 같은 서버 검사를 재실행한다. 원본/개인 Save/config·기존 YAML/PNG/golden·R134 보류 입력은 보호 범위이며 전후 whole checkpoint로 확인한다. 새 tests/driver/기능 코드를 동결하고 과거 문서 본문도 유지한다. 증거는 `/private/tmp/opennox-remote-input-r183.KqYVmG`에 보존한다. 검사·감사 후 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM643제품·unchanged 일반/HD Host GUI를 별도 검증한다. 원격 전투/모든 직업/물리 SDL/GPU/원본 Windows 전체 동등성 및 전체 포팅 완료는 주장하지 않는다.
+
 ## 원격 맵 로드의 로컬 Client 역할 유지 (R182)
 
 기준 clean/pushed revision은 `8651bc9af2ee031be08762bda7bf8034830059f8`이다. 도구체인은 사용자 설치 `/Users/ghost/.goenv/versions/1.26.9/bin/go`이며 wrapper의 실제 GOVERSION/GOTOOLCHAIN/GOROOT도 같은 버전과 경로다. 전역 goenv 설정은 바꾸지 않는다. 원본 GAME.EXE의 기존 전체 identity·code2,968/data650·자산 매니페스트는 그대로이며 새 range나 원본 Windows 전체 실행 인증은 없다.

@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 실제 메뉴·인게임 옵션 전체 audit 재검증 (R174)
+
+기준 clean/pushed Go1.26.9 revision은 1500ec303110d92d9f0edb9fd52f62badc5e6139이다. 남은 실행 경로를 찾기 위해 기존 main-menu-options-audit.yaml과 host-game-client-options-audit.yaml을 byte-identical private 복사본에서 일반·HD 네 번 실행했다. 실제 mouse/key 입력·stock window 생성·옵션 handlers·read-only observer를 사용하며 직접 handler 호출·결과 주입·설정/animation 강제·입력/기대값/timeout 변경은 없다. 기존 scenario의 “known failures” 주석은 당시 기록으로 그대로 유지한다. 현재 네 결과는 actual0이며 메인 일반226/HD228, 인게임 일반201/HD203, 합계858pass/0fail이다. HD의 두 추가 해상도 선택 검사 때문에 각 mode에서2pass가 더 있다.
+
+검사 범위는15 video toggles의 초기/변경/복귀와 floor/GUI renderer 연결, 지원 해상도 선택, main-menu window mode와 save checkpoint 분리, gamma·sensitivity slider의 실제 적용, audio sliders의 Target/enable·mute 및 FX startup scalar 보존, 입력 설정의 stock Apply enabled 상태·mouse pickup의 exclusive 선택·defaults/reset·네 list의 scroll/scrollbar 동기화·primary/secondary F-key rebind·Esc cancellation·Back/Apply 후 bindings와 메모리상 직렬화, menu InputCfg 재열기·Escape 적용/대체·원래 옵션/메뉴 복귀와 인게임 Close다. menu의 Escape가 이미 창을 닫은 뒤 조건부 Input Back fallback/Options Back fallback은 unavailable 두 건으로 기록되며 이를 실제 Back click 성공으로 세지 않는다. 원본에 없는 tooltip/NoSoftLights persistence를 요구하지 않으며 실제 option-close 해상도 적용과 config 디스크 writes의 E2E suppression을 false failure로 바꾸지 않는다.
+
+Mock audio-handles=true로 GUI의 원래 audio control admission을 실행한다. Mock AIL Current/timers/buffers는 inactive이므로 요청 Target과 flags만 검증하고 실제 mixing/ADPCM/가청 음향의 성공으로 세지 않는다. E2E deterministic bindings의 defaults/reset은 원본 default.cfg와 실제 disk round trip 인증이 아니다. 필터·stretch·해상도 선택·gamma와 기존 writer의 메모리상 값은 확인하지만 재시작/개인 설정 저장 검증으로 확대하지 않는다.
+
+수동 audit 안의 Screen은 private 새 디렉터리에서만 NOX_E2E_OVERRIDE=true로 녹화한다. 이 flag의 실제 사용처가 Screen 이미지 쓰기 한 곳뿐임을 확인했으며 settings assertions는 유지한다. 네 입력은 서로 다른 snapshot directory를 써 이전 녹화를 덮어쓰지 않고, 기존 canonical PNG/자산/기대값 변경0이다. 고정 PNG 대조로 통과한 것이 아니라18개의 private headless frames를 보존한 것이다. 일반 메뉴 options/input와 인게임 options 화면을 직접 시각 검사하여 글자·컨트롤의 표시와 배치를 확인했다. 원본 Windows framebuffer나 physical SDL/OpenAL/remote transport 전체 동등성은 UNPROVEN이다.
+
+네 제품 모두 darwin/arm64·go1.26.9·full revision1500ec303110d92d9f0edb9fd52f62badc5e6139·vcs.modified=false이고 release overlay0이다. 모든 실행 뒤 source6721files 전체·protected304files·stock1556files/570653750B·개인1562files/Save/config whole checkpoints가 전후 byte-identical이다. 새 input/expected·Go test·게임 본체·원본 파일·개인 파일을 바꾸거나 삭제하지 않았다. 실패를 해결하기 위해 테스트를 교정한 단위가 아니라, 기존 audit가 현재 코드에서는 모두 통과함을 확인해 남은 범위를 좁힌 검증 단위다. 입력·wrapper·네 actual receipts·18private PNG·checkpoints는 /private/tmp/opennox-options-ui-audit-r174.TI9gin에 보존한다.
+
+이 커밋은 문서2files에만 삽입한다. 기능 source·YAML/PNG·공개 테스트는 그대로이며, commit 바로 다음 도구에서 origin port/go1.26-multiarch로 push한 뒤 새 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help와 기존 일반·HD headless spell-pet/map-transition을 따로 검증한다. 아직 실행되지 않은 이 후속 계획을 성공으로 세지 않는다. 기존 R134 보류·최초 OptionsDialog GC 오류의 직접 원인·historical frozen Screen/전투/음식 및 전체 포팅 목표는 계속 미완료/UNPROVEN이다.
+
+선행 R173 callback ABI1500ec303은 clean/pushed 공식 ARM643제품 build/metadata/help/verify, 일반·HD 실제 headless/mock 주문3종·동료18기록·Pixie2개·con02a/con03a/con02a 전환과 전후 original/stock/personal 대조 actual0까지 완료했다. runtime audit SHA=7b2cbef5fa743fe30c2d718fe06d5f7bdae73cce554ef77d8675ac30770a41f2다. 현재 production stored-slot reader가 확인되지 않은 한계도 그대로 유지하며 아래 R173의 당시 후속 계획은 이 완료 증거로 마무리한다.
+
 ## 비디오 초기화 콜백 슬롯의 native 주소 보존 (R173)
 
 기준 clean/pushed Go1.26.9 revision은 1c6ac8678288beefa8a27be16aa17e0ea395bd07이다. recreateRenderTarget이 등록하는 실제 C sub_47FCE0 주소를 legacy Go wrapper가 C.int로 축소하고, 0048A210 C entry가 packed DWORD 5D4594+1193504에 기록했다. 기존 production3files만 바꾼다: GAME2_2.h의 void*(void*) ABI, GAME2_2.c 해당 setter 한 본체의 setMemPtr와 입력 그대로 반환, video_cgo.go의 직접 pointer 전달이다. 나머지 C 본체·render-target 호출자·실제 descriptor callback·공용 memmap pointer side-slot 구현은 유지한다. 현재 포팅된 renderer의 production 코드에서는 이 슬롯을 읽는 호출자를 찾지 못했다. 따라서 실제 초기화의 주소 저장 결함 복원이며, 사용자 화면 크래시나 SDL/DirectDraw 동작 전체를 해결했다는 증거로 확대하지 않는다.

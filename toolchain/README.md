@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R174: 실제 옵션 audit 네 경로 검증
+
+기존 main-menu/in-game options audit를 사용자 goenv Go1.26.9의 clean ARM64 일반·HD 제품으로 실행해 각각226/228/201/203, 합계858항목이 통과했다. 실제 UI input·상태·메모리상 직렬화 검증이며 mock audio Target/flags, E2E defaults와 video/config suppression을 physical playback·disk restart로 확대하지 않는다.18private 녹화 PNG는 canonical 이미지 대조가 아니고 기존 YAML/PNG와 모든 원본/개인 파일은 그대로다. 이 단위는 문서만 추가하고 게임 동작·기대값을 바꾸지 않는다. 상세 범위와 receipt는 [R174 인벤토리](./PORTING-INVENTORY.md#실제-메뉴인게임-옵션-전체-audit-재검증-r174)를 따른다. R173의 clean3제품 및 일반/HD headless 후속 검증도 완료됐으며 전체 포팅 목표는 계속 미완료다.
+
 ## R173: 비디오 초기화의 native 콜백 저장 ABI
 
 Go1.26.9 기준에서 렌더 타깃 초기화의 C 콜백 주소가 int/DWORD로 축소되던 setter·선언·Go 전달만 native pointer와 공용 side slot으로 복원했다. 동결된 compiled RED, 실제 C callback과 원본 descriptor 대조, strict/race/checkptr2 및 전체 일반/HD/cgocheck2/server·oracle 검사가 통과했다. 현재 renderer의 production slot-reader가 확인된 것은 아니며 화면/Windows renderer 전체 해결로 확대하지 않는다. 원본 도구의 환경/stack-guard 초기 실패와 최종 검증 범위는 [R173 인벤토리](./PORTING-INVENTORY.md#비디오-초기화-콜백-슬롯의-native-주소-보존-r173)를 따른다. R172의 clean 3제품·일반/HD headless·dedicated server 검증은 후속 완료됐고 사용자 goenv Go1.26.9 정책은 유지한다.

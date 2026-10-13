@@ -1,5 +1,17 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## SummonEffect 직접 등록 콜백의 native child·수명 연결 (R178)
+
+기준 clean/pushed Go1.26.9 revision은 08e1641f8b1b65b4dcdbf08342bcd9bf5ba09a8b이다. HarpoonRope는 이미 typed native fields를 읽고 있음을 확인했다. SummonEffect의 world dispatcher는 Go 구현을 사용하지만 공개 Drawable.CallDraw 경로의 등록 C 본체는 drawable/animation/child를 PE32 DWORD 배열로 읽었다. 실제 C 파서가 만든 고주소 parent·child·animation·viewport와 MSG_FX_SUMMON packet을 통해 기존 world 경로가 통과한 뒤 직접 콜백 여덟 조건에서 잘못된 nil-child 삭제의 SIGSEGV를 재현했다.
+
+C 본체는 provenance-only로 보존하고 typed CGo export와 init binding을 기존 drawSummonEffect4B7D00에 연결했다. production 변경은 네 파일의 이 연결뿐이며 기존 Go animation·alpha·50-spark·expiry 구현, 등록 kind/파서 및 packet·피해/HP·RNG·프레임 정책은 바꾸지 않았다. 새 native/headless test 하나는 first/half/last/expired/zero-life/frame-wrap/clip/outside에서 두 경로의 raster·RenderData·전체 live drawable graph·child·parser·viewport·RNG·expiry와 surface upload를 비교한다. Windows framebuffer나 실제 SDL/GPU 동등성 검사는 아니다.
+
+초기 새 테스트의 Snapshot API build failure와 packet dispatcher 반환값 준비 실패를 보존했다. v3의 outside render-context clip 누락도 수정 전에 보존했다. 수정 후 v4에서는 크래시 여덟 건이 사라졌지만 마지막 spark의 할당 주소 차이로 비교 하나가 실패했다. v4 원문은 byte-identical archive로 남기고 v5에서는 live graph pointer identity만 node ID로 canonicalize하며 scalar·image/type/callback·padding과 모든 frame/수명/숫자 기대값을 그대로 비교한다. 동일 frozen v5는 baseline actual1/SIGSEGV8, 수정 actual0이다. strict CGo/race/checkptr2 count3은 기존 소환/취소 검사 포함45pass/0skip이며 실제 직접 callback 조건24회를 실행했다.
+
+전체 Go1.26.9 일반/HD/cgocheck2는 각각73,584pass/47skip/39packages, server는69,042pass/7skip/35packages·actual0이다. R177의 모든 기존 test ID/action/횟수/skip/package 상태를 유지하며 client에 새9pass만 추가했고 server delta는0이다. 원본2,968code/650data와 stock1,556files·개인1,562files·protected304files·R134 보류 입력은 유지한다. 증거는 /private/tmp/opennox-summon-callback-r178.nVSVre에 보존한다.
+
+commit 바로 다음 도구에서 origin port/go1.26-multiarch에 push한 뒤 해당 clean revision의 ARM64 일반/HD/server3제품 metadata/Mach-O/help 및 clean native summon test와 unchanged 소환/Charm/Pixie·세 맵 전환 일반/HD headless/mock를 별도 검증한다. 아직 실행되지 않은 후속 계획을 성공으로 세지 않는다. 원본 Windows 전체 동등성·청음·SDL/GPU·R134와 전체 포팅 목표는 계속 미완료다. 선행 R177은 clean3제품·native renderer/movie와 실제 headless/OpenAL 일반/HD·전후 whole checkpoint actual0, runtime SHA=c6a3e1261fd139297f3888699c9ca0509ad936d2827451aeab7dff3ced43cacd로 완료했다.
+
 ## 종료된 영상 렌더러의 surface·화면 버퍼 수명 복원 (R177)
 
 기준 clean/pushed Go1.26.9 revision은 7d0fd2fcb09c6484403b0a98777f09a816902de5이다. R176의 파일·OpenAL cleanup은 유지하지만 MoviePlayer가 만든 renderer는 종료 뒤에도 seat resize callback과 마지막 surface/frame을 보관했다. actual headless screen의 resize는 모든 registered callback을 호출했고 종료된 movie renderer가 현재 GUI 뒤에 재그려져 마지막 movie frame/빈 surface로 덮었다. 현재 SDL input backend는 registered onResize를 호출하지 않으므로 실제 SDL 창에서도 이 재그리기가 발생했다고 확대하지 않는다. SDL NewSurface는 OpenGL surface로 위임하고 Destroy는 gl.DeleteTextures를 호출한다는 현재 코드 경로를 확인했지만 이번은 physical GPU resource/readback 인증이 아니다.

@@ -8,6 +8,9 @@
 
 extern uint32_t dword_5d4594_1313740;
 
+// The active entry is the native-width Go export in client_draw_all.go.
+// Keep the decoded PE32 body only as provenance.
+#if 0
 //----- (004B7D00) --------------------------------------------------------
 int nox_thing_summon_effect_draw(int* a1, nox_drawable* dr) {
 	uint32_t* v2;       // esi
@@ -90,3 +93,4 @@ int nox_thing_summon_effect_draw(int* a1, nox_drawable* dr) {
 	}
 	return result;
 }
+#endif

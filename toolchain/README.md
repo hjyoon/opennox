@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R178: 소환 효과 직접 콜백의 native 수명 연결
+
+실제 고주소 소환 packet/파서/렌더러 검사에서 기존 world 경로는 통과했지만 직접 등록 콜백은 PE32 오프셋 때문에 여덟 조건 모두 SIGSEGV를 일으켰다. 해당 C entry를 기존 Go 소환 효과에 연결한 네 production files와 새 test 하나만 변경했다. 동일 v5 RED/GREEN, strict/race/checkptr2 45pass와 전체 일반/HD/CGo/server 회귀 및 원본 자료 대조가 통과했다. 새 테스트 준비 실패·할당 주소 관찰 수정도 보존하며 Windows/SDL/GPU 전체 인증으로 확대하지 않는다. 자세한 범위는 [R178 인벤토리](./PORTING-INVENTORY.md#summoneffect-직접-등록-콜백의-native-child수명-연결-r178)를 따른다. R177 clean runtime 검증은 완료됐고 전체 포팅 목표는 계속 진행 중이다.
+
 ## R177: 영상 렌더러의 surface 해제와 resize 재그리기 차단
 
 영상 종료·early close·audio-source 생성 실패 후 surface가 남고 headless resize에서 현재 GUI가 마지막 영상/빈 화면으로 덮이는 경로를 실제 stock movie로 재현했다. renderer의 graphics-thread Close와 MoviePlayer의 해당 renderer cleanup만 추가하며 active GUI·decode·FPS·viewport 계산은 유지한다. frozen RED/GREEN, 실제27resize 비교, renderer storage/lifecycle 및 기존 영상 검사와 전체 회귀가 통과했다. SDL backend는 현재 resize callback을 dispatch하지 않으므로 실제 SDL ghost redraw나 GPU 메모리 readback을 인증하지 않는다. 상세 범위는 [R177 인벤토리](./PORTING-INVENTORY.md#종료된-영상-렌더러의-surface화면-버퍼-수명-복원-r177)에 기록한다. R176 clean runtime 검증은 완료됐고 전체 포팅 목표는 계속 미완료다.

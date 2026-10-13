@@ -11,6 +11,14 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func init() {
+	// Direct drawable callbacks must share the world dispatcher's native
+	// animation data, child pointer, image rendering and expiry cleanup.
+	legacy.Nox_thing_summon_effect_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawSummonEffect4B7D00(dr, vp)
+	}
+}
+
 type summonEffectDrawHooks4B7D00 struct {
 	frame       func() uint32
 	animate     func(*client.Drawable) int

@@ -46,6 +46,14 @@ func init() {
 	}
 }
 
+func init() {
+	// The registered BlueRainSparkDraw entry uses the existing movement,
+	// bounce, replacement activation/deletion, RNG and raster world route.
+	legacy.Nox_thing_blue_rain_spark_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawBlueRainSpark4B7060(dr, vp)
+	}
+}
+
 func (c *Client) drawRegisteredGlowOrb4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
 	ids := glowOrbTypeIDs4B6B80{
 		heal:      c.Things.IndByID("HealOrb"),

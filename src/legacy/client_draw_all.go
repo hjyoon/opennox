@@ -146,6 +146,8 @@ var (
 
 var Nox_thing_pixie_draw func(vp *noxrender.Viewport, dr *client.Drawable) int
 
+var Nox_thing_blue_rain_spark_draw func(vp *noxrender.Viewport, dr *client.Drawable) int
+
 var (
 	Nox_thing_debug_draw          func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_monster_draw        func(vp *noxrender.Viewport, dr *client.Drawable) int
@@ -275,6 +277,11 @@ func nox_thing_oblivion_up_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32
 //export nox_thing_rain_orb_draw
 func nox_thing_rain_orb_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
 	return int32(Nox_thing_rain_orb_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_blue_rain_spark_draw
+func nox_thing_blue_rain_spark_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_blue_rain_spark_draw(asViewport(vp), asDrawable(dr)))
 }
 
 //export nox_thing_pixie_draw

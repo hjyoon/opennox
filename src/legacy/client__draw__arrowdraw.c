@@ -4,6 +4,9 @@
 #include "GAME2_3.h"
 #include "client__draw__slavedraw.h"
 
+// Retain the decoded PE32 bodies for provenance. The active symbols are the
+// native-width Go exports in client_draw_all.go.
+#if 0
 //----- (004B7920) --------------------------------------------------------
 int nox_thing_arrow_draw(int* a1, nox_drawable* dr) {
 	int v2;       // eax
@@ -123,3 +126,4 @@ int nox_thing_weak_arrow_tail_link_draw(uint32_t* a1, nox_drawable* dr) {
 	}
 	return 1;
 }
+#endif

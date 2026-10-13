@@ -11,6 +11,17 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func init() {
+	// Registered C entries share the existing native tail spawning, cache,
+	// activation, decay and real SlaveDraw image path used by world dispatch.
+	draw := func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		result, _ := noxClient.callArrowDraw4B7920(dr, vp)
+		return result
+	}
+	legacy.Nox_thing_arrow_draw = draw
+	legacy.Nox_thing_weak_arrow_draw = draw
+}
+
 type arrowDrawKind4B7920 uint8
 
 const (

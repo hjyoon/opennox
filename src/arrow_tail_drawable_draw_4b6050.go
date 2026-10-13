@@ -14,6 +14,17 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func init() {
+	// Registered C entries use the same native lifetime, palette, alpha,
+	// geometry, clipping and raster implementation as world dispatch.
+	legacy.Nox_thing_arrow_tail_link_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawArrowTail4B6050(dr, vp, false)
+	}
+	legacy.Nox_thing_weak_arrow_tail_link_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawArrowTail4B6050(dr, vp, true)
+	}
+}
+
 type arrowTailDrawKind4B6050 uint8
 
 const (

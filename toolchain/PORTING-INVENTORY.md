@@ -1,5 +1,17 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 원격 마법사·소환술사의 실제 시계 접속 검증 (R184)
+
+기준 clean/pushed Go1.26.9 revision은 `0453eaa6ee71609666d5b7ef047a443de98ef47f`이다. R183의 clean ARM64 일반/HD/server3제품·전체 회귀·unchanged 일반/HD headless Host GUI와 후속 whole checkpoint는 완료됐고 runtime audit SHA는 `e5f02d6fb95992bda00bfbafa51f3dc155b7392dd3223127ed6a42fcf96908a1`이다. 이번은 같은 게임 소스의 원격 클래스 검증이며 production·기존 tests/기대값/YAML/PNG/golden·원본 자산을 수정하지 않는다.
+
+기존 real-clock private overlay를 직업 선택 버튼602(Wizard)/603(Conjurer)에 확장하고, 실제 client/server 클래스 일치와 ready 상태에서 HP·mana·speed 양수만 추가로 관찰했다. `NOX_E2E`/record/override는 해제했고 기존 headless seat·hardware platform·실제20ms clock 진행·실제 GUI 입력/loopback transport를 사용한다.90/120초 driver 한계·2초 이동 assertion·이동 뒤20초 정상 높이 갱신 관찰은 그대로다. 서버 observer는 상태를 읽기만 하며 game HP·mana·speed·position·RNG·clock·프레임 정책을 변경하지 않는다. 처음 client driver v1의 ChildByID int/uint 타입 오류·actual1을 보존하고 v2에서는 그 cast만 교정한 뒤 입력을 동결했다.
+
+Wizard의 client/server는 모두 actual0이다. 실제 클래스 wizard·HP75/75·mana150/150·speed1.75/1.75, client 좌표(2570,2790)→(2712,2798), 정상 높이 갱신 scheduled900/current901과 서버 정상 종료를 확인했다. Conjurer도 client/server actual0이며 실제 클래스 conjurer·HP100/100·mana125/125·speed1.8499999/1.8499999, 좌표(2814,3036)→(3004,3036), scheduled1350/current1351과 정상 종료를 확인했다. 각 moved snapshot에서 맵·Jack·체력/마나 HUD·직업별 단축바를 확인했다. 초기 fade capture를 표시 성공으로 세지 않는다. 두 직업 네 실제 process 검사를 spell casting·combat·모든 맵·physical SDL/GPU·Windows 전체 동등성 인증으로 확대하지 않는다.
+
+native `Object.SetColor`의 Player 분기 panic은 그대로 남는다. 현재 public API는6material slots를 갖지만 player의 저장/기존97B info packet에는5RGB 채널만 있고 draw의 세 번째 slot은 초기화된 white 값이다. local-only palette 변경, 임의 slot 대응, 새 wire/Save 형식을 승인 없이 추가하지 않았다. 원본 프로토콜과 remote/save에 걸친 계약 확인이 필요한 별도 경계다.
+
+실제 실행 전후 전체 checkpoint는 동일하다: source6,735files·protected304files·stock1,556files·개인1,562files, R134 보류4입력과 R183 source bytes를 유지한다. 게임 코드/테스트가 동일하므로 R183의 전체 일반/HD/CGo73,619pass/47skip·server69,061pass/7skip을 새 실행으로 꾸미거나 반복하지 않는다. 이번 새 증거는 `/private/tmp/opennox-remote-classes-r184.XtsDZi`의 private v1/v2 입력·logs·PNG·실제 terminal/해시에 보존한다. 문서 두 파일만 commit하고 바로 다음 도구에서 origin port/go1.26-multiarch로 push한 뒤 docs-only clean revision의 공식 ARM643제품 metadata/Mach-O/help를 검증한다. R134·Player SetColor·remote spells/combat·historical frozen 실패 및 전체 ARM64 포팅 목표는 계속 미완료다.
+
 ## 전용 서버 능력치 초기화와 원격 높이 갱신 (R183)
 
 기준 clean/pushed revision은 `329944ff92a70dbdf418d8f8661160f8927e2359`이다. 사용자 설치 `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 사용하며 실제 GOVERSION/GOTOOLCHAIN/GOROOT도 Go1.26.9와 이 설치 경로다. 전역 goenv 설정과 최소 지원 언어 버전은 바꾸지 않는다. 원본 GAME.EXE의 전체 identity·기존 code2,968/data650 매니페스트는 유지하고 새 범위를 추가하지 않는다.

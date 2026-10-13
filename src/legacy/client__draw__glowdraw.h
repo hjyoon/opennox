@@ -4,9 +4,9 @@
 #include "defs.h"
 
 int sub_4B6770(int* a1, nox_drawable* dr, int a3, int a4);
-int nox_thing_magic_sparkle_draw(int* a1, nox_drawable* dr);
+int nox_thing_magic_sparkle_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
 int nox_thing_pixie_draw(int* a1, nox_drawable* dr);
-int nox_thing_pixie_dust_draw(int* a1, nox_drawable* dr);
+int nox_thing_pixie_dust_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
 int nox_thing_blue_rain_spark_draw(uint32_t* a1, nox_drawable* dr);
 int nox_thing_rain_orb_draw(nox_draw_viewport_t* a1, nox_drawable* dr);
 int nox_thing_red_spark_draw(uint32_t* a1, nox_drawable* dr);

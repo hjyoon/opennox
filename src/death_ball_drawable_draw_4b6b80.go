@@ -25,6 +25,19 @@ func init() {
 	}
 }
 
+func init() {
+	// Registered C entries use the same palette selection, RNG, lifetime,
+	// clipping and raster implementation as the existing native world route.
+	legacy.Nox_thing_magic_sparkle_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		bright, dim, _ := sparkleDrawColors4B6770(legacy.Get_nox_thing_magic_sparkle_draw(), noxClient.srv.Rand.Other.Int)
+		return noxClient.drawSparkle4B6770(dr, vp, bright, dim)
+	}
+	legacy.Nox_thing_pixie_dust_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		bright, dim, _ := sparkleDrawColors4B6770(legacy.Get_nox_thing_pixie_dust_draw(), noxClient.srv.Rand.Other.Int)
+		return noxClient.drawSparkle4B6770(dr, vp, bright, dim)
+	}
+}
+
 func (c *Client) drawRegisteredGlowOrb4B6B80(dr *client.Drawable, vp *noxrender.Viewport) int {
 	ids := glowOrbTypeIDs4B6B80{
 		heal:      c.Things.IndByID("HealOrb"),

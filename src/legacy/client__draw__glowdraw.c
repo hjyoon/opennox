@@ -71,6 +71,9 @@ int sub_4B6770(int* a1, nox_drawable* dr, int a3, int a4) {
 	}
 }
 
+// Retain the decoded PE32 sparkle wrapper for provenance. The active symbol
+// is the native-width Go export in client_draw_all.go.
+#if 0
 //----- (004B6B00) --------------------------------------------------------
 int nox_thing_magic_sparkle_draw(int* a1, nox_drawable* dr) {
 	if (nox_common_randomIntMinMax_415FF0(0, 10, "C:\\NoxPost\\src\\Client\\Draw\\Glowdraw.c", 317) >= 5) {
@@ -79,6 +82,7 @@ int nox_thing_magic_sparkle_draw(int* a1, nox_drawable* dr) {
 		return sub_4B6770(a1, dr, *(int*)&dword_5d4594_1313540, *(int*)&dword_5d4594_1313536);
 	}
 }
+#endif
 
 //----- (004B6E80) --------------------------------------------------------
 int nox_thing_pixie_draw(int* a1, nox_drawable* dr) {
@@ -134,6 +138,9 @@ int nox_thing_pixie_draw(int* a1, nox_drawable* dr) {
 	return 1;
 }
 
+// Retain the decoded PE32 dust wrapper for provenance. The active symbol
+// is the native-width Go export in client_draw_all.go.
+#if 0
 //----- (004B6FE0) --------------------------------------------------------
 int nox_thing_pixie_dust_draw(int* a1, nox_drawable* dr) {
 	int result; // eax
@@ -145,6 +152,7 @@ int nox_thing_pixie_dust_draw(int* a1, nox_drawable* dr) {
 	}
 	return result;
 }
+#endif
 
 //----- (004B7060) --------------------------------------------------------
 int nox_thing_blue_rain_spark_draw(uint32_t* a1, nox_drawable* dr) {

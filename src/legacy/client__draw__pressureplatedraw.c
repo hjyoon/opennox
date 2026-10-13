@@ -5,6 +5,9 @@
 #include "operators.h"
 
 //----- (004BBB30) --------------------------------------------------------
+// Retain the decoded PE32 body for provenance. The active symbol is the
+// native-width Go export in client_draw_all.go.
+#if 0
 int nox_thing_pressure_plate_draw(uint32_t* a1, nox_drawable* dr) {
 	int v2;    // esi
 	int v4;    // ebp
@@ -74,3 +77,4 @@ int nox_thing_pressure_plate_draw(uint32_t* a1, nox_drawable* dr) {
 	} while (v12 < 2);
 	return 1;
 }
+#endif

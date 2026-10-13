@@ -23,6 +23,14 @@ func init() {
 	}
 }
 
+func init() {
+	// Registered pressure-plate C entry shares the native color/shape,
+	// signed-dword endpoints and line renderer used by the world route.
+	legacy.Nox_thing_pressure_plate_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawPressurePlate4BBB30(dr, vp)
+	}
+}
+
 type indicatorLine4B9790 struct {
 	from image.Point
 	to   image.Point
@@ -111,6 +119,12 @@ func pressurePlateFloatToInt4BBB30(value float32) int {
 	return int(math.RoundToEven(float64(value)))
 }
 
+func pressurePlateAddPoint4BBB30(base, off image.Point) image.Point {
+	// Original ADD/LEA endpoints wrap as signed dwords, including the
+	// one-pixel second layer. Pointer widths remain native throughout.
+	return image.Pt(int(int32(uint32(base.X)+uint32(off.X))), int(int32(uint32(base.Y)+uint32(off.Y))))
+}
+
 func pressurePlateDrawStateFor4BBB30(dr *client.Drawable, vp *noxrender.Viewport) pressurePlateDrawState4BBB30 {
 	effect := dr.UnionEffect()
 	rgb := [6]byte{
@@ -130,17 +144,17 @@ func pressurePlateDrawStateFor4BBB30(dr *client.Drawable, vp *noxrender.Viewport
 
 	base := vp.ToScreenPos(dr.PosVec)
 	box := &dr.Shape.Box
-	a := base.Add(image.Pt(pressurePlateFloatToInt4BBB30(box.LeftTop), pressurePlateFloatToInt4BBB30(box.LeftBottom)))
-	b := base.Add(image.Pt(pressurePlateFloatToInt4BBB30(box.RightBottom2), pressurePlateFloatToInt4BBB30(box.RightTop2)))
-	c := base.Add(image.Pt(pressurePlateFloatToInt4BBB30(box.LeftBottom2), pressurePlateFloatToInt4BBB30(box.LeftTop2)))
-	d := base.Add(image.Pt(pressurePlateFloatToInt4BBB30(box.RightTop), pressurePlateFloatToInt4BBB30(box.RightBottom)))
+	a := pressurePlateAddPoint4BBB30(base, image.Pt(pressurePlateFloatToInt4BBB30(box.LeftTop), pressurePlateFloatToInt4BBB30(box.LeftBottom)))
+	b := pressurePlateAddPoint4BBB30(base, image.Pt(pressurePlateFloatToInt4BBB30(box.RightBottom2), pressurePlateFloatToInt4BBB30(box.RightTop2)))
+	c := pressurePlateAddPoint4BBB30(base, image.Pt(pressurePlateFloatToInt4BBB30(box.LeftBottom2), pressurePlateFloatToInt4BBB30(box.LeftTop2)))
+	d := pressurePlateAddPoint4BBB30(base, image.Pt(pressurePlateFloatToInt4BBB30(box.RightTop), pressurePlateFloatToInt4BBB30(box.RightBottom)))
 	for layer := range state.lines {
 		off := image.Pt(layer, 0)
 		state.lines[layer] = [4]indicatorLine4B9790{
-			{from: a.Add(off), to: d.Add(off)},
-			{from: b.Add(off), to: d.Add(off)},
-			{from: a.Add(off), to: c.Add(off)},
-			{from: b.Add(off), to: c.Add(off)},
+			{from: pressurePlateAddPoint4BBB30(a, off), to: pressurePlateAddPoint4BBB30(d, off)},
+			{from: pressurePlateAddPoint4BBB30(b, off), to: pressurePlateAddPoint4BBB30(d, off)},
+			{from: pressurePlateAddPoint4BBB30(a, off), to: pressurePlateAddPoint4BBB30(c, off)},
+			{from: pressurePlateAddPoint4BBB30(b, off), to: pressurePlateAddPoint4BBB30(c, off)},
 		}
 	}
 	return state

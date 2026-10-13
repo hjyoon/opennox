@@ -150,6 +150,8 @@ var Nox_thing_blue_rain_spark_draw func(vp *noxrender.Viewport, dr *client.Drawa
 
 var Nox_thing_spherical_shield_draw func(vp *noxrender.Viewport, dr *client.Drawable) int
 
+var Nox_thing_player_waypoint_draw func(vp *noxrender.Viewport, dr *client.Drawable) int
+
 var (
 	Nox_thing_spider_spit_draw  func(vp *noxrender.Viewport, dr *client.Drawable) int
 	Nox_thing_black_powder_draw func(vp *noxrender.Viewport, dr *client.Drawable) int
@@ -311,6 +313,11 @@ func nox_thing_blue_rain_spark_draw(vp *nox_draw_viewport_t, dr *nox_drawable) i
 //export nox_thing_spherical_shield_draw
 func nox_thing_spherical_shield_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
 	return int32(Nox_thing_spherical_shield_draw(asViewport(vp), asDrawable(dr)))
+}
+
+//export nox_thing_player_waypoint_draw
+func nox_thing_player_waypoint_draw(vp *nox_draw_viewport_t, dr *nox_drawable) int32 {
+	return int32(Nox_thing_player_waypoint_draw(asViewport(vp), asDrawable(dr)))
 }
 
 //export nox_thing_arrow_draw

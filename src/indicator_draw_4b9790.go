@@ -15,6 +15,14 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func init() {
+	// Registered C entry shares the existing native circle/star geometry,
+	// palette, alpha and line renderer used by the world route.
+	legacy.Nox_thing_player_waypoint_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawPlayerWaypoint4B9790(dr, vp)
+	}
+}
+
 type indicatorLine4B9790 struct {
 	from image.Point
 	to   image.Point

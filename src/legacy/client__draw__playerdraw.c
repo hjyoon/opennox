@@ -25,6 +25,9 @@ extern uint32_t nox_color_white_2523948;
 extern uint32_t nox_color_blue_2650684;
 
 //----- (004B9790) --------------------------------------------------------
+// Retain the decoded PE32 body for provenance. The active symbol is the
+// native-width Go export in client_draw_all.go.
+#if 0
 int nox_thing_player_waypoint_draw(int a1, nox_drawable* dr) {
 	int v2; // esi
 	int v3; // ebp
@@ -55,3 +58,4 @@ int nox_thing_player_waypoint_draw(int a1, nox_drawable* dr) {
 	nox_client_drawEnableAlpha_434560(0);
 	return 1;
 }
+#endif

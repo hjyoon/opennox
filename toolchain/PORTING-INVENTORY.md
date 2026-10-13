@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 영상 종료와 생성 실패의 파일·오디오 자원 수명 복원 (R176)
+
+기준 clean/pushed Go1.26.9 revision은 1c70df2bf78e5c91086aaed4b24624a9dbf1a6c8이다. 실제 영상 consumer인 client/noxmovie.MoviePlayer와 게임 video_client.go 및 standalone cmd/noxmovie 호출자를 조사했다. NewPlayer가 직접 연 파일은 constructor 실패 때 닫히지 않았고, mouse/key/window 입력 handler의 Close가 아직 작업 중인 audio worker보다 먼저 source/buffer를 해제했다. constructor 실패8회에 동일 inode의 열린 descriptor0→1…8이 남았으며, real stock WWLOGO + headless input + actual OpenAL null cancellation count10은3pass/7fail·actual1, 해제 뒤 생긴 real buffer가 아직 유효한 상태를 재현했다. Go data race나 SIGSEGV는 관찰하지 않았으므로 그런 크래시 재현으로 확대하지 않는다.
+
+최초 새 test의 /dev/fd os.ReadDir는 임시 FD entry를 stat하는 동안 bad-file-descriptor로 준비 실패했다. 그 원본 v1과 actual1 로그는 보존한다. Readdirnames로 이름만 읽은 뒤 같은 inode를 Fstat하는 OS 관찰 adapter만 교정해 v2를 다시 동결했다. 파일·case8개·stock movie·key/mouse/window event·5frame admission·4s/55s/60s timeout·모든 expected는 그대로다. 테스트 준비 실패를 실제 파일 누수 RED로 세지 않는다. 기존 공개 tests/YAML/PNG/goldens/원본 음원·영상은 변경하지 않았다.
+
+production 변경은 기존 noxmovie.go 한 파일이다. stop/close를 각각 once로 구분하고 mutex 아래 worker 등록과 중단을 직렬화하며 decoder/audio worker를 join한 뒤 native source와 모든 buffers를 해제한다. 입력 handler는 중단 요청만 보내고 Play의 반환 때 cleanup이 완료되도록 한다. 정상 EOF도 Play 반환 시 파일·source/buffer를 정리하며 기존 caller의 deferred Close는 idempotent다. 생성 실패 시 NewPlayer가 직접 연 파일은 닫되 NewPlayerWithHandle의 실패 시 caller 소유권 계약은 유지한다. VQA decoding·PCM samples·buffer queue logic·audio gain/rate·framerate 계산·renderer·입력 이벤트의 종류/Pressed admission은 그대로다. 모든 외부 concurrent misuse나 다른 renderer callback/resource까지 완결했다고 주장하지 않는다.
+
+동결 v2의 실제 cgocheck2+race+checkptr2 count3 GREEN은30pass/3skip·actual0이다. skip은 isolated child entry를 parent 밖에서 직접 실행하지 않는 기존 형태의 guard이며 실제 child mouse/key/window9개는 모두 재생·입력·cleanup을 수행했다. 동일 cancellation stress count10은10pass/0skip·actual0, 실제30 input cancellations가 모두 통과했다. 추가 frozen natural/early-close 검사는 count3 actual0, original WWLOGO 130frames/15fps/22050Hz를 약9초에 전부 표시하고 source·buffers·file을 정리하며 Close-before-Start는0frames/once-close다. HD 전체 새 package의 strict/race/checkptr2 count3는33pass/6child-entry skip·actual0이며 실제 입력9건/자연 종료3건/early close3건을 수행했다. 스피커·Windows 화면/음질·physical SDL input 검증이 아니다.
+
+전체 일반/HD/cgocheck2는 각각73571pass/45skip/39packages·actual0이다. R175 기존 모든 test ID/action/횟수·skip는 같고 새 client/noxmovie의9pass/4optional/child skip만 추가한다. 종전 no-tests였던 해당 package만skip→pass, 다른 package 상태는 유지한다. server는69038pass/7skip/35packages로 이전과 완전히 같다. Go 명령은 모두 사용자 goenv /Users/ghost/.goenv/versions/1.26.9/bin/go이고 GC/선점 비활성화·expected/fixture/HP/RNG/flags/WAIT/timeout/PNG retune·overlay는 없다. unchanged oracle code2968/data650·strict NXZ actual0이다.
+
+source6721files에 새 frozen Go tests2개를 추가해6723files이며 기능 본체 변경1개다. 원본 WWLOGO와 stock1556files/570653750B·protected304files·개인1562files/Save/config·사용자 유지 선택의 R134 patch/기대값은 불변이다. 실패/성공·v1/v2·native movie frames/metadata·whole checkpoints는 /private/tmp/opennox-movie-lifecycle-r176.EG0bUE에 보존한다. 이번 문서는 제목 바로 뒤에만 삽입하며 역사 suffix를 덮어쓰지 않는다.
+
+이후 commit 바로 다음 도구에서 origin port/go1.26-multiarch로 push하고 clean Go1.26.9 ARM64 일반/HD/server3제품 metadata/Mach-O/help와 clean native movie tests 및 unchanged headless/OpenAL-null gameplay audio 일반·HD를 별도로 검증한다. 아직 실행되지 않은 후속 계획을 성공으로 세지 않는다. R134·최초 OptionsDialog GC source 원인·원본 Windows/world/pixel/청음/remote transport 전체 동등성과 전체 포팅 목표는 계속 미완료다. R175의 clean ARM643제품·clean native full music loop·실제 headless/OpenAL 일반·HD 여섯 FX phases와 전후 whole checkpoints는 actual0, runtime receipt SHA=7f8b142358d5002469a4748b92c606f517199a0a28871f33e8e8b29ed4ab7ab6로 완료했다.
+
 ## Goenv Go 1.26.9 실제 오디오 검증 및 점이 있는 음악 폴더 경로 수정 (R175)
 
 기준 clean/pushed revision은 ecd086c8f73d2f089059500cc48a906d42f9c946이다. 모든 실제 Go 명령은 사용자 설치 /Users/ghost/.goenv/versions/1.26.9/bin/go를 선택했다. unchanged host-game-gameplay-audio.yaml의 headless/OpenAL Soft null 일반·HD는 각각283.822863초/283.789583초에 actual0으로 종료했다. 기존 실제 pickup/drop 입력과 해머·Spider fixture, HP/RNG/WAIT/timeout 및 기대값을 바꾸지 않았다. 여섯 phase(pickup/drop/attack/hurt/walk/run)에서 network sound submission과 새 FX buffer queue/consume를 확인했다. MetalWeaponPickup/MetalWeaponDrop/HammerMissing/MetalHitFlesh/HumanMaleHurtLight/WalkOnStone/RunOnStone가 해당 phase 안에서 submitted=true다. 여섯 phase 끝 두 구성 모두 전체 FX queued=processed1133이다. 이 GUI 두 제품은 수정 전 기준 revision이며 무음 mock가 아닌 실제 native OpenAL 경로다. 사람의 청음·Windows PCM/화면 동등성이나 모든 지형/event gate를 인증하지 않는다.

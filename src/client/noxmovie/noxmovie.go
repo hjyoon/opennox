@@ -39,10 +39,36 @@ type MoviePlayer struct {
 	audioBuffers openal.Buffers
 	audioGain    float32
 	stop         chan struct{}
+	stopOnce     sync.Once
+	closeOnce    sync.Once
+	workersMu    sync.Mutex
+	workers      sync.WaitGroup
 }
 
 func (player *MoviePlayer) Start() {
-	go player.decode()
+	player.startWorker(player.decode)
+}
+
+func (player *MoviePlayer) startWorker(f func()) bool {
+	player.workersMu.Lock()
+	defer player.workersMu.Unlock()
+	select {
+	case <-player.stop:
+		return false
+	default:
+	}
+	player.workers.Add(1)
+	go func() {
+		defer player.workers.Done()
+		f()
+	}()
+	return true
+}
+
+func (player *MoviePlayer) requestStop() {
+	player.workersMu.Lock()
+	defer player.workersMu.Unlock()
+	player.stopOnce.Do(func() { close(player.stop) })
 }
 
 func (player *MoviePlayer) decode() {
@@ -117,17 +143,17 @@ func NewPlayerWithHandle(file io.ReadSeekCloser, mvSeat seat.Seat, audioDrv ail.
 			switch evt {
 			case seat.WindowClosed:
 				// If user tries to close the window, stop the loop.
-				player.Close()
+				player.requestStop()
 			}
 		case *seat.KeyboardEvent:
 			if evt.Pressed {
 				// Stop the loop on keyboard key press as well.
-				player.Close()
+				player.requestStop()
 			}
 		case *seat.MouseButtonEvent:
 			if evt.Pressed {
 				// Stop the loop on mouse key press as well.
-				player.Close()
+				player.requestStop()
 			}
 		}
 	})
@@ -141,29 +167,33 @@ func NewPlayer(fname string, mvSeat seat.Seat, audioDrv ail.Driver) (plr *MovieP
 		return nil, err
 	}
 
-	return NewPlayerWithHandle(vqaFile, mvSeat, audioDrv)
+	plr, err = NewPlayerWithHandle(vqaFile, mvSeat, audioDrv)
+	if err != nil {
+		vqaFile.Close()
+	}
+	return plr, err
 }
 
 func (player *MoviePlayer) Close() {
-	select {
-	case <-player.stop:
-		return
-	default:
-	}
-	close(player.stop)
-	player.file.Close()
-	player.audioSrc.Stop()
+	player.closeOnce.Do(func() {
+		player.requestStop()
+		player.file.Close()
+		// Decode may be blocked on the file; close it before joining. The audio
+		// worker must finish before its source and every allocated buffer go away.
+		player.workers.Wait()
+		player.audioSrc.Stop()
 
-	// First we need to release the audio source, and only then delete the (possibly) attached buffers
-	player.audioSrc.Release()
-	if len(player.audioBuffers) > 0 {
-		player.audioBuffers.Delete()
-	}
+		// Detach the source before deleting its possibly queued buffers.
+		player.audioSrc.Release()
+		if len(player.audioBuffers) > 0 {
+			player.audioBuffers.Delete()
+		}
 
-	// Consuming dangling errors
-	_ = openal.Err()
+		// Consuming dangling errors
+		_ = openal.Err()
 
-	player.seat.ReplaceInputs(player.oldInputs)
+		player.seat.ReplaceInputs(player.oldInputs)
+	})
 }
 
 func convertSampleToData(samples []wav.Sample, format openal.Format) []byte {
@@ -189,6 +219,9 @@ func (player *MoviePlayer) SetAudioGain(v float32) {
 }
 
 func (player *MoviePlayer) Play() {
+	// Input only requests cancellation. Cleanup follows worker completion,
+	// including early returns before the audio worker has started.
+	defer player.Close()
 	// TODO: if we got no audio, we could probably still keep displaying frames...
 	// Note that the frame delays are all calculated based on sound position
 	audioSrc := player.audioSrc.GetSource()
@@ -219,7 +252,7 @@ func (player *MoviePlayer) Play() {
 	defer wg.Wait()
 
 	// Audio thread
-	go func() {
+	if !player.startWorker(func() {
 		defer wg.Done()
 		var freeBuffers openal.Buffers
 		for {
@@ -282,7 +315,10 @@ func (player *MoviePlayer) Play() {
 				}
 			}
 		}
-	}()
+	}) {
+		wg.Done()
+		return
+	}
 
 	var (
 		currentFrame              = 0

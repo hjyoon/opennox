@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R176: 영상 생성 실패·입력 종료의 자원 정리
+
+영상 constructor 실패 때 열린 파일8개가 남는 누수와 실제 stock 영상의 mouse/key/window cancellation10회 중7회에서 버퍼가 남는 문제를 재현했다. 입력은 중단만 요청하고 decoder/audio worker 종료 뒤 source·buffer·file을 정리하도록 한 MoviePlayer 파일과 새 tests2개만 바꿨다. 같은 frozen tests의 strict/race/checkptr2·반복 종료·130frame 자연 재생·early close 및 전체 일반/HD/CGo/server 회귀가 통과했다. OS FD 관찰 adapter의 첫 준비 실패와 v1은 보존하며 스피커/Windows 전체 인증으로 확대하지 않는다. 상세 범위는 [R176 인벤토리](./PORTING-INVENTORY.md#영상-종료와-생성-실패의-파일오디오-자원-수명-복원-r176)에 기록한다. R175 clean runtime 검증은 완료됐고 전체 포팅 목표는 계속 미완료다.
+
 ## R175: Goenv Go 1.26.9 실제 오디오와 음악 폴더 경로
 
 실제 headless/OpenAL-null 일반·HD에서 걷기·달리기·공격·피격·장비 획득/드롭 여섯 phase의 새 FX buffer 소비를 확인했다. 기존 strict stream267회·원본 효과음1780개 전체·macOS 기본 출력의 무음10개도 통과했다. 기존 배경음 opt-in에서 점이 있는 상위 폴더를 확장자로 오인하는 실패를 발견해 음악 filename만 검사하도록 한 조건을 수정했다. 같은 음원·테스트·경로의 재검사는 전체 약33.9초 반복을 통과했고 전체 일반/HD/CGo/server의 이전 결과와 기대값도 같다. 청음·Windows 전체 동등성 인증이 아니며 자세한 실패/성공과 범위는 [R175 인벤토리](./PORTING-INVENTORY.md#goenv-go-1269-실제-오디오-검증-및-점이-있는-음악-폴더-경로-수정-r175)에 기록한다. R174의 clean runtime 검증은 완료됐고 전체 포팅 목표는 계속 미완료다.

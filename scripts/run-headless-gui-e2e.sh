@@ -45,8 +45,9 @@ if [[ "$audio_backend" == openal && "${NOX_E2E_AUDIO_HANDLES:-}" == true ]]; the
 	echo "error: NOX_E2E_AUDIO=openal cannot be combined with mock NOX_E2E_AUDIO_HANDLES" >&2
 	exit 2
 fi
-if [[ "$($go_cmd env GOVERSION)" != "go1.26.5" ]]; then
-	echo "error: Go 1.26.5 is required" >&2
+required_go="$(tr -d '[:space:]' < "$repo_dir/toolchain/go-version.txt")"
+if [[ "$("$go_cmd" env GOVERSION)" != "$required_go" ]]; then
+	echo "error: $required_go is required" >&2
 	exit 1
 fi
 

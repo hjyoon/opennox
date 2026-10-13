@@ -44,7 +44,7 @@ A package for Arch Linux is available on the AUR: <a href="https://aur.archlinux
 ## Build OpenNox
 **NOTE: This section is only for people who wish to build the source code locally.**
 
-This porting branch requires exactly Go 1.26.5. Use `./scripts/go.sh` on macOS/Linux or `scripts\\go.ps1` on Windows; see [the toolchain policy](./toolchain/README.md), [the source baseline](./toolchain/BASELINE-linux-386.md), [the private-data oracle policy](./toolchain/oracle/README.md), and [the live portability inventory](./toolchain/PORTING-INVENTORY.md).
+This porting branch requires exactly Go 1.26.9. Use `./scripts/go.sh` on macOS/Linux or `scripts\\go.ps1` on Windows; see [the toolchain policy](./toolchain/README.md), [the source baseline](./toolchain/BASELINE-linux-386.md), [the private-data oracle policy](./toolchain/oracle/README.md), and [the live portability inventory](./toolchain/PORTING-INVENTORY.md). The POSIX wrapper prefers an already-installed goenv 1.26.9 unless `GO` explicitly selects another executable; it does not change the global goenv version.
 
 For the local reference copy used by this branch, `make oracle-test` first verifies every path, size, and SHA-256 in the private Nox data tree and then runs the implemented semantic comparisons. Original assets remain outside this repository.
 

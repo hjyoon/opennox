@@ -23,8 +23,9 @@ if [[ ! -f "$data_dir/GAME.EXE" || ! -f "$data_dir/thing.bin" ]]; then
 	echo "error: $data_dir is not a complete Nox data directory" >&2
 	exit 1
 fi
-if [[ "$("$go_cmd" env GOVERSION)" != "go1.26.5" ]]; then
-	echo "error: Go 1.26.5 is required" >&2
+required_go="$(tr -d '[:space:]' < "$repo_dir/toolchain/go-version.txt")"
+if [[ "$("$go_cmd" env GOVERSION)" != "$required_go" ]]; then
+	echo "error: $required_go is required" >&2
 	exit 1
 fi
 

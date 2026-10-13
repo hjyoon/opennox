@@ -4,7 +4,19 @@ set -eu
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 repo_dir=$(dirname "$script_dir")
 required_go=$(tr -d '[:space:]' < "$repo_dir/toolchain/go-version.txt")
-go_command=${GO:-go}
+go_command=${GO:-}
+if [ -z "$go_command" ]; then
+	go_command=go
+	# Use an already-installed pinned goenv toolchain without changing the
+	# caller's global goenv selection. Explicit GO always takes precedence.
+	if command -v goenv >/dev/null 2>&1; then
+		if goenv_prefix=$(goenv prefix "${required_go#go}" 2>/dev/null); then
+			if [ -x "$goenv_prefix/bin/go" ]; then
+				go_command="$goenv_prefix/bin/go"
+			fi
+		fi
+	fi
+fi
 
 unset GOROOT
 export GOTOOLCHAIN="$required_go"

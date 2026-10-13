@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R172: 사용자 설치 goenv Go 1.26.9
+
+현재 pin·프로젝트 .go-version·빌드/제품 검사와 launcher는 Go1.26.9다. 명시한 GO를 존중하고 이미 설치된 goenv 1.26.9를 우선 사용하며 전역 기본값 1.25.12는 보존한다. [ARM64 GC 공식 백포트](https://github.com/golang/go/issues/80394)가 포함된 설치본으로 공식 재현 100회, 기존 OptionsDialog GC 진단 300회, 전체 일반/HD/cgocheck2/server 테스트 및 원본 oracle 대조가 통과했다. 구 버전의 재현 실패·도구체인 선택 RED와 기존 기대값은 유지한다. 자세한 범위·횟수와 아직 미완료인 clean runtime 검증은 [R172 인벤토리](./PORTING-INVENTORY.md#go-1269-및-설치된-goenv-도구체인-선택-r172)를 따른다. 아래 과거 Go1.26.5 기록은 역사적 증거로 보존한다.
+
 ## R114: visible LavaFountain의 native FLAME admission
 
 - 기준은 clean/pushed R113 `e3789507db24f36ac8b284ac5461b3674f01e87b`다. 보고된 NewPlayer/type713/class2621444/flags16777732에 source==weapon LavaFountain/type788/class12582912/subclass0/flags16777748의 raw3/type1(FLAME)이 거절됐다. 이 class `0xc00000`은 IMMOBILE|VISIBLE_ENABLE로, 앞서 포팅한 LavaFountain3의 DANGEROUS|IMMOBILE(`0x410000`)과 다르다. 기존 `playerDamageWorldFlameShape4E17B0` 한 본체에 새 stationary-visible subset만 추가해 PlayerDamage/DefaultDamage가 기존 FLAME 경로를 공유하게 한다. 객체 이름/ID·피해량/유형·HP·면역은 바꾸지 않고 unit/weapon/wand/missile 및 non-FLAME 배제는 유지한다. signature/imports/본체 밖 bytes 및 기존 테스트/입력/자산/Save/config는 불변이다.
@@ -307,7 +311,7 @@ GUI 검사는 아래 기존 headless runner에 해당 YAML을 전달하고 일�
 
 이전 Quest key observer `d36a7dabd`의 후속 clean 검증도 완료했다. ARM64 3제품 build/revision/help, 일반/HD 실제 Quest key 각 16회/합계 32회와 양방향 마법 8실행/106결과 및 전후 oracle이 통과했고 source/remote revision과 stock 자산은 불변이다. 아래 observer의 clean 검증 대기 기록은 이 결과로 마무리한다.
 
-이 포팅 브랜치의 유일한 지원 도구체인은 `go1.26.5`이다. 버전의 단일 텍스트 기준은 `go-version.txt`이며, `src/go.mod`에는 언어 기준 `go 1.26.0`과 권장 도구체인 `toolchain go1.26.5`를 함께 선언한다.
+이 포팅 브랜치의 유일한 지원 도구체인은 `go1.26.9`이다. 버전의 단일 텍스트 기준은 `go-version.txt`이며, `src/go.mod`에는 언어 기준 `go 1.26.0`과 권장 도구체인 `toolchain go1.26.9`를 함께 선언한다. 저장소의 `.go-version`은 goenv의 프로젝트 선택을 1.26.9로 지정하며 전역 선택은 변경하지 않는다. 아래 과거 검증 기록의 1.26.5는 당시 실제 사용 버전으로 보존한다.
 
 빌드와 테스트는 다음 래퍼로 실행한다.
 
@@ -337,7 +341,7 @@ Windows PowerShell에서는 다음과 같이 실행한다.
 .\scripts\go.ps1 -C src test ./internal/noxbuild
 ```
 
-실행할 제품이 현재 clean source revision과 정확히 일치하는지는 `noxbuild -verify`로 확인한다. 이 검사는 ELF, PE, Mach-O를 호스트 종류와 무관하게 읽어 Go 1.26.5, 지원 대상 tuple, 전체 `vcs.revision`, `vcs.modified=false`를 강제한다. 특히 무시된 `build/` 아래에 남은 구 실행 파일을 다시 실행하는 일을 차단한다.
+실행할 제품이 현재 clean source revision과 정확히 일치하는지는 `noxbuild -verify`로 확인한다. 이 검사는 ELF, PE, Mach-O를 호스트 종류와 무관하게 읽어 Go 1.26.9, 지원 대상 tuple, 전체 `vcs.revision`, `vcs.modified=false`를 강제한다. 특히 무시된 `build/` 아래에 남은 구 실행 파일을 다시 실행하는 일을 차단한다.
 
 ```sh
 ./scripts/go.sh -C src run ./internal/noxbuild \
@@ -351,7 +355,7 @@ Windows PowerShell에서는 다음과 같이 실행한다.
   ..\build\windows-amd64\opennox.exe ..\build\windows-amd64\opennox-server.exe
 ```
 
-래퍼는 외부 `GOROOT`를 제거하고 `GOTOOLCHAIN=go1.26.5`와 빈 `GOEXPERIMENT`를 강제한 뒤, 실제 `GOVERSION`이 정확히 일치하는지 검사한다. 이로써 goenv 같은 버전 관리자가 다른 표준 라이브러리 경로를 주입하는 경우도 차단한다. `GO` 환경 변수에는 공백 없는 Go 실행 파일 경로 하나만 지정할 수 있다. `internal/noxbuild`도 자신을 컴파일한 Go와 자식 빌드에 쓰는 Go를 각각 검사한다.
+래퍼는 외부 `GOROOT`를 제거하고 `GOTOOLCHAIN=go1.26.9`와 빈 `GOEXPERIMENT`를 강제한 뒤, 실제 `GOVERSION`이 정확히 일치하는지 검사한다. `GO`를 명시하면 그 실행 파일을 우선 사용한다. 그렇지 않으면 `goenv prefix 1.26.9`로 이미 설치된 실행 파일을 찾고, 사용할 수 없을 때만 PATH의 `go`로 돌아간다. `goenv global/local/install`을 실행하거나 전역 선택을 변경하지 않는다. `GO`에는 인자 없이 Go 실행 파일 경로 하나만 지정하며 공백이 있는 경로도 지원한다. `internal/noxbuild`도 자신을 컴파일한 Go와 자식 빌드에 쓰는 Go를 각각 검사한다.
 
 따라서 `GOEXPERIMENT=cgocheck2 ./scripts/go.sh ...`는 strict CGo 검증이 아니다. POSIX 환경의 테스트 전용 실행 경로는 고정 도구체인을 먼저 찾은 뒤 `cgocheck2`와 `CGO_ENABLED=1`의 실제 적용을 확인한다. 릴리스 빌드 래퍼의 정책은 바꾸지 않으며, 테스트 인수를 생략하면 전체 패키지를 실행한다.
 

@@ -23,9 +23,10 @@ if [[ ! -f "$data_dir/GAME.EXE" || ! -f "$data_dir/thing.bin" ]]; then
 	exit 1
 fi
 
-go_version="$($go_cmd version)"
-if [[ "$go_version" != *"go1.26.5 "* ]]; then
-	echo "error: expected Go 1.26.5, got: $go_version" >&2
+required_go="$(tr -d '[:space:]' < "$repo_dir/toolchain/go-version.txt")"
+go_version="$("$go_cmd" env GOVERSION)"
+if [[ "$go_version" != "$required_go" ]]; then
+	echo "error: expected $required_go, got: $go_version" >&2
 	exit 1
 fi
 

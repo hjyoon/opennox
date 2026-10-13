@@ -1,4 +1,16 @@
-# Go 1.26.5 멀티아키텍처 포팅 인벤토리
+# Go 1.26.9 멀티아키텍처 포팅 인벤토리
+
+## Go 1.26.9 및 설치된 goenv 도구체인 선택 (R172)
+
+사용자 요청에 따라 현재 도구체인을 go1.26.9로 올렸다. go-version.txt, src/go.mod의 toolchain, noxbuild의 compiler/child/product 검사와 세 launcher의 버전 검사를 맞춘다. 언어 기준 go 1.26.0·의존성·게임 본체는 유지한다. 새 .go-version은 프로젝트에만 1.26.9를 지정한다. POSIX go.sh는 명시한 GO를 우선 사용하고, 없으면 goenv prefix 1.26.9의 이미 설치된 실행 파일을 선택한다. 사용 가능한 설치본이 없으면 기존 PATH fallback과 정확한 GOVERSION 검사를 유지한다. goenv 설치·global/local 변경 명령은 실행하지 않는다. 실제 선택은 /Users/ghost/.goenv/versions/1.26.9, 전역 기본값은 이전 1.25.12 그대로다.
+
+Go의 ARM64 비동기 선점 프레임 GC 수정은 [공식 백포트 #80394](https://github.com/golang/go/issues/80394)로 1.26.6에 반영됐다. 이전 고정 1.26.5의 mgcmark.go에는 해당 프레임 확장이 없고 사용자 goenv 1.26.9에는 있다. 변경 없는 공식 issue80188.go 재현 프로그램을 게임/unsafe/CGo 호출 없이 비교했다. 이전 1.26.5 실행 20회 중 13회가 검증 panic: bad로 actual2, 7회가 actual0이다. 사용자 goenv 1.26.9로 별도 빌드한 같은 프로그램은 100회 모두 actual0이며 원본 프로그램·런타임 소스·라이선스와 실패/성공 로그를 동결했다. GOGC=100/GOMAXPROCS2와 정상 비동기 선점을 유지하며 GC/선점 비활성화 우회는 없다. 이 독립 재현은 알려진 런타임 결함의 증거이며 R171 OptionsDialog의 found-pointer-to-free-object 오류와 동일한 발생 원인을 확정하지 않는다.
+
+기존 OptionsDialogCycle 테스트와 관련 source 18개는 R171/R170에서 byte-identical이다. 변경 없는 기존 테스트의 GOGC=1, clobberfree=1, gccheckmark=1 진단은 이전 두 기준에서 각각 300회, 사용자 goenv 1.26.9에서도 300회 actual0이다. 새 goenv 선택 테스트의 설치본/공백 경로·명시한 GO 우선·미설치·goenv 없음·비실행 파일·버전 불일치 6조건과 parent를 수정 전 동결했다. 원래 wrapper의 compiled RED는 2pass/5fail·actual1, 같은 테스트의 GREEN은 actual0이다. 기존 strict runner 테스트는 fake Go의 버전 입력만 pin 파일에서 읽도록 바꿨으며 모든 case·expected arguments·exit codes는 유지했다. noxbuild 전체 33IDs×3=99pass, 직전 TriggerDraw 실제 cgocheck2+race+checkptr2 65IDs×3=195pass도 actual0이다.
+
+Go1.26.9/GOMAXPROCS2/-p=2 직렬 일반·HD·실제 cgocheck2 전체는 각각 73,528pass/41skip/38packages, server는 69,038pass/7skip/35packages·actual0이다. R171의 모든 기존 ID/action/횟수/skip/package 결과는 같고 각 구성에 새 goenv 7pass만 더했다. unchanged oracle-test의 code2,968/data650·stock1556files/570653750B·strict NXZ도 actual0이다. 보호된 YAML/PNG/manifest 304개·개인1562files/Save/config·사용자 선택대로 유지한 R134 patch/기대값을 보존한다. 증거와 초기 실패는 /private/tmp/opennox-options-gc-r172.aZJ7cv에 남긴다. 과거 문서의 Go1.26.5는 당시 실제 사용 버전이며 일괄 바꾸지 않는다.
+
+다음 단계는 commit 직후 origin port/go1.26-multiarch로 push하고 그 clean revision의 공식 ARM64 일반/HD/server 3제품을 goenv Go1.26.9로 빌드·metadata/help 검증하는 것이다. 기존 conjurer spell-pet/map-transition YAML의 일반/HD headless/mock와 isolated dedicated server도 실행한다. 아직 실행하지 않은 이 후속 검증을 성공으로 세지 않는다. 원본 Windows/world/pixel/가청 음향/remote transport 전체 동등성, OptionsDialog 초기 오류의 확정 원인, R134 및 전체 포팅 목표는 계속 미완료/UNPROVEN이다.
 
 ## TriggerDraw native viewport 및 원본 반올림 복원 (R171)
 

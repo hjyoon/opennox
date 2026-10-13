@@ -13,15 +13,20 @@ func TestStrictCGOCheckRunner(t *testing.T) {
 	if runtime.GOOS == "windows" {
 		t.Skip("POSIX test runner")
 	}
+	versionData, err := os.ReadFile("../../../toolchain/go-version.txt")
+	if err != nil {
+		t.Fatal(err)
+	}
+	requiredGo := strings.TrimSpace(string(versionData))
 	const fakeGo = `#!/bin/sh
 set -eu
 if [ "$1" = env ]; then
     case "$2" in
         GOVERSION)
             if [ "${GOEXPERIMENT:-}" = cgocheck2 ]; then
-                printf '%s\n' "${NOX_TEST_STRICT_VERSION:-go1.26.5}"
+                printf '%s\n' "${NOX_TEST_STRICT_VERSION:-$NOX_TEST_PINNED_VERSION}"
             else
-                printf '%s\n' go1.26.5
+                printf '%s\n' "$NOX_TEST_PINNED_VERSION"
             fi ;;
         GOROOT)
             [ "${GOEXPERIMENT:-}" = '' ]
@@ -80,7 +85,7 @@ exit "${NOX_TEST_EXIT_CODE:-0}"
 					cmd.Env = append(cmd.Env, v)
 				}
 			}
-			cmd.Env = append(cmd.Env, "GO="+goPath, "NOX_TEST_TOOLCHAIN="+root,
+			cmd.Env = append(cmd.Env, "GO="+goPath, "NOX_TEST_TOOLCHAIN="+root, "NOX_TEST_PINNED_VERSION="+requiredGo,
 				"GOROOT=invalid-outer-root", "GOTOOLCHAIN=invalid-outer-toolchain", "GOEXPERIMENT=invalid-outer-experiment",
 				"CGO_ENABLED=0", "CGO_CFLAGS_ALLOW=", "PKG_CONFIG_PATH=test-pkgconfig")
 			cmd.Env = append(cmd.Env, tc.env...)

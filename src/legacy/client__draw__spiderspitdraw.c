@@ -4,6 +4,9 @@
 
 extern uint32_t nox_color_white_2523948;
 
+// Retain the decoded PE32 body for provenance. The active symbol is the
+// native-width Go export in client_draw_all.go.
+#if 0
 //----- (004B9D70) --------------------------------------------------------
 int nox_thing_spider_spit_draw(uint32_t* a1, nox_drawable* dr) {
 	uint32_t* v2; // eax
@@ -70,3 +73,4 @@ int nox_thing_spider_spit_draw(uint32_t* a1, nox_drawable* dr) {
 	nox_client_drawRectFilledOpaque_49CE30(v9, v7, 2, 2);
 	return 1;
 }
+#endif

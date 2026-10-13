@@ -11,6 +11,17 @@ import (
 	"github.com/opennox/opennox/v1/legacy"
 )
 
+func init() {
+	// Registered C entries share the existing native geometry, gray outline,
+	// white core, powder marks, clipping and raster world implementation.
+	legacy.Nox_thing_spider_spit_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawSpiderSpit4B9D70(dr, vp)
+	}
+	legacy.Nox_thing_black_powder_draw = func(vp *noxrender.Viewport, dr *client.Drawable) int {
+		return noxClient.drawBlackPowder4B9ED0(dr, vp)
+	}
+}
+
 type simpleProjectileDrawKind4B9D70 uint8
 
 const (

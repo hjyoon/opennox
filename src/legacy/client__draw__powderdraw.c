@@ -2,6 +2,9 @@
 #include "GAME1_2.h"
 #include "GAME2_3.h"
 
+// Retain the decoded PE32 body for provenance. The active symbol is the
+// native-width Go export in client_draw_all.go.
+#if 0
 //----- (004B9ED0) --------------------------------------------------------
 int nox_thing_black_powder_draw(uint32_t* a1, nox_drawable* dr) {
 	int v2; // esi
@@ -18,3 +21,4 @@ int nox_thing_black_powder_draw(uint32_t* a1, nox_drawable* dr) {
 	nox_client_drawRectFilledOpaque_49CE30(v2 + 8, v3 - 2, 1, 1);
 	return 1;
 }
+#endif

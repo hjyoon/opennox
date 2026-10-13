@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## Goenv Go 1.26.9 실제 오디오 검증 및 점이 있는 음악 폴더 경로 수정 (R175)
+
+기준 clean/pushed revision은 ecd086c8f73d2f089059500cc48a906d42f9c946이다. 모든 실제 Go 명령은 사용자 설치 /Users/ghost/.goenv/versions/1.26.9/bin/go를 선택했다. unchanged host-game-gameplay-audio.yaml의 headless/OpenAL Soft null 일반·HD는 각각283.822863초/283.789583초에 actual0으로 종료했다. 기존 실제 pickup/drop 입력과 해머·Spider fixture, HP/RNG/WAIT/timeout 및 기대값을 바꾸지 않았다. 여섯 phase(pickup/drop/attack/hurt/walk/run)에서 network sound submission과 새 FX buffer queue/consume를 확인했다. MetalWeaponPickup/MetalWeaponDrop/HammerMissing/MetalHitFlesh/HumanMaleHurtLight/WalkOnStone/RunOnStone가 해당 phase 안에서 submitted=true다. 여섯 phase 끝 두 구성 모두 전체 FX queued=processed1133이다. 이 GUI 두 제품은 수정 전 기준 revision이며 무음 mock가 아닌 실제 native OpenAL 경로다. 사람의 청음·Windows PCM/화면 동등성이나 모든 지형/event gate를 인증하지 않는다.
+
+초기에 영상이 오래 재생되는 것을 정지로 의심했으나 read-only goroutine/movie header 대조로 교정했다. 원본 INTRO.VQA는2920frames/15fps, 약194.667초이며 WWLOGO/INTRO/NOXLOGO 순서로 자연 재생 후 메뉴로 진행했다. E2E의 첫 skip 입력은 movie 종료 뒤 실행되므로 movie skip 검증으로 세지 않는다. 처음 실행을 종료하거나 timeout/영상 자산을 바꿔 통과시키지 않았다.
+
+기존 OpenAL PCM/ADPCM/MP3 frame·seek·pause·drain·정리와 stock chap1.wav/c1cap01k.wav의 cgocheck2+race+checkptr2 count3는89IDs/267pass/0skip·actual0이다. 이전 R141의 모든 ID/action/횟수와 같다. stock Audio.idx/Audio.bag의 전체1780entries·44663ADPCMblocks를 원래 속도로 실제 null backend에서 끝까지 재생해 queued=processed44663·playing0·voice release 후 source0을 확인했다. PCM46599736values/45579914nonzero와 SHA=b8b6dbaa6a10e14b44f5e9048aa105efa266311b2a94199c5688ea06d8926ba7는 이전과 같지만 독립 Windows/Miles PCM oracle는 아니다. 승인된 실제 macOS 기본 출력 장치의 기존 무음10IDs도 Go1.26.9 strict/race/checkptr2로10pass/0skip·actual0이다. 마이크·출력 장치 선택·OS 볼륨·개인 설정 변경은 없다.
+
+unchanged opt-in TestMusicChap1NativeResumeThenFullLoop는 실제 음악 폴더의 상위 경로 opennox-trap-icons-r59.svLZQj에 점이 있어 actual1이었다. startPlay가 전체 joined path의 점을 확장자로 오인해 chap1.wav가 아니라 chap1을 열었다. 이 실패 로그와 기존 테스트/음원/입력 경로를 그대로 보존한다. production 변경은 src/legacy/music/music.go의 확장자 조건을 path가 아닌 audioTable의 filename aname에 적용하는 한 곳과 설명 주석뿐이다. 기본 게임 caller의 dir="music"와 모든 table entry의 .wav 결과는 같고, 음악 선택·driver·fallback·볼륨·Position·Loaded·반복 state 본체는 유지한다. 기본 게임의 짧은 BGM 반복을 새로 재현/수정했다고 확대하지 않는다.
+
+같은 frozen test/absolute stock path의 GREEN strict/race/checkptr2 actual0은 저장 위치 마지막1초 재생 후 full747519frames/22050Hz(33.901088초)를 관찰33.998232초에 재생하고 다음 loop를0부터 시작했다. 속도·clip 길이·GC/선점·timeout·예상 PCM/frames를 바꾸지 않았다. 일반/HD/cgocheck2 전체는 각73562pass/41skip/38packages, server69038pass/7skip/35packages·actual0이며 R173의 모든 기존 ID/action/횟수/skip/package 상태가 완전히 같다. 새 테스트를 추가하거나 기존 기대값을 교정하지 않았다. unchanged oracle code2968/data650·strict NXZ actual0이다.
+
+source6721files 중 기능 변경1개, 아래 두 문서의 제목 직후 삽입 외 다른 source와 protected304files·stock1556files/570653750B·개인1562files/Save/config 및 사용자 유지 선택의 R134 patch/기대값은 보존한다. 실패/성공·원본 headers·frozen inputs·native products·runtime·checkpoints는 /private/tmp/opennox-goenv-native-audio-r175.lvL9Zg에 남긴다. 캐시·원본·개인 자료·이전 evidence 삭제0, overlay/fixture/HP/RNG/flags/WAIT/timeout/PNG retune0이다.
+
+이후 commit 바로 다음 도구에서 origin port/go1.26-multiarch로 push하고 새 clean revision의 공식 ARM64 일반/HD/server3제품 metadata/Mach-O/help 및 같은 배경음 native test와 headless 일반·HD 실행을 별도 검증한다. 아직 실행되지 않은 후속 계획을 성공으로 세지 않는다. R134·최초 OptionsDialog GC source 원인·원본 Windows/world/pixel/청음/remote transport 전체 동등성과 전체 포팅 목표는 계속 미완료다. 선행 R174의 clean ARM643제품과 일반·HD spell-pet map transition·oracle 및 전후 whole checkpoint 검증은 actual0, runtime receipt SHA=d74ec8f7c81c29ab73b332c5f0ed905d6749fbc334db8cca34674d970384dfde로 완료했다.
+
 ## 실제 메뉴·인게임 옵션 전체 audit 재검증 (R174)
 
 기준 clean/pushed Go1.26.9 revision은 1500ec303110d92d9f0edb9fd52f62badc5e6139이다. 남은 실행 경로를 찾기 위해 기존 main-menu-options-audit.yaml과 host-game-client-options-audit.yaml을 byte-identical private 복사본에서 일반·HD 네 번 실행했다. 실제 mouse/key 입력·stock window 생성·옵션 handlers·read-only observer를 사용하며 직접 handler 호출·결과 주입·설정/animation 강제·입력/기대값/timeout 변경은 없다. 기존 scenario의 “known failures” 주석은 당시 기록으로 그대로 유지한다. 현재 네 결과는 actual0이며 메인 일반226/HD228, 인게임 일반201/HD203, 합계858pass/0fail이다. HD의 두 추가 해상도 선택 검사 때문에 각 mode에서2pass가 더 있다.

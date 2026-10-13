@@ -184,7 +184,8 @@ func (m *Module) startPlay(a1p *MusicState) bool {
 	m.Sub_43D650()
 	*m.dword_587000_93160 = 0
 	path := filepath.Join(m.dir, aname)
-	if !strings.Contains(path, ".") {
+	// A dot in the directory does not give the music filename an extension.
+	if !strings.Contains(aname, ".") {
 		path += ".wav"
 	}
 	s := m.dword_5d4594_816376.OpenStream(path)

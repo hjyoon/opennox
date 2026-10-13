@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R175: Goenv Go 1.26.9 실제 오디오와 음악 폴더 경로
+
+실제 headless/OpenAL-null 일반·HD에서 걷기·달리기·공격·피격·장비 획득/드롭 여섯 phase의 새 FX buffer 소비를 확인했다. 기존 strict stream267회·원본 효과음1780개 전체·macOS 기본 출력의 무음10개도 통과했다. 기존 배경음 opt-in에서 점이 있는 상위 폴더를 확장자로 오인하는 실패를 발견해 음악 filename만 검사하도록 한 조건을 수정했다. 같은 음원·테스트·경로의 재검사는 전체 약33.9초 반복을 통과했고 전체 일반/HD/CGo/server의 이전 결과와 기대값도 같다. 청음·Windows 전체 동등성 인증이 아니며 자세한 실패/성공과 범위는 [R175 인벤토리](./PORTING-INVENTORY.md#goenv-go-1269-실제-오디오-검증-및-점이-있는-음악-폴더-경로-수정-r175)에 기록한다. R174의 clean runtime 검증은 완료됐고 전체 포팅 목표는 계속 미완료다.
+
 ## R174: 실제 옵션 audit 네 경로 검증
 
 기존 main-menu/in-game options audit를 사용자 goenv Go1.26.9의 clean ARM64 일반·HD 제품으로 실행해 각각226/228/201/203, 합계858항목이 통과했다. 실제 UI input·상태·메모리상 직렬화 검증이며 mock audio Target/flags, E2E defaults와 video/config suppression을 physical playback·disk restart로 확대하지 않는다.18private 녹화 PNG는 canonical 이미지 대조가 아니고 기존 YAML/PNG와 모든 원본/개인 파일은 그대로다. 이 단위는 문서만 추가하고 게임 동작·기대값을 바꾸지 않는다. 상세 범위와 receipt는 [R174 인벤토리](./PORTING-INVENTORY.md#실제-메뉴인게임-옵션-전체-audit-재검증-r174)를 따른다. R173의 clean3제품 및 일반/HD headless 후속 검증도 완료됐으며 전체 포팅 목표는 계속 미완료다.

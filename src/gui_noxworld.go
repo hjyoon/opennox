@@ -717,7 +717,13 @@ func beginNoxWorldJoin(srv discover.Server) error {
 	}
 
 	leaveNoxWorldForPlayerSelection()
-	return showNoxWorldPlayerSelection(srv.Mode == lobby.ModeQuest)
+	startNoxWorldJoin()
+	if err := showNoxWorldPlayerSelection(srv.Mode == lobby.ModeQuest); err != nil {
+		legacy.Set_dword_5d4594_815044(0)
+		noxServer.SetUpdateFunc2(nil)
+		return err
+	}
+	return nil
 }
 
 // noxGameShowGameSelNative owns the Nox World window through native pointers.
@@ -735,6 +741,8 @@ func noxGameShowGameSelNative() int {
 		return 1
 	}
 
+	legacy.Set_dword_5d4594_815044(0)
+	legacy.Sub_43AF90(0)
 	if winNoxWorld != nil && !winNoxWorld.GetFlags().Has(gui.StatusDestroyed) {
 		winNoxWorld.ShowModal()
 		gui.SetAnimGlobalState(gui.AnimInDone)
@@ -883,6 +891,8 @@ func noxWorldWindowProc(_ *gui.Window, ev gui.WindowEvent) gui.WindowEventResp {
 
 func closeNoxWorldToMainMenu() {
 	closeNoxWorldNativeState()
+	legacy.Set_dword_5d4594_815044(0)
+	legacy.Sub_43AF90(0)
 	if winNoxWorld != nil {
 		winNoxWorld.Destroy()
 		winNoxWorld = nil

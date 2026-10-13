@@ -347,6 +347,12 @@ func nox_xxx_serverHost_43B4D0() {
 	} else {
 		// join
 		legacy.Sub_43B630()
+		if noxWorldSelected != nil && legacy.Sub_43B6D0() != 0 {
+			// The native browser has released the old dialog parent. Keep
+			// password/Cancel callbacks with its join owner instead.
+			func_5D4594_830220 = noxWorldJoinDialogOK
+			func_5d4594_830216 = noxWorldJoinDialogCancel
+		}
 		nox_client_createSockAndJoin_43B440()
 	}
 	legacy.Sub_49FF20()

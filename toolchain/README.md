@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R181: native 서버 참가 상태와 프레임 소유권
+
+사용자 goenv의 Go 1.26.9를 직접 사용했고, `GO`를 생략한 wrapper도 같은 설치를 선택함을 확인했다. native 서버 목록에서 캐릭터 선택으로 넘어갈 때 사라진 참가 플래그와 접속 상태 갱신을 복원했다. 실제 UDP 응답·기존 C dispatcher의 승인/비밀번호/실패/재시도/타임아웃 검사가 통과했다. 일반·HD·엄격 CGo 전체는 각각73,611pass/47skip, 서버는69,053pass/7skip이며 기존 테스트 결과는 불변이다. 원본 자료와 R134 보류도 유지한다. 실제 맵 진입은 아직 미검증이며 가상 시계 client와 실시간 server의 혼합 검사에서 발생한 본 접속 timeout을 성공으로 보고하지 않는다. 범위와 실패 기록은 [R181 인벤토리](./PORTING-INVENTORY.md#native-서버-참가-플래그와-접속-frame-소유권-r181)에 구분한다.
+
 ## R180: Glyph 직접 callback의 native 회귀 검사
 
 실제 C parser·고주소 local-player slot·C GlyphDraw/AnimateDraw·전체 raster/headless upload를 기존 게임 경로와15조건 비교했다. 같은 pointer의 fallback alpha와 실제 negative-height clip cache를 보존한 frozen 검사는 통과했다. 초기 새 테스트의 C allocation 초기값/연속 cache 준비 실패와 원문은 남긴다. 게임 production 수정 없이 새 test 한 파일만 추가하며 strict/race/checkptr2 반복57pass와 전체 일반/HD/CGo/server·원본 자료 대조가 통과했다. 이는 Windows stock pixel·physical SDL/GPU 인증이 아니다. 상세 범위는 [R180 인벤토리](./PORTING-INVENTORY.md#glyph-등록-c-경로의-고주소alpha애니메이션-검증-r180)를 따른다. 사용자 goenv Go1.26.9·R134 보류를 유지하고 R179 clean runtime 검증은 완료했다. 전체 포팅 목표는 계속 진행 중이다.

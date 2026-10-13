@@ -805,6 +805,9 @@ func Get_nox_wol_server_result_cnt_815088() int {
 func Get_dword_5d4594_815044() int {
 	return int(C.dword_5d4594_815044)
 }
+func Set_dword_5d4594_815044(v int) {
+	C.dword_5d4594_815044 = C.uint(v)
+}
 func Get_dword_587000_87412() int {
 	return int(C.dword_587000_87412)
 }

@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## Native 서버 참가 플래그와 접속 frame 소유권 (R181)
+
+기준 revision은 `42d3f8171a99f03f835efeb83d327d7d1d2df907`이다. 사용자 goenv Go1.26.9의 직접 실행과 `GO` 없는 wrapper 선택을 확인했고 전역 goenv 설정은 변경하지 않았다. 원본 GAME.EXE의 전체 identity와 기존 봉인 `sub_438770`을 유지하며 43A02B..43A07B의 참가 플래그와 43A09D..43A10E의 password 전송을 읽기 전용 대조했다. 새 원본 range/manifest는 없고 원본 PE32 실행을 새로 증명한 것도 아니다.
+
+R180 clean ARM64 dedicated server는 실제 loopback discovery와 참가 요청을 받고 `000014` 승인 응답을 보냈다. 그러나 client는 대기 화면에 남았고 server player 수는0이었다. native browser의 창 정리가 update hook을 지우고 815044 참가 플래그를 설정하지 않는 두 연결 누락을 확인했다. 새 source-wiring 검사는 수정 전 actual1이다.
+
+production5파일에서 참가 플래그·상태 초기화·프레임 소유권을 연결하고, 초기 선택 상태에서는 사용하지 않는 C discovery 창 경로를 피한다. 나머지 접속 상태는 기존 C438770을 사용한다. native browser가 해제한 dialog parent 대신 password/OK/Cancel callback을 연결한다. 원래22byte/8UTF-16-unit password,20초 timeout 및1초 뒤 retry를 유지하며 게임 balance·FPS·transport clock·기존 YAML/PNG/golden은 바꾸지 않는다.
+
+새 native9조건은 실제 UDP/production lobby decoder/installed update hook/기존 C dispatcher를 실행한다. 외부 font/dialog 표시와 retry sender는 관찰 서비스이며 선택된 C record는4GiB 위다. pending,approval,duplicate approval,password packet,error,timeout 경계,retry 경계,inactive/foreign response,production nonblocking poll을 검사했다. 관련69tests의 strict CGo/race/checkptr2 count3는207pass/0skip이다. 초기 CGo global 선언 불일치 build failure는 보존했고 setter를 기존 선언 소유 파일에 두었다.
+
+전체 일반·HD·엄격 CGo는 각각73,611pass/47skip/39packages, 서버는69,053pass/7skip/35packages·actual0이다. R180의 기존 test ID/action/횟수/skip/package 상태는 같고 새11pass만 추가됐다. 첫 전체 일반 검사의 actual1은 디스크 부족 build failure이며 재검사 성공과 구분한다. 실행 종료 후 프로젝트 전용 재생성 가능한 Go build cache 약20GB만 정리했다. 원본 code2,968/data650·stock1,556files·개인1,562files·protected304files와 R134 보류4입력은 유지한다.
+
+후속 candidate headless는 기존 private YAML을 그대로 사용해 승인 대기를 벗어나 `NET_CONNECT`까지 진행했다. 하지만 본 접속은 timeout(code=-23), server player 수0, capture는 black/frame0이었다. actual0 종료와 capture의 "joined" label은 접속 성공 증거가 아니다. E2E platform Sleep는 가상 시간만 진행하고 실제 대기하지 않으며 server는 실제 시계로 실행됐다. 이 혼합 시계 검사의 한계와 transport 문제는 별도로 확인해야 한다. 본 접속/맵 진입·원격 이동·물리 SDL/GPU·Windows 전체 동등성·전체 포팅 완료는 주장하지 않는다. 모든 증거는 `/private/tmp/opennox-lan-native-r181.gZpLB0`에 보존한다. 커밋 직후 push하고 clean3제품과 unchanged Host GUI를 후속 검증한다.
+
 ## Glyph 등록 C 경로의 고주소·alpha·애니메이션 검증 (R180)
 
 기준 clean/pushed Go1.26.9 revision은 fcbcc925fcfe34ceb6823d19408a5f2ca9d1a60b이다. 선행 R179는 SDL resize 수정·즉시 push·clean ARM643제품·native SDL·일반/HD headless 및 whole checkpoint를 actual0, runtime SHA=e91108d4076eaec0a7b7d01bb610108f5cbbe47988a12e7c82aaba9dc2a9d598로 완료했다. 이번은 아직 별도 C 본체를 사용하는 GlyphDraw의 실제 직접 callback과 기존 게임 Go 경로를 비교하는 새 회귀 검사 한 파일만 추가한다. 이미 provenance-only인 C 본체와 미사용 sparkle/falling-rain helpers를 활성 크래시로 오인하지 않았고 게임 production은 변경하지 않았다.

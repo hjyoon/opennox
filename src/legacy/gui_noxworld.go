@@ -9,6 +9,7 @@ package legacy
 #include "GAME2_3.h"
 #include "GAME3.h"
 #include "MixPatch.h"
+#include "client__shell__noxworld.h"
 */
 import "C"
 import (
@@ -222,6 +223,10 @@ func Sub_4A0410(addr string, port int) bool {
 
 func Sub_43B6D0() int {
 	return int(C.sub_43B6D0())
+}
+
+func Sub_438770() bool {
+	return C.sub_438770() != 0
 }
 
 func Sub_43AF80() int {

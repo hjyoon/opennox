@@ -702,7 +702,9 @@ func beginNoxWorldJoin(srv discover.Server) error {
 
 	legacy.Set_nox_game_createOrJoin_815048(0)
 	noxflags.SetGame(noxflags.GameOnline)
-	noxflags.UnsetGame(noxflags.GameHost | noxflags.GameClient | noxflags.GameModeMask | noxflags.GameModeCoop)
+	// The local Client role is independent of hosting: CONNECT_RESULT_OK
+	// needs it to initialize things and rendering before the remote map.
+	noxflags.UnsetGame(noxflags.GameHost | noxflags.GameModeMask | noxflags.GameModeCoop)
 	noxflags.SetGame(noxflags.GameFlag(gameModeToFlags(srv.Mode)))
 	if srv.Mode == lobby.ModeQuest {
 		noxflags.UnsetGame(noxflags.GameNotQuest)

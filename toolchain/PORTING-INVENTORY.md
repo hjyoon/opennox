@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 원격 맵 로드의 로컬 Client 역할 유지 (R182)
+
+기준 clean/pushed revision은 `8651bc9af2ee031be08762bda7bf8034830059f8`이다. 도구체인은 사용자 설치 `/Users/ghost/.goenv/versions/1.26.9/bin/go`이며 wrapper의 실제 GOVERSION/GOTOOLCHAIN/GOROOT도 같은 버전과 경로다. 전역 goenv 설정은 바꾸지 않는다. 원본 GAME.EXE의 기존 전체 identity·code2,968/data650·자산 매니페스트는 그대로이며 새 range나 원본 Windows 전체 실행 인증은 없다.
+
+별도 opt-in Go overlay는 기존 headless seat만 선택하고 실제 `runArgs`/게임 루프/GUI 입력/loopback UDP를 사용한다. `NOX_E2E`/record/override는 해제했고 `env.IsE2E()==false`, 동일 platform 유지와 실제20ms 대기 후 clock 진행을 검사한다. 게임 RNG·Sleep·접속 deadline·transport·개인 Save/config·기존 YAML/PNG/golden은 수정하지 않았다. 첫 준비 실행은 메뉴 애니메이션 대기 및 상대/전체 창 좌표를 잘못 사용해 접속 전에 실패했다. 이를 게임 결함이나 성공으로 세지 않는다.
+
+올바른 입력의 R181 실행은 승인/NET_CONNECT/맵 수신까지 진행했지만 `sub_42C310`에서 `index out of range [0] with length 0`·actual2로 종료됐다. native `beginNoxWorldJoin`이 Host뿐 아니라 로컬 Client 역할까지 해제하므로 `CONNECT_RESULT_OK`가 things/렌더러 초기화를 건너뛴다. 새 source-wiring 회귀는 수정 전 actual1이다. production 변경은 `gui_noxworld.go`의 기존 역할 해제 마스크에서 Client만 제외하는 한 표현식과 설명 주석이며, nil/bounds 우회나 역할 강제 설정은 없다.
+
+수정 후 실제 시계 실행에서 things/TOC2,875개, `so_beach` 맵·server player1·server ready·렌더링된 Jack을 확인했다. 첫 join snapshot은 fade 중 검은 화면이므로 표시 성공 증거로 사용하지 않는다. 후속 C sanctuary/chat-help의 실제4103 확인 버튼을 눌러 창을 닫은 이미지로 맵/플레이어 표시를 확인했다.2초 right-button 이동은 server의 실제 MSG_PLAYER_INPUT까지 도달했으나 좌표가 변하지 않았고 최종 private 검사 actual1이다. 다른 generic dialog를 누르던 준비 버전과 이 별도 이동 실패를 보존한다. 맵 입장 크래시 수정의 증거이지 원격 이동·전투·전체 네트워크 동등성·물리 SDL/GPU 인증은 아니다. 이후 서버의 입력 수용/ready 상태와 플레이어 초기화를 별도로 조사한다.
+
+관련70tests의 실제 cgocheck2/race/checkptr2 count3는210pass/0skip·actual0이다. 순차 전체 일반·HD·엄격 CGo는 각각73,612pass/47skip/39packages, 서버는69,054pass/7skip/35packages·actual0이다. R181의 모든 기존 test ID/action/횟수/skip/package 결과를 유지하고 새 source-wiring pass1만 추가한다. 첫 일반/HD/oracle 검사는 공간 부족으로 실패했고, 캐시 정리 후 동시 빌드도 임시 공간 부족으로 실패해 두 Go 작업을 SIGTERM15로 종료했다. 이후 한 번에 하나씩 실행한 결과와 혼합하지 않는다. 프로젝트 전용 재생성 가능 Go build cache 약24GB 및 종료한 두 작업의 Go compiler 임시 폴더만 정리했다. 원본1,556files·개인1,562files·protected304files·R134 보류4입력은 유지하고 이전 문서 본문도 그대로 보존한다.
+
+후속 clean3제품 metadata/unchanged Host GUI 검증은 같은 커밋 소스로 별도 수행한다. private overlay·PNG·실제 terminal/해시·초기 실패·독립 감사 자료는 `/private/tmp/opennox-realtime-join-r182.OhsBMp`에 보존하며 source/공개 자산에 추가하지 않는다. 커밋 직후 기존 `origin port/go1.26-multiarch`로 push하고 전체 포팅 목표는 계속 미완료로 둔다.
+
 ## Native 서버 참가 플래그와 접속 frame 소유권 (R181)
 
 기준 revision은 `42d3f8171a99f03f835efeb83d327d7d1d2df907`이다. 사용자 goenv Go1.26.9의 직접 실행과 `GO` 없는 wrapper 선택을 확인했고 전역 goenv 설정은 변경하지 않았다. 원본 GAME.EXE의 전체 identity와 기존 봉인 `sub_438770`을 유지하며 43A02B..43A07B의 참가 플래그와 43A09D..43A10E의 password 전송을 읽기 전용 대조했다. 새 원본 range/manifest는 없고 원본 PE32 실행을 새로 증명한 것도 아니다.

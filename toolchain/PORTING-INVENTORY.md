@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 종료된 영상 렌더러의 surface·화면 버퍼 수명 복원 (R177)
+
+기준 clean/pushed Go1.26.9 revision은 7d0fd2fcb09c6484403b0a98777f09a816902de5이다. R176의 파일·OpenAL cleanup은 유지하지만 MoviePlayer가 만든 renderer는 종료 뒤에도 seat resize callback과 마지막 surface/frame을 보관했다. actual headless screen의 resize는 모든 registered callback을 호출했고 종료된 movie renderer가 현재 GUI 뒤에 재그려져 마지막 movie frame/빈 surface로 덮었다. 현재 SDL input backend는 registered onResize를 호출하지 않으므로 실제 SDL 창에서도 이 재그리기가 발생했다고 확대하지 않는다. SDL NewSurface는 OpenGL surface로 위임하고 Destroy는 gl.DeleteTextures를 호출한다는 현재 코드 경로를 확인했지만 이번은 physical GPU resource/readback 인증이 아니다.
+
+새 frozen opt-in test는 원본 WWLOGO·actual OpenAL null·production headless/render/input을 사용한다. surface wrapper는 실제 NewSurface/Destroy를 그대로 위임하고 소유권 호출 횟수만 관찰하며 decoder/renderer/결과를 대체하지 않는다. cancel(원래 video5frames 뒤 실제 mouse event)/close-before-start/constructor-no-audio-source의3경로 × resize800x600/1920x1080/640x480을 검사했다. compiled RED actual1은 각 마지막 surface의 destroy-count0, 매 resize에서2renderer presentation, 현재 이미지/viewport 불일치와 retired renderer tick 진행을 확인했다. 입력과 frame·timeout·원본 asset·expected는 그 뒤 바꾸지 않았다. 로그의 current-GUI-preserved 문구는 assertion 결과를 대신하지 않으며 실패/actual status와 실제 snapshot 비교를 증거로 사용한다.
+
+production은 기존2파일만 변경한다. client/render.Renderer.Close는 graphics-owning thread에서 한 번 surface를 Destroy하고 backbuf/buf/prev/seat/view callback references를 비운다. closed renderer의 present/OnViewResize는 no-op이고 Init는 재초기화를 거절한다. seat에 남은 resize callback의 receiver는 작게 남을 수 있으나 새 drawing/storage를 만들지 않는다. client/noxmovie는 정상·입력·early cleanup 및 audio-source 생성 실패 때 해당 movie renderer만 Close한다. active GUI renderer·resize geometry/float32 rounding·video decoding·gain/rate·queue·FPS·public input admission은 유지한다. renderer API 전반의 concurrent 사용이나 SDL resize notification 추가는 하지 않는다.
+
+동일 frozen test의 cgocheck2+race+checkptr2 count3 GREEN은actual0, 실제3경로×3sizes×3회=27resize 비교를 통과했다. 같은 headless surface를 사용하는 새 renderer unit test는 before-frame/after-frame/after-recreate에서 각 surface once-destroy·frame/seat references 제거·closed copy/resize/view callback no-op·closed Init error를 확인했다. 기존 natural130frame/입력 cancellation/early close 및 render aspect ratio 검사와 함께 일반·HD strict/race/checkptr2 count3는 각각54pass/9isolated-child-entry skip/2packages·actual0이다. 실제 opt-in 부모가 자식 native 검사를 수행했으며 child-entry skip을 실행 성공으로 세지 않는다.
+
+전체 일반/HD/cgocheck2는 각73575pass/47skip/39packages, server69042pass/7skip/35packages·actual0이다. R176의 모든 기존 ID/action/횟수·skip·package status는 그대로다. 새 renderer4pass와 client의 optional/child2skip만 추가하며 server에는 renderer4pass만 추가한다. Go 실행은 사용자 /Users/ghost/.goenv/versions/1.26.9/bin/go이고 원본/개인/GC·선점·flags·HP/RNG·WAIT·timeout·PNG·fixtures·expected retune 및 overlay0이다. unchanged oracle code2968/data650·strict NXZ도 actual0이다.
+
+source6723files에 새 tests2개를 추가해6725files이며 기존 기능2files만 바꾼다. protected304files·stock1556files/570653750B·개인1562files/Save/config·사용자 유지 선택의 R134 patch/기대값은 그대로다. 실패/성공·frozen tests/asset·native products·whole checkpoints는 /private/tmp/opennox-movie-renderer-retirement-r177.c9jO60에 보존한다. 문서는 제목 직후 삽입만 하며 역사 suffix를 유지하고 캐시·원본·개인·이전 evidence 삭제0이다.
+
+이후 commit 바로 다음 도구에서 origin port/go1.26-multiarch로 push하고 clean Go1.26.9 ARM64 일반/HD/server3제품 metadata/Mach-O/help, clean native renderer/movie test와 unchanged headless/OpenAL-null gameplay audio 일반·HD를 따로 검증한다. 아직 실행되지 않은 후속 계획을 성공으로 세지 않는다. R134·최초 OptionsDialog GC source 원인·전체 Windows/world/pixel/청음/remote transport 동등성과 전체 포팅 목표는 계속 미완료다. R176의 clean ARM643제품·native movie tests·실제 headless/OpenAL 일반·HD 여섯 FX phases 및 whole checkpoint는actual0, runtime receipt SHA=0c4ec6604a9f193afd276eeedf3cdb9fe92b9128395450876569f3cc1c0d2344로 완료했다.
+
 ## 영상 종료와 생성 실패의 파일·오디오 자원 수명 복원 (R176)
 
 기준 clean/pushed Go1.26.9 revision은 1c70df2bf78e5c91086aaed4b24624a9dbf1a6c8이다. 실제 영상 consumer인 client/noxmovie.MoviePlayer와 게임 video_client.go 및 standalone cmd/noxmovie 호출자를 조사했다. NewPlayer가 직접 연 파일은 constructor 실패 때 닫히지 않았고, mouse/key/window 입력 handler의 Close가 아직 작업 중인 audio worker보다 먼저 source/buffer를 해제했다. constructor 실패8회에 동일 inode의 열린 descriptor0→1…8이 남았으며, real stock WWLOGO + headless input + actual OpenAL null cancellation count10은3pass/7fail·actual1, 해제 뒤 생긴 real buffer가 아직 유효한 상태를 재현했다. Go data race나 SIGSEGV는 관찰하지 않았으므로 그런 크래시 재현으로 확대하지 않는다.

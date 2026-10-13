@@ -115,6 +115,7 @@ func NewPlayerWithHandle(file io.ReadSeekCloser, mvSeat seat.Seat, audioDrv ail.
 	audioSrc := audioDrv.AllocateSample()
 
 	if audioSrc == 0 {
+		rend.Close()
 		if err := openal.Err(); err != nil {
 			return nil, err
 		}
@@ -192,6 +193,7 @@ func (player *MoviePlayer) Close() {
 		// Consuming dangling errors
 		_ = openal.Err()
 
+		player.renderer.Close()
 		player.seat.ReplaceInputs(player.oldInputs)
 	})
 }

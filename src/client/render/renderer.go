@@ -1,6 +1,7 @@
 package render
 
 import (
+	"errors"
 	"image"
 	"sync/atomic"
 
@@ -31,6 +32,7 @@ func New(sc seat.Screen) (*Renderer, error) {
 
 type Renderer struct {
 	ticks       uint32 // atomic
+	closed      bool
 	sc          seat.Screen
 	backbuf     seat.Surface
 	backbufFilt bool
@@ -53,6 +55,9 @@ func (r *Renderer) Ticks() uint {
 
 // Init the renderer.
 func (r *Renderer) Init(sz image.Point) error {
+	if r.closed {
+		return errors.New("renderer is closed")
+	}
 	if r.backbuf != nil {
 		return nil
 	}
@@ -62,6 +67,24 @@ func (r *Renderer) Init(sz image.Point) error {
 	return nil
 }
 
+// Close retires the surface and frame storage. Like rendering operations, it
+// must run on the owning graphics thread. The seat may retain the resize
+// callback; present ignores it after retirement.
+func (r *Renderer) Close() {
+	if r.closed {
+		return
+	}
+	r.closed = true
+	if r.backbuf != nil {
+		r.backbuf.Destroy()
+		r.backbuf = nil
+	}
+	r.buf = nil
+	r.prev = nil
+	r.onResize = nil
+	r.sc = nil
+}
+
 // Reset the renderer.
 func (r *Renderer) Reset(sz image.Point) error {
 	return nil
@@ -69,6 +92,9 @@ func (r *Renderer) Reset(sz image.Point) error {
 
 // OnViewResize registers a function that will be called when the render or the underlying window resizes.
 func (r *Renderer) OnViewResize(fnc func(view image.Rectangle)) {
+	if r.closed {
+		return
+	}
 	r.onResize = append(r.onResize, fnc)
 	fnc(r.view)
 }
@@ -79,6 +105,9 @@ func (r *Renderer) CopyBuffer(img *noximage.Image16) {
 }
 
 func (r *Renderer) present(img *noximage.Image16) {
+	if r.closed {
+		return
+	}
 	sz := img.Size()
 	if img == nil {
 		// Window resize events redraw the existing surface; a nil image has

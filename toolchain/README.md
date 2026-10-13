@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R187: 원격 Magic Missile과 정상 주문책 입력
+
+사용자 goenv Go1.26.9를 계속 사용하며 GO 없는 wrapper 선택도 확인했다. 게임 코드 수정 없이 실제 시계/headless 원격 Wizard→Warrior Magic Missile을 기본 단축바와 정상 주문책 드래그 두 경로로 검증했다. 레벨3·4발의 native 소유자/추적 대상·단일 마나15 소모·서버와 양쪽 client의 피해8/16 및 정상 종료를 확인했다. v2에서는 접속자2명의 실제 quit/ack를 검사했고 초기 잘못된 종료 URL은 성공 증거에서 제외했다. 기존 소스·기대값·원본·개인 데이터·R134 보류는 그대로다. 관련 기존 엄격 CGo/race/checkptr2 회귀를 3회 반복해 855pass/0skip를 확인했다. 모든 발의 명중·모든 주문/직업/맵 인증은 아니며 자세한 범위는 [R187 인벤토리](./PORTING-INVENTORY.md#원격-magic-missile과-정상-주문책-입력-검증-r187)를 따른다.
+
 ## R186: 원격 Fireball과 전용 서버 종료 검증
 
 사용자 goenv Go1.26.9로 계속 빌드·검사한다. 실제 시계/headless 입력의 Wizard→Warrior Fireball 두 실행에서 정상 시전 큐·단일 마나150→120 소모·서버와 client HP150→23 및 표시127을 확인했다. 실제 접속자2명인 전용 서버의 quit가 로컬 GUI 글꼴에서 nil 접근하던 크래시는 기존 GUI 네 작업만 dedicated build에서 제외해 수정했다. 같은 새 회귀 RED/GREEN과 실제 두 접속자의 quit/ack 및 정상 종료를 확인했고 전체 일반/HD/CGo 각각73,623pass/47skip·server69,065pass/7skip, 관련 엄격/race/checkptr2 반복111pass가 통과했다. 기존 결과·기대값·원본·개인 데이터·R134 보류와 초기 진단 실패를 유지한다. 모든 주문·직업 쌍·맵의 인증은 아니며 상세는 [R186 인벤토리](./PORTING-INVENTORY.md#원격-fireball-실전-검증과-전용-서버-종료-gui-분리-r186)를 따른다.

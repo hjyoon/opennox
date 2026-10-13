@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 원격 Magic Missile과 정상 주문책 입력 검증 (R187)
+
+기준 clean/pushed revision은 `df65c549c168afa56be1cf47da275283a64e769f`이다. 사용자 설치본 `/Users/ghost/.goenv/versions/1.26.9`를 사용하고, GO를 생략한 wrapper의 GOVERSION/GOROOT/GOTOOLCHAIN도 같은 Go1.26.9임을 확인했다. 전역 goenv·최소 언어 버전과 게임 production/test 소스는 변경하지 않는다.
+
+별도 실제 시계/headless Wizard·Warrior 두 client와 전용 서버로 일반 메뉴·직업 선택·MOTD·아레나 참가·right-button 이동·마우스 조준·키보드 시전을 실행했다. HP·마나·좌표·주문 습득·RNG·clock·packet·damage callback·렌더 결과를 주입하지 않고 QueueInLoop 관찰 API로 실제 상태만 읽는다. v1은 자연 기본 단축바 D의 Magic Missile을 사용해 레벨3·4발·native 소유자/실제 추적 대상·45회 방향 갱신·마나150→135 단일 소모·HP150→142 및 양쪽 표시8을 확인했다.
+
+v2의 자연 기본 세트 `[4,51,43,27,41]`에는 Magic Missile이 없었다. 정상 B 입력으로 주문책을 열고 실제 목록 index11/page0에서 첫 단축 슬롯으로 마우스 드래그·release한 뒤 B로 닫았다. 선택한 한 entry만 변경되고 다른24개와 row는 보존됐다. 이어 실제 A 입력의 시전 큐·4발·57회 추적 방향 갱신·마나150→135 단일 소모·HP150→134 및 양쪽 표시16을 확인했다. client 마나136은 정상 후속 회복이며 추가 소모로 세지 않는다. 장비·충돌·밀침·회복을 유지한 관찰이므로 모든4발의 명중이나 매 발의 직접/범위 피해까지 인증하지 않는다.
+
+두 실행의 client4/server2 process는 모두 actual0이고 정상15초 높이 갱신을 통과했다. v2의 실제 ready 접속자2명/frame1362에서 기존 인증된 `/api/v0/game/cmd`의 quit를 호출해 양쪽 MSG_SERVER_QUIT199·서버 ACK200 두 건과 정상 종료를 확인했다. v1의 초기 잘못된 quit/console URL은 HTTP200 HTML을 반환한 준비 실수로 보존하며 active quit 증거에서 제외한다. 이후 올바른 cmd로 이미 연결이 해제된 v1 서버를 종료했다.
+
+진단은 `/private/tmp/opennox-remote-missile-r187.xkaArw`에 frozen overlay·실제 입력/관찰 로그·PNG·actual-exit ledger로 보존한다. 게임 소스6,737개·보호된 YAML/PNG/oracle304개·원본1,556개·개인 데이터1,562개와 R134 HOLD 네 입력은 실행 전후 동일하다. gameplay audit actual0/SHA `9d4f464864f41efd38c75e770b7bf96a5589cea453015c43df7839af29319d5c`다.
+
+관련 기존 Magic Missile·BoomCollide·drawable·quickbar 엄격 CGo/race/checkptr2 검사를 그대로 3회 반복해 855pass/0skip/0fail, 285개 identity/3package 및 actual0을 확인했다. 기존 테스트·기대값은 바꾸지 않았고 R186 전체 일반/HD/CGo/server 회귀 결과는 기존 기록으로 유지하며 이번 전체 재실행으로 표시하지 않는다. 이번 변경은 문서만이다. 나머지 주문·직업 쌍·맵, 물리 SDL/Retina/GPU·실제 오디오 출력, Player SetColor 계약과 R134 HOLD를 전체 완료로 선언하지 않는다.
+
 ## 원격 Fireball 실전 검증과 전용 서버 종료 GUI 분리 (R186)
 
 기준 clean/pushed revision은 `6a4ee5a7180d0f3e9e95c49103e6b96706f2eee0`이다. R185의 clean ARM64 일반/HD/server3제품·unchanged 일반/HD headless Host GUI·후속 whole checkpoint는 완료됐고 runtime audit SHA는 `5c2b5b588d11b9f6d351d28c4afd106f137885069b3efed18ca7739f194c2c72`다. 사용자 goenv Go1.26.9를 계속 사용하며 GO를 생략한 wrapper의 GOVERSION/GOROOT/GOTOOLCHAIN도 이 설치본이다. 전역 goenv와 최소 언어 버전은 바꾸지 않는다.

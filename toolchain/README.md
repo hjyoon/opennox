@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R197: 전사 스킬 상태의 native 다섯 칸 순회
+
+사용자 goenv Go1.26.9와 `GO` 없는 wrapper 선택을 계속 확인한다. 실제 전사 스킬 상태/reset/활성 비트/조회 네 함수에서 signed32 주소 비교를 원래 다섯 레코드 수 경계로 바꿨다. 원본 scalar/packet/효과/시간/반환 계약과 기존 기대값은 유지한다. 최종 fixture의 compiled control actual1·수정 후11,088조건·실제 CGo7,280조건·관련 strict/race/checkptr2 3회1,101pass, 전체 일반/HD/CGo 각각73,713pass/47skip·server69,155pass/7skip 및 모든 기존 결과 동일을 확인했다. 일반 headless 다섯 스킬10cycles와 unchanged 일반/HD NPC Harpoon 각2cycles는 actual0이다. HD frozen Screen actual2는 이전 clean 제품도 같은 원본 다중 알림 문구의983픽셀 차이로 재현하며 교정/삭제하지 않았다. 초기 link 준비 실패·픽셀 실패/검증 범위·원본/개인 데이터/R134 보존과 미완료 항목은 [R197 인벤토리](./PORTING-INVENTORY.md#전사-스킬-상태-테이블의-native-다섯-레코드-경계-r197)를 따른다.
+
 ## R196: 동료 체력 테이블의 native 순회
 
 사용자 goenv Go1.26.9로 계속 빌드·검사한다. 실제32칸 동료 HP 테이블의 조회/빈 슬롯/등록/reset에서 signed32로 축소한 주소 비교를 원래 슬롯 수 경계로 복원했다. decoder/ID·HP packing·scalar ABI·padding은 유지한다. compiled RED와 수정 후39,204조건·실제 CGo4,224조건·관련 strict/race/checkptr2 3회303pass, 전체 일반/HD/CGo 각각73,708pass/47skip·server69,150pass/7skip 및 unchanged 일반/HD headless 회복30경로/ally15기록이 통과했다. 기존 결과·기대값·원본·개인 데이터·R134 보류는 그대로이며 새 packet 준비 강화·검증 범위와 미완료 항목은 [R196 인벤토리](./PORTING-INVENTORY.md#동료-체력-테이블의-native-32칸-순회-경계-r196)를 따른다.

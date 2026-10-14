@@ -326,6 +326,7 @@ void sub_461060() {
 char* sub_461090(int a1, int a2) {
 	int v2;       // edx
 	char* result; // eax
+	unsigned int count = 0;
 
 	v2 = gameFrame();
 	result = (char*)getMemAt(0x5D4594, 1047764 + 24*1 + 20);
@@ -335,7 +336,7 @@ char* sub_461090(int a1, int a2) {
 			*((uint32_t*)result - 3) = a2;
 		}
 		result += 24;
-	} while ((int)result < (int)getMemAt(0x5D4594, 1047928));
+	} while (++count < 5);
 	return result;
 }
 
@@ -343,6 +344,7 @@ char* sub_461090(int a1, int a2) {
 char* sub_4610D0(unsigned char a1) {
 	int* v1;      // esi
 	char* result; // eax
+	unsigned int count = 0;
 
 	if (a1 != 6) {
 		return sub_461090(*getMemU32Ptr(0x5D4594, 1047764 + 24*a1), 1);
@@ -351,7 +353,7 @@ char* sub_4610D0(unsigned char a1) {
 	do {
 		result = sub_461090(*v1, 1);
 		v1 += 6;
-	} while ((int)v1 < (int)getMemAt(0x5D4594, 1047908));
+	} while (++count < 5);
 	return result;
 }
 
@@ -359,6 +361,7 @@ char* sub_4610D0(unsigned char a1) {
 char* sub_461120(int a1, int a2) {
 	int v2;       // edx
 	char* result; // eax
+	unsigned int count = 0;
 
 	v2 = 1 << a1;
 	result = (char*)getMemAt(0x5D4594, 1047764 + 24*1 + 12);
@@ -371,7 +374,7 @@ char* sub_461120(int a1, int a2) {
 			}
 		}
 		result += 24;
-	} while ((int)result < (int)getMemAt(0x5D4594, 1047920));
+	} while (++count < 5);
 	return result;
 }
 
@@ -385,7 +388,7 @@ int sub_461160(int a1) {
 	while (*(uint32_t*)v2 != a1) {
 		v2 += 24;
 		++v1;
-		if ((int)v2 >= (int)getMemAt(0x5D4594, 1047908)) {
+		if (v1 >= 6) {
 			return 0;
 		}
 	}

@@ -1,5 +1,23 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 전사 스킬 상태 테이블의 native 다섯 레코드 경계 (R197)
+
+기준 clean/pushed revision은 `cb751cf9e642f611505a309caf66349b2e7077a0`이다. 사용자 goenv Go1.26.9를 계속 사용하며 `GO` 없는 공식 wrapper도 `/Users/ghost/.goenv/versions/1.26.9`의 darwin/arm64 도구체인을 선택함을 확인했다. 버전 고정·전역 goenv·런타임/GC 설정은 변경하지 않았다. 활성 C 패킷 경로를 조사하여 이미 Go가 가로채는 중복 arm은 수정하지 않고 실제 스킬 상태 테이블의 네 반복문만 수정했다.
+
+`GAME2_1.c`의 `sub_461090`(사용 가능 상태/쿨다운 시작), `sub_4610D0`(초기화), `sub_461120`(활성 비트), `sub_461160`(활성 조회)는 24바이트 scalar record1..5를 처리한다. signed32로 축소한 주소의 끝 비교는 부호 경계에서 첫 행 뒤에 끝나 뒤쪽 상태/ID를 놓친다. 앞의 세 함수에는 원래 다섯 칸의 카운터를 두고, 조회는 기존 행 번호가6에 도달하면 끝내도록 바꿨다. record0 제외, reset selector0..5의 해당 행 ID 조회와 selector6의 전체 초기화, 중복 ID의 모든 상태 갱신/첫 조회, DWORD 프레임·비트·쓰기 순서·padding 및 native 반환 `table+164`/`table+156`을 유지한다. 스킬 효과/피해량/시간/packet ABI·함수 signature는 변경하지 않았다.
+
+실제 C dispatcher의 `MSG_REPORT_ABILITY_STATE(206)`·`MSG_REPORT_ACTIVE_ABILITIES(207)`·`MSG_RESET_ABILITIES(235)`가 이 함수들을 호출하고, 기존 장비 변경 경로도 활성 조회를 사용한다. award(205)의 이미 native-width인 루프는 수정하지 않았다. GAME.EXE `00461090..0046119C` 네 본체 및 `004611E0..00461246`의 award, `006D4268` 기준24바이트 stride/다섯 레코드와 반환 주소를 raw disassembly·독립 함수 SHA로 확인했다. 함수 크기는54/67/60/61/103bytes이며 원본 code2,968/data650 verifier도 actual0이다.
+
+새 동결 fixture는 네 실제 C 본체를 함께 컴파일하고 memmap 위치와 시계만 통제한다. signed32 부호/DWORD wrap 경계와 일반 high-address 테이블, 순서가 바뀐 다섯 ID·중복/없는 ID·record0 제외, availability0/1/255/0xffffffff·활성0/1/-1·다른 마스크 비트·프레임0/0x7fffffff/0x80000000/0xffffffff·원래 반환·전체192바이트/앞뒤 guard를 검사했다. state/reset 각각3,696조건·active2,772·lookup924, 합계11,088조건이 actual0이며 같은 최종 fixture로 기준 본체를 실제 컴파일한 네 control은 각각 actual1이다. 최초 `native-red`/`native-green` 실행의 actual1은 새 fixture에서 두 typed memmap link 서비스를 빠뜨린 준비 오류이므로 behavioral RED로 세지 않는다. 해당 입력·로그를 archive에 보존하고 그 두 서비스만 보완했으며 원래 Go assertion·C 기대값은 바꾸지 않았다.
+
+별도 CGo child의 전체 실제 dispatcher→genuine 테이블→실제 C 조회는 네 opcode205/206/207/235, 모든 행 순서·대상/없는 ID·연결 두 상태·네 DWORD 시계·BYTE 경계·packet 두 정렬·award 제거/이미 소유한 level의 무변경·전체 테이블/packet guard 불변의7,280조건에서 actual0이다. 양수 award UI 자체의 모든 분기를 이 packet 검사로 인증하지 않는다. 관련 기존 회귀와 새 검사의 공식 cgocheck2/race/checkptr2 3회는367IDs/1,101pass·3packages·0skip/0fail이며 actual packet 조건21,840회도 통과했다. 전체 일반/HD/공식 cgocheck2 각각73,713pass/47skip·39packages, server69,155pass/7skip·35packages·actual0이고 R196의 모든 기존 결과는 같으며 새5개 테스트만 추가됐다.
+
+unchanged `host-game-warrior-abilities.yaml`을 byte-identical private 경로에 복사한 일반 headless/mock 게임은 다섯 스킬 각각 두 번의 실제 키 입력/효과/종료/쿨다운 재입력 거부/ready 보고와 정상 종료가 actual0이다. charge의 Troll HP2000→1850 및 최종 다섯 HUD의 Ready1/Active0/Start0도 확인했다. 대상 배치/초기 HP/WAIT AI/quickbar 지정은 기존 fixture 준비이며 이 결과를 모든 자연 전투·원본 Windows 실행·물리 가청 음향으로 확대하지 않는다. 새 private PNG21개는 동결했고 기존 소스 PNG/기대값을 덮어쓰지 않았다.
+
+HD의 같은 frozen 입력은 Harpoon 두 번째 prepared Screen에서 actual2였다. 이전 clean Go1.26.9 ARM64 HD 바이너리도 정확히 같은 Screen/actual2이며 두 actual PNG는 byte-identical이다. 차이983픽셀의 범위는(396,561)..(627,573) 중앙 알림뿐이고 두 문구 모두 stock CSF `AbilityNotReady`의 네 원래 variant에 포함된다. 기존 `strman.Entry.Value`가 무작위로 선택하는 문구를 고정하거나 PNG를 교정하지 않았다. 일반의 다섯 스킬10cycles와 HD의 완료5cycles prefix를 구분하며 나머지 HD 전체/엄격 픽셀 게이트를 GREEN으로 인증하지 않는다. 별도 unchanged/no-Screen `host-warrior-npc-harpoon.yaml` 일반/HD 두 process는 각각2cycles의 NPC 피해·pull·종료·cooldown 거부/재사용에서 actual0이다. 이전 제품에 현재 dirty-source 공식 verifier를 적용한 actual1은 clean-source 요구를 보존한 진단이며, 그 제품의 clean baseline metadata/이전 검증 receipt와 실제 baseline 실행을 별도로 확인했다.
+
+진단·초기 link 실패·compiled control·동결 입력·일반 캡처/HD 실패/이전 제품 control·terminal/checkpoint는 `/private/tmp/opennox-client-ability-r197.img4r6`에 보존하고 body audit SHA는 `332a2ca6117917362fcef6a5ae3339041c8bb704f432a21d7aa1b5bc3716c138`다. source6,761→6,765files의 기능 차이는 C 한 파일의 네 종료 조건/카운터+새4files뿐이다. protected304files·stock1,556files·개인1,562files/Save/config·기존 기대값·R134 HOLD 네 입력은 불변이고 캐시/실패 자료를 삭제하지 않았다. 커밋 직후 origin `port/go1.26-multiarch`에 push하며 clean ARM64 일반/HD/server3제품 metadata/Mach-O/help 및 unchanged 일반/HD NPC Harpoon은 후속 receipt로 검증한다. 이 작업 단위와 HD 픽셀 실패의 비회귀 확인을 전체 포팅 완료로 표시하지 않으며 남은 C 경계·SKU/WOL·Player SetColor·R134/보존된 실패는 계속 미완료다.
+
 ## 동료 체력 테이블의 native 32칸 순회 경계 (R196)
 
 기준 clean/pushed revision은 `f5a12795246f9e038fce32fba132dfa91e5f281a`이며 사용자 goenv Go1.26.9를 계속 사용한다. Solo Quest/기존 실패 이력을 검토하면서 Windows registry 기반 SKU/WOL 계약은 추정으로 대체하지 않았고, Wizard/Con02A 고정 PNG 차이·플레이어가 먼저 사망한 Skeleton 처치 timeout·별도 Quest selector 감사와 보존된 stage3 실패를 실제 새 게임 결함/완료로 혼동하지 않았다. 이번 기능 변경은 활성 동료 체력 테이블의 네 루프다.

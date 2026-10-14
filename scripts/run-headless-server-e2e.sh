@@ -117,6 +117,7 @@ fi
 		NOX_XWIS=false NOX_NET_NAT=false NOX_API_TOKEN="$test_token" \
 		"$server_binary" -config "$runtime_data_dir/opennox.yml" \
 		-data "$runtime_data_dir" -port "$server_port" \
+		-autoexec "" \
 		-pprof "127.0.0.1:$metrics_port" -noaudio
 ) >"$server_log" 2>&1 &
 server_pid=$!

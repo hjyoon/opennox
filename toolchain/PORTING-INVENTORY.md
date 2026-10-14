@@ -1,5 +1,17 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 전용 서버 E2E의 명시적 시작 옵션 분리 (R208)
+
+기준 clean/pushed revision은 `cc04c08d1ca699fe013eec74f06b6850b0dbdeed`이며 사용자 goenv Go1.26.9를 계속 사용한다. R207에서 전용 서버의 원래 CLI 기본 `load estate`가 실행되면서, 별도 시작 옵션 없이 초기 so_beach/chat을 요구하던 공식 서버 E2E가 22.8초 후 actual1로 실패했다. 실제 로그에는 so_beach 초기화 뒤 estate 로드가 있다. 게임의 기본 명령을 되돌리지 않고 공식 검사 실행기에 `-autoexec ""` 두 인수를 명시했다. 기존 맵·모드·players·tick·load count·인증 API·quit 판정과 public idle YAML은 바이트 그대로 유지한다. 게임 source·clock/RNG·설정/권한/네트워크 로직은 변경하지 않는다.
+
+같은 clean R207 server 제품으로 수정 후 공식 검사와 새 출력/포트의 독립 반복 두 번이 모두 actual0이다. 세 실행 모두 so_beach/chat→estate/arena→trilevel/arena→estate/arena, players0/max32, 네 구간의 실제 엔진 loop/game tick 증가, 각 load count1/1/1/2와 authenticated console quit 후 정상 process exit0을 통과했다. private bridge는 공식 스크립트의 script_dir 위치만 교정하며 모든 launch/판정은 실제 public source를 실행한다. E2E clock/headless/mock 범위의 전용 서버 회귀이며 원격 플레이어 전투·공개 서버 등록·독립 -autoquest 동작의 검증은 아니다.
+
+새 회귀는 실제 launch subshell을 bash에서 argv-only executable로 실행하여 공백 있는 경로와 명시적인 빈 인수까지 NUL 경계로 검사한다. 이 argv 검사를 엔진 E2E로 세지 않는다. 변경 전 같은 동결 test는 missing autoexec argument로 actual1, 변경 후1pass/0skip·actual0이다. 기존 R207 startup 검사와 함께 공식 cgocheck2+race+checkptr2/count3은21pass/0skip·actual0이다. 전체 일반/HD/공식 cgocheck2 각각73,767pass/47skip·40packages, server69,201pass/7skip·36packages·actual0이며 모든 기존 test ID/action/count/skip/package 결과는 같고 새1ID만 추가됐다.
+
+보존 감사 actual0은 기존 source6,799→6,800files에서 공식 runner의 정확히 한 줄과 새 test만 기능 차이임을 확인했다. 문서 두 파일은 이 기록/시작 옵션 설명만 추가하고 기존 suffix를 보존한다. protected304files·개인1,562files/Save/config·R134 HOLD 네 입력·동결 private 입력/이전 실패는 유지한다. R206 검증 자산1,554개가 원본 sealed manifest와 여전히 byte/SHA 동일하며 nc.obj/nox.cfg를 포함한 full tree 복원이라고 주장하지 않는다. 원본 code2,968/data650 verifier도 actual0이다. body audit SHA는 `2adbbbc794de35e11df983ba4fd49ddb44ea62e941b17b41998f41e664fcf241`, 자료는 `/private/tmp/opennox-dedicated-quest-r208.EgO6dq`에 보존한다. 캐시·최소 언어 버전·전역 goenv/runtime/GC는 변경하지 않았다.
+
+커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 일반/HD/server 제품 metadata·새 argv 회귀·같은 공식 서버 E2E를 후속 receipt로 확인한다. 아직 실행하지 않은 후속 검사나 -autoquest, 역사적 GUI/AI 실패·Windows/물리 GPU/가청 음향 및 전체 포팅 목표를 완료로 기록하지 않는다.
+
 ## 전용 서버의 시작 규칙과 CLI autoexec 실행 복원 (R207)
 
 기준 clean/pushed revision은 `3dda59990ec8fef4daea9c4fe117dc09d34c0eb6`이며 사용자 goenv Go1.26.9를 계속 사용한다. RunServerArgs는 MainLoop에 직접 진입하여 initGameSession435CC0을 거치지 않는다. 기존 `execrul autoexec.rul → set cycle on → serverExec` 블록이 그 클라이언트 초기화에만 있어 R204의 전용 서버는 -autoexec를 받았어도 실행하지 않았다. 같은 clean 전용 제품의 실제 clock/private localhost 검사에서 지정한 command chain과 규칙이 모두 누락된 채5초 동안 so_beach/chat·User Game·players0이 유지됐고 정상 authenticated quit/actual0으로 종료했다. 이 negative observation의 actual0을 기능 성공으로 바꾸어 세지 않는다.

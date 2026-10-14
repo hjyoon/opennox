@@ -626,6 +626,8 @@ NOX_E2E_SEAT=headless NOX_E2E_CLIENT_TARGET=client-hd \
 
 독립 서버의 실제 기동·맵 전환·정상 종료는 다음 headless 회귀로 확인한다. `curl`·`jq`가 필요하며, 고정 도구체인으로 `server` 제품을 빌드한 뒤 개인 save/config를 제외한 임시 데이터 뷰에서 실행한다. E2E 모드로 NAT 포워딩과 공개 서버 등록을 차단하고, 인증된 로컬 API로 `so_beach→estate→trilevel→estate`를 로드한다. 각 맵의 mode·player 수, 실제 game tick 증가와 map load 횟수를 확인하고 console `quit` 이후 10초 안에 프로세스가 exit 0으로 끝나야 통과한다. 원본 데이터는 변경하지 않고 출력 디렉터리에 로그·임시 런타임 데이터를 남긴다. 기본 게임/API 포트는 18610, metrics 포트는 6062이며 다른 서버 E2E와 동시에 쓰지 않는다. `NOX_E2E_SERVER_PORT`·`NOX_E2E_SERVER_METRICS_PORT`로 바꿀 수 있다. 이미 빌드한 제품을 검사할 때에는 절대 경로의 `NOX_E2E_SERVER_BINARY`를 지정한다. 이 검증은 접속한 원격 플레이어의 게임플레이·공개 서버 발견·Quest 소환수 보존을 대신하지 않는다.
 
+이 검사 실행기는 초기 so_beach와 이후 API 맵 전환을 분리하기 위해 `-autoexec ""`를 명시한다. 일반 전용 서버에서 옵션을 생략하면 기존 CLI 기본 `load estate`가 실행된다. 검사 편의를 위해 게임의 기본 명령이나 기존 판정값을 변경하지 않는다.
+
 ```sh
 bash ./scripts/run-headless-server-e2e.sh \
   /absolute/path/to/nox /absolute/path/to/server-e2e-output

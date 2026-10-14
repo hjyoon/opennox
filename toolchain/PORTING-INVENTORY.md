@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 퀘스트 보상·이름 변경 알림의 native 이름 접근 (R194)
+
+기준 clean/pushed revision은 `7a2fdbf6dc8665602edd8332b1505b082887ab4e`이며 사용자 goenv Go1.26.9를 계속 사용한다. 활성 C decoder의 `MSG_GAUNTLET` 보상 sub30/31/32(스펠·도감·스킬) 및 `MSG_UPDATE_GUI_GAME_SETTINGS` 이름 변경 알림을 수정했다. Player를 `nox_playerInfo*`로 유지해 PE32 `+4704` 대신 native `name_final`(ARM64 offset6008)을 읽고, current-player 비교에서 정수 저장소를 char-pointer lvalue로 읽던 alias를 native 포인터 비교로 바꿨다. 보상 packet의 ushort ID는 기존 packed byte reader를 재사용하며 high bit를 임의로 지우지 않는다. 다른 switch arm·58바이트 settings copy·5/60바이트 반환·helper 순서·버퍼·packet ABI는 유지한다.
+
+네트워크 경로 조사에서 발견한 Quest hint sub33의 C 정수 포인터 테이블은 이미 Go receiver가 가로채는 비활성 중복이었다. 그것을 실제 게임 결함이나 이번 수정으로 세지 않고 그대로 둔다. 보상 sub30/31/32와 settings 이름 알림은 Go의 선행 receiver에서 처리하지 않아 실제 C fallback에 도달한다. 원본 GAME.EXE `0048F576..0048F666`, `00493F8C..004941C7`의 raw disassembly에서 lookup-before-connected, ushort/byte 읽기, 조회된 Player와 current slot 비교, title→localization→UTF-16 formatting/centered 출력 및 이름 변경 flag clear 순서를 확인했다. 이름 주소/분기 판단을 helper 전후에 잘못 다시 조회하지 않으며 원본 Windows 전체 실행을 인증한 것은 아니다.
+
+동결한 새 C fixture는 네 실제 arm·Player 선언·native header와 기존 UTF-16 formatter를 컴파일한다. 보상2,160조건과 settings512조건에서 4GiB 초과 Player, native/PE32 이름 분리, 한글/surrogate pair, 연결/없는 대상/self/other/nil current-slot, 0/상위 ushort ID, 0/255 byte ID, helper가 current slot/이름을 바꿀 때의 cached identity와 live 내용, settings 두 행·flag·helper 호출 순서 및 전체 Player/packet bytes를 확인했다. 동일 fixture의 기존 본체는 보상/이름 두 검사 모두 컴파일 후 bad-name=1·actual1이고 수정 본체는2,672조건·actual0이다. 원래 pending-name 경로의 잘못된 nil current-player 안전성은 별도로 보장하지 않는다.
+
+별도 실제 CGo 검사는 전체 C dispatcher→실제32슬롯 Player registry→string manager→UTF-16 formatter→centered 세 슬롯/타이머→Go 콘솔 export를 통과한다. guide title은 genuine native guide record/427240 lookup을 사용하며 spell/ability title 서비스와 연결 상태는 fixture 데이터로 통제한다. Player 조회·formatter/출력 결과를 대체하지 않는다. child process에서 original blob과 전역 상태를 격리해156조건의 한글/이모지 출력, disconnected에서도 먼저 실행되는 원래 index store, raw ID·settings·Player/packet 불변을 확인했다. 관련 기존 회귀와 새 검사를 공식 cgocheck2/race/checkptr2로3회 반복해1,024IDs/3,072pass·3packages·0skip/0fail·actual0 및 actual packet468회를 확인했다.
+
+전체 일반/HD/공식 cgocheck2는 각각73,701pass/47skip·39packages, server는69,143pass/7skip·35packages·actual0이다. R193의 모든 기존 test/package 결과와 기존 두 ASLR 이름 정규화는 그대로이며 새 세 테스트만 추가됐다. 처음의 기존 formatter sign warning 및 새 packet fixture의 미존재 getter compile failure는 원문/actual1과 archive로 보존했다. 새 fixture 준비만 교정했고 기존 기대 문구/판단 조건·게임 데이터·Go GC/preemption·clock·RNG·timeout을 retune하지 않았다.
+
+unchanged `host-quest-stage-transition.yaml`의 일반/HD headless/mock 검증에서 실제 stock exit contact·collision 후 `g_templd` stage1→`g_swamp` stage2/frame2206·native player/drawable·HP450/450과 정상 종료를 확인했다. 다음 이동에서 위치는(561.000,2875.957)→(517.497,3171.985)로 바뀌고 gameplay/HUD도 표시됐다. 출구 fixture는 위치/일반 충돌을 준비하며 단계·체력·결과를 주입하지 않는다. 첫 실행의 screenshot helper가 없던 기준 PNG8개를 자동 생성해 최초 보존 감사는 actual1이었다. 이 새로 소유한8개만 hash/원래 부재를 확인한 뒤 private `quest-scenario/testdata`로 이동해 보관했다. 기존304개 보호 입력은 변경하지 않았으며 삭제한 캡처는 없다. 동일 YAML의 private 복사본과 동결 PNG로 일반/HD를 다시 실행해 actual0·8화면의 재현성을 확인했다. 이 생성된 기준을 원본 Windows/과거 golden 동등성, 다른 사람의 보상 수신, 모든 퀘스트 단계의 증거로 사용하지 않는다.
+
+원본 code2,968/data650 verifier와 최종 보존 감사도 actual0이다. 기존 소스/테스트·protected304files·stock1,556files·개인1,562files/Save/config·R134 HOLD 네 입력은 그대로다. 원문 진단의 잘못된 read cwd/JS quoting 오류와 최초 감사 실패도 성공 증거에서 제외했다. 진단·초기 실패·동결 입력·terminal/checkpoint는 `/private/tmp/opennox-quest-notices-r194.UCTIrQ`에 보존하고 body audit SHA는 `a61d567e097e54ce28c89f198c4a23dc79bbd5e9f3708688e280669af125dea0`이다. 프로젝트 캐시는 삭제하지 않았다. 커밋 직후 origin `port/go1.26-multiarch`로 push하며 clean ARM643제품 metadata/Mach-O/help와 같은 private-input 일반/HD headless 검증은 별도 후속 receipt로 확인한다. Player SetColor·R134·역사적 frozen 화면/Quest/AI 실패·남은 C 경계와 전체 ARM64 포팅 목표는 계속 미완료다.
+
 ## 점수·보물 알림 패킷의 native 필드 복원 (R193)
 
 기준 clean/pushed revision은 `0fce32e3c88c3ca7a25ebc34491b487a66196c91`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 계속 사용한다. 활성 C dispatcher `48EA70`의 `MSG_REPORT_LESSON(78)` 및 `MSG_REPORT_TREASURE_COUNT(85)`만 수정했다. PE32 고정 위치의 점수·사망 수·보물 수·갱신 시각·이름 접근을 `nox_playerInfo`의 native 필드로 바꾸고, 두 패킷의 정렬되지 않은 wire 숫자 읽기를 little-endian 바이트 읽기로 바꿨다. 다른 switch arm, 외부 함수/packet ABI, 11/7바이트 반환, 기존 문자열 버퍼는 유지한다.

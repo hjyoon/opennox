@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R194: 퀘스트 보상·이름 변경 알림의 native 이름
+
+사용자 goenv Go1.26.9를 계속 사용한다. 실제 C fallback의 스펠/도감/스킬 보상과 이름 변경 네 알림 분기에서 PE32 이름 위치를 native Player 필드로 복원했다. 이미 Go가 처리하는 hint C 중복은 건드리지 않고 원래 ID/분기/helper/settings/packet 계약을 유지한다. 기존 본체 compiled RED와 수정 후2,672조건·actual CGo156조건·strict/race/checkptr2 3회3,072pass를 확인했다. 전체 일반/HD/CGo 각각73,701pass/47skip·server69,143pass/7skip이며 기존 결과는 모두 동일하다. headless Quest stage1→2/이동/정상 종료도 확인했다. 자동 생성된 신규 캡처8개는 소스 밖에 보관하고 같은 private 입력으로 재검증했으며 기존 기대값·원본·개인 데이터·R134 보류는 유지한다. 범위와 초기 실패·미완료 항목은 [R194 인벤토리](./PORTING-INVENTORY.md#퀘스트-보상이름-변경-알림의-native-이름-접근-r194)를 따른다.
+
 ## R193: 점수·보물 알림의 native Player 필드
 
 사용자 goenv Go1.26.9를 계속 사용한다. 실제 C dispatcher의 점수/보물 패킷 두 arm에서 PE32 위치에 쓰던 Player 데이터와 이름을 native 필드로 복원하고 해당 packed 숫자를 바이트로 읽도록 수정했다. 원본 signed Elimination·unsigned strict 보물 시각·호스트 권한·cached DWORD wrap 알림 조건과 helper 순서/packet ABI는 유지한다. 동결된 기존 본체의 compiled RED, 수정 후 3,648조건, 실제 CGo 51경로 및 strict/race/checkptr2 3회 552pass를 확인했다. 전체 일반/HD/cgocheck2 각각 73,698pass/47skip·server69,140pass/7skip이며 모든 기존 결과와 기대값은 불변이다. unchanged headless 일반/HD 보물 획득·드롭은 actual0이고 원본/개인 데이터/R134 보류도 유지한다. 전체 라운드·Windows/물리 오디오/전체 포팅 완료 인증은 아니며 [R193 인벤토리](./PORTING-INVENTORY.md#점수보물-알림-패킷의-native-필드-복원-r193)에 범위와 기록을 구분한다.

@@ -1,0 +1,15 @@
+{
+  "lang": 8,
+  "entries": [
+    {"id": "plyrspel.c:AwardSpell", "vals": [{"str": "스펠 [%s]"}]},
+    {"id": "plyrspel.c:AwardSpellToOther", "vals": [{"str": "스펠 [%s] [%s]"}]},
+    {"id": "PlyrGide.c:AwardGuide", "vals": [{"str": "도감 [%s]"}]},
+    {"id": "PlyrGide.c:AwardGuideToOther", "vals": [{"str": "도감 [%s] [%s]"}]},
+    {"id": "ComAblty.c:AwardAbility", "vals": [{"str": "스킬 [%s]"}]},
+    {"id": "ComAblty.c:AwardAbilityToOther", "vals": [{"str": "스킬 [%s] [%s]"}]},
+    {"id": "cdecode.c:NameChange", "vals": [{"str": "이름 [%s]"}]},
+    {"id": "guimsg.c:systemmsg", "vals": [{"str": "알림: %s"}]},
+    {"id": "cdecode.c:FixtureSpell", "vals": [{"str": "주문🚀"}]},
+    {"id": "cdecode.c:FixtureAbility", "vals": [{"str": "기술🚀"}]}
+  ]
+}

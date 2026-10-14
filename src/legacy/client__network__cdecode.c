@@ -360,13 +360,13 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 	nox_playerInfo* v300;   // eax
 	int v301;               // eax
 	uint32_t* v302;         // eax
-	char* v303;             // esi
+	nox_playerInfo* v303;   // esi
 	wchar2_t* v304;          // eax
 	wchar2_t* v305;          // eax
-	char* v306;             // esi
+	nox_playerInfo* v306;   // esi
 	wchar2_t* v307;          // eax
 	wchar2_t* v308;          // eax
-	char* v309;             // esi
+	nox_playerInfo* v309;   // esi
 	wchar2_t* v310;          // eax
 	wchar2_t* v311;          // eax
 	wchar2_t* v312;          // eax
@@ -2143,7 +2143,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				}
 				if (nox_common_gameFlags_check_40A5C0(128)) {
 					if (dword_5d4594_1200832) {
-						v330 = (wchar2_t*)(dword_8531A0_2576 + 4704);
+						v330 = ((nox_playerInfo*)dword_8531A0_2576)->name_final;
 						v41 = nox_strman_loadString_40F1D0("NameChange", 0,
 														   "C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 1470);
 						nox_swprintf(v401, v41, v330);
@@ -3037,9 +3037,9 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 			}
 			return 4;
 		case 0x1Eu:
-			v303 = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 3));
+			v303 = (nox_playerInfo*)nox_common_playerInfoGetByID_417040(nox_cdecode_score_read_u16(data + 3));
 			if (nox_client_isConnected_43C700() && v303) {
-				if (v303 == *(char**)(&dword_8531A0_2576)) {
+				if (v303 == (nox_playerInfo*)dword_8531A0_2576) {
 					v348 = nox_xxx_spellTitle_424930(*(unsigned char*)(data + 2));
 					v304 = nox_strman_loadString_40F1D0("plyrspel.c:AwardSpell", 0,
 														"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 8112);
@@ -3048,17 +3048,17 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 					v349 = nox_xxx_spellTitle_424930(*(unsigned char*)(data + 2));
 					v305 = nox_strman_loadString_40F1D0("plyrspel.c:AwardSpellToOther", 0,
 														"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 8115);
-					nox_swprintf(v405, v305, v303 + 4704, v349);
+					nox_swprintf(v405, v305, v303->name_final, v349);
 				}
 				nox_xxx_printCentered_445490(v405);
 			}
 			return 5;
 		case 0x1Fu:
-			v306 = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 3));
+			v306 = (nox_playerInfo*)nox_common_playerInfoGetByID_417040(nox_cdecode_score_read_u16(data + 3));
 			if (!nox_client_isConnected_43C700() || !v306) {
 				return 5;
 			}
-			if (v306 == *(char**)(&dword_8531A0_2576)) {
+			if (v306 == (nox_playerInfo*)dword_8531A0_2576) {
 				v350 = nox_xxx_guiCreatureGetName_427240(*(unsigned char*)(data + 2));
 				v307 = nox_strman_loadString_40F1D0("PlyrGide.c:AwardGuide", 0,
 													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 8145);
@@ -3067,16 +3067,16 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				v351 = nox_xxx_guiCreatureGetName_427240(*(unsigned char*)(data + 2));
 				v308 = nox_strman_loadString_40F1D0("PlyrGide.c:AwardGuideToOther", 0,
 													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 8148);
-				nox_swprintf(v403, v308, v306 + 4704, v351);
+				nox_swprintf(v403, v308, v306->name_final, v351);
 			}
 			nox_xxx_printCentered_445490(v403);
 			return 5;
 		case 0x20u:
-			v309 = nox_common_playerInfoGetByID_417040(*(unsigned short*)(data + 3));
+			v309 = (nox_playerInfo*)nox_common_playerInfoGetByID_417040(nox_cdecode_score_read_u16(data + 3));
 			if (!nox_client_isConnected_43C700() || !v309) {
 				return 5;
 			}
-			if (v309 == *(char**)(&dword_8531A0_2576)) {
+			if (v309 == (nox_playerInfo*)dword_8531A0_2576) {
 				v352 = nox_xxx_abilityGetName_0_425260(*(unsigned char*)(data + 2));
 				v310 = nox_strman_loadString_40F1D0("ComAblty.c:AwardAbility", 0,
 													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 8178);
@@ -3085,7 +3085,7 @@ int nox_xxx_netOnPacketRecvCli_48EA70_switch(int a1, int op, unsigned char* data
 				v353 = nox_xxx_abilityGetName_0_425260(*(unsigned char*)(data + 2));
 				v311 = nox_strman_loadString_40F1D0("ComAblty.c:AwardAbilityToOther", 0,
 													"C:\\NoxPost\\src\\Client\\Network\\cdecode.c", 8181);
-				nox_swprintf(v404, v311, v309 + 4704, v353);
+				nox_swprintf(v404, v311, v309->name_final, v353);
 			}
 			nox_xxx_printCentered_445490(v404);
 			return 5;

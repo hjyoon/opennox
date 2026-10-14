@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 원격 Force of Nature의 방패 반사와 직접 피격 검증 (R189)
+
+기준 clean/pushed revision은 `7f142dd3547aa2f288f5d1c78040ef9f2f339034`이다. 사용자 goenv Go1.26.9를 계속 사용하며 GO 없는 wrapper도 해당 설치본을 선택함을 확인했다. 게임 production/test·기존 YAML/PNG/golden·최소 언어 버전은 변경하지 않는다. 원본 thing.bin/gamedata.bin에서 Force of Nature의 CLASS_CONJURER/CANT_TARGET_SELF·마나60, DeathBall의 직접 충돌255·근접100·외경50/내경0을 읽었다.
+
+첫 v1 진단은 시전자 소유 목록에서 빠진 투사체를 삭제로 판단하고 사망 때의 마나66→0을 두 번째 시전 비용으로 세어 actual1이었다. v2/v3는 자연 스폰 사이의 도보 경로를 찾지 못해 시전 전에 실패했다. 이 세 실행의 client/server/monitor·frozen 입력·로그·PNG·실제 종료를 그대로 보존한다. 별도 원본 맵 메타데이터 helper의 `truncated object` 실패도 남겨 전체 ObjectData 해독 성공으로 세지 않는다. 후속 private 진단만 실제 MissileList, 사각형의 네 모서리, finer 이동 격자와 live native 포털 목적지 연결을 읽도록 보강했다. v4/v5 경로는 도보 입력으로 완료됐으므로 네 포털의 실제 통과나 전체 경로 탐색 동등성을 인증하지 않는다.
+
+실제 hardware clock/headless seat·정상 원격 메뉴/직업 선택/아레나 참가·B 주문책 드래그/release/B 닫기·right-button 이동·조준/A 입력으로 Conjurer→Warrior를 검사했다. 기본 단축바에 없던 Force of Nature를 첫 슬롯으로 옮긴 한 entry 외의24개·row는 유지됐다. HP·마나·위치·주문 습득·RNG·clock·packet·damage callback·render 결과를 주입하지 않는다. 두 실행 모두 레벨3·self0 시전 큐/음절·단일 마나125→65 소모60, native 고주소 duration/caster/charge/DeathBall, 정상20틱 충전·end−7 charge 제거·end−1 launch·duration cleanup을 관찰했다.
+
+v4의 정지한 전사는 상태16·원래 방패 armor0x1000005·buff0에서 DeathBall을 반사했다. 같은 native ball의 소유자가 전사로 바뀌었고 CRUSH/type2의 근접 피해로 시전자 HP100→85→53→1→0·정상 사망 마나0이 됐다. 전사는 HP150을 유지했다. 일반 left-button 부활로 시전자의 HP100·마나125가 복원됐다. v5는 충전 중 전사에게 정상 right-button 접근 입력을 보냈고 실제 위치 변화·state0을 확인했다. 반사 없이 같은 ball의 직접 명중으로 HP150→0·CRUSH/type2·양쪽 client 피해 표시150/HUD가 일치했다. 일반 클릭 부활 후 전사 HP150도 복원됐다. client의 시전 후 마나66/67은 자연 회복이며 추가 비용으로 세지 않는다.
+
+두 DeathBall은 생성 후 observed age123에서 자연 world 제거됐고 charge/ball의 양쪽 drawable도 강제 삭제 없이 제거됐다. 각 실행의 ready remote2명 상태에서 정상 authenticated cmd quit를 요청해 MSG_SERVER_QUIT199·ACK200 두 건씩, client4/server2 합계6 process의 actual0 종료와 정상15초 높이 갱신을 확인했다. 관련 기존 Force of Nature/DeathBall/duration/피해/사망/부활 회귀는 strict cgocheck2+race+checkptr2/count3에서2,502pass·834identities·3packages·0skip/0fail·actual0이다. R186 전체 회귀를 이번 재실행으로 표시하지 않는다.
+
+실행 전후 전체 source6,737개·보호304개·원본1,556개·개인1,562개와 R134 HOLD 네 입력은 동일하다. frozen private driver·실제 입력/관찰·PNG·실제 종료 ledger는 `/private/tmp/opennox-remote-nature-r189.w4o4F8`에 보존한다. gameplay audit actual0/SHA는 `d892b2e1cac10197a7e7096e1c55edbf776b3ac088bca9f58534543eae68298e`다. 이 두 경로에 추가 기능 수정이 필요한 결함은 발견되지 않아 문서 두 파일만 추가하고 커밋 직후 push한다. 나머지 주문/직업/맵·독립 원본 Windows 실행·물리 SDL/Retina/GPU·실제 가청 음향·Player SetColor 계약·R134 HOLD와 전체 포팅 완료를 주장하지 않는다.
+
 ## 원격 소환술사의 Toxic Cloud 시전과 자연 수명 검증 (R188)
 
 기준 clean/pushed revision은 `5c0569aa69417c9613c383f020fb14c1a6d2e3e0`이다. 사용자 goenv Go1.26.9를 계속 사용하고 게임 production/test·기존 YAML/PNG/golden·최소 언어 버전은 변경하지 않는다. 원본 `thing.bin`의 실제 decoder로 Toxic Cloud가 CLASS_CONJURER/CANT_TARGET_SELF/마나60임을 확인했다. 첫 진단 helper의 string/숫자 ID 비교 build failure는 원문·actual1과 함께 보존하고 새 v2 helper에서 API 타입만 교정했다.

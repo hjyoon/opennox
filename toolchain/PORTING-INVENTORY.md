@@ -1,5 +1,23 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 전용 서버 기본 비렌더링과 CTF·FlagBall HUD 시작 경계 (R212)
+
+기준 clean/pushed revision은 `0de619651f2fb7756903da54f13ecf6ba7d03db6`이며 사용자 goenv Go1.26.9를 계속 사용한다. R211에서 실제 clock의 일반/Quest 호스트에 두 클라이언트를 순차 접속시키고, 서로 다른 실제 net code·Quest team1·양쪽 HUD/마우스 이동·정상 quit/ACK2를 확인했다. 개인 Save/state/clock/packet 주입이나 production 변경은 없다. 최초 Quest 검사는 두 번째 참가자의 준비 완료 전에 team을 검사한 입력 오류였으며 실패 원문을 유지하고 준비 시점만 분리한 v2에서 통과했다. 봉인된 R211 receipt SHA는 `8cee7ae6ff772f2458179d920eb87ccb901658c7e456ef3dc8f66f4b1a2029ec`다.
+
+추가 실제 CTF 검사에서 전용 서버가 capflag 로딩 중 `sub_455A50`로 GUI를 만들려다 `server should not load GUI`로 actual2 종료했다. `sub_455A50`와 `sub_455F60`는 기존 team lookup 후 NoRendering이면0을 반환하도록 각각 세 줄만 추가했다. lookup·일반 렌더링의 기존 본문·team/model/flag count·FlagBall reset은 유지한다. 이 guard만으로 실제 실행이 해결되지 않아 CLI를 확인하니 server 제품도 `-serveronly` 기본값이 false였다. main.go의 해당 기본값만 build-tag 상수 `isDedicatedServer`로 바꿨다. 일반 client의 false 기본값과 명시적 CLI override는 유지하며 dedicated 기본 실행은 기존 seat/audio/비렌더링 초기화 분기로 진입한다. GUI parser의 panic이나 게임 모드 전환 제한을 없애지 않았다.
+
+새 native HUD parent2는 real headers와 완전한 active C bodies를 그대로 컴파일한다. 각24조건(엔진 모드4·기존 창 유무2·guard pattern3)에서 비렌더링 GUI 호출/상태 변경0과 기존 렌더링 창 배치/초기화를 검사한다. 동일 v2 입력은 guard 전2fail→후2pass이며 공식 cgocheck2+race+checkptr2/count3의 새 HUD/기존 team 검사12pass/0skip다. 초기 v1 fixture의 exported DWORD 선언 누락은 컴파일 준비 실패이며 이번에 새로 만든 두 untracked 입력만 byte-exact archive로 보존하고 새 v2 이름을 사용했다. 기존 baseline 기대값은 수정하지 않았다. 추가 CLI 선언 검사는 원래 false 기본값에서1fail→수정 후1pass이며 실제 실행 검증과 구분한다.
+
+실제 clock/private localhost의 별도 CTF·FlagBall 서버는 `-serveronly`나 엔진 상태 주입 없이 시작→같은 맵 재로딩→각 load count1/2·players0/max32·loop/tick 증가→authenticated quit actual0을 통과했다. 두 서버와 controller 모두 actual0이다. 처음 재로딩 controller는 다른 게임 모드로 전환하려다 원래 콘솔 제한에 막혔으며 actual1/실제 child cleanup SIGTERM15·입력/로그를 보존했다. 별도 서버와 같은 모드 재로딩으로 교정한 새 v3 입력에서 통과했다. 공식 server E2E의 so_beach/chat→estate/arena→trilevel/arena→estate/arena, 네 tick 증가, load1/1/1/2와 정상 quit도 actual0이다.
+
+CTF 맵 준비 이후의 실제 client Join은 별도 `nox_xxx_netPlayerIncomingServ_4DDF60` 팀 순회에서 native 주소가 `0x2d808258`로 잘려 SIGSEGV/host actual2·client actual1을 일으켰다. 이는 CTF incoming pointer HOLD로 남기며 이번 시작 경계 수정에서 GAME3_2.c를 변경하거나 접속 성공으로 기록하지 않는다. 일반/Quest의 R211 성공을 CTF/FlagBall·모든 공개 서버·물리 LAN/WAN 검증으로 확대하지 않는다.
+
+전체 일반/HD/공식 cgocheck2 각각73,780pass/47skip·40packages, server69,214pass/7skip·36packages·actual0이다. R210의 모든 기존 ID/action/count/skip/package는 같고 새3parents만 추가됐다. 기존632B Warrior save와 R140의 동결 Host Load 입력은 일반/HD actual0이며 선택·Load 직후·600frame 대기·이동의 여덟 실제 PNG bytes/SHA가 R210과 같다. 개인 Save를 import하거나 화면 기대값을 교체하지 않았다. original code2,968/data650 verifier도 actual0이다.
+
+보존 감사 actual0은 source6,806→6,809files의 기능 차이가 위 두 기존 source와 새 회귀/fixture 세 파일뿐임을 확인했다. 기존 assertion/YAML/PNG/oracle·protected304files·개인1,562files/Save/config·R134 HOLD·R211 증거·original 자산 subset1,554개는 불변이다. body audit SHA는 `6586e42001acb656cfbd4801da6dc09cb3b0820eece906e3dfe0b8729f70ef1d`, 자료는 `/private/tmp/opennox-ctf-incoming-r212.eB3O10`에 보존한다. 최소 언어 버전·전역 goenv/runtime/GC·캐시를 변경하지 않았다.
+
+문서는 이 기록만 앞에 추가하고 기존 suffix를 보존한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 세 제품·새 회귀·실제 CTF/FlagBall 시작/재로딩/정상 종료·공식 server E2E·동일 일반/HD Host Load를 후속 receipt로 확인한다. 아직 실행되지 않은 후속 검사, CTF incoming pointer HOLD, 다른 GUI/AI/인벤토리 HOLD·physical GPU/가청 음향·전체 포팅 목표는 완료로 기록하지 않는다.
+
 ## 원격 Quest 접속의 팀 정보 포인터 복원 (R210)
 
 기준 clean/pushed revision은 `b6202811486b1f37ed3ac079e0e3653decf43b2b`이며 사용자 goenv Go1.26.9를 계속 사용한다. R209의 실제 incoming player는 `sub_4DF2E0`가 embedded team 주소 `0x1583cce80`을 `0x583cce80`으로 잘라 native ContainsObject에서 SIGSEGV/host actual2를 일으켰다. 해당 team/player iterator를 실제 pointer 타입으로 바꾸고 member 주소·team ID·net code를 기존 native field로 읽는다. 같은 경로의 `sub_4198A0`는 member 인수와 lookup object를 pointer로 유지하고 ID/type을 named field로 읽는다. 세 C source/header의 이 변경 외에는 기능 코드 차이가 없다. 기존 index31 gate, descriptor→member 순서, nil member/lookup gate, ID0의 packet 전송, signed net-code bits, 10바이트 wire payload와 transport 인수는 유지한다.

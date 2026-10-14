@@ -86,7 +86,7 @@ func runArgs(args []string, loopFunc func() error) (gerr error) {
 	var (
 		fConfig     = flags.String("config", "", "use specified config file")
 		fData       = flags.String("data", "", "explicitly set Nox data dir")
-		fServer     = flags.Bool("serveronly", false, "run the server only")
+		fServer     = flags.Bool("serveronly", isDedicatedServer, "run the server only")
 		fWindow     = flags.Bool("window", false, "window")
 		fSWindow    = flags.Bool("swindow", false, "swindow")
 		fFullScreen = flags.Bool("fullscreen", false, "fullscreen")

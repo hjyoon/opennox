@@ -2795,6 +2795,9 @@ char sub_455A50(char a1) {
 
 	v1 = 0;
 	nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
+	if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
+		return 0;
+	}
 	if (!(dword_5d4594_1045604 || (v2 = sub_455C30()) != 0)) {
 		return v2;
 	}
@@ -2935,6 +2938,9 @@ int sub_455F60() {
 	int v6;     // [esp+10h] [ebp-4h]
 
 	nox_xxx_objGetTeamByNetCode_418C80(nox_player_netCode_85319C);
+	if (nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) {
+		return 0;
+	}
 	if (dword_5d4594_1045636 || (result = sub_456070()) != 0) {
 		nox_xxx_gameGetScreenBoundaries_43BEB0_get_video_mode(&v3, &v2, &v6);
 		nox_xxx_screenGetSize_430C50_get_video_max(&v4, &v5);

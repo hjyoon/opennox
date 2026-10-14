@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R202: 중앙 HUD 알림의 native 반복 경계
+
+사용자 goenv Go1.26.9를 계속 사용한다. 실제 맵/Save 알림 초기화와 HUD 중앙 문구 출력에 남은 signed32 주소 비교 두 개만 원본의3개 알림/4개 그림자 반복 횟수로 바꿨다. 원본 두 전체 함수·unhooked UTF-16 복사 실행, 동결 compiled RED와 수정 후13,365 native 조건·실제 영어/한글 font/raster/headless402frames·관련 공식 strict/race/checkptr2 3회33pass가 통과했다. 일반 주소의 수정 전 실제 화면도 통과하므로 그것을 behavioral RED로 세지 않는다. 전체 일반/HD/CGo 각각73,731pass/47skip·server69,165pass/7skip과 모든 기존 결과가 동일하다. 일반/HD headless Quest8화면·stage1→2/이동/종료와 원본/개인 데이터·기존 기대값·R134 HOLD도 유지한다. 새 fixture 준비 실패/보존 기록·declared font/draw 서비스와 아직 미완료인 범위는 [R202 인벤토리](./PORTING-INVENTORY.md#중앙-hud-알림-초기화와-그림자의-native-반복-경계-r202)를 따른다.
+
 ## R201: 맵 생성 진행 문구의 native 포인터
 
 사용자 goenv Go1.26.9를 계속 사용하며 `GO` 없는 공식 wrapper도 같은 Darwin/ARM64 설치를 선택한다. 실제 맵 생성 진행 문구에서 UTF-16 주소를 DWORD로 축소하던 저장/읽기를 기존 native pointer slot으로 바꾸고, 측정 폭은 포인터 대신 별도 int에 받으며3바이트 패킷의 sequence는 byte로 읽는다. 원본395바이트의681회 실행·동결 native681조건·실제 로컬/전체 C dispatcher의 영어/한국어384headless frames, 관련 공식 strict/race/checkptr2 3회30pass가 통과했다. 수정 전 두 실제 경로의 SIGSEGV와 새 fixture 준비 실패는 원문/입력으로 보존한다. 전체 일반/HD/CGo 각각73,728pass/47skip·server69,163pass/7skip 및 모든 기존 결과는 동일하다. 일반/HD headless Quest8화면·stage1→2/이동/종료도 통과했고 기존 기대값·원본/개인 데이터·R134 HOLD는 유지한다. 원본 Windows presentation/EAX와 기존 C short API의 구분, 통제 렌더링/음향 서비스 및 아직 미완료인 범위는 [R201 인벤토리](./PORTING-INVENTORY.md#맵-생성-진행-문구의-native-utf-16-포인터-r201)를 따른다.

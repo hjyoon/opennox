@@ -515,6 +515,7 @@ void sub_4417E0(wchar2_t* a1, const char* a2) {
 wchar2_t* sub_445450() {
 	unsigned char* v0; // esi
 	wchar2_t* result;   // eax
+	int message_count = 0;
 
 	v0 = getMemAt(0x5D4594, 824440);
 	do {
@@ -522,7 +523,7 @@ wchar2_t* sub_445450() {
 		*(uint32_t*)v0 = 0;
 		v0[4] = 0;
 		v0 += 644;
-	} while ((int)v0 < (int)getMemAt(0x5D4594, 826372));
+	} while (++message_count < 3);
 	dword_5d4594_825736 = 0;
 	return result;
 }
@@ -543,6 +544,7 @@ int nox_xxx_drawMessageLines_445530() {
 	int i;              // [esp+10h] [ebp-Ch]
 	int v13;            // [esp+14h] [ebp-8h]
 	int v14;            // [esp+18h] [ebp-4h]
+	int shadow_count;
 
 	v13 = 0;
 	nox_draw_viewport_t* rdr = nox_draw_getViewport_437250();
@@ -559,12 +561,13 @@ int nox_xxx_drawMessageLines_445530() {
 		v6 = getMemU16Ptr(0x5D4594, 823804 + v5);
 		nox_xxx_drawGetStringSize_43F840(0, v6, &v14, 0, 0);
 		v7 = nox_win_width - v14;
+		shadow_count = 0;
 		v8 = getMemAt(0x587000, 107848);
 		v9 = (nox_win_width - v14) / 2;
 		do {
 			nox_xxx_drawString_43F6E0(0, (short*)v6, v9 + *(uint32_t*)v8, v1 + *((uint32_t*)v8 + 1));
 			v8 += 8;
-		} while ((int)v8 < (int)getMemAt(0x587000, 107880));
+		} while (++shadow_count < 4);
 		v10 = v13;
 		if (v13) {
 			nox_xxx_drawSetTextColor_434390(*getMemIntPtr(0x5D4594, 2597996));

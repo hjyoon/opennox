@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 퀘스트 결과 화면의 원본 제목과 native 여섯 행 경계 (R195)
+
+기준 clean/pushed revision은 `4f2a5c40f27fd0948c830b18ba63bef63e0d47bb`이며 사용자 goenv Go1.26.9를 계속 사용한다. `GO`를 생략한 공식 wrapper도 `go1.26.9 darwin/arm64`를 선택한다. 설치된 runtime의 `mgcmark.go`에는 `(*sigctxt).pushCall`이 삽입한 작은 프레임까지 스캔하는 ARM64 수정이 있다. [Go1.26.6 백포트 #80394](https://github.com/golang/go/issues/80394)와 로컬 Go1.26.9 소스를 확인했으며, GC/preemption 설정을 끄거나 런타임 소스를 변경하지 않았다.
+
+실제 결과 화면 `sub_44E8E0`의 두 문장만 수정했다. 원본 GAME.EXE `0044E995..0044E99B`가 읽는 `005A52B4`의 UTF-16 bytes는 `20 00 00 00`(공백 하나)다. 포팅 코드에 추가돼 있던 ` XX1 `을 제거해 원래 단계 제목을 복원했다. `0044EE17..0044EE2B`의 좌표 범위는 여섯 XY 레코드이며, native 포인터를 signed32로 축소해 비교하던 종료 조건을 이미 증가하는 행 번호의 `>=6`으로 바꿨다. 주소의 하위32비트가 부호 경계를 넘더라도 여섯 행을 모두 그린다. 원본 코드2,057bytes의 SHA는 `a6a1bbb66d529bde80cd58e40d160d8b3b595049227f00559e522ee4996a1f4e`이다. 나머지 본체·native Player/통계 필드·문자열/배치·프레임/깜박임·packet ABI는 그대로다. 앞서 조사한 이미 Go receiver가 처리하는 C decoder 중복 arm은 수정하지 않았다.
+
+새 fixture는 완전한 실제 C 렌더러·native 헤더·실제 UTF-16 formatter를 컴파일하고 memmap/지역화/font metric/그리기 서비스만 통제한다. 4GiB 초과 Player/font, signed32 부호 경계와 DWORD wrap을 넘는 좌표 테이블 및 일반 high-address 테이블, 빈/희소/여섯 행, local/other/nil identity, native/PE32 이름 분리·긴 한글 이름 자르기, ushort/DWORD 값, 단계0/1/0x8001/-1, 기본/홀수 해상도, frame0/1/29/30/31/0xffffffff와 blink 두 상태를 검사한다. 두 테스트 각6,048조건, 합계12,096조건에서 제목·그리기 내용/좌표/색/폭·locale/measure 수·signed return·통계/좌표 저장소 불변을 확인했다. 준비를 마친 동일 fixture의 기존 본체는 실제 컴파일 뒤 잘못된 제목과 `draws=13/22`의 조기 순회 종료로 각각 actual1이다. 수정 본체는 actual0이며 관련 기존 CGo 회귀를 공식 cgocheck2/race/checkptr2로3회 반복한32IDs/96pass·3packages도0skip/0fail이다.
+
+최초 새 fixture에서는 macOS가 낮은 mmap hint를 다른 주소로 반환해 준비 단계가 actual1이었다. 해당 입력/로그를 archive에 보존하고 기존 mapping을 덮어쓰지 않는 더 높은 hint로 교정했다. 새 fixture 작성 중 이름 폭을324로 전사한 오류도 원본 `0044EB0E..0044EB28`의 `290-120-16=154`와 대조해 게임 코드 수정 전에 교정했다. 이후 compiled RED를 다시 확인하고 테스트를 동결했다. 기존 테스트·기대값·golden을 교정하거나 수정 후 결과에 맞춰 새 assertion을 바꾼 것은 아니다.
+
+전체 일반/HD/공식 cgocheck2는 각각73,703pass/47skip·39packages, server는69,145pass/7skip·35packages·actual0이다. R194의 모든 기존 test/package 결과는 같고 새 두 테스트만 추가됐다. 원본 code2,968/data650 verifier도 actual0이다. 변경 범위·동결 입력·terminal·protected304files·stock1,556files·개인1,562files/Save/config·R134 HOLD 네 입력의 불변을 감사했다.
+
+원래 `host-quest-stage-transition.yaml`을 byte-identical private 경로에 복사해 일반/HD headless/mock 게임을 실행했다. 실제 stock exit contact 이후 `g_templd` stage1→`g_swamp` stage2/frame2206·HP450/450·native player/drawable, 다음 이동(561.000,2875.957)→(517.497,3171.985)과 정상 종료가 actual0이다. 실제 결과 화면 제목은 `게임 결과 - 스테이지: 1`로 표시돼 `XX1`이 없으며 다음 gameplay HUD는 stage2다. 새 private 캡처8개를 동결해 HD 재현성도 확인했다. 소스의 기존 PNG나 R194 private 캡처를 덮어쓰지 않았고, 이 새 기록을 원본 Windows/역사적 golden의 픽셀 동등성이나 실제 여섯 접속자 결과의 증거로 쓰지 않는다.
+
+초기 실패·원본 disassembly/data·동결 입력·로그·checkpoint는 `/private/tmp/opennox-quest-score-draw-r195.gj1ZlN`에 보존하며 body audit SHA는 `7f019aa5bb02987e2d725d1120171153dc1fad669bbd9f4a04b737148c198f52`다. 자체 캐시는 삭제하지 않았다. 커밋 직후 origin `port/go1.26-multiarch`에 push하고 clean ARM64 일반/HD/server 제품 metadata/Mach-O/help 및 같은 private 입력의 clean 일반/HD headless 실행은 후속 receipt로 확인한다. Player SetColor·R134·역사적 frozen 화면/Quest/AI 실패·남은 C 경계와 전체 포팅 목표는 미완료다.
+
 ## 퀘스트 보상·이름 변경 알림의 native 이름 접근 (R194)
 
 기준 clean/pushed revision은 `7a2fdbf6dc8665602edd8332b1505b082887ab4e`이며 사용자 goenv Go1.26.9를 계속 사용한다. 활성 C decoder의 `MSG_GAUNTLET` 보상 sub30/31/32(스펠·도감·스킬) 및 `MSG_UPDATE_GUI_GAME_SETTINGS` 이름 변경 알림을 수정했다. Player를 `nox_playerInfo*`로 유지해 PE32 `+4704` 대신 native `name_final`(ARM64 offset6008)을 읽고, current-player 비교에서 정수 저장소를 char-pointer lvalue로 읽던 alias를 native 포인터 비교로 바꿨다. 보상 packet의 ushort ID는 기존 packed byte reader를 재사용하며 high bit를 임의로 지우지 않는다. 다른 switch arm·58바이트 settings copy·5/60바이트 반환·helper 순서·버퍼·packet ABI는 유지한다.

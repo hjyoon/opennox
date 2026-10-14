@@ -172,7 +172,7 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 	nox_wcscpy(&v55[1], v4);
 	v5 = nox_strman_loadString_40F1D0("Noxworld.c:Stage", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c", 451);
 	nox_wcscpy(v56, v5);
-	nox_wcscat(v56, L" XX1 ");
+	nox_wcscat(v56, L" ");
 	nox_itow(*getMemIntPtr(0x5D4594, 831228), WideCharStr, 10);
 	nox_wcscat(v56, WideCharStr);
 	nox_swprintf(v57, L"%s - %s", &v55[1], v56);
@@ -253,7 +253,9 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 		++v7;
 		++v42;
 		v48 = v6;
-		if ((int)v6 >= (int)getMemAt(0x587000, 123012)) {
+		// The original coordinate range contains exactly six score rows.
+		// Do not truncate native addresses to a signed 32-bit loop bound.
+		if (v42 >= 6) {
 			break;
 		}
 		v2 = v51;

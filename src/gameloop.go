@@ -223,6 +223,7 @@ func (s *Server) MainLoop() error {
 	// Match startServer so ordinary multiplayer spells/abilities are awarded.
 	noxflags.SetEngine(noxflags.EngineAdmin)
 	noxflags.UnsetEngine(noxflags.EngineGodMode)
+	s.initDedicatedHostQuest(isServerQuest)
 	s.nox_xxx_gameSetMapPath_409D70("so_beach.map")
 	setVersionCode(NOX_CLIENT_VERS_CODE)
 	// RunServerArgs bypasses the menu/startServer path. Initialize the same

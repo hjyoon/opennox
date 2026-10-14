@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 전용 서버의 Quest 선택 초기화와 원격 접속 실패 분리 (R209)
+
+기준 clean/pushed revision은 `717d224a36b228f2b78f31ad17e4545fdeeefb67`이며 사용자 goenv Go1.26.9를 계속 사용한다. 전용 MainLoop는 메뉴의 startServer를 우회하여 -autoquest를 파싱하고도 서버 Quest mode word를 설정하지 않았다. clean 제품의 실제 clock/private localhost에서 빈 autoexec로 로비를 연 뒤 authenticated `startSoloQuest`를 요청했지만 so_beach/chat·players0이8초 동안 유지됐다. 이 behavioral negative의 driver actual1과 정상 quit/게임 child actual0을 구분한다. 일반 옵션의 동일 명령은 원래대로 로비를 유지하며 actual0이다.
+
+전용 entry에 서버 측 fresh-host 설정을 한 번 연결했다. 기존 startServer와 같은 createOrJoin1, GameNotQuest 선택, Coop 해제, 461440/4D6F40/4D6F90 reset, 4D6F60 선택과 4D6F80 reset을 실제 기존 setter로 수행한다. 기존 EngineAdmin/GodMode 처리 뒤, game data/newSession/시작 명령/첫 tick 이전에 실행한다. 그래픽 tubes·minimap·character picker를 기동하거나 GUI path를 수정하지 않는다. 기존 MainLoop의 기능 diff는 이 한 호출이며 초기 맵·CLI 기본 load estate·명령 순서·clock/RNG·네트워크/전투 코드는 변경하지 않았다.
+
+수정 제품의 실제 API 명령은 stock g_castld의 Quest 전환과 정상 quit/actual0을 확인했다. 즉시 API 관찰은 stage0이며 이후 실제 서버 로그에서 stage1 전환이 확인된다. 별도 remote client 준비에서는 startup CLI `startSoloQuest`로 stage1·players0을 확인한 뒤 실제 접속을 시작했다. 일반 서버는 같은 초기화 변경 아래 game_ip.txt 목록 검색·Join·Conjurer 생성/appearance·native client-only role·기존 HUD HP100/mana125·마우스 이동 (3380,3668)→(3380,3496)·host quit/client MSG_SERVER_QUIT/host ACK1과 양 child actual0을 통과했다. private input-only driver이며 server/player/packet/HP/Quest state를 주입하지 않는다. 모든 GUI는 headless이고 virtual clock은 사용하지 않았다.
+
+원격 Quest 접속은 HOLD다. 실제 incoming player에서 unchanged `sub_4DF2E0`의 int player iterator가 object team 주소를 `0x1583cce80→0x583cce80`으로 잘라 native ContainsObject에서 addr0x583cce84로 SIGSEGV/host actual2가 났다. 클라이언트는 appearance 선택 뒤 ServerList로 돌아가 stage6 timeout/actual1이며 movement/정상 disconnect 성공으로 세지 않는다. 해당 C 루프의 `sub_4198A0(int,...)` 멤버 packet consumer도 남은 경계로 확인했다. coordinator actual1·실제 양 child terminal·timeout PNG와 변경하지 않은 관련 C/Go source bytes를 동결 보존했다. 이 기동 설정 수정으로 원격 Quest 플레이까지 해결했다고 주장하지 않으며 다음 수정은 그 두 native-pointer 경계와 실제 접속 재검증이다.
+
+새 parent2/subtest6은 실제 native mode words/C setter와 stale0/1/0xffffffff의 두 선택, fresh-host reset·별도 transition request/closed word·다른 game/engine flags 불변 및 실행 위치를 검사한다. 연결 전7pass/1 wiring fail·actual1, 연결 후8pass·actual0이다. 기존 startup/permission/argv와 공식 cgocheck2+race+checkptr2/count3은57pass/0skip·actual0이다. 전체 일반/HD/공식 cgocheck2 각각73,775pass/47skip·40packages, server69,209pass/7skip·36packages·actual0이며 R208의 모든 기존 test ID/action/count/skip/package 결과는 같고 새8IDs만 추가됐다. 공식 dedicated E2E의 기존 네 맵/mode/players/tick/load count/정상 quit도 actual0이다. unit suite의 green을 위 실제 remote Quest 실패 대신 쓰지 않는다.
+
+보존 감사 actual0은 source6,800→6,802files에서 gameloop의 단일 호출 및 새 helper/test만 기능 차이임을 확인했다. 기존 assertion/YAML/PNG/oracle·protected304files·개인1,562files/Save/config·R134 HOLD 네 입력과 이전 실패/동결 입력은 유지한다. 검증된 original 자산1,554개가 sealed bytes/SHA와 동일하며 제외된 nc.obj/nox.cfg를 포함한 full tree 복원은 주장하지 않는다. 원본 code2,968/data650 verifier도 actual0이다. body audit SHA는 `951a44c40b776f6fef2c9151c14def72cf81a0342e6e67f45014f45e33a3eeb8`, 자료는 `/private/tmp/opennox-dedicated-quest-start-r209.PGTADm`에 보존한다. 최소 언어 버전·전역 goenv/runtime/GC·캐시와 기존 GUI/인벤토리 HOLD는 변경하지 않았다.
+
+문서는 이 기록만 앞에 추가하고 기존 suffix를 유지한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 세 제품 metadata·새 초기화 회귀·같은 실제 Quest 시작/일반 API 회귀와 공식 server E2E를 후속 receipt로 확인한다. 아직 미실행인 후속 검사, 원격 Quest 접속·역사적 GUI/AI 실패·Windows/물리 GPU/가청 음향 및 전체 포팅 목표는 미완료다.
+
 ## 전용 서버 E2E의 명시적 시작 옵션 분리 (R208)
 
 기준 clean/pushed revision은 `cc04c08d1ca699fe013eec74f06b6850b0dbdeed`이며 사용자 goenv Go1.26.9를 계속 사용한다. R207에서 전용 서버의 원래 CLI 기본 `load estate`가 실행되면서, 별도 시작 옵션 없이 초기 so_beach/chat을 요구하던 공식 서버 E2E가 22.8초 후 actual1로 실패했다. 실제 로그에는 so_beach 초기화 뒤 estate 로드가 있다. 게임의 기본 명령을 되돌리지 않고 공식 검사 실행기에 `-autoexec ""` 두 인수를 명시했다. 기존 맵·모드·players·tick·load count·인증 API·quit 판정과 public idle YAML은 바이트 그대로 유지한다. 게임 source·clock/RNG·설정/권한/네트워크 로직은 변경하지 않는다.

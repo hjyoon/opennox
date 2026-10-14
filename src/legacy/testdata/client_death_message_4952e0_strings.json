@@ -1,0 +1,8 @@
+{
+  "lang": 8,
+  "entries": [
+    {"id": "die.c:LocalizeAttacker", "vals": [{"str": "< %s >"}]},
+    {"id": "die.c:LocalizeVictim", "vals": [{"str": "[%s]"}]},
+    {"id": "die.c:AttackerNasty", "vals": [{"str": "나쁜 것"}]}
+  ]
+}

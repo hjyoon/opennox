@@ -1,5 +1,23 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 사망 알림의 native 플레이어 이름 주소 복원 (R192)
+
+기준 clean/pushed revision은 `bf9f785eb8eacb5a4072ca6c0931da4272b2b87b`이며 사용자 goenv Go1.26.9를 계속 사용한다. 기존 production 변경은 `src/legacy/client__network__deathmsg.c:sub_4952E0` 한 본체의 타입/이름 필드 접근뿐이다. 공격자·보조 공격자·피해자 이름의 PE32 `+4704`와 varargs 인자의 `int` 축소를 `nox_playerInfo->name_final` 및 UTF-16 포인터로 복원한다. ARM64 실제 이름 offset은6008이다. packet/header ABI·조회/지역화/문자열 합성/흰색 콘솔 출력 순서·반환값·기존32/32/64word 버퍼는 유지한다.
+
+원본 GAME.EXE `004952E0..00495424` raw disassembly는 ushort ID 조회, 이름 주소를 지역화 전에 보관하는 순서, 주 공격자 조회 성공 때만 보조 공격자를 읽는 분기, `" + %s"` 합성과 최종 `"%s %s"`/450C00 반환을 확인한다. 원본 Windows 전체 실행이나 잘못된 victim ID/기존 버퍼 overflow의 안전성을 인증하지 않는다. 기존 raw name 읽기는 사망 packet의 실제 C dispatcher `48EA70→4C9BF0→495210→4952E0`에서 활성 경로다.
+
+새 compiled native fixture는 실제 C 본체·native Player header·기존 UTF-16 formatter/concat을 사용하여62조건을 검사한다. 4GiB 초과 Player, 서로 다른 native/PE32 이름 위치, 한글·surrogate pair, 0/상위 ushort ID·없는 공격자/보조 공격자, 지역화 callback 뒤 live packet/name 읽기, 콘솔 반환값과 unaligned packet ring의 remap/wrap/원래 store를 포함한다. lookup/localization/console은 통제 서비스이며, varargs entry는 잘못된 이름 포인터를 진단 crash 전에 거절하고 실제 formatter에 전달한다. 최종 동결 fixture의 이전 본체 control은 compiled actual1·bad-pointer1, 수정 본체는62조건 actual0이다.
+
+별도 CGo 검사는 실제32슬롯 registry·지역화·원본 상수 blob·C formatter·Go 콘솔 export와 전체 dispatcher를 통과한다. 단지 output printer만 관찰하며5조건의 한글·이모지 출력, Player bytes/packet 불변과 ring99→0/oldest0→1을 확인한다. blob 초기화는 별도 child process로 격리하여 다른 테스트의 pointer slots를 지우지 않는다. 실제 cgocheck2+race+checkptr2/count3의 관련212IDs/636pass·2packages·0skip/0fail·actual0이며 실제 packet 조건15회도 확인했다.
+
+초기 진단의 Ruby replacement escape 오류·기존 formatter qualifier/label-extension 경고·native RED와 첫 packet fixture의 상수 blob 초기화 누락 actual1을 보존한다. 새 테스트 준비만 교정했고 기대 문구/조건·기존 테스트·게임 HP/RNG/입력/시계/timeout/golden은 retune하지 않았다. C fixture의 compiler-specific 경고 범위와 PE32 decoy 초기화 분리도 별도 보존 버전 후 최종 동결했고, 그 최종 동일 입력으로 control RED/현재 GREEN과 관련 strict 반복을 재확인했다.
+
+unchanged `host-game-player-death.yaml` 일반/HD headless/mock 두 process는 actual0이다. 기존 stock Spider placement/target fixture 이후 실제 공격·독 피해로 HP75→0, frame805/state4·native object/drawable, `"피해자: Jack , 공격자: 나쁜 것"` 콘솔 출력과 정상 종료를 확인했다. 사망/체력/출력 결과를 주입하지 않았으며 이는 기존 virtual-clock hosted 경로이지 autonomous enemy selection·원격 PVP·original pixels/물리 오디오 인증이 아니다.
+
+전체 일반/HD/공식 cgocheck2는 각각73,696pass/47skip·39packages, server는69,138pass/7skip·35packages·actual0이다. R190 각 모드의 모든 기존 test/package 결과와 비교해 바이트 주소를 이름에 쓰는 기존 두 조건만 같은 ASLR 정규화를 적용했으며, 기존 결과는 전부 불변이고 R191 한 테스트와 이번 두 테스트만 추가됐다. original code2,968/data650 verifier도 actual0이다. 기존 source/테스트·protected304files·stock1,556files·개인1,562files/Save/config 및 R134 HOLD 네 입력은 보존했다.
+
+동결 body audit SHA는 `7602abafafa07535befa2899100c8a5a51ac9dc0a9ee61c2a4452fc1ba78c948`이며 private 입력/초기 실패/terminal/source 체크포인트는 `/private/tmp/opennox-death-message-r192.I1HfDF`에 보존한다. 기존 문서 suffix는 유지하고 커밋 직후 origin `port/go1.26-multiarch`로 push한다. clean revision의 공식 ARM643제품 metadata/Mach-O/help와 같은 unchanged 사망 GUI 일반/HD는 별도 후속 receipt로 확인한다. Player SetColor·R134·역사적 frozen 화면/Quest/AI 실패·전체 원본 Windows/SDL/GPU/오디오 및 전체 ARM64 포팅 목표는 계속 미완료다.
+
 ## Host Game 시작 상태와 관전자 아이콘의 native 계약 (R191)
 
 기준 clean/pushed revision은 `46a93bc21660dd17627b745c8fdb8484c8d202d7`이며 사용자 goenv Go1.26.9를 계속 사용한다. R190의 ARM643제품과 정상/HD native Teleport GUI 및 후속 보존 감사는 actual0이고 runtime audit SHA는 `03055e070a77be01de231b6980c3b37541bdfdf4ca5f16a16e45b525d360bf7b`다. R190의 unchanged `host-game-start.yaml`은 기존 PNG와 달라 actual2였으며 이전 clean `042bd754c` 제품도 같은 actual2·바이트 동일 got PNG였다. 다른 Host GUI 시나리오 통과를 이 화면 비교의 통과로 사용하지 않는다.

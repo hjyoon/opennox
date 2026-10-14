@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R192: 사망 알림의 native 이름 포인터
+
+Go1.26.9 ARM64에서 사망 알림이 Player 이름을 PE32 위치에서 읽고 주소를32비트로 축소하는 활성 C 경로를 typed native 이름 필드로 수정했다. 원본 출력 순서·버퍼·packet ABI는 유지한다. 이전 본체 control은 같은 fixture에서 실패하고 수정 후62조건·실제 CGo packet 경로 및 관련 strict/race/checkptr2 반복636pass를 확인했다. 전체 일반/HD/cgocheck2는 각각73,696pass/47skip, server는69,138pass/7skip이며 모든 기존 결과는 그대로다. unchanged 일반/HD headless 게임에서 실제 HP75→0/사망/콘솔 알림과 정상 종료를 확인했고, 초기 테스트 준비 실패·원본·개인 데이터·R134 보류를 보존했다. 상세 범위와 미완료 경로는 [R192 인벤토리](./PORTING-INVENTORY.md#사망-알림의-native-플레이어-이름-주소-복원-r192)를 따른다.
+
 ## R191: Host Game 시작 상태와 관전자 표시 검증
 
 Goenv Go1.26.9를 계속 사용한다. 기존 Host 시작 PNG의 actual2를 보존하고 현재 native status0x10의 숨겨진 eye/방패대기 상태와 원본 low-bit 표시 조건을 대조했다. 일반 입력의 보행·공격·방패복귀·관전자 메뉴 전환은 정상/HD headless 두 실행에서 actual0이고 여섯 실제 캡처도 각각 동일하다. 게임 코드를 바꾸지 않고439조건의 compiled native 회귀를 추가하며 역사적 고정 오프셋 control actual1을 보존한다. 관련 실제 strict CGo/race/checkptr2/count3는276pass/0skip다. 기존 기대값·PNG·원본·개인 데이터·R134 HOLD는 그대로이며 상세와 제한은 [R191 인벤토리](./PORTING-INVENTORY.md#host-game-시작-상태와-관전자-아이콘의-native-계약-r191)를 따른다.

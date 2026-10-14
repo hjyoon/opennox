@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R200: 나침반·삼각함수 초기화의 native 경계
+
+사용자 goenv Go1.26.9를 계속 사용한다. 활성 video initializer의 signed32 주소 비교 세 줄만 기존 카운터의4/32/320회 경계로 바꿨으며 이미지 로드/opaque handle·상태 reset·double 상수/sin/변환·store/반환은 유지한다. 원본 두 함수와 x87 helper 실행·동일 frozen fixture의 compiled RED 및 수정 후225조건·실제 CGo320 words/72파티클 좌표/1,056headless frames·관련 strict/race/checkptr2 3회612pass가 통과했다. 전체 일반/HD/CGo 각각73,725pass/47skip·server69,162pass/7skip와 기존 결과는 동일하다. 첫 전체 CGo 검사는 공유 캐시 손실로 실패했고, 원문 보존 후 전용 캐시의 동일 검사로 통과했다. 고정한 일반/HD headless Quest8화면·stage1→2/이동/종료도 통과했으며 기존 기대값·원본/개인 데이터·R134는 유지한다. 캐시/자동 checksum 복구·검증 범위·아직 미완료인 항목은 [R200 인벤토리](./PORTING-INVENTORY.md#나침반-이미지와-삼각함수-테이블의-native-초기화-경계-r200)를 따른다.
+
 ## R199: 효과 팔레트의 원본 ramp와 native 경계
 
 사용자 goenv Go1.26.9를 계속 사용한다. 실제 맵 효과 팔레트 initializer에서 char 감소로 어두워진 첫 blue ramp를 원본 DWORD `+255`로 복원하고 네 signed32 주소 종료 조건을64/32/64/64회 순회로 바꿨다. 원본 RGB bytes/paired stores/반환과 기존 draw·시간·RNG 계약은 유지한다. 원본319바이트 실행768 RGB 호출·compiled control RED와 수정 후90조건/23,040호출·실제 CGo 맵256색/10headless frames·관련 strict/race/checkptr2 3회306pass가 통과했다. 전체 일반/HD/CGo 각각73,720pass/47skip·server69,160pass/7skip과 모든 기존 결과는 동일하다. unchanged 일반/HD headless Missile11경로/Bow3발을 확인했으며 새 private Bow 캡처는 동결 관찰이지 Windows/과거 golden이 아니다. 초기 Python/JIT/fixture 준비 실패·원본/개인 데이터/기존 기대값·R134 보존 및 아직 미완료인 범위는 [R199 인벤토리](./PORTING-INVENTORY.md#효과-팔레트의-원본-dword-색상-증가와-native-순회-경계-r199)를 따른다.

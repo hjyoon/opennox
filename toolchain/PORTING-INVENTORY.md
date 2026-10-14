@@ -1,5 +1,23 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 나침반 이미지와 삼각함수 테이블의 native 초기화 경계 (R200)
+
+기준 clean/pushed revision은 `556ebe1d6a91b078720427ea489a7168fe8b7da9`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 계속 사용한다. 활성 클라이언트 초기화의 `sub_43C060 → compassGenStrings_4A9C80`와 `sub_4AE520 → Sub_4AEE30`에서 signed32 주소 종료 비교 세 줄만 기존 정수 카운터의4/32/320회 경계로 바꿨다. 나침반 이름/호출/4+32 DWORD image stores·상태 reset·nil 이미지·반환, 삼각함수의 원래 double 상수/식·sin·정수 변환·320 stores·반환은 그대로다. circle renderer·파티클/RNG·image-handle registry와 다른 C body를 변경하지 않았다.
+
+원본 GAME.EXE SHA는 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`이다. 원본4A9C80 전체126bytes(SHA `77fb768c6d7f2d775d2f3c40b19a909dde71339720a7d35a61f5ae645853da47`)·4AEE30 전체67bytes(`c4c3aed4857ed3354964da85547e69cf852ccd97d7927f426a73cbbee321220f`)·566DCC 전체39bytes(`d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c`)를 실제 PE에서 읽어 세 stack/guard pattern으로 실행했다. 나침반의 formatter/image token 두 서비스만 통제한다. 삼각함수의 FSIN·원본 truncating x87 helper는 hook 없이 실행하며 원본 두 entry6회·formatter/image108회·x87 helper960회·모든320 words/반환·code/guard 불변·fault0을 확인했다. Windows image loader/전체 framebuffer 인증은 아니다.
+
+동결한 새 fixture는 두 완전한 production C 본체와 native headers를 컴파일한다. 세 high-address mapping·signed32/DWORD 경계의 다섯 placement·세 guard pattern·나침반의 정상/일부 nil/전체 nil 반환 및 삼각함수의 실제 libm/별도 순서 sink를 검사한다. 기존 본체는 같은 frozen fixture에서 나침반36개 중5개, 삼각함수320개 중1개만 처리해 각각 behavioral actual1이다. 수정 후135+90=225조건·나침반4,860 loads·sine28,800 calls·전체 words/반환/별도 text slot/앞뒤 guard가 actual0이다. 기대값은 원본 실행에서 동결했고 수정 후 교정하지 않았다.
+
+별도 실제 CGo child에서는 real circle initializer→C 함수→현재 native sin의320 words가 원본과 정확히 일치하고 양쪽 guard도 유지됨을 확인했다. 실제 파티클 point helper의72조건과 native circle renderer/headless upload1,024frames도 통과했다. 원래 clamp=256에서 읽는 초기화 범위 바로 뒤 word는 새 값을 주입하거나321번째 store를 추가하지 않고 기존 상태로 보존한다. 나침반은 genuine C formatter/CGo→기존 renderer의 opaque handles/registry→32개 paired-image/headless frames를 검사한다. 새 colored bag/image service와 기존 raster primitive는 선언한 통제 서비스이며 Windows compass/circle pixel oracle이 아니다. 일반 주소의 수정 전 실제 CGo 검사도3IDs 모두 통과하므로 이를 behavioral RED로 세지 않는다.
+
+관련 공식 cgocheck2/race/checkptr2/count3은204IDs/612pass·2packages·0skip/0fail·actual0, 새 실제 headless frames3,168개를 포함한다. 전체 일반/HD/공식 cgocheck2는 각각73,725pass/47skip·39packages, server는69,162pass/7skip·35packages다. R199 기존 test/package 결과와 두 ASLR 이름 정규화는 그대로이며 client 모드에 새5IDs, server에는 legacy2IDs만 추가됐다.
+
+첫 전체 batch는 일반/HD 통과 후 엄격 모드에서 공유 GOCACHE 파일을 찾지 못해 actual1로 종료했다. 당시 공유 gocache/mod 디렉터리의 부재도 실제 확인했고 이 작업에서 삭제한 캐시는 없다. 모든 실패 원문을 유지한 뒤 `/private/tmp/opennox-video-tables-r200.04SkfZ` 아래 전용 go-cache/go-modcache/go-work를 사용해 고정 모듈을 재생성했다. module download가 자동 추가한 workspace checksum은 별도 diff 증거로 보존하고 기존 세 줄로 복원했다. module/toolchain/기존 소스·기대값을 바꾸지 않았고 같은 전체 엄격 검사·전용 서버 검사가 actual0으로 종료했다. v1 실패와 v2 성공을 혼동하거나 실패 로그를 덮어쓰지 않는다.
+
+R195에서 이미 동결된 private `host-quest-stage-transition.yaml`과8개 관찰 PNG를 바이트 그대로 복사해 일반/HD headless/mock으로 재검증했다.8화면 비교·stock exit 실제 충돌의 g_templd stage1→g_swamp stage2/frame2206·native player/drawable·HP450/450과 이후(561.000,2875.957)→(517.497,3171.985) 이동·정상 종료는 두 실행 모두 actual0이다. 출구 위치/충돌 fixture를 포함하며 전체 자율 퀘스트/모든 맵의 증거가 아니다. 새 PNG 생성·기존 golden 변경·개인 Save import는 없고, 이 관찰을 Windows/physical GPU/가청 오디오 인증으로 확대하지 않는다.
+
+원본 code2,968/data650 verifier·보존 감사는 actual0이다. source6,774→6,779files의 기능 차이는 C 세 종료 조건과 새5files뿐이다. protected304files·stock1,556files·개인1,562files/Save/config·기존 테스트/기대값·R134 HOLD 네 입력은 그대로다. private 실행/원본 transcript/동결 입력/캐시 손실 실패/terminal/checkpoint는 `/private/tmp/opennox-video-tables-r200.04SkfZ`에 보존하고 body audit SHA는 `39df6f784a129f20b4005b033666d37ac2ff5879ffb7ea2e12885ba8a638fd6d`이다. 문서 두 파일은 이 기록만 삽입한다. 커밋 직후 origin `port/go1.26-multiarch`로 push하고 clean ARM643제품 및 같은 일반/HD headless 입력은 후속 receipt로 검증한다. 아직 수정하지 않은 맵 생성 progress UTF-16 포인터 경계·Player SetColor·R134·역사적 frozen 화면/Quest/AI 실패·남은 C 경계와 전체 포팅 목표는 계속 미완료다.
+
 ## 효과 팔레트의 원본 DWORD 색상 증가와 native 순회 경계 (R199)
 
 기준 clean/pushed revision은 `40bd1661f93ecfcbfdc7c0486d5b1adfe79a879d`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`로 계속 빌드·검사한다. 활성 맵 초기화 `maps.go → Sub_4B64C0 → GAME3.c:sub_4B5CD0`의 첫 파란색 ramp를 원본 DWORD 누산기와 `+255` 증가로 복원하고, 네 signed32 주소 비교를 원래64/32/64/64회 경계로 바꿨다. 두 번째 loop의 yellow/orange paired stores를 포함한256색·1,024바이트의 위치/순서·RGB BYTE 변환·helper·반환은 유지한다. native magic/arrow tail의 실제 팔레트 소비 경로를 확인했으며 draw geometry·수명·frame·RNG·damage를 변경하지 않았다.

@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R193: 점수·보물 알림의 native Player 필드
+
+사용자 goenv Go1.26.9를 계속 사용한다. 실제 C dispatcher의 점수/보물 패킷 두 arm에서 PE32 위치에 쓰던 Player 데이터와 이름을 native 필드로 복원하고 해당 packed 숫자를 바이트로 읽도록 수정했다. 원본 signed Elimination·unsigned strict 보물 시각·호스트 권한·cached DWORD wrap 알림 조건과 helper 순서/packet ABI는 유지한다. 동결된 기존 본체의 compiled RED, 수정 후 3,648조건, 실제 CGo 51경로 및 strict/race/checkptr2 3회 552pass를 확인했다. 전체 일반/HD/cgocheck2 각각 73,698pass/47skip·server69,140pass/7skip이며 모든 기존 결과와 기대값은 불변이다. unchanged headless 일반/HD 보물 획득·드롭은 actual0이고 원본/개인 데이터/R134 보류도 유지한다. 전체 라운드·Windows/물리 오디오/전체 포팅 완료 인증은 아니며 [R193 인벤토리](./PORTING-INVENTORY.md#점수보물-알림-패킷의-native-필드-복원-r193)에 범위와 기록을 구분한다.
+
 ## R192: 사망 알림의 native 이름 포인터
 
 Go1.26.9 ARM64에서 사망 알림이 Player 이름을 PE32 위치에서 읽고 주소를32비트로 축소하는 활성 C 경로를 typed native 이름 필드로 수정했다. 원본 출력 순서·버퍼·packet ABI는 유지한다. 이전 본체 control은 같은 fixture에서 실패하고 수정 후62조건·실제 CGo packet 경로 및 관련 strict/race/checkptr2 반복636pass를 확인했다. 전체 일반/HD/cgocheck2는 각각73,696pass/47skip, server는69,138pass/7skip이며 모든 기존 결과는 그대로다. unchanged 일반/HD headless 게임에서 실제 HP75→0/사망/콘솔 알림과 정상 종료를 확인했고, 초기 테스트 준비 실패·원본·개인 데이터·R134 보류를 보존했다. 상세 범위와 미완료 경로는 [R192 인벤토리](./PORTING-INVENTORY.md#사망-알림의-native-플레이어-이름-주소-복원-r192)를 따른다.

@@ -1,0 +1,8 @@
+{
+  "lang": 8,
+  "entries": [
+    {"id": "cdecode.c:Eliminated", "vals": [{"str": "탈락 [%s]"}]},
+    {"id": "cdecode.c:SH_NearVictory", "vals": [{"str": "보물 [%s]"}]},
+    {"id": "guimsg.c:systemmsg", "vals": [{"str": "알림: %s"}]}
+  ]
+}

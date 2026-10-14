@@ -1,5 +1,29 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 점수·보물 알림 패킷의 native 필드 복원 (R193)
+
+기준 clean/pushed revision은 `0fce32e3c88c3ca7a25ebc34491b487a66196c91`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 계속 사용한다. 활성 C dispatcher `48EA70`의 `MSG_REPORT_LESSON(78)` 및 `MSG_REPORT_TREASURE_COUNT(85)`만 수정했다. PE32 고정 위치의 점수·사망 수·보물 수·갱신 시각·이름 접근을 `nox_playerInfo`의 native 필드로 바꾸고, 두 패킷의 정렬되지 않은 wire 숫자 읽기를 little-endian 바이트 읽기로 바꿨다. 다른 switch arm, 외부 함수/packet ABI, 11/7바이트 반환, 기존 문자열 버퍼는 유지한다.
+
+| 필드 | PE32 위치 | ARM64 native 위치 |
+| --- | ---: | ---: |
+| lessons | 2136 | 2140 |
+| field_2140 | 2140 | 2144 |
+| field_2144 | 2144 | 2148 |
+| field_2152 | 2152 | 2156 |
+| field_2156 | 2156 | 2160 |
+| field_2160 | 2160 | 2164 |
+| name_final | 4704 | 6008 |
+
+원본 GAME.EXE의 `004909DF..00490AB5`와 `00490CED..00490DCE` raw disassembly에서 실제 store, helper 순서, 이름 주소, sound312/volume100, packet 진행을 확인했다. Elimination의 사망 수 비교는 `490A61 JL`의 signed DWORD 조건이다. 보물 갱신 시각은 `490D52 JBE`의 unsigned strict 비교이며, 호스트/오래된 패킷에서도 cached 보물 수의 DWORD `total-1` wrap/equality로 알림을 판단한다. 이 조건들을 바꾸거나 새 서버 권한/시간 비교 규칙을 넣지 않았다. 원본 Windows 전체 실행을 인증한 것은 아니다.
+
+동결한 새 C fixture는 두 실제 production arm과 선언, native header, 기존 UTF-16 formatter를 컴파일한다. 4GiB 초과 Player, native/PE32 이름 위치 분리, 한글·surrogate pair, signed/unsigned 경계, nil lookup/접속/호스트/Elimination/debug 분기, 지역화 뒤 live 이름, helper 호출 순서와 Player 전체/packet guard 불변의 3,648조건을 검사한다. 기존 본체는 동일 fixture에서 실제 컴파일 후 잘못된 Player store로 actual1, 수정 본체는 actual0이다. lookup/localization/console 등은 통제 서비스이고 잘못된 varargs 이름 주소는 실제 formatter 전에 진단한다.
+
+별도 실제 CGo 검사에서는 전체 C dispatcher → 실제 32슬롯 Player registry → 지역화/UTF-16 formatter → centered message의 세 슬롯·타이머·flag → Go 콘솔 export를 통과한다. frontend 접속 flag와 콘솔·오디오 출력 sink만 관찰/설정하며, 원본 상수 blob은 child process로 격리한다. 17조건×3초기 알림 슬롯의 51경로에서 점수/보물 갱신·한글/이모지·호스트 권한·stale frame·원래 index store·전체 Player bytes를 확인했다. 관련 기존 회귀와 새 검사를 공식 `cgocheck2 + race + checkptr2`로 3회 반복하여 184IDs/552pass·2packages·0skip/0fail·actual0 및 실제 packet 조건 153회를 확인했다. 신규 fixture 준비를 위해 기존 기대값을 교정하지 않았다.
+
+전체 일반/HD/공식 cgocheck2는 각각 73,698pass/47skip·39packages, server는 69,140pass/7skip·35packages·actual0이다. R192 각 모드의 모든 기존 test/package 결과는 동일하고 새 두 테스트만 추가됐다. 기존 두 ASLR test 이름에는 이전과 동일한 정규화만 적용했다. unchanged `host-game-treasure-pickup-drop.yaml` 일반/HD headless/mock 두 process도 actual0이며, 기존 RedPotion의 TreasurePickup handler fixture 후 실제 마우스/MSG_TRY_GET 획득·인벤토리 밖 드래그 드롭·server/client state·정상 종료를 확인했다. 이 GUI gate 자체를 원격 Elimination/Scavenger Hunt 전체 라운드나 해당 승리 알림의 증거로 사용하지 않는다.
+
+원본 code2,968/data650 verifier·보존 감사도 actual0이다. 기존 소스/테스트·protected304files·stock1,556files·개인1,562files/Save/config·R134 HOLD 네 입력은 그대로다. 읽기 전용 진단의 잘못된 cwd 및 적용 전 patch-context 오류는 게임 실패나 성공 증거로 세지 않는다. private 진단·동결 입력·compiled RED·실제 terminal·체크포인트는 `/private/tmp/opennox-client-score-r193.8g5qxz`에 유지하고 body audit SHA는 `2d42ed467a37ae39b27d7743a5f5ce2c8e1b2d1a3c5367b6c71581591be54a5b`이다. 프로젝트 캐시는 이번에 삭제하지 않았다. 커밋 직후 origin `port/go1.26-multiarch`로 push하고 clean ARM64 3제품 metadata/Mach-O/help 및 같은 headless 일반/HD GUI는 별도 후속 receipt로 확인한다. Player SetColor·R134·역사적 frozen 화면/Quest/AI 실패·남은 C 경계·전체 원본 Windows/SDL/GPU/가청 오디오와 전체 포팅 목표는 계속 미완료다.
+
 ## 사망 알림의 native 플레이어 이름 주소 복원 (R192)
 
 기준 clean/pushed revision은 `bf9f785eb8eacb5a4072ca6c0931da4272b2b87b`이며 사용자 goenv Go1.26.9를 계속 사용한다. 기존 production 변경은 `src/legacy/client__network__deathmsg.c:sub_4952E0` 한 본체의 타입/이름 필드 접근뿐이다. 공격자·보조 공격자·피해자 이름의 PE32 `+4704`와 varargs 인자의 `int` 축소를 `nox_playerInfo->name_final` 및 UTF-16 포인터로 복원한다. ARM64 실제 이름 offset은6008이다. packet/header ABI·조회/지역화/문자열 합성/흰색 콘솔 출력 순서·반환값·기존32/32/64word 버퍼는 유지한다.

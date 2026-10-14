@@ -1,5 +1,25 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 맵 생성 진행 문구의 native UTF-16 포인터 (R201)
+
+기준 clean/pushed revision은 `ad279ca223a9f5805793e489af37c1623390841b`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 계속 사용하며 `GO` 없는 공식 wrapper도 go1.26.9 darwin/arm64임을 확인했다. `.go-version`·toolchain pin·module toolchain은1.26.9이고 최소 언어 버전/전역 goenv·런타임/GC 설정을 바꾸지 않는다. 로컬 mapGenSetFlags5235F0와 전체 C dispatcher48EA70의9B/9C/9D가 호출하는 활성 mapGenClientText4A9D00만 수정했다.
+
+원래 UTF-16 주소를 DWORD에 저장한 뒤 native pointer로 읽으면 뒤의 packed DWORD까지 주소 상위32비트가 된다. 기존 memmap native pointer slot의 setMemPtr/getMemPtr로 저장·측정·출력의 전체 주소를 유지하며 원래4바이트 blob layout과 인접 compass/sequence/frame을 보존한다. 측정 폭을 포인터 변수에 int로 덮어쓰던 alias는 별도 int로 받는다. 정렬되지 않은3바이트 wire sequence를 두 byte로 읽고 같은 unsigned16 값을 캐시에 저장한다. 새 캐시/우회값·nil guard·helper/색상/기하·frame cycle·시간/RNG·dispatcher/header/ABI는 추가하거나 변경하지 않는다. 측정 서비스가 cached text를 바꾸는 경우 draw 때 native slot을 다시 읽는다.
+
+원본 GAME.EXE SHA는 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`이다. 전체4A9D00 entry부터 ret4A9E8A까지395bytes(SHA `684af341bcc887d070e0ef90ed89c618b08b97681f85b0efbb956e90e642c0e9`)를 hook 없이 실행하며13개 외부 UI 서비스를 명시적으로 통제했다. 세 op/전체32frames·signed 화면 크기/정수 나눗셈·sequence0/1/7fff/8000/ffff와 duplicate·알 수 없는 op의 기존 문구·측정 중 문구 변경을 포함한227입력을 세 stack/guard pattern으로 실행해681entries/fault0/code·packet·guard 불변을 확인했다. 원본 trace에서 localization key/source/line·helper 순서/argument·signed 좌표·cached text/sequence/frame을 동결한 canonical JSON으로 도출했다.
+
+원본은 Windows presentation begin48A220→copy4AD170→end48A290를 호출한다. 마지막 platform 서비스의 EAX는 기존 decoded C short sequence 반환과 같다고 주장할 수 없으며 두 실제 caller는 helper 반환을 사용하지 않는다. 원본 platform trace/EAX를 별도 기록하고 기존 short API/dispatcher3bytes 계약은 그대로 유지한다. 현재 Go copyPixBuffer가 이미 실제 upload와 presentation count 증가를 소유하므로 Windows lock/end나 추가 frame 증가를 복원하지 않았다. 이 검사는 전체 Windows driver/원본 framebuffer·반환값 완전 일치 인증이 아니다.
+
+새 fixture는 완전한 production C 파일과 real native headers를 컴파일한다.4GiB 위의 실제 mapping/text pointers·native slot 서비스·unaligned packet와 guard·packed image/text/neighbor bytes 및 모든 동결 trace를 검사한다. 기존 본체는 같은 frozen fixture에서 native cached UTF-16 주소가 달라 behavioral actual1이다. 수정 후681조건은 actual0이다. 별도 실제 child는 native CGo local entry 또는 전체 C dispatcher→실제 localization/font/C draw exports→현재 Go raster/headless upload를 영어/한국어 각각96frames씩, 합계384frames로 검사한다. duplicate의 무음/무출력/무증가, 단일897/50 sound 요청·실제 pointer·packed neighbor·sequence/frame cycle·3바이트 packet/guard·presentation count96·game frame100/RNG93/17을 확인한다. private colored bag/GoRegular font/CSF와 기존 raster primitives를 통제 서비스로 선언하며 Windows 폰트/픽셀·가청 소리 인증으로 확대하지 않는다.
+
+최초 actual-baseline actual1은 새 fixture에서 존재하지 않는 SetBgColor를 사용한 compile 준비 오류다. 전체 v1 입력을 archive한 뒤 실제 SetSelectColor API만 교정하고 v2 입력을 동결했다. 기존 production의 실제 local/packet child는 모두 neighbor0xa55aa55a가 잘못 결합된 주소에서 SIGSEGV/actual1이었다. production 수정 후 첫 mapgen-green에서는 native681조건이 통과했지만 새 raster reference 두 검사는 actual1이었다. original4343E0와 실제 export/renderer가 SetColor를 사용하는데 reference만 SetColor2를 사용한 준비 오류를 확인했다. v2 전체 입력을 archive하고 reference API만 SetColor로 교정한 v3를 동결했다. 색상0x03e0·기대값/조건/횟수·original transcript·native fixture/Go assertion은 변경하지 않았다. 모든 초기 실패/입력과 최종3IDs actual0을 구분해 보존한다.
+
+관련 공식 cgocheck2/race/checkptr2/count3은10IDs/30pass·3packages·0skip/0fail·actual0이다. 실제 mapgen1,152frames와 기존 video3,168frames를 포함한다. 전체 일반/HD/공식 cgocheck2 각각73,728pass/47skip·39packages, server69,163pass/7skip·35packages·actual0이다. R200의 모든 기존 test/package 결과/횟수/skip과 두 기존 ASLR 이름 정규화는 그대로이며 client 모드에 새3IDs, server에는 legacy1ID만 추가됐다.
+
+R195에서 이미 동결한 private Quest YAML과8개 관찰 PNG를 바이트 그대로 복사했다. 일반/HD headless/mock 검사는8화면 비교·stock exit 실제 충돌의 g_templd stage1→g_swamp stage2/frame2206·native player/drawable·HP450/450·(561.000,2875.957)→(517.497,3171.985) 이동·정상 종료 모두 actual0이다. 출구 위치/충돌 fixture를 포함하며 전체 자율 Quest/모든 맵의 증거가 아니다. 기존 golden 수정·새 PNG 생성·개인 Save import는 없고 이 관찰은 Windows/physical GPU/가청 오디오 oracle이 아니다.
+
+원본 code2,968/data650 verifier와 보존 감사는 actual0이다. source6,779→6,785files의 기능 차이는 production C 한 본체와 새6files뿐이며 protected304files·stock1,556files·개인1,562files/Save/config·기존 테스트/기대값·R134 HOLD 네 입력은 그대로다. 이번 작업에서 캐시/실패 자료를 삭제하지 않았다. 동결 입력/원본 transcript/준비 오류·behavioral RED/실제 terminal/checkpoint는 `/private/tmp/opennox-mapgen-text-r201.ItkNxi`에 보존하며 body audit SHA는 `74cbebe2d6514d6cec35c34c0eadbe10e0da9cc76ef0818b95d5fbbc673d46fd`이다. 문서 두 파일은 이 기록만 삽입한다. 커밋 직후 origin `port/go1.26-multiarch`로 push하고 clean ARM64 세 제품과 같은 일반/HD headless 입력은 후속 receipt로 확인한다. Player SetColor·R134·역사적 frozen 화면/Quest/AI 실패·남은 C 경계와 전체 macOS ARM64 포팅 목표는 계속 미완료다.
+
 ## 나침반 이미지와 삼각함수 테이블의 native 초기화 경계 (R200)
 
 기준 clean/pushed revision은 `556ebe1d6a91b078720427ea489a7168fe8b7da9`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 계속 사용한다. 활성 클라이언트 초기화의 `sub_43C060 → compassGenStrings_4A9C80`와 `sub_4AE520 → Sub_4AEE30`에서 signed32 주소 종료 비교 세 줄만 기존 정수 카운터의4/32/320회 경계로 바꿨다. 나침반 이름/호출/4+32 DWORD image stores·상태 reset·nil 이미지·반환, 삼각함수의 원래 double 상수/식·sin·정수 변환·320 stores·반환은 그대로다. circle renderer·파티클/RNG·image-handle registry와 다른 C body를 변경하지 않았다.

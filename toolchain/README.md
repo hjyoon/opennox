@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R201: 맵 생성 진행 문구의 native 포인터
+
+사용자 goenv Go1.26.9를 계속 사용하며 `GO` 없는 공식 wrapper도 같은 Darwin/ARM64 설치를 선택한다. 실제 맵 생성 진행 문구에서 UTF-16 주소를 DWORD로 축소하던 저장/읽기를 기존 native pointer slot으로 바꾸고, 측정 폭은 포인터 대신 별도 int에 받으며3바이트 패킷의 sequence는 byte로 읽는다. 원본395바이트의681회 실행·동결 native681조건·실제 로컬/전체 C dispatcher의 영어/한국어384headless frames, 관련 공식 strict/race/checkptr2 3회30pass가 통과했다. 수정 전 두 실제 경로의 SIGSEGV와 새 fixture 준비 실패는 원문/입력으로 보존한다. 전체 일반/HD/CGo 각각73,728pass/47skip·server69,163pass/7skip 및 모든 기존 결과는 동일하다. 일반/HD headless Quest8화면·stage1→2/이동/종료도 통과했고 기존 기대값·원본/개인 데이터·R134 HOLD는 유지한다. 원본 Windows presentation/EAX와 기존 C short API의 구분, 통제 렌더링/음향 서비스 및 아직 미완료인 범위는 [R201 인벤토리](./PORTING-INVENTORY.md#맵-생성-진행-문구의-native-utf-16-포인터-r201)를 따른다.
+
 ## R200: 나침반·삼각함수 초기화의 native 경계
 
 사용자 goenv Go1.26.9를 계속 사용한다. 활성 video initializer의 signed32 주소 비교 세 줄만 기존 카운터의4/32/320회 경계로 바꿨으며 이미지 로드/opaque handle·상태 reset·double 상수/sin/변환·store/반환은 유지한다. 원본 두 함수와 x87 helper 실행·동일 frozen fixture의 compiled RED 및 수정 후225조건·실제 CGo320 words/72파티클 좌표/1,056headless frames·관련 strict/race/checkptr2 3회612pass가 통과했다. 전체 일반/HD/CGo 각각73,725pass/47skip·server69,162pass/7skip와 기존 결과는 동일하다. 첫 전체 CGo 검사는 공유 캐시 손실로 실패했고, 원문 보존 후 전용 캐시의 동일 검사로 통과했다. 고정한 일반/HD headless Quest8화면·stage1→2/이동/종료도 통과했으며 기존 기대값·원본/개인 데이터·R134는 유지한다. 캐시/자동 checksum 복구·검증 범위·아직 미완료인 항목은 [R200 인벤토리](./PORTING-INVENTORY.md#나침반-이미지와-삼각함수-테이블의-native-초기화-경계-r200)를 따른다.

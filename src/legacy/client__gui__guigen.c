@@ -21,13 +21,14 @@ short nox_xxx_mapGenClientText_4A9D00(unsigned char* a1) {
 	wchar2_t* v5;       // eax
 	int v6;            // kr00_4
 	int v7;            // esi
+	int text_width;
 
 	v1 = a1;
-	v2 = *(unsigned short*)(a1 + 1);
+	v2 = (unsigned int)a1[1] | ((unsigned int)a1[2] << 8);
 	if ((unsigned short)v2 == *getMemU32Ptr(0x5D4594, 1309668)) {
 		return v2;
 	}
-	*getMemU32Ptr(0x5D4594, 1309668) = *(unsigned short*)(a1 + 1);
+	*getMemU32Ptr(0x5D4594, 1309668) = v2;
 	nox_xxx_clientPlaySoundSpecial_452D80(897, 50);
 	sub_430B50(0, 0, nox_win_width - 1, nox_win_height - 1);
 	nox_client_clearScreen_440900();
@@ -39,23 +40,23 @@ short nox_xxx_mapGenClientText_4A9D00(unsigned char* a1) {
 	switch (*v1) {
 	case 0x9Bu:
 		v5 = nox_strman_loadString_40F1D0("Generating", 0, "C:\\NoxPost\\src\\client\\Gui\\guigen.c", 89);
-		*getMemU32Ptr(0x5D4594, 1309660) = v5;
+		setMemPtr(0x5D4594, 1309660, v5);
 		break;
 	case 0x9Cu:
 		v5 = nox_strman_loadString_40F1D0("Assembling", 0, "C:\\NoxPost\\src\\client\\Gui\\guigen.c", 92);
-		*getMemU32Ptr(0x5D4594, 1309660) = v5;
+		setMemPtr(0x5D4594, 1309660, v5);
 		break;
 	case 0x9Du:
 		v5 = nox_strman_loadString_40F1D0("Populating", 0, "C:\\NoxPost\\src\\client\\Gui\\guigen.c", 95);
-		*getMemU32Ptr(0x5D4594, 1309660) = v5;
+		setMemPtr(0x5D4594, 1309660, v5);
 		break;
 	}
-	nox_xxx_drawGetStringSize_43F840(0, *(unsigned short**)getMemAt(0x5D4594, 1309660), (int*)&a1, 0, 0);
-	v6 = nox_win_width - (uint32_t)a1;
+	nox_xxx_drawGetStringSize_43F840(0, (wchar2_t*)getMemPtr(0x5D4594, 1309660), &text_width, 0, 0);
+	v6 = nox_win_width - text_width;
 	v7 = nox_win_height / 2 - (2 * nox_xxx_guiFontHeightMB_43F320(0) + 70);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 	nox_xxx_drawSetColor_4343E0(*getMemIntPtr(0x852978, 4));
-	nox_draw_drawStringHL_43F730(0, *(short**)getMemAt(0x5D4594, 1309660), v6 / 2, v7);
+	nox_draw_drawStringHL_43F730(0, (wchar2_t*)getMemPtr(0x5D4594, 1309660), v6 / 2, v7);
 	if (++*getMemU32Ptr(0x5D4594, 1309672) >= 32) {
 		*getMemU32Ptr(0x5D4594, 1309672) = 0;
 	}

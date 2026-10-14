@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R199: 효과 팔레트의 원본 ramp와 native 경계
+
+사용자 goenv Go1.26.9를 계속 사용한다. 실제 맵 효과 팔레트 initializer에서 char 감소로 어두워진 첫 blue ramp를 원본 DWORD `+255`로 복원하고 네 signed32 주소 종료 조건을64/32/64/64회 순회로 바꿨다. 원본 RGB bytes/paired stores/반환과 기존 draw·시간·RNG 계약은 유지한다. 원본319바이트 실행768 RGB 호출·compiled control RED와 수정 후90조건/23,040호출·실제 CGo 맵256색/10headless frames·관련 strict/race/checkptr2 3회306pass가 통과했다. 전체 일반/HD/CGo 각각73,720pass/47skip·server69,160pass/7skip과 모든 기존 결과는 동일하다. unchanged 일반/HD headless Missile11경로/Bow3발을 확인했으며 새 private Bow 캡처는 동결 관찰이지 Windows/과거 golden이 아니다. 초기 Python/JIT/fixture 준비 실패·원본/개인 데이터/기존 기대값·R134 보존 및 아직 미완료인 범위는 [R199 인벤토리](./PORTING-INVENTORY.md#효과-팔레트의-원본-dword-색상-증가와-native-순회-경계-r199)를 따른다.
+
 ## R198: 보조무기 marker의 native 84칸 초기화
 
 사용자 goenv Go1.26.9를 계속 사용하며 직접 실행과 GO 없는 wrapper도 같은 Darwin/ARM64 설치를 선택한다. 활성 보조무기 초기화의 signed32 주소 비교를 원래21행 카운터로 바꿔4열×21행을 처리한다. selector/encoder/sender·wire/반환·empty flag와 기존 기대값은 유지한다. compiled control RED와 수정 후87,720조건·실제 CGo1,360조건·관련 strict/race/checkptr2 3회1,164pass, 전체 일반/HD/CGo 각각73,716pass/47skip·server69,158pass/7skip 및 모든 기존 결과 동일을 확인했다. 원래 frozen inventory Screen의 일반/HD actual2는 이전 clean 제품에서도 동일한 실제 픽셀로 재현하며 그대로 보존한다. 별도 동결 기능 입력의 실제 마우스/보조무기 동기화·아이콘 확인 각2회는 일반/HD actual0이며 원래 Screen 통과를 대체하지 않는다. 준비 오류·실패 기록·원본/개인 데이터/R134 보존과 미완료 범위는 [R198 인벤토리](./PORTING-INVENTORY.md#보조무기-표시-초기화의-native-84칸-경계-r198)를 따른다.

@@ -4556,7 +4556,7 @@ nox_window* nox_xxx_wndScrollBoxButtonCreate_4B5640(nox_window* parent, int a2, 
 
 //----- (004B5CD0) --------------------------------------------------------
 int sub_4B5CD0() {
-	char v0;           // si
+	int v0;            // esi
 	unsigned char* v1; // edi
 	int v2;            // edi
 	unsigned char* v3; // esi
@@ -4568,6 +4568,7 @@ int sub_4B5CD0() {
 	unsigned char* v9; // edi
 	int result;        // eax
 	int v12;           // [esp+8h] [ebp-4h]
+	unsigned int count = 0;
 
 	v0 = 0;
 	v1 = getMemAt(0x5D4594, 1312500);
@@ -4575,8 +4576,9 @@ int sub_4B5CD0() {
 		LOBYTE(v12) = v0 / 63;
 		*(uint32_t*)v1 = nox_color_rgb_4344A0((unsigned char)(v0 / 63) / 3, 3 * (unsigned char)(v0 / 63) / 5, v12);
 		v1 += 4;
-		--v0;
-	} while ((int)v1 < (int)getMemAt(0x5D4594, 1312756));
+		v0 += 255;
+	} while (++count < 64);
+	count = 0;
 	v2 = 0;
 	v3 = getMemAt(0x5D4594, 1312756);
 	do {
@@ -4587,7 +4589,8 @@ int sub_4B5CD0() {
 		*((uint32_t*)v3 + 32) = nox_color_rgb_4344A0(255, v5, 0);
 		v3 += 4;
 		v2 += 255;
-	} while ((int)v3 < (int)getMemAt(0x5D4594, 1312884));
+	} while (++count < 32);
+	count = 0;
 	v6 = 0;
 	v7 = getMemAt(0x5D4594, 1313012);
 	do {
@@ -4595,7 +4598,8 @@ int sub_4B5CD0() {
 		*(uint32_t*)v7 = nox_color_rgb_4344A0(v12, v12, v12);
 		v7 += 4;
 		v6 += 255;
-	} while ((int)v7 < (int)getMemAt(0x5D4594, 1313268));
+	} while (++count < 64);
+	count = 0;
 	v8 = 0;
 	v9 = getMemAt(0x5D4594, 1313268);
 	do {
@@ -4603,7 +4607,7 @@ int sub_4B5CD0() {
 		*(uint32_t*)v9 = result;
 		v9 += 4;
 		v8 += 255;
-	} while ((int)v9 < (int)getMemAt(0x5D4594, 1313524));
+	} while (++count < 64);
 	return result;
 }
 // 4B5D21: variable 'v12' is possibly undefined

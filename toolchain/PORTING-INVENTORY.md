@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 효과 팔레트의 원본 DWORD 색상 증가와 native 순회 경계 (R199)
+
+기준 clean/pushed revision은 `40bd1661f93ecfcbfdc7c0486d5b1adfe79a879d`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`로 계속 빌드·검사한다. 활성 맵 초기화 `maps.go → Sub_4B64C0 → GAME3.c:sub_4B5CD0`의 첫 파란색 ramp를 원본 DWORD 누산기와 `+255` 증가로 복원하고, 네 signed32 주소 비교를 원래64/32/64/64회 경계로 바꿨다. 두 번째 loop의 yellow/orange paired stores를 포함한256색·1,024바이트의 위치/순서·RGB BYTE 변환·helper·반환은 유지한다. native magic/arrow tail의 실제 팔레트 소비 경로를 확인했으며 draw geometry·수명·frame·RNG·damage를 변경하지 않았다.
+
+원본 GAME.EXE SHA는 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`이다. 원본 entry4B5CD0부터 ret4B5E0E까지319바이트(SHA `b193fadf653a19c714b42b2a6cfa0ca883e967e9946ad32adde4a621659f39dc`)를 세 stack/guard pattern에서 실행했다. 유일한 통제 서비스 RGB4344A0는 low-BYTE RGB를 기록하고 구별 가능한 token을 반환한다. 세 entry·768 RGB 호출에서256색의 모든 stores/순서/반환과 code/guard 불변을 확인했다. 원본 첫 ramp의 index2 RGB(2,4,8), index63(85,153,255)는 기존 char 감소와 다르다. 원본 Windows RGB 변환·프레임 전체의 픽셀 oracle로 주장하지 않는다.
+
+새 frozen C fixture는 실제 완전한 production 본체·native headers를 컴파일한다. 세 high-address mapping·signed32/DWORD 경계의 다섯 palette placement·세 guard pattern에서 색상 mode45조건과 색상 산술에 독립적인 loop-bounds mode45조건, 합계90조건/23,040 RGB 호출을 검사한다. 같은 최종 fixture의 기준 본체는 RGB와 네 loop 경계 모두 behavioral actual1이고 수정 본체는 actual0이다. 별도 실제 CGo child에서는 대체 writer 없이 실제 맵 parent→전체 initializer→genuine RGB5551 export의256words를 확인한다. 실제 world/direct registered callback 두 경로·다섯 remaining-life 조건의10 full-raster/headless-upload frames도 original RGB와 기존 native line primitive 기준을 통과한다. 이는 실제 맵 팔레트 회귀 검사이며 Windows raster/physical GPU 인증은 아니다.
+
+원본 probe의 첫 실행은 system Python의 Unicorn 부재로 actual1, 설치된 Python의 sandbox JIT 실행은 signal4였다. 동일 frozen probe의 승인된 읽기 전용 실행은 actual0이다. 첫 두 compiled control은 operators.h 누락과 getMemAt macro 재정의의 fixture 준비 실패였다. 매 교정 전에 새 입력을 archive했으며 header/undef 준비만 보완했다. 최종 frozen Go assertions·원본 JSON·probe·production을 이후 변경하지 않았다. 준비 실패를 behavioral RED나 성공으로 세지 않으며 모든 원문을 유지한다.
+
+관련 공식 cgocheck2/race/checkptr2/count3은102IDs/306pass·2packages·0skip/0fail·actual0이며 실제 tail frames30개를 포함한다. 전체 일반/HD/공식 cgocheck2는 각각73,720pass/47skip·39packages, server는69,160pass/7skip·35packages·actual0이다. R198 기존 test/package 결과·기대값·두 ASLR 이름의 정규화는 그대로이며 client 모드에 새4IDs, server에 legacy2IDs만 추가됐다.
+
+unchanged 기능 입력을 private 복사해 일반/HD headless/mock으로 각각 Magic Missile11경로와 Bow3발을 확인했다. Missile은 Player→NPC/NPC→Player levels1..5 및 기존 natural NPC animation 경로의 실제 명중·server/client HP·투사체 제거를 검사한다. 시전 요청·HP/위치/AI 준비를 포함한 fixture이므로 정상 플레이어 mana/incantation 입력이나 전체 자율 AI의 인증은 아니다. Bow는 실제 inventory equip/마우스 공격에서 charge20→19→18→17·target HP2000→1938→1876→1814·공격 animation 완료가 actual0이다. 기존 bow helper가 YAML 밖에서 추가하는 Screen의 첫 private PNG는 신규 관찰로만 보관했고 HD 전에 동결해 동일 캡처 재현을 확인했다. 이 PNG는 과거/Windows golden을 대체하지 않고 source에 추가하지 않는다. 오디오 mock/noaudio 검사를 가청 효과음 인증으로 세지 않는다.
+
+원본 code2,968/data650 verifier·보존 감사는 actual0이다. source6,769→6,774files의 차이는 이번 production 한 본체와 새5files뿐이고 protected304files·stock1,556files·개인1,562files/Save/config·R134 HOLD 네 입력은 그대로다. 캐시를 삭제하지 않았다. 진단·동결 입력·초기 실패·실제 terminal/checkpoint는 `/private/tmp/opennox-fx-palette-r199.G2rzV1`에 보존하며 body audit SHA는 `69669dd54695767dc85e1fdda60d61ec6d29649c12cdddcd88421a325e07008c`이다. 문서 두 파일은 이 기록만 삽입한다. 커밋 직후 origin `port/go1.26-multiarch`로 push하고 clean ARM64 세 제품 metadata/Mach-O/help 및 같은 frozen 입력의 일반/HD headless 검증은 후속 receipt로 확인한다. Player SetColor·R134·역사적 frozen 화면/Quest/AI 실패·남은 C 경계 및 전체 macOS ARM64 포팅 목표는 계속 미완료다.
+
 ## 보조무기 표시 초기화의 native 84칸 경계 (R198)
 
 기준 clean/pushed revision은 `8aae1385a106c7179e79479b94f60a41bdf3bee7`이다. 사용자 goenv Go1.26.9를 계속 사용하며 직접 실행과 `GO` 없는 공식 wrapper 모두 `go1.26.9 darwin/arm64`임을 확인했다. `.go-version`·toolchain pin·module toolchain은 이미1.26.9이며 전역 goenv·최소 언어 버전·런타임/GC 설정을 변경하지 않는다. 설치된 `runtime/mgcmark.go`에는 ARM64 pushCall frame 스캔 백포트가 포함돼 있다.

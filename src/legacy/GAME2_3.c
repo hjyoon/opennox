@@ -1472,7 +1472,7 @@ char* sub_494FF0() {
 	while (*(uint32_t*)v1) {
 		v1 += 16;
 		++v0;
-		if ((int)v1 >= (int)getMemAt(0x5D4594, 1201440)) {
+		if (v0 >= 32) {
 			return 0;
 		}
 	}
@@ -1489,7 +1489,7 @@ char* sub_495020(int a1) {
 	while (!*((uint32_t*)v2 + 3) || *(uint32_t*)v2 != a1) {
 		v2 += 16;
 		++v1;
-		if ((int)v2 >= (int)getMemAt(0x5D4594, 1201428)) {
+		if (v1 >= 32) {
 			return 0;
 		}
 	}
@@ -1500,6 +1500,7 @@ char* sub_495020(int a1) {
 int sub_495060(int a1, short a2, short a3) {
 	unsigned char* v3; // eax
 	char* v4;          // eax
+	unsigned int i = 0;
 
 	v3 = getMemAt(0x5D4594, 1200916);
 	do {
@@ -1507,7 +1508,7 @@ int sub_495060(int a1, short a2, short a3) {
 			return 1;
 		}
 		v3 += 16;
-	} while ((int)v3 < (int)getMemAt(0x5D4594, 1201428));
+	} while (++i < 32);
 	v4 = sub_494FF0();
 	if (v4) {
 		*((uint16_t*)v4 + 3) = a2;
@@ -1586,6 +1587,7 @@ int sub_495180(int a1, uint16_t* a2, uint16_t* a3, uint8_t* a4) {
 //----- (004951C0) --------------------------------------------------------
 char* sub_4951C0() {
 	char* result; // eax
+	unsigned int i = 0;
 
 	result = (char*)getMemAt(0x5D4594, 1200922);
 	do {
@@ -1595,7 +1597,7 @@ char* sub_4951C0() {
 		*(result - 2) = 0;
 		*(uint32_t*)(result - 6) = 0;
 		result += 16;
-	} while ((int)result < (int)getMemAt(0x5D4594, 1201434));
+	} while (++i < 32);
 	return result;
 }
 

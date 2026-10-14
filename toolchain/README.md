@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R196: 동료 체력 테이블의 native 순회
+
+사용자 goenv Go1.26.9로 계속 빌드·검사한다. 실제32칸 동료 HP 테이블의 조회/빈 슬롯/등록/reset에서 signed32로 축소한 주소 비교를 원래 슬롯 수 경계로 복원했다. decoder/ID·HP packing·scalar ABI·padding은 유지한다. compiled RED와 수정 후39,204조건·실제 CGo4,224조건·관련 strict/race/checkptr2 3회303pass, 전체 일반/HD/CGo 각각73,708pass/47skip·server69,150pass/7skip 및 unchanged 일반/HD headless 회복30경로/ally15기록이 통과했다. 기존 결과·기대값·원본·개인 데이터·R134 보류는 그대로이며 새 packet 준비 강화·검증 범위와 미완료 항목은 [R196 인벤토리](./PORTING-INVENTORY.md#동료-체력-테이블의-native-32칸-순회-경계-r196)를 따른다.
+
 ## R195: 퀘스트 결과 제목과 native 행 경계
 
 사용자 goenv Go1.26.9를 계속 사용하며 `GO` 없는 wrapper 선택과 로컬 ARM64 runtime 백포트도 확인했다. 실제 Quest 결과 렌더러에서 원본에 없는 `XX1` 제목을 공백 하나로 복원하고, signed32로 축소한 포인터 종료 조건을 원래 여섯 행의 번호 경계로 바꿨다. compiled RED와 수정 후12,096조건·관련 strict/race/checkptr2 3회96pass, 전체 일반/HD/CGo 각각73,703pass/47skip·server69,145pass/7skip 및 headless stage1→2/정상 결과 제목/이동/종료를 확인했다. 기존 결과·기대값·원본·개인 데이터·R134 보류는 그대로다. 새 fixture 준비 실패/전사 교정과 private 캡처의 제한, 미완료 범위는 [R195 인벤토리](./PORTING-INVENTORY.md#퀘스트-결과-화면의-원본-제목과-native-여섯-행-경계-r195)를 따른다.

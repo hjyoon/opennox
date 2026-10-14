@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 동료 체력 테이블의 native 32칸 순회 경계 (R196)
+
+기준 clean/pushed revision은 `f5a12795246f9e038fce32fba132dfa91e5f281a`이며 사용자 goenv Go1.26.9를 계속 사용한다. Solo Quest/기존 실패 이력을 검토하면서 Windows registry 기반 SKU/WOL 계약은 추정으로 대체하지 않았고, Wizard/Con02A 고정 PNG 차이·플레이어가 먼저 사망한 Skeleton 처치 timeout·별도 Quest selector 감사와 보존된 stage3 실패를 실제 새 게임 결함/완료로 혼동하지 않았다. 이번 기능 변경은 활성 동료 체력 테이블의 네 루프다.
+
+`GAME2_3.c`의 `sub_494FF0`(빈 슬롯), `sub_495020`(조회), `sub_495060`(등록), `sub_4951C0`(초기화)는 16바이트 scalar record32개를 처리한다. native 주소를 signed32로 축소한 끝 주소 비교가 부호 경계에서 첫 행 뒤에 끝나 빈 슬롯/뒤쪽 ID를 놓치고, 중복 등록 및 불완전 초기화를 일으켰다. 기존 조회/빈 슬롯의 행 번호와 등록/초기화의 새 카운터로 원래32칸을 순회하도록 종료 조건만 바꿨다. 초기화의 native 반환 주소 `table+518`도 유지한다. record/packet ABI, 함수 signature, ID/HP/색/활성 값의 폭·쓰기 순서·padding·기타 본체는 변경하지 않았다.
+
+실제 root creature monitor는 C 등록/해제를 사용하고, `MSG_REPORT_HEALTH(65)`·`MSG_REPORT_TOTAL_HEALTH(221)`의 활성 C dispatcher가 이 조회/HP 업데이트로 이어지며 monster HP 표시도 C getter를 읽는다. 따라서 이미 Go receiver가 가로채는 비활성 C 중복 수정이 아니다. 원본 GAME.EXE `00494FF0..00495203`의10개 함수와 `006F98A8..006F9AA8`의32칸 범위를 raw disassembly·독립 함수 SHA로 확인했다. 원본은 조회에서 active DWORD의 임의 nonzero를 인정하지만 중복 등록에서는 정확히1만 인정하며, 전체 DWORD ID를 비교한다. HP65/221의 raw ally ID와 정규화 local-player ID 규칙, ushort HP 및 압축 BYTE×2 규칙도 유지했다. decoder/네트워크 caller는 수정하지 않았다.
+
+새 동결 fixture는 전체 실제 C subsystem을 컴파일하고 memmap 위치만 통제한다. signed32 부호/DWORD wrap을 넘는 테이블과 일반 high-address 테이블, 모든33개 빈 슬롯/가득 참 상태·33개 존재/없는 대상·active1/2/0xffffffff·상위32비트 ID·ushort 경계·alt BYTE·padding/앞뒤 guard·중복 삽입·조회/getter/update/remove/reset을 각각9,801조건, 합계39,204조건으로 검사했다. 같은 입력의 기존 본체 네 검사는 실제 컴파일 후 각각 actual1이고, 수정 본체는 actual0이다. 모든 새 native 기대값은 RED 이후 불변이다.
+
+별도 실제 CGo child에서는 genuine32칸 테이블을 기존 monitor 함수로 채운 뒤 전체 C dispatcher를 호출한다. 모든 슬롯/없는 대상, 연결/debug 두 상태, raw 상위 ID 비트, HP0/0x7fff/0x8000/0xffff, 두 packet 정렬 위치, native getter·역순 unmonitor·reset과 전체512바이트/padding/packet guard 불변의4,224조건이 actual0이다. 조회/HP 서비스를 대체하지 않는다. 새 packet 검사 준비에서 `table+6`도 허용하던 불필요한 비교를 발견해 최초 소스를 archive에 보관하고 원본 `table+518`만 단독 강제한 뒤 동결했다. 강화 전후4,224조건이 actual0이며 입력/packet/scalar 기대값과 production은 바꾸지 않았다. 관련 기존 회귀와 새 검사의 공식 cgocheck2/race/checkptr2 3회는101IDs/303pass·3packages·0skip/0fail이며 actual packet 조건12,672회도 통과했다.
+
+전체 일반/HD/공식 cgocheck2는 각각73,708pass/47skip·39packages, server는69,150pass/7skip·35packages·actual0이다. R195의 모든 기존 test/package 결과는 같고 새5개 테스트만 추가됐다. 원본 code2,968/data650 verifier도 actual0이다. unchanged `host-game-restore-spell.yaml` 일반/HD headless/mock에서6모드×5레벨의 회복 acceptance30경로, native NPC와 실제 client ally record15건, 자원/음향 이벤트/정상 종료를 확인했다. Health/Wink NPC는 client/server150/150이며 NPC Mana의 원래 no-op 및 압축 홀수 HP도 유지한다. 이 기존 fixture는 일반 피해/마나 소비로 입력을 준비하고 실제 instant dispatcher를 호출하므로 정상 incantation·마나 비용·발사체/모든 자연 전투·물리 가청 음향/Windows 픽셀 동등성의 증거로 확대하지 않는다.
+
+private 진단·원본 code/disassembly·compiled RED·동결 입력·새 packet 준비 archive·terminal/checkpoint는 `/private/tmp/opennox-ally-health-r196.PKQ4NI`에 보존하며 body audit SHA는 `f844462037fbf63b755d14133c3355b1a5795c64e4226ce23f0c6411be42e03e`다. source6,757→6,761files의 기능 차이는 기존 C 한 파일의 네 loop bounds/counters+새4files뿐이다. protected304files·stock1,556files·개인1,562files/Save/config·기존 기대값/PNG/YAML/oracle·R134 HOLD 네 입력은 불변이며 자체 캐시/실패 자료를 삭제하지 않았다. 문서는 제목 뒤 삽입하고 commit 직후 origin `port/go1.26-multiarch`에 push한다. clean ARM64 일반/HD/server3제품 metadata/Mach-O/help와 같은 일반/HD headless 회복 fixture는 후속 receipt로 확인하며 전체 포팅·남은 C 경계·SKU/WOL·Player SetColor·R134 및 보존된 실패는 여전히 미완료다.
+
 ## 퀘스트 결과 화면의 원본 제목과 native 여섯 행 경계 (R195)
 
 기준 clean/pushed revision은 `4f2a5c40f27fd0948c830b18ba63bef63e0d47bb`이며 사용자 goenv Go1.26.9를 계속 사용한다. `GO`를 생략한 공식 wrapper도 `go1.26.9 darwin/arm64`를 선택한다. 설치된 runtime의 `mgcmark.go`에는 `(*sigctxt).pushCall`이 삽입한 작은 프레임까지 스캔하는 ARM64 수정이 있다. [Go1.26.6 백포트 #80394](https://github.com/golang/go/issues/80394)와 로컬 Go1.26.9 소스를 확인했으며, GC/preemption 설정을 끄거나 런타임 소스를 변경하지 않았다.

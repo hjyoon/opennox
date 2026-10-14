@@ -1,6 +1,7 @@
 package opennox
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"image/color"
@@ -240,6 +241,7 @@ func (s *Server) MainLoop() error {
 	if err := s.InitialMapLoad(); err != nil {
 		return err
 	}
+	execGameStartupCommands(context.Background())
 	legacy.Sub_43AA70()
 	s.mainloopInit()
 	// Console exit and the normal server shutdown path clear this flag too.

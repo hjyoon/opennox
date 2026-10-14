@@ -606,16 +606,7 @@ func initGameSession435CC0() error {
 	if isServer && !isDedicatedServer {
 		c.srv.PlayerGoObserver(c.Server.Players.List()[0], false, true)
 	}
-	execConsoleCmdAuthed(ctx, "execrul autoexec.rul")
-	if isServer {
-		execServerCmd("set cycle on")
-		for _, cmd := range serverExec {
-			if len(cmd) == 0 {
-				continue
-			}
-			execServerCmd(cmd)
-		}
-	}
+	execGameStartupCommands(ctx)
 	legacy.Sub_4951C0()
 	legacy.Sub_465DE0(0)
 	return nil

@@ -1,5 +1,23 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 전용 서버의 시작 규칙과 CLI autoexec 실행 복원 (R207)
+
+기준 clean/pushed revision은 `3dda59990ec8fef4daea9c4fe117dc09d34c0eb6`이며 사용자 goenv Go1.26.9를 계속 사용한다. RunServerArgs는 MainLoop에 직접 진입하여 initGameSession435CC0을 거치지 않는다. 기존 `execrul autoexec.rul → set cycle on → serverExec` 블록이 그 클라이언트 초기화에만 있어 R204의 전용 서버는 -autoexec를 받았어도 실행하지 않았다. 같은 clean 전용 제품의 실제 clock/private localhost 검사에서 지정한 command chain과 규칙이 모두 누락된 채5초 동안 so_beach/chat·User Game·players0이 유지됐고 정상 authenticated quit/actual0으로 종료했다. 이 negative observation의 actual0을 기능 성공으로 바꾸어 세지 않는다.
+
+기존 블록의 명령·순서·isServer gate·빈 문자열 처리와 두 console context/권한 함수를 그대로 공유 helper로 옮겼다. 일반 initGameSession은 원래 위치에서 같은 ctx로 호출한다. 전용 MainLoop는 초기 session/InitialMapLoad가 성공한 뒤, 기존 Sub43AA70/첫 tick 이전에 helper를 한 번 호출한다. 그래픽 초기화·초기 맵/clock/RNG·서비스/선언된 포트·명령 parser·cheat/side gate·map load/정상 종료 계약을 바꾸거나 대체하지 않는다. 일반 블록 전체와 dedicated의 context import/단일 호출 이외의 source bytes가 같은 것을 별도 감사했다. 기존 오류 반환은 startup 명령보다 앞에 유지한다.
+
+수정 제품의 실제 startup은 private 규칙의 R207 Rule 이름 설정 뒤 지정한 CLI의 bludeath/arena·R207 CLI·players0을 확인하고 정상 종료했다. -autoexec를 생략하면 기존 default `load estate`가 실행되어 estate/arena·R207 Rule, 빈 옵션은 so_beach/chat·R207 Rule이다. startup `quit`는 강제 정리 없이 actual0으로 즉시 종료했다. 일반 authenticated console로 R207 After 이름을 설정하고 estate를 다시 로드한 뒤에도 이름/맵이 유지되고 시작 규칙의 두 log marker가 증가하지 않아 tick/맵 재로드의 반복 실행이 없음을 확인했다. 모든 positive profile과 게임 child actual0이다. 원본 Windows dedicated CLI 실행으로 확대하지 않는다.
+
+새 parent3/subtest3은 일반 host/dedicated host/client의 실제 parser·quoted 한글 payload·규칙/기본 cycle/CLI 순서·server/cheat context·빈/공백/unknown 명령의 기존 처리·optional 규칙 누락·CLI 입력/flag/지속 cheat 불변과 dedicated 호출 위치를 검사한다. rule/CLI parser는 실제 함수이며 cycle/probe 동작은 명시적 통제 서비스다. 연결 전 helper-only 검사는5pass/1 wiring fail·actual1, 연결 후 동일 동결 검사는6pass·actual0이다. 공식 cgocheck2+race+checkptr2/count3의 startup/console/session 검사는63pass·0skip/0fail·actual0이다.
+
+기존632B gameplay-created Warrior save와 R140 동결 Load YAML을 그대로 복사한 일반/HD headless/mock은 모두 actual0이다. selection1734/loaded1249/wait1849/moved2094의 네 실제 화면이 서로 같고 R205 clean 검증과도 전체 픽셀 차이0이다. 개인 저장 파일은 import하지 않았으며 이 확인을 모든 캐릭터/physical GPU/가청 소리로 확대하지 않는다. 전체 일반/HD/공식 cgocheck2 각각73,766pass/47skip·40packages, server69,200pass/7skip·36packages·actual0이다. R206의 모든 기존 test ID/action/count/skip/package 결과는 같고 새6IDs만 추가됐다. 기존 assertion/YAML/PNG/oracle와 R134 HOLD는 그대로이며 인벤토리 SCREEN HOLD도 변경하지 않는다.
+
+최초 empty 옵션 관찰은 이미 실제 이름이 바뀌고 stderr에 규칙 두 marker가 있었지만 buffered 파일 log에는 아직 없어 actual1/소유 child TERM15로 중단됐다. 원문을 보존하고 새 driver가 같은 두 marker를 즉시 stderr에서 제한 시간 내 읽게 했으며 기대값·조건·production을 변경하지 않았다. 미실행/동결 v1 driver는 capture-wrapper PID와 game PID의 정리 소유권이 달라 실행 전에 별도 v2에서 game child를 직접 소유하게 했다. 정상 종료와 실패 정리 receipt를 구분하며 다른 process에는 신호를 보내지 않는다. 별도 API/CLI 입력·private seed/rule/map copies와 실제 clock/production startup을 사용했고 외부 lobby 등록/port forwarding·개인 Save/config는 사용하지 않았다. per-map user.rul은 제외했고 shipped root user.rul은 원본의0바이트 read-only file이다.
+
+원본과 byte/SHA가 같은 게임 자산1,554개를 R206의 검증된 private 경로에서 재사용했다. nc.obj/nox.cfg 두 제외 항목을 포함한 이전 full tree를 복원했다고 주장하지 않는다. code2,968/data650 verifier·기존 protected304files/개인1,562files/R134 보존 감사는 actual0이다. source6,797→6,799files의 기존 변화는 game.go/gameloop.go 두 호출 위치뿐이고 새 helper/test 두 파일 및 이 기록만 추가한다. 최소 언어 버전·전역 goenv·runtime/GC 설정은 바꾸지 않았다. body audit SHA는 `8222a6c53087a2274ea988f41329af7fd55776185c8ff65f051f37b2d1de90f1`, 자료는 `/private/tmp/opennox-dedicated-autoexec-r207.NRLuD2`에 보존한다.
+
+문서의 기존 suffix를 보존한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 일반/HD/server 세 제품 metadata·새 회귀·같은 실제 dedicated startup chain을 후속 receipt로 확인한다. 아직 실행하지 않은 후속 검사를 이미 완료했다고 기록하지 않는다. 다른 보존된 GUI/AI 실패·original Windows/physical GPU/가청 음향 및 전체 포팅 목표는 미완료다.
+
 ## 인벤토리 화면 차이의 원인 분리와 원본 RGB5551 대조 (R206)
 
 기준 clean/pushed revision은 `0e904d80f9159d738b72e7b24089ab75a6a06133`이며 사용자 goenv Go1.26.9를 계속 사용한다. R203의 기존 YAML/5PNG를 바이트 그대로 복사해 같은 headless/mock 입력을 재생했다. 현재 첫 SCREEN은 여전히 actual2이며 clipping/stock weapon-icon 검사는 통과하고 R203의 실제 got PNG와 SHA도 같다. 색상 분해·packed material·장비 팔레트 세 파일을 historical `e83491e327f22c785c56d930018de4207169ab37` 그대로 연결한 private overlay는 다섯 SCREEN 모두 actual0이다. 장비 코드만 되돌리면 player501픽셀 차이가 사라지고 나머지575픽셀이 남으며, SplitColor/SplitColor16만 되돌리면 반대로575픽셀이 사라지고 player501픽셀이 남는다. SetMaterial만 되돌린 경우1,076픽셀 차이가 그대로이므로 이 프레임에서 단독 원인은 아니다. 기존 player status/raw ID 대조의 동일 화면 결과도 유지한다. 관찰 rectangle은 semantic/Windows framebuffer oracle가 아니다.

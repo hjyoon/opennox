@@ -1,5 +1,23 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 보조무기 표시 초기화의 native 84칸 경계 (R198)
+
+기준 clean/pushed revision은 `8aae1385a106c7179e79479b94f60a41bdf3bee7`이다. 사용자 goenv Go1.26.9를 계속 사용하며 직접 실행과 `GO` 없는 공식 wrapper 모두 `go1.26.9 darwin/arm64`임을 확인했다. `.go-version`·toolchain pin·module toolchain은 이미1.26.9이며 전역 goenv·최소 언어 버전·런타임/GC 설정을 변경하지 않는다. 설치된 `runtime/mgcmark.go`에는 ARM64 pushCall frame 스캔 백포트가 포함돼 있다.
+
+활성 `GAME2_1.c:sub_4619F0`의 signed32 주소 종료 비교만 원래21행 카운터로 바꿨다. native152바이트 record의4열×21행, 마지막 equipment4칸을 포함한84칸을 모두 처리하며 BYTE amount가0인 marker·equip·다른 필드/padding은 유지한다. 원본의 반복 DWORD marker store·열/행 순서와 native 반환 `grid+15952`도 유지한다. actual selector461550의 이전 full DWORD code·native selected pointer·선택 marker1·drawable code, sender4BF010의3바이트 E0 packet·recipient31/relatedNULL/disconnect1·반환 및 encoder578B00의0x8000 threshold/0x20400000 flag packing은 수정하지 않았다. auto selection·drag/drop·판매/장비 변경의 실제 caller를 확인했고 이미 native finder로 대체된 C 중복은 수정하지 않았다.
+
+GAME.EXE 네 전체 함수461550/4619F0/4BF010/578B00의111/63/43/40bytes와 raw disassembly에서 PE32 stride148·21행·4열·반복 marker store·wire 계약을 확인했다. 원본 code2,968/data650 verifier도 actual0이다. 새 fixture는 네 실제 C 본체와 native headers를 함께 컴파일하며 grid placement와 최종 network sink만 통제한다. signed32 부호/DWORD wrap 및 일반 high-address 세 mapping, 모든84칸/없는 이전·새 선택·동일 선택·empty marker·BYTE0/1/32/255·DWORD code 경계·네 sender 반환·전체 grid/drawable/앞뒤 guard를 검사한다. clear1,020조건·selection86,700조건, 합계87,720조건이 actual0이다. 동일 최종 fixture로 기준 본체를 실제 컴파일한 clear/select control은 각각 behavioral actual1이고, selector는 packet sink 진입 때 이미 stale marker를 검출한다.
+
+최초 `native-red` actual1은 새 fixture의 sink forward declaration 누락인 준비 오류다. 해당 Go/C 입력을 archive한 뒤 선언과 expected byte array의 native alignment만 보완했으며 기대값은 바꾸지 않았다. 이후 최종 frozen Go assertion·C fixture로 compiled RED/현재 GREEN을 확인했다. 별도 child의 실제 selector→reset→encoder→C sender→Go host NetList queue는 서비스 대체 없이1,360조건 actual0이다. C-owned drawables/실제 static84칸·native pointer 및 header offsets·전체 상태·정확한3바이트 단일 packet을 확인한다. static grid가 부호 경계를 넘지 않는 기존 빌드도 이 child 검사는 통과하므로 이를 단독 behavioral RED로 세지 않는다.
+
+관련 기존 검사와 새3GoID의 공식 cgocheck2/race/checkptr2 3회는388IDs/1,164pass·3packages·0skip/0fail 및 실제 host packet 조건4,080회 actual0이다. 전체 일반/HD/공식 cgocheck2 각각73,716pass/47skip·39packages, server69,158pass/7skip·35packages·actual0이다. R197의 모든 기존 결과/횟수/skip/package가 같고 새3개 테스트만 추가됐다. 전체 cgocheck2 lane과 관련 race/checkptr2 lane의 범위를 구분한다.
+
+unchanged `solo-warrior-inventory-clipping.yaml`과 public PNG를 byte-identical private 경로로 복사한 일반/HD headless/mock 검사는 첫 `inventory 4x3 clipped` Screen에서 각각 actual2였다. 실제 clipping/primary raster prefix는 통과했지만 이후 alternate drag와 네 나머지 Screen은 실행되지 않았다. 이전 R197 clean Go1.26.9 ARM64 일반/HD 제품도 같은 Screen/actual2이며 각 현재/이전 actual PNG의 모든 픽셀이 동일하다. historical expected와는1,076픽셀 차이가 있고 관찰용 좌상단565×225영역에도37픽셀이 포함된다. 이 차이를 임의의 원인이나 성공으로 단정하지 않으며 golden·기존 assertion·실패 PNG를 교정/삭제하지 않는다. 최초 감사 초안의 성공 가정과 좌상단 차이0 가정은 실행하지 않은 원문 버전으로 남기고, 최종 v3는 실제 네 actual2·1076/37 차이와 current/baseline pixel equality를 명시적으로 검증한다.
+
+별도 private 기능 입력은 기존 no-Screen `host-game-item-engage-equip.yaml`의 전체 prefix와 equip/dequip assertion을 유지하고, 실제 보조무기 드래그/재선택 두 번과 I 입력 종료만 추가한 뒤 실행 전에 동결했다. 일반/HD 두 process는 각각 actual0이며 Sword의 server/client netcode499 일치·dragged=false와 alternate 실제 raster87/87을 두 번씩 확인했다. 이는 원래 frozen 인벤토리 Screen 게이트의 통과나 전체 자연 gameplay/Windows/GPU/가청 음향 인증을 대체하지 않는다. 게임 HP·RNG·시계·스펠/무기 균형·packet 결과를 주입하지 않았다.
+
+body audit SHA는 `6bcc8e818d9a8abffcdf79cf1aee6573e59f194e8f23ab61082ea623a609c13c`이며 원문 실패·동결 입력·compiled control·실제 terminal·현재/이전 화면·checkpoint는 `/private/tmp/opennox-secondary-grid-r198.2lAcxk`에 보존한다. source6,765→6,769files의 기능 차이는 기존 C 한 함수의 카운터/종료 조건과 새4files뿐이다. 기존 테스트/기대값·protected304files·stock1,556files·개인1,562files/Save/config와 R134 HOLD 네 입력은 그대로이고 캐시/실패 자료를 삭제하지 않았다. 커밋 직후 origin `port/go1.26-multiarch`에 push하며 clean ARM64 일반/HD/server3제품 metadata/Mach-O/help 및 동결된 별도 일반/HD 보조무기 기능 입력은 후속 receipt로 확인한다. R134·SKU/WOL·Player SetColor·역사적 frozen 실패·남은 C 경계와 전체 ARM64 포팅 목표는 계속 미완료다.
+
 ## 전사 스킬 상태 테이블의 native 다섯 레코드 경계 (R197)
 
 기준 clean/pushed revision은 `cb751cf9e642f611505a309caf66349b2e7077a0`이다. 사용자 goenv Go1.26.9를 계속 사용하며 `GO` 없는 공식 wrapper도 `/Users/ghost/.goenv/versions/1.26.9`의 darwin/arm64 도구체인을 선택함을 확인했다. 버전 고정·전역 goenv·런타임/GC 설정은 변경하지 않았다. 활성 C 패킷 경로를 조사하여 이미 Go가 가로채는 중복 arm은 수정하지 않고 실제 스킬 상태 테이블의 네 반복문만 수정했다.

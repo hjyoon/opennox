@@ -681,6 +681,7 @@ char* sub_4619F0() {
 	char* result; // eax
 	int v2;       // esi
 	int v3;       // ecx
+	unsigned int row = 0;
 
 	v0 = (char*)&(nox_client_inventory_grid_1050020[0].field_140);
 	do {
@@ -698,7 +699,7 @@ char* sub_4619F0() {
 			--v2;
 		} while (v2);
 		v0 += sizeof(nox_inventory_cell_t);
-	} while ((int)v0 <= (int)&(nox_client_inventory_grid_1050020[NOX_INVENTORY_ROW_COUNT - 1].field_140));
+	} while (++row < NOX_INVENTORY_ROW_COUNT);
 	return result;
 }
 

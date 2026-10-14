@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R198: 보조무기 marker의 native 84칸 초기화
+
+사용자 goenv Go1.26.9를 계속 사용하며 직접 실행과 GO 없는 wrapper도 같은 Darwin/ARM64 설치를 선택한다. 활성 보조무기 초기화의 signed32 주소 비교를 원래21행 카운터로 바꿔4열×21행을 처리한다. selector/encoder/sender·wire/반환·empty flag와 기존 기대값은 유지한다. compiled control RED와 수정 후87,720조건·실제 CGo1,360조건·관련 strict/race/checkptr2 3회1,164pass, 전체 일반/HD/CGo 각각73,716pass/47skip·server69,158pass/7skip 및 모든 기존 결과 동일을 확인했다. 원래 frozen inventory Screen의 일반/HD actual2는 이전 clean 제품에서도 동일한 실제 픽셀로 재현하며 그대로 보존한다. 별도 동결 기능 입력의 실제 마우스/보조무기 동기화·아이콘 확인 각2회는 일반/HD actual0이며 원래 Screen 통과를 대체하지 않는다. 준비 오류·실패 기록·원본/개인 데이터/R134 보존과 미완료 범위는 [R198 인벤토리](./PORTING-INVENTORY.md#보조무기-표시-초기화의-native-84칸-경계-r198)를 따른다.
+
 ## R197: 전사 스킬 상태의 native 다섯 칸 순회
 
 사용자 goenv Go1.26.9와 `GO` 없는 wrapper 선택을 계속 확인한다. 실제 전사 스킬 상태/reset/활성 비트/조회 네 함수에서 signed32 주소 비교를 원래 다섯 레코드 수 경계로 바꿨다. 원본 scalar/packet/효과/시간/반환 계약과 기존 기대값은 유지한다. 최종 fixture의 compiled control actual1·수정 후11,088조건·실제 CGo7,280조건·관련 strict/race/checkptr2 3회1,101pass, 전체 일반/HD/CGo 각각73,713pass/47skip·server69,155pass/7skip 및 모든 기존 결과 동일을 확인했다. 일반 headless 다섯 스킬10cycles와 unchanged 일반/HD NPC Harpoon 각2cycles는 actual0이다. HD frozen Screen actual2는 이전 clean 제품도 같은 원본 다중 알림 문구의983픽셀 차이로 재현하며 교정/삭제하지 않았다. 초기 link 준비 실패·픽셀 실패/검증 범위·원본/개인 데이터/R134 보존과 미완료 항목은 [R197 인벤토리](./PORTING-INVENTORY.md#전사-스킬-상태-테이블의-native-다섯-레코드-경계-r197)를 따른다.

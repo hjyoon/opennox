@@ -1,5 +1,9 @@
 # Go 도구체인 정책
 
+## R191: Host Game 시작 상태와 관전자 표시 검증
+
+Goenv Go1.26.9를 계속 사용한다. 기존 Host 시작 PNG의 actual2를 보존하고 현재 native status0x10의 숨겨진 eye/방패대기 상태와 원본 low-bit 표시 조건을 대조했다. 일반 입력의 보행·공격·방패복귀·관전자 메뉴 전환은 정상/HD headless 두 실행에서 actual0이고 여섯 실제 캡처도 각각 동일하다. 게임 코드를 바꾸지 않고439조건의 compiled native 회귀를 추가하며 역사적 고정 오프셋 control actual1을 보존한다. 관련 실제 strict CGo/race/checkptr2/count3는276pass/0skip다. 기존 기대값·PNG·원본·개인 데이터·R134 HOLD는 그대로이며 상세와 제한은 [R191 인벤토리](./PORTING-INVENTORY.md#host-game-시작-상태와-관전자-아이콘의-native-계약-r191)를 따른다.
+
 ## R190: 원격 포털과 전용 서버 단일 접속자 종료 복원
 
 사용자 goenv Go1.26.9를 계속 사용한다. 실제 시계/headless 일반 이동으로 native 포털·출발/도착 효과·위치/HUD·원본 animation 계약을 확인했다. 전용 서버가 로컬 host를 잘못 빼서 원격1명일 때 quit/ACK를 생략하던 산술만 수정했으며 compiled RED/GREEN과 실제199→200·정상 종료가 통과했다. 전체 일반/HD/strict는 각각73,693pass/47skip, server69,135pass/7skip이고 모든 기존 결과를 유지하며 새70pass만 추가했다. 초기 진단 실패·원본·개인 데이터·기존 기대값·R134 HOLD는 유지한다. 상세 범위와 캐시 정리·아직 남은 전체 목표는 [R190 인벤토리](./PORTING-INVENTORY.md#원격-포털-통과와-전용-서버의-단일-접속자-종료-ack-r190)를 따른다.

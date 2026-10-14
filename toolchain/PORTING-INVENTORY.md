@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## Host Game 시작 상태와 관전자 아이콘의 native 계약 (R191)
+
+기준 clean/pushed revision은 `46a93bc21660dd17627b745c8fdb8484c8d202d7`이며 사용자 goenv Go1.26.9를 계속 사용한다. R190의 ARM643제품과 정상/HD native Teleport GUI 및 후속 보존 감사는 actual0이고 runtime audit SHA는 `03055e070a77be01de231b6980c3b37541bdfdf4ca5f16a16e45b525d360bf7b`다. R190의 unchanged `host-game-start.yaml`은 기존 PNG와 달라 actual2였으며 이전 clean `042bd754c` 제품도 같은 actual2·바이트 동일 got PNG였다. 다른 Host GUI 시나리오 통과를 이 화면 비교의 통과로 사용하지 않는다.
+
+같은 YAML·PNG를 private 경로에 복사하고 Screen 직전 상태만 읽는 overlay로 original assertion actual2를 재확인했다. frame549의 server/client는 같은 native Player이고 status0x10·state16·armor0x1000005·weapon0x200·drawable anim40/frame5였다. ObserverIcon image는 유효하지만 window flags0x98로 숨겨져 있다. 원본 GAME.EXE 004357A0의 실제 bytes/disassembly는 player status의 low bit1만 검사하여 48CA70→46AC00에 hidden0/1을 전달한다. 004F8460의 기존 sealed shield branch는 chat/장비/대기 조건 뒤 state15에 진입한다. 원본 전체 Windows 실행을 대체하는 증거는 아니다.
+
+기존 PNG는 `719e376e2`에서 기록됐고 이후 `cbe53e675`가 observer toggle의 PE32 `player+3680` 읽기를 native `player->field_3680`로 고쳤다. 현 native status offset은4976이다. 장비/애니메이션 경로도 당시 이후 native 복원이 있었으므로 오래된 이미지에 맞춰 observer·무기·자세를 강제로 돌리거나 기준 PNG를 덮어쓰지 않는다. public 화면 비교는 여전히 실패로 보존한다.
+
+별도 private 입력 진단은 원래 startup prefix를 유지하고 기존 walk-start/stop·melee·escape/observer-button만 실행하며 읽기 전용 관찰과 실제 frame capture를 추가했다. 정상/HD 두 process는 actual0이다. 양쪽 모두 frame549의 방패대기16/anim40 → frame579의 보행0/anim4·movement8·실제 위치변화 → frame614의 방패복귀16 → frame619의 공격1/anim28/frame3 → frame679의 방패복귀16을 관찰했다. 일반 메뉴 버튼 후 frame772의 status0x11·window0x88·visible eye icon도 확인했다. 여섯 캡처가 정상/HD에서 각각 바이트 동일하고 실제 PNG를 검사했다. 이는 기존 virtual-clock/headless 입력 경로의 증거이며 real-clock/physical SDL/GPU/가청 출력이나 전체 캠페인 인증이 아니다.
+
+production body 변경 없이 새 Go 테스트와 C fixture만 추가한다. 실제 native Player/Window header와 기존 4357A0/48CA70 본체를 컴파일하여439조건·nil/active/status/초기 hidden·오래된 PE32 위치의 반대 decoy byte·전체 Player 불변과 window의 hidden-bit 이외 불변을 검사한다. 동일 fixture에 역사적 offset 읽기만 넣은 private control은 compiled actual1, 현재 본체는439조건 actual0이고 새 Go 검사 count3도 actual0이다. 최초 fixture의 존재하지 않는 C flag 명칭 오류는 원문·actual1으로 남겼고 새 실행에서 정의된0x88을 사용한다. 게임 HP·위치·RNG·시계·패킷·애니메이션 상태·기존 기대값을 수정하지 않는다.
+
+관련 기존 status/equipment/animation/observer/wire 검사와 새 회귀는 race/checkptr2/count3 및 공식 test-cgocheck2.sh의 실제 cgocheck2+race+checkptr2/count3에서 각각276pass·92identities·3packages·0skip/0fail·actual0이다. 첫 lane의 GOEXPERIMENT는 go.sh가 의도적으로 해제했으므로 그 receipt를 strict experiment 실행으로 세지 않고 별도 공식 wrapper의 설정 문자열과 실제 terminal을 확인했다. R190 전체 일반/HD/strict/server 회귀는 기존 기록으로 유지하며 이번 전체 재실행으로 표시하지 않는다.
+
+선택 original-byte emulator 진단 v1의 PE RVA 계산 오류 actual1 및 교정 v2의 도구 자체 SIGILL/signal4는 보존하고 original execution 성공으로 세지 않는다. 원본 raw disassembly·compiled native control·실제 headless 상태 관찰은 별도 증거다. 프로젝트 캐시를 이번에 삭제하지 않았고 기존 자산/YAML/PNG/oracle·개인 Save/config와 R134 HOLD 네 입력은 유지한다. private 자료는 `/private/tmp/opennox-host-state-r191.1mVaWi`에 보존한다. Player SetColor·R134·다른 직업/맵·역사적 frozen 실패와 전체 포팅 목표는 계속 미완료다.
+
 ## 원격 포털 통과와 전용 서버의 단일 접속자 종료 ACK (R190)
 
 기준 clean/pushed revision은 `042bd754c6521beec1eb7b193ec3d7f5c166b97a`이다. 사용자 goenv Go1.26.9와 실제 Darwin/ARM64를 계속 사용한다. 원본 GAME.EXE의 code2,968/data650 및 기존 자산·YAML/PNG/golden·최소 언어 버전은 유지한다. 포털 이동에는 새 기능 코드를 추가하지 않는다.

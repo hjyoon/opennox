@@ -1,5 +1,27 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## Host Load 투명도 재검증과 macOS LAN 검색 폴백 (R204)
+
+기준 clean/pushed revision은 `d83e441105580ea145bd9b81ba49d114cda48eb8`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 계속 사용한다. 전역 goenv/최소 언어 버전·runtime/GC·게임 clock/RNG·기존 테스트/YAML/PNG/oracle·원본/개인 Save/config는 변경하지 않는다. 기존 R140의 native player status offset4976 수정은 유지하며 같은632B gameplay-created Warrior save와 동결 Load 입력으로 일반/HD clean 공식 제품을 각각 실행했다. 개인 Save import·release overlay 없이 Multiplayer→Host Game→캐릭터 Load→600frame 대기→일반 이동이 actual0이다.1249/1849/2094의 세 실제 화면은 일반/HD 서로 같고 보존된 R140 fixed display와도 전체 픽셀 차이0이다. 기존 opacity/observer/raw-player-ID/join/종료 계수의 공식 cgocheck2+race+checkptr2/count3은861pass·0skip/0fail·actual0이다. 이번에 투명도 본체를 다시 수정하거나 다른 캐릭터/개인 저장 파일까지 재현했다고 주장하지 않는다.
+
+서로 다른 localhost UDP/TCP52904/52906의 clean 전용 서버 두 개와 별도 실제 clock/headless 클라이언트 두 개로 일반 검색 목록→Join→Conjurer 선택/외형 확인→아레나 참가→right-button 이동→정상 authenticated quit를 검사했다. A 접속 중 B의 players0 유지와 이후 B players1을 확인했다. client 위치(2608,2892)→(2610,2714), (3936,2940)→(3922,2876), HP100/mana125 및 각각 MSG_SERVER_QUIT199→ACK200 한 건, 네 게임 process actual0이다. 초기 ready 캡처는 정상 fade의 검은 화면이며 이후 실제 moved 캡처에서 world/player/HUD를 확인했다. 이는 로컬 독립 호스트/실제 UDP 연결의 증거이며 물리적으로 다른 LAN 컴퓨터나 임의 WAN 서버의 인증은 아니다.
+
+이 과정에서 기본 LAN 검색의255.255.255.255:18590 전송이 `no route to host`로 실패했다. 같은 Go1.26.9·12바이트 실제 discovery packet은 실행 환경 안팎에서 모두 실패했지만 활성 IPv4 subnet broadcast 전송은 양쪽에서 성공했다. OS route/interface가 존재하고 Go 자체의 SO_BROADCAST 설정도 확인했으므로 sandbox만의 문제라고 단정하지 않는다. production의 유일한 기존 변경은 lan.go의 송신 한 호출이며 새 lan_broadcast.go가 기존 limited broadcast를 먼저 시도한다. 성공하면 interface 조회/추가 전송0이다. 실패한 경우만 UP/BROADCAST·non-loopback/non-point-to-point IPv4 인터페이스의 유효한 subnet 대상으로 같은 socket/token/packet을 보내고 중복 IP를 제거한다. /0·/31·/32·IPv6·잘못된 mask·loopback/multicast/unspecified 주소를 제외한다. 수신 decoder·400ms LAN timeout·game port·normal LAN 성공 경로와 게임 ABI/상태는 유지한다.
+
+새24IDs는 subnet 경계/주소 불변·limited 성공의 단일 전송·fallback 순서/중복/부분 및 전체 실패·cancel·실제 loopback UDP의 원래 wire bytes/source port를 검사한다. 동일 동결 테스트에 원래 단일 송신 본문만 연결한 compiled control은16pass/8fail·actual1이며 수정 후 공식 strict count3은72pass·actual0이다. 실제18590 포트의 clean 로컬 Nox 서버를 띄우고 등록된 production LAN backend를 호출한 private 검사도 이전 송신 control actual1→수정 actual0이다. 활성 subnet 두 대상으로 전송한 뒤 실제 local IP의 port18590/map so_beach/mode chat/players0/Source lan/NoPing 응답을 확인했다. OS target 서비스만 통제한 unit socket fixture와 이 실제 서버/인터페이스 검사를 구분한다.
+
+전체 일반/HD/공식 cgocheck2는 각각73,755pass/47skip·40packages, server는69,189pass/7skip·36packages·actual0이다. R202의 모든 기존 test ID/action/횟수/skip과 다른 package 결과는 같으며 새LAN24IDs만 추가됐다. 이전에 테스트가 없던 common/discover package의 no-tests skip 하나가 새 테스트 실행 pass로 바뀐 것만 별도로 확인했다. source6,791→6,793files의 기능 변경은 위 세 Go 파일뿐이며 protected304files·stock1,556files·개인1,562files와 R134 HOLD 네 입력은 불변이다. 원본 code2,968/data650 verifier actual0이며 캐시/증거 삭제0이다. body audit SHA는 `507f2db9f1c348b647b7dd181257db1a3c96d23a6dc7459336bd46d85ac47fbf`, private 자료는 `/private/tmp/opennox-host-load-network-r204.OYb5dD`에 보존한다.
+
+실패한 첫 준비는 dedicated CLI의-autoexec가 초기so_beach에서 실행되지 않아 아레나 시작 조건에 도달하지 못했다. source 확인과 실제 로그를 보존하고 일반 authenticated map API로만 준비 경로를 교정했다. 이 별도 dedicated startup 공백을 해결했다고 주장하지 않는다. cleanup의 ps 접근 EPERM과 새 Ruby 로그 파일 모드x 오류도 원문/actual1로 보존했고 후속 controller는 정확히 소유한 실제 child PID와 exclusive-create flag를 사용한다. 최초 manifest의 두 client runtime config는 정상 게임 cleanup이 기본값을 저장하며 바뀌었으므로 불변 input이라고 다시 이름 붙이거나 복원하지 않는다. 초기 seed와 후속 mutable output을 구분하고 동결 코드/시나리오/게임 데이터/사용자 config는 그대로 유지한다.
+
+문서는 기존 suffix를 보존한다. 커밋 직후 origin `port/go1.26-multiarch`로 push하고 해당 clean ARM64 일반/HD/server 세 제품의 metadata/Mach-O/help, 같은 일반/HD Load 입력과 실제 LAN 응답을 별도 후속 receipt로 확인한다. 아직 실행되지 않은 후속 검사를 이미 성공한 것으로 기록하지 않는다. 다른 물리 LAN/WAN 서버·original Windows/physical GPU/가청 음향 및 전체 포팅 목표는 미완료다.
+
+## 기존 인벤토리 화면 차이의 보존된 대조 실험 (R203)
+
+같은 기준 revision에서 기존 solo-warrior-inventory-clipping YAML/5PNG를 별도 경로에 바이트 그대로 복사했다. 일반/HD 모두 실제 4x3 clip·4x21 capacity·21cells·원래 stock Sword/GreatSword와 primary slot pixels를 통과했으나 첫 public SCREEN은 actual2다. 기준 대비1,076pixels 차이 중 관찰용 UI rectangle37·player rectangle501·나머지538이며 이 rectangle들은 semantic/original Windows oracle가 아니다. 기존 player status 읽기 방식과 raw ID 조회 방식만 각각 되돌린 private control도 동일 actual2·current와 픽셀 차이0이므로 두 가설은 제외했다. 처음 pixel inspector의 image.Rect sentinel은 endpoint normalization 때문에 bounds가 잘못됐으며 원본/receipt를 보존했다. 별도 v2의 정확한 half-open bounds는(231,37)..(935,768)이고 일치 이미지의 차이는 명시적으로0이다.
+
+기준 PNG가 마지막 저장된 `e83491e327f22c785c56d930018de4207169ab37`의 별도 clone에서 Go pin 네 곳만1.26.9로 올린 historical replay는 같은 YAML/5PNG의 전체 다섯 SCREEN을 actual0으로 통과했다. 당시 gameplay/render/helper는 수정하지 않았다. 아직 어느 후속 기능 변화가 화면 차이를 만들었는지 확정하지 못했으므로 current player를 숨기거나 기존 PNG/기대값을 갱신하지 않는다. production 변경0의 진단 checkpoint이며 문제 해결/전체 성공으로 세지 않는다. source/원본/개인/보호/R134 불변 감사 actual0의 SHA는 `3d85e4a5a35b6130c214494bd6edd761b2725ae03b5c027b98480166467b803b`, 자료는 `/private/tmp/opennox-inventory-visual-r203.GwAdK4`에 보존한다.
+
 ## 중앙 HUD 알림 초기화와 그림자의 native 반복 경계 (R202)
 
 기준 clean/pushed revision은 `2d6b14c0ba742d20faecc8a603427afdedeeff55`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 계속 사용하며 전역 goenv/최소 언어 버전·런타임/GC 설정은 바꾸지 않는다. 맵 시작·Save 로드·실제 packet cleanup이 호출하는 sub445450과 실제 drawMinimapAndLines4738E0이 호출하는 drawMessageLines445530의 signed32 주소 비교 두 개만 원본의3알림/4그림자 횟수로 바꿨다. Quest hint sub33의 raw C 포인터 테이블과 summon draw의 decoded C body는 이미 선행 Go receiver/entry가 대체하므로 새 결함이나 수정으로 세지 않았다.

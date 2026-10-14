@@ -33,10 +33,7 @@ func init() {
 		defer l.Close()
 
 		token := rnd.Uint32()
-		if _, err := l.WriteTo(encodeGameDiscovery(token), &net.UDPAddr{
-			IP:   net.IPv4(255, 255, 255, 255), // multicast
-			Port: common.GamePort,
-		}); err != nil {
+		if err := sendLANDiscovery(ctx, log, l, encodeGameDiscovery(token), common.GamePort, lanBroadcastTargets); err != nil {
 			return err
 		}
 		start := time.Now()

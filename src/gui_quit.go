@@ -47,6 +47,14 @@ func sub_467440(a1 int) {
 	*memmap.PtrUint32(0x5D4594, 1062544) = uint32(a1)
 }
 
+func serverQuitPendingAckCount(players int, dedicated bool) int {
+	if dedicated {
+		// Dedicated servers have no local host player to exclude.
+		return players
+	}
+	return players - 1
+}
+
 func sub_446190() {
 	s := noxServer
 	nox_xxx_serverIsClosing_825764 = false
@@ -75,7 +83,7 @@ func sub_446190() {
 			legacy.Sub_509CB0()
 		}
 		if noxflags.HasGame(noxflags.GameHost) {
-			dword_5d4594_825752 = s.Players.Count() - 1
+			dword_5d4594_825752 = serverQuitPendingAckCount(s.Players.Count(), isDedicatedServer)
 			sub_467440(0)
 			if dword_5d4594_825752 > 0 {
 				s.NetSendServerQuit()

@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 원격 포털 통과와 전용 서버의 단일 접속자 종료 ACK (R190)
+
+기준 clean/pushed revision은 `042bd754c6521beec1eb7b193ec3d7f5c166b97a`이다. 사용자 goenv Go1.26.9와 실제 Darwin/ARM64를 계속 사용한다. 원본 GAME.EXE의 code2,968/data650 및 기존 자산·YAML/PNG/golden·최소 언어 버전은 유지한다. 포털 이동에는 새 기능 코드를 추가하지 않는다.
+
+초기 private 진단의 경로 실패·v2의 잘못된 모듈 namespace·v10의 잘못된 관찰 필드명은 각각 원문·frozen 입력·실제 종료로 보존한다. 접근을 막는 실제 wall ray/shape/grid를 읽어 닫힌 문을 확인했고, 잠금·소유자·팀이 없는 문을 일반 이동으로 밀어 열도록 입력 경로만 보강했다. 포털 중심과 플레이어의 실제 효과 위치를 혼동한 관찰, 이동 직후에도 유지되는 일반 입력·관성, 도착 InvisibleTeleportPentagram을 visible animation처럼 검사한 실패도 남긴다. v12의 경유점 반복은 sampled 위치가 경유점 통과를 놓친 입력 문제이며 새 driver만 통과 평면을 읽는다. 게임 위치·HP·마나·RNG·시계·패킷·충돌 결과나 기존 테스트 기대값은 주입/교정하지 않는다.
+
+실제 hardware clock/headless seat·원격 메뉴/직업 선택·아레나 참가·right-button 도보 입력으로 BluDeath의 TeleportPentagram294→InvisibleTeleportPentagram291을 두 번 통과했다. native source/destination/update 포인터는4GiB 위이고 PE32 destination slot은0이다. source state1·peer state2의 동일 activation frame, activation+8의 실제 player move-frame·즉시 목적지(4165,2811), 두 TeleportPoof 수신/drawable과 sound147 event2를 확인했다. 일반 입력 release 뒤의 자연 후속 이동을 유지한 채 server/client 좌표·HP100/100·mana125/125와 정상 높이 갱신이 일치했다. 출발 animation은 frame4/state0/step0으로 돌아오며, 원본 effect-free InvisiblePentagramUpdate는 peer state2/frame0/step0을 그대로 둔다. 이는 실제 가청 출력·모든 포털/맵 또는 Windows 전체 실행 동등성 인증이 아니다.
+
+수정 전 v13의 정상 authenticated quit는 원격 ready1명인데도 종료 패킷/ACK 없이 server를 먼저 닫았다. gui_quit.go가 dedicated에서도 Players.Count()-1로 로컬 호스트 한 명을 빼던 원인이다. 기존 산술을 추출한 compiled RED는 dedicated0..32의33leaf가 실패했다. production 변경은 ACK 수 계산 helper와 기존 호출 한 곳뿐이며 dedicated는 전체 접속자 수, 일반 host는 기존 Count()-1을 유지한다. 새 source-wiring/계수 검사와 기존 GUI 분리 검사 count3는213pass다. 송신 packet·ACK handler·타임아웃·나머지 종료 본문은 그대로다.
+
+수정 후 v14는 같은 종류의 일반 입력/포털 증거 뒤 ready1명에서 실제 MSG_SERVER_QUIT199→MSG_SERVER_QUIT_ACK200 한 건과 client/server actual0을 확인했다. v13/v14의 게임 process4개 actual0 중 v13을 ACK 성공으로 세지 않는다. related strict cgocheck2+race+checkptr2/count3는993pass·331identities·3packages·0skip/0fail이다. 전체 일반/HD/strict는 각각73,693pass/47skip/39packages, server는69,135pass/7skip/35packages·actual0이며 R186의 모든 기존 ID/action/횟수/skip/package 결과를 유지하고 새 ACK 검사70pass만 추가했다.
+
+게임 기능 source의 변경은 gui_quit.go와 새 server_shutdown_ack_count_test.go뿐이며 보호304개·원본1,556개·개인1,562개와 R134 HOLD 네 입력은 유지한다. 감사의 선행 checkpoint receipt가 아직 없던 최초 준비 실패도 보존하고 실제 terminal 뒤 동일 감사로 재확인했다. gameplay audit SHA는 `e2ef1ad6882be290881375827312b1487c2a3c7080e5850976bd485d289dd21b`이며 private 자료는 `/private/tmp/opennox-remote-portal-r190.5nu68R`에 보존한다. 일반 전체 검사 종료 후 검증된 프로젝트 Go build cache 약9.5GB만 clean -cache로 제거했다. 이후 HD/strict/server 검사는 count1로 test-result cache 수집을 생략하고 실제 재실행했으며 GC·preemption·game clock은 변경하지 않는다. 소스·모듈 캐시·자산·Save/config·증거는 삭제하지 않았다.
+
+기존 문서 이력에 이번 범위만 추가하고 commit 직후 origin port/go1.26-multiarch로 push한다. clean revision의 공식 ARM643제품 metadata/Mach-O/help 및 unchanged 일반/HD headless Host GUI를 후속 확인한다. Player SetColor 계약·R134 HOLD·다른 원격 주문/직업/맵·역사적 frozen 실패·물리 SDL/Retina/GPU/오디오와 전체 포팅 완료는 아직 미완료다.
+
 ## 원격 Force of Nature의 방패 반사와 직접 피격 검증 (R189)
 
 기준 clean/pushed revision은 `7f142dd3547aa2f288f5d1c78040ef9f2f339034`이다. 사용자 goenv Go1.26.9를 계속 사용하며 GO 없는 wrapper도 해당 설치본을 선택함을 확인했다. 게임 production/test·기존 YAML/PNG/golden·최소 언어 버전은 변경하지 않는다. 원본 thing.bin/gamedata.bin에서 Force of Nature의 CLASS_CONJURER/CANT_TARGET_SELF·마나60, DeathBall의 직접 충돌255·근접100·외경50/내경0을 읽었다.

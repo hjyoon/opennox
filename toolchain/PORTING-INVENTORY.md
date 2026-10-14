@@ -1,5 +1,28 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 실시간 공개 서버 접속 검사와 연결 오류 문자열 포인터 수정 (R205)
+
+기준 clean/pushed revision은 `ba5f849f13acff2b52754a7ca0af681ca7a75a4c`이며 사용자 goenv Go1.26.9를 계속 사용한다. 사용자가 현재 목록의 모든 서버 접속 시험을 명시적으로 승인했다. 2026-10-14T14:06:26Z의 production ListServers 조회는 기본 lobby의 실제6개 서버를 반환했고 각 클라이언트의 실제 GUI 목록에서도 같은 endpoint를 골라 일반 Join·Conjurer/외형 선택을 진행했다. 각 process는 별도 Save/config·일반 파일인 maps 복사본을 사용한다. headless seat와 입력/화면 캡처만 private driver이며 Env.IsE2E=false·실제 clock·production 검색/packet/연결/맵 로딩을 유지했다. 외부 서버에 전투·이동·채팅·치트·암호 입력이나 설정 변경을 하지 않았다. 정상 Join의 일시적인 플레이어 접속은 사용자 승인 범위다.
+
+| 실제 목록의 서버 | endpoint | 확인 결과 |
+| --- | --- | --- |
+| Waystation | 121.200.33.119:18590 | Join 응답 시간 초과; 오류 표시 크래시 수정 후 정상 안내·목록 복귀 |
+| USA Midwest #1 | 173.208.129.98:18590 | !takrp 사용자 맵 다운로드·접속/idle·일반 Quit/Yes·퇴장 actual0 |
+| NoXCommunity EU | 212.192.2.113:18590 | sjjc 사용자 맵 다운로드·접속/idle·일반 Quit/Yes·퇴장 actual0 |
+| Undead Tide | 217.216.92.175:18590 | Join 응답 시간 초과; 오류 표시 크래시 수정 후 정상 안내·목록 복귀 |
+| Kor] Newbies | 221.153.137.109:18590 | Join 승인/초기 handshake 후 실제 MSG_SERVER_CLOSE 수신; 뒤이어 연결 시간 초과 |
+| 1:NoXWorld.ru | 45.144.64.229:18590 | furnace 사용자 맵 다운로드·접속/idle·일반 Quit/Yes·퇴장 actual0 |
+
+위 결과는 그 시점의 이 Mac 실행 환경에서 얻은 실제 결과이며 모든 서버의 접속 성공으로 세지 않는다. 한국 서버의 종료 이유·두 서버의 무응답 원인을 서버 로그 없이 설정/버전/NAT 문제로 단정하지 않는다. 외부 서버 시험 전에는 별도 clean 전용 localhost52914 서버에서 같은 일반 GUI Join/idle/Quit/Yes를 검증했다. 서버가 MSG_CLIENT_CLOSE10을 받고 players0으로 돌아온 뒤 소유한 서버만 정상 authenticated quit했으며 두 process actual0이다. 외부 서버 세 곳에서도 native map_download_finish·HP100/mana125 수신·관전자 status1·실제 world 화면·일반 UI 퇴장/connection close를 확인했다. 관전자 반투명 표시를 Host Load 버그로 혼동하지 않는다.
+
+Waystation/Undead Tide의 첫 시험은 실제 시간 초과 뒤 sub438BD0의 문자열 조회에서 SIGSEGV·actual2였다. 원본 GAME.EXE SHA `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의438BD0 disassembly와59C578의14개 DWORD 문자열 주소를 직접 읽었다. 코드8의ErrTimeOut 포인터0x59c698과 다음ErrFindFailed 포인터0x59c6a4가64비트 char** 읽기에서0x59c6a40059c698로 합쳐지는 로그가 원인 증거다. C 소비자 한 곳을 같은14개 원본 key의 native-width const 포인터 배열로 바꿨다. 기존 title 예외8/9/10·text/button/font 순서·join gate/state·timeout/packet/clock은 유지한다. 원본에 정의되지 않은 out-of-range code만 generic ConnError로 안전하게 처리한다. packed blob·번역 파일·GUI 기대값을 덮어쓰지 않는다.
+
+새 native 회귀 테스트는 실제 C dispatcher→C-to-Go 문자열 lookup을 호출해14개 원본 code/key 및14/255/-1의 세 invalid guard를 검증한다. 제어되는 서비스는 빈 StringManager의 명시적 MISSING key 관찰과 dialog/font callback이며 live GUI 번역 인증과 구분한다. 동일 동결 테스트와 수정 전 C 본문의 compiled control actual1→수정 actual0이다. 공식 cgocheck2+race+checkptr2/count3의 기존 join/observer 관련 선택 검사는42pass·0skip/0fail·3packages·actual0이다. 같은 frozen 입력의 새 runtime에서 두 실제 서버를 다시 시험해 양쪽 모두 정상 한국어 제한 시간 초과 안내·확인 버튼·목록 복귀·process actual0이며 접속 성공으로 재분류하지 않았다.
+
+전체 일반/HD/공식 cgocheck2는 각각73,756pass/47skip·40packages, server는69,190pass/7skip·36packages·actual0이다. 모든 기존 test ID/action/count/skip/package 결과는 R204와 같고 새 native parent test1개만 추가됐다. source6,793→6,794files의 기능 변경은 C 소비자1개와 새 테스트1개뿐이다. protected304files·원본1,556files·개인1,562files·R134 HOLD는 전체 검사 전후 불변이다. 기존 assertion/YAML/PNG/oracle·runtime/GC·최소 언어 버전·전역 goenv 변경0이다. private 자료는 `/private/tmp/opennox-public-hosts-r205.RXZhkn`, body audit SHA는 `b65a886645450c36f1edf78b3b7a87d13209030a26f32292a88a1f8f2bd0f811`이다. 실행기 첫 준비는 capture 이전에 적용한 env가 receipt argv에 없어서 시작 전에 중단됐고, 비교 도구는 새 parent의 identity 증가1을 빠뜨려 native 일반 테스트 actual0 뒤 중단됐다. 두 실패/입력/receipt는 보존하고 별도 버전에서 환경 수집/집계만 교정했으며 테스트 입력·판정·기대값은 변경하지 않았다.
+
+R204의 커밋 직후 push·clean 일반/HD/server metadata와 release 일반/HD Host Load·실제 LAN 전후 대조도 actual0으로 마무리했다. 같은 Warrior save의 일반/HD 네 capture는 precommit와 같으며 원본/개인/보호/R134 불변의 release audit SHA는 `47dbcf4aed63768293893fd94ad21fec4d9c400e74c3022a90a34a243973f503`이다. 개인 저장 파일/다른 캐릭터나 physical GPU까지 검증했다고 주장하지 않는다. 이번 수정도 커밋 직후 origin port/go1.26-multiarch로 push하고 clean 세 제품 및 동일 일반/HD Host Load를 별도 후속 receipt로 확인한다. 아직 실행하지 않은 후속 검사를 이미 통과한 것으로 기록하지 않는다. R203 화면 차이·dedicated autoexec startup 공백·original Windows/physical GPU/가청 음향 및 전체 포팅 목표는 계속 미완료다.
+
 ## Host Load 투명도 재검증과 macOS LAN 검색 폴백 (R204)
 
 기준 clean/pushed revision은 `d83e441105580ea145bd9b81ba49d114cda48eb8`이다. 사용자 goenv `/Users/ghost/.goenv/versions/1.26.9/bin/go`를 계속 사용한다. 전역 goenv/최소 언어 버전·runtime/GC·게임 clock/RNG·기존 테스트/YAML/PNG/oracle·원본/개인 Save/config는 변경하지 않는다. 기존 R140의 native player status offset4976 수정은 유지하며 같은632B gameplay-created Warrior save와 동결 Load 입력으로 일반/HD clean 공식 제품을 각각 실행했다. 개인 Save import·release overlay 없이 Multiplayer→Host Game→캐릭터 Load→600frame 대기→일반 이동이 actual0이다.1249/1849/2094의 세 실제 화면은 일반/HD 서로 같고 보존된 R140 fixed display와도 전체 픽셀 차이0이다. 기존 opacity/observer/raw-player-ID/join/종료 계수의 공식 cgocheck2+race+checkptr2/count3은861pass·0skip/0fail·actual0이다. 이번에 투명도 본체를 다시 수정하거나 다른 캐릭터/개인 저장 파일까지 재현했다고 주장하지 않는다.

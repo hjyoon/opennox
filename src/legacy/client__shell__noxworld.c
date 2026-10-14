@@ -404,6 +404,18 @@ int sub_438770() {
 }
 
 //----- (00438BD0) --------------------------------------------------------
+static const char* nox_wol_connection_error_string_id(uint32_t code) {
+	// GAME.EXE 59C578 has fourteen four-byte string pointers. The relocated
+	// fixed blob cannot hold overlapping native-width pointers at that stride.
+	static const char* const ids[] = {
+		"ErrLowPing",       "ErrHighPing",    "ErrLowLevel", "ErrHighLevel",
+		"ErrClosed",        "ErrBanned",      "ErrWrongPassword", "ErrIllegalClass",
+		"ErrTimeOut",       "ErrFindFailed",  "ErrNeedRefresh", "ErrFull",
+		"ErrDupSerial",     "ErrWrongVer",
+	};
+	return code < sizeof(ids) / sizeof(ids[0]) ? ids[code] : "ConnError";
+}
+
 int sub_438BD0() {
 	int v0;      // eax
 	wchar2_t* v1; // eax
@@ -418,7 +430,7 @@ int sub_438BD0() {
 		sub_449E00(v1);
 		v0 = nox_client_connError_814552;
 	}
-	v2 = nox_strman_loadString_40F1D0(*(char**)getMemAt(0x587000, 87416 + 4 * v0), 0,
+	v2 = nox_strman_loadString_40F1D0((char*)nox_wol_connection_error_string_id((uint32_t)v0), 0,
 									  "C:\\NoxPost\\src\\client\\shell\\noxworld.c", 1265);
 	sub_449E30(v2);
 	dword_5d4594_815044 = 0;

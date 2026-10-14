@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 원격 Quest 접속의 팀 정보 포인터 복원 (R210)
+
+기준 clean/pushed revision은 `b6202811486b1f37ed3ac079e0e3653decf43b2b`이며 사용자 goenv Go1.26.9를 계속 사용한다. R209의 실제 incoming player는 `sub_4DF2E0`가 embedded team 주소 `0x1583cce80`을 `0x583cce80`으로 잘라 native ContainsObject에서 SIGSEGV/host actual2를 일으켰다. 해당 team/player iterator를 실제 pointer 타입으로 바꾸고 member 주소·team ID·net code를 기존 native field로 읽는다. 같은 경로의 `sub_4198A0`는 member 인수와 lookup object를 pointer로 유지하고 ID/type을 named field로 읽는다. 세 C source/header의 이 변경 외에는 기능 코드 차이가 없다. 기존 index31 gate, descriptor→member 순서, nil member/lookup gate, ID0의 packet 전송, signed net-code bits, 10바이트 wire payload와 transport 인수는 유지한다.
+
+봉인된 GAME.EXE에서 원래 `004DF2E0`의128B와 `004198A0`의96B를 바꾸지 않고 직접 실행했다. 선언한 통제 서비스는 enumeration/membership/descriptor/lookup/transport이며 full Windows Quest 실행은 아니다. enumeration5·packet5조건의 callback 순서/packet bytes·code/input/비휘발 register/stack guard와 memory fault0을 확인했다. `00419180`의80B에서 확인한 byte ABI를 적용한다. 새 native parent2는 real headers와 완전한 active C bodies를 수정 없이 컴파일하고, 64비트 high addresses와 guard pattern0/5a/ff에서 같은10조건을 비교한다. 같은 v2 기준에서 b620의 원래 C bodies는 team pointer 절단 abort와 member 소비 SIGSEGV로2fail/actual1이고, 수정 본체는2pass/actual0이다. 공식 cgocheck2+race+checkptr2/count3의 새 검사와 기존 simple-object packet 회귀는12pass/0skip/actual0이다.
+
+최초 original v1의 controlled membership hook는 caller가 push한 DWORD의 upper EAX까지 ID로 비교하는 준비 오류가 있었다. 원래 callee는 CL/AL을 비교하고 EAX를0xff로 마스킹한다. v1 입력/결과와 이번에 새로 만든 세 untracked 파일만 byte-exact archive에 보존한 뒤 새 이름의 v2 입력으로 이 ABI를 교정했다. 기존 baseline test/expectation·original instructions·실패 원문은 수정하지 않았다. sandbox에서는 최소 Unicorn NOP 실행도 SIGILL4였고 승인된 동일 read-only 실행은 actual0이다. 이를 게임 RED로 세거나 런타임/GC·전역 보안 설정을 바꾸지 않았다.
+
+실제 clock의 별도 일반/Quest 호스트에 input-only headless client로 목록 선택→Join→Conjurer/appearance→native client-only role→HUD→일반 마우스 이동→host quit/client MSG_SERVER_QUIT/host ACK1을 확인했다. 기존 R209 assertion은 모두 같으며 private 경로/identity/포트만 바꿨다. 일반 bludeath/arena는 기존 HP100/mana125와 이동(3004,3178)→(3004,2998), Quest g_cryptd/stage1은 HP300/mana375와 이동(1530,840)→(1530,720)을 관찰했다. 양 호스트/클라이언트와 coordinator는 모두 actual0이며 강제 정리를 정상 종료로 세지 않는다. Quest/player/packet/health state나 clock을 주입하지 않았다. 이 실제 remote Quest 접속의 포인터 HOLD는 해결됐지만 모든 Quest map/balance·물리 LAN/WAN·Windows framebuffer 검증으로 확대하지 않는다.
+
+전체 일반/HD/공식 cgocheck2 각각73,777pass/47skip·40packages, server69,211pass/7skip·36packages·actual0이다. R209의 모든 기존 test ID/action/count/skip/package 결과는 같고 새 parent2만 추가됐다. 공식 dedicated E2E도 기존 so_beach/chat→estate/arena→trilevel/arena→estate/arena·players0/max32·네 loop/tick 증가·load count1/1/1/2·정상 quit actual0을 통과했다. 원본 code2,968/data650 verifier도 actual0이다.
+
+보존 감사 actual0은 source6,802→6,806files와 위 세 C source/header·새 회귀/fixture/original probe/transcript 네 파일만 기능 차이임을 확인했다. 기존 assertion/YAML/PNG/oracle·protected304files·개인1,562files/Save/config·R134 HOLD 및 R209 crash/input은 유지한다. 검증된 original 자산1,554개는 sealed bytes/SHA와 같으며 제외된 nc.obj/nox.cfg를 포함한 full tree 복원은 주장하지 않는다. body audit SHA는 `9a2a3501e43fc28ecede4da71e66f8b8e6e43bda2272f448c6005f8dad258bdb`, 자료는 `/private/tmp/opennox-quest-team-report-r210.RJvVUB`다. 최소 언어 버전·전역 goenv/runtime/GC·캐시는 변경하지 않았다.
+
+문서는 이 기록만 앞에 추가하고 기존 suffix를 유지한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 세 제품 metadata·새 회귀·새 private Save/포트의 실제 일반/Quest 접속과 공식 server E2E를 후속 receipt로 확인한다. 기존632B Warrior save와 R140 동결 Load 입력의 일반/HD 화면도 별도 재검증한다. 아직 실행하지 않은 후속 검사와 다른 GUI/AI/인벤토리 HOLD·physical GPU/가청 음향 및 전체 포팅 목표를 완료로 기록하지 않는다.
+
 ## 전용 서버의 Quest 선택 초기화와 원격 접속 실패 분리 (R209)
 
 기준 clean/pushed revision은 `717d224a36b228f2b78f31ad17e4545fdeeefb67`이며 사용자 goenv Go1.26.9를 계속 사용한다. 전용 MainLoop는 메뉴의 startServer를 우회하여 -autoquest를 파싱하고도 서버 Quest mode word를 설정하지 않았다. clean 제품의 실제 clock/private localhost에서 빈 autoexec로 로비를 연 뒤 authenticated `startSoloQuest`를 요청했지만 so_beach/chat·players0이8초 동안 유지됐다. 이 behavioral negative의 driver actual1과 정상 quit/게임 child actual0을 구분한다. 일반 옵션의 동일 명령은 원래대로 로비를 유지하며 actual0이다.

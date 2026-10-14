@@ -5510,15 +5510,16 @@ int sub_4DF180(void* a1) {
 
 //----- (004DF2E0) --------------------------------------------------------
 void sub_4DF2E0(int a1) {
-	char* i; // ebx
-	int j;   // esi
+	nox_team_t* i;   // ebx
+	nox_object_t* j; // esi
 
 	if (a1 != 31) {
-		for (i = nox_server_teamFirst_418B10(); i; i = nox_server_teamNext_418B60((int)i)) {
+		for (i = nox_server_teamFirst_418B10(); i; i = nox_server_teamNext_418B60(i)) {
 			sub_4197C0((wchar2_t*)i, a1);
 			for (j = nox_xxx_getFirstPlayerUnit_4DA7C0(); j; j = nox_xxx_getNextPlayerUnit_4DA7F0(j)) {
-				if (nox_xxx_teamCompare2_419180(j + 48, i[57])) {
-					sub_4198A0(j + 48, a1, *(uint32_t*)(j + 36));
+				nox_object_team_t* member = (nox_object_team_t*)&j->field_12;
+				if (nox_xxx_teamCompare2_419180(member, i->field_57)) {
+					sub_4198A0(member, a1, j->net_code);
 				}
 			}
 		}

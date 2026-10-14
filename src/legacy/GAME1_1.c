@@ -512,8 +512,8 @@ void sub_4197C0(wchar2_t* a1, int a2) {
 }
 
 //----- (004198A0) --------------------------------------------------------
-void sub_4198A0(int a1, int a2, int a3) {
-	int v3;      // eax
+void sub_4198A0(nox_object_team_t* a1, int a2, int a3) {
+	nox_object_t* v3; // eax
 	int v4;      // ecx
 	char v5[10]; // [esp+8h] [ebp-Ch]
 
@@ -521,11 +521,11 @@ void sub_4198A0(int a1, int a2, int a3) {
 		v3 = nox_server_getObjectFromNetCode_4ECCB0(a3);
 		if (v3) {
 			v5[0] = -60;
-			v4 = *(unsigned char*)(a1 + 4);
+			v4 = a1->id;
 			v5[1] = 1;
 			*(uint16_t*)&v5[6] = a3;
 			*(uint32_t*)&v5[2] = v4;
-			*(uint16_t*)&v5[8] = *(uint16_t*)(v3 + 4);
+			*(uint16_t*)&v5[8] = v3->typ_ind;
 			nox_xxx_netSendPacket1_4E5390(a2, v5, 10, 0, 1);
 		}
 	}

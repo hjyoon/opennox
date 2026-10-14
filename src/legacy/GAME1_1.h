@@ -28,7 +28,7 @@ int nox_xxx_teamCompare2_419180(nox_object_team_t* value, unsigned char id);
 void nox_xxx_netChangeTeamMb_419570(nox_object_team_t* value, int net_code);
 int sub_4196D0(void* a1, void* a2, int a3, int a4);
 void sub_4197C0(wchar2_t* a1, int a2);
-void sub_4198A0(int a1, int a2, int a3);
+void sub_4198A0(nox_object_team_t* a1, int a2, int a3);
 char sub_419900(nox_team_t* team, nox_object_team_t* value, short net_code);
 char sub_419960(nox_team_t* team, nox_object_team_t* value, short net_code);
 double sub_419A10(float a1);

@@ -139,7 +139,10 @@ func (f *CryptFile) Read(p []byte) (int, error) {
 	} else {
 		n, err = f.File.Read(p)
 	}
-	if n != 0 {
+	// The original fread reads one item of len(p) bytes. Only a complete,
+	// nonempty item reaches its CRC update; a partial read still returns its
+	// bytes (and the XOR path still transforms the entire requested buffer).
+	if n != 0 && n == len(p) {
 		f.crcAdd(p)
 	}
 	return n, err

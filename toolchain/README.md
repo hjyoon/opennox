@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R235: 불완전한 파일 읽기의 체크섬 상태 보존
+
+기준은 clean/pushed `ba8d91a516104a7ca455b8cb3fd7ce78cfa76b08`이며 사용자 goenv Go 1.26.9를 유지한다. `CryptFile.Read`의 CRC admission 조건 한 곳만 nonempty complete read로 한정한다. 원본 `00426AC0`은 size=len/count=1의 fread 결과가 0이면 CRC helper를 호출하지 않지만, 기존 Go 코드는 일부만 읽혀도 요청 버퍼 전체를 CRC에 넣었다. 읽힌 바이트 수·오류·XOR의 전체 요청 버퍼 변환·쓰기·호출별 CRC 알고리즘·기존 C wrapper 반환값은 변경하지 않는다. C wrapper의 zero-byte item 반환을 포함한 모든 I/O 계약을 이번 수정으로 인증하지 않는다.
+
+원본 읽기 wrapper·XOR·CRC 본체와 1,024바이트 table을 변경 없이 912회 실행했다. 두 외부 fread service의 prefix write/item count만 통제 입력으로 대체했으며 192회 CRC·456회 XOR, callee-saved register·stack·buffer canary와 코드/테이블 비변경을 확인한다. 같은 raw/XOR·Read/ReadWrite·6 initial·요청 크기/부분 길이의 실제 Go 일반 파일 읽기는 CRC states SHA256 `f4fbfee05b3bc636c5e419cb6f3aa7429ae2a5e66f33cb4c3d737704dff13e6a`와 일치한다. 이 증거는 전체 Windows OS 파일 I/O 실행이 아니다.
+
+새 동결 회귀 한 파일은 912개 raw/XOR 경계·204개 잘린 암호화 파일·96개 완전한 암호화 분할 읽기와 parent 3개를 포함한다. 같은 테스트의 수정 전 601pass/614fail·actual1, 수정 후 1,215pass/0skip·actual0이며 공식 cgocheck2/race/checkptr2 count3는 3,645pass/0skip이다. 입력·기대값을 수정해 통과시키지 않는다. canonical 다섯 게임 모드의 모든 기존 ID/action/count/package 결과와 원본 157개 맵 재출력의 비변경은 audit-body-v1.log로 판정한다. 기존 라이브러리의 158개 TestMapWrite CRC 실패와 R233 자산 확장 음성 실패는 해결로 세지 않는다.
+
+사용자가 허용한 불필요한 캐시 정리로 task-owned Go build cache 약 44GB만 Go 1.26.9의 clean -cache로 제거했다. 이는 재생성 가능한 컴파일 캐시이며 모듈 다운로드·소스·게임 자산·개인 Save/설정·동결 증거는 삭제하지 않았다. 원본 1,554개 자산·보호 파일 305개·개인 파일 1,562개·R134 HOLD를 유지한다. 전역 goenv/runtime/GC·최소 언어 버전과 기존 tests/YAML/PNG/oracle은 바꾸지 않는다.
+
+자료는 `/private/tmp/opennox-crypt-read-r235.oWgVZ2`에 보존한다. 이 README prefix·한 production 파일·새 회귀 파일만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 푸시 후 새 clean ARM64 네 제품·일반/HD 공식 전용 서버의 수정 TriLevel 전환·기존 Host Load 8화면은 audit-release-v1.log로 별도 판정한다. 외부 공개 호스트는 이번 단계에서 재시도하지 않는다. 미실행 검사를 완료로 세지 않으며 TestMapWrite/음성 자산/War01A/fixed Quest/Player SetColor·대화 API·외부 접속 원인·다른 GUI/AI/API·physical GPU/가청 출력과 전체 포팅 목표는 미완료다.
+
 ## R234: 맵 재출력의 zero-name EOF 블록 복원
 
 기준은 clean/pushed `8a0a10005628fd7f3b0839d90c4b0a0243b83075`이며 사용자 goenv Go 1.26.9를 유지한다. `maps.Writer`의 Go-only 종료 표시 필드와 Flush/Close/WriteRawSection 세 본체에 한 번의 zero-length section name을 기록한다. 마지막 payload가 crypt block 경계이면 별도 8바이트가 필요하고, 명시적 끝 Flush가 이미 만든 zero padding은 재사용한다. 반복 Close와 checksum patch 재시도는 EOF를 중복 추가하지 않는다. header/section/payload·체크섬 알고리즘·게임 로더·AI/네트워크 계산은 바꾸지 않는다.

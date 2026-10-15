@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R233: 맵 섹션 길이의 aligned DWORD 계약
+
+기준은 clean/pushed `d5d6bc309b4cdea0083a6ee1687f800e987c8ef7`이며 사용자 goenv Go 1.26.9를 유지한다. `maps.Reader.nextSection`의 길이 읽기 한 곳을 기존 `readAlignedU32`로 연결했다. 원본 클라이언트의 `004AC4EF`는 길이 4를 넘겨 `00426C20`을 호출한다. 암호화 블록은 8바이트지만 길이는 앞 DWORD이고 뒤 DWORD는 패딩이다. 게임 로더·체크섬·writer·기존 EOF/오류 계약은 수정하지 않는다.
+
+새 회귀는 writer를 사용하지 않고 두 magic·다섯 unused DWORD·32개 길이의 연속 세 섹션을 직접 암호화한다. 같은 동결 입력의 수정 전 64pass/257fail·actual1, 수정 후 321pass·actual0이며 기존 R232와 함께 공식 cgocheck2/race/checkptr2 count3는 3,051pass/0skip이다. 원본 157개 맵/212,179개 객체의 수·순서·타입·opaque payload SHA는 R232와 동일하다. 모든 XFER 의미 디코딩이나 인게임 로드 수정으로 확대하지 않는다.
+
+읽기 전용 재출력 probe는 원본 157개 중 152개에서 checksum DWORD만 다르고, TriLevel/Con09b/War02b/War09b/Wiz09b 다섯 파일에서는 마지막 8바이트도 사라짐을 확인했다. 기존 라이브러리는 수정 전후 3,098pass/158fail/0skip·actual1이며 모든 ID/action/count/package 결과가 같다. 이 158개 TestMapWrite 실패를 이번 GREEN으로 세거나 원래 CRC를 복사해 감추지 않는다. EOF marker와 원본 writer의 호출 경계는 후속 조사 대상으로 남긴다.
+
+원본 CRC 본체 `00426BD0` 75바이트와 원래 1,024바이트 table을 변경 없이 실행한 216조건/360호출은 호출마다 마지막 반전을 하는 계약을 확인한다. private overlay의 실제 ARM64 Go 경로도 공식 strict/race/checkptr2에서 같은 360개 결과 SHA를 3회 재현했다. 독립 framing parser는 157개 모두 EOF용 zero name을 갖고 다섯 정렬 끝의 8바이트가 writer 출력에서 누락됨을 확인한다. 이 추가 경계 증거는 audit-extra-evidence-v1.log로 구분한다. 동일 바이트도 호출 분할에 따라 CRC가 달라지므로 표준 streaming CRC로 교체하지 않는다. 첫 sandbox 진단의 SIGILL과 같은 입력의 별도 실행 actual0을 함께 보존한다. 이는 전체 Windows writer·OS I/O나 원본 편집기 실행 검증이 아니다.
+
+처음 루트 전체 검사에 NOX_DATA를 추가해 이전 기준보다 자산 검사를 넓혔다. 이 실행과 이전 reader 본체 overlay를 사용하는 동일 환경의 baseline은 둘 다 74,351pass/40skip/1,141fail·actual1이며 모든 test ID/action/count/package가 같다. 한국어 대사 1,137개의 비어 있는 기대 해시·standalone chap1.mp3 unsupported와 parent 3개이며 실제 PCM 해시/오류도 같다. 첫 private 비교기는 unrelated timestamped unsupported 로그까지 비교해 actual1이었고, 별도 v2는 실패 음성의 정확한 payload만 대조했다. 기존 테스트·기대 해시는 변경하지 않는다.
+
+canonical 5종 게임 검사는 이전 R232와 동일하게 NOX_DATA를 지정하지 않으며 자산 확장 실패와 구분한다. 완료 여부와 전후 결과는 audit-body-v2.log를 따른다. 새 clean 네 ARM64 제품·공식 일반/HD server·기존 일반/HD Host Load 8화면 후속 판정은 audit-release-v2.log를 따른다. 자료는 `/private/tmp/opennox-map-crc-r233.aDUo52`에 보존한다. 이 README prefix·한 production 함수·새 독립 회귀 파일만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 개인 Save/설정·원본·기존 tests/YAML/PNG/oracle·R134 HOLD는 유지한다. 아직 실행하지 않은 검사를 완료로 세지 않으며 TestMapWrite/음성 자산 기대값/War01A/fixed Quest/Player SetColor·대화 API·외부 접속 원인·다른 GUI/AI/API·물리 GPU/가청 출력과 전체 포팅 목표는 미완료다.
+
 ## R232: 맵 객체의 정렬·DWORD 길이와 native int 경계
 
 기준은 clean/pushed `862b6fcc540aef3686d267339dfcf34a03f529bd`이며 사용자 goenv Go1.26.9를 유지한다. `binenc.Reader.Align`이 이미 정렬된 위치에서도8바이트를 더 건너뛰는 계산을 교정했다. `maps.Objects.ReadObjects`는 원래 crypt block8바이트의 앞 DWORD만 길이로 읽고 나머지4바이트는 패딩으로 소비하며, native int 변환 전에 남은 길이와 비교한다. 두 production 함수 외 기존 decoder/TOC·오류/입력·게임 로더·AI·네트워크·화면 계약은 바꾸지 않는다.

@@ -211,7 +211,9 @@ func (r *Reader) nextSection() (string, error) {
 	if err := r.error(); err != nil {
 		return "", err
 	}
-	size := r.readU64()
+	// The crypt block is eight bytes, but only its first DWORD is a length.
+	// Match the game's aligned DWORD read; the remaining bytes are padding.
+	size := r.readAlignedU32()
 	if err := r.error(); err != nil {
 		return sect, err
 	}

@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R242: 구버전 몬스터 레코드의 버전별 tail 경계
+
+기준은 clean/pushed `c379861ed3b05b78bf30c9ba8176bed9e4350dbd`이며 사용자 goenv Go 1.26.9를 유지한다. 실제 Solo 플레이어가 있는 native-clock 캠페인 로드 검사에서 War03d의 Zombie를 version 0으로 오독했다. 원본 157개 맵을 읽기 전용으로 확인한 Zombie 614개는 version60 35개·version64 579개이며 version0은 없었다. War03d의 35개는 모두 version60/object-base62다. bounded native phase 검사는 각 원본 payload를 정상 tail까지 읽고 나서 없는 buff version을 더 읽어 실패했다. 버전 제한 완화·오브젝트 skip·맵 데이터 수정으로 우회하지 않는다.
+
+GAME.EXE 00529706..00529A6E와 빈 buff/voice 함수·file wrapper·CRC를 변경 없이 200조건 실행했다. 원본은 shop sell multiplier를 version61부터, buffs를 62부터, wounded NPC voice를 63부터, poison을 64부터 전송한다. 이 네 guard만 복구한다. 원본 2,912회 file-wrapper·2,856회 CRC의 states SHA256은 `59f578e01e747fecdc4e8f0f7c83913f4fa4c11402592996391cdebc58e84ad0`다. 통제된 low-level fread/fwrite·빈 enchant 열거·빈 음성 registry·색상 통지·host flag 조회를 전체 Windows OS, nonempty buff/shop inventory 또는 전체 monster XFER 실행으로 확대하지 않는다.
+
+새 동결 v4는 version60..64·일반/상점/female/wounded/결합 subclass·read/write·host 여부·dormant 여부·raw/cipher/XOR의 500 leaf 조건을 검사한다. 같은 501개 ID의 RED는 100pass/401fail·actual1, GREEN은 501pass/0skip·actual0이다. 수정 전 통과한 version64 100조건도 유지하며 실제 payload·read position·checksum block·체력/partial-word 필드·상점 배율·색상·0 poison의 live-state 보존을 대조한다. write의 후속 0x5a 필드/CRC 호출은 비교기에 명시한다. 원본 War03d의 35개 bounded payload도 같은 36개 ID에서 RED 36fail에서 GREEN 36pass로 바뀌며 HP50을 복원한다. 공식 cgocheck2/race/checkptr2 count3와 canonical 다섯 모드의 기존 모든 ID/action/count/package 보존은 audit-body-v2.log를 따른다. 대조기 v1이 빈 freeze stderr를 JSON으로 읽은 실패도 보존하며 v2는 manifest 파일 선택만 교정한다.
+
+초기 새 테스트의 allocator count/type catalog 초기화, alloc.New의 type-witness 의미, XOR의 raw backend 위치 관찰 오류와 원본 probe의 초기 메모리/unsigned-char adapter 오류는 별도 버전의 원문·실패 receipt로 보존한다. 기존 테스트의 기대값·HP·RNG·timeout·YAML·PNG·oracle는 고치지 않았다. 제거한 새 초안 v1..v3와 이전 production의 동결 path는 원래 manifest를 수정하지 않고 동일 바이트의 명시적 archive binding으로 검증한다.
+
+최초 native 캠페인 v7은 War01a·War02a·War02b·War03a·War03b·War03c의 3초 연속 world window를 마쳤지만 War03d를 로드하지 못했다. 그 뒤 private 관찰 훅이 해제된 cached HostUnit의 Health를 읽은 SIGSEGV는 production 크래시 증거로 세지 않는다. 새 v8 관찰은 world/drawable 목록의 살아 있는 pointer membership부터 확인하며 같은 native clock·일반 Solo UI·인증된 console load·HP/세대/3초 연속 window·60초 준비 budget을 유지한다. 전체 campaign107·Quest13·자연스러운 스토리/전투 완료로 확대하지 않는다.
+
+자료는 `/private/tmp/opennox-campaign-native-r242.qxqgD4`다. production 한 파일·새 v4 회귀 파일·README prefix만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 새 clean ARM64 네 제품·일반/HD 공식 서버·기존 Host Load 8화면과 캠페인 재실행은 푸시 후 별도 receipt로 판정하며 미실행 검사를 완료로 세지 않는다. 공개 호스트 접속은 R239의 3 ready/3 timeout/deadline 기록을 보존하며 이번에 재시험했다고 주장하지 않는다. 기존 README suffix·원본 자산1,554개·개인 Save/설정·R134 HOLD·INVENTORY는 유지하고 캐시·전역 goenv/runtime/GC·최소 언어 버전은 바꾸지 않는다. 다른 GUI/AI/API·구버전 전체 serializer·War01A/fixed Quest·physical GPU/가청 출력·Windows 전체 실행과 전체 포팅은 미완료다.
+
 ## R241: Solo 포함 맵 목록의 세 직업 옵션 일관성
 
 기준은 clean/pushed `611a9451f32b392ceafe6a4ec6caac519f280091`이며 사용자 goenv Go 1.26.9를 유지한다. maps.Scan의 Solo 옵션은 세 직업 접두사를 모두 허용한다는 기존 계약인데, 괄호 누락으로 Wizard·Conjurer는 옵션과 무관하게 제외됐다. boolean grouping 한 곳만 수정한다. 기본 제외·대소문자 처리·접두사 규칙·정렬·메타데이터·읽기 오류·게임 모드 선택·네트워크 프로토콜은 바꾸지 않는다. NOX_SOLO_MP를 기본으로 켜거나 캠페인 맵을 멀티플레이에 강제로 로드하지 않는다.

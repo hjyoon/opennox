@@ -1017,20 +1017,26 @@ func monsterXferTail528DB0(cf *cryptfile.CryptFile, obj *server.Object, version 
 			return fmt.Errorf("female NPC voice: %w", err)
 		}
 	}
-	if err := monsterXferBuffs52AAB0(cf, obj); err != nil {
-		return err
+	// These fields were appended in different record versions. Reading them
+	// from a version-60 map consumes the next object's aligned header.
+	if version >= 62 {
+		if err := monsterXferBuffs52AAB0(cf, obj); err != nil {
+			return err
+		}
 	}
-	if obj.MonsterClass().Has(object.MonsterWoundedNPC) {
+	if version >= 63 && obj.MonsterClass().Has(object.MonsterWoundedNPC) {
 		if err := monsterXferVoice528DB0(cf, ud); err != nil {
 			return fmt.Errorf("wounded NPC voice: %w", err)
 		}
 	}
-	poison, err := monsterRWU8(cf, obj.Poison540)
-	if err != nil {
-		return fmt.Errorf("poison: %w", err)
-	}
-	if cf.ReadOnly() && poison != 0 {
-		setSomePoisonDataCall4EEA90(obj, int32(poison))
+	if version >= 64 {
+		poison, err := monsterRWU8(cf, obj.Poison540)
+		if err != nil {
+			return fmt.Errorf("poison: %w", err)
+		}
+		if cf.ReadOnly() && poison != 0 {
+			setSomePoisonDataCall4EEA90(obj, int32(poison))
+		}
 	}
 	if !cf.ReadOnly() {
 		return nil
@@ -1057,8 +1063,10 @@ func monsterXferShop528DB0(cf *cryptfile.CryptFile, obj *server.Object, version 
 	if shop.BuyMultiplier, err = monsterRWF32(cf, shop.BuyMultiplier); err != nil {
 		return fmt.Errorf("shop buy multiplier: %w", err)
 	}
-	if shop.SellMultiplier, err = monsterRWF32(cf, shop.SellMultiplier); err != nil {
-		return fmt.Errorf("shop sell multiplier: %w", err)
+	if version >= 61 {
+		if shop.SellMultiplier, err = monsterRWF32(cf, shop.SellMultiplier); err != nil {
+			return fmt.Errorf("shop sell multiplier: %w", err)
+		}
 	}
 	text, err := monsterRWString8(cf, cStringBytes528DB0(shop.ShopText[:]))
 	if err != nil {

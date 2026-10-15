@@ -1,3 +1,5 @@
+//go:build highres
+
 package legacy
 
 /*

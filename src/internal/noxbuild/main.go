@@ -20,6 +20,7 @@ const (
 	BinOpenNoxDebug   = "opennox-debug"
 	BinOpenNoxHDDebug = "opennox-hd-debug"
 	BinServer         = "opennox-server"
+	BinServerHD       = "opennox-server-hd"
 )
 
 const (
@@ -64,7 +65,7 @@ func main() {
 		}
 		return
 	}
-	if err := build(flag.Args()); err != nil {
+	if err := buildProducts(flag.Args()); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
@@ -98,7 +99,7 @@ type productMetadata struct {
 
 func productBuildPathForFile(path string) string {
 	name := strings.TrimSuffix(filepath.Base(path), ".exe")
-	if name == BinServer {
+	if name == BinServer || name == BinServerHD {
 		return serverBuildPath
 	}
 	return productBuildPath
@@ -195,7 +196,7 @@ func verifyProducts(paths []string) error {
 	return nil
 }
 
-func build(args []string) error {
+func buildProducts(args []string) error {
 	if *fOS == "windows" {
 		defTargets = append(defTargets, BinOpenNoxDebug, BinOpenNoxHDDebug)
 	}
@@ -223,6 +224,10 @@ func buildTarget(target string) error {
 	case BinServer, "server":
 		return goBuild("opennox-server", BinServer, &buildOpts{
 			CGO: true, Tags: []string{"server"},
+		})
+	case BinServerHD, "server-hd", "server-highres":
+		return goBuild("opennox-server", BinServerHD, &buildOpts{
+			CGO: true, Tags: []string{"server", "highres"},
 		})
 	case BinOpenNox, "client":
 		return goBuild("opennox", BinOpenNox, &buildOpts{
@@ -439,6 +444,8 @@ func goBuild(cmd string, bin string, opts *buildOpts) error {
 	if !filepath.IsAbs(src) {
 		src = "." + string(filepath.Separator) + src
 	}
+	// Go package arguments accept slash paths on every host, including Windows.
+	src = filepath.ToSlash(src)
 	args = append(args,
 		"-o", bin,
 		src,

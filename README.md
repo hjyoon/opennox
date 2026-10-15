@@ -48,6 +48,17 @@ This porting branch requires exactly Go 1.26.9. Use `./scripts/go.sh` on macOS/L
 
 For the local reference copy used by this branch, `make oracle-test` first verifies every path, size, and SHA-256 in the private Nox data tree and then runs the implemented semantic comparisons. Original assets remain outside this repository.
 
+### Multiplayer build variants
+
+The normal client and dedicated server use the vanilla protocol. The HD client uses a separate high-resolution protocol and requires an HD host; normal and HD peers intentionally reject each other. To build the matching HD dedicated server on Apple Silicon:
+
+```sh
+./scripts/go.sh -C src run ./internal/noxbuild \
+  -go=../scripts/go.sh -os=darwin -arch=arm64 -o=../build server-hd
+```
+
+This adds `build/opennox-server-hd`; run it with the same data/configuration options as `opennox-server`. `server-highres` is an alias. The existing default build still produces the normal client, HD client and normal dedicated server. The HD server is opt-in, and neither protocol's version checks are bypassed.
+
 ### Local GUI regression tests
 
 `scripts/run-headless-gui-e2e.sh` builds the native client and runs a scenario with isolated saves and configuration. Playback defaults to a deterministic headless screen. To exercise the SDL/OpenGL window and presentation on a desktop session, opt in explicitly:

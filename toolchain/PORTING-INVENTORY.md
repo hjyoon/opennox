@@ -1,5 +1,23 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## KOTR 맵 종료 왕관 재배정의 native 포인터 복원 (R216)
+
+기준 clean/pushed revision은 `f2428bcceccb5724932913caea60908f3ab52499`이며 사용자 goenv Go1.26.9를 계속 사용한다. R215의 clean ARM64 세 제품·실제 stock Chat 접속 대조·공식 server E2E·일반/HD Host Load 후속 검증은 actual0이고 receipt SHA는 `b0dceb42ca23b663b73e9506da7ee3ccaf65d45485d265e389b40c5779bac3f9`다. 이번 변경은 map exit가 조건부 호출하는 sub4D2160의 Team/PlayerInfo/Object pointer와 crown holder reads를 native 타입으로 복원하고, 이미 있는 serverTeams.TeamFlag 저장소를 읽는 CGo getter/선언을 연결한다. Team prefix/field_76의 타입·크기·ABI는 바꾸지 않는다.
+
+원본 GAME.EXE SHA는 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`, 전체004D2160..004D2230의208bytes SHA는 `4e636081e9b36e3bb9532c6fefec50c6941e30eb2e35fb936afb87c181415e63`다. 변경 없는 원본 instructions를16조건×guard0/5a/ff=48회 실행해 count/iterator/RNG/membership/pickup 기록과 원래 fault9회를 얻었다. 정상 반환의 callee-saved register 및 모든 code/input guards를 확인했다. enumeration/count/RNG/membership/pickup만 선언한 통제 서비스이며 원본 field loads는 실제로 실행한다. RNG의 원본 source0x5b70e0/line151도 확인한다. Windows 전체 실행·실제 무작위 분포·네트워크 게임 oracle로 확대하지 않는다.
+
+같은 real headers/완전한 active C 본문을 native 주소4GiB 위에서 실행하는 새 parent2는48조건을 원본과 대조한다. 빈 팀·이미 보유한 왕관·멤버0·첫/마지막 플레이어·nil unit/다른 팀 재추첨·team ID255·여러 팀·실패한 pickup 반환 무시·공유 왕관의 후속 held 판정·membership callback 뒤 crown와 playerUnit 재조회·cached count의 wrap 경계 및 원래 nil crown/roster fault를 포함한다. 재추첨은 전체 cached roster에서 다시 시작하며 후보 선별/횟수 제한을 추가하지 않았다. holder 검사 뒤에만 member count를 부르고, membership 성공 뒤 crown를 먼저 읽고 선택된 playerUnit을 다시 읽어 pickup(1,1)에 넘기는 순서도 유지한다. 새 nil guard/fallback은 없다.
+
+추가 parent1은 실제 CGo First/Next/native server team storage/Go crown side table로18조건을 검사한다. legacy scalar는0/5a5a5a5a/ffffffff로 두고도 held/empty-member 분기와 전체 native Team/Object bytes 불변을 확인한다. 동일 동결 v2 입력은 수정 전 C 본문 두 parent의 실제 memory fault 및 CGo child의 SIGSEGV로3fail/actual1, 수정 후3pass/66조건·actual0이다. 첫 v1 입력의 없는 Object.C 메서드로 인한 build failure는 별도 보존하고 새 v2 파일에서 fixture pointer conversion만 교정했다. 통과를 위해 기존 assertion/기대값은 바꾸지 않았다. 공식 cgocheck2+race+checkptr2/count3의 새 KOTR/기존 팀·HUD 검사는39pass/0skip·actual0이다.
+
+실제 KOTR map-exit E2E는 미검증이다. stock Kingdoms의 KOTR 지원 metadata를 확인하고 전용 서버에 공식 set team/set mode KOTR/load 명령을 줬으나 실제 진입 모드는 CTF였다. KOTR readiness deadline의 driver actual1과 authenticated quit 뒤 server actual0을 그대로 보존한다. sub4D2160까지 도달하지 않은 이 준비 실패를 실제 KOTR crash RED나 수정 후 게임 성공으로 세지 않는다. 모드 설정·clock/RNG·게임/packet/health/team 상태를 주입하거나 이 경로를 우회하는 production 변경도 하지 않았다. 이 소비 함수의 수정 근거는 위 원본/complete-native-body/실제 CGo 검증이며 실제 KOTR 모드 준비·접속·맵 전환은 후속 과제다.
+
+전체 일반/HD/공식 cgocheck2 각각73,789pass/47skip·40packages, server69,223pass/7skip·36packages·actual0이다. R215의 모든 기존 ID/action/count/skip/package 결과는 같고 새 parent3만 추가됐다. 기존632B Warrior save와 R140 동결 Host Load 입력의 일반/HD actual0 및 선택·Load 직후·600frame 대기·이동의 여덟 PNG bytes/SHA는 R215 clean 결과와 같다. 개인 Save는 import하지 않았다. original code2,968/data650 manifest verifier도 actual0이며 새 원본 함수 emulation과 구분한다.
+
+보존 감사 actual0은 source6,817→6,821files의 기능 차이가 위 C 소비 함수/Go getter/header 선언과 새 Go 검사/C fixture/original probe/transcript4files뿐임을 확인했다. 기존 assertion/YAML/PNG/oracle·protected304files·개인1,562files/Save/config·R134 HOLD·R215 동결 입력/receipt 및 original 자산 subset1,554개는 불변이다. body audit SHA는 `c76d153cded39738e708fc6c5cdfe55a99e3ba26e79c7d0b65def728eef84ad0`, 자료는 `/private/tmp/opennox-kotr-map-exit-r216.zY7mWK`에 보존한다. 최소 언어 버전·전역 goenv/runtime/GC·캐시는 변경하거나 삭제하지 않았다.
+
+문서는 이 기록만 앞에 추가하고 기존 suffix를 보존한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 세 제품·새 회귀·공식 server E2E·동일 일반/HD Host Load를 후속 receipt로 확인한다. 아직 실행하지 않은 후속 검사나 실제 KOTR 전환, 다른 GUI/AI/인벤토리 HOLD·physical LAN/WAN/GPU·가청 음향 및 전체 포팅 목표를 완료로 기록하지 않는다.
+
 ## Chat 근접 팀 배정의 native 포인터와 원본 거리 연산 (R215)
 
 기준 clean/pushed revision은 `8393a4a1dac17a30d941b5fbc3ef14f59a9f3458`이며 사용자 goenv Go1.26.9를 계속 사용한다. R214의 clean ARM64 세 제품·실제 CTF/FlagBall 접속/이동/정상 종료·공식 server E2E·일반/HD Host Load 후속 검증도 actual0으로 마무리했고 receipt SHA는 `71c770ee1ff71083fa5f65cafacc4626e154e33ab31be8ba7fd0452e3e07312b`다. 이번 변경은 server.go가 조건부로 호출하는 Chat 근접 팀 배정 sub4183C0 한 함수와 전용 산술 helper3개다. Object/UpdateData/Player/Team/거점 주소를 int/DWORD로 자르거나 PE32 offset으로 읽던 부분을 기존 native 구조체 포인터/필드로 바꿨다. 호출 조건·참가자 제외·기존 팀 유지/변경·callback 순서·net code bits·exhausted iterator의0 반환은 유지하고 새 nil guard/fallback은 추가하지 않았다.

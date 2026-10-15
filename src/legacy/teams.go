@@ -49,6 +49,11 @@ func nox_server_teamSetFlagObject_4180D0(t *nox_team_t, flag *nox_object_t) {
 	GetServer().S().Teams.SetTeamFlag(asTeam(t), asObjectS(flag))
 }
 
+//export nox_server_teamGetFlagObject_4180D0
+func nox_server_teamGetFlagObject_4180D0(t *nox_team_t) *nox_object_t {
+	return asObjectC(GetServer().S().Teams.TeamFlag(asTeam(t)))
+}
+
 //export nox_server_teamFirst_418B10
 func nox_server_teamFirst_418B10() *nox_team_t {
 	return (*nox_team_t)(GetServer().S().Teams.First().C())

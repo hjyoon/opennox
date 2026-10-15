@@ -167,32 +167,33 @@ void sub_4D10F0(char* a1) {
 
 //----- (004D2160) --------------------------------------------------------
 void sub_4D2160() {
-	char* result; // eax
-	char* i;      // ebp
+	nox_team_t* result; // eax
+	nox_team_t* i;      // ebp
 	int v2;       // edi
-	char* j;      // esi
-	int v4;       // eax
+	nox_playerInfo* j;  // esi
+	nox_object_t* v4;   // eax
 	int v5;       // [esp+4h] [ebp-4h]
 
 	v5 = nox_common_playerInfoCount_416F40();
 	result = nox_server_teamFirst_418B10();
 	for (i = result; result; i = result) {
-		if (!*(uint32_t*)(*((uint32_t*)i + 19) + 492) && sub_418BC0((int)i)) {
+		if (!nox_server_teamGetFlagObject_4180D0(i)->inv_holder && sub_418BC0(i)) {
 			do {
 				v2 = nox_common_randomInt_415FA0(0, v5 - 1);
-				for (j = nox_common_playerInfoGetFirst_416EA0(); j; j = nox_common_playerInfoGetNext_416EE0((int)j)) {
+				for (j = nox_common_playerInfoGetFirst_416EA0(); j; j = nox_common_playerInfoGetNext_416EE0(j)) {
 					if (!v2) {
 						break;
 					}
 					--v2;
 				}
-				v4 = *((uint32_t*)j + 514);
-			} while (!v4 || !nox_xxx_teamCompare2_419180(v4 + 48, i[57]));
-			sub_4F3400(
-				(nox_object_t*)(uintptr_t)*((uint32_t*)j + 514),
-				(nox_object_t*)(uintptr_t)*((uint32_t*)i + 19), 1, 1);
+				v4 = j->playerUnit;
+			} while (!v4 || !nox_xxx_teamCompare2_419180((nox_object_team_t*)&v4->field_12, i->field_57));
+			// Original reloads the crown, then the selected unit, after membership.
+			nox_object_t* crown = nox_server_teamGetFlagObject_4180D0(i);
+			nox_object_t* who = j->playerUnit;
+			sub_4F3400(who, crown, 1, 1);
 		}
-		result = nox_server_teamNext_418B60((int)i);
+		result = nox_server_teamNext_418B60(i);
 	}
 }
 

@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## Go 1.26.9 실제 AI 연속 공격·캠페인·Quest 진행 재검증 (R220)
+
+실제 실행 revision은 clean/pushed `38715f7a275fd10f4d9970467777a9a719de5f24`다. R219의 direct ray bridge·clean ARM64 세 제품·효과/Host Load/server 후속 검증은 actual0이며 release audit SHA는 `6ade52577fa2dbde3c4387ed8f89ef999df509bf1db19e11d657bd5ce3c957de`다. 이번에는 게임 소스를 바꾸지 않고 현재 Go1.26.9 제품의 실제 진행을 확대 점검했다. 기존 protected YAML/PNG/게임 assertion을 그대로 private 복사하고 headless/mock·비어 있는 private Save/config에서 실행했으며 화면 override는 false다.
+
+맵에서 읽은 Bat9개 중 기존 fixture가 선택한 객체는 원래 ACTION_GUARD/HP8/8·init/AI/script 상태를 유지한 채 위치만 host 가까이 배치됐다. 자연 update 후 실제 enemy 인식/client drawable gate와 정상 quit가 actual0이다. 이 위치 fixture를 전 구간 자연 보행이나 공격/피해 검증이라고 확대하지 않는다. War01A의 StartWizardSetpiece는 실제 polygon/client/server 경로에서 시작하고 Jerry/Bryan/Wizard가 모두 동작했다. start662→player release1119→completion1209·elapsed547frame/latch1·세 NPC/제어 복귀의 기존 assertion은 통과했다. 뒤의 동결 SCREEN은 actual2로 실패했다. 원래 expected/got/diff 세 PNG와 입력을 봉인했고 관찰 비교는46,780pixels 차이·player rectangle742pixels를 보고했다. 이 rectangle은 semantic oracle가 아니며 현재 palette·애니메이션·HUD 중 원인을 확정하거나 golden을 덮어쓰지 않았다.
+
+기존 sustained AI YAML의 Spider/Troll/Urchin/NPC/OgreBrute/Scorpion/VileZombie/StoneGolem/MechanicalGolem/Wasp/Ghost11종×상승/하강×clear/off-ray-box=44조건은 전부 actual0이다. 각 조건에서 실제 frame이 다른3회씩 총132개 HP 감소를 관찰했고 source는 native 고주소이며 poison type5는 횟수에서 제외됐다. 배치/방향·NPC의 정상 aggression/장비·관찰용 host HP2000과 입력 idle 방지는 기존 fixture다. SeenEnemies/CurrentEnemy/PreferredEnemy/FIGHT/Injured/damage callback/packet/pixel이나 선제 피격을 주입하지 않았으며 incoming-hit=none을 유지한다. 이 결과를 전체 몬스터/마법/맵 AI 또는 원본 Windows 전투 동등성으로 확대하지 않는다.
+
+기존 fixed-map Quest YAML은 stage1..3을 진행한 후 stage4 expected g_swamp/actual g_foresd로 actual2였다. 플레이어의 phase3·HP450/450·접속/로딩 해제 상태와 별개로 그 원래 gate는 계속 RED다. 이후 fixed stage5..20/다섯 SCREEN은 미실행이며 별도 map-oracle 시나리오 성공으로 대체하지 않는다. 일반·HD의 unchanged map-oracle20단계는 각각126.593462초/128.701561초·actual0/정상 cleanup이다. 각20개의 실제 selector snapshot을 프로세스 밖에서4096-word RNG table·signed DWORD maximum/equality/cooldown·ordered candidate 규칙으로 다시 계산했다. 결과 index/정확한 Logic 소비와 history/frame/Other/clock/last 불변·4GiB 위 native map 주소를 확인했다. 두 모드의 snapshot은 주소 외 동일하다. 각20개 playable/client phase3/HP450/450·mouse 이동19회·위치 fixture 뒤 정상 출구 collision19회·stock generator cap20회·stage5 Hecubah/Necromancer와 stage20 Hecubah도 통과했다. 전체 맵 보행·보스 처치·원본 PE/Windows 전체 실행 검증은 아니다.
+
+별도의 메인 메뉴 Solo Quest 직접 클릭도 Host Quest 클릭이나 개인 Save import 없이 새 Warrior 생성→두 verified selector/맵→단계별 stock cap→일반 마우스 이동2회→출구 collision1회→정상 quit actual0이다. 일반/HD Quest20의 completed stage4/19 score 및 stage5/6/20 gameplay의 각5개1024×768 private PNG는 모두 byte-identical이며 실제 월드/캐릭터/상점/HUD와 결과 제목/한글 문자열을 직접 확인했다. 이것은 진단 렌더 관찰이며 원래 fixed-map golden이나 physical GPU·가청 음향 인증이 아니다.
+
+runtime 감사 actual0/SHA `ac91dbcf6bfe2dddf1edac3d16be5dead9837d2a635414cfa17a6ab2280ed0f3`는 all_GUI_green=false와 위 두 actual2를 명시한다. source6,833files/protected304files/개인1,562files의 전체 체크포인트는 실행 전후 같으며 SHA도 `30266c627b9424fb667d74933b76695b775312260006c16e6866f537461c856d`로 동일하다. original 자산 subset1,554개·R134 HOLD·R219 동결 receipt/입력/실패 증거도 보존한다. 원본 assets의 nc.obj/nox.cfg를 포함하는 full tree 검증은 주장하지 않는다. 자료는 `/private/tmp/opennox-campaign-ai-r220.V5iN8P`에 보존했다. 게임 소스·기존 테스트/기대값/YAML/PNG/oracle·Go 최소 언어 버전·전역 goenv/runtime/GC·캐시를 변경하거나 삭제하지 않았다. 전체 네 모드 unit suite는 이번에 재실행했다고 세지 않으며 동일 게임 코드의 R219 검증을 유지한다.
+
+이 문서 기록만 앞에 추가해 기존 suffix를 보존하고 커밋 직후 origin port/go1.26-multiarch로 push한다. 새 docs-only revision의 clean ARM64 일반/HD/server 제품·metadata/Mach-O/help·Solo Quest·공식 server E2E·일반/HD Host Load는 후속 receipt로 확인한다. 아직 실행하지 않은 후속 검사를 완료로 세지 않는다. 고정 Quest/War01A SCREEN·다른 기존 GUI/AI/인벤토리/Player SetColor·R134 HOLD와 전체 포팅 목표는 미완료다.
+
 ## 광선 효과의 등록 CGo 업데이트 진입점 복원 (R219)
 
 기준 clean/pushed revision은 `7a332bbbdf7dea9d1eb2368dd5efd0741196f5ec`이며 사용자 goenv Go1.26.9를 계속 사용한다. R218의 clean ARM64 세 제품·stock 장비 충전/자연 FX/열린 inventory·공식 server E2E·일반/HD Host Load 후속 검증은 actual0이고 release audit SHA는 `69ccf6868aaaf2b6e0f47988a1e6ff5018916467d4a1037b62d5c9db2dfa5b16`다. 이번에는 drawable update 테이블에 등록된 CharmUpdateDraw/HealUpdateDraw/DrainManaUpdateDraw의 직접 CGo 진입점을 확인했다. 일반 월드 엔진은 이미 기존 Go helper로 분기하므로, 이 검사를 일반 엔진에서 새로 발견한 크래시로 확대하지 않는다.

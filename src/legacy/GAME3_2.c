@@ -6002,6 +6002,9 @@ void nox_xxx_effectRegeneration_4E01D0(int a1, int a2) {
 }
 
 //----- (004E02C0) --------------------------------------------------------
+#if 0
+// PE32 provenance. The registered symbol is the native-width Go export in
+// effect_continual_replenishment_4e02c0.go, including its original byte wrap.
 void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2) {
 	int v2;           // eax
 	int v3;           // ecx
@@ -6037,6 +6040,7 @@ void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2) {
 		}
 	}
 }
+#endif
 
 //----- (004E0370) --------------------------------------------------------
 float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value) {

@@ -19,7 +19,7 @@ void sub_4DFE10(void* effect, nox_object_t* owner, const nox_object_t* item);
 float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
 float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value);
 float* nox_xxx_effectDamageMultiplier_4E04C0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, float* damage);
-void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2);
+void nox_xxx_attribContinualReplen_4E02C0(void* effect, nox_object_t* item, void* context);
 void nox_xxx_confuseEffect_4E0670(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context);
 void nox_xxx_drainMEffect_4E0740(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage);
 void nox_xxx_sympathyEffect_4E08E0(void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, int32_t* damage);

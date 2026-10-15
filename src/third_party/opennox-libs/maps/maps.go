@@ -75,7 +75,7 @@ func Scan(log *slog.Logger, path string, opts *ScanOptions) (MapList, error) {
 			}
 			name := fi.Name()
 			lname := strings.ToLower(name)
-			if !opts.Solo && strings.HasPrefix(lname, SoloPrefixWar) || strings.HasPrefix(lname, SoloPrefixWiz) || strings.HasPrefix(lname, SoloPrefixCon) {
+			if !opts.Solo && (strings.HasPrefix(lname, SoloPrefixWar) || strings.HasPrefix(lname, SoloPrefixWiz) || strings.HasPrefix(lname, SoloPrefixCon)) {
 				continue
 			}
 			info, err := ReadMapInfo(filepath.Join(path, name))

@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R241: Solo 포함 맵 목록의 세 직업 옵션 일관성
+
+기준은 clean/pushed `611a9451f32b392ceafe6a4ec6caac519f280091`이며 사용자 goenv Go 1.26.9를 유지한다. maps.Scan의 Solo 옵션은 세 직업 접두사를 모두 허용한다는 기존 계약인데, 괄호 누락으로 Wizard·Conjurer는 옵션과 무관하게 제외됐다. boolean grouping 한 곳만 수정한다. 기본 제외·대소문자 처리·접두사 규칙·정렬·메타데이터·읽기 오류·게임 모드 선택·네트워크 프로토콜은 바꾸지 않는다. NOX_SOLO_MP를 기본으로 켜거나 캠페인 맵을 멀티플레이에 강제로 로드하지 않는다.
+
+새 동결 회귀는 세 직업·mixed-case·일반 이름 안의 접두사·기존 접두사 판정·100개 초과 디렉터리 페이지·빈 디렉터리/일반 파일·잘못된 맵의 경고/부분 목록·없는 경로를 검사한다. 같은 21개 ID의 수정 전 14pass/7fail·actual1에서 수정 후 21pass/0skip·actual0이며 공식 cgocheck2/race/checkptr2 count3는 63pass다. 원본 157개 파일의 크기·SHA와 MapInfo를 보존한 읽기 전용 검사는 Solo 포함 시 87개에서 157개로 바뀌고, 기본 nil/false 목록은 모두 같은 50개다.
+
+수정 전 clean 일반/HD 서버 네 실행도 실제 HTTP control 목록의 50/87개와 다운로드 API의 50개를 확인했다. 첫 private 수집기 v1은 JSON name 필드를 filename으로 읽어 실패했으며 actual1과 소유 서버 TERM15를 보존한다. 별도 v2는 필드명·비중복 출력 경로만 교정하고 입력·판정·30초/10초 deadline은 유지한다. 새 clean 제품의 네 동일 검사는 푸시 후 audit-release-v1.log로 별도 판정한다. 수집기 실패를 게임 크래시나 완료된 RED 재현으로 세지 않는다.
+
+canonical 다섯 게임 모드의 기존 모든 ID/action/count/package 보존과 기존 라이브러리 TestMapWrite 158개 CRC 실패의 유지 여부는 audit-body-v1.log를 따른다. R240 읽기 전용 검사는 원본 멀티플레이 맵 37개의 기본 모드(Arena 15·CTF 5·FlagBall 2·Chat 15)에서 일반/HD 74개 독립 native 서버가 각각 로드 generation 증가·3초 real-clock main/game tick 진행·정상 quit을 통과했다. campaign 107개·Quest template 13개는 다른 모드로 강제하지 않았고, 모든 지원 모드 조합·플레이어 전투·GUI·물리 출력 검증은 아니다. 자료는 `/private/tmp/opennox-native-map-matrix-r240.nIIU1P`다.
+
+R239의 별도 최신 네트워크 기록은 `/private/tmp/opennox-host-connect-r239.nWEgMJ`에 보존했다. 2026-10-16 03:00 KST 공개 목록 API connection refused/XWIS timeout과 승인된 이전 여섯 주소의 실제 Join은 구분한다. 세 주소는 map-loaded observer와 UI 정상 종료, 나머지는 timeout/deadline이었다. NoXWorld observer의 HP 0/0 수신을 HP100 전투 성공으로 세지 않는다. 일반/HD 로컬 Join·마우스 spawn·이동·UI 종료는 통과했지만 다른 물리 장치 LAN이나 외부 전투 인증은 아니다. 이번 R241에서 공개 호스트를 재시험했다고 주장하지 않는다.
+
+이번 자료는 `/private/tmp/opennox-solo-scan-r241.SPSDn9`다. production 한 줄·새 회귀 파일·이 README prefix만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 기존 README suffix·tests/YAML/PNG/oracle·원본 자산 1,554개·개인 Save/설정·R134 HOLD·INVENTORY는 유지하며 캐시·전역 goenv/runtime/GC·최소 언어 버전은 바꾸지 않는다. 새 clean ARM64 네 제품·일반/HD 공식 서버·기존 Host Load 8화면은 푸시 후 별도 receipt로 확인하며 미실행 검사를 완료로 세지 않는다. 다른 GUI/AI/API·War01A/fixed Quest·Player SetColor·문자열 대화·physical GPU/가청 출력·Windows 전체 실행과 전체 포팅은 미완료다.
+
 ## R238: native AI 스택 좌표의 8바이트 체크섬 경계
 
 기준은 clean/pushed `628798402fc2e25aaec67c6b955329cb1a22e117`이며 사용자 goenv Go 1.26.9를 유지한다. monster/NPC AI 스택의 좌표 두 개를 원본처럼 하나의 8바이트 I/O/CRC item으로 저장·복원한다. 두 uintptr를 그대로 직렬화하지 않고 각 low DWORD를 little-endian으로 변환한다. 원본 이름 테이블의 빈 39번 슬롯도 wire 전용 빈 이름으로 복원하며 전역 Action.String의 진단 표현은 유지한다. 다른 인자 종류·일반 byte/String helper·CRC 알고리즘·AI 실행·게임/네트워크 계산은 바꾸지 않는다.

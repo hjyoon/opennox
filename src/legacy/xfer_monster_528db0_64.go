@@ -10,7 +10,9 @@ package legacy
 import "C"
 
 import (
+	"encoding/binary"
 	"fmt"
+	"io"
 	"math/bits"
 	"sync"
 	"unsafe"
@@ -719,7 +721,9 @@ func monsterXferActionData529CE0(cf *cryptfile.CryptFile, obj *server.Object, re
 
 func monsterXferAIStackItem52A440(cf *cryptfile.CryptFile, item *server.AIStackItem, objectIDs *[2]int32, waypointIDs *[2]uint32, delta int32) error {
 	actionName := ai.ActionType(item.Action).String()
-	if cf.ReadOnly() {
+	// Slot 39 is unnamed in the original wire table. Keep String's
+	// diagnostic spelling separate from the serialized action name.
+	if cf.ReadOnly() || item.Action == 39 {
 		actionName = ""
 	}
 	var err error
@@ -729,6 +733,9 @@ func monsterXferAIStackItem52A440(cf *cryptfile.CryptFile, item *server.AIStackI
 	}
 	if cf.ReadOnly() {
 		item.Action = uint32(monsterActionByName528DB0(actionName, 72, ai.ACTION_IDLE))
+		if actionName == "" {
+			item.Action = 39
+		}
 		item.Args = [4]uintptr{}
 	}
 	action := int(item.Action)
@@ -751,13 +758,34 @@ func monsterXferAIStackItem52A440(cf *cryptfile.CryptFile, item *server.AIStackI
 		kind := memmap.Uint32(0x587000, uintptr(255608+4*(i+4*action)))
 		switch kind {
 		case 0:
-			for j := 0; j < 2; j++ {
-				value, e := monsterRWU32(cf, uint32(item.Args[slot+j]))
-				if e != nil {
-					return fmt.Errorf("argument %d.%d: %w", i, j, e)
+			// A PE32 vector is one eight-byte I/O/CRC item, not two
+			// scalar items or two native-width uintptrs.
+			var buf [8]byte
+			binary.LittleEndian.PutUint32(buf[:4], uint32(item.Args[slot]))
+			binary.LittleEndian.PutUint32(buf[4:], uint32(item.Args[slot+1]))
+			var n int
+			if cf.ReadOnly() {
+				n, err = io.ReadFull(cf, buf[:])
+				if n >= 4 {
+					item.Args[slot] = uintptr(binary.LittleEndian.Uint32(buf[:4]))
 				}
-				item.Args[slot+j] = uintptr(value)
+				if n == 4 && err == io.ErrUnexpectedEOF {
+					// Preserve the native reader's complete-word commit
+					// and second-word EOF error, without admitting CRC
+					// for an incomplete eight-byte item.
+					err = io.EOF
+				}
+			} else {
+				n, err = cf.Write(buf[:])
+				if err == nil && n != len(buf) {
+					err = io.ErrShortWrite
+				}
 			}
+			if err != nil {
+				return fmt.Errorf("argument %d.%d: %w", i, min(n/4, 1), err)
+			}
+			item.Args[slot] = uintptr(binary.LittleEndian.Uint32(buf[:4]))
+			item.Args[slot+1] = uintptr(binary.LittleEndian.Uint32(buf[4:]))
 		case 1:
 			id := int32(0)
 			if !cf.ReadOnly() {

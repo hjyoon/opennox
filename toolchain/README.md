@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R238: native AI 스택 좌표의 8바이트 체크섬 경계
+
+기준은 clean/pushed `628798402fc2e25aaec67c6b955329cb1a22e117`이며 사용자 goenv Go 1.26.9를 유지한다. monster/NPC AI 스택의 좌표 두 개를 원본처럼 하나의 8바이트 I/O/CRC item으로 저장·복원한다. 두 uintptr를 그대로 직렬화하지 않고 각 low DWORD를 little-endian으로 변환한다. 원본 이름 테이블의 빈 39번 슬롯도 wire 전용 빈 이름으로 복원하며 전역 Action.String의 진단 표현은 유지한다. 다른 인자 종류·일반 byte/String helper·CRC 알고리즘·AI 실행·게임/네트워크 계산은 바꾸지 않는다.
+
+원본 GAME.EXE의 전체 0052A440 helper·이름 lookup·frame clamp·file wrapper·CRC와 테이블을 변경 없이 7,344조건 실행했다. low-level fread/fwrite의 bytes/item count만 통제해 31,572회 CRC와 3,240회 vector8 요청, register/stack/canary 및 원본 코드·테이블·이름 비변경을 확인했다. states SHA256은 `66393e0b24c039c5055262d3de493c0dcf2090092046946d150d2431515b3528`다. 초기 CRC 0xffffffff의 1,224조건을 native raw/cipher/XOR의 실제 payload와 checksum block 2,448회로 대조한다. writer의 다음 0x5a 필드와 그 CRC 호출은 비교기에 명시적으로 포함한다. 전체 object XFER나 Windows OS I/O 검증으로 확대하지 않는다.
+
+최초 원본 probe v1의 size0 서비스 오류와 테스트 v1의 미초기화 인자 테이블, v2의 alloc.New 참조 ID 초기화 누락은 모두 원문/actual1로 보존한다. 테스트 v1/v2는 명시적 retired-inputs-v1/v2에 동일 바이트로 보관한다. v2는 배포 테이블의 정수 metadata 1,152바이트만 로드·복구하고 v3는 C 할당 뒤 참조 ID만 초기화하며 assertion·기대값·케이스·HP·RNG·deadline은 변경하지 않는다. 같은 동결 v3의 수정 전 1,704pass/746fail·actual1에서 수정 후 2,450pass/0skip·actual0으로 바뀌었다. 72개 action·3개 bit pattern·NULL/non-NULL native 참조·두 XOR 모드·읽기/쓰기와 vector의 0..7바이트 부족 경계를 포함한다. 잘린 읽기의 조기 오류·완전한 DWORD만 반영하는 기존 native 정책은 유지하며 원본 C의 실패 후 전체 메모리 동작과 같다고 주장하지 않는다.
+
+공식 cgocheck2/race/checkptr2 count3 및 canonical 다섯 모드의 모든 기존 ID/action/count/package 보존은 audit-body-v1.log로 판정한다. 기존 TestMapWrite 158개 CRC 실패와 R233 확장 음성 실패는 이번 해결로 세지 않는다. 전체 native serializer 경계·다른 GUI/AI/API와 전체 포팅은 미완료다. 기존 tests/YAML/PNG/oracle·원본 자산 1,554개·개인 Save/설정·R134 HOLD·INVENTORY를 유지하며 캐시·전역 goenv/runtime/GC·최소 언어 버전은 바꾸지 않는다.
+
+자료는 `/private/tmp/opennox-ai-vector-r238.MDh87O`다. production 한 파일·새 v3 회귀 파일·이 README prefix만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 푸시 후 새 clean ARM64 네 제품·일반/HD 공식 서버의 수정 TriLevel 전환·기존 Host Load 8화면은 audit-release-v1.log로 따로 판정한다. 이 단위의 공개 호스트 재접속은 없으며 미실행 검사를 완료로 세지 않는다. physical GPU/가청 출력·Windows 전체 실행과 보존된 미해결 항목은 계속 미완료다.
+
 ## R237: native monster/NPC 저장 문자열과 체크섬 호출 경계
 
 기준은 clean/pushed `536e77ee0ac0cbfe56d53cf45703017fa11dd3c8`이며 goenv Go 1.26.9를 유지한다. native String8의 빈 본문도 실제 Write를 호출해 원본의 CRC 반전을 보존한다. 반대로 NULL 음성세트·상점 modifier·없는 FieldGuide 이름은 길이만 기록하도록 분리한다. 자동 스펠의 0번 값과 상점의 0번 spell/ability는 원본 테이블의 SPELL_INVALID/ABILITY_INVALID 이름으로 저장한다. optional-name 변환 helper의 기존 내부 계약과 빈 문자열 읽기 호환성은 유지하며 일반 byte helper·CRC 알고리즘·게임/네트워크 계산은 바꾸지 않는다.

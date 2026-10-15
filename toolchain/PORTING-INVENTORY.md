@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## Fireball 등록 CGo 업데이트 다섯 진입점의 native 연결 (R223)
+
+기준 clean/pushed `a91e641f6a4361bac6e3a314dd9f577b42136a8b`이며 사용자 goenv Go1.26.9를 계속 사용한다. R222의 clean ARM64 세 제품·일반/HD Host Load8화면·공식 server 후속 감사는 actual0/SHA `e0d357eea610b689e58a4d03b662d04219032ecfed7183ba7749467c29092190`다. 이번에는 Titan/Strong/Regular/Weak/Pitiful Fireball의 등록 C 심벌004CCE70/004CD090/004CD0C0/004CD0F0/004CD120을 점검했다. 일반 월드 dispatcher는 이미 Go 효과 구현을 사용하므로 이번 직접 CGo 검사를 일반 엔진의 새 크래시 재현으로 확대하지 않는다.
+
+기존 C wrappers는 drawable을 PE32 uint32 배열로 읽고 raw Spark helper에 넘겼다. 같은 새 동결 ABI 입력은 수정 전5fail/actual1이며 모두 return1·native hook calls0이다. renderer 초기화에 도달하지 않도록 옛 offset480 gate를 명시적으로 poison한 opaque adapter fixture이며 SIGSEGV 재현이라고 기록하지 않는다. 기존 C 이름·등록 키·주소 getter를 유지한 native viewport/drawable 포인터의 Go export를 기존 Go 효과 helper에 연결했다. C 헤더의 다섯 prototype만 typed pointer/int32 반환으로 교정하고 원래 다섯 C 본문은 byte-exact #if0 provenance로 보존했다. raw004CCEA0 helper 본체는 그대로이며 새 활성 호출 경로라고 세지 않는다. pause/Field_120·RNG·위치/입자 계산·ordinary world dispatcher는 변경하지 않았다.
+
+원본 GAME.EXE 전체 SHA `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 다섯 entry를 read-only disassembly로 다시 확인했다. 원본 power5/4/3/2/1·표시 억제 gate·pause·return1 매핑을 보존한다. disassembly receipt SHA는 `d8cd0549fba2a540040eaf8ce8d764e9af14726cac186a97637af6df25ffffb0`/`ab43700b275e3ad82b855f5598c9e1c4cf44effe9b85a4dd1c470c2848723d3e`다. 새 GAME.EXE 전체 함수 emulation이나 Windows 전체 게임 실행을 했다는 주장은 없으며 기존 original code2,968/data650 manifest verifier actual0과 구분한다.
+
+같은 동결 parent5는 수정 후5pass/actual0이다. 실제 C function pointer→CGo export→native hook에서4GiB 위 viewport/drawable·power 매핑·nil 전달·signed32 반환·whole input record 불변과 renderer-free keep-alive를 검사한다. 기존 pure 효과 payload5도 actual0이다. 공식 Go1.26.9 cgocheck2+race+checkptr2/count3은30pass/0skip이며 전체 일반/HD/공식 cgocheck2는 각각73,806pass/47skip·40packages, server69,240pass/7skip·36packages·actual0다. R219의 모든 기존 ID/action/count/skip/package는 같고 새 parent5만 추가됐다.
+
+private routing-only overlay는 기존 dispatcher의 Fireball 다섯 call만 실제 CGo 심벌로 경유시키고 Spark 증가를 read-only로 기록했다. 기존 Fireball YAML/모든 gameplay assertion은 바이트 단위 그대로다. 플레이어→NPC·NPC→플레이어 각5레벨과 실제 NPC cast-frame 경로1개, 합계11조건의 실제 projectile collision·정확한 피해·귀속 marker·client HP/HUD·cast/explode event1/1·투사체 제거가 actual0이다. 실제 moving update에서 native viewport0x600003f50000과4GiB 위 drawable의 power3/4/5가 각각 Spark3/4/5를 생성하고 return1인 것을 관찰했다. power1/2는 opaque direct ABI 검사 범위이며 자연 gameplay에서 관찰했다고 세지 않는다. 배치·durable HP·aim·WAIT/CAST action fixture와 virtual clock/mock audio가 있고 player mana/incantation 입력·무자극 선제공격·physical GPU/가청 출력 검증은 아니다.
+
+body 감사 actual0/SHA `fd128b4231a423e2ffca02abcb8129239ae53b98b3612bb41fb98e917a8e03d8`는 source6,833→6,837files의 기존 차이가 위 C provenance wrapper/다섯 prototype뿐이며 새 Go binding/export/회귀4files 외 기능 차이가 없음을 확인한다. protected304files·개인1,562files/Save/config·R134 HOLD·R222 동결264files·original 자산 subset1,554개는 보존했다. 플레이어 SetColor의 미구현 API는 전용 색상 갱신 protocol/색인 계약을 확인하지 못했으므로 신규 참가 packet 재전송이나 no-op으로 대체하지 않고 별도 HOLD로 남긴다. 최소 언어 버전·전역 goenv/runtime/GC·캐시 변경/삭제는 없다.
+
+자료는 `/private/tmp/opennox-fireball-native-r223.tB1Tux`에 보존한다. 이 prefix만 추가해 이전 문서 suffix를 유지하고 커밋 직후 origin port/go1.26-multiarch에 push한다. clean ARM64 일반/HD/server 세 제품·새 ABI/기존 payload·일반/HD unchanged Fireball11조건씩·동일 CGo routing 진단·공식 server E2E·일반/HD Host Load8화면은 후속 receipt로 확인하며 아직 실행하지 않은 검사를 완료로 세지 않는다. all_GUI_green=false이며 기존 War01A/fixed Quest/다른 GUI·AI·API/R134 HOLD·현재 공개 서버 가용성·전체 port goal은 계속 미완료다.
+
 ## War01A 추가 3프레임 변화의 공통 MainAI 변경 경계 분리 (R222)
 
 기준 clean/pushed `d9b785a6d2de861d03b0a6a49b6260f6d7aac8c3`다. R221의 clean ARM64 일반/HD/server 제품·공식 server E2E·일반/HD Host Load8화면 후속 검증은 actual0이며 release audit SHA는 `06a03e84975efc8f2a994c7bd119bb8fc985b967e2465e22480cfae52ef02071`다. 이번은 남은1116→1119 변화의 read-only 조사이며 게임 소스 변경0·새 public 테스트0·기존 assertion/YAML/PNG/oracle 변경0이다. Host Load 반투명 수정과 별개인 기존 War01A SCREEN RED를 보존한다.

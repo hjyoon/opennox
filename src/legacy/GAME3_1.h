@@ -220,11 +220,11 @@ int sub_4CC3C0(unsigned int a1);
 int nox_xxx_updDrawUndeadKiller_4CCCF0();
 int sub_4CCD00(int a1, int a2);
 int nox_xxx_updDrawFist_4CCDB0(int a1, int a2);
-int sub_4CCE70(int a1, uint32_t* a2);
-int sub_4CD090(int a1, uint32_t* a2);
-int sub_4CD0C0(int a1, uint32_t* a2);
-int sub_4CD0F0(int a1, uint32_t* a2);
-int sub_4CD120(int a1, uint32_t* a2);
+int32_t sub_4CCE70(nox_draw_viewport_t* vp, nox_drawable* dr);
+int32_t sub_4CD090(nox_draw_viewport_t* vp, nox_drawable* dr);
+int32_t sub_4CD0C0(nox_draw_viewport_t* vp, nox_drawable* dr);
+int32_t sub_4CD0F0(nox_draw_viewport_t* vp, nox_drawable* dr);
+int32_t sub_4CD120(nox_draw_viewport_t* vp, nox_drawable* dr);
 int sub_4CD400(nox_draw_viewport_t* vp, nox_drawable* dr);
 
 #endif // NOX_PORT_GAME3_1

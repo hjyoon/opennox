@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R244: 공격자 없는 NPC 압사·물기 피해 연결
+
+Goenv Go1.26.9를 사용한다. 실제 HD/native-clock 캠페인 관찰에서 발견한 NPC(type1343/class2097154/subclass69650)의 nil source·nil weapon CRUSH(2)/raw200과 BITE(8)/raw50을 native PlayerDamage·DefaultDamage 경로에 연결했다. 기존 PlayerDamage 본체에는3줄 dispatch만 더하고, DefaultDamage의 두 admission만 NPC 하위 클래스에 한정해 확장했다. 타입 이름/맵 특례·직접 체력 감소·강제 사망·면역 해제는 없다. 일반 몬스터의 기존 source-less CRUSH 미지원 기대값과 다른 모든 기존 테스트를 보존했다.
+
+변경 없는 GAME.EXE `004E17B0`→`004E20F0`/`00419A70`→`004E0B30`의1,210조건을 실행했다. CRUSH는 cached absorption의 절반, BITE는 전체를 사용하며 f32 spill·live fractional carry·armor wear·cached marker·late GodMode/Quest·nil attribution/피격 timestamp/Shield 순서를 유지한다. armor/sound/late defense/최종 HP 서비스는 원본 probe의 통제 지점이며, 이 probe를 전체 장비 내구도·사망·Windows 실행 인증으로 확대하지 않는다. 새 고정 회귀1,229identity와 원본/native1,200계산 조합의 모든 관찰 상태가 일치한다. 실제 C→Go→native HP는 raw200의1000→800→600→400, raw50의1000→950→900→850을 통과했다. 실제 cgocheck2·race·checkptr=2/count3은3,687pass이며, 기존 NoUpdate/Dead/무적·반사/방어 자세·late Defend/Shield zero-return도 유지한다.
+
+일반·HD·실제 strict 전체는 각각80,600pass/47skip·40package, server·server-HD는 각각76,034pass/7skip·36package로, 이전 모든 ID/action/count/package 결과를 유지하고 새1,229pass만 더했다. 수정 전 실제 RED와 중간 CRUSH protection 거부 실패를 보존하며 테스트·원본·개인 Save/config·R134 HOLD·기존 문서 suffix는 변경하지 않았다. 근거 `/private/tmp/opennox-dialog-native-r244.b8LkfB`의 원본 대조·body/document·release 영수증에서 범위를 분리한다. 커밋 직후 push 후 clean ARM64 일반/HD/서버/서버-HD 제품, 공식 로컬 서버·Host Load 및 같은107맵/동일 입력·deadline의 후속 native 관찰을 별도로 확인한다.
+
+수정 전 HD 관찰은 원본 Warrior37맵 중36맵의 연속 world-update 창을 통과했지만 War11a에서 플레이어 HP0으로 중단했다. startup의 실제 NPC 대화·status512/NoUpdate와 일반 Done 이후 해제는 관찰했으나 이전 R243의 War03b/War07h 실패를 직접 재현한 증거는 아니다. 250ms 상태 표본 간 시간이 controller의3초 창과 같다는 private collector 가정 오류와 plan 파일 확장자 오류도 보존하고, 실제 입력·3초 검사·60초 준비 예산·HP는 바꾸지 않았다. 현재 공개 서버 목록 API의 읽기 전용 조회는 connection refused이며 이를 공개 서버 전체 접속 불가로 해석하지 않는다. 전체 캠페인/Quest·모든 저장 캐릭터의 반투명 현상·전체 포팅 목표는 별도 미완료다.
+
 ## R243: NPC tail의 버전별 필드 경계 복구
 
 기준은 clean/pushed `cb8a62487264d9498a54f1a057ad3ad75dfe6024`이며 사용자 goenv Go 1.26.9를 유지한다. R242 native 일반/HD 캠페인은 여섯 맵의 연속 world window 뒤 War03d의 Kalen을 `unsupported buff version 27`로 읽지 못했다. 원본 157개 맵의 `NPC` 타입 603개를 읽기 전용으로 확인하면 version60은 Kalen 한 개, version62는 602개다. 다른 ObjectType의 NPC subclass까지 조사했다는 뜻은 아니다. Kalen payload 341바이트의 SHA256은 `a4d134136c4a7e8081a009d438ee8ab939ca846bf245692568a44b736dea2e88`이며 tail은 318..341에서 끝난다.

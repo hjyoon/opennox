@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R232: 맵 객체의 정렬·DWORD 길이와 native int 경계
+
+기준은 clean/pushed `862b6fcc540aef3686d267339dfcf34a03f529bd`이며 사용자 goenv Go1.26.9를 유지한다. `binenc.Reader.Align`이 이미 정렬된 위치에서도8바이트를 더 건너뛰는 계산을 교정했다. `maps.Objects.ReadObjects`는 원래 crypt block8바이트의 앞 DWORD만 길이로 읽고 나머지4바이트는 패딩으로 소비하며, native int 변환 전에 남은 길이와 비교한다. 두 production 함수 외 기존 decoder/TOC·오류/입력·게임 로더·AI·네트워크·화면 계약은 바꾸지 않는다.
+
+동결한 새 회귀 두 파일은 정렬·반복 정렬·EOF·패딩 부족, 여러 payload 길이의 연속 객체·비어 있거나0xffffffff인 unused DWORD, 잘린 header·0x80000000/0xffffffff 길이·기존 TOC/부분 디코딩 오류를 검사한다. 수정 전18pass/678fail·actual1, 같은 입력의 수정 후696pass·actual0이고 공식 cgocheck2+race+checkptr2/count3는2,088pass/0skip·2packages다. Linux/386 테스트 바이너리 빌드는 actual0이며32비트 실행 검증으로 세지 않는다. 최소 언어 버전·전역 goenv/runtime/GC·캐시는 변경하거나 삭제하지 않는다.
+
+별도 읽기 전용 probe는 실제 ReadObjects API의 XFER decoder만 opaque payload 관찰기로 지정해 타입·바이트 framing을 독립적인 aligned-DWORD parser와 대조한다. 같은 원본157개 맵/212,179개 객체에서 수정 전151개 맵이 unexpected EOF였고 수정 후157개 모두 객체 수·순서·타입·각 payload SHA가 일치한다. 모든 XFER 클래스의 의미 디코딩이나 인게임 load 치트 수정으로 확대하지 않는다. 현재 게임 로더는 별도의 CryptFile.ReadAlignedU32 경로이며 수정하지 않았다.
+
+기존 라이브러리 전체 비교는 수정 전후 모두2,402pass/158fail/0skip·actual1이고 test ID/action/count/package 결과가 같다. 실패158개는157개 원본 맵의 TestMapWrite 자식과 parent다. 적어도 Estate의 원문 diff는 같은59,020bytes 외 checksum DWORD만 다르다. 이 기존 재출력 실패·기대값은 보존하며 이번 객체 읽기 수정의 GREEN으로 세지 않는다. checksum을 임의 보존하거나 기존 oracle을 수정하지 않고 별도 원본 writer 계약 조사 대상으로 남긴다.
+
+이전 R231에서는 원본 VortexSource를 격리 로컬 게임에 배치한 세 headless 실행(등록 CGo 진단·일반 dispatch·HD dispatch)에서 draw=nil source의60개 파티클·삭제 후360tick 자연 소멸을 확인했다. 세 live 화면끼리, 세 expired 화면끼리 SHA가 같고 두 stage는 서로 다르다. 관련 기존 엄격 검사6,288pass/0skip로 R228의13개 등록 진입점 월드 경로를 모두 관찰했다. 이는 원본 캠페인 자연 발생·모든 효과·물리 출력·전체 포팅 완료 인증이 아니다. R231 자료는 `/private/tmp/opennox-vortex-world-r231.Qa7lO7`에 동결했다.
+
+이번 자료는 `/private/tmp/opennox-map-records-r232.e1mvtT`다. 전체 게임5종 회귀·기존 결과 보존·소스/개인/원본 감사는 audit-body-v1.log, 새 clean 네 ARM64 제품·공식 일반/HD server·동일 Host Load 화면 후속 검증은 audit-release-v1.log를 따른다. 이 prefix만 추가하고 기존 README suffix·기존 tests/YAML/PNG/oracle·R134 HOLD를 유지해 커밋 직후 origin port/go1.26-multiarch로 push한다. 아직 실행하지 않은 검사는 완료로 세지 않으며 TestMapWrite·War01A/fixed Quest·Player SetColor/문자열 대화 API·외부 목록/접속 원인·다른 GUI/AI/API·physical GPU/가청 음향과 전체 포팅 목표는 미완료다.
+
 ## R230: 남은 등록 효과의 실제 월드 경로와 Imp 선공 회귀
 
 기준은 clean/pushed `cf65497c8375bc3934b870c241fe5e2ff51f4e11`이고 사용자 goenv Go1.26.9를 유지한다. R228의 native CGo 등록 진입점13개 중 아직 월드에서 관찰하지 못한 경로를 추가 조사했다. 별도 진단 overlay는 기존 효과 계산·callback 등록·RNG·시계·HP·패킷을 바꾸지 않고5개 dispatch 호출만 실제 등록 CGo 진입점으로 우회한다.

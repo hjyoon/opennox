@@ -160,8 +160,16 @@ func (sect *Objects) ReadObjects(toc *ObjectsTOC, reg xfer.ObjectRegistry) ([]Xf
 		if !r.Align(+2) {
 			return out, io.ErrUnexpectedEOF
 		}
-		sz, ok := r.ReadU64()
+		// The aligned length occupies one crypt block, but only its first
+		// DWORD is the size. The other four bytes are unused padding.
+		header, ok := r.ReadNext(8)
 		if !ok {
+			return out, io.ErrUnexpectedEOF
+		}
+		sz := binary.LittleEndian.Uint32(header[:4])
+		// Check at wire width before converting to a native int. This also
+		// rejects lengths above MaxInt on a 32-bit host without wrapping.
+		if uint64(sz) > uint64(r.Remaining()) {
 			return out, io.ErrUnexpectedEOF
 		}
 		data, ok := r.ReadNext(int(sz))

@@ -163,7 +163,7 @@ func (r *Reader) ReadPointF32() (types.Pointf, bool) {
 }
 
 func (r *Reader) Align(off int) bool {
-	_, ok := r.ReadNext(8 - (r.off+off)%8)
+	_, ok := r.ReadNext((8 - (r.off+off)%8) % 8)
 	return ok
 }
 

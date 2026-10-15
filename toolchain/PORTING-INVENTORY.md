@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## USA Midwest 맵 진입 미완료의 UDP 전송 관찰 제한 분리 (R225)
+
+기준 clean/pushed `47c25f7d92d857c11ce81449a6c0bfca4980e464`이며 사용자 goenv Go1.26.9를 계속 사용한다. R224의 clean ARM64 세 제품·일반/HD Host Load8화면·공식 server 및 공개 snapshot6곳의 Join 시도 후속 감사는 actual0/SHA `3d99c88106e2a4f6b11feb681a86bd43626e99c5f7f8304f65c983034ae73ca5`다. 그중 USA Midwest `173.208.129.98:18590`의 원래75초 readiness 실패는 그대로 보존한다. 게임 소스·public 테스트·기존 assertion/YAML/PNG/oracle 변경0이다.
+
+보존된 packet log를 다시 읽으면 HTTP 맵 API timeout 후 기존 UDP fallback이 진행됐고 `!TakRP.map`의230,933bytes 중240parts/122,880bytes(53.210238%)가 도착해 있었다. 당시 partial 파일은 수신 payload와 일치하며 마지막까지 전송이 진행됐다. 이 기록만으로 client deadlock/맵 조립 버그를 확정하지 않는다. payload 로그의 len-1 표현도512byte 맵 조각과 맞으며 off-by-one 근거가 아니다.
+
+동결한 별도 private progress 진단은 같은 historical snapshot endpoint에 정상 Multiplayer/GUI row/Join/캐릭터 생성으로 접속한다. 원래75초 시점에 여전히 not-ready임을 marker/PNG로 남겼고, 이후452parts(451×512+21)/230,933bytes가 모두 도착했다. 실제 wire payload 전체가 완성된 압축 파일과 byte-identical이며 R224 partial122,880bytes는 그 앞부분과 같다. 맵 CRC는 같은 `0x882e6915`다. 압축 SHA `930a39f765d7b86a2eb9687f6f2b2a05d82311f808ec8e47542dc1faafbb88ff`, 해제된313,016byte 맵 SHA `c06270a5b3b54475943abb6a83e8d752791f8b793aff5f744d26128ac5120a4a`를 보존한다.
+
+실제 UDP 수신은18:09:39→18:11:03(KST)이며 appearance 수락 이후87.510초에 connected marker를 관찰했다. 전체 Join/idle/일반 UI Quit/Yes 절차는106.901564458초다. 실제 맵 로드·HP100/mana125 수신·client role/host=false·일반 disconnect·process actual0을 확인했다. 실제 clock/headless이며 전투/chat/치트/비밀번호 제출·외부 호스트 설정 변경·엔진 시간/HP/packet 주입은 없다. 관전자 표시/반투명은 이 공개 서버 세션 상태이며 별도 Host Load 회귀와 혼동하지 않는다. 원래 실패 gate/입력/기대값을 연장하거나 이 새 관찰로 GREEN 대체하지 않는다.
+
+관련 기존 Join/session-mode/private-map-download 회귀는 공식 Go1.26.9 cgocheck2+race+checkptr2/count3에서18IDs/54pass·0skip·actual0이다. 이들 unit/AST/private HTTP fixture 범위와 실제 공개 서버 실행 증거를 구분한다. source6,841files/protected304files/개인1,562files의 조사 전후 체크포인트는 byte-identical(SHA `ef252d3991f6aaf6874a2951075d4b2b39ea2060cc839b708038aaf545fcab08`)이다. R224 동결324files·R134 HOLD·원본 자산 subset1,554개도 보존했다. 최소 언어 버전·전역 goenv/runtime/GC·캐시 변경/삭제는 없다.
+
+자료는 `/private/tmp/opennox-public-map-readiness-r225.tPlRxX`에 보존한다. 원인 감사 actual0/SHA `a798ede1a4ca026ce18d17033d13d592f64be4990747513060726720b333a61d`는 위 조건과 엔진 패치가 필요하다는 근거 없음·원래 gate 미충족 보존을 검증한다. 첫 private 문서 감사는 UTF-8/BINARY 문자열 비교 오류로 actual1이었고 그 입력/receipt를 보존한다. 별도 새 검증기는 텍스트 읽기만 교정하며 game gate/기대값 변경은 없다. 이 문서 prefix만 추가해 이전 suffix를 유지하고 커밋 직후 origin port/go1.26-multiarch에 push한다. 새 docs-only revision의 clean ARM64 세 제품·관련 회귀·공식 server·일반/HD Host Load8화면은 후속 receipt로 확인하며 아직 실행하지 않은 검사를 완료로 세지 않는다. 전체 네 모드 unit suite를 이번에 재실행했다고 세지 않고 동일 게임 코드의 R224 검증을 유지한다. 다른 공개 호스트의 timeout/원격 종료 원인·War01A/fixed Quest·다른 GUI/AI/API/R134 HOLD·Windows 전체 실행/physical GPU/가청 출력은 미해결 또는 미검증이다. all_GUI_green=false이며 전체 port goal은 계속 미완료다.
+
 ## DeathBall 계열 등록 CGo 업데이트 네 진입점의 native 연결 (R224)
 
 기준 clean/pushed `81a3e26f8273a98fec3f95070f2a7bafbfad3234`이며 사용자 goenv Go1.26.9를 계속 사용한다. R223의 clean ARM64 세 제품·일반/HD Host Load8화면·공식 server 후속 감사는 actual0/SHA `9c34864a18b9de9b87de9a37c9b6b93c33bede4f42a2cb1273ddae3a602c9c8c`다. 이번은 DeathBall/Fragment/Charge/LinearOrb 등록 C 심벌004CDF80/004CE0A0/004CE0C0/004CA650의 직접 CGo 경로다. 일반 world dispatcher는 이미 native Go helper를 사용하므로 일반 엔진의 새 크래시 재현이라고 확대하지 않는다.

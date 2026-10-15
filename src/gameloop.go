@@ -242,8 +242,9 @@ func (s *Server) MainLoop() error {
 	if err := s.InitialMapLoad(); err != nil {
 		return err
 	}
-	execGameStartupCommands(context.Background())
 	legacy.Sub_43AA70()
+	initDedicatedHostSettings(legacy.Sub_4161E0)
+	execGameStartupCommands(context.Background())
 	s.mainloopInit()
 	// Console exit and the normal server shutdown path clear this flag too.
 	// The dedicated loop must honor it just like the client-host loop does.

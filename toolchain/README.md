@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R236: cryptfile C export의 zero-size item 반환
+
+기준은 clean/pushed `e96f8a587bd83853ff7f34f4e4a027c8b2385f6f`이며 사용자 goenv Go 1.26.9를 유지한다. 열린 파일에 대한 C export의 반환 조건 한 곳에 n==0을 추가한다. 원본 fread/fwrite의 zero-size 요청은 완료 item 0개지만 기존 Go export는 n==len(buf)==0을 성공 1로 반환했다. ReadWrite 호출 뒤에 판정하므로 빈 쓰기의 CRC 반전은 그대로 발생한다. 바이트 수·오류·XOR·파일 위치·체크섬 알고리즘·기존 native 직렬화 헬퍼와 nil fault 계약은 변경하지 않는다.
+
+원본 wrapper·Binfile read/write·CRT fread/fwrite·XOR·CRC/table을 변경 없이 240조건/600호출 실행했다. 읽기·쓰기 결과를 hook으로 공급하지 않았으며 FILE lock/unlock과 zero-byte calloc의 NULL/non-NULL 및 free만 통제했다. 반환 0·쓰기 CRC 360회·XOR 240회·register/stack/canary·원본 코드/테이블 비변경을 확인했다. zero 경로의 states SHA256은 `1c1d93c98d31dfbeefaa4aa9da99cd3d35eaef958153dc6357c7c31c164f6950`다. 이는 전체 Windows OS 파일 I/O 검증이 아니다.
+
+새 동결 public 회귀 두 파일은 read/write/append·raw/cipher/XOR·NULL/non-NULL empty buffer·반복 zero·후속 complete/partial/EOF·닫힌 OS 파일 오류와 실제 암호화 checksum block을 검사한다. 별도 private overlay는 C-owned 버퍼로 실제 C macro→CGo export를 호출한다. 같은 144개 ID의 수정 전 9pass/135fail·actual1, 수정 후 144pass/0skip·actual0이다. 기존 R235 읽기 회귀와 함께 공식 cgocheck2/race/checkptr2 count3는 4,077pass/0skip·1,359 IDs이다. canonical 다섯 모드에는 새 public 131개만 추가하며 모든 기존 ID/action/count/package 결과의 유지 여부는 audit-body-v1.log로 판정한다.
+
+추적된 소스의 lexical 참조 814행과 return/result 소비 위치를 별도 기록했다. 원본 음성세트는 NULL일 때 length만, non-NULL일 때 length와 payload를 쓰므로 공통 XFER helper를 일괄 변경하지 않았다. 이 조사는 전체 native serializer CRC 호출 경계나 active 64-bit call graph의 완료 인증이 아니다. 기존 TestMapWrite 158개 CRC 실패·R233 자산 확장 음성 실패도 해결로 세지 않는다. 기존 tests/YAML/PNG/oracle·원본 1,554개 자산·개인 Save/설정·보호 파일 305개·R134 HOLD를 유지하며 캐시·전역 goenv/runtime/GC·최소 언어 버전을 바꾸지 않는다.
+
+자료는 `/private/tmp/opennox-crypt-items-r236.naqIBY`다. 이 README prefix·한 production 파일·새 회귀 두 파일만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 새 clean ARM64 네 제품·일반/HD 공식 전용 서버의 수정 TriLevel 전환·기존 Host Load 8화면은 푸시 후 audit-release-v1.log로 별도 판정한다. 공개 호스트는 이번 단계에서 재시험하지 않는다. 미실행 검사를 완료로 세지 않으며 전체 포팅·다른 GUI/AI/API·physical GPU/가청 출력과 보존된 미해결 항목은 계속 미완료다.
+
 ## R235: 불완전한 파일 읽기의 체크섬 상태 보존
 
 기준은 clean/pushed `ba8d91a516104a7ca455b8cb3fd7ce78cfa76b08`이며 사용자 goenv Go 1.26.9를 유지한다. `CryptFile.Read`의 CRC admission 조건 한 곳만 nonempty complete read로 한정한다. 원본 `00426AC0`은 size=len/count=1의 fread 결과가 0이면 CRC helper를 호출하지 않지만, 기존 Go 코드는 일부만 읽혀도 요청 버퍼 전체를 CRC에 넣었다. 읽힌 바이트 수·오류·XOR의 전체 요청 버퍼 변환·쓰기·호출별 CRC 알고리즘·기존 C wrapper 반환값은 변경하지 않는다. C wrapper의 zero-byte item 반환을 포함한 모든 I/O 계약을 이번 수정으로 인증하지 않는다.

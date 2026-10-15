@@ -6,6 +6,7 @@
 #include "common__random.h"
 
 //----- (004CC950) --------------------------------------------------------
+#if 0 // R228: original PE32 body; native registered entry is exported by Go.
 int nox_xxx_updDrawVortexSource_4CC950(int a1, int a2) {
 	int v2;  // ebp
 	int v3;  // esi
@@ -49,3 +50,4 @@ int nox_xxx_updDrawVortexSource_4CC950(int a1, int a2) {
 	}
 	return 1;
 }
+#endif // R228 native registered entry

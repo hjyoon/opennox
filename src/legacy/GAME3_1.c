@@ -4327,6 +4327,7 @@ int sub_4C51D0(int2* a1, int2* a2) {
 }
 
 //----- (004CA540) --------------------------------------------------------
+#if 0 // R228: original PE32 body; native registered entry is exported by Go.
 int nox_xxx_sprite_4CA540(uint32_t* a1, int a2) {
 	uint32_t* v2; // esi
 	double v3;    // st7
@@ -4369,6 +4370,8 @@ int nox_xxx_sprite_4CA540(uint32_t* a1, int a2) {
 	nox_xxx_spriteDeleteStatic_45A4E0_drawable((int)v2);
 	return 0;
 }
+
+#endif // R228 native registered entry
 
 //----- (004CA650) --------------------------------------------------------
 #if 0
@@ -4420,6 +4423,7 @@ int sub_4CA650(int a1, int a2) {
 // 4CA67E: variable 'v6' is possibly undefined
 
 //----- (004CA720) --------------------------------------------------------
+#if 0 // R228: original PE32 body; native registered entry is exported by Go.
 int sub_4CA720(int a1, int a2) {
 	int v2;     // ebx
 	int v3;     // ebp
@@ -4458,6 +4462,8 @@ int sub_4CA720(int a1, int a2) {
 	}
 	return result;
 }
+
+#endif // R228 native registered entry
 
 // Native-width implementation: client/gui.NewProgressBarRaw.
 #if 0
@@ -4789,6 +4795,7 @@ int sub_4CC3C0(unsigned int a1) {
 int nox_xxx_updDrawUndeadKiller_4CCCF0() { return 1; }
 
 //----- (004CCD00) --------------------------------------------------------
+#if 0 // R228: original PE32 bodies; native registered entries are exported by Go.
 int sub_4CCD00(int a1, int a2) {
 	unsigned int i; // ecx
 
@@ -4836,6 +4843,8 @@ int nox_xxx_updDrawFist_4CCDB0(int a1, int a2) {
 	*(uint32_t*)(a2 + 432) = gameFrame();
 	return 1;
 }
+
+#endif // R228 native registered entry
 
 //----- (004CCE70) --------------------------------------------------------
 #if 0 // Original PE32 bodies; registered symbols are exported by Go.

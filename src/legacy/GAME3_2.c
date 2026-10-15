@@ -101,6 +101,7 @@ int sub_4CE0A0(int a1, int a2) {
 #endif
 
 //----- (004CE1D0) --------------------------------------------------------
+#if 0 // R228: original PE32 bodies; native registered entries are exported by Go.
 int nox_xxx_updDrawCloud_4CE1D0(int a1, int a2) {
 	if ((unsigned char)gameFrame() & 1) {
 		sub_4CE200(a1, a2, 1, 75);
@@ -121,6 +122,8 @@ int sub_4CE360(int a1, int a2) {
 	}
 	return 1;
 }
+
+#endif // R228 native registered entry
 
 static uint8_t* nox_color_light_data(nox_drawable* dr) { return (uint8_t*)&dr->field_44; }
 

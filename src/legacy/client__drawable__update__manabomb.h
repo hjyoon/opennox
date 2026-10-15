@@ -3,6 +3,6 @@
 
 #include "defs.h"
 
-int nox_xxx_updDrawManabombCharge_4CCAC0(int a1, uint32_t* a2);
+int32_t nox_xxx_updDrawManabombCharge_4CCAC0(nox_draw_viewport_t* vp, nox_drawable* dr);
 
 #endif // NOX_PORT_CLIENT_DRAWABLE_UPDATE_MANABOMB

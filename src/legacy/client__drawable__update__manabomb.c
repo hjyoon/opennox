@@ -9,6 +9,7 @@
 extern uint32_t dword_5d4594_1522956;
 
 //----- (004CCAC0) --------------------------------------------------------
+#if 0 // R228: original PE32 body; native registered entry is exported by Go.
 int nox_xxx_updDrawManabombCharge_4CCAC0(int a1, uint32_t* a2) {
 	int rad = (int)nox_xxx_gamedataGetFloat_419D40("ManaBombOutRadius");
 	if (!dword_5d4594_1522956) {
@@ -53,3 +54,4 @@ int nox_xxx_updDrawManabombCharge_4CCAC0(int a1, uint32_t* a2) {
 	}
 	return 1;
 }
+#endif // R228 native registered entry

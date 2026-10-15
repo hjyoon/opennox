@@ -8,9 +8,9 @@
 
 int32_t nox_xxx_updDrawDBall_4CDF80(nox_draw_viewport_t* vp, nox_drawable* dr);
 int32_t sub_4CE0A0(nox_draw_viewport_t* vp, nox_drawable* dr);
-int nox_xxx_updDrawCloud_4CE1D0(int a1, int a2);
-int sub_4CE340(int a1, int a2);
-int sub_4CE360(int a1, int a2);
+int32_t nox_xxx_updDrawCloud_4CE1D0(nox_draw_viewport_t* vp, nox_drawable* dr);
+int32_t sub_4CE340(nox_draw_viewport_t* vp, nox_drawable* dr);
+int32_t sub_4CE360(nox_draw_viewport_t* vp, nox_drawable* dr);
 int nox_xxx_updDrawColorlight_4CE390(nox_draw_viewport_t* vp, nox_drawable* dr);
 void nox_xxx_colorLightAlterB0ArrayColor_4CE440(nox_drawable* dr);
 void nox_xxx_colorLightAlterIntensity_4CE610(nox_drawable* dr);

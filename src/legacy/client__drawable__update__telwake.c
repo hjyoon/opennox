@@ -4,6 +4,7 @@
 #include "common__random.h"
 
 //----- (004CD8D0) --------------------------------------------------------
+#if 0 // R228: original PE32 body; native registered entry is exported by Go.
 int nox_xxx_updDrawTeleportWake_4CD8D0(int a1, int a2) {
 	int v2; // esi
 	int v3; // eax
@@ -36,3 +37,4 @@ int nox_xxx_updDrawTeleportWake_4CD8D0(int a1, int a2) {
 	}
 	return 1;
 }
+#endif // R228 native registered entry

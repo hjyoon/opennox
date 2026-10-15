@@ -7,6 +7,7 @@
 #include "common__random.h"
 
 //----- (004CDD80) --------------------------------------------------------
+#if 0 // R228: original PE32 body; native registered entry is exported by Go.
 void nox_xxx_updDrawMagic_4CDD80(int a1, uint32_t* a2) {
 	uint32_t* v2; // edi
 	int v3;       // eax
@@ -73,3 +74,4 @@ void nox_xxx_updDrawMagic_4CDD80(int a1, uint32_t* a2) {
 		v15--;
 	} while (v15);
 }
+#endif // R228 native registered entry

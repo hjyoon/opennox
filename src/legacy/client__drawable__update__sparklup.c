@@ -6,6 +6,7 @@
 #include "common__random.h"
 
 //----- (004CDBF0) --------------------------------------------------------
+#if 0 // R228: original PE32 body; native registered entry is exported by Go.
 int nox_xxx_updDrawSparkleTrail_4CDBF0(int a1, uint32_t* a2) {
 	uint32_t* v2; // ebx
 	int v3;       // edi
@@ -57,3 +58,4 @@ int nox_xxx_updDrawSparkleTrail_4CDBF0(int a1, uint32_t* a2) {
 	} while (!v6);
 	return 1;
 }
+#endif // R228 native registered entry

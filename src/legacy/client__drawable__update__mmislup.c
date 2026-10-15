@@ -5,6 +5,7 @@
 #include "common__random.h"
 
 //----- (004CD9E0) --------------------------------------------------------
+#if 0 // R228: original PE32 body; native registered entry is exported by Go.
 int nox_xxx_updDrawMagicMissile_4CD9E0(int a1, uint32_t* a2) {
 	uint32_t* v2;  // ebp
 	int v3;        // esi
@@ -78,3 +79,4 @@ int nox_xxx_updDrawMagicMissile_4CD9E0(int a1, uint32_t* a2) {
 	}
 	return 1;
 }
+#endif // R228 native registered entry

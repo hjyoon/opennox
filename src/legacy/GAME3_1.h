@@ -198,9 +198,9 @@ void nox_client_sentryRayScreenPosition_4C5060(const nox_draw_viewport_t* vp, co
 int sub_4C5060(nox_draw_viewport_t* a1p);
 int sub_4C51D0(int2* a1, int2* a2);
 int sub_4C5630(int a1, int a2, int a3);
-int nox_xxx_sprite_4CA540(uint32_t* a1, int a2);
+int32_t nox_xxx_sprite_4CA540(nox_draw_viewport_t* vp, nox_drawable* dr);
 int32_t sub_4CA650(nox_draw_viewport_t* vp, nox_drawable* dr);
-int sub_4CA720(int a1, int a2);
+int32_t sub_4CA720(nox_draw_viewport_t* vp, nox_drawable* dr);
 nox_window* nox_gui_newProgressBar_4CAF10(int a1, int a2, int a3, int a4, int a5, int a6, uint32_t* a7);
 int sub_4CAF80(int a1, int a2, int a3, int a4);
 int sub_4CAFB0(int a1);
@@ -218,8 +218,8 @@ int sub_4CC170(nox_window* win, int event, uintptr_t event_arg, uintptr_t event_
 int sub_4CC280(unsigned int a1);
 int sub_4CC3C0(unsigned int a1);
 int nox_xxx_updDrawUndeadKiller_4CCCF0();
-int sub_4CCD00(int a1, int a2);
-int nox_xxx_updDrawFist_4CCDB0(int a1, int a2);
+int32_t sub_4CCD00(nox_draw_viewport_t* vp, nox_drawable* dr);
+int32_t nox_xxx_updDrawFist_4CCDB0(nox_draw_viewport_t* vp, nox_drawable* dr);
 int32_t sub_4CCE70(nox_draw_viewport_t* vp, nox_drawable* dr);
 int32_t sub_4CD090(nox_draw_viewport_t* vp, nox_drawable* dr);
 int32_t sub_4CD0C0(nox_draw_viewport_t* vp, nox_drawable* dr);

@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 등록된 팀 개수 계산의 native 포인터 복원 (R214)
+
+기준 clean/pushed revision은 `44b347964515c091920fd30122e2b93e61cf2ca5`이며 사용자 goenv Go1.26.9를 계속 사용한다. R213의 커밋 직후 push·clean ARM64 세 제품·실제 CTF/FlagBall 접속/이동/정상 종료·공식 server E2E·일반/HD Host Load 후속 검증도 actual0으로 마무리했고 receipt SHA는 `482957cff21277f6461a1c0e98f7148c2896055dad6c1f80be3f0ad7bf350f8e`다. 이번에는 raw 검색의 teamNext(int)12곳을 실제 CGo 전처리 결과와 대조했다. 활성 함수 안의 호출은4곳뿐이며 나머지는 이미 native 경로로 대체된 비활성 provenance다. 그중 network/서버 설정이 사용하는 sub417DE0의 팀 주소 truncation을 수정했다.
+
+GAME1.c의 변경은 iterator를 `nox_team_t*`로 선언하고 Next의 int cast를 제거하며 같은 byte60 DWORD를 field_60으로 읽는 세 줄뿐이다. 이 함수는 전체 활성 팀 수가 아니라 field_60이 nonzero인 팀 수를 char로 반환한다. 기존 First/Next 호출 순서·zero/nonzero 판정·반환·팀 데이터 불변과 ABI를 유지하며 Teams.Count로 대체하거나 guard/fallback을 추가하지 않았다. 실제 typed 헤더에서도 byte60은 같은 scalar이고 native Team.Ind60으로 교차 확인했다.
+
+새 parent2는 완전한 active C 본문/real headers의48조건과 실제 CGo First/Next/native server team storage의16조건을 검사한다. 팀0/1/3/16·zero/mixed/80000000/ffffffff scalar·guard pattern·4GiB 위 포인터 전달·정확한 iterator 횟수와 전체 팀 bytes 불변을 포함한다. 동일 동결 입력은 수정 전 controlled Next에서 포인터 truncation으로 실패하고 실제 CGo child에서 SIGSEGV가 나 두 parent/actual1이었다. 수정 후64조건/parent2 actual0이며 공식 cgocheck2+race+checkptr2/count3의 새 count/기존 incoming/team/HUD 검사는24pass·0skip다. 이는 native C 및 실제 CGo 검사이며 새 GAME.EXE 전체 함수 emulation이나 Windows 실행 인증으로 확대하지 않는다.
+
+실제 clock/private localhost의 CTF capflag 및 FlagBall flagball을 input-only headless client로 목록 선택→Join→Conjurer/appearance→HP100/mana125→일반 마우스 이동→authenticated host quit/client MSG_SERVER_QUIT/host ACK1까지 확인했다. 두 client가 받은 실제 활성 팀2개의 field_60은 모두0이었고, read-only CGo 개수도0이었다. nonzero scalar 조건은 위 native 회귀에서 별도로 검사했다. CTF 위치는(2078,2102)→(2078,1916), FlagBall은(2506,3036)→(2444,2918)이며 네 게임 process와 coordinator 모두 actual0이다. gameplay/packet/health/team/clock/RNG 상태를 주입하지 않았다. R213의 기존 network assertion은 그대로 두고 read-only count 확인만 추가했으며 release 입력도 private 경로/identity/포트만 바꿨음을 별도 감사했다. 실제 moved 화면의 world/player/HUD도 확인했다.
+
+전체 일반/HD/공식 cgocheck2 각각73,784pass/47skip·40packages, server69,218pass/7skip·36packages·actual0이다. R213의 모든 기존 ID/action/count/skip/package 결과는 같고 새 parent2만 추가됐다. 공식 server E2E의 기존 네 map/mode/player/tick/load count/정상 quit gate도 actual0이다. 기존632B Warrior save와 R140 동결 Host Load 입력의 일반/HD actual0 및 선택·Load 직후·600frame 대기·이동의 여덟 PNG bytes/SHA는 R213와 같다. original code2,968/data650 verifier도 actual0이며 이는 기존 manifest 범위 검증이다.
+
+보존 감사 actual0은 source6,811→6,813files의 기능 차이가 위 C 세 줄과 새 Go 검사/C fixture 두 파일뿐임을 확인했다. 기존 assertion/YAML/PNG/oracle·protected304files·개인1,562files/Save/config·R134 HOLD·R213 동결 입력/receipt 및 original 자산 subset1,554개는 불변이다. body audit SHA는 `083344ccaa16a3e13e098c235e821f20cc76eacb44deafd5bee6617e8e676cc7`, 자료는 `/private/tmp/opennox-team-consumers-r214.WP6PqU`에 보존한다. 최소 언어 버전·전역 goenv/runtime/GC·캐시는 변경하지 않았다.
+
+문서는 이 기록만 앞에 추가하고 기존 suffix를 보존한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 세 제품·새 회귀·새 private 포트/Save의 실제 CTF/FlagBall 개수 확인/접속/이동/정상 종료·공식 server E2E·동일 일반/HD Host Load를 후속 receipt로 확인한다. 아직 실행하지 않은 후속 검사를 완료로 기록하지 않는다. 전처리상 남은 int cast3곳 중 Chat 가까운 팀 배정과 KOTR 맵 종료 처리에는 실제 Go 호출 경로가 있다. 옛 elimination 함수의 유일한 raw C caller는 비활성 pickup provenance이며 현재 native Go 서비스가 사용되므로 이를 새 실제 장애로 세지 않는다. 다른 팀 소비자·GUI/AI/인벤토리 HOLD·physical LAN/WAN/GPU·가청 음향 및 전체 포팅 목표는 계속 미완료다.
+
 ## CTF 신규 참가의 native 팀 포인터 순회 복원 (R213)
 
 기준 clean/pushed revision은 `dd8d5177a2e45b82620a0205463fdd43e17120a2`이며 사용자 goenv Go1.26.9를 계속 사용한다. R212에서 capflag 로딩은 통과했지만 실제 Join은 `nox_xxx_netPlayerIncomingServ_4DDF60`의 CTF 순회가 팀 주소를 int로 잘라 Go Team.Next에 전달하면서 SIGSEGV/host actual2를 일으켰다. GAME3_2.c의 변경은 j를 `nox_team_t*`로 선언하고, Next의 int cast를 제거하고, 같은 byte57을 named field로 읽는 세 줄뿐이다. FlagBall 우선순위·상태 getter·전송 인수 bits/순서·참가 player 상태 기록·기타 후속 처리는 기준 본문 그대로다. 접속을 건너뛰거나 팀 정보를 생략하는 fallback은 추가하지 않았다.

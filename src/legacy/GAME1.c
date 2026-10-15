@@ -2262,11 +2262,11 @@ int sub_417DC0() { return dword_5d4594_526276; }
 //----- (00417DE0) --------------------------------------------------------
 char sub_417DE0() {
 	char v0; // bl
-	char* i; // eax
+	nox_team_t* i; // eax
 
 	v0 = 0;
-	for (i = nox_server_teamFirst_418B10(); i; i = nox_server_teamNext_418B60((int)i)) {
-		if (*((uint32_t*)i + 15)) {
+	for (i = nox_server_teamFirst_418B10(); i; i = nox_server_teamNext_418B60(i)) {
+		if (i->field_60) {
 			++v0;
 		}
 	}

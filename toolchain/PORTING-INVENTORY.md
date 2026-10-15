@@ -1,5 +1,25 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## Chat 근접 팀 배정의 native 포인터와 원본 거리 연산 (R215)
+
+기준 clean/pushed revision은 `8393a4a1dac17a30d941b5fbc3ef14f59a9f3458`이며 사용자 goenv Go1.26.9를 계속 사용한다. R214의 clean ARM64 세 제품·실제 CTF/FlagBall 접속/이동/정상 종료·공식 server E2E·일반/HD Host Load 후속 검증도 actual0으로 마무리했고 receipt SHA는 `71c770ee1ff71083fa5f65cafacc4626e154e33ab31be8ba7fd0452e3e07312b`다. 이번 변경은 server.go가 조건부로 호출하는 Chat 근접 팀 배정 sub4183C0 한 함수와 전용 산술 helper3개다. Object/UpdateData/Player/Team/거점 주소를 int/DWORD로 자르거나 PE32 offset으로 읽던 부분을 기존 native 구조체 포인터/필드로 바꿨다. 호출 조건·참가자 제외·기존 팀 유지/변경·callback 순서·net code bits·exhausted iterator의0 반환은 유지하고 새 nil guard/fallback은 추가하지 않았다.
+
+원본 GAME.EXE SHA는 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`이며 004183C0 전체272bytes SHA는 `3201fec59d0de584d3bbf363ef55e9a03d1549629400e26666f50468eea3ed47`다. 변경 없는 원본 instructions를 gameplay CW0e7f(precision53/chop)로 실행해56조건×guard0/5a/ff=168회에서 반환·callee-saved register·전체 입력/code guards 불변과 호출 기록을 얻었다. First/Next/ByID/attach/change만 통제 서비스이며 실제 원본 field reads와 x87 연산은 대체하지 않았다. 팀0/1/2/3·참가자0/1/2/3·status/local/nonrendering·누락 거점·같은 팀/변경·동률·1e9 경계·±0/±infinity/quiet/signaling NaN/max finite/subnormal·float spill 경계를 포함한다. Windows 전체 실행/화면/네트워크 oracle는 아니다.
+
+원본은 좌표 차이와 제곱합을 float32로 중간 반올림하지 않고, nearest 저장 시에만 float32/chop으로 내린다. FCOM의 C0 검사이므로 less뿐 아니라 unordered도 nearest를 교체한다. 기존 C 전사본의 float 차이/nearest-even spill/단순 less는 이 경계에서 다르다. 새 local helper3은 binary64 각 단계와 float32 저장의 chop을 보존한다. volatile 경계와 분리된 제곱합으로 FMA contraction을 막고 fma는 제곱의 잔차 확인에만 쓴다. 스레드 FP 환경·game clock/RNG·전역 runtime/GC를 바꾸지 않는다. 원본 CRT/gameplay의 정밀도·round control 호출 disassembly도 별도로 보존했다.
+
+새 public parent2는 real headers와 완전한 active C 본문/helper를 그대로 컴파일하고 원본 transcript와99조건/69조건을 대조한다. 전체 native Object/UpdateData/Player/Team/거점은4GiB 위 주소이며 typed scalar fields/주변 bytes·iterator 인수·team change/attach 인수/순서를 검사한다. 동일 동결 입력은 수정 전 두 parent 모두 실제 메모리 접근 SIGSEGV/actual1, 수정 후168조건/parent2 actual0이다. 포인터만 고치고 이전 전사 산술을 유지한 별도 compiled control은168회 모두 정상 반환하지만 quiet/signaling NaN-last와 spill-tie3종에서15건(5조건×3guard)의 원본 호출 기록 차이가 남았다. 현재 수정은 이 차이도 없으며 공식 cgocheck2+race+checkptr2/count3의 새 Chat/기존 count/incoming/team/HUD 검사는30pass·0skip다.
+
+기본 stock Chat 접속을 함수 자체의 RED로 기록하지 않는다. so_beach에서 공식 set team 명령으로 팀을 만든 actual clock/private localhost 서버와 input-only headless client의 목록 선택→Join→Conjurer/appearance→HP100/mana125·실제 team ID1 수신→일반 마우스 이동→authenticated host quit/client MSG_SERVER_QUIT/host ACK1은 수정 전후 모두 actual0이다. 실제 위치는 이전(3222,3194)→(3194,3044), 수정(2814,3036)→(2814,2842)였으며 각 host/client/controller actual0이다. readonly CGo count도 수신한 실제 팀2개/registered0과 일치했다. world/HUD capture는 보존했으며 gameplay/packet/health/team/clock/RNG 상태 주입·personal Save import는 없다. 이 기본 접속 대조가 조건부 재배정 함수의 실행/크래시를 입증했다고 확대하지 않는다. 조건부 함수의 동작 수정 근거는 위 complete-body/original transcript 검증이다.
+
+첫 private 접속 입력은 load capflag 후 모드가 자동 CTF로 바뀌어 Chat 기대와 달랐다. actual1 및 owned host TERM cleanup을 보존하고 기본 Chat 맵/공식 set team을 쓰는 새 v2 입력으로 조건을 준비했으며 기존 native/original 기대값은 바꾸지 않았다. endpoint 준비가 불필요한 baseline B 디렉터리를 찾다 끝난 actual1도 보존했다. baseline A의 이미 복사된 endpoint는 원래 seed와 byte-exact로 확인했고 기존 기록을 덮어쓰지 않았다. 원본 에뮬레이터와 이전 known-working control의 sandbox SIGILL4는 승인된 제한 밖 실행에서 같은 원본 입력이 actual0임을 확인해 JIT 실행 환경 문제로 구분했다. 이를 Go runtime 또는 게임의 새 크래시로 세지 않는다.
+
+전체 일반/HD/공식 cgocheck2 각각73,786pass/47skip·40packages, server69,220pass/7skip·36packages·actual0이다. R214의 모든 기존 ID/action/count/skip/package 결과는 같고 새 parent2만 추가됐다. 공식 server E2E의 네 map/mode/player/tick/load count/정상 quit gate도 actual0이다. 기존632B Warrior save와 R140 동결 Host Load 입력의 일반/HD actual0 및 선택·Load 직후·600frame 대기·이동의 여덟 PNG bytes/SHA는 R214와 같다. 기존 original code2,968/data650 manifest verifier도 actual0이며 새 원본 함수 실행 검증과 구분한다.
+
+보존 감사 actual0은 source6,813→6,817files의 기능 차이가 위 C 한 함수/helper3와 새 Go 검사/C fixture/original probe/transcript4files뿐임을 확인했다. 기존 assertion/YAML/PNG/oracle·protected304files·개인1,562files/Save/config·R134 HOLD·R214 동결 입력/receipt 및 original 자산 subset1,554개는 불변이다. body audit SHA는 `f1573b5b38b403ff188c44a9b5a3df259a6134e259f781b010fe959ed646331f`, 자료는 `/private/tmp/opennox-chat-nearest-team-r215.1Ffg3H`에 보존한다. 최소 언어 버전·전역 goenv·캐시 변경/삭제는 없다.
+
+문서는 이 기록만 앞에 추가하고 기존 suffix를 보존한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 세 제품·새 회귀·새 private 포트/Save의 stock Chat 접속 대조·공식 server E2E·동일 일반/HD Host Load를 후속 receipt로 확인한다. 아직 실행하지 않은 후속 검사를 완료로 기록하지 않는다. 남은 KOTR 맵 종료 소비자는 이미 native side table로 보존하는 TeamFlag를 사용해야 하며 field_76을 pointer로 바꾸는 ABI 변경은 필요하지 않다. KOTR·다른 GUI/AI/인벤토리 HOLD·physical LAN/WAN/GPU·가청 음향 및 전체 포팅 목표는 계속 미완료다.
+
 ## 등록된 팀 개수 계산의 native 포인터 복원 (R214)
 
 기준 clean/pushed revision은 `44b347964515c091920fd30122e2b93e61cf2ca5`이며 사용자 goenv Go1.26.9를 계속 사용한다. R213의 커밋 직후 push·clean ARM64 세 제품·실제 CTF/FlagBall 접속/이동/정상 종료·공식 server E2E·일반/HD Host Load 후속 검증도 actual0으로 마무리했고 receipt SHA는 `482957cff21277f6461a1c0e98f7148c2896055dad6c1f80be3f0ad7bf350f8e`다. 이번에는 raw 검색의 teamNext(int)12곳을 실제 CGo 전처리 결과와 대조했다. 활성 함수 안의 호출은4곳뿐이며 나머지는 이미 native 경로로 대체된 비활성 provenance다. 그중 network/서버 설정이 사용하는 sub417DE0의 팀 주소 truncation을 수정했다.

@@ -2588,17 +2588,46 @@ int sub_418390() {
 	return 1;
 }
 
+// GAME.EXE's gameplay x87 environment is precision 53, round-toward-zero.
+// Correct local nearest-even operations without changing the thread's FP
+// environment. Volatile spills prevent contraction across instruction steps.
+static double nox_chat_team_add_chop53_4183C0(double a, double b) {
+	volatile double sum = a + b;
+	volatile double virtual_b = sum - a;
+	volatile double error = (a - (sum - virtual_b)) + (b - virtual_b);
+	if ((sum > 0 && error < 0) || (sum < 0 && error > 0)) {
+		return nextafter(sum, 0.0);
+	}
+	return sum;
+}
+
+static double nox_chat_team_square_chop53_4183C0(double value) {
+	volatile double square = value * value;
+	if (fma(value, value, -square) < 0) {
+		return nextafter(square, 0.0);
+	}
+	return square;
+}
+
+static float nox_chat_team_spill_chop32_4183C0(double value) {
+	float narrow = (float)value;
+	if (fabs((double)narrow) > fabs(value)) {
+		narrow = nextafterf(narrow, 0.0f);
+	}
+	return narrow;
+}
+
 //----- (004183C0) --------------------------------------------------------
 int sub_4183C0() {
-	int result; // eax
-	int i;      // esi
-	int v2;     // eax
-	int v3;     // eax
-	int v4;     // eax
-	char* v5;   // ebp
-	int v6;     // edi
-	char* v7;   // ecx
-	int v8;     // eax
+	nox_object_t* result; // eax
+	nox_object_t* i;      // esi
+	nox_player_update_data_t* v2; // eax
+	nox_playerInfo* v3;   // eax
+	uint32_t v4;         // eax
+	nox_team_t* v5;      // ebp
+	nox_team_t* v6;      // edi
+	nox_team_t* v7;      // ecx
+	nox_object_t* v8;    // eax
 	double v9;  // st7
 	double v10; // st6
 	double v11; // st5
@@ -2606,42 +2635,45 @@ int sub_4183C0() {
 
 	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
 	for (i = result; result; i = result) {
-		v2 = *(uint32_t*)(i + 748);
-		if (!v2 || ((v3 = *(uint32_t*)(v2 + 276), *(uint32_t*)(v3 + 2060) != nox_player_netCode_85319C) ||
+		v2 = i->data_update;
+		if (!v2 || ((v3 = v2->player, v3->netCode != nox_player_netCode_85319C) ||
 					!nox_common_getEngineFlag(NOX_ENGINE_FLAG_DISABLE_GRAPHICS_RENDERING)) &&
-					   ((v4 = *(uint32_t*)(v3 + 3680), !(v4 & 1)) || v4 & 0x20)) {
-			v5 = nox_xxx_getTeamByID_418AB0(*(unsigned char*)(i + 52));
+					   ((v4 = v3->field_3680, !(v4 & 1)) || v4 & 0x20)) {
+			v5 = nox_xxx_getTeamByID_418AB0(((nox_object_team_t*)&i->field_12)->id);
 			v6 = 0;
 			v12 = 1000000000.0;
 			v7 = nox_server_teamFirst_418B10();
 			if (v7) {
 				do {
-					v8 = *((uint32_t*)v7 + 18);
+					v8 = v7->field_72;
 					if (v8) {
-						v9 = *(float*)(v8 + 60) - *(float*)(i + 60);
-						v10 = *(float*)(v8 + 56) - *(float*)(i + 56);
-						v11 = v10 * v10 + v9 * v9;
-						if (v11 < v12) {
-							v12 = v11;
-							v6 = (int)v7;
+						v9 = nox_chat_team_add_chop53_4183C0((double)v8->y, -(double)i->y);
+						v10 = nox_chat_team_add_chop53_4183C0((double)v8->x, -(double)i->x);
+						v11 = nox_chat_team_add_chop53_4183C0(nox_chat_team_square_chop53_4183C0(v9),
+																 nox_chat_team_square_chop53_4183C0(v10));
+						// FCOM 0041845F tests C0: less and unordered both replace.
+						if (!(v11 >= v12)) {
+							v12 = nox_chat_team_spill_chop32_4183C0(v11);
+							v6 = v7;
 						}
 					}
-					v7 = nox_server_teamNext_418B60((int)v7);
+					v7 = nox_server_teamNext_418B60(v7);
 				} while (v7);
 				if (v6) {
 					if (v5) {
-						if ((char*)v6 != v5) {
-							sub_4196D0(i + 48, v6, *(uint32_t*)(i + 36), 0);
+						if (v6 != v5) {
+							sub_4196D0(&i->field_12, v6, (int32_t)i->net_code, 0);
 						}
 					} else {
-						nox_xxx_createAtImpl_4191D0(*(uint8_t*)(v6 + 57), i + 48, 1, *(uint32_t*)(i + 36), 0);
+						nox_xxx_createAtImpl_4191D0(v6->field_57, (nox_object_team_t*)&i->field_12, 1, (int32_t)i->net_code, 0);
 					}
 				}
 			}
 		}
 		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
 	}
-	return result;
+	// The exhausted player iterator is NULL on every returning original path.
+	return 0;
 }
 
 //----- (004184D0) --------------------------------------------------------

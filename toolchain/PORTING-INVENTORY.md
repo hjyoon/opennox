@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## War01A 추가 3프레임 변화의 공통 MainAI 변경 경계 분리 (R222)
+
+기준 clean/pushed `d9b785a6d2de861d03b0a6a49b6260f6d7aac8c3`다. R221의 clean ARM64 일반/HD/server 제품·공식 server E2E·일반/HD Host Load8화면 후속 검증은 actual0이며 release audit SHA는 `06a03e84975efc8f2a994c7bd119bb8fc985b967e2465e22480cfae52ef02071`다. 이번은 남은1116→1119 변화의 read-only 조사이며 게임 소스 변경0·새 public 테스트0·기존 assertion/YAML/PNG/oracle 변경0이다. Host Load 반투명 수정과 별개인 기존 War01A SCREEN RED를 보존한다.
+
+고정 시나리오/기대 PNG와 fresh private Save/config/maps를 사용해 first-parent375/437/447/448/474/475/489/490번째 리비전을 각각 독립 worktree·Go1.26.9로 빌드하고 headless/mock 실행했다. 모두 start662·Jerry/Bryan/Wizard 동작·플레이어 조작 복귀의 기존 assertion을 통과하고 최종 SCREEN은 actual2다. 375..489의 이번 관찰 지점들은 release1116·screen1206이며490번째 `02c48447de06d6cf9b3c3adeb891a4a8821b6b04`는1119/1209다. 직접 부모489번째 `91339522ead628791d55f1796283d9aad587a2fa`와 인접 경계를 확인했다. 따라서 FLEE447/448·즉시 Blink474/475를 이 추가3프레임 변화의 경계로 지목하지 않는다. 모든 중간 이력의 단조성이나 전체 Windows 게임 실행을 증명한 결과는 아니다.
+
+인접490번째의 production 차이는 기존 `MonsterMainNativeRuntime547210` entry와 새 공통 progress tail뿐이다. GAME.EXE `005479FA..00547C45`를 read-only disassembly로 다시 대조했다. 원본은 MOVE_TO7/FAR_MOVE_TO37/MOVE_TO_HOME8/ROAM10/FLEE24에 공통 이동 진척·unsigned half-FPS 정체 검사와 원래 frustration/WAIT/RNG 순서를 적용한 뒤 음식/Warrior 무기 tail로 진행한다. 옛 partial classifier의 조기 종료를 복원해 stale 화면에 맞추거나 frame/RNG/맵/캐릭터를 강제로 교정하지 않는다.490번째 실패 PNG는 current와 바이트 단위로 같으며 SHA는 `9e0cb52310426e820a25de5d7a815cd554c5f8a83b58f52aee853987fee9e80c`다. R221의122→123 체력 로딩 경계와 이번489→490 공통 AI 경계를 분리한 것이며 마지막 SCREEN 자체를 GREEN으로 바꾼 것은 아니다.
+
+현재 기존 common progress/frustration 회귀는 Go1.26.9 cgocheck2+race+checkptr2·count3에서318IDs/954pass·0skip·2packages·actual0이다. synthetic server 조건과4GiB 위 C-owned record의 실제 legacy binding 검사를 포함하며 전 구간 자연 보행·전체 전투/렌더러 동등성으로 확대하지 않는다. 기존 original code2,968/data650 manifest verifier도 actual0이다. disassembly receipt SHA는 `43c1395ad98e8af7bfc0e0b12353fd24b0b2a8d27ef6b124a6effbdc44e70121`이며 original GAME.EXE 전체 SHA는 기존 `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`다.
+
+원인 감사 actual0/SHA `cfcf0437218efe72ba25220f802be0805fefff2de51a6e800a4c086b203e2875`는 source6,833files/protected304files/개인1,562files의 조사 전후 전체 체크포인트 동일(SHA `aeb06eec1af456f75c7ffe3c8b5a3012ff9fe7f41ce3f438aa82bc615a767cd2`), historical worktree별 전후 동일, R221 동결339files와 R134 HOLD 보존을 확인한다. 번호488/리비전489를 잘못 조합한 첫 private controller는 파일 생성/빌드/게임 시작 전 보호 검사에서actual1로 중단됐다. 이 준비 실패도 보존하며 게임 회귀 실패로 합산하지 않는다. original 자산 subset1,554개를 사용했고 personal Save import·기존 기대값 교체·전역 goenv/runtime/GC·최소 언어 버전·캐시 변경/삭제는 없다.
+
+자료는 `/private/tmp/opennox-war01a-timing-r222.Ctr6SF`에 보존한다. 이 문서 prefix만 추가하고 이전 suffix를 유지해 커밋 직후 origin port/go1.26-multiarch에 push한다. clean ARM64 세 제품·관련 기존 회귀·동일 War01A SCREEN RED·일반/HD Host Load8화면·공식 server E2E는 후속 receipt로 확인하며 아직 실행하지 않은 후속 검사를 완료로 세지 않는다. 전체 네 모드 unit suite·현재 공개 서버 가용성·physical GPU/가청 음향을 이번에 새로 검증했다고 주장하지 않는다. all_GUI_green=false이며 fixed Quest 맵 순서·다른 GUI/AI/API HOLD·R134 HOLD와 전체 port goal은 계속 미완료다.
+
 ## War01A 화면 실패의 역사적 체력 로딩 변경 경계 분리 (R221)
 
 기준 clean/pushed `813a532bda0448304abeaeca421dc7d7fb61e0da`다. 이번은 read-only 원인 조사 기록이며 게임 소스 변경0·기존 tests/assertions/YAML/PNG/oracle 변경0이다. 현재 clean ARM64 제품으로 기존 DunMir 세 NPC 시나리오를 다시 실행하면 Jerry/Bryan/Wizard 동작과 플레이어 조작 복귀는 통과하지만 마지막 SCREEN RED/actual2가 유지된다. start662·release1119·screen1209이며 실제 PNG SHA `9e0cb52310426e820a25de5d7a815cd554c5f8a83b58f52aee853987fee9e80c`는 R220 결과와 바이트 단위로 같다. 이를 이벤트 전체 실패나 새 크래시로 분류하지 않는다.

@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R230: 남은 등록 효과의 실제 월드 경로와 Imp 선공 회귀
+
+기준은 clean/pushed `cf65497c8375bc3934b870c241fe5e2ff51f4e11`이고 사용자 goenv Go1.26.9를 유지한다. R228의 native CGo 등록 진입점13개 중 아직 월드에서 관찰하지 못한 경로를 추가 조사했다. 별도 진단 overlay는 기존 효과 계산·callback 등록·RNG·시계·HP·패킷을 바꾸지 않고5개 dispatch 호출만 실제 등록 CGo 진입점으로 우회한다.
+
+기존 Poison/Troll 사망 독구름/Cleansing Flame YAML과 모든 기대값을 byte-identical하게 보존한9회 headless 실행(진단3·clean 일반3·clean HD3)은 모두 actual0이다. Magic의 원본 void ABI와 실제4/5개 spark 생성, SmallToxicCloud의 짝수 frame0/홀수 frame1개 생성, 네 실제 Cleansing Flame 형식의 이동과 viewport 이탈 제거를 관찰했다. 각 phase의 기존 완료 표식14개를 유지했다. 이들은 배치·대기 AI·script cast 등을 명시한 기존 fixture이며 입력만으로 하는 전투·물리 GPU/가청 출력 인증은 아니다.
+
+원본 thing.bin/monster.bin은 ImpShot이 SparkleTrailUpdateDraw를 사용하고 stock Imp가 이를 발사함을 확인했다. 기존 선공 fixture의 지원 유형에 Imp를 추가하고 Urchin과 동일하게 사전 관찰한 소유 투사체를 인정하며 missile 관찰을 요구한다. 기존16조건·assertion·600tick deadline·HP2000·RNG·게임 AI/피해 계산은 변경하지 않는다. 새 독립 YAML은 두 대각선×clear/off-ray-box의4조건이다. 동결 새 회귀의 실제 RED를 확인한 뒤, 진단 게임은 네 조건 모두 피격 이전 자체 적 탐색/FIGHT/발사·서버 HP 감소와 client 피해 관찰을 통과했다. 실제 ImpShot CGo는 native-width viewport/drawable을 유지하며 매 호출5개 spark를 생성했다.
+
+처음 private 수집기는 정상 공격자 본체도 허용하는 기존 계약을 잘못 좁혀 observed-projectile=true만 요구했다. 게임 actual0/네 PASS와 수집기 actual1을 함께 보존하고 별도 v2 감사는 기존 공격자 또는 사전 관찰 투사체라는 계약으로 원문을 확인했다. 기존 게임 검사나 기대값을 완화한 GREEN으로 세지 않는다. client의 음수 damage 알림은 관찰값이며 매 Imp 타격의 정확한 독립 delta로 주장하지 않는다.
+
+기존 native 효과33IDs×3=99pass와 기존/새 AI55IDs×3=165pass는 공식 cgocheck2+race+checkptr2에서0skip/actual0이다. 전체5종 suite를 이번에 재실행했다고 주장하지 않는다. R228에서 실제 월드로 확인한8개에 이번4개를 더해12/13이며 VortexSource는 여전히 direct ABI/payload 단위검사만 확인했다. 별도 읽기 전용157개 원본 맵 조사에는 VortexSource 배치가 없었다. 처음 두 조사 도구의151개 semantic 오류는 보존하고, v3는 이미 정렬된 record에서 padding을 추가하지 않아157개를 모두 읽었다. 게임/라이브러리 맵 decoder를 수정한 것은 아니다.
+
+자료는 `/private/tmp/opennox-effect-paths-r230.ReyUpg`다. 기존9회 감사 SHA `48910e881e8889f0a092a7b43f2d2c1a58df7b3902962b817b3ab4e975a58d9f`, 독립 Imp 감사 SHA `573bee9bdf3e95bb9d24664be86f89f9996e401229bfefb5f8ef4a8624f631bd`를 보존한다. 이번 변경은 검증 fixture3곳·새 테스트·새 YAML과 이 README prefix뿐이다. 개인 Save/설정·기존 YAML/PNG/oracle·R134 HOLD는 유지한다. 커밋 직후 push하고 새 clean 일반/HD client·server와 Host Load 후속 검증은 별도 receipt로 확인한다. R229 공개 접속2ready/3timeout/1원래75초 다운로드 deadline은 과거 결과로 유지하며 이번 재접속으로 세지 않는다. 다른 GUI/AI/API·War01A/fixed Quest·Player SetColor/R134·외부 서버 원인·물리 출력·전체 포팅 목표는 미완료다.
+
 ## R229: 공개 목록 서비스 실패와 여섯 주소의 실제 Join 분리
 
 기준은 clean/pushed `57c472e798ffad873c3132165b852a45e42dc3fd`이며 사용자 goenv Go1.26.9를 사용한다. R228의 네 clean ARM64 제품·일반/HD 효과·실제 시계 로컬 접속/이동/종료·Host Load8화면 후속 감사는 actual0/SHA `e2367d5caa1f5456b3fdeb3c2b2bbc83c7d8937aeb1b81b7ff1084df3d2b41e4`다. 이번 게임 소스·public tests·기존 YAML/PNG/oracle 변경은0이다.

@@ -17,7 +17,7 @@ func e2eAIFirstAttackMode(mode string) (kind string, descending, obstacle bool, 
 		return "", false, false, false
 	}
 	switch parts[0] {
-	case "Spider", "Troll", "Urchin", "NPC":
+	case "Spider", "Troll", "Urchin", "NPC", "Imp":
 	default:
 		return "", false, false, false
 	}
@@ -175,7 +175,7 @@ func (f *e2eAIFirstAttackFixture) acceptsDamageSource(source *server.Object) boo
 	if f.kind == "NPC" && source == f.weapon {
 		return true
 	}
-	return f.kind == "Urchin" && f.projectiles[source]
+	return (f.kind == "Urchin" || f.kind == "Imp") && f.projectiles[source]
 }
 
 func (f *e2eAIFirstAttackFixture) observe() bool {
@@ -206,7 +206,7 @@ func (f *e2eAIFirstAttackFixture) observe() bool {
 	if f.host.HealthData.Cur >= 2000 {
 		return false
 	}
-	if !f.acquired || !f.fought || !f.acceptsDamageSource(f.host.Obj130) || f.kind == "Urchin" && !f.missile {
+	if !f.acquired || !f.fought || !f.acceptsDamageSource(f.host.Obj130) || (f.kind == "Urchin" || f.kind == "Imp") && !f.missile {
 		e2eError(fmt.Errorf("unforced AI damage lacks acquisition/combat/source: mode=%s acquired=%t fought=%t missile=%t source=%p/%p", f.mode, f.acquired, f.fought, f.missile, f.host.Obj130, f.enemy))
 		return true
 	}

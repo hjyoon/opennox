@@ -1,5 +1,19 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## War01A 화면 실패의 역사적 체력 로딩 변경 경계 분리 (R221)
+
+기준 clean/pushed `813a532bda0448304abeaeca421dc7d7fb61e0da`다. 이번은 read-only 원인 조사 기록이며 게임 소스 변경0·기존 tests/assertions/YAML/PNG/oracle 변경0이다. 현재 clean ARM64 제품으로 기존 DunMir 세 NPC 시나리오를 다시 실행하면 Jerry/Bryan/Wizard 동작과 플레이어 조작 복귀는 통과하지만 마지막 SCREEN RED/actual2가 유지된다. start662·release1119·screen1209이며 실제 PNG SHA `9e0cb52310426e820a25de5d7a815cd554c5f8a83b58f52aee853987fee9e80c`는 R220 결과와 바이트 단위로 같다. 이를 이벤트 전체 실패나 새 크래시로 분류하지 않는다.
+
+별도 private Go overlay로 과거 SplitColor/SetMaterial/장비 선택 세 본체를 함께 적용해도 전체 다른 픽셀은46,780→46,112다. 정확히 일치하도록 돌아온676픽셀과 새로 달라진8픽셀의 순차668감소이며 대부분을 설명하지 않는다. 당시 frame limiter 한 본체 또는 공유 `monsterCreatureActuallyMove50D3B0` 한 본체만 복원한 두 대조군은 각각 current PNG와 바이트 단위로 동일하다. 이 대조 코드는 제품에 적용하지 않았고 기존 실행 입력·기대값을 변경하지 않았다. 준비만 한 개별 색상/조합 대조군은 실행 성공으로 집계하지 않는다.
+
+기준 PNG 생성 리비전 `6dc4cdeb3`와 이후62/93/122번째 first-parent 리비전을 각각 독립 worktree·Go1.26.9로 빌드하여 같은 고정 YAML/PNG와 fresh private Save/config/maps로 실행했다. 모두 strict SCREEN/actual0이며 start662·release1126·screen1216이다. 123번째 `13c82e8190df9ae990af368dfc9ac1fce4e5cf8f`는 actual2·release1116·screen1206이고125/250번째도 같은 시간이다. 123/125번째의 실패 PNG는 바이트 단위로 같다. 500번째 `27403d260`는 current와 같은1119/1209 및 동일 실패 PNG다. 이벤트 함수·Screen·imageDiff 세 함수는 생성 당시와 current의 본체 SHA가 모두 같으며 엄격한 픽셀 비교를 완화한 차이가 아니다. 이는 관찰한 인접 변경 경계의 증거이지 모든 중간 이력의 일시적 변화나123번째 이후 추가3프레임 변화까지 고립한 결과는 아니다.
+
+직접 부모 `f616c328790b23cd20d9558a9da31fed611aefda`/자식 `13c82e819` 사이의 게임 변경은 `monsterXferTail528DB0`의 대기 NPC 체력 초기화 한 곳이다. GAME.EXE `00529A3D`의 `66 c7 40 04 00 00`과 `00529A49`의 `66 c7 01 00 00`을 read-only disassembly로 다시 확인했다. 원본은 Max(+4)와 Cur(+0)를0으로 만들며 이전 체력(+2)을 지우는 분기가 아니다. 원본에 맞는 이 수정을 오래된 화면을 통과시키려고 되돌리지 않는다. 현행 기존 체력 회귀5IDs의 Go1.26.9 cgocheck2+race+checkptr2 count3은15pass/0skip·actual0다. 원본 코드2,968/data650범위 검증도actual0이며 전체 Windows 게임 실행·전체 AI/렌더러 동등성 인증으로 확대하지 않는다.
+
+원인 감사 actual0/SHA `7e6747d7615a1210d7af3c141e90298fdac6640e5a9a73723183cd11b4bf2d03`는 source6,833files·protected304files·개인1,562files의 조사 전후 전체 체크포인트가 바이트 단위로 동일함을 확인한다(SHA `2a08ee2aaa07429cb5dbad86f689d588a3fdb2f9f663b1e384e3c104d8a7eb50`). historical worktree별 전후 source/개인 체크포인트, R219/R220 동결 receipt와 R134 HOLD도 보존한다. 원본 자산 subset1,554개를 사용했으며 nc.obj/nox.cfg 포함 full tree·가청 음향·물리 GPU·사용자 Linux 실행은 주장하지 않는다. 준비 중 full-read guard 및 helper 변수명 충돌은 파일 생성 전 중단됐고 회귀 테스트 실패로 세지 않는다. 전역 goenv/runtime/GC·최소 언어 버전·캐시는 변경하거나 삭제하지 않았다.
+
+자료는 `/private/tmp/opennox-war01a-screen-r221.J5hoVV`에 보존한다. all_GUI_green=false이며 기존 화면·fixed Quest 맵 순서·R134 HOLD와 전체 port goal은 미완료다. 이번 문서만 커밋하고 바로 origin port/go1.26-multiarch에 push한 뒤 clean 일반/HD/server 제품, 같은 War01A SCREEN RED 보존, Host Game saved-character Load 정상/HD8화면 및 공식 server E2E를 후속 검증한다. 전체 네 모드 unit suite를 이번에 새로 실행했다고 세지 않으며 동일 게임 코드의 R219 증거를 유지한다.
+
 ## Go 1.26.9 실제 AI 연속 공격·캠페인·Quest 진행 재검증 (R220)
 
 실제 실행 revision은 clean/pushed `38715f7a275fd10f4d9970467777a9a719de5f24`다. R219의 direct ray bridge·clean ARM64 세 제품·효과/Host Load/server 후속 검증은 actual0이며 release audit SHA는 `6ade52577fa2dbde3c4387ed8f89ef999df509bf1db19e11d657bd5ce3c957de`다. 이번에는 게임 소스를 바꾸지 않고 현재 Go1.26.9 제품의 실제 진행을 확대 점검했다. 기존 protected YAML/PNG/게임 assertion을 그대로 private 복사하고 headless/mock·비어 있는 private Save/config에서 실행했으며 화면 override는 false다.

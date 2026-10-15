@@ -5072,7 +5072,7 @@ int nox_xxx_netPlayerIncomingServ_4DDF60(int a1) {
 	float v4;           // edi
 	float v5;           // ebp
 	const volatile nox_game_ball_status_t* v8; // eax
-	char* j;            // edi
+	nox_team_t* j;      // edi
 	const volatile nox_team_flag_status_t* v10; // eax
 	nox_object_t* v13;  // [esp+Ch] [ebp+4h]
 	uint16_t game_ball_net_code;
@@ -5144,8 +5144,8 @@ int nox_xxx_netPlayerIncomingServ_4DDF60(int a1) {
 		game_ball_state = v8->state;
 		nox_xxx_netSendBallStatus_4D95F0(v1, game_ball_state, game_ball_net_code);
 	} else if (nox_common_gameFlags_check_40A5C0(32)) {
-		for (j = nox_server_teamFirst_418B10(); j; j = nox_server_teamNext_418B60((int)j)) {
-			v10 = sub_4E8320(j[57]);
+		for (j = nox_server_teamFirst_418B10(); j; j = nox_server_teamNext_418B60(j)) {
+			v10 = sub_4E8320(j->field_57);
 			team_flag_carrier_net_code = v10->carrier_net_code;
 			team_flag_index = v10->flag_index;
 			team_flag_status = v10->status;

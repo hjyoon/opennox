@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## CTF 신규 참가의 native 팀 포인터 순회 복원 (R213)
+
+기준 clean/pushed revision은 `dd8d5177a2e45b82620a0205463fdd43e17120a2`이며 사용자 goenv Go1.26.9를 계속 사용한다. R212에서 capflag 로딩은 통과했지만 실제 Join은 `nox_xxx_netPlayerIncomingServ_4DDF60`의 CTF 순회가 팀 주소를 int로 잘라 Go Team.Next에 전달하면서 SIGSEGV/host actual2를 일으켰다. GAME3_2.c의 변경은 j를 `nox_team_t*`로 선언하고, Next의 int cast를 제거하고, 같은 byte57을 named field로 읽는 세 줄뿐이다. FlagBall 우선순위·상태 getter·전송 인수 bits/순서·참가 player 상태 기록·기타 후속 처리는 기준 본문 그대로다. 접속을 건너뛰거나 팀 정보를 생략하는 fallback은 추가하지 않았다.
+
+새 native parent2는 real headers와 완전한 active C 함수를 수정 없이 컴파일한다. CTF18조건(팀0/1/3·index0/31·guard pattern0/5a/ff)은 4GiB 위 실제 주소가 Next 소비자에 그대로 전달되는지 검사하고, 상태 전송 인수·callback 순서와 player/object/team/status bytes의 허용된 변경만 확인한다. FlagBall/CTF 동시 flag 우선순위·일반/observer/elimination/MOTD tail15조건도 같은 본문에서 검사한다. 동일 v2 입력에서 수정 전 CTF pointer 소비는 abort/1fail이고 나머지15조건은1pass였다. 수정 후 두 parent/33조건이 모두 actual0이며 공식 cgocheck2+race+checkptr2/count3의 새 incoming/기존 team/HUD 검사는18pass/0skip다. 이는 통제된 외부 서비스를 둔 native C 검사이며 원본 Windows 전체 실행이나 새 GAME.EXE 전체 함수 emulation으로 기록하지 않는다.
+
+최초 v1 검사에는 실제 게임에 이미 있는 Wno-int-conversion 옵션이 빠져 두 parent 모두 컴파일 준비 단계에서 실패했다. 이번에 새로 만든 untracked Go 검사만 byte-exact archive로 보존하고 새 v2 이름에서 기존 게임의 compiler 옵션과 정수 overflow 옵션을 적용했다. C fixture·행동 기대값은 그대로이며 준비 실패를 게임 RED로 세지 않는다. release 입력의 기계적인 v1→v2 변환이 Go module import까지 바꾼 문제도 실행 전에 발견했다. 그 미실행 입력을 보존하고 module v1 import와 모든 게임 assertion을 유지한 별도 v3 입력을 만들었다. 이 준비 교정은 실제 제품/접속 성공과 구분하며 검증 receipt도 보존한다.
+
+실제 clock/private localhost의 CTF capflag 및 FlagBall flagball에 별도 input-only headless client로 목록 선택→Join→Conjurer/appearance→native client-only role→HP100/mana125→일반 마우스 이동→authenticated host quit/client MSG_SERVER_QUIT/host ACK1을 확인했다. CTF 위치는(2604,1910)→(2604,1732), FlagBall은(2506,3036)→(2444,2918)이며 네 게임 process와 coordinator 모두 actual0이다. 실제 moved 화면의 world/player/HUD도 확인했다. R212의 모든 접속 assertion은 유지하고 private 경로·identity·포트만 바꿨다. gameplay/packet/health/team/clock/RNG 상태를 주입하지 않았다. 이 실제 CTF incoming pointer HOLD는 해결됐지만 모든 팀 소비자·경기 진행·물리 LAN/WAN·Windows framebuffer까지 검증했다고 확대하지 않는다.
+
+전체 일반/HD/공식 cgocheck2 각각73,782pass/47skip·40packages, server69,216pass/7skip·36packages·actual0이다. R212의 모든 기존 ID/action/count/skip/package는 같고 새 parent2만 추가됐다. 공식 server E2E의 기존 네 맵/mode/player/tick/load count/정상 quit gate도 actual0이다. 기존632B Warrior save와 R140 동결 Host Load 입력의 일반/HD actual0 및 선택·Load 직후·600frame 대기·이동의 여덟 PNG bytes/SHA는 R212와 같다. original code2,968/data650 verifier도 actual0이다.
+
+보존 감사 actual0은 source6,809→6,811files의 기능 차이가 위 C 세 줄과 새 Go 검사/C fixture 두 파일뿐임을 확인했다. 기존 assertion/YAML/PNG/oracle·protected304files·개인1,562files/Save/config·R134 HOLD·R212 crash/동결 입력/receipt와 original 자산 subset1,554개는 불변이다. body audit SHA는 `53a88f47590d158c414c783bcec14d4af3031d8adcc86d9666a7c7a7473d7a33`, 자료는 `/private/tmp/opennox-ctf-team-iteration-r213.O2JruW`에 보존한다. 최소 언어 버전·전역 goenv/runtime/GC·캐시는 변경하지 않았다.
+
+문서는 이 기록만 앞에 추가하고 기존 suffix를 보존한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 세 제품·새 회귀·새 private 포트/Save의 실제 CTF/FlagBall 접속/이동/정상 종료·공식 server E2E·동일 일반/HD Host Load를 후속 receipt로 확인한다. 아직 실행하지 않은 후속 검사와 다른 GUI/AI/인벤토리 HOLD·physical GPU/가청 음향 및 전체 포팅 목표는 완료로 기록하지 않는다. 다른 팀 순회의 int cast 검색 결과에는 비활성 provenance도 포함되므로 활성 경로와 실제 영향을 구분해 후속 점검한다.
+
 ## 전용 서버 기본 비렌더링과 CTF·FlagBall HUD 시작 경계 (R212)
 
 기준 clean/pushed revision은 `0de619651f2fb7756903da54f13ecf6ba7d03db6`이며 사용자 goenv Go1.26.9를 계속 사용한다. R211에서 실제 clock의 일반/Quest 호스트에 두 클라이언트를 순차 접속시키고, 서로 다른 실제 net code·Quest team1·양쪽 HUD/마우스 이동·정상 quit/ACK2를 확인했다. 개인 Save/state/clock/packet 주입이나 production 변경은 없다. 최초 Quest 검사는 두 번째 참가자의 준비 완료 전에 team을 검사한 입력 오류였으며 실패 원문을 유지하고 준비 시점만 분리한 v2에서 통과했다. 봉인된 R211 receipt SHA는 `8cee7ae6ff772f2458179d920eb87ccb901658c7e456ef3dc8f66f4b1a2029ec`다.

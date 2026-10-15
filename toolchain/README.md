@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R243: NPC tail의 버전별 필드 경계 복구
+
+기준은 clean/pushed `cb8a62487264d9498a54f1a057ad3ad75dfe6024`이며 사용자 goenv Go 1.26.9를 유지한다. R242 native 일반/HD 캠페인은 여섯 맵의 연속 world window 뒤 War03d의 Kalen을 `unsupported buff version 27`로 읽지 못했다. 원본 157개 맵의 `NPC` 타입 603개를 읽기 전용으로 확인하면 version60은 Kalen 한 개, version62는 602개다. 다른 ObjectType의 NPC subclass까지 조사했다는 뜻은 아니다. Kalen payload 341바이트의 SHA256은 `a4d134136c4a7e8081a009d438ee8ab939ca846bf245692568a44b736dea2e88`이며 tail은 318..341에서 끝난다.
+
+GAME.EXE 0052B81A..0052B9B4와 voice/빈 buff/file-wrapper/CRC를 변경 없이 416조건 실행했다. 경험치 51·voice 52·buff 61·poison 62의 네 guard만 복구한다. 원본 3,240회 file-wrapper·3,152회 CRC의 states SHA256은 `a25b8445148df29df6b207c70d33a0c01dbb8587fb8d2e6aa377e4ba6ced49ce`다. fread/fwrite·음성 registry lookup/set·빈 enchant 열거·host flag 조회는 통제된 서비스이며 전체 Windows OS나 nonempty buff/inventory 실행을 증명하지 않는다. 기존 health 필수 조건, version50 미만 거부, pointer 폭, dormant Cur/Max 처리와 Field2 보존은 바꾸지 않는다.
+
+새 동결 v1의 version50..62·read/write·host·dormant·0x8000 flag·빈/실제 이름 voice·raw/cipher/XOR 1,040 leaf 조건은 같은 1,041개 ID에서 RED 80pass/961fail·actual1에서 GREEN 1,041pass·actual0으로 바뀐다. 원래 통과하던 version62도 유지한다. 실제 payload·read position·checksum block·Max의 word truncation·experience의 NaN 비트·subclass OR·부분 바이트·voice와 0 poison의 live-state 보존을 원본 실행 결과와 대조한다. write 후속 0x5a 필드/CRC 호출은 비교기에 명시한다. 공식 cgocheck2/race/checkptr2 count3 및 canonical 다섯 모드의 기존 모든 ID/action/count/package 보존은 `audit-body-v1.log`를 따른다.
+
+별도 Kalen bounded phase v1의 미초기화 private Script VM, v2의 inventory=0 가정 실패는 원문과 actual receipt로 보존한다. v3는 원본 byte39의 inventory count 3을 독립 확인하고 빈 script-name resolver를 초기화한다. 원본 payload·HP1/Max150·90000 경험치·318..341 경계는 바꾸지 않는다. 동일 v3와 이전 production overlay에서 없는 buff를 읽는 EOF를 재현하고 수정 후 끝 위치를 확인한다. callback 이름의 실제 맵 스크립트 연결, 뒤따르는 세 inventory 레코드 및 post-load AI까지 이 bounded 검사로 증명하지 않는다. 기존 테스트·YAML·PNG·HP·RNG·timeout·oracle는 수정하지 않았다.
+
+자료는 `/private/tmp/opennox-npc-tail-r243.Os0KiF`다. production 한 파일·새 v1 회귀 파일·README prefix만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 새 clean ARM64 네 제품·일반/HD 공식 서버·기존 Host Load 8화면 및 같은 native 캠페인 계획의 재실행은 푸시 후 별도 receipt로 판정하며 미실행·실패 항목을 완료로 세지 않는다. 공개 호스트는 R239 기록을 유지하며 이번 수정으로 재접속했다고 주장하지 않는다. README 이전 suffix·원본 자산1,554개·개인 Save/설정·R134 HOLD·INVENTORY를 보존하고 캐시·전역 goenv/runtime/GC·최소 언어 버전은 바꾸지 않는다. 전체 campaign107·Quest13·자연스러운 스토리/전투·구버전 전체 NPC XFER·다른 GUI/AI/API·physical GPU/가청 출력·Windows 전체 실행 및 전체 포팅은 미완료다.
+
 ## R242: 구버전 몬스터 레코드의 버전별 tail 경계
 
 기준은 clean/pushed `c379861ed3b05b78bf30c9ba8176bed9e4350dbd`이며 사용자 goenv Go 1.26.9를 유지한다. 실제 Solo 플레이어가 있는 native-clock 캠페인 로드 검사에서 War03d의 Zombie를 version 0으로 오독했다. 원본 157개 맵을 읽기 전용으로 확인한 Zombie 614개는 version60 35개·version64 579개이며 version0은 없었다. War03d의 35개는 모두 version60/object-base62다. bounded native phase 검사는 각 원본 payload를 정상 tail까지 읽고 나서 없는 buff version을 더 읽어 실패했다. 버전 제한 완화·오브젝트 skip·맵 데이터 수정으로 우회하지 않는다.

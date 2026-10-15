@@ -148,18 +148,28 @@ func npcXferTail52ADE0(cf *cryptfile.CryptFile, obj *server.Object, version int)
 	if obj.HealthData.Cur, err = monsterRWU16(cf, obj.HealthData.Cur); err != nil {
 		return fmt.Errorf("health: %w", err)
 	}
-	if obj.Experience, err = monsterRWF32(cf, obj.Experience); err != nil {
-		return fmt.Errorf("experience: %w", err)
+	// GAME.EXE 0052B8DA..0052B965 gates each later field separately.
+	// In particular, version-60 Kalen ends after voice, before buffs/poison.
+	if version >= 51 {
+		if obj.Experience, err = monsterRWF32(cf, obj.Experience); err != nil {
+			return fmt.Errorf("experience: %w", err)
+		}
 	}
-	if err := monsterXferVoice528DB0(cf, ud); err != nil {
-		return fmt.Errorf("NPC voice: %w", err)
+	if version >= 52 {
+		if err := monsterXferVoice528DB0(cf, ud); err != nil {
+			return fmt.Errorf("NPC voice: %w", err)
+		}
 	}
-	if err := monsterXferBuffs52AAB0(cf, obj); err != nil {
-		return err
+	if version >= 61 {
+		if err := monsterXferBuffs52AAB0(cf, obj); err != nil {
+			return err
+		}
 	}
-	poison, err := monsterRWU8(cf, obj.Poison540)
-	if err != nil {
-		return fmt.Errorf("poison: %w", err)
+	var poison byte
+	if version >= 62 {
+		if poison, err = monsterRWU8(cf, obj.Poison540); err != nil {
+			return fmt.Errorf("poison: %w", err)
+		}
 	}
 	if !cf.ReadOnly() {
 		return nil
@@ -173,7 +183,6 @@ func npcXferTail52ADE0(cf *cryptfile.CryptFile, obj *server.Object, version int)
 	if uint32(obj.ObjFlags)&0x8000 != 0 {
 		obj.ObjFlags |= object.Flags(0x40)
 	}
-	_ = version
 	return nil
 }
 

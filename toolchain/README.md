@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R234: 맵 재출력의 zero-name EOF 블록 복원
+
+기준은 clean/pushed `8a0a10005628fd7f3b0839d90c4b0a0243b83075`이며 사용자 goenv Go 1.26.9를 유지한다. `maps.Writer`의 Go-only 종료 표시 필드와 Flush/Close/WriteRawSection 세 본체에 한 번의 zero-length section name을 기록한다. 마지막 payload가 crypt block 경계이면 별도 8바이트가 필요하고, 명시적 끝 Flush가 이미 만든 zero padding은 재사용한다. 반복 Close와 checksum patch 재시도는 EOF를 중복 추가하지 않는다. header/section/payload·체크섬 알고리즘·게임 로더·AI/네트워크 계산은 바꾸지 않는다.
+
+새 독립 wire 검사는 maps.Reader의 관대한 EOF 처리를 oracle로 쓰지 않고 실제 암호문을 풀어 zero name·정확한 마지막 padding·섹션/체크섬을 검사한다. 두 magic·0..31 payload·끝 Flush 0/1/2회·빈 맵·반복 Close·마지막 I/O 오류 전파·checksum patch 재시도·닫힌 뒤 잘못된 이름의 비변경을 포함한다. 동결 두 파일의 수정 전 181pass/36fail·actual1, 수정 후 217pass·actual0이며 R232/R233와 함께 공식 cgocheck2/race/checkptr2 count3는 3,702pass/0skip이다. 중간 arbitrary Flush 또는 쓰기 실패 후 전체 stream 복구까지 새로 보장한 것은 아니다.
+
+같은 읽기 전용 원본 157개 재출력에서 이전에 끝이 완전했던 152개는 암호문 SHA까지 동일하다. TriLevel/Con09b/War02b/War09b/Wiz09b 다섯 파일의 누락된 끝 8바이트를 복원해 157개 모두 길이·원본 plaintext가 CRC DWORD 외에는 일치한다. checksum을 복사하거나 원래 기대값을 바꾸지 않는다. 기존 라이브러리는 전후 모두 3,419pass/158fail/0skip·actual1이며 모든 test ID/action/count/package가 같다. 158개 TestMapWrite checksum 실패와 원본의 호출 경계별 CRC 계약은 계속 별도 미해결이다. 원본 212,179개 객체의 수·순서·타입·opaque payload도 유지하며 전체 XFER 의미 디코딩으로 확대하지 않는다.
+
+같은 R233 clean Go 1.26.9 ARM64 server 바이너리를 고정하고 실제 공식 headless server 시나리오를 변경 없이 사용했다. 기존 writer의 격리 TriLevel 재출력은 `server read map: cannot read next section: EOF`/actual1로 실패했다. 수정 writer의 새 격리 파일은 원래 so_beach→estate→trilevel→estate 맵/모드·틱·load count·quit gate를 모두 통과했다. 개인 Save/설정을 가져오지 않고 원본 자산은 읽기 전용으로 유지했다. 첫 baseline controller는 모든 개별 캡처 뒤 JSON require 누락의 NameError/actual1이었으며 입력·실패 기록을 보존한다. 이것을 게임 크래시나 통과한 controller로 세지 않는다.
+
+canonical 5종 게임 검사와 기존 결과 보존은 audit-body-v1.log로 판정한다. 이들은 이전과 같이 NOX_DATA를 지정하지 않으며 R233의 자산 확장 음성 1,141개 실패를 이번에 재실행하거나 고쳤다고 주장하지 않는다. 푸시 후 네 새 clean ARM64 제품·수정 TriLevel을 실제로 받은 일반/HD 공식 server·기존 Host Load 8화면은 audit-release-v1.log로 따로 판정한다. 자료는 `/private/tmp/opennox-map-eof-r234.H8TcVD`다. 이 README prefix·한 production 파일·새 회귀 두 파일만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 기존 tests/YAML/PNG/oracle·원본/개인 데이터·R134 HOLD와 README suffix를 보존한다. 실행하지 않은 검사는 완료로 세지 않으며 TestMapWrite/음성 자산/War01A/fixed Quest/Player SetColor·대화 API·외부 접속 원인·다른 GUI/AI/API·physical GPU/가청 출력과 전체 포팅 목표는 미완료다.
+
 ## R233: 맵 섹션 길이의 aligned DWORD 계약
 
 기준은 clean/pushed `d5d6bc309b4cdea0083a6ee1687f800e987c8ef7`이며 사용자 goenv Go 1.26.9를 유지한다. `maps.Reader.nextSection`의 길이 읽기 한 곳을 기존 `readAlignedU32`로 연결했다. 원본 클라이언트의 `004AC4EF`는 길이 4를 넘겨 `00426C20`을 호출한다. 암호화 블록은 8바이트지만 길이는 앞 DWORD이고 뒤 DWORD는 패딩이다. 게임 로더·체크섬·writer·기존 EOF/오류 계약은 수정하지 않는다.

@@ -10,9 +10,10 @@ import (
 )
 
 type Writer struct {
-	cw     *crypt.Writer
-	crc    uint32
-	crcOff int64
+	cw        *crypt.Writer
+	crc       uint32
+	crcOff    int64
+	endMarked bool
 }
 
 type WriterAt interface {
@@ -66,10 +67,25 @@ func (w *Writer) writeHeader(h Header) error {
 }
 
 func (w *Writer) Flush() error {
-	return w.cw.Flush()
+	padding := w.cw.Written()%crypt.Block != 0
+	if err := w.cw.Flush(); err != nil {
+		return err
+	}
+	// End padding already supplies the zero-length section name. Remember
+	// it so Close does not append another block after an explicit Flush.
+	if padding {
+		w.endMarked = true
+	}
+	return nil
 }
 
 func (w *Writer) Close() error {
+	if !w.endMarked {
+		if err := w.cw.WriteU8(0); err != nil {
+			return err
+		}
+		w.endMarked = true
+	}
 	if err := w.cw.Flush(); err != nil {
 		return err
 	}
@@ -99,6 +115,7 @@ func (w *Writer) WriteRawSection(s RawSection) error {
 	if err := w.writeSectionName(s.Name); err != nil {
 		return err
 	}
+	w.endMarked = false
 	if err := w.cw.WriteU64(uint64(len(s.Data))); err != nil {
 		return err
 	}

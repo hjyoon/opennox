@@ -199,7 +199,7 @@ int sub_4C5060(nox_draw_viewport_t* a1p);
 int sub_4C51D0(int2* a1, int2* a2);
 int sub_4C5630(int a1, int a2, int a3);
 int nox_xxx_sprite_4CA540(uint32_t* a1, int a2);
-int sub_4CA650(int a1, int a2);
+int32_t sub_4CA650(nox_draw_viewport_t* vp, nox_drawable* dr);
 int sub_4CA720(int a1, int a2);
 nox_window* nox_gui_newProgressBar_4CAF10(int a1, int a2, int a3, int a4, int a5, int a6, uint32_t* a7);
 int sub_4CAF80(int a1, int a2, int a3, int a4);

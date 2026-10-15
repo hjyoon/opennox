@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## DeathBall 계열 등록 CGo 업데이트 네 진입점의 native 연결 (R224)
+
+기준 clean/pushed `81a3e26f8273a98fec3f95070f2a7bafbfad3234`이며 사용자 goenv Go1.26.9를 계속 사용한다. R223의 clean ARM64 세 제품·일반/HD Host Load8화면·공식 server 후속 감사는 actual0/SHA `9c34864a18b9de9b87de9a37c9b6b93c33bede4f42a2cb1273ddae3a602c9c8c`다. 이번은 DeathBall/Fragment/Charge/LinearOrb 등록 C 심벌004CDF80/004CE0A0/004CE0C0/004CA650의 직접 CGo 경로다. 일반 world dispatcher는 이미 native Go helper를 사용하므로 일반 엔진의 새 크래시 재현이라고 확대하지 않는다.
+
+같은 새 동결 parent4는 수정 전4fail/actual1이며 각 별도 child에서4GiB 위 drawable이 int로 잘린 C 접근의 SIGSEGV가 실제 발생했다. 옛 타입 ID cache만 준비해 renderer/type lookup setup 실패와 구분했다. 원래 C 이름·등록 이름·주소 getter를 유지한 native viewport/drawable 포인터의 Go export를 기존 Go 효과 helper에 연결했다. 네 prototype만 int32/native pointer로 교정하고 원래 네 C 본문은 byte-exact #if0 provenance로 보존했다. 기존 raw004CDFA0 helper 본체를 새 활성 호출 경로로 세지 않는다. 기존 효과 helper·world dispatcher·좌표/입자 수치·RNG/clock은 변경하지 않았다.
+
+원본 GAME.EXE 전체 SHA `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 네 entry를 read-only disassembly로 다시 대조했다. 본체/파편 Spark3/1·charge10회 sampling·LinearOrb 이동/근접·overshoot 삭제/return0·이동/return1 규칙을 확인했다. 원본 code2,968/data650 manifest verifier도 actual0이다. 새 전체 함수 emulation이나 Windows 전체 게임 실행을 했다는 주장은 아니다.
+
+수정 후 같은 parent4는4pass/actual0이다. 실제 등록 function pointer→CGo→native hook에서4GiB 위 두 포인터·nil 전달·3/1 매핑·signed32 반환·whole input record 불변·renderer-free keep-alive를 확인했다. 기존 pure 효과 payload3도 actual0이고 공식 cgocheck2+race+checkptr2/count3은21pass/0skip이다. 전체 일반/HD/공식 cgocheck2는 각각73,810pass/47skip·40packages, server69,244pass/7skip·36packages·actual0이다. R223의 기존 모든 ID/action/count/skip/package가 같고 새 parent4만 추가됐다.
+
+처음 private routing-only overlay는 기존 네 call만 CGo로 경유했다. 기존 unchanged Force of Nature YAML의 charge 제거·launch·duration 정리·server fragment의 정확한2초 boundary/이후 expire까지7marker는 game actual0이지만 추가 관찰 gate는 fragment client call 미관찰로 controller actual1이었다. 이 원래 실패 gate/입력/로그는 그대로 보존한다. 원본 thing.bin에서도 DeathBallFragment→DeathBallFragmentUpdateDraw 연결을 확인했다. 별도 보조 진단은 실제 클라이언트 allocator가 원본 fragment type으로 만든 native record에 등록된 callback을 직접 호출해 Spark1/return1과 source 정리를 확인했다. 따라서 새 진단 전체를 routing-only라 부르거나 server fragment의 자연 client delivery를 관찰했다고 세지 않는다. 실제 world의 charge/Orb/ball CGo와 Orb return1→return0 및 별도 fragment fixture가 통과하고 원래7marker도 그대로다. fixture/virtual clock/mock 조건이며 input-only casting·physical GPU·가청 출력 검증은 아니다.
+
+private 비교 기준 경로 오타, 보조 runtime helper 경로 오타, 다중 JSONL controller 출력을 단일 JSON으로 읽은 분석 오류도 각각 실패 receipt/동결 입력과 함께 남겼다. 새 이름의 검증기는 경로/JSONL 마지막 결과 읽기만 교정하고 기존 기대값·game assertion·YAML·PNG를 완화하지 않는다. body 감사 actual0/SHA `659decaa7f5f7e1b8a5cc6489bab372da2c3a53f069d2242b2ae034fb7c7fd3c`는 source6,837→6,841files의 기존 C/H6files와 새 Go binding/export/회귀4files만의 차이를 확인한다. protected304files·개인1,562files/Save/config·R134 HOLD·R223 동결168files·원본 자산 subset1,554개는 보존한다. 최소 언어 버전·전역 goenv/runtime/GC·캐시 변경/삭제는 없다.
+
+자료는 `/private/tmp/opennox-deathball-native-r224.PuCb78`에 보존한다. 이 prefix만 추가해 이전 suffix를 유지하고 커밋 직후 origin port/go1.26-multiarch에 push한다. clean ARM64 세 제품·일반/HD unchanged Force of Nature/fragment·별도 CGo/fragment 보조 진단·공식 server E2E·일반/HD Host Load8화면은 후속 receipt로 확인한다. 현재 공개 목록을 새로 조회해 모든 snapshot 항목에 일반 UI Join/idle/Quit를 시도하기 전 로컬 별도 host에서 같은 실제 clock/headless 절차를 검증한다. 외부 chat/전투/치트/비밀번호 제출·호스트 설정 변경은 하지 않고 결과별 접속/원격 종료/timeout/목록 소멸을 분리한다. 아직 실행하지 않은 후속/현재 공개 서버 성공을 완료로 세지 않는다. all_GUI_green=false이며 기존 War01A/fixed Quest·다른 GUI/AI/API/R134 HOLD와 전체 port goal은 계속 미완료다.
+
 ## Fireball 등록 CGo 업데이트 다섯 진입점의 native 연결 (R223)
 
 기준 clean/pushed `a91e641f6a4361bac6e3a314dd9f577b42136a8b`이며 사용자 goenv Go1.26.9를 계속 사용한다. R222의 clean ARM64 세 제품·일반/HD Host Load8화면·공식 server 후속 감사는 actual0/SHA `e0d357eea610b689e58a4d03b662d04219032ecfed7183ba7749467c29092190`다. 이번에는 Titan/Strong/Regular/Weak/Pitiful Fireball의 등록 C 심벌004CCE70/004CD090/004CD0C0/004CD0F0/004CD120을 점검했다. 일반 월드 dispatcher는 이미 Go 효과 구현을 사용하므로 이번 직접 CGo 검사를 일반 엔진의 새 크래시 재현으로 확대하지 않는다.

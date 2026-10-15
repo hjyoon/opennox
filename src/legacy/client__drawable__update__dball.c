@@ -43,6 +43,7 @@ uint32_t* nox_xxx_updDrawAddRndSpark_4CDFA0(int a1, uint32_t* a2) {
 }
 
 //----- (004CE0C0) --------------------------------------------------------
+#if 0
 int nox_xxx_updDrawDBallCharge_4CE0C0(int a1, int a2) {
 	int v2;       // ebx
 	short v3;     // cx
@@ -78,3 +79,4 @@ int nox_xxx_updDrawDBallCharge_4CE0C0(int a1, int a2) {
 	} while (v2);
 	return 1;
 }
+#endif

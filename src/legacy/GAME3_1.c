@@ -4371,6 +4371,7 @@ int nox_xxx_sprite_4CA540(uint32_t* a1, int a2) {
 }
 
 //----- (004CA650) --------------------------------------------------------
+#if 0
 int sub_4CA650(int a1, int a2) {
 	int v2;             // esi
 	int v3;             // eax
@@ -4415,6 +4416,7 @@ int sub_4CA650(int a1, int a2) {
 	}
 	return result;
 }
+#endif
 // 4CA67E: variable 'v6' is possibly undefined
 
 //----- (004CA720) --------------------------------------------------------

@@ -6,8 +6,8 @@
 #include "item_defend_effects_4e1320.h"
 #include "item_pre_damage_4e13b0.h"
 
-int nox_xxx_updDrawDBall_4CDF80(int a1, int a2);
-int sub_4CE0A0(int a1, int a2);
+int32_t nox_xxx_updDrawDBall_4CDF80(nox_draw_viewport_t* vp, nox_drawable* dr);
+int32_t sub_4CE0A0(nox_draw_viewport_t* vp, nox_drawable* dr);
 int nox_xxx_updDrawCloud_4CE1D0(int a1, int a2);
 int sub_4CE340(int a1, int a2);
 int sub_4CE360(int a1, int a2);

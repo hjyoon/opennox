@@ -87,6 +87,7 @@ extern int ptr_5D4594_2650668_cap;
 nox_list_item_t nox_common_maplist = {0};
 
 //----- (004CDF80) --------------------------------------------------------
+#if 0
 int nox_xxx_updDrawDBall_4CDF80(int a1, int a2) {
 	nox_xxx_updDrawAddRndSpark_4CDFA0(a2, (uint32_t*)3);
 	return 1;
@@ -97,6 +98,7 @@ int sub_4CE0A0(int a1, int a2) {
 	nox_xxx_updDrawAddRndSpark_4CDFA0(a2, (uint32_t*)1);
 	return 1;
 }
+#endif
 
 //----- (004CE1D0) --------------------------------------------------------
 int nox_xxx_updDrawCloud_4CE1D0(int a1, int a2) {

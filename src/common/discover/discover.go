@@ -34,6 +34,10 @@ type Server struct {
 	Priority int        // lower values mean higher priority
 	Ping     time.Duration
 	NoPing   bool // server doesn't support UDP pings
+	// ProtocolVersion is the exact UDP wire version, not the lobby's product
+	// version or resolution hint. Nil means it has not been observed; zero is
+	// an observed value and must not be replaced with a guessed version.
+	ProtocolVersion *uint32 `json:"protocol_version,omitempty"`
 }
 
 type SearchFunc func(ctx context.Context, log *slog.Logger, out chan<- Server) error
@@ -191,12 +195,13 @@ func eachServerWith(ctx context.Context, log *slog.Logger, pc *net.UDPConn, fnc 
 					if !s.NoPing {
 						s.NoPing = true
 						start := time.Now()
-						g, err := pinger.Ping(ctx, netip.AddrPortFrom(s.IP, uint16(s.Port)))
+						g, err := pinger.pingServer(ctx, netip.AddrPortFrom(s.IP, uint16(s.Port)))
 						if err != nil {
 							log.Warn("ping error", "src", s.Source, "err", err)
 						} else {
 							s.Ping = time.Since(start)
-							s.Game = mergeInfo(s.Game, g)
+							s.Game = mergeInfo(s.Game, &g.Game)
+							s.ProtocolVersion = g.ProtocolVersion
 						}
 					}
 					select {
@@ -277,9 +282,9 @@ func listServersWith(ctx context.Context, log *slog.Logger, pc *net.UDPConn) ([]
 		defer ping.Close()
 		var (
 			remaining int
-			pingOut   = make(chan *lobby.Game, 50)
+			pingOut   = make(chan *Server, 50)
 		)
-		procPing := func(g *lobby.Game) {
+		procPing := func(g *Server) {
 			remaining--
 			key := serverKey{Addr: g.Address, Port: g.Port}
 			seenMu.RLock()
@@ -287,9 +292,10 @@ func listServersWith(ctx context.Context, log *slog.Logger, pc *net.UDPConn) ([]
 			seenMu.RUnlock()
 			if s != nil {
 				pingResp[key] = &Server{
-					Game:   *g,
-					Ping:   time.Since(start),
-					NoPing: true,
+					Game:            g.Game,
+					ProtocolVersion: g.ProtocolVersion,
+					Ping:            time.Since(start),
+					NoPing:          true,
 				}
 			} else {
 				log.Warn("cannot find server", "addr", g.Address, "port", g.Port)
@@ -304,7 +310,7 @@ func listServersWith(ctx context.Context, log *slog.Logger, pc *net.UDPConn) ([]
 				if !ok {
 					break pingLoop
 				}
-				if err := ping.SendPing(pingOut, netip.AddrPortFrom(s.IP, uint16(s.Port))); err != nil {
+				if err := ping.sendPingServer(pingOut, netip.AddrPortFrom(s.IP, uint16(s.Port))); err != nil {
 					log.Warn("cannot ping server", "addr", s.IP, "port", s.Port, "err", err)
 				} else {
 					remaining++
@@ -357,6 +363,7 @@ func listServersWith(ctx context.Context, log *slog.Logger, pc *net.UDPConn) ([]
 			v.Ping = p.Ping
 			v.NoPing = v.NoPing || p.NoPing
 			v.Game = mergeInfo(v.Game, &p.Game)
+			v.ProtocolVersion = p.ProtocolVersion
 		}
 		out = append(out, *v)
 	}

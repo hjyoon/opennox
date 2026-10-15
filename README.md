@@ -59,6 +59,8 @@ The normal client and dedicated server use the vanilla protocol. The HD client u
 
 This adds `build/opennox-server-hd`; run it with the same data/configuration options as `opennox-server`. `server-highres` is an alias. The existing default build still produces the normal client, HD client and normal dedicated server. The HD server is opt-in, and neither protocol's version checks are bypassed.
 
+Server discovery retains the exact UDP protocol version through listing, ping refresh and selection. A received version takes precedence over lobby resolution hints, including zero or an unknown version. Entries without a UDP version retain the resolution-based fallback; the lobby's product-version string is separate from this wire value.
+
 ### Local GUI regression tests
 
 `scripts/run-headless-gui-e2e.sh` builds the native client and runs a scenario with isolated saves and configuration. Playback defaults to a deterministic headless screen. To exercise the SDL/OpenGL window and presentation on a desktop session, opt in explicitly:

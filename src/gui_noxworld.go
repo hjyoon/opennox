@@ -209,6 +209,18 @@ func noxWorldClampByte(v int) byte {
 	return byte(min(max(v, 0), int(^uint8(0))))
 }
 
+func noxWorldServerProtocolVersion(srv discover.Server) NoxVersion {
+	if srv.ProtocolVersion != nil {
+		return NoxVersion(*srv.ProtocolVersion)
+	}
+	// HTTP/XWIS entries may not have a UDP response. Preserve their existing
+	// resolution-based hint only when no wire version was actually observed.
+	if srv.Res.HighRes || srv.Res.Width > 1024 || srv.Res.Height > 768 {
+		return noxProtoVersionHighRes
+	}
+	return noxProtoVersionLegacy
+}
+
 func noxWorldClearSelectedServer() {
 	legacy.Set_dword_5d4594_814624(nil)
 	legacy.Set_dword_5d4594_815056(0)
@@ -249,10 +261,7 @@ func noxWorldSetSelectedServer(srv discover.Server) error {
 	}
 	rec.PlayersVal = noxWorldClampByte(srv.Players.Cur)
 	rec.MaxPlayersVal = noxWorldClampByte(srv.Players.Max)
-	rec.SetVersion(uint32(noxProtoVersionLegacy))
-	if srv.Res.HighRes || srv.Res.Width > 1024 || srv.Res.Height > 768 {
-		rec.SetVersion(uint32(noxProtoVersionHighRes))
-	}
+	rec.SetVersion(uint32(noxWorldServerProtocolVersion(srv)))
 
 	noxWorldSelected = rec
 	noxWorldSelectedFree = freeRec
@@ -1022,17 +1031,12 @@ func sub_438770_waitList() {
 		case lobby.AccessPassword:
 			status |= 0x20
 		}
-		// TODO: should propagate this via lobby
-		v := noxProtoVersionLegacy
-		if g.Res.HighRes || g.Res.Width > 1024 || g.Res.Height > 768 {
-			v = noxProtoVersionHighRes
-		}
 		clientOnLobbyServer(log, &LobbyServerInfo{
 			Server:  g,
 			Flags:   gameModeToFlags(g.Mode),
 			Status:  status,
 			Level:   uint16(level),
-			Version: uint32(v),
+			Version: uint32(noxWorldServerProtocolVersion(g)),
 		})
 	}
 	sub_44A400()

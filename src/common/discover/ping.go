@@ -36,13 +36,13 @@ func PingAll(ctx context.Context, log *slog.Logger, pc *net.UDPConn, arr []Serve
 		last      error
 		remaining int
 	)
-	out := make(chan *lobby.Game, len(arr))
+	out := make(chan *Server, len(arr))
 	byKey := make(map[serverKey]*Server, len(arr))
 	start := time.Now()
 	for i := range arr {
 		s := &arr[i]
 		byKey[s.key()] = s
-		if err := p.SendPing(out, netip.AddrPortFrom(s.IP, uint16(s.Port))); err != nil {
+		if err := p.sendPingServer(out, netip.AddrPortFrom(s.IP, uint16(s.Port))); err != nil {
 			log.Warn("cannot ping server", "addr", s.IP, "port", s.Port, "err", err)
 			last = err
 		} else {
@@ -59,7 +59,8 @@ loop:
 			remaining--
 			if s := byKey[serverKey{Addr: g.Address, Port: g.Port}]; s != nil {
 				s.Ping = time.Since(start)
-				s.Game = mergeInfo(s.Game, g)
+				s.Game = mergeInfo(s.Game, &g.Game)
+				s.ProtocolVersion = g.ProtocolVersion
 				s.NoPing = true
 			} else {
 				log.Warn("cannot find server", "addr", g.Address, "port", g.Port)
@@ -77,7 +78,7 @@ func NewPinger(log *slog.Logger, pc *net.UDPConn) *Pinger {
 		stop:    make(chan struct{}),
 		done:    make(chan struct{}),
 		rnd:     rand.New(rand.NewSource(time.Now().UnixNano())),
-		byToken: make(map[uint32]chan<- *lobby.Game),
+		byToken: make(map[uint32]pingTarget),
 	}
 	go p.read()
 	return p
@@ -92,7 +93,14 @@ type Pinger struct {
 	mu      sync.Mutex
 	err     error
 	rnd     *rand.Rand
-	byToken map[uint32]chan<- *lobby.Game
+	byToken map[uint32]pingTarget
+}
+
+// Keep the public Game-only pinger API while internal discovery retains the
+// wire metadata. Exactly one destination is set for each request.
+type pingTarget struct {
+	games   chan<- *lobby.Game
+	servers chan<- *Server
 }
 
 func (p *Pinger) Close() error {
@@ -130,12 +138,12 @@ func (p *Pinger) read() {
 			continue
 		}
 		p.mu.Lock()
-		ch := p.byToken[m.Token]
-		if ch != nil {
+		target := p.byToken[m.Token]
+		if target.games != nil || target.servers != nil {
 			delete(p.byToken, m.Token)
 		}
 		p.mu.Unlock()
-		if ch == nil {
+		if target.games == nil && target.servers == nil {
 			continue
 		}
 		g := convGameInfo(addr, m, buf)
@@ -145,12 +153,21 @@ func (p *Pinger) read() {
 		select {
 		case <-p.stop:
 			return
-		case ch <- g:
+		case target.games <- &g.Game:
+		case target.servers <- g:
 		}
 	}
 }
 
 func (p *Pinger) SendPing(out chan<- *lobby.Game, addr netip.AddrPort) error {
+	return p.sendPing(pingTarget{games: out}, addr)
+}
+
+func (p *Pinger) sendPingServer(out chan<- *Server, addr netip.AddrPort) error {
+	return p.sendPing(pingTarget{servers: out}, addr)
+}
+
+func (p *Pinger) sendPing(target pingTarget, addr netip.AddrPort) error {
 	p.log.Info("pinging", "addr", addr)
 	p.mu.Lock()
 	if err := p.err; err != nil {
@@ -158,7 +175,7 @@ func (p *Pinger) SendPing(out chan<- *lobby.Game, addr netip.AddrPort) error {
 		return err
 	}
 	token := p.rnd.Uint32()
-	p.byToken[token] = out
+	p.byToken[token] = target
 	p.mu.Unlock()
 	data := encodeGameDiscovery(token)
 	_, err := p.pc.WriteTo(data, net.UDPAddrFromAddrPort(addr))
@@ -169,6 +186,19 @@ func (p *Pinger) Ping(ctx context.Context, addr netip.AddrPort) (*lobby.Game, er
 	out := make(chan *lobby.Game, 1)
 	err := p.SendPing(out, addr)
 	if err != nil {
+		return nil, err
+	}
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	case g := <-out:
+		return g, nil
+	}
+}
+
+func (p *Pinger) pingServer(ctx context.Context, addr netip.AddrPort) (*Server, error) {
+	out := make(chan *Server, 1)
+	if err := p.sendPingServer(out, addr); err != nil {
 		return nil, err
 	}
 	select {
@@ -206,7 +236,7 @@ func decodeGameInfo(buf []byte) *discover.MsgServerInfo {
 	return &p
 }
 
-func convGameInfo(addr netip.AddrPort, m *discover.MsgServerInfo, buf []byte) *lobby.Game {
+func convGameInfo(addr netip.AddrPort, m *discover.MsgServerInfo, buf []byte) *Server {
 	name := m.ServerName
 	mname := m.MapName
 	status := buf[20] | buf[21]
@@ -222,19 +252,20 @@ func convGameInfo(addr netip.AddrPort, m *discover.MsgServerInfo, buf []byte) *l
 		q = &lobby.QuestInfo{Stage: int(binary.LittleEndian.Uint16(buf[68:]))}
 	}
 	// TODO: more fields
-	return &lobby.Game{
+	protocol := binary.LittleEndian.Uint32(m.Unk19[3:7]) // datagram bytes 24..27
+	return &Server{IP: addr.Addr(), ProtocolVersion: &protocol, Game: lobby.Game{
 		Name:    name,
 		Address: addr.Addr().String(),
 		Port:    int(addr.Port()),
 		Map:     strings.ToLower(mname),
 		Mode:    gameFlagsToMode(flags),
 		Access:  access,
-		Vers:    "", // TODO: is there a version code in the response?
+		Vers:    "", // The UDP protocol version is not a product version string.
 		Res:     lobby.Resolution{},
 		Players: lobby.PlayersInfo{
 			Cur: int(buf[3]),
 			Max: int(buf[4]),
 		},
 		Quest: q,
-	}
+	}}
 }

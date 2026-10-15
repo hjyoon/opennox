@@ -58,17 +58,14 @@ func init() {
 					continue
 				}
 				if g := convGameInfo(addr, m, buf); g != nil {
+					g.Source = backend
+					g.Priority = priorityLAN
+					g.Ping = time.Since(start)
+					g.NoPing = true // already pinged
 					select {
 					case <-ctx.Done():
 						return
-					case out <- Server{
-						IP:       addr.Addr(),
-						Source:   backend,
-						Priority: priorityLAN,
-						Ping:     time.Since(start),
-						NoPing:   true, // already pinged
-						Game:     *g,
-					}:
+					case out <- *g:
 					}
 				}
 			}

@@ -70,10 +70,26 @@ func monsterRWString8(cf *cryptfile.CryptFile, value string) (string, error) {
 		}
 		return string(buf), nil
 	}
+	if len(value) == 0 {
+		// Unlike an omitted optional field, an empty string still has a
+		// payload write in GAME.EXE. That zero-byte call complements CRC.
+		_, err := cf.Write(nil)
+		return value, err
+	}
 	if err := monsterRWBytes528DB0(cf, []byte(value)); err != nil {
 		return "", err
 	}
 	return value, nil
+}
+
+func monsterRWOptionalString8(cf *cryptfile.CryptFile, value string, present bool) (string, error) {
+	if !cf.ReadOnly() && !present {
+		// Original NULL voice/modifier/type-name pointers write only the
+		// length byte, without an empty payload call or its CRC effect.
+		_, err := monsterRWU8(cf, 0)
+		return "", err
+	}
+	return monsterRWString8(cf, value)
 }
 
 func cStringBytes528DB0(buf []byte) string {

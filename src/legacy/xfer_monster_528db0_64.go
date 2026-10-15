@@ -439,7 +439,8 @@ func monsterXferDefinitionCommon528DB0(cf *cryptfile.CryptFile, ud *server.Monst
 	spellIDs := []*uint32{&ud.Field511, &ud.Field512, &ud.Field513}
 	for i, p := range spellIDs {
 		cur := ""
-		if !cf.ReadOnly() && *p != 0 {
+		if !cf.ReadOnly() {
+			// The original name table includes SPELL_INVALID at index zero.
 			cur = spell.ID(*p).String()
 		}
 		value, e := monsterRWString8(cf, cur)
@@ -1087,6 +1088,7 @@ func monsterXferShopItem528DB0(cf *cryptfile.CryptFile, srv *server.Server, item
 	}
 	if version >= 47 {
 		paramName := ""
+		paramPresent := true
 		if !cf.ReadOnly() {
 			paramName, err = monsterShopParamName528DB0(typ, item.Param, func(index uint32) (string, bool) {
 				paramType := srv.Types.ByInd(int(index))
@@ -1098,8 +1100,20 @@ func monsterXferShopItem528DB0(cf *cryptfile.CryptFile, srv *server.Server, item
 			if err != nil {
 				return fmt.Errorf("shop parameter: %w", err)
 			}
+			if item.Param == 0 {
+				// A missing field-guide type is a NULL name pointer, but the
+				// spell/ability tables have named invalid sentinels at zero.
+				switch typ.XferFunc() {
+				case Get_nox_xxx_XFerFieldGuide_4F6390():
+					paramPresent = false
+				case Get_nox_xxx_XFerAbilityReward_4F6240():
+					paramName = server.AbilityInvalid.String()
+				default:
+					paramName = spell.SPELL_INVALID.String()
+				}
+			}
 		}
-		paramName, err = monsterRWString8(cf, paramName)
+		paramName, err = monsterRWOptionalString8(cf, paramName, paramPresent)
 		if err != nil {
 			return err
 		}
@@ -1131,7 +1145,7 @@ func monsterXferShopItem528DB0(cf *cryptfile.CryptFile, srv *server.Server, item
 				return fmt.Errorf("modifier slot %d: %w", i, err)
 			}
 		}
-		name, err = monsterRWString8(cf, name)
+		name, err = monsterRWOptionalString8(cf, name, item.ModifierSlots[i] != 0)
 		if err != nil {
 			return err
 		}
@@ -1147,7 +1161,7 @@ func monsterXferVoice528DB0(cf *cryptfile.CryptFile, ud *server.MonsterUpdateDat
 	if !cf.ReadOnly() {
 		name = monsterSoundSetName528DB0(ud.SoundSet122)
 	}
-	name, err := monsterRWString8(cf, name)
+	name, err := monsterRWOptionalString8(cf, name, ud.SoundSet122 != nil)
 	if err != nil {
 		return err
 	}

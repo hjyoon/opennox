@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R237: native monster/NPC 저장 문자열과 체크섬 호출 경계
+
+기준은 clean/pushed `536e77ee0ac0cbfe56d53cf45703017fa11dd3c8`이며 goenv Go 1.26.9를 유지한다. native String8의 빈 본문도 실제 Write를 호출해 원본의 CRC 반전을 보존한다. 반대로 NULL 음성세트·상점 modifier·없는 FieldGuide 이름은 길이만 기록하도록 분리한다. 자동 스펠의 0번 값과 상점의 0번 spell/ability는 원본 테이블의 SPELL_INVALID/ABILITY_INVALID 이름으로 저장한다. optional-name 변환 helper의 기존 내부 계약과 빈 문자열 읽기 호환성은 유지하며 일반 byte helper·CRC 알고리즘·게임/네트워크 계산은 바꾸지 않는다.
+
+원본 GAME.EXE의 version64 monster definition 구간·voice 함수·shop writer와 실제 이름 테이블·file wrapper·CRC를 변경 없이 474조건 실행해 5,622회 CRC 호출을 확인했다. low-level fwrite와 객체 의존 soundset/FieldGuide lookup만 통제했다. states SHA256은 `28089d936cdcb3a6fa055c11f19ec565089d77f62abc532ee1c749ca11ef04c7`다. 현재 native 데이터로 표현되는 39조건의 두 암호화 변형 78회는 실제 저장 파일의 payload와 checksum block을 원본 결과와 대조한다. 빈 이름 modifier/빈 object type 이름 등 표현되지 않는 원본 조건·전체 object XFER·Windows OS I/O 검증으로 확대하지 않는다.
+
+첫 신규 테스트 v1의 해제된 임시 음성 레코드가 목록에 남아 allocator 재사용으로 잘못 조회되는 픽스처 오류와 두 actual1 실행을 보존한다. v1 입력은 retired-inputs-v1에 동일 바이트로 보관하며 원래 freeze manifest도 유지한다. v2는 레코드 해제 전에 lookup 항목을 제거하는 수명 관리만 수정했다. 기대값·assertion·케이스·HP·RNG·timeout은 바꾸지 않는다. 같은 동결 v2의 이전 production overlay는 75pass/40fail·actual1이고 수정 코드는 115pass/0skip·actual0이다. 별도 bitwise CRC와 실제 암호화 checksum block·NULL/empty 차이·0번 sentinel·네 modifier slot·후속 sentinel·문자열 읽기/truncation을 검사한다.
+
+공식 cgocheck2/race/checkptr2 count3 및 canonical 다섯 모드의 기존 모든 ID/action/count/package 보존은 audit-body-v1.log로 판정한다. 기존 TestMapWrite 158개 CRC 실패와 R233 확장 음성 실패는 해결로 세지 않는다. 다른 native serializer의 vector 분할 호출 등 전체 CRC 경계 조사는 미완료다. 기존 tests/YAML/PNG/oracle·원본 자산 1,554개·개인 Save/설정·R134 HOLD·INVENTORY를 유지하며 캐시·전역 goenv/runtime/GC·최소 언어 버전을 바꾸지 않는다.
+
+자료는 `/private/tmp/opennox-xfer-crc-r237.otv04f`다. production 두 파일·새 v2 회귀 파일·이 README prefix만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 새 clean ARM64 네 제품·일반/HD 공식 서버의 수정 TriLevel 전환과 기존 Host Load 8화면은 푸시 후 audit-release-v1.log로 별도 판정한다. 이번 공개 호스트 재접속은 없으며 미실행 검사를 완료로 세지 않는다. 전체 포팅·기존 미해결 GUI/AI/API·physical GPU/가청 출력은 계속 미완료다.
+
 ## R236: cryptfile C export의 zero-size item 반환
 
 기준은 clean/pushed `e96f8a587bd83853ff7f34f4e4a027c8b2385f6f`이며 사용자 goenv Go 1.26.9를 유지한다. 열린 파일에 대한 C export의 반환 조건 한 곳에 n==0을 추가한다. 원본 fread/fwrite의 zero-size 요청은 완료 item 0개지만 기존 Go export는 n==len(buf)==0을 성공 1로 반환했다. ReadWrite 호출 뒤에 판정하므로 빈 쓰기의 CRC 반전은 그대로 발생한다. 바이트 수·오류·XOR·파일 위치·체크섬 알고리즘·기존 native 직렬화 헬퍼와 nil fault 계약은 변경하지 않는다.

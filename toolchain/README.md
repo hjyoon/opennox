@@ -1,5 +1,28 @@
 # Go 도구체인 정책
 
+## R229: 공개 목록 서비스 실패와 여섯 주소의 실제 Join 분리
+
+기준은 clean/pushed `57c472e798ffad873c3132165b852a45e42dc3fd`이며 사용자 goenv Go1.26.9를 사용한다. R228의 네 clean ARM64 제품·일반/HD 효과·실제 시계 로컬 접속/이동/종료·Host Load8화면 후속 감사는 actual0/SHA `e2367d5caa1f5456b3fdeb3c2b2bbc83c7d8937aeb1b81b7ff1084df3d2b41e4`다. 이번 게임 소스·public tests·기존 YAML/PNG/oracle 변경은0이다.
+
+2026-10-15 20:36/20:37(KST)의 두 production discovery는 목록 API 연결 거부와 XWIS 대체 조회 시간 초과로 각각0개를 반환했다. 이를 성공한 현재 전체 서버 목록으로 세지 않는다. 앞서 사용자에게 허용받은 17:50(KST) snapshot의 여섯 주소를 새 private `game_ip.txt`로 조회했다. 현재 UDP 정보에 응답한 주소는 EU/러시아 두 곳이며 각각 exact protocol `0x0001039a`였다. 나머지 네 곳의 미관찰 protocol은 nil로 유지하고 기존 resolution fallback을 적용했다. 여섯 실제 GUI row 선택 후 C 선택 레코드까지 protocol이 보존됨을 확인했다.
+
+| 이전 목록의 이름 / 주소 | 이번 일반 UI Join 결과 |
+| --- | --- |
+| Waystation / 121.200.33.119:18590 | 게임의 접속 시간 초과 오류 |
+| USA Midwest #1 / 173.208.129.98:18590 | 승인 후 UDP 맵 다운로드, 원래75초 안에 입장 미완료 |
+| NoXCommunity EU / 212.192.2.113:18590 | 맵 진입·HP100/mana125·관전자 idle·UI Quit/Yes·정상 disconnect |
+| DELVE lobby / 217.216.92.175:18590 | 게임의 접속 시간 초과 오류 |
+| Kor] Newbies / 221.153.137.109:18590 | 게임의 접속 시간 초과 오류 |
+| 1:NoXWorld.ru / 45.144.64.229:18590 | 현재 UDP 이름 NoXWorld-Main, 맵 진입·HP100/mana125·관전자 idle·UI Quit/Yes·정상 disconnect |
+
+모든 여섯 process는 actual0·signal없음이며 이는 접속 여섯 곳 성공이라는 뜻이 아니다. Join/캐릭터 생성/appearance/오류 확인·종료는 정상 UI 입력이고 실제 시계/headless·무음으로 실행했다. 공개 서버에서 spawn/보행/전투/chat/치트/비밀번호 제출·호스트 설정 변경은 없다. 관전자 eye/반투명 표시를 별도 Host Load 반투명 회귀와 혼동하지 않는다. 로컬 호스팅/이동·일반/HD Host Load 증거는 같은 게임 코드의 R228 검증이며 이번에 이를 새로 실행했다고 세지 않는다.
+
+미국 서버는 같은 CRC `0x882e6915`의230,933byte 맵 중 연속72parts/36,864bytes(15.9631%)를20:41:09→20:42:03에 수신했다. 남은 partial 파일은 실제 수신 packet payload와 byte-identical(SHA `eb870258ec8b447df01a33bf4db2e31b77e4181aa1cbfe85fd60632f6b02a765`)이다. 원래75초 gate를 연장하거나 ready로 바꾸지 않으며 이 기록만으로 엔진 결함을 확정하지 않는다. R225의 별도87.510초 입장과 R224의3ready/2timeout/1원격 종료는 과거 결과로 보존하고 이번2ready/3접속 timeout/1다운로드 deadline과 구분한다.
+
+기존 protocol56IDs는 공식 Go1.26.9 cgocheck2+race+checkptr2에서 count3·168pass/0skip·2packages·actual0이다. 전체5종 suite를 이번에 재실행했다고 주장하지 않는다. 검사 전후 source6,849files/protected304files/개인1,562files의 checkpoint가 동일하며 R134 HOLD·R225/R228 동결 증거·원본 자산을 유지한다. 첫 static 조회 helper가 const에 대입해 compile actual1이었던 입력/receipt는 그대로 남기고, 별도 v2는 private cwd의 정규 game_ip.txt 읽기만 사용한다. 게임 기대값/timeout 완화나 전역 goenv/runtime/GC·캐시 변경/삭제는 없다.
+
+자료는 `/private/tmp/opennox-current-public-r229.wCUHEA`다. runtime 감사 actual0/SHA `d4f9ffac1c26a713171495b4959554fc6a59f72d266b5dc0a37d511f0e5ab1c7`, UDP 감사 actual0/SHA `9b170c02a5fea49c240f5306dd8d590168c68e158e14d12fde7d5dfb6bcadddf`를 보존한다. 이 README prefix만 추가하고 기존 suffix를 유지해 커밋 직후 origin port/go1.26-multiarch에 push한다. 새 docs-only revision의 네 clean 제품·metadata·공식 server 후속 검증은 별도 receipt로 확인하며 아직 실행하지 않은 검사를 완료로 세지 않는다. 공개 목록/timeout의 외부 원인·War01A/fixed Quest·Player SetColor/R134 HOLD·다른 GUI/AI/API·physical GPU/가청 출력·전체 포팅 목표는 미완료다.
+
 ## R202: 중앙 HUD 알림의 native 반복 경계
 
 사용자 goenv Go1.26.9를 계속 사용한다. 실제 맵/Save 알림 초기화와 HUD 중앙 문구 출력에 남은 signed32 주소 비교 두 개만 원본의3개 알림/4개 그림자 반복 횟수로 바꿨다. 원본 두 전체 함수·unhooked UTF-16 복사 실행, 동결 compiled RED와 수정 후13,365 native 조건·실제 영어/한글 font/raster/headless402frames·관련 공식 strict/race/checkptr2 3회33pass가 통과했다. 일반 주소의 수정 전 실제 화면도 통과하므로 그것을 behavioral RED로 세지 않는다. 전체 일반/HD/CGo 각각73,731pass/47skip·server69,165pass/7skip과 모든 기존 결과가 동일하다. 일반/HD headless Quest8화면·stage1→2/이동/종료와 원본/개인 데이터·기존 기대값·R134 HOLD도 유지한다. 새 fixture 준비 실패/보존 기록·declared font/draw 서비스와 아직 미완료인 범위는 [R202 인벤토리](./PORTING-INVENTORY.md#중앙-hud-알림-초기화와-그림자의-native-반복-경계-r202)를 따른다.

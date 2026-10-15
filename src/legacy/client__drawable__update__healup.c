@@ -6,6 +6,7 @@
 #include "operators.h"
 
 //----- (004CD450) --------------------------------------------------------
+#if 0 // Original PE32 body; the registered symbol is exported by Go.
 int sub_4CD450(uint32_t* a1, int a2) {
 	int v2;        // esi
 	int v3;        // eax
@@ -106,3 +107,4 @@ int sub_4CD450(uint32_t* a1, int a2) {
 	}
 	return 1;
 }
+#endif

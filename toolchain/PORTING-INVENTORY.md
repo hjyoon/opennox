@@ -1,5 +1,21 @@
 # Go 1.26.9 멀티아키텍처 포팅 인벤토리
 
+## 광선 효과의 등록 CGo 업데이트 진입점 복원 (R219)
+
+기준 clean/pushed revision은 `7a332bbbdf7dea9d1eb2368dd5efd0741196f5ec`이며 사용자 goenv Go1.26.9를 계속 사용한다. R218의 clean ARM64 세 제품·stock 장비 충전/자연 FX/열린 inventory·공식 server E2E·일반/HD Host Load 후속 검증은 actual0이고 release audit SHA는 `69ccf6868aaaf2b6e0f47988a1e6ff5018916467d4a1037b62d5c9db2dfa5b16`다. 이번에는 drawable update 테이블에 등록된 CharmUpdateDraw/HealUpdateDraw/DrainManaUpdateDraw의 직접 CGo 진입점을 확인했다. 일반 월드 엔진은 이미 기존 Go helper로 분기하므로, 이 검사를 일반 엔진에서 새로 발견한 크래시로 확대하지 않는다.
+
+같은 동결 직접 호출 입력은 수정 전3fail/actual1이었다. Heal과 Drain Mana는4GiB 위 drawable 주소가32비트로 잘린 C 접근에서 실제 SIGSEGV를 냈다. Charm은 그보다 앞선 client type lookup setup에서 nil panic이 났으므로 pointer truncation 재현으로 세지 않는다. 세 C 심벌/등록 이름/주소 getter를 유지하고 native viewport/drawable 타입의 Go export를 기존 native Go 효과 구현에 연결했다. 전용 서버의 미연결 렌더 hook는 기존 drawable export 패턴대로1을 반환한다. 원래 세 C 본문은 byte-exact #if0 provenance로 보존하고, 기존 Go helper·월드 dispatcher·확률/RNG·좌표/입자 계산은 수정하지 않았다. 남은 옛 sub_4CD150 helper를 새 활성 호출 경로라고 세지도 않는다.
+
+새 parent3은 실제 등록 C function pointer를 CGo로 호출하여4GiB 위 두 포인터·nil 전달·signed32 반환·전체 input record 불변을 확인한다. 같은 동결 입력은 수정 후3pass/actual0이며 기존 Charm/Heal/Drain Mana payload 검사4개도 통과한다. 공식 cgocheck2+race+checkptr2/count3은21pass/0skip/actual0이다. 새 원본 전체 함수 emulation이나 Windows 실행을 했다는 주장은 없으며 original code2,968/data650 manifest verifier의 actual0과 구분한다.
+
+private cmd/opennox의 routing-only overlay로 세 업데이트만 실제 CGo 심벌을 경유시켰다. 기존 Charm/Chain Lightning E2E YAML과 모든 게임 assertion은 바이트 단위 그대로다. stock Charm의 일반 시전→실제 CharmRay/CharmOrb 생성→캡처→45frame 뒤 소유권 완료/광선 제거, 모든 duration ray의 draw/제거, Lightning 및 Drain Mana의 전송/취소/정리가 actual0이다. 세 native CGo 호출의 실제 viewport/drawable 주소와 return1도 관찰했다. 캡처에서 실제 녹색 입자·월드/캐릭터/HUD를 직접 확인했다. 기존 E2E fixture/virtual clock/mock audio와 경로 변경이 있는 진단이며 input-only combat·일반 엔진의 수정 전 crash·physical GPU/가청 음향 검증으로 확대하지 않는다.
+
+전체 일반/HD/공식 cgocheck2 각각73,801pass/47skip·40packages, server69,235pass/7skip·36packages·actual0이다. R218의 모든 기존 test ID/action/count/skip/package 결과는 같고 새 parent3만 추가됐다. 기존632B Warrior save와 R140 동결 Host Load 입력의 일반/HD actual0 및 선택·Load 직후·600frame 대기·이동 여덟 PNG bytes/SHA는 R218 clean 결과와 같다. 개인 Save를 import하거나 화면 기대값을 교체하지 않았다.
+
+보존 감사 actual0은 source6,830→6,833files에서 기존 변경이 세 C 본문의 provenance wrapper/세 header의 typed 선언뿐이며 새 bridge/binding/회귀3files 외 차이가 없음을 확인했다. 기존 assertion/YAML/PNG/oracle·protected304files·개인1,562files/Save/config·R134 HOLD·R218 동결 release receipt·original 자산 subset1,554개는 불변이다. body audit SHA는 `a2fee91d9f5d1b46005b682c1b74f6df834147ec52ca719b6e8467ccfe686ad5`이며 자료는 `/private/tmp/opennox-modifier-native-audit-r219.dXSwxS`에 보존한다. 최소 언어 버전·전역 goenv/runtime/GC·캐시는 변경하거나 삭제하지 않았다.
+
+문서는 이 기록만 앞에 추가하고 기존 suffix를 보존한다. 커밋 직후 origin port/go1.26-multiarch로 push하고 clean ARM64 세 제품·새 native 회귀·동일 routing-only 효과 검증·공식 server E2E·일반/HD Host Load를 후속 receipt로 확인한다. 아직 실행하지 않은 clean 후속 검사는 완료로 기록하지 않는다. 다른 GUI/AI/인벤토리 HOLD·physical LAN/WAN/GPU·가청 음향 및 전체 포팅 목표는 계속 미완료다.
+
 ## 지속 충전 장비 업데이트의 native 콜백 복원 (R218)
 
 기준 clean/pushed revision은 `5687c82d61065ffffab097bb9d426a2630930373`이며 사용자 goenv Go1.26.9를 계속 사용한다. R217의 clean ARM64 세 제품·실제 KOTR 접속/이동/두 visible map 전환/ACK1·공식 server E2E·일반/HD Host Load 후속 검증은 actual0이며 release audit SHA는 `c09172393527373b36919f99147e837d3666ab7279e4e5d37d58ece5ff99b123`다. 이번에는 실제 modifier.bin에 등록된 ContinualReplenishment1..4의 장비 update 콜백 004E02C0을 추적했다. 이 콜백은 비활성 provenance가 아니라 ItemsApplyUpdateEffect→실제 C function pointer 호출 경로이며 stock 주기는240/210/180/150frame이다.

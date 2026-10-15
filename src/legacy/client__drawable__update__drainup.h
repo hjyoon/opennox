@@ -3,6 +3,6 @@
 
 #include "defs.h"
 
-int sub_4CD690(uint32_t* a1, int a2);
+int sub_4CD690(nox_draw_viewport_t* vp, nox_drawable* dr);
 
 #endif // NOX_PORT_CLIENT_DRAWABLE_UPDATE_DRAINUP

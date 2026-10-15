@@ -4881,6 +4881,7 @@ int sub_4CD120(int a1, uint32_t* a2) {
 // 4CD28F: variable 'v16' is possibly undefined
 
 //----- (004CD400) --------------------------------------------------------
+#if 0 // Original PE32 body; the registered symbol is exported by Go.
 int sub_4CD400(uint32_t* a1, int a2) {
 	int v2; // eax
 
@@ -4893,6 +4894,7 @@ int sub_4CD400(uint32_t* a1, int a2) {
 	sub_4CD150(*(int*)&dword_5d4594_1522968, a1, a2, 0);
 	return 1;
 }
+#endif
 
 // 4CD516: variable 'v5' is possibly undefined
 // 4CD527: variable 'v7' is possibly undefined

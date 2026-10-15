@@ -225,6 +225,6 @@ int sub_4CD090(int a1, uint32_t* a2);
 int sub_4CD0C0(int a1, uint32_t* a2);
 int sub_4CD0F0(int a1, uint32_t* a2);
 int sub_4CD120(int a1, uint32_t* a2);
-int sub_4CD400(uint32_t* a1, int a2);
+int sub_4CD400(nox_draw_viewport_t* vp, nox_drawable* dr);
 
 #endif // NOX_PORT_GAME3_1

@@ -657,7 +657,7 @@ func (c *CtrlEventHandler) nox_ctrlevent_action_42E670(code player.CtrlCode, dat
 			return
 		}
 	} else {
-		if c.indA+1 == c.indB {
+		if (c.indA+1)%cap(c.bufA) == c.indB {
 			return
 		}
 	}
@@ -837,7 +837,8 @@ func (c *CtrlEventHandler) writeToNetBuffer() {
 	}
 	ticks := uint32(platformTicks())
 	if noxflags.HasGame(noxflags.GameHost) {
-		for i := c.indB; i != c.indA; i = (i + 1) % cap(c.bufA) {
+		i := c.indB
+		for ; i != c.indA; i = (i + 1) % cap(c.bufA) {
 			p := &c.bufA[i]
 			if p.tick > ticks+50 {
 				break
@@ -847,7 +848,8 @@ func (c *CtrlEventHandler) writeToNetBuffer() {
 			}
 			appendRecord(p)
 		}
-		c.indB = c.indA
+		// Leave the first not-yet-due event and its tail queued for a later frame.
+		c.indB = i
 	} else {
 		for i := 0; i < c.indA; i++ {
 			p := &c.bufA[i]

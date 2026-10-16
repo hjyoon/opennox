@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R275: 지연된 호스트 입력의 보존과 링 경계 보호
+
+기준 clean/pushed revision은 `aa0db3071806573f984f70f8414d0a824bf18ca0`이며 goenv Go 1.26.9를 유지한다. 호스트 `writeToNetBuffer`는 미래 입력을 만나면 현재 읽기 cursor를 보존한다. 그 뒤의 준비된 입력도 먼저 처리하지 않으며, 처리 시각이 되면 원래 순서대로 한 번 소비한다. 생산자의 full 검사도 다음 위치를 modulo128로 비교해 read0/write127에서 128번째 입력을 받아 false-empty가 되는 오류를 막는다. 호스트의 127 usable slots·비호스트의 선형 128 slots·framing·local feedback/history/dedup·수신 admission·sender 일괄 enqueue 정책은 유지한다. sender-full 때 자동 rollback/retry를 추가한 것은 아니다.
+
+사용자의 “원본 기준으로 교정” 승인에 따라 R273의 미래 입력 두 기대 cursor만 각각127과5로 교정하고 설명 문자열 세 개를 수정했다. 다른 기존 기대값과 R134 HOLD는 유지한다. 사용자 지정 REA 레포로 이미 확보한 원본 `42D510`의 408바이트·file offset185616·명령어 Evidence `ev_5341705b58ae298b3bb6967a94c87515e5bacfedaff7d5674457ea3fb5b3a967`를 재사용한다. 원본은 timestamp를 Active보다 먼저 확인하고 미래 분기에서 현재 EBX를 읽기 cursor에 저장한다. 13개 Evidence의 원본 SHA·bundle/snapshot 전체 값·owner 정렬·정상 close/runtime 비움을 다시 감사했으며 엔진 재분석이나 원본 게임 실행은 하지 않았다. modulo full guard는 직접 관련된 안전성 강화이며 원본 생산자와의 완전 동등성을 주장하지 않는다.
+
+원본의 deadline 계산은64비트지만 현재 Go timestamp는32비트다. 이번에는 그 표현과 platform/E2E 시간 단위를 유지하며 overflow/49.7일 경계 문제는 별도 후속 항목으로 남긴다. 지연 cursor 수정만으로 전체 원본 입력 동등성이나 WAN/실제 peer 지연 실행을 인증하지 않는다. 새 unit matrix는 serializer/enqueue를 검사하지만 실제 ctrl_C/ctrl_B의 전체 호출 순서는 인증하지 않는다. 보존된 Active 음소 입력의 local feedback 반복 가능성도 별도 원본 대조 대상으로 남기며, 원본과의 차이로 확정한 것은 아니다.
+
+새 테스트6개는 정확한 수정 전 production에서5fail/1pass였고, 같은 동결 fixture로 수정 후 모두 통과했다. 128개 cursor·8,448개 부분 drain 조건, now+50/51 경계·inactive future gate·반복 준비·clock advance 후 소비·미래 head 뒤의 오래된 입력 순서·모든 full 위치·pending pause dedup·긴 prefix/tail의 bounded framing과 실제 sender backpressure/명시적 retry·비호스트 보존을 검사한다. 기존 platform.Get/Set seam을 복원 가능한 unit clock으로 사용하므로 실제 경과 시간 검증이 아니다. 엄격 cgocheck2/race/checkptr2 count3는 111pass다. canonical 다섯 모드는 normal-sequential=81,248pass/47skip/40package、hd-sequential=81,248pass/47skip/40package、strict-sequential=81,248pass/47skip/40package、server-sequential=76,681pass/7skip/36package、server-HD-sequential=76,681pass/7skip/36package로 모두 actual0이며 합계 397,106pass/155skip다. 기존 모든 test ID/action/count/skip/package는 유지하고 모드마다 새6 IDs만 추가했다. 모든 이전 기대값이 불변이라는 주장은 하지 않으며 승인된 두 교정 외의 보존은 소스 감사로 확인했다.
+
+자료는 `/private/tmp/opennox-input-delay-r275.nJKseU`에 보존한다. source/original 감사 SHA는 `e90794e71421726ae47d104575b076c558199152cdd188c0739aeaded9f44972`다. R274의2,054개 sealed regular files·원본 자산·개인 Save/config·기존 YAML/PNG/oracle·R134 HOLD·PORTING-INVENTORY와 이전 README suffix를 보존한다. 커밋 직후 push하며 clean ARM64 네 제품·일반/HD 공식 서버의 native quit·고정 mock-clock Host Load 여덟 화면은 푸시 후 별도 receipt로 판정한다. 개인 지속 반투명은 미해결이며 이번에 공개 호스트 재접속·physical GPU/가청 출력을 인증하지 않는다. 전체 포팅은 기존 영역별 판단의 가중합79%, 약80%를 유지하며 테스트 수 비율이나 완료 선언이 아니다.
+
 ## R274: 원본 RGB555 밝기 인덱스와 실제 플레이어 래스터 검증
 
 기준 clean/pushed revision은 `a3218f71ca9a2ceb472f9b21240dccdc4ca75978`이며 goenv Go 1.26.9를 유지한다. `ColorIntensity`의 byte 성분을 이동 전에 uint16으로 넓혀 15비트 RGB555 테이블 주소를 보존한다. 기존 byte 연산은 빨강과 초록 상위 비트를 잘랐다. 테이블 생성식·크기·팔레트·알파·blend·renderer layout·다른 호출자는 변경하지 않는다. 이 스칼라 계산 오류를 ARM64 전용 포인터 문제나 개인 반투명 현상의 원인으로 주장하지 않는다.

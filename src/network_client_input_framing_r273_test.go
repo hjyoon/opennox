@@ -249,16 +249,16 @@ func TestClientInputFramingHostRingAndTickCutoffR273(t *testing.T) {
 	selected = []noxCtrlEvent{ctrl.bufA[126]}
 	before = *ctrl
 	before.netBuf = nil
-	before.indB = before.indA
+	before.indB = 127
 	ctrl.writeToNetBuffer()
 	after = *ctrl
 	after.netBuf = nil
 	if !reflect.DeepEqual(before, after) || !bytes.Equal(ctrl.netBuf, inputReferenceFramesR273(selected)) {
-		t.Fatal("host future-event cutoff or deliberate indB=indA behavior changed")
+		t.Fatal("host future-event cutoff must retain the first unconsumed ring position")
 	}
 	ctrl.writeToNetBuffer()
 	if len(ctrl.netBuf) != 0 || !c.clientSendInput(server.HostPlayerIndex) || c.srv.NetList.ByInd(server.HostPlayerIndex, netlist.Kind0).Count() != 0 {
-		t.Fatal("an exhausted/equal-index host ring queued an empty header or replayed skipped events")
+		t.Fatal("a retained future event must not emit a header or replay consumed events")
 	}
 
 	ctrl.indB, ctrl.indA = 5, 8
@@ -269,13 +269,13 @@ func TestClientInputFramingHostRingAndTickCutoffR273(t *testing.T) {
 	ctrl.bufA[7] = ctrl.bufA[6]
 	before = *ctrl
 	before.netBuf = nil
-	before.indB = before.indA
+	before.indB = 5
 	ctrl.writeToNetBuffer()
 	after = *ctrl
 	after.netBuf = nil
 	if !reflect.DeepEqual(before, after) || len(ctrl.netBuf) != 0 ||
 		!c.clientSendInput(server.HostPlayerIndex) || c.srv.NetList.ByInd(server.HostPlayerIndex, netlist.Kind0).Count() != 0 {
-		t.Fatal("future FIRST host event must leave no header while still setting indB=indA")
+		t.Fatal("future FIRST host event must leave no header and keep its read cursor")
 	}
 }
 

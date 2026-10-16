@@ -85,6 +85,10 @@ func nox_xxx_mapWriteSectionsMB_426E20(a1 unsafe.Pointer) int32 {
 	return int32(Nox_xxx_mapWriteSectionsMB_426E20(a1))
 }
 
+func Get_nox_xxx_mapWriteSectionsMB_426E20() unsafe.Pointer {
+	return C.nox_xxx_mapWriteSectionsMB_426E20
+}
+
 //export nox_xxx_nxzCompressFile_57BDD0
 func nox_xxx_nxzCompressFile_57BDD0(a1, a2 *C.char) int32 {
 	if err := cnxz.CompressFile(GoString(a1), GoString(a2)); err != nil {

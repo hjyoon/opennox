@@ -254,7 +254,10 @@ func nox_xxx_mapWriteSectionsMB_426E20(a1 unsafe.Pointer) int {
 		buf := make([]byte, 1+len(sect.Name)+1)
 		buf[0] = byte(len(sect.Name)) + 1
 		copy(buf[1:], sect.Name)
-		cf.Write(buf)
+		// The original writer checksums the length and name as separate I/O
+		// items; combining them changes its per-call CRC inversion.
+		cf.Write(buf[:1])
+		cf.Write(buf[1:])
 		cf.SectionStart()
 		if err := sect.Fnc(cf, a1); err != nil {
 			gameLog.Printf("failed to write section: %q: %v", sect.Name, err)

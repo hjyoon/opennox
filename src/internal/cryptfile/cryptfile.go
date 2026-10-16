@@ -377,12 +377,14 @@ func (f *CryptFile) SectionEnd() {
 	if f.xor {
 		off, _ := f.File.File.Seek(0, io.SeekCurrent)
 		off2 := uint32(off - int64(offs.After) - 4)
-		f.File.FileSeek(int64(offs.After), io.SeekStart)
+		// XOR sections use raw file positions, bypassing the cipher writer's
+		// seek wrapper (which ignores nonzero offsets in write modes).
+		f.File.File.Seek(int64(offs.After), io.SeekStart)
 		var b [4]byte
 		binary.LittleEndian.PutUint32(b[:], off2)
 		cryptXor(126, b[:])
 		f.File.File.Write(b[:])
-		f.File.FileSeek(off, io.SeekStart)
+		f.File.File.Seek(off, io.SeekStart)
 	} else {
 		n := f.File.Written()
 		f.File.WriteUint32At(uint32(n-int64(offs.After)), int64(offs.Before))

@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R249: 맵 섹션 저장의 CRC 호출과 XOR 길이 backpatch
+
+Goenv Go 1.26.9를 유지한다. 실제 게임의 00426E20 포팅에서 이름 길이 1바이트와 NUL 종료 문자열을 한 번에 Write하던 부분을 원본의 두 I/O item으로 분리했다. CRC는 호출마다 반전되므로 같은 바이트를 합쳐 쓰는 것만으로도 값이 달라진다. XOR SectionEnd는 쓰기 모드에서 nonzero offset을 무시하는 binfile seek wrapper 대신 원본처럼 raw file seek로 길이를 제자리에 기록하고 끝 위치로 복귀한다. CRC 알고리즘·섹션 이름/순서·본문 serializer·중간 실패 시 미완결 섹션 유지·일반 암호화 경로·게임/네트워크 프로토콜은 변경하지 않았다. legacy getter는 실제 C→Go 진입 검증만을 위한 것이다.
+
+변경 없는 GAME.EXE의 섹션 writer·실제 16개 이름/콜백 테이블·file wrapper·CRC·SectionStart/End·XOR 루틴을 96조건 실행했다. 통제된 본문은 none/zero-byte/2·4·8·3바이트 item이며 중간 callback 실패도 포함한다. native WriteOnly/Append·direct/C→Go·NULL/비NULL 384조건의 반환값·실제 저장 checksum·파일 위치·콜백 순서가 원본과 일치한다. low-level 파일/allocator와 본문 callback은 통제 서비스이므로 전체 Windows I/O나 모든 맵 serializer의 증명은 아니다. 새 v1이 실패 섹션의 raw zero 예약 블록을 복호화해 0으로 기대한 오류는 원문·실패 로그와 함께 보존했다. 원본 00409110의 정렬된 예약 분기를 별도 16조건 실행해 raw zero 8바이트를 확인하고, 그 블록의 검사 표현만 교정한 v2를 동결했다. 같은 v2의 이전 production은 385fail, 수정 후는 385pass다.
+
+실제 cgocheck2·race·checkptr=2/count3와 canonical 일반·HD·strict·server·server-HD의 기존 모든 ID/action/count/package 보존은 `/private/tmp/opennox-map-crc-boundaries-r249.C9H8aZ/audit-body-v1.log`로 판정한다. generic 라이브러리 maps.Writer는 별도 경로이며 원본 157맵 roundtrip의 CRC 차이와 TestMapWrite 158개 실패를 이번 수정의 해결로 세지 않는다. 기존 테스트·YAML·PNG·oracle·원본 자산 1,554개·개인 Save/config·R134 HOLD·이 문서 이전 suffix·INVENTORY를 보존한다. 캐시·전역 goenv/runtime/GC·최소 언어 버전은 바꾸지 않는다.
+
+커밋 직후 push하고 clean ARM64 네 제품·일반/HD 공식 로컬 서버·고정 Host Load 8화면은 release receipt로 따로 확인한다. R248의 native-clock 고정 J00(Jack/Warrior)에서는 지속 반투명을 재현하지 못했고, 승인된 이전 공개 주소 여섯 곳의 실제 Join은 3 ready/3 timeout·deadline이었다. 목록 API 거부로 최신 목록 전체를 받았다는 뜻은 아니며 R249에서 공개 호스트를 재접속했다고 주장하지 않는다. 해당 개인 저장 캐릭터·전체 campaign/Quest·generic CRC roundtrip·다른 GUI/AI/API·physical GPU/가청 출력·Windows 전체 실행 및 전체 포팅은 미완료다.
+
 ## R244: 공격자 없는 NPC 압사·물기 피해 연결
 
 Goenv Go1.26.9를 사용한다. 실제 HD/native-clock 캠페인 관찰에서 발견한 NPC(type1343/class2097154/subclass69650)의 nil source·nil weapon CRUSH(2)/raw200과 BITE(8)/raw50을 native PlayerDamage·DefaultDamage 경로에 연결했다. 기존 PlayerDamage 본체에는3줄 dispatch만 더하고, DefaultDamage의 두 admission만 NPC 하위 클래스에 한정해 확장했다. 타입 이름/맵 특례·직접 체력 감소·강제 사망·면역 해제는 없다. 일반 몬스터의 기존 source-less CRUSH 미지원 기대값과 다른 모든 기존 테스트를 보존했다.

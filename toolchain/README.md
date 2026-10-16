@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R276: 원본 64비트 입력 시각과 부호 있는 지연 보정
+
+기준 clean/pushed revision은 `6ae965d54a9a65233f21cfc2d74d9ac46039b956`이며 goenv Go 1.26.9를 유지한다. Go 소유 `noxCtrlEvent.tick`과 `CtrlEventHandler.ticks`를 uint64로 보관하고 생산자와 소비자에서 기존 `platformTicks()`의 상위 word를 잘라내지 않는다. 원본의32비트 지연 보정은 int32→int64→uint64로 부호 확장해 더한다. helper의 uint32 ABI·server settings layout·platform/E2E 시간 단위·wire format·framing·cursor/full 검사·history/local feedback 정책은 그대로다. 0xffffffff 보정은 약49.7일 뒤가 아니라 -1이며, 합과 deadline은 원본처럼 modulo2^64다. overflow를 포화 처리하거나 signed timestamp 비교로 바꾸지 않는다.
+
+사용자 지정 REA 레포 `9d940c2f284cc6f75b27900336e52ceeba4aa2af`의 public SDK/stdio MCP·Ghidra 12.1.3으로 원본 GAME.EXE의 실제 owner `42D6B0`만 읽기 전용 분석했다. 3,458바이트·963명령어·file offset186032이며 `42D6BA/BF`는 EDX:EAX 전체를 보관하고 `42D6ED`의 CDQ 뒤 ADD/ADC가 보정값을 부호 확장한다. 명령어 Evidence는 `ev_6267d4521e7b6edc60ceaf6132c305a73bcf8a5ca46880a402743b31f55d02db`다. 기존 R273 `42D510` Evidence를 재실행 없이 재사용했으며 이 소비자는50을 carry 포함해 더하고 unsigned high/low 비교를 한다. 세 Evidence의 전체 bundle/snapshot 값·아홉 receipt·close 후 빈 runtime·원본 SHA를 감사한다. 준비된 v1은 실행하지 않고 provider 분류 검사만 교정한 v2를 실행했다. 원본 게임 실행·수정이나 전체 입력 동등성 인증은 아니다.
+
+owner 본체의 history 복사는24바이트 전체 레코드를 옮긴다. 원본 음소 분기는 timestamp gate나 Active 해제를 추가하지 않고 소리/프레임 함수를 호출하므로, 대기 중 음소의 반복 가능성을 이번 포팅 버그로 단정하거나 정책을 변경하지 않았다. 키보드부터 모든 UI/음성 경로의 자연 실행이나 가청 재생을 검사한 것은 아니다. R273의 승인된 두 미래 cursor 기대값은 R275 그대로 유지한다. 기존 테스트의 유일한 기계적 변경은 `uint32(i)` timestamp 초기값을 `uint64(i)`로 넓히는 것이며 R275 fixture와 R134 HOLD는 byte 단위로 보존한다.
+
+새 top-level 회귀 7개는 수정 전 동일 fixture로 6pass/38fail이었고 수정 후 모두 통과했다(하위 테스트 포함 집계). 실제42D6B0 owner→42E670→변경 없는 history/local tail, 높은 시각 word, 양수 carry·음수 borrow/최솟값/underflow, deadline carry, 오래된 낮은 시각, rollover를 건너는 소비, high-word 미래 head/equality/inactive/order를 확인한다. fixture는 기존 platform.Get/Set만 사용하는 복원 가능한 결정적 unit clock이며 실제49.7일 경과·접속 peer/WAN 지연 검증이 아니다. cgocheck2/race/checkptr2 count3 선별은 243pass다. canonical 다섯 모드는 normal-sequential=81,292pass/47skip/40package、hd-sequential=81,292pass/47skip/40package、strict-sequential=81,292pass/47skip/40package、server-sequential=76,725pass/7skip/36package、server-HD-sequential=76,725pass/7skip/36package로 모두 actual0이며 합계 397,326pass/155skip다. R275의 기존 모든 test ID/action/count/skip/package를 보존한다.
+
+자료는 `/private/tmp/opennox-control-owner-r276.kwZ9fE`에 보존한다. source/original 감사 SHA는 `a041a9b1c091f11bdab04884ad2bf5ecd7c5c3f3407cb033fd01ca0015cdf5c1`다. 이전 R275의167개 sealed regular files·원본 자산·개인 Save/config·기존 YAML/PNG/oracle·PORTING-INVENTORY와 이전 README suffix를 유지한다. 커밋 직후 push하며 clean ARM64 네 제품·일반/HD 공식 서버 native quit·고정 mock-clock Host Load 여덟 화면은 푸시 후 별도 receipt로 판정한다. 개인 지속 반투명은 미해결이며 이번 입력 시각 수정의 인과 효과로 주장하지 않는다. 공개 호스트 재접속·physical GPU/가청 출력·자연 client application 종료를 새로 인증하지 않는다. 전체 포팅은 영역별 공학적 판단의 가중합79%, 약80%를 유지한다. 테스트 수 비율이나 전체 완료 선언이 아니다.
+
 ## R275: 지연된 호스트 입력의 보존과 링 경계 보호
 
 기준 clean/pushed revision은 `aa0db3071806573f984f70f8414d0a824bf18ca0`이며 goenv Go 1.26.9를 유지한다. 호스트 `writeToNetBuffer`는 미래 입력을 만나면 현재 읽기 cursor를 보존한다. 그 뒤의 준비된 입력도 먼저 처리하지 않으며, 처리 시각이 되면 원래 순서대로 한 번 소비한다. 생산자의 full 검사도 다음 위치를 modulo128로 비교해 read0/write127에서 128번째 입력을 받아 false-empty가 되는 오류를 막는다. 호스트의 127 usable slots·비호스트의 선형 128 slots·framing·local feedback/history/dedup·수신 admission·sender 일괄 enqueue 정책은 유지한다. sender-full 때 자동 rollback/retry를 추가한 것은 아니다.

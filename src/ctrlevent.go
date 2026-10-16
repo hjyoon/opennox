@@ -33,7 +33,7 @@ func init() {
 const ctrlEventCap = 128
 
 type noxCtrlEvent struct {
-	tick uint32
+	tick uint64
 	server.PlayerCtrl
 }
 
@@ -63,7 +63,7 @@ func (c *CtrlEventBinding) defEvent() keybind.Event {
 }
 
 type CtrlEventHandler struct {
-	ticks       uint32
+	ticks       uint64
 	playerDir   uint32
 	bufA        [ctrlEventCap]noxCtrlEvent
 	bufB        [ctrlEventCap]noxCtrlEvent // TODO: size a guess
@@ -88,9 +88,10 @@ func (c *CtrlEventHandler) Reset() {
 }
 
 func (c *CtrlEventHandler) nox_xxx_clientControl_42D6B0(mpos image.Point, a4 *CtrlEventBinding) {
-	c.ticks = uint32(platformTicks())
+	c.ticks = platformTicks()
 	if noxflags.HasGame(noxflags.GameHost) && noxflags.HasGame(noxflags.GameOnline) {
-		c.ticks += nox_ctrlevent_add_ticks_42E630()
+		// The original CDQ/ADD/ADC sign-extends the 32-bit compensation.
+		c.ticks += uint64(int64(int32(nox_ctrlevent_add_ticks_42E630())))
 	}
 	if !noxflags.HasGame(noxflags.GameHost) {
 		c.indA = 0
@@ -835,7 +836,7 @@ func (c *CtrlEventHandler) writeToNetBuffer() {
 		}
 		buf[packetStart+1] = byte(len(buf) - packetStart - 2)
 	}
-	ticks := uint32(platformTicks())
+	ticks := platformTicks()
 	if noxflags.HasGame(noxflags.GameHost) {
 		i := c.indB
 		for ; i != c.indA; i = (i + 1) % cap(c.bufA) {

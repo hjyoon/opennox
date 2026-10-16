@@ -118,7 +118,7 @@ func inputClientFixtureR273(t *testing.T) *Client {
 func inputRepeatEventsR273(count int, code player.CtrlCode) []noxCtrlEvent {
 	events := make([]noxCtrlEvent, count)
 	for i := range events {
-		events[i] = noxCtrlEvent{tick: uint32(i), PlayerCtrl: server.PlayerCtrl{
+		events[i] = noxCtrlEvent{tick: uint64(i), PlayerCtrl: server.PlayerCtrl{
 			Code: code, Data: 0x89abcd00 + uint32(i), Active: true,
 		}}
 	}

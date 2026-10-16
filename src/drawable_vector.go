@@ -117,22 +117,24 @@ func (c *Client) DrawAnimState(vp *noxrender.Viewport, dr *client.Drawable) int 
 }
 
 func (c *Client) getAnimFrameInd(dr *client.Drawable, ani *client.AnimationVector) int {
+	// The original unsigned DIV is followed by signed 32-bit comparisons.
+	// Preserve EAX's sign before widening to a native int on 64-bit hosts.
 	switch ani.Kind {
 	case client.AnimOneShot:
-		ind := int((c.Server.Frame() - dr.AnimStart) / (uint32(ani.Val42) + 1))
+		ind := int(int32((c.Server.Frame() - dr.AnimStart) / (uint32(ani.Val42) + 1)))
 		if ind >= int(ani.Cnt40) {
 			ind = int(ani.Cnt40) - 1
 		}
 		return ind
 	case client.AnimOneShotRemove:
-		ind := int((c.Server.Frame() - dr.AnimStart) / (uint32(ani.Val42) + 1))
+		ind := int(int32((c.Server.Frame() - dr.AnimStart) / (uint32(ani.Val42) + 1)))
 		if ind >= int(ani.Cnt40) {
 			c.Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr)
 			return -1
 		}
 		return ind
 	case client.AnimLoop:
-		ind := int((c.Server.Frame() + dr.NetCode32) / (uint32(ani.Val42) + 1))
+		ind := int(int32((c.Server.Frame() + dr.NetCode32) / (uint32(ani.Val42) + 1)))
 		if ind >= int(ani.Cnt40) {
 			ind %= int(ani.Cnt40)
 		}
@@ -140,7 +142,7 @@ func (c *Client) getAnimFrameInd(dr *client.Drawable, ani *client.AnimationVecto
 	case client.AnimRandom:
 		return c.Server.Rand.Other.Int(0, int(ani.Cnt40)-1)
 	case client.AnimSlave:
-		return int(dr.AnimFrameSlave)
+		return int(int32(dr.AnimFrameSlave))
 	default:
 		return 0
 	}

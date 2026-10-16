@@ -1,5 +1,21 @@
 # Go 도구체인 정책
 
+## R277: 원본 애니메이션 프레임의 signed 32비트 결과 보존
+
+기준 clean/pushed revision은 `60d2de4d2e368ac1b3444db3b1f19e3998aeb90b`이며 goenv Go 1.26.9를 유지한다. 공용 프레임 helper의 세 uint32 나눗셈 결과와 Slave 프레임을 int32로 해석한 뒤 native int로 넓힌다. 기존 64비트 Go에서는 음수가 되어야 할 high-bit 결과를 큰 양수로 해석해 마지막/loop 이미지를 선택하거나 아직 삭제하면 안 되는 drawable을 삭제했다. unsigned 나눗셈 이전의 DWORD 덧셈·뺄셈 wrap, 속도·count·Kind·정상 clamp·실제 삭제·RNG·player remap·렌더/ABI/layout·network format은 바꾸지 않는다. 여기서 원본과 대조한 metadata 범위는 asset parser의 count/delay0..255다. 원본 MOVSX가 적용되는 비정상 high-bit short metadata나 zero-divisor fault의 완전 동등성은 별도이며 안전한 값으로 clamp하지 않았다.
+
+사용자 지정 REA 레포 `9d940c2f284cc6f75b27900336e52ceeba4aa2af`의 public MCP/stdio·Node24.18.0·Ghidra12.1.3·Java21로 원본 GAME.EXE를 읽기 전용 분석했다. 첫 v1은4B8FA0 조회 실패와4BC5D0 의사코드 성공을 함께 보존했고 actual1이다. v2의 정확한4B8FA0 관찰은 undecodable/procedure null로 actual1이며, 그 주소의 코드 부재나 실제 player owner를 증명하지 않는다. 추정 entry를 강제 등록하지 않았다. 두 분석 모두 close 성공·빈 runtime과 실패 원문을 보존한다.
+
+v3는 이미 확보한 의사코드를 재조회하지 않고4BC5D0의194바이트·71명령어·file offset771536 및 실제 caller 목록만 확보했다. unsigned DIV 뒤 signed JL 비교, Loop의 CDQ/IDIV, Slave의 raw EAX, Kind3 default0을 확인했다. helper 명령어 Evidence는 `ev_2ce51c572927d3e0d166d449ce6179ff70b2b72815fa1ee05eca6c8c59efd0f9`다. 목록에서 관찰된 유일한 직접 caller4BC6B0만 v4로 조회했다. 이67바이트·28명령어·offset771760 함수는 CALL4BC5D0 뒤 TEST EAX/JGE를 사용하며 음수이면 image를 읽거나 그리지 않고0을 반환한다. consumer 명령어 Evidence는 `ev_7efabed98c9f4a33d8af0b670a789fc140f7dc96157aa14f20b03d24cd403c2b`다. 정적 목록은 미분석/간접 caller를 누락할 수 있으며 모든 실행 consumer의 목록이 아니다. v3/v4는 각각 actual0이고 세 Evidence의 전체 bundle/snapshot·원본 SHA·성공 close/빈 runtime을 감사한다. 원본 EXE 실행·patch·전체 player-selector 동등성은 주장하지 않는다.
+
+새 client-only top-level10개(하위 포함187 IDs)는 동일하게 동결한 테스트로 수정 전 153pass/34fail, 수정 후 모두 통과했다. 실패는 값·이미지 포인터·실제 pool/list 수명·등록된 C bridge callback 결과이며 compile/panic/checkptr 실패를 RED 근거로 쓰지 않았다. legal 3-color bag의 실제 callback을 한 번만 호출하고 high-address native records/handles와 실제 drawable pool을 사용한다. player 선택 회귀는 기존 Go remap/방향·정확한 Naked handle/panim/frame·zero-count guard·별도 seeded RNG의 한 번 선택과 상태 불변을 검사한다. 이것은 원본 player owner/remap 또는 stock sprite pixel oracle가 아니며 raw0/chat 소유권은 범위 밖이다. cgocheck2/race/checkptr2 count3는 561pass다. 준비된 validation-v1 감사의 protected manifest 범위 오류는 실행 전 검토에서 발견해 보존하고 v2 helper만 실행했다. fixture·기대값은 바꾸지 않았다. 별도 source 감사 v1이 freezer의 데이터 인자를 helper 실행으로 오인한 첫 actual1도 보존했다. 실행 argv의 첫 두 항목만 비교하도록 한 v2 감사는 actual0이며 게임 코드·fixture·기대값을 바꾸지 않았다.
+
+canonical 다섯 모드는 normal-sequential=81,479pass/47skip/40package、hd-sequential=81,479pass/47skip/40package、strict-sequential=81,479pass/47skip/40package、server-sequential=76,725pass/7skip/36package、server-HD-sequential=76,725pass/7skip/36package로 actual0이며 합계 397,887pass/155skip다. R276의 모든 기존 ID/action/count/skip/package 및 기존 Go test bytes·YAML/PNG/oracle를 보존한다. 새 세 파일은 !server이므로 server 두 모드에 새 IDs를 추가한 것으로 세지 않는다. R134 HOLD와 PORTING-INVENTORY·원본 자산·개인 Save/config도 그대로다.
+
+자료는 `/private/tmp/opennox-player-selector-r277.s34REK`다. source/original 감사 SHA는 `a8e3d729b6a94277f8a0b47d4a6a4ff96fb695adc58ebbf2c0565d4149166242`이며 R276의182개 sealed regular files와 이전 README suffix를 보존한다. 커밋 직후 push하고 clean ARM64 네 제품·일반/HD 공식 서버 native quit·기존 mock-clock Host Load 여덟 기준 화면은 푸시 후 별도 receipt로 판정한다. 개인 지속 반투명은 미해결이며 이번 프레임 결과 교정을 그 원인·해결로 주장하지 않는다. 공개 호스트 재접속·natural client application 종료·physical GPU/가청 출력도 새로 인증하지 않는다.
+
+전체 포팅 추정은 가중합79%, 약80%를 유지한다. 빌드/ABI15×95% + 게임플레이25×80% + 렌더/UI15×80% + 오디오10×85% + 호스팅/프로토콜15×85% + 캠페인15×60% + 장시간/릴리스5×50% =79다. 영역별 성숙도는 공학적 판단이며 함수나 테스트 개수의 완료율이 아니다. 지속 반투명·전체 자연 campaign/Quest·WAN/NAT·장시간 통합·physical GPU/가청 출력과 기존 보류 항목은 미완료다.
+
 ## R276: 원본 64비트 입력 시각과 부호 있는 지연 보정
 
 기준 clean/pushed revision은 `6ae965d54a9a65233f21cfc2d74d9ac46039b956`이며 goenv Go 1.26.9를 유지한다. Go 소유 `noxCtrlEvent.tick`과 `CtrlEventHandler.ticks`를 uint64로 보관하고 생산자와 소비자에서 기존 `platformTicks()`의 상위 word를 잘라내지 않는다. 원본의32비트 지연 보정은 int32→int64→uint64로 부호 확장해 더한다. helper의 uint32 ABI·server settings layout·platform/E2E 시간 단위·wire format·framing·cursor/full 검사·history/local feedback 정책은 그대로다. 0xffffffff 보정은 약49.7일 뒤가 아니라 -1이며, 합과 deadline은 원본처럼 modulo2^64다. overflow를 포화 처리하거나 signed timestamp 비교로 바꾸지 않는다.

@@ -164,16 +164,7 @@ func (c *Client) clientSendInput(pli ntype.PlayerInd) bool {
 	if len(nbuf) == 0 {
 		return true
 	}
-	var buf [2]byte
-	buf[0] = byte(netmsg.MSG_PLAYER_INPUT)
-	buf[1] = byte(len(nbuf))
-	if !c.srv.NetList.AddToMsgListCli(pli, netlist.Kind0, buf[:2]) {
-		return false
-	}
-	if !c.srv.NetList.AddToMsgListCli(pli, netlist.Kind0, nbuf) {
-		return false
-	}
-	return true
+	return c.srv.NetList.AddToMsgListCli(pli, netlist.Kind0, nbuf)
 }
 
 func (c *Client) clientSendInputMouse(pli ntype.PlayerInd, mp image.Point) bool {

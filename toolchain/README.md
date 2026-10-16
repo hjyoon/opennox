@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R273: 플레이어 입력의 완전한 프레이밍과 일괄 enqueue
+
+기준은 clean/pushed `4a3552197884784f9ad0a36cf5bda7c8bd34435f`이며 goenv Go 1.26.9를 유지한다. `CtrlEventHandler.writeToNetBuffer`가 실제 제어 레코드를 직렬화할 때부터 opcode·1바이트 길이·본문을 완성한다. 본문은 255바이트 이하이며 4/5/8바이트 레코드 사이에서만 나눈다. `clientSendInput`은 완성된 메시지 전체를 한 번 enqueue하므로 byte/node/arena 용량 부족 때 헤더나 일부 envelope만 남지 않는다. 정상 단일 envelope의 wire bytes·제어 순서·inactive skip·host ring/tick gate·기존 indB=indA와 수신 queue의 `<128` 수용/중복 제거 정책은 유지한다. 수신 여유가 부족하면 envelope별로 거부될 수 있으므로 최대 128개 입력의 실제 실행까지 보장하지 않는다.
+
+동결한 새 회귀 7개는 수정 전 production에서 모두 실패했다. 실제 sender는 511-node/2044-byte 조건에서 `3f04` 헤더만 남겼으며, 원본 실패 기록을 보존한다. 동일 fixture의 수정 후 새 7개와 R272 수신 12개는 19pass다. 256개 코드 × 0..128개 입력, payload 0/1/4바이트·250/255/256 경계·혼합/비활성·host wrap/cutoff·복사 소유권·queue byte/node/arena 실패 및 실제 producer→sender→NetList→onPacketRaw와 후속 Mouse/KeepAlive를 검사한다. C 소유 Player/Object/Update는 명시적으로 초기화한다. cgocheck2/race/checkptr2 count3는 기존 24개와 새 7개, 31 IDs/93pass다.
+
+canonical 일반·HD·strict는 각각 81,239pass/47skip/40package, server·server-HD는 각각 76,672pass/7skip/36package로 모두 actual0이다. 합계 397,061pass/155skip이며 R272의 모든 기존 ID/action/count/skip/package와 기대값을 유지하고 새 7 IDs만 추가했다. 두 production 파일의 정확한 baseline→framing/refactor 변경과 다른 순회 분기의 보존을 감사했다. 실제 접속 peer가 초과 입력을 wire로 보낸 검증이나 전체 원본 동등성으로 확대하지 않는다.
+
+사용자 지정 REA 레포 `9d940c2f284cc6f75b27900336e52ceeba4aa2af`의 public stdio MCP/Ghidra 12.1.3으로 원본 GAME.EXE의 `0042D510/0043C8F0/0042CD50/0042D440/0042D450/0051A960` 여섯 함수를 한 세션에서 읽기 전용 분석했다. 원본은 getter에서 길이의 low byte만 복사하고 sender도 그만큼의 본문만 별도 enqueue하며, 수신은 `<128` 조건을 사용한다. 초과 입력을 온전한 여러 envelope로 보내는 이번 변경은 원본의 잘림을 의도적으로 강화한 처리다. 원본 host future-tick cutoff의 미소비 cursor 보존과 기존 Go의 indB=indA 차이도 별도 잔여 항목으로 남긴다. batch Evidence는 `ev_91fda10d9adb5dd40ceeb26fbecc1f9d64aa3e08e5b0fe7ccb2797f71c419772`이며, 실제 명령어·file offset·13개 Evidence·bundle/snapshot과 close/runtime 비움을 보존했다. 원본 실행·수정은 하지 않았다.
+
+자료는 `/private/tmp/opennox-input-send-r273.6yX8t2`다. 첫 감사의 bundle 순서 가정 실패를 보존하고, REA 소유 구현이 정의한 evidence_id 정렬에 맞춰 ID와 전체 값의 정확한 일치를 확인한 v2만 actual0으로 판정한다. 게임 코드·fixture·기대값은 바꾸지 않았다. audit-body-v2 SHA는 `b2e0f91d1edb7c8276df1b715912ac1c05193e989bdbd9f0f7e316f28a28244e`다. 기존 tests/YAML/PNG/oracle·원본 자산·개인 Save/config·R134 HOLD·PORTING-INVENTORY·이전 README suffix를 보존한다. 커밋 직후 push하며 clean ARM64 네 제품과 일반/HD 공식 서버·Host Load 여덟 화면은 푸시 후 별도 receipt로 확인한다.
+
+전체 포팅은 영역별 공학적 판단의 가중합 79%, 약 80%를 유지한다. 테스트 수나 REA 도입만으로 계산한 완료율이 아니다. 개인 Host Load 지속 반투명·전체 자연 campaign/Quest·WAN/NAT·장시간 통합·physical GPU/가청 출력과 기존 보류 항목은 미완료다.
+
 ## R272: 일반 플레이어 입력 패킷의 경계 검증
 
 기준은 clean/pushed `9b0bed7f658db9d6d282e4caa3a7895ad9c57ac7`이며 goenv Go 1.26.9를 유지한다. 실제 서버 `OnPacketOpSub → netOnPlayerInput → netDecodePlayerInput`에서 길이 바이트·선언 body·4바이트 제어 레코드·0/1/4바이트 추가 데이터의 경계를 확인한다. 완전한 body를 먼저 검사한 뒤에만 기존 명령 queue에 append하므로 잘린 tail의 정상 prefix도 일부 적용하지 않는다. `0x26`의 2바이트 경계도 검사한다. 정상 제어 코드·low-byte 해석·payload·명령 순서·중복 제거·queue 용량 정책 및 입력 수용 flag가 꺼진 플레이어의 bounded body 건너뛰기는 유지한다. 인증·전송·wire format을 재설계하지 않는다.

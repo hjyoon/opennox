@@ -11,6 +11,7 @@ import (
 	"github.com/opennox/libs/cfg"
 	"github.com/opennox/libs/client/keybind"
 	"github.com/opennox/libs/common"
+	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/player"
 
 	"github.com/opennox/opennox/v1/client/gui"
@@ -74,7 +75,7 @@ type CtrlEventHandler struct {
 	flags747848 byte
 	flags750956 bool
 	flags754064 uint32
-	netBuf      []byte
+	netBuf      []byte // Complete MSG_PLAYER_INPUT messages, ready for one enqueue.
 }
 
 func (c *CtrlEventHandler) Reset() {
@@ -817,6 +818,23 @@ func writeConfigHotkeys(sect *cfg.Section) {
 
 func (c *CtrlEventHandler) writeToNetBuffer() {
 	buf := c.netBuf[:0]
+	packetStart := -1
+	appendRecord := func(p *noxCtrlEvent) {
+		sz := p.Code.DataSize()
+		// The wire length is one byte. Split only between complete records;
+		// keep all envelopes together so the sender can enqueue them atomically.
+		if packetStart < 0 || len(buf)-packetStart-2+4+sz > 255 {
+			packetStart = len(buf)
+			buf = append(buf, byte(netmsg.MSG_PLAYER_INPUT), 0)
+		}
+		buf = append(buf, byte(p.Code), 0, 0, 0)
+		if sz != 0 {
+			var b [4]byte
+			binary.LittleEndian.PutUint32(b[:], p.Data)
+			buf = append(buf, b[:sz]...)
+		}
+		buf[packetStart+1] = byte(len(buf) - packetStart - 2)
+	}
 	ticks := uint32(platformTicks())
 	if noxflags.HasGame(noxflags.GameHost) {
 		for i := c.indB; i != c.indA; i = (i + 1) % cap(c.bufA) {
@@ -827,12 +845,7 @@ func (c *CtrlEventHandler) writeToNetBuffer() {
 			if !p.Active {
 				continue
 			}
-			buf = append(buf, byte(p.Code), 0, 0, 0)
-			if sz := p.Code.DataSize(); sz != 0 {
-				var b [4]byte
-				binary.LittleEndian.PutUint32(b[:], p.Data)
-				buf = append(buf, b[:sz]...)
-			}
+			appendRecord(p)
 		}
 		c.indB = c.indA
 	} else {
@@ -841,12 +854,7 @@ func (c *CtrlEventHandler) writeToNetBuffer() {
 			if !p.Active {
 				continue
 			}
-			buf = append(buf, byte(p.Code), 0, 0, 0)
-			if sz := p.Code.DataSize(); sz != 0 {
-				var b [4]byte
-				binary.LittleEndian.PutUint32(b[:], p.Data)
-				buf = append(buf, b[:sz]...)
-			}
+			appendRecord(p)
 		}
 	}
 	c.netBuf = buf

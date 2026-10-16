@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R262: 통계 패킷용 난수의 native 경계와 원본 반환 비트 복원
+
+기준은 clean/pushed `9e8c93de98e61a309841099e00e290461b4f7be9`이며 goenv Go 1.26.9를 유지한다. 통계 flush → `nox_stats_report/sub_42A8B0` → `sub_42AC50`에서 호출하는 `0042AAA0`의 55칸 subtractive RNG 한 본체와 국소 multiply helper만 수정한다. 네 번의 warm-up에 있던 signed32 주소 종료 비교를 기존 카운터의 55칸 경계로 바꾸고, seed의 NEG/SUB를 명시적 DWORD wrap으로 유지하며, 원본 precision53/toward-zero 최종 곱셈을 FMA residual/nextafter로 재현한다. 상태표·index·준비 DWORD·주변 padding·C/Go API·packet 형식·전역 FP 모드와 별도 게임/보호 RNG는 바꾸지 않는다. 통계 전송 tail의 기존 미지원은 그대로이며 전체 전송 복구로 세지 않는다.
+
+변경 없는 GAME.EXE 0042AAA0..0042ABE4의 324바이트 본체와 실제 CRT/게임 제어워드 helper를 실행했다. 외부 난수·수학 callback이나 원본 코드/상수 대체 없이 세 guard pattern × 세 ready DWORD × 아홉 seed × 두 index 쌍의 162조건에서 각 128회, 총 20,736회의 반환 double bit·seed·308바이트 상태·guard/register/stack/control을 기록했다. 원본 transcript SHA256은 `eb1406a61a2f0fae6380ed62f0d71c8806c3652cebd5a7daca9634476cddad39`다. caller-owned FSTP64 한 명령으로 ST0를 읽으며 전체 Windows·물리 x87·임의 손상 상태·통계 transport 인증으로 확대하지 않는다.
+
+동결 v1의 완전한 production C 본문을 컴파일한 여섯 native 배치에서 수정 전 19 IDs는 5pass/14fail이다. 일반 주소에서도 162개 반환 stream 중 138개가 달랐고, signed32 경계에서는 추가로 114개 상태 stream이 달랐다. baseline/순회-only/수학-only/combined 대조군 총 497,664회로 원인을 분리했다. 같은 원본 기대값·fixture의 수정 후 124,416회와 19 IDs는 모두 일치하고, 공식 cgocheck2/race/checkptr2 count3는 57pass다. 독립 UBSan C 실행 파일도 signed-wrap compiler flag 없이 같은 124,416회를 통과한다. Go strict는 비교기/실행 orchestration을 검사하며 별도 C child에 Go sanitizer가 적용됐다고 주장하지 않는다. canonical 다섯 모드의 기존 모든 ID/action/count/package 보존은 `audit-body-v1.log`의 실제 terminal로 판정한다.
+
+자료는 `/private/tmp/opennox-stats-rng-r262.Ho4x81`다. 검증 전 사용자 승인 범위의 소유 Go build cache에서 마지막 사용이 12시간 넘은 큰 data entry 67개, 8,678,102,028바이트만 개별 제거했다. source·module cache·runtime·게임 자산·개인 Save/config·증거는 삭제하지 않았고 Go가 필요 시 다시 생성한다. 기존 tests/YAML/PNG/oracle·원본 자산 1,554개·R134 HOLD·R261의 story/PNG 실패와 전체 기존 README suffix·INVENTORY는 보존한다. production 한 파일·새 회귀 세 파일·이 README prefix만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 푸시 후 clean ARM64 네 제품·일반/HD 공식 서버·고정 Host Load 여덟 화면은 별도 release receipt로 판정하며 미실행 검사를 완료로 세지 않는다. 공개 호스트를 재접속했다고 주장하지 않는다. 개인 Host Load의 지속 반투명은 여전히 재현/해결 미확정이고 다른 미포팅 경로·물리 GPU/가청 출력 및 전체 목표도 미완료다.
+
 ## R260: native 삼각함수 초기화 경계와 acos 테이블 복원
 
 기준은 clean/pushed `00e8f252935adcb85e9b85fab767ee0a4a2cf097`이며 사용자 goenv Go 1.26.9를 유지한다. 실제 게임 시작의 `RunArgs` → `nox_xxx_initSinCosTables_414C90` 한 본체와 국소 multiply helper만 변경한다. sin 4,096칸·acos 8,192칸의 signed32 주소 종료 비교를 기존 인덱스의 고정 경계로 바꾸고, 원본 float 상수와 precision53/toward-zero 최종 곱셈을 FMA residual/nextafter로 복원한다. 전역 부동소수점 모드·시드/RNG·테이블 크기·준비 플래그·초기화된 테이블의 비변경·반환 byte·C/Go API와 본체 밖 코드는 유지한다.

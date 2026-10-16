@@ -5,6 +5,8 @@
 #include <arpa/inet.h>
 #endif
 
+#include <math.h>
+
 #include "GAME1.h"
 #include "GAME1_1.h"
 #include "GAME1_2.h"
@@ -1869,6 +1871,17 @@ LABEL_10:
 // 42A970: using guessed type int var_400[256];
 
 //----- (0042AAA0) --------------------------------------------------------
+// GAME.EXE uses precision53/toward-zero. Reproduce this multiply locally;
+// no global FPU state or the independent 4096-word gameplay RNG is changed.
+static double nox_stats_mul_chop53_42AAA0(double a, double b) {
+ double product = a * b;
+ double error = fma(a, b, -product);
+ if ((product > 0.0 && error < 0.0) || (product < 0.0 && error > 0.0)) {
+  return nextafter(product, 0.0);
+ }
+ return product;
+}
+
 double sub_42AAA0(int* a1) {
 	int v1;            // eax
 	int v2;            // esi
@@ -1887,12 +1900,12 @@ double sub_42AAA0(int* a1) {
 		*getMemU32Ptr(0x5D4594, 741656) = 1;
 		v1 = *a1;
 		if ((int)*a1 < 0) {
-			v1 = -v1;
+			v1 = (int32_t)(0u - (uint32_t)v1);
 		}
 		v2 = 1;
 		v3 = 21;
-		v4 = (161803398 - v1) % 1000000000;
-		*getMemU32Ptr(0x5D4594, 741604) = (161803398 - v1) % 1000000000;
+		v4 = (int32_t)(UINT32_C(161803398) - (uint32_t)v1) % INT32_C(1000000000);
+		*getMemU32Ptr(0x5D4594, 741604) = (int32_t)(UINT32_C(161803398) - (uint32_t)v1) % INT32_C(1000000000);
 		do {
 			*getMemU32Ptr(0x5D4594, 741384 + 4 * (v3 % 55)) = v2;
 			v2 = v4 - v2 + (v4 - v2 < 0 ? 0x3B9ACA00 : 0);
@@ -1911,7 +1924,7 @@ double sub_42AAA0(int* a1) {
 				}
 				v7 += 4;
 				++v6;
-			} while ((int)v7 <= (int)getMemAt(0x5D4594, 741604));
+			} while (v6 <= 55);
 			--v5;
 		} while (v5);
 		dword_5d4594_741648 = 0;
@@ -1935,7 +1948,7 @@ double sub_42AAA0(int* a1) {
 		v13 = v11;
 	}
 	*getMemU32Ptr(0x5D4594, 741384 + 4 * v9) = v11;
-	return (double)v13 * *getMemDoublePtr(0x581450, 8368);
+	return nox_stats_mul_chop53_42AAA0((double)v13, *getMemDoublePtr(0x581450, 8368));
 }
 
 //----- (0042ABF0) --------------------------------------------------------

@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R274: 원본 RGB555 밝기 인덱스와 실제 플레이어 래스터 검증
+
+기준 clean/pushed revision은 `a3218f71ca9a2ceb472f9b21240dccdc4ca75978`이며 goenv Go 1.26.9를 유지한다. `ColorIntensity`의 byte 성분을 이동 전에 uint16으로 넓혀 15비트 RGB555 테이블 주소를 보존한다. 기존 byte 연산은 빨강과 초록 상위 비트를 잘랐다. 테이블 생성식·크기·팔레트·알파·blend·renderer layout·다른 호출자는 변경하지 않는다. 이 스칼라 계산 오류를 ARM64 전용 포인터 문제나 개인 반투명 현상의 원인으로 주장하지 않는다.
+
+사용자 지정 REA 6.5.0 레포 `9d940c2f284cc6f75b27900336e52ceeba4aa2af`와 기존 public SDK/stdio MCP·Ghidra 12.1.3을 재사용해 원본 GAME.EXE의 `433CD0/433E40/4338D0/434E80/434EC0/434CC0/434DA0/434FB0`를 읽기 전용 분석했다. `434E80`의 51바이트 본체는 full-width AND/SHL/OR 뒤 byte lookup을 수행하며 mode0/1 초기화가 이 함수를 선택한다. `434DA0`은 최대 인덱스 0x7fff·32770바이트 할당·RGB 가중치 76/150/28을 사용한다. 원본 PE의 고유 file offset 1587240에서 mode descriptor의 mask/shift도 확인했다. 첫 분석은 두 LAB 주소를 함수로 조회해 actual1이었고 원문과 cleanup을 보존한다. 관찰된 실제 함수만 조회한 v2는 actual0이며, 17개 Evidence의 bundle/snapshot 전체 값·owner 정렬·close 후 빈 runtime과 원본 SHA를 감사했다. 원본 게임 실행이나 전체 renderer 동등성 검증은 아니다.
+
+새 테스트 3개는 같은 동결 fixture로 수정 전 모두 실패하고 수정 후 모두 통과했다. 32,768개 RGB555 셀과 16,777,216개 byte-RGB 입력의 low-bit alias·독립 계산식·literal sentinel 주소·테이블/RenderData/renderer 불변을 검사한다. cgocheck2/race/checkptr2 count3는 9pass다. canonical 다섯 모드는 normal-sequential=81,242pass/47skip/40package、hd-sequential=81,242pass/47skip/40package、strict-sequential=81,242pass/47skip/40package、server-sequential=76,675pass/7skip/36package、server-HD-sequential=76,675pass/7skip/36package로 모두 actual0이다. 합계 397,076pass/155skip이며 R273의 기존 모든 ID/action/count/skip/package를 유지하고 모드마다 새 3 IDs만 추가했다. 수학식 및 원본 정적 대조를 원본 EXE 실행 oracle로 부르지 않는다.
+
+별도 private overlay의 native-clock/headless Host Game→저장 캐릭터 Load→10초 대기/9-frame film→일반 이동→UI Quit/disconnect를 7사례 실행했다. 제공된 640바이트 개인 J00의 별도 복사본과 owned J00를 일반·HD에서, 기존 public 프로필 3개를 HD에서 사용했다. 개인 설정을 import하거나 원본 Save를 수정하지 않았다. 실제 선택된 이미지를 재선택/preload하지 않고 원래 draw를 각 한 번 호출하며 bounds callback을 보존했다. 플레이어·장비 11,010 draws가 모두 type4로 match/sample되고 누락·추가 match·sample/operation 잘림은 0이다. 실제 op2/op4는 source-multiply 계열뿐이며 AlphaEnabled는 전행 false였다. raw alpha 값 자체를 적용 투명도로 해석하지 않는다. raw type2/7·clipped·alpha-over 분기는 이번 실행에서 검증되지 않았다. 98 PNG 중 각 사례 idle 7개와 제공 HD 이동 1개만 직접 검토했다. 이 계측은 타이밍 오버헤드를 더하며, 세션 disconnect 뒤 명시적 harness stop을 사용하므로 변경 없는 release나 자연 application 종료·physical GPU 인증이 아니다. 개인 지속 반투명은 미해결이다.
+
+자료는 `/private/tmp/opennox-player-raster-r274.JIR9jE`에 보존한다. source/original 감사 SHA는 `4919fe708c7e67a135b4699ba9c3421c47835aa1ed59bc1324982b202f803c40`, 별도 raster 감사 SHA는 `8b2820673dd57e1c248162a546462072efe50a928d1757e9865a6d99dfb54096`다. setter 저장 위치의 별도 원본 차이와 제한된 presentation 검토 결과는 후속 기록으로 남기며 이번 계산 수정의 효과로 합치지 않는다. 기존 tests/YAML/PNG/oracle·원본 자산·개인 Save/config·R134 HOLD·PORTING-INVENTORY와 이전 README suffix를 보존한다. 커밋 직후 push하며 clean ARM64 네 제품·일반/HD 공식 서버의 native quit·고정 mock-clock Host Load 여덟 기준 화면은 푸시 후 별도 receipt로 판정한다. 이번에 공개 호스트 재접속이나 물리 GPU/가청 출력을 인증하지 않았다.
+
+전체 포팅은 기존 영역별 공학적 판단의 가중합 79%, 약 80%를 유지한다. 테스트 개수나 이번 원본 분석량의 비율이 아니다. 개인 반투명·전체 자연 campaign/Quest·WAN/NAT·장시간 통합·physical GPU/가청 출력과 기존 보류 항목은 미완료다.
+
 ## R273: 플레이어 입력의 완전한 프레이밍과 일괄 enqueue
 
 기준은 clean/pushed `4a3552197884784f9ad0a36cf5bda7c8bd34435f`이며 goenv Go 1.26.9를 유지한다. `CtrlEventHandler.writeToNetBuffer`가 실제 제어 레코드를 직렬화할 때부터 opcode·1바이트 길이·본문을 완성한다. 본문은 255바이트 이하이며 4/5/8바이트 레코드 사이에서만 나눈다. `clientSendInput`은 완성된 메시지 전체를 한 번 enqueue하므로 byte/node/arena 용량 부족 때 헤더나 일부 envelope만 남지 않는다. 정상 단일 envelope의 wire bytes·제어 순서·inactive skip·host ring/tick gate·기존 indB=indA와 수신 queue의 `<128` 수용/중복 제거 정책은 유지한다. 수신 여유가 부족하면 envelope별로 거부될 수 있으므로 최대 128개 입력의 실제 실행까지 보장하지 않는다.

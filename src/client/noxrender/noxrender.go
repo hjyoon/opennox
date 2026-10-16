@@ -375,7 +375,8 @@ type NoxRender struct {
 }
 
 func (r *NoxRender) ColorIntensity(cr, cg, cb byte) byte {
-	v := ((cb & 0xF8) >> 3) | ((cg & 0xF8) << 2) | ((cr & 0xF8) << 7)
+	// Widen before shifting: the RGB555 table index needs all fifteen bits.
+	v := ((uint16(cb) & 0xF8) >> 3) | ((uint16(cg) & 0xF8) << 2) | ((uint16(cr) & 0xF8) << 7)
 	return r.colors.revTable[v]
 }
 

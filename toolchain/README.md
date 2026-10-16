@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R283: 호스트 비밀번호 UTF-16 필드 주소 교정
+
+기준 clean/pushed revision은 `60f40a731044fb462b88c8a818ce1149f462b266`이며 goenv Go 1.26.9를 유지한다. 활성 호스트 인증 callback이 설정의 byte39를 비밀번호로 읽던 한 줄을 `alloc.GoString16(&sst.ServerPass78[0])`으로 교정했다. 실제 필드는 byte78의9개 UTF-16 word이며, 39문자와39바이트를 혼동한 오류다. ARM64만의 레이아웃 문제로 한정하지 않는다. 기존 NUL scan·대소문자 비교·핑 제한·패킷 codec/응답 정책은 바꾸지 않았다.
+
+사용자 지정 REA 레포의 증거·역공학 절차를 적용하고 보존된 포팅 전 C 소스 `6b2db2d16^:src/GAME5_2.c`의 opcode17 비교 `(const wchar_t*)settings+39`, 현재 GUI의 `wchar2_t*+39` 저장과 typed 설정 읽기/쓰기 경로를 대조했다. 원본 helper entry를 추정하거나 새 REA/Ghidra·GAME.EXE·Unicorn 실행을 한 것은 아니다. 실제 호스트 `Server.listen`의 Options.CheckPass→netstr decoder→callback 전달을 확인했으며, CONNECT_SERVER의 같은 callback 바인딩은 별도의 client-options 경로로 구분한다.
+
+프로덕션 수정 전 직접 callback19조건은4pass/17fail(상위 ID 포함)이었으며16개 하위 실패는 올바른 비밀번호 거부·byte39 미끼 문자열 수락 등 실제 결과 불일치다. compile/panic 실패가 아니다. 이후 같은 literal 기대값은21pass다. 최종 byte freeze는 초기 RED/GREEN과 gofmt 뒤에 만들었으므로 과거 RED에 소급한 byte freeze를 주장하지 않는다. 별도9조건은 실제 localhost UDP·실제 MsgServerPass codec/decoder·기존 Options.CheckPass를 통해 실제 인증 함수를 호출하고 literal wire 응답을 검사한다. 핑 byte용 기존 clock만 고정하며 fake 인증이나 새 production hook은 없다. 빈 문자열·한글·최대8word·surrogate pair·대소문자·signed -1 핑 sentinel 및 우선순위, 전체 Settings/주변16byte와 요청 불변·정확한 복원을 검사한다.
+
+최종 집중 회귀는 일반31pass·HD31pass·cgocheck2/race/checkptr2 count3의93pass다. canonical 일반·HD·strict는 각각81584pass/47skip/40package, server·server-HD는 각각76766pass/7skip/36package이며 모두 actual0다. 합계398284pass/155skip이고 이전 모든 ID/action/count/skip/package를 유지한다. 기존 Go test2427파일·oracle/자산·개인 Save/config·R134 HOLD4개·PORTING-INVENTORY와 이전 R282 봉인108개를 보존했다. 승인된 R273 기대값 교정/R275 입력 보존은 유지하고 다른 보류 기대값은 바꾸지 않았다. 캐시는 삭제하지 않았다.
+
+이번 변경은 production 한 줄·새 회귀 두 파일·이 README prefix뿐이다. 자료는 `/private/tmp/opennox-native-audit-r283.RAZDRh`, source 감사 SHA는 `108b8f6afac6281a27e830fa6d2ad6b55c43dea1db703f39d434b5c41553c56f`다. 커밋 직후 push하고 그 clean revision의 ARM64 네 제품과 일반/HD 공식 헤드리스 서버의 기동·세 번 맵 전환·실제 콘솔 quit을 별도 receipt로 검증한다. 미실행 검사를 완료로 세지 않는다. 실제 UDP 인증 검사는 전체 게임 peer 접속·공개 호스트/WAN/NAT·Host Load 지속 반투명 해결이나 보이는 화면/가청 출력을 인증하지 않는다.
+
+전체 포팅 추정은 빌드/ABI15×95 + 게임플레이25×80 + 렌더/UI15×80 + 오디오10×85 + 호스팅15×85 + 캠페인15×60 + 장시간/릴리스5×50을100으로 나눈79%, 약80%를 유지한다. 영역 성숙도의 공학적 판단이며 테스트 수의 완료율이 아니다. 개인 지속 반투명·전체 자연 campaign/Quest·WAN/NAT·장시간 통합과 기존 보류 항목은 미완료다.
+
 ## R282: 원본 선택기 관측과 실제 등록 PlayerDraw 회귀
 
 기준 clean/pushed revision은 `2701528e9663613e770b8a282cb69071a6a446f9`이며 goenv Go 1.26.9를 유지한다. 이번 변경은 새 client-only 테스트 두 파일과 이 README prefix뿐이다. 기존 게임 코드·테스트·기대값·자산은 바꾸지 않았다. 승인된 R273 미래 입력 기대값 교정/R275 입력 보존 수정은 유지하고, R134 HOLD는 그대로 둔다.

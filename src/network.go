@@ -246,7 +246,7 @@ func sub_416910(a1 unsafe.Pointer) unsafe.Pointer {
 
 func noxnetCheckPassword(p *noxnet.MsgServerPass) netmsg.Message {
 	sst := getServerSettings()
-	expPass := alloc.GoString16((*uint16)(unsafe.Add(unsafe.Pointer(sst), 39)))
+	expPass := alloc.GoString16(&sst.ServerPass78[0])
 
 	if p.Pass != expPass {
 		return &noxnet.MsgServerError{Err: noxnet.ErrWrongPassword}

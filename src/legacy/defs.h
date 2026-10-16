@@ -1429,8 +1429,7 @@ typedef struct nox_render_data_t {
 	intptr_t field_64;   // 64, 256; native RGB component
 	uint32_t field_65;  // 65, 260
 	nox_render_mat_t materials[16];  // 66, 264
-	uint16_t field_258_0; // 258, 1032
-	uint16_t field_258_2; // 258, 1034
+	uint32_t intensity_258; // 258, 1032; original 433CD0 writes the whole DWORD
 	uint32_t field_259; // 259, 1036
 	uint32_t field_260; // 260, 1040
 	uint32_t field_261; // 261, 1044

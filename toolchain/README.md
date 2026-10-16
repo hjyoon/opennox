@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R278: 원본 RGB555 조명 배율과 밝기 DWORD 저장 복구
+
+기준 clean/pushed revision은 `d4578e367c29256e3f135392396c085ef9a0d6f0`이며 goenv Go 1.26.9를 유지한다. packed 색상 setter 세 경로가 display용 `ColorNRGBA` 대신 기존 raster `SplitColor`를 사용하도록 교정했다. 원본 mode1의 RGB555 최대 성분은248이며255로 확장하지 않는다. packed white의 Flag16도 원본처럼 false다. 직접 RGB setter는255 성분과 full-white Flag16을 그대로 유지한다. 두16비트 밝기 필드는 Go/C에서 하나의 uint32로 합쳐 원본처럼 낮은 byte에 결과를 쓰고 상위24비트를 지운다. 구조체 크기와 뒤따르는 alpha 위치는 유지하며 알파 분기·일반 RGB 조명·색상 라이브러리의 display 변환은 변경하지 않는다.
+
+사용자 지정 REA 레포 `9d940c2f284cc6f75b27900336e52ceeba4aa2af`의 기존 원본 기록을 재사용했다. `433CD0`의 AND EAX,FF 뒤 DWORD+1032 store는 `ev_051da25f535f2cc38f55b2acdb546bb9d703ae12dc4719ddda752e14a5b4563b`, `433E40`의 unpack→RGB setter 호출은 `ev_986e9280e8b8adc8d7c4e5ae5c0e9f7857a84e8c0de9f4911e591e1b05df1720`, mode1의 unpack435280 선택은 `ev_8913f332477d6c1b6040d52c7f7b7edcbea8fe49618e02f8e8ec213d43483b78`에 근거한다. 기존65536입력 scalar oracle·원본 코드/table digest와23 receipt·17 Evidence·전체 bundle/snapshot을 다시 감사했다. MMX cache 비활성 RGB555 계약이며 모든 원본 driver/mode 동등성은 아니다.
+
+별도 player-selector 조사는 원본4B8FA0..4B9050의176바이트·68개 명령어를 기존 LLVM으로 정적 decode하고 PE mapping/원본 byte를 대조했다. 이것은 REA Evidence나 실제 PlayerDraw owner/도달 가능성 인증이 아니다. 새 REA48D830 조회는 NoProcedure로 actual1이고, close도 process-table EPERM으로 실패했다. 실패 원문과 잔여 임시 파일을 보존한다. 별도 승인된 읽기 전용 프로세스 조회에서 해당 PID/소유 경로의 live match가 없음을 확인했으며 이를 성공 close로 바꾸지 않았다. 강제 함수 등록·원본 게임 실행·Unicorn 실행은 하지 않았다. 이후의32바이트 chat bridge/owner 조사는 준비만 하고 실행하지 않았다.
+
+새 client-only 회귀4개는 같은 동결 fixture로 수정 전4fail, 수정 후4pass다. packed 어댑터 셋 각각65536입력을 검사하고, 직접 RGB9개·Flag16·반환값·전체 RenderData byte·clip/material/alpha 이웃·픽셀/소유자 불변을 확인한다. baseline은 각 packed 경로에서5954 RGB 차이, root 경로에서 packed white2개의 Flag16 차이와65536개 DWORD 차이를 보였다. 기대값은 production split/display helper를 사용하지 않는다. legacy 회귀는 실제 cgo-export Go 본체와 RGB 서비스 전달을 검사하며 C transition이나 원본 framebuffer oracle로 주장하지 않는다. cgocheck2/race/checkptr2 count3도12pass다.
+
+전체 normal/HD/strict는 각각81483pass/47skip/40package, server/server-HD는 각각76725pass/7skip/36package로 actual0이며 합계397899pass/155skip다. 이전 모든 ID/action/count/skip/package와 기존 Go test2420개·보호 oracle/YAML/PNG·원본 자산·개인 Save/config·R134 HOLD·PORTING-INVENTORY를 보존한다. 자료는 `/private/tmp/opennox-selector-owner-r278.hWaL67`, source 감사 SHA는 `529da3f30ae673378d043a1b5559dd746a58832d97a0fca44620f1e08da5332c`다. 릴리스 감사 v1의 자기 파일 동결 목록 불일치는 실행 전에 발견해 보존했고, 별도 auditor 동결을 확인하는 v2만 실행 대상으로 삼는다. 커밋 직후 push하고 clean ARM64 네 제품·일반/HD 공식 서버 native quit·기존 mock-clock Host Load 여덟 화면은 푸시 후 별도 receipt로 판정한다.
+
+이번 packed 색상 교정은 빙결·적외선 등 해당 tint 경로에 적용되지만, 일반 조명/알파 선택을 바꾸지 않았으며 개인 Host Load 지속 반투명의 원인·해결 증거가 아니다. 공개 호스트 재접속·WAN/NAT·자연 client application 종료·physical GPU/가청 출력도 새로 인증하지 않는다. 전체 포팅 추정은 빌드/ABI15×95 + 게임플레이25×80 + 렌더/UI15×80 + 오디오10×85 + 호스팅15×85 + 캠페인15×60 + 장시간/릴리스5×50을100으로 나눈79%, 약80%를 유지한다. 영역 성숙도에 대한 공학적 판단이며 테스트 수의 완료율이 아니다. 전체 목표와 기존 보류 항목은 미완료다.
+
 ## R277: 원본 애니메이션 프레임의 signed 32비트 결과 보존
 
 기준 clean/pushed revision은 `60d2de4d2e368ac1b3444db3b1f19e3998aeb90b`이며 goenv Go 1.26.9를 유지한다. 공용 프레임 helper의 세 uint32 나눗셈 결과와 Slave 프레임을 int32로 해석한 뒤 native int로 넓힌다. 기존 64비트 Go에서는 음수가 되어야 할 high-bit 결과를 큰 양수로 해석해 마지막/loop 이미지를 선택하거나 아직 삭제하면 안 되는 drawable을 삭제했다. unsigned 나눗셈 이전의 DWORD 덧셈·뺄셈 wrap, 속도·count·Kind·정상 clamp·실제 삭제·RNG·player remap·렌더/ABI/layout·network format은 바꾸지 않는다. 여기서 원본과 대조한 metadata 범위는 asset parser의 count/delay0..255다. 원본 MOVSX가 적용되는 비정상 high-bit short metadata나 zero-divisor fault의 완전 동등성은 별도이며 안전한 값으로 clamp하지 않았다.

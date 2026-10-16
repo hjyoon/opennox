@@ -95,8 +95,7 @@ type RenderData struct {
 	lightColor   RGB             // 62, 248
 	field_65     uint32          // 65, 260
 	materials    [16]RenderMat   // 66, 264
-	field_258_0  uint16          // 258, 1032
-	Intensity258 uint16          // 258, 1034
+	Intensity258 uint32          // 258, 1032; original 433CD0 writes the whole DWORD
 	alpha        uint32          // 259, 1036
 	field_260    uint32          // 260, 1040
 	field_261    uint32          // 261, 1044

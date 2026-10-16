@@ -277,8 +277,8 @@ func nox_draw_set54RGB32_434040(cl_cgo int32) {
 //export nox_draw_setColorMultAndIntensity_433E40
 func nox_draw_setColorMultAndIntensity_433E40(cl_cgo int32) int32 {
 	cl := int(cl_cgo)
-	c := noxcolor.RGBA5551(cl).ColorNRGBA()
-	return int32(int(GetClient().R2().SetColorMultAndIntensityRGB(c.R, c.G, c.B)))
+	c := noxrender.SplitColor(noxcolor.RGBA5551(cl))
+	return int32(int(GetClient().R2().SetColorMultAndIntensityRGB(byte(c.R), byte(c.G), byte(c.B))))
 }
 
 //export sub_437290

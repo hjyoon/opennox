@@ -237,13 +237,14 @@ func sub_4338D0() int {
 }
 
 func sub433E40(cl noxcolor.Color) int {
-	c := cl.ColorNRGBA()
-	return int(noxClient.r.SetColorMultAndIntensityRGB(c.R, c.G, c.B))
+	c := noxrender.SplitColor(noxcolor.ToRGBA5551Color(cl))
+	return int(noxClient.r.SetColorMultAndIntensityRGB(byte(c.R), byte(c.G), byte(c.B)))
 }
 
 func (r *NoxRender) SetColorMultAndIntensity(cl color.Color) {
-	c := noxcolor.ToRGBA5551Color(cl).ColorNRGBA()
-	r.SetColorMultAndIntensityRGB(c.R, c.G, c.B)
+	// Original 433E40 uses the raster unpacker, not display-white expansion.
+	c := noxrender.SplitColor(noxcolor.ToRGBA5551Color(cl))
+	r.SetColorMultAndIntensityRGB(byte(c.R), byte(c.G), byte(c.B))
 }
 
 func (r *NoxRender) SetColorMultAndIntensityRGB(cr, cg, cb byte) byte {
@@ -251,7 +252,7 @@ func (r *NoxRender) SetColorMultAndIntensityRGB(cr, cg, cb byte) byte {
 	d.SetFlag16(cr == 0xFF && cg == 0xFF && cb == 0xFF)
 	d.SetColorMultA(noxrender.Color16{R: uint16(cr), G: uint16(cg), B: uint16(cb)})
 	v := r.ColorIntensity(cr, cg, cb)
-	d.Intensity258 = uint16(v)
+	d.Intensity258 = uint32(v)
 	return v
 }
 

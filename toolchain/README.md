@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R264: Go 1.26.9 진단 명령의 실행 버전 검사 복구
+
+기준은 clean/pushed `0482dbb4ef00c81d1c18d31cc0c7a99ae34eccca`다. 저장소 pin·go.mod·noxbuild가 이미 goenv Go 1.26.9를 사용하지만 cgoabi/layoutaudit 두 main은 여전히 1.26.5만 허용했다. 실제 1.26.9로 빌드한 두 실행 파일은 도움말이 아닌 진단 호출에서 모두 exit2였다. 정확한 버전 검사와 exit2 계약을 제거하지 않고 두 requiredGoVersion 문자열만 1.26.9로 맞춘다. 최소 언어 버전·전역 goenv/runtime/GC·게임 코드·네트워크 프로토콜·과거 1.26.5 결과와 ABI 기준 문서는 수정하지 않는다.
+
+새 TestDiagnosticToolchainPolicyR264는 저장소 text pin과 cgoabi/layoutaudit/noxbuild의 세 entry point를 대조한다. 같은 동결 입력의 4 IDs는 RED 1pass/3fail에서 GREEN 4pass로 바뀐다. package 단위 테스트가 명령의 main guard까지 실행한다고 간주하지 않는다. 수정 후 실제 read-only cgoabi는 고정 fixture의 int/uint 매개변수·결과 네 항목을 찾고, 현재 legacy export scan은 0항목이다. -w를 사용하지 않았으며 이 제한된 scan을 전체 C/Go ABI 안전 인증으로 확대하지 않는다.
+
+실제 layoutaudit의 darwin/arm64 결과는 package error0이며 Object/Player/MonsterUpdateData/PlayerUpdateData/AIStackItem/DurSpell의 크기 928/6160/2960/656/48/184 및 세 주요 Object offset이 별도로 컴파일한 unsafe.Sizeof/Offsetof 실측과 일치한다. child go도 로컬 PATH/GOTOOLCHAIN으로 1.26.9에 고정한다. linux/386은 pointer4의 타입 추출 진단일 뿐이며 기존 package error82를 숨기지 않는다. 이를 386 크로스 빌드나 실행 성공으로 세지 않는다. 세 진단 package의 공식 cgocheck2/race/checkptr2 count3는 216pass이고, canonical 다섯 모드의 기존 모든 ID/action/count/package 보존과 추가 4pass는 audit-body-v1.log의 실제 terminal로 판정한다.
+
+자료는 `/private/tmp/opennox-audit-tools-r264.OTYwaX`다. 준비 v1의 이전 manifest 이름 오기는 입력·실패 terminal로 보존하고 v2에서 그 참조명만 교정했다. 기존 tests/YAML/PNG/oracle·원본 자산1,554개·개인 Save/config·R134 HOLD·R263 전체 증거·README 이전 suffix·INVENTORY는 유지한다. production 두 상수·새 회귀 한 파일·README prefix만 커밋하고 직후 origin port/go1.26-multiarch에 push한다. 푸시 후 clean ARM64 네 제품·일반/HD 공식 서버·고정 Host Load 여덟 화면은 별도 release receipt로 확인하며 미실행 검사를 완료로 세지 않는다.
+
+R263의 별도 실제 시계/headless 두 프로세스에서는 일반끼리·HD끼리 Host Game→Load, peer Join→관전 해제→이동, host 이동의 peer 수신, peer 퇴장과 host 잔류가 통과했다. HD client→일반 host는 기존 정확한 버전 검사로 거부됐고 반대 방향은 실행하지 않았다. R255의 일반 client 공개 여섯 주소 중 관전 준비3/timeout3과 당시 목록 조회 실패는 과거 결과이며 이번 공개 재접속이 아니다. 개인 Host Load의 지속 반투명은 여전히 재현/해결 미확정이다. 물리 GPU·가청 출력·외부 inbound/NAT와 다른 미포팅 경로 및 전체 목표는 미완료다.
+
 ## R262: 통계 패킷용 난수의 native 경계와 원본 반환 비트 복원
 
 기준은 clean/pushed `9e8c93de98e61a309841099e00e290461b4f7be9`이며 goenv Go 1.26.9를 유지한다. 통계 flush → `nox_stats_report/sub_42A8B0` → `sub_42AC50`에서 호출하는 `0042AAA0`의 55칸 subtractive RNG 한 본체와 국소 multiply helper만 수정한다. 네 번의 warm-up에 있던 signed32 주소 종료 비교를 기존 카운터의 55칸 경계로 바꾸고, seed의 NEG/SUB를 명시적 DWORD wrap으로 유지하며, 원본 precision53/toward-zero 최종 곱셈을 FMA residual/nextafter로 재현한다. 상태표·index·준비 DWORD·주변 padding·C/Go API·packet 형식·전역 FP 모드와 별도 게임/보호 RNG는 바꾸지 않는다. 통계 전송 tail의 기존 미지원은 그대로이며 전체 전송 복구로 세지 않는다.

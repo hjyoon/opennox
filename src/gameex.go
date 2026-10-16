@@ -216,7 +216,7 @@ func MixRecvFromReplacer(pc net.PacketConn, buf1 []byte, from netip.AddrPort) {
 			data := buf1[:alloc.StrLenS(buf1)]
 			v43, free := alloc.Make([]byte{}, 2+len(data)+1)
 			defer free()
-			v39, free39 := alloc.New(int32(0))
+			v39, free39 := alloc.New(unsafe.Pointer(nil))
 			defer free39()
 			copy(v43[2:], data)
 			if legacy.PlayerInfoStructParser_1(unsafe.Pointer(&v43[0]), v39) != 0 {

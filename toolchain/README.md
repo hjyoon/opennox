@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R269: GameEx 플레이어 이름 조회의 native 포인터와 버퍼 복구
+
+기준 clean/pushed revision은 `f61d8873570ed1cdbcd004d86e0b1bcde665c3f8`이며 goenv Go 1.26.9를 유지한다. 실제 확장 UDP F13A의 opcode4/8이 호출하는 `playerInfoStructParser_0/1` 두 본체에서 Player 포인터의 int 축약·PE32 고정 offset·한 바이트 이름 버퍼를 제거한다. native Player 필드와 원래 28 UTF16-unit 이름 용량에 대응하는 char 배열을 사용하고, 두 번째 parser의 ObjectTeam 출력·CGo 선언·호출자 할당도 native pointer 폭으로 맞춘다. 기존 packet 형식·case-sensitive 첫 active-player 일치·불일치 시 출력 보존·문자별 low-byte 변환·opcode8의 미구현 postlookup tail은 유지한다. 원본 계약은 보존된 GameEx.c 소스이며 GAME.EXE 또는 없는 GameEx DLL의 원본 실행 oracle로 주장하지 않는다.
+
+새 영구 회귀의 같은 동결 v3 fixture는 이전 production 세 파일 overlay에서 0pass/3fail, 수정 후 3pass다. 실제 CGo에서 잘린 다음 Player 포인터의 SIGSEGV와 기존 32-bit 출력 ABI를 확인했다. parser마다 33개의 guard/name 조건과 빈 roster를 검사하며 inactive/duplicate/최대27자/low-byte/UTF8 miss/case/prefix/miss·4GiB 위 native 주소·출력 canary 및 입력 불변을 포함한다. 첫 v1의 StringManager 준비 누락과 v2의 alloc.New 초기값 오해는 입력·실패 terminal을 보존하고 v3에서 준비만 교정했다. 원본 기대값·조건·assertion은 완화하지 않았다. 공식 cgocheck2/race/checkptr2 count3도 9pass다.
+
+canonical 전체 일반·HD·strict는 각각 81,208pass/47skip/40package, server·server-HD는 각각 76,641pass/7skip/36package로 actual0이며, 이전 모든 ID/action/count/skip/package가 유지되고 새3 IDs만 추가됐음을 `audit-body-v1.log`로 확인한다. 별도 native-clock/headless private test binary의 실제 loopback UDP는 이전 일반 opcode4와 이전 HD opcode8에서 각각 SIGSEGV/exit2를 재현했다. 수정 일반·HD는 없는 이름의 무응답→Jack의 정확한22바이트 opcode6 응답→opcode8의 기존 무응답→재조회 응답·live frame 진행 후 UI Quit/Yes를 통한 native loop/process 정상 반환까지 actual0이다. 함수/응답/HP/위치/시계를 대체하거나 강제 mainloop stop을 사용하지 않는다. private additive test binary를 변경 없는 release 제품으로 간주하지 않으며, 개인 Save/config·공개 게임 접속·physical GPU·가청 출력 인증도 아니다.
+
+자료는 `/private/tmp/opennox-active-abi-r269.A9WLwl`에 보존한다. 사용자 승인 범위에서 마지막 사용이12시간 넘은 소유 Go build cache의 data file86개, 8,597,931,926바이트만 개별 제거했고 Go가 필요 시 다시 생성한다. source·module cache·자산·개인 Save/config·증거는 삭제하지 않았다. production 세 파일·새 회귀 한 파일·이 README prefix만 커밋하고 직후 origin port/go1.26-multiarch에 push한다. 기존 README suffix·PORTING-INVENTORY.md·tests/YAML/PNG/oracle·원본 자산1,554개·R134 HOLD·개인 데이터·최소 언어 버전·전역 runtime/GC/FPU는 유지한다. 푸시 후 clean ARM64 네 제품·일반/HD 공식 서버·고정 Host Load 여덟 화면은 후속 release receipt로 판정하며 미실행 검사를 완료로 세지 않는다.
+
+전체 포팅 진행률은 공학적 추정으로 약 80%이며 테스트 개수의 비율이 아니다. 개인 Host Load의 지속 반투명은 여전히 재현/해결 미확정이고, 다른 원본 동작/GUI/API HOLD·전체 자연 진행 campaign/Quest·physical GPU/가청 출력·외부 inbound/NAT와 전체 목표는 미완료다. 이번 확장 메시지 크래시 수정이 이 별도 반투명 현상의 해결이라는 주장은 하지 않는다.
+
 ## R267: 서버 지역 판정 테이블의 native 주소 비교 복구
 
 기준 clean/pushed revision은 `28b601db9678122fa85e8b02b02e6a9f4200a881`이며 goenv Go 1.26.9를 유지한다. R266의 별도 native-clock/headless 입력 검사는 일반/HD 각각 Main Menu·Solo·Host Load의 여섯 경로다. 메인 메뉴의 직접 종료와 Solo/Host Load의 세션 Quit/Yes→메인 메뉴 application Quit/Yes 정상 반환을 확인했다. private driver의 서버 목록 Back ID 오기와 그 실패 기록을 보존했으며 게임 코드 변경이나 강제 mainloop stop으로 성공시킨 검사가 아니다. 개인 Host Load 지속 반투명의 해결 증거로 세지 않는다.

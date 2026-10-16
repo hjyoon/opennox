@@ -32,8 +32,8 @@ char getPlayerClassFromObjPtr(int a1) { return *(uint8_t*)(*(uint32_t*)(*(uint32
 //----- (10001D40) --------------------------------------------------------
 char playerInfoStructParser_0(void* a1p) {
 	char* a1 = a1p;
-	char* v1;  // esi
-	char pDst; // [esp+10h] [ebp-18h]
+	nox_playerInfo* v1;
+	char pDst[sizeof(((nox_playerInfo*)0)->name_final) / sizeof(wchar2_t)];
 
 	if (a1 == (char*)-2)
 		return 0;
@@ -41,45 +41,45 @@ char playerInfoStructParser_0(void* a1p) {
 	if (!v1)
 		return 0;
 	while (1) {
-		nox_CharToOemW((const wchar2_t*)v1 + 2352, &pDst);
-		if (!strcmp(&pDst, a1 + 2))
+		nox_CharToOemW(v1->name_final, pDst);
+		if (!strcmp(pDst, a1 + 2))
 			break;
-		v1 = nox_common_playerInfoGetNext_416EE0((int)v1);
+		v1 = nox_common_playerInfoGetNext_416EE0(v1);
 		if (!v1)
 			return 0;
 	}
-	a1[1] = *((uint8_t*)nox_xxx_objGetTeamByNetCode_418C80(*((uint32_t*)v1 + 515)) + 4);
-	*a1 = v1[2251];
+	a1[1] = nox_xxx_objGetTeamByNetCode_418C80(v1->netCode)->id;
+	*a1 = v1->info.playerClass;
 	return 1;
 }
 
 //----- (10001E10) --------------------------------------------------------
-char playerInfoStructParser_1(void* a1p, int* a3) {
-	int a1 = a1p;
-	char* v3;     // eax
-	char* v4;     // eax
-	uint32_t* v6; // eax
-	char pDst;    // [esp+Ch] [ebp-18h]
+char playerInfoStructParser_1(void* a1p, nox_object_team_t** a3) {
+	char* a1 = a1p;
+	nox_playerInfo* v3;
+	nox_playerInfo* v4;
+	nox_object_team_t* v6;
+	char pDst[sizeof(((nox_playerInfo*)0)->name_final) / sizeof(wchar2_t)];
 
-	if (a1 == -2)
+	if (a1 == (char*)-2)
 		return 0;
 	v3 = nox_common_playerInfoGetFirst_416EA0();
-	int a2 = v3;
+	nox_playerInfo* a2 = v3;
 	if (!v3)
 		return 0;
 	while (1) {
-		nox_CharToOemW((const wchar2_t*)(a2 + 4704), &pDst);
-		if (!strcmp(&pDst, (const char*)(a1 + 2)))
+		nox_CharToOemW(a2->name_final, pDst);
+		if (!strcmp(pDst, a1 + 2))
 			break;
 		v4 = nox_common_playerInfoGetNext_416EE0(a2);
 		a2 = v4;
 		if (!v4)
 			return 0;
 	}
-	v6 = nox_xxx_objGetTeamByNetCode_418C80(*(uint32_t*)(a2 + 2060));
-	*a3 = (int)v6;
-	*(uint8_t*)(a1 + 1) = *((uint8_t*)v6 + 4);
-	*(uint8_t*)a1 = *(uint8_t*)(a2 + 2251);
+	v6 = nox_xxx_objGetTeamByNetCode_418C80(a2->netCode);
+	*a3 = v6;
+	a1[1] = v6->id;
+	*a1 = a2->info.playerClass;
 	return 1;
 }
 

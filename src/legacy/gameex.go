@@ -12,7 +12,7 @@ int  nox_xxx_clientUpdateButtonRow_45E110(int a1);
 nox_object_team_t* nox_xxx_objGetTeamByNetCode_418C80(int a1);
 void  nox_xxx_printCentered_445490(wchar2_t* a1);
 char playerInfoStructParser_0(void* a1);
-char playerInfoStructParser_1(void* a1, int* a3);
+char playerInfoStructParser_1(void* a1, nox_object_team_t** a3);
 */
 import "C"
 import (
@@ -41,8 +41,8 @@ func Mix_MouseKeyboardWeaponRoll(a1 *server.Object, a2 int8) int {
 func PlayerInfoStructParser_0(a1 unsafe.Pointer) int {
 	return int(C.playerInfoStructParser_0(a1))
 }
-func PlayerInfoStructParser_1(a1 unsafe.Pointer, a2 *int32) int {
-	return int(C.playerInfoStructParser_1(a1, (*C.int)(unsafe.Pointer(a2))))
+func PlayerInfoStructParser_1(a1 unsafe.Pointer, a2 *unsafe.Pointer) int {
+	return int(C.playerInfoStructParser_1(a1, (**C.nox_object_team_t)(unsafe.Pointer(a2))))
 }
 func PlayerDropATrap(a1 *server.Object) {
 	playerDropATrapNative10002030(a1, func(owner, item *server.Object, point *types.Pointf) {

@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R272: 일반 플레이어 입력 패킷의 경계 검증
+
+기준은 clean/pushed `9b0bed7f658db9d6d282e4caa3a7895ad9c57ac7`이며 goenv Go 1.26.9를 유지한다. 실제 서버 `OnPacketOpSub → netOnPlayerInput → netDecodePlayerInput`에서 길이 바이트·선언 body·4바이트 제어 레코드·0/1/4바이트 추가 데이터의 경계를 확인한다. 완전한 body를 먼저 검사한 뒤에만 기존 명령 queue에 append하므로 잘린 tail의 정상 prefix도 일부 적용하지 않는다. `0x26`의 2바이트 경계도 검사한다. 정상 제어 코드·low-byte 해석·payload·명령 순서·중복 제거·queue 용량 정책 및 입력 수용 flag가 꺼진 플레이어의 bounded body 건너뛰기는 유지한다. 인증·전송·wire format을 재설계하지 않는다.
+
+동일한 private public-boundary probe는 변경 없는 기준 production에서 6fail, 수정 후 6pass다. 네 잘린 입력의 실제 panic과 `0x26`의 과다 소비를 기록했다. 별도 실제 `onPacketRaw → onPacketOp → OnPacketOpSub` 회귀는 기준 코드의 세 panic과 두 정상 분기를 2pass/4fail로 재현하며 수정 후 6pass다. 이는 실제 수신 함수 경로 검사이지 접속한 peer가 wire로 보낸 공격이나 원본 Windows 실행을 재현했다는 뜻은 아니다. 서버 decoder 회귀 6개는 정상 2,304조건·decoder 절단 3,128조건·envelope 절단 65,280조건·비활성 body 1,024조건과 입력/출력 backing array·queue 불변 및 후속 Mouse/KeepAlive 경계를 검사한다.
+
+게임 production과 첫 fixture로 수행한 canonical 일반·HD·strict는 각각 81,232pass/47skip/40package, server·server-HD는 각각 76,665pass/7skip/36package이며 모두 actual0이다. R270의 모든 기존 ID/action/count/skip/package를 유지하고 새 12 IDs만 추가됐다. 첫 raw fixture에서 alloc.New의 인자를 초기값으로 오인한 점은 첫 바이트를 보존한 뒤 바로잡았다. 최종 fixture는 C 소유 Player/Object/Update의 상호 연결을 명시적으로 초기화·확인·해제한다. 이 setup만의 정확한 변경을 감사하고 최종 새 12 IDs를 다섯 모드에서 다시 통과시켰다. production 바이트와 다른 packet/기대값은 동일하다. 최종 fixture 바이트로 전체 canonical을 한 번 더 실행했다는 주장은 하지 않는다. 공식 cgocheck2/race/checkptr2 count3는 기존 R270 12개와 새 12개, 총 24 IDs/72pass이며 legacy R269 선별 실행으로 확대하지 않는다.
+
+사용자 지정 REA 레포의 동일 revision `9d940c2f284cc6f75b27900336e52ceeba4aa2af`와 public stdio MCP·기존 Ghidra 12.1.3을 재사용했다. 원본 SHA `0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`의 `0051BAD0..0051CEDD` 5,134바이트·1,640명령어·file offset 1,161,936을 읽기 전용 분석했다. `0051BBE4`의 `0051A960` 호출과 입력 길이만큼의 진행, `0x26`의 2바이트 진행을 확인했다. batch Evidence는 `ev_265318fe515542ffec2f39c2fbec0e7ede9fc9ebca0c1dc0ebf25192bb4b33de`다. 원본 helper 본체·모든 packet 경로의 동등성·원본 실행을 입증한 것으로 확대하지 않는다. 첫 긴 Unix 소켓 경로로 인한 분석 실패를 보존하고 새 짧은 소유 경로로 재시도한 v2는 actual0/74.91초다. 세 Evidence 기록·bundle·165,254바이트 snapshot과 close 성공·runtime 비움을 확인했다. 전역 REA/Codex/Node/Go/GC 설정은 변경하지 않았다.
+
+자료는 `/private/tmp/opennox-input-bounds-r272.NOgMGF`에 보존한다. audit-body-v1의 actual0과 SHA `6198b98e9d7ddd577c33a02c2aef174e738676a811172aba5ce3abd25d7d0daa`로 위 범위를 판정한다. 클라이언트가 255바이트를 초과하는 입력 묶음을 만들 때의 길이 wrap 및 header/body 개별 enqueue는 별도 후속 후보이며 이번에 수정하지 않았다. 보상 title의 C 선언 폭도 private 회귀 초안만 준비했고 현재 최적화된 ARM64 release의 크래시를 재현했다고 주장하지 않는다. 원본 자산·개인 Save/config·기존 기대값/YAML/PNG/oracle·R134 HOLD·PORTING-INVENTORY와 이전 README suffix를 보존한다. 커밋 직후 push하며 새 clean 네 ARM64 제품·일반/HD 공식 서버·기존 Host Load 여덟 화면은 푸시 후 별도 receipt로 검증한다. 개인 지속 반투명·전체 자연 campaign/Quest·WAN/NAT·장시간 통합·physical GPU/가청 출력은 미완료다. 전체 포팅은 명시적 가중 성숙도 모델 79%, 약 80%를 유지하며 테스트 개수 비율로 계산하지 않는다.
+
 ## R271: REA로 원본 렌더 경로와 ARM64 산출물 교차 확인
 
 R270 커밋 `b9e6967bbe860623e1302955ab617937d2733ad1`의 즉시 push, canonical 다섯 모드, 실제 native-clock/headless UDP와 clean Go 1.26.9 ARM64 네 제품·일반/HD 서버·Host Load 여덟 기준 화면의 최종 감사가 통과했다. 1,260개 증거 파일의 최종 manifest SHA는 `8359ded19fc0f4fafdaba4c6660cf35830dfec9c84ed66ab20b285ba64b9321d`다.

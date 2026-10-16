@@ -123,10 +123,16 @@ func (s *Server) NetSendMsgXxx1(recipient int, msg netmsg.Message, relatedObject
 }
 
 func (s *Server) OnPacketOpSub(pli ntype.PlayerInd, op netmsg.Op, data []byte, pl *Player, u *Object) (int, bool, error) {
+	if len(data) == 0 {
+		return 0, false, io.ErrUnexpectedEOF
+	}
 	switch op {
 	case netmsg.MSG_KEEP_ALIVE:
 		return 1, true, nil
 	case 0x26: // TODO: what this opcode is for?
+		if len(data) < 2 {
+			return 0, false, io.ErrUnexpectedEOF
+		}
 		return 2, true, nil
 	case netmsg.MSG_MOUSE:
 		var p noxnet.MsgMouse
@@ -140,7 +146,10 @@ func (s *Server) OnPacketOpSub(pli ntype.PlayerInd, op netmsg.Op, data []byte, p
 		})
 		return 1 + n, true, nil
 	case netmsg.MSG_PLAYER_INPUT:
-		n := s.netOnPlayerInput(pl, data[1:])
+		n, err := s.netOnPlayerInput(pl, data[1:])
+		if err != nil {
+			return 0, false, err
+		}
 		return 1 + n, true, nil
 	case netmsg.MSG_IMPORTANT:
 		if len(data) < 5 {
@@ -173,18 +182,40 @@ func (s *Server) OnPacketOpSub(pli ntype.PlayerInd, op netmsg.Op, data []byte, p
 	return 0, false, nil
 }
 
-func (s *Server) netOnPlayerInput(pl *Player, data []byte) int {
+func (s *Server) netOnPlayerInput(pl *Player, data []byte) (int, error) {
+	if len(data) == 0 {
+		return 0, io.ErrUnexpectedEOF
+	}
 	sz := int(data[0])
+	if len(data)-1 < sz {
+		return 0, io.ErrUnexpectedEOF
+	}
 	data = data[1 : 1+sz]
 	if pl.Field3680&0x10 == 0 {
-		return 1 + sz
+		return 1 + sz, nil
 	}
-	buf := netDecodePlayerInput(data, nil)
+	buf, err := netDecodePlayerInput(data, nil)
+	if err != nil {
+		return 0, err
+	}
 	s.Players.Control.Player(pl.Index()).Append(buf)
-	return 1 + sz
+	return 1 + sz, nil
 }
 
-func netDecodePlayerInput(data []byte, out []PlayerCtrl) []PlayerCtrl {
+func netDecodePlayerInput(data []byte, out []PlayerCtrl) ([]PlayerCtrl, error) {
+	// Validate the complete declared body before appending anything, including
+	// into a caller-owned backing array. An incomplete tail must not apply its
+	// otherwise valid prefix to the player's control buffer.
+	for remaining := data; len(remaining) > 0; {
+		if len(remaining) < 4 {
+			return out, io.ErrUnexpectedEOF
+		}
+		sz := 4 + player.CtrlCode(remaining[0]).DataSize()
+		if len(remaining) < sz {
+			return out, io.ErrUnexpectedEOF
+		}
+		remaining = remaining[sz:]
+	}
 	for len(data) > 0 {
 		code := player.CtrlCode(data[0])
 		data = data[4:]
@@ -200,7 +231,7 @@ func netDecodePlayerInput(data []byte, out []PlayerCtrl) []PlayerCtrl {
 		}
 		out = append(out, v)
 	}
-	return out
+	return out, nil
 }
 
 func (s *Server) NetInformTextMsg(pid ntype.PlayerInd, code byte, ind int) bool {

@@ -104,7 +104,7 @@ int sub_409A70(short a1) {
 	while (*(uint32_t*)v2 != (a1 & 0x17F0)) {
 		v2 += 4;
 		++result;
-		if ((int)v2 >= (int)getMemAt(0x587000, 4728)) {
+		if (result >= 6) {
 			return 0;
 		}
 	}
@@ -408,7 +408,7 @@ int sub_40A710(int a1) {
 	while (*(uint32_t*)v2 != a1) {
 		v2 += 8;
 		++v1;
-		if ((int)v2 >= (int)getMemAt(0x587000, 4704)) {
+		if (v1 >= 5) {
 			return 1;
 		}
 	}

@@ -912,7 +912,7 @@ int sub_4D0D50(int a1) {
 	while (!(a1 & *(uint32_t*)v2)) {
 		v2 += 8;
 		++result;
-		if ((int)v2 >= (int)getMemAt(0x587000, 191884)) {
+		if (result >= 6) {
 			return 0;
 		}
 	}

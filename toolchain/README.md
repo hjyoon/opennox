@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R256: 네트워크 설정 세 조회의 native 순회 경계
+
+기준은 clean/pushed `485709dc27cf782b784502b961bd1a6758eccb6c`이며 사용자 goenv Go 1.26.9를 유지한다. 실제 설정·전송률·게임 모드 조회 `00409A70/0040A710/004D0D50`의 signed32 주소 종료 비교 세 줄만 기존 카운터의 6/5/6칸 경계로 바꾼다. 서로 다른 두 모드 테이블의 순서, `0x17f0` 마스크, 첫 일치 선택, 중복 키, 기본 반환값 0/1/0과 기존 C/Go API·패킷 형식은 그대로다.
+
+변경하지 않은 GAME.EXE의 세 leaf 본체 106바이트를 외부 호출 대체 없이 실행해 원본·중복·상위 비트 테이블의 923조건을 기록했다. 동일한 C 본체 전체를 컴파일한 네 native 주소 배치의 3,692조건 중 수정 전 signed32 경계에서만 70건이 잘못된 값을 반환했다. 일반 주소의 실제 CGo 대조군은 수정 전에도 통과하므로 이를 일반적인 호스팅 실패 재현으로 세지 않는다. 수정 후 같은 동결 입력이 모두 통과하며 실제 CGo 설정값 65,536개·모드 68개·전송률 12개도 원본과 일치한다. 첫 진단 초안의 컴파일 경고 처리와 단위 테이블 초기화 누락은 입력·실패 로그로 보존하고 별도 v2에서 준비만 교정했다. 원본 기대값이나 게임 조건을 완화하지 않았다.
+
+관련 공식 cgocheck2+race+checkptr2 count3는 18pass/0skip이다. 독립 C 실행 파일 자체에 Go sanitizer가 적용됐다고 주장하지 않는다. 전체 일반/HD/CGo/server/server-HD의 실제 결과와 기존 ID/action/count/package 보존은 `audit-body-v1.log`로 판정한다. 새 clean 네 ARM64 제품·원래 일반/HD 서버 시나리오·고정 Host Load 8화면과 실제 시계의 별도 로컬 일반/HD 접속·관전 해제·이동·UI 퇴장은 푸시 후 release receipt로 따로 확인한다. 실행하지 않은 검사는 완료로 세지 않는다.
+
+자료는 `/private/tmp/opennox-network-tables-r256.mq4rEr`다. 이 README prefix만 추가하고 기존 suffix·tests/YAML/PNG/oracle·원본 자산·개인 Save/설정·R134 HOLD를 보존한다. 커밋 직후 origin port/go1.26-multiarch에 push한다. R255의 공개 주소 여섯 곳 3ready/3timeout 및 당시 목록 조회 실패는 과거 증거로 유지하며 이번 공개 재접속으로 세지 않는다. 이번 수정이 사용자의 지속적인 Host Load 반투명 현상의 원인이나 해결임을 주장하지 않는다. 외부 inbound/NAT·개인 Save 전체·물리 GPU/가청 출력·generic maps CRC·대화 API·다른 미포팅 경로와 전체 목표는 미완료다.
+
 ## R254: MaidenDraw 미리보기 색상 포인터의 native 경계
 
 Goenv Go 1.26.9를 유지한다. 실제 등록된 MaidenDraw의 GameFlag22(0x200000) 분기가 data_update 포인터를 int로 줄이고 PE32의 2076바이트 위치에서 RGB를 읽던 문제를 고쳤다. Go의 native MonsterUpdateData.Color 주소를 C에 전달하며, 한 번 캐시한 포인터에서 여섯 색상을 순서대로 읽는다. extent 검색·일반 NPC registry 분기·material slot 1..6·후속 MonsterDraw·반환값·palette를 초기화하지 않는 동작은 유지한다. 클래스나 nil guard를 새로 넣지 않으며 update record나 색상 배열을 복사하지 않는다. 이 미리보기 수정은 플레이어 Host Load 반투명 현상의 원인 확인이나 해결을 의미하지 않는다.

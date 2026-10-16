@@ -1,5 +1,23 @@
 # Go 도구체인 정책
 
+## R282: 원본 선택기 관측과 실제 등록 PlayerDraw 회귀
+
+기준 clean/pushed revision은 `2701528e9663613e770b8a282cb69071a6a446f9`이며 goenv Go 1.26.9를 유지한다. 이번 변경은 새 client-only 테스트 두 파일과 이 README prefix뿐이다. 기존 게임 코드·테스트·기대값·자산은 바꾸지 않았다. 승인된 R273 미래 입력 기대값 교정/R275 입력 보존 수정은 유지하고, R134 HOLD는 그대로 둔다.
+
+사용자 지정 REA 레포의 역공학·증거 절차와 보존된 REA helper 명령어/file-offset Evidence 및 LLVM selector/chat/owner 분석을 재사용했다. 새 REA/Ghidra 조회·setup·설치나 원본 Windows 게임 프로세스를 실행한 것은 아니다. 보존 GAME.EXE의 실제 selector4B8FA0·frame helper4BC5D0·chat wrapper48D830과 jump table을 수정 없이 Unicorn2.1.4/Python3.14.7의 Darwin ARM64 환경에서 실행했다. lookup·enchant·RNG·delete 네 외부 서비스만 선언된 합성 반환값을 사용한다. 원본 등록 tuple의 runtime activation·외부 서비스 알고리즘·전체 PlayerDraw/렌더 동등성이나 pristine stock 원본을 인증하지 않는다.
+
+첫 v2는 signal4/SIGILL로 끝났으며 정확한 중단 단계와 sandbox 인과는 미확인이다. 진단 v3는 import/API와48조건을 통과한 뒤 RNG 서비스 진입 훅 전에 PC415FF0/fetch416000의 미매핑 오류로 actual1이었다. 실패 원문을 그대로 보존했다. v4는 실제 PE의416000 한 페이지를 기존 RX 매핑/snapshot에만 추가했고 명령어·논리 메모리·서비스·ABI guard는 유지했다. 같은56조건이 모두 통과했고 actual0/signal 없음/timeout=false·입력 불변이었다. 이는 관측된 매핑 공백 교정이며 내부 JIT 선읽기 원인까지 증명한 것은 아니다. 512명령 상한·64/71/9개 원본 명령어 경계·선택 handle·optional output 순서·canary·stack/nonvolatile와19개 입력의 전후 identity를 독립 감사했다. 원본 관측 JSON SHA는 `729b67f7c1964376c116c7c18a93ea13704097c681e4965ec76d3a063de9fda4`다.
+
+새 Go 선택기 회귀는 그 관측에서50조건을 그대로 literal row/frame 기대값으로 투영한다. 비어 있지 않은 Random4조건과 실제 삭제 요청2조건은 제외하며 RNG/삭제 서비스 동등성을 새로 주장하지 않는다. 실제 native chat list로 zero/nonzero 의미를 비교하지만 원본 PE32 pointer bit나 물리 C out-slot을 Go tuple과 같다고 하지 않는다. count0·음수 결과의 nil/nil/-1과, null image여도 row/frame이 유효한 경우를 구분한다. 원본 프레임 산식을 Go로 재작성해 기대값을 만든 것이 아니다.
+
+별도 회귀는8개의 새 테스트 프로세스에서 실제 등록된 PlayerDraw→C drawObject→type4 op2 RLE 소프트웨어 래스터 경로를 각1회 호출한다. 실제 native player registry/drawable pool과9개 독립 body/armor/weapon 이미지, Slave frame1·방향0/5, 전체64×64 픽셀과 장비 겹침 순서/입력 불변을 검사한다. C static cache는 프로세스 수명으로 격리하며 자식은30초 deadline·실제 exit0·정확한 단일 receipt를 요구한다. 캐시된 alpha0/28/128이라도 useAlpha=false이면 같은 불투명 결과였고, 명시적으로 enabled128이면 몸에만 적용된 뒤 기존 C cleanup이 장비 전에 alpha 사용을 끈다. 의도된 trail caller도 incoming alpha를 켜므로 강제 entry reset을 추가하지 않았다. op4 indexed sprite·보이는 GPU/합성·실제 개인 Host Load 지속 반투명이나 그 원인/해결은 여전히 미인증이다.
+
+새 회귀는 일반60pass·HD60pass·cgocheck2/race/checkptr2 count3의180pass다. canonical 일반·HD·strict는 각각81553pass/47skip/40package, server·server-HD는 각각76735pass/7skip/36package로 actual0이며 합계398129pass/155skip다. 기존 모든 ID/action/count/skip/package와 Go test2425개·보호 자료305개·개인 설치1562파일·R134 HOLD4개·PORTING-INVENTORY 및 이전 R281 봉인157개를 유지했다. 이번에 캐시를 삭제하지 않았다. RED나 게임 동작 수정으로 주장하지 않는다.
+
+자료는 `/private/tmp/opennox-selector-run-r282.Up3RyQ`이며 원본 실행 감사 SHA는 `12b94809ec71bbdf9a0330a8013b4886e48c1b67a530f97c9f930fcf63f17060`, source 감사 SHA는 `1f521afbcc82693d4c248083130949dec696220a86229a3f76f03206db58d116`다. 이 테스트/문서 커밋 직후 push한다. 이번에는 네 release 제품 재빌드·공식 서버/Host Load 화면 재생·새 공개 호스트/WAN/NAT 검사를 하지 않았으며, R281의 보존된 release 결과를 새 실행으로 세지 않는다.
+
+전체 포팅 추정은 빌드/ABI15×95 + 게임플레이25×80 + 렌더/UI15×80 + 오디오10×85 + 호스팅15×85 + 캠페인15×60 + 장시간/릴리스5×50을100으로 나눈79%, 약80%를 유지한다. 영역 성숙도의 공학적 판단이며 테스트 개수의 완료율이 아니다. 개인 지속 반투명·전체 자연 campaign/Quest·WAN/NAT·장시간 통합과 기존 보류 항목은 미완료다.
+
 ## R281: 마법벽 원격 전송의 native Player 준비 플래그 복구
 
 기준 clean/pushed revision은 `e5691d48b81f37f9999e47704d8011150ecf4c2f`이며 goenv Go 1.26.9를 유지한다. 활성 `spellWall.changeOrAddRemoteWalls`가 원래 PE32 Player+3680을 native 포인터에서도 직접 읽던 조건 한 줄을 `pl.Field3680&0x10`으로 교정했다. 현재64비트 상태 필드는4976이며 옛3680은 Armor[1].Field0의 낮은 byte다. 준비된 원격 플레이어의 마법벽 생성 패킷이 장비 데이터 때문에 누락될 수 있었다. 실제 바깥 갱신 경로는 이미 준비 상태를 검사하므로 helper의 반대 조건 검사를 자연 게임의 unready 전송 재현으로 확대하지 않는다. host31 제외·매 벽마다 live 상태 재조회·전송 뒤 delivery bit·중복 방지·6byte opcode61 payload와 기존 callback 인수/실패 반환 정책은 유지한다. 알파·화면 합성이나 개인 Host Load 반투명 수정이 아니다.

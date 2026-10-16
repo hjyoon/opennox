@@ -1343,6 +1343,18 @@ void nox_xxx_gameLoopMemDump_413E30() {
 int sub_413F60(const void* a1, const void* a2) { return *((uint32_t*)a1 + 20) - *((uint32_t*)a2 + 20); }
 
 //----- (00414C90) --------------------------------------------------------
+// GAME.EXE initializes under precision53/toward-zero. The fixed float grid
+// products and subtraction below are exact; preserve the final multiply's
+// rounding locally without changing the process floating-point environment.
+static double nox_trig_mul_chop53_414C90(double a, double b) {
+	double product = a * b;
+	double error = fma(a, b, -product);
+	if ((product > 0.0 && error < 0.0) || (product < 0.0 && error > 0.0)) {
+		return nextafter(product, 0.0);
+	}
+	return product;
+}
+
 char nox_xxx_initSinCosTables_414C90() {
 	long long v0;      // rax
 	unsigned char* v1; // esi
@@ -1356,18 +1368,21 @@ char nox_xxx_initSinCosTables_414C90() {
 		v4 = 0;
 		v1 = getMemAt(0x85B3FC, 12260);
 		do {
-			*(uint32_t*)v1 = (long long)(sin((double)v4 * 0.0015339808) * *getMemDoublePtr(0x581450, 7200));
+			*(uint32_t*)v1 = (long long)nox_trig_mul_chop53_414C90(
+				sin((double)v4 * (double)*getMemFloatPtr(0x581450, 7208)), *getMemDoublePtr(0x581450, 7200));
 			v1 += 4;
 			++v4;
-		} while ((int)v1 < (int)getMemAt(0x85B3FC, 28644));
+		} while (v4 < 4096);
 		v5 = 0;
 		v2 = getMemAt(0x5D4594, 338472);
 		do {
-			v0 = (long long)(acos((double)v5 * 0.00024414062 - 1.0) * *getMemDoublePtr(0x581450, 7184));
+			v0 = (long long)nox_trig_mul_chop53_414C90(
+				acos((double)v5 * (double)*getMemFloatPtr(0x581450, 7196) -
+					 (double)*getMemFloatPtr(0x581450, 7192)), *getMemDoublePtr(0x581450, 7184));
 			*(uint32_t*)v2 = v0;
 			v2 += 4;
 			++v5;
-		} while ((int)v2 < (int)getMemAt(0x5D4594, 371240));
+		} while (v5 < 8192);
 	}
 	return v0;
 }

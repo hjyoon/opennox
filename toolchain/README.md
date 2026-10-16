@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R260: native 삼각함수 초기화 경계와 acos 테이블 복원
+
+기준은 clean/pushed `00e8f252935adcb85e9b85fab767ee0a4a2cf097`이며 사용자 goenv Go 1.26.9를 유지한다. 실제 게임 시작의 `RunArgs` → `nox_xxx_initSinCosTables_414C90` 한 본체와 국소 multiply helper만 변경한다. sin 4,096칸·acos 8,192칸의 signed32 주소 종료 비교를 기존 인덱스의 고정 경계로 바꾸고, 원본 float 상수와 precision53/toward-zero 최종 곱셈을 FMA residual/nextafter로 복원한다. 전역 부동소수점 모드·시드/RNG·테이블 크기·준비 플래그·초기화된 테이블의 비변경·반환 byte·C/Go API와 본체 밖 코드는 유지한다.
+
+변경 없는 GAME.EXE의 실제 초기화 본체·inline FSIN·acos/ftol·CRT 정밀도와 게임 반올림 설정을 외부 수학 callback 대체 없이 실행했다. 세 guard pattern × 준비 플래그 0/1/2/0x80/0xff의 15조건에서 원본 12,288개 값과 주변 guard·register/stack·준비 상태를 확인했다. 테이블 SHA256은 `362e011c229b40ea30aca24a974a98f1ddaee6a70c9df9562712f5c174ac805a`다. 이는 에뮬레이션한 원본 고정 입력이며 전체 Windows·물리 x87·모든 libm 입력의 인증은 아니다.
+
+현재 C는 signed32 주소 경계에서 테이블을 첫 항목만 쓴 뒤 준비 완료로 표시했고, 일반 주소에서도 acos 6개 값이 달랐다. 동결 v3의 실제 CGo RED와 네 주소 대조군은 같은 원본 기대값을 사용한다. 여섯 native 배치의 baseline/순회-only/수학-only/combined 720조건에서 두 원인을 분리했다. 수정한 완전한 C 본문의 180조건·실제 CGo 15조건/19 IDs·공식 cgocheck2/race/checkptr2 count3 57pass와 독립 UBSan 180조건의 실제 종료는 `audit-body-v2.log`에서 판정한다. 독립 C 실행 파일이 Go sanitizer의 검사를 받았다고 주장하지 않는다.
+
+처음 새 v1 CGo 픽스처는 게임 시작 때 로드되는 상수 블록을 준비하지 않았고, 첫 UBSan은 새 v2 C 픽스처의 base+offset-start 중간 포인터가 작은 테스트 배열을 벗어나는 오류를 찾았다. 원문과 모든 실패·C signal6을 보존한다. v2는 원본 28바이트 입력의 준비/복구와 getter만, v3는 세 상대 오프셋의 괄호와 fixture 파일명만 교정했다. 원본 테이블·기대값·assertion·케이스·HP·RNG·deadline을 완화하지 않았다. canonical 다섯 모드의 기존 모든 ID/action/count/package 보존도 같은 body audit로 확인하며 미실행 검사를 완료로 세지 않는다.
+
+마지막 정적 검토에서는 새 픽스처의 5-page 보호 범위가 4KiB 페이지에서 부족함을 확인했다. page-v4 준비는 기존 새 파일명을 유지한 채 배열 길이에서 올림 계산한 보호 범위와 소유 예약 범위만 교정한다. Go 테스트·ID·원본 기대값·assertion·케이스·deadline·production은 바꾸지 않는다. 4/8/16/64KiB 범위 수식 대조와 현재 macOS에서의 최종 전체 5모드·strict/UBSan을 재검증하며, 물리 4KiB Linux 실행으로 주장하지 않는다.
+
+자료는 `/private/tmp/opennox-trig-init-r260.2vPIup`다. production 한 파일·새 회귀 세 파일·이 README prefix만 커밋하고 직후 origin port/go1.26-multiarch에 push한다. 푸시 후 새 clean ARM64 네 제품·일반/HD 공식 서버·기존 고정 Host Load 여덟 화면은 별도 release receipt로 판정한다. 기존 tests/YAML/PNG/oracle·원본 자산 1,554개·개인 Save/설정·R134 HOLD·README suffix·INVENTORY를 유지한다. 캐시·전역 goenv/runtime/GC·최소 언어 버전은 바꾸지 않는다. 이 수정이 개인 Host Load 지속 반투명의 원인이나 해결이라는 주장은 하지 않으며, 다른 미포팅 경로·물리 GPU/가청 출력과 전체 목표는 미완료다.
+
 ## R257: 서버 세션의 보호용 난수열 복원
 
 기준은 clean/pushed `60f321ab21654081d4da17b30545de0c2b4798e9`이며 goenv Go 1.26.9를 유지한다. 실제 newSession → 0056F1C0에서 쓰는 보호용 난수의 0056FE30/0056FF00/0056FF80 세 leaf만 수정한다. 버린 floor 반환값과 value-value 때문에 소수부가 항상 0이 되던 문제를 정수부·소수부로 분리하고, CRT의 precision53/게임의 toward-zero 연산을 국소 residual 계산으로 재현한다. 마지막 두 계수가 같은 shifted state를 읽는 원본 동작, 5개 seed word, 19회 warm-up, unsigned32 범위 wrap과 경계값을 유지한다. signed seed shift와 포인터의 signed32 종료 비교는 unsigned32 xorshift/고정 5칸 순회로 바꾼다. 게임/시각용 4096-word RNG·보호 노드 구조·게임/네트워크 프로토콜·전역 FP 환경은 바꾸지 않는다.

@@ -824,46 +824,61 @@ int nox_xxx_playerApplyProtectionCRC_56FD50(int a1, void* a2p, int a3) {
 // 560840: using guessed type void  nullsub_31(uint32_t);
 
 //----- (0056FE30) --------------------------------------------------------
-double nox_xxx_unkDoubleSmth_56FE30() {
-	double v0; // st7
+// The original CRT selects precision 53 (004031F2) and gameplay selects
+// round-toward-zero (004014B5/0043E2C1). Recover each local rounding residual
+// without changing the thread's floating-point environment. Seeded values
+// and the five original constants keep these residuals in binary64 range.
+static double nox_protection_add_chop53_56FE30(double a, double b) {
+	volatile double sum = a + b;
+	volatile double virtual_b = sum - a;
+	volatile double error = (a - (sum - virtual_b)) + (b - virtual_b);
+	if ((sum > 0 && error < 0) || (sum < 0 && error > 0)) {
+		return nextafter(sum, 0.0);
+	}
+	return sum;
+}
 
+static double nox_protection_mul_chop53_56FE30(double a, double b) {
+	volatile double product = a * b;
+	double error = fma(a, b, -product);
+	if ((product > 0 && error < 0) || (product < 0 && error > 0)) {
+		return nextafter(product, 0.0);
+	}
+	return product;
+}
+
+double nox_xxx_unkDoubleSmth_56FE30() {
 	*getMemU64Ptr(0x5D4594, 2516412) = *getMemU64Ptr(0x5D4594, 2516404);
 	*getMemU64Ptr(0x5D4594, 2516404) = *getMemU64Ptr(0x5D4594, 2516396);
 	*getMemU32Ptr(0x5D4594, 2516396) = *getMemU32Ptr(0x5D4594, 2516388);
 	*getMemU32Ptr(0x5D4594, 2516400) = *getMemU32Ptr(0x5D4594, 2516392);
-	v0 = *getMemDoublePtr(0x5D4594, 2516388) * *getMemDoublePtr(0x581450, 11376) +
-		 *getMemDoublePtr(0x5D4594, 2516404) * *getMemDoublePtr(0x581450, 11368) +
-		 *getMemDoublePtr(0x5D4594, 2516412) * *getMemDoublePtr(0x581450, 11360) +
-		 *getMemDoublePtr(0x5D4594, 2516412) * *getMemDoublePtr(0x581450, 11352) + *getMemDoublePtr(0x5D4594, 2516420);
-	floor(v0);
-	*getMemDoublePtr(0x5D4594, 2516388) = v0 - v0;
-	*getMemDoublePtr(0x5D4594, 2516420) = v0 * *getMemDoublePtr(0x581450, 11344);
+	double value = nox_protection_mul_chop53_56FE30(*getMemDoublePtr(0x5D4594, 2516388), *getMemDoublePtr(0x581450, 11376));
+	value = nox_protection_add_chop53_56FE30(value, nox_protection_mul_chop53_56FE30(*getMemDoublePtr(0x5D4594, 2516404), *getMemDoublePtr(0x581450, 11368)));
+	value = nox_protection_add_chop53_56FE30(value, nox_protection_mul_chop53_56FE30(*getMemDoublePtr(0x5D4594, 2516412), *getMemDoublePtr(0x581450, 11360)));
+	// The original repeats this shifted state, rather than the oldest state.
+	value = nox_protection_add_chop53_56FE30(value, nox_protection_mul_chop53_56FE30(*getMemDoublePtr(0x5D4594, 2516412), *getMemDoublePtr(0x581450, 11352)));
+	value = nox_protection_add_chop53_56FE30(value, *getMemDoublePtr(0x5D4594, 2516420));
+	double whole = floor(value);
+	*getMemDoublePtr(0x5D4594, 2516388) = value - whole;
+	*getMemDoublePtr(0x5D4594, 2516420) = nox_protection_mul_chop53_56FE30(whole, *getMemDoublePtr(0x581450, 11344));
 	return *getMemDoublePtr(0x5D4594, 2516388);
 }
 
 //----- (0056FF00) --------------------------------------------------------
 void sub_56FF00(int a1) {
-	int v1;            // eax
-	unsigned char* v2; // ecx
-	unsigned int v3;   // eax
-	int v4;            // esi
-
-	v1 = a1;
-	if (!a1) {
-		v1 = -1;
+	uint32_t seed = (uint32_t)a1;
+	if (!seed) {
+		seed = UINT32_MAX;
 	}
-	v2 = getMemAt(0x5D4594, 2516388);
-	do {
-		v2 += 8;
-		v3 = (((v1 << 13) ^ (unsigned int)v1) >> 17) ^ (v1 << 13) ^ v1;
-		v1 = (32 * v3) ^ v3;
-		*((double*)v2 - 1) = (double)(unsigned int)v1 * *getMemDoublePtr(0x581450, 11344);
-	} while ((int)v2 < (int)getMemAt(0x5D4594, 2516428));
-	v4 = 19;
-	do {
+	for (int i = 0; i < 5; ++i) {
+		seed ^= seed << 13;
+		seed ^= seed >> 17;
+		seed ^= seed << 5;
+		*getMemDoublePtr(0x5D4594, 2516388 + 8 * i) = (double)seed * *getMemDoublePtr(0x581450, 11344);
+	}
+	for (int i = 0; i < 19; ++i) {
 		nox_xxx_unkDoubleSmth_56FE30();
-		--v4;
-	} while (v4);
+	}
 	dword_5d4594_2516380 = 0;
 	*getMemU32Ptr(0x5D4594, 2516376) = 99;
 	dword_5d4594_2516372 = 100;
@@ -871,19 +886,12 @@ void sub_56FF00(int a1) {
 
 //----- (0056FF80) --------------------------------------------------------
 int sub_56FF80(int a1, int a2) {
-	long long v2; // rax
-	int result;   // eax
-
 	*getMemU32Ptr(0x5D4594, 2516376) = a2;
 	dword_5d4594_2516380 = a1;
-	dword_5d4594_2516372 = a2 - a1 + 1;
-	v2 = (long long)(nox_xxx_unkDoubleSmth_56FE30() * (double)*(unsigned int*)&dword_5d4594_2516372);
-	if ((unsigned int)v2 < *(int*)&dword_5d4594_2516372) {
-		result = dword_5d4594_2516380 + v2;
-	} else {
-		result = dword_5d4594_2516372 + dword_5d4594_2516380;
-	}
-	return result;
+	uint32_t width = (uint32_t)a2 - (uint32_t)a1 + 1u;
+	dword_5d4594_2516372 = width;
+	uint32_t value = (uint32_t)(int64_t)nox_protection_mul_chop53_56FE30(nox_xxx_unkDoubleSmth_56FE30(), (double)width);
+	return (int32_t)(dword_5d4594_2516380 + (value < width ? value : width));
 }
 
 //----- (00578B00) --------------------------------------------------------

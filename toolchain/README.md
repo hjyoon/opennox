@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R257: 서버 세션의 보호용 난수열 복원
+
+기준은 clean/pushed `60f321ab21654081d4da17b30545de0c2b4798e9`이며 goenv Go 1.26.9를 유지한다. 실제 newSession → 0056F1C0에서 쓰는 보호용 난수의 0056FE30/0056FF00/0056FF80 세 leaf만 수정한다. 버린 floor 반환값과 value-value 때문에 소수부가 항상 0이 되던 문제를 정수부·소수부로 분리하고, CRT의 precision53/게임의 toward-zero 연산을 국소 residual 계산으로 재현한다. 마지막 두 계수가 같은 shifted state를 읽는 원본 동작, 5개 seed word, 19회 warm-up, unsigned32 범위 wrap과 경계값을 유지한다. signed seed shift와 포인터의 signed32 종료 비교는 unsigned32 xorshift/고정 5칸 순회로 바꾼다. 게임/시각용 4096-word RNG·보호 노드 구조·게임/네트워크 프로토콜·전역 FP 환경은 바꾸지 않는다.
+
+변경 없는 GAME.EXE의 세 본체와 실제 CRT 초기화·floor·ftol·제어워드 helper를 외부 callback 대체 없이 실행해 9개 시드, 1,152회 draw, 360회 range의 원본 반환/상태/bounds를 확보했다. Unicorn이 예약 비트6을 생략한 0x023f/0x0e3f를 보고한다는 점을 별도 instruction trace로 확인했으며 처음의 0x027f 기대 진단 실패도 보존했다. 독립 math/big precision53/ToZero 모델이 같은 원본 입력을 검산한다. 원본 중복 state operand를 일반적인 PRNG 공식으로 바꾸지 않았다.
+
+동결 v2의 native 네 주소 배치 6,084조건은 수정 전 모두 불일치했고 수정 후 모두 원본과 일치한다. 일반 주소의 실제 CGo 호출도 시드 9개 모두 첫 상태값 0으로 퇴화했음을 재현했다. v1 C 비교기는 원본의 버린 floor 결과를 -Werror가 차단한 준비 실패이며 원문·로그를 남기고 별도 v2에서 해당 경고 옵션만 교정했다. 입력·기대값·assertion은 유지한다. 실제 CGo GREEN, 공식 cgocheck2/race/checkptr2 count3, 별도 UBSan 6,084조건과 canonical 다섯 모드의 기존 모든 ID/action/count/package 보존은 `audit-body-v1.log`의 실제 terminal로 판정한다. 독립 C 실행 파일에 Go sanitizer가 적용됐다고 주장하지 않는다.
+
+자료는 `/private/tmp/opennox-protection-rng-r257.Xc5Ghv`다. production 한 파일·새 회귀 세 파일·README prefix만 커밋하고 직후 origin port/go1.26-multiarch로 push한다. 새 clean ARM64 네 제품·일반/HD 공식 서버와 고정 Host Load 8화면은 푸시 후 release receipt로 별도 판정하며 실행하지 않은 검사를 완료로 세지 않는다. R256 로컬 접속 및 R255 공개 여섯 주소의 당시 결과는 과거 기록이며 이번 공개 재접속으로 세지 않는다. 개인 Host Load 지속 반투명 현상의 원인·해결을 주장하지 않는다. 기존 tests/YAML/PNG/oracle·원본 자산1,554개·개인 Save/설정·R134 HOLD·README suffix·INVENTORY를 유지한다. 캐시·전역 goenv/runtime/GC·최소 언어 버전·물리 GPU/가청 출력은 건드리지 않는다. 다른 미포팅 경로와 전체 목표는 미완료다.
+
 ## R256: 네트워크 설정 세 조회의 native 순회 경계
 
 기준은 clean/pushed `485709dc27cf782b784502b961bd1a6758eccb6c`이며 사용자 goenv Go 1.26.9를 유지한다. 실제 설정·전송률·게임 모드 조회 `00409A70/0040A710/004D0D50`의 signed32 주소 종료 비교 세 줄만 기존 카운터의 6/5/6칸 경계로 바꾼다. 서로 다른 두 모드 테이블의 순서, `0x17f0` 마스크, 첫 일치 선택, 중복 키, 기본 반환값 0/1/0과 기존 C/Go API·패킷 형식은 그대로다.

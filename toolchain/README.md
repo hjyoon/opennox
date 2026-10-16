@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R279: SDL OpenGL 컨텍스트 요청의 enum 영역 교정
+
+기준 clean/pushed revision은 `4f5bd7b25cb25ce1f74864619a3a81e199180737`이며 goenv Go 1.26.9를 유지한다. SDL 초기화가 프로필/플래그의 값인 CORE=1과 FORWARD_COMPATIBLE=2를 속성 키로 사용해 실제로 GREEN_SIZE=1, BLUE_SIZE=1을 요청하던 오류를 수정했다. 이제 PROFILE_MASK=21에 CORE=1, CONTEXT_FLAGS=20에 FORWARD_COMPATIBLE=2를 전달한다. OpenGL 버전3.3·doublebuffer·요청 순서·오류 문자열/%w·fail-fast·창 생성 위치와 기존 수명/정리 정책은 유지한다. 알파·업로드·셰이더·게임플레이 정책은 바꾸지 않는다. 근거는 동결한 설치 SDL2 헤더와 Go 바인딩의 직접 setter 계약이다.
+
+다섯 호출을 동작 보존 helper로 추출한 뒤 같은 동결 fixture로 RED를 확인했다. 이것은 변경 없는 R278 전체 소스를 실행한 RED가 아니라 기존 잘못된 호출을 유지한 seam-only refactor다. 7 IDs 중2pass/5fail이었고 수정 후7pass, cgocheck2/race/checkptr2 count3는21pass다. 성공 요청값과 순서, enum 숫자 영역, 다섯 단계 각각의 오류 전달/중단을 검사하며 이 선별 테스트는 SDL Init·창·컨텍스트를 만들지 않는다. 기존 실제 dummy SDL resize/event 경로를 포함한 별도 headless 패키지는18pass다. canonical 일반·HD·strict 각각81483pass/47skip/40package, server·server-HD 각각76725pass/7skip/36package로 모두 actual0이며 합계397899pass/155skip다. 새 SDL fixture는 nested libs module에 있어 canonical ./... 집계와 별도로 검사했다. 이전 모든 ID/action/count/skip/package, 기존 Go test2422개, 보호 oracle/자산·개인 Save/config·R134 HOLD·PORTING-INVENTORY를 보존했다.
+
+REA 레포의 역공학 절차와 기존 기록을 재사용하고, 기존 LLVM으로 보존된 GAME.EXE의 chat32바이트·player owner3376바이트·optimus 장비 코드237바이트를 읽기 전용 대조했다. 각 PE mapping/명령어 byte/출력/종료값/전후 파일 identity를 보존했다. chat은 netcode lookup 결과를 bool로 바꾸며, 선택한 본체 이미지와 같은 animation/frame을 양쪽 장비 분기가 재사용하는 것은 현재 Go와 일치한다. 이 GAME.EXE에는 별도 optimus 코드 구간이 있으므로 수정 없는 stock 원본이라고 주장하지 않는다. raw 등록 tuple의 reader/stride/runtime activation은 미확인이다. 이번 LLVM 결과는 REA Evidence가 아니며 새 Ghidra 조회·강제 함수 등록·원본 게임/Unicorn 실행은 없다. R278의 실패한 REA close와 잔여 자료도 그대로다.
+
+별도 비공개 Go1.26.9 진단은 창·SDL·Cocoa 없이 실제 변경 없는 OpenGL backend를 호출했다. 첫 sandbox 실행은 CGLChoosePixelFormat의10017 invalid CoreGraphics connection에서 actual1로 끝났고 그대로 보존했다. 동일 binary를 승인된 별도 권한 경계/새 로그에서 실행하자 Apple M4·OpenGL4.1 Metal에서 실제 texture upload와 셰이더/FBO readback16픽셀이 모두 일치했다. GL texture의 bit15 alpha는 Nox 논리 alpha와 반대지만, 관찰된 blend-disabled 상태에서 RGB는 premultiply되거나 배경과 섞이지 않았다. 상하 반전·clear·원본 word 불변·모든 context/resource 정리도 통과했다. 이는 windowless CGL4.1 제어 컨텍스트의 결과이며 SDL의 실제 협상값·게임 창 framebuffer/합성·개인 Host Load 반투명 원인/해결 증거는 아니다. 강제 불투명 처리나 alpha 반전을 추가하지 않았다.
+
+자료는 `/private/tmp/opennox-player-owner-r279.3GNvQT`다. source 감사 SHA는 `68ce2136d82928432e2ecb08e60032001c8cb5ab2b766592c2ff584f9f01f209`, CGL 감사 SHA는 `b963269d2835978ffef18a62dc129359c217fc2b1d7e4b712ea7ee030f8f2e52`다. source auditor v1은 controller의 여러 JSON 줄을 한 문서로 읽는 문제를 실행 전에 찾아 보존하고 마지막 summary 줄만 읽는 v2를 사용했다. RED helper 보관본의 추가 마지막 LF 한 개도 실제 RED 입력과 byte-identical이라고 주장하지 않고 구분했다. 커밋 직후 push하며 clean ARM64 네 제품·일반/HD 공식 서버 native quit·기존 mock-clock Host Load 여덟 기준 화면은 푸시 후 별도 receipt로 판정한다. 새 공개 호스트 접속·WAN/NAT·자연 client application 종료·가청 출력을 인증하지 않는다.
+
+전체 포팅 추정은 빌드/ABI15×95 + 게임플레이25×80 + 렌더/UI15×80 + 오디오10×85 + 호스팅15×85 + 캠페인15×60 + 장시간/릴리스5×50을100으로 나눈79%, 약80%를 유지한다. 영역 성숙도의 공학적 판단이며 테스트 개수의 완료율이 아니다. 지속 반투명·전체 자연 campaign/Quest·창 합성·장시간 통합과 기존 보류 항목은 미완료다.
+
 ## R278: 원본 RGB555 조명 배율과 밝기 DWORD 저장 복구
 
 기준 clean/pushed revision은 `d4578e367c29256e3f135392396c085ef9a0d6f0`이며 goenv Go 1.26.9를 유지한다. packed 색상 setter 세 경로가 display용 `ColorNRGBA` 대신 기존 raster `SplitColor`를 사용하도록 교정했다. 원본 mode1의 RGB555 최대 성분은248이며255로 확장하지 않는다. packed white의 Flag16도 원본처럼 false다. 직접 RGB setter는255 성분과 full-white Flag16을 그대로 유지한다. 두16비트 밝기 필드는 Go/C에서 하나의 uint32로 합쳐 원본처럼 낮은 byte에 결과를 쓰고 상위24비트를 지운다. 구조체 크기와 뒤따르는 alpha 위치는 유지하며 알파 분기·일반 RGB 조명·색상 라이브러리의 display 변환은 변경하지 않는다.

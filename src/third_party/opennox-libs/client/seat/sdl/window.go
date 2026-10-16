@@ -30,20 +30,8 @@ func New(log *slog.Logger, title string, sz image.Point) (*Window, error) {
 		return nil, fmt.Errorf("SDL Initialization failed: %w", err)
 	}
 	sdl.SetHint(sdl.HINT_RENDER_SCALE_QUALITY, "1")
-	if err := sdl.GLSetAttribute(sdl.GL_CONTEXT_MAJOR_VERSION, 3); err != nil {
-		return nil, fmt.Errorf("cannot set OpenGL version: %w", err)
-	}
-	if err := sdl.GLSetAttribute(sdl.GL_CONTEXT_MINOR_VERSION, 3); err != nil {
-		return nil, fmt.Errorf("cannot set OpenGL version: %w", err)
-	}
-	if err := sdl.GLSetAttribute(sdl.GL_CONTEXT_PROFILE_CORE, 1); err != nil {
-		return nil, fmt.Errorf("cannot set OpenGL core: %w", err)
-	}
-	if err := sdl.GLSetAttribute(sdl.GL_CONTEXT_FORWARD_COMPATIBLE_FLAG, 1); err != nil {
-		return nil, fmt.Errorf("cannot set OpenGL forward: %w", err)
-	}
-	if err := sdl.GLSetAttribute(sdl.GL_DOUBLEBUFFER, 1); err != nil {
-		return nil, fmt.Errorf("cannot set OpenGL attribute: %w", err)
+	if err := configureGLAttributes(sdl.GLSetAttribute); err != nil {
+		return nil, err
 	}
 
 	win, err := sdl.CreateWindow(title, sdl.WINDOWPOS_UNDEFINED, sdl.WINDOWPOS_UNDEFINED, int32(sz.X), int32(sz.Y),

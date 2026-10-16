@@ -1,5 +1,17 @@
 # Go 도구체인 정책
 
+## R267: 서버 지역 판정 테이블의 native 주소 비교 복구
+
+기준 clean/pushed revision은 `28b601db9678122fa85e8b02b02e6a9f4200a881`이며 goenv Go 1.26.9를 유지한다. R266의 별도 native-clock/headless 입력 검사는 일반/HD 각각 Main Menu·Solo·Host Load의 여섯 경로다. 메인 메뉴의 직접 종료와 Solo/Host Load의 세션 Quit/Yes→메인 메뉴 application Quit/Yes 정상 반환을 확인했다. private driver의 서버 목록 Back ID 오기와 그 실패 기록을 보존했으며 게임 코드 변경이나 강제 mainloop stop으로 성공시킨 검사가 아니다. 개인 Host Load 지속 반투명의 해결 증거로 세지 않는다.
+
+이번 수정은 활성 서버 정보의 지역 필터와 기존 WOL 표시 경로가 사용하는 `sub_437860` 한 본체다. 사각형 테이블의 끝 주소를 `(int)`로 잘라 비교하면 native 주소 하위 32비트의 signed 경계를 걸친 배치에서 뒤쪽 지역을 검사하기 전에 0을 반환한다. GAME1_2.c의 비교 한 곳만 native unsigned-char pointer 비교로 바꾼다. 네 사각형·int16 경계의 signed 확장·int32 좌표·strict 내부 판정·첫 일치 우선·미일치 0·기존 C/Go API와 다른 로비/네트워크 동작은 유지한다. 현재 production ASLR에서 이 배치를 관찰했다거나 개인 반투명 현상 또는 원격 목록 서버의 접속 거부를 고쳤다는 주장은 아니다.
+
+해시가 고정된 원본 GAME.EXE의 00437860..004378A1 전체 65bytes를 읽고 수정 없는 x86 본체를 실행했다. stock·겹침·음수 int16·역전/퇴화 사각형의 경계 조합 1,504조건을 기록했고 원본 code·caller stack/callee-saved register·입력 테이블 불변을 검사했다. 선언된 변형 입력만 공급하며 외부 함수를 대체하지 않는다. 첫 sandbox 실행의 JIT SIGILL 기록은 남겼고, 동일 동결 진단을 sandbox 밖에서 실행한 actual0 원본 결과와 구분한다. 전체 Windows 게임 실행 인증은 아니다.
+
+같은 동결 새 13 IDs는 RED 9pass/4fail에서 GREEN 13pass로 바뀐다. >4GiB owned reservation의 signed 경계 앞 네 배치·DWORD wrap 경계·경계 뒤·일반 주소 등 일곱 배치에서 production C 본체의 10,528조건과 table/canary 불변을 확인한다. 별도 실제 CGo entry는 원본 1,504조건과 일치한다. UBSan 10,528조건과 공식 cgocheck2/race/checkptr2 count3의 39pass도 확인한다. 다섯 canonical 전체 모드의 이전 모든 ID/action/count/skip/package 보존 및 추가 13pass는 `audit-body-v1.log`의 실제 terminal과 대조한다. 기존 tests/YAML/PNG/oracle·R134 HOLD·원본 자산 1,554개·개인 Save/config·최소 언어 버전·전역 runtime/GC/FPU는 변경하지 않는다.
+
+자료는 `/private/tmp/opennox-world-region-r267.gl8Dft`에 보존한다. README에는 이 prefix만 추가해 이전 suffix를 byte-exact 유지하고 PORTING-INVENTORY.md는 수정하지 않는다. 이 비교 한 줄·새 회귀 세 파일·README만 커밋한 직후 origin port/go1.26-multiarch에 push한다. clean ARM64 네 제품·일반/HD 공식 server·고정 Host Load 여덟 화면은 후속 release receipt로 확인하며, 실행 전 성공으로 세지 않는다. 다른 원본 동작/GUI/API HOLD·개인 반투명·physical GPU/가청 출력·외부 inbound/NAT와 전체 port goal은 계속 미완료다.
+
 ## R264: Go 1.26.9 진단 명령의 실행 버전 검사 복구
 
 기준은 clean/pushed `0482dbb4ef00c81d1c18d31cc0c7a99ae34eccca`다. 저장소 pin·go.mod·noxbuild가 이미 goenv Go 1.26.9를 사용하지만 cgoabi/layoutaudit 두 main은 여전히 1.26.5만 허용했다. 실제 1.26.9로 빌드한 두 실행 파일은 도움말이 아닌 진단 호출에서 모두 exit2였다. 정확한 버전 검사와 exit2 계약을 제거하지 않고 두 requiredGoVersion 문자열만 1.26.9로 맞춘다. 최소 언어 버전·전역 goenv/runtime/GC·게임 코드·네트워크 프로토콜·과거 1.26.5 결과와 ABI 기준 문서는 수정하지 않는다.

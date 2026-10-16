@@ -3601,7 +3601,7 @@ int sub_437860(int a1, int a2) {
 	while (a1 <= *((short*)v3 - 2) || a1 >= *(short*)v3 || a2 <= *((short*)v3 - 1) || a2 >= *((short*)v3 + 1)) {
 		v3 += 8;
 		++result;
-		if ((int)v3 >= (int)getMemAt(0x587000, 87564)) {
+		if (v3 >= (unsigned char*)getMemAt(0x587000, 87564)) {
 			return 0;
 		}
 	}

@@ -11,6 +11,7 @@ import (
 	"strings"
 	"unsafe"
 
+	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/player"
 	"github.com/spf13/viper"
 
@@ -162,21 +163,34 @@ func gameex_makeExtensionPacket(buf []byte, opcode uint16, needsPlayer bool) {
 }
 
 func MixRecvFromReplacer(pc net.PacketConn, buf1 []byte, from netip.AddrPort) {
+	if len(buf1) < 4 {
+		return
+	}
 	op := binary.LittleEndian.Uint16(buf1[2:])
 	buf1 = buf1[4:]
 	switch op {
 	case 0: // warrior weapon scroll
 		if (legacy.Get_gameex_flags()>>3)&1 != 0 {
+			if len(buf1) < 5 {
+				return
+			}
 			ti := binary.LittleEndian.Uint32(buf1)
 			buf1 = buf1[4:]
 			v10 := noxServer.getObjectFromNetCode(int(ti))
+			if v10 == nil || !v10.Class().Has(object.ClassPlayer) || v10.UpdateData == nil {
+				return
+			}
+			pl := v10.ControllingPlayer()
+			if pl == nil {
+				return
+			}
 			v9 := buf1[0]
 			buf1 = buf1[1:]
 			v36 := (uint32(v9)>>4)&1 != 0
 			if v36 {
 				v9 &= 0xEF
 			}
-			if v10.ControllingPlayer().PlayerClass() == player.Warrior || v36 {
+			if pl.PlayerClass() == player.Warrior || v36 {
 				if legacy.Mix_MouseKeyboardWeaponRoll(v10, int8(v9)) != 0 {
 					var buf [4]byte
 					binary.LittleEndian.PutUint16(buf[0:], 0xF13A)
@@ -243,8 +257,14 @@ func MixRecvFromReplacer(pc net.PacketConn, buf1 []byte, from netip.AddrPort) {
 		}
 	case 9:
 		if (legacy.Get_gameex_flags()>>3)&1 != 0 {
+			if len(buf1) < 4 {
+				return
+			}
 			ti := binary.LittleEndian.Uint32(buf1)
 			v35 := noxServer.getObjectFromNetCode(int(ti))
+			if v35 == nil || !v35.Class().Has(object.ClassPlayer) || v35.UpdateData == nil || v35.ControllingPlayer() == nil {
+				return
+			}
 			legacy.PlayerDropATrap(v35)
 		}
 	}

@@ -1,5 +1,31 @@
 # Go 도구체인 정책
 
+## R270: 확장 UDP 수신 길이와 플레이어 명령 입력 검증
+
+기준 clean/pushed revision은 `8fa20beebf31cf89f05f03ff2a75b0f3934f65d4`이며 goenv Go 1.26.9를 유지한다. 실제 netstr.recvRaw는 F13A 패킷을 확장 처리기로 넘길 때 수신 길이가 아닌 16KB 버퍼 전체를 전달했다. 실제 수신 길이만 전달하고 선택적 callback이 없으면 확장 패킷을 무시한다. MixRecvFromReplacer는 4바이트 헤더, opcode0의 추가5바이트, opcode9의 추가4바이트를 검사하며 두 플레이어 명령은 존재하는 native Player 객체·update·controller에만 전달한다. 정상 payload·기능 flag·signed direction/force bit·서비스 호출·이름 변환·opcode8의 기존 미구현 tail·일반 전송/XOR/Join/reliability는 유지한다. 인증이나 네트워크 형식을 재설계하지 않는다.
+
+같은 동결 v2의 새12 IDs는 이전 production 두 파일 overlay에서2pass/10fail, 수정 후12pass다. 실제 loopback UDP로 세 buffer guard×열 가지2..16,384바이트 크기, 일반 datagram과 callback 없는 수신을 검사한다. 명령 handler는 짧은 헤더/본문과 잘못된 Player 참조, 빈 inventory에서 세 직업×256방향×옵션 on/off의3,072개 정상 형식 입력과 native record 불변을 검사한다. 첫 v1의16KB 송신은 macOS 기본 송신 버퍼에서 EMSGSIZE였고 원문·실패 receipt를 남겼다. v2는 테스트 소켓의 SetWriteBuffer(64KiB) 준비만 추가하며 같은 packet 크기·기대값·assertion과 OS 전역 설정은 유지한다. 공식 cgocheck2/race/checkptr2 count3는 기존 무기 전환·덫 드롭·이름 조회를 포함한39 IDs/117pass이며 새12 IDs의 반복36pass도 포함된다.
+
+canonical 일반·HD·strict는 각각81,220pass/47skip/40package, server·server-HD는 각각76,653pass/7skip/36package로 actual0이다. 기존 모든 ID/action/count/skip/package 보존과 새12 IDs만의 추가를 body audit에서 확인한다. 별도 native-clock/headless private test binary의 실제 UDP에서는 이전 일반의 두 바이트 접두부와 이전 HD의 없는 Player 번호가 각각 handler panic/exit2를 재현했다. 수정 일반·HD는 각각 잘못된 datagram15개→정상 명령3개→조회4개/정확한22바이트 응답2개(마지막 이름은 NUL 없는 payload)→live frame 진행→UI Quit/Yes의 native loop/process 정상 반환까지 actual0이다. 함수/응답/HP/위치/RNG/시계를 대체하지 않고 강제 mainloop stop도 사용하지 않는다. 이 private test binary를 변경 없는 release 제품 또는 원본 GameEx DLL 실행으로 주장하지 않는다.
+
+자료는 `/private/tmp/opennox-extension-validation-r270.pwrb1l`에 보존한다. 공용 임시 경로의 검증용 J00 저장본 부재로 release 입력 동결 v1이 실패한 기록을 남겼다. R269 동결 baseline runtime의632바이트/SHA `6e66f3eefb7778f94dad719bf2890099e4c1c81c77941cea11aa107dee4c9690`와 같은 저장본만 이번 root의 owned-source에 별도 복사했다. R134의 옛 manifest 부재로 body audit v1도 중단됐다. 남아 있던 당시 성공 ledger의 명령·네 원래 worktree 파일로 재계산한 전체 manifest SHA `2c845069b7f047e8d2bd537d8a6eb106b77a6733e300a749cc5553feaeb632df`가 정확히 일치함을 확인하고 같은 manifest 바이트를 복원했다. 네 사용자 보류 파일도 읽기 전용으로 별도 복사했다. 같은 동결 body 검증기의 새 실행 v2는 actual0이다. 최초 실패·입력·기대값과 R134 HOLD를 성공 결과로 덮어쓰거나 변경하지 않았다.
+
+production 두 Go 파일·새 회귀 두 파일·이 README prefix만 커밋하고 다음 도구에서 즉시 origin port/go1.26-multiarch에 push한다. 이전 README suffix·PORTING-INVENTORY.md·기존 tests/YAML/PNG/oracle·원본 자산1,554개·개인 Save/config·최소 언어 버전·전역 runtime/GC/FPU를 유지한다. 이번에 캐시나 기존 증거를 삭제하지 않았다. 푸시 후 clean ARM64 네 제품·일반/HD 공식 서버·고정 Host Load 여덟 화면은 후속 release receipt로 판정하며 실행 전 통과로 세지 않는다. 공개 게임에 잘못된 패킷을 보내거나 이번에 재접속한 검사가 아니다.
+
+전체 진행률은 아래 영역별 공학적 추정 모델의 가중합79%, 대략5% 단위로 표시하면 약 80%다. 가중치와 영역 점수 자체는 검증 증거·잔여 작업량에 대한 판단값이며 코드 함수 수나 테스트 통과율로 측정한 완료율·통계적 신뢰구간이 아니다. 이전 정성 추정을 명시적인 모델로 기록하며 이 점수가 전체 목표의 완료 감사를 대신하지 않는다.
+
+| 영역 | 가중치 | 추정 완성도 | 기여분(%p) |
+| --- | ---: | ---: | ---: |
+| 도구체인·빌드·ABI | 15% | 95% | 14.25 |
+| 게임 로직·전투·AI | 25% | 80% | 20 |
+| 화면·UI | 15% | 80% | 12 |
+| 음향 | 10% | 85% | 8.5 |
+| 호스팅·접속·프로토콜 | 15% | 85% | 12.75 |
+| 캠페인·맵·스크립트 | 15% | 60% | 9 |
+| 릴리스·장시간 통합 | 5% | 50% | 2.5 |
+
+계산은 Σ(가중치×영역별 추정 완성도)/100=79%다. 근거는 Go1.26.9 ARM64 네 제품의 기존 clean 검증과 이번 전체 회귀·실제 UDP, headless 일반/HD 로드 화면 및 native 종료다. 음향은 이번에 다시 실행한 결과가 아니라 R268의 stock1,780음원/44,663 ADPCM block·배경음 전체 loop·native-clock OpenAL-null 걷기/달리기 검증을 사용한다. 모든 음향 trigger나 실제 가청 출력을 인증하지 않는다. 개인 Host Load 지속 반투명·기존 GUI/screen HOLD·미포팅 예외 분기·전체 자연 진행 campaign/Quest·generic map CRC·대화 API·R134 HOLD·장시간 전체 조합·physical GPU/가청 출력 및 외부 inbound/NAT/WAN은 미완료 또는 미검증이다. 이 입력 검증으로 그 별도 문제들까지 고쳤다는 주장은 하지 않는다.
+
 ## R269: GameEx 플레이어 이름 조회의 native 포인터와 버퍼 복구
 
 기준 clean/pushed revision은 `f61d8873570ed1cdbcd004d86e0b1bcde665c3f8`이며 goenv Go 1.26.9를 유지한다. 실제 확장 UDP F13A의 opcode4/8이 호출하는 `playerInfoStructParser_0/1` 두 본체에서 Player 포인터의 int 축약·PE32 고정 offset·한 바이트 이름 버퍼를 제거한다. native Player 필드와 원래 28 UTF16-unit 이름 용량에 대응하는 char 배열을 사용하고, 두 번째 parser의 ObjectTeam 출력·CGo 선언·호출자 할당도 native pointer 폭으로 맞춘다. 기존 packet 형식·case-sensitive 첫 active-player 일치·불일치 시 출력 보존·문자별 low-byte 변환·opcode8의 미구현 postlookup tail은 유지한다. 원본 계약은 보존된 GameEx.c 소스이며 GAME.EXE 또는 없는 GameEx DLL의 원본 실행 oracle로 주장하지 않는다.

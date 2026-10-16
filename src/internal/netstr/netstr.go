@@ -352,7 +352,9 @@ func (g *Streams) recvRaw(pc net.PacketConn, buf []byte) (int, netip.AddrPort, e
 		return n, src, err
 	}
 	if n >= 2 && binary.LittleEndian.Uint16(buf[:2]) == 0xF13A { // extension packet code
-		g.OnExtPacket(pc, buf, src)
+		if g.OnExtPacket != nil {
+			g.OnExtPacket(pc, buf[:n], src)
+		}
 		return 0, src, nil
 	}
 	return n, src, nil

@@ -54,18 +54,19 @@ func New(log *slog.Logger, title string, sz image.Point) (*Window, error) {
 }
 
 type Window struct {
-	log      *slog.Logger
-	win      *sdl.Window
-	gl       opengl.Window
-	prevPos  image.Point
-	prevSz   image.Point
-	drawSz   image.Point
-	textInp  bool
-	mode     seat.ScreenMode
-	rel      bool
-	mpos     image.Point
-	onResize []func(sz image.Point)
-	onInput  []func(ev seat.InputEvent)
+	log       *slog.Logger
+	win       *sdl.Window
+	gl        opengl.Window
+	glContext glContextOwner
+	prevPos   image.Point
+	prevSz    image.Point
+	drawSz    image.Point
+	textInp   bool
+	mode      seat.ScreenMode
+	rel       bool
+	mpos      image.Point
+	onResize  []func(sz image.Point)
+	onInput   []func(ev seat.InputEvent)
 }
 
 func (win *Window) Close() error {
@@ -73,6 +74,7 @@ func (win *Window) Close() error {
 		return nil
 	}
 	win.gl.Close()
+	win.glContext.release(sdl.GLDeleteContext)
 	err := win.win.Destroy()
 	win.win = nil
 	win.onResize = nil
@@ -225,19 +227,15 @@ func (win *Window) notifyScreenResize() {
 }
 
 func (win *Window) initGL() error {
-	gtx, err := win.win.GLCreateContext()
-	if err != nil {
-		return fmt.Errorf("OpenGL creation failed: %w", err)
-	}
-	err = win.win.GLMakeCurrent(gtx)
-	if err != nil {
-		return fmt.Errorf("OpenGL bind failed: %w", err)
-	}
-	sdl.GLSetSwapInterval(0)
-	if err := win.gl.Init(win.log); err != nil {
-		return err
-	}
-	return nil
+	return win.glContext.initialize(
+		win.win.GLCreateContext,
+		win.win.GLMakeCurrent,
+		func() error {
+			sdl.GLSetSwapInterval(0)
+			return win.gl.Init(win.log)
+		},
+		sdl.GLDeleteContext,
+	)
 }
 
 func (win *Window) Present() {

@@ -1,5 +1,21 @@
 # Go 도구체인 정책
 
+## R280: SDL GL 컨텍스트 소유권과 종료·실패 정리 복구
+
+기준 clean/pushed revision은 `ca2fa22441cc68c1410dd6b41c1f858bd0507d64`이며 goenv Go 1.26.9를 유지한다. SDL `initGL`이 성공한 컨텍스트를 지역 변수로만 받고 버려 정상 Close와 bind/backend 초기화 실패 때 명시적으로 삭제하지 않던 경로를 교정했다. Window가 하나의 context owner를 보관하고, 정상 종료는 GL 객체 정리→컨텍스트 삭제→창 Destroy→SDL Quit 순서를 지킨다. 실패 시 생성된 컨텍스트만 먼저 정리하고 기존 New의 창/SDL unwind로 돌아간다. 삭제 전에 owner를 비워 중복·재진입 삭제를 막고, 보유 중 재초기화는 새 컨텍스트를 만들기 전에 거부한다. 기존 create/bind 오류 문자열과 %w, backend 오류 identity, swap-interval 오류 무시와 단일 창/current-thread 전제는 유지한다. alpha·셰이더·게임 로직·기존 attribute-error Quit 분기는 바꾸지 않는다.
+
+설치된 것은 SDL2 Classic이 아니라 SDL2-compat 2.32.72/SDL3 3.4.16이다. 버전 일치 [SDL 창 종료 소스](https://github.com/libsdl-org/SDL/blob/release-3.4.16/src/video/SDL_video.c#L4174)와 [Cocoa context 수명 소스](https://github.com/libsdl-org/SDL/blob/release-3.4.16/src/video/cocoa/SDL_cocoaopengl.m#L479)를 대조해 창 종료의 연결 해제와 별도 context destructor를 구분했다. 이는 소스에서 도출한 소유권 결함이며 실제 메모리 감소량이나 destructor 완료를 계측한 결과가 아니다. REA 레포의 증거·소유권 절차와 보존된 원본 분석을 재사용했으며, 이번에 원본 GAME.EXE·Unicorn·새 Ghidra 조회를 실행하지 않았다. 원본 selector의 더 좁은 실행 검증 계획은 준비만 했고 등록/runtime activation 경계는 여전히 미확인이다.
+
+기존 동작을 유지한 seam-only 추출본에서 같은 동결 Lifecycle fixture는 1pass/4fail(상위 ID 포함)이었고, 수정 후 5pass다. 변경 없는 이전 전체 소스를 실행한 RED라고 주장하지 않는다. 추가 Guards는 새 owner 계약 검사로 구분하며, 이전 R279 SDL 테스트와 합친 결과는 19pass, cgocheck2/race/checkptr2 count3는57pass다. fake callback/Go 소유 주소만 사용하므로 이 선별 회귀는 SDL 창이나 실제 destructor를 실행하지 않는다. 별도 실제 dummy SDL resize/event 경로는30pass다. canonical 일반·HD·strict 각각81483pass/47skip/40package, server·server-HD 각각76725pass/7skip/36package로 모두 actual0이며 합계397899pass/155skip다. 새 fixture는 nested libs module에 있어 별도로 검사했다. 이전 모든 ID/action/count/skip/package와 기존 Go test2423개, oracle/자산·개인 Save/config·R134 HOLD·PORTING-INVENTORY를 보존했다.
+
+비공개 native 진단은 검토·해시 고정한 additive overlay와 수정된 미커밋 소스를 사용했으며 clean release 제품이 아니다. 실제 New는 SetScreenMode를 통해 커서·크기·위치 등을 바꾸므로 호출하지 않았다. 처음부터 HIDDEN인64×32 SDL 창을 만드는 좁은 fixture에서 실제 configureGLAttributes/initGL/NewSurface/Update/Clear/Draw/Close를 호출했다. Show/Hide·focus·cursor/grab·fullscreen·Present/swap·대체 FBO 경로는 사용하지 않았다. 설치 헤더의 전체72바이트 SysWM 구조체를 C가 소유하고 Cocoa getter의 scalar만 복사했으며, 작은 cached Go SysWM union은 사용하지 않았다.
+
+승인된 CoreGraphics 권한 경계의 단일 실행은 actual0/timeout=false다. 실제 로드된 SDL2-compat/SDL3 경로와 Cocoa driver, Apple M4·GL4.1 Metal, SDL 조회 profile1/flags2와 별도 GL flags1, RGBA8·doublebuffer를 기록했다. Retina drawable은128×64이며 기본 BACK framebuffer의8×2 영역에서 원래 texture upload와 shader의16픽셀·상하 반전·clear·원본 word 불변이 모두 일치했다. gamma1/blend-disabled 상태를 유지했고 bit15 texture alpha를 논리 Nox alpha로 강제 교정하지 않았다. 기본 framebuffer도 alpha8을 보고했으며 alpha 저장이 없을 때의255 규칙은 별도로 명시했다. 22단계와7개 window sample에서 hidden/invisible/not-focused/not-key/not-main, Cocoa isOpaque=true·alphaValue=1·SDL opacity=1을 관찰했다. 실제 Close 후 owner와 current CGL은 비었지만 이는 owner 해제·unbinding 관찰이지 native destructor 완료/메모리 회수 증명이 아니다. 보이는 창의 합성·전체 New·개인 Host Load 반투명의 원인/해결·자연 client application 종료를 인증하지 않는다.
+
+자료는 `/private/tmp/opennox-sdl-context-r280.scBtxr`다. source 감사 SHA는 `53125f9d2f747084d793a31cc3747d56c69e6b6f9b5f34a620c1d6949559b60c`, native JSON SHA는 `b13d945d60bbc03ce537846c0962b3e8a89e5b557511a7394ad9daa6f22b91f2`다. 원본 기대값·실패 기록·이전 R279 봉인227개 자료를 유지했고 이번에 캐시를 삭제하지 않았다. SDL 두 production 파일·새 회귀·이 README prefix만 커밋한 직후 push한다. clean ARM64 네 제품·일반/HD 공식 서버 native quit·기존 mock-clock Host Load 여덟 기준 화면은 푸시 후 별도 receipt로 판정하며 미실행 검사를 완료로 세지 않는다. 새 공개 호스트 접속·WAN/NAT·가청 출력 인증은 없다.
+
+전체 포팅 추정은 빌드/ABI15×95 + 게임플레이25×80 + 렌더/UI15×80 + 오디오10×85 + 호스팅15×85 + 캠페인15×60 + 장시간/릴리스5×50을100으로 나눈79%, 약80%를 유지한다. 영역 성숙도의 공학적 판단이며 테스트 개수의 완료율이 아니다. 지속 반투명·전체 자연 campaign/Quest·보이는 창 합성·장시간 통합과 기존 보류 항목은 미완료다.
+
 ## R279: SDL OpenGL 컨텍스트 요청의 enum 영역 교정
 
 기준 clean/pushed revision은 `4f5bd7b25cb25ce1f74864619a3a81e199180737`이며 goenv Go 1.26.9를 유지한다. SDL 초기화가 프로필/플래그의 값인 CORE=1과 FORWARD_COMPATIBLE=2를 속성 키로 사용해 실제로 GREEN_SIZE=1, BLUE_SIZE=1을 요청하던 오류를 수정했다. 이제 PROFILE_MASK=21에 CORE=1, CONTEXT_FLAGS=20에 FORWARD_COMPATIBLE=2를 전달한다. OpenGL 버전3.3·doublebuffer·요청 순서·오류 문자열/%w·fail-fast·창 생성 위치와 기존 수명/정리 정책은 유지한다. 알파·업로드·셰이더·게임플레이 정책은 바꾸지 않는다. 근거는 동결한 설치 SDL2 헤더와 Go 바인딩의 직접 setter 계약이다.

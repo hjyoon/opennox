@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R271: REA로 원본 렌더 경로와 ARM64 산출물 교차 확인
+
+R270 커밋 `b9e6967bbe860623e1302955ab617937d2733ad1`의 즉시 push, canonical 다섯 모드, 실제 native-clock/headless UDP와 clean Go 1.26.9 ARM64 네 제품·일반/HD 서버·Host Load 여덟 기준 화면의 최종 감사가 통과했다. 1,260개 증거 파일의 최종 manifest SHA는 `8359ded19fc0f4fafdaba4c6660cf35830dfec9c84ed66ab20b285ba64b9321d`다.
+
+사용자가 지정한 `/Users/ghost/codex-sandbox/git/rea`의 commit `9d940c2f284cc6f75b27900336e52ceeba4aa2af`(REA 6.5.0)을 사용했다. 레포 지침과 reverse-engineer-anything workflow를 읽고, 고정 Node 24.18.0·npm 11.16.0을 이번 임시 경로에만 준비해 locked 의존성과 public launcher를 빌드했다. Node 배포본은 공식 checksum으로 검증했다. HUSKY=0으로 기존 hook 설정을 유지했고 REA tracked tree는 clean이다. 전역 Node·goenv·Go runtime/GC·Codex 설정은 바꾸지 않았다. Codex 등록까지 요구한 doctor의 실패는 없는 MCP 등록 때문이며, 별도 Ghidra-only doctor는 actual0이다. 등록을 수정하지 않고 public CLI와 별도 진단용 stdio MCP 클라이언트를 사용했다.
+
+REA inspect_go_binary가 R270의 일반·HD client/server 네 파일에서 Mach-O arm64/64-bit/little-endian, Go 1.26.9, CGO_ENABLED=1, Darwin/ARM64, 정확한 build tag와 clean b9e6967bb revision을 완전 파싱했다. 원본 metadata bytes/range·파일 SHA와 전체 Evidence를 보존한다. 내장 metadata 관찰은 컴파일러·의존성 진위나 실행 동작 인증이 아니며, R270의 실제 build/run 증거와 구분한다.
+
+기존 Ghidra 12.1.3 mac_arm_64와 JDK 21을 사용했다. REA 문서의 검증 기준은 12.1.4이고 12.1.x 호환 허용에 따라 실제 12.1.3을 기록한다. 첫 두 진단의 SwiftShims 기본 module-cache 쓰기 거부와 전체 실패 기록을 남겼다. 같은 동결 v2 진단을 승인된 실행 경로에서 수행한 v3는 actual0/74.77초다. 해시가 고정된 GAME.EXE를 private ephemeral project에 읽기 전용 import해 `004C4770` 1,860바이트 및 `004C4EC0` 127바이트의 Ghidra body 범위·의사코드·명령어·원본 file-offset 매핑을 확보했다. 원본을 실행하거나 코드/데이터를 패치하지 않았다. 다섯 Evidence 기록과 85,216바이트 snapshot을 별도 보존하고 close_binary 성공·소유 runtime 디렉터리 비움을 확인했다. snapshot은 primitive cache가 아닌 workflow 1개와 Evidence 5개를 보존하므로 임의의 새 native query가 엔진 없이 재생된다는 주장은 하지 않는다.
+
+높이 필드가 다를 수 있다는 초기 가설은 defs.h의 실제 z=104/field_26_1=106 정의와 원본 명령어를 대조해 기각했다. 원본 `004C4D20`은 backbuffer depth를 signed 16과 비교해 적외선 시야 alpha 128/255를 선택한다. 현재 Image16 기반·indexed-color 없는 native renderer의 16비트 이상 경로에서는 기존 255 선택이 해당 원본 분기와 일치한다. 사용되지 않는 옛 depth 메모리 값을 읽어 분기를 되살리지 않았다. Ghost alpha의 `004C4F1E`도 signed IDIV이며 decompiler의 uint 표현만으로 unsigned division으로 바꾸지 않았다. 이 제한된 정적 대조는 두 함수의 모든 경로 동등성이나 개인 Host Load 지속 반투명의 원인·해결을 입증하지 않는다.
+
+자료와 재사용 가능한 public MCP 진단은 `/private/tmp/opennox-rea-r271.ku5G22`에 보존한다. 게임 production·기존 회귀/기대값/YAML/PNG/oracle·원본 자산·개인 Save/config·R134 HOLD·PORTING-INVENTORY.md는 변경하지 않으며 이 README prefix만 추가한다. 기존 native player-status 회귀의 일반·HD·엄격 재실행은 별도 terminal/audit로 판정한다. 전체 진행률은 R270의 명시적 가중 모델 79%, 약 80%를 유지한다. REA 준비나 정적 분석만으로 완료율을 올리지 않는다. 개인 반투명·전체 자연 진행 campaign/Quest·WAN/NAT·장시간 통합·physical GPU/가청 출력과 별도 보류 항목은 미완료다.
+
 ## R270: 확장 UDP 수신 길이와 플레이어 명령 입력 검증
 
 기준 clean/pushed revision은 `8fa20beebf31cf89f05f03ff2a75b0f3934f65d4`이며 goenv Go 1.26.9를 유지한다. 실제 netstr.recvRaw는 F13A 패킷을 확장 처리기로 넘길 때 수신 길이가 아닌 16KB 버퍼 전체를 전달했다. 실제 수신 길이만 전달하고 선택적 callback이 없으면 확장 패킷을 무시한다. MixRecvFromReplacer는 4바이트 헤더, opcode0의 추가5바이트, opcode9의 추가4바이트를 검사하며 두 플레이어 명령은 존재하는 native Player 객체·update·controller에만 전달한다. 정상 payload·기능 flag·signed direction/force bit·서비스 호출·이름 변환·opcode8의 기존 미구현 tail·일반 전송/XOR/Join/reliability는 유지한다. 인증이나 네트워크 형식을 재설계하지 않는다.

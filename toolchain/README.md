@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R281: 마법벽 원격 전송의 native Player 준비 플래그 복구
+
+기준 clean/pushed revision은 `e5691d48b81f37f9999e47704d8011150ecf4c2f`이며 goenv Go 1.26.9를 유지한다. 활성 `spellWall.changeOrAddRemoteWalls`가 원래 PE32 Player+3680을 native 포인터에서도 직접 읽던 조건 한 줄을 `pl.Field3680&0x10`으로 교정했다. 현재64비트 상태 필드는4976이며 옛3680은 Armor[1].Field0의 낮은 byte다. 준비된 원격 플레이어의 마법벽 생성 패킷이 장비 데이터 때문에 누락될 수 있었다. 실제 바깥 갱신 경로는 이미 준비 상태를 검사하므로 helper의 반대 조건 검사를 자연 게임의 unready 전송 재현으로 확대하지 않는다. host31 제외·매 벽마다 live 상태 재조회·전송 뒤 delivery bit·중복 방지·6byte opcode61 payload와 기존 callback 인수/실패 반환 정책은 유지한다. 알파·화면 합성이나 개인 Host Load 반투명 수정이 아니다.
+
+근거는 보존된 `e131da6e^:src/legacy/GAME4.c`의 `sub_4FF7B0` 디컴파일 소스와 현재32/64비트 Player 레이아웃이다. 이 함수의 새 GAME.EXE 명령어 인증을 주장하지 않는다. 사용자 지정 REA 레포의 역공학·증거 절차 및 이전 REA helper/LLVM selector·chat/owner 자료를 재사용해 실제 selector/helper/chat을 위한56조건의 제한된 실행 도구도 준비·동결했다. 이번에는 Python import/API probe·Unicorn·새 REA/Ghidra 조회·원본 EXE를 실행하지 않았고 선택기/Go/픽셀 동등성을 완료로 세지 않는다. 봉인 후 실행할 때는 새 임시 root의 검토된 후속 버전이 필요하다. 기존 renderer의 incoming-alpha/early-return 정책을 임의로 초기화하지 않았다.
+
+수정 없는 기존 production에 새 테스트만 추가한 RED는4조건과 상위 ID의5fail이다. 동일 byte의 fixture는 교정 후10pass, HD10pass, 실제 cgocheck2/race/checkptr2 count3는30pass다. 실제 helper→기존 NetSendPacketXxx0 forwarding을 실행하지만 외부 sender는 fake이며 socket·맵·자연 멀티플레이 전송 인증은 아니다. C-owned Player의 상태/옛 byte 반대 조합·상위 bit·전체 record 불변, 정확한 payload/호출 순서, host/empty/dedup과 callback 사이 상태 변경을 검사한다. 기존 테스트·기대값을 바꾸지 않았다.
+
+canonical 일반·HD·strict는 각각81493pass/47skip/40package, server·server-HD는 각각76735pass/7skip/36package로 모두 actual0이며 합계397949pass/155skip다. 이전 모든 ID/action/count/skip/package와 기존 Go test2424개·oracle/자산·개인 Save/config·R134 HOLD4개·PORTING-INVENTORY를 보존했다. 자료는 `/private/tmp/opennox-selector-oracle-r281.nh1PXX`이며 source 감사 SHA는 `f1dd90e74e63231062a774d99318562f6c640c3a01fcadec80e0f6e84a195d90`다. private validation 감사 v1의 child receipt에서 args 제외 비교 누락을 실행 전에 찾아 보존하고 v2만 실행했다. 기능/fixture/실패 기록은 이 교정으로 바꾸지 않았다. 이번에 캐시를 삭제하지 않았다.
+
+이 한 줄 production·새 테스트·README prefix만 커밋한 직후 push한다. clean ARM64 네 제품·일반/HD 공식 서버 native quit·기존 mock-clock Host Load 여덟 기준 화면은 푸시 후 별도 receipt로 판정하며 미실행 검사를 완료로 세지 않는다. 새 공개 호스트 접속·WAN/NAT·가청 출력·보이는 화면 합성·자연 client application 종료나 개인 지속 반투명 해결을 인증하지 않는다.
+
+전체 포팅 추정은 빌드/ABI15×95 + 게임플레이25×80 + 렌더/UI15×80 + 오디오10×85 + 호스팅15×85 + 캠페인15×60 + 장시간/릴리스5×50을100으로 나눈79%, 약80%를 유지한다. 영역 성숙도의 공학적 판단이며 테스트 개수의 완료율이 아니다. 전체 자연 campaign/Quest·개인 반투명·WAN/NAT·장시간 통합과 기존 보류 항목은 미완료다.
+
 ## R280: SDL GL 컨텍스트 소유권과 종료·실패 정리 복구
 
 기준 clean/pushed revision은 `ca2fa22441cc68c1410dd6b41c1f858bd0507d64`이며 goenv Go 1.26.9를 유지한다. SDL `initGL`이 성공한 컨텍스트를 지역 변수로만 받고 버려 정상 Close와 bind/backend 초기화 실패 때 명시적으로 삭제하지 않던 경로를 교정했다. Window가 하나의 context owner를 보관하고, 정상 종료는 GL 객체 정리→컨텍스트 삭제→창 Destroy→SDL Quit 순서를 지킨다. 실패 시 생성된 컨텍스트만 먼저 정리하고 기존 New의 창/SDL unwind로 돌아간다. 삭제 전에 owner를 비워 중복·재진입 삭제를 막고, 보유 중 재초기화는 새 컨텍스트를 만들기 전에 거부한다. 기존 create/bind 오류 문자열과 %w, backend 오류 identity, swap-interval 오류 무시와 단일 창/current-thread 전제는 유지한다. alpha·셰이더·게임 로직·기존 attribute-error Quit 분기는 바꾸지 않는다.

@@ -173,7 +173,7 @@ func (sp *spellWall) changeOrAddRemoteWalls(pl *server.Player) {
 	}
 	bit := uint32(1) << pl.PlayerInd
 	for mw := sp.list; mw != nil; mw = mw.Next24 {
-		if int32(*(*uint8)(unsafe.Add(unsafe.Pointer(pl), 3680)))&0x10 != 0 {
+		if pl.Field3680&0x10 != 0 {
 			if mw.PlayerBits16&bit == 0 {
 				wl := mw.Wall8
 				var buf [6]byte

@@ -40,18 +40,11 @@ int nox_thing_maiden_draw(uint32_t* a1, nox_drawable* dr) {
 			return nox_thing_monster_draw(a1, dr);
 		}
 	}
-	int v5 = v2->data_update;
-	int v6 = 0;
-	uint8_t* v7 = (uint8_t*)(v5 + 2077);
-	int v8;
-	do {
-		LOBYTE(v3) = v7[1];
-		LOBYTE(v5) = *(v7 - 1);
-		v8 = v6 + 1;
-		LOBYTE(v6) = *v7;
-		nox_draw_setMaterial_4340A0(v8, v5, v6, v3);
-		v6 = v8;
-		v7 += 3;
-	} while (v8 < 6);
+	// Keep the cached color pointer and live per-slot loads. The update
+	// record is native-aligned, not a PE32 record at byte offset 2076.
+	const nox_color3_t* colors = nox_client_maidenColors_native_4BBF90((nox_object_t*)v2);
+	for (int i = 0; i < 6; ++i) {
+		nox_draw_setMaterial_4340A0(i + 1, colors[i].r, colors[i].g, colors[i].b);
+	}
 	return nox_thing_monster_draw(a1, dr);
 }

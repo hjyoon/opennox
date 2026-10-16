@@ -1,5 +1,15 @@
 # Go 도구체인 정책
 
+## R254: MaidenDraw 미리보기 색상 포인터의 native 경계
+
+Goenv Go 1.26.9를 유지한다. 실제 등록된 MaidenDraw의 GameFlag22(0x200000) 분기가 data_update 포인터를 int로 줄이고 PE32의 2076바이트 위치에서 RGB를 읽던 문제를 고쳤다. Go의 native MonsterUpdateData.Color 주소를 C에 전달하며, 한 번 캐시한 포인터에서 여섯 색상을 순서대로 읽는다. extent 검색·일반 NPC registry 분기·material slot 1..6·후속 MonsterDraw·반환값·palette를 초기화하지 않는 동작은 유지한다. 클래스나 nil guard를 새로 넣지 않으며 update record나 색상 배열을 복사하지 않는다. 이 미리보기 수정은 플레이어 Host Load 반투명 현상의 원인 확인이나 해결을 의미하지 않는다.
+
+변경 없는 GAME.EXE 004BBF90..004BC071의 226바이트를 144조건 실행했다. flag·registry·material·MonsterDraw는 통제 서비스이며 RGB는 실제 setter의 byte 경계에서 비교한다. 빈 목록·첫/중간/끝/없는/중복 extent·NPC 유무·두 색상 조합·색상 callback 중 뒤쪽 색상/객체 update pointer 교체·NULL viewport·0/1/-7 반환을 포함한다. 같은 동결 v3 C callback 검사는 4GiB 위 native 주소에서 수정 전 cgo SIGSEGV, 수정 후 145pass이며 엄격 cgocheck2/race/checkptr2 count3도 통과한다. 첫 두 새 회귀 초안의 구문·타입 컴파일 실패는 원문과 별도로 보존하고 게임 크래시 재현으로 세지 않는다. canonical 일반·HD·strict·server·server-HD의 이전 모든 ID/action/count/package 보존은 `/private/tmp/opennox-maiden-palette-r254.IyIHuT/audit-body-v1.log`에서 판정한다. 실제 stock sprite raster·임의 잘못된 포인터·Windows 전체 실행의 인증은 아니다.
+
+별도 R250의 새 캐릭터/저장 로드 12조건과 R252의 공개 observer 종료 후 소유 저장본 로드 6조건에서 상태·이동·UI 종료는 통과했다. R253의 세 HD 저장본은 1,020회 실제 이미지 선택에서 NULL 이미지가 없었고 27개 idle film을 직전 present/draw와 대응했다. 수동 검토는 각 film의 첫/끝 여섯 PNG에 한정한다. R252의 HD 두 캡처를 캐릭터 미확인으로 읽은 판단은 독립 재검토에서 오판으로 확인했으며 기존 PNG·리뷰·exit1 gate는 변경하지 않았다. 진단 logging이 시간/RNG seed와 spawn 선택에 영향을 줄 수 있으므로 서로 다른 실행의 pixel 동일성이나 해당 개인 저장본·physical GPU의 정상 동작은 주장하지 않는다. 지속 반투명은 아직 재현/해결로 판정하지 않는다.
+
+R251에서 당시 승인된 이전 공개 주소 여섯 곳은 3 ready/3 timeout 또는 deadline이었고 일반/HD 별도 로컬 host/client의 Join·spawn·이동·UI 종료를 확인했다. 새 목록 API 거부/XWIS timeout을 목록 전체나 모든 게임 서버 접속 불가로 해석하지 않으며 이번 R254에서 공개 호스트를 재접속했다고 주장하지 않는다. 커밋 직후 push 후 clean ARM64 네 제품·일반/HD 공식 서버·기존 고정 Host Load 여덟 화면은 release receipt로 별도 판정한다. 기존 테스트·YAML·PNG·oracle·원본 1,554개·개인 Save/config·R134 HOLD·이전 README suffix·INVENTORY를 보존한다. 캐시·전역 goenv/runtime/GC·최소 언어 버전은 바꾸지 않는다. 개인 반투명·전체 campaign/Quest·generic maps CRC·다른 GUI/AI/API·physical GPU/가청 출력과 전체 포팅은 미완료다.
+
 ## R249: 맵 섹션 저장의 CRC 호출과 XOR 길이 backpatch
 
 Goenv Go 1.26.9를 유지한다. 실제 게임의 00426E20 포팅에서 이름 길이 1바이트와 NUL 종료 문자열을 한 번에 Write하던 부분을 원본의 두 I/O item으로 분리했다. CRC는 호출마다 반전되므로 같은 바이트를 합쳐 쓰는 것만으로도 값이 달라진다. XOR SectionEnd는 쓰기 모드에서 nonzero offset을 무시하는 binfile seek wrapper 대신 원본처럼 raw file seek로 길이를 제자리에 기록하고 끝 위치로 복귀한다. CRC 알고리즘·섹션 이름/순서·본문 serializer·중간 실패 시 미완결 섹션 유지·일반 암호화 경로·게임/네트워크 프로토콜은 변경하지 않았다. legacy getter는 실제 C→Go 진입 검증만을 위한 것이다.

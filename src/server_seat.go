@@ -23,7 +23,8 @@ func (c *Client) DrawGeneral(a1 bool) error {
 	return nil
 }
 
-func (c *Client) freeSeat() {
+func (c *Client) freeSeat() error {
+	return nil
 }
 
 func (c *Client) gameResetVideoMode(inMenu, force bool) error {

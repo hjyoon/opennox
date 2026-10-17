@@ -235,6 +235,12 @@ func runArgs(args []string, loopFunc func() error) (gerr error) {
 		if err != nil {
 			return err
 		}
+		graphicsOwner := noxClient
+		defer func() {
+			if err := graphicsOwner.Close(); err != nil {
+				gerr = errors.Join(gerr, fmt.Errorf("close graphics: %w", err))
+			}
+		}()
 	}
 	if *fWindow {
 		dword_5d4594_805860 = false

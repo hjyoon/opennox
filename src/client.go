@@ -103,8 +103,15 @@ func (c *Client) GetCtrlEvent() legacy.CtrlEventHandler {
 }
 
 func (c *Client) Close() error {
-	c.freeSeat()
-	return nil
+	if c == nil || c.Client == nil {
+		return nil
+	}
+	// Surfaces must release their GL resources while the seat's context is alive.
+	if c.Win != nil {
+		c.Win.Close()
+		c.Win = nil
+	}
+	return c.freeSeat()
 }
 
 func (c *Client) SetStretch(v bool) {

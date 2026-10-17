@@ -132,13 +132,16 @@ func (c *Client) initSeat(sz image.Point) error {
 	return nil
 }
 
-func (c *Client) freeSeat() {
+func (c *Client) freeSeat() error {
 	e2e.inputToWindow = nil
 	e2e.scenarioToWindow = nil
 	if c.Seat != nil {
-		c.Seat.Close()
+		if err := c.Seat.Close(); err != nil {
+			return err
+		}
 		c.Seat = nil
 	}
+	return nil
 }
 
 func errorMessage(format string, args ...any) {

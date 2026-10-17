@@ -4942,8 +4942,7 @@ int nox_xxx_gen_524680(int a1, int a2, int a3) {
 
 //----- (00524950) --------------------------------------------------------
 int sub_524950(int a1, int a2, float* a3, int* a4) {
-	float v5; // [esp+Ch] [ebp-8h]
-	float v6; // [esp+10h] [ebp-4h]
+	float center[2];
 	nox_mapgen_decor_fill_legacy* fill = nox_mapgenDecorFillResolve((uint32_t)a2);
 	if (!fill) {
 		return 0;
@@ -4952,9 +4951,9 @@ int sub_524950(int a1, int a2, float* a3, int* a4) {
 	nox_xxx_tileGetDefByName_51D4D0(fill->tile_name);
 	sub_5245A0(a1, a3, *a4, a4[1]);
 	sub_544020(fill->object_name);
-	v5 = (double)*a4 * 16.263456 + *a3;
-	v6 = (double)a4[1] * 16.263456 + a3[1];
-	return sub_543680(&v5);
+	center[0] = (double)*a4 * ((double)0x1.04371ep+4f) + *a3;
+	center[1] = (double)a4[1] * ((double)0x1.04371ep+4f) + a3[1];
+	return sub_543680(&center[0]);
 }
 
 //----- (005249C0) --------------------------------------------------------
@@ -4974,10 +4973,8 @@ int sub_5249C0(int a1, int a2, float* a3, int* a4) {
 	int v16;    // ebp
 	int v17;    // eax
 	float v19;  // [esp+10h] [ebp-14h]
-	float v20;  // [esp+14h] [ebp-10h]
-	float v21;  // [esp+18h] [ebp-Ch]
-	float v22;  // [esp+1Ch] [ebp-8h]
-	float v23;  // [esp+20h] [ebp-4h]
+	float point[2];
+	float center[2];
 	int v24;    // [esp+34h] [ebp+10h]
 	nox_mapgen_decor_fill_legacy* fill = nox_mapgenDecorFillResolve((uint32_t)a2);
 	if (!fill) {
@@ -4991,23 +4988,23 @@ int sub_5249C0(int a1, int a2, float* a3, int* a4) {
 	v7 = a4[1];
 	v8 = 2 * v6;
 	v24 = 0;
-	v9 = (double)v6 * 32.526913;
+	v9 = (double)v6 * ((double)0x1.04371ep+5f);
 	v10 = v5 - 2 * v6;
 	v19 = v9;
 	v11 = v9 + *a3;
-	v21 = a3[1];
-	v20 = v11;
+	point[1] = a3[1];
+	point[0] = v11;
 	if (v7 / 2 >= 0) {
 		do {
-			sub_5245A0(a1, &v20, v10, 1);
+			sub_5245A0(a1, &point[0], v10, 1);
 			v12 = *v4;
 			v10 += 2;
 			v13 = v10 < *v4;
-			v20 = v20 - 32.526913;
-			v21 = v21 + 32.526913;
+			point[0] = point[0] - ((double)0x1.04371ep+5f);
+			point[1] = point[1] + ((double)0x1.04371ep+5f);
 			if (!v13) {
 				v10 = v12;
-				v20 = *a3;
+				point[0] = *a3;
 			}
 			++v24;
 		} while (v24 <= v4[1] / 2);
@@ -5015,27 +5012,27 @@ int sub_5249C0(int a1, int a2, float* a3, int* a4) {
 	v14 = v4[1];
 	v15 = *v4 - v8;
 	v16 = 0;
-	v20 = v19 + *a3;
-	v21 = (double)(v14 - 1) * 32.526913 + a3[1];
+	point[0] = v19 + *a3;
+	point[1] = (double)(v14 - 1) * ((double)0x1.04371ep+5f) + a3[1];
 	if (v14 / 2 > 0) {
 		do {
-			sub_5245A0(a1, &v20, v15, 1);
+			sub_5245A0(a1, &point[0], v15, 1);
 			v17 = *v4;
 			v15 += 2;
 			v13 = v15 < *v4;
-			v20 = v20 - 32.526913;
-			v21 = v21 - 32.526913;
+			point[0] = point[0] - ((double)0x1.04371ep+5f);
+			point[1] = point[1] - ((double)0x1.04371ep+5f);
 			if (!v13) {
 				v15 = v17;
-				v20 = *a3;
+				point[0] = *a3;
 			}
 			++v16;
 		} while (v16 < v4[1] / 2);
 	}
 	sub_544020(fill->object_name);
-	v22 = (double)*v4 * 16.263456 + *a3;
-	v23 = (double)v4[1] * 16.263456 + a3[1];
-	return sub_543680(&v22);
+	center[0] = (double)*v4 * ((double)0x1.04371ep+4f) + *a3;
+	center[1] = (double)v4[1] * ((double)0x1.04371ep+4f) + a3[1];
+	return sub_543680(&center[0]);
 }
 
 //----- (00524B50) --------------------------------------------------------
@@ -5057,10 +5054,8 @@ void sub_524B50(int a1, int a2, float* a3, int* a4) {
 	signed int v19; // eax
 	int v20;        // ebp
 	float v21;      // ecx
-	float v22;      // [esp+4h] [ebp-10h]
-	float v23;      // [esp+8h] [ebp-Ch]
-	float v24;      // [esp+Ch] [ebp-8h]
-	float v25;      // [esp+10h] [ebp-4h]
+	float point[2];
+	float center[2];
 	int v26;        // [esp+24h] [ebp+10h]
 	signed int v27; // [esp+24h] [ebp+10h]
 	nox_mapgen_decor_fill_legacy* fill = nox_mapgenDecorFillResolve((uint32_t)a2);
@@ -5072,8 +5067,8 @@ void sub_524B50(int a1, int a2, float* a3, int* a4) {
 	if (*a4 >= 3 && a4[1] >= 3) {
 		nox_xxx_tileGetDefByName_51D4D0(fill->tile_name);
 		v5 = *a4 - 2;
-		v22 = *a3 + 32.526913;
-		v23 = a3[1] + 32.526913;
+		point[0] = *a3 + ((double)0x1.04371ep+5f);
+		point[1] = a3[1] + ((double)0x1.04371ep+5f);
 		if (v5 < 1) {
 			v5 = 1;
 		}
@@ -5081,59 +5076,59 @@ void sub_524B50(int a1, int a2, float* a3, int* a4) {
 		if (v7 < 1) {
 			v7 = 1;
 		}
-		sub_5245A0(a1, &v22, v5, v7);
+		sub_5245A0(a1, &point[0], v5, v7);
 		v8 = *a4;
 		if ((int)*a4 < 4) {
 			if (v8 == 3) {
 				v15 = a3[1];
-				v22 = *a3 + 32.526913;
-				v23 = v15;
-				sub_5245A0(a1, &v22, 1, 1);
-				v23 = v23 + 65.053825;
-				sub_5245A0(a1, &v22, 1, 1);
+				point[0] = *a3 + ((double)0x1.04371ep+5f);
+				point[1] = v15;
+				sub_5245A0(a1, &point[0], 1, 1);
+				point[1] = point[1] + ((double)0x1.04371ep+6f);
+				sub_5245A0(a1, &point[0], 1, 1);
 			}
 		} else {
 			v9 = nox_xxx_mapGenRandFunc_526AC0(1, v8 - 3);
 			v10 = v9;
 			v11 = nox_xxx_mapGenRandFunc_526AC0(1, *a4 - v9 - 2);
-			v23 = a3[1];
-			v22 = (double)v11 * 32.526913 + *a3;
-			sub_5245A0(a1, &v22, v10, 1);
+			point[1] = a3[1];
+			point[0] = (double)v11 * ((double)0x1.04371ep+5f) + *a3;
+			sub_5245A0(a1, &point[0], v10, 1);
 			v12 = nox_xxx_mapGenRandFunc_526AC0(1, *a4 - 3);
 			v13 = v12;
 			v14 = nox_xxx_mapGenRandFunc_526AC0(1, *a4 - v12 - 2);
 			v26 = a4[1] - 1;
-			v22 = (double)v14 * 32.526913 + *a3;
-			v23 = (double)v26 * 32.526913 + a3[1];
-			sub_5245A0(a1, &v22, v13, 1);
+			point[0] = (double)v14 * ((double)0x1.04371ep+5f) + *a3;
+			point[1] = (double)v26 * ((double)0x1.04371ep+5f) + a3[1];
+			sub_5245A0(a1, &point[0], v13, 1);
 		}
 		v16 = v4[1];
 		if (v16 < 4) {
 			if (v16 == 3) {
 				v21 = *a3;
-				v23 = a3[1] + 32.526913;
-				v22 = v21;
-				sub_5245A0(a1, &v22, 1, 1);
-				v22 = v22 + 65.053825;
-				sub_5245A0(a1, &v22, 1, 1);
+				point[1] = a3[1] + ((double)0x1.04371ep+5f);
+				point[0] = v21;
+				sub_5245A0(a1, &point[0], 1, 1);
+				point[0] = point[0] + ((double)0x1.04371ep+6f);
+				sub_5245A0(a1, &point[0], 1, 1);
 			}
 		} else {
 			v17 = nox_xxx_mapGenRandFunc_526AC0(1, v16 - 3);
 			v18 = v17;
 			v19 = nox_xxx_mapGenRandFunc_526AC0(1, v4[1] - v17 - 2);
-			v22 = *a3;
-			v23 = (double)v19 * 32.526913 + a3[1];
-			sub_524610(a1, &v22, v18);
+			point[0] = *a3;
+			point[1] = (double)v19 * ((double)0x1.04371ep+5f) + a3[1];
+			sub_524610(a1, &point[0], v18);
 			v20 = nox_xxx_mapGenRandFunc_526AC0(1, v4[1] - 3);
 			v27 = nox_xxx_mapGenRandFunc_526AC0(1, v4[1] - v20 - 2);
-			v22 = (double)(*v4 - 1) * 32.526913 + *a3;
-			v23 = (double)v27 * 32.526913 + a3[1];
-			sub_524610(a1, &v22, v20);
+			point[0] = (double)(*v4 - 1) * ((double)0x1.04371ep+5f) + *a3;
+			point[1] = (double)v27 * ((double)0x1.04371ep+5f) + a3[1];
+			sub_524610(a1, &point[0], v20);
 		}
 		sub_544020(fill->object_name);
-		v24 = (double)*v4 * 16.263456 + *a3;
-		v25 = (double)v4[1] * 16.263456 + a3[1];
-		sub_543680(&v24);
+		center[0] = (double)*v4 * ((double)0x1.04371ep+4f) + *a3;
+		center[1] = (double)v4[1] * ((double)0x1.04371ep+4f) + a3[1];
+		sub_543680(&center[0]);
 	}
 }
 

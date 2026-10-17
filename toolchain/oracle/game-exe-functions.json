@@ -16541,6 +16541,27 @@
       "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 00524610; uncovered fragment retained without replacing any previous sealed range."
     },
     {
+      "name": "mapgen_fill_points_524950_r305_body",
+      "address": "0x00524950",
+      "size": 104,
+      "sha256": "59fcb6cf7421b0137417c7b4c36097af7f337f3bbcf49dc0a0cfe961b208ebc7",
+      "purpose": "Complete original GAME.EXE fill producer body, observed by REA/Ghidra and independently matched to immutable PE bytes; contiguous two-float callback coordinates, original binary32 arithmetic operands, signed bounds, and callback/RNG order for native R305 source-bound regression."
+    },
+    {
+      "name": "mapgen_fill_points_5249C0_r305_body",
+      "address": "0x005249C0",
+      "size": 385,
+      "sha256": "73b96b8a8bce039ca0bdbacaa03d4b716e5287097dc3800d286376e40d0ee0c3",
+      "purpose": "Complete original GAME.EXE fill producer body, observed by REA/Ghidra and independently matched to immutable PE bytes; contiguous two-float callback coordinates, original binary32 arithmetic operands, signed bounds, and callback/RNG order for native R305 source-bound regression."
+    },
+    {
+      "name": "mapgen_fill_points_524B50_r305_body",
+      "address": "0x00524B50",
+      "size": 679,
+      "sha256": "2628ef8faeda0d78c60fb04dbd3811567336e4532f021b5fb4149cc448003852",
+      "purpose": "Complete original GAME.EXE fill producer body, observed by REA/Ghidra and independently matched to immutable PE bytes; contiguous two-float callback coordinates, original binary32 arithmetic operands, signed bounds, and callback/RNG order for native R305 source-bound regression."
+    },
+    {
       "name": "sub_5262F0",
       "address": "0x005262F0",
       "size": 594,
@@ -21217,6 +21238,13 @@
       "size": 56,
       "sha256": "dbd072d35720821654f5e0a6f155c56f24c27ec23ea00a84a5707a9fdbaa9731",
       "purpose": "the exact seven class/subclass pairs assigning Weapon/Wand, Armor, FieldGuide, Spell, Ability, Potion, and Food shop sort categories"
+    },
+    {
+      "name": "mapgen_fill_float32_583D18_r305",
+      "address": "0x00583D18",
+      "size": 4,
+      "sha256": "7c2f211ecf1eaa23c82143e71adea9cce19a5d3c3f45323cc0ef6a16b72cfdc0",
+      "purpose": "Original binary32 65.05382537841797 operand (0x42821B8F, exact 0x1.04371ep+6f), read by REA-decoded FADD instructions at 00524CA7 and 00524D9B in irregular fill producer 00524B50."
     },
     {
       "name": "monster_dodge_distance_epsilon",

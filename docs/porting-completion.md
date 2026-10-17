@@ -44,14 +44,41 @@ binary32 operands. Controlled native cases cover these operations; the
 documented `543680` initialization policy defines previously unspecified
 transient state. The ordinary server's `#name` entry needs external
 theme/AreaMap inputs absent from the retained stock map inventory. Full
-generation, upstream theme-pointer/float-pair conversions and the remaining
+generation, upstream theme/file/conditional-parser pointer conversions and the remaining
 callback/layout classification remain open.
+
+Three fill producers now use contiguous float coordinate pairs, exact
+binary32 operands and the original double-to-float staging. Their 15 fixed
+vectors exercise the actual token registry, native fill pointers, callback
+and RNG order, and canaries in optimized and ASan+UBSan execution. They add
+33 macOS terminal events. The integrated native/declaration-guard union
+passes 164 events normally and under race, checkptr level 2 and cgocheck2.
+These controlled results do not establish complete classic generation.
 
 Stock sprite scanning found 139,080 images, 126,687 compressed streams and
 21,522,854 runs. Only opcodes 1, 2, 4 and 5 occurred; speculative opcode 6/7
 changes therefore do not explain translucency in those unchanged assets.
 Retained Host Load samples show normal player status and disabled layer
 alpha. These observations do not resolve the reported visual symptom.
+
+## Other platform observations
+
+The existing Windows gate for clean R304 revision `f2efbe9b1` built, verified
+and ran help for both 386 and amd64 server products, then failed its Go test
+step. The prior `9116f3164` and `730981c07` runs failed that step too. These
+Windows results are separate from the four passing macOS configurations.
+See the [R304 Windows run](https://github.com/hjyoon/opennox/actions/runs/39023157802).
+
+The 386 diagnostics include existing test constants overflowing `int` during
+compilation. The amd64 failures include resource exhaustion, file/fixture
+platform assumptions and an existing actual Quest reward CGo dispatcher
+fault. CRLF simulation reproduces several source extraction/hash failures,
+but the remote checkout bytes were not captured, so the EOL explanation
+remains an inference. The reward path also stores six native string pointers
+in `int` locals before variadic formatting. Current optimized Mac code can
+preserve those pointers despite their declarations; its passing child tests
+do not establish a correct native argument contract. These findings remain
+open, and existing tests and fixtures remain unchanged.
 
 ## Campaign observations and test integrity
 
@@ -181,6 +208,33 @@ remained 8 to 11 and ended at 8; final heap allocation was 55.2 MB. This
 zero-player, audio-disabled idle/load run does not establish combat or
 replication stability. Receipt:
 `ev_5e0adef52668070bb70fa4b4553520d6d9ff0d919533d33c3e6b0b53a6192097`.
+
+## R305 fill producer validation checkpoint
+
+| Configuration | PASS events | SKIP events | Passed packages | FAIL |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 81,892 | 47 | 40 | 0 |
+| Highres | 81,892 | 47 | 40 | 0 |
+| Server | 77,064 | 7 | 36 | 0 |
+| Server, highres | 77,064 | 7 | 36 | 0 |
+
+Each mode retains every R304 test identity, result and multiplicity and adds
+33 pass events. All 3,242 existing tests, fixtures and E2E files remain
+byte-identical; no existing expected value changes. R134 and the whole-header
+declaration guards remain unchanged. The integrated 164-event native/guard
+union also passes race, checkptr level 2 and cgocheck2.
+
+The original fifteen fill vectors pass both optimized and ASan+UBSan runs,
+including the actual registry and allocations above 4GiB. Only the three
+specified producer bodies change in `GAME4_2.c`; all its other address
+sections and header bytes remain. The oracle verifies 2,991 code and 656 data
+ranges with every prior record retained. Initial unsorted-record validation
+failed and is preserved; inserting new records by address corrected the
+manifest order without changing compiled code or existing seals.
+
+All 1,562 personal installation files, totaling 571,159,691 bytes, retain
+their baseline hashes. Original REA observations, controlled C callbacks,
+macOS Go suites and the separate Windows findings have distinct scopes.
 
 ## R304 native floor validation checkpoint
 

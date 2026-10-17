@@ -171,11 +171,61 @@ remained unchanged. The oracle retains its previous records and now verifies
 2,988 code ranges and 655 data ranges.
 
 The `#name` server entry needs external theme/AreaMap inputs absent from the
-retained stock inventory. Upstream theme-name pointer narrowing and separate
-float-pair producers in `524950`, `5249C0` and `524B50` remain open. This work
-does not establish a successful complete stock or custom map-generation run.
+retained stock inventory. Upstream theme, file-handle and conditional-parser
+pointer conversions remain open. This work does not establish a successful
+complete stock or custom map-generation run.
 
 ```sh
 NOX_E2E_SEAT=headless ./scripts/go.sh -C src test ./legacy \
   -run '^TestFloorBrush.*R304$' -count=1
+```
+
+## Fill producer coordinate pairs
+
+`sub_524950`, `sub_5249C0` and `sub_524B50` now pass contiguous two-float
+coordinates to rectangle, column and flood callbacks. Their existing signed
+32-bit fill token still resolves through `nox_mapgenLegacyPtrResolve`; the
+native pointer returned by that registry remains intact.
+
+The producers use original binary32 words `0x41821B8F`, `0x42021B8F` and
+`0x42821B8F` for half-step, step and double-step. These operands are promoted
+into the existing double intermediates before the original float stores.
+In `5249C0`, the first pass uses the unrounded double offset while the second
+reads its stored float copy. With width 9, height 2 and x origin
+`-97.58073425292969`, the first pass starts at `2^-18` and the second at zero.
+Replacing both paths with one float intermediate would lose that distinction.
+
+Fifteen fixed original-derived vectors cover callback order and coordinate
+bits, signed division, zero/negative dimensions, conditional skips, exact RNG
+calls and ranges, native fill/input canaries, and null tokens. The controlled
+program links the actual production token registry. A low-bit collision
+forces a high-bit token for a live fill allocation above 4GiB; signed-int
+transport must resolve back to that exact native address.
+
+Using identical inputs and expectations, the baseline passes six vectors and
+fails nine, including nine ASan stack-buffer-overflow reports. Converting
+only the coordinate arrays passes nine and leaves six numerical mismatches.
+The final candidate passes all 15 optimized and ASan+UBSan vectors.
+`TestFloorBrushFillPointsOriginalR305` repeats both modes from complete current
+production bodies, typedef, resolver and registry. It adds 33 terminal Go test
+events on macOS, including mode and parent events. Together with prior floor
+checks and the unchanged declaration guards, 164 events pass normally and
+with race, checkptr level 2 and `GOEXPERIMENT=cgocheck2`.
+
+Optimized cases run on every supported 64-bit target. Sanitizer mode is
+required on Darwin/Linux and skips on other targets, avoiding an additional
+runtime dependency in the existing Windows MinGW gate. The macOS runs skip
+neither mode. Source-bound callbacks do not establish a complete generator
+run or a direct Go/CGo call into these producers. Integer return checks retain
+the current C declarations; Ghidra infers void for two original routines.
+
+REA/Ghidra complete bodies for these three functions total 1,168 bytes and
+match independent PE reads. The oracle adds those three bodies and the
+double-step constant, reaching 2,991 code ranges and 656 data ranges. Every
+previous record and its relative order remains. The original executable
+remains unchanged and unexecuted.
+
+```sh
+NOX_E2E_SEAT=headless ./scripts/go.sh -C src test ./legacy \
+  -run '^TestFloorBrushFillPointsOriginalR305$' -count=1
 ```

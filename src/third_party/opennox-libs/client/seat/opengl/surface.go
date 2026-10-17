@@ -41,7 +41,22 @@ func (s *Surface) Update(img *noximage.Image16) {
 		panic("invalid image size")
 	}
 	gl.BindTexture(gl.TEXTURE_2D, s.tex)
+	// Tight uint16 rows need two-byte alignment. A width divisible by four
+	// already fits every GL unpack alignment (1, 2, 4, 8), including the usual
+	// screen sizes, so keep that path free of extra GL state queries.
+	var restoreAlignment int32
+	if s.sz.X%4 != 0 {
+		var alignment int32
+		gl.GetIntegerv(gl.UNPACK_ALIGNMENT, &alignment)
+		if alignment > 2 && (2*s.sz.X)%int(alignment) != 0 {
+			gl.PixelStorei(gl.UNPACK_ALIGNMENT, 2)
+			restoreAlignment = alignment
+		}
+	}
 	gl.TexImage2D(gl.TEXTURE_2D, 0, gl.RGBA, int32(s.sz.X), int32(s.sz.Y), 0, gl.BGRA, gl.UNSIGNED_SHORT_1_5_5_5_REV, gl.Ptr(img.Pix))
+	if restoreAlignment != 0 {
+		gl.PixelStorei(gl.UNPACK_ALIGNMENT, restoreAlignment)
+	}
 }
 
 func (s *Surface) Size() image.Point {

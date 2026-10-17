@@ -139,10 +139,10 @@ func (win *Window) initProgram() error {
 
 	posAttr := gl.GetAttribLocation(prog, gl.Str("position\x00"))
 	gl.EnableVertexAttribArray(uint32(posAttr))
-	gl.VertexAttribPointer(uint32(posAttr), 2, gl.FLOAT, false, 4*4, gl.PtrOffset(0*4))
+	gl.VertexAttribPointerWithOffset(uint32(posAttr), 2, gl.FLOAT, false, 4*4, 0*4)
 
 	texAttr := gl.GetAttribLocation(prog, gl.Str("texcoord\x00"))
 	gl.EnableVertexAttribArray(uint32(texAttr))
-	gl.VertexAttribPointer(uint32(texAttr), 2, gl.FLOAT, false, 4*4, gl.PtrOffset(2*4))
+	gl.VertexAttribPointerWithOffset(uint32(texAttr), 2, gl.FLOAT, false, 4*4, 2*4)
 	return nil
 }

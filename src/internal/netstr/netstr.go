@@ -431,7 +431,7 @@ func (g *Streams) ProcessStats(min, max time.Duration) {
 			}
 			cnt := 0
 			var sum time.Duration
-			for i = 0; i < 10; i++ {
+			for i := 0; i < 10; i++ {
 				if nx.samples[i] > 0 {
 					cnt++
 					sum += nx.samples[i]

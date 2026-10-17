@@ -358,11 +358,6 @@ func (sc *e2eScenario) RawInput(dt time.Duration, evs ...seat.InputEvent) {
 func (sc *e2eScenario) Quit(dt time.Duration) {
 	sc.Input(dt, "", seat.WindowClosed)
 	sc.Input(1, "", seat.WindowClosed)
-	sc.add(1, "", func() {
-		if e2e.err != nil {
-			panic(e2e.err)
-		}
-	})
 }
 
 func (sc *e2eScenario) Move(x, y int, name string) {
@@ -11137,10 +11132,24 @@ func e2eSaveRecording() {
 }
 
 func e2eStop() {
-	if !e2e.recording {
-		return
+	panicking := recover()
+	if e2e.recording {
+		e2eSaveRecording()
 	}
-	e2eSaveRecording()
+	// runArgs defers this hook, so it still runs when the first close event
+	// ends the loop before another scenario tick can report collected errors.
+	// Keep an existing failure; only a successful exit may become a test error.
+	if panicking != nil {
+		if code, ok := panicking.(ErrExit); !ok || code != 0 {
+			panic(panicking)
+		}
+	}
+	if e2e.err != nil {
+		panic(e2e.err)
+	}
+	if panicking != nil {
+		panic(panicking)
+	}
 }
 
 func e2eDone() {

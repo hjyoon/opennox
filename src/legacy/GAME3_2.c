@@ -44,6 +44,7 @@
 #include "defs.h"
 #include "mapgen_legacy_ptr.h"
 #include "operators.h"
+#include "player_incoming_quest_4ddf60.h"
 #include "server__script__builtin.h"
 
 extern uint32_t dword_5d4594_3835368;
@@ -5095,7 +5096,7 @@ int nox_xxx_netPlayerIncomingServ_4DDF60(int a1) {
 	if (nox_common_gameFlags_check_40A5C0(4096)) {
 		if (a1 != 31) {
 			if (v2->playerUnit) {
-				*(uint32_t*)((uint8_t*)v2->playerUnit->data_update + 552) = 1;
+				nox_xxx_playerIncomingQuest_native_4DDF60(v2->playerUnit);
 			}
 		}
 		sub_4D9CF0(a1);

@@ -68,6 +68,7 @@ int nox_xxx_sendAllPlayerIDs_4DE270(nox_playerInfo* p) { assert(p==&player);even
 
 /* These branches are outside the objective-mode cases; reaching one is an
  * error, not a permissive replacement of another gameplay path. */
+void nox_xxx_playerIncomingQuest_native_4DDF60(nox_object_t* unit) { abort(); }
 int sub_4D9CF0(int index) { abort(); }
 int sub_4D6000(nox_object_t* p) { abort(); }
 void nox_xxx_netMarkMinimapObject_417190(int index,nox_object_t* p,unsigned arg) { abort(); }

@@ -4129,375 +4129,181 @@ unsigned char nox_xxx_tileReadOne_422A40(int version, uint32_t* fields, nox_tile
 
 //----- (00422C10) --------------------------------------------------------
 int nox_xxx_tile_422C10(int a1, void* region) {
-	int rows_remaining;
-	int row_byte_offset;
 	int column_index;
-	int v3;        // ecx
-	char v4;       // bl
-	int v5;        // esi
-	int i;         // edx
-	uint32_t* v7;  // eax
-	char v8;       // bl
-	int v9;        // esi
-	int j;         // edx
-	int v11;       // ecx
-	uint32_t* v12; // eax
-	char v13;      // bl
-	int v14;       // edx
-	uint8_t** v15; // esi
-	uint8_t* v16;  // ecx
-	int v17;       // eax
-	uint8_t** v18; // esi
-	int v19;       // edi
-	char v20;      // bl
-	int k;         // edx
-	uint8_t* v22;  // ecx
-	int v23;       // eax
-	int v24;       // esi
-	int v26;       // edi
-	int v27;       // ebp
-	int l;         // eax
-	int m;         // esi
-	int n;         // eax
-	int ii;        // esi
-	int v35;       // ebx
-	int v36;       // eax
-	int v37;       // ebp
-	int v38;       // edi
-	uint8_t* v39;  // eax
-	int v40;       // esi
-	uint8_t* v41;  // eax
-	int jj;        // eax
-	int kk;        // esi
-	int v44;       // ecx
-	int v45;       // edx
-	int v46;       // ebx
-	int v47;       // edi
-	int v48;       // esi
-	int v49;       // edi
-	int v51;       // esi
-	uint32_t* v52; // esi
+	int v44, v45, v46, v47, v48, v49, v51;
+	uint32_t* v52;
 	nox_tile_list_node_t** v52_head;
-	int v55;       // ecx
-	int v56;       // esi
-	int v57;       // eax
-	int v58;       // ebp
-	int v59;       // esi
-	uint8_t* v60;  // eax
-	int v61;       // ebx
-	int v62;       // edi
-	int* v63;      // esi
-	int v64;       // edi
-	int v66;       // esi
-	int v67;       // ebp
-	int* v68;      // edi
-	int* v69;      // esi
-	bool v70;      // cc
-	uint8_t* v71;  // eax
-	int v72;       // ebx
-	int v73;       // edi
-	int* v74;      // esi
-	int v75;       // [esp+10h] [ebp-34h]
-	int v76;       // [esp+14h] [ebp-30h]
-	int v77;       // [esp+18h] [ebp-2Ch]
-	int v78;       // [esp+1Ch] [ebp-28h]
-	int v79;       // [esp+20h] [ebp-24h]
-	int v80 = 0;   // [esp+24h] [ebp-20h]
-	int v81 = 0;   // [esp+28h] [ebp-1Ch]
-	int2 v82;      // [esp+2Ch] [ebp-18h]
-	int4 v83;      // [esp+34h] [ebp-10h]
+	int v64, v66, v67;
+	bool v70;
+	int v75;
+	int v76, v77, v78, v79;
+	int v81;
+	int4 v83;
 
 	if ((short)a1 < 3) {
 		return 0;
 	}
 	if (!nox_crypt_IsReadOnly()) {
+		int max_x = 0;
+		int max_y = 0;
 		if (region) {
 			sub_428170(region, &v83);
 			v76 = v83.field_0 / 23;
-			v80 = v83.field_8 / 23;
 			v77 = v83.field_4 / 23;
-			v81 = v83.field_C / 23;
-			v24 = v81;
-			v78 = v83.field_8 / 23 - v83.field_0 / 23 + 1;
-			v79 = v81 - v83.field_4 / 23 + 1;
+			max_x = v83.field_8 / 23;
+			max_y = v83.field_C / 23;
 		} else {
-			v3 = 0;
-			v4 = 0;
-			v5 = 0;
-			for (i = 0; i < ptr_5D4594_2650668_cap * 44; i += 44) {
-				if (v4) {
-					break;
-				}
-				v3 = 0;
-				a1 = i;
-				v7 = ptr_5D4594_2650668;
-				while (!*(uint8_t*)(i + *v7)) {
-					++v3;
-					++v7;
-					if (v3 >= ptr_5D4594_2650668_cap) {
-						goto LABEL_12;
+			bool found = false;
+			for (int y = 0; y < ptr_5D4594_2650668_cap && !found; ++y) {
+				for (int x = 0; x < ptr_5D4594_2650668_cap; ++x) {
+					if (ptr_5D4594_2650668[x][y].field_0) {
+						v77 = y;
+						found = true;
+						break;
 					}
 				}
-				v77 = v5;
-				v4 = 1;
-			LABEL_12:
-				++v5;
 			}
-			if (v3 == ptr_5D4594_2650668_cap && v5 == ptr_5D4594_2650668_cap) {
+			if (!found) {
 				return 1;
 			}
-			v8 = 0;
-			v9 = 127;
-			for (j = 5588; j >= 0; j -= 44) {
-				if (v8) {
-					break;
-				}
-				v11 = 0;
-				a1 = j;
-				v12 = ptr_5D4594_2650668;
-				while (!*(uint8_t*)(j + *v12)) {
-					++v11;
-					++v12;
-					if (v11 >= ptr_5D4594_2650668_cap) {
-						goto LABEL_22;
+			// v3 scans the original 128-row map when finding the upper edge.
+			found = false;
+			for (int y = 127; y >= 0 && !found; --y) {
+				for (int x = 0; x < ptr_5D4594_2650668_cap; ++x) {
+					if (ptr_5D4594_2650668[x][y].field_0) {
+						max_y = y;
+						found = true;
+						break;
 					}
 				}
-				v81 = v9;
-				v8 = 1;
-			LABEL_22:
-				--v9;
 			}
-			v13 = 0;
-			v14 = 0;
-			v15 = ptr_5D4594_2650668;
-			do {
-				if (v13) {
-					break;
-				}
-				v16 = *v15;
-				v17 = 0;
-				while (!*v16) {
-					++v17;
-					v16 += 44;
-					if (v17 >= ptr_5D4594_2650668_cap) {
-						goto LABEL_30;
+			found = false;
+			for (int x = 0; x < 128 && !found; ++x) {
+				for (int y = 0; y < ptr_5D4594_2650668_cap; ++y) {
+					if (ptr_5D4594_2650668[x][y].field_0) {
+						v76 = x;
+						found = true;
+						break;
 					}
 				}
-				v76 = v14;
-				v13 = 1;
-			LABEL_30:
-				++v14;
-				++v15;
-			} while (v14 < 128);
-			v18 = (uint8_t**)(ptr_5D4594_2650668 + ptr_5D4594_2650668_cap - 1);
-			v19 = v80;
-			v20 = 0;
-			for (k = ptr_5D4594_2650668_cap - 1; k >= 0; --k) {
-				if (v20) {
-					break;
-				}
-				v22 = *v18;
-				v23 = 0;
-				while (!*v22) {
-					++v23;
-					v22 += 44;
-					if (v23 >= ptr_5D4594_2650668_cap) {
-						goto LABEL_38;
-					}
-				}
-				v19 = k;
-				v20 = 1;
-			LABEL_38:
-				--v18;
 			}
-			v24 = v81;
-			v80 = v19;
-			v78 = v19 - v76 + 1;
-			v79 = v81 - v77 + 1;
+			found = false;
+			for (int x = ptr_5D4594_2650668_cap - 1; x >= 0 && !found; --x) {
+				for (int y = 0; y < ptr_5D4594_2650668_cap; ++y) {
+					if (ptr_5D4594_2650668[x][y].field_0) {
+						max_x = x;
+						found = true;
+						break;
+					}
+				}
+			}
 		}
+		v78 = max_x - v76 + 1;
+		v79 = max_y - v77 + 1;
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v76, 4u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v77, 4u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v78, 4u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v79, 4u);
 		if (!region) {
-			if (v77 > v24) {
-				return 1;
-			}
-
-			v26 = v76;
-			v27 = v80;
-			int v28 = v77;
-			rows_remaining = v81 - v77 + 1;
-			do {
-				if (v26 <= v27) {
-					do {
-						obj_5D4594_2650668_t* obj = &ptr_5D4594_2650668[v26][v28];
-
-						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(&obj->field_0), 1);
-						if (obj->field_0 & 0x1) {
-							nox_xxx_fileReadWrite_426AC0_file3_fread(&obj->field_1, 16);
-							LOBYTE(v75) = 0;
-							for (l = obj->field_5; l; l = *(uint32_t*)(l + 16)) {
-								LOBYTE(v75) = v75 + 1;
-							}
-							nox_xxx_fileReadWrite_426AC0_file3_fread(&v75, 1);
-							for (m = obj->field_5; m; m = *(uint32_t*)(m + 16)) {
-								nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)m, 16);
-							}
+			for (int y = v77; y <= max_y; ++y) {
+				for (int x = v76; x <= max_x; ++x) {
+					obj_5D4594_2650668_t* tile = &ptr_5D4594_2650668[x][y];
+					nox_xxx_fileReadWrite_426AC0_file3_fread(&tile->field_0, 1u);
+					int* fields[2] = {&tile->field_1, &tile->field_6};
+					nox_tile_list_node_t* heads[2] = {tile->field_5, tile->field_10};
+					for (int layer = 0; layer < 2; ++layer) {
+						if (!(tile->field_0 & (1u << layer))) {
+							continue;
 						}
-						if (obj->field_0 & 0x2) {
-							nox_xxx_fileReadWrite_426AC0_file3_fread(&obj->field_6, 16);
-							LOBYTE(v75) = 0;
-							for (n = obj->field_10; n; n = *(uint32_t*)(n + 16)) {
-								LOBYTE(v75) = v75 + 1;
-							}
-							nox_xxx_fileReadWrite_426AC0_file3_fread(&v75, 1);
-							for (ii = obj->field_10; ii; ii = *(uint32_t*)(ii + 16)) {
-								nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)ii, 16);
-							}
+						nox_xxx_fileReadWrite_426AC0_file3_fread(fields[layer], 16u);
+						uint8_t count = 0;
+						for (nox_tile_list_node_t* node = heads[layer]; node; node = node->next) {
+							++count;
 						}
-						++v26;
-					} while (v26 <= v27);
-					v26 = v76;
+						nox_xxx_fileReadWrite_426AC0_file3_fread(&count, 1u);
+						for (nox_tile_list_node_t* node = heads[layer]; node; node = node->next) {
+							nox_xxx_fileReadWrite_426AC0_file3_fread(node, 16u);
+						}
+					}
 				}
-				v28++;
-				--rows_remaining;
-			} while (rows_remaining);
+			}
 			return 1;
 		}
-		v35 = v77;
-		if (v77 > v24) {
-			return 1;
-		}
-		v36 = v76;
-	LABEL_61:
-		v37 = v36;
-		if (v36 > v80) {
-			if (++v35 > v81) {
-				return 1;
-			}
-			goto LABEL_61;
-		}
-		v38 = 23 * v36 + 11;
-		while (1) {
-			if (!(((uint8_t)v35 + (uint8_t)v37) & 1)) {
-				if (v35 & 1) {
-					v41 = (uint8_t*)((uint32_t)(ptr_5D4594_2650668[(v38 - 34) / 46]) + 44 * (23 * (v35 + 1) / 46));
-					if (!(*v41 & 1)) {
-						goto LABEL_75;
+		for (int y = v77; y <= max_y; ++y) {
+			for (int x = v76; x <= max_x; ++x) {
+				int* fields = NULL;
+				nox_tile_list_node_t* head = NULL;
+				int2 point = {23 * x + 11, 23 * y + 34};
+				if (!(((uint8_t)y + (uint8_t)x) & 1)) {
+					if (y & 1) {
+						obj_5D4594_2650668_t* tile =
+							&ptr_5D4594_2650668[(point.field_0 - 34) / 46][23 * (y + 1) / 46];
+						if (tile->field_0 & 1) {
+							fields = &tile->field_1;
+							head = tile->field_5;
+						}
+					} else {
+						obj_5D4594_2650668_t* tile =
+							&ptr_5D4594_2650668[(point.field_0 - 11) / 46][23 * y / 46];
+						if (tile->field_0 & 2) {
+							fields = &tile->field_6;
+							head = tile->field_10;
+						}
 					}
-					v40 = (int)(v41 + 4);
-				} else {
-					v39 = (uint8_t*)((uint32_t)(ptr_5D4594_2650668[(v38 - 11) / 46]) + 44 * (23 * v35 / 46));
-					if (!(*v39 & 2)) {
-						goto LABEL_75;
-					}
-					v40 = (int)(v39 + 24);
 				}
-				v82.field_0 = v38;
-				v82.field_4 = 23 * v35 + 34;
-				if (nox_xxx_wallMath_427F30(&v82, region)) {
-					LOBYTE(a1) = 1;
-					nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
-					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v40, 0x10u);
-					LOBYTE(v75) = 0;
-					for (jj = *(uint32_t*)(v40 + 16); jj; jj = *(uint32_t*)(jj + 16)) {
-						LOBYTE(v75) = v75 + 1;
+				uint8_t present = fields && nox_xxx_wallMath_427F30(&point, region);
+				nox_xxx_fileReadWrite_426AC0_file3_fread(&present, 1u);
+				if (present) {
+					nox_xxx_fileReadWrite_426AC0_file3_fread(fields, 16u);
+					uint8_t count = 0;
+					for (nox_tile_list_node_t* node = head; node; node = node->next) {
+						++count;
 					}
-					nox_xxx_fileReadWrite_426AC0_file3_fread(&v75, 1u);
-					for (kk = *(uint32_t*)(v40 + 16); kk; kk = *(uint32_t*)(kk + 16)) {
-						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)kk, 0x10u);
+					nox_xxx_fileReadWrite_426AC0_file3_fread(&count, 1u);
+					for (nox_tile_list_node_t* node = head; node; node = node->next) {
+						nox_xxx_fileReadWrite_426AC0_file3_fread(node, 16u);
 					}
-					goto LABEL_76;
 				}
 			}
-		LABEL_75:
-			LOBYTE(a1) = 0;
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
-		LABEL_76:
-			++v37;
-			v38 += 23;
-			if (v37 > v80) {
-				v36 = v76;
-				if (++v35 > v81) {
-					return 1;
-				}
-				goto LABEL_61;
-			}
 		}
+		return 1;
 	}
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v76, 4u);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v77, 4u);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v78, 4u);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v79, 4u);
 	if (!region) {
-		for (int ll = 0; ll < ptr_5D4594_2650668_cap; ll++) {
-			for (int mm = 0; mm < ptr_5D4594_2650668_cap; mm++) {
-				*(uint8_t*)&ptr_5D4594_2650668[mm][ll] = 0;
+		for (int y = 0; y < ptr_5D4594_2650668_cap; ++y) {
+			for (int x = 0; x < ptr_5D4594_2650668_cap; ++x) {
+				ptr_5D4594_2650668[x][y].field_0 = 0;
 			}
 		}
-		v55 = v77;
-		v81 = v77;
-		if (v77 < v77 + v79) {
-			v56 = v78;
-			row_byte_offset = 44 * v77;
-			v57 = v76;
-			do {
-				v58 = v57;
-				if (v57 < v56 + v57) {
-					do {
-						v59 = row_byte_offset;
-						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(row_byte_offset + (uint32_t)(ptr_5D4594_2650668[v58])),
-																 1u);
-						v60 = (uint8_t*)(v59 + (uint32_t)(ptr_5D4594_2650668[v58]));
-						if (*v60 & 1) {
-							nox_xxx_fileReadWrite_426AC0_file3_fread(v60 + 4, 0x10u);
-							nox_xxx_fileReadWrite_426AC0_file3_fread(&v75, 1u);
-							if ((uint8_t)v75) {
-								v61 = 0;
-								v62 = (uint32_t)(ptr_5D4594_2650668[v58]) + v59 + 4;
-								if ((uint8_t)v75) {
-									do {
-										v63 = nox_xxx_tileListAddNewSubtile_422160(0, 0, 0, 0);
-										nox_xxx_fileReadWrite_426AC0_file3_fread(v63, 0x10u);
-										*(uint32_t*)(v62 + 16) = v63;
-										++v61;
-										v62 = (int)v63;
-									} while (v61 < (unsigned char)v75);
-								}
-							} else {
-								*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + row_byte_offset + 20) = 0;
-							}
+		for (int y = v77; y < v77 + v79; ++y) {
+			for (int x = v76; x < v76 + v78; ++x) {
+				obj_5D4594_2650668_t* tile = &ptr_5D4594_2650668[x][y];
+				nox_xxx_fileReadWrite_426AC0_file3_fread(&tile->field_0, 1u);
+				int* fields[2] = {&tile->field_1, &tile->field_6};
+				nox_tile_list_node_t** heads[2] = {&tile->field_5, &tile->field_10};
+				for (int layer = 0; layer < 2; ++layer) {
+					if (!(tile->field_0 & (1u << layer))) {
+						continue;
+					}
+					nox_xxx_fileReadWrite_426AC0_file3_fread(fields[layer], 16u);
+					uint8_t count = 0;
+					nox_xxx_fileReadWrite_426AC0_file3_fread(&count, 1u);
+					nox_tile_list_node_t** tail = heads[layer];
+					*tail = NULL;
+					for (unsigned int i = 0; i < count; ++i) {
+						nox_tile_list_node_t* node = nox_xxx_tileListAddNewSubtile_422160(0, 0, 0, 0);
+						if (!node) {
+							return 0;
 						}
-						v71 = (uint8_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + row_byte_offset);
-						if (*v71 & 2) {
-							nox_xxx_fileReadWrite_426AC0_file3_fread(v71 + 24, 0x10u);
-							nox_xxx_fileReadWrite_426AC0_file3_fread(&v75, 1u);
-							if ((uint8_t)v75) {
-								v72 = 0;
-								v73 = (uint32_t)(ptr_5D4594_2650668[v58]) + row_byte_offset + 24;
-								if ((uint8_t)v75) {
-									do {
-										v74 = nox_xxx_tileListAddNewSubtile_422160(0, 0, 0, 0);
-										nox_xxx_fileReadWrite_426AC0_file3_fread(v74, 0x10u);
-										*(uint32_t*)(v73 + 16) = v74;
-										++v72;
-										v73 = (int)v74;
-									} while (v72 < (unsigned char)v75);
-								}
-							} else {
-								*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + row_byte_offset + 40) = 0;
-							}
-						}
-						v56 = v78;
-						v57 = v76;
-						++v58;
-					} while (v58 < v78 + v76);
-					v55 = v77;
+						nox_xxx_fileReadWrite_426AC0_file3_fread(node, 16u);
+						*tail = node;
+						tail = &node->next;
+					}
 				}
-				v70 = ++v81 < v55 + v79;
-				row_byte_offset += 44;
-			} while (v70);
+			}
 		}
 		return 1;
 	}

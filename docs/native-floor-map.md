@@ -34,8 +34,40 @@ NOX_E2E_SEAT=headless ./scripts/test-cgocheck2.sh \
   -race -gcflags=all=-d=checkptr=2 -run '^TestFloorMap.*R300$' -count=1 ./legacy
 ```
 
-The controlled services do not establish original `GAME.EXE` equivalence or
-full map-loading coverage. The version-3 writer and region-free reader still
-contain older 32-bit tile/node arithmetic and need separate conversion and
-coverage. This change addresses the native region argument and its directly
-related scalar variables.
+The controlled services do not establish full map-loading coverage.
+
+## Version-3 tile rows and links
+
+The version-3 writer and region-free reader now index native tile rows and
+follow typed subtile links. They retain the original 128-row scan bounds,
+four 32-bit header fields, one-byte flags/counts, 16-byte scalar transfers,
+row-major order and geometry callback order. Native pointer fields are never
+serialized. Four independent crashes were reproduced before this conversion.
+
+`TestFloorMapV3NativeDataR302` compiles the complete production codec and
+bounds function against controlled services. Seven cases cover both writer
+forms, both reader forms, two-layer linked nodes, the `[127][127]` edge, empty
+grids, exact bytes/callback order and allocation canaries. The seven cases
+pass optimized and ASan+UBSan execution; the original R300 cases also pass.
+
+```sh
+NOX_E2E_SEAT=headless ./scripts/go.sh -C src test ./legacy \
+  -run '^TestFloorMap.*R(300|302)$' -count=1
+```
+
+REA/Ghidra 12.1.3 static analysis used `GAME.EXE` SHA-256
+`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`.
+The codec body `00422C10..004235B6` and allocator body
+`00422160..004221D1` are sealed in the existing code oracle. The original
+executable was neither run nor modified; decompilation is derived evidence.
+
+### Unresolved selected-region coordinates
+
+The existing version-3 selected-region reader computes `(row+23)/46` for odd
+rows and `row/46` for even rows. Original instructions and decompilation use
+`23*(row+1)/46` and `23*row/46`. A two-by-two region starting at row 3 therefore
+places both layers at `tile[1][0]` in the current product and `tile[1][2]` in
+the original-derived expectation. The existing R300 fixture expects the
+current mapping. This conversion preserves that expectation and leaves the
+coordinate discrepancy open. Its selected-region read case is a preservation
+check, not proof of original coordinate equivalence.

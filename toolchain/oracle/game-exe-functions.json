@@ -749,6 +749,20 @@
       "purpose": "the exact nine NOP bytes separating monster polygon transition from the next routine at 00422140"
     },
     {
+      "name": "nox_xxx_tileListAddNewSubtile_422160",
+      "address": "0x00422160",
+      "size": 114,
+      "sha256": "179b8263445d8b791d9ed55fb9f877c27e9fbe7e8eea510e021bb2b76916bb88",
+      "purpose": "allocate a subtile node from the PE32 pool, initialize its four scalar DWORDs, and terminate its native-converted next link"
+    },
+    {
+      "name": "nox_xxx_tile_422C10",
+      "address": "0x00422C10",
+      "size": 2471,
+      "sha256": "db77e62bd2500ea0d16a69c3ef3ab1db7993996022c6bf1c3a1a4f097e30b2b5",
+      "purpose": "version-3 floor codec: fixed128 tile scans, row-major four-DWORD header, flag/count bytes, 16-byte scalar nodes, selected-region parity and original row coordinates"
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_424CCE",
       "address": "0x00424CCE",
       "size": 5,
@@ -4109,11 +4123,25 @@
       "purpose": "the exact immediate PlayerUpdate function-pointer store installed when clearing an observing player"
     },
     {
+      "name": "nox_xxx_netPlayerIncomingServ_4DDF60_prefix",
+      "address": "0x004DDF60",
+      "size": 473,
+      "sha256": "cc4940d70f70a4806c8cae0ec62a778497677251b0a4aa50da7b1b9a4ea9931d",
+      "purpose": "incoming player setup through Quest pending-load write at PE32 +552, its guards, callbacks and team/status synchronization before an already sealed status-call instruction"
+    },
+    {
       "name": "nox_xxx_netNeedTimestampStatus_4174F0_call_4DE139",
       "address": "0x004DE139",
       "size": 5,
       "sha256": "1666144502070e4ea95a8867a5cab0fd9011e98cef89b75ceabea6bf6e4e3eb6",
       "purpose": "the exact decoded direct rel32 call instruction targeting player status assignment at 004174F0"
+    },
+    {
+      "name": "nox_xxx_netPlayerIncomingServ_4DDF60_suffix",
+      "address": "0x004DE13E",
+      "size": 295,
+      "sha256": "4148b25f3d310f55f8841f69b169ca7186ff5b8df523b60349551552e78ac26a",
+      "purpose": "incoming player setup after the separately sealed status-call instruction: team objective reports, player IDs and Quest completion tail"
     },
     {
       "name": "nox_xxx_dropAllItems_4EDA40_call_4DE746",

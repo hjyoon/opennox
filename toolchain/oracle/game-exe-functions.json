@@ -2443,6 +2443,27 @@
       "purpose": "the exact decoded direct rel32 call from the client journal packet decoder to PE32 journal-entry removal"
     },
     {
+      "name": "client_quest_reward_spell_48EA70_arm",
+      "address": "0x00493F8C",
+      "size": 193,
+      "sha256": "6929eb1c25c302b15c1e478c88949942740af44dadc14d57c792af56445c2ced",
+      "purpose": "Derived spell reward-arm subinterval of the formal 0048EA70 dispatcher, not a whole function: retain full string pointers for self/other varargs, live player-name lookup and original announcement order"
+    },
+    {
+      "name": "client_quest_reward_guide_48EA70_arm",
+      "address": "0x0049404D",
+      "size": 185,
+      "sha256": "82836090e20f82549ae605d72a97b8e96e41e0240f22f560fe99b6e1f149f491",
+      "purpose": "Derived guide reward-arm subinterval of the formal 0048EA70 dispatcher, not a whole function: retain full string pointers for self/other varargs, live player-name lookup and original announcement order"
+    },
+    {
+      "name": "client_quest_reward_ability_48EA70_arm",
+      "address": "0x00494106",
+      "size": 193,
+      "sha256": "dbddecece0f310e5377461d98f6c1f15f76633195bba7929ce9e7dfb297e1580",
+      "purpose": "Derived ability reward-arm subinterval of the formal 0048EA70 dispatcher, not a whole function: retain full string pointers for self/other varargs, live player-name lookup and original announcement order"
+    },
+    {
       "name": "nox_xxx_allocClassListFriends_495980",
       "address": "0x00495980",
       "size": 35,

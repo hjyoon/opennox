@@ -55,6 +55,28 @@ and RNG order, and canaries in optimized and ASan+UBSan execution. They add
 passes 164 events normally and under race, checkptr level 2 and cgocheck2.
 These controlled results do not establish complete classic generation.
 
+The Quest reward decoder now retains native UTF-16 title pointers in all six
+self/other spell, guide and ability locals. Only their declarations change;
+lookup, player identity, live names, formatting and output order remain.
+The existing actual CGo dispatcher test reproduced a SIGSEGV with `-O0`
+before this correction. Optimized Apple ARM64 code had retained full pointer
+registers despite the incorrect `int` declarations, masking the defect.
+
+A new source-bound regression injects those six actual declarations into
+the unchanged reward/settings fixture. Its 2,160 reward and 512 settings
+inputs, expected values, varargs checks and buffer checks remain intact in
+each of the O0, O2 and ASan+UBSan modes. The unmodified baseline fails the
+O0 reward contract at case 541. An initial sanitizer compile failed on the
+current Darwin SDK's deprecated `sprintf` declaration; that log is retained.
+The new runner suppresses only that Darwin diagnostic while preserving the
+fixture and fatal sanitizer checks.
+
+After the declaration correction, the unchanged actual CGo test passes all
+156 isolated child cases with `-O0`. The focused union passes 13 outer Go
+events both normally and with race, checkptr level 2 and cgocheck2. Its new
+source-bound test supplies ten of those events, including parents and groups.
+Child stdout is not counted again in the outer terminal totals.
+
 Stock sprite scanning found 139,080 images, 126,687 compressed streams and
 21,522,854 runs. Only opcodes 1, 2, 4 and 5 occurred; speculative opcode 6/7
 changes therefore do not explain translucency in those unchanged assets.
@@ -74,11 +96,11 @@ compilation. The amd64 failures include resource exhaustion, file/fixture
 platform assumptions and an existing actual Quest reward CGo dispatcher
 fault. CRLF simulation reproduces several source extraction/hash failures,
 but the remote checkout bytes were not captured, so the EOL explanation
-remains an inference. The reward path also stores six native string pointers
-in `int` locals before variadic formatting. Current optimized Mac code can
-preserve those pointers despite their declarations; its passing child tests
-do not establish a correct native argument contract. These findings remain
-open, and existing tests and fixtures remain unchanged.
+remains an inference. The reward pointer declarations described above are
+corrected from a failure reproduced on macOS as well. This does not establish
+a Windows runtime pass for the candidate or resolve the independent resource,
+386 test-constant, EOL or fixture-lifecycle findings. Existing tests and
+fixtures remain unchanged.
 
 ## Campaign observations and test integrity
 
@@ -208,6 +230,35 @@ remained 8 to 11 and ended at 8; final heap allocation was 55.2 MB. This
 zero-player, audio-disabled idle/load run does not establish combat or
 replication stability. Receipt:
 `ev_5e0adef52668070bb70fa4b4553520d6d9ff0d919533d33c3e6b0b53a6192097`.
+
+## R306 Quest title pointer validation checkpoint
+
+| Configuration | PASS events | SKIP events | Passed packages | FAIL |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 81,902 | 47 | 40 | 0 |
+| Highres | 81,902 | 47 | 40 | 0 |
+| Server | 77,074 | 7 | 36 | 0 |
+| Server, highres | 77,074 | 7 | 36 | 0 |
+
+Each mode retains every R305 terminal identity, action and multiplicity and
+adds ten pass events. All 3,244 existing tests, fixtures and E2E files retain
+their hashes; no existing input, assertion or expected value changes. The
+selected 35 source/fixture dependencies remain unchanged throughout these
+runs. All 1,562 personal installation files retain their baseline hashes.
+The focused union passes 13 events normally and with race, checkptr level 2
+and cgocheck2; the unchanged actual dispatcher also passes separately at O0.
+
+Only six local declarations in the decoder change from `int` to `wchar2_t*`.
+All other bytes of that C file remain unchanged. The initial actual CGo O0
+SIGSEGV and source-bound O0 varargs failure remain recorded beside the final
+passes. These results establish the native pointer contract for the tested
+reward paths and do not supply a complete gameplay or campaign denominator.
+
+REA observations seal three reward-arm subintervals totaling 571 bytes
+inside the formal `0048EA70..004942D1` dispatcher. They are not three complete
+function bodies. The code oracle verifies 2,994 code and 656 data ranges,
+retaining all earlier records, their relative order and metadata. The
+original executable is unchanged and was not run.
 
 ## R305 fill producer validation checkpoint
 

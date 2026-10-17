@@ -21,8 +21,9 @@ completion requirements.
 
 ## Current findings
 
-The native FloorMap conversion and its remaining original-coordinate
-discrepancy are documented in [native-floor-map.md](native-floor-map.md).
+The native FloorMap conversion, corrected original coordinates, signed
+bounds and whole-byte flag behavior are documented in
+[native-floor-map.md](native-floor-map.md).
 The separate incoming Quest player defect wrote the PE32 `PlayerUpdateData`
 offset 552 into native respawn markers. The C producer now calls a native
 helper that writes typed `Field138` (offset 648 on ARM64). Regression checks
@@ -35,6 +36,13 @@ Original comparison uses REA/Ghidra 12.1.3 and `GAME.EXE` SHA-256
 The codec and allocator bodies and incoming-player body are sealed in the
 code oracle, retaining every existing range. These are static observations;
 the original executable has not been run by this investigation.
+
+A separate static audit identifies remaining PE32 pointer and tile-stride
+assumptions in the conditional classic map-generator floor path. The ordinary
+server's `#name` entry can reach that generator with external theme/AreaMap
+inputs. Those inputs are absent from the retained stock map inventory;
+execution by the stock Quest map scenarios is unproved. Source-bound native
+reproduction and the related callback/layout classification remain open.
 
 Stock sprite scanning found 139,080 images, 126,687 compressed streams and
 21,522,854 runs. Only opcodes 1, 2, 4 and 5 occurred; speculative opcode 6/7
@@ -76,3 +84,89 @@ newly created image supplies no comparison evidence.
 These campaign captures use isolated data copies, headless rendering,
 virtual game time and disabled audio. They establish neither compositor
 parity nor audible output nor an ordinary-clock stability run.
+
+## Independent loopback peers
+
+The new `scripts/e2e/client-live-peer.yaml` exercises discovery, class/color
+selection, a bound local drawable, movement and disconnect against a separate
+dedicated server. It requires an isolated local server and
+`NOX_E2E_REAL_SLEEP=true`. This opt-in mode retains virtual ticks and the
+deterministic RNG, while platform `Sleep` also waits in real time. The default
+E2E clock is unchanged. Production networking timeouts and retries are unchanged.
+
+With the same first candidate executable, the default clock exhausted the
+socket polling loop with error -23 and no registered player. Real Sleep
+allowed the socket handshake, but its virtual-time jump made subsequent
+scheduled steps overdue. The `checkpoint` action now queues the next phase
+from the clock at phase completion. A separate `wait-client-connected`
+action first requires the connected flag and matching positive player/drawable
+netcodes, with a 500-engine-iteration timeout. The original scenario's
+500/120/30 join, movement and settling durations remain intact.
+
+The final development candidate SHA-256
+`4d51a31c1964d0d2d3685c986668df27611f624488eca228f507dd69196684bb`
+and clean `9116f3164` server SHA-256
+`79971a621582c30f69582fa64f1c22e5fa430b507c87ae6193d995b43da1da73`
+passed the complete loopback run. Across 177 API samples the player count
+changed 0 to 1 to 0. All 54 observed server/player/drawable bindings agreed
+on netcode 185 and stayed within eight world units. The server player moved
+231.002 units and its replicated client position followed. Both processes
+exited naturally with code 0; the server used authenticated quit. The REA
+capture and selected filesystem observations were untruncated, and owned
+process cleanup completed. Receipt:
+`ev_cb9c61cc8a559f80363cc0a5b7cd2e7d0088da45487411b935cc794370e1872b`.
+
+The client was a source-bound development build with `vcs.modified=true`.
+This run establishes actual loopback socket and movement behavior with a
+virtual-clock client and ordinary-clock server. It does not establish a
+fully ordinary-clock client, map transitions, reconnect, WAN traversal or
+runtime compatibility with the original Windows executable. Captured frames
+are observations, not screenshot-golden comparisons.
+
+## Other runtime evidence
+
+The unchanged native-audio Warrior scenario passed on clean `bd4c363df` in
+294.137 seconds using OpenAL Soft 1.25.2's null backend. It exercised stream
+playback, pause/resume, buffer consumption and context/device cleanup with
+real worker time and virtual game time. This is lifecycle evidence, not
+audible output. Receipt:
+`ev_c2616791f51ac78639e80ce12ebf4c6b740db68d55dc8387112f083620b7e46a`.
+
+Clean `9116f3164` dedicated server ran for 300.002 real seconds with all
+`NOX_E2E*` variables removed. The run collected 61 samples, made three map
+transitions and ended with authenticated quit and natural exit 0. Goroutines
+remained 8 to 11 and ended at 8; final heap allocation was 55.2 MB. This
+zero-player, audio-disabled idle/load run does not establish combat or
+replication stability. Receipt:
+`ev_5e0adef52668070bb70fa4b4553520d6d9ff0d919533d33c3e6b0b53a6192097`.
+
+## Native and harness validation checkpoint
+
+The combined floor-region and live-peer harness changes passed all four
+configuration suites with Go 1.26.9 on macOS ARM64:
+
+| Configuration | Test pass events | Skips | Passed packages | Failures |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 81,807 | 47 | 40 | 0 |
+| Highres | 81,807 | 47 | 40 | 0 |
+| Server | 76,979 | 7 | 36 | 0 |
+| Server, highres | 76,979 | 7 | 36 | 0 |
+
+These are terminal Go test events, including parent tests and subtests, not
+feature coverage. Each configuration retains all prior terminal cases and
+adds 75 pass events: 57 native checks and 18 harness checks. Comparison
+preserves multiplicities while normalizing only native allocation addresses
+in the names of two existing fault-boundary tests.
+
+The native focused union passed 74 events with race, checkptr level 2 and
+`GOEXPERIMENT=cgocheck2`. The final E2E subset passed 27 events under the same
+strict settings. Source-bound optimized and ASan+UBSan C runs also passed.
+The oracle verifies 2,974 code ranges and 652 data ranges, retaining every
+previous record; these totals do not measure original-function coverage.
+
+All 2,744 preserved Go test/YAML files remain byte-identical. The only changes
+to existing C fixtures in this checkpoint are the approved original-derived
+R300/R302 expected row locations and the corresponding exclusion check.
+Inputs, cases, assertions and canaries remain. R134 is unchanged. All 1,562
+personal installation files, totaling 571,159,691 bytes, retain their baseline
+content hashes.

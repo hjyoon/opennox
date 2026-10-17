@@ -683,6 +683,21 @@ func (sc *e2eScenario) WaitMap(mapName, name string) {
 	})
 }
 
+func (sc *e2eScenario) WaitClientConnected(name string) {
+	// addWhen counts engine iterations, matching the original peer wait budget.
+	sc.addWhen(0, name, 500, func() bool {
+		if noxClient == nil || !nox_client_isConnected() {
+			return false
+		}
+		unit := noxClient.ClientPlayerUnit()
+		code := legacy.ClientPlayerNetCode()
+		return unit != nil && code > 0 && int(unit.NetCode32) == code
+	}, func() {
+		e2eLog.Printf("CLIENT CONNECTED: netcode=%d drawable_netcode=%d frame=%d",
+			legacy.ClientPlayerNetCode(), noxClient.ClientPlayerUnit().NetCode32, noxServer.Frame())
+	})
+}
+
 func (sc *e2eScenario) WaitForcedCoopAutosave(name string) {
 	sc.add(0, name+" resume", func() {
 		if !nox_xxx_gameGet_4DB1B0() {
@@ -9431,6 +9446,11 @@ func (sc *e2eScenario) Load(path string) {
 			dt = l.Dur
 		}
 		switch l.Action {
+		case "checkpoint":
+			sc.Wait(dt, l.Name)
+			// A blocking peer operation may advance virtual time. Queue the
+			// following phase from the current clock after this one finishes.
+			sc.Exec()
 		case "quit":
 			sc.Quit(dt)
 		case "check-console-commands":
@@ -9766,6 +9786,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.WaitMap(l.Map, l.Name)
+		case "wait-client-connected":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.WaitClientConnected(l.Name)
 		case "wait-forced-coop-autosave":
 			if dt != 0 {
 				sc.Wait(dt, "")
@@ -11011,6 +11036,9 @@ func e2eInit() {
 	e2eLog.Println("WARNING: starting in e2e test mode")
 	e2e.p = newPlayformE2E()
 	platform.Set(e2e.p)
+	if e2e.p.realSleep != nil {
+		e2eLog.Println("using virtual ticks with real Sleep (NOX_E2E_REAL_SLEEP=true)")
+	}
 	if e2e.recording {
 		e2eLog.Printf("RECORD: %s", fname)
 		if e2e.slow == 0 {

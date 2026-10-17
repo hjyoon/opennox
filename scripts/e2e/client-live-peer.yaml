@@ -1,0 +1,79 @@
+# Headless-only: start a separate owned local dedicated server first.
+# Isolate data/game_ip.txt to that server's 127.0.0.1:port.
+# Requires NOX_E2E_REAL_SLEEP=true: virtual ticks with real Sleep.
+# The readiness gate is bounded at 500 engine iterations. Existing post-join
+# wait 500, walk 120 and settle 30 raw ticks remain unchanged.
+# Audit frames are observations, not pixel golden assertions.
+# Verify movement with independent server/client netcode and position observations.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 432
+    y: 98
+    name: select actual local server row
+  - action: wait
+    dt: 30
+    name: wait for server popup
+  - action: click
+    x: 448
+    y: 232
+    name: join actual local dedicated server
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait-client-connected
+    name: actual remote client drawable binding
+  - action: checkpoint
+  - action: wait
+    dt: 500
+    name: wait for actual remote join and map
+  - action: capture-quest-map-audit-frame
+    name: actual local UDP joined client
+  - action: walk
+    ang: 0
+    dt: 120
+    name: real remote player movement
+  - action: wait
+    dt: 30
+    name: settle after remote movement
+  - action: capture-quest-map-audit-frame
+    name: actual local UDP moved client
+  - action: quit
+    dt: 1
+  - action: checkpoint
+  - action: quit
+    dt: 30

@@ -2,20 +2,25 @@ package opennox
 
 import (
 	"math/rand"
+	"os"
 	"sync"
 	"time"
 )
 
 func newPlayformE2E() *platformE2E {
 	p := &platformE2E{}
+	if os.Getenv("NOX_E2E_REAL_SLEEP") == "true" {
+		p.realSleep = time.Sleep
+	}
 	p.RandSeed(1234)
 	return p
 }
 
 type platformE2E struct {
-	mu  sync.Mutex
-	t   time.Duration
-	rnd *rand.Rand
+	mu        sync.Mutex
+	t         time.Duration
+	rnd       *rand.Rand
+	realSleep func(time.Duration)
 }
 
 func (p *platformE2E) ticks() time.Duration {
@@ -38,8 +43,12 @@ func (p *platformE2E) Ticks() time.Duration {
 
 func (p *platformE2E) Sleep(dt time.Duration) {
 	p.mu.Lock()
-	defer p.mu.Unlock()
 	p.t += dt
+	sleep := p.realSleep
+	p.mu.Unlock()
+	if sleep != nil {
+		sleep(dt)
+	}
 }
 
 func (p *platformE2E) TimeSeed() int64 {

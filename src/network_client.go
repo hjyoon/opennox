@@ -12,6 +12,7 @@ import (
 
 	"github.com/opennox/libs/console"
 	"github.com/opennox/libs/noxnet"
+	netmapsend "github.com/opennox/libs/noxnet/mapsend"
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/strman"
 
@@ -471,13 +472,13 @@ func (c *Client) nox_xxx_netOnPacketRecvCli48EA70_switch(ind ntype.PlayerInd, op
 		c.mapsend.onMapDownloadStart(name, uint(sz))
 		return 88
 	case netmsg.MSG_MAP_SEND_PACKET:
-		if len(data) < 6 {
+		var p netmapsend.MsgMapSendPacket
+		n, err := p.Decode(data[1:])
+		if err != nil {
 			return -1
 		}
-		bind := binary.LittleEndian.Uint16(data[2:])
-		sz := binary.LittleEndian.Uint16(data[4:])
-		c.mapsend.onMapDownloadPart(uint(bind), data[6:6+sz])
-		return 6 + int(sz)
+		c.mapsend.onMapDownloadPart(uint(p.Block), p.Data)
+		return 1 + n
 	case netmsg.MSG_MAP_SEND_ABORT:
 		if len(data) < 2 {
 			return -1

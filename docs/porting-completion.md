@@ -279,6 +279,42 @@ held the estate assets, so this run covers map handoff and fresh-process
 reconnection, not asset download. It does not establish combat, every game
 mode, a fully ordinary-clock client or original Windows-peer interoperability.
 
+## Native UDP download, transition and fresh reconnection
+
+Clean Go 1.26.9 ARM64 products from `e6673a55be5ef3357e4391482cdc925dbeb391f8`
+pass a separate normal/highres profile with stock client maps withheld only
+from owned data copies. Each pair transfers So_Beach to client 1, transfers
+Estate while that client remains connected, then transfers Estate to a fresh
+client process on the same running server. All six UDP transfers produce
+`.nxz` and `.map` bytes matching the preserved originals. No game-code change
+is required; the two new scenarios retain the existing live-peer scenario.
+
+The initial unchanged scenario downloaded correctly but did not move. Separate
+diagnostics establish real stock chat-help/MOTD dismissal and the remaining
+observer state. The current native map request deliberately calls
+`PlayerGoObserver`; normal Action input is needed after each transfer. Both
+final profiles verify received Action packets, observer-to-normal reports,
+normal unit flags and independent server/drawable movement. Earlier negative
+captures and their unchanged inputs remain preserved.
+
+| Profile | So_Beach walk | Connected Estate walk | Fresh Estate walk | Handoff |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 174.839 units | 84.637 units | 104.067 units | 11.248 s |
+| Highres | 114.602 units | 180.572 units | 149.653 units | 11.459 s |
+
+All six walk phases retain matching netcodes; their maximum observed
+replication distance is 1.647 units. Each server observes `0,1,0,1,0` players,
+retains identity across its connected handoff, and survives for the fresh
+connection. All six processes exit naturally with code 0, without termination
+cleanup. REA retains complete capture budgets and owned-process settlement.
+The profile, fixed bounds, input prerequisites and remaining limits are in
+[native-map-transfer.md](native-map-transfer.md).
+
+These are headless virtual-tick clients with real Sleep and ordinary-clock
+dedicated servers, with audio disabled. They do not establish original
+Windows-peer interoperability, combat, WAN, ordinary-time clients or SDL
+compositor parity. The overall weighted maturity estimate remains 79%.
+
 ## Other runtime evidence
 
 The unchanged native-audio Warrior scenario passed on clean `bd4c363df` in

@@ -1,0 +1,131 @@
+# Native UDP map-transfer profile; see docs/native-map-transfer.md.
+# Use an owned ordinary-clock dedicated server with NOX_MAPS_HTTP=false.
+# Start on so_beach with zero players. Withhold both client map directories
+# only from an isolated copy of the data, preserving its Save and settings.
+# Requires NOX_E2E_SEAT=headless and NOX_E2E_REAL_SLEEP=true.
+# On STATE "request estate transition", the controller posts estate to the
+# owned server's authenticated map API, keeping the same server process.
+# Each native download requires normal Action input to leave observer mode.
+# Retain ready 500, wait 500, walk 120 and settle 30; map-stage bound is 20s.
+# Audit frames are observations. Independently verify file hashes, identity,
+# status transitions, replicated movement and natural process exits.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: click
+    x: 448
+    y: 264
+    name: open multiplayer
+  - action: wait
+    dt: 700
+    name: wait for native server discovery
+  - action: click
+    x: 432
+    y: 98
+    name: select actual local server row
+  - action: wait
+    dt: 30
+    name: wait for server popup
+  - action: click
+    x: 448
+    y: 232
+    name: join actual local dedicated server
+  - action: wait
+    dt: 400
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept color selection
+  - action: wait-client-connected
+    name: actual remote client drawable binding
+  - action: checkpoint
+  - action: wait
+    dt: 500
+    name: wait for actual remote join and map
+  - action: click
+    x: 512
+    y: 486
+    name: dismiss stock chat information
+  - action: wait
+    dt: 2
+  - action: click
+    x: 463
+    y: 330
+    name: dismiss stock MOTD
+  - action: wait
+    dt: 2
+  - action: melee
+    dt: 2
+    ang: 0
+    name: normal Action input to join play after download
+  - action: wait
+    dt: 30
+    name: settle after normal participation input
+  - action: capture-quest-map-audit-frame
+    name: actual local UDP joined client
+  - action: walk
+    ang: 0
+    dt: 120
+    name: real remote player movement
+  - action: wait
+    dt: 30
+    name: settle after remote movement
+  - action: capture-quest-map-audit-frame
+    name: actual local UDP moved client
+  - action: capture-quest-map-audit-frame
+    name: request estate transition
+  - action: wait
+    dt: 500
+    name: bounded estate map transition window
+  - action: wait-client-connected
+    name: actual estate client drawable binding
+  - action: checkpoint
+  - action: melee
+    dt: 2
+    ang: 0
+    name: normal Action input after connected Estate download
+  - action: wait
+    dt: 30
+    name: settle after Estate participation input
+  - action: wait
+    dt: 500
+    name: wait for actual estate map and client
+  - action: capture-quest-map-audit-frame
+    name: actual estate joined client
+  - action: walk
+    ang: 0
+    dt: 120
+    name: real estate player movement
+  - action: wait
+    dt: 30
+    name: settle after estate movement
+  - action: capture-quest-map-audit-frame
+    name: actual estate moved client
+  - action: quit
+    dt: 1
+  - action: checkpoint
+  - action: quit
+    dt: 30

@@ -3956,7 +3956,7 @@ int nox_server_mapRWFloorMap_422230(void* region) {
 	v63 = -1;
 	for (int x = 0; x < ptr_5D4594_2650668_cap; ++x) {
 		for (int y = 0; y < ptr_5D4594_2650668_cap; ++y) {
-			if (ptr_5D4594_2650668[x][y].field_0 & 3) {
+			if (ptr_5D4594_2650668[x][y].field_0 != 0) {
 				if (x < v60) v60 = x;
 				if (x > v64) v64 = x;
 				if (y < v61) v61 = y;
@@ -4329,7 +4329,7 @@ int nox_xxx_tile_422C10(int a1, void* region) {
 					v52_head = NULL;
 					if (v46 & 1) {
 						v64 = (v48 - 23) / 46;
-						v66 = (v46 + 23) / 46;
+						v66 = 23 * (v46 + 1) / 46;
 						if (nox_common_gameFlags_check_40A5C0(0x400000)) {
 							nox_tile_coord_entry_t* entry =
 								nox_xxx_tileAllocTileInCoordList_5040A0(v64, v66, COERCE_FLOAT(1));
@@ -4345,7 +4345,7 @@ int nox_xxx_tile_422C10(int a1, void* region) {
 						}
 					} else {
 						v49 = v48 / 46;
-						v51 = v46 / 46;
+						v51 = 23 * v46 / 46;
 						if (nox_common_gameFlags_check_40A5C0(0x400000)) {
 							nox_tile_coord_entry_t* entry =
 								nox_xxx_tileAllocTileInCoordList_5040A0(v49, v51, COERCE_FLOAT(2));

@@ -170,9 +170,9 @@ static void test_region_read(void) {
     header(99, -99, 2, 2); pack(0, 1); pack(1, 1); layer1(); pack(1, 1); layer2(); pack(0, 1);
     memcpy(wire, expected, expected_size); wire_size = expected_size; readonly_mode = 1;
     need(nox_xxx_tile_422C10(3, box->region) == 1, "actual selected-region reader result");
-    // v3's legacy row mapping is retained, including (row + 23) / 46.
-    check_layers(&ptr_5D4594_2650668[1][0]);
-    for (int x = 0; x < CAP; ++x) for (int y = 0; y < CAP; ++y) if (x != 1 || y != 0) need(ptr_5D4594_2650668[x][y].field_0 == 0, "region reader target mapping");
+    // Original v3 maps odd/even region rows to the same native tile row.
+    check_layers(&ptr_5D4594_2650668[1][2]);
+    for (int x = 0; x < CAP; ++x) for (int y = 0; y < CAP; ++y) if (x != 1 || y != 2) need(ptr_5D4594_2650668[x][y].field_0 == 0, "region reader target mapping");
     need(geometry_calls == 0 && node_count == 3, "region reader node/geometry counts"); finish(before);
 }
 static void test_empty(void) {

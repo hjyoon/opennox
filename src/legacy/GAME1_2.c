@@ -196,7 +196,7 @@ int nox_xxx_wallMath_427F30(int2* a1, int* a2) {
 
 //----- (00428170) --------------------------------------------------------
 int sub_428170(void* a1p, int4* a2) {
-	uint32_t* a1 = a1p;
+	int32_t* a1 = a1p;
 	int v2; // edx
 	int v3; // edx
 

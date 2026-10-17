@@ -131,7 +131,7 @@ static void test_v3_read(void) {
     invoke();
     need(cursor == wire_size && cursor == 54 && calls == 11, "v3 exact two-column I/O, not native layer size");
     for (int i = 0; i < 2; ++i) {
-        obj_5D4594_2650668_t *tile = &ptr_5D4594_2650668[i][0];
+        obj_5D4594_2650668_t *tile = &ptr_5D4594_2650668[i][2];
         need(tile->field_0 == 1 && tile->field_1 == data[i][0] && tile->field_2 == data[i][1] && tile->field_3 == data[i][2] && tile->field_4 == data[i][3] && !tile->field_5, "source-derived v3 scalar fields");
     }
     need(node_count == 0, "v3 count-zero allocation"); finish(before);

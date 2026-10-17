@@ -756,6 +756,20 @@
       "purpose": "allocate a subtile node from the PE32 pool, initialize its four scalar DWORDs, and terminate its native-converted next link"
     },
     {
+      "name": "FloorMap_dispatch_code_interval_422230",
+      "address": "0x00422230",
+      "size": 2053,
+      "sha256": "6186dbc0a9b10d1bba9fdf9cf8d7a8ca25a0e051520ad2a7c2cd6ad2ef895da4",
+      "purpose": "code interval reached by the original FloorMap dispatch table: v3 delegate, v4 header/row codecs and all four whole-BYTE nonzero bounds predicates; extent derived from matching REA bytes and LLVM sequential decode, not a Ghidra function body"
+    },
+    {
+      "name": "FloorMap_dispatch_code_interval_422230_padding",
+      "address": "0x00422A35",
+      "size": 11,
+      "sha256": "19f3c2045194c5d2e45451e3dfe6a203b5e240aec5a2400a92cdb425c3331137",
+      "purpose": "eleven original NOP bytes between the decoded FloorMap code interval and tileReadOne at 00422A40"
+    },
+    {
       "name": "nox_xxx_tile_422C10",
       "address": "0x00422C10",
       "size": 2471,
@@ -21210,6 +21224,20 @@
       "size": 16384,
       "sha256": "7dfccdce34d74e348fae4181630a4c41a20a560432658ba2526969bb7000605f",
       "purpose": "the exact 4096 little-endian int32 values in range 0 through 32767 shared by the logic RNG at 00416030 and other-stream RNG at 00416090"
+    },
+    {
+      "name": "FloorMap_dispatch_name_and_entry_598228",
+      "address": "0x00598228",
+      "size": 8,
+      "sha256": "f3b91862cf686f715a1f204cb839868d6cc65d965fdc36122e01bd09c9d51d23",
+      "purpose": "PE32 dispatch record binding the FloorMap name at 005982B0 to code entry00422230"
+    },
+    {
+      "name": "FloorMap_dispatch_name_5982B0",
+      "address": "0x005982B0",
+      "size": 9,
+      "sha256": "ba681aaeff2b760c095092204eaf0e6c6edf80651cd438abf17e194b4fb12dca",
+      "purpose": "original zero-terminated ASCII FloorMap section name referenced by its dispatch record"
     },
     {
       "name": "guide_name_pointer_table_427230",

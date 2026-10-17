@@ -61,13 +61,50 @@ The codec body `00422C10..004235B6` and allocator body
 `00422160..004221D1` are sealed in the existing code oracle. The original
 executable was neither run nor modified; decompilation is derived evidence.
 
-### Unresolved selected-region coordinates
+## Original region coordinates and bounds
 
-The existing version-3 selected-region reader computes `(row+23)/46` for odd
-rows and `row/46` for even rows. Original instructions and decompilation use
-`23*(row+1)/46` and `23*row/46`. A two-by-two region starting at row 3 therefore
-places both layers at `tile[1][0]` in the current product and `tile[1][2]` in
-the original-derived expectation. The existing R300 fixture expects the
-current mapping. This conversion preserves that expectation and leaves the
-coordinate discrepancy open. Its selected-region read case is a preservation
-check, not proof of original coordinate equivalence.
+The version-3 selected-region reader uses the original `23*(row+1)/46` for
+odd rows and `23*row/46` for even rows. The earlier expressions omitted the
+factor 23. A two-by-two region starting at row 3 now places both layers at
+`tile[1][2]`. R300/R302 expected rows follow the original instructions;
+their input streams, assertions, allocation guards and I/O checks remain.
+
+`sub_428170` views the descriptor coordinates as signed 32-bit values. Its
+earlier unsigned view reversed mixed-sign endpoints before the clamps. It
+retains the original asymmetric rules: clamp negative minima to zero and
+maxima at or above 5888 to 5887, without normalizing inverted results.
+`TestRegionBoundsSignedOriginalR303` and
+`TestRegionBoundsSignedCGoR303` cover 20 literal original-derived vectors,
+including mixed signs, equal endpoints and integer extremes. The latter
+uses the existing CGo entry with native C-owned input/output and canaries.
+
+## Whole-byte flags in version-4 bounds
+
+The version-4 writer considers every nonzero flag byte when finding bounds,
+matching the original four byte comparisons. The earlier `flags & 3`
+condition excluded high-bit-only cells admitted by version-3 input. The
+record payload still selects its two layers with bits 1 and 2.
+`TestFloorMapV4WholeFlagBoundsR303` passes actual version-3 input through the
+version-4 writer and checks exact headers, payloads, callback widths and
+sentinels. It covers high flags, both layers, the grid edge and empty grids.
+A layer-clear fixture applies the byte operation directly; it does not
+establish execution of the separate legacy editor routine.
+
+The flag field is already `uint8_t`; its three neighboring bytes are separate
+fields. `TestFloorMapV3FlagByteR303` checks preservation of those neighboring
+fields with nonzero byte patterns.
+A read-only scan of the hash-bound 157 stock maps found only version 4 and
+flags 0 through 3. The high-bit difference concerns admitted custom/legacy
+version-3 input, not a reproduced stock-map failure.
+
+The original `FloorMap` dispatch record, its name and the decoded
+`00422230..00422A34` code interval are also sealed in the code oracle. REA
+decoded the entry and read matching bytes; LLVM supplied sequential decode
+and boundary evidence. Ghidra did not register this interval as a procedure,
+so its extent is recorded as a derived code interval rather than a Ghidra
+function body.
+
+```sh
+NOX_E2E_SEAT=headless ./scripts/go.sh -C src test ./legacy \
+  -run '^Test(FloorMap|RegionBounds).*R30[023]$' -count=1
+```

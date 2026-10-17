@@ -40,26 +40,33 @@ func WaitForLobbyResults(conn net.PacketConn, srvAddr netip.Addr, flag RecvFlags
 			return 0, err
 		}
 		buf = buf[:n]
-		op := netmsg.Op(buf[2])
-		if op < netmsg.MSG_CLIENT_ACCEPT {
-			if op == netmsg.MSG_SERVER_INFO || srvAddr == from.Addr() {
-				switch op {
-				case netmsg.MSG_SERVER_INFO:
-					if from.Addr().IsValid() {
-						opts.OnResult(from, buf)
+		// A callback must never consume fields beyond this datagram, even
+		// though the reused receive buffer has capacity for a larger reply.
+		if len(buf) >= 3 {
+			op := netmsg.Op(buf[2])
+			if op < netmsg.MSG_CLIENT_ACCEPT {
+				if op == netmsg.MSG_SERVER_INFO || srvAddr == from.Addr() {
+					switch op {
+					case netmsg.MSG_SERVER_INFO:
+						// The fixed header ends where the server name begins.
+						if len(buf) >= 72 && from.Addr().IsValid() {
+							opts.OnResult(from, buf)
+						}
+					case netmsg.MSG_PASSWORD_REQUIRED:
+						opts.OnPassRequired()
+					case netmsg.MSG_SERVER_PING:
+						if len(buf) >= 8 {
+							opts.OnPing(from, buf)
+						}
+					case netmsg.MSG_SERVER_ERROR:
+						if len(buf) >= 4 && !opts.OnConnectErr(noxnet.ConnectError(buf[3])) {
+							break
+						}
+					case netmsg.MSG_SERVER_JOIN_OK:
+						opts.OnJoinOK()
+					case netmsg.MSG_SERVER_JOIN_FAIL:
+						opts.OnJoinFail()
 					}
-				case netmsg.MSG_PASSWORD_REQUIRED:
-					opts.OnPassRequired()
-				case netmsg.MSG_SERVER_PING:
-					opts.OnPing(from, buf)
-				case netmsg.MSG_SERVER_ERROR:
-					if !opts.OnConnectErr(noxnet.ConnectError(buf[3])) {
-						break
-					}
-				case netmsg.MSG_SERVER_JOIN_OK:
-					opts.OnJoinOK()
-				case netmsg.MSG_SERVER_JOIN_FAIL:
-					opts.OnJoinFail()
 				}
 			}
 		}

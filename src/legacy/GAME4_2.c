@@ -564,14 +564,14 @@ int nox_xxx_map_51E140() {
 int nox_xxx_mapGenSpellIdByName_51E1D0(const char* a1) {
 	unsigned int i; // esi
 	char v3[60];    // [esp+8h] [ebp-78h]
-	char v4;        // [esp+44h] [ebp-3Ch]
+	char v4[60];    // [esp+44h] [ebp-3Ch]
 
 	strcpy(v3, a1);
 	for (i = 0; i < strlen(v3); ++i) {
 		v3[i] = toupper(v3[i]);
 	}
-	nox_sprintf(&v4, "SPELL_%s", v3);
-	return nox_xxx_spellNameToN_4243F0(&v4);
+	nox_sprintf(v4, "SPELL_%s", v3);
+	return nox_xxx_spellNameToN_4243F0(v4);
 }
 // 51E1D0: using guessed type char var_78[60];
 

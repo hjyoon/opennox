@@ -16471,6 +16471,13 @@
       "purpose": "the exact six NOP bytes separating the map-save section driver from the debug-break stub at 0051E1C0"
     },
     {
+      "name": "nox_xxx_mapGenSpellIdByName_51E1D0",
+      "address": "0x0051E1D0",
+      "size": 139,
+      "sha256": "bdffa8eebce9426b1ba04b11c7804fe0e7037fd58f8ec0f41b8ec0454f62212b",
+      "purpose": "the complete original spell-name lookup body; two 60-byte local arrays preserve uppercase SPELL_ formatting and lookup handoff"
+    },
+    {
       "name": "nox_xxx_netSendFxAllCli_523030_call_523023",
       "address": "0x00523023",
       "size": 5,

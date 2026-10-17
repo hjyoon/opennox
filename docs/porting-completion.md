@@ -55,6 +55,36 @@ and RNG order, and canaries in optimized and ASan+UBSan execution. They add
 passes 164 events normally and under race, checkptr level 2 and cgocheck2.
 These controlled results do not establish complete classic generation.
 
+The spell-name lookup helper now restores its original 60-byte output array.
+Retained REA/Ghidra instructions and pseudocode identify two adjacent 60-byte
+arrays; all 139 bytes of the original body match an independent PE read and
+are added to the code oracle without changing previous records. The helper
+retains its uppercase conversion, `SPELL_` prefix and lookup handoff. Its
+source-bound regression uses the production formatter with 310 bounded ASCII
+inputs per optimization/sanitizer mode. The tested input lengths are 0 through
+53 bytes so the prefix and terminator fit; arbitrary-length input and complete
+classic generation remain unverified.
+
+For this correction, the Darwin ARM64 normal and highres suites each pass
+81,906 terminal test events with 47 skips; server and server+highres each
+pass 77,078 with seven skips. These totals include parent/subtest events.
+All previous test outcomes and multiplicities remain, with four new passing
+events from the spell-name regression. Only the existing two subtest families
+whose names contain runtime pointers above `UINT32_MAX` need address-label
+normalization for comparison; nil and fixed low addresses remain literal.
+The focused mapgen union passes 148 events both normally and with race,
+checkptr level 2 and cgocheck2. All 3,245 pre-existing test/fixture/YAML files
+retain their SHA-256 values, and the oracle verifies 2,995 code and 656 data
+ranges. These results retain the overall 79% maturity estimate.
+
+The retained clean R306 normal product also completed the headless Wiz08e
+tower scenario through REA process capture. The stock tower selected and
+naturally launched at player, monster and NPC victims; server and client HP
+agreed on damage of 34, 35 and 35 respectively, and the process exited normally.
+These were direct map loads with controlled victims, virtual game time and
+audio disabled. Three software frames were observed without golden comparisons;
+the result does not establish chapter traversal, endings or compositor parity.
+
 The Quest reward decoder now retains native UTF-16 title pointers in all six
 self/other spell, guide and ability locals. Only their declarations change;
 lookup, player identity, live names, formatting and output order remain.

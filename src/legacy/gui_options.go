@@ -52,7 +52,12 @@ func sub_4AAA10() int32 { return int32(Sub_4AAA10()) }
 func sub_4C3A90(a1_cgo *nox_window, a2_cgo C.int, a3_cgo, a4_cgo C.uintptr_t) C.int {
 	a1 := int(uintptr(unsafe.Pointer(a1_cgo)))
 	a2 := int(a2_cgo)
-	a3 := unsafe.Pointer(uintptr(a3_cgo))
+	// Only button clicks carry a sender window. Other events carry scalars,
+	// such as WindowNewChild's ID, which must never become Go pointers.
+	var a3 unsafe.Pointer
+	if a2 == 16391 {
+		a3 = unsafe.Pointer(uintptr(a3_cgo))
+	}
 	a4 := int(uintptr(a4_cgo))
 	return C.int(Sub_4C3A90(a1, a2, a3, a4))
 }
@@ -61,7 +66,10 @@ func sub_4C3A90(a1_cgo *nox_window, a2_cgo C.int, a3_cgo, a4_cgo C.uintptr_t) C.
 func sub_4CBE70(a1_cgo *nox_window, a2_cgo C.int, a3_cgo, a4_cgo C.uintptr_t) C.int {
 	a1 := int(uintptr(unsafe.Pointer(a1_cgo)))
 	a2 := int(a2_cgo)
-	a3 := unsafe.Pointer(uintptr(a3_cgo))
+	var a3 unsafe.Pointer
+	if a2 == 16391 {
+		a3 = unsafe.Pointer(uintptr(a3_cgo))
+	}
 	a4 := int(uintptr(a4_cgo))
 	return C.int(Sub_4CBE70(a1, a2, a3, a4))
 }

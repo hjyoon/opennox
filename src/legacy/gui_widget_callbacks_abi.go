@@ -91,6 +91,14 @@ static int nox_test_input_config_control_callback(nox_window* win, int shell, in
 	}
 	return sub_4C3CD0(win, event, a3, a4);
 }
+
+static int nox_test_input_config_root_callback(nox_window* win, int shell, int event,
+		uintptr_t a3, uintptr_t a4) {
+	if (shell) {
+		return sub_4CBE70(win, event, a3, a4);
+	}
+	return sub_4C3A90(win, event, a3, a4);
+}
 */
 import "C"
 
@@ -146,6 +154,16 @@ func inputConfigControlCallbackC(win *gui.Window, shell bool, event int, a3, a4 
 		cshell = 1
 	}
 	return int(C.nox_test_input_config_control_callback(
+		(*C.nox_window)(win.C()), cshell, C.int(event), C.uintptr_t(a3), C.uintptr_t(a4),
+	))
+}
+
+func inputConfigRootCallbackC(win *gui.Window, shell bool, event int, a3, a4 uintptr) int {
+	var cshell C.int
+	if shell {
+		cshell = 1
+	}
+	return int(C.nox_test_input_config_root_callback(
 		(*C.nox_window)(win.C()), cshell, C.int(event), C.uintptr_t(a3), C.uintptr_t(a4),
 	))
 }

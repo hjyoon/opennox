@@ -50,12 +50,15 @@ func (p *Image16) PixOffset(x, y int) int {
 	return (y-p.Rect.Min.Y)*p.Stride + (x - p.Rect.Min.X)
 }
 
+// Row returns the visible pixels at absolute image coordinate y. The returned
+// slice shares the image's storage but cannot extend into row padding.
 func (p *Image16) Row(y int) []uint16 {
-	y = y - p.Rect.Min.Y
-	if y < 0 || y >= p.Stride {
+	if y < p.Rect.Min.Y || y >= p.Rect.Max.Y {
 		return nil
 	}
-	return p.Pix[y*p.Stride : (y+1)*p.Stride : (y+1)*p.Stride]
+	start := (y - p.Rect.Min.Y) * p.Stride
+	end := start + p.Rect.Dx()
+	return p.Pix[start:end:end]
 }
 
 func (p *Image16) SubImage(r image.Rectangle) *Image16 {

@@ -125,7 +125,15 @@ func (r *Renderer) present(img *noximage.Image16) {
 		if r.buf == nil || r.buf.Rect != img.Rect {
 			r.buf = noximage.NewImage16(img.Rect)
 		}
-		copy(r.buf.Pix, img.Pix)
+		if img.Stride == sz.X {
+			copy(r.buf.Pix, img.Pix)
+		} else {
+			// Subimages share their parent's stride. Copy visible rows, not
+			// parent padding or pixels outside the source rectangle.
+			for y := img.Rect.Min.Y; y < img.Rect.Max.Y; y++ {
+				copy(r.buf.Row(y), img.Row(y))
+			}
+		}
 		if bsz := r.backbuf.Size(); sz != bsz || r.filtering != r.backbufFilt {
 			Log.Printf("recreating surface: %dx%d -> %dx%d", bsz.X, bsz.Y, sz.X, sz.Y)
 			if r.backbuf != nil {

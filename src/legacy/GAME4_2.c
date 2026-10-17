@@ -21,6 +21,7 @@
 #include "operators.h"
 #include "input.h"
 #include "mapgen_legacy_ptr.h"
+#include "floor_brush_native.h"
 
 #include "client__video__draw_common.h"
 #include "common__magic__speltree.h"
@@ -374,149 +375,64 @@ float get_nox_xxx_conjurerMaxMana_587000_312804();
 
 //----- (0051DA70) --------------------------------------------------------
 extern nox_tileDef_t nox_tile_defs_arr[176];
-int sub_51DA70(int a1, int a2, int a3, int a4, int a5) {
-	int v5;  // ebx
-	int v6;  // ebp
-	int* v7; // esi
-	int v8;  // edi
-	int v9;  // ecx
-	int v10; // eax
-	int v11; // eax
-	int v12; // edx
-	int v13; // ecx
-	int v15; // ebx
-	int v16; // edi
-	int v17; // edx
-	int v18; // eax
-	int v19; // edx
-	int v20; // esi
-	int v22; // ebp
-	int v23; // edx
-	int v24; // edx
-	int v25; // esi
-	int v26; // ebp
-	int v27; // edx
-	int v28; // [esp+10h] [ebp-8h]
-	int v29; // [esp+14h] [ebp-4h]
-	int v30; // [esp+24h] [ebp+Ch]
+int nox_floorBrushApplyNative_51DA70(int x, int y, nox_floor_brush_t* brush, int layer, int merge) {
+    int tile;
+    int variation;
+    if (!brush) {
+        tile =255;
+        variation =0;
+    } else if (brush->pattern && !brush->kind) {
+        tile =brush->tile_id;
+        variation =0;
+        brush->anchor_x =x;
+        brush->anchor_y =y;
+        brush->kind =(uint8_t)layer;
+    } else {
+        int relative_x =x;
+        int relative_y =y;
+        int parity =layer !=1;
+        if (brush->pattern) {
+            relative_x -=brush->anchor_x;
+            relative_y -=brush->anchor_y;
+            parity =brush->kind ==layer ?0 : (brush->kind ==1 ?1 :-1);
+        }
+        tile =brush->tile_id;
+        int width =nox_tile_defs_arr[tile].field_52;
+        int height =nox_tile_defs_arr[tile].field_53;
+        int column =(relative_y +relative_x) %width;
+        int row =(parity +relative_y -relative_x) %height;
+        if (column <0) column +=width;
+        if (row <0) row +=height;
+        variation =*getMemU32Ptr(0x973F18,35916) ==1
+            ? dword_5d4594_3835348 :column +row *width;
+    }
+    if (layer !=1 && layer !=2) return 0;
 
-	v5 = a4;
-	v6 = a2;
-	v7 = (int*)a3;
-	v8 = a1;
-	if (!a3) {
-		v9 = 255;
-		v10 = 0;
-		goto LABEL_19;
-	}
-	if (!*(uint32_t*)(a3 + 8)) {
-		v11 = a1;
-		v12 = a2;
-		v28 = a1;
-		v13 = a4 != 1;
-		v30 = v13;
-		goto LABEL_11;
-	}
-	if (!*(uint8_t*)(a3 + 20)) {
-		v9 = *(uint32_t*)a3;
-		v10 = 0;
-		*(uint32_t*)(a3 + 12) = a1;
-		*(uint32_t*)(a3 + 16) = a2;
-		*(uint8_t*)(a3 + 20) = a4;
-		goto LABEL_19;
-	}
-	v11 = a1 - *(uint32_t*)(a3 + 12);
-	v12 = a2 - *(uint32_t*)(a3 + 16);
-	v28 = a1 - *(uint32_t*)(a3 + 12);
-	a2 -= *(uint32_t*)(a3 + 16);
-	if (*(unsigned char*)(a3 + 20) != a4) {
-		v13 = *(uint8_t*)(a3 + 20) != 1 ? -1 : 1;
-		v30 = v13;
-		goto LABEL_11;
-	}
-	v30 = 0;
-LABEL_11:
-	v9 = *v7;
-	v15 = nox_tile_defs_arr[v9].field_52;
-	v29 = (v12 + v11) % v15;
-	v16 = nox_tile_defs_arr[v9].field_53;
-	v17 = (v30 + a2 - v28) % v16;
-	v18 = v29;
-	if (v29 < 0) {
-		v18 = v15 + v29;
-	}
-	if (v17 < 0) {
-		v17 += v16;
-	}
-	if (*getMemU32Ptr(0x973F18, 35916) == 1) {
-		v10 = dword_5d4594_3835348;
-	} else {
-		v10 = v18 + v17 * v15;
-	}
-	v8 = a1;
-	v5 = a4;
-LABEL_19:
-	if (v5 == 2) {
-		if (dword_5d4594_3835352 == 1) {
-			if (v7) {
-				v19 = v7[6];
-				v20 = v7[7];
-			} else {
-				v19 = 255;
-				v20 = 0;
-			}
-			return nox_xxx_tile_543C50((uint32_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + 44 * v6 + 24), v9, v10, v19,
-									   v20, a5);
-		}
-		v22 = 44 * v6;
-		v23 = v22 + (uint32_t)(ptr_5D4594_2650668[v8]);
-		if (*(uint32_t*)(v23 + 24) != v9 || *(uint32_t*)(v23 + 28) != v10) {
-			*(uint32_t*)(v23 + 24) = v9;
-			*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v22 + 28) = v10;
-			if (v9 == 255) {
-				nox_xxx_tileFreeTile_422200(&ptr_5D4594_2650668[v8][v6].field_10);
-			}
-			if (v7) {
-				*(uint8_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v22) |= 2u;
-			} else {
-				*(uint8_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v22) =
-					*(uint8_t*)(v22 + (uint32_t)(ptr_5D4594_2650668[v8])) & 0xFD;
-			}
-			return 1;
-		}
-		return 0;
-	}
-	if (v5 != 1) {
-		return 0;
-	}
-	if (dword_5d4594_3835352 == 1) {
-		if (v7) {
-			v24 = v7[6];
-			v25 = v7[7];
-		} else {
-			v24 = 255;
-			v25 = 0;
-		}
-		return nox_xxx_tile_543C50((uint32_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + 44 * v6 + 4), v9, v10, v24, v25,
-								   a5);
-	}
-	v26 = 44 * v6;
-	v27 = v26 + (uint32_t)(ptr_5D4594_2650668[v8]);
-	if (*(uint32_t*)(v27 + 4) == v9 && *(uint32_t*)(v27 + 8) == v10) {
-		return 0;
-	}
-	*(uint32_t*)(v27 + 4) = v9;
-	*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v26 + 8) = v10;
-	if (v9 == 255) {
-		nox_xxx_tileFreeTile_422200(&ptr_5D4594_2650668[v8][v6].field_5);
-	}
-	if (v7) {
-		*(uint8_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v26) |= 1u;
-	} else {
-		*(uint8_t*)((uint32_t)(ptr_5D4594_2650668[v8]) + v26) =
-			*(uint8_t*)(v26 + (uint32_t)(ptr_5D4594_2650668[v8])) & 0xFE;
-	}
-	return 1;
+    obj_5D4594_2650668_t* cell =&ptr_5D4594_2650668[x][y];
+    int* base_tile =layer ==1 ?&cell->field_1 :&cell->field_6;
+    int* base_variation =layer ==1 ?&cell->field_2 :&cell->field_7;
+    nox_tile_list_node_t** head =layer ==1 ?&cell->field_5 :&cell->field_10;
+    // The left scalar fields and native head are separated by alignment
+    // padding; they cannot be overlaid by a standalone nox_tile_layer_t.
+    if (dword_5d4594_3835352 ==1) {
+        return nox_xxx_tile_543C50(*base_tile,head,tile,variation,
+            brush ?brush->edge_id :255,brush ?brush->edge_variation :0,merge);
+    }
+    if (*base_tile ==tile && *base_variation ==variation) return 0;
+    *base_tile =tile;
+    *base_variation =variation;
+    if (tile ==255) nox_xxx_tileFreeTile_422200(head);
+    uint8_t bit =layer ==1 ?1 :2;
+    if (brush) cell->field_0 |=bit;
+    else cell->field_0 &= (uint8_t)~bit;
+    return 1;
+}
+
+// The preserved integer ABI carries a PE32 mapgen token. Native producers
+// use the typed entry above and never narrow a host brush pointer to int.
+int sub_51DA70(int x, int y, int brush_token, int layer, int merge) {
+    return nox_floorBrushApplyNative_51DA70(x, y,
+        nox_mapgenLegacyPtrResolve((uint32_t)brush_token), layer, merge);
 }
 
 //----- (0051DD50) --------------------------------------------------------
@@ -527,8 +443,8 @@ void sub_51DD50(int a1, int a2, int a3, int a4) {
 	int v7;            // eax
 
 	if (a1 > 0 && a1 < 127 && a2 > 0 && a2 < 127) {
-		if ((v4 = a3, a3 & 2) && (v4 = a3, a4 == *(uint32_t*)((uint32_t)(ptr_5D4594_2650668[a1]) + 44 * a2 + 24)) ||
-			v4 & 1 && a4 == *(uint32_t*)((uint32_t)(ptr_5D4594_2650668[a1]) + 44 * a2 + 4)) {
+		if ((v4 = a3, a3 & 2) && (v4 = a3, a4 == ptr_5D4594_2650668[a1][a2].field_6) ||
+			v4 & 1 && a4 == ptr_5D4594_2650668[a1][a2].field_1) {
 			if ((!(v4 & 1) || a2 != 1) && (!(a3 & 2) || a1 != 1)) {
 				v5 = 0;
 				if (*(int*)&dword_5d4594_2487248 > 0) {
@@ -4844,25 +4760,24 @@ float* sub_5245A0(int a1, float* a2, int a3, int a4) {
 	float* result; // eax
 	int v5;        // ebp
 	int v6;        // esi
-	float v7;      // [esp+4h] [ebp-8h]
-	float v8;      // [esp+8h] [ebp-4h]
+	float point[2];
 
 	result = (float*)a4;
-	v8 = a2[1] + 16.263456;
+	point[1] = a2[1] + 0x1.04371ep+4f;
 	if (a4 > 0) {
 		v5 = a4;
 		do {
-			v7 = *a2 + 16.263456;
+			point[0] = *a2 + 0x1.04371ep+4f;
 			if (a3 > 0) {
 				v6 = a3;
 				do {
-					result = sub_51D5E0(&v7);
+					result = sub_51D5E0(point);
 					--v6;
-					v7 = v7 + 32.526913;
+					point[0] = point[0] + 0x1.04371ep+5f;
 				} while (v6);
 			}
 			--v5;
-			v8 = v8 + 32.526913;
+			point[1] = point[1] + 0x1.04371ep+5f;
 		} while (v5);
 	}
 	return result;
@@ -4872,18 +4787,17 @@ float* sub_5245A0(int a1, float* a2, int a3, int a4) {
 float* sub_524610(int a1, float* a2, int a3) {
 	float* result; // eax
 	int v4;        // esi
-	float v5;      // [esp+4h] [ebp-8h]
-	float v6;      // [esp+8h] [ebp-4h]
+	float point[2];
 
 	result = a2;
 	v4 = a3;
-	v5 = *a2 + 16.263456;
-	v6 = a2[1] + 16.263456;
+	point[0] = *a2 + 0x1.04371ep+4f;
+	point[1] = a2[1] + 0x1.04371ep+4f;
 	if (a3 > 0) {
 		do {
-			result = sub_51D5E0(&v5);
+			result = sub_51D5E0(point);
 			--v4;
-			v6 = v6 + 32.526913;
+			point[1] = point[1] + 0x1.04371ep+5f;
 		} while (v4);
 	}
 	return result;

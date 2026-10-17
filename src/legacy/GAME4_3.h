@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4_3
 
 #include "defs.h"
+#include "floor_brush_native.h"
 #include "item_drop_rules_53ebf0.h"
 #include "lifetime_update_53b8f0.h"
 #include "secondary_weapon_53ab90.h"
@@ -286,10 +287,10 @@ char* sub_542BF0(int32_t a1, int32_t a2, int32_t a3);
 char* sub_5435C0(const char* name, int32_t a2, int32_t a3, int32_t a4);
 char* sub_543620(const char* name, int32_t value);
 int sub_543680(float* a1);
-int sub_5437E0(int* a1, int a2, int a3);
-void sub_543BC0(int a1, int a2, int a3, int a4, int a5, int a6);
-int nox_xxx_tile_543C50(uint32_t* a1, int a2, int a3, int a4, int a5, int a6);
-int sub_543E60(int a1, int a2);
+int sub_5437E0(int* position, nox_floor_brush_t* brush, int step);
+void sub_543BC0(int x, int y, int layer, int tile, nox_floor_brush_t* brush, int edge_variation);
+int nox_xxx_tile_543C50(uint32_t base_tile, nox_tile_list_node_t** head, int tile, int variation, int edge, int edge_variation, int merge);
+int sub_543E60(nox_tile_list_node_t* node, int edge_variation);
 int nox_xxx_mapGenEdge_543EB0(int a1, int a2);
 int sub_543FB0(const char* a1);
 int sub_544020(char* a1);

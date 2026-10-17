@@ -37,12 +37,15 @@ The codec and allocator bodies and incoming-player body are sealed in the
 code oracle, retaining every existing range. These are static observations;
 the original executable has not been run by this investigation.
 
-A separate static audit identifies remaining PE32 pointer and tile-stride
-assumptions in the conditional classic map-generator floor path. The ordinary
-server's `#name` entry can reach that generator with external theme/AreaMap
-inputs. Those inputs are absent from the retained stock map inventory;
-execution by the stock Quest map scenarios is unproved. Source-bound native
-reproduction and the related callback/layout classification remain open.
+The conditional classic map-generator floor path now uses native brush
+pointers, cell/head ownership, node links and scalar flood coordinates.
+Rectangle/column producers use contiguous float pairs and exact original
+binary32 operands. Controlled native cases cover these operations; the
+documented `543680` initialization policy defines previously unspecified
+transient state. The ordinary server's `#name` entry needs external
+theme/AreaMap inputs absent from the retained stock map inventory. Full
+generation, upstream theme-pointer/float-pair conversions and the remaining
+callback/layout classification remain open.
 
 Stock sprite scanning found 139,080 images, 126,687 compressed streams and
 21,522,854 runs. Only opcodes 1, 2, 4 and 5 occurred; speculative opcode 6/7
@@ -123,6 +126,45 @@ fully ordinary-clock client, map transitions, reconnect, WAN traversal or
 runtime compatibility with the original Windows executable. Captured frames
 are observations, not screenshot-golden comparisons.
 
+Clean revision `730981c0758c8bfff709943f2f8691ce36589956` subsequently
+passed both normal and highres client/server pairs. The normal run observed
+158 samples, 44 bindings and 193.198 units of movement; highres observed 157
+samples, 43 bindings and 115.264 units. Both retained the 0-to-1-to-0 player
+lifecycle, matching netcodes, natural process exits and complete captures.
+All four product hashes and personal files stayed unchanged. Receipts:
+`ev_90c3c3cfbcce65a0aed81beed677d7fc21b45d2036523a91b9b8fbc1cdbf5b39`
+and `ev_d4ea07b3028a63af9cfdedc887af970e09df966973347779c167b706e4ff55ae`.
+
+## Map handoff, fresh connection and observer participation
+
+A later private scenario kept the same clean `730981c0` server process and
+endpoint while changing `so_beach` to `estate`, disconnecting client 1 and
+connecting a fresh client 2. Its first run failed overall with controller
+exit 1: map handoff passed, but client 2 remained in the arena's normal
+observer state and did not move. That failure and its input are preserved.
+
+Source and packet observations establish the prerequisite: a non-Coop,
+non-Chat participant enters as an observer and uses Action to join play.
+The connection gate establishes a bound drawable; a movement scenario must
+also follow the game mode's participation flow. A separate diagnostic adds
+the existing normal Action input for client 2. It retains the original
+500/120/30 join, movement and settling steps and the bounded observer checks.
+
+That diagnostic passed with the same server process throughout. The map
+handoff completed in 13.417 seconds within its 20-second bound, with real
+client map loading, rebinding and 114.817 units of estate movement. Fresh
+client 2 then sent Action, cleared only the observer status bit, acquired
+normal unit flags and moved 200.881 units. Its maximum observed replication
+distance was 4.445 units. Both clients and the server exited naturally with
+code 0. REA retained all 239 raw/rendered frames with no selected filesystem
+omissions; original personal files and product hashes stayed unchanged.
+Receipt: `ev_a9e72c7639f543883e1490dd9c2e67095bd0317252147d96ca069bf93568dd47`.
+
+The HUD was observed; MOTD dismissal was not established. Both peers already
+held the estate assets, so this run covers map handoff and fresh-process
+reconnection, not asset download. It does not establish combat, every game
+mode, a fully ordinary-clock client or original Windows-peer interoperability.
+
 ## Other runtime evidence
 
 The unchanged native-audio Warrior scenario passed on clean `bd4c363df` in
@@ -140,7 +182,46 @@ zero-player, audio-disabled idle/load run does not establish combat or
 replication stability. Receipt:
 `ev_5e0adef52668070bb70fa4b4553520d6d9ff0d919533d33c3e6b0b53a6192097`.
 
-## Native and harness validation checkpoint
+## R304 native floor validation checkpoint
+
+| Configuration | PASS events | SKIP events | Passed packages | FAIL |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 81,859 | 47 | 40 | 0 |
+| Highres | 81,859 | 47 | 40 | 0 |
+| Server | 77,031 | 7 | 36 | 0 |
+| Server, highres | 77,031 | 7 | 36 | 0 |
+
+Each configuration retains every R303 terminal test identity, result and
+multiplicity, adding 52 pass events. Only the native allocation addresses in
+two existing fault-boundary test families are normalized; literal zero and
+fixed low addresses remain distinct. These event totals include parents and
+subtests and do not measure feature coverage.
+
+The floor/region/brush union contains 124 events. It and the seven unchanged
+declaration guards pass normally and with race, checkptr level 2 and
+`GOEXPERIMENT=cgocheck2`: 131 events per run. The 37 brush/list/flood cases and
+eight rectangle/column cases also pass optimized and ASan+UBSan C execution.
+Two brush cases define deterministic initialization of unspecified original
+stack state; two others check the legacy-token adapter with a controlled
+resolver. These are distinct from original-defined behavior and execution
+through the real token registry or a complete generator.
+
+The first normal/server runs failed seven existing guards because a native
+prototype change altered the whole-header SHA. The product now exposes its
+typed entry through a dedicated header and preserves the old token ABI with
+a resolver wrapper. `GAME4_2.h` and all 3,238 existing tests, fixtures and E2E
+files remain byte-identical to R303. No existing expected value changed in
+R304, and R134 remains unchanged. All 1,562 personal installation files,
+totaling 571,159,691 bytes, retain their baseline hashes. Initial failure logs
+remain preserved alongside successful final runs.
+
+The oracle verifies 2,988 code ranges and 655 data ranges, retaining every
+previous record. REA/Ghidra analysis adds 14 original complete procedure
+bodies and three constant ranges; the original executable was neither run
+nor modified. Controlled coverage and the remaining generator limitations
+are detailed in [native-floor-map.md](native-floor-map.md).
+
+## R303 native and harness validation checkpoint
 
 The combined floor-region and live-peer harness changes passed all four
 configuration suites with Go 1.26.9 on macOS ARM64:

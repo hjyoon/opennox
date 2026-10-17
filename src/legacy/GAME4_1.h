@@ -2,6 +2,7 @@
 #define NOX_PORT_GAME4_1
 
 #include "defs.h"
+#include "floor_brush_native.h"
 #include "decay_511660.h"
 #include "match_state_5096f0.h"
 #include "unit_follow_5158c0.h"
@@ -156,7 +157,7 @@ int nox_xxx_tileCheckImageVari_51D570(int a1);
 int nox_xxx_tile_51D5C0(int a1);
 float* sub_51D5E0(float* a1);
 int sub_51D8F0(float2* a1);
-int sub_51D9C0(int a1, int a2, int a3, int a4, int a5);
+int sub_51D9C0(int a1, int a2, int a3, int a4, nox_floor_brush_t* brush);
 void sub_517B70(float2* a1, void* a2, void* a3);
 void nox_xxx_getUnitsInRect_517C10(float4* a1, void* fnc, void* a3);
 void nox_xxx_getUnitsInRectAdv_517ED0(float4* a1, void* a2, void* a3);

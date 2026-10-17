@@ -4952,41 +4952,36 @@ int sub_51D8F0(float2* a1) {
 	int v5;     // ebp
 	int v6;     // edx
 	int result; // eax
-	int v8;     // [esp+10h] [ebp-20h]
-	int v9;     // [esp+14h] [ebp-1Ch]
-	int v10;    // [esp+18h] [ebp-18h]
-	int v11;    // [esp+1Ch] [ebp-14h]
-	int v12;    // [esp+20h] [ebp-10h]
-	char v13;   // [esp+24h] [ebp-Ch]
-	int v14;    // [esp+28h] [ebp-8h]
-	int v15;    // [esp+2Ch] [ebp-4h]
+	nox_floor_brush_t brush;
 	float v16;  // [esp+34h] [ebp+4h]
 
-	v9 = dword_5d4594_3835348;
-	v1 = a1->field_0 + 11.5;
-	v8 = *getMemU32Ptr(0x973F18, 35912);
-	v10 = 0;
-	v13 = 0;
-	v11 = -1;
-	v12 = -1;
-	v14 = 255;
-	v15 = 0;
+	brush = (nox_floor_brush_t){
+        .tile_id = *getMemU32Ptr(0x973F18,35912),
+        .variation = dword_5d4594_3835348,
+        .pattern =0,
+        .anchor_x =-1,
+        .anchor_y =-1,
+        .kind =0,
+        .edge_id =255,
+        .edge_variation =0,
+    };
+    v1 = a1->field_0 +11.5;
 	v2 = a1->field_4 + 11.5;
-	v3 = (long long)(v1 * 0.021739131);
+	v3 = (long long)(v1 * 0x1.642c86p-6f);
 	v16 = v2;
-	v4 = (long long)(v2 * 0.021739131);
+	v4 = (long long)(v2 * 0x1.642c86p-6f);
 	v5 = (int)(long long)v1 % 46;
 	v6 = (long long)v16 % 46;
 	if (*getMemU32Ptr(0x973F18, 35912) == 255) {
 		result = sub_51D9C0(v3, v4, v5, v6, 0);
 	} else {
-		result = sub_51D9C0(v3, v4, v5, v6, (int)&v8);
+		result = sub_51D9C0(v3, v4, v5, v6, &brush);
 	}
 	return result;
 }
 
 //----- (0051D9C0) --------------------------------------------------------
-int sub_51D9C0(int a1, int a2, int a3, int a4, int a5) {
+int sub_51D9C0(int a1, int a2, int a3, int a4, nox_floor_brush_t* a5) {
 	int result; // eax
 
 	if (a1 - 1 <= 0 || a1 >= 127 || a2 - 1 <= 0 || a2 >= 127) {
@@ -4994,14 +4989,14 @@ int sub_51D9C0(int a1, int a2, int a3, int a4, int a5) {
 	}
 	if (a3 <= a4) {
 		if (46 - a3 <= a4) {
-			result = sub_51DA70(a1, a2, a5, 2, 0);
+			result = nox_floorBrushApplyNative_51DA70(a1, a2, a5, 2, 0);
 		} else {
-			result = sub_51DA70(a1 - 1, a2, a5, 1, 0);
+			result = nox_floorBrushApplyNative_51DA70(a1 - 1, a2, a5, 1, 0);
 		}
 	} else if (46 - a3 <= a4) {
-		result = sub_51DA70(a1, a2, a5, 1, 0);
+		result = nox_floorBrushApplyNative_51DA70(a1, a2, a5, 1, 0);
 	} else {
-		result = sub_51DA70(a1, a2 - 1, a5, 2, 0);
+		result = nox_floorBrushApplyNative_51DA70(a1, a2 - 1, a5, 2, 0);
 	}
 	return result;
 }

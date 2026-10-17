@@ -1,4 +1,4 @@
-# Native FloorMap region boundary
+# Native floor maps and brush state
 
 `nox_server_mapRWFloorMap_422230` and its version-3 delegate
 `nox_xxx_tile_422C10` receive a native `void*` region. Receiving that argument
@@ -107,4 +107,75 @@ function body.
 ```sh
 NOX_E2E_SEAT=headless ./scripts/go.sh -C src test ./legacy \
   -run '^Test(FloorMap|RegionBounds).*R30[023]$' -count=1
+```
+
+## Native brush, layer ownership and flood coordinates
+
+The conditional classic map-generator floor path now passes a pointer to a
+contiguous 32-byte `nox_floor_brush_t` scalar record. Its tile, variation,
+pattern, anchors, kind and edge fields retain their original offsets. The
+record contains no pointers; the argument carrying its address uses native
+pointer width. Separate C locals no longer stand in for the original stack
+record in `sub_51D8F0`.
+
+Native producers call `nox_floorBrushApplyNative_51DA70` through the dedicated
+brush header. The existing `sub_51DA70` declaration and `GAME4_2.h` remain
+byte-for-byte unchanged. Its compatibility wrapper resolves the unsigned
+32-bit legacy token before calling the native entry; it never treats that
+token as a native address. Separate null-token and high-bit-token cases cover
+this adapter.
+
+The writer selects scalar fields and the owned subtile head separately. A
+native cell is 56 bytes: left scalars begin at 4 with their head at 24; right
+scalars begin at 32 with their head at 48. Casting `cell+4` to a standalone
+layer would put the left head at the wrong address. Subtile nodes are 24 bytes
+with a native `next` pointer at 16. Tail removal, duplicate return values,
+merge/coalesce order, byte flags, adjacent fields and the other head remain
+covered by controlled cases.
+
+The flood worklist retains three 32-bit scalars per entry, its 500-entry
+limit, duplicate checks, LIFO removal and original neighbor order. Its y
+coordinate is a scalar; it is no longer read into a native pointer slot.
+The grid scale uses the exact original binary32 operand `0x3CB21643`, promoted
+into the existing double intermediate. No valid-grid output difference was
+observed for the earlier decimal scale, so this correspondence improvement
+is not counted as a reproduced additional failure.
+
+`sub_5245A0` and `sub_524610` pass explicit two-float coordinate arrays. Their
+half-step and step use original words `0x41821B8F` and `0x42021B8F`, matching
+the original `FADD float` operands and per-coordinate stores. Truncated
+decimal double literals produced different results for negative/tie vectors
+even after the array conversion. Eight cases verify exact binary32 callback
+coordinates/order, nonpositive dimensions, input preservation and the
+retained C return declaration. Ghidra infers void returns for the original
+two routines; return checks do not claim a defined original return value.
+
+`sub_543680` originally initializes only brush offsets 0, 4, 24 and 28. The
+remaining original stack state is unspecified. The portable record now
+initializes its remaining transient fields to zero. Two explicit determinism
+cases cover that policy separately from 33 original-derived native cases;
+they do not establish equivalence to unspecified original stack contents.
+
+The 37 native cases and eight coordinate cases pass optimized C and
+ASan+UBSan execution. The integrated floor/region/brush union passes 124
+terminal Go test events. Together with the seven unchanged declaration
+guards, 131 events pass normally and with race, checkptr level 2 and
+`GOEXPERIMENT=cgocheck2`. The new source-bound C cases use controlled callbacks
+and native structures; they do not execute a complete classic map generator
+or directly exercise its Go/CGo boundary.
+
+REA/Ghidra decoded 14 complete original procedure bodies for this path,
+including the two coordinate producers. Independent PE reads match every
+body and referenced constant; all sessions closed and the original file hash
+remained unchanged. The oracle retains its previous records and now verifies
+2,988 code ranges and 655 data ranges.
+
+The `#name` server entry needs external theme/AreaMap inputs absent from the
+retained stock inventory. Upstream theme-name pointer narrowing and separate
+float-pair producers in `524950`, `5249C0` and `524B50` remain open. This work
+does not establish a successful complete stock or custom map-generation run.
+
+```sh
+NOX_E2E_SEAT=headless ./scripts/go.sh -C src test ./legacy \
+  -run '^TestFloorBrush.*R304$' -count=1
 ```

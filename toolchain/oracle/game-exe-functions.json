@@ -16380,6 +16380,48 @@
       "purpose": "the exact shared stack cleanup and two-byte packet advance reached by MSG_TRADE/0x12 and the MSG_GAUNTLET exit/respawn paths"
     },
     {
+      "name": "floor_brush_native_51D5E0_r304_part1",
+      "address": "0x0051D5E0",
+      "size": 98,
+      "sha256": "af20e938494475e0e16536f365a3864e1e1e70eaae2507fe78e6ed473e4d74ca",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 0051D5E0; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_51D8F0_r304_part1",
+      "address": "0x0051D8F0",
+      "size": 199,
+      "sha256": "8f4617b9a1dfa231fe061f66343040e8118c493c03fc70c2f8caa0013dd81375",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 0051D8F0; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_51D9C0_r304_part1",
+      "address": "0x0051D9C0",
+      "size": 171,
+      "sha256": "adea4a44570ee09405cc68b7286e14f982000a17144e7c805bc4eb38fce71540",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 0051D9C0; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_51DA70_r304_part1",
+      "address": "0x0051DA70",
+      "size": 732,
+      "sha256": "abd78f8a0b8bcf52a1b08b09893abcbe31742ecb96d94dbf9eb8600be7973181",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 0051DA70; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_51DD50_r304_part1",
+      "address": "0x0051DD50",
+      "size": 223,
+      "sha256": "7e34042628f1b8c668036e0e1a7921ae1b4b715badf8760ddfbf313e414a2a6f",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 0051DD50; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_51DE30_r304_part1",
+      "address": "0x0051DE30",
+      "size": 82,
+      "sha256": "1c40d45c2adbb9a957f28607475d9881f5af4d573a012d7e1b805a968d19d56d",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 0051DE30; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
       "name": "nox_xxx_mapCountWallsMB_51DEA0",
       "address": "0x0051DEA0",
       "size": 45,
@@ -16483,6 +16525,20 @@
       "size": 5,
       "sha256": "5ceeb54c0267b5b1eabd551abeab781ca78eda89597b492cb586738d7c8d1463",
       "purpose": "the exact decoded direct rel32 call from arrow-trap FX construction to the viewport-filtered all-client FX broadcaster"
+    },
+    {
+      "name": "floor_brush_native_5245A0_r304_part1",
+      "address": "0x005245A0",
+      "size": 111,
+      "sha256": "17deae25eddd2636ec335aa29b75f997578e0964df5dc72cebae8cc11de5b184",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 005245A0; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_524610_r304_part1",
+      "address": "0x00524610",
+      "size": 76,
+      "sha256": "a9be9f093e21391c2d531f925658e260a7ad3ba60779d142b90657c7a8a1b5f3",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 00524610; uncovered fragment retained without replacing any previous sealed range."
     },
     {
       "name": "sub_5262F0",
@@ -19607,6 +19663,48 @@
       "purpose": "the exact thirteen NOP alignment bytes after the one-qualifier name helper"
     },
     {
+      "name": "floor_brush_native_543680_r304_part1",
+      "address": "0x00543680",
+      "size": 159,
+      "sha256": "8a6cd31f7a231dd6607b3bc45829b6ca4b0e2a5e5b6d7b27fed3aeeb61f2441e",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 00543680; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_5437E0_r304_part1",
+      "address": "0x005437E0",
+      "size": 988,
+      "sha256": "4324e501d9fa8d2eb390a88570f16b6ced31d55aa878cf81a9c4bfc762365db5",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 005437E0; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_543BC0_r304_part1",
+      "address": "0x00543BC0",
+      "size": 144,
+      "sha256": "f8ad50ce4291c90320f343bce97b52d03071501da573adea6bd52f2ac5bf4adf",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 00543BC0; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_543C50_r304_part1",
+      "address": "0x00543C50",
+      "size": 524,
+      "sha256": "0ad8d681ce329197f37393ff976c0475b8e0aa27d14fb316faf559b62d0bb526",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 00543C50; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_543E60_r304_part1",
+      "address": "0x00543E60",
+      "size": 79,
+      "sha256": "01a0dad9397c85a652dfd6f21e1b46cb91fe7e5db4ede265d74488b90913b7ce",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 00543E60; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
+      "name": "floor_brush_native_544310_r304_part1",
+      "address": "0x00544310",
+      "size": 212,
+      "sha256": "c2b181cb0f0e57ab67305ae135472e794cf693cdfbf9bae309e7f7bca38186cc",
+      "purpose": "Static REA/Ghidra and independently matched PE bytes of the original floor brush/coordinate/list procedure 00544310; uncovered fragment retained without replacing any previous sealed range."
+    },
+    {
       "name": "nox_xxx_mobActionMoveTo_5443F0",
       "address": "0x005443F0",
       "size": 463,
@@ -20834,6 +20932,13 @@
       "purpose": "the exact binary32 100.0 multiplier used to convert poison protection into the signed integer RNG rejection threshold"
     },
     {
+      "name": "floor_brush_float32_582C58_r304_part1",
+      "address": "0x00582C58",
+      "size": 4,
+      "sha256": "0f4f19a596cd94b6fa7cbd81e5523e9bfff47a79705fe334797ebd3a0690d8d3",
+      "purpose": "Original binary32 operand at 00582C58, referenced by REA-decoded FADD/FMUL instructions in native floor coordinate producers; exact value 0x1.642c860000000p-6."
+    },
+    {
       "name": "ai_path_cell_center_half",
       "address": "0x00582C5C",
       "size": 4,
@@ -20951,6 +21056,20 @@
       "size": 4,
       "sha256": "61520755a61370ee9346120b2fecee07b12c873831eaa026b7349b588e70d466",
       "purpose": "binary32 34.0 half extent subtracted from and added to the 23-times Door tile centers by 004E8AC0"
+    },
+    {
+      "name": "floor_brush_float32_583B94_r304_part1",
+      "address": "0x00583B94",
+      "size": 4,
+      "sha256": "416be4fa850adf589350ac2e7b38ee116deae6a817faf5f2bb5d038d7831d4e0",
+      "purpose": "Original binary32 operand at 00583B94, referenced by REA-decoded FADD/FMUL instructions in native floor coordinate producers; exact value 0x1.04371e0000000p+5."
+    },
+    {
+      "name": "floor_brush_float32_583B9C_r304_part1",
+      "address": "0x00583B9C",
+      "size": 4,
+      "sha256": "0bcba0b8b1885881b33cd204b2f0ca90c2cdc51b7b962095dd7a565004cf3fd4",
+      "purpose": "Original binary32 operand at 00583B9C, referenced by REA-decoded FADD/FMUL instructions in native floor coordinate producers; exact value 0x1.04371e0000000p+4."
     },
     {
       "name": "projectile_reflect_epsilon",

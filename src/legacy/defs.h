@@ -1851,6 +1851,10 @@ _Static_assert(offsetof(nox_playerInfo, quest_stage) == (sizeof(void*) == 4 ? 46
 	"wrong native offset of nox_playerInfo.quest_stage field!");
 _Static_assert(offsetof(nox_playerInfo, field_4700) == (sizeof(void*) == 4 ? 4700 : 6004),
 	"wrong native offset of nox_playerInfo.field_4700 field!");
+_Static_assert(offsetof(nox_playerInfo, name_final) == (sizeof(void*) == 4 ? 4704 : 6008),
+	"wrong native offset of nox_playerInfo.name_final field!");
+_Static_assert(sizeof(((nox_playerInfo*)0)->name_final) == 56,
+	"wrong size of nox_playerInfo.name_final field!");
 
 typedef enum {
 	NOX_ENGINE_FLAG_1 = 1u << 0u,

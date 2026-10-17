@@ -2447,13 +2447,13 @@ int nox_xxx_showP2PTradeWnd_4C12D0() {
 
 //----- (004C1320) --------------------------------------------------------
 int nox_xxx_netP2PStartTrade_4C1320(const uint8_t* data) {
-	uintptr_t v1;   // esi
+	nox_playerInfo* v1; // esi
 	nox_window* v3; // eax
 	nox_window* v4; // eax
 	int v5;       // [esp+4h] [ebp-8h]
 	int v6;       // [esp+8h] [ebp-4h]
 
-	v1 = dword_8531A0_2576;
+	v1 = (nox_playerInfo*)dword_8531A0_2576;
 	if (!dword_8531A0_2576 || !data) {
 		return 0;
 	}
@@ -2468,7 +2468,7 @@ int nox_xxx_netP2PStartTrade_4C1320(const uint8_t* data) {
 	nox_window_get_size(dword_5d4594_1320940, &v6, &v5);
 	nox_window_setPos_46A9B0(dword_5d4594_1320940, 198, 193);
 	v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3702);
-	nox_window_call_field_94(v3, 16385, v1 + 4704, 0);
+	nox_window_call_field_94(v3, 16385, (uintptr_t)v1->name_final, 0);
 	v4 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3703);
 	nox_window_call_field_94(v4, 16385, (uintptr_t)getMemAt(0x5D4594, 1319844), 0);
 	sub_467BB0();
@@ -2695,17 +2695,17 @@ int sub_4C1BC0(const uint8_t* data) {
 //----- (004C1BF0) --------------------------------------------------------
 int nox_xxx_prepareP2PTrade_4C1BF0() {
 	int result;     // eax
-	uintptr_t v1;   // esi
+	nox_playerInfo* v1; // esi
 	nox_window* v2; // eax
 	nox_window* v3; // eax
 
 	result = dword_5d4594_1320964;
-	v1 = dword_8531A0_2576;
+	v1 = (nox_playerInfo*)dword_8531A0_2576;
 	if (dword_5d4594_1320964) {
 		if (dword_8531A0_2576) {
 			sub_4C1410();
 			v2 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3702);
-			nox_window_call_field_94(v2, 16385, v1 + 4704, 0);
+			nox_window_call_field_94(v2, 16385, (uintptr_t)v1->name_final, 0);
 			v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3703);
 			result = (int)nox_window_call_field_94(v3, 16385, (uintptr_t)getMemAt(0x5D4594, 1319844), 0);
 		}

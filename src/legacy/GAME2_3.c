@@ -747,9 +747,9 @@ void sub_48D990(nox_draw_viewport_t* a1p) {
 			uint16_t* player_name = 0;
 			if (bubble->drawable && bubble->drawable->flags28 & 4) {
 				nox_team_t* team = nox_xxx_objGetTeamByNetCode_418C80(bubble->drawable->field_32);
-				char* player_info = (char*)nox_common_playerInfoGetByID_417040(bubble->net_code);
+				nox_playerInfo* player_info = nox_common_playerInfoGetByID_417040(bubble->net_code);
 				if (player_info) {
-					player_name = (uint16_t*)(player_info + 4704);
+					player_name = player_info->name_final;
 				}
 				if (team) {
 					nox_team_t* resolved = nox_xxx_getTeamByID_418AB0(*((unsigned char*)team + 4));
@@ -1685,14 +1685,14 @@ int sub_495430() {
 
 //----- (00495500) --------------------------------------------------------
 int* sub_495500(int* a1) {
-	int v1;          // edi
+	void* v1;        // edi
 	int v2;          // eax
 	int v3;          // ebp
 	bool v4;         // zf
-	char* v5;        // eax
-	char* v6;        // eax
-	char* v7;        // eax
-	int v8;          // ebp
+	nox_playerInfo* v5; // eax
+	nox_playerInfo* v6; // eax
+	nox_playerInfo* v7; // eax
+	nox_video_bag_image_t* v8; // ebp
 	int v11;         // esi
 	int v12;         // esi
 	int v13;         // ecx
@@ -1706,7 +1706,7 @@ int* sub_495500(int* a1) {
 	int v21;         // [esp+10h] [ebp-DCh]
 	int v22;         // [esp+14h] [ebp-D8h]
 	int v23;         // [esp+18h] [ebp-D4h]
-	int v24;         // [esp+1Ch] [ebp-D0h]
+	void* v24;       // [esp+1Ch] [ebp-D0h]
 	int v25;         // [esp+20h] [ebp-CCh]
 	int v26;         // [esp+24h] [ebp-C8h]
 	int v27;         // [esp+28h] [ebp-C4h]
@@ -1731,23 +1731,23 @@ int* sub_495500(int* a1) {
 		v5 = nox_common_playerInfoGetByID_417040(v2);
 		if (v5) {
 			v3 = 1;
-			nox_swprintf(v29, (const wchar2_t*)v5 + 2352);
+			nox_swprintf(v29, v5->name_final);
 		}
 	}
 	if (a1[1]) {
 		v6 = nox_common_playerInfoGetByID_417040(a1[1]);
 		if (v6) {
 			if (v3) {
-				nox_swprintf(v28, L"+%s", v6 + 4704);
+				nox_swprintf(v28, L"+%s", v6->name_final);
 			} else {
-				nox_swprintf(v28, (const wchar2_t*)v6 + 2352);
+				nox_swprintf(v28, v6->name_final);
 			}
 		}
 	}
 	if (a1[2]) {
 		v7 = nox_common_playerInfoGetByID_417040(a1[2]);
 		if (v7) {
-			nox_swprintf(v30, (const wchar2_t*)v7 + 2352);
+			nox_swprintf(v30, v7->name_final);
 		}
 	}
 	if (a1[4] != 1) {
@@ -1780,24 +1780,24 @@ int* sub_495500(int* a1) {
 				break;
 			}
 		}
-		v8 = *getMemU32Ptr(0x5D4594, 1203828);
+		v8 = (nox_video_bag_image_t*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1203828);
 		goto LABEL_28;
 	}
 	t9 = nox_get_thing(a1[3]);
 	if (!t9) {
-		v8 = *getMemU32Ptr(0x5D4594, 1203828);
+		v8 = (nox_video_bag_image_t*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1203828);
 		goto LABEL_28;
 	}
 	if (t9->pri_class & 0x1001000) {
 		sub_4B9650(a1[3]);
 	}
-	v8 = t9->pretty_image;
+	v8 = (nox_video_bag_image_t*)(uintptr_t)t9->pretty_image;
 LABEL_26:
 	if (!v8) {
-		v8 = *getMemU32Ptr(0x5D4594, 1203828);
+		v8 = (nox_video_bag_image_t*)(uintptr_t)*getMemU32Ptr(0x5D4594, 1203828);
 	}
 LABEL_28:
-	nox_draw_imageMeta_47D5C0(v8, &v27, &v26, &v23, &v25);
+	nox_draw_imageMeta_47D5C0(v8, (uint32_t*)&v27, (uint32_t*)&v26, (uint32_t*)&v23, (uint32_t*)&v25);
 	nox_xxx_drawGetStringSize_43F840(v1, v29, &v21, &v22, 0);
 	v11 = v21;
 	nox_xxx_drawGetStringSize_43F840(v1, v28, &v21, &v22, 0);

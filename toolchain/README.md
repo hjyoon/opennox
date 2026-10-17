@@ -1,5 +1,19 @@
 # Go 도구체인 정책
 
+## R284: 활성 C UI의 네이티브 Player 이름·폰트·아이콘 주소 교정
+
+기준 clean/pushed revision은 `ef95caa1277a7bf2735e6f18c00fc8a69b76b26e`이며 goenv Go 1.26.9를 유지한다. 활성 채팅 `sub_48D990`·사망 알림 `sub_495500`·P2P 거래 시작/준비의 이름 접근식7개를 `nox_playerInfo->name_final`로 교정했다. PE32의 byte4704/UTF-16 word2352는 native64에서 장비 영역이며 실제 이름은 byte6008이다. 기존 단일 이름 저장소와 구조체 배치는 유지하고 offset4704/6008·폭56byte를 C assertion으로 고정했다. 옛 위치에 이름을 미러 저장하지 않는다. 사망 알림의 폰트 두 지역 변수와 직접 스펠/능력 아이콘 지역 변수는 포인터 폭을 보존하며, Thing/default 이미지 별칭과 메타데이터 출력·좌표는 기존32비트를 유지한다. lookup/guard·callback 전 캐시·호출 순서·문자열 format 정책·반환 ABI·wire/save 형식은 바꾸지 않았다.
+
+사용자 지정 REA 레포의 증거·소유권 절차와 보존된 C 소비자·현재 native Player 생성/읽기 경로를 대조했다. 이번에는 새 REA/Ghidra·LLVM·Unicorn·원본 GAME.EXE 실행을 하지 않았으며 native ABI 결함을 새 원본 바이너리 관측으로 표현하지 않는다. dormant PE32 분기와 보존된 원본 오프셋은 그대로 둔다. 이 이름 표시 수정은 Host Load 지속 반투명의 원인/해결을 뜻하지 않는다.
+
+수정 전 동결된 실제 linked C 채팅 렌더 회귀는 ASCII·한글·빈 이름의 literal 픽셀 불일치3개와 상위 ID가 실패했고 missing-player/non-player 두 대조군은 통과했다. 생성된 작은 bitmap font·실제 Player registry/네이티브 chat/drawable·UTF-16 변환·소프트웨어 raster를 사용하며 fresh child의 exit0·단일 완료 receipt·입력/프레임/RNG 불변을 요구한다. 같은 fixture bytes는 교정 후5조건 모두 통과했다. 별도4개 검사는 현재 프로덕션 C 함수 전체를 실제 헤더/UTF-16 formatter와 함께 컴파일하고 lookup/font/image/window/draw 서비스만 통제하여12+10+10+17=49개 내부 사례를 검사한다. 첫 death 검사의 기존 부호 비교 경고에 의한 compile 실패는 보존했으며 새 fixture에 해당 경고 pragma 한 줄만 추가한 v2는4개 모두 semantic RED였다. 이 v2 fixture도 수정 전후 동일하다. high native 주소·한글/surrogate·빈/최대 이름·guard·거래 reset 사이 owner 변경·폰트/아이콘·32비트 별칭/출력 폭을 검사하며 전체 실제 거래/사망 GUI 화면의 동등성을 주장하지 않는다.
+
+집중 회귀는 일반10pass·HD10pass·cgocheck2/race/checkptr2 count3의30pass다. canonical 일반·HD·cgocheck2는 각각81594pass/47skip/40package, server·server-HD는 각각76770pass/7skip/36package로 모두 actual0이며 합계398322pass/155skip다. 이전 모든 ID/action/count/skip/package와 기존 Go test2429파일·oracle/자산·개인 Save/config·R134 HOLD4개·PORTING-INVENTORY 및 이전 R283 봉인123파일을 보존했다. 승인된 R273 기대값 교정/R275 입력 보존은 유지하고 다른 보류 기대값은 바꾸지 않았다. 이번에 캐시는 삭제하지 않았다.
+
+변경 범위는 production C/header3파일·새 Go 회귀3파일/C fixture2파일·이 README prefix뿐이다. 자료는 `/private/tmp/opennox-player-name-r284.wq4JyU`, source 감사 SHA는 `d00fda30ef797363cebc07632626d8abd481c12aae01fc9353e1cb62c999da8c`다. 커밋 직후 push하고 그 clean revision의 ARM64 네 제품과 일반/HD 공식 헤드리스 서버 기동·세 번 맵 전환·실제 콘솔 quit은 별도 receipt로 검증한다. 미실행 검사는 완료로 세지 않는다. 실제 peer 접속·공개 호스트/WAN/NAT·개인 지속 반투명·전체 GUI/가청 출력은 이번에 새로 인증하지 않는다.
+
+전체 포팅 추정은 빌드/ABI15×95 + 게임플레이25×80 + 렌더/UI15×80 + 오디오10×85 + 호스팅15×85 + 캠페인15×60 + 장시간/릴리스5×50을100으로 나눈79%, 약80%를 유지한다. 영역 성숙도의 공학적 판단이며 테스트 수의 완료율이 아니다. 개인 지속 반투명·전체 자연 campaign/Quest·WAN/NAT·장시간 통합과 기존 보류 항목은 미완료다.
+
 ## R283: 호스트 비밀번호 UTF-16 필드 주소 교정
 
 기준 clean/pushed revision은 `60f40a731044fb462b88c8a818ce1149f462b266`이며 goenv Go 1.26.9를 유지한다. 활성 호스트 인증 callback이 설정의 byte39를 비밀번호로 읽던 한 줄을 `alloc.GoString16(&sst.ServerPass78[0])`으로 교정했다. 실제 필드는 byte78의9개 UTF-16 word이며, 39문자와39바이트를 혼동한 오류다. ARM64만의 레이아웃 문제로 한정하지 않는다. 기존 NUL scan·대소문자 비교·핑 제한·패킷 codec/응답 정책은 바꾸지 않았다.

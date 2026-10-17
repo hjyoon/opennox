@@ -3761,7 +3761,8 @@ void nox_xxx_tileFreeTile_422200(nox_tile_list_node_t** head) {
 }
 
 //----- (00422230) --------------------------------------------------------
-int nox_server_mapRWFloorMap_422230(int a1) {
+int nox_server_mapRWFloorMap_422230(void* region) {
+	int row_delta;
 	int v2;             // ecx
 	char v3;            // bl
 	int v4;             // esi
@@ -3835,18 +3836,18 @@ int nox_server_mapRWFloorMap_422230(int a1) {
 		return 0;
 	}
 	if ((short)v62 <= 3) {
-		return nox_xxx_tile_422C10(v62, a1);
+		return nox_xxx_tile_422C10(v62, region);
 	}
 	if (nox_crypt_IsReadOnly()) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v60, 4u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v61, 4u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v66, 4u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v67, 4u);
-		if (a1) {
-			sub_428170((uint32_t*)a1, &v70);
+		if (region) {
+			sub_428170(region, &v70);
 			v41 = v70.field_0 / 23 - v60;
 			v42 = v70.field_4 / 23 - v61;
-			a1 = v70.field_4 / 23 - v61;
+			row_delta = v70.field_4 / 23 - v61;
 			v61 = v70.field_4 / 23;
 			v60 = v70.field_0 / 23;
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v59, 2u);
@@ -3898,7 +3899,7 @@ int nox_server_mapRWFloorMap_422230(int a1) {
 					if ((uint16_t)v59 == (uint16_t)-1) {
 						break;
 					}
-					v42 = a1;
+					v42 = row_delta;
 				}
 				return 1;
 			}
@@ -3938,8 +3939,8 @@ int nox_server_mapRWFloorMap_422230(int a1) {
 		}
 		return 1;
 	}
-	if (a1) {
-		sub_428170((uint32_t*)a1, &v70);
+	if (region) {
+		sub_428170(region, &v70);
 		v60 = v70.field_0 / 23;
 		v18 = v70.field_8 / 23;
 		v64 = v70.field_8 / 23;
@@ -3974,7 +3975,7 @@ LABEL_43:
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v61, 4u);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v66, 4u);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v67, 4u);
-	if (a1) {
+	if (region) {
 		v33 = v61;
 		if (v61 > v63) {
 			v59 = 0xFFFF;
@@ -3995,7 +3996,7 @@ LABEL_43:
 							if (tile->field_0 & 1) {
 								v69.field_0 = v36;
 								v69.field_4 = 23 * v33 + 34;
-								if (nox_xxx_wallMath_427F30(&v69, (uint32_t*)a1)) {
+								if (nox_xxx_wallMath_427F30(&v69, region)) {
 									LOBYTE(v40) = 0;
 									HIBYTE(v40) = v65;
 									v68 = v33 | v40;
@@ -4012,7 +4013,7 @@ LABEL_43:
 							if (tile->field_0 & 2) {
 								v69.field_0 = v36;
 								v69.field_4 = 23 * v33 + 34;
-								if (nox_xxx_wallMath_427F30(&v69, (uint32_t*)a1)) {
+								if (nox_xxx_wallMath_427F30(&v69, region)) {
 									LOBYTE(v40) = 0;
 									HIBYTE(v40) = v65;
 									v68 = v33 | v40;
@@ -4127,7 +4128,10 @@ unsigned char nox_xxx_tileReadOne_422A40(int version, uint32_t* fields, nox_tile
 }
 
 //----- (00422C10) --------------------------------------------------------
-int nox_xxx_tile_422C10(int a1, int a2) {
+int nox_xxx_tile_422C10(int a1, void* region) {
+	int rows_remaining;
+	int row_byte_offset;
+	int column_index;
 	int v3;        // ecx
 	char v4;       // bl
 	int v5;        // esi
@@ -4207,8 +4211,8 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 		return 0;
 	}
 	if (!nox_crypt_IsReadOnly()) {
-		if (a2) {
-			sub_428170((uint32_t*)a2, &v83);
+		if (region) {
+			sub_428170(region, &v83);
 			v76 = v83.field_0 / 23;
 			v80 = v83.field_8 / 23;
 			v77 = v83.field_4 / 23;
@@ -4315,7 +4319,7 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v77, 4u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v78, 4u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v79, 4u);
-		if (!a2) {
+		if (!region) {
 			if (v77 > v24) {
 				return 1;
 			}
@@ -4323,7 +4327,7 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 			v26 = v76;
 			v27 = v80;
 			int v28 = v77;
-			a2 = v81 - v77 + 1;
+			rows_remaining = v81 - v77 + 1;
 			do {
 				if (v26 <= v27) {
 					do {
@@ -4357,8 +4361,8 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 					v26 = v76;
 				}
 				v28++;
-				--a2;
-			} while (a2);
+				--rows_remaining;
+			} while (rows_remaining);
 			return 1;
 		}
 		v35 = v77;
@@ -4392,7 +4396,7 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 				}
 				v82.field_0 = v38;
 				v82.field_4 = 23 * v35 + 34;
-				if (nox_xxx_wallMath_427F30(&v82, (uint32_t*)a2)) {
+				if (nox_xxx_wallMath_427F30(&v82, region)) {
 					LOBYTE(a1) = 1;
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
 					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v40, 0x10u);
@@ -4426,7 +4430,7 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v77, 4u);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v78, 4u);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v79, 4u);
-	if (!a2) {
+	if (!region) {
 		for (int ll = 0; ll < ptr_5D4594_2650668_cap; ll++) {
 			for (int mm = 0; mm < ptr_5D4594_2650668_cap; mm++) {
 				*(uint8_t*)&ptr_5D4594_2650668[mm][ll] = 0;
@@ -4436,14 +4440,14 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 		v81 = v77;
 		if (v77 < v77 + v79) {
 			v56 = v78;
-			a2 = 44 * v77;
+			row_byte_offset = 44 * v77;
 			v57 = v76;
 			do {
 				v58 = v57;
 				if (v57 < v56 + v57) {
 					do {
-						v59 = a2;
-						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(a2 + (uint32_t)(ptr_5D4594_2650668[v58])),
+						v59 = row_byte_offset;
+						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(row_byte_offset + (uint32_t)(ptr_5D4594_2650668[v58])),
 																 1u);
 						v60 = (uint8_t*)(v59 + (uint32_t)(ptr_5D4594_2650668[v58]));
 						if (*v60 & 1) {
@@ -4462,16 +4466,16 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 									} while (v61 < (unsigned char)v75);
 								}
 							} else {
-								*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + a2 + 20) = 0;
+								*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + row_byte_offset + 20) = 0;
 							}
 						}
-						v71 = (uint8_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + a2);
+						v71 = (uint8_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + row_byte_offset);
 						if (*v71 & 2) {
 							nox_xxx_fileReadWrite_426AC0_file3_fread(v71 + 24, 0x10u);
 							nox_xxx_fileReadWrite_426AC0_file3_fread(&v75, 1u);
 							if ((uint8_t)v75) {
 								v72 = 0;
-								v73 = (uint32_t)(ptr_5D4594_2650668[v58]) + a2 + 24;
+								v73 = (uint32_t)(ptr_5D4594_2650668[v58]) + row_byte_offset + 24;
 								if ((uint8_t)v75) {
 									do {
 										v74 = nox_xxx_tileListAddNewSubtile_422160(0, 0, 0, 0);
@@ -4482,7 +4486,7 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 									} while (v72 < (unsigned char)v75);
 								}
 							} else {
-								*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + a2 + 40) = 0;
+								*(uint32_t*)((uint32_t)(ptr_5D4594_2650668[v58]) + row_byte_offset + 40) = 0;
 							}
 						}
 						v56 = v78;
@@ -4492,12 +4496,12 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 					v55 = v77;
 				}
 				v70 = ++v81 < v55 + v79;
-				a2 += 44;
+				row_byte_offset += 44;
 			} while (v70);
 		}
 		return 1;
 	}
-	sub_428170((uint32_t*)a2, &v83);
+	sub_428170(region, &v83);
 	v44 = v83.field_0 / 23;
 	v76 = v83.field_0 / 23;
 	v45 = v83.field_4 / 23;
@@ -4508,7 +4512,7 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 	}
 	v47 = v78;
 	do {
-		a2 = v44;
+		column_index = v44;
 		if (v44 < v47 + v44) {
 			v81 = 23 * v44;
 			v48 = 23 * v44;
@@ -4576,7 +4580,7 @@ int nox_xxx_tile_422C10(int a1, int a2) {
 				v47 = v78;
 				v44 = v76;
 				v48 = v81 + 23;
-				v70 = ++a2 < v78 + v76;
+				v70 = ++column_index < v78 + v76;
 				v81 += 23;
 			} while (v70);
 			v45 = v77;

@@ -148,6 +148,41 @@ including a blue actor and foliage. The actor's identity is not established
 by the pixel comparison. Two reruns produced the same actual image.
 The full fresh-load scenario remains failed; the golden is preserved.
 
+The R308 investigation reproduced the same 889-pixel failure on clean
+`2fe0db447822fd0e00e891440c0891c6ac0ea4ab` normal and highres products.
+Both actual PNGs are byte-identical to the retained failure. A private passive
+overlay around the single real `DrawPlayer` call identifies the central actor
+as Jack, netcode 2. At frames 70 through 74 its native status is `0x10`, buffs,
+fade and flags70 are zero, and incoming/outgoing alpha enable is false. The
+cached alpha byte is 28; it does not activate blending. The overlay's final
+PNG remains byte-identical to the release output. This observation applies
+to the copied manual-save case and does not resolve every Host Load report.
+
+The PNGs were introduced in `51a8df7f0` on October 1. The following day's
+weapon/armor material corrections (`0bba5d6bf`, `3c7abc0fa`) and five-bit
+RGB555 arithmetic corrections (`255653c28`, `716088799`) were not reflected
+in those images. A diagnostic overlay restoring only the historical material
+code makes 425 pixels match the old fresh-load golden; the other 464 remain.
+Restoring the historical RGB555 split as well makes both unchanged original
+live-load and fresh-load PNG comparisons pass. These are explicitly modified
+historical controls, not current-release successes. The current rendering
+code passes 175 original-contract test events, including the retained
+65,536-word original color transcript.
+
+Two proposed PNGs were tested in separate copied data trees with the current
+normal and highres release products. All four seed/live-load and fresh-process
+load runs pass exact pixels, state restoration, 329.469 units of real input
+movement and natural exit. Seed runs also verify overwrite refusal, confirmed
+overwrite and unchanged autosave on refusal. Public input scripts, the
+100-tick waits, scalar comparisons and renderer code remain unchanged.
+The canonical PNGs remain preserved pending the user's decision under the
+existing test/fixture preservation condition; candidate results are not counted
+as a pass of the unchanged public golden. REA candidate receipts are
+`ev_b3f921ca0e880152d4dd2239eb25212f5ca8d01abdde109425439cd8ea6dee82`,
+`ev_a1ee2635f49dc4f223b9478199f37faa671ef0a28530702b23f8047e9dd1d19b`,
+`ev_3b0fd6ca44f15a3f0743baa557391fd850e546b0caebb08a13324e4e28794733`
+and `ev_d6ac32ddaa87b90f11229ef53720bcebc089b6150c0057063518ce5d7ef4cc59`.
+
 Collecting failures with `NOX_E2E_FAILFAST=false` exposed a shutdown defect:
 the first close event could exit before a later scenario callback reported
 the accumulated error. Such an exit code 0 is not accepted as a pass. The

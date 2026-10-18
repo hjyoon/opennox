@@ -7,6 +7,20 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "nox_platform_srand",
+      "address": "0x00402000",
+      "size": 13,
+      "sha256": "6e3eff83de5006b2d1096a15e38c296f7ad519b304399a8a9ba6f18d2533268c",
+      "purpose": "store the exact unsigned dword seed in CRT thread state +0x14"
+    },
+    {
+      "name": "nox_platform_rand",
+      "address": "0x0040200D",
+      "size": 34,
+      "sha256": "2cca2d8cef91290829f9fbc2a3b95cd14ea62d4fb3338f371a4c13a5d6102322",
+      "purpose": "advance uint32 CRT state by 214013*x+2531011 modulo 2^32 and return bits16..30"
+    },
+    {
       "name": "gameplay_precision_53_4031F2",
       "address": "0x004031F2",
       "size": 18,
@@ -16679,6 +16693,34 @@
       "size": 14,
       "sha256": "e2dac2a3e4166130a2801c775fbc9d722fbafd40c777e11c307e3e69c0feaffc",
       "purpose": "the exact fourteen NOP bytes separating prefab analysis from the next generated-map helper"
+    },
+    {
+      "name": "nox_xxx_mapGenSetRngSeed_526AB0",
+      "address": "0x00526AB0",
+      "size": 12,
+      "sha256": "0d6cf5f76a7f58ad983fde044c4267eba10feef20392ab95a0becee148aff38c",
+      "purpose": "forward the exact uint32 classic generator seed to the original CRT seed entry"
+    },
+    {
+      "name": "nox_xxx_mapGenRandFunc_526AC0",
+      "address": "0x00526AC0",
+      "size": 54,
+      "sha256": "e2f368802703d6af501f08c6d65760ec88c552c395e9839b515af4ba84cb5f7a",
+      "purpose": "consume original 15-bit CRT output in the unsigned scaled integer helper with upper clamp"
+    },
+    {
+      "name": "nox_xxx_mapGenRandFunc2_526B00",
+      "address": "0x00526B00",
+      "size": 92,
+      "sha256": "0af5e71feb47d7230688b81865a15f4742b248d5727cc55d29c21a37d729d3fd",
+      "purpose": "consume the original scaled integer draws with the two triangular rejection comparisons"
+    },
+    {
+      "name": "sub_526BC0",
+      "address": "0x00526BC0",
+      "size": 48,
+      "sha256": "ca34b228f1629b959e5a3208ae08a3e50189abf9f34f62f61de4fccb39f99794",
+      "purpose": "consume original 15-bit CRT output in the single-precision-bound floating range helper"
     },
     {
       "name": "nox_xxx_mapGenMoveObject_527A10_prefix",

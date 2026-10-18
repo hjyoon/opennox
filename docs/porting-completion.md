@@ -10,9 +10,9 @@ tests or adding sealed original ranges does not supply that denominator.
 | Gameplay | 25 | 80 | Executed three-class feature matrix, including items, AI, death, pets and objective modes |
 | Rendering and UI | 15 | 80 | Remaining Host Load reports, unchanged fresh-load golden discrepancy, broader SDL input and compositor checks |
 | Audio | 10 | 85 | Perceptual audible-output fidelity and broader long-session playback after the bounded ordinary-clock core-backend run |
-| Networking | 15 | 85 | Fully ordinary-clock independent socket-peer combat/reconnect and original Windows-peer runtime compatibility |
+| Networking | 15 | 85 | Broader peer/gameplay matrix and original Windows-peer runtime compatibility |
 | Campaign | 15 | 60 | Complete three-class objectives/routes, story-triggered endings, chapter saves/reloads and legitimate progression |
-| Stability | 5 | 50 | Broader ordinary-clock independent-peer load/combat/transition evidence beyond the single bounded host run |
+| Stability | 5 | 50 | Broader peer load and sustained gameplay beyond the bounded host and independent-peer profiles |
 
 The calculation is `(15*95+25*80+15*80+10*85+15*85+15*60+5*50)/100 = 79`.
 All seven areas remain partial. Physical second-machine, WAN traversal and
@@ -20,6 +20,94 @@ overnight runs can strengthen evidence; they are not additional implicit
 completion requirements.
 
 ## Current findings
+
+R314 fixes two reproduced lifecycle failures. Dedicated classic generation no
+longer invokes the client progress renderer; its rendered path restores original
+signed tick comparisons and writes the progress packet without unaligned access.
+The whole-world `GET /debug/nox/objects` collection response now traverses and
+encodes objects inside the server loop, returning only owned JSON bytes to the
+HTTP goroutine. The previous observer could follow an inventory freed during
+campaign autosave. Request cancellation cannot leave the server loop blocked on
+the response channel. Other optional debug endpoints are outside this correction.
+
+The exact final source, test and module inputs total 6,615 files. All four
+integrated configurations pass with every R313 outcome and multiplicity retained:
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 81,970 | 49 | 0 |
+| Highres | 81,970 | 49 | 0 |
+| Server | 77,142 | 7 | 0 |
+| Server, highres | 77,142 | 7 | 0 |
+
+Counts include parent and subtest events. Each configuration adds 18 passing
+events: 13 whole-body progress events and five snapshot lifetime/cancellation
+tests. The focused union also passes 34 events with race detection, checkptr
+level 2 and actual `GOEXPERIMENT=cgocheck2`; the five API tests separately pass
+under race detection. All 3,267 existing protected tests/fixtures/YAML retain
+their hashes. All 1,562 personal installation files (571,159,691 bytes), original
+Save/settings and existing PNG expectations are preserved.
+
+Four clean ARM64 products are built from
+`dd142aa82dcbcc0061683c99b3ee4c44b5ae484e`; their help exits are zero and REA
+build metadata agrees with Go on Go 1.26.9, architecture, tags, revision and
+`vcs.modified=false`. The clean dedicated product passes five consecutive
+ordinary-clock authored exit generations and natural shutdown. Saved destinations,
+positions and four exact NXZ round trips are documented in
+[native-theme-reader.md](native-theme-reader.md#r314-dedicated-progress-and-saved-exits).
+
+The corrected clean normal client also repeats the Con11a greeting with exactly
+three collection requests at observed phases 0, 1 and 2. Each response is complete
+HTTP 200 JSON with 291 objects; game and wrapper exit naturally with code 0.
+This bounded check uses an explicit virtual clock and unchanged phase inputs.
+It confirms a working corrected response through that transition, not general
+race freedom. Receipt:
+`ev_71ff2c248f06b3aacc02a4fe374b86d8bccf8a915bfbeddd680eae92500c00ae`.
+
+Two further R314 runtime matrices use the separately pinned clean R313 code
+`0eaa6e6d5a606aeace14d06d88697f1e70bdbda8`; their timings and identities are
+not attributed to the newly built products.
+
+The ordinary-clock network profile passes normal and highres pairs, each with
+one dedicated server and two sequential independent client processes. The same
+server observes players `0,1,0,1,0`, a connected So_Beach-to-Estate transfer and
+a fresh client connection. Three native UDP downloads per pair produce six
+files matching stock hashes. All three movement phases advance the authoritative
+unit and matching client drawable. Normal and highres Estate transport/reload
+take 3.579s and 3.611s; the retained ordinary input schedules reach movement in
+29.859s and 29.908s under a separately declared 120s stage bound. The original
+20s virtual end-to-movement assertion is not reused. Controller runtimes are
+329.534s and 330.366s, with 646 and 648 raw samples.
+
+A controlled stock Spider, placed and targeted through the existing Lua API,
+executes its actual attack callback and changes player HP from 150 to 140.
+The owning client receives exact health packet bytes `43 8c 00`; no direct damage
+or HP writes supply the result. Six product processes exit naturally with code 0.
+An inherited process sandbox allows only loopback outbound traffic; child-only
+proxies reject optional external lookups. Machine settings are untouched.
+Normal/highres receipts are
+`ev_dd828c3c819d9cd7250d716494989bad26980d7ef366003ab2b433dbb6ba2ea0`
+and `ev_cf359ecc6f1883030a07e70ce524b9b8cfdef67a1676425b53cc5b6ac8b79be6`.
+The remote-client server-TickHook metrics remain zero, so they provide no client
+FPS/clock-ratio measurement. This does not independently read the rendered HUD
+scalar or establish original Windows-peer compatibility.
+
+Wiz06a normal and highres pass the Captain's two stock dialogs under both
+virtual and explicit ordinary clocks. Retained input remains blocked for 30
+iterations in the second dialog, then its ordinary Done input releases movement.
+The same input moves the player about 28.32 units. Actual AUTOSAVE and WORKING
+files each retain journal `Wiz6SneakIn`, type 2; the read-only decoder does not
+certify every other save section/checksum or demonstrate reload. Ordinary receipts
+are `ev_cdd3209167c9b98e580e0a7032e5e4b79a613a02d4e0eb0a9a9f9f66b349974b`
+and `ev_f17b121dfadaecfbe904611ae7b3501c4d463ac6e56cc3cc7049ca8ea83c078f`.
+Con11a normal and highres virtual runs reach the untouched greeting trigger;
+two ordinary Done inputs advance stock global 48 through `0,1,2` and release
+the guard phase. Controlled direct map entry is explicit preparation in both
+chapters. Full routes, later battles and story-triggered endings remain open.
+The earlier geometry-precondition failure and unsafe debug-observer crash remain
+retained negatives, distinct from the passing stock callbacks.
+
+These bounded advances leave the weighted engineering estimate at 79%.
 
 The native FloorMap conversion, corrected original coordinates, signed
 bounds and whole-byte flag behavior are documented in

@@ -158,15 +158,60 @@ The earlier exact-current abort and private diagnostic trace remain retained
 as the negative controls. Captures retain sampled process/environment limits;
 they do not supply an atomic OS image binding or complete process trace.
 
+## R314 dedicated progress and saved exits
+
+The clean R313 dedicated product generated and loaded three authored exit maps,
+then panicked in the fourth generation when the throttled progress callback
+reached the client renderer. A dedicated server has no renderer. The corrected
+`5235F0` progress entry returns immediately under `EngineNoRendering`.
+This is an explicit dedicated-server port extension; the original only has its
+editor-mode guard. Generation, ordinary time and RNG remain active.
+
+REA/Ghidra and an independent PE read agree on all 125 original bytes at
+`005235F0`, SHA-256
+`65f78187da6533b2ad93e693d30d9b11715cdee4b6470ae716c04f63ef9aa3a6`.
+Both original `JLE` branches use signed 32-bit time comparisons. The rendered
+path now retains those comparisons and the exact 250ms strict interval.
+Its three-byte opcode/low-16 sequence packet uses byte stores, removing a real
+UBSan unaligned-word failure while retaining the full DWORD increment before
+the callback and live timestamp reload afterward. The additive whole-body
+fixture exercises rendering, editor and dedicated paths in O0, O2 and
+ASan+UBSan, including rollover, sequence wrap and callback/input mutations.
+The oracle now verifies 3,008 code and 660 data ranges; every preceding record
+is unchanged. Original GAME.EXE was inspected statically and never executed.
+
+Clean code `dd142aa82dcbcc0061683c99b3ee4c44b5ae484e` produces a dedicated ARM64
+server with SHA-256
+`8e9b5c228a3831669fa8fe4d573c378dc5d35f5d0a61716b5b32be7968112dff`.
+In one ordinary-clock process it generates, saves and loads north, south, east
+and west authored themes, then regenerates north after an intervening stock
+map. All five generations complete and the process exits naturally with code 0.
+The repeated north map and NXZ bytes match. Existing `set maps allow.all true`
+is explicit preparation for repeated synthetic map selection after entering
+coop mode; it does not supply generator state. Both earlier negative captures
+remain separate. Final generation receipt:
+`ev_492d9622ac957da02f304e9e7410c350963d0fa849774749c06e98a706486ad1`.
+
+The themes use real stock `Exit1`, exact `so_beach.map` link data, a nested
+false Wizard branch, zero-player equality and 0%/100% alternatives. Each saved
+map is 2,512 bytes and contains one PlayerStart and one Exit1. Read-only section
+and XFER decoding confirms all 16 named sections, the exact destination and
+the corresponding rotated boundary position. Actual `cnxz.DecompressFile`
+reconstructs every map byte from each of the four NXZ files without modifying
+the inputs. Decoder receipt:
+`ev_5a2743797c184acae30ed3134b2d9e6635f68557a9398a040a184745cbe90d99`.
+These are authored generation/serialization checks, not a runtime exit collision
+or destination-map handoff, prefab workflow or original external-theme oracle.
+
 ## Remaining scope
 
 The retained stock map inventory lacks original external theme/AreaMap inputs.
-Broader room, recursive-hall, prefab, exit and conditional-theme combinations
-remain outside the three fixed-seed authored generation runs.
+Broader room, recursive-hall, prefab, exit and player-dependent conditional
+combinations remain outside the seven fixed-seed authored theme variants.
 Arbitrary-length tokens and out-of-capacity records are outside the
 bounded evidence above. Remaining callback/layout classification is unfinished.
 
-All 3,249 pre-existing tests, fixtures and YAML files retain their hashes,
+All 3,267 pre-existing tests, fixtures and YAML files retain their hashes,
 as do 1,562 personal installation files totaling 571,159,691 bytes. The
 existing manual-save PNG comparisons remain failed pending their separate
 fixture decision. These parser checks leave the overall weighted maturity

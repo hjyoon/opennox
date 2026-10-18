@@ -16478,6 +16478,34 @@
       "purpose": "the complete original spell-name lookup body; two 60-byte local arrays preserve uppercase SPELL_ formatting and lookup handoff"
     },
     {
+      "name": "nox_xxx_mapGenReadTheme_51E260",
+      "address": "0x0051E260",
+      "size": 734,
+      "sha256": "2c1061d885688fd542cd9dfb8378ca821daf95750e47c0aa07fae277fc041121",
+      "purpose": "complete original theme reader body; native name, FILE and child theme pointer transport with unchanged original fixed-layout defaults and dispatch"
+    },
+    {
+      "name": "nox_xxx_genReadAlgData_51EBB0",
+      "address": "0x0051EBB0",
+      "size": 1020,
+      "sha256": "8870462eddb638e899d3076770a42234c42a558e32d6bb8208b4cd461ab9cf16",
+      "purpose": "complete original algorithm-data reader body; 60-byte value local, scalar offsets and skeleton-table selection"
+    },
+    {
+      "name": "nox_xxx_genReadSpellSet_51EFB0",
+      "address": "0x0051EFB0",
+      "size": 120,
+      "sha256": "f5ad40d04f61b7c8c02e257564881c391759d26d0f181a12b3eee5ced9f0ebb7",
+      "purpose": "complete original spell-set reader body; native theme pointer and bounded 137-slot/count contract"
+    },
+    {
+      "name": "nox_xxx_genReadExit_51F800",
+      "address": "0x0051F800",
+      "size": 495,
+      "sha256": "aaf2aac63768d7a787096471f98a2b809f08b48e609f3a9a8847e9fc0a64a863",
+      "purpose": "complete original exit reader body; native theme pointer with original record stride, direction and link-data offsets"
+    },
+    {
       "name": "nox_xxx_netSendFxAllCli_523030_call_523023",
       "address": "0x00523023",
       "size": 5,
@@ -23527,6 +23555,27 @@
       "size": 13,
       "sha256": "ad115b168dc33861a1f80aab0b344c5c4d5e2c2803954832105c4cc47b44519e",
       "purpose": "the distinct null-terminated RewardMarker name passed by Quest Necromancer spawn"
+    },
+    {
+      "name": "mapgen original skeleton pointer table",
+      "address": "0x005C4D3C",
+      "size": 12,
+      "sha256": "5e96b5f7b1b1cd929e567fd26397ac69266c9d795a2546d22d7f518f92fbc911",
+      "purpose": "original mapgen original skeleton pointer table; static PE32 layout used to verify native side-slot access"
+    },
+    {
+      "name": "mapgen NONE skeleton literal",
+      "address": "0x005C4E30",
+      "size": 5,
+      "sha256": "ab9728203d287af032a61c88d52017d857e2e7fcdb9a4fd965a55aa6babd9c31",
+      "purpose": "original mapgen NONE skeleton literal; static PE32 layout used to verify native side-slot access"
+    },
+    {
+      "name": "mapgen HALL_RING skeleton literal",
+      "address": "0x005C4E38",
+      "size": 10,
+      "sha256": "72b8edb099a7ec3c9546751a92d023775ec542f94f72a2fa895cf1e7e2b7991e",
+      "purpose": "original mapgen HALL_RING skeleton literal; static PE32 layout used to verify native side-slot access"
     },
     {
       "name": "pull_cast_power_balance_key_52BFA0",

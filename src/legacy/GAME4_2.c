@@ -21,6 +21,7 @@
 #include "operators.h"
 #include "input.h"
 #include "mapgen_legacy_ptr.h"
+#include "mapgen_theme_native.h"
 #include "floor_brush_native.h"
 
 #include "client__video__draw_common.h"
@@ -576,7 +577,7 @@ int nox_xxx_mapGenSpellIdByName_51E1D0(const char* a1) {
 // 51E1D0: using guessed type char var_78[60];
 
 //----- (0051E260) --------------------------------------------------------
-int nox_xxx_mapGenReadTheme_51E260(int* a1, int a2) {
+int nox_mapgenReadThemeNative_51E260(int* a1, const char* a2) {
 	FILE* v2;     // eax
 	FILE* v3;     // edi
 	int v4;       // eax
@@ -612,16 +613,16 @@ int nox_xxx_mapGenReadTheme_51E260(int* a1, int a2) {
 	*getMemU32Ptr(0x5D4594, 2487520) = 0;
 	v2 = nox_binfile_open_408CC0(v7, 0);
 	v3 = v2;
-	if (!v2 || !nox_binfile_cryptSet_408D40((int)v2, 1)) {
+	if (!v2 || !nox_binfile_cryptSet_408D40(v2, 1)) {
 		return 0;
 	}
 	while (nox_xxx_mapGenReadLine_51E540(v3, getMemAt(0x5D4594, 2487264))) {
 		if (!nox_strcmpi("ALGORITHM_DATA", (const char*)getMemAt(0x5D4594, 2487264))) {
-			v4 = nox_xxx_genReadAlgData_51EBB0((int)a1, v3);
+			v4 = nox_mapgenReadAlgDataNative_51EBB0((uint8_t*)a1, v3);
 			goto LABEL_23;
 		}
 		if (!nox_strcmpi("EXIT", (const char*)getMemAt(0x5D4594, 2487264))) {
-			v4 = nox_xxx_genReadExit_51F800((int)a1, v3);
+			v4 = nox_mapgenReadExitNative_51F800((uint8_t*)a1, v3);
 			goto LABEL_23;
 		}
 		if (!nox_strcmpi("PREFAB", (const char*)getMemAt(0x5D4594, 2487264))) {
@@ -647,7 +648,7 @@ int nox_xxx_mapGenReadTheme_51E260(int* a1, int a2) {
 						v5 = 0;
 						goto LABEL_27;
 					}
-					v4 = nox_xxx_genReadDecor_51F9F0(a1, v3);
+					v4 = nox_xxx_genReadDecor_51F9F0((uint32_t*)a1, v3);
 				} else {
 					v4 = nox_xxx_genReadWeaponSet_51F030((uint8_t*)a1, v3);
 				}
@@ -655,7 +656,7 @@ int nox_xxx_mapGenReadTheme_51E260(int* a1, int a2) {
 				v4 = nox_xxx_genReadArmorSet_51F640((uint8_t*)a1, v3);
 			}
 		} else {
-			v4 = nox_xxx_genReadSpellSet_51EFB0((int)a1, v3);
+			v4 = nox_mapgenReadSpellSetNative_51EFB0((uint8_t*)a1, v3);
 		}
 	LABEL_23:
 		v5 = v4;
@@ -671,6 +672,10 @@ LABEL_27:
 		return v5;
 	}
 	return 0;
+}
+
+int nox_xxx_mapGenReadTheme_51E260(int* a1, int a2) {
+	return nox_mapgenReadThemeNative_51E260(a1, (const char*)nox_mapgenLegacyPtrResolve((uint32_t)a2));
 }
 
 //----- (0051E540) --------------------------------------------------------
@@ -973,18 +978,15 @@ int sub_51EAF0(int a1, uint32_t* a2) {
 }
 
 //----- (0051EBB0) --------------------------------------------------------
-int nox_xxx_genReadAlgData_51EBB0(int a1, FILE* a2) {
+int nox_mapgenReadAlgDataNative_51EBB0(uint8_t* a1, FILE* a2) {
 	int v2;            // edi
-	const char** v3;   // eax
-	unsigned char* v4; // esi
-	int v5;            // ecx
-	char v7;           // [esp+10h] [ebp-3Ch]
+	char v7[60];           // [esp+10h] [ebp-3Ch]
 
 	while (nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
 		if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
 			return 1;
 		}
-		if (!nox_xxx_mapGenReadLine_51E540(a2, &v7)) {
+		if (!nox_xxx_mapGenReadLine_51E540(a2, v7)) {
 			break;
 		}
 		if (nox_strcmpi("midHallLength", (const char*)getMemAt(0x5D4594, 2487264))) {
@@ -1020,92 +1022,84 @@ int nox_xxx_genReadAlgData_51EBB0(int a1, FILE* a2) {
 																							  (const char*)getMemAt(
 																								  0x5D4594, 2487264))) {
 																					v2 = 0;
-																					if (*getMemU32Ptr(0x587000,
-																									  253244)) {
-																						v3 = (const char**)getMemAt(
-																							0x587000, 253244);
-																						v4 = getMemAt(0x587000, 253244);
-																						do {
-																							if (!nox_strcmpi(*v3, &v7)) {
-																								break;
-																							}
-																							v5 = *((uint32_t*)v4 + 1);
-																							v4 += 4;
-																							++v2;
-																							v3 = (const char**)v4;
-																						} while (v5);
+																					const char* skeleton = (const char*)getMemPtr(0x587000, 253244);
+																					while (skeleton) {
+																						if (!nox_strcmpi(skeleton, v7)) {
+																							break;
+																						}
+																						++v2;
+																						skeleton = (const char*)getMemPtr(0x587000, 253244 + 4 * v2);
 																					}
-																					*(uint32_t*)a1 =
-																						*getMemU32Ptr(0x587000,
-																									  253244 +
-																										  4 * v2) != 0
-																							? v2
-																							: 0;
+																					*(uint32_t*)a1 = skeleton ? (uint32_t)v2 : 0;
 																				}
 																			} else {
-																				*(uint32_t*)(a1 + 52) = atoi(&v7);
+																				*(uint32_t*)(a1 + 52) = atoi(v7);
 																			}
-																		} else if (nox_strcmpi(&v7, "true")) {
+																		} else if (nox_strcmpi(v7, "true")) {
 																			*(uint32_t*)(a1 + 60) = 0;
 																		} else {
 																			*(uint32_t*)(a1 + 60) = 1;
 																		}
-																	} else if (nox_strcmpi(&v7, "true")) {
+																	} else if (nox_strcmpi(v7, "true")) {
 																		*(uint32_t*)(a1 + 56) = 0;
 																	} else {
 																		*(uint32_t*)(a1 + 56) = 1;
 																	}
 																} else {
-																	*(uint32_t*)(a1 + 48) = atoi(&v7);
+																	*(uint32_t*)(a1 + 48) = atoi(v7);
 																}
 															} else {
-																*(uint32_t*)(a1 + 44) = atoi(&v7);
+																*(uint32_t*)(a1 + 44) = atoi(v7);
 															}
 														} else {
-															*(uint32_t*)(a1 + 76) = atoi(&v7);
+															*(uint32_t*)(a1 + 76) = atoi(v7);
 														}
 													} else {
-														*(uint32_t*)(a1 + 72) = atoi(&v7);
+														*(uint32_t*)(a1 + 72) = atoi(v7);
 													}
 												} else {
-													*(float*)(a1 + 64) = atof(&v7);
+													*(float*)(a1 + 64) = atof(v7);
 												}
 											} else {
-												*(uint32_t*)(a1 + 40) = atoi(&v7);
+												*(uint32_t*)(a1 + 40) = atoi(v7);
 											}
 										} else {
-											*(uint32_t*)(a1 + 36) = atoi(&v7);
+											*(uint32_t*)(a1 + 36) = atoi(v7);
 										}
 									} else {
-										*(uint32_t*)(a1 + 32) = atoi(&v7);
+										*(uint32_t*)(a1 + 32) = atoi(v7);
 									}
 								} else {
-									*(uint32_t*)(a1 + 28) = atoi(&v7);
+									*(uint32_t*)(a1 + 28) = atoi(v7);
 								}
 							} else {
-								*(uint32_t*)(a1 + 24) = atoi(&v7);
+								*(uint32_t*)(a1 + 24) = atoi(v7);
 							}
 						} else {
-							*(uint32_t*)(a1 + 20) = atoi(&v7);
+							*(uint32_t*)(a1 + 20) = atoi(v7);
 						}
 					} else {
-						*(uint32_t*)(a1 + 16) = atoi(&v7);
+						*(uint32_t*)(a1 + 16) = atoi(v7);
 					}
 				} else {
-					*(uint32_t*)(a1 + 12) = atoi(&v7);
+					*(uint32_t*)(a1 + 12) = atoi(v7);
 				}
 			} else {
-				*(uint32_t*)(a1 + 8) = atoi(&v7);
+				*(uint32_t*)(a1 + 8) = atoi(v7);
 			}
 		} else {
-			*(uint32_t*)(a1 + 4) = atoi(&v7);
+			*(uint32_t*)(a1 + 4) = atoi(v7);
 		}
 	}
 	return 0;
 }
 
+int nox_xxx_genReadAlgData_51EBB0(int a1, FILE* a2) {
+	return nox_mapgenReadAlgDataNative_51EBB0((uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
+}
+
 //----- (0051EFB0) --------------------------------------------------------
-int nox_xxx_genReadSpellSet_51EFB0(int a1, FILE* a2) {
+int nox_mapgenReadSpellSetNative_51EFB0(uint8_t* a1, FILE* a2) {
 	int v2; // eax
 
 	while (1) {
@@ -1121,6 +1115,10 @@ int nox_xxx_genReadSpellSet_51EFB0(int a1, FILE* a2) {
 		}
 	}
 	return 1;
+}
+
+int nox_xxx_genReadSpellSet_51EFB0(int a1, FILE* a2) {
+	return nox_mapgenReadSpellSetNative_51EFB0((uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
 }
 
 //----- (0051F030) --------------------------------------------------------
@@ -1397,7 +1395,7 @@ int nox_xxx_genReadArmorSet_51F640(uint8_t* a1, FILE* a2) {
 }
 
 //----- (0051F800) --------------------------------------------------------
-int nox_xxx_genReadExit_51F800(int a1, FILE* a2) {
+int nox_mapgenReadExitNative_51F800(uint8_t* a1, FILE* a2) {
 	while (1) {
 		if (!nox_xxx_mapGenReadLine_51E540(a2, getMemAt(0x5D4594, 2487264))) {
 			return 0;
@@ -1438,6 +1436,10 @@ int nox_xxx_genReadExit_51F800(int a1, FILE* a2) {
 		}
 	}
 	return 1;
+}
+
+int nox_xxx_genReadExit_51F800(int a1, FILE* a2) {
+	return nox_mapgenReadExitNative_51F800((uint8_t*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
 }
 
 //----- (0051F9F0) --------------------------------------------------------

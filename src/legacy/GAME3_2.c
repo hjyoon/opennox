@@ -43,6 +43,7 @@
 #include "common__magic__speltree.h"
 #include "defs.h"
 #include "mapgen_legacy_ptr.h"
+#include "mapgen_theme_native.h"
 #include "operators.h"
 #include "player_incoming_quest_4ddf60.h"
 #include "server__script__builtin.h"
@@ -1620,7 +1621,7 @@ int nox_xxx_mapGenStep_4D44E0() {
 	sub_57C490_2("theme");
 	sub_526C40(0);
 	sub_51D100(0);
-	result = nox_xxx_mapGenReadTheme_51E260((int*)theme, (int)getMemAt(0x587000, 197860));
+	result = nox_mapgenReadThemeNative_51E260((int*)theme, (const char*)getMemAt(0x587000, 197860));
 	if (!result) {
 		return 0;
 	}

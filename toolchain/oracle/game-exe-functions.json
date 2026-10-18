@@ -16597,6 +16597,13 @@
       "purpose": "the exact decoded direct rel32 call from vampire-ray FX construction to the viewport-filtered all-client FX broadcaster"
     },
     {
+      "name": "nox_xxx_mapGenSetFlags_5235F0",
+      "address": "0x005235F0",
+      "size": 125,
+      "sha256": "65f78187da6533b2ad93e693d30d9b11715cdee4b6470ae716c04f63ef9aa3a6",
+      "purpose": "original rendered-client map-generation progress: editor guard, signed tick rollover and throttle, input polling, three-byte opcode/sequence packet, DWORD increment and callback-before-last-time store"
+    },
+    {
       "name": "nox_xxx_netSendFxAllCli_523030_call_5236D7",
       "address": "0x005236D7",
       "size": 5,
@@ -23632,6 +23639,13 @@
       "size": 10,
       "sha256": "72b8edb099a7ec3c9546751a92d023775ec542f94f72a2fa895cf1e7e2b7991e",
       "purpose": "original mapgen HALL_RING skeleton literal; static PE32 layout used to verify native side-slot access"
+    },
+    {
+      "name": "mapgen_progress_interval_ms_5C53E4",
+      "address": "0x005C53E4",
+      "size": 4,
+      "sha256": "270381688ef9fe69e96a0b857d9cfff2eb4387bd6e208fdc260837e67fd27905",
+      "purpose": "original signed 250ms strict progress-display interval used by 005235F0"
     },
     {
       "name": "pull_cast_power_balance_key_52BFA0",

@@ -21,6 +21,65 @@ completion requirements.
 
 ## Current findings
 
+R315 restores the original CRT stream at the two legacy C ABI shims. The
+previous unrestricted Go random values put required prefab rooms outside the
+map. The same authored south-marker AreaMap/theme now completes generation,
+save, load, byte-identical fixed-seed repetition and natural dedicated shutdown.
+Saved/live object positions and an exact native NXZ round trip agree. Static
+original comparison, stream ownership and bounded prefab scope are documented in
+[native-theme-reader.md](native-theme-reader.md#r315-crt-stream-and-required-prefab).
+
+All 6,617 frozen source/test/module inputs remain fixed through four integrated
+configurations. Every R314 terminal outcome and multiplicity is retained, with
+six new passing regression events in each configuration:
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 81,976 | 49 | 0 |
+| Highres | 81,976 | 49 | 0 |
+| Server | 77,148 | 7 | 0 |
+| Server, highres | 77,148 | 7 | 0 |
+
+Counts include parent/subtest events. The seven-event focused union also passes
+with race detection, checkptr level 2 and actual `GOEXPERIMENT=cgocheck2`.
+The oracle verifies 3,014 code and 660 data ranges, preserving every earlier
+record. Four clean Go 1.26.9 ARM64 products at code
+`0666df6e687bffb82986dd6356c3607020130f0d` have zero help exits and matching
+Go/REA revision, tag and `vcs.modified=false` metadata.
+
+Separately pinned R314 normal/highres products now have actual ordinary-clock
+exit handoff evidence for four authored directions, with destination readiness,
+server/client equipment preservation and natural exits. This extends the old
+generation-only evidence; it does not attribute those gameplay runs to the new
+CRT products. The exact matrix is in
+[native-theme-reader.md](native-theme-reader.md#r315-actual-exit-movement).
+
+R315 campaign exploration uses only the clean R314 normal client, explicit
+virtual time, headless input and audio disabled. Actual stock book pickup,
+reward UI, icon drag into quickbar spell39 and A-key Invisibility casting pass.
+The running approach still dies; changing the post-cast input to walking reaches
+`(2909.500,4717.415)` with HP20/20 and both guards stationary. The stock notice
+countdown nevertheless changes from 0 to 58, and the next north input stalls
+at map geometry. This establishes neither complete non-detection nor Wiz06b
+entry, objective completion or post-reward persistence/reload. The wrong-book
+Lock44 assertion failure and other incomplete route attempts remain negatives.
+Casting/run and walking receipts are
+`ev_aed2478cce80e6270b4b02b7d467a45b14c2a90468c2312d0640839916fe8206`
+and `ev_e1e535798a12d015b410b899addddaaa9ea6e30cf61e699fc52690a394007dac`.
+No new ordinary-clock/highres campaign route or natural ending is claimed.
+
+During this run the old `/private/tmp` checkout lost 6,500 tracked files and Git
+metadata for an unknown cause. Its failing audit is preserved. A fresh independent
+workspace clone at `a2b6d0c` matched all 6,984 pre-change tracked files against
+the intact snapshot before applying this correction. All 3,270 pre-existing
+protected files verify unchanged there. All 1,562 personal files
+(571,159,691 bytes) and original Save/settings remain unchanged. Existing manual
+save/load PNG discrepancies remain open; no expected image was changed.
+
+These bounded advances retain the weighted maturity estimate at 79%.
+
+### Retained R314 findings
+
 R314 fixes two reproduced lifecycle failures. Dedicated classic generation no
 longer invokes the client progress renderer; its rendered path restores original
 signed tick comparisons and writes the progress packet without unaligned access.

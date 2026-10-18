@@ -203,16 +203,93 @@ the inputs. Decoder receipt:
 These are authored generation/serialization checks, not a runtime exit collision
 or destination-map handoff, prefab workflow or original external-theme oracle.
 
+## R315 CRT stream and required prefab
+
+A required authored AreaMap record loaded and analyzed successfully but failed
+every placement attempt: its room coordinates were about 63 million and
+86 million, outside the theme. The old C ABI shim returned the low 32 bits of
+Go's unrestricted `RandInt`, while both classic range helpers expect the
+original CRT's `0..32767` result. A private diagnostic product retained the
+successful record index, dimensions and marker analysis before `within=0`.
+The failing clean-product captures remain separate from that diagnostic.
+
+REA/Ghidra and an independent PE section read agree on all 253 bytes of
+`00402000`, `0040200D`, `00526AB0`, `00526AC0`, `00526B00` and `00526BC0`.
+The CRT updates its unsigned dword with `214013 * state + 2531011` modulo
+2^32, then returns `(state >> 16) & 32767`. The native C ABI now preserves
+that stream and seed width. Its seed shim still calls the existing Go platform
+hook exactly once with the unchanged unsigned seed; the Go platform generator
+itself is unchanged. The original thread-local game-thread stream is represented
+as one mutex-serialized stream across CGo callbacks. Separate concurrent CRT
+thread states and arbitrary-input range-helper equivalence are outside this
+correction. Original GAME.EXE was inspected statically and never executed.
+
+Six added code ranges bring the oracle to 3,014 code and 660 data ranges;
+all previous records are unchanged. The original binary32 scale at `00583080`
+was already covered by the data oracle. Additive tests verify fixed arithmetic
+vectors, repeat seeding, concurrent stream consumption and the actual C integer
+and floating mapgen boundaries. Seven focused events, including the unchanged
+fixed-seed forwarding test, pass normally and with race detection, checkptr
+level 2 and actual `GOEXPERIMENT=cgocheck2`.
+
+Clean code `0666df6e687bffb82986dd6356c3607020130f0d` produces the dedicated
+ARM64 server with SHA-256
+`daa2a07e5d34d1063ed3153bbe2c0ca814cf6e9ab623f0ca054e777a381e6ef2`.
+The same south-marker library and encrypted theme that failed with the old
+product now complete two ordinary-clock generations, saves and generated-map
+loads, with a real intervening stock map. Both MAP and NXZ hashes repeat exactly
+and the server exits naturally with code 0. The authored 176-byte AreaMap
+contains one real stock Exit1 and one ExitSouthMarker; the theme requires it
+with `MUST_OCCUR` and contains no separate `EXIT` block. Runtime receipt:
+`ev_4dbd70f03e067bf47e94659d6ac4a71b300f9405696f99a70e9a81ff30d286fd`.
+
+Read-only decoding finds 16 named sections, 18 wall records, 81 floor halves,
+one PlayerStart at `(3739,3577)` and one Exit1 at `(2911,2657)` with exact
+destination `so_beach.map`. Both corrected collection snapshots after load
+agree with the saved positions; the connection marker is absent. The actual
+native NXZ decoder reconstructs all 2,856 MAP bytes exactly from the 2,952-byte
+NXZ without changing either input. Decoder receipt:
+`ev_65f06173d7f0bc7df0df9497f83b62c6fc001919df6ebddf9952b51ccd375850`.
+This bounded record contains no authored prefab floor, wall, waypoint, group
+or script section. Other marker/room combinations and original external
+AreaMap assets remain unverified.
+
+## R315 actual exit movement
+
+Four separate fresh solo-host processes also pass actual right-mouse movement
+from the generated PlayerStart through a loaded Exit1 to ready `so_beach`.
+These use the separately pinned clean R314 code
+`dd142aa82dcbcc0061683c99b3ee4c44b5ae484e`: north is normal; south, east and
+west are highres. All use ordinary time and exit naturally with code 0 in
+about 148 seconds each. StaffWooden, StreetSneakers, StreetPants and StreetShirt
+each pass server/client inventory counts before and after the handoff. No
+direct callback, contact helper, relocation or measured map command supplies
+the transition. Initial source-map selection is explicit preparation.
+
+The north observer saw an early API map-name update before destination
+placement, so its separate native MAP READY and inventory assertions establish
+readiness. Highres collection snapshots wait for MAP READY and retain item
+type/script IDs, equipped flags and player name/class. The handoff conclusion
+combines actual input/load observations with the static ExitCollide binding;
+no instruction-level collision trace was captured. Receipts, in N/S/E/W order:
+`ev_b41e9110646455215411915a82da6d0af75224767d80dede40021ff4cff6e907`,
+`ev_d18dec3d5a67d8f83667d509446b5f2cf2c73edc426914db082ba86b747eaf53`,
+`ev_8aedb97030338f05f741e0e1ae32877238cc60f1bcbde7df1bf70616ae19dac1`,
+`ev_2087ba6e9b51d4321c40866f695a4007399a66d1dc50d52f728dc26aec0aa7ed`.
+This is four particular authored solo-host routes, not every product/direction
+pair, independent-peer handoff or completed campaign route.
+
 ## Remaining scope
 
 The retained stock map inventory lacks original external theme/AreaMap inputs.
-Broader room, recursive-hall, prefab, exit and player-dependent conditional
-combinations remain outside the seven fixed-seed authored theme variants.
+Broader room, recursive-hall, prefab-section and player-dependent conditional
+combinations remain outside the bounded authored variants above.
 Arbitrary-length tokens and out-of-capacity records are outside the
 bounded evidence above. Remaining callback/layout classification is unfinished.
 
-All 3,267 pre-existing tests, fixtures and YAML files retain their hashes,
-as do 1,562 personal installation files totaling 571,159,691 bytes. The
-existing manual-save PNG comparisons remain failed pending their separate
+All 3,270 pre-existing protected tests, fixtures and YAML files retain their
+hashes in the independently recovered workspace repository. All 1,562 personal
+installation files totaling 571,159,691 bytes remain unchanged. The existing
+manual-save PNG comparisons remain failed pending their separate
 fixture decision. These parser checks leave the overall weighted maturity
 estimate at 79%; they do not provide a measured feature-coverage denominator.

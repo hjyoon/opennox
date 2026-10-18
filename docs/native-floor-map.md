@@ -171,9 +171,10 @@ remained unchanged. The oracle retains its previous records and now verifies
 2,988 code ranges and 655 data ranges.
 
 The `#name` server entry needs external theme/AreaMap inputs absent from the
-retained stock inventory. Upstream theme, file-handle and conditional-parser
-pointer conversions remain open. This work does not establish a successful
-complete stock or custom map-generation run.
+retained stock inventory. The later [R310 theme reader](native-theme-reader.md)
+converts native names, file handles and child theme pointers. Conditional
+expressions still need their file/player pointer conversions. A successful
+complete stock or custom map-generation run remains unverified.
 
 ```sh
 NOX_E2E_SEAT=headless ./scripts/go.sh -C src test ./legacy \

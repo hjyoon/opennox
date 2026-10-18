@@ -43,9 +43,11 @@ Rectangle/column producers use contiguous float pairs and exact original
 binary32 operands. Controlled native cases cover these operations; the
 documented `543680` initialization policy defines previously unspecified
 transient state. The ordinary server's `#name` entry needs external
-theme/AreaMap inputs absent from the retained stock map inventory. Full
-generation, upstream theme/file/conditional-parser pointer conversions and the remaining
-callback/layout classification remain open.
+theme/AreaMap inputs absent from the retained stock map inventory. The R310
+theme reader now transports native names, file handles and child theme
+pointers. Conditional-expression file/player conversions, full generation
+and the remaining callback/layout classification remain open; see
+[native-theme-reader.md](native-theme-reader.md).
 
 Three fill producers now use contiguous float coordinate pairs, exact
 binary32 operands and the original double-to-float staging. Their 15 fixed
@@ -112,6 +114,38 @@ Stock sprite scanning found 139,080 images, 126,687 compressed streams and
 changes therefore do not explain translucency in those unchanged assets.
 Retained Host Load samples show normal player status and disabled layer
 alpha. These observations do not resolve the reported visual symptom.
+
+## R310 theme reader validation checkpoint
+
+Revision `98080022714fdfa52fb03acf22cfec0bc6c0bdc8` preserves native theme-name,
+encrypted-file and child-parser pointers, restores the original 60-byte
+algorithm value buffer, and reads the skeleton table through its native
+side slots. The original integer declarations remain available as token
+adapters. The fixed 1,116-byte theme layout and all previous oracle records
+remain intact.
+
+| Configuration | PASS events | SKIP events | Passed packages | FAIL |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 81,915 | 47 | 40 | 0 |
+| Highres | 81,915 | 47 | 40 | 0 |
+| Server | 77,087 | 7 | 36 | 0 |
+| Server, highres | 77,087 | 7 | 36 | 0 |
+
+Each suite retains every R307 terminal outcome and multiplicity and adds
+nine passing parent/subtest events. The source-bound C fixture exercises
+236 bounded cases in each of O0, O2 and ASan+UBSan. Actual CGo reads temporary
+encrypted themes through native pointers and registered high-bit name
+tokens, verifies file closure, room/hall graph cleanup, partial EOF writes
+and untouched guards. The focused union passes 157 events with race,
+checkptr level 2 and cgocheck2.
+
+All 3,249 pre-existing test/fixture/YAML files and all 1,562 personal files
+(571,159,691 bytes) retain their hashes. The original executable hash and
+both existing manual-save PNGs remain unchanged. The oracle verifies 2,999
+code and 659 data ranges. All four clean ARM64 products build, return help
+successfully, and have matching REA/Go build metadata. The new checks cover
+bounded theme parsing; conditional expressions and complete generation
+remain open. The weighted maturity estimate remains 79%.
 
 ## Other platform observations
 

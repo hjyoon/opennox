@@ -27,7 +27,9 @@ func init() {
 		qu := r.URL.Query()
 		indStr := qu.Get("ind")
 		if indStr == "" {
-			writeJSONResp(w, noxServer.Objs.AllObjects())
+			writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+				return noxServer.Objs.AllObjects()
+			})
 			return
 		}
 		ind, err := strconv.ParseInt(indStr, 10, 32)

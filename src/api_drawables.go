@@ -11,6 +11,8 @@ var _ json.Marshaler = &client.Drawable{}
 
 func init() {
 	http.HandleFunc("/debug/nox/drawable", func(w http.ResponseWriter, r *http.Request) {
-		writeJSONResp(w, noxClient.Objs.AllList1())
+		writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+			return noxClient.Objs.AllList1()
+		})
 	})
 }

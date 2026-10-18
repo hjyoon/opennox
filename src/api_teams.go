@@ -11,6 +11,8 @@ var _ json.Marshaler = &server.Team{}
 
 func init() {
 	http.HandleFunc("/debug/nox/teams", func(w http.ResponseWriter, r *http.Request) {
-		writeJSONResp(w, noxServer.Teams.Teams())
+		writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+			return noxServer.Teams.Teams()
+		})
 	})
 }

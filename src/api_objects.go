@@ -37,51 +37,59 @@ func init() {
 			http.Error(w, "Bad index", http.StatusBadRequest)
 			return
 		}
-		obj := asObjectS(noxServer.Objs.GetObjectByInd(int(ind)))
-		if obj == nil {
-			http.Error(w, "Not found", http.StatusFound)
-			return
-		}
-		all := obj.Flags()
-		for _, word := range strings.Split(qu.Get("flags"), ",") {
-			fname := word
-			unset := false
-			if strings.HasPrefix(fname, "-") {
-				unset = true
-				fname = fname[1:]
+		writeJSONRespInLoopWithError(w, r, noxServer.QueueInLoop, func() (any, error) {
+			obj := asObjectS(noxServer.Objs.GetObjectByInd(int(ind)))
+			if obj == nil {
+				return nil, apiSnapshotHTTPError{status: http.StatusFound, message: "Not found"}
 			}
-			fl, err := object.ParseFlag(fname)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
-				return
+			all := obj.Flags()
+			for _, word := range strings.Split(qu.Get("flags"), ",") {
+				fname := word
+				unset := false
+				if strings.HasPrefix(fname, "-") {
+					unset = true
+					fname = fname[1:]
+				}
+				fl, err := object.ParseFlag(fname)
+				if err != nil {
+					return nil, apiSnapshotHTTPError{status: http.StatusBadRequest, message: err.Error()}
+				}
+				if unset {
+					all &^= fl
+				} else {
+					all |= fl
+				}
 			}
-			if unset {
-				all &^= fl
-			} else {
-				all |= fl
-			}
-		}
-		obj.ObjFlags = all
-		writeJSONResp(w, obj)
+			obj.ObjFlags = all
+			return obj, nil
+		})
 	})
 	http.HandleFunc("/debug/nox/objects/updatable", func(w http.ResponseWriter, r *http.Request) {
-		var out []*Object
-		for p := noxServer.Objs.UpdatableList; p != nil; p = p.Next() {
-			out = append(out, asObjectS(p))
-		}
-		writeJSONResp(w, out)
+		writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+			var out []*Object
+			for p := noxServer.Objs.UpdatableList; p != nil; p = p.Next() {
+				out = append(out, asObjectS(p))
+			}
+			return out
+		})
 	})
 	http.HandleFunc("/debug/nox/objects/non-missiles", func(w http.ResponseWriter, r *http.Request) {
-		writeJSONResp(w, noxServer.Objs.AllNonMissiles())
+		writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+			return noxServer.Objs.AllNonMissiles()
+		})
 	})
 	http.HandleFunc("/debug/nox/objects/missiles", func(w http.ResponseWriter, r *http.Request) {
-		writeJSONResp(w, noxServer.Objs.AllMissiles())
+		writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+			return noxServer.Objs.AllMissiles()
+		})
 	})
 	http.HandleFunc("/debug/nox/objects/index", func(w http.ResponseWriter, r *http.Request) {
-		m := make(map[string]server.DebugMapIndex)
-		for k, v := range noxServer.Map.DebugIndex() {
-			m[fmt.Sprintf("%d,%d", k.X, k.Y)] = v
-		}
-		writeJSONResp(w, m)
+		writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+			m := make(map[string]server.DebugMapIndex)
+			for k, v := range noxServer.Map.DebugIndex() {
+				m[fmt.Sprintf("%d,%d", k.X, k.Y)] = v
+			}
+			return m
+		})
 	})
 }

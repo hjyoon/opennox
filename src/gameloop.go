@@ -41,14 +41,14 @@ var (
 )
 
 func nox_client_getIntroScreenDuration_44E3B0() int {
-	if env.IsE2E() {
+	if env.IsE2EVirtualTime() {
 		return 10
 	}
 	return 25
 }
 
 func nox_client_getBriefDuration() int {
-	if env.IsE2E() {
+	if env.IsE2EVirtualTime() {
 		return 10
 	} else if env.IsDevMode() {
 		return 3000

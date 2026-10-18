@@ -144,7 +144,16 @@ func (win *Window) processKeyboardEvent(ev *sdl.KeyboardEvent) {
 		})
 		return
 	}
-	key := scanCodeToKeyNum[ev.Keysym.Scancode]
+	code := int(ev.Keysym.Scancode)
+	if code < 0 || code >= len(scanCodeToKeyNum) {
+		return
+	}
+	key := scanCodeToKeyNum[code]
+	// Zero terminates the game's keyboard batch; an unmapped SDL key must
+	// not insert that sentinel ahead of later presses or releases.
+	if key == 0 {
+		return
+	}
 	win.inputEvent(&seat.KeyboardEvent{
 		Key:     key,
 		Pressed: ev.State == sdl.PRESSED,

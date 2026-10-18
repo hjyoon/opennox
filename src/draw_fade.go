@@ -45,7 +45,7 @@ func nox_xxx_cliPlayMapIntro_44E0B0(menu int) {
 }
 
 func getFadeDuration() int {
-	if env.IsE2E() {
+	if env.IsE2EVirtualTime() {
 		return 10
 	} else if env.IsDevMode() {
 		return 5

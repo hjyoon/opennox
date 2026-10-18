@@ -189,6 +189,9 @@ func (s *serverPlayers) init(srv *Server) {
 }
 
 func (s *serverPlayers) ResetAll() {
+	// Cached host references belong to the player session and must be
+	// invalidated before its objects can be released during teardown.
+	s.SetHost(nil, nil)
 	for i := range s.list {
 		s.list[i] = Player{}
 	}

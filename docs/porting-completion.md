@@ -6,13 +6,13 @@ tests or adding sealed original ranges does not supply that denominator.
 
 | Area | Weight | Estimated maturity | Remaining completion evidence |
 | --- | ---: | ---: | --- |
-| Build and native ABI | 15 | 95 | Applicable four-configuration suites and classification of reachable stock callbacks/layouts |
+| Build and native ABI | 15 | 95 | Classification of remaining reachable stock callbacks/layouts after the passing integrated four-configuration suites |
 | Gameplay | 25 | 80 | Executed three-class feature matrix, including items, AI, death, pets and objective modes |
-| Rendering and UI | 15 | 80 | Host Load translucency diagnosis, fresh-load pixel discrepancy, normal/highres SDL input and compositor checks |
-| Audio | 10 | 85 | Production backend lifecycle under ordinary game time and audible output |
-| Networking | 15 | 85 | Independent socket peers, replication, transitions, reconnect and original protocol compatibility |
-| Campaign | 15 | 60 | All three classes through chapter endings, saves, reloads and progression |
-| Stability | 5 | 50 | Bounded ordinary-clock load/combat/transition soak with resource and shutdown checks |
+| Rendering and UI | 15 | 80 | Remaining Host Load reports, unchanged fresh-load golden discrepancy, broader SDL input and compositor checks |
+| Audio | 10 | 85 | Perceptual audible-output fidelity and broader long-session playback after the bounded ordinary-clock core-backend run |
+| Networking | 15 | 85 | Fully ordinary-clock independent socket-peer combat/reconnect and original Windows-peer runtime compatibility |
+| Campaign | 15 | 60 | Complete three-class objectives/routes, story-triggered endings, chapter saves/reloads and legitimate progression |
+| Stability | 5 | 50 | Broader ordinary-clock independent-peer load/combat/transition evidence beyond the single bounded host run |
 
 The calculation is `(15*95+25*80+15*80+10*85+15*85+15*60+5*50)/100 = 79`.
 All seven areas remain partial. Physical second-machine, WAN traversal and
@@ -45,8 +45,11 @@ documented `543680` initialization policy defines previously unspecified
 transient state. The ordinary server's `#name` entry needs external
 theme/AreaMap inputs absent from the retained stock map inventory. The R310
 theme reader now transports native names, file handles and child theme
-pointers. Conditional-expression file/player conversions, full generation
-and the remaining callback/layout classification remain open; see
+pointers. Conditional-expression readers also retain native files and player
+fields. The generation entry, save and placement boundaries preserve native
+objects. An authored single-room theme now completes ordinary-clock
+generation, map/NXZ save, generated-map load and natural shutdown. Broader
+classic input combinations and callback/layout classification remain open; see
 [native-theme-reader.md](native-theme-reader.md).
 
 Three fill producers now use contiguous float coordinate pairs, exact
@@ -146,6 +149,150 @@ code and 659 data ranges. All four clean ARM64 products build, return help
 successfully, and have matching REA/Go build metadata. The new checks cover
 bounded theme parsing; conditional expressions and complete generation
 remain open. The weighted maturity estimate remains 79%.
+
+## R313 integrated regression checkpoint
+
+The combined native mapgen, SDL input, host reset, audio ownership and
+ordinary-clock changes pass the four Darwin ARM64 configurations below.
+All 6,611 compiled-source, test and module inputs retain their frozen hashes
+before and after each suite.
+
+| Configuration | PASS events | SKIP events | Passed packages | FAIL |
+| --- | ---: | ---: | ---: | ---: |
+| Normal | 81,952 | 49 | 40 | 0 |
+| Highres | 81,952 | 49 | 40 | 0 |
+| Server | 77,124 | 7 | 36 | 0 |
+| Server, highres | 77,124 | 7 | 36 | 0 |
+
+Every R310 terminal outcome and multiplicity is retained, with 37 new passing
+events per configuration. The client configurations additionally skip two new
+opt-in native OpenAL tests; the separate real OpenAL null-driver gate executes
+them and passes all 70 events normally and under strict settings. Only the
+same two existing server test families need native runtime address-label
+normalization; fixed low addresses and event multiplicities stay literal.
+
+The final mapgen/timing/host-reset union passes 195 events with race,
+checkptr level 2 and `GOEXPERIMENT=cgocheck2`, including the added complete
+buffer allocation/free regression. The timing/connection union passes 42
+events, and the tagged native SDL input union passes 17 events in normal,
+highres and strict modes. All 3,252 pre-existing protected tests, fixtures and
+YAML files retain their hashes; existing expected values and PNGs are unchanged.
+The oracle verifies 3,007 code and 659 data ranges while retaining every
+previous record. These are parent/subtest events, not a coverage denominator.
+
+## R313 input, audio ownership and ordinary-clock checkpoint
+
+The weighted maturity estimate remains **79%**. The following controlled
+results close specific defects and evidence gaps; they do not establish a
+complete gameplay, campaign or compatibility denominator.
+
+The SDL keyboard adapter now rejects out-of-range and unmapped scancodes
+before forwarding events. Unmapped keys previously inserted zero, the game
+keyboard batch terminator, and discarded later mapped presses or releases.
+Real native SDL dummy-driver queues reproduced that loss in both menu and
+letterboxed gameplay layouts. A separate direct-boundary regression caught
+invalid table indices. The isolated candidate passed all 47 SDL package
+events normally and with highres, race, checkptr level 2 and cgocheck2,
+including all 30 existing resize/context/attribute events. The integrated
+tree subsequently passed the 17 additive input events normally, with highres,
+and under the strict settings. Its production source and both additive files
+are byte-identical to the isolated candidate. These tests cover native event
+transport and software input state; Cocoa/Retina/compositor, physical input,
+relative mouse and IME behavior remain outside this result. Receipt:
+`ev_0efcfae293ed46a62d55733f0a5e6390b49b4b27e4228ee3147738737ae99403`.
+
+Sample and stream teardown now delete an immutable copy of the originally
+allocated OpenAL buffer IDs. Their mutable recycling lists could contain
+duplicates while omitting a still-owned ID. The identical native partial-queue
+regression failed both baseline closes and passed the correction. All 70
+native `TestOpenAL` events passed both normally and with race, checkptr level 2
+and cgocheck2, using OpenAL Soft's silent null driver. The integrated tree
+also passes all 70 events in both settings, retaining existing movie-buffer
+ownership, drain, seek, statistics and teardown checks. Production source
+matches the isolated candidate exactly; its additive regression differs only
+by a comment.
+
+`NOX_E2E_CLOCK=ordinary` retains the production clock, Sleep, RNG, millisecond
+ticks, local calendar, time-based effects and frame-limit flag policy while
+the scenario counts input iterations separately. The default remains virtual.
+The integrated timing, real-Sleep, checkpoint, connection-gate and frame-limit
+union passes 42 events. An earlier 34-event command misspelled the
+connection-gate test prefix and did not execute those tests; the 42-event run
+closes that omission. The initial mapgen/timing/host-reset focused union
+passes 191 events normally and under the strict settings; the final buffer
+regression raises the strict union to 195. These overlapping
+event counts are not a coverage percentage.
+
+A source-bound normal ARM64 development artifact over `eb7f60ff`, with
+explicit ordinary-time and buffer-ownership overlays, completed a private
+headless host run. Raw active-start-to-child-exit events span 317.336 wall
+seconds within a 900-second execution bound; the controller reports 317.530
+seconds measured after shutdown and 425.627 seconds overall. All 416
+metric/state samples are retained. The 227 stable post-scenario samples span
+232.724 seconds and recompute to 30.001203 game FPS, within the declared
+27–31 FPS bound. Platform milliseconds advance at 0.999933604 times wall time,
+within the declared 0.95–1.05 bound.
+
+The run preserves every original host gameplay/audio assertion, exercises
+real input pickup/drop, two hammer attacks, a stock hostile Spider's first
+attack, walk/run and TriLevel/Estate transitions with host/drawable rebinding.
+Actual OpenAL Soft 1.25.2 core output selects the MacBook Air speakers and
+consumes native buffers in all six effect phases and after transitions.
+Ordinary WindowClosed input gives child and controller exit 0 without
+termination cleanup. Context/device cleanup completes without OpenAL
+warnings. All 21 controller checks and 27 retained audit checks pass.
+Receipt:
+`ev_eb6a9b4e44e7ac1dc27fe5e94dd352bf6fbd3a0c90f0a2bea2251efae6b080d3`.
+
+The 309 paired host/drawable samples share netcode 2. Their largest non-atomic
+position distance is 8.569 units; each of the four real-input movement phases
+exceeds eight units. This is one host process, not independent socket-peer
+replication. Goroutines range from 8 to 12 and end at 9; threads range from 7
+to 8 and end at 8. Final Go heap is 207,903,448 bytes, peak 274,121,080 bytes;
+child maximum RSS is 396,623,872 bytes. These bounded observations establish
+neither general leak freedom nor human-heard audio fidelity. E2E state/input
+isolation, controlled combat fixtures and owned optional-movie withholding
+remain part of the profile. It is not a clean combined release run.
+
+## R313 controlled campaign endings and host lifetime
+
+Clean R310 normal/highres products at `98080022714fdfa52fb03acf22cfec0bc6c0bdc8`
+pass all six controlled class/configuration ending-dispatch runs. Each loads
+the final map directly, explicitly calls an unchanged stock function and
+selects the corresponding movie once:
+
+| Class | Final map | Explicit function | Selected movie | Normal/highres |
+| --- | --- | --- | --- | --- |
+| Warrior | War11a | EndScene3 | warrior.vqa | pass/pass |
+| Conjurer | Con11a | TheEnd1 | conjurer.vqa | pass/pass |
+| Wizard | Wiz11a | FinalFadeOut | wizard.vqa | pass/pass |
+
+All six captures exit naturally with code 0, settle without termination
+cleanup and retain their complete selected capture budgets. Movies are
+deliberately dismissed through ordinary input. These virtual-clock,
+audio-disabled runs do not establish objective/route completion, story-driven
+final triggers, boss combat, full movie playback or persistent ending bits.
+
+The unchanged Warrior scenario's post-EndGame Screen exposed a real lifetime
+defect: `serverPlayers.ResetAll` cleared player slots but retained cached host
+player/unit references before Coop teardown freed their storage. ResetAll now
+clears both references at their owner. A new lifecycle regression fails the
+baseline and passes the candidate and strict settings. Both normal/highres
+source-bound candidates pass the byte-identical previously failing scenario,
+retaining both Screen actions; its newly created PNGs are observations with
+zero golden comparisons. The integrated owner fix and regression exactly
+match the validated candidate. Receipts:
+`ev_6c0aa52060a4e678df892febcc7c13a014f3b01bfbf2ee928a72bed967a44bf0`
+and `ev_da86516f50727d6298233075cfb7681434e733336d6e7a8417b65bc6195ca322`.
+
+Direct War11a entry also establishes that the observed autosave wait was
+waiting for normal stock dialogs. Two ordinary Done inputs complete the
+unchanged autosave gate on both clean products; no pause/unfreeze correction
+is needed for this case. Full three-class routes, chapter save/reload and
+legitimate progression remain open, including the earlier Con11a/Wiz06a
+full-route questions. All 3,252 pre-existing test/fixture/YAML files and all
+1,562 personal installation files retain their hashes. The original Windows
+executable was not executed; existing candidate PNGs remain separate.
 
 ## Other platform observations
 

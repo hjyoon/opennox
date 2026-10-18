@@ -11035,8 +11035,12 @@ func e2eInit() {
 
 	e2eLog.Println("WARNING: starting in e2e test mode")
 	e2e.p = newPlayformE2E()
-	platform.Set(e2e.p)
-	if e2e.p.realSleep != nil {
+	if err := setE2EGameClock(e2e.p, os.Getenv("NOX_E2E_CLOCK")); err != nil {
+		panic(err)
+	}
+	if os.Getenv("NOX_E2E_CLOCK") == "ordinary" {
+		e2eLog.Println("using ordinary game clock and random source; scenario steps count input iterations")
+	} else if e2e.p.realSleep != nil {
 		e2eLog.Println("using virtual ticks with real Sleep (NOX_E2E_REAL_SLEEP=true)")
 	}
 	if e2e.recording {

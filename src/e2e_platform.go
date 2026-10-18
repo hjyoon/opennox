@@ -1,10 +1,14 @@
 package opennox
 
 import (
+	"fmt"
 	"math/rand"
 	"os"
 	"sync"
 	"time"
+
+	"github.com/opennox/libs/env"
+	"github.com/opennox/libs/platform"
 )
 
 func newPlayformE2E() *platformE2E {
@@ -71,4 +75,25 @@ func (p *platformE2E) RandSeed(seed int64) {
 
 func (p *platformE2E) RandSeedTime() {
 	p.RandSeed(p.TimeSeed())
+}
+
+// setE2EGameClock keeps the scenario iteration counter separate from the game
+// platform in ordinary mode. The production clock, Sleep and random source
+// then remain installed, while the headless seat still accepts scripted input.
+func setE2EGameClock(p *platformE2E, mode string) error {
+	switch mode {
+	case "", "virtual":
+		platform.Set(p)
+	case "ordinary":
+		// Keep the production platform initialized before E2E playback.
+	default:
+		return fmt.Errorf("NOX_E2E_CLOCK must be virtual or ordinary (got %q)", mode)
+	}
+	return nil
+}
+
+// e2eFrameLimitDisabled preserves an explicit user flag in ordinary playback.
+// Virtual playback retains its existing uncapped input-iteration behavior.
+func e2eFrameLimitDisabled(requested bool) bool {
+	return requested || env.IsE2EVirtualTime()
 }

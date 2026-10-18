@@ -27,3 +27,10 @@ func AppUserDir() string {
 	}
 	return ""
 }
+
+// IsE2EVirtualTime reports whether E2E playback uses the deterministic clock.
+// Ordinary playback still uses the E2E seat and isolated configuration, but
+// retains production tick units, time-based effects and the local calendar.
+func IsE2EVirtualTime() bool {
+	return IsE2E() && os.Getenv("NOX_E2E_CLOCK") != "ordinary"
+}

@@ -127,10 +127,12 @@ type audioSample struct {
 	d       *audioDriver
 	playing uint32 // atomic
 
-	next    *audioSample
-	source  openal.Source
-	hwbuf   openal.Buffers
-	hwready int
+	next   *audioSample
+	source openal.Source
+	hwbuf  openal.Buffers
+	// Keep allocated IDs separate from the mutable recycling free list.
+	ownedBuffers openal.Buffers
+	hwready      int
 
 	bmu     sync.Mutex
 	buffers [2]audioSampleBuf
@@ -189,10 +191,12 @@ type audioStream struct {
 	h Stream
 	d *audioDriver
 
-	next    *audioStream
-	source  openal.Source
-	hwbuf   openal.Buffers
-	hwready int
+	next   *audioStream
+	source openal.Source
+	hwbuf  openal.Buffers
+	// Keep allocated IDs separate from the mutable recycling free list.
+	ownedBuffers openal.Buffers
+	hwready      int
 
 	playing bool
 	eof     bool
@@ -290,6 +294,7 @@ func (dig Driver) AllocateSample() Sample {
 	}
 
 	s.hwbuf = openal.NewBuffers(4)
+	s.ownedBuffers = append(openal.Buffers(nil), s.hwbuf...)
 	s.hwready = 4
 	if !audioCheckError() {
 		s.source.Delete()
@@ -331,8 +336,8 @@ func (s Sample) Release() {
 	v.d.stats.SampleBuffersProcessed += uint64(v.processedBuffers())
 	v.source.Stop()
 	v.source.Delete()
-	if len(v.hwbuf) > 0 {
-		v.hwbuf.Delete()
+	if len(v.ownedBuffers) > 0 {
+		v.ownedBuffers.Delete()
 	}
 	v.d.mu.Unlock()
 }
@@ -386,6 +391,7 @@ func (dig Driver) OpenStream(name string) Stream {
 		return 0
 	}
 	s.hwbuf = openal.NewBuffers(2)
+	s.ownedBuffers = append(openal.Buffers(nil), s.hwbuf...)
 	s.hwready = 2
 	if !audioCheckError() {
 		s.source.Delete()
@@ -443,7 +449,7 @@ func (h Stream) Close() error {
 	}
 	s.source.Stop()
 	s.source.Delete()
-	s.hwbuf.Delete()
+	s.ownedBuffers.Delete()
 	s.dec.Close()
 	return nil
 }

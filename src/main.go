@@ -170,7 +170,7 @@ func runArgs(args []string, loopFunc func() error) (gerr error) {
 		writeConfigLater()
 	}
 	if env.IsE2E() {
-		*fNoLimit = true
+		*fNoLimit = e2eFrameLimitDisabled(*fNoLimit)
 		mainloopHook = e2eRun
 	}
 	if path := *fData; path != "" {
@@ -579,7 +579,7 @@ func sub_43DCC0() {
 			legacy.Set_dword_5d4594_816348(0)
 		}
 		noxClient.sub4312C0()
-		if env.IsE2E() {
+		if env.IsE2EVirtualTime() {
 			// The deterministic E2E clock no longer advances once the quit
 			// step completes, so the throttled client update above cannot
 			// finish the pending music state transition on its own.

@@ -26,7 +26,7 @@ func nox_itoa(val C.int, s *C.char, radix_cgo int32) *C.char {
 //export noxGetLocalTime
 func noxGetLocalTime(p *C.noxSYSTEMTIME) {
 	tm := time.Now()
-	if env.IsE2E() {
+	if env.IsE2EVirtualTime() {
 		tm = time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC).Add(platform.Ticks())
 	}
 	p.wYear = C.ushort(tm.Year())

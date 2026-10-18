@@ -10,7 +10,7 @@ import (
 )
 
 func platformTicks() uint64 {
-	if env.IsE2E() {
+	if env.IsE2EVirtualTime() {
 		return uint64(platform.Ticks())
 	}
 	return uint64(platform.Ticks() / time.Millisecond)

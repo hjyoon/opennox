@@ -16,23 +16,25 @@ func init() {
 		DPos    *image.Point `json:"dpos,omitempty"`
 	}
 	http.HandleFunc("/debug/nox/script/legacy", func(w http.ResponseWriter, r *http.Request) {
-		var out []debugNoxScript
-		funcs := noxServer.noxScript.Funcs()
-		for i, f := range funcs {
-			var dpos *image.Point
-			if f.PosOff != (image.Point{}) {
-				dpos = &f.PosOff
+		writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+			var out []debugNoxScript
+			funcs := noxServer.noxScript.Funcs()
+			for i, f := range funcs {
+				var dpos *image.Point
+				if f.PosOff != (image.Point{}) {
+					dpos = &f.PosOff
+				}
+				out = append(out, debugNoxScript{
+					Ind:     i,
+					Name:    f.Name(),
+					Args:    f.Args(),
+					Locals:  f.Locals(),
+					Returns: f.Return,
+					Suff:    f.NamePref,
+					DPos:    dpos,
+				})
 			}
-			out = append(out, debugNoxScript{
-				Ind:     i,
-				Name:    f.Name(),
-				Args:    f.Args(),
-				Locals:  f.Locals(),
-				Returns: f.Return,
-				Suff:    f.NamePref,
-				DPos:    dpos,
-			})
-		}
-		writeJSONResp(w, out)
+			return out
+		})
 	})
 }

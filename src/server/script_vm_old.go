@@ -1291,6 +1291,9 @@ func (s *NoxScriptVM) ReadScript(r io.Reader) error {
 		if len(fnc.Name) >= 1024 {
 			return fmt.Errorf("function name too long: %d", len(fnc.Name))
 		}
+		if suffix, offset, complete := scriptFunctionQualifier505360(fnc.Name); complete {
+			cur.NamePref, cur.PosOff = suffix, offset
+		}
 		if fnc.VarsSz != 0 {
 			cur.Values = make([]uint32, fnc.VarsSz)
 		}

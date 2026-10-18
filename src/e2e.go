@@ -9583,6 +9583,9 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ClickChapterBriefing(l.Name)
+		case "interact-named-npc":
+			sc.Wait(dt, "")
+			sc.InteractNamedNPC(l.Item, image.Pt(l.X, l.Y), l.Name)
 		case "click-npc-dialog-done":
 			if dt != 0 {
 				sc.Wait(dt, "")

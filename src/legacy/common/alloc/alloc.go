@@ -91,6 +91,21 @@ func Calloc(num int, size uintptr) (unsafe.Pointer, func()) {
 	}
 }
 
+// AdoptCAllocation transfers an existing C-heap allocation to this allocator's
+// ownership. The caller must stop releasing it directly with C.free. Repeated
+// adoption of the same allocation is harmless only when its size agrees.
+func AdoptCAllocation(ptr unsafe.Pointer, size uintptr) {
+	if ptr == nil || size == 0 {
+		panic("invalid C allocation")
+	}
+	allocMu.Lock()
+	defer allocMu.Unlock()
+	if old, ok := allocs[ptr]; ok && old != size {
+		panic("conflicting C allocation size")
+	}
+	allocs[ptr] = size
+}
+
 func FreePtr(ptr unsafe.Pointer) {
 	allocMu.Lock()
 	_, ok := allocs[ptr]

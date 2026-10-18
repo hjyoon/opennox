@@ -428,6 +428,12 @@ func (s *Server) Nox_xxx_waypoint_5799C0() {
 	var next *Waypoint
 	for it := s.WPs.Pending; it != nil; it = next {
 		next = it.WpNext
+		if it.Flags&0x1000000 != 0 {
+			// Prefab waypoints originate in C's sub_579E70. Once published,
+			// the temporary list retains only its container and this list
+			// owns the payload until waypointDeleteAll calls alloc.Free.
+			alloc.AdoptCAllocation(unsafe.Pointer(it), unsafe.Sizeof(*it))
+		}
 		it.WpNext = s.WPs.List
 		if s.WPs.List != nil {
 			s.WPs.List.WpPrev = it

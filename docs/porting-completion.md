@@ -21,6 +21,75 @@ completion requirements.
 
 ## Current findings
 
+R317 corrects the native qualifier metadata used by compiled prefab functions.
+The pinned `asm` reader assigned both coordinates to X and left Y zero. The
+live server now decodes the ordinal suffix and two signed 32-bit coordinates
+from the original CRT contract, preserving the full function name. Static
+GAME.EXE instructions and independently read PE bytes establish delimiter
+skipping, string ordinals, decimal prefixes, wrapping arithmetic and separate
+builtin coordinate delivery. Incomplete malformed qualifiers retain the
+upstream fallback; no safe original result is invented for `atoi(NULL)`.
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 82,048 | 49 | 0 |
+| Highres | 82,048 | 49 | 0 |
+| Server | 77,220 | 7 | 0 |
+| Server, highres | 77,220 | 7 | 0 |
+
+All R316 terminal outcomes and multiplicities remain, with 29 new passing
+events per configuration. All 6,627 frozen source/test/module inputs remain
+unchanged. The 24-event real SCRIPT03/builtin focus changes from 19 FAIL and
+5 PASS before the correction to 24 PASS after it, including race, checkptr2
+and actual cgocheck2. The integrated lifetime/input/qualifier union passes
+78 events normally and under those strict checks.
+
+The registered legacy-script HTTP route now traverses and encodes all borrowed
+function and value storage on the game loop. Additive tests cover cancellation,
+retirement before HTTP output, and byte-identical empty-VM JSON. Flag, type and
+memmap diagnostics still require separate lifetime review; no global race-free
+claim is made. A bounded named-NPC input action observes a live drawable,
+moves the actual mouse, waits for the existing cursor selection and clicks
+once. It changes no world, camera, script, AI or dialog state. Its moving-target
+and vanished-target tests pass. Clean R317 virtual Warrior progression uses
+that actual input for the guard, QuarterMaster and Gearhart, then obtains the
+RubyKey with HP20 and a natural zero exit. Receipt:
+`ev_8d04a853d45351d7c6d56bfb5ff4e76d6bca499a77b8e87d0a72d90c8669899d`.
+Ordinary normal/highres runs remain in progress at this checkpoint.
+
+Four clean Go 1.26.9 ARM64 products at code
+`53d4af42cf3d77bb3ddbc0f96ff1168acfd7ed86` have zero help exits and matching
+Go/REA architecture, revision, tag and `vcs.modified=false` metadata. The
+original oracle verifies 3,019 code and 665 data ranges, adding five of each
+while retaining every prior record. GAME.EXE was read statically and never run.
+
+A new 671-byte authored AreaMap includes a structurally decoded 183-byte
+SCRIPT03 object. The old clean `62c46ea` server qualifies the named waypoints
+and naturally completes two generations, but saves an empty ScriptObject and
+returns null for the live script list. That zero process exit does not pass
+the script-payload gate. The saved section is exactly `010000000000` and the
+failure is retained for R318 file-path investigation. Receipt:
+`ev_60e18b9935645bbba965c776a53882be22adaf535c1eb834c71d5c3ce44f053b`.
+
+Separately pinned clean `62c46ea` Wizard runs now execute original Wiz01a
+spell pickup/casting, the Urchin encounter, Horvath's automatic introduction
+and reward dialog, and the LesserHeal/potion/journal rewards in both clocks.
+Receipts: `ev_92e57a952506bd88f079813abf89af3a701be1bcf1112251f8f08fdb90875527`
+and `ev_26f5704fdcb311be584163b71833354e74f5d7fac5e5f3c4531382372a946577`.
+End results agree, but exact positions and intermediate HP differ. The stock
+fallback can contribute to the encounter; no all-lightning-hit claim is made.
+The old autosave contains the initial state, so post-reward persistence remains
+a separate actual-menu Save/Load gate being pursued in R318.
+
+All 3,275 pre-existing protected files and all 1,562 personal files
+(571,159,691 bytes) remain unchanged. Existing manual-save PNG comparisons
+remain failing and the two-image proposal is still unapproved. Full three-class
+campaigns/endings, original Windows-peer compatibility, broader audio/UI and
+sustained stability evidence remain open. The weighted estimate stays 79%;
+the 100% goal is active. REA sampling and before/after filesystem limits remain.
+
+### Retained R316 findings
+
 R316 fixes a reproduced generated-waypoint ownership failure and ten further
 world diagnostic operations. A required AreaMap with authored floors, walls,
 linked waypoints and groups saved correctly, then panicked with `incorrect free`

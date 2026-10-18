@@ -335,6 +335,38 @@ product to fit a new expectation. The bounded AreaMap still contains no
 ScriptObject payload and does not establish external original prefab assets,
 every connection combination or a gameplay route through this geometry.
 
+## R317 compiled qualifier metadata and pending script payload
+
+The server's SCRIPT03 consumer now retains a full qualified function name
+while restoring the original suffix and independent signed DX/DY metadata.
+The pinned module reader wrote both numeric tokens into X. Original loader
+`00505360`, CRT tokenizer/decimal parser, default ctype bytes and builtin
+adapter are sealed and independently verified. The suffix keeps the ordinal
+as a string; repeated percent delimiters are skipped, later tokens ignored,
+and signed decimal prefixes wrap at 32 bits. Process locale changes and
+missing tokens reaching original null-pointer paths are outside this model.
+The 24-event focus includes real ReadScript streams, builtin observation/reset,
+and the unchanged 1,024-byte boundary. Before/after evidence is 19 FAIL/5 PASS
+versus 24 PASS, normally and with race/checkptr2/cgocheck2.
+
+The live legacy-script diagnostic now owns its encoded JSON before leaving
+the game loop. Full four-configuration suites preserve all R316 outcomes and
+add 29 passing events each; the strict integrated focus passes 78 events.
+Code `53d4af42cf3d77bb3ddbc0f96ff1168acfd7ed86` has four independently
+inspected clean ARM64 products. The oracle has 3,019 code/665 data records,
+with every old record unchanged and no original execution.
+
+The authored 671-byte AreaMap adds a valid 183-byte SCRIPT03 payload to R316's
+bounded linked geometry. On the old clean `62c46ea` server, both generated
+maps still save ScriptObject version1/size0 and expose no live functions.
+Qualified waypoint names show the payload flag reached placement, but do not
+prove script preservation. Receipt
+`ev_60e18b9935645bbba965c776a53882be22adaf535c1eb834c71d5c3ce44f053b`
+retains the two generations and natural shutdown; the semantic gate fails.
+The empty native current-file buffer is being traced separately in R318.
+The R317 loader correction therefore has focused/native-contract coverage,
+not a passing generated-payload runtime claim.
+
 ## Remaining scope
 
 The retained stock map inventory lacks original external theme/AreaMap inputs.

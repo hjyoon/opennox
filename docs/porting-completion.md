@@ -180,6 +180,18 @@ YAML files retain their hashes; existing expected values and PNGs are unchanged.
 The oracle verifies 3,007 code and 659 data ranges while retaining every
 previous record. These are parent/subtest events, not a coverage denominator.
 
+All four ARM64 products build from clean code commit
+`0eaa6e6d5a606aeace14d06d88697f1e70bdbda8` and return help with exit 0.
+REA and Go agree on Go 1.26.9, Mach-O ARM64, build tags, revision and clean
+status. The clean dedicated server also completes the authored initial
+classic generation/save/load scenario and exits naturally with code 0;
+its map/NXZ bytes match the source-bound development run. Receipt:
+`ev_f18e248ce22c30ceb14f10a0d408ee43250cc281bc5f764c4bcb0d6634a3e5af`.
+The ordinary audio soak and two broader generator variants retain their
+separate development-artifact identities. Source, suite, build and runtime
+records are retained under `tmp/opennox-resume-r313-20261018` in the local
+workspace. Subsequent changes in this checkpoint are documentation only.
+
 ## R313 input, audio ownership and ordinary-clock checkpoint
 
 The weighted maturity estimate remains **79%**. The following controlled

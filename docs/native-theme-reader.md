@@ -145,10 +145,18 @@ NXZ decoder also reconstructs all 2,440 bytes of the initial map exactly from
 its compressed file. The read-only decoder receipt is
 `ev_f72202b5b42afb1817bc38a894f62a9a3fd404352dd4b9839878c0c38497a9cb`.
 
-This is an end-to-end controlled generation/save/load result. It is a
-source-bound development artifact, not a claim that a subsequently built
-clean release binary ran this scenario. The earlier exact-current abort and
-private diagnostic trace remain retained as the negative controls.
+The three initial runs use a source-bound development artifact. A subsequent
+clean server product at code commit
+`0eaa6e6d5a606aeace14d06d88697f1e70bdbda8`, SHA-256
+`eaac8153ab2740b4ca92d65db9dcd54adf1a6c592055ff9e977c19707d953780`,
+also completes the initial generation/save/load scenario and exits naturally
+with code 0. Its generated map and NXZ bytes exactly match the initial run.
+REA receipt:
+`ev_f18e248ce22c30ceb14f10a0d408ee43250cc281bc5f764c4bcb0d6634a3e5af`.
+The two broader scenarios remain separately identified development runs.
+The earlier exact-current abort and private diagnostic trace remain retained
+as the negative controls. Captures retain sampled process/environment limits;
+they do not supply an atomic OS image binding or complete process trace.
 
 ## Remaining scope
 

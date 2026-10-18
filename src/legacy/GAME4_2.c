@@ -514,7 +514,8 @@ int nox_xxx_mapSaveMap_51E010(char* a1, int a2) {
 	v8[strlen(v8)-4] = 0;
 	v2 = &v8[strlen(v8) + 1];
 	v3 = getMemByte(0x587000, 253116);
-	*(uint32_t*)--v2 = *getMemU32Ptr(0x587000, 253112);
+	uint32_t suffix = *getMemU32Ptr(0x587000, 253112);
+	memcpy(--v2, &suffix, sizeof(suffix));
 	v2[4] = v3;
 	result = nox_xxx_cryptOpen_426910(Mem, 0, 19);
 	if (result) {
@@ -523,7 +524,7 @@ int nox_xxx_mapSaveMap_51E010(char* a1, int a2) {
 		if (nox_xxx_map_51E140()) {
 			sub_4268F0(v5);
 			nox_xxx_cryptClose_4269F0();
-			if (!a2 || (result = nox_xxx_nxzCompressFile_57BDD0(Mem, (int)v8)) != 0) {
+			if (!a2 || (result = nox_xxx_nxzCompressFile_57BDD0(Mem, v8)) != 0) {
 				result = 1;
 			}
 		} else {
@@ -756,7 +757,7 @@ int sub_51E630(FILE* a1) {
 //----- (0051E670) --------------------------------------------------------
 int sub_51E670(FILE* a1) {
 	int result; // eax
-	int v2;     // [esp+4h] [ebp-4h]
+	uint32_t v2; // [esp+4h] [ebp-4h]
 
 	if (nox_strcmpi("IF", (const char*)getMemAt(0x5D4594, 2487264))) {
 		if (nox_strcmpi("ELSE", (const char*)getMemAt(0x5D4594, 2487264))) {
@@ -771,7 +772,7 @@ int sub_51E670(FILE* a1) {
 		}
 		return nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264)) != 0;
 	}
-	result = sub_51E800((int)a1, &v2);
+	result = nox_mapgenReadConditionNative_51E800(a1, &v2);
 	if (result) {
 		if (v2) {
 			return nox_xxx_mapGenReadLine_51E540(a1, getMemAt(0x5D4594, 2487264)) != 0;
@@ -822,20 +823,21 @@ int sub_51E780(FILE* a1) {
 }
 
 //----- (0051E800) --------------------------------------------------------
-int sub_51E800(int a1, uint32_t* a2) {
+int nox_mapgenReadConditionNative_51E800(FILE* file, uint32_t* a2) {
 	FILE* v2;     // edi
 	uint32_t* v3; // esi
-	char* v4;     // eax
+	nox_playerInfo* v4; // eax
 	int result;   // eax
-	char* v6;     // eax
-	char* v7;     // eax
+	nox_playerInfo* v6; // eax
+	nox_playerInfo* v7; // eax
 	int v8;       // eax
 	int v9;       // esi
 	int v10;      // eax
 	int v11;      // esi
+	uint32_t comparison;
 
-	v2 = (FILE*)a1;
-	if (!nox_xxx_mapGenReadLine_51E540((FILE*)a1, getMemAt(0x5D4594, 2487264))) {
+	v2 = file;
+	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
 		return 0;
 	}
 	if (!nox_strcmpi("WIZARD", (const char*)getMemAt(0x5D4594, 2487264))) {
@@ -843,8 +845,8 @@ int sub_51E800(int a1, uint32_t* a2) {
 		*a2 = 0;
 		v4 = nox_common_playerInfoGetFirst_416EA0();
 		if (v4) {
-			while (v4[2251] != 1) {
-				v4 = nox_common_playerInfoGetNext_416EE0((int)v4);
+			while (v4->info.playerClass != 1) {
+				v4 = nox_common_playerInfoGetNext_416EE0(v4);
 				if (!v4) {
 					return 1;
 				}
@@ -859,8 +861,8 @@ int sub_51E800(int a1, uint32_t* a2) {
 		*a2 = 0;
 		v6 = nox_common_playerInfoGetFirst_416EA0();
 		if (v6) {
-			while (v6[2251] != 2) {
-				v6 = nox_common_playerInfoGetNext_416EE0((int)v6);
+			while (v6->info.playerClass != 2) {
+				v6 = nox_common_playerInfoGetNext_416EE0(v6);
 				if (!v6) {
 					return 1;
 				}
@@ -875,8 +877,8 @@ int sub_51E800(int a1, uint32_t* a2) {
 		*a2 = 0;
 		v7 = nox_common_playerInfoGetFirst_416EA0();
 		if (v7) {
-			while (v7[2251]) {
-				v7 = nox_common_playerInfoGetNext_416EE0((int)v7);
+			while (v7->info.playerClass) {
+				v7 = nox_common_playerInfoGetNext_416EE0(v7);
 				if (!v7) {
 					return 1;
 				}
@@ -887,9 +889,9 @@ int sub_51E800(int a1, uint32_t* a2) {
 		return 1;
 	}
 	if (!nox_strcmpi("EXPERIENCE_LEVEL", (const char*)getMemAt(0x5D4594, 2487264))) {
-		if (sub_51EAF0((int)v2, &a1) && nox_xxx_mapGenReadLine_51E540(v2, getMemAt(0x5D4594, 2487264))) {
+		if (nox_mapgenReadComparisonNative_51EAF0(v2, &comparison) && nox_xxx_mapGenReadLine_51E540(v2, getMemAt(0x5D4594, 2487264))) {
 			v8 = atoi((const char*)getMemAt(0x5D4594, 2487264));
-			switch (a1) {
+			switch (comparison) {
 			case 0:
 				*a2 = v8 > 3;
 				result = 1;
@@ -922,11 +924,11 @@ int sub_51E800(int a1, uint32_t* a2) {
 		return 0;
 	}
 	v9 = nox_common_playerInfoCount_416F40();
-	if (!sub_51EAF0((int)v2, &a1) || !nox_xxx_mapGenReadLine_51E540(v2, getMemAt(0x5D4594, 2487264))) {
+	if (!nox_mapgenReadComparisonNative_51EAF0(v2, &comparison) || !nox_xxx_mapGenReadLine_51E540(v2, getMemAt(0x5D4594, 2487264))) {
 		return 0;
 	}
 	v10 = atoi((const char*)getMemAt(0x5D4594, 2487264));
-	switch (a1) {
+	switch (comparison) {
 	case 0:
 		*a2 = v9 < v10;
 		result = 1;
@@ -949,11 +951,15 @@ int sub_51E800(int a1, uint32_t* a2) {
 	return result;
 }
 
+int sub_51E800(int a1, uint32_t* a2) {
+	return nox_mapgenReadConditionNative_51E800((FILE*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
+}
+
 //----- (0051EAF0) --------------------------------------------------------
-int sub_51EAF0(int a1, uint32_t* a2) {
+int nox_mapgenReadComparisonNative_51EAF0(FILE* file, uint32_t* a2) {
 	int result; // eax
 
-	if (!nox_xxx_mapGenReadLine_51E540((FILE*)a1, getMemAt(0x5D4594, 2487264))) {
+	if (!nox_xxx_mapGenReadLine_51E540(file, getMemAt(0x5D4594, 2487264))) {
 		return 0;
 	}
 	if (!nox_strcmpi("<", (const char*)getMemAt(0x5D4594, 2487264))) {
@@ -975,6 +981,10 @@ int sub_51EAF0(int a1, uint32_t* a2) {
 	result = 1;
 	*a2 = 3;
 	return result;
+}
+
+int sub_51EAF0(int a1, uint32_t* a2) {
+	return nox_mapgenReadComparisonNative_51EAF0((FILE*)nox_mapgenLegacyPtrResolve((uint32_t)a1), a2);
 }
 
 //----- (0051EBB0) --------------------------------------------------------
@@ -2686,12 +2696,22 @@ int sub_5212B0(uint8_t* a1, uint32_t* a2) {
 
 //----- (005213E0) --------------------------------------------------------
 int nox_xxx_mapgenAllocBuffer_5213E0() {
-	dword_5d4594_2487556 = calloc(1, 0x2000u);
-	return dword_5d4594_2487556 != 0;
+	void* buffer = calloc(1, 0x2000u);
+	dword_5d4594_2487556 = nox_mapgenLegacyPtrRegister(buffer);
+	if (!dword_5d4594_2487556) {
+		free(buffer);
+		return 0;
+	}
+	return 1;
 }
 
 //----- (00521400) --------------------------------------------------------
-void nox_xxx_mapgenFreeBuffer_521400() { free(*(void**)&dword_5d4594_2487556); }
+void nox_xxx_mapgenFreeBuffer_521400() {
+	void* buffer = nox_mapgenLegacyPtrResolve(dword_5d4594_2487556);
+	nox_mapgenLegacyPtrForget(buffer);
+	free(buffer);
+	dword_5d4594_2487556 = 0;
+}
 
 //----- (00521710) --------------------------------------------------------
 void* nox_xxx_mapGenGetTopRoom_521710() { return nox_mapgen_room_head; }
@@ -6958,9 +6978,6 @@ float* nox_xxx_mapGenPlaceObj_5279B0(float2* a1) {
 //----- (00527A10) --------------------------------------------------------
 void* nox_objectTypeGetXfer(char* id);
 float* nox_xxx_mapGenMoveObject_527A10(float* a1, float2* a2) {
-	float v3;  // ecx
-	float v4;  // eax
-	int v5;    // ecx
 	char* v6;  // eax
 	float2 v7; // [esp+4h] [ebp-8h]
 
@@ -6970,20 +6987,18 @@ float* nox_xxx_mapGenMoveObject_527A10(float* a1, float2* a2) {
 	if (!a1) {
 		return 0;
 	}
-	v3 = v7.field_4;
-	a1[10] = *(float*)&dword_5d4594_3835392;
-	v4 = v7.field_0;
+	nox_object_t* object = (nox_object_t*)a1;
+	object->extent = dword_5d4594_3835392;
 	++dword_5d4594_3835392;
-	a1[15] = v3;
-	v5 = *((uint32_t*)a1 + 4) | 0x1000000;
-	a1[14] = v4;
-	*((uint32_t*)a1 + 4) = v5;
-	v6 = (char*)nox_xxx_getUnitName_4E39D0((int)a1);
+	object->y = v7.field_4;
+	object->x = v7.field_0;
+	object->obj_flags |= 0x1000000;
+	v6 = nox_xxx_getUnitName_4E39D0(object);
 	if (nox_objectTypeGetXfer(v6) == nox_xxx_XFerDoor_4F4CB0) {
-		a1[14] = (double)(int)(23 * (unsigned long long)(long long)(v7.field_0 * 0.043478262 + 0.5));
-		a1[15] = (double)(int)(23 * (unsigned long long)(long long)(v7.field_4 * 0.043478262 + 0.5));
+		object->x = (double)(int)(23 * (unsigned long long)(long long)(v7.field_0 * 0.043478262 + 0.5));
+		object->y = (double)(int)(23 * (unsigned long long)(long long)(v7.field_4 * 0.043478262 + 0.5));
 	}
-	nox_xxx_createAt_4DAA50((int)a1, 0, a1[14], a1[15]);
+	nox_xxx_createAt_4DAA50(object, NULL, object->x, object->y);
 	nox_xxx_unitClearPendingMB_4DB030();
 	return a1;
 }

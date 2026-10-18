@@ -12,5 +12,7 @@ int nox_mapgenReadThemeNative_51E260(int* theme, const char* name);
 int nox_mapgenReadAlgDataNative_51EBB0(uint8_t* theme, FILE* file);
 int nox_mapgenReadSpellSetNative_51EFB0(uint8_t* theme, FILE* file);
 int nox_mapgenReadExitNative_51F800(uint8_t* theme, FILE* file);
+int nox_mapgenReadConditionNative_51E800(FILE* file, uint32_t* result);
+int nox_mapgenReadComparisonNative_51EAF0(FILE* file, uint32_t* comparison);
 
 #endif // NOX_MAPGEN_THEME_NATIVE_H

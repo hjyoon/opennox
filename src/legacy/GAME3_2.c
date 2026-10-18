@@ -1545,7 +1545,7 @@ int nox_xxx_mapGenStart_4D4320() {
 	char* v2;                    // eax
 	char* v3;                    // eax
 	int result;                  // eax
-	int i;                       // eax
+	nox_object_t* i;                       // eax
 	char* v6;                    // eax
 	char* v7;                    // eax
 	char* v8;                    // [esp-8h] [ebp-C10h]
@@ -1558,7 +1558,7 @@ int nox_xxx_mapGenStart_4D4320() {
 	v0 = 100;
 	nox_xxx_mapSwitchLevel_4D12E0(1);
 	nox_xxx_setGameFlags_40A4D0(0x400000);
-	*getMemU32Ptr(0x5D4594, 1550924) = nox_get_and_zero_server_objects_4DA3C0();
+	setMemPtr(0x5D4594, 1550924, nox_get_and_zero_server_objects_4DA3C0());
 	memset(getMemAt(0x973F18, 2408), 0, 0x5B8u);
 	while (1) {
 		v1 = nox_xxx_mapGenStep_4D44E0();
@@ -1579,7 +1579,7 @@ int nox_xxx_mapGenStart_4D4320() {
 	if (nox_fs_access(FileName, 0) == -1 || (result = nox_fs_remove(FileName))) {
 		if (nox_fs_access(ExistingFileName, 0) == -1 || (result = nox_fs_move(ExistingFileName, FileName))) {
 			for (i = nox_server_getFirstObject_4DA790(); i; i = nox_server_getNextObject_4DA7A0(i)) {
-				*(uint32_t*)(i + 44) = 0;
+				i->script_id = 0;
 			}
 			nox_xxx_mapGenMakeInfo_4D5DB0(getMemAt(0x973F18, 2408));
 			v9 = nox_xxx_getRandMapName_4D4310();
@@ -1594,8 +1594,8 @@ int nox_xxx_mapGenStart_4D4320() {
 				return 0;
 			}
 			nox_xxx_mapSwitchLevel_4D12E0(1);
-			nox_set_server_objects_4DA3E0(*getMemIntPtr(0x5D4594, 1550924));
-			*getMemU32Ptr(0x5D4594, 1550924) = 0;
+			nox_set_server_objects_4DA3E0((nox_object_t*)getMemPtr(0x5D4594, 1550924));
+			setMemPtr(0x5D4594, 1550924, NULL);
 			nox_common_gameFlags_unset_40A540(0x400000);
 			result = 1;
 		}

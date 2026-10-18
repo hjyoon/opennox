@@ -66,17 +66,97 @@ NOX_E2E_SEAT=headless ./scripts/go.sh -C src test ./legacy \
   -run '^TestMapgenThemeNative.*R310$' -count=1
 ```
 
+## R311 conditional and generation boundaries
+
+Conditional dispatch now passes the actual encrypted `FILE*` to native
+condition and comparison readers. Class selection follows native player
+links and `info.playerClass`; it no longer reads the PE32 class offset from
+an ARM64 player. The integer entries remain adapters for registered legacy
+tokens. Original comparison order, the fixed experience-level rule,
+percentage RNG, partial output and IF/ELSE/ENDIF recursion are retained.
+The ordinary `#name.map` entry also extracts the theme from the requested
+map name, rather than slicing the unrelated installation directory string.
+
+`TestMapgenConditionNativeEncryptedR311` exercises 270 cases using actual
+encrypted binfiles and native player slots. These include all three classes,
+inactive players, player counts, experience comparisons, percentage endpoints,
+invalid operators, premature EOF, nested conditionals and complete conditional
+themes. Native file/player addresses exceed `UINT32_MAX` on ARM64, and legacy
+entry cases force high-bit tokens. Output guards, player bytes and file closure
+are checked. This runs in an isolated child so parser and RNG state do not
+change existing tests.
+
+The generator entry also retains its detached server-object list through
+native side slots and clears typed `script_id` fields. Object placement uses
+native object fields and pointers for coordinates, flags and creation. Map
+saving passes its native compression destination directly and copies the
+four-byte extension with `memcpy`, avoiding an unaligned integer store.
+`TestMapgenEntryNativeObjectList` exercises empty and populated lists;
+`TestMapgenSaveMoveNativeR311` exercises 48 save and 18 placement cases.
+Each complete production body runs with O0, O2 and ASan+UBSan, preserving the
+original bounded path inputs, call order, failure branches and untouched bytes.
+
+The R313 full-generation probe then exposed a separate cleanup defect: the
+8,192-byte work buffer was truncated into a four-byte global, and cleanup read
+eight bytes across that global and its neighbor before freeing the result.
+Allocation now registers the native pointer in the existing mapgen registry;
+cleanup resolves and forgets that token, frees its allocation and clears the
+four-byte slot. Registration failure releases the new allocation. The complete
+source audit found only these allocation/free consumers and the unchanged
+four-byte variable metadata. `TestMapgenBufferNativeR313` uses the actual
+registry with both allocator failures, native addresses above `UINT32_MAX`,
+adjacent guards, 12 repeated lifetimes and repeated cleanup. The extracted
+baseline fails its pointer-identity contract in all three compiler modes;
+the corrected bodies pass O0, O2 and ASan+UBSan.
+
+REA/Ghidra records and independent PE reads cover seven further complete
+original bodies: condition dispatch (164 bytes), condition evaluation (714),
+comparison parsing (177), generation entry (433), generation step (688), map
+save (298) and object placement (240). The last body spans two new disjoint
+ranges and the preserved six-byte Door callback comparison. Every previous
+oracle record is unchanged; the combined oracle verifies 3,007 code and 659
+data ranges. Whole-body byte coverage does not imply complete runtime coverage.
+
+## R313 controlled generation, save and load
+
+A dedicated ARM64 product built from the same 6,611 compiled-source,
+test and module files as the integrated tree completes the ordinary-clock
+`#probeclassic` path. An authored encrypted theme selects a fixed seed, one
+room, no recursive halls, no prefabs and no campaign exits; its valid empty
+`AreaMap.lib` index and stock wall/floor names are explicit inputs. All runtime
+files live in a separate owned data copy, with audio disabled.
+
+The API observes `so_beach` -> `#probeclassic` -> `$probeclassic`. Generation
+writes a 2,440-byte map and a 2,516-byte NXZ file, then the normal loader reads
+its 16 named sections and final terminator, including WallMap, FloorMap and
+ObjectData.
+The dedicated process exits naturally with code 0 after its ordinary quit
+command; capture cleanup verifies the owned process group and removes its
+temporary root without termination. REA receipt:
+`ev_1cc469a2f530e147544dd7a01ef9f9f832708768932a87d204115eb2f088bcff`.
+
+The same immutable product also generates and loads a `NONE` skeleton with
+recursion limit 3 and a `HALL_RING` skeleton with recursion limit 1. Their
+saved maps have 22 walls/58 floor halves and 258 walls/960 floor halves,
+respectively, compared with the initial map's 16 walls/49 floor halves.
+These counts come from the actual saved-map parser; transient room counts
+were not instrumented. Both processes exit naturally with code 0. The actual
+NXZ decoder also reconstructs all 2,440 bytes of the initial map exactly from
+its compressed file. The read-only decoder receipt is
+`ev_f72202b5b42afb1817bc38a894f62a9a3fd404352dd4b9839878c0c38497a9cb`.
+
+This is an end-to-end controlled generation/save/load result. It is a
+source-bound development artifact, not a claim that a subsequently built
+clean release binary ran this scenario. The earlier exact-current abort and
+private diagnostic trace remain retained as the negative controls.
+
 ## Remaining scope
 
-The encrypted integration uses themes without conditional expressions.
-`sub_51E670`, `sub_51E800` and `sub_51EAF0` still transport file handles
-through integers; class conditions also use legacy player pointers and
-offsets. Those paths require separate native conversion and original
-comparison. The retained stock map inventory lacks the external
-theme/AreaMap inputs required for a complete classic generation run.
+The retained stock map inventory lacks original external theme/AreaMap inputs.
+Broader room, recursive-hall, prefab, exit and conditional-theme combinations
+remain outside the three fixed-seed authored generation runs.
 Arbitrary-length tokens and out-of-capacity records are outside the
-bounded evidence above. Full generation and remaining callback/layout
-classification are unfinished.
+bounded evidence above. Remaining callback/layout classification is unfinished.
 
 All 3,249 pre-existing tests, fixtures and YAML files retain their hashes,
 as do 1,562 personal installation files totaling 571,159,691 bytes. The

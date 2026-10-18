@@ -819,7 +819,7 @@ func (s *Server) nox_server_loadMapFile_4CF5F0(mname string, noCrypt bool) error
 		legacy.Sub_4D39F0(v3)
 		v13 := mname[1:]
 		if i := strings.IndexByte(mname, '.'); i > 0 {
-			v13 = v3[:i]
+			v13 = mname[1:i]
 		}
 		legacy.Sub_4D42E0(v13)
 		v12 := fmt.Sprintf("$%s.map", v13)

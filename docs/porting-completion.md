@@ -21,6 +21,72 @@ completion requirements.
 
 ## Current findings
 
+R316 fixes a reproduced generated-waypoint ownership failure and ten further
+world diagnostic operations. A required AreaMap with authored floors, walls,
+linked waypoints and groups saved correctly, then panicked with `incorrect free`
+during map teardown. Its C allocations now transfer into the tracked allocator
+when generated waypoints become world-owned. The same 464-byte library and
+encrypted theme pass generation, saving, loading, an intervening stock map,
+fixed-seed repetition and natural shutdown on the clean corrected server.
+The entire generated MAP is byte-identical to the artifact saved before the
+old teardown failure. The exact scope is in
+[native-theme-reader.md](native-theme-reader.md#r316-authored-geometry-and-waypoint-ownership).
+
+All 6,622 frozen source/test/module inputs remain fixed through four integrated
+configurations. Every R315 outcome and multiplicity is retained, with 43 new
+passing parent/subtest events in each configuration:
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 82,019 | 49 | 0 |
+| Highres | 82,019 | 49 | 0 |
+| Server | 77,191 | 7 | 0 |
+| Server, highres | 77,191 | 7 | 0 |
+
+The combined 49-event focus passes with race detection, checkptr level 2 and
+actual `GOEXPERIMENT=cgocheck2`. Real registered HTTP routes test cancellation,
+ordered/atomic object flags, unchanged 302/400 responses, and original JSON bytes
+after borrowed native values have been retired. Object lookup and collections,
+map indexes, teams, players, walls, waypoints and drawables now finish traversal
+and encoding on the main loop. Script/flag/type/memmap diagnostics remain outside
+this repair; no global race-freedom claim is made. The new server also answers
+nine affected diagnostic variants after each of two generated-map loads.
+
+Four clean Go 1.26.9 ARM64 products at code
+`62c46ea5e21f59a80bae57ed3b68541311b0f465` have zero help exits and matching
+Go/REA architecture, revision, tag and `vcs.modified=false` metadata. The oracle
+still verifies all 3,014 code and 660 data ranges; no original record changed
+and original GAME.EXE was never executed.
+
+Separately pinned clean `0666df6` normal products extend Wiz06a's actual input
+route. The stock Invisibility reward/cast is followed by walking into the
+unlocked guardhouse, clicking its SilverKey, and returning by original
+113→114→115→116→117 links. The locked Gate consumes the key and the player
+reaches city waypoint120 at `(2914.665,3845.857)` with HP20. The exact same input
+passes in virtual and ordinary clocks with natural zero exits. Receipts:
+`ev_f01b10016ff40a4fda6a52acd26069584a14907bdc0a237cf5fe8cbf4e8019c2`
+and `ev_f1cdfce91c15ff3b12d08fd68a9b3e7a46d7ecee2d11967d4941ed90e1f72ea4`.
+The next stock gate requires GoldKey, held by Guard1 in both decoded original
+inventory and a live snapshot. Two staff-input attempts prove no hit, defeat
+or loot. Wiz06b, completed objectives, post-key persistence and endings remain
+unverified. Deaths and wrong-click/return assertions remain negative evidence.
+
+Latest normal/highres `0666df6` manual-save runs still fail both unchanged PNG
+comparisons: 943 live-load pixels and 889 fresh-load pixels. Each actual PNG
+is byte-identical to R308. All four runs pass the observed save/overwrite/state
+restoration and movement checks. The separate provided Host Load passes real
+Load and movement in virtual and ordinary time, but a persistent transparency
+defect is not causally established. No rendering implementation or expected
+image was changed, and the prepared two-image proposal remains unapproved.
+
+All 3,271 pre-existing protected files and all 1,562 personal files
+(571,159,691 bytes) remain unchanged. Owned R316 process groups are verified
+quiescent and their selected file hashes are rechecked. REA process sampling,
+before/after filesystem observations and environment/image-binding limitations
+remain. The weighted maturity estimate remains 79%; the full 100% goal is active.
+
+### Retained R315 findings
+
 R315 restores the original CRT stream at the two legacy C ABI shims. The
 previous unrestricted Go random values put required prefab rooms outside the
 map. The same authored south-marker AreaMap/theme now completes generation,

@@ -279,6 +279,62 @@ no instruction-level collision trace was captured. Receipts, in N/S/E/W order:
 This is four particular authored solo-host routes, not every product/direction
 pair, independent-peer handoff or completed campaign route.
 
+## R316 authored geometry and waypoint ownership
+
+The required south-connected AreaMap now also contains four authored floor
+halves, two walls, two mutually linked named waypoints and two groups. The old
+clean `0666df6` server generates and saves it, then panics in
+`Nox_xxx_waypointDeleteAll_579DD0`: generated waypoint payloads were allocated
+by C's `sub_579E70`, while teardown used tracked Go `alloc.Free` without an
+ownership transfer. The existing temporary-list tests cover C cleanup and
+retained payloads, but did not cover publication followed by world teardown.
+Original failing receipt:
+`ev_f7faa9f28cc29336d81923090eca424012b412e333ae999d1415e895fabf0c62`.
+
+Generated pending waypoints are now adopted by the tracked C-heap allocator
+when they enter the world's main list. Their pointers, indices, positions,
+links and flags remain intact. Adoption validates non-null pointers and
+nonzero sizes, allows same-size repeated ownership registration, and rejects
+conflicting sizes without losing the previous owner. A native regression using
+the actual C allocator fails with the old `incorrect free`, then passes after
+the fix. Mixed ordinary/generated lifetimes, repeated empty teardown, adoption
+boundaries and the unchanged temporary-list contract pass. This eight-event
+focus passes normally and with race/checkptr/cgocheck2; the integrated union
+with diagnostic-route checks passes 49 events.
+
+Clean code `62c46ea5e21f59a80bae57ed3b68541311b0f465`, dedicated SHA-256
+`07931f1a00c4e25d105d0937b976c68f5b00dac935ea68df2de12fc315267bfd`,
+passes the same 464-byte library and encrypted theme in ordinary time. Two
+generations, saves and loads separated by a real stock map repeat identical
+MAP/NXZ bytes and exit naturally with code 0. Runtime receipt:
+`ev_cf056f97b3d6593309b2c2719dab7d192adfca69f1076ab7fd7a3dff2503e3c1`.
+The MAP is byte-identical to the old run's saved artifact; this correction
+changes ownership rather than rewriting the successful saved geometry.
+
+Independent raw section parsing consumes every byte and finds 16 sections,
+85 floor halves, 20 walls, five waypoints and two groups. The four added floor
+images are 9/60/61/59 at the translated cells, and the added material40 walls
+are at `(125,113)` and `(127,113)`. `ProbeWP_A` at `(2921,2657)` and
+`ProbeWP_B` at `(2951,2657)` retain mutual link IDs/mask2; `ProbeWaypoints%0`
+and `ProbeWalls%0` contain the corresponding translated identities/coordinates.
+The post-load API agrees on both named waypoint positions. Saved enabled
+flags1 become live flags3 through the existing grid registration's bit2;
+live connection masks remain2. The waypoint API does not expose link targets,
+so link/group identity claims come from the decoded saved sections.
+
+The saved PlayerStart/Exit1 coordinates agree with both loaded object snapshots,
+the connection marker is absent and the exact `so_beach.map` destination remains.
+Native `cnxz` reconstructs all 3,040 MAP bytes from the 3,146-byte NXZ without
+changing either input. The MAP SHA-256 is
+`140be75399e8ba2a6cd859022d0382c9349e0e1286960283fb47561f3a6aa21a`.
+Final decoder/loaded-state receipt:
+`ev_6b991bba9922a9b7fb674f2b1c3e86f705554f93be0b255ef459595b8d4517a0`.
+Two observer assumption failures (JSON coordinate case and the existing
+load-time registration flag) are retained separately; neither changed the
+product to fit a new expectation. The bounded AreaMap still contains no
+ScriptObject payload and does not establish external original prefab assets,
+every connection combination or a gameplay route through this geometry.
+
 ## Remaining scope
 
 The retained stock map inventory lacks original external theme/AreaMap inputs.
@@ -287,7 +343,7 @@ combinations remain outside the bounded authored variants above.
 Arbitrary-length tokens and out-of-capacity records are outside the
 bounded evidence above. Remaining callback/layout classification is unfinished.
 
-All 3,270 pre-existing protected tests, fixtures and YAML files retain their
+All 3,271 pre-existing protected tests, fixtures and YAML files retain their
 hashes in the independently recovered workspace repository. All 1,562 personal
 installation files totaling 571,159,691 bytes remain unchanged. The existing
 manual-save PNG comparisons remain failed pending their separate

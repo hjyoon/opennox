@@ -9635,6 +9635,12 @@ func (sc *e2eScenario) Load(path string) {
 			sc.WalkEnd()
 		case "run":
 			sc.RunFor(l.Ang, dt, l.Name)
+		case "run-to-world":
+			sc.Wait(dt, "")
+			sc.MoveToWorld(image.Pt(l.X, l.Y), false, l.Name)
+		case "walk-to-world":
+			sc.Wait(dt, "")
+			sc.MoveToWorld(image.Pt(l.X, l.Y), true, l.Name)
 		case "run-start":
 			sc.RunStart(l.Ang, dt, l.Name)
 		case "run-dir":

@@ -21,6 +21,70 @@ completion requirements.
 
 ## Current findings
 
+R331 reaches the first original mine worker through the stock elevator,
+learned Charm, controlled-creature combat and original door/recognition
+triggers. No source change is required. A fresh process first Loads the spent
+GoldKey Save with one SapphireKey, gold 513 and Charm9. Actual road movement and
+the original lower button activate elevator1. The native Use cursor requires
+less than 75 world units; attempts from the centered boarding position are
+outside that range. Approaching and using the button before boarding works.
+Pure game-loop observations show original lower-to-upper transport and the
+return trip. Waiting 24 ticks and actually leaving the upper platform writes
+living health 20 Saves in virtual normal and ordinary normal/highres. Both
+ordinary cases start from the prior virtual mine-door Save.
+
+A rushed upper-road diagnostic reaches six goals and then records PlayerDeath;
+it has no new Save and is never a continuation seed. Ranged Charm instead
+controls original SmallAlbinoSpider5685. Retreating before the channel finishes
+cancels an earlier cast for exceeding the original range. That attempt still
+writes a living Save, but no controlled creature is credited to it. Holding
+range through the channel succeeds and produces a new living health 20 Save.
+A new process Loads the same live owned spider with MIGRATE; MONITOR clears
+after Load. Actual Charm on original Imp5485 then succeeds while holding range,
+and both live pets are retained in another health 20 Save.
+
+The actual all-creature Hunt command makes the pets roam away; its no-Save
+diagnostic ends alive at health 6 without clearing the enemies. The original
+Escort menu entry instead keeps both pets nearby. Both small enemy spiders
+are observed DEAD while player health remains 20. Continuing the original road
+lets the pets defeat the adult AlbinoSpider and writes a living health 18,
+poison 0 Save. No order, AI, ownership, team or health setter is involved.
+
+From that virtual road Save, actual movement defeats the original Bat,
+consumes SapphireKey at InitialDoor and crosses Worker1Rec. The stock script
+prints first worker rescued/five remaining, awards 250 XP and opens Alex's
+dialogue. Clicking the real Done control grants RubyKey2582. Alex then enables
+the next lift and reaches the original waiting point. This complete
+road/door/recognition/Done/Save segment also passes ordinary normal/highres;
+all three start from the same prior virtual road Save. Native manual Saves
+record health 17/16/17 respectively, poison 0, gold 513, mana 70 and XP 2976.649.
+The rescue journal remains active; the worker return count is 0. Five more
+workers, return conditions, later objectives and endings remain unfinished.
+
+All 20 captures finish: 18 exit0 and 2 bounded negative exit2, including the
+retained rushed-road death. Ten new living manual Saves independently pass
+native health/current owned Path/Map/changed SHA/archived-map checks. There
+are 74 observed arrival gates. Every owned group verifies and quiesces, with no
+forced termination, capture timeout or truncation. Eight intentional no-Save
+diagnostics remain separate from saved checkpoints. Missing optional final
+reads establish no completion. Script global symbols use the untouched map's
+variable offsets so array globals are read from the correct native cells.
+
+Code and all four clean ARM64 products remain
+3127d8d938d1bf2e453475b88a74943d96e93b0d. Sealed R329 40 focused/40 strict checks,
+four full suites and matched products are reused while source is unchanged.
+Normal/highres retain 82,090 PASS/49 SKIP each; server/server-highres retain
+77,262 PASS/7 SKIP each, zero FAIL, with every prior terminal identity/action/
+multiplicity preserved. Preservation rehashes 6,641 source inputs, 3,282 protected
+files, 1,562 personal files, cloned stock and every R319 through R330 artifact
+seal. Original camera-name mismatches, lookup/parser warnings, broader input,
+audio, original Windows-peer, native-generator/ABI and stability evidence
+remain open. Full three-class campaigns, Warrior zipper/Horrendous and side
+objectives remain incomplete. Weighted maturity stays 79%; all seven areas
+remain partial.
+
+### Retained R330 findings
+
 R330 continues the original Conjurer story from the earned Mayor reward
 Save. Actual movement through the enabled town-gate triggers starts the
 original Imp scene and brings Aldwyn into the conversation. Actual Done adds

@@ -21,6 +21,78 @@ completion requirements.
 
 ## Current findings
 
+R330 continues the original Conjurer story from the earned Mayor reward
+Save. Actual movement through the enabled town-gate triggers starts the
+original Imp scene and brings Aldwyn into the conversation. Actual Done adds
+LocateMineForeman2 and unlocks the town gates. A new living manual Save
+independently records health 20, poison 0 and gold 513. No NPC, script, camera,
+lock or player-position setter is used.
+
+Actual gate movement then triggers EndMission and the original exit into
+Con03a. The real chapter briefing is dismissed with mouse input and a living
+manual Save is written. This transition passes virtual normal and ordinary
+normal/highres; both ordinary cases start from a prior virtual living Save.
+A fresh process Loads the ordinary-produced Con03a Save with Charm9 and
+gold 513. Approaching Janero before native-cursor Talk makes the conversation
+work, followed by four actual road arrivals and a living Save. A direct Talk
+attempt before approaching remains a bounded negative.
+
+Seven further original road goals reach the town hub, and another nine reach
+the mine entrance. The Millard cursor-selection attempt remains unsuccessful;
+no dialogue or new Save is credited to that case. Actual southwest movement
+into the stock exit instead enters Con03B and produces a living manual Save.
+A new process Loads it and follows the original road to Foreman. Talk and
+Done complete LocateMineForeman4, add Con03RescueMineWorkers2 and give the
+original GoldKey, SapphireKey and Imp field guide. The first attempt leaves
+the automatically opened knowledge book active: Escape closes the book,
+so its subsequent menu clicks never write. Its old byte-identical PLR is
+explicitly rejected as a new reward checkpoint. An additional real Escape
+closes the book before the Save menu and produces a new living Save.
+
+The complete Foreman dialogue, two key checks, book close and manual Save
+also pass ordinary normal/highres from the prior virtual Con03B entry Save.
+All three independent native PLRs record health 20, poison 0, gold 513,
+XP 2443.4712, the completed Foreman objective, the new rescue objective and
+Imp among the six named field guides. Section 8 is read independently using
+the original version 1/presence/count/name format; no guide setter or fixture
+is involved. Older chapter journals are no longer present in these new
+chapter Saves. A fresh Load retains both keys, Charm and the new objectives.
+
+Actual right-mouse movement through the original gold-locked mine doors
+consumes GoldKey from 1 to 0 on both server and client, retains one SapphireKey
+and reaches the far side. A new manual Save records health 20 and gold 513.
+The six workers, later mine objectives and complete story remain unfinished.
+
+All 17 owned captures finish with exit code 0 in 14 cases and exit code 2 in
+3 bounded negative cases.
+Twelve living manual Saves independently pass native health, current owned
+Path, Map, changed SHA and archived-map checks. There are
+69 observed arrival gates. Every owned group verifies and quiesces, with no
+forced termination, capture timeout, truncation or PlayerDeath. The intentional
+no-Save diagnostic and unwritten reward attempt remain separate from the
+living checkpoints. Optional missing final reads establish no completion.
+
+The original Mayor camera warning is further classified from untouched data:
+waypoint 398 is named Con02a.map:RewardLookWP while the original script requests
+MayorRewardLookWP. No waypoint alias or camera correction is invented. New
+chapter lookup warnings and the Millard input negative remain retained;
+progression evidence does not establish full camera or NPC interaction fidelity.
+
+Code and all four clean ARM64 products remain
+3127d8d938d1bf2e453475b88a74943d96e93b0d. The sealed R329 40 focused and 40 strict
+checks, four full suites and independently matched products are reused without
+rerunning unchanged code. Normal/highres retain 82,090 PASS / 49 SKIP each;
+server/server-highres retain 77,262 PASS / 7 SKIP each, with zero FAIL and all
+prior terminal identities/actions/multiplicities preserved. Preservation
+rehashes 6,641 source inputs, 3,282 protected files, 1,562 personal files, cloned
+stock and every R319 through R329 artifact seal. No original GAME.EXE,
+personal write or golden approval occurs. Full three-class campaigns/endings,
+the remaining Warrior gauntlet/Horrendous and broad gameplay/UI/audio/original
+Windows-peer/native-generator/stability evidence remain incomplete. The weighted
+estimate stays 79%; all seven areas remain partial.
+
+### Retained R329 findings
+
 R329 fixes a naturally reached NPC damage branch. An Urchin's original
 ThrowingStone reaches PlayerDamage as a distinct SIMPLE|MISSILE projectile
 with an initialized monster source and IMPACT11 damage. The bounded native

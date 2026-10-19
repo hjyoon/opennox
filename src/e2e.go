@@ -9927,6 +9927,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.ObserveElevatorBoarding(l.Extent, l.Name)
+		case "observe-player-target":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ObservePlayerTarget(l.Name)
 		case "exercise-elevator-round-trip":
 			if dt != 0 {
 				sc.Wait(dt, "")

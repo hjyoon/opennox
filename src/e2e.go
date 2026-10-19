@@ -9596,6 +9596,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "strike-nearest-monster":
 			sc.Wait(dt, "")
 			sc.StrikeNearestMonster(l.Item, image.Pt(l.X, l.Y), l.Name)
+		case "cast-at-nearest-monster-input":
+			sc.Wait(dt, "")
+			sc.CastAtNearestMonsterInput(l.Item, image.Pt(l.X, l.Y), l.Slot, l.Count, l.Name)
 		case "click-npc-dialog-done":
 			if dt != 0 {
 				sc.Wait(dt, "")

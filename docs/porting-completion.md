@@ -21,6 +21,113 @@ completion requirements.
 
 ## Current findings
 
+R323 adds actual mouse targeting of the nearest original unnamed hostile monster
+of an exact requested type. Each frame reads the current world, hostile
+relationship, native line of sight, viewport and drawable. The bounded action
+pins only wire/extent/script-ID values, approaches the ground position and
+requires the exact original native cursor target before one ordinary left
+press/release. Airborne art height affects aiming, while movement still follows
+the ground. Death, disappearance and unavailable drawing remain distinct.
+It invokes no damage, forced selection, script, use-packet or state-setting API.
+The older named-target behavior is retained and passes its actual MasterUrchin
+combat/menu-Save regression.
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 82,075 | 49 | 0 |
+| Highres | 82,075 | 49 | 0 |
+| Server | 77,247 | 7 | 0 |
+| Server, highres | 77,247 | 7 | 0 |
+
+Every R322 terminal identity, action and multiplicity remains, adding three
+passing observation tests per configuration. Eleven combined input tests pass
+normally and with race/checkptr2/actual-cgocheck2. Four clean ARM64 Go1.26.9
+products at `6128598105694a289f5a45cfa6127de878b59081` have matching Go/REA
+revision, tags, architecture and unmodified VCS metadata, with help exit 0.
+
+Forty-eight completed owned game captures produce thirty-four exits 0 and
+fourteen bounded negative exits 2. All owned groups verify and settle quiescent
+without forced termination or truncation. Thirty-three cases have independently
+verified living manual Saves. One exit-0 diagnostic naturally enters Con02a but
+fails its manual-Save goal; process success does not qualify that goal. A prior
+y-8 arena-two prototype stays unexecuted. Two separate preparations reject a
+missing required manual-slot map before starting a game. The first also has a
+failed CLI preflight. All forty-nine fully prepared scenarios pass the real
+Go-AST action dispatcher and reviewed-input verifier. Negative, mixed and
+unexecuted cases are retained, and none becomes a successful new seed.
+
+The Conjurer genuinely defeats three original bats, two lower spiders and two
+urchins through ordinary staff input. Whole-world snapshots independently show
+each original actor alive and subsequently DEAD. Urchin y-8 aiming times out;
+y14 accounts for its original height and permits the native cursor to select
+it. Disappearance-only results are never counted as kills. Original menu Saves
+and later new-process Loads preserve the deaths and progression.
+
+Actual chest collision and a real dropped-key click produce SilverKey
+server1/client1 and a living menu Save. A later original door consumes it,
+observing server0/client0, and menu Save completes alive. Ordinary melee breaks
+the original apple/key barrels. An actual RedApple click raises native health
+from 8 to 13; the consumed food and living Save are verified. Ordinary in-game
+rest also demonstrates natural recovery without a health override.
+
+Actual ExitSwitch native Use changes the original switch enabled-to-disabled
+and ExitElevator disabled-to-enabled, awards its original 100 XP and menu-saves.
+Short platform walking and walking across a full cycle do not prove a ride.
+Walking to the cycling platform center and stopping does: the original physical
+carry reaches its paired shaft at 4015,2749 and menu Save succeeds. New processes
+restore that position and traverse the exit cave. Passive existing script GET
+snapshots observe the original collapse guards; original source variable offsets
+are used when interpreting their values.
+
+The original exit naturally loads Con02a. The first attempt opens the Save flow
+during the transition fade: deferred AUTOSAVE/WORKING files have active map
+con02a, while SAVE0001 remains the previous Con01a byte-for-byte. Two preparation
+guards correctly reject it as a manual Con02a seed. The initial casing-only
+explanation is retained as a rejected hypothesis. A fresh case waits for the
+original fade, performs actual new-map movement and then completes the original
+manual Save. Native FileInfo.Map and the archived map both identify con02a. A
+new process uses the original Solo/row1/Load menu, moves and manually re-saves.
+Both manual saves have HP8/20, XP743.4713 and poison0. The first new-map manual
+save has no journal entries; the resumed/re-saved case has LocateAldwyn2. Full
+Conjurer objectives and campaign completion remain open.
+
+The Warrior crosses all three original crusher segments with actual run/Space
+input, activates the first arena lever and defeats both original spiders. Real
+in-game recovery raises health8 to20. Original cyclic flames remain active after
+Save/Load, and an actual run/Space route crosses that section with HP20. The
+second arena's original lever and both Urchin deaths pass in virtual normal,
+ordinary normal and ordinary highres. Saved XP is2194.678, with health18,15 and14
+respectively. Both ordinary cases start from a previous virtual actual-menu Save;
+this is not an uninterrupted ordinary/highres fresh chapter.
+
+Later unsafe routes and blocked cursor/wall approaches remain negative. The
+unlocked inner gate and correct fire-hall lane eventually pass with HP18 and a
+living menu Save. In the third arena, walking onto the original floor lever
+already disables it and enables all three Urchins. A redundant native-Use wait
+dies and remains negative. A fresh case immediately fights after actual contact:
+all three original named Urchins are DEAD, and the original menu saves HP16/20,
+XP2701.7498, poison0 and War2Gauntlet2. The fourth arena, later gauntlet hazards
+and actual Horrendous completion/War2Gauntlet4 remain unverified.
+
+| R323 receipt | Scope |
+| --- | --- |
+| `ev_043213500a872aec0b5b066bf3be3a6bce7aba89e8d88272ee52fc2f00094b3b` | Original unnamed Urchins DEAD and living manual Save |
+| `ev_7be9484d679f3d48a08254e761ea70ba778dd12a2112fee2d286be89c48e26a8` | Exit-room combat, native ExitSwitch use and living manual Save |
+| `ev_fb16f51baa3e80fb03c4f951356c29a75af80ac950085c278582251cfca8b14e` | Original physical exit lift carry and living manual Save |
+| `ev_c0bdc135ad7d2e1b923a4e421af34028cd69902821dfa1808ffaadc9de323c6f` | Natural Con02a entry, settled fade, movement and verified manual Save |
+| `ev_0aefb7f4ff8772eaffd16d53447dde7f1e141f95285b8467b3d17bdaaea86f7c` | New-process original Con02a manual Load, movement and re-Save |
+| `ev_ead8d402c81d35219911f4fc52024806a016107d096c8178d02e3a28ce4f9275` | Actual floor-lever contact, three original Urchin deaths and living manual Save |
+
+All 6,637 frozen source inputs, 3,281 protected files, 1,562 personal files and
+R319/R320/R320-runtime/R321/R322 artifact seals retain their hashes. Every
+verified manual Player.plr differs from its seed and names its current owned
+case path. No original GAME.EXE execution or existing golden change occurs.
+Full three-class natural campaigns/endings and the broader gameplay, UI/audio,
+original-peer, native-generator and sustained-stability evidence remain open.
+All seven areas remain partial; the estimate stays 79% and 100% is incomplete.
+
+### Retained R322 findings
+
 R322 adds actual mouse use of an original named map object. Each frame resolves
 the current server object, its static/dynamic network code and current client
 drawable. One real left press/release requires both that exact native cursor

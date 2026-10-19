@@ -9403,6 +9403,7 @@ type e2eStepYML struct {
 	Ang      float64       `yaml:"ang,omitempty"`
 	Row      int           `yaml:"row,omitempty"`
 	Slot     int           `yaml:"slot,omitempty"`
+	Extent   uint32        `yaml:"extent,omitempty"`
 	Spell    int           `yaml:"spell,omitempty"`
 	Item     string        `yaml:"item,omitempty"`
 	Creature string        `yaml:"creature,omitempty"`
@@ -9921,6 +9922,11 @@ func (sc *e2eScenario) Load(path string) {
 				sc.Wait(dt, "")
 			}
 			sc.AssertElevatorXferLoaded(l.Name)
+		case "observe-elevator-boarding":
+			if dt != 0 {
+				sc.Wait(dt, "")
+			}
+			sc.ObserveElevatorBoarding(l.Extent, l.Name)
 		case "exercise-elevator-round-trip":
 			if dt != 0 {
 				sc.Wait(dt, "")

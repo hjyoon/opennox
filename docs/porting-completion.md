@@ -21,6 +21,87 @@ completion requirements.
 
 ## Current findings
 
+R333 adds read-only game-loop observations for actual player targeting.
+The new observe-player-target action copies the original mouse position,
+client cursor/drawable, server CursorObj, current weapon, health/poison/mana,
+server/client guide arrays and the real player's active Charm duration target.
+It never runs target selection, changes input, casts a spell, learns a guide
+or writes world/player/spell records. Output retains no object pointers;
+eight copied Charm rows and a bounded1024-record scan prevent an invalid
+duration list from hanging the observer. Nine new regressions cover copied
+values, no mutation, absent records, caster/spell filtering, bounded output,
+cycles, reference retention and the runtime's reader-only calls/assignments.
+
+Both49 focused and49 strict tests pass, including actual cgocheck2, race and
+checkptr=2. All four fresh full suites preserve every prior terminal identity,
+action and multiplicity, with exactly nine new passing events per lane.
+Normal/highres have82099 PASS/49 SKIP each; server/server-highres have77271
+PASS/7 SKIP each, zero FAIL. Clean code commit
+b4732c9c09f51ce8fdb18fd027cf4efdad25f4e2 produces four new Go1.26.9 ARM64
+Mach-O products. Each help exits0 and independent Go/REA metadata agrees on
+revision, tags and unmodified VCS state. All6643 tested source hashes match
+the clean commit. Its97024000-byte full git source archive has7012 members
+independently rehashed. Existing protected tests/goldens remain unchanged.
+
+Fresh original-menu Loads of the living R33221 Naldo Save show matching
+server/client guide IDs7,8,13,24,25,26 and a real equipped StaffWooden pointer.
+The original table names these AlbinoSpider, SmallAlbinoSpider, Imp, Spider,
+SmallSpider and SpittingSpider. Charm level remains1. Poison stays0 in the
+captured native observations. These findings do not establish a guide,
+equipment, max-health or saved-coordinate restoration defect. The weapon
+pointer clears after an observed original player death; that is not a Load
+failure. Native observations distinguish that transition from a living Save.
+
+The first side-room cast receives the original BeastScroll-required response.
+Before that cast, Troll7199 is94.9 units away and adult spider2132 is129.2
+away. The native cursor later actually selects2132. Inserting a second real
+A at that observed point creates a genuine Charm duration record targeting
+original2132/script1000173065, then a living MONITOR/MIGRATE host-child adult
+spider. No object or cursor target is assigned by the harness. This proves
+adult control in the virtual runs. The later room defense/exit attempts still
+record PlayerDeath and are not continuation sources.
+
+The original Hunt menu followed by uninterrupted known room roads escapes
+through the door and reaches985,1425 with player health5 and living Naldo.
+That intentional no-Save diagnostic finishes0; the adult pet has died.
+Its final world observation includes an incoming ImpShot. Moving to1020,1470
+in the next attempt preserves health5 initially, but the following Imp cast
+receives the original no-creature/pointer message. Subsequent damage and
+PlayerDeath reject that branch. No safe Naldo hub return, worker-return
+increment or rescue completion is established.
+
+Ordinary normal and highres each finish their separate approximately51-second
+no-Save target diagnostics0, without PlayerDeath. Their native guide and
+weapon observations pass. The fixed-coordinate second cast does not reproduce
+adult control: both casts receive the original BeastScroll-required response,
+the actual cursor does not select the adult, and no Charm record/pet exists.
+The same saved start does not guarantee identical later NPC positions. These
+negative results are retained rather than credited as ordinary Charm success.
+Future input should follow actual sprite/cursor observations through original
+mouse events, without target setters, instead of relying on this fixed timing.
+
+All10 captures settle:4 exit0 diagnostics and6 bounded negative exit2, with38
+measured physical arrival gates. One branch writes a native health7, poison0
+owned Save but subsequently records PlayerDeath; it is explicitly rejected.
+There are no newly usable living manual Saves. The preferred story source
+remains sealed R33221, health15/poison0/Naldo alive. All groups are verified
+and quiescent, without forced termination, capture timeout or truncation;
+observed unsupported-native-branch counts are0. Preservation rehashes6643
+current source files,3282 prior protected files,1562 personal files, cloned
+stock and every R319 through R332 sealed artifact. The initial comparison
+helper syntax error and an overly broad post-death equipment certificate
+assertion are retained separately from game/test failures and corrected in
+new helper versions; neither caused suite or game reruns.
+
+Full three-class stories/endings, living worker returns and later mine
+objectives, Warrior zipper/Horrendous, side objectives, broader UI/audio,
+original Windows-peer, reachable ABI/native-generator and stability evidence
+remain incomplete. Weighted maturity remains79%, not measured coverage;
+all seven areas remain partial. Original GAME.EXE execution, personal writes,
+golden changes and forced game-state mutation remain absent.
+
+### Retained R332 findings
+
 R332 verifies original elevator2 player transport, Alex's original route
 and dialogue, further native creature combat, and Naldo recognition through
 the original Ruby door. Code and products remain unchanged at

@@ -21,6 +21,73 @@ completion requirements.
 
 ## Current findings
 
+R325 verifies the Warrior's fourth-arena exit, the following hardened-ground
+lava bends and the unlocked ZipperDoor entrance. The perpendicular gate route
+2780,3700 to2860,3780 passes with both server/client arrival checks and a living
+manual Save. A later new process restores the position beyond the gate. The
+first eastward lava bend reaches its requested points but dies after Save;
+walking along the inner bends instead retains HP20/20 and poison0. The complete
+exit/lava/door route then passes ordinary normal and highres with HP20/20,
+XP2875.7322, poison0 and the original zipper activation global238 at1. Both
+ordinary cases start from an earlier virtual menu Save, not a fresh ordinary
+chapter. The original Troll remains DEAD and its death counter1 persists.
+
+Eighteen owned captures produce nine exits0 and nine bounded negative exits2,
+without forced termination or truncation; all owned groups verify/quiesce.
+Eight new living manual Saves independently pass native Map/Path/health/SHA
+checks. Five negative cases write a menu Save before original PlayerDeath;
+their changed owned PLRs are retained diagnostically and explicitly rejected
+as continuation seeds. One exit0 is an intentional read-only native-link
+diagnostic with no new Save. One superseded prepared route remains NOT RUN,
+and one preparation fails before creating a route, cloning assets or launching
+a game. All nineteen prepared scenarios pass the real Go-AST input verifier.
+The preservation audit checks 81 observed server/client arrival gates at most
+twelve units from their actual goals.
+
+A new process Loads the ordinary R324 Troll victory Save at HP8/20. Original
+passive recovery, without food or health overrides, produces a manual HP20/20
+Save. The later zipper remains incomplete: a center run enters the corridor,
+and the original moving StoneBlock subsequently pushes the player back without
+health loss. Full-corridor goal waits remain negative, while a southwest-lane
+attempt causes original PlayerDeath. Neither Space input nor reaching a
+partial position establishes complete trap traversal or Horrendous completion.
+
+The Conjurer immediately resumes actual movement after the existing living
+Load checks, rather than waiting idle under fire. Original run/Space input
+reaches the next two linked cave waypoints and manually saves HP17/20,
+XP743.4713 and poison0; the later live observation is HP4/20. All twenty-four
+whole-world Urchin rows retain their identities and remain alive; no cave kill
+or player spell learning is claimed. Later attempts traverse nine more
+original linked waypoints and approach GreenElevator200. Timed approaches and
+center-target walking do not produce transport to GreenElevatorPit201. One
+observation shows player ON_OBJECT at the platform, then off it later; these
+attempts die after Save and stay negative.
+
+Native saved-map readers retain the reciprocal200/201 connection. The already
+compiled, independently reviewed read-only `assert-elevator-xfer-loaded`
+checks all four current elevators: four reciprocal native links, native-width
+addresses and zero PE32 pointer slots. It passes without changing or saving
+game state. This rules out a missing-link explanation at that observation;
+the boarding-height/update interaction still needs diagnosis. No engine
+defect or physical lift completion is declared. The state-setting elevator
+round-trip fixture is excluded from natural progression.
+
+Normal/highres 82,075 PASS49 SKIP and server/server-highres 77,247 PASS7 SKIP
+per configuration, zero FAIL, plus eleven normal/eleven strict input checks
+remain the sealed R323 results. Source and all four clean Go1.26.9 ARM64
+products remain `6128598105694a289f5a45cfa6127de878b59081`, so they are reused
+without rerunning unchanged code. All 6,637 source inputs,3,281 protected files,
+1,562 personal files, cloned stock files and R319 through R324 seals rehash
+unchanged. Two optional final script reads race orderly quit and support no
+completion claim. A flow-style preparation-prefix parsing issue is corrected
+for fresh cases; the extra real movement in cases5/7 and all earlier scenario
+hashes remain intact. No original GAME.EXE, golden approval or personal write
+occurs. Full campaigns/endings and broader gameplay/UI/audio/networking/ABI/
+stability evidence remain open. The estimate stays79%; all seven areas remain
+partial and 100% is incomplete.
+
+### Retained R324 findings
+
 R324 continues the natural Warrior and Conjurer campaigns through original
 keyboard/mouse input and menu Save/Load. Source and all four products remain at
 `6128598105694a289f5a45cfa6127de878b59081`. The sealed R323 four-configuration

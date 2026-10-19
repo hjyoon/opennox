@@ -49,6 +49,13 @@
       "purpose": "the CRT initialization call setting the x87 precision-control mask to 53-bit significands before gameplay"
     },
     {
+      "name": "nox_data_root_buffer_getter_409E10",
+      "address": "0x00409E10",
+      "size": 6,
+      "sha256": "286effd2983bb60e2db06e665a8f3e68db191fb90ea4127d902517607de12ae9",
+      "purpose": "return the original data-root character buffer at 005D4B08, consumed immediately by ScriptObject path formatting"
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_40A9D6",
       "address": "0x0040A9D6",
       "size": 5,
@@ -13391,6 +13398,13 @@
       "purpose": "load the SCRIPT03 nc.obj string/function records while preserving full names, tokenizing a local percent-delimited copy into the ordinal suffix and two separate signed ABI32 position offsets, and initializing absent qualifiers to zero"
     },
     {
+      "name": "nox_server_mapRWScriptObject_path_init_prefix_505A40",
+      "address": "0x00505A40",
+      "size": 45,
+      "sha256": "f3e38847b3edd721f9cca7530e32542e759dc179171b11a7c3e9a6581422c199",
+      "purpose": "the exact first 45 bytes of the ScriptObject section handler: initialize its state, obtain the data-root buffer, and format %s\\nc.obj into scratch current-path buffer 0097B740; this is a decoded prefix, not a Ghidra complete function body"
+    },
+    {
       "name": "nox_server_mapRWGroupData_505C30",
       "address": "0x00505C30",
       "size": 1575,
@@ -19803,6 +19817,13 @@
       "purpose": "the exact decoded direct rel32 call that cancels the current monster spell-table entry before clearing that unit's monster state"
     },
     {
+      "name": "nox_script_merge_files_541670",
+      "address": "0x00541670",
+      "size": 323,
+      "sha256": "e96d8ef0144884bd902b1514fc45205f35536f549c3a78ba95033fc043641286",
+      "purpose": "open both input script files as rb, handle empty inputs through delete/move branches, otherwise open destination as w+b to create/truncate a readable binary output before merging and closing all streams"
+    },
+    {
       "name": "sub_542BF0_before_trigger_identity_compare",
       "address": "0x00542BF0",
       "size": 215,
@@ -23508,6 +23529,13 @@
       "purpose": "the exact %%%s/NUL format retaining the ordinal token as a string suffix"
     },
     {
+      "name": "script_object_current_path_format_505A40",
+      "address": "0x005BF234",
+      "size": 10,
+      "sha256": "ee3b7db8a4fb7f87f804e9d8f3da4a519e0a93e2665620c09b8bd3c367f8f7c8",
+      "purpose": "the exact %s\\nc.obj/NUL format used by the ScriptObject handler to initialize native scratch current-path buffer 0097B740"
+    },
+    {
       "name": "match_limit_auto_exit_message_5096F0",
       "address": "0x005BF288",
       "size": 29,
@@ -25697,6 +25725,13 @@
       "size": 27,
       "sha256": "e5109f74dd42e1471afbd5880588676cd2ad3acf3f68cc850d41d7f740032047",
       "purpose": "the second distinct copy of the exact NUL-terminated use.c:SpellRewardClassFail priority-message key used when SpellRewardUse finds an already-known spell"
+    },
+    {
+      "name": "script_merge_file_open_modes_541670",
+      "address": "0x005CBFC0",
+      "size": 12,
+      "sha256": "ba1ad76e22169d0fe97e14edf29aaad804c50338fbfee1887a3e2e6aae0bd3dc",
+      "purpose": "the exact first-input rb/NUL, second-input rb/NUL, and destination w+b/NUL CRT mode strings including their original zero alignment bytes"
     },
     {
       "name": "script_callback_qualified_name_format_and_error",

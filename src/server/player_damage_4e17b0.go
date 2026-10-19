@@ -817,7 +817,16 @@ func playerDamageMonster4E17B0(
 		weapon != nil && weapon.Class().Has(object.ClassMissile) &&
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 		!defaultDamageAttackQualifies4E1400(source, weapon)
-	if harpoonImpact {
+	// Stock Urchin ThrowingStone reaches this callback as a distinct
+	// SIMPLE|MISSILE with the initialized monster as source. Original case
+	// 11 at 004E1F84 uses this same full-armor/carry tail without a player
+	// source restriction. Keep other monster missile/weapon shapes separate.
+	monsterMissileImpact := typ == object.DamageImpact && source != nil && source != weapon &&
+		source.UpdateData != nil && source.Class().Has(object.ClassMonster) &&
+		!source.Class().HasAny(object.ClassPlayer|object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
+		weapon != nil && weapon.Class().Has(object.ClassMissile) && weapon.Class().Has(object.ClassSimple) &&
+		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand)
+	if harpoonImpact || monsterMissileImpact {
 		return playerDamageMonsterMissilePierce4E17B0(target, source, weapon, update, armorValue, damage, typ, runtime)
 	}
 	// Match the already restored DefaultDamage PIERCE tail. Stock GolemArrow

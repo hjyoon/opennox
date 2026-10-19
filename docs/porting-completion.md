@@ -21,6 +21,61 @@ completion requirements.
 
 ## Current findings
 
+R319 adds an actual-mouse approach/strike action for moving named monsters.
+Each frame observes the current player, drawable, viewport, distance and normal
+cursor selection. It queues ordinary right-button movement followed by one
+left-button press/release. It retains no object pointers between frames,
+releases movement if the target disappears, and does not strike a dead target.
+No world, AI, health, camera, cursor-selection or script state is written.
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 82,068 | 49 | 0 |
+| Highres | 82,068 | 49 | 0 |
+| Server | 77,240 | 7 | 0 |
+| Server, highres | 77,240 | 7 | 0 |
+
+Every R318 terminal identity, outcome and multiplicity remains, with two new
+passing input-lifetime tests per configuration. Those tests and both existing
+NPC-input tests also pass race/checkptr2/actual-cgocheck2. Four clean Go 1.26.9
+ARM64 products at `eefe8aaf4b07acff308ba766c928b5188da82d2b` have matching
+Go/REA revision, tags, architecture and unmodified VCS metadata.
+
+Two genuine-input virtual normal runs defeat War01A's MasterUrchin and leave
+the Warrior alive with HP10/20. The first two named-target calls produce real
+weapon input; the next two observe death and issue no attack. A separate
+registered whole-object snapshot confirms DEAD, and the actual journal shows
+OrchardQuest complete with ReturnToGearhart active. Receipts:
+`ev_1b5a2125b04c7c5dee18151a0b706db2122e3de8b19b123a93c71eaf3fb8418b`
+and the private R319 `warrior-master-save-v2-virtual` capture.
+
+The second run uses the original Escape/Save/row1/Save/Yes UI. Its saved
+player has HP10/20, XP349.1723, poison0, OrchardQuest4 and ReturnToGearhart2.
+A new process loads that exact owned save through original Solo/row1/Load
+input, restoring position `(1185.000,2687.355)`, HP10 and the dead MasterUrchin.
+This is genuine combat persistence, not a direct save or script helper.
+The later return route in that process fails and remains negative evidence.
+
+The ordinary full route stalls at a market obstacle before gate contact and
+correctly fails its consumed-key assertion. Fixed-duration cave-return inputs
+also stall and fail the bounded Gearhart cursor gate. These establish neither
+ordinary combat success nor a Gearhart reward or next chapter. A separate
+pre-combat attempt writes an alive HP10 UI save, then the player dies and its
+live-player assertion fails. The overall source-case failure causes the next
+ordinary preparation to be rejected before game launch; it is marked unrun.
+No failed case is promoted to success by its file or process exit alone.
+
+All 6,631 frozen source/module/test inputs, the union of 3,280 pre-existing
+protected files and all 1,562 personal installation files retain their hashes.
+The previous R318 seal also rehashes exactly. The oracle is unchanged at
+3,022 code/667 data ranges. Existing canonical PNG failures and their unapproved
+proposal remain unchanged. Ordinary/highres combat, observed-arrival return
+navigation, Gearhart/QuarterMaster rewards, complete three-class campaigns,
+Windows-peer/audio/UI/stability gates remain open. The weighted estimate stays
+79%; the overall 100% goal remains active.
+
+### Retained R318 findings
+
 R318 restores the compiled ScriptObject file lifecycle. The section handler now
 publishes its actual `nc.obj` path to the native prefab qualifier, and the
 nonempty-input merger creates and truncates its output as the original `w+b`

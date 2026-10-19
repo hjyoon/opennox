@@ -242,7 +242,9 @@ func nox_script_readWriteZzz_541670(cpath, cpath2, cdst *byte) int {
 		return 1
 	}
 
-	df, err := ifs.OpenFile(dst, os.O_RDWR)
+	// Original 00541762 passes "w+b": a later placement has moved the old
+	// blend away, so the destination must be created and stale bytes removed.
+	df, err := ifs.OpenFile(dst, os.O_RDWR|os.O_CREATE|os.O_TRUNC)
 	if err != nil {
 		return 0
 	}

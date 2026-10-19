@@ -9586,6 +9586,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "interact-named-npc":
 			sc.Wait(dt, "")
 			sc.InteractNamedNPC(l.Item, image.Pt(l.X, l.Y), l.Name)
+		case "use-named-object":
+			sc.Wait(dt, "")
+			sc.UseNamedObject(l.Item, image.Pt(l.X, l.Y), l.Name)
 		case "strike-named-monster":
 			sc.Wait(dt, "")
 			sc.StrikeNamedMonster(l.Item, image.Pt(l.X, l.Y), l.Name)

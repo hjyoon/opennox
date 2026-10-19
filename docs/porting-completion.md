@@ -21,6 +21,48 @@ completion requirements.
 
 ## Current findings
 
+R320 adds actual-mouse movement toward a requested world position, using the
+current viewport and client/player observations on each frame. Each move has a
+600-tick bound and requires both server and client within 12 world units. It
+releases the right button as soon as the server arrives, waits for the client,
+and releases movement when player observations are unavailable. The next step
+allows five ordinary ticks for the real input release to settle. No world,
+collision, health, AI, camera, script or map-transition state is modified.
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 82,070 | 49 | 0 |
+| Highres | 82,070 | 49 | 0 |
+| Server | 77,242 | 7 | 0 |
+| Server, highres | 77,242 | 7 | 0 |
+
+All R319 terminal identities, actions and multiplicities remain, adding two
+passing movement-observation tests. Those tests and the four existing named
+NPC/monster-input tests pass race/checkptr2/actual-cgocheck2. They cover blocked
+movement remaining incomplete, updated directions, server/client arrival
+separation, button release and unavailable-player/stale-value handling.
+Four clean ARM64 Go 1.26.9 products at
+`82786243dde467b894f6de75d99bc853788b118f` have matching Go/REA revision,
+tags, architecture and unmodified VCS metadata, with help exits 0.
+
+A concrete return/reward case is prepared from the R319 actual-menu post-combat
+save. Its stock assets and cloned save verify exactly with distinct inodes.
+The YAML permits genuine mouse/keyboard input and read-only observations;
+proposed waypoint/city/gate segments still require actual collision-respecting
+arrival. Gearhart rewards and the QuarterMaster handoff remain unverified.
+Both host-capture requests failed before process creation because automatic
+approval review reported model capacity. The prepared case is explicitly
+NOT RUN; no game/capture result or runtime success is invented, and no alternate
+host execution bypasses that review.
+
+All 6,633 frozen inputs, 3,281 pre-existing protected files, 1,562 personal
+installation files and the prior R319 artifact seal retain their hashes.
+The 100% objective remains incomplete and the weighted estimate remains 79%.
+Approved runtime validation is the next required step; full campaign, UI/golden,
+audio, original Windows-peer, native-generator and stability gates remain open.
+
+### Retained R319 findings
+
 R319 adds an actual-mouse approach/strike action for moving named monsters.
 Each frame observes the current player, drawable, viewport, distance and normal
 cursor selection. It queues ordinary right-button movement followed by one

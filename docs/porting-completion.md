@@ -21,6 +21,56 @@ completion requirements.
 
 ## Current findings
 
+R321 runs the unchanged clean R320 products through 14 fresh owned captures.
+Ten games exit 0 and four stop on bounded E2E expectations with exit 2; every
+owned group settles quiescent without forced termination or truncation. The
+exit-0 distant-button probe supplies save/load evidence but fails to activate
+the elevator, so process success does not qualify that gameplay result.
+
+The earned Gearhart recommendation restores through original Solo/row1/Load
+in a new process. Actual QuarterMaster input then loads War02a, the original
+briefing closes through a real click, and the original menu saves chapter two.
+Separate ordinary normal and ordinary highres cases complete all 18 return
+segments, rewards, chapter entry and menu Save. Both start from the previous
+virtual combat save; ordinary/highres combat is still unverified. New processes
+load the resulting virtual and ordinary normal/highres chapter saves and pass
+actual movement checks. Saved XP remains 1849.1724; new chapter journals are
+initially empty until their own story events add an objective.
+
+Actual movement into the original gauntlet trigger opens Dant's dialogue.
+Real Done input continues to Horrendous, whose own Done awards War2Gauntlet2.
+The original menu preserves that objective with HP13/20, poison0 and
+XP1849.1724. The earlier uninterrupted world-arrival wait fails in this
+automatic-dialogue segment and remains negative evidence.
+
+A fresh Conjurer uses the original class/color/briefing and Captain dialogue,
+then passes nine actual-mouse cave-arrival gates. The original BigSpider Bear
+is alive before traversal and DEAD after the rockfall route. The player remains
+HP20/20; an actual first menu Save contains LocateAldwyn2 and restores in later
+processes. A close button approach and menu Save also pass. Entrance-button
+activation and upper-cave arrival remain unverified: two pixel-click variants
+leave the elevator disabled, and the existing type-only hover gate times out.
+Two Button4 objects lie inside the viewport, so that selector cannot uniquely
+identify the entrance switch. The next input action must resolve its map name
+and require the normal native Use cursor before clicking.
+
+| R321 receipt | Scope |
+| --- | --- |
+| `ev_15732f5c1e025f1f08c948114f400c507a2e2f053f685bd85240cca4a706773a` | Ordinary normal return, rewards and chapter Save |
+| `ev_5df00bb9455a176cdd44b0f6d112d69fccb836ea2cd506a5025dacc636004c89` | Ordinary highres return, rewards and chapter Save |
+| `ev_d456a56ea321e22fa3fc0ddb97b04616aba433199c3160ec32ca13e9751f5fc8` | Actual gauntlet introduction and saved objective |
+| `ev_f3e0db4459b52264e29ff1e20a0dd2cc7401901f1d708f0b23f848962a9f5e07` | Fresh Conjurer cave/rockfall route and first Save |
+
+All 6,633 frozen source inputs, 3,281 protected files, 1,562 personal files and
+the R319/R320/R320-runtime artifact seals retain their hashes. The unchanged
+code reuses the passing R320 four-configuration suites and strict input union
+below. Earlier sealed NOT RUN cases stay unexecuted; R321 uses fresh clones.
+Original executable execution and existing golden changes remain zero. Full
+three-class campaigns/endings and the UI/audio/original-peer/native-generator/
+stability gates remain open; the estimate stays 79% and 100% remains incomplete.
+
+### Retained R320 findings
+
 R320 adds actual-mouse movement toward a requested world position, using the
 current viewport and client/player observations on each frame. Each move has a
 600-tick bound and requires both server and client within 12 world units. It

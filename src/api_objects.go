@@ -21,7 +21,9 @@ func (obj *Object) MarshalJSON() ([]byte, error) {
 
 func init() {
 	http.HandleFunc("/debug/nox/types", func(w http.ResponseWriter, r *http.Request) {
-		writeJSONResp(w, noxServer.Types.List())
+		writeJSONRespInLoop(w, r, noxServer.QueueInLoop, func() any {
+			return noxServer.Types.List()
+		})
 	})
 	http.HandleFunc("/debug/nox/objects", func(w http.ResponseWriter, r *http.Request) {
 		qu := r.URL.Query()

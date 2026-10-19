@@ -21,6 +21,70 @@ completion requirements.
 
 ## Current findings
 
+R326 confirms original GreenElevator200 transport to GreenElevatorPit201
+and an actual forest disembark, followed by a living manual Save. The same
+path passes virtual normal and ordinary normal/highres. Native saved health
+is10/20,15/20 and14/20 respectively, with poison0 and XP743.4713. The two
+ordinary cases start from a prior virtual natural menu Save, not an ordinary
+fresh campaign. A fifteen-sample passive trace observes the player rise with
+the platform, move to3599,1610, remain aboard and later return to2771.5,4473.5.
+The disembark cases leave during the normal raised phase. Earlier sparse
+endpoint observations did not establish whether an intermediate ride occurred.
+No elevator physics repair or forced activation is used.
+
+A new process Loads the forest Save at native health10. Original passive
+recovery over5400 ticks restores health20. Five actual linked forest waypoints
+then reach Aldwyn's house and a new manual Save. Original native-cursor Talk,
+Yes and Done produce the rendered insufficient-money response, close the
+dialog and save alive. An independent version3 Inventory-section reader
+establishes saved gold0. The previously unverified candidate85 is the native
+status Direction1 field, not money. Player spells remain null and the two
+journal entries remain LocateAldwyn2 and ReturnBridgeGuardsBoots2; no fee
+payment, player spell learning or objective completion is claimed.
+
+Actual center walking also stands ON_OBJECT at CavePit204. Fifteen passive
+observations retain reciprocal native links while linked CaveElevator205
+stays disabled at state2/height64 and the player stays health20. This is an
+original script-state gate, not evidence of a broken native link. The trace
+quits normally without a new Save. The boots side-room gate actually reports
+that RubyKey is required. Read-only world inventory identifies original
+RubyKey6621 inside ChestUrchin4 extent6620 at3835,5374. Attempts to approach
+that chest, cross the river or enter the locked room remain negative. Two
+failed combat branches each observe one original Urchin DEAD, but neither
+produces a living saved combat result. No key, boots, opened chest or new gold
+is claimed. One attempted menu Save is followed by original PlayerDeath and
+is explicitly excluded as a continuation seed.
+
+Sixteen owned captures finish with eight exits0 and eight bounded exits2.
+All owned groups verify and quiesce without forced termination or truncation.
+Six new living manual Saves independently pass native Map/Path/health/SHA
+checks; one is a partial house-approach checkpoint with no chest completion.
+Two exit0 diagnostics intentionally make no new manual Save. One prepared
+combat route is superseded and remains NOT RUN. All seventeen prepared
+scenarios pass the real Go-AST registered-action verifier;68 observed arrival
+gates retain both server/client distances at most twelve units. Legacy directional
+walk/run actions target a fixed1024x768 screen center; a world-direction label
+is not general camera-edge evidence. Nearest-monster inputs can approach a
+target up to512 units away and leave the intended room. Those limits and
+all unsuccessful original inputs remain preserved.
+
+Source632fb3a4f8e330a820b965719638f2a87c7b8faf adds only a passive game-loop
+elevator observation and three mutation/lifetime tests, with no gameplay
+mechanics change. Every prior R323 terminal test identity/action/multiplicity
+is retained. Fresh full suites pass82,078 events/49 skips in normal and highres,
+and77,250 events/seven skips in server and server/highres, with zero failures.
+Fourteen combined input/observation tests pass normally and with race,
+checkptr2 and actual GOEXPERIMENT=cgocheck2. All four new clean Go1.26.9 ARM64
+products have matching Go/REA revision, tags, architecture and unmodified VCS
+metadata, with help exit0. Preservation checks cover6639 frozen source inputs,
+3281 existing protected files,1562 personal files, cloned stock and all sealed
+R319 through R325 artifacts. No original GAME.EXE execution, personal write or
+golden approval occurs. Full campaigns/endings and the broader gameplay/UI/
+audio/original-peer/native-generator/stability matrix remain incomplete. The
+weighted maturity estimate stays79%; all seven areas remain partial.
+
+### Retained R325 findings
+
 R325 verifies the Warrior's fourth-arena exit, the following hardened-ground
 lava bends and the unlocked ZipperDoor entrance. The perpendicular gate route
 2780,3700 to2860,3780 passes with both server/client arrival checks and a living
@@ -59,7 +123,7 @@ XP743.4713 and poison0; the later live observation is HP4/20. All twenty-four
 whole-world Urchin rows retain their identities and remain alive; no cave kill
 or player spell learning is claimed. Later attempts traverse nine more
 original linked waypoints and approach GreenElevator200. Timed approaches and
-center-target walking do not produce transport to GreenElevatorPit201. One
+center-target walking do not observe transport in their sparse checkpoints. One
 observation shows player ON_OBJECT at the platform, then off it later; these
 attempts die after Save and stay negative.
 
@@ -69,7 +133,7 @@ checks all four current elevators: four reciprocal native links, native-width
 addresses and zero PE32 pointer slots. It passes without changing or saving
 game state. This rules out a missing-link explanation at that observation;
 the boarding-height/update interaction still needs diagnosis. No engine
-defect or physical lift completion is declared. The state-setting elevator
+defect or physical lift completion was established in that earlier round. The state-setting elevator
 round-trip fixture is excluded from natural progression.
 
 Normal/highres 82,075 PASS49 SKIP and server/server-highres 77,247 PASS7 SKIP

@@ -21,6 +21,74 @@ completion requirements.
 
 ## Current findings
 
+R327 earns original gold and completes Aldwyn's first lesson through actual
+mouse/keyboard input. Clicking original forest StumpChest1 extent6604 opens
+it and drops its native43-gold item; clicking that visible item collects43.
+A changed, owned manual Save independently records health20 and gold43.
+Walking near the dropped item alone remains a negative attempt. Original
+script inspection corrects the earlier fee candidate: Aldwyn compares and
+deducts global59=30. The inaccessible town Gold500 is referenced as the
+Mayor's reward by global89; unsuccessful counter approaches do not establish
+a pickup defect or legitimate possession of that reward.
+
+The earned-gold Save Loads in virtual normal and ordinary normal/highres.
+Five actual exterior/house arrivals, native-cursor Talk, Yes and four actual
+Next/Done clicks finish the lesson and write new living manual Saves in all
+three cases. Each native PLR records health20, gold13, SPELL_CHARM level1,
+XP943.4713, LocateAldwyn4 and the new BanishSpiders2 entry; the boots entry
+remains incomplete. Both ordinary cases start from the virtual earned Save,
+not fresh ordinary characters. Original lesson scripts enable elevators205
+and202. One earlier exit0 attempt reaches the runtime lesson but leaves its
+last dialog open: its Save attempt never writes, and its old gold43/spells-null
+PLR is explicitly excluded as a new lesson checkpoint.
+
+A new process Loads the lesson Save with gold13 and Charm9 in quickbar slot0.
+Passive game-loop observations show original pit204 boarding carry the player
+to cave elevator205 at3967,460, then return if the player stays aboard.
+Waiting48 ticks and actually running to3888,548 instead disembarks and writes
+a living health20 Save. Its later live observation is health12 without death.
+Eighteen original cave goals then reach the enabled MagicShop elevator202.
+A slow final approach lets pursuing monsters also board and displace the
+player before the rise. Running the final approach and then making a short
+center walk retains boarding and observes original transport into town.
+Four further actual shop/town exit goals produce a new manual Save at native
+health15, poison0, gold13 and Charm1. No lift, AI, position or health setter is
+used. Actual Charm casting, pet ownership and BanishSpiders completion remain
+unverified.
+
+Actual run/Space observations also cross the original tavern counter after
+establishing facing before the jump. State12/AIRBORNE and the observed
+trajectory establish the jump even though native ZVal remains0. No jump-height
+repair or Gold500 possession is claimed. A cave attempt reaches five goals
+and writes native health20, but original PlayerDeath follows Save; that entire
+exit2 branch is retained and rejected as a continuation seed.
+
+Thirty-one owned captures finish17 exits0 and14 bounded negative exits2, with
+no forced termination, capture timeout or truncation. Every owned group
+verifies and quiesces. Twelve living original manual Saves pass independent
+native health/Map/current Path/changed SHA/archived-map checks. Four exit0
+diagnostics intentionally make no new Save; the other exit0 without a new
+Save is the incomplete-dialog attempt described above. All31 prepared
+scenarios pass actual Go-AST action registration, and111 observed arrivals
+retain both server/client distances at most twelve units. Fifteen optional
+final object/script reads race shutdown; missing reads support no completion
+claim. All failed inputs and the rejected post-Save death remain preserved.
+
+Source and the four clean ARM64 products remain
+632fb3a4f8e330a820b965719638f2a87c7b8faf. The sealed R326 four-configuration
+suites,14 normal input/observation checks and14 race/checkptr2/actual-cgocheck2
+checks are reused without rerunning unchanged code. Normal/highres retain
+82,078 PASS49 SKIP each; server/server-highres retain77,250 PASS7 SKIP each,
+with zero FAIL. All prior terminal identities/actions/multiplicities remain.
+Preservation rehashes6639 frozen source inputs,3282 protected files,1562
+personal files, cloned stock and every R319 through R326 artifact seal.
+No original GAME.EXE execution, personal write or golden approval occurs.
+Full three-class campaigns/endings, later Warrior gauntlet/Horrendous and the
+broader gameplay/UI/audio/original-peer/native-generator/stability matrix
+remain incomplete. The weighted estimate stays79%; all seven areas are partial.
+
+### Retained R326 findings
+
 R326 confirms original GreenElevator200 transport to GreenElevatorPit201
 and an actual forest disembark, followed by a living manual Save. The same
 path passes virtual normal and ordinary normal/highres. Native saved health

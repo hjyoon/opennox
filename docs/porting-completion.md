@@ -21,6 +21,80 @@ completion requirements.
 
 ## Current findings
 
+R322 adds actual mouse use of an original named map object. Each frame resolves
+the current server object, its static/dynamic network code and current client
+drawable. One real left press/release requires both that exact native cursor
+target and CursorUse13. The action retains primitive observations between
+frames and changes no cursor selection, object, script, network or world state.
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 82,072 | 49 | 0 |
+| Highres | 82,072 | 49 | 0 |
+| Server | 77,244 | 7 | 0 |
+| Server, highres | 77,244 | 7 | 0 |
+
+Every R320 terminal identity, action and multiplicity remains, adding two
+passing named-use observation tests per configuration. The combined eight
+NPC/monster/movement/use-input tests pass normally and with
+race/checkptr2/actual-cgocheck2. Four clean ARM64 Go1.26.9 products at
+`5a3af918e738e1b66896f905ef40608d7588b247` have matching Go/REA revision,
+tags, architecture and unmodified VCS metadata, with help exits0.
+
+Twenty-three fresh owned captures produce thirteen game exits0 and ten
+negative exits2. Every owned group is verified and settles quiescent, without
+forced termination or truncation. A private jump prototype used unsupported
+`run-end` and fails before gameplay. Its artifacts remain unchanged. The
+replacement verifier parses the real Go action dispatcher and rejects that
+old prototype; every other capture uses registered, reviewed actual-input
+or read-only observation actions. No failed save becomes a successful seed.
+
+The original EntranceSwitch requires its raised art position, y-20. Exact
+native Use input changes that switch from enabled to disabled and its original
+EntranceElevator from disabled to enabled. Virtual normal, ordinary normal
+and ordinary highres independently confirm both states and complete original
+menu Save. All three save HP20/20, XP100, poison0 and LocateAldwyn2. Their
+approach seed is an earlier virtual actual-menu Save; this does not establish
+an uninterrupted ordinary/highres fresh chapter.
+
+A new process loads the activated-lift Save, physically rides the original
+elevator, passes eight upper-cave arrival checks and saves through the original
+menu. Another actual route walks to the barrel-fire barrier, holds ordinary
+mouse movement, presses Space and releases the button. It reaches the west
+side alive, then menu-saves HP11/20, XP100, poison0 and LocateAldwyn2. Later
+processes restore that saved position and continue. A genuine chest collision
+releases its SilverKey; actual clicking observes server1/client1. Actual door
+contact later consumes it, observing server0/client0. These later cases die
+during further movement or after Save and remain negative overall: earned-key
+persistence, exit-switch use and the next Conjurer chapter are still unverified.
+
+The Warrior advances through the original corridor, wooden door, stairs and
+next paired door. New processes continue to the gauntlet front and naturally
+open the instructor dialogue. Actual Done input allows the original timed
+redshirt/chicken demonstration; the original menu saves the living player
+with HP15/20, XP1849.1724, poison0 and War2Gauntlet2. The actual gauntlet trial
+and its completion remain open. Stair probes after earlier saves are explicitly
+later than those saved checkpoints; no saved destination is inferred.
+
+| R322 receipt | Scope |
+| --- | --- |
+| `ev_8713c3d6a911a1d25545b58340df7efcfe930b95f115f74e9a47c75315b727ae` | Ordinary normal native Use, elevator activation and menu Save |
+| `ev_234a1bec1214371feaec3cb6de10d17b8beb1aed57772fe198f687d5f61235ca` | Ordinary highres native Use, elevator activation and menu Save |
+| `ev_0a7ed867567d626c65f6efbed4b5fa5437d81eb1c5680614dde6954ea5ab732c` | Original physical lift, eight upper-cave arrivals and menu Save |
+| `ev_3e2e91c113b6aa63b749b97feefeaf9a10d1f731bdea4946e75c23f3e635fce4` | Actual jump/fire crossing, living west-side arrival and menu Save |
+| `ev_3afa7a1506b32573f5114a56f16fc5f0be61766137f8097547bd8a322211dc1b` | Original instructor Done, timed demonstration and living menu Save |
+
+All 6,635 frozen source inputs, 3,281 protected files, 1,562 personal files and
+R319/R320/R320-runtime/R321 artifact seals retain their hashes. Original
+executable execution and existing golden changes remain zero. Read-only
+snapshots observe unnamed bats, urchins and spiders near later failed routes;
+they do not by themselves prove a cause of death. Next, actual native-drawable
+targeting must support those original unnamed monsters. Full campaigns,
+UI/audio/original-peer/native-generator/stability gates remain open. The
+estimate stays79%; 100% remains incomplete.
+
+### Retained R321 findings
+
 R321 runs the unchanged clean R320 products through 14 fresh owned captures.
 Ten games exit 0 and four stop on bounded E2E expectations with exit 2; every
 owned group settles quiescent without forced termination or truncation. The

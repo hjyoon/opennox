@@ -45,21 +45,42 @@ Four clean ARM64 Go 1.26.9 products at
 `82786243dde467b894f6de75d99bc853788b118f` have matching Go/REA revision,
 tags, architecture and unmodified VCS metadata, with help exits 0.
 
-A concrete return/reward case is prepared from the R319 actual-menu post-combat
-save. Its stock assets and cloned save verify exactly with distinct inodes.
-The YAML permits genuine mouse/keyboard input and read-only observations;
-proposed waypoint/city/gate segments still require actual collision-respecting
-arrival. Gearhart rewards and the QuarterMaster handoff remain unverified.
-Both host-capture requests failed before process creation because automatic
-approval review reported model capacity. The prepared case is explicitly
-NOT RUN; no game/capture result or runtime success is invented, and no alternate
-host execution bypasses that review.
+An approved runtime follow-up now loads the R319 actual-menu post-combat save
+in a new process and completes the virtual normal return. All 18 movement
+segments observe server and client arrival within 12 world units, including
+the cave egress and previously unlocked RubyKey gate. Genuine Gearhart dialog
+and Done input award the SponsorshipLetter and 500 XP. The original
+Escape/Save/row1/Save/Yes menu writes HP11/20, XP849.1723, poison0 and all four
+journal entries complete, including ReturnToGearhart4. A registered whole-object
+snapshot and inventory assertion independently observe the earned letter.
+
+The subsequent genuine QuarterMaster dialog consumes that letter, awards
+1,000 XP and naturally loads War02a. The live player reaches the original
+PlayerStart `(5117.5,5071.5)`, and the captured screen shows the second-chapter
+briefing. The natural transition's WORKING player contains HP12/20 and
+XP1849.1724. The game exits naturally with code 0; REA verifies the owned group
+and quiescent settlement without truncation or forced termination. Receipt:
+`ev_dd2aa288bd96e162bc42bfb7d3a0abb6dd058afaeecfe82fd82108ddd7dd6671`.
+Briefing dismissal, continued chapter-two play and a chapter-two menu save/load
+remain unverified. The cloned seed AUTOSAVE still contains the initial
+HP20/XP0/FirstQuest2 and supplies no chapter-two persistence evidence.
+
+Four fresh follow-up cases are prepared and explicitly NOT RUN: the complete
+chapter-entry/save route under virtual normal and ordinary normal/highres,
+plus a shorter new-process Load of the earned Gearhart reward. Two automatic
+approval reviews fail with model capacity; a matrix review and its permitted
+single retry time out. All fail before process creation. The earlier sealed
+R320 prepared case remains unrun and unchanged. Successful evidence and
+unexecuted inputs remain separate; no alternate host execution bypasses review.
 
 All 6,633 frozen inputs, 3,281 pre-existing protected files, 1,562 personal
-installation files and the prior R319 artifact seal retain their hashes.
+installation files and both prior R319/R320 artifact seals retain their hashes.
+The unchanged code and products reuse the passing suites above; this runtime
+follow-up makes no source changes or redundant whole-suite rerun.
 The 100% objective remains incomplete and the weighted estimate remains 79%.
-Approved runtime validation is the next required step; full campaign, UI/golden,
-audio, original Windows-peer, native-generator and stability gates remain open.
+Approved reward-reload and chapter-entry/save validation is next; ordinary and
+highres return/combat, full campaign, UI/golden, audio, original Windows-peer,
+native-generator and stability gates remain open.
 
 ### Retained R319 findings
 

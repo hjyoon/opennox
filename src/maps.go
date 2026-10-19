@@ -85,6 +85,13 @@ func nox_server_mapRWScriptObject_505A40(cf *cryptfile.CryptFile, a1 unsafe.Poin
 	}()
 	s := noxServer
 	fname := datapath.Data(asm.NCobjName)
+	// 00505A40 also publishes this path for native prefab qualification and
+	// merging. The Go file operations alone leave that native buffer empty.
+	nativePath := unsafe.Slice((*byte)(memmap.PtrOff(0x973F18, 30760)), 1024)
+	if len(fname) >= len(nativePath) {
+		return fmt.Errorf("compiled script path too long: %d", len(fname))
+	}
+	alloc.StrCopy(nativePath, fname)
 	legacy.Set_dword_5d4594_1599644(0)
 	if cf.File.Mode() != binfile.ReadOnly {
 		cf.WriteU16(1)

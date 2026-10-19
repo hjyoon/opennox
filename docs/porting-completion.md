@@ -21,6 +21,70 @@ completion requirements.
 
 ## Current findings
 
+R329 fixes a naturally reached NPC damage branch. An Urchin's original
+ThrowingStone reaches PlayerDamage as a distinct SIMPLE|MISSILE projectile
+with an initialized monster source and IMPACT11 damage. The bounded native
+admission now uses the existing full armor, fractional carry, item wear and
+default damage path, matching the original case 11. Other adjacent missile
+shapes retain their prior behavior. Real C-owned records above 4 GiB exercise
+the original dispatcher through native HP changes; additional server checks
+verify carry, attribution and callback order.
+
+The old and new captures use byte-identical scenarios and the same living
+Save. The old 396 unsupported NPC stone events become zero. Two attacking
+Urchins are observed DEAD while town NPCs remain alive; this is not credited
+as player combat. The fixed path writes a living health 20 Save in virtual
+normal and ordinary normal/highres, with zero unsupported native events.
+
+Actual learned Charm quickbar input then controls both original quest
+spiders. The first conversion causes the original script to create the second
+spider. Selecting and casting on that second spider before crossing the office
+doors preserves line of sight. Both live spiders become host children with
+MONITOR and MIGRATE, and a new living manual Save records health20. A fresh
+process restores the same two script IDs as live host children with MIGRATE;
+MONITOR is absent after Load, so MONITOR persistence is not claimed.
+
+Owning both spiders alone leaves the quest incomplete. Clicking the original
+all-creature cage menu and its first Banish entry removes them and lets the
+original SpiderEngine set its completion flag. The actual Mayor free response
+and Done unlock his room and start his walk. A second actual conversation
+awards the original 500 gold and completes BanishSpiders4. Independent native
+manual Saves from virtual normal and ordinary normal/highres each record
+health 20, poison 0, gold 513, Charm1 and XP 2443.4712. The ordinary cases execute
+both Charms, Banish and both Mayor conversations from the prior virtual living
+Save; they are not fresh ordinary characters. Boots and later objectives remain
+open.
+
+The original Mayor free-response camera lookup still logs two unresolved
+MayorRewardLookWP warnings in each full path. Reward and living-save evidence
+does not establish correct camera framing; that lookup remains a separate
+open issue.
+
+All 14 owned captures finish with 9 exits0 and 5 bounded negative exits2.
+There are 8 independently verified living manual Saves and
+50 actual arrival gates. Every owned group verifies and quiesces, with no
+forced termination, capture timeout or truncation. The earlier Save followed
+by PlayerDeath remains rejected as a seed. The wrong-room approaches, a close
+range death, an incomplete Mayor reward attempt and intentional diagnostics
+remain retained. Missing optional final reads support no completion claim.
+
+Code and the four fresh clean ARM64 products are
+3127d8d938d1bf2e453475b88a74943d96e93b0d. Fresh focused and strict checks each
+pass 40 terminal events, with race/checkptr2 and actual GOEXPERIMENT=cgocheck2
+enabled for strict. Four fresh full suites pass: normal/highres 82,090 PASS / 49
+SKIP each; server/server-highres 77,262 PASS / 7 SKIP each; zero FAIL. Every prior
+terminal identity, action and multiplicity remains, adding exactly 12 new
+terminal events. Product metadata is independently matched and the source
+archive is rehashed. Preservation rehashes 6641 frozen source inputs, 3282
+protected files, 1562 personal files, cloned stock and every R319 through R328
+artifact seal. No original GAME.EXE execution, personal write or golden
+approval occurs. Full three-class campaigns/endings, Warrior zipper/Horrendous
+and the broader gameplay/UI/audio/original-peer/native-generator/stability
+matrix remain incomplete. The weighted estimate stays 79%; all seven areas
+remain partial.
+
+### Retained R327 findings
+
 R327 earns original gold and completes Aldwyn's first lesson through actual
 mouse/keyboard input. Clicking original forest StumpChest1 extent6604 opens
 it and drops its native43-gold item; clicking that visible item collects43.

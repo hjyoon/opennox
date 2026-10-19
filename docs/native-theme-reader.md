@@ -367,6 +367,58 @@ The empty native current-file buffer is being traced separately in R318.
 The R317 loader correction therefore has focused/native-contract coverage,
 not a passing generated-payload runtime claim.
 
+## R318 compiled script file lifecycle
+
+The original ScriptObject prefix `00505A40..00505A6C` formats the actual data
+root and `nc.obj` into the native current-path buffer `0097B740`. The Go port
+previously used that path only locally, leaving native qualification with an
+empty path. The section handler now publishes the same path before either
+save or load. Original `00541670` opens the nonempty merge destination as
+`w+b`; the Go path now uses create/truncate/read-write flags at that exact
+site. The general filesystem wrapper and the distinct C qualifier open mode
+are unchanged. Three code and two data ranges are added without changing any
+previous oracle record; the 45-byte handler prefix is explicitly a prefix.
+
+The additive actual ScriptObject/native-merger regression retains original
+section bytes, both signed coordinate pairs, two independent nonempty inputs,
+absent-output creation, stale-output truncation and unchanged input files.
+The tests that failed before the two repairs remain in private evidence.
+The focused 57-event union passes normally and with race/checkptr2/cgocheck2.
+The previous C-only ASan attempt times out and supplies no sanitizer pass.
+
+Clean ARM64 server code `9e14fe95701bb8a7e2c88b664024d723649d53a6`
+uses the unchanged 671-byte authored library. Its 183-byte no-op SCRIPT03
+becomes an exact 195-byte `ProbeFn%0%1842%1657` stream, embedded in the saved
+MAP and present in `nc.obj`. Both generated-map loads expose the same full
+function name, suffix and independent X/Y offsets. Independently decoded
+waypoint positions minus their authored local values and region origin give
+exactly `(1842,1657)`; using the absolute world offset here was an error in
+the first private controller, not evidence of a product failure.
+
+The saved map retains 85 floor halves, 20 walls, five waypoints and two groups.
+The authored four floors, two walls and reciprocal waypoint/group membership
+match the prior geometry contract. An intervening `so_beach` load and a second
+fixed-seed generation preserve identical MAP/NXZ bytes, native decompression
+is exact, and shutdown is natural code 0 without termination cleanup.
+Receipt: `ev_0943605fb4e9fe93dc7b4615aa0b50153cc87a829223b41ca844568fb67af499`.
+The first attempt could not spawn a PTY under the outer sandbox; its EPERM
+failure is preserved. The successful authorized host observation still runs
+the owned game inside its child-only loopback network policy.
+
+Two separate attempts require two authored prefabs, first with matching South
+markers and then with opposite North/South records. Both fail generation and
+the game exits 0; the controllers correctly fail with 1. They establish no
+runtime merge success and no diagnosed production cause. Both preserve a
+CRC-valid eight-member native-memory diagnostic ZIP and verified owned-process
+settlement. Receipts: `ev_04c38399fc905a61034d3e84feef2644e546f2168936c7af0a82723e89f26124`
+and `ev_4b678d055038ec2ac54fb458a6e4247e3435f1fda002457c5f26f033b67b79e2`.
+Neither input was made to pass by changing game state or the placement rules.
+
+The positive runtime covers one required authored prefab and a no-op function.
+The actual native-merger test covers the two-file branch independently.
+Arbitrary compiled-script behaviors, external original prefab assets, the two
+rejected definitions and the full connection/overlap matrix remain unverified.
+
 ## Remaining scope
 
 The retained stock map inventory lacks original external theme/AreaMap inputs.

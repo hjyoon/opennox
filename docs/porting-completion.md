@@ -21,6 +21,86 @@ completion requirements.
 
 ## Current findings
 
+R318 restores the compiled ScriptObject file lifecycle. The section handler now
+publishes its actual `nc.obj` path to the native prefab qualifier, and the
+nonempty-input merger creates and truncates its output as the original `w+b`
+contract requires. The authored 183-byte SCRIPT03 becomes the exact expected
+195-byte qualified stream. A clean dedicated server generates, saves and loads
+it twice, crosses an intervening stock map, preserves identical fixed-seed MAP
+and NXZ bytes, and exits naturally with code 0. Saved/live functions retain
+`%0` and both placement offsets `(1842,1657)`, independently reconciled with
+saved waypoint coordinates after the region-loader origin is removed. Floors,
+walls, linked waypoints, groups and native NXZ decompression also verify.
+Receipt: `ev_0943605fb4e9fe93dc7b4615aa0b50153cc87a829223b41ca844568fb67af499`.
+
+| Configuration | PASS events | SKIP events | FAIL events |
+| --- | ---: | ---: | ---: |
+| Normal | 82,066 | 49 | 0 |
+| Highres | 82,066 | 49 | 0 |
+| Server | 77,238 | 7 | 0 |
+| Server, highres | 77,238 | 7 | 0 |
+
+Every R317 terminal identity, outcome and multiplicity remains, with 18 new
+passing parent/subtest events per configuration. The 57-event focused union
+also passes with race detection, checkptr level 2 and actual cgocheck2. The
+native-merger subprocess separately checks two nonempty inputs, exact output
+bytes, creating an absent destination, truncating stale data, unchanged inputs
+and both live-VM coordinate pairs. The prior C-only ASan attempt timed out;
+no successful ASan result is claimed.
+
+The remaining type/ZIP/game-flag diagnostic proposal is integrated. Type JSON
+and the complete native-blob ZIP are encoded on the main loop before HTTP can
+retire or mutate borrowed storage. Nonzero game-flag changes run their native
+hooks on that loop; copied scalar response formatting remains unchanged.
+Canceled requests, actual type retirement, native-blob retirement, original
+JSON/ZIP bytes and mutation ordering have registered-route coverage. Eight
+real native blobs also produce a CRC-valid diagnostic ZIP on the new server.
+This does not establish global scalar synchronization or atomicity across all
+native workers.
+
+Four clean Go 1.26.9 ARM64 products at code
+`9e14fe95701bb8a7e2c88b664024d723649d53a6` have matching Go/REA revision,
+architecture, tags and `vcs.modified=false`, with natural help exits 0. The
+original oracle verifies 3,022 code and 667 data ranges, preserving every
+previous record. All 6,629 frozen inputs, 3,278 pre-existing protected files,
+and 1,562 personal installation files retain their exact hashes. GAME.EXE was
+not executed. Exact file-flow and negative-case scope is recorded in
+[native-theme-reader.md](native-theme-reader.md#r318-compiled-script-file-lifecycle).
+
+Separately pinned clean R317 normal products now provide actual Wizard
+Wiz01A objective completion and natural Wiz02A entry in virtual and ordinary
+time. Real barrel interaction opens the fire approach; SapphireKey contact,
+apprentice dialog, robe/book pickup, the cycling elevator, Horvath's reward,
+lab portal and original map exit follow genuine input. Saved XP is 1761.1278;
+the earlier post-introduction value is 111, correcting prior private prose.
+Actual row-0 Load in a new process restores the natural AUTOSAVE, equipped
+robe, three spells and MeetHorvath journal. Ordinary earlier cave/pickup stages
+use genuine menu-save checkpoints and are not one uninterrupted fresh chapter.
+Boundary receipts: `ev_4215649beb2d8c17e051c53906f320027796cedc9019affdab12b2e8d1a35f4e`
+and `ev_f135e22d604835fe60d02269ca38d97917d9517f29df0d3a1d1711201858ee5e`.
+New-process Load receipts: `ev_cc49d10fa5377816535399cd72e03d347d4023bbf5610ada34f6bcd67138db82`
+and `ev_11a2ece90609a887750fe4ec2bc29994a36a5ff1708070058865642f29b398b9`.
+These results are not attributed to the newer R318 products.
+
+R317 Warrior products also pass actual menu Save/movement/Load and original
+RubyKey-gate consumption in ordinary normal/highres runs. A separate ordinary
+process restores an ordinary-produced save with the key and journal. The
+cave bats are defeated, but MasterUrchin and subsequent objectives remain
+incomplete. All 2,046 Wizard and 7,980 Warrior sealed artifacts rehash exactly;
+failed inputs and deaths are retained. No gameplay state, HP, lock, objective,
+script callback or personal save was injected or edited.
+
+Two additional two-prefab definitions, including opposite North/South markers,
+fail during generation before successful load. Their natural game exit 0 is
+not a successful semantic result; controller exits are 1 and both captures
+are retained. Runtime merging of those definitions remains open despite the
+passing actual native-merger regression. Existing two canonical PNG failures,
+the unapproved golden proposal, full three-class campaigns/endings, original
+Windows-peer interoperability, broader audio/UI and sustained stability also
+remain open. The weighted estimate remains 79%; the 100% goal stays active.
+
+### Retained R317 findings
+
 R317 corrects the native qualifier metadata used by compiled prefab functions.
 The pinned `asm` reader assigned both coordinates to X and left Y zero. The
 live server now decodes the ordinal suffix and two signed 32-bit coordinates

@@ -21,6 +21,91 @@ completion requirements.
 
 ## Current findings
 
+R332 verifies original elevator2 player transport, Alex's original route
+and dialogue, further native creature combat, and Naldo recognition through
+the original Ruby door. Code and products remain unchanged at
+3127d8d938d1bf2e453475b88a74943d96e93b0d. Pure elevator observations identify
+Elevator305 paired with pit5382: actual boarding reaches the lower platform,
+the player naturally leaves at Z0, and original BobDown enables Alex's next
+movement. Following five physical road goals and using the real Talk/Done
+controls advances Alex's original state to3. Virtual normal and ordinary
+normal/highres all write native health19, poison0, mana78, gold513 and
+XP2976.649 Saves. The ordinary segments take about94.12/94.15 seconds and
+start from the same earlier virtual first-worker Save; they are not fresh
+ordinary characters.
+
+On the north road, actual ranged Charm controls HuntImp3. The two small enemy
+spiders, adult spider and enemy Imp are subsequently observed DEAD. The
+controlled small spider and newly controlled Imp also die; only the older
+Imp survives that saved branch. Fresh Load and the real Escort menu bring
+the surviving Imp back to the player. The apparent saved pet-coordinate
+mismatch was a comparison against the later post-Save snapshot: archived map
+coordinates match the actual pre-Save position, and the next Load restores
+that position. No save-coordinate repair is justified. Actual running and
+Space then bypass a Troll and defeat another Troll and small spider through
+natural combat; the last Imp dies. These outcomes do not establish a broad
+combat or pathfinding fix.
+
+Normal passive recovery restores health11 to20 before the next approach.
+Actual Charm controls original SmallAlbinoSpider2129. One attempted return
+branch writes a native health20 Save but records PlayerDeath during the
+post-Save observation; the entire exit2 branch is rejected. A healthy branch
+instead physically reaches the original RubyDoor, consumes RubyKey2582,
+crosses Worker3Rec, earns100XP and opens Naldo's native dialogue. The real
+Done control grants replacement RubyKey4835 and original CreatureFollow.
+Case21 writes a living health15, poison0, mana71, gold513, XP3574.8599 Save;
+Naldo is alive both before and after Save. The earlier controlled spider has
+already died. Original logical global17=1 and key-grant global22=2, while
+worker-return global21 remains0. Recognition and following are not a
+completed worker return or the six-worker objective.
+
+An actual east-side room route reaches the door, and the original road node
+871,1221 permits the outward crossing. Naldo follows out and along the north
+cave. The recognition script naturally activates/spawns additional enemies;
+later road attempts still record PlayerDeath and provide no continuation
+Save. A ranged cast on Small2128 succeeds during one rejected return branch.
+The nominal two-pet/adult attempt actually controls only Small2128, then
+receives the original BeastScroll-required response; the pet dies before
+Save. Lower cursor aiming also fails to establish adult ownership. No adult
+Charm, safe hub return, enemy clearance or two-pet success is credited.
+Native guide names already include AlbinoSpider and SmallAlbinoSpider, but
+the actual rejected spell target is not proven. Original quickbar slot0=9
+passes. Inventory clicks do not prove an equipment flag transition or an
+equipment restoration defect. Existing max-health20 is consistent with the
+untouched level/balance evidence; no health repair is made.
+
+One room diagnostic finishes with a living player and a new native health15
+Save but Naldo is DEAD in the final world observation. It is explicitly
+excluded as a progression source. This adds a story-NPC survival check to
+the usual inner exit0/no-force/no-PlayerDeath/new owned native Save checks.
+Case21 remains the preferred story checkpoint; case4 is the earlier safe
+Alex checkpoint. Low-health diagnostic Saves are retained without claiming
+protection or quest completion.
+
+All32 executed captures settle:23 exit0 and9 bounded negative exit2. There
+are14 verified living-player manual Saves, of which13 also retain living
+Naldo, and138 measured physical arrival gates. One prepared alternative is
+NOT RUN and one invalid-action preparation is rejected before game launch.
+No owned process is forced, timed out or truncated; every group is verified
+and quiescent. Native health/poison/current owned Path/Map/new SHA and the
+archived map are independently checked. Optional missing final reads prove
+no completion. All observed unsupported-native-branch counts remain0.
+
+Sealed R32940 focused/40 strict checks, all four full suites, matched clean
+ARM64 products and source archive are reused because source is unchanged.
+Normal/highres retain82090 PASS/49 SKIP each; server/server-highres retain
+77262 PASS/7 SKIP each, zero FAIL, with prior terminal identities/actions/
+multiplicities preserved. Preservation rehashes6641 source inputs,3282
+protected files,1562 personal files, cloned stock and all R319 through R331
+sealed artifacts. Original camera/lookup/parser/input negatives remain
+retained. Full three-class stories/endings, worker returns and other mine
+workers, Warrior zipper/Horrendous, side objectives, broader UI/audio,
+original Windows-peer, reachable ABI/native-generator and stability evidence
+remain incomplete. Weighted maturity stays79%, not measured coverage; all
+seven areas remain partial.
+
+### Retained R331 findings
+
 R331 reaches the first original mine worker through the stock elevator,
 learned Charm, controlled-creature combat and original door/recognition
 triggers. No source change is required. A fresh process first Loads the spent

@@ -21,6 +21,102 @@ completion requirements.
 
 ## Current findings
 
+R324 continues the natural Warrior and Conjurer campaigns through original
+keyboard/mouse input and menu Save/Load. Source and all four products remain at
+`6128598105694a289f5a45cfa6127de878b59081`. The sealed R323 four-configuration
+suites, eleven normal input tests and eleven race/checkptr2/actual-cgocheck2
+tests are reused without rerunning unchanged code. Normal/highres retain
+82,075 PASS and 49 SKIP each; server/server-highres retain 77,247 PASS and seven
+SKIP each, with zero FAIL events.
+
+Fifty-two owned captures comprise thirty-six game exits 0, fifteen bounded
+negative exits 2 and one quarantined capture timeout. The fifty-one completed
+games have no forced termination. In highres ordinary case39, original
+PlayerDeath precedes a capture idle-timeout SIGTERM; no final game result or
+successful new Save exists. That failed attempt remains immutable and excluded
+from continuation seeds. All fifty-two owned groups verify and settle
+quiescent, without truncation. Later affected ordinary captures allow the
+existing 120-second native failure wait to finish by using a 150-second capture
+idle bound; their game limits and assertions are unchanged.
+
+Thirty-five new living manual Saves independently pass native Player.plr
+health, active Map, current owned Path and changed-SHA checks. Exit-0 Conjurer
+case4 enters dialog without updating the manual Save, so it is excluded. Two
+superseded prepared cases remain NOT RUN; two missing-route preparations fail
+before asset cloning or any game. All fifty-four prepared scenarios pass the
+real Go-AST registered-input verifier. The audit validates 130 observed world
+arrival gates with both server and client distance at most twelve units.
+
+The Warrior traverses the original narrow lava route and the correct fourth
+arena gate opening. Passive original recovery restores health10 to20. Actual
+Sword input breaks the originally named potion crate, whose real contents are
+RedApples, and the antidote crate. Pixel pickups independently produce two
+apples and one CurePoisonPotion on server and client. Original lever use starts
+the elevator/cage sequence and brings the same Troll extent12419 from its
+offscreen position to the arena. Later snapshots show it DEAD and its original
+death callback counter at1. Native saved Door2 and ZipperDoor lock codes are0;
+actual traversal of the arena exit and the later gauntlet remains unverified.
+
+Earlier targeting and southern-lane attempts remain negative or mixed,
+including original PlayerDeath after a Troll kill. Living Saves with poison1
+are explicitly incomplete treatment results. The original thing.bin defines
+Troll drawable Z15; mouse offset y7 aims eight pixels above its standing ground
+projection. With the unchanged R323 actual native-cursor action and a cleared
+western lane, highres virtual and ordinary normal/highres runs defeat the
+Troll, consume both real apples, move away from its poison cloud and use the
+actual visible inventory antidote cell. Their manual Saves have HP9/20,8/20
+and8/20 respectively, XP2875.7322 and active poison0. The ordinary runs begin
+from a prior virtual menu Save, rather than an uninterrupted fresh chapter.
+Separately, a new process Loads the earlier treated case33 Save, preserves the
+Troll death/counter1 and poison0, moves and manually re-saves with HP18/20.
+
+The Conjurer's original Necromancer sequence completes with four arrivals,
+summon flag1, hit callback1 and dialog-done1. The original Spider callback
+caller handle changes from0 to a positive script ID; its continued liveness
+after the setpiece is not claimed. The Necromancer disappears through the
+original sequence, player NO_UPDATE clears, and actual road movement and menu
+Save succeed. The Henrick wolf/Charm NPC demonstration reaches its original
+sixty pulses, releases the player, and likewise permits actual movement/Save.
+Both sequences pass virtual normal and ordinary normal/highres cases. Native
+player spells remain null: these NPC scenes do not prove player Charm learning
+or pet ownership and AI-stack mastery.
+
+Actual Bridge_Guard Talk/Done adds ReturnBridgeGuardsBoots2 beside
+LocateAldwyn2. Walking onto the original GreenElevatorPit5942 physically
+transports the player from the riverbank to its original GreenElevator5943 in
+the den. An independent native-map reader confirms reciprocal extents and the
+destination; actual transport and living manual Save pass virtual normal and
+ordinary normal/highres. A later virtual run rests and traverses five cave
+waypoints, saving native HP18/20, poison0 and unchanged XP743.4713. The later
+live snapshot is HP8/20 after nearby-enemy damage; no den enemy kill is claimed.
+The earlier den-entry Save is retained as the safer alternative. Aldwyn,
+returning the boots, player spell learning and the complete chapter remain
+open. Magic-shop approach/interior Saves do not establish a lift ride.
+
+| R324 receipt | Scope |
+| --- | --- |
+| `ev_efe2a04c3730c34b820a47715bc7baa42e2576417878118fb54c713e4a89381e` | Ordinary normal Troll DEAD, real food/antidote use and poison0 living manual Save |
+| `ev_8f439aac0b94439b3e27f4608320cc9450df050291c8dd0e0c4acd5b78559081` | Ordinary highres equivalent combat and treated living manual Save |
+| `ev_3d4bc4bdba30c3baba745c55370a36865ce19b59f721c008f70d255b4d612fa3` | New-process Load preserves earlier Troll death/counter and treated player, movement/re-Save |
+| `ev_f65e266b5a9500d8d647d402601ff909527ea0c536b01e9c598ba84272c32704` | Ordinary normal Necromancer sequence, released player and movement/Save |
+| `ev_3ac412a9813cc707fb706a51dd713ac98b27dc91d495cd7eab8e3597321fba8d` | Ordinary highres Henrick NPC demonstration, released player and movement/Save |
+| `ev_c51094d3b67ee5306b1f1dcdfbdc5fa0cee8e5732de5ea12e3d7b9692211e002` | Ordinary normal original green-pit transport and living manual Save |
+| `ev_576527fa83fedd9cc309c81facf12dce8f2cbab1b3923b3f5382ccd8ea3521ad` | Ordinary highres original green-pit transport and living manual Save |
+
+The final audit rehashes all 6,637 frozen source inputs, 3,281 protected files,
+1,562 personal files, cloned stock inputs and the sealed
+R319/R320/R320-runtime/R321/R322/R323 artifacts unchanged. Four final optional
+script reads race orderly game shutdown; required earlier observations remain
+available and no proof relies on those missing reads. No original GAME.EXE,
+state-setting API, golden approval or personal-install write is used. Earlier
+route labels are retained as raw evidence, with the actual angle convention
+corrected in continuation notes:0 north,0.5 east,1 south,1.5 west. Full natural
+three-class endings, later gauntlet, broader gameplay/UI/audio, original-peer,
+native-generator and sustained stability remain incomplete. All seven areas
+remain partial and the weighted estimate stays79%, not measured coverage.
+
+### Retained R323 findings
+
 R323 adds actual mouse targeting of the nearest original unnamed hostile monster
 of an exact requested type. Each frame reads the current world, hostile
 relationship, native line of sight, viewport and drawable. The bounded action

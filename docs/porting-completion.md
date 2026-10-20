@@ -538,7 +538,8 @@ repeats that route, acquires the dropped quest item's original Pickup cursor
 and left clicks. Both server and client report one `MayorsScepter`, original
 extent 10344. The item is in the player's inventory and no longer a world
 object. The original menu writes an owned living Save at HP 11, poison 0
-and unchanged XP 9203.707, followed by natural exit 0. Kalen and owned Wolf1
+and XP 9303.707, including the original 100-XP pickup award, followed by
+natural exit 0. Kalen and owned Wolf1
 remain alive. `original-scepter-pickup-save-verification-v127.json` binds
 the original input, object and native Save evidence.
 
@@ -553,6 +554,29 @@ boundary are unproved. The separately inspected chamber-door trigger at
 region of the loaded War03c map; it is not a prerequisite inferred for this
 Scepter chest. Kalen's interaction and all remaining area, class and
 engineering requirements remain pending.
+
+Case 132 follows the original western road to barrel 8997 and destroys it
+with ordinary sword clicks. After the first impact moves the barrel, westward
+swings release original RedPotion 9817. Real mouse hover acquires Pickup
+cursor 2; a left click yields one potion on both server and client. Actual X
+input consumes it and raises observed HP from 12 to 35. The owned manual
+Save retains HP 35, poison 0, XP 9303.707 and original MayorsScepter 10344.
+Post-Save HP is 28 and the process exits naturally with code 0. The optional
+purchased Wolf1 dies elsewhere on the original map during this run; this is
+a living-player Save, not a living-party checkpoint. Earlier living-party
+Save 127 remains preserved, and required Kalen remains alive.
+
+Case 133's new process loads that owned slot through the original menu and
+restores HP 35, the earned Scepter, consumed barrel/potion state and the
+companion's death. Its later original western-road Charge kills Scorpion
+8516, but continuing pursuit kills the player before the next arrival. The
+whole run remains failed and ineligible for continuation. Read-only snapshots
+also show pursuing original ShamanBuddy1 and Pixie missiles; no AI or health
+adjustment is made to bypass combat. Separate living-player recovery and
+initial Load evidence is recorded in
+`original-scepter-west-recovery-save-load-verification-v132.json`. Kalen,
+delivery to the Mayor, remaining areas and chapter/overall completion remain
+pending.
 
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit

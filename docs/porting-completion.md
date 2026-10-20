@@ -578,6 +578,28 @@ initial Load evidence is recorded in
 delivery to the Mayor, remaining areas and chapter/overall completion remain
 pending.
 
+Case 135 first approaches the pursuing original ShamanBuddy1 more closely,
+then uses actual A-key and mouse input. Original extent 9815 is observed
+dead; its owned living-player Save retains HP 28, poison 0 and XP 9611.67.
+Post-Save HP is 21 and exit is naturally 0. Case 136's new process restores
+that Save and original defeat state, follows the original road back to
+waypoint 537 and observes HP 21, 21, 22, 22, 23, 23 and 24 through natural
+rest. Its owned Save retains HP 24. Case 137 continues original rest in a
+separate process, observing HP 25, 27, 29, 31, 33 and 35; its owned Save and
+post-Save observation both retain HP 35 with poison 0. The earned Scepter
+remains held and Kalen remains alive; the earlier optional companion death
+also remains. All three cases exit naturally with code 0.
+
+Case 138 initially restores that full-health owned Save through the original
+menu. Its later traversal dies at original JailDoor 7568, rather than
+reaching Kalen. Read-only saved-map decoding identifies lock code 3, the
+original Ruby-key requirement. This failed traversal is preserved separately
+from its initial Load and earns no Kalen interaction or door-unlock credit.
+`original-shaman-pursuit-recovery-save-load-verification-v137.json` binds the
+actual Shaman combat, natural recovery, living-player Saves and initial
+fresh-process Load. Obtaining and using the original Ruby key, Kalen's
+dialog, Mayor delivery and the remaining completion requirements remain open.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

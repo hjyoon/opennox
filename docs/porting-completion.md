@@ -243,10 +243,81 @@ eastern cemetery road but times out at its iron fence and is rejected as a
 continuation source. Cases 54/55 replay from the healthy prior Save, observe
 the fence and attempt an actual Space jump, then save alive. Neither fence
 crossing nor the nearby `Secret01XP` award is proved; XP remains unchanged.
-Preferred current checkpoints are normal case 55 in War03c and ordinary
-highres case 50a in War03b, both HP 35, poison 0, gold 100 with Wolf1 alive.
-The Scepter, Kalen, remaining original areas and chapter boundary are still
-pending.
+These cemetery checkpoints remain archived. The Scepter, Kalen, remaining
+original areas and chapter boundary are still pending.
+
+### Warrior chapter 3 crypt continuation
+
+Case 56 follows the original mausoleum half doors and CaveElevatorPit 8142
+to its paired crypt elevator 6987. Player and purchased Wolf1 both transfer
+from the cemetery near (2334,5301) to the crypt near (2300,3059). Waiting
+under incoming attack then causes player death during the Save sequence;
+this case is rejected and its healthy source 55 remains unchanged.
+
+Case 57 replays from 55 with actual quickbar and approach input after
+landing. Original Urchins 9819, 9690, 9689, 9353 and 9352 are dead at the
+end, and player and Wolf1 survive. Its owned manual Save retains HP 14,
+poison 0, gold 100 and XP 8852.732. The sword helpers observe four pinned
+creatures dying and then no available targets; they press no sword attack.
+These observations do not establish sword kills or assign each kill to a
+particular attacker.
+
+Case 58 reloads this Save and rests in the cleared room using original game
+time. Observed HP progresses through 18, 22, 27, 31 and 35, stays at 35 and
+is saved again. The virtual-clock process runs 7,055 native frames and exits
+naturally after 86.2 seconds. Case 59 follows the original eastern corridor;
+actual cursor observation identifies purchased Wolf1 with HP 40/40. It ends
+alive with another owned Save after two further observed creature deaths.
+The final post-Save HP is 21; kill attribution remains separate.
+
+Case 60's further creature-approach input times out after a successful
+return and natural recovery, so it earns no continuation Save. Case 61
+repeats that recovery as a separate successful stage and saves HP 35.
+Case 62 then reaches original connected-room waypoints 562, 563 and 564
+using ordinary running and bounded sword input. It saves alive, with final
+post-Save HP 8; it does not prove all nearby enemies are cleared.
+
+Case 63 immediately runs back over those reached original roads, rests in
+the cleared elevator room and saves HP 35 with poison 0. Its observed
+recovery sequence is 16, 25, 33 and 35; the process exits naturally after
+105.0 seconds and 8,764 native frames. The injured source Save is preserved.
+
+A separate read-only observer repeats case 57 from the identical earned
+Save and byte-identical input. It records six actual 8-to-0 Urchin health
+changes with fresh damage-frame metadata and the purchased Wolf1's exact
+native pointer as the damage source. Wolf1's recorded owner is the actual
+player. Both this diagnostic and the clean case 57 end with those six
+original creatures dead, Wolf1 alive and natural exit 0. One other health
+decrease has stale damage-source metadata and is not attributed to an
+attacker. The diagnostic earns no additional campaign completion credit;
+`companion-combat-verification-d8.json` records the bounded evidence.
+
+Case 64 reaches upper-settlement waypoint 415 with observed HP 34. Its
+manual Save completes, then the player dies; the overall run remains a
+failed death case. Direct reading shows that its owned SAVE0001 was written
+before death with HP 32, poison 0 and the unchanged quest, ability and gold.
+An explicit recovery proof binds the exact source files, reviewed input,
+unmodified clean product, owned path, pre-Save living snapshot and
+Save-before-death log order. Other failed or isolated runs do not qualify.
+
+Case 65 uses original Solo/slot1/Load input on that exact cloned living
+checkpoint. Its first native observation is HP 32 at the saved upper road,
+then actual retreat and natural rest permit a new owned Save at HP 35 and
+natural exit 0. This verifies recovery of a valid pre-death Save without
+reclassifying the source run as successful. The default preparation rules
+remain strict; this source requires its separately validated recovery proof.
+The latest healthy normal checkpoint is case 65 in War03c; ordinary highres
+case 50a in War03b remains archived. Required objectives and other areas are
+still pending.
+
+A read-only scan of all 157 supplied stock `.map` files parses their exit
+records and inline script strings without errors. It finds no direct exit
+or literal inline-script reference into War03d; its inline script is empty.
+War03d's 1,135 objects only partially overlap War03c's 2,120 objects: 474
+share extent/type and 329 also share position. This does not establish full
+War03d coverage or remove it from the verification scope. The four Warrior3
+map files independently match the untouched supplied Nox asset hashes.
+Details are in `stock-war03d-reference-audit-v1.json`.
 
 ### R344 player-info correction
 

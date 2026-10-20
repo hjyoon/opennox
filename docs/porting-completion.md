@@ -452,6 +452,33 @@ the actual input, healing, recovery, owned Saves and fresh-process Load.
 The Shaman, Scepter, Kalen, remaining areas and chapter completion remain
 pending; this evidence does not establish overall completion.
 
+Case 103 independently repeats the original crypt entry without consuming
+either purchased potion. Actual combat leaves HP 19; natural rest restores
+35, and the original menu writes an owned Save with both potions and living
+owned Wolf1. Case 104's fresh-process menu Load retains both potions, and
+the actual original northern road produces an owned Save at HP 3.
+
+Case 105 settles the original Load input before pressing X: native frames
+9 and 25 show HP 3 to 35 and both potion counters change from 2 to 1.
+The original crumbling pit, scripted scene and sword-opened Dirt passage
+lead to paced sword attacks on the main Shaman. A second actual X input
+changes HP 4 to 33 while both inventories reach zero potions.
+The main Shaman is dead in the subsequent world snapshots. The original
+menu writes an owned Save with HP 21, poison 0 and XP 9165.205; post-Save
+HP is 18 and exit is naturally 0. Wolf1 remains alive and owned, and Kalen
+remains alive. Both Shaman doors have lock code 0 in the saved map. The
+pre-scene source also has lock code 0, so this comparison alone is not a
+direct live 5-to-0 observation or proof of doorway traversal.
+
+Case 106's separate process loads that exact Save through the original
+menu. Its first native frame restores HP 21, both purchased potions remain
+consumed, and the original main Shaman remains dead. Its later pursuit of
+the remaining Urchins fails with player death; the whole run remains failed
+and is not a continuation source. The independent evidence is
+`original-shaman-defeat-save-load-verification-v106.json`. Four arena
+Urchins and two Shaman buddies remain alive in Save 105. Scepter, Kalen's
+interaction, remaining areas and chapter completion are still pending.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

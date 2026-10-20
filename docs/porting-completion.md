@@ -21,6 +21,74 @@ completion requirements.
 
 ## Current findings
 
+R339 consumes the earned GoldKey through original door movement, recognizes
+Garrit and Dudley and completes Dudley's original Done dialogue. Native
+observations retain state 18=1/19=1 and returned-worker counter 21=3. The
+original shared recognition creates seven Imps and one Scorpion; all eight
+new script identities are observed. No key, counter or callback is assigned.
+
+Original jump/run input exits the guarded room and escorts both workers
+through the north and inner roads. Garrit briefly stops at a corner; three
+ordinary walks bring him alongside Dudley again without an AI or Follow
+change. A separate original Load and 6,500 normal native ticks, after sequential
+learned Charm inputs, recover health 10->29 and preserve two Imps and a Small.
+
+The final successful return road uses three original moving Charm inputs.
+Actual native durations are 63->108, 167->212 and 227->272, 45 frames each;
+all three Imps are alive and owned before Save. Eight measured road arrivals
+reach the lower lift room. Health 20->6->7, poison 0, and all five story workers
+survive the whole case including the original Save and 180 post-Save ticks.
+Dudley and Garrit finish 36 and 23 units from the player. Two saved Imps later
+die during native post-Save combat; an original Load can restore the earlier
+saved live state. No external revival or ownership assignment is made.
+
+Waiting for recovery at that point instead loses Dudley. That case exits 0
+through original story failure but writes no Save and is never a source.
+Another case actually walks onto platform 6164 at 3302,4108 and observes the
+player inside its box at Z4. After 90 normal ticks the player is still downstairs
+and outside the box. It saves, then PlayerDeath occurs during post-Save
+ticks; the whole branch is rejected. Dudley nevertheless reaches the upper
+area before Save, sets state 19=2 and counter 21=4 and earns the original 250 XP
+(native 7371.3003->7621.3003). Garrit and the player remain downstairs. This
+proves one original worker transport/Return event inside a rejected branch;
+it does not supply a safe new-return checkpoint. Counter 5 and AllFound
+remain unproven. Combat and crowd displacement do not establish an engine
+defect.
+
+There are 17 executed captures: 11 exit 0, 6 negative exit 2, 10 valid living manual
+Saves, 6 PlayerDeath branches and 45 measured arrival gates. The exit 0 count
+includes the no-Save story failure. One genuine Save is rejected because
+of later PlayerDeath. No forced termination, startup failure or prepared-only
+case occurs. Preferred eligible original Save is case 15, native health 7,
+poison 0, gold 513, state15=6/18=1/19=1/21=3, GoldKey 0 and all five
+workers alive; Player.plr SHA256 is
+28efb0e766c51915f6a240ddb2a5adcbdbf9fae204616a8bc74196c44f23e9b9.
+This round does not claim fresh ordinary normal/highres continuation runs.
+
+Engine source and products remain sealed R334 revision
+b6f0d60ae9eb5de85a5f6c584fefb161c3f2831a. Reused gates retain 58 focused and
+58 strict actual cgocheck2/race/checkptr2 passes and four exact-terminal-
+preserving full suites: normal/HD 82,108 PASS/49 SKIP each, server/server-HD
+77,280 PASS/7 SKIP each, zero FAIL. Four ARM64 products and their metadata/full
+source archive are unchanged. No new engine build or suite is claimed.
+Preservation rehashes 6,645 source, 3,284 protected, 1,562 personal files, each
+stock clone and all 22 prior seals, including the separate R335 repair.
+
+REA supplies generic reverse-engineering and evidence tools. The OpenNox
+completion scope comes from the inherited task record and this document;
+actual campaign play is the agent's chosen validation method, not a REA
+requirement. The user's provenance question does not add a new completion
+criterion.
+
+Next are protected boarding and physical worker returns, then the remaining
+mine objective and ordinary normal/highres checks of the earned escort Save.
+Complete three-class campaigns/endings, Warrior zipper/Horrendous, broader
+UI/audio, original Windows-peer, reachable ABI/native-generator and sustained
+stability remain open. Weighted maturity remains 79%, not measured coverage;
+all seven areas remain partial and the 100% goal remains active.
+
+### Retained R338 findings
+
 R338 completes Alex's original follow-up dialogue, earned GoldKey and third-lift
 transport. The actual Alex conversation and original Done change state 15=5->6,
 grant original GoldKey 4849 from zero to one and enable Worker1Unlock 3096,

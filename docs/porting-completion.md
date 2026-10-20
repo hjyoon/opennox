@@ -512,6 +512,26 @@ and preserves the main Shaman and both Urchin death states. Its later chest
 approach dies and remains failed. The separate living-Save and initial-Load
 proof is `original-urchin-combat-save-load-verification-v115.json`.
 
+Case 119 reaches original chest 9603 with a bounded northeast run, acquires
+its actual Use cursor and clicks static wire 0xa583. The chest releases
+RedPotion 9604. Case 121 repeats that input from the earned Save, acquires
+the original Pickup cursor and clicks the released potion. Both inventories
+report one potion; actual X input consumes it and observed HP reaches 35.
+The new owned Save retains HP 34, poison 0 and unchanged XP 9203.707, followed
+by natural exit 0. The already defeated Shaman and two Urchins remain dead,
+Wolf1 remains alive and owned, and Kalen remains alive.
+
+Case 122's separate process initially restores HP 34 and the opened chest
+with its consumed potion. Actual connected-road arrivals at original
+waypoints 636, 543 and 650 establish passage beyond the Shaman gates into
+the upper room. Its owned Save has HP 11 and poison 0; post-Save HP remains
+11 and exit is naturally 0. The input, loot, recovery, living Save/Load and
+original traversal evidence is
+`original-upper-chest-recovery-gate-verification-v122.json`. A subsequent
+attempt to rest there dies as pursuit continues, so that failed run supplies
+no natural-recovery or continuation credit. Scepter, Kalen's interaction,
+the chamber-door trigger and all other remaining requirements remain pending.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

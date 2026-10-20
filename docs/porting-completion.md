@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a tunnel combat, DunMir gates and guards, road robbers, Ix guard gate unlock and natural War03b entry proved; fresh earned War03b AUTOSAVE Load/manual Save; remaining objectives and areas pending |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a tunnel combat, DunMir gates and guards, road robbers, Ix gate unlock, Mayor quest and purchased wolf proved; normal/HD living Save/Load and natural War03c entry with wolf; remaining objectives and areas pending |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
@@ -213,8 +213,40 @@ Case 44 loads that exact earned Save with the current clean highres product
 using the ordinary clock, walks the original town road and writes an owned
 living manual Save. It retains HP 35, poison 0, XP, gold, Berserker level 5,
 the Urchin guide and the Ix journal, with a natural exit 0. Cases 43 and 44
-are the preferred current normal/highres checkpoints. The later chapter
-objectives remain pending.
+remain archived normal/highres checkpoints.
+
+Cases 45–48 follow original Ix roads and house passages, with actual
+Mayor's Guard and Mayor-home Talk/Done input. The original automatic Mayor
+introduction is visible in case 40a; the later owned Saves retain
+`War03aIxQuest` type 4 and `War03bGetScepter` type 2. Door-hover attempts in
+46/47 do not acquire a target or Use cursor, so only their actual walking
+passages earn credit.
+
+Case 49 uses original Henrick Talk, Yes and Done to buy the first wolf for
+200 gold. Both client and server gold change from 300 to 100, and the
+original sale globals change from 0/0 to 1/1. Original Wolf1, extent 5997,
+leaves its pen and follows; the unpurchased Wolf2 remains in the pen. Case
+50 reloads that manual Save and walks the original northeastern road. The
+wolf moves over 1,600 units and finishes within 44 units of the player.
+Case 50a repeats living Load, movement and Save with the clean highres
+product and ordinary clock, exiting naturally after 62.9 seconds. Both
+retain HP 35, poison 0 and gold 100. Their independent checks are recorded
+in `original-wolf-purchase-verification.json`.
+
+Case 51 crosses the original northeastern exit into War03c, with the
+purchased wolf transferred by the original game. Its actual arrival is
+(1142,4193); a new owned manual Save retains HP 35 and poison 0. Case 52
+reloads this Save and follows the original southern cemetery trail. Its
+combat helpers observe no available target and press no attack, so this
+route earns movement and living Save/Load credit only. Case 53 reaches the
+eastern cemetery road but times out at its iron fence and is rejected as a
+continuation source. Cases 54/55 replay from the healthy prior Save, observe
+the fence and attempt an actual Space jump, then save alive. Neither fence
+crossing nor the nearby `Secret01XP` award is proved; XP remains unchanged.
+Preferred current checkpoints are normal case 55 in War03c and ordinary
+highres case 50a in War03b, both HP 35, poison 0, gold 100 with Wolf1 alive.
+The Scepter, Kalen, remaining original areas and chapter boundary are still
+pending.
 
 ### R344 player-info correction
 

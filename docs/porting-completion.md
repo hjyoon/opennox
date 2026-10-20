@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward and War02b Save/Load proved; Gearhart rescue and chapter 2 ending pending | Completion unproven in inspected records |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, second silver key, Gearhart cooperative switches and living War02b Save/Load proved; sewer exit and chapter 2 ending pending | Completion unproven in inspected records |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
@@ -54,6 +54,46 @@ overnight runs can strengthen evidence; they are not additional implicit
 completion requirements.
 
 ## Current findings
+
+### ChainPull5 follow-up
+
+The reported Wiz02b ChainPull5 is `Wiz02B:ElevatorChain`, whose original
+activation callback is `GetArchivistButton`. Isolated original-object/script
+diagnostics confirm the actual Use cursor, mouse click, MSG_TRY_COLLIDE
+dispatch and callback. Their entry marker names one previously anonymous
+waypoint in a private map copy; original object/script sections remain
+byte-identical. These diagnostic runs do not earn campaign completion credit.
+
+The trigger and toggle update ports used `Frame134` (PE32 object+536,
+the damage timestamp) for cooldowns. Both original C routines use object+136,
+which is native `Field34`. The ports now read and write that original field
+without changing the damage timestamp. Three new regressions fail before
+the fix and pass afterwards. Two existing tests correct their timestamp
+expectations to Field34; all their other assertions and existing goldens
+remain intact. Focus checks pass 1,950 terminal events over ten repetitions;
+actual cgocheck2/race/checkptr2 checks pass 297. Four complete suites pass:
+normal/highres 82,117 PASS and 49 SKIP each; server/server-highres 77,289 PASS
+and 7 SKIP each. Terminal-event preservation is recorded separately from
+the two explicit expectation corrections.
+
+The bounded diagnostic also exposes a separate unresolved follow-up:
+Zaris starts moving after the chain callback, then re-enters his home guard
+trigger and stops near 3939,4893. Suppressing that guard in a diagnostic
+overlay alone does not establish gate arrival. No such suppression is part
+of the production fix, and the complete reported interaction remains under
+investigation. Evidence is retained under
+`/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/chainpull-*`.
+
+Before this follow-up, the earned R344 Warrior continuation opens the original
+gear-room chest, picks up its second SilverKey through the actual Pickup
+cursor, opens the third gate pair and completes Gearhart's second Talk/Done.
+Gearhart reaches his pressure switch. The player's original pressure switch
+then advances the sewer script to phase 4; final Done enables the exit and
+Gearhart's follow behavior. Case 11 saves health 35, poison 0 and XP 7049.47,
+with Gearhart alive. Original source Saves remain unchanged. Sewer exit,
+town rescue award and chapter 2 ending remain pending.
+
+### R344 player-info correction
 
 R344 fixes the reported Linux AMD64 segmentation fault in the show-info
 player renderer, sub_436F50. The class-name lookup dereferenced a packed PE32
@@ -93,7 +133,7 @@ native Save hashes and case paths are recorded in
 `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/build-reload-verification.json`.
 
 Campaign scope remains Warrior, Conjurer and Wizard chapters 1-3 only.
-Warrior2's Gearhart puzzle/ending, Warrior3, Wizard2-3 and earlier checkpoint
+Warrior2's sewer exit/ending, Warrior3, Wizard2-3 and earlier checkpoint
 reconciliation remain open. The 100% goal is active without a new percentage.
 
 ### Retained R343 findings

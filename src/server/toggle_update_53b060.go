@@ -9,7 +9,8 @@ type ToggleUpdateRuntime53B060 struct {
 }
 
 // ToggleUpdate53B060 ports GAME.EXE 0053B060 to native Object pointers while
-// retaining the original fixed-width 60-byte update record.
+// retaining the original fixed-width 60-byte update record. Its cooldown
+// belongs to Field34 (PE32 object+136), not the separate damage timestamp.
 func (s *Server) ToggleUpdate53B060(unit *Object, runtime ToggleUpdateRuntime53B060) uint8 {
 	update := unit.UpdateDataToggle()
 	if !unit.ObjFlags.Has(object.FlagEnabled) {
@@ -18,20 +19,20 @@ func (s *Server) ToggleUpdate53B060(unit *Object, runtime ToggleUpdateRuntime53B
 	}
 	if update.Flags&0x8 == 0 {
 		update.State = 0
-		unit.Frame134 = s.Frame()
+		unit.Field34 = s.Frame()
 		unit.MarkAnimFrame(0)
 	}
 	switch update.State {
 	case 0:
-		if s.Frame() > unit.Frame134 && update.Flags&0x1 != 0 {
+		if s.Frame() > unit.Field34 && update.Flags&0x1 != 0 {
 			runtime.AudioEvent(update.SoundActivate, unit)
 			unit.MarkAnimFrame(1)
 			runtime.ScriptCallback(&update.ScriptActivate, runtime.CollideTarget(unit), unit, NoxEventToggleXXX)
 			update.State = 3
-			unit.Frame134 = s.Frame() + s.TickRate()
+			unit.Field34 = s.Frame() + s.TickRate()
 		}
 	case 1:
-		if s.Frame() > unit.Frame134 && update.Flags&0x1 != 0 {
+		if s.Frame() > unit.Field34 && update.Flags&0x1 != 0 {
 			runtime.AudioEvent(update.SoundDeactivate, unit)
 			unit.MarkAnimFrame(0)
 			runtime.ScriptCallback(&update.ScriptDeactivate, nil, unit, NoxEventToggleYYY)
@@ -40,10 +41,10 @@ func (s *Server) ToggleUpdate53B060(unit *Object, runtime ToggleUpdateRuntime53B
 			} else {
 				update.State = 0
 			}
-			unit.Frame134 = s.Frame() + s.TickRate()
+			unit.Field34 = s.Frame() + s.TickRate()
 		}
 	case 3:
-		if s.Frame() > unit.Frame134 && update.Flags&0x1 == 0 {
+		if s.Frame() > unit.Field34 && update.Flags&0x1 == 0 {
 			update.State = 1
 		}
 	}

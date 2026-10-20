@@ -17,7 +17,8 @@ type TriggerUpdateRuntime53B1B0 struct {
 // TriggerUpdate53B1B0 ports GAME.EXE 0053B1B0 to native Object pointers.
 // TriggerUpdateData remains the original 60-byte record; its transient object
 // pointer is supplied by CollideTarget because PE32 Field4 cannot hold a native
-// pointer on 64-bit targets.
+// pointer on 64-bit targets. The cooldown uses Field34 (PE32 object+136),
+// independently of Frame134 (the damage timestamp at PE32 object+536).
 func (s *Server) TriggerUpdate53B1B0(unit *Object, runtime TriggerUpdateRuntime53B1B0) uint8 {
 	update := unit.UpdateDataTrigger()
 	delay := s.TickRate()
@@ -27,11 +28,11 @@ func (s *Server) TriggerUpdate53B1B0(unit *Object, runtime TriggerUpdateRuntime5
 	if unit.ObjFlags.Has(object.FlagEnabled) {
 		if update.Flags&0x8 == 0 {
 			update.State = 0
-			unit.Frame134 = s.Frame()
+			unit.Field34 = s.Frame()
 			unit.MarkAnimFrame(0)
 		}
 		if update.State != 0 {
-			if update.State == 1 && s.Frame() > unit.Frame134 && update.Flags&0x1 == 0 {
+			if update.State == 1 && s.Frame() > unit.Field34 && update.Flags&0x1 == 0 {
 				runtime.AudioEvent(update.SoundDeactivate, unit)
 				unit.MarkAnimFrame(0)
 				runtime.ScriptCallback(&update.ScriptDeactivate, nil, unit, NoxEventTriggerDeactivated)
@@ -46,7 +47,7 @@ func (s *Server) TriggerUpdate53B1B0(unit *Object, runtime TriggerUpdateRuntime5
 			unit.MarkAnimFrame(1)
 			runtime.ScriptCallback(&update.ScriptActivate, runtime.CollideTarget(unit), unit, NoxEventTriggerActivated)
 			update.State = 1
-			unit.Frame134 = delay + s.Frame()
+			unit.Field34 = delay + s.Frame()
 		}
 		flags := update.Flags
 		if flags&0x1 != 0 {

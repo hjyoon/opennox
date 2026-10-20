@@ -42,8 +42,8 @@ func TestTriggerUpdate53B1B0ActivationAndDeactivation(t *testing.T) {
 	if got := server.TriggerUpdate53B1B0(unit, runtime); got != 0xc {
 		t.Fatalf("activation result = %#x, want 0xc", got)
 	}
-	if update.State != 1 || unit.Frame134 != 130 || unit.Field33 != 1 {
-		t.Fatalf("activation state = (%d,%d,%d), want (1,130,1)", update.State, unit.Frame134, unit.Field33)
+	if update.State != 1 || unit.Field34 != 130 || unit.Field33 != 1 {
+		t.Fatalf("activation state = (%d,%d,%d), want (1,130,1)", update.State, unit.Field34, unit.Field33)
 	}
 	wantActivate := []string{"audio:101:true", "script:8:true:true"}
 	if fmt.Sprint(events) != fmt.Sprint(wantActivate) {
@@ -77,8 +77,8 @@ func TestTriggerUpdate53B1B0ImmediateAndDisabledPaths(t *testing.T) {
 			AudioEvent:     func(uint32, *Object) {},
 			ScriptCallback: func(*ScriptCallback, *Object, *Object, ScriptEventType) {},
 		})
-		if unit.Frame134 != 77 {
-			t.Fatalf("immediate deadline = %d, want 77", unit.Frame134)
+		if unit.Field34 != 77 {
+			t.Fatalf("immediate deadline = %d, want 77", unit.Field34)
 		}
 	})
 	t.Run("disabled", func(t *testing.T) {

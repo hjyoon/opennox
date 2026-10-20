@@ -39,8 +39,8 @@ func TestToggleUpdate53B060ActivationCycle(t *testing.T) {
 	if got := s.ToggleUpdate53B060(unit, runtime); got != 0x5 {
 		t.Fatalf("initial return = %#x, want 0x5", got)
 	}
-	if update.State != 0 || unit.Frame134 != 100 || len(events) != 0 {
-		t.Fatalf("initial state/frame/events = %d/%d/%v", update.State, unit.Frame134, events)
+	if update.State != 0 || unit.Field34 != 100 || len(events) != 0 {
+		t.Fatalf("initial state/frame/events = %d/%d/%v", update.State, unit.Field34, events)
 	}
 
 	update.Flags |= 0x1
@@ -48,8 +48,8 @@ func TestToggleUpdate53B060ActivationCycle(t *testing.T) {
 	if got := s.ToggleUpdate53B060(unit, runtime); got != 0xd {
 		t.Fatalf("activation return = %#x, want 0xd", got)
 	}
-	if update.Flags != 0xc || update.State != 3 || unit.Frame134 != 131 {
-		t.Fatalf("activation flags/state/frame = %#x/%d/%d, want 0xc/3/131", update.Flags, update.State, unit.Frame134)
+	if update.Flags != 0xc || update.State != 3 || unit.Field34 != 131 {
+		t.Fatalf("activation flags/state/frame = %#x/%d/%d, want 0xc/3/131", update.Flags, update.State, unit.Field34)
 	}
 	if len(events) != 2 || events[0] != "audio" || events[1] != "script" {
 		t.Fatalf("activation events = %v", events)
@@ -64,8 +64,8 @@ func TestToggleUpdate53B060ActivationCycle(t *testing.T) {
 	update.Flags |= 0x1
 	s.SetFrame(133)
 	s.ToggleUpdate53B060(unit, runtime)
-	if update.State != 0 || unit.Frame134 != 163 || len(events) != 4 {
-		t.Fatalf("deactivation state/frame/events = %d/%d/%v", update.State, unit.Frame134, events)
+	if update.State != 0 || unit.Field34 != 163 || len(events) != 4 {
+		t.Fatalf("deactivation state/frame/events = %d/%d/%v", update.State, unit.Field34, events)
 	}
 }
 

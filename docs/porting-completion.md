@@ -479,6 +479,27 @@ and is not a continuation source. The independent evidence is
 Urchins and two Shaman buddies remain alive in Save 105. Scepter, Kalen's
 interaction, remaining areas and chapter completion are still pending.
 
+The original lower room supplies another earned recovery route. Its apple
+barrel 8008 contains RedApples 10307/10308, and red barrel 8007 contains
+RedPotion 9821. Case 110a uses actual sword swings to destroy the barrels,
+then selects the dropped apple with the original Pickup cursor and left
+clicks: native HP changes from 15 to 20. A separate real mouse hover and
+click picks up the dropped RedPotion; both inventories report one. Actual
+X input consumes it and changes observed HP 11 to 32. The original menu
+writes an owned Save with HP 31, poison 0, unchanged XP and the main Shaman
+still dead. Post-Save HP is 24, exit is naturally 0, and Wolf1 remains alive
+and owned. The second original apple remains in the world.
+
+Case 111's initial fresh-process menu Load restores HP 31, the destroyed
+barrels, consumed first apple and potion, remaining second apple and dead
+main Shaman. Its later combat dies and remains ineligible for continuation.
+The original-world recovery and initial Load evidence are recorded in
+`original-world-supplies-save-load-verification-v110a.json`. A preceding
+click without first acquiring the Pickup cursor fails its inventory
+assertion and is preserved as a failure. No inventory, health, actor or
+objective state is assigned by these input routes. Scepter, Kalen and the
+remaining completion requirements are still pending.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

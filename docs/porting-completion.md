@@ -626,6 +626,43 @@ its subsequent premature reward click fails and supplies no reward-pickup
 or continuation credit. The separate proof is
 `original-ruby-door-kalen-save-load-verification-v142.json`.
 
+Case 144 waits for original input readiness, then acquires Pickup cursor 2
+on ChainTunic 9551 and LeatherArmoredBoots 9552 and picks up both rewards.
+The original pickup automatically equips the tunic. Actual connected-road
+movement returns through the unlocked door to waypoint 537; its owned
+living-player Save has HP 19 and poison 0. Case 145 loads those earned
+rewards and defeats the remaining original Scorpion 9003 with actual Charge
+after normal cooldown. It writes another owned Save at HP 19, followed by
+natural exit 0 and post-Save HP 20.
+
+Case 146 opens and closes the original inventory with real I-key input and
+observes natural recovery from HP 19 through 23, 27, 30 and 34. Its owned
+Save retains HP 34. Case 147 clicks the visible armored-boots inventory cell
+at (339,138). Original boots 9552 become equipped and previous boots 14060
+remain held but unequipped. Tunic 9551 stays equipped. Further natural rest
+and an owned Save retain HP 35, poison 0, XP 10218.387, gold 109 and the
+Scepter. Both runs exit naturally with code 0.
+
+Case 148's original route actually crosses the story-broken ZombieWallGroup
+and reaches southern waypoint 613 and CaveElevator 7566. Contact with the
+original trigger unlocks all three ChamberDoors 7612/7613/7614: read-only
+saved-map lock codes change from 5/5/5 to 0/0/0. Its owned Save has HP 15
+and poison 0; case 149 later writes HP 18 with the same earned equipment
+and Scepter. Neither run transports the player. Case 150's first fresh menu
+Load restores HP 18 and equipment, but its subsequent elevator boarding
+ends in player death and remains failed. The distinct reward, equipment,
+recovery, original wall passage and chamber-unlock evidence is recorded in
+`original-kalen-equipment-south-passage-verification-v149.json`.
+
+Case 151 does actually travel from the original elevator center near
+(3208,4588) to its original shaft near (1288,2012). Four original Skeletons
+are near the arrival point. The player has only HP 2 before a Save and dies
+afterward; the whole run is ineligible for continuation. Its earlier
+quickbar action reports no selected target and no queued key, so it proves
+no guard kill. A later lift-edge rest also dies. These observations do not
+establish a living elevator Save/Load, Mayor delivery or chapter completion;
+all original source checkpoints and failed runs remain preserved.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

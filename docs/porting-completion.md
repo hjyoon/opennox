@@ -21,6 +21,92 @@ completion requirements.
 
 ## Current findings
 
+R335 independently reloads the completed Naldo return and makes a healthy
+continuation Save through original recovery and movement. The new process
+retains logical script state15=4, state17=2 and returned-worker counter21=1.
+Three original 2500-tick in-world waits recover actual health 6->11->17->20,
+with poison 0 throughout. Original menu Save writes a new owned native health 20
+checkpoint with living Naldo and three living owned creatures. No health,
+poison, timer, position, AI, ownership or script field is assigned by the
+harness. All five original mine-worker NPCs remain alive in each usable Save.
+
+The original waypoint link1777,2149->1674,2477 passes the closed-gate area
+through actual right-mouse movement. A first southwest attempt reaches all 21
+planned physical goals, including 377,3824 outside Logan's door, but leaves
+the party fighting behind and dies. That branch supplies physical-clearance
+evidence only and is never a Save source. A shorter replay writes a living
+health 20 staging Save with the three pets close to the player.
+
+Original Hunt plus physical retreat preserves player health 20 but loses two
+pets and leaves Troll7196 alive. Eight staff actions from the earlier approach
+queue no attack because the original availability checks reject the target;
+no damage is credited to those actions. After following the next original
+road to 1581,2860, two native-hover-confirmed left presses actually attack the
+Troll. Target health 5 then 2 and its final DEAD flag are observed during the
+combined original staff/party combat. The player retreats and saves native
+health 11/poison 0 with two living Imps and living story NPCs. Neither the whole
+kill nor all damage is attributed to the staff alone.
+
+A further normal 5000-tick wait recovers health 11 to 20, and the original roads
+reach 972,3390. The attempted Imp quickbar action queues no A because its target
+has already died; no new Imp control is claimed. This route writes a living
+native health 20 Save, while the original pre-Save world still contains living
+adult7089 and Imp7087. Both die in the later post-Save observation. A fresh
+Load correctly restores the earlier living actors. Comparing the Save with
+those later deaths would falsely suggest a restoration bug. The stationary
+reload attempt loses health, receives original poison 1, then records
+PlayerDeath; its copied loaded PLR still says20/poison 0 and belongs to source7,
+so it is explicitly not a new living checkpoint.
+
+Immediate original movement on the same valid Save avoids those attacks:
+1031,3146->974,3054->1062,2942->1030,2816->1097,2717. Native health stays20 and
+poison 0 at every measured point and throughout the following original wait.
+The new owned Save has health 20/max20, mana 78/max78, gold 513 and XP 4704.8433,
+active map con03b and SHA 001df0f463f16a30892090d9effc77c7a484409a70ffdac798ed90427b77f8f9.
+Naldo remains alive and return counter 1 persists. The pets have died. Four
+later independent no-Save UI processes all load this checkpoint and preserve
+health 20/poison 0, confirming it as the preferred healthy continuation source.
+
+Actual B input opens the original knowledge book. The original beast tab lists
+six learned guides, and clicking Imp opens its portrait and description. The
+attempted portrait drag moves the book window; it does not establish an S-slot
+binding. Original S produces no creature and mana stays78. No summon success
+or source-code defect is credited. Read-only scans of 34 original Conjurer maps
+find the later Con08a script's AwardSummonSpell function using
+SPELL_SUMMON_CREATURE. This source observation does not execute that chapter
+or prove all trigger conditions; current summon acquisition remains campaign
+work, with no forced spell, guide or quickbar assignment.
+
+All 13 captures settle: 11 exit 0, 2 PlayerDeath exit 2, 7 newly valid living manual
+Saves and 47 measured physical arrival gates. The four UI diagnostics
+intentionally write no Save. Source7 is a dangerous living checkpoint, despite
+its positive saved health; source9 is preferred. Eight optional final script
+reads race orderly quit and are retained without using missing data as proof.
+All owned process groups are verified/quiescent, without forced termination,
+capture timeout or truncation. Unsupported-native-branch observations are 0.
+Preservation rehashes 6,645 source files, 3,284 protected files, 1,562 personal files,
+cloned stock and every R319 through R334 sealed artifact. Original GAME.EXE
+execution, personal writes and golden changes remain absent.
+
+Engine source and products are unchanged at
+b6f0d60ae9eb5de85a5f6c584fefb161c3f2831a. R335 explicitly reuses sealed R334's
+58 focused/58 strict tests (actual cgocheck2, race, checkptr=2), all four full
+suites and exact terminal-identity/action/multiplicity preservation. Normal/HD
+have 82,108 PASS/49 SKIP each; server/server-HD have 77,280 PASS/7 SKIP each, zero
+FAIL. The four Go1.26.9 ARM64 products, matched Go/REA metadata and full
+97044480-byte/7014-member source archive are reused unchanged; no fresh test
+or build run is claimed for this input-only round.
+
+Next work is fresh original Charm recruitment from the healthy source,
+Logan's guarded door and the other workers. Return counter remains1; Logan
+recognition, another worker return and complete mine rescue are unproven.
+Full three-class stories/endings, Warrior zipper/Horrendous, wider UI/audio,
+original Windows-peer, reachable ABI/native-generator and sustained stability
+remain open. Weighted maturity stays 79%, not measured coverage; all seven
+areas remain partial and the overall 100% goal remains active.
+
+### Retained R334 findings
+
 R334 makes the campaign input harness aim through the actual viewport and
 original mouse/quickbar controls. Earlier fixed pixels missed moving creatures
 in ordinary-clock runs. The new cast-at-nearest-monster-input action copies

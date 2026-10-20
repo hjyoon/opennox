@@ -79,6 +79,19 @@ remain unchanged; the new complete-drawer test adds six terminal events in
 each configuration. Frozen source inputs comprise 6,647 files. R343's earned
 Warrior sewer Save and all earlier sealed evidence are preserved separately.
 
+All four fresh macOS ARM64 products now pass help execution and independent
+REA/Go metadata inspection: exact Go 1.26.9, revision
+`4d0b2b9c556218613db34d0956300ccd5fa79cc1`, and `vcs.modified=false`.
+The normal and highres clients independently load cloned R343 case 37 Saves,
+run 300 native frames and write original menu Saves with health 35, poison 0,
+XP 7049.47, Berserker Charge 5, War2Gauntlet4 and SaveGearhart2. Gearhart
+remains alive, both processes exit 0 without PlayerDeath, and the original
+seed files remain byte-identical. These are virtual-clock checkpoint checks;
+they do not establish fresh complete-chapter or ordinary-clock coverage.
+All 6,647 frozen source inputs are rehashed and unchanged. Product hashes,
+native Save hashes and case paths are recorded in
+`/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/build-reload-verification.json`.
+
 Campaign scope remains Warrior, Conjurer and Wizard chapters 1-3 only.
 Warrior2's Gearhart puzzle/ending, Warrior3, Wizard2-3 and earlier checkpoint
 reconciliation remain open. The 100% goal is active without a new percentage.

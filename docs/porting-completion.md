@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Gauntlet partial; zipper/Horrendous completion pending | Completion unproven in inspected records |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward and War02b Save/Load proved; Gearhart rescue and chapter 2 ending pending | Completion unproven in inspected records |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
@@ -54,6 +54,59 @@ overnight runs can strengthen evidence; they are not additional implicit
 completion requirements.
 
 ## Current findings
+
+R342 completes the previously unresolved Warrior chapter 2 zipper passage.
+An actual east side approach, southeast run and Space pass the moving stone
+and blade corridor. Virtual and independent ordinary normal/highres cases
+reach the far side with health 20 and write genuine menu Saves. The original
+Troll death counter 229=1 and zipper activation 238=1 remain; no damage,
+collision, hazard, AI, position or timer state is assigned.
+
+Original far-door alignment and the stock teleporter trigger the reward:
+2,500 XP, maximum/current health 20->35 and Berserker Charge level 5. Waiting
+for the original award animation before menu input produces a safe Save.
+The original return door midpoint, Sargent Talk/Done and two automatic town
+QuarterMaster pages produce War2Gauntlet4 and SaveGearhart2. The return to
+War01a is the original reused town during chapter 2, rather than a chapter
+reset. The original gear room aisle and QuarterMaster Done are also saved.
+
+The cave shaft approach first stops outside its railing. Original movement
+around the northwest end, a slow walk to its center and normal lift ticks
+establish physical descent: upper 2390,3082 at Z -26/height 34 becomes lower
+4393,4278 at Z 4/height 0, inside the platform. The later original elevator
+break and automatic warning require normal delivery time and Done before
+Save. Case 24 retains health 35, poison 0 and a genuine lower-room Save.
+
+Original thin-door mouse input and a tangent adjustment enter War02b through
+its enabled exit. Independent ordinary normal and highres processes load
+that same entry Save, make two nearby walks, run 300 native frames and write
+new owned Saves. Both retain health 35, poison 0, XP 5375.7324, Berserker
+Charge 5, Gauntlet4, SaveGearhart2 and a living sewer Gearhart. These are
+earned checkpoint continuations; Gearhart rescue and the chapter 2 ending
+remain open. No entire fresh current-product chapter replay is claimed.
+
+There are 27 executed captures: 19 exit 0,
+8 negative exit 2, 14 valid living
+manual Saves and 47 measured arrival gates,
+with zero PlayerDeath or forced termination. Prepared case 1 is never run.
+Five exit 0 cases have no new Save and cannot authorize continuation. Input
+failures and optional final observation races remain preserved, without a
+native engine defect claim. Every interpreted script snapshot uses its exact
+original map-specific function identity and global layout.
+
+Scope remains Warrior, Conjurer and Wizard chapters 1-3 only. Warrior's
+remaining rescue/ending/chapter 3, Wizard chapters 2-3 and earlier-evidence
+reconciliation remain open. The historical 79% engineering estimate is not
+a new nine-cell percentage. All seven broader engineering areas remain
+partial; overall 100% is unproven and the goal remains active.
+
+Engine/products and gates remain sealed R334 b6f0d60ae9eb5de85a5f6c584fefb161c3f2831a:
+58 focus, 58 strict actual cgocheck2/race/checkptr2; normal/HD
+82,108 PASS/49 SKIP each and server/server-HD 77,280 PASS/7 SKIP each, zero
+FAIL. No fresh suite or build is claimed. Preservation rehashes 6,645 source,
+3,284 protected and 1,562 personal files, every stock clone and 25 prior seals.
+
+### Retained R341 findings
 
 R341 extends the earned Conjurer chapter 3 chain through its original ending.
 Original mine-exit movement returns to Con03a. The return point lies inside

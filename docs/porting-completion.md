@@ -319,6 +319,40 @@ living Save, exiting naturally after 61.7 seconds. Current living-party
 checkpoints are normal 63 and highres 67 in War03c. Required objectives and
 other areas are still pending.
 
+Case 70a follows 26 original connected-route waypoints to the Sapphire-key
+chest. Actual close-range mouse input acquires its Use cursor and opens it;
+a separate left click picks up the dropped SapphireKey. Both server and
+client report one key. The original menu writes an owned manual Save with
+HP 18, poison 0 and unchanged quest, ability, XP and gold, followed by natural
+exit 0. Case 71 independently loads that exact Save through the original
+menu: its first native frame reports HP 18 and both inventories retain the
+key. The source files and their hashes remain unchanged.
+
+The later return in case 71 fails with player death. Further sword-approach
+and retreat attempts also fail; they do not qualify as continuation sources.
+Case 73's actual A-key Charge moves through the Scorpion passage and permits
+eleven original return-route arrivals before another death. This establishes
+neither a Scorpion kill nor a healthy round trip. A first Sapphire-door click
+in case 74 misses the native drawable and earns no door-use credit.
+`sapphire-pickup-save-reload-verification-v71.json` records the successful
+pickup and living Save/Load separately from the failed return. The earlier
+healthy party checkpoints remain preserved.
+
+Case 75 corrects the approach and crosses the original cage doorway with
+the earned key. The key disappears from inventory, and read-only decoding
+of the new saved map confirms door 9808's lock changes from 4 to 0. The
+player reaches the treasure room and writes an owned manual Save with HP 6,
+poison 0 and XP 8875.205, then exits naturally with code 0. Its source Save
+remains unchanged. The attempted pixel click still acquires no Use cursor;
+the evidence establishes collision-based unlocking and passage, not a
+successful left-click use. `sapphire-door-unlock-verification-v75.json`
+records the native lock and inventory evidence. A subsequent attempt to
+rest near the room center dies as the original pursuing Urchins enter the
+doorway; that failed run earns no recovery or continuation credit. Treasure
+collection and a healthy continuation from this room remain pending. A
+separate bounded run to the back wall also dies. Main-quest continuation
+therefore retains the healthy original party Saves 63 and 67 as sources.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

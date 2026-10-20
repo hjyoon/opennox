@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Natural War03a entry and living normal/HD AUTOSAVE Load/manual Save; original objectives and War03b-d pending |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a tunnel combat, DunMir gates and guards, road robbers, Ix guard gate unlock and natural War03b entry proved; fresh earned War03b AUTOSAVE Load/manual Save; remaining objectives and areas pending |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
@@ -54,6 +54,52 @@ overnight runs can strengthen evidence; they are not additional implicit
 completion requirements.
 
 ## Current findings
+
+### Alerted enemies remain stationary at range
+
+The reported behavior reproduces with the stock `War03a:Robber`. At about
+378 units it recognizes the player and selects that exact enemy, but its
+FIGHT action is cancelled before startup on each frame. The original
+ten-second UNDER_ATTACK condition has expired by this point. The GUARD
+writer packed its home X/Y into Args1/Args2, while the original location
+dependency reads Args2/Args3. The resulting invalid home distance fails the
+guard's condition and repeatedly removes FIGHT. Nearby-enemy stimulus can
+renew UNDER_ATTACK and conceal the error at close range.
+
+Commit `3ce87ff7a8dd982dad0228b038bb6da90e78070d` writes the radius and home
+coordinates into Args0/Args2/Args3 and preserves the unused native-width
+Args1. A bounded execution of the seven unchanged GAME.EXE instructions at
+0054613B..00546156 confirms those stores and preserved fields for four
+positions. The existing location reader remains unchanged. New regressions
+cover reused slots, failed pushes, the actual native guard/dependency
+pipeline, the 750-unit boundary and the recent-hit OR condition. Four
+subcases fail before the fix. All nine new terminal events pass afterwards.
+No previous assertions, goldens or original code/data ranges change.
+
+Focus checks pass 4,068 terminal events over three runs. Actual
+cgocheck2/race/checkptr2 checks pass 1,356. All four complete suites pass:
+normal/highres 82,915 PASS and 49 SKIP each; server/server-highres 78,087 PASS
+and 7 SKIP each. The event audit preserves every earlier terminal event,
+with exactly nine additions in each configuration. It uses the same two
+existing test families' runtime-address normalization as the earlier audits.
+
+Before/after original-map runs use byte-identical input and cloned earned
+Saves. Before the fix, twelve samples retain the same enemy position and an
+unstarted FIGHT. Afterwards it pursues the player, reaches melee range and
+delivers three native damage events without player retaliation. A separate
+stock Archer creates a real missile with its recorded original owner.
+These isolated diagnoses do not earn campaign completion credit; a separate
+archer attack probe ends in player death and preserves its source Save.
+
+All four clean ARM64 products at this commit pass help execution and matching
+independent Go/REA revision, Go 1.26.9, tags and unmodified-VCS checks. The
+normal ordinary-clock and highres virtual-clock products repeat the actual
+original input route without code overlays, both with natural exits 0,
+observed pursuit and native incoming damage. Their observed player health
+changes from 35 to 24 and 30 respectively. The clean source archive and
+6,654 frozen inputs are preserved in `ai-guard-fix/`. Runtime and suite
+checks are consolidated in `ai-guard-fix/verification.json`. Evidence remains under
+`/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/ai-*`.
 
 ### ChainPull5 follow-up
 
@@ -138,11 +184,37 @@ that AUTOSAVE through row 0 and each write an owned manual SAVE0001 through
 the original menu. Separate normal/highres processes then load their new
 manual slot, walk along original navigation waypoint 1059 and save again.
 Both preserve HP 35, poison 0, XP, the Ix journal, Berserker level 5 and the
-Urchin guide. Preferred continuation saves are cases 26a and 27a. The current
+Urchin guide. These cases 26a and 27a remain archived. The current
 campaign audit remains separate from the preserved pre-fix audit. Earlier attempts that displayed a save message but retained
 a copied older manual slot are rejected for continuation; original source
 paths and hashes distinguish the original automatic save from a new manual
-save. Further Warrior3 submaps and objectives remain pending.
+save.
+
+Further earned Warrior3 input routes kill the original cave Troll using
+Berserker Charge and clear four Bats with sword input. Actual DunMir half-door
+and inner-gate clicks permit Brigadin, Kenneth and Lance Talk/Done and the
+original public road. One attempt stops on a wall and another dies after
+bypassing a roadside robber; both are rejected for continuation. A clean
+replay kills that robber with Charge, and a second original road robber with
+sword input. Janero's actual first Done unlocks the Ix gate pair; logical
+globals 36 and 39 change from 0/0 to 1/1. Original outer/inner gate clicks
+and the original exit then enter War03b. Case 40a retains the earned War03b
+AUTOSAVE, but its copied older manual slot is rejected. Case 41a loads the
+new AUTOSAVE in a fresh process, follows original town roads and writes an
+owned War03b manual Save: HP 15, poison 0, XP 8852.732, gold 300, Berserker
+level 5, the Urchin guide and the Ix journal. Case 41a is the latest normal
+checkpoint before the AI fix. The clean AI-fixed normal product then loads
+that earned Save and writes current-engine checkpoint 42. Its first well
+click does not acquire the Use cursor and earns no well-interaction credit.
+Case 43 walks closer, acquires the actual Use cursor on the original
+anonymous WishingWell and clicks it. Original `MakeAWish` restores HP from
+15 to 35; a new owned manual Save retains that health with poison 0.
+Case 44 loads that exact earned Save with the current clean highres product
+using the ordinary clock, walks the original town road and writes an owned
+living manual Save. It retains HP 35, poison 0, XP, gold, Berserker level 5,
+the Urchin guide and the Ix journal, with a natural exit 0. Cases 43 and 44
+are the preferred current normal/highres checkpoints. The later chapter
+objectives remain pending.
 
 ### R344 player-info correction
 

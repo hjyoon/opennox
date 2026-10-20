@@ -1,17 +1,51 @@
 # macOS ARM64 completion evidence
 
-The current engineering estimate is **79%**. This is a weighted maturity
+## Current campaign scope
+
+The latest user instruction limits campaign verification to **Warrior,
+Conjurer and Wizard, chapters 1 through 3 only**. This covers nine class/chapter
+cells and every stock submap in those chapters. Chapter 4 and later gameplay,
+and full-story endings, are excluded from the completion requirements.
+An original transition into chapter 4 may establish the chapter 3 boundary;
+no chapter 4 objective progression is required or pursued.
+
+Each chapter needs original earned progression and required objectives,
+class mechanics available in these chapters, and original Save/Load evidence.
+Existing build/ABI, UI, audio, networking and stability requirements remain;
+later-chapter content must not become an implicit verification gate.
+Historical sections below retain the earlier broader scope, which this
+explicit user restriction supersedes.
+
+| Class | Chapter 1 stock maps | Chapter 2 stock maps | Chapter 3 stock maps |
+| --- | --- | --- | --- |
+| Warrior | War01a | War02a, War02b | War03a, War03b, War03c, War03d |
+| Conjurer | Con01a | Con02a | Con03a, Con03b |
+| Wizard | Wiz01a | Wiz02a, Wiz02b, Wiz02c | Wiz03a, Wiz03b, Wiz03c |
+
+The nine-cell inventory distinguishes earlier product evidence from current
+runtime evidence. These states are not completion percentages. A map list
+or a process exit does not prove a complete chapter.
+
+| Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
+| --- | --- | --- | --- |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Gauntlet partial; zipper/Horrendous completion pending | Completion unproven in inspected records |
+| Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Current mine rescue, all five returns and Foreman reward proved; Captain/boundary pending |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
+
+The historical full-game engineering estimate is **79%**. It predates the
+chapter restriction and is not a measured completion percentage for the nine
+class/chapter cells. This is a weighted maturity
 estimate, not measured function, feature, line or branch coverage. Passing
 tests or adding sealed original ranges does not supply that denominator.
 
 | Area | Weight | Estimated maturity | Remaining completion evidence |
 | --- | ---: | ---: | --- |
 | Build and native ABI | 15 | 95 | Classification of remaining reachable stock callbacks/layouts after the passing integrated four-configuration suites |
-| Gameplay | 25 | 80 | Executed three-class feature matrix, including items, AI, death, pets and objective modes |
+| Gameplay | 25 | 80 | Executed three-class chapters 1-3 feature matrix, including available items, AI, death, pets and objective modes |
 | Rendering and UI | 15 | 80 | Remaining Host Load reports, unchanged fresh-load golden discrepancy, broader SDL input and compositor checks |
 | Audio | 10 | 85 | Perceptual audible-output fidelity and broader long-session playback after the bounded ordinary-clock core-backend run |
 | Networking | 15 | 85 | Broader peer/gameplay matrix and original Windows-peer runtime compatibility |
-| Campaign | 15 | 60 | Complete three-class objectives/routes, story-triggered endings, chapter saves/reloads and legitimate progression |
+| Campaign | 15 | 60 | Complete all three classes in chapters 1-3, their original objective routes and chapter saves/reloads; later chapters and full endings excluded |
 | Stability | 5 | 50 | Broader peer load and sustained gameplay beyond the bounded host and independent-peer profiles |
 
 The calculation is `(15*95+25*80+15*80+10*85+15*85+15*60+5*50)/100 = 79`.
@@ -20,6 +54,56 @@ overnight runs can strengthen evidence; they are not additional implicit
 completion requirements.
 
 ## Current findings
+
+R340 proves the original five-worker mine rescue in Conjurer chapter 3.
+Original Hunt and moving Charm inputs clear Wolf 7214 before the lower-lift
+Save; sole damage attribution is not claimed. At the third lift, 60 normal
+ticks reach the upper passenger dwell window. Actual running off the shaft
+before descent leaves the platform available to both following workers.
+Their original Return triggers and AllFound execute: counter 21=5, state 15=7,
+all worker states 16..20=3, RescueMineWorkers4 and native XP +1,000. Player and
+all five workers survive the whole case and original menu Save.
+
+An independent original Load and 7,000 normal native ticks recover health 12->29
+and mana 85 without health, poison, clock or timer assignments. The original
+second and first lift cycles are measured at 30/60/90 ticks; the 60 tick upper
+dwell windows permit actual step-off and continuous return-road arrivals.
+The original Foreman Talk needs native delivery time before Done; adding 10
+normal ticks makes the real dialogue available. Original Done grants Gold500
+(513->1013) and Con03FindAirshipCap2. No callback or reward is injected.
+
+Independent ordinary normal and highres processes each load that same earned
+Foreman Save through the original menu, perform two nearby walks, run 600
+normal native frames and write new owned Saves. Both retain health 29,
+poison 0, gold 1,013, counter 5, Foreman state 81=5, the Captain objective and all five
+living workers. These are earned-Save continuations, not fresh chapters or
+complete campaigns. Preferred Player.plr SHA256 is
+672352922b2262240a43c679afa5a105ef8442fa8bd2d82ed64a7b0dcbaa480d.
+
+There are 13 executed captures: 10 exit 0 with valid living manual Saves,
+3 negative exit 2, 56 measured arrival gates and zero PlayerDeath. Wrong
+cross-floor goals and premature dialogue inputs are preserved as failures
+without new Saves. No forced termination, startup failure or prepared-only
+case occurs. No port defect is inferred from those input preconditions.
+
+The latest explicit user scope is Warrior, Conjurer and Wizard chapters 1-3
+only, as recorded above. Nine cells/18 stock submaps are inventoried; earlier
+product evidence is separated from current runtime results. Historical 79%
+is not a newly measured percentage for this restricted scope. Captain,
+Conjurer 3 ending boundary, Warrior gauntlet/Horrendous/chapter 3 and Wizard
+chapters 2-3/current replay remain open. Chapter 4 objectives and full-story
+endings are excluded. Overall 100% remains unproven and the goal stays active.
+
+Engine and four products remain sealed R334 b6f0d60ae9eb5de85a5f6c584fefb161c3f2831a.
+Reused gates retain 58 focused/58 strict actual cgocheck2/race/checkptr2 passes
+and exact full suites: normal/HD 82,108 PASS/49 SKIP each, server/server-HD
+77,280 PASS/7 SKIP each, zero FAIL. Metadata and the full source archive are unchanged;
+no new engine suite or build is claimed. Preservation rehashes 6,645 source,
+3,284 protected, 1,562 personal files, every cloned stock and all 23 prior seals,
+including the separate R335 repair. Existing broader UI/audio/network/ABI/
+stability requirements remain, without later campaign content as implicit gates.
+
+### Retained R339 findings
 
 R339 consumes the earned GoldKey through original door movement, recognizes
 Garrit and Dudley and completes Dudley's original Done dialogue. Native

@@ -500,6 +500,18 @@ assertion and is preserved as a failure. No inventory, health, actor or
 objective state is assigned by these input routes. Scepter, Kalen and the
 remaining completion requirements are still pending.
 
+Case 113 separately repeats the original nearby Urchin Charge with actual
+A-key and mouse input. Original Urchin 9814 is observed dead, then ordinary
+room movement permits an owned living Save at HP 23 and XP 9184.553. No
+additional sword kills are inferred from holding the mouse button during
+that movement. Case 114 instead uses bounded northward movement and one
+actual north sword click. Original `War03c:Urchin04` is dead afterwards;
+the owned Save retains HP 20, poison 0 and XP 9203.707. Both runs exit
+naturally with code 0. A fresh process in case 115 initially restores HP 20
+and preserves the main Shaman and both Urchin death states. Its later chest
+approach dies and remains failed. The separate living-Save and initial-Load
+proof is `original-urchin-combat-save-load-verification-v115.json`.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

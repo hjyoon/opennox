@@ -353,6 +353,27 @@ collection and a healthy continuation from this room remain pending. A
 separate bounded run to the back wall also dies. Main-quest continuation
 therefore retains the healthy original party Saves 63 and 67 as sources.
 
+Case 78 instead follows the original northern road from the healthy party
+Save, reaches waypoint 403 before the crumbling pit and writes an owned
+manual Save with HP 19 and poison 0. Case 79 enters original
+PitCrumblingFloor 8840 and lands near (4742,4050). Original `Frozen` sets
+the player's NO_UPDATE flag while four Urchins walk to their scripted
+waypoints and report arrival. Script `Move` dispatches native AI movement;
+it does not teleport these monsters. Premature key and sword input during
+this freeze proves no combat. Although this run exits 0, no manual Save
+completes and its copied older slot is rejected for continuation.
+
+Case 80 independently repeats that original pit route and waits for the
+actual walking and frame timers. At native frame 347 all four arrival
+reports are 1, logical global 45 is phase 4 and the player no longer has
+NO_UPDATE. Subsequent original-menu input writes an owned manual Save with
+HP 11 and poison 0, followed by natural exit 0. Its later post-Save
+observation is HP 3. All four named Urchins and the Shaman remain alive;
+queued Charge and bounded sword input establish no kills or room clearance.
+`original-shaman-scene-verification-v80.json` records the original transfer,
+walking reports, unfreeze and living Save separately from required combat,
+Scepter, Kalen and the chapter boundary, which remain pending.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

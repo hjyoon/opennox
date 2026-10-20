@@ -21,6 +21,94 @@ completion requirements.
 
 ## Current findings
 
+R334 makes the campaign input harness aim through the actual viewport and
+original mouse/quickbar controls. Earlier fixed pixels missed moving creatures
+in ordinary-clock runs. The new cast-at-nearest-monster-input action copies
+an existing hostile creature's identity, derives its current screen position
+from the client sprite/viewport/Z, and queues mouse motion plus one original
+A/S/D/F/G press/release. Bounded native-frame tracking follows camera and
+sprite movement; conflicting native cursor identities block the key. It never
+assigns CursorObj, spell targets, ownership, AI, health, position, velocity,
+guides, spells or script variables, and it never calls a direct cast function.
+When the original Charm makes a target non-hostile, the input diagnostic may
+report observed_absent; independent duration/ownership observations distinguish
+that transition from an actor physically disappearing.
+
+Nine new regressions cover original key events and release, native cursor
+conflicts, projection changes, invalid range/death/disappearance, native frame
+pause/wrap, bounded reads, retained references and reader/input-only runtime
+calls. All 58 focused and 58 strict tests pass, with actual cgocheck2, race and
+checkptr=2. Four fresh full suites retain every prior terminal identity,
+action and multiplicity, adding exactly nine passing tests per lane.
+Normal/highres each have 82,108 PASS/49 SKIP; server/server-highres each have
+77,280 PASS/7 SKIP, zero FAIL. All 6,645 tested source hashes match clean commit
+b6f0d60ae9eb5de85a5f6c584fefb161c3f2831a. Four fresh Go1.26.9 ARM64 Mach-O
+products exit 0 for help, with matching independent Go/REA metadata and clean
+VCS state. The 97,044,480-byte full git archive contains 7,014 independently
+rehashed members. All gates preceded the first R334 game; unchanged tests and
+products were reused for later input routes in this round.
+
+The first real A now creates an original Charm duration targeting adult
+AlbinoSpider2132/script1000173065, then a living owned MONITOR/MIGRATE adult.
+Virtual, ordinary normal and ordinary highres all independently reproduce it.
+The ordinary first-A diagnostics take 48.525/48.503 seconds, finish 0 without
+PlayerDeath, and retain health 15/poison 0/living Naldo. These intentionally
+write no Save and are not new progression checkpoints. The known room roads
+then escape with Naldo and control a real Imp; native mouse aiming also binds
+the north small spider. Route 5 writes a living native health 11/poison 0 Save,
+but both pets are dead in its later observation. It is a dangerous living
+checkpoint, not proof that two pets survive that route.
+
+Actual original staff defense plus adult1747 Charm clears the western small
+spiders. Route 12 saves health 9/poison 0/mana 38, XP 3819.692, with living Naldo,
+adult1747 and Imp1000220776 before and after Save. Fresh menu Load 13 restores
+both creatures as living direct host children with MIGRATE. MONITOR/USEABLE
+change after Load; the existing pet reload contract explicitly does not
+require MONITOR alone. This is not an established ownership or AI defect.
+Stationary Charm waits, jumps alone, and one outer-range approach still die;
+all six PlayerDeath branches remain rejected and never seed continuation.
+
+At the failed outer approach, actual player414,2811 is308.8 units from the
+bend Imp644,3017, outside original Charm's 300 range; no A was queued. Moving
+physically to440,2840 brings it in range. Original A then targets actual
+Imp1000220778, staff input defends against nearby small spiders, and the
+original roads reach Worker3Return. Map-specific script observations show
+state15 3->4, state17 1->2 and returned-worker counter21 0->1; Naldo moves to
+the original waiting area and remains alive. The original Worker3Return
+function contains the 250 XP award. Total XP changes also include combat and
+must not be attributed entirely to the return. The mine rescue journal stays
+active; full mine rescue and later objectives are not complete.
+
+Virtual route 14, ordinary normal 15 and ordinary highres 16 each independently make
+that original return and finish 0 with a current owned manual Save and living
+Naldo after Save. The ordinary segments take 87.510/87.961 seconds and begin
+from the same virtual western Save 12, not fresh ordinary characters. Native
+saved health is 6/6/4 respectively, poison 0, mana 78 and gold 513. Their saved
+XP is 4220.6943/4311.9873/4221.463. Independent native parsing checks positive
+health, owned current path, active con03b map, new SHA and the archived map.
+Reload of a completed return Save, passive recovery, other workers and later
+mine objectives are the next work; the observed return is not a whole-story
+or full ordinary-character completion claim.
+
+All 15 executed captures settle: 9 exit 0, 6 negative exit 2, 186 measured physical
+arrival gates and 5 newly valid living manual Saves. One prepared case is
+explicitly NOT RUN because its planned 13 map observations exceed the wrapper's
+12-observation budget; a new immutable route removes redundant observations.
+All owned process groups are verified/quiescent, without forced termination,
+capture timeout or truncation. Six optional final script reads race orderly
+quit; missing reads are retained and no return proof depends on them. Observed
+unsupported-native counts are 0. Preservation rehashes 6,645 source files, 3,283
+prior protected files, 1,562 personal files, all cloned stock, and every R319
+through R333 sealed artifact. Original GAME.EXE execution, personal writes,
+golden changes and forced game-state mutation remain absent.
+
+Full three-class stories/endings, remaining worker and side objectives,
+Warrior zipper/Horrendous, broader UI/audio, original Windows-peer, reachable
+ABI/native-generator and sustained stability evidence remain open. Weighted
+maturity stays 79%, not measured coverage; all seven areas remain partial.
+
+### Retained R333 findings
+
 R333 adds read-only game-loop observations for actual player targeting.
 The new observe-player-target action copies the original mouse position,
 client cursor/drawable, server CursorObj, current weapon, health/poison/mana,

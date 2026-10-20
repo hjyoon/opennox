@@ -78,7 +78,13 @@ func monsterActionGuard546010(unit *Object, hooks monsterActionGuardHooks546010)
 						hooks.push(ai.DEPENDENCY_ENEMY_CLOSER_THAN, update.SightRange*1.05)
 					} else {
 						hooks.push(ai.DEPENDENCY_UNDER_ATTACK, uint32(0))
-						hooks.push(ai.DEPENDENCY_LOCATION_CLOSER_THAN, update.SightRange*1.5, guardPos)
+						if item := hooks.push(ai.DEPENDENCY_LOCATION_CLOSER_THAN); item != nil {
+							// 0054613B..00546156 leaves Args1 untouched; the
+							// location dependency reads X/Y from Args2/Args3.
+							item.Args[0] = uintptr(math.Float32bits(update.SightRange * 1.5))
+							item.Args[2] = uintptr(head.ArgU32(0))
+							item.Args[3] = uintptr(head.ArgU32(1))
+						}
 						hooks.push(ai.DEPENDENCY_OR)
 					}
 					hooks.push(ai.ACTION_FIGHT, enemy.PosVec, hooks.frame())

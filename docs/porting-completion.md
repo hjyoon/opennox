@@ -422,8 +422,35 @@ transition. A new owned cemetery Save retains HP 35, poison 0, both potions
 and the living owned wolf; exit is naturally 0. Source files remain
 unchanged. `original-potion-purchase-save-transfer-verification-v92a.json`
 records these transactions, living Save/Load and original map transfer.
-Potion consumption and healing, the Shaman, Scepter, Kalen and chapter
-completion remain pending.
+Those cases establish purchase and persistence; potion use is checked
+separately below.
+
+Read-only elevator observations distinguish a missed boarding input from
+a broken original elevator. The longer movement continues past the upper
+shaft while the linked elevator cycles normally. A close approach followed
+by a six-tick southeast step and release instead transfers the player from
+the original upper shaft to the lower crypt. Both link directions remain
+valid. Case 95 subsequently dies while waiting to observe the landing;
+that failed run earns no healing or continuation credit.
+
+Case 96 uses the purchased RedPotion through the original X key, physical
+key 45, immediately after the confirmed lower arrival. Native observations
+at frames 647 and 663 show HP 28 to 34 at the same position, and both server
+and client potion counts change from 2 to 1. After combat, natural rest
+recovers HP 8, 16, 23, 30 and 35. The original menu writes an owned manual
+Save with HP 35, poison 0 and gold 20; one potion and living owned Wolf1
+remain. No sword-kill credit is inferred from helpers that report no left
+mouse press. Exit is naturally 0 after 103.8 seconds.
+
+Case 97 independently loads that exact Save through the original menu.
+Its first native frame restores HP 35 at the saved position, while both
+inventories retain one RedPotion and both gold counters read 20. It then
+reaches 29 actual room/road waypoints and writes another owned northern
+road Save at HP 6, followed by natural exit 0. Both source Saves retain
+their hashes. `original-potion-heal-save-load-verification-v97.json` binds
+the actual input, healing, recovery, owned Saves and fresh-process Load.
+The Shaman, Scepter, Kalen, remaining areas and chapter completion remain
+pending; this evidence does not establish overall completion.
 
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit

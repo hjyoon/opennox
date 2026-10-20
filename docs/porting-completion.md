@@ -55,6 +55,36 @@ completion requirements.
 
 ## Current findings
 
+R344 fixes the reported Linux AMD64 segmentation fault in the show-info
+player renderer, sub_436F50. The class-name lookup dereferenced a packed PE32
+4-byte slot as char**, reading eight bytes on a 64-bit host. Wizard's original
+0x58e90c and the following Conjurer 0x58e914 become exactly the reported invalid
+0x58e9140058e90c. The lookup now uses the existing getMemPtr native side-slot
+accessor, preserving the original class indices, localization and drawing.
+
+The regression compiles and executes the complete production C drawer with
+native player/drawable layouts, high native string pointers and the production
+UTF-16 formatter. Warrior, Wizard, Conjurer and both absent-player branches
+check the map, coordinates, localized class/level, drawing positions, return
+value and neighboring data. The original body fails with the exact reported
+pointer; the corrected body passes all five cases on macOS ARM64 and Linux
+AMD64. The Linux check executes native C in an isolated amd64 container, and
+does not claim a full Linux Go 1.26.9 game replay.
+
+Fresh Go 1.26.9 focus checks pass eight terminal events. The strict run also
+passes eight with actual GOEXPERIMENT=cgocheck2, -race and checkptr level 2.
+Four complete suites pass: normal/highres 82,114 PASS and 49 SKIP each;
+server/server-highres 77,286 PASS and 7 SKIP each. Existing tests and goldens
+remain unchanged; the new complete-drawer test adds six terminal events in
+each configuration. Frozen source inputs comprise 6,647 files. R343's earned
+Warrior sewer Save and all earlier sealed evidence are preserved separately.
+
+Campaign scope remains Warrior, Conjurer and Wizard chapters 1-3 only.
+Warrior2's Gearhart puzzle/ending, Warrior3, Wizard2-3 and earlier checkpoint
+reconciliation remain open. The 100% goal is active without a new percentage.
+
+### Retained R343 findings
+
 R343 continues Warrior chapter 2 from the sealed sewer-entry Save using
 ordinary mouse/keyboard/menu input and virtual native frames. Three original
 sweep lever sections and two physical cave elevator transfers are traversed.

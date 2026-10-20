@@ -95,7 +95,8 @@ int sub_436F50() {
 						 (int)local_player->pos.x, (int)local_player->pos.y);
 			nox_xxx_drawString_43F6E0(0, getMemI16Ptr(0x5D4594, 811120), v2, v6);
 			v9 = nox_strman_loadString_40F1D0(
-				*(char**)getMemAt(0x587000, 29456 + 4 * player->info.playerClass), 0,
+				// The packed PE32 table stores native pointers in side slots.
+				getMemPtr(0x587000, 29456 + 4 * player->info.playerClass), 0,
 				"C:\\NoxPost\\src\\client\\System\\client.c", 1357);
 			v8 = player->field_3684;
 			v7 = nox_strman_loadString_40F1D0("PlayerInfo", 0, "C:\\NoxPost\\src\\client\\System\\client.c", 1355);

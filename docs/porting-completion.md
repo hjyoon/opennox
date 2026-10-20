@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, second silver key, Gearhart cooperative switches and living War02b Save/Load proved; sewer exit and chapter 2 ending pending | Completion unproven in inspected records |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Natural War03a entry and living normal/HD AUTOSAVE Load/manual Save; original objectives and War03b-d pending |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
@@ -105,7 +105,17 @@ arrival, Talk/Done, return to the guard area and a second successful chain
 use. This passes in a tracing build and in an ordinary-clock production-source
 candidate without code overlays. The named private entry waypoint remains a
 diagnostic-only accommodation; these runs do not earn campaign credit. The
-no-overlay ordinary run exits naturally after 78.9 seconds. Evidence, exact
+no-overlay ordinary candidate run exits naturally after 78.9 seconds.
+Clean committed products at `39d3b2d6b51e6819d479f78b888a9c9126a635b9`
+repeat the full route in ordinary normal and virtual highres runs, both with
+natural exits 0 and two actual Use clicks. Their original logical globals
+76/77 change from 0/0 to 0/1 on first arrival and record 0/1 again after
+the second actual call; the first Talk increments global 87 and Done returns
+Zaris to the home area. All four clean products
+have matching Go/REA revision, ARM64 architecture, tags and unmodified-VCS
+metadata. The independent replay and freeze audit is
+`chainpull-fix-verification.json`; products and the clean source archive are
+preserved in `chain-grid-fix/`. Evidence, exact
 source freezes, before/after failures and replay artifacts remain under
 `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/chainpull-*`.
 
@@ -115,8 +125,24 @@ cursor, opens the third gate pair and completes Gearhart's second Talk/Done.
 Gearhart reaches his pressure switch. The player's original pressure switch
 then advances the sewer script to phase 4; final Done enables the exit and
 Gearhart's follow behavior. Case 11 saves health 35, poison 0 and XP 7049.47,
-with Gearhart alive. Original source Saves remain unchanged. Sewer exit,
-town rescue award and chapter 2 ending remain pending.
+with Gearhart alive. Original source Saves remain unchanged. Clean path-fix
+products then complete the original narrow sewer exit, return to War01a,
+QuarterMaster's 1,500-XP award and Gearhart's thanks. `StartupScreen(3)` starts
+the next chapter in War01a; it does not immediately change to War03a.
+Horrendous's actual Talk/Done unlocks the Ix gates and supplies 300 gold,
+LeatherBoots, MedievalCloak and the Urchin guide. The original navigation road,
+actual gate clicks and original exit then enter War03a without map selection.
+Case 23 exits naturally, with HP 35, poison 0 and XP 8549.471. Its original
+AUTOSAVE contains War03aIxQuest type 2. New normal and highres processes load
+that AUTOSAVE through row 0 and each write an owned manual SAVE0001 through
+the original menu. Separate normal/highres processes then load their new
+manual slot, walk along original navigation waypoint 1059 and save again.
+Both preserve HP 35, poison 0, XP, the Ix journal, Berserker level 5 and the
+Urchin guide. Preferred continuation saves are cases 26a and 27a. The current
+campaign audit remains separate from the preserved pre-fix audit. Earlier attempts that displayed a save message but retained
+a copied older manual slot are rejected for continuation; original source
+paths and hashes distinguish the original automatic save from a new manual
+save. Further Warrior3 submaps and objectives remain pending.
 
 ### R344 player-info correction
 

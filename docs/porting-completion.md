@@ -306,9 +306,18 @@ then actual retreat and natural rest permit a new owned Save at HP 35 and
 natural exit 0. This verifies recovery of a valid pre-death Save without
 reclassifying the source run as successful. The default preparation rules
 remain strict; this source requires its separately validated recovery proof.
-The latest healthy normal checkpoint is case 65 in War03c; ordinary highres
-case 50a in War03b remains archived. Required objectives and other areas are
-still pending.
+Wolf1 is alive and in the player's owned list just after this Load, but
+dies during the retreat and leaves that list. Case 65 is therefore a living
+player recovery checkpoint with a dead companion. The earlier normal case
+63 preserves both player and Wolf1 alive and remains the preferred party
+checkpoint. Case 66 independently reloads the dead-companion Save through
+the original menu: the player remains at HP 35 and Wolf1 remains dead and
+absent from the owned list. Case 67 instead loads the living-party case 63
+with the current clean highres product and ordinary clock. It observes
+player HP 35 and Wolf1 HP 40/40, walks the original room and writes an owned
+living Save, exiting naturally after 61.7 seconds. Current living-party
+checkpoints are normal 63 and highres 67 in War03c. Required objectives and
+other areas are still pending.
 
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit

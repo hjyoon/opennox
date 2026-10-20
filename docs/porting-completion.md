@@ -29,7 +29,7 @@ or a process exit does not prove a complete chapter.
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Gauntlet partial; zipper/Horrendous completion pending | Completion unproven in inspected records |
-| Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Current mine rescue, all five returns and Foreman reward proved; Captain/boundary pending |
+| Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
@@ -54,6 +54,51 @@ overnight runs can strengthen evidence; they are not additional implicit
 completion requirements.
 
 ## Current findings
+
+R341 extends the earned Conjurer chapter 3 chain through its original ending.
+Original mine-exit movement returns to Con03a. The return point lies inside
+the entrance cabin; an actual left click and movement through its original
+door permit the linked road to the current Captain at 1864,3319. Original
+Talk, 10 native delivery ticks and Done twice produce Captain phase 1->2->3
+and Con03FindAirshipCap4. A genuine menu Save retains health 29, poison 0,
+mana 85, gold 1,013 and all five living workers in the archived native mine.
+The inactive map's xfer flags are decoded read-only with the native FlagDead
+enum, rather than treating absent workers in the active outdoor map as dead.
+
+Independent original menu Loads of that same phase 3 Save and the third
+actual Captain Talk naturally switch to Con04a. Virtual and ordinary normal
+processes first observe the transition during its black fade. Fresh ordinary
+normal and highres cases allow 120 normal rendering ticks and visibly show
+the original chapter 4 briefing. They quit without dismissing the briefing,
+pursuing chapter 4 objectives or writing a new manual Save. Only the chapter
+3 completion boundary is claimed. These are earned-Save continuations, not
+a fresh entire chapter replay on the current revision.
+
+There are 8 executed captures, 6 exit 0,
+2 negative exit 2, 2
+valid living manual Saves and 16 measured arrival
+gates, with zero PlayerDeath or forced termination. Prepared case 7 is never
+run; its immediate-fade route is superseded by visible boundary case 8.
+The two failed movement routes write no Save and never authorize continuation.
+No engine defect is inferred. Each script snapshot uses its own exact
+original function identity/global layout; the chapter 4 VM remains uninterpreted.
+
+The latest scope remains all three classes, chapters 1-3 only. Warrior
+gauntlet/Horrendous/chapter 3, Wizard chapters 2-3 and reconciliation of earlier
+chapter evidence with the current products remain open. Broader scoped
+build/ABI, UI, audio, networking and stability requirements remain partial.
+No new nine-cell completion percentage is assigned; historical 79% remains
+the earlier full-scope engineering estimate. Overall 100% is unproven and
+the goal remains active.
+
+Engine/products and all gates remain sealed R334 b6f0d60ae9eb5de85a5f6c584fefb161c3f2831a:
+58 focus, 58 strict actual cgocheck2/race/checkptr2, normal/HD
+82,108 PASS/49 SKIP each and server/server-HD 77,280 PASS/7 SKIP each, zero
+FAIL. No fresh suite or build is claimed. Preservation rehashes 6,645 source,
+3,284 protected and 1,562 personal files, each stock clone and all 24 prior
+seals including the separate R335 repair.
+
+### Retained R340 findings
 
 R340 proves the original five-worker mine rescue in Conjurer chapter 3.
 Original Hunt and moving Charm inputs clear Wolf 7214 before the lower-lift

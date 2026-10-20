@@ -616,15 +616,18 @@ with actual Charge and traverses the original road to Kalen. Collision with
 JailDoor 7568 consumes the earned RubyKey; both inventories change from one
 to zero, saved lock code changes from 3 to 0, and the player actually reaches
 waypoint 765 beyond the door. Real Kalen Talk and Done clicks execute the
-original story: Kalen and his corpse object die, and original ChainTunic
-9551 and LeatherArmoredBoots 9552 appear at their reward positions. These
-are original `KalenTalkEnd` effects, not premature required-NPC deaths.
+original story: Kalen dies, the preexisting dead corpse template moves to
+his position, and original ChainTunic 9551 and LeatherArmoredBoots 9552 appear
+at their reward positions. These are original `KalenTalkEnd` effects, not
+premature required-NPC deaths. The corpse template is already dead in the
+initial snapshot; its relocation is distinct from Kalen's live-to-dead change.
 The owned living-player Save retains HP 32, poison 0, XP 9916.553, gold 109
 and the Scepter, followed by natural exit 0. Case 143's initial fresh menu
 Load restores the player's HP and the original key, door and story states;
 its subsequent premature reward click fails and supplies no reward-pickup
 or continuation credit. The separate proof is
-`original-ruby-door-kalen-save-load-verification-v142.json`.
+`original-ruby-door-kalen-save-load-verification-v142b.json`; it corrects the
+earlier corpse-death wording while preserving the prior proof and its hash.
 
 Case 144 waits for original input readiness, then acquires Pickup cursor 2
 on ChainTunic 9551 and LeatherArmoredBoots 9552 and picks up both rewards.
@@ -662,6 +665,37 @@ quickbar action reports no selected target and no queued key, so it proves
 no guard kill. A later lift-edge rest also dies. These observations do not
 establish a living elevator Save/Load, Mayor delivery or chapter completion;
 all original source checkpoints and failed runs remain preserved.
+
+Case 153 retreats into the original side room, then recovers naturally from
+HP 18 through 21, 25, 29, 33 and 35. Its owned Save and post-Save observation
+both retain HP 35, poison 0, XP 10218.387, gold 109, the Scepter and both
+equipped Kalen rewards. Case 154 loads that earned checkpoint, walks onto
+the low original elevator and waits 60 native frames. The player actually
+travels from near (3208,4588) to shaft (1288,2012.5) with HP 35, then leaves
+through original waypoints 748 and 493. Its owned Save has HP 17 and poison
+0; post-Save HP is 18 and exit is naturally 0. Its unsuccessful Skeleton
+Charge earns no kill credit.
+
+Case 155 repeats the natural boarding and prompt departure from the same
+full-health source, omitting that Charge. Actual original roads cross the
+first and second unlocked ChamberDoors and reach lower western waypoint
+760. All selected HP observations, the owned Save and the post-Save
+observation are HP 35. A new process in case 156 loads that actual slot,
+restores HP 35, the Scepter and equipped tunic/armored boots, and then explores
+the southern dead-end crypt. That later exploration retains saved HP 24
+but post-Save HP 8, not a southern exit. All four runs exit naturally 0.
+`original-west-elevator-chambers-save-load-verification-v156.json` binds the
+natural transport, original roads, earned equipment and living Save/Load.
+
+Case 157 separately returns through original roads and crosses the third
+unlocked ChamberDoor. An eastern movement stops inside its room; its owned
+Save has HP 9 and post-Save HP 3. It is preserved but the healthier case 155
+remains available. Read-only original data locates GoldKey 10056 at
+(2326,1907), behind the northern jail, and the two gold-key gates at
+(2070,2875) and (2116,2829). Separate original-input inspections leave
+JailDoor 10051 intact after Charge and northeast sword attempts; no key,
+jail-break, exit-gate or Mayor-delivery credit is claimed. The remaining
+grate attack and original return route are still being verified.
 
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit

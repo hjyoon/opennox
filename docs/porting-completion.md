@@ -55,6 +55,42 @@ completion requirements.
 
 ## Current findings
 
+R343 continues Warrior chapter 2 from the sealed sewer-entry Save using
+ordinary mouse/keyboard/menu input and virtual native frames. Three original
+sweep lever sections and two physical cave elevator transfers are traversed.
+Earned Berserker Charge and actual sword input clear the required leeches,
+spiders, bats and scorpions. The first original Gearhart Talk/Done gives the
+SilverKey and moves his script to phase 1. Original paired doors and the first
+silver gate admit the player to the gear room; the key is used, not retained.
+
+The preferred living Save is case 37 in War02b: native health 34, poison 0,
+XP 7049.47, Berserker Charge 5 and SaveGearhart2, with Gearhart alive. A further
+180 native frames after Save naturally show health 35. All three nearby bats,
+two scorpions and three gear-room AlbinoSpiders remain dead in the final
+snapshot. Gearhart's cooperative switches, sewer exit, return to town and
+chapter 2 ending remain pending. No fresh ordinary-clock/highres or entire
+chapter replay is claimed for R343.
+
+All 37 prepared cases execute: 20 exit 0, 17 negative exit 2, 18 eligible
+living manual Saves and 109 measured arrival gates. Thirteen whole cases
+contain PlayerDeath; all six manual Saves followed by death are rejected as
+continuation sources. Two exit 0 diagnostic cases have no Save. There is no
+forced termination. Negative input/geometry/combat branches remain preserved.
+
+The user now reports a separate Linux AMD64 segmentation fault in the
+show-info renderer. Reading the original packed Wizard class slot as an
+8-byte pointer exactly produces the reported 0x58e9140058e90c by joining the
+Wizard and Conjurer PE32 addresses. The fix is being validated in isolated
+R344; it is not part of R343's unchanged engine/products or gameplay claims.
+
+R343 reuses sealed R334's 58 focused/58 strict checks, four complete suites,
+four products and source archive. Preservation verifies 6,645 source files,
+3,284 protected files, 1,562 personal files and 26 prior seals. All classes
+remain restricted to chapters 1-3. Overall 100% remains unproven and active;
+no new scoped completion percentage is assigned.
+
+### Retained R342 findings
+
 R342 completes the previously unresolved Warrior chapter 2 zipper passage.
 An actual east side approach, southeast run and Space pass the moving stone
 and blade corridor. Virtual and independent ordinary normal/highres cases

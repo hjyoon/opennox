@@ -400,6 +400,31 @@ player death and supplies no kill or continuation credit. The independent
 wall, input and saved-health evidence is
 `arena-wall-input-verification-v86.json`; all earlier Saves remain preserved.
 
+Cases 89/90 return from the earned northeastern Ix road to the original
+Mystic shop through nineteen actual road/approach arrivals. Real NPC and
+Buy-button clicks reveal six RedPotions at 40 gold each. Case 91 buys one
+item twice: server/client gold changes 100 to 60 to 20, with potion counts
+1 then 2. Its later Escape sequence completes no manual Save; the unchanged
+older slot is rejected as a continuation source despite natural exit 0.
+
+Case 91a instead clicks the original merchant Leave button and waits for
+inventory state 0 before opening the normal Save menu. It writes an owned
+War03b manual Save with HP 35, poison 0 and gold 20; both purchased potions
+and living owned Wolf1 remain. The only extra reviewed harness action reads
+the original quantity dialog's accept-widget geometry and queues real mouse
+press/release. Earlier validators and preparers remain preserved; no game
+position, inventory, health or shop stock is assigned by the harness.
+
+Case 92a loads that actual slot in a fresh process, verifies both inventories
+contain two RedPotions and both gold counters read 20, then walks the
+original town road and exit into War03c. Both values survive that map
+transition. A new owned cemetery Save retains HP 35, poison 0, both potions
+and the living owned wolf; exit is naturally 0. Source files remain
+unchanged. `original-potion-purchase-save-transfer-verification-v92a.json`
+records these transactions, living Save/Load and original map transfer.
+Potion consumption and healing, the Shaman, Scepter, Kalen and chapter
+completion remain pending.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

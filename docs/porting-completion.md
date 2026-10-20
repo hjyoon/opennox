@@ -374,6 +374,32 @@ queued Charge and bounded sword input establish no kills or room clearance.
 walking reports, unfreeze and living Save separately from required combat,
 Scepter, Kalen and the chapter boundary, which remain pending.
 
+A private read-only actor trace repeats clean case 81's exact inputs and
+earned Save. Its nearest original Urchin has HP 8; the player approaches
+from about 90 units but stops at 61.4 against an intact northwestern Dirt
+wall. Five fresh incoming-damage observations resolve to the exact native
+pointers of two original Urchins. Other damage-source pointers remain
+unattributed. This diagnosis earns no campaign credit and changes no actor,
+wall, health, AI, RNG, target or input state.
+
+Read-only decoding finds eight original wall cells around the landing and
+five in Save 80; three eastern cells are absent. A native diagnostic reads
+the Dirt definition with health 1. Save 80 follows both Charge and sword
+input, so its wall destruction is not attributed to Charge alone. Case 84
+omits the sword clicks and fails to exit. Case 85 loads Save 80 and actually
+crosses its open eastern side with HP 11, but dies during the next Save
+attempt and is rejected for continuation.
+
+Case 86 repeats the earned pit route, approaches the northeastern wall and
+clicks the sword once. It actually reaches (4801,3999) with HP 15 before
+using A, establishing wall opening and passage through original input.
+The new saved map omits the northern, northeastern and eastern cells. Its
+owned manual Save has HP 11 and poison 0; post-Save HP is 7 and exit is
+naturally 0. The Shaman remains alive. Later pursuit in case 88 causes
+player death and supplies no kill or continuation credit. The independent
+wall, input and saved-health evidence is
+`arena-wall-input-verification-v86.json`; all earlier Saves remain preserved.
+
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit
 or literal inline-script reference into War03d; its inline script is empty.

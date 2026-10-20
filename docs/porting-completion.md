@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a tunnel combat, DunMir gates and guards, road robbers, Ix gate unlock, Mayor quest and purchased wolf proved; natural War03c entry, main Shaman defeat and original Scepter pickup with living Save/Load; return, remaining objectives and areas pending |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a tunnel combat, DunMir gates and guards, road robbers, Ix gate unlock, Mayor quest and purchased wolf proved; natural War03c entry, Shaman defeats, Scepter, Ruby-key door and Kalen Talk/Done with living-player Save/Load; Mayor delivery, remaining objectives and areas pending |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
@@ -599,6 +599,32 @@ from its initial Load and earns no Kalen interaction or door-unlock credit.
 actual Shaman combat, natural recovery, living-player Saves and initial
 fresh-process Load. Obtaining and using the original Ruby key, Kalen's
 dialog, Mayor delivery and the remaining completion requirements remain open.
+
+Case 139 returns along original connected roads, acquires Use cursor 13 on
+Ruby chest 9578 at static wire 0xa56a and opens it. Original RubyKey 9581 is
+released into the world; an owned living Save retains HP 35 and poison 0.
+Case 141 loads that actual slot, hovers separately over the key and nearby
+Gold 9580, then picks both up with real mouse input. The key's cursor is 2
+and type 625; both inventories report one RubyKey and the earned Scepter.
+Native gold changes from 20 to 109. Original road arrivals return to waypoint
+537, where a new owned Save retains HP 32 and poison 0. An earlier overlapping
+hover selects Gold rather than the key and fails its key assertion; that
+case remains a failure.
+
+Case 142 loads that Save in a new process, defeats original Scorpion 8516
+with actual Charge and traverses the original road to Kalen. Collision with
+JailDoor 7568 consumes the earned RubyKey; both inventories change from one
+to zero, saved lock code changes from 3 to 0, and the player actually reaches
+waypoint 765 beyond the door. Real Kalen Talk and Done clicks execute the
+original story: Kalen and his corpse object die, and original ChainTunic
+9551 and LeatherArmoredBoots 9552 appear at their reward positions. These
+are original `KalenTalkEnd` effects, not premature required-NPC deaths.
+The owned living-player Save retains HP 32, poison 0, XP 9916.553, gold 109
+and the Scepter, followed by natural exit 0. Case 143's initial fresh menu
+Load restores the player's HP and the original key, door and story states;
+its subsequent premature reward click fails and supplies no reward-pickup
+or continuation credit. The separate proof is
+`original-ruby-door-kalen-save-load-verification-v142.json`.
 
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit

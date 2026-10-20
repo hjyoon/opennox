@@ -21,6 +21,92 @@ completion requirements.
 
 ## Current findings
 
+R338 completes Alex's original follow-up dialogue, earned GoldKey and third-lift
+transport. The actual Alex conversation and original Done change state 15=5->6,
+grant original GoldKey 4849 from zero to one and enable Worker1Unlock 3096,
+shaft 2740 and lower platform 6164. Returned-worker counter 21 stays 3;
+Garrit and Dudley are still unrecognized. Alex is the original Worker1.
+
+Actual boarding followed by 90 normal native ticks places the player at
+3302,4108/Z24 at frame 182, on platform state 1/height 20 with reciprocal
+shaft links and the player inside its native box. Original walking steps off
+at 3410,4200 and reaches ground Z0, followed by a new healthy manual Save.
+The earlier 24-tick wait does not complete that cycle in time and its lower
+arrival times out. No clock, frame, position, Z, velocity or elevator field
+is assigned. The nearby north door later passes but returns toward the lift.
+
+Continuous original running crosses the lower east Scorpion road through
+five measured arrivals at health 28/poison 0, followed by a new Save.
+Scorpion 6132 remains alive; the owned Small 6118 dies in native combat.
+Standing staff fights instead end in PlayerDeath. A separate optional room
+fight leaves Troll 7193 DEAD after five actual staff left presses and native
+combat; three later requests have no target and queue no attack. Native
+recovery and original Save retain health 29. Chest-use and pickup branches
+fail without a new Save; stable loot or a learned healing spell is not claimed.
+
+The inner east room needs earlier Charm input and continued movement.
+Original A has native range 300; the first distant unavailable request
+queues no key and spends no mana. Later actual inputs start the earned Imp
+Charms. Overlapping requests leave only the later pending duration, so no
+simultaneous completion is inferred. Movement and eight normal ticks allow
+the next attempted charge after the previous duration. The successful route
+crosses the physical gap between disconnected NPC waypoint components and
+continues through the inner west road. Original A at frame 460 starts Imp
+6152's native Charm 459->504, 45 frames. Later object observations confirm
+the same original Imp alive and owned. The north corridor Save has health
+6/poison 0, no PlayerDeath, and all five story NPCs alive.
+
+An independent original Load and 7,000 normal native ticks recover health
+6->28/29 and mana to 85 without health, poison, timer or clock assignments.
+The original Save retains two living owned Imps, 6152 and 6741. Imp 6741 was
+saved alive before dying during the previous case's post-Save ticks; the
+next original Load restores that earlier saved live pet. No external revival
+or ownership change is performed.
+
+Independent ordinary-clock normal and highres processes each load that same
+earned recovery Save through the original menu, perform two actual nearby
+walks, run 600 normal native ticks and write new owned manual Saves. Both
+retain health 29/poison 0, returned-worker counter 3, state 15=6, all five
+story NPCs and both living owned Imps. These are earned-Save continuations,
+not fresh three-class campaigns. Preferred Player.plr SHA is
+b3cd5c508d7653873fe1d56382a070b1501dc1cc4fe864089c3b9548aa82eecd,
+with mana 85, gold 513 and the original GoldKey still held.
+
+There are 25 observed game captures: 11 exit 0 with valid living manual
+Saves, 14 negative exit 2, 83 measured arrival gates and 10 PlayerDeath
+branches. Three branches write real Saves before later PlayerDeath; the
+entire branches are rejected as continuation sources. There are no forced
+terminations, startup failures or prepared-only cases. Every failed,
+no-Save, death and poisoned branch remains excluded from continuation.
+
+One prepared route inherited actual eligible source 5 while its prose said
+source 6. The executed input and true seed are retained; a separate
+provenance correction records the mismatch. Future preparation requires an
+explicit expected source matching the actual path. Another source-only
+handoff correction identifies extent 6882 as WoodenDoor, not GoldKey.
+Neither correction changes engine code, executed inputs or prior seals.
+
+Engine source/products remain b6f0d60ae9eb5de85a5f6c584fefb161c3f2831a.
+Sealed R334 gates are reused: 58 focused/58 strict passes with actual
+cgocheck2, race and checkptr=2; four exact-terminal-preserving full suites,
+normal/HD 82,108 PASS/49 SKIP each and server/server-HD 77,280 PASS/7 SKIP
+each, zero FAIL. Four Go 1.26.9 ARM64 products, matching Go/REA metadata and
+the 7,014-member full source archive are unchanged. No new engine suite or
+build is claimed. Preservation rehashes 6,645 source, 3,284 protected and
+1,562 personal files, each cloned stock and all 21 prior R319..R337 seals,
+including the separate R335 reference repair. No original GAME.EXE
+execution, personal writes or golden changes occur.
+
+Next are Garrit, Dudley and their protected original returns. Four original
+Scorpion guards remain outside their room; recognition, dialogue Done,
+return counter 5, AllFound and the next mine objective are unproven.
+Three-class stories/endings, Warrior zipper/Horrendous, broader UI/audio,
+original Windows-peer, reachable ABI/native-generator and stability remain
+open. Weighted maturity stays 79%, not measured coverage; all seven areas
+remain partial and the 100% goal stays active.
+
+### Retained R337 findings
+
 R337 completes Claude's original recognition, escort and physical return.
 The actual NPC crossing of Worker6Return trigger 3036 at 1883,2594 changes logical
 20=1->2, returned-worker counter 21=2->3 and state 15=4->5. Native saved XP

@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a tunnel combat, DunMir gates and guards, road robbers, Ix gate unlock, Mayor quest and purchased wolf proved; normal/HD living Save/Load and natural War03c entry with wolf; remaining objectives and areas pending |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a tunnel combat, DunMir gates and guards, road robbers, Ix gate unlock, Mayor quest and purchased wolf proved; natural War03c entry, main Shaman defeat and original Scepter pickup with living Save/Load; return, remaining objectives and areas pending |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
@@ -531,6 +531,28 @@ original traversal evidence is
 attempt to rest there dies as pursuit continues, so that failed run supplies
 no natural-recovery or continuation credit. Scepter, Kalen's interaction,
 the chamber-door trigger and all other remaining requirements remain pending.
+
+Case 125 reaches original Scepter chest 9576 through the upper treasure room
+and opens it with the actual Use cursor and static wire 0xa568. Case 127
+repeats that route, acquires the dropped quest item's original Pickup cursor
+and left clicks. Both server and client report one `MayorsScepter`, original
+extent 10344. The item is in the player's inventory and no longer a world
+object. The original menu writes an owned living Save at HP 11, poison 0
+and unchanged XP 9203.707, followed by natural exit 0. Kalen and owned Wolf1
+remain alive. `original-scepter-pickup-save-verification-v127.json` binds
+the original input, object and native Save evidence.
+
+Case 128's fresh process initially loads HP 11 and the earned Scepter from
+that exact slot through the original menu. Both inventories retain the item
+and the original chest remains opened. Its later west-road rest attempt dies;
+the whole run remains failed and is not a continuation source. The initial
+Load evidence is `original-scepter-save-reload-verification-v128.json`.
+The GetScepter journal remains type 2: delivery to the Mayor and the chapter
+boundary are unproved. The separately inspected chamber-door trigger at
+(3208.5,4588.5) controls three `War03d:ChamberDoor` objects in the western
+region of the loaded War03c map; it is not a prerequisite inferred for this
+Scepter chest. Kalen's interaction and all remaining area, class and
+engineering requirements remain pending.
 
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit

@@ -76,12 +76,37 @@ normal/highres 82,117 PASS and 49 SKIP each; server/server-highres 77,289 PASS
 and 7 SKIP each. Terminal-event preservation is recorded separately from
 the two explicit expectation corrections.
 
-The bounded diagnostic also exposes a separate unresolved follow-up:
-Zaris starts moving after the chain callback, then re-enters his home guard
-trigger and stops near 3939,4893. Suppressing that guard in a diagnostic
-overlay alone does not establish gate arrival. No such suppression is part
-of the production fix, and the complete reported interaction remains under
-investigation. Evidence is retained under
+The remaining Zaris failure was traced to gameplay path-grid rounding.
+The port selected cells by default nearest-even rounding, while the original
+main loop at 0043E2C1 sets round-toward-zero. Both the binary32 product spill
+and 00419A70's FISTP inherit that mode. Zaris's first outbound waypoint at
+3969,4843 therefore belongs to cell 172,210; the port incorrectly searched
+173,211, exhausted search storage and returned to the home guard trigger.
+The shared path-grid conversion now preserves the exact reciprocal product,
+directed binary32 spill and signed conversion without changing thread state.
+No guard suppression or map-script workaround is included.
+
+A reproducible bounded execution of the unchanged original coordinate prefix
+and FISTP records 788 coordinate pairs, including all 0..256 grid boundaries
+and their adjacent float32 values, negative, invalid and stock Zaris inputs.
+Gameplay and default-nearest results differ in 263 cases. The new regression
+fails on all 263 before the engine fix and passes afterwards. Four existing
+test files explicitly correct their default-nearest coordinate expectations;
+all other assertions and existing original code/data bytes remain unchanged.
+One original-range description now correctly says active caller rounding.
+Focus checks pass 3,068 events, and actual cgocheck2/race/checkptr2 passes 3,263.
+All four complete suites pass: normal/highres 82,906 PASS and 49 SKIP each;
+server/server-highres 78,078 PASS and 7 SKIP each. All pre-existing terminal
+events remain, with exactly the new oracle test and its 788 subtests added.
+The frozen 6,652 inputs include the original-range description explicitly.
+
+The isolated input route now verifies actual ChainPull5 use, original gate
+arrival, Talk/Done, return to the guard area and a second successful chain
+use. This passes in a tracing build and in an ordinary-clock production-source
+candidate without code overlays. The named private entry waypoint remains a
+diagnostic-only accommodation; these runs do not earn campaign credit. The
+no-overlay ordinary run exits naturally after 78.9 seconds. Evidence, exact
+source freezes, before/after failures and replay artifacts remain under
 `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/chainpull-*`.
 
 Before this follow-up, the earned R344 Warrior continuation opens the original

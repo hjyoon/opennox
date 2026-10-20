@@ -19,8 +19,8 @@ func TestAIPathGridCell50BA00UsesBinary32X87Conversion(t *testing.T) {
 		pos  types.Pointf
 		want ntype.Point32
 	}{
-		{name: "positive ties", pos: types.Ptf(34.5, 57.5), want: ntype.Point32{X: 2, Y: 2}},
-		{name: "negative ties", pos: types.Ptf(-34.5, -57.5), want: ntype.Point32{X: -2, Y: -2}},
+		{name: "positive ties", pos: types.Ptf(34.5, 57.5), want: ntype.Point32{X: 1, Y: 2}},
+		{name: "negative ties", pos: types.Ptf(-34.5, -57.5), want: ntype.Point32{X: -1, Y: -2}},
 		{name: "invalid", pos: types.Ptf(float32(math.NaN()), float32(math.Inf(1))), want: ntype.Point32{X: math.MinInt32, Y: math.MinInt32}},
 	}
 	for _, test := range tests {
@@ -78,8 +78,8 @@ func TestAIWaypointSearchGridCell50CB20UsesBinary32X87Conversion(t *testing.T) {
 		pos  types.Pointf
 		want ntype.Point32
 	}{
-		{name: "positive ties", pos: types.Ptf(34.5, 57.5), want: ntype.Point32{X: 2, Y: 2}},
-		{name: "negative ties", pos: types.Ptf(-34.5, -57.5), want: ntype.Point32{X: -2, Y: -2}},
+		{name: "positive ties", pos: types.Ptf(34.5, 57.5), want: ntype.Point32{X: 1, Y: 2}},
+		{name: "negative ties", pos: types.Ptf(-34.5, -57.5), want: ntype.Point32{X: -1, Y: -2}},
 		{name: "invalid", pos: types.Ptf(float32(math.NaN()), float32(math.Inf(-1))), want: ntype.Point32{X: math.MinInt32, Y: math.MinInt32}},
 	}
 	for _, test := range tests {

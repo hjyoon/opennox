@@ -14333,7 +14333,7 @@
       "address": "0x0050BA00",
       "size": 251,
       "sha256": "42f75df2b7f06bede9923afc2f8a185c99d73f255bd2742b4397b94961f792a9",
-      "purpose": "initialize path-search state and convert both source and target coordinates with binary32 reciprocal multiplication followed by x87 round-to-nearest-even"
+      "purpose": "initialize path-search state and convert both source and target coordinates with binary32 reciprocal multiplication followed by x87 FISTP with the active caller rounding mode"
     },
     {
       "name": "nox_xxx_pathFind_50BA00_search_50BAFB",

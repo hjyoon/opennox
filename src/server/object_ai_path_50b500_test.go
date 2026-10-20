@@ -61,9 +61,9 @@ func TestAIPathGridCell50B810UsesBinary32X87Conversion(t *testing.T) {
 		pos  types.Pointf
 		want [2]int
 	}{
-		{types.Ptf(34.5, 57.5), [2]int{2, 2}},
-		{types.Ptf(-34.5, -57.5), [2]int{-2, -2}},
-		{types.Ptf(80.5, 11.5), [2]int{4, 0}},
+		{types.Ptf(34.5, 57.5), [2]int{1, 2}},
+		{types.Ptf(-34.5, -57.5), [2]int{-1, -2}},
+		{types.Ptf(80.5, 11.5), [2]int{3, 0}},
 	}
 	for _, test := range tests {
 		x, y := paths.GridCell50B810(&test.pos)

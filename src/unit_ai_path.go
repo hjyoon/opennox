@@ -329,8 +329,8 @@ func (s *Server) nox_xxx_pathFind_50BA00(far bool, obj *server.Object, a3 *types
 
 // aiPathGridCell50BA00 preserves the two FLD/FMUL/FSTP/00419A70 sequences at
 // GAME.EXE 0050BA51 and 0050BAD2. Both coordinates are multiplied by the
-// exact binary32 reciprocal of 23, spilled to binary32, and rounded to the
-// nearest even integer by the shared x87 conversion routine.
+// exact binary32 reciprocal of 23, spilled to binary32, and rounded
+// toward zero by the shared x87 conversion routine in gameplay mode.
 func (s *Server) aiPathGridCell50BA00(pos *types.Pointf) ntype.Point32 {
 	x, y := s.AI.Paths.GridCell50B810(pos)
 	return ntype.Point32{X: int32(x), Y: int32(y)}
@@ -360,7 +360,7 @@ var aiPathNeighborOffsets50BA00 = [...]ntype.Point32{
 // aiPathGridCell50CB20 preserves the two FLD/FMUL/FSTP/00419A70 sequences at
 // GAME.EXE 0050CB38 and 0050CB49. As in the main path search, the original
 // multiplies binary32 coordinates by the exact binary32 reciprocal of 23,
-// spills them back to binary32, and rounds to the nearest even integer.
+// spills them back to binary32, and rounds toward zero in gameplay mode.
 func (s *Server) aiPathGridCell50CB20(pos *types.Pointf) ntype.Point32 {
 	x, y := s.AI.Paths.GridCell50B810(pos)
 	return ntype.Point32{X: int32(x), Y: int32(y)}

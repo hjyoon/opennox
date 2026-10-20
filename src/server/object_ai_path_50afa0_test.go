@@ -56,10 +56,10 @@ func TestAIPathGridCell50AFA0UsesX87Rounding(t *testing.T) {
 		want  int32
 	}{
 		{11.5, 0},
-		{34.5, 2},
+		{34.5, 1},
 		{57.5, 2},
-		{80.5, 4},
-		{-34.5, -2},
+		{80.5, 3},
+		{-34.5, -1},
 		{float32(math.Inf(1)), math.MinInt32},
 		{float32(math.NaN()), math.MinInt32},
 	}
@@ -92,12 +92,12 @@ func TestAIPathRebuild50AFA0SpecialPriorityAndWaypointRounding(t *testing.T) {
 		x, y int
 		want AIMapIndexFlags
 	}{
-		{2, 4, AIIndexHole},
-		{4, 6, AIIndexTransporter},
-		{6, 8, AIIndexElevator},
-		{8, 10, AIIndexElevatorShaft},
+		{1, 3, AIIndexHole},
+		{4, 5, AIIndexTransporter},
+		{6, 7, AIIndexElevator},
+		{8, 9, AIIndexElevatorShaft},
 		{10, 10, 0},
-		{12, 12, AIIndexWaypoint},
+		{11, 12, AIIndexWaypoint},
 	}
 	for _, test := range tests {
 		if got := paths.MapIndex(test.x, test.y).Flags8; got != test.want {

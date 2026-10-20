@@ -57,10 +57,10 @@ func TestAIPathTargetCell50AC20UsesExactGridInverseAndX87Rounding(t *testing.T) 
 	}{
 		{0, 0},
 		{11.5, 0},
-		{34.5, 2},
+		{34.5, 1},
 		{57.5, 2},
-		{80.5, 4},
-		{-34.5, uint16(0xfffe)},
+		{80.5, 3},
+		{-34.5, uint16(0xffff)},
 		{float32(math.Inf(1)), 0},
 		{float32(math.NaN()), 0},
 	}
@@ -122,7 +122,7 @@ func TestAIPathDestination50AC20AllObjectClasses(t *testing.T) {
 			if got := paths.Sub_50AC20(&AIVisitNode{X0: x, Y2: y}, &out); got != 1 {
 				t.Fatalf("result = %d, want 1", got)
 			}
-			if want := [2]uint16{2, 4}; out != want {
+			if want := [2]uint16{1, 3}; out != want {
 				t.Fatalf("destination = %v, want %v", out, want)
 			}
 

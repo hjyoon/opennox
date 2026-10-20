@@ -585,10 +585,8 @@ func aiPathHoleDestinationValid50AC20(data uintptr) bool {
 	return data+unsafe.Offsetof(HoleCollideData{}.DestinationX) != 0
 }
 
-// aiPathTargetCell50AC20 models the binary32 multiply and nox_float2int call
-// used by GAME.EXE 0050ADB4 and 0050AE32. The latter is x87 FISTP under the
-// default round-to-nearest-even mode and returns integer-indefinite on invalid
-// or out-of-range input; the caller stores its low word.
+// aiPathFloatToInt419A70 models x87 FISTP under the default nearest-even
+// mode. Gameplay path-grid calls use the directed conversion below instead.
 func aiPathFloatToInt419A70(value float32) int32 {
 	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
 		return math.MinInt32
@@ -597,12 +595,20 @@ func aiPathFloatToInt419A70(value float32) int32 {
 }
 
 func aiPathGridCell50AFA0(value float32) int32 {
-	return aiPathFloatToInt419A70(value * aiPathGridInverse50AC20)
+	// 0043E2C1 selects round-toward-zero before simulation. Both the
+	// reciprocal-product FSTP and 00419A70's FISTP inherit that mode.
+	// Two binary32 factors multiply exactly at precision 53; retain that
+	// product until the directed binary32 spill, including near cell edges.
+	product := monsterMoveToRunSpill544440(float64(value) * float64(aiPathGridInverse50AC20))
+	if math.IsNaN(product) || product >= 2147483648 || product < -2147483648 {
+		return math.MinInt32
+	}
+	return int32(product)
 }
 
 // GridCell50B810 converts a world position to the path-grid coordinates used
 // by GAME.EXE 0050B810. Both products are spilled to binary32 before the
-// shared 00419A70 x87 round-to-nearest-even conversion.
+// shared 00419A70 x87 conversion under gameplay's round-toward-zero mode.
 func (s *serverAIPaths) GridCell50B810(pos *types.Pointf) (int, int) {
 	return int(aiPathGridCell50AFA0(pos.X)), int(aiPathGridCell50AFA0(pos.Y))
 }

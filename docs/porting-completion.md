@@ -21,6 +21,94 @@ completion requirements.
 
 ## Current findings
 
+R337 completes Claude's original recognition, escort and physical return.
+The actual NPC crossing of Worker6Return trigger 3036 at 1883,2594 changes logical
+20=1->2, returned-worker counter 21=2->3 and state 15=4->5. Native saved XP
+increases by the original 250 to 6542.515. Health stays 29/29 and
+poison 0 at every measured return-road point. All five mine workers remain
+alive after original menu Save. Claude is observed near 1906,2467 afterward.
+
+Independent ordinary-clock normal and highres processes each load the same
+earned virtual return Save through the original menu, perform two actual
+return-area walks and run 600 normal native ticks. Observed globals retain
+20=2/21=3/15=5, with health 29, poison 0 and all five workers alive. Each writes
+a new owned original menu Save. These are independent earned-Save
+continuations, not fresh three-class campaigns. The preferred Save has
+health 29, mana 85, gold 513, XP 6542.515, no surviving owned creatures and
+SHA 5ec1cdaf252029e95067db8db60d2d2db35dafd2b5885ad094beed710f7a8d62.
+
+Original walking first detours around warehouse furniture and crosses its
+ordinary doors without consuming the held Ruby. Disconnected NPC waypoint
+components do not establish a player collision defect: actual input crosses
+the physical gap. Early guard fights fail; a continuous original sprint with
+an actual Imp7119 Charm reaches the west loop with health 29/poison 0 and a new
+Save. Earlier blocked chords and arrival timeouts remain negative evidence.
+
+Actual learned A later controls Imp7133 and then Imp7138; the latter is
+observed at 2 HP during the successful second charge and alive/owned after
+Save. Native combat clears the other room Imps. Two passive-wait branches
+instead end in PlayerDeath. Full object observations show Small7132 taking
+a long original route around the cave. Early A attempts have no available
+target, queue no key and spend no mana. Waiting for its physical arrival
+then allows one actual A at frame 722, with native Charm 721->766 (45 frames).
+Original Escort and 5000 normal recovery ticks preserve the party and let
+health 19 recover naturally to 29/poison 0 before a new Save.
+
+Original door movement consumes Ruby 1->0. Further original movement crosses
+Worker6Rec (function 69), awards its 100 XP and opens Claude's original dialogue. Clicking
+the current Done control runs Worker6DialogEnd (function 16), sets logical
+20=1 and starts Follow. Counter 22 already equals 3 and
+fails the original <=2 extra-key condition, so no fourth Ruby is granted.
+Claude is the original Worker6. No quest callback, counter,
+key, ownership, target or Follow field is assigned by the harness.
+
+Protecting that Follow clears the returning-road Troll7195 with two actual
+staff left presses plus original companion combat. Four extra requests have
+no target and queue no attack. A later three actual staff presses plus
+native combat kill Wolf7215; three extra requests queue no attack. Ten Small
+watch requests have no available target, queue no A and spend no mana.
+Another 5000 normal ticks recover native health 13->29. Original combat leaves
+no surviving owned companions, while all five story NPCs stay alive.
+
+The Claude recognition script requests seven Bat creations; five spawned
+instances are observed. Later actual Bat staff inputs/native combat leave
+1000297310, 1000297311 and 1000297313 DEAD. The remaining 1000297309 and
+1000297312 are observed alive near 2295,3788 and
+2249,3786. No complete Bat clearance is claimed. Tracking a fleeing Bat leads
+the hero and Claude into an east alcove. Actual northwest mouse input exits
+it, then eleven measured original east-road and aligned warehouse-door
+walks bring Claude through the original return trigger described above.
+The direct unaligned reverse door chord times out; aligned physical input
+passes it. No collision, camera, AI, follow, health, poison, damage, clock,
+timer, guide, spell or script state is changed directly.
+
+There are 30 observed game captures: 20 exit 0,
+10 negative exit 2, 20 valid living manual Saves,
+123 measured arrival gates and 7 PlayerDeath branches. Every death,
+negative and no-Save branch is retained and excluded from continuation seeds.
+There are no forced terminations, capture startup failures or prepared-only
+cases. Optional quit-raced reads are retained; missing reads prove nothing.
+
+Engine source/products remain b6f0d60ae9eb5de85a5f6c584fefb161c3f2831a.
+Sealed R334 gates are reused: 58 focused/58 strict passes with actual
+cgocheck2, race and checkptr=2; four exact-terminal-preserving full suites,
+normal/HD 82,108 PASS/49 SKIP each and server/server-HD 77,280 PASS/7 SKIP each,
+zero FAIL. The four Go 1.26.9 ARM64 products, matching Go/REA metadata and
+7,014-member full source archive are unchanged. No new engine suite runs or
+builds are claimed. Preservation rehashes 6,645 source, 3,284 protected and
+1,562 personal files, cloned stock and all 20 R319..R336 seals including the
+separate R335 reference repair. No original GAME.EXE execution, personal
+writes or golden changes occur.
+
+Next are Garrit, Dudley and the original next mine objective from state 15=5.
+Counter 3 does not complete all five mine rescues or three-class stories and
+endings. Warrior zipper/Horrendous, broader UI/audio, original Windows-peer,
+reachable ABI/native-generator and stability remain open. Weighted maturity
+stays 79%, not measured coverage; all seven areas remain partial and the
+100% goal stays active.
+
+### Retained R336 findings
+
 R336 completes Logan's original recognition, escort and physical return.
 Returned-worker counter 21 changes 1->2 and logical 16 changes 1->2 when Logan
 crosses the original Worker2Return trigger at 1660,2481. He then reaches the

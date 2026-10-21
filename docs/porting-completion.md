@@ -590,6 +590,36 @@ Historical deaths remain 59, with no forced terminations. All 6,663 product
 inputs and existing tests/goldens remain unchanged; remaining B/C objectives,
 the original Wizard3 ending and overall completion remain open.
 
+Subsequent western-corner attempt 489 dies during the combined encounter.
+The death world contains nearby original Swordsman 1883 and Archer 208;
+those positions alone do not attribute every incoming hit. The complete
+run, including its earlier movement, receives no continuation credit.
+The qualified three-kill/full-resource Save488 remains unchanged. Historical
+deaths are now 60 with no forced terminations. Safe covered approach 490
+saves HP 33/mana 99, but all four Archer helpers emit no spell key; it earns
+no Archer kill or Fireball-use credit.
+
+Original 491 returns to A, actually casts Shield away from the Primitive
+range and refills mana. Its native A save contains ENCHANT_SHIELD, power 1,
+saved duration 0 and Shield health 20, with player HP/mana 33/99. Natural B
+reentry 492 has no saved enchantment. Same-map Load-only 493 also loses it
+without another spell or map movement, so the observation is not specific
+to B entry. Unchanged GAME.EXE 0041BC36-0041BC47 replaces a loaded zero
+duration with the FPS scalar and stores it. Original generic buff update
+004FF620 decrements nonzero durations, and Shield update 0052F650 does not
+reset the timer. The observed expiration is consistent with those branches;
+no production change or indefinite active-Shield Load claim is justified.
+This compares original static instructions with current native observations,
+not an original Windows runtime or an exact sampled expiration frame.
+
+Proof `wizard3-original-shield-load-observation-verification-v493.json` has
+SHA-256 `8d722a9b155f38fa64db85f9669c497eb94b1d38c56b1d5e2ac4f6127a6b6676`.
+It binds an immutable audit snapshot, the original disassembly and native
+v5 enchantment reads. All prior point-in-time proofs and death counts are
+retained. All 6,663 product inputs and existing tests/goldens remain unchanged.
+Archer 208, western Swordsman 1883, later B/C objectives, the Wizard3 ending
+and overall completion remain open.
+
 ### Alerted enemies remain stationary at range
 
 The reported behavior reproduces with the stock `War03a:Robber`. At about

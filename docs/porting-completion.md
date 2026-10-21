@@ -1127,6 +1127,26 @@ PlayerDeath. `wizard2-original-necro-dialog-pit-save-load-verification-v263.json
 binds the original scene, corrected actual descent and explicit limits,
 SHA-256 `264249d42660328fec3c6d3658f1c72450379d40077196a59d3cd69f9f51b0de`.
 
+Case 264 freshly loads the lower-cave Save, defeats original Urchin 2362
+and restores HP 19 to 27 with Lesser Heal. Two A keys are queued, but the
+existing-projectile cap rejects the second attempt without mana cost;
+this is one executed Magic Missile. Actual Pickup cursor 2 and a left
+click acquire original BookOfOblivion 1758. Its original callback awards
+250 XP, completes GetNecromancer (type 4) and starts ArchivistBook (type 2).
+The owned Save has HP 24, mana 46 and poison 0, distinct from pre-Save
+HP 26 and later HP 23.
+
+Case 265 freshly loads that book, defeats original Urchin 2363 with Chain
+Lightning and retreats along original lower-cave road 183. Case 266 freshly
+loads the owned HP 24/mana 40 Save and naturally restores HP to 27 and
+mana to 89, keeping the original book and journal throughout. All three
+cases pass the strict actual-loader field schema, exit naturally and
+have no PlayerDeath. `wizard2-original-book-pickup-recovery-save-load-verification-v266.json`
+binds actual combat, pickup, objectives and independent Save/Load/recovery,
+SHA-256 `71fbdbfc44f4201570f5db7b47cd1f9d2d293a6ac3c3c0a7d9fdf2e0f210ca5c`.
+Shield/Fireball and available side-quest mechanics, the lower-cave exit,
+Archivist/Horvath delivery and Wizard3 remain pending.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

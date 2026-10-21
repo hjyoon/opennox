@@ -1,0 +1,349 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "functions": [
+    {
+      "name": "nox_xxx_wndListBoxAddLine_4A3AC0",
+      "address": "0x004A3AC0",
+      "size": 319,
+      "sha256": "9dd0b6bc21b75b570e0640fd89b48d7c58889d9766651f625ff05b62f468e25f",
+      "purpose": "the exact PE32 listbox line insertion and measurement helper, including seven-pixel text padding and the additional ten-pixel constructor scrollbar deduction"
+    },
+    {
+      "name": "nox_xxx_loadDefColor_4A94A0",
+      "address": "0x4a94a0",
+      "size": 532,
+      "sha256": "210095f32b05dadf2ee9ea97dab115fa7206040f00cf38a54b10f740189c7926"
+    }
+  ],
+  "rgb_calls": [
+    [
+      0,
+      0,
+      0
+    ],
+    [
+      8,
+      8,
+      8
+    ],
+    [
+      115,
+      115,
+      115
+    ],
+    [
+      212,
+      212,
+      212
+    ],
+    [
+      255,
+      255,
+      255
+    ],
+    [
+      100,
+      0,
+      0
+    ],
+    [
+      255,
+      0,
+      0
+    ],
+    [
+      255,
+      128,
+      128
+    ],
+    [
+      0,
+      100,
+      0
+    ],
+    [
+      0,
+      255,
+      0
+    ],
+    [
+      128,
+      255,
+      128
+    ],
+    [
+      0,
+      0,
+      140
+    ],
+    [
+      0,
+      0,
+      255
+    ],
+    [
+      0,
+      160,
+      255
+    ],
+    [
+      240,
+      180,
+      42
+    ],
+    [
+      255,
+      255,
+      0
+    ],
+    [
+      255,
+      255,
+      128
+    ]
+  ],
+  "palette": [
+    0,
+    69272609,
+    969816526,
+    1801087834,
+    2147450879,
+    805318656,
+    2080406528,
+    2115010064,
+    25166208,
+    65012704,
+    1139819504,
+    1114129,
+    2031647,
+    43975327,
+    2059762373,
+    2145419232,
+    2146467824
+  ],
+  "rows": [
+    {
+      "index": -2147483648,
+      "default": 305402420,
+      "color": 305402420
+    },
+    {
+      "index": -2,
+      "default": 305402420,
+      "color": 305402420
+    },
+    {
+      "index": -1,
+      "default": 305402420,
+      "color": 305402420
+    },
+    {
+      "index": 0,
+      "default": 305402420,
+      "color": 0
+    },
+    {
+      "index": 1,
+      "default": 305402420,
+      "color": 69272609
+    },
+    {
+      "index": 2,
+      "default": 305402420,
+      "color": 969816526
+    },
+    {
+      "index": 3,
+      "default": 305402420,
+      "color": 1801087834
+    },
+    {
+      "index": 4,
+      "default": 305402420,
+      "color": 2147450879
+    },
+    {
+      "index": 5,
+      "default": 305402420,
+      "color": 805318656
+    },
+    {
+      "index": 6,
+      "default": 305402420,
+      "color": 2080406528
+    },
+    {
+      "index": 7,
+      "default": 305402420,
+      "color": 2115010064
+    },
+    {
+      "index": 8,
+      "default": 305402420,
+      "color": 25166208
+    },
+    {
+      "index": 9,
+      "default": 305402420,
+      "color": 65012704
+    },
+    {
+      "index": 10,
+      "default": 305402420,
+      "color": 1139819504
+    },
+    {
+      "index": 11,
+      "default": 305402420,
+      "color": 1114129
+    },
+    {
+      "index": 12,
+      "default": 305402420,
+      "color": 2031647
+    },
+    {
+      "index": 13,
+      "default": 305402420,
+      "color": 43975327
+    },
+    {
+      "index": 14,
+      "default": 305402420,
+      "color": 2059762373
+    },
+    {
+      "index": 15,
+      "default": 305402420,
+      "color": 2145419232
+    },
+    {
+      "index": 16,
+      "default": 305402420,
+      "color": 2146467824
+    },
+    {
+      "index": 17,
+      "default": 305402420,
+      "color": 305402420
+    },
+    {
+      "index": 2147483647,
+      "default": 305402420,
+      "color": 305402420
+    },
+    {
+      "index": -2147483648,
+      "default": 2147483648,
+      "color": 2147483648
+    },
+    {
+      "index": -2,
+      "default": 2147483648,
+      "color": 2147483648
+    },
+    {
+      "index": -1,
+      "default": 2147483648,
+      "color": 2147483648
+    },
+    {
+      "index": 0,
+      "default": 2147483648,
+      "color": 0
+    },
+    {
+      "index": 1,
+      "default": 2147483648,
+      "color": 69272609
+    },
+    {
+      "index": 2,
+      "default": 2147483648,
+      "color": 969816526
+    },
+    {
+      "index": 3,
+      "default": 2147483648,
+      "color": 1801087834
+    },
+    {
+      "index": 4,
+      "default": 2147483648,
+      "color": 2147450879
+    },
+    {
+      "index": 5,
+      "default": 2147483648,
+      "color": 805318656
+    },
+    {
+      "index": 6,
+      "default": 2147483648,
+      "color": 2080406528
+    },
+    {
+      "index": 7,
+      "default": 2147483648,
+      "color": 2115010064
+    },
+    {
+      "index": 8,
+      "default": 2147483648,
+      "color": 25166208
+    },
+    {
+      "index": 9,
+      "default": 2147483648,
+      "color": 65012704
+    },
+    {
+      "index": 10,
+      "default": 2147483648,
+      "color": 1139819504
+    },
+    {
+      "index": 11,
+      "default": 2147483648,
+      "color": 1114129
+    },
+    {
+      "index": 12,
+      "default": 2147483648,
+      "color": 2031647
+    },
+    {
+      "index": 13,
+      "default": 2147483648,
+      "color": 43975327
+    },
+    {
+      "index": 14,
+      "default": 2147483648,
+      "color": 2059762373
+    },
+    {
+      "index": 15,
+      "default": 2147483648,
+      "color": 2145419232
+    },
+    {
+      "index": 16,
+      "default": 2147483648,
+      "color": 2146467824
+    },
+    {
+      "index": 17,
+      "default": 2147483648,
+      "color": 2147483648
+    },
+    {
+      "index": 2147483647,
+      "default": 2147483648,
+      "color": 2147483648
+    }
+  ],
+  "memory_faults": [],
+  "executable_and_code_unchanged": true,
+  "scope": "Bounded stock GAME.EXE list-box palette and insertion color oracle.\n\nExecute unchanged 4A94A0 and 4A3AC0 instructions. RGB5551 packing, UTF-16\ncopy/length, font height and reflow are declared service boundaries. This\nchecks row color selection, not an original Windows framebuffer.\nUsage: python original_list_box_colors_4a3ac0.py REPO GAME.EXE\n"
+}

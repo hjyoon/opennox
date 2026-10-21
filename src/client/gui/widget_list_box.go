@@ -21,6 +21,15 @@ type ScrollListBoxItem struct {
 	Field_130 uint32      // 130, 520; rendered line height
 }
 
+// Stock 004A94A0 palette, indexed by the add-line event's second argument.
+// Keep native color values instead of the original table of PE32 pointers.
+var scrollListBoxColors = [...]noxcolor.RGBA5551{
+	noxcolor.Black, noxcolor.Gray1, noxcolor.Gray2, noxcolor.Gray3, noxcolor.White,
+	noxcolor.DarkRed, noxcolor.Red, noxcolor.LightRed, noxcolor.DarkGreen,
+	noxcolor.Green, noxcolor.LightGreen, noxcolor.DarkBlue, noxcolor.Blue,
+	noxcolor.Cyan, noxcolor.Orange, noxcolor.Yellow, noxcolor.LightYellow,
+}
+
 type ScrollListBoxData struct {
 	Count       uint16             // 0, 0
 	Line_height uint16             // 0, 2
@@ -431,7 +440,9 @@ func scrollListBoxAddLine(win *Window, str string, colorArg int) bool {
 	str = strings.TrimSuffix(str, "\n")
 	alloc.StrCopyZero16(item.Text[:], str)
 	item.Field_129 = win.DrawData().TextColorVal
-	_ = colorArg
+	if colorArg >= 0 && colorArg < len(scrollListBoxColors) {
+		item.Field_129 = scrollListBoxColors[colorArg].Color32()
+	}
 	height := int(d.Line_height)
 	if r := win.GUI().Render(); r != nil {
 		wrapWidth := win.Size().X - 7
@@ -785,7 +796,7 @@ func scrollListBoxDraw(win *Window, draw *WindowData) int {
 				r.DrawRectFilledOpaque(pos.X, y, w, lineH, cl)
 			}
 		}
-		r.Data().SetTextColor(draw.TextColor())
+		r.Data().SetTextColor(noxcolor.RGBA5551(item.Field_129 >> 16))
 		text := alloc.GoString16(&item.Text[0])
 		r.DrawStringWrapped(font, text, image.Rect(pos.X+5, y+2, pos.X+w-2, y+lineH))
 	}

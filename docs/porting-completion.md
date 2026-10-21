@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; original B Swordsman pursuit/kill/XP and natural A resource-return/B reentry retain the saved death and full resources; remaining Wiz03b objectives, Wiz03c and original ending pending |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; three original B Swordsmen are defeated with native HP/XP checks; natural A resource-return/B reentry retain all three deaths, full resources and the recharged wand; remaining Wiz03b objectives, Wiz03c and original ending pending |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -559,6 +559,36 @@ reveals that the enemy has already pursued the player. Historical deaths
 remain 59 with no forced terminations. All 6,663 product inputs and existing
 tests/goldens remain unchanged; B/C objectives, the original Wizard3 ending
 and overall completion remain pending.
+
+Original continuation 484 defeats Swordsman 585 and saves HP 29, mana 57,
+poison 0 and XP 11477.425. Continuation 485 queues three Magic Missile keys
+against Swordsman 1886 but does not finish it: the original saved monster
+has HP 2 and remains alive, while native player XP is unchanged. The saved
+simple non-female/non-shop Swordsman Xfer64 tail is checked against the
+frozen source layout, buff version 2/count 0 and poison 0. No kill is
+credited to 485. Follow-up 486 approaches that saved wounded unit and
+finishes it through ordinary input. Native XP reaches 11543.65 and the
+world confirms the same original unit dead. Two additional wand shots
+consume charges 200 to 198; they receive no killing-hit attribution.
+
+Original continuation 487 starts from the B save with HP 22 and little
+mana and naturally returns to A. The Primitive pair restores mana to 99, actual Lesser Heal restores
+HP 25 to 33, and actual movement outside the node ranges lets their normal
+regeneration run before reapproach. The owned native A manual save ends at
+HP 33/33, mana 99/99, poison 0 and wand charge 200/200. The equipped original
+PoisonRobe retains ArmorQuality1 and PoisonProtect1 with durability 264.
+The inactive B map retains all three original dead Swordsmen 587/585/1886.
+Natural B reentry 488 and its new manual save preserve those deaths, XP,
+eight spells, Bat/Wasp guides and full resources. Swordsman 1883 remains
+alive; the western corner and later original objectives remain pending.
+
+Proof `wizard3-original-b-three-kills-resource-return-verification-v488.json`
+has SHA-256 `dd0015776cc719f93086efe319f3c0756d751a42554b2a4be6bb625d3b1b91cc`.
+All five runs are ordinary-clock actual-input continuations with complete
+terminal world/script/wall observations and owned living native saves.
+Historical deaths remain 59, with no forced terminations. All 6,663 product
+inputs and existing tests/goldens remain unchanged; remaining B/C objectives,
+the original Wizard3 ending and overall completion remain open.
 
 ### Alerted enemies remain stationary at range
 

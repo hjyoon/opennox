@@ -334,6 +334,28 @@ All 6,663 current product inputs remain unchanged. This establishes actual
 armor equipment and retention, with no poison-damage or CurePoison-effect
 credit. Remaining Wizard3 objectives and overall completion are pending.
 
+Original road encounters 435, 436, 437 and 440 retain the actual deaths of
+small spiders 239, 232, 238 and 1126. Ordinary Magic Missile inputs account
+for each new death; unavailable targets queue no key and receive no kill
+credit. Fresh ordinary HD 441 retains all four original corpses and the
+equipped PoisonRobe. All five owned saves retain HP 33/33, poison 0,
+XP 11136.126, the seven spells and the original quest state. Real passive
+recovery raises mana 28 to 48 over 1,800 server frames in 440, then 48 to 99
+over 4,800 frames in HD 441. These are ordinary 60/160-second game waits.
+
+Proof `wizard3-original-road-spiders-rest-hd-save-load-verification-v441b.json`
+has SHA-256 `64cb8277823657426fac7fb69f204fceb9e38c7ba80e84897b345e3d04a0f7d3`.
+Failed attempts 438 and 439 both end in PlayerDeath without a new save;
+their entire runs are excluded and retained, bringing the historical death
+count to 56. The private resource plan confused ObeliskPrimitive 3852/3853
+with the actual Obelisk type used by the earlier mana fountains. No mana
+recharge or shield-survival credit is assigned to those attempts. The
+first private verifier also assumed the final script HTTP read had a path;
+the corrected verifier checks every successful sealed script snapshot and
+retains the required terminal-world and native-owned-save checks. Earlier
+code and failure logs remain preserved. All 6,663 product inputs remain
+unchanged; remaining Wizard3 objectives and overall completion stay open.
+
 ### Alerted enemies remain stationary at range
 
 The reported behavior reproduces with the stock `War03a:Robber`. At about

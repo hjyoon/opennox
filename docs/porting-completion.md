@@ -993,6 +993,24 @@ and unchanged XP 3658.5554, with natural exits 0 and no PlayerDeath.
 the positive Save/Load chain and excluded negative control, SHA-256
 `2f1900ffc4fd3bfcaf729ce1f635695db5c9c687316700ca9a3a4a1462d1880a`.
 
+Case 230 defeats original FlyingGolem 2277 with one actual Magic Missile;
+the second helper finds no living target and queues no key. Lesser Heal
+restores HP 13 to 20, and the four obelisks restore mana 33 to 78 before a
+new living Save. Case 231 freshly loads that Save, defeats pursuing original
+SmallAlbinoSpider 1437 and follows the connected roads to anonymous Chest3
+2333. Case 233 observes that exact chest with Use cursor 13 and clicks it;
+the contained original GoldKey 2340 becomes a world item. Case 234 observes
+Pickup cursor 2, clicks the key and saves with one GoldKey in inventory.
+
+Case 235 freshly loads that key, passes the original barred gates 818/819
+and consumes it. Read-only native map decoding confirms both lock codes
+change from 2 to 0. These five cases all save HP 20, mana 78 and poison 0,
+exit naturally with code 0 and retain the four learned spells and original
+journal. Failed combat attempt 229 remains excluded in full.
+`wizard2-original-golem-gold-key-gates-save-load-verification-v235.json`
+binds the combat, actual Use/Pickup, independent Load and gate evidence,
+SHA-256 `c87ca316a665cc4c07c6c03eebfc64019f7de43c9cf37192efe30e33f2dd3059`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

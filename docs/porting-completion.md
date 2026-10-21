@@ -82,7 +82,18 @@ previous production source. No existing test, expected value or golden changes.
 
 Focused checks pass 329 events; actual cgocheck2/race/checkptr2 passes 364.
 Normal and highres full suites each pass 83,179 events with 49 skips.
-The server configurations and clean committed products are being validated.
+Server and server-highres each pass 78,351 events with 7 skips. Every earlier
+terminal identity, result and multiplicity remains, with exactly 264 additions
+per configuration and only the same two pre-existing native-address name
+normalizations. All 6,652 other earlier source inputs remain byte-identical.
+Four clean ARM64 products at `917d6a5a5aecfb46313eaefe63e68261c52a74df`
+pass help execution and independent Go/REA checks for Go 1.26.9, revision,
+tags and unmodified VCS. The 6,659 current inputs and complete source archive
+are sealed in `strong-fireball-fix/`. A one-digit instruction-address comment
+correction preserves identical executable tokens and positions; its earlier
+tested source and freeze remain separately recorded. The final focused run
+uses the corrected comment. Consolidated checks are in
+`strong-fireball-fix/verification.json`.
 The original oracle verifies 3,022 code and 667 data ranges. A separate
 1,556-file original tree passes the full sealed manifest after taking only
 its two mutable configuration files from the unchanged installer into a new

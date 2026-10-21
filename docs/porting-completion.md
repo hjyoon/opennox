@@ -1096,6 +1096,37 @@ binds reward, pause expiry, actual Save/Load and resumed progression,
 SHA-256 `ccf6de9a72d9264641446c958d9d57ce7e945b2472f2798968c8fbf3be01c537`.
 No XP, level, pause, FX, clock or resource rule is changed.
 
+Case 261 passes the original rubble detour, starts PlayerFollowCheck and
+clicks the original Necromancer dialogue Done button. Original globals
+52/53 change from 0/0 through 1/0 to 1/1, the pit becomes enabled and the
+real Necromancer moves to the lower area. The separate NecroTemp 2717
+changes from alive to DEAD through the original script; this is not a
+player combat kill. The owned Save retains HP 27, mana 89 and poison 0.
+
+An external input-plan error is corrected separately from engine behavior:
+the actual loader reads `ang`, while unknown `dir` is silently ignored.
+Retrospective inspection of 256 preserved scenarios finds this field in
+four runs: 241, 258, 261 and 262. Their bounded movement actually uses the
+default north angle; attached directional intent labels are corrected by
+`input-angle-field-errata-v263.json`, SHA-256
+`8b9f61106ff82ef48894013cd686404920afbb199c1322eaf8678ae5e46c1c14`.
+Actual observed coordinates, script effects, combat and Save/Load evidence
+remain the basis of each claim. Archived inputs and results are preserved.
+A private validator now extracts accepted fields from the real Go AST,
+rejects unknown step/raw-event fields and requires explicit movement angles.
+The corrected 263 input passes this stricter check; no game code changes.
+
+Case 262 moves north upstairs and earns no pit-descent credit. Case 263
+instead uses actual `ang: 0.36`, enters original pit 1713 and reaches
+(3755.9878,2402.6877), within seven units of its original (3751,2406)
+destination. Native map decoding confirms the original and saved pit
+destination and callback remain unchanged. It writes an owned lower-cave
+Save at HP 20, mana 89 and poison 0; pre-Save HP 22 and later observed HP
+19 are separate observations. All three living runs exit naturally without
+PlayerDeath. `wizard2-original-necro-dialog-pit-save-load-verification-v263.json`
+binds the original scene, corrected actual descent and explicit limits,
+SHA-256 `264249d42660328fec3c6d3658f1c72450379d40077196a59d3cd69f9f51b0de`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

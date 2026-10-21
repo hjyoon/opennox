@@ -1011,6 +1011,21 @@ journal. Failed combat attempt 229 remains excluded in full.
 binds the combat, actual Use/Pickup, independent Load and gate evidence,
 SHA-256 `c87ca316a665cc4c07c6c03eebfc64019f7de43c9cf37192efe30e33f2dd3059`.
 
+Cases 236–238 verify the original spike-hall missile switches. The central
+carpet is reached without damage. Two actual Magic Missile inputs operate
+the original buttons: global 74 changes from 0 to 1, then the two original
+wall lights move separately to (1871,3998) and (1818,3928). The first button
+has no hovered target; the original script and light effects establish its
+hit. A fresh Load retains this state and the original roads 185/188 pass.
+Original StatueTriggerE 748 then selects the eastern wall group and moves
+all four statues to their original scripted positions. The owned Save has
+HP 20, mana 50 and poison 0; the later nearby-spider hit reducing observed
+HP to 18 is retained separately. All three processes exit naturally with
+no PlayerDeath. `wizard2-original-spike-switches-statue-plate-save-load-verification-v238.json`
+binds the Save/Load and script evidence, SHA-256
+`a175182464302dcdfa70044a4cc4e65d9db7ec5fdc99a58012348fa64a6bc23f`.
+The selected eastern passage traversal is still pending at this checkpoint.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

@@ -151,6 +151,29 @@ from 0 to 1 and makes Morgan a real player-owned follower. He moves from his
 stock position and stops within 60 units. Both original quest records remain
 active; Warden handoff and chapter completion are pending.
 
+The unchanged b7 source archive now also runs the Linux AMD64 Go server
+PlayerDamage regressions under ARM64-host Rosetta emulation. Normal and
+cgocheck2/race/checkptr2 runs each pass 10,308 terminal test events with no
+failures or skips, preserving identities, results and multiplicities. The
+same existing allocation-address family is normalized; fixed low addresses
+and zero remain literal. Explicit glibc `MALLOC_MMAP_THRESHOLD_=0` satisfies
+the existing C-record-above-4-GiB fixture preconditions. The initial default
+allocator run retains all 513 preparation failures and its raw log; those
+assertions report low native addresses rather than damage mismatches.
+All 6,663 frozen production/test inputs remain byte-identical.
+
+The source is mounted read-only in network-disabled Linux AMD64 containers
+with Go 1.26.9. This is neither physical AMD64 hardware nor Linux stock-map
+gameplay. Proofs in `linux-amd64-player-damage-b7/` are
+`server-high-v2-verification.json`, SHA-256
+`39e4a89f63218933b726b0989cd9cc123c36fd3b0f2eda9e92d189894cf7dad9`,
+and `server-strict-v3-verification.json`, SHA-256
+`3acf8fe303e796ec091d48fc8d20ba4f1e0cc04418c86283411a4232b5b8f2fb`.
+The registered upper-module C callback is still pending independent Clang
+compilation. GCC 14.2 reports an internal peephole2 compiler error in the
+unchanged legacy shop-price function; that build failure remains preserved.
+No Linux callback or complete Linux build success is claimed at this point.
+
 The three-case proof is
 `wizard2-original-new-engine-morgan-surrender-save-load-verification-v385b.json`,
 SHA-256 `ae359b0578e9da24b68fd4899d816f42dbe850759603d3960330a3fa355a063c`.

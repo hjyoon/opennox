@@ -32,10 +32,12 @@ func playerDamageWorldProjectile4E17B0(
 		}
 		return true, true
 	}
-	player := target.Class().Has(object.ClassPlayer)
-	if player && r.CoopMode != nil && r.CoopMode() && source.FindOwnerChainPlayer() == target {
+	// 004E1808 queries Coop before the owner and live PLAYER class gates,
+	// including NPC targets. Cache the target layout only after that query.
+	if r.CoopMode != nil && r.CoopMode() && source.FindOwnerChainPlayer() == target && target.Class().Has(object.ClassPlayer) {
 		return true, false
 	}
+	player := target.Class().Has(object.ClassPlayer)
 	if target.UpdateData == nil || (!player && (!target.Class().Has(object.ClassMonster) || uint32(target.SubClass())&0x10 == 0)) {
 		return reject("unsupported world projectile target update")
 	}

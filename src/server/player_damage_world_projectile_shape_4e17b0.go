@@ -28,6 +28,12 @@ func playerDamageWorldProjectileShape4E17B0(source, weapon *Object, typ object.D
 			!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 			!defaultDamageAttackQualifies4E1400(source, weapon)
 	case object.DamageFlame:
+		// A terminal Fireball owner can be the missile itself. Preserve both
+		// arguments through the world-projectile prefix: no unit update exists,
+		// and 004E1AA2 leaves the marker clear until case 1 records the type.
+		if source == weapon && pureMissile(weapon) {
+			return true
+		}
 		// Scripted spell missiles can retain a class-zero ImaginaryCaster.
 		return (world && source.Class().Has(object.ClassImmobile) || source.Class() == 0) &&
 			source != weapon && pureMissile(weapon)

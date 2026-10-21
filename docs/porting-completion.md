@@ -55,6 +55,42 @@ completion requirements.
 
 ## Current findings
 
+### StrongFireball rejects player damage when source equals weapon
+
+The reported native `NewPlayer` hit supplies the same `StrongFireball`
+object as source and weapon: damage 96, type 1, projectile type 694,
+class 2621441, subclass 1 and flags 553665028. The existing unit-fired and
+weapon-less missile admissions omit this terminal-owner shape, so the
+player callback reports `unsupported player damage shape` and skips HP.
+
+Pure missile self-sources now enter the existing world-projectile prefix.
+This retains both arguments, the cached damage marker, ordinary shield and
+Reflect defenses, full raw FLAME armor wear, unchanged fractional HP carry,
+Quest scaling and DefaultDamage's protection, hurt-state and HP bindings.
+The prefix also queries Coop before the owner and live target-class gates,
+as the unchanged original CALL at 004E1808 does, including NPC targets.
+Unit, weapon and wand projectiles retain their separate admission checks.
+
+A bounded execution of unchanged GAME.EXE PlayerDamage instructions records
+228 player/NPC conditions, including damage 96, signed and zero input,
+Quest scaling, shield directions, reflection, GodMode and early exits.
+All compare exactly after the fix. C-owned records above 4 GiB cross the
+registered production callback and verify HP 400 to 304, attribution,
+unchanged carry and the original hurt state 30 for damage 96.
+The final regression set has 264 terminal events; 140 fail against the
+previous production source. No existing test, expected value or golden changes.
+
+Focused checks pass 329 events; actual cgocheck2/race/checkptr2 passes 364.
+Normal and highres full suites each pass 83,179 events with 49 skips.
+The server configurations and clean committed products are being validated.
+The original oracle verifies 3,022 code and 667 data ranges. A separate
+1,556-file original tree passes the full sealed manifest after taking only
+its two mutable configuration files from the unchanged installer into a new
+copy; previous installation files and Saves remain unchanged. Evidence is
+under `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/strong-fireball-*`.
+The Wizard campaign is preserved at owned living save 382, HP 27/27,
+mana 89/89 and poison 0, pending continuation with the verified new product.
+
 ### Alerted enemies remain stationary at range
 
 The reported behavior reproduces with the stock `War03a:Robber`. At about

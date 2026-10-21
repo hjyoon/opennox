@@ -1201,6 +1201,23 @@ hit, kill or impact damage is claimed. No quickbar setter is used.
 binds the pickup, independent Load, actual set keys and projectile evidence,
 SHA-256 `e30d5ba778eb38b4059972bff4bed9f9158aa3def5d47a314af7fabdef0f9a37`.
 
+Cases 284–289 carry those six earned spells back through the original pit
+and book route, using consecutive owned Saves. The return Save has HP 17;
+its damage source is unclassified. Actual Lesser Heal restores HP to 27,
+and natural recovery restores mana to 89 before descent. The original pit
+collision reaches the lower destination; actual Magic Missile kills Urchin
+2362 and Lesser Heal restores the player. The original BookOfOblivion
+Pickup, 250 XP and journal changes are retained with all six spells.
+Lightning in 287 leaves Urchin 2363 alive and earns no kill credit. In 288,
+actual Lesser Heal and Magic Missile permit its verified death and retreat.
+Case 289 independently loads the owned book-holding Save, retains both
+Urchin deaths and naturally restores HP 21 to 27 and mana 1 to 89. Poison
+remains 0. The earlier separate four-spell book Save 270 remains unchanged;
+no inventory or objective is transferred between branches.
+`wizard2-original-six-spell-book-recovery-save-load-verification-v289.json`
+binds the consecutive source chain, original progression and living recovery,
+SHA-256 `20ce907005056ba6f89b3cafbb92051f5950861cd4158e2f9f1cd6762c3c7dfb`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

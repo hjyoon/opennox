@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal and Swap learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion pickup, journal objectives, Troll combat and living Save/Load proved; cave exit, book/amulet delivery and remaining mechanics pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion pickup, journal objectives, Troll combat and living Save/Load proved; cave exit, book/amulet delivery and remaining mechanics pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -1186,6 +1186,20 @@ persistence across Load is claimed.
 `wizard2-original-shield-learning-cast-save-load-verification-v280.json`
 binds the original pickup, learning, independent Load, cast and recovery,
 SHA-256 `473cdb8729bf90876e0321ee2e2cafe2958a31de9cceec28937479c04a4c7444`.
+
+Cases 281–283 continue this same earned branch to original Fireball book 271.
+Actual Pickup and click learn level-1 Fireball; the new owned Save retains
+all six learned spells. In a fresh process, actual E selects the next spell
+set, whose naturally assigned A contains Fireball 27. Actual A creates a
+real Fireball missile recorded both in the world and in the player's owned
+object list. Mana changes from 89 to 59, matching the original 30-point cost.
+Actual W restores the first set, with Magic Missile on A and Shield on G,
+before another owned living Save. All three runs preserve HP 27 and poison 0.
+This empty-floor cast proves projectile creation and ownership; no enemy
+hit, kill or impact damage is claimed. No quickbar setter is used.
+`wizard2-original-fireball-learning-cast-save-load-verification-v283.json`
+binds the pickup, independent Load, actual set keys and projectile evidence,
+SHA-256 `e30d5ba778eb38b4059972bff4bed9f9158aa3def5d47a314af7fabdef0f9a37`.
 
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is

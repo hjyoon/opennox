@@ -1252,6 +1252,32 @@ with HP 27 and poison 0 throughout. Cure-potion use is still pending.
 binds the consecutive source chain, combat, original pickup and recovery,
 SHA-256 `ed79ae0589ba2dd165b125e9a346ce7197be3c49e7ddee315ebad06f8795d4a7`.
 
+Case 300 fails a private scenario expectation that C must consume a mana
+potion at full mana. The unchanged use routine correctly retains it; this
+failed run is wholly ineligible. Case 301 repeats the same owned source and
+input prefix through the original BluePotion 1940 pickup, then retains it
+and returns to save. Actual Shield costs 80 mana, and same-process natural
+recovery restores mana 9 to 89 before the upper-cave route. Reviewed frames
+retain the Shield icon and glow after recovery and return. The owned Save
+has HP 21, mana 89 and Shield health 14, decoded independently through the
+exact named version-5 enchantment fields. Raw incoming damage before
+reduction is not separately sampled. Four unavailable Troll helpers queue
+no offensive key and earn no cast or kill credit.
+
+Original pursuers then reach the lower route. Actual Lesser Heal and
+Lightning kill Troll 950 in 302. In 303, C consumes the earned mana potion
+at reduced mana, restoring 29 to 79, and Lightning kills Troll 948 without
+player damage. Actual player movement in 304 brings Urchin 2364 and Troll
+2365 into range; Magic Missile and Lightning kill them and Lesser Heal
+restores HP 22 to 27. Case 305 independently loads the owned Save and
+retains all five Troll and three Urchin deaths, the book, six spells and
+one cure potion while naturally restoring mana 4 to 89. HP remains 27 and
+poison remains 0. Cure use, the remaining upper-cave encounters/items and
+original exit/delivery remain pending.
+`wizard2-original-upper-shield-mana-potion-save-load-verification-v305.json`
+binds these separate failures and earned progression with living Save/Load,
+SHA-256 `65d02dee5534b54c950d1dfc83adfeadef21ce3f50ced8703fca60e74cb2ca68`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

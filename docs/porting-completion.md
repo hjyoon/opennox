@@ -1415,6 +1415,27 @@ binds the transporter chain, natural map return, shortcut activation,
 original reward and independent HD Load/completed dialog,
 SHA-256 `c9a8e2c9c4aba51b8a54e8fc7edaf50f4b4bbe101c7c0015838375c271c7113d`.
 
+Cases 337–344 carry the earned amulet back through the original archive
+lift and return gates. Case 338 observes the lower destination but remains
+on the platform and rides back up; it does not establish a lower-floor
+Save. Case 339 immediately walks off the lower platform, saves alive, and
+the next fresh Load confirms that position. Case 340 crosses the original
+gate pair in the return direction. Case 341 then takes original Exit 3937
+naturally from Wiz02b to Wiz02a with the amulet, quest book and equipped
+wand at charge 198 retained.
+
+Case 344 reaches the Warden around the jail desk and uses real NPC mouse
+interaction and Done. The original dialog adds ArrestMorgan to the active
+journal. The owned native Save has HP 27, mana 89, poison 0 and unchanged
+XP 9132.782. Morgan has not yet been arrested and ReturnToHorvath remains
+active. The earlier dialog attempt in 343 produces no active dialog or new Save
+and earns no progression. Read-only native inventory and script checks
+retain the original inputs and rewards.
+`wizard2-original-amulet-galava-warden-save-load-verification-v344.json`
+binds the lift transfers, disembarkation, fresh Load, reverse gate passage,
+natural map return and Warden dialog,
+SHA-256 `5effbb1d046439d3caaab6c85d6a752bcd6cec43263526c0055894aa87a1a44d`.
+
 The remaining chapter 2 areas, Horvath amulet delivery, Morgan/Push and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

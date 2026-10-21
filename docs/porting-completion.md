@@ -55,6 +55,48 @@ completion requirements.
 
 ## Current findings
 
+### Solo Load Game loses the autosave row color
+
+The original save list chooses palette index 13 for AUTOSAVE, 14 for a
+manual save and 3 for an empty slot. The native-width list box discarded the
+add-line color argument and rendered every row with the window's default
+text color. Both insertion and drawing now preserve the original per-row
+color: blue autosave, orange manual saves and gray empty slots. Selecting a
+row keeps its text color and the original selection background.
+
+Bounded execution of unchanged GAME.EXE 004A94A0 and 004A3AC0 supplies 44
+color conditions, including all 17 palette entries, invalid indices and a
+transparent default. Packing, string/font services and reflow are declared
+boundaries; this is not an original Windows framebuffer comparison.
+Native raster checks cover plain/image lists and both selected save rows.
+The final new regressions fail 42 terminal events against the previous
+production widget. Focused and cgocheck2/race/checkptr2 runs each pass 67
+events. Every existing test and golden remains unchanged.
+
+Actual ordinary-clock Solo to Load Game menu runs reproduce the old orange
+autosave and verify the fix in normal and highres products. Real mouse input
+selects slots 0 and 1, with nine captured screens across the three runs.
+Pixel checks distinguish the blue autosave, orange manual save and gray
+empty rows; every copied saved game and source file remains byte-identical.
+These menu-only runs receive no campaign progression credit. The sealed
+`save-slot-color-fix/menu-verification.json` has SHA-256
+`1f9ba9285a43f2d9123ba5679bd7dc2497597de7b2d6aa4eb3b17e17aa3d61a1`.
+The code revision is `b7db0a6b2450b5f3121a401a5b570fda5339b7c2`.
+
+All four complete suites pass: normal/highres each have 83,232 passes and
+49 skips; server/server-highres each have 78,404 passes and 7 skips. Every
+previous terminal event, result and multiplicity is retained, with 53 new
+passing events per configuration. Only the same two existing address-based
+subtest names receive the previously documented native-address normalization.
+All 6,658 other prior source/test inputs remain byte-identical in the
+6,663-file freeze. Four clean Go 1.26.9 ARM64 products have matching REA/Go
+metadata, exact build tags and `vcs.modified=false`. The independently
+rehashed source archive has SHA-256
+`dc10cb9afe396e371b40c6d990baac1baefc9f4da958137f9d746208645ec02f`.
+`save-slot-color-fix/verification.json` consolidates these checks. The new
+campaign audit preserves all 422 prior campaign rows and every prior field;
+the UI checks do not alter the nine-cell completion state or death count.
+
 ### StrongFireball rejects player damage when source equals weapon
 
 The reported native `NewPlayer` hit supplies the same `StrongFireball`

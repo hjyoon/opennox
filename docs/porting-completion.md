@@ -1057,6 +1057,23 @@ binds passage, combat, recovery and that exclusion, SHA-256
 `facabedd781d996090d2a0b7c92b5fde034177a6e228c9a8ee545032b15331dd`.
 SecretOrb1, later book objectives and Wizard3 remain pending.
 
+Cases 247/249 detour around the original library columns, reach the Orb1
+alcove and continue through original northeastern road 194. Both retain
+owned HP 20, mana 78 and poison 0 Saves. Direct Orb1 entry attempts 245/248
+time out without a new Save; secret opening and reward remain unproved.
+Case 250 defeats the two eastern spiders but saves with poison 1, so it is
+not an eligible continuation. Case 251 instead loads healthy 249, begins
+combat farther away and kills original spiders 2346/2347 with two actual
+Chain Lightning inputs. Two later unavailable helpers queue no key.
+Every native observation in 251 retains poison 0. Original Obelisk 1622
+refills mana, and the first Lesser Heal changes HP 15 to 20; later full-HP
+inputs earn no additional healing-effect credit. The new owned Save is
+HP 20, mana 78, poison 0, with natural exit 0 and no PlayerDeath.
+`wizard2-original-east-library-spiders-recovery-save-load-verification-v251.json`
+binds these routes and exclusions, SHA-256
+`ba06ae14f5b0030d8e38044f8c8040196bbc6c4a300afee7d132be5b497d077a`.
+No poison cure or Orb1 secret completion is claimed.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

@@ -1042,6 +1042,21 @@ binds both selected passages, combat and recovery, SHA-256
 `d06dfdf8c0c25345b487485f5aa2b94e876bd7f699b8551e95b5400b21f5e51d`.
 The eastern obelisk room is a side branch; Bookcase1 progression is pending.
 
+Cases 243/244 activate original PressurePlate 108, enable its two movers,
+shift both Bookcase1 objects and pass road 195. The two pre-passage Bat
+helpers in 243 find no available target and queue no spell. Its owned Save
+has HP 12; later observed HP 8 is distinct. Case 244 replays the healthy
+242 Save and fights after crossing: two Magic Missiles kill original Bats
+2343/2344, then Chain Lightning kills AlbinoSpider 2345. Lesser Heal changes
+HP 19 to 20, and the owned Save has mana 11 and poison 0. Case 246 freshly
+loads that Save and naturally restores mana 11 to 78 without movement or
+spell inputs. All three runs exit naturally without PlayerDeath. The failed
+direct SecretOrb1 approach 245 creates no Save and remains excluded.
+`wizard2-original-bookcase1-combat-recovery-save-load-verification-v246.json`
+binds passage, combat, recovery and that exclusion, SHA-256
+`facabedd781d996090d2a0b7c92b5fde034177a6e228c9a8ee545032b15331dd`.
+SecretOrb1, later book objectives and Wizard3 remain pending.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; Horvath delivery and remaining areas pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and persists through normal/HD living Save/Load; crate-held PoisonRobe, Horvath delivery and remaining areas pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -163,6 +163,28 @@ Proof `wizard2-original-push-pressure-secret-hd-save-load-verification-v403.json
 has SHA-256 `4573b65733dbad7b63211c199da09a4fd176ac11deb3e61b9bd7451b83a25e44`.
 A static wall-only planning failure is retained without engine-failure credit.
 All 6,659 product inputs stay unchanged; this is additional campaign evidence.
+
+Actual ordinary-clock continuation 407 reaches original CryptChairTrigger
+2453 beside the stationary CryptChair. Original global 95 changes 0 to 1;
+the native save records all three TroveWalls at 82,78 / 83,77 / 84,76 in
+open state 3, compared with stock state 1. The next fresh normal Load walks
+through those walls and earns the original MorganSecret message and exactly
+150 XP. Both original secret triggers 4705/4706 become disabled. XP changes
+9986.126 to 10136.126; HP remains 27/27 and poison remains 0.
+
+Fresh ordinary HD continuation 409 retains that earned XP without another
+award, keeps Morgan and the Warden alive, and reaches the original
+DarkCrate1 2456 at 1883,1589. Its inventory still contains original
+Wiz02A:PoisonRobe 1445; pickup is pending. All three runs save through the
+original menu and retain seven spells, Bat guide and book/amulet/cure.
+The sealed proof is
+`wizard2-original-morgan-secret-hd-save-load-verification-v409.json`,
+SHA-256 `1c8ee882906594d2881583642bdd566ef95887de3c9fa449d4fe11e23abbf9a4`.
+Earlier wall shots and the corrected Push-passage route are retained;
+the timed-out route 404 has no new save and is excluded. A private verifier
+started before the audit finished is preserved with its log; the unchanged
+verifier passes after audit completion. Horvath delivery and chapter
+completion remain pending. All 6,659 product inputs stay unchanged.
 
 ### Alerted enemies remain stationary at range
 

@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist and Horvath task dialogue proved; original campaign ChainPull5/Zaris gate unlock and living Save pass in normal virtual/HD ordinary time; library, remaining objectives and Wiz02c pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath and original ChainPull5/Zaris gate unlock proved; normal virtual/HD ordinary living Saves; original archive lift and library theft scene reach GetNecromancer with living Save; remaining book objectives and Wiz02c pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -806,10 +806,33 @@ These current campaign results are bound in
 `wizard2-original-chain-campaign-verification-v179.json`, SHA-256
 `2911019b5aeb25cc429da4e2add4ab829df8b9a48bd5839b29eea7316eec4f11`.
 
-The library, Wiz02c and Wizard3 remain in progress. No new Wizard chapter
-completion or overall percentage is assigned. The same four clean products
-and 6,654 frozen production inputs remain in use; no new production edit
-or suite result is claimed by these campaign continuations.
+Case 180 freshly loads the completed Zaris Save with HP 20, physically
+crosses the unlocked gate pair and walks onto original WhiteElevatorPit
+2726. At native frame 182 the player is still on the platform at the upper
+shaft, near (4019,4758). Subsequent normal departure input reaches the
+original lower landing by frame 199; the next native observation is near
+(4038,1502), HP 20. Its new owned Save retains HP 20 and mana 52. A fresh
+original Load in case 182 restores HP 20 at (4036.5046,1503.3794).
+
+Actual library entry crosses the untouched `TheftPieceCheck` polygon and
+starts the original scene. Six actual Done clicks, the authored NPC fight
+and departure path complete its dialogue sequence. The exact original VM
+phase progresses through 0/1/2/3/4/6/7/8; both Librarians die as scripted,
+the Archivist stays alive, the Necromancer is disabled at his authored
+departure point, and the living player is released. The owned Save has
+HP 20, poison 0, mana 55, unchanged XP 1761.1278 and `GetNecromancer` type 2.
+Case 181 stopped just outside the polygon and its absent-dialog Done
+failed; it remains ineligible. Neither the polygon nor NPC state is edited.
+`wizard2-original-archive-lift-library-theft-verification-v182.json` binds
+the original lift passage, living landing Save/Load and original scene,
+SHA-256 `caa71851c632574ef5f8c17855360c35aa7a02806da52e558972507d7f5d2290`.
+No additional independent missile-damage trace is claimed by that scene.
+
+The remaining archive combat, book objectives, Wiz02c and Wizard3 remain in
+progress. No new Wizard chapter completion or overall percentage is
+assigned. The same four clean products and 6,654 frozen production inputs
+remain in use; no new production edit or suite result is claimed by these
+campaign continuations.
 
 ### R344 player-info correction
 

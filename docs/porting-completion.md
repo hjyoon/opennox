@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; normal/HD living checkpoints; actual Chain Lightning, obelisk refill, Lesser Heal, Swap learning/Load/use and living escape Save proved; book objectives and Wiz02c pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal and Swap learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; book objectives and remaining Wiz02c pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -897,7 +897,33 @@ two living checkpoints and the original deaths, SHA-256
 The later aisle attempt 197 reaches the exit approach but dies during
 continued Bat pursuit; that whole run remains ineligible for continuation.
 
-The remaining archive combat, book objectives, Wiz02c and Wizard3 remain in
+Case 200 uses ordinary movement to retreat to the upper library, where
+natural rest changes HP 18 to 20 and mana 25 to 78. Its full-health S input
+earns no additional healing-effect credit. Case 201 freshly loads HP 20 and
+mana 78, defeats original Bats 3765/3831/3847 with actual Magic Missile and
+passes the original book aisles. Its owned stair-approach Save retains
+HP 20, mana 36 and poison 0. Wrong-side stair attempt 202 dies without
+transferring and is excluded, as is blocked recovery attempt 199.
+
+Case 203 defeats remaining Bat 3846 and approaches original stairs 3207
+from their open northwest end. Southeast movement naturally enters Wiz02c;
+the owned Save retains HP 19, mana 23, poison 0 and XP 2932.1697. Independent
+ordinary-clock highres case 204 also naturally enters Wiz02c and writes a
+living Save with HP 10 and mana 24. Its after-cast Bat remains alive and its
+XP stays 2879.9695; no highres final-Bat kill is claimed.
+
+New normal/highres processes 205/206 load their respective Wiz02c manual
+Saves, retaining the original journal, all four learned spells and F/115.
+Actual proximity to original obelisk 160 changes mana 23 to 74 and 24 to 75.
+Actual S Lesser Heal then changes HP 19 to 20 and 10 to 20. New owned Saves
+retain HP 20, poison 0 and mana 46/47, with natural exits 0. All source Saves
+remain unchanged. The exact original Wiz02c script catalog is added without
+changing any of the 198 prior audit rows or fields. These six checkpoints
+are bound in
+`wizard2-original-cave-entry-recovery-save-load-verification-v206.json`,
+SHA-256 `b94673dca36d9452c98eb55edb43c9b0c47aa98d5e443d5c7bcedbf9a5aa38bb`.
+
+The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs
 remain in use; no new production edit or suite result is claimed by these

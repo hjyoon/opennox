@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal and original Morgan surrender/follow with living saves proved; Warden handoff, Horvath delivery and remaining areas pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; Horvath delivery and remaining areas pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -120,6 +120,32 @@ original NewPlayer and retains every other assertion. The initial code and
 failure log remain preserved. No additional full-suite run is needed for
 this documentation and private evidence update; all 6,659 product inputs
 remain unchanged.
+
+Original escort continues through the Rogue doors and enabled lift. Morgan
+rides the original passenger cycles; moving the player beyond his stopping
+distance from the upper shaft lets him step off and follow into Town.
+Crossing original trigger 4772 starts the Warden conversation. Actual Done
+runs Warden1End, awards 500 XP and 500 gold, changes ArrestMorgan from 2 to 4
+and capture global 107 from 0 to 1. Both NPCs remain alive. Fresh ordinary HD
+Load retains XP 9986.126, gold 500, the completed quest, book/amulet/cure and
+wand 200; the reward is not duplicated. Seven original-source cases are
+bound by `wizard2-original-morgan-escort-warden-hd-save-load-verification-v394.json`,
+SHA-256 `bf45b490c49076f7bc8df0508e987390713c4355da07619894c43ae039078650`.
+
+Fresh normal continuation 395 verifies the original cell follow-up. Native
+JailDoor 718, script ID 1000032578, changes lock 0 to 5; MorganCellTrigger
+1394 is disabled and original WardenBack global 101 changes 0 to 1. Morgan
+and the returned Warden remain alive, and the original script's NO_UPDATE
+state on the Warden is retained. The owned save records HP 27, mana 48,
+poison 0, XP 9986.126 and gold 500. Supplement
+`wizard2-original-morgan-cell-lock-save-load-verification-v395.json` has
+SHA-256 `7c512239566a07a5c9fbfb53a76802a935d96b75d390fbec28f6c0a2dff3b5c3`.
+An unused player-only ascent and all other attempts remain preserved.
+Case 391 has a real save but no object observations because another process
+owns debug port 22000; it is excluded from continuation. Case 392 repeats
+the same source and inputs on a different observation port and verifies
+Morgan's Town rejoin. Horvath delivery, remaining areas and chapter
+completion remain pending.
 
 ### Alerted enemies remain stationary at range
 

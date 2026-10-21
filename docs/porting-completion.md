@@ -1436,6 +1436,32 @@ binds the lift transfers, disembarkation, fresh Load, reverse gate passage,
 natural map return and Warden dialog,
 SHA-256 `5effbb1d046439d3caaab6c85d6a752bcd6cec43263526c0055894aa87a1a44d`.
 
+Cases 346–359b continue the original Morgan route from the Warden Save.
+The warehouse and church approaches preserve living checkpoints but do not
+establish hideout entry. Case 356 instead aligns at the exterior corner
+with six ticks of southwest walking, then physically follows the narrow
+northwest corridor to shaft 943. The original shaft links to elevator 2374;
+case 357 falls to that unchanged lower destination while the lift remains
+disabled. One actual Fireball kills Archer 2384, with native mana 89 to 59,
+HP 27, poison 0 and XP 9222.454. Later unavailable casts queue no key.
+The additional Shield input consumes no mana and earns no new cast credit.
+
+Case 358 steps off the platform, observes the original Button 4521 with
+the Use cursor and clicks it with the real left mouse button. The original
+EnableRogueElevator callback changes the lift from disabled to enabled;
+the player saves on the lower floor. Fresh HD ordinary-time Load in 359
+retains the enabled lift and dead Archer, reviews the inventory and saves
+with HP 27, mana 67 and poison 0. The quest book, amulet, cure potion and
+equipped wand at charge 198 remain. Its first obelisk approach supplies no
+charging claim. The failed movement attempts in 345 and 352 earn no
+progression. Private wall-planning and pre-combat snapshot mistakes retain
+their original failed versions; the revised verifier requires the Archer
+alive before combat and dead afterwards and on fresh Load.
+`wizard2-original-rogue-entry-hd-save-load-verification-v359b.json`
+binds the original input route, linked fall, combat, button, owned living
+Saves and HD Load,
+SHA-256 `0e00e2231c584e7755e5ea786f53ebe011d8651b275a9b6eaf29c43a10a240f9`.
+
 The remaining chapter 2 areas, Horvath amulet delivery, Morgan/Push and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

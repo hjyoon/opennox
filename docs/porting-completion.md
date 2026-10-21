@@ -1278,6 +1278,27 @@ original exit/delivery remain pending.
 binds these separate failures and earned progression with living Save/Load,
 SHA-256 `65d02dee5534b54c950d1dfc83adfeadef21ce3f50ced8703fca60e74cb2ca68`.
 
+Case 306 enters the upper group and dies; the whole run is ineligible and
+its healthy source 305 remains unchanged. Case 307 loads that same source,
+casts Shield, naturally restores full mana and uses a shorter lure into
+the original corridor. Two actual Lightning inputs select Bat 1932 and
+Urchin 2367. Independent before/after world records also establish deaths
+of Troll 946, Bat 1930 and Urchin 2366 during that battle. Individual damage
+sources and every chain arc are not separately sampled. The original map
+contains exactly the six Troll extents 946–950 and 2365; all six are now
+verified dead. The owned Save retains HP 27, mana 17 and poison 0.
+
+Case 308 independently loads that Save, naturally restores mana to 89 and
+continues through the upper rooms. Before/after records establish deaths
+of Bats 1929/1931, AlbinoSpider 1920 and SmallAlbinoSpiders 1926/1928. Player
+HP reaches an observed minimum of 11, actual Lesser Heal restores 27 and
+original obelisk 1941 refills mana to 89. A later heal and owned Save retain
+HP 27, mana 62 and poison 0. The original quest book, six spells and cure
+potion remain. Z input at poison 0 earns no cure-removal effect.
+`wizard2-original-corridor-chain-upper-mana-save-load-verification-v308.json`
+binds the preserved death run, source chain, combat and upper-mana recovery,
+SHA-256 `2104143463a09b450a5ce115c4c43383310c219ab7ab018ad37b7b961716aa88`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

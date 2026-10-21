@@ -1218,6 +1218,27 @@ no inventory or objective is transferred between branches.
 binds the consecutive source chain, original progression and living recovery,
 SHA-256 `20ce907005056ba6f89b3cafbb92051f5950861cd4158e2f9f1cd6762c3c7dfb`.
 
+Case 290 observes original Troll 947 pursuing the player and samples it at
+HP 16/20 after one actual Fireball cast. Its pre-cast current HP is not
+separately sampled, and no Fireball kill is claimed. Two actual Magic
+Missile inputs in 291 still leave it alive; that low-mana living Save is
+preserved but parked. Case 292 instead loads the same unchanged healthy
+source 289, uses a shorter lure without offensive input and returns with
+HP 27/mana 89. In 293, three actual body-aimed Magic Missile inputs sample
+Troll HP 12, 4 and 0. The fourth helper has no eligible target and queues no
+key. Player HP remains 27. These changed routes and aim do not establish a
+cause for the earlier missed shots.
+
+Case 294 independently loads that owned Save, retains the Troll death,
+quest book and six spells, and naturally restores mana 46 to 89. The clean
+HD product then repeats original Load in ordinary time in 295. Actual E/W
+keys select the earned Fireball set and restore Magic Missile/Shield, actual
+movement reaches the original cave road, and an owned manual Save retains
+HP 27, mana 89, poison 0, the book, all six spells and Troll death.
+`wizard2-original-six-spell-troll-hd-save-load-verification-v295.json`
+binds the separate branches, combat and normal-to-HD living Save/Load,
+SHA-256 `c2224edb01c16ccfc2a9d12b2c13e35de4626b65554bcf6072407085862c77b1`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

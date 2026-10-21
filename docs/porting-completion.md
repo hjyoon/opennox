@@ -973,6 +973,26 @@ the separate emulator attempt fails and supplies no execution-oracle credit.
 Original scripts, objects, walls and actor state are not adjusted to make a
 route pass.
 
+Cases 223–227 verify the original southern steel-crate puzzle with actual
+movement inputs. Walking pushes CrateSteel4 2400 from (2057,5246) to
+(2085.617,5303.173); a fresh Load retains that partial position. Further
+alignment places it within ten units of original PressurePlate 2399 at
+(2058,5347). Another fresh Load retains the pressed position. The player
+moves more than 175 units away while the crate stays on the plate, then
+passes the original SecretWalls10 route to (2230,5150). An isolated control
+using the unchanged pre-push Save cannot reach that same gate endpoint
+within 600 ticks. Its approach differs and it earns no campaign credit.
+
+The original plate names OpenWalls/CloseWalls; their original script bodies
+call the wall-group open/close builtins. Unchanged raw saved-wall DirBit and
+Modified fields are not interpreted as runtime openness flags. Case 227
+freshly loads the gate-side Save and reaches the four original eastern
+obelisks, restoring mana 40 to 78. All five owned Saves have HP 20, poison 0
+and unchanged XP 3658.5554, with natural exits 0 and no PlayerDeath.
+`wizard2-original-steel-crate-gate-save-load-verification-v228.json` binds
+the positive Save/Load chain and excluded negative control, SHA-256
+`2f1900ffc4fd3bfcaf729ce1f635695db5c9c687316700ca9a3a4a1462d1880a`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

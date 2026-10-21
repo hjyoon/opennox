@@ -1299,6 +1299,31 @@ potion remain. Z input at poison 0 earns no cure-removal effect.
 binds the preserved death run, source chain, combat and upper-mana recovery,
 SHA-256 `2104143463a09b450a5ce115c4c43383310c219ab7ab018ad37b7b961716aa88`.
 
+Cases 309–312 continue to original FlyingGolem 2378 and FieldGuide 2706.
+Actual Magic Missile records the Golem's native zero-health/dead observation;
+it is then removed. Four independently decoded owned map Saves omit that
+extent, and fresh normal/HD Loads retain its absence. SmallAlbinoSpider
+2381 instead retains a dead corpse. The initial unsealed verifier wrongly
+required a persistent Golem corpse and is preserved with its failed lookup;
+the revised verifier binds the death log, world removal and saved-map/reload
+evidence. The 309 Save has HP 15; its S input alone earns no healing effect.
+
+Actual Pickup and click learn the original Bat guide in 310. Client/server
+guide level 1 and the owned native field-guide section agree. Original
+obelisk 1942 refills mana to an observed 75, and Lesser Heal restores HP 17
+to 27 before the owned Save. Clean HD ordinary-time Load in 311 preserves
+the Bat guide, six spells, book and cure potion, naturally restores mana
+46 to 89 and exits normally after 218 seconds. Its frame shows the spell
+list because the normal-product tab coordinate misses the lower HD book.
+Case 312 uses the observed HD layout to display the actual Bat picture and
+description, closes the book and writes another owned living Save: HP 27,
+mana 89, poison 0. The two actual Bat pages are reviewed and sealed. Wizard
+Charm remains 0. All earlier production tests and evidence seals retain
+their bytes.
+`wizard2-original-golem-bat-guide-hd-save-load-verification-v312b.json`
+binds the original combat, guide learning, recovery and independent HD UI/Load,
+SHA-256 `af2d4ad821453d6b1aa1e1a9674f6d70165cb767afbe2c629e7683fce3b168e0`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

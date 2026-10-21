@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; Horvath delivery, Morgan arrest and remaining areas pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal and original Morgan surrender/follow with living saves proved; Warden handoff, Horvath delivery and remaining areas pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -99,8 +99,27 @@ The original oracle verifies 3,022 code and 667 data ranges. A separate
 its two mutable configuration files from the unchanged installer into a new
 copy; previous installation files and Saves remain unchanged. Evidence is
 under `/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/strong-fireball-*`.
-The Wizard campaign is preserved at owned living save 382, HP 27/27,
-mana 89/89 and poison 0, pending continuation with the verified new product.
+The new normal product loads owned living source 382 and earns save 383 at
+HP 27/27, mana 89/89 and poison 0. Fresh HD ordinary-clock continuation 384
+uses two actual Magic Missile quickbar inputs to kill original
+`Wiz02A:MorganGuard1`; two later absent-target attempts queue no key. Actual
+Lesser Heal restores HP 22 to 27. Morgan remains alive. Fresh normal Load 385
+retains the dead guard; original StateEngine 79 changes surrender global 93
+from 0 to 1 and makes Morgan a real player-owned follower. He moves from his
+stock position and stops within 60 units. Both original quest records remain
+active; Warden handoff and chapter completion are pending.
+
+The three-case proof is
+`wizard2-original-new-engine-morgan-surrender-save-load-verification-v385b.json`,
+SHA-256 `ae359b0578e9da24b68fd4899d816f42dbe850759603d3960330a3fa355a063c`.
+It binds the new clean products, exact original scripts, native owned saves,
+seven spells, Bat guide, retained book/amulet/cure and equipped wand charges
+200. The initial private verifier incorrectly used nonunique extent 0 to
+identify the host player; the corrected verifier requires exactly one
+original NewPlayer and retains every other assertion. The initial code and
+failure log remain preserved. No additional full-suite run is needed for
+this documentation and private evidence update; all 6,659 product inputs
+remain unchanged.
 
 ### Alerted enemies remain stationary at range
 

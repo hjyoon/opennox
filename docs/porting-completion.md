@@ -1436,7 +1436,7 @@ binds the lift transfers, disembarkation, fresh Load, reverse gate passage,
 natural map return and Warden dialog,
 SHA-256 `5effbb1d046439d3caaab6c85d6a752bcd6cec43263526c0055894aa87a1a44d`.
 
-Cases 346–359b continue the original Morgan route from the Warden Save.
+Cases 346–359 continue the original Morgan route from the Warden Save.
 The warehouse and church approaches preserve living checkpoints but do not
 establish hideout entry. Case 356 instead aligns at the exterior corner
 with six ticks of southwest walking, then physically follows the narrow
@@ -1461,6 +1461,15 @@ alive before combat and dead afterwards and on fresh Load.
 binds the original input route, linked fall, combat, button, owned living
 Saves and HD Load,
 SHA-256 `0e00e2231c584e7755e5ea786f53ebe011d8651b275a9b6eaf29c43a10a240f9`.
+
+Case 360 loads that earned HD Save and walks within 50 units of original
+Obelisk 4771. Native mana increases from 67 to 89, and the equipped wand
+recovers from charge 198 to 200 with its original Replenishment1 modifier
+retained. Fully consumed native inventory reads bind both endpoints. The
+owned native Save has HP 27 and poison 0, with unchanged XP and original
+inputs. `wizard2-original-rogue-obelisk-replenishment-save-load-verification-v360.json`
+seals this actual mana and wand recharge,
+SHA-256 `d008adc92560f936f5ba2efd7e562341059a8494135fac076d319d54d2e56325`.
 
 The remaining chapter 2 areas, Horvath amulet delivery, Morgan/Push and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is

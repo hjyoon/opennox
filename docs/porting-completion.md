@@ -1239,6 +1239,19 @@ HP 27, mana 89, poison 0, the book, all six spells and Troll death.
 binds the separate branches, combat and normal-to-HD living Save/Load,
 SHA-256 `c2224edb01c16ccfc2a9d12b2c13e35de4626b65554bcf6072407085862c77b1`.
 
+Cases 296–299 continue the HD-owned Save in the clean normal product. Actual
+original roads lure Troll 949 from its southern room without offensive
+input. Four actual Magic Missile inputs in 297 sample its HP as 12, 4, 4
+and 0; the third input earns no damage claim. Player HP falls from 27 to 23,
+and actual Lesser Heal restores 27. Original CurePoisonPotion 2723, dropped
+in the earlier Urchin combat, is acquired with the Pickup cursor and click.
+Case 299 independently loads the owned Save, retains the book, six spells,
+both Troll deaths and one cure potion, and naturally restores mana 4 to 89
+with HP 27 and poison 0 throughout. Cure-potion use is still pending.
+`wizard2-original-second-troll-cure-save-load-verification-v299.json`
+binds the consecutive source chain, combat, original pickup and recovery,
+SHA-256 `ed79ae0589ba2dd165b125e9a346ce7197be3c49e7ddee315ebad06f8795d4a7`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

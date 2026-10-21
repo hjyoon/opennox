@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; Horvath delivery, Morgan/Push and remaining areas pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; Horvath delivery, Morgan arrest and remaining areas pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -1471,7 +1471,37 @@ inputs. `wizard2-original-rogue-obelisk-replenishment-save-load-verification-v36
 seals this actual mana and wand recharge,
 SHA-256 `d008adc92560f936f5ba2efd7e562341059a8494135fac076d319d54d2e56325`.
 
-The remaining chapter 2 areas, Horvath amulet delivery, Morgan/Push and Wizard3 remain in
+Cases 363–370 continue through the original Rogue hall and west room.
+Actual Fireball inputs kill HallArcher 2435 and Swordsman 2406; the latter
+exchange leaves HP 22. Original Lesser Heal restores HP 27. The Push book
+is carried by Crate 2418, rather than lying at its stored editor position.
+Actual wand shots destroy that crate and release the same named book and
+script identity into the world. Case 370 picks it up with the original
+Pickup cursor, closes the automatically opened knowledge book with B and
+saves seven level-one spells, including Push. The earlier pickup in 369
+has no new owned Save and earns no progression.
+
+The saved quickbar selects row 4. Earlier private checks incorrectly
+assumed row 0; their failed runs remain excluded. Read-only row checks in
+378 verify actual E inputs through rows 4, 0 and 1 before casting earned
+Push. Native mana changes from 16 to 6, and both movable cots change
+position. Fresh HD ordinary-time Load in 379 retains row 1, seven spells
+and those positions. Actual E/W inputs select rows 2 and 1; after natural
+mana recovery, another real Push cast moves the cots and consumes mana.
+Its owned native Save has HP 27, mana 8, poison 0 and XP 9399.117. The
+quest book, amulet, cure potion and equipped wand at charge 190 remain.
+Morgan and his guard remain alive and ArrestMorgan remains active.
+
+The revised private verifier accepts both observed original successful-cast
+sentences while retaining native spell ID, row, mana, movement and Save
+checks; its initial failed version is preserved. No production test,
+expected value, source or original script changes.
+`wizard2-original-push-combat-hd-save-load-verification-v379b.json`
+binds nine living checkpoints, combat, healing, crate ownership and drop,
+original learning, actual Push effects and independent HD Load/use,
+SHA-256 `298bdd381d6651d6ca8fc56a2f6773497a3f53f8c5181cfecdffd031ca128516`.
+
+The remaining chapter 2 areas, Horvath amulet delivery, Morgan arrest and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs
 remain in use; no new production edit or suite result is claimed by these

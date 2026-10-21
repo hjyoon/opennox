@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; Wasp guide, Wiz03b, Wiz03c and remaining original objectives pending |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; Wiz03b, Wiz03c and remaining original objectives pending |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -401,6 +401,57 @@ earlier candidate's unknown YAML fields are rejected before game execution.
 All 6,663 product inputs and existing tests/goldens remain unchanged.
 Wasp-guide collection, Wiz03b/Wiz03c, remaining original objectives and
 overall completion remain pending.
+
+Original Wasp-guide continuation now passes in normal and fresh HD. Earned
+source 457b recovers mana 11 to 99 over 7,920 ordinary server frames at
+HP 33/33. Its unalerted branch reaches the southern fire corridor in 464.
+Three actual Pull keys destroy original WaterBarrel 4547 and remove three
+original fire objects: fire count 68 to 65, water-barrel count 18 to 17.
+Sixteen ordinary Space press/release pairs cross the corridor. The player
+takes 27 HP damage, reaches the original alcove and saves alive at HP 6/33,
+mana 72 and poison 0. This establishes surviving traversal, not an unharmed
+or original-framebuffer match.
+
+Normal 466 uses two actual Lesser Heal keys, observing HP 6 to 21 to 33.
+Four wand clicks at the barrel's actual post-Pull position destroy original
+Barrel2 6662 (`Wiz03a:WaspInside`) and drop its owned FieldGuide 6719,
+script ID 1000358374. The first aim used the barrel's earlier position and
+is not credited with opening it. Normal 467 observes the real Pickup
+cursor and clicks the dropped guide. Native and client/server guide tables
+retain Bat and Wasp, with eight learned spells and eight inventory items.
+Fresh ordinary HD 468 retains both guides and saves at HP 33/33, mana 19
+and poison 0. XP remains 11205.765; the nearby secret100XP is not earned.
+
+Proof `wizard3-original-water-wasp-guide-hd-save-load-verification-v468.json`
+has SHA-256 `c321b7fafbbd088f484372227cd76d5f22ff3bc10990795f83450bd3828f0d3c`.
+The equipped original PoisonRobe retains PoisonProtect1 and health 297
+after the fire passage. The old robe remains at health 283; one unused
+CurePoisonPotion remains. Native wand charges are 196 in normal 467 and
+195 in HD 468: an outdated book-tab coordinate clicks outside the book
+and fires one real wand shot. Only native guide retention is credited to
+that initial tab attempt. Corrected actual HD input in 469 selects the red
+creature tab and Wasp entry; the insect illustration and Korean description
+are visually checked. Its supplemental proof has SHA-256
+`6e3633e201024fb1ecc80a5d13624c028f910c13c9ccdd045fb8588db2a43b1a`
+(`wizard3-original-wasp-creature-page-hd-verification-v469.json`).
+
+Unused living alternative branches 458, 459, 460 and 462 remain preserved.
+Deaths in 461 and 463 exclude both entire runs and bring historical deaths
+to 59. A pursuing original GiantLeech reaches the fire-side position in
+461 and pushes the player into fire; the fire positions themselves do not
+move. The close-attack input in 463 waits for a cursor and never emits its
+wand click before death. Attempt 465 also fails without a new save when
+an unverified straight approach to the secret trigger is blocked. All
+failure logs, dropped-item states and earlier planners remain preserved.
+
+The earlier private interpretation of ObeliskPrimitive as unsuitable for
+mana recovery is withdrawn. Read-only original thing.bin decoding shows
+that both Obelisk and ObeliskPrimitive bind `ObeliskUpdate`. The earlier
+failed approach still earns no recharge credit; exact runtime distance,
+vision and mana behavior remain to be checked. This is a planning
+correction, not a newly established production defect. All 6,663 current
+product inputs and existing tests/goldens remain unchanged. Wiz03b/Wiz03c,
+the remaining original objectives and overall completion remain pending.
 
 ### Alerted enemies remain stationary at range
 

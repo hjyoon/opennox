@@ -883,6 +883,20 @@ unchanged; no resource, learned-spell, shortcut or position setter is used.
 the actual refill, healing, learning, Save/Load and two exchanged positions,
 SHA-256 `b94891a1aebfcd6259ca1984811880598f683c0fdbd07fb1c4252fa920121f76`.
 
+Case 195 freshly loads the escaped Save with HP 20 and mana 32, retaining
+all four learned spells and F/115. Two actual D-key inputs defeat original
+small spider 3399 and large spider 3405. Its owned living Save retains
+HP 18, mana 25, poison 0 and XP 2720.1836. Case 196 independently loads that
+checkpoint and follows three actual movement goals through the original
+opened SwapWalls passage into the western ruined library. Its owned Save
+retains HP 18, mana 26 and the same XP. The absent Bat target produces no
+queued spell input and earns no Bat combat credit.
+`wizard2-original-west-library-save-load-verification-v196.json` binds these
+two living checkpoints and the original deaths, SHA-256
+`0f473b161757f2437d5a2816dcc349e1d99e53d4d27098295c20b8c09ef83f95`.
+The later aisle attempt 197 reaches the exit approach but dies during
+continued Bat pursuit; that whole run remains ineligible for continuation.
+
 The remaining archive combat, book objectives, Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

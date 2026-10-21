@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a tunnel combat, DunMir gates and guards, road robbers, Ix gate unlock, Mayor quest and purchased wolf proved; natural War03c entry, Shaman defeats, Scepter, Ruby-key door and Kalen Talk/Done with living-player Save/Load; Mayor delivery, remaining objectives and areas pending |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
 
@@ -692,10 +692,53 @@ unlocked ChamberDoor. An eastern movement stops inside its room; its owned
 Save has HP 9 and post-Save HP 3. It is preserved but the healthier case 155
 remains available. Read-only original data locates GoldKey 10056 at
 (2326,1907), behind the northern jail, and the two gold-key gates at
-(2070,2875) and (2116,2829). Separate original-input inspections leave
-JailDoor 10051 intact after Charge and northeast sword attempts; no key,
-jail-break, exit-gate or Mayor-delivery credit is claimed. The remaining
-grate attack and original return route are still being verified.
+(2070,2875) and (2116,2829). Earlier Charge and northeast sword attempts
+leave JailDoor 10051 intact.
+
+Case 161 loads the living HP 35 side-room Save, uses the original western
+lift and attacks north once with the sword. The actual broken wall is cell
+(99,87), material 53 `IronFenceDamaged`; the plan's cell (100,88) label was
+an intended target and is not an observed outcome. Cell (100,88), material
+12 `IronFence`, remains and saved JailDoor 10051 still has script lock 5.
+The player physically enters the original key room with HP 30, observes
+Pickup cursor 2/type 624 and clicks GoldKey 10056. Server/client counts
+become 1, then 0 while leaving through the two original gold gates. Both
+saved gate locks change from original 2 to 0. The owned Save has HP 20,
+poison 0, the Scepter and both equipped Kalen rewards; post-Save HP is 21.
+
+Case 164 freshly loads that HP 20 Save, walks onto original elevator 6987
+and waits 60 native frames. Actual player coordinates reach its surface
+shaft at (2334.5,5301.5), then follow the original cemetery roads and exit
+naturally into War03b with HP 21 and the Scepter. After allowing the map
+fade and actual save-menu controls to settle, its new owned War03b Save
+retains HP 22 and poison 0. A fresh process in case 165 restores that same
+HP 22, position, Scepter and equipment. Case 162 had reached Ix and printed
+a Save message, but its manual slot remained the copied War03c source; it
+is explicitly ineligible. Native owned Path, changed SHA and active Map
+checks catch that failure. These results are bound in
+`original-gold-key-town-return-save-load-verification-v164.json`, SHA-256
+`44a2a94494b5970315a1133fab71882abece05750ef8e54b6399dc330c5bb593`.
+
+Case 166 loads the earned Ix Save and takes the original roads to Mayor
+Theogrin. Actual Talk/Done consumes the Scepter, completes
+`War03bGetScepter` as journal type 4, grants XP 1000 and gold 500, and
+reaches the natural level-up threshold. The new owned Save contains HP
+49/49, poison 0, XP 11218.387, gold 609, Berserker Charge 5 and WarCry 5.
+An actual Escape first closes the automatically opened reward ability book;
+the next Escape opens the save menu. Case 165 omitted that first close and
+wrote no manual Save, so it remains ineligible for further continuation.
+
+Independent original menu Loads of case 166 restore HP 49 and gold 609 in
+normal virtual and highres ordinary time. Actual roads lead to the original
+appeared Captain at (2383,3648). His Talk/Done invokes the original chapter
+3 ending, reaches War04a and visibly shows the original Korean chapter 4
+briefing in both runs. Both exit naturally 0, without player death, briefing
+dismissal, chapter 4 objectives or a new manual Save. Only the chapter 3 main
+quest ending boundary is claimed. Save/Load, rewards and both visual reviews
+are bound in `original-mayor-captain-boundary-save-load-verification-v168.json`,
+SHA-256 `2153d34807fe7a3997dbb6e0bcd8c7c39db86436056bd0d2506c7b22952c7523`.
+Actual WarCry use, optional areas, War03d classification and the remaining
+class/chapter and engineering evidence remain separate, open requirements.
 
 A read-only scan of all 157 supplied stock `.map` files parses their exit
 records and inline script strings without errors. It finds no direct exit

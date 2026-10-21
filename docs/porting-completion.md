@@ -147,6 +147,23 @@ the same source and inputs on a different observation port and verifies
 Morgan's Town rejoin. Horvath delivery, remaining areas and chapter
 completion remain pending.
 
+The original Push secret also passes earned input verification. From the
+hallway at 2310,1600, two actual row-1 Push inputs move WoodenChair3 4784
+from 2235,1529 to 2200.4526,1494.0533, within seven units of PressurePlate
+4775 at 2196,1489. OpenPushSecret changes original wall 97,69 from DirBit
+128/Modified 0 to 0/1. The next normal ordinary run walks through that wall,
+and fresh HD Load retains the chair/wall state and passes the inner door.
+Three owned positive-HP, poison-free native saves retain the seven spells,
+Bat guide, completed Morgan arrest and book/amulet/cure. Native XP remains
+9986.126 and gold remains 500; no extra secret XP is claimed. Trigger 4796's
+original record has empty script slots, so the separately named PushSecretXP
+function is not treated as proof of an earned reward.
+
+Proof `wizard2-original-push-pressure-secret-hd-save-load-verification-v403.json`
+has SHA-256 `4573b65733dbad7b63211c199da09a4fd176ac11deb3e61b9bd7451b83a25e44`.
+A static wall-only planning failure is retained without engine-failure credit.
+All 6,659 product inputs stay unchanged; this is additional campaign evidence.
+
 ### Alerted enemies remain stationary at range
 
 The reported behavior reproduces with the stock `War03a:Robber`. At about

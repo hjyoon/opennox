@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Entry and MeetHorvath objective observed; completion pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist gate unlock and Horvath's three-page task dialogue proved; ReturnToHorvath saved; remaining objectives and Wiz02c pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -748,6 +748,45 @@ share extent/type and 329 also share position. This does not establish full
 War03d coverage or remove it from the verification scope. The four Warrior3
 map files independently match the untouched supplied Nox asset hashes.
 Details are in `stock-war03d-reference-audit-v1.json`.
+
+### Current Wizard2 earned continuation
+
+The earlier Wizard1 boundary is reconciled through the exact sealed case
+`wiz01a-wiz02a-boundary40-normal`, produced by the earlier clean
+`53d4af42cf3d77bb3ddbc0f96ff1168acfd7ed86` product. Its 25 sealed case files,
+original input route, prior source Save hashes and native Wiz02a AUTOSAVE
+are rechecked. The source seal remains
+`7dff4e70f8d3f0a5c74c21e9da40549529a4bd1a75da94875c7c6b1bc8118e3e`.
+A separate preparation receipt interprets the older result schema; no old
+result, slot, map or seal is rewritten. This is an earlier earned checkpoint,
+not a new full current-product Wizard1 replay.
+
+Case 169a uses the current clean AI-fixed product and actual original row-0
+Load. Native HP 20/20, poison 0, XP 1761.1278, Lesser Heal 1, Chain Lightning
+1, Magic Missile 1, the equipped apprentice robe and `MeetHorvath` type 2
+persist into a new owned manual Save. Case 170 freshly loads that slot,
+follows original Galava roads and enters Wiz02b through the original Tower
+exit. It retains a living owned Tower Save with HP 20 and mana 40. Case 171
+loads it, approaches the original receptionist and completes Talk/Done.
+Native saved SDoor1/SDoor2 locks change from 5 to 0; the player stays alive
+and writes another owned Save.
+
+Case 173 takes the original local hallway and office doors to Horvath,
+then completes all three original task-dialogue pages with actual Done
+clicks. Its owned Save has HP 20, poison 0, mana 44 and unchanged XP,
+equipment and three spells. `MeetHorvath` becomes type 4 and
+`ReturnToHorvath` becomes type 2. All four runs exit naturally 0 and every
+source Save remains byte-identical. The direct-wall movement timeout in
+case 172 is retained as a failed control route with no continuation credit;
+no engine defect is inferred. These results are bound in
+`wizard2-earned-tower-horvath-save-load-verification-v173.json`, SHA-256
+`0822607291f0974b3c1fc52232c4b9833f2aa602c527ed2993dc9d6091f31628`.
+
+The earned original ChainPull5/Zaris quest branch, the library, Wiz02c and
+Wizard3 remain in progress. No new Wizard chapter completion or overall
+percentage is assigned. The same four clean products and 6,654 frozen
+production inputs remain in use; no new production edit or suite result
+is claimed by these campaign continuations.
 
 ### R344 player-info correction
 

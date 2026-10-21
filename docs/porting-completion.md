@@ -1074,6 +1074,28 @@ binds these routes and exclusions, SHA-256
 `ba06ae14f5b0030d8e38044f8c8040196bbc6c4a300afee7d132be5b497d077a`.
 No poison cure or Orb1 secret completion is claimed.
 
+Case 255 defeats original FlyingGolem 2348 with one actual Magic Missile.
+Its original XP reward naturally raises maximum HP 20 to 27 and mana 78
+to 89. Original PauseFX holds server frame 126 until its unchanged
+5,000-platform-tick expiry; virtual time needs sufficient driver loops.
+After natural expiry, observed frames advance to 905/971 and the actual
+menu writes an owned HP 27, mana 89, poison 0 Save. Earlier attempts
+252/253/254 reach the same reward but act before expiry and create no new
+Save. Their movement/menu failures do not establish a blocked wall.
+
+Case 256 freshly loads the level-reward Save and passes original road 96,
+confirming normal movement resumes. Its two unavailable Bat helpers queue
+no key; two actual Chain Lightning inputs defeat original Spiders 2341/2255
+without damage or poison. Full-HP S earns no healing-effect credit. Case
+257 freshly loads the owned HP 27/mana 70 Save, follows roads 147/149 and
+uses original Obelisk 2082 to refill mana to 89. It reaches original road
+150 and writes another full, unpoisoned Save before the Necromancer scene.
+All three positive runs exit naturally without PlayerDeath.
+`wizard2-original-level-reward-resume-save-load-verification-v257.json`
+binds reward, pause expiry, actual Save/Load and resumed progression,
+SHA-256 `ccf6de9a72d9264641446c958d9d57ce7e945b2472f2798968c8fbf3be01c537`.
+No XP, level, pause, FX, clock or resource rule is changed.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

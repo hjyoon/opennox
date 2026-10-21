@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; Horvath delivery and remaining areas pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual chapter briefing dismissal, normal manual Save, fresh ordinary HD Load and Horvath Amulet quest introduction proved; Wiz03b, Wiz03c and remaining original objectives pending |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -206,6 +206,31 @@ after-pickup capture; its source/log remain, and the correction explicitly
 checks both sides of the actual click. All other assertions remain.
 Horvath delivery and chapter completion are still pending; all 6,659 product
 inputs remain unchanged.
+
+Wizard2 now reaches its original ending. Normal virtual continuation 415
+uses the original Rogue lift to return to Town; normal ordinary 416 returns
+along Galava's connected roads, and HD ordinary 417 naturally transfers to
+Wiz02b and saves before Horvath. Normal ordinary 419 completes the original
+Horvath conversation, earns exactly 1000 XP and a level-up, consumes the
+delivered book and amulet, and naturally enters Wiz03a. Actual mouse input
+closes its original chapter briefing before an owned native manual save.
+XP is 11136.126, HP is 33/33, mana is 99/99 and poison is 0.
+
+Fresh ordinary HD 420 loads that exact earned checkpoint, retains the seven
+level-1 spells, Bat guide, 500 gold and both original robes, and starts
+Wiz03aGetAmulet at journal state 2 through original Horvath Talk/Done.
+The exact map-specific script layout records logical global 22 changing
+from 0 to 1. Native armor decoding retains PoisonProtect1 and health 325.
+Five cases are sealed in
+`wizard2-original-ending-wizard3-entry-hd-save-load-verification-v420.json`,
+SHA-256 `177b1fed242ea58b391b183e7e62ba07fe086dbee15d0e6f0f78489a82aba107`.
+First-frame conversation attempt 418 opens no dialog and has no new manual
+save; it remains excluded. The same source with ordinary Load settling time
+succeeds in 419. Private script catalog v10 adds the three unchanged stock
+Wizard3 signatures while retaining all nine previous catalog entries;
+audit v14 preserves the previous life, save, source and product guards.
+Wizard3 remaining maps/objectives and overall completion remain pending.
+All 6,659 product inputs remain unchanged.
 
 ### Alerted enemies remain stationary at range
 

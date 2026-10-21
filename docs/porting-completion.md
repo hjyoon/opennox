@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; Wiz03b, Wiz03c and remaining original objectives pending |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; remaining Wiz03b objectives, Wiz03c and original ending pending |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -490,6 +490,40 @@ ownership preflight, and the private preparer now rejects reserved port
 NPC-life or terminal-world guard is weakened. Historical deaths remain 59;
 all 6,663 product inputs and existing tests/goldens remain unchanged.
 Remaining Wizard3 maps/objectives and overall completion are still pending.
+
+Original southern continuation 474 defeats Wolf 483 through actual Magic
+Missile input. In 475, Wolf 479 survives with 1 HP, the player takes 13 HP
+damage, and actual approach to Primitive 3854 restores mana. Continuation
+476 finishes that same Wolf, casts original Lesser Heal to restore HP 20
+to 33 and reaches mana 84 near the southwest Primitive pair. Native XP
+increases from 11205.765 before the Wolves to 11342.96 after both kills.
+The run records distinguish queued keys from completed casts and spent
+mana; no kill or spell-use credit is assigned to an ineffective extra key.
+
+Continuation 477b follows the original western path and enters ExitCaveDown
+6579 through bounded actual movement. The original exit naturally changes
+Wiz03a to Wiz03b at HideoutEntranceWP. After the transition fade and automatic
+entry save finish, actual Escape, Save/Load, manual-row selection and Yes
+write a new owned manual save whose native Map is wiz03b. Fresh HD 478c
+loads that file and saves again with HP 33/33, mana 89/99, poison 0, eight
+learned spells, both Bat/Wasp guides and the equipped original PoisonRobe.
+Read-only decoding of the inactive saved Wiz03a retains living Brenneth
+611 and the dead original Archer 4481 and Wolves 483/479.
+
+Proof `wizard3-original-wolves-natural-b-hd-verification-v478c.json` has
+SHA-256 `d01768c6785996be4c7f9831b794bd5b1e72efb0ed1fa7dae6aa87d65fc68d63`.
+Earlier 477 observes the natural B arrival but its menu input precedes the
+entry auto-save completion, leaving the older manual A save; the complete
+run is ineligible for continuation. HD preparation 478 rejects that file
+before launching. HD 478b then exposes an A-specific private template still
+waiting for A after actually loading B and exits on its unchanged timeout;
+that complete run is also excluded. A B-specific template and an exact
+prelaunch template-map/native-seed-map equality guard correct the private
+workflow. All old plans, logs, saves and guards are preserved. No production
+change is attributed to these private input mistakes. Historical deaths
+remain 59 with no forced terminations; all 6,663 product inputs and existing
+tests/goldens remain unchanged. Remaining B/C objectives, the original
+Wizard3 ending and overall completion stay open.
 
 ### Alerted enemies remain stationary at range
 

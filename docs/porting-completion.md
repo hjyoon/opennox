@@ -1165,6 +1165,28 @@ binds the actual movement, unavailable-input limits, controlled source
 comparison, combat and independent living Save/Load/recovery, SHA-256
 `3db80fcca4e6acf58d60b6e1c68949b7cc0ecf70f8b671d30e1ecd2b6a9adb54`.
 
+The later upper-cave attempts 272/273 end in PlayerDeath and are wholly
+ineligible. Their source book-holding Save 270 remains unchanged. A separate
+branch from the healthy pre-pit Save 261 returns along original library
+roads. Case 274 stops at furniture; case 277 fails to pick up the book.
+Both are preserved failures and provide no continuation credit. Cases
+275/276/278 establish the actual detour and living entrance-room Saves.
+
+Case 279 acquires the original Shield spellbook 2351 with the actual Pickup
+cursor and mouse click. Its natural reward trail assigns level-1 Shield to
+G. Case 280 independently loads the owned Save, verifies G still contains
+Shield and casts it through the actual key. Mana changes from 89 to 9,
+matching the unchanged original 80-point cost; the captured frame shows the
+Shield status icon and protection glow. Approaching original obelisk 159
+then restores mana to 61, with 62 in the owned living Save. All five eligible
+processes preserve HP 27, poison 0 and the original completed pit-scene
+globals. This branch carries no quest book and does not merge items or
+objectives with Save 270. No incoming-hit reduction or active-Shield
+persistence across Load is claimed.
+`wizard2-original-shield-learning-cast-save-load-verification-v280.json`
+binds the original pickup, learning, independent Load, cast and recovery,
+SHA-256 `473cdb8729bf90876e0321ee2e2cafe2958a31de9cceec28937479c04a4c7444`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

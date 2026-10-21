@@ -944,6 +944,35 @@ Death-time mana 0 in a failed run is not evidence of combat mana exhaustion.
 the three positive checkpoints and preserves those exclusions, SHA-256
 `9bffac4a5b13f56198222e25daca1458a38a14cd87518ec8d1a33ba07d4d71a5`.
 
+Case 214 passes the story-opened Bookcase5 route and defeats original
+Urchin 2350 with actual Magic Missile. Its owned Save has HP 15, mana 42
+and poison 0; later post-Save HP 13 is a separate observation. Case 215
+freshly loads HP 15, immediately defeats pursuing Bat 826 and reaches the
+northern road with an owned Save at HP 14 and mana 27. Case 216 naturally
+rests to HP 18, follows the connected northern roads and saves mana 44.
+Its three unavailable, wall-occluded targets queue no spell and earn no
+combat credit.
+
+Case 217 enters that room through its original lower opening. Both original
+spiders 269/216 become DEAD after spell inputs; the queued A input alone is
+not used to attribute the large-spider kill. Original mana obelisks restore
+mana, actual Lesser Heal changes HP 18 to 20, and the owned Save retains
+HP 20, mana 78 and poison 0. Case 220 freshly loads this checkpoint, returns
+along original roads and activates original PressurePlate 1985: it becomes
+disabled while Bookcase6AMover 1982 becomes enabled. Its new living Save
+also retains HP 20 and mana 78. The five positive checkpoints are bound in
+`wizard2-original-north-room-switch-save-load-verification-v220.json`,
+SHA-256 `e6b2a0fd03c033452f1600d795adf6df926ca17092980cf9992e54c4dc07e066`.
+
+Full Bookcase6 motion and traversal are not proved. Movement attempt 218
+fails without a new Save, prepared 219 is never launched, and traversal
+attempt 221 later dies and remains excluded. Read-only GAME.EXE instructions
+0054F83E..0054F866 and the zero constant at 0058307C confirm the existing
+both-nonzero-velocity arrival predicate. No OR-condition change is applied;
+the separate emulator attempt fails and supplies no execution-oracle credit.
+Original scripts, objects, walls and actor state are not adjusted to make a
+route pass.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

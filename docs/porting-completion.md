@@ -1324,6 +1324,24 @@ their bytes.
 binds the original combat, guide learning, recovery and independent HD UI/Load,
 SHA-256 `af2d4ad821453d6b1aa1e1a9674f6d70165cb767afbe2c629e7683fce3b168e0`.
 
+Cases 313–316 load that earned HD Save in the clean normal product and
+continue into the western library. Actual mouse input and physical movement
+pass the first anonymous half-door pair. Independent native door reads
+retain the same saved directions; these records establish passage, without
+claiming that the click rotated a door. Actual Chain Lightning kills original
+SmallAlbinoSpider 2384 and AlbinoSpider 2393, with both deaths retained after
+fresh Load. The owned combat Save has HP 12, mana 82 and XP 7758.3833.
+
+The early S input immediately after Load in 315 leaves HP and mana unchanged,
+so it earns no healing credit. In 316, after input readiness, actual Lesser
+Heal restores HP 12 to 27 with mana 83 to 54. The nearby original obelisk
+2385 then restores mana to 89. The owned living Save retains poison 0, the
+quest book, six spells, Bat guide and cure potion. All four sources remain
+byte-identical, and every run exits naturally without player death.
+`wizard2-original-west-doors-recovery-save-load-verification-v316.json`
+binds these inputs, original scripts, deaths, native Saves and recovery,
+SHA-256 `4ff798ae8bebe86191182995e355bf97c30b4d063666be2c329b6e884ec1b62b`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

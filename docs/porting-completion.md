@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal and Swap learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; book objectives and remaining Wiz02c pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal and Swap learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion pickup, journal objectives, Troll combat and living Save/Load proved; cave exit, book/amulet delivery and remaining mechanics pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -1146,6 +1146,24 @@ binds actual combat, pickup, objectives and independent Save/Load/recovery,
 SHA-256 `71fbdbfc44f4201570f5db7b47cd1f9d2d293a6ac3c3c0a7d9fdf2e0f210ca5c`.
 Shield/Fireball and available side-quest mechanics, the lower-cave exit,
 Archivist/Horvath delivery and Wizard3 remain pending.
+
+Cases 267/268 retain HP 27, mana 89 and the quest book while original Troll
+947 moves toward the actual player route. Their unavailable target helpers
+queue no offensive key and earn no cast or kill credit. Cases 268/269 use
+byte-identical clones of the same owned Save. Adding 60 ticks of actual
+gameplay before target selection in 269 makes the target available; this
+does not identify an engine defect. Three actual Magic Missile inputs
+reduce Troll 947 from HP 20 to 10 to 1 to 0 without player damage or poison.
+The owned Save has HP 27, mana 46 and the original quest book. Full-HP S
+earns no healing-effect credit.
+
+Case 270 freshly loads that Save, retains the original Troll death and book,
+and naturally restores mana 46 to 89. All four processes exit naturally
+without PlayerDeath. No Troll attack hit is claimed.
+`wizard2-original-troll-combat-recovery-save-load-verification-v270.json`
+binds the actual movement, unavailable-input limits, controlled source
+comparison, combat and independent living Save/Load/recovery, SHA-256
+`3db80fcca4e6acf58d60b6e1c68949b7cc0ecf70f8b671d30e1ecd2b6a9adb54`.
 
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is

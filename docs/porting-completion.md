@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath and original ChainPull5/Zaris gate unlock proved; normal virtual/HD ordinary living Saves; original archive lift and library theft scene reach GetNecromancer with living Save; remaining book objectives and Wiz02c pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; normal/HD living checkpoints; actual Chain Lightning, obelisk refill, Lesser Heal, Swap learning/Load/use and living escape Save proved; book objectives and Wiz02c pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -847,6 +847,41 @@ bookcases. That plate also enables the original next spider group. The
 player dies there during post-Save waiting, so the entire run is ineligible
 for continuation. Its copied/manual slot is not rescued or used as a source.
 Both failed runs and the earlier living source Saves remain preserved.
+
+Case 186 repeats from the earlier living source, defeats the Bat and passes
+the pressure-plate bookcases, then uses actual Chain Lightning against the
+newly enabled small spiders. Original 3396/3397 retain DEAD flags and the
+player writes a living Save with HP 17, mana 30, poison 0 and XP 1954.1687.
+Case 187 freshly loads that HP 17 checkpoint and follows the original
+southern library roads. Further actual spell inputs and movement leave
+small spiders 3402/3403/3395 and large spider 3404 dead; the first ranged
+3404 sample still has HP 10 and is not a successful kill. The original
+Swap-room arrival retains a living Save with HP 16, mana 26, poison 0 and
+XP 2314.8945. No mana-refill or Lesser Heal effect is claimed by case 187.
+These results are bound in
+`wizard2-original-chain-room-save-load-verification-v187.json`, SHA-256
+`64d5c058df6e72d87c22cb283d2f6cd18ac5374bee0989cc72d66298d8391eea`.
+
+Case 193 approaches the original east mana obelisk more closely, reaching
+about 28 units instead of the earlier 56. Native mana rises from 26 to 77.
+Actual Lesser Heal then changes HP 16 to 20 and mana 77 to 48. The original
+SwapBook is selected with Pickup cursor 2/type 210 and clicked. Allowing
+240 normal reward-trail ticks completes the original natural F/115 shortcut
+assignment; actual B closes the knowledge book before the save menu.
+Its new owned Save contains HP 20, mana 50, poison 0 and all four learned
+level-1 spells. Earlier center-approach, early-shortcut and unfinished
+book-close controls remain ineligible; no copied slot authorizes progress.
+
+Case 194 freshly loads that Save and verifies F/115. Actual F input swaps
+the player from (2822.8462,2759.9958) to original spider 3398 at (2755,2538),
+while that same living spider moves to the player's former coordinates.
+Mana changes from 50 to 40. Actual Chain Lightning then kills nearby
+original large spider 3406. The new escaped Save retains HP 20, mana 32,
+poison 0 and XP 2518.818, with natural exit 0. All source files stay
+unchanged; no resource, learned-spell, shortcut or position setter is used.
+`wizard2-original-swap-recovery-save-load-verification-v194.json` binds
+the actual refill, healing, learning, Save/Load and two exchanged positions,
+SHA-256 `b94891a1aebfcd6259ca1984811880598f683c0fdbd07fb1c4252fa920121f76`.
 
 The remaining archive combat, book objectives, Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is

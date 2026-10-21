@@ -923,6 +923,27 @@ are bound in
 `wizard2-original-cave-entry-recovery-save-load-verification-v206.json`,
 SHA-256 `b94673dca36d9452c98eb55edb43c9b0c47aa98d5e443d5c7bcedbf9a5aa38bb`.
 
+Case 211 separately preserves a safe original Wiz02c checkpoint after
+natural rest: HP 20, mana 78 and poison 0. Case 212 freshly loads it, passes
+the original entry half-door/corridor and triggers the original first
+Necromancer scene. Both script-summoned Spiders are observed alive before
+actual retreat and three A-key Magic Missile inputs. Native observations
+record the first target at 4/12 HP, then the two original summoned objects
+dead. Mana changes 78 to 63, 48 and 34; the owned living Save retains HP 13,
+poison 0 and XP 3273.8093. Earlier rapid repeat input was denied by the
+original active-missile limit; queued input alone never proves a hit.
+
+Case 213's new process restores that Save, both summoned Spider deaths,
+disabled first-scene triggers 1253/1254 and the original disabled
+Necromancer 2716. Actual Lesser Heal changes HP 13 to 20 and mana 34 to 5,
+then safe natural rest yields an owned Save with HP 20, mana 55 and poison
+0. Attempts 207/209/210 die and remain excluded; attempt 208 exits without
+an eligible manual Save while the original event still controls input.
+Death-time mana 0 in a failed run is not evidence of combat mana exhaustion.
+`wizard2-original-cave-first-scene-save-load-verification-v213.json` binds
+the three positive checkpoints and preserves those exclusions, SHA-256
+`9bffac4a5b13f56198222e25daca1458a38a14cd87518ec8d1a33ba07d4d71a5`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

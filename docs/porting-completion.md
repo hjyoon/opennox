@@ -232,6 +232,29 @@ audit v14 preserves the previous life, save, source and product guards.
 Wizard3 remaining maps/objectives and overall completion remain pending.
 All 6,659 product inputs remain unchanged.
 
+Original Wizard3 continuation 421 walks onto HorvathBookcaseTrigger 2438.
+The plate disables itself and the original movers shift bookcases 2432/2433
+from 3475,4721 / 3501,4695 to 3434,4735 / 3514,4656. Normal ordinary 424
+passes that opening and WhiteElevatorPit 2430, reaches original elevator
+708 at 5250,571, then steps off during its natural bottom dwell. Read-only
+observations record state 0/height 0 with the player on the lift, then
+state 3/height 28 with the player clear of it and no ON_OBJECT flag.
+Fresh ordinary HD 425 retains the moved bookcases and off-platform save,
+passes unlocked original SecretDoor 723, and saves near the next shaft.
+All three owned saves retain HP 33/33, mana 99/99, poison 0, XP 11136.126,
+seven spells, Bat guide, both robes and the active Amulet quest.
+
+Proof `wizard3-original-bookcase-shaft-door-hd-save-load-verification-v425.json`
+has SHA-256 `1267754414468c3d0f63d393d7a346055bc7e34eb84a7a81ae38322c73b164e8`.
+An earlier valid HD shaft run rides back up; attempt 423 starts leaving too
+late during rising state 3 and has no new save, so it is excluded.
+Private preparer v17 binds post-Save wait to the actual scenario: v16 only
+changed the observation label while retaining the template's original wait.
+All earlier scenarios/logs and seals remain unchanged and are interpreted
+using their actual input and observed frames. Production remains the same
+6,659 frozen inputs. The next cellar, remaining Wizard3 maps/objectives and
+overall completion are pending.
+
 ### Alerted enemies remain stationary at range
 
 The reported behavior reproduces with the stock `War03a:Robber`. At about

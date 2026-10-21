@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion pickup, journal objectives, Troll combat and living Save/Load proved; cave exit, book/amulet delivery and remaining mechanics pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; Horvath delivery, Morgan/Push and remaining areas pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -1386,7 +1386,36 @@ binds the source branches, excluded failures, combat, pickup, native charges,
 equipment, projectiles and independent HD Load,
 SHA-256 `b4bf8d41eb884c38fcac675cbb9f428fdca493bae9b26a7d715064cca3c97c63`.
 
-The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
+Cases 330–336 continue from the unchanged earned HD wand Save. Original
+staircase inputs traverse transporters 1949 to 1950 and 1787 to 1788;
+Exit 1960 then naturally returns from Wiz02c to the named Wiz02b shortcut.
+Field-aware reads bind those links to the unchanged stock maps. The failed
+diagonal approach in 329 has no new Save and earns no progression. A private
+verifier initially checked only X displacement for the second transporter;
+its failed version remains preserved. The revised verifier checks both
+coordinates, exact saved positions and proximity to the original linked
+destinations. No production assertion or test changes.
+
+Case 334 physically steps on original PressurePlate 3811, whose unchanged
+callback is OpenExitWalls, and walks through the shortcut wall opening.
+Case 335b reaches the Archivist by normal movement and uses actual NPC mouse
+interaction and Done. The original script grants one AmuletOfClarity, awards
+300 XP and completes ArchivistBook. The BookOfOblivion remains carried as
+the original script specifies. The owned native Save has HP 27, mana 75,
+poison 0 and XP 9132.782. ReturnToHorvath remains active.
+
+Clean HD ordinary-time Load in 336 retains the reward and completed journal.
+Actual repeat interaction and Done grant neither a second amulet nor more
+XP. The inventory view is reviewed; a fully consumed native inventory read
+retains one amulet and the equipped wand at charge 198. Its owned Save has
+HP 27, mana 78 and poison 0. All source files and original scripts retain
+their hashes, with six spells, Bat guide, quest book and cure potion intact.
+`wizard2-original-return-archivist-hd-save-load-verification-v336b.json`
+binds the transporter chain, natural map return, shortcut activation,
+original reward and independent HD Load/completed dialog,
+SHA-256 `c9a8e2c9c4aba51b8a54e8fc7edaf50f4b4bbe101c7c0015838375c271c7113d`.
+
+The remaining chapter 2 areas, Horvath amulet delivery, Morgan/Push and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs
 remain in use; no new production edit or suite result is claimed by these

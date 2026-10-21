@@ -1342,6 +1342,50 @@ byte-identical, and every run exits naturally without player death.
 binds these inputs, original scripts, deaths, native Saves and recovery,
 SHA-256 `4ff798ae8bebe86191182995e355bf97c30b4d063666be2c329b6e884ec1b62b`.
 
+Cases 317–328 continue through the original western rooms to the wand
+counter. Original SmallAlbinoSpiders 1900/1901 die in 317; the second death
+is collateral to the earlier Lightning input, without a second queued cast.
+Three later combat attempts, 318–320, end in player death and are wholly
+excluded. Living Saves 321/322 remain preserved as separate combat stages.
+The main continuation 323 starts from the unchanged living Save 317:
+actual Shield and original recovery precede Fireball against FlyingGolem
+2552 and two Magic Missiles each against AlbinoSpider 2396 and FlyingGolem
+2394. All three native deaths are observed. Both Golems are removed and stay
+absent after fresh Load; the spider retains a dead corpse. From an observed
+HP 18/mana 0, original recovery waits and S input lead to an owned Save at
+HP 27, mana 78, poison 0. The 204.7-second run uses a 270-second host deadline
+set before launch; its prepared specification is preserved, and no scenario
+input or game clock setting changes.
+
+Case 325 defeats original AlbinoSpider 1820 with two actual Magic Missiles
+and retains HP 27. The failed straight counter approach in 324 has no new
+Save and earns no progression. Case 326 instead walks through the original
+counter's open southwest side and uses the real Pickup cursor and mouse
+click to acquire SulphorousFlareWand 2747 with its original Replenishment1
+modifier. The quest book, six spells, Bat guide and cure potion remain.
+
+Case 327b equips that earned wand through inventory mouse input and fires
+an actual player-owned YellowStarShot. The native equipped script-ID list
+switches from the wooden staff to the wand, and charge 200 becomes 199.
+Clean HD ordinary-time Load in 328 preserves the equipped wand, emits
+another player-owned YellowStarShot through real left-button input and
+saves charge 198. Both inventory views are reviewed. A read-only decoder
+fully consumes the native inventory section and reads the selected weapons'
+named WeaponXfer fields; it does not infer unnamed library values. The final
+owned Save has HP 27, mana 60, poison 0 and XP 8832.782.
+
+The initial 327 preflight rejects the previously unreviewed inventory-click
+helper before gameplay. Review confirms it reads the visible cell and
+queues mouse events. A new private verifier retains the strict field/action
+checks, adds that one action and pins its exact function-body hash. Unknown
+`dir`, unregistered actions and the registered direct `grant-item` mutation
+remain rejected. Existing verifiers, production source, tests and evidence
+seals remain unchanged.
+`wizard2-original-west-wand-hd-save-load-verification-v328.json`
+binds the source branches, excluded failures, combat, pickup, native charges,
+equipment, projectiles and independent HD Load,
+SHA-256 `b4bf8d41eb884c38fcac675cbb9f428fdca493bae9b26a7d715064cca3c97c63`.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

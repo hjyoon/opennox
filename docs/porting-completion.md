@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and persists through normal/HD living Save/Load; crate-held PoisonRobe, Horvath delivery and remaining areas pending | Completion unproven in inspected records |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; Horvath delivery and remaining areas pending | Completion unproven in inspected records |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -185,6 +185,27 @@ the timed-out route 404 has no new save and is excluded. A private verifier
 started before the audit finished is preserved with its log; the unchanged
 verifier passes after audit completion. Horvath delivery and chapter
 completion remain pending. All 6,659 product inputs stay unchanged.
+
+The original crate-held robe is now earned. Eight actual wand mouse inputs
+in normal continuation 410 destroy DarkCrate1 2456 and release its contained
+PoisonRobe 1445, script ID 1000031714. The first pickup misses the ground
+location and earns no item credit; a real hover at 511,361 selects Pickup
+cursor 2. Actual click in 413 moves that exact original robe into inventory.
+Fresh ordinary HD continuation 414 retains the ten-item inventory and both
+original robes, then walks back through the secret wall, cleared hall and
+Rogue door to the enabled lift.
+
+Fully consumed native inventory decoding verifies PoisonRobe health 325 and
+modifiers ArmorQuality1 / empty / PoisonProtect1 / empty in both saved files.
+HP stays 27/27, mana 89/89, poison 0 and XP 10136.126; the book, amulet and
+cure potion remain. Five cases are bound by
+`wizard2-original-poison-robe-hd-save-load-verification-v414b.json`,
+SHA-256 `ec255785ad5bbf0da8501eae3805a7e907d5f5358177ebe70512764c74490d32`.
+The initial private verifier mistakes a pre-click hover capture for an
+after-pickup capture; its source/log remain, and the correction explicitly
+checks both sides of the actual click. All other assertions remain.
+Horvath delivery and chapter completion are still pending; all 6,659 product
+inputs remain unchanged.
 
 ### Alerted enemies remain stationary at range
 

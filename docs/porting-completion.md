@@ -255,6 +255,26 @@ using their actual input and observed frames. Production remains the same
 6,659 frozen inputs. The next cellar, remaining Wizard3 maps/objectives and
 overall completion are pending.
 
+Normal ordinary continuation 426 reaches ElevatorPit 733 and the linked
+CellarElevator 610, then walks southwest into the original trigger ring.
+DisableElevator turns the lift off and opens its scripted walls. Brenneth
+approaches from 4750,1282; the original automatic explanation opens, and an
+actual Done changes logical global 42 from 0 to 1. He returns to his
+scripted guard position near 4938,1032 and remains alive. Fresh ordinary HD
+427 retains the disabled lift, completed conversation and twenty inactive
+ring triggers, then traverses the opened tunnel to waypoint 10 at 4231,1055.
+Both owned saves retain HP 33/33, mana 99/99, poison 0 and XP 11136.126.
+
+Proof `wizard3-original-cellar-brenneth-hd-save-load-verification-v427b.json`
+has SHA-256 `e20d8f58758c2d60beffd0dbd6a19080182a733aec66ca5fbae5b137446146e1`.
+The initial private verifier assumes all twenty triggers begin enabled;
+original trigger 643 already has Val5 255/Flags 0 and is inactive. The
+correction verifies the exact nineteen-active/one-inactive initial state
+and retains the all-twenty-inactive ending/HD checks. Initial code/logs
+remain preserved. All 6,659 product inputs remain unchanged. The original
+Pull book route, remaining Wizard3 maps/objectives and overall completion
+remain pending.
+
 ### Alerted enemies remain stationary at range
 
 The reported behavior reproduces with the stock `War03a:Robber`. At about

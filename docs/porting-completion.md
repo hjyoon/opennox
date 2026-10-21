@@ -828,6 +828,26 @@ the original lift passage, living landing Save/Load and original scene,
 SHA-256 `caa71851c632574ef5f8c17855360c35aa7a02806da52e558972507d7f5d2290`.
 No additional independent missile-damage trace is claimed by that scene.
 
+Case 183 freshly loads the completed theft Save with native HP 20 and mana
+55. Actual Magic Missile inputs reduce original SmallAlbinoSpiders 3597
+and 3596 from observed HP 1/1 to 0; both original actors retain DEAD flags.
+The new owned Save has HP 20, poison 0, mana 27 and XP 1827.5713. Four
+quickbar helper actions include late-dead/no-key outcomes and do not prove
+four casts or four kills. The other two original small spiders remain alive.
+An actual Lesser Heal key at full HP 20 produces no observed health change,
+so no healing effect is claimed. These results are bound in
+`wizard2-original-magic-missile-save-verification-v183.json`, SHA-256
+`4d72bff209a2936aab25dd11ef6557bf2319bf91fefe3da2dddbb07477b80b49`.
+
+Case 184 reaches the next bookcase barrier but dies to the nearby original
+Bat while movement remains blocked. Case 185 recovers mana naturally from
+27 through 35 to 43, defeats that original Bat with actual Magic Missile,
+steps on the original pressure plate and physically passes the moving
+bookcases. That plate also enables the original next spider group. The
+player dies there during post-Save waiting, so the entire run is ineligible
+for continuation. Its copied/manual slot is not rescued or used as a source.
+Both failed runs and the earlier living source Saves remain preserved.
+
 The remaining archive combat, book objectives, Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

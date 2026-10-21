@@ -1026,6 +1026,22 @@ binds the Save/Load and script evidence, SHA-256
 `a175182464302dcdfa70044a4cc4e65d9db7ec5fdc99a58012348fa64a6bc23f`.
 The selected eastern passage traversal is still pending at this checkpoint.
 
+Case 239 freshly loads the eastern-plate Save, passes EastWalls and defeats
+AlbinoSpider 808 with two actual Magic Missiles. The first hit leaves HP 2;
+the second kills it. Original obelisks 780/781 restore mana 20 to 78 and
+Lesser Heal changes HP 18 to 20. Case 241 freshly loads this recovery Save,
+returns to the statue room, selects the northern plate and passes road 191.
+Two actual Magic Missiles reduce original Spider 2354 from HP 12 to 4 to 0;
+Lesser Heal restores HP 18 to 20. Case 242 freshly loads that owned Save and
+naturally regenerates mana 19 to 78 in the cleared room without movement,
+spell or state writes. All three owned Saves have poison 0 and natural
+exits 0 without PlayerDeath. Prepared route 240 is never launched after its
+planned target species is found incorrect.
+`wizard2-original-statue-passages-recovery-save-load-verification-v242.json`
+binds both selected passages, combat and recovery, SHA-256
+`d06dfdf8c0c25345b487485f5aa2b94e876bd7f699b8551e95b5400b21f5e51d`.
+The eastern obelisk room is a side branch; Bookcase1 progression is pending.
+
 The remaining archive combat, book objectives, remaining Wiz02c and Wizard3 remain in
 progress. No new Wizard chapter completion or overall percentage is
 assigned. The same four clean products and 6,654 frozen production inputs

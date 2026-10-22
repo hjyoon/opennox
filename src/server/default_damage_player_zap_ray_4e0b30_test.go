@@ -527,8 +527,24 @@ func TestDefaultDamageWorld4E0B30PlayerZapRayEarlyGatesAndBoundary(t *testing.T)
 			why := ""
 			r := damageMeleeWorldRuntime4E0B30(t)
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { why = reason }
-			r.DamageClear = func(*Object, int32) { t.Fatal("unsupported ray shape reached HP") }
+			supported := invalid == "distinct world" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type"
+			calls, amount := 0, int32(0)
+			r.DamageClear = func(v *Object, d int32) {
+				if !supported || v != target {
+					t.Fatal("unsupported ray shape reached HP")
+				}
+				calls++
+				amount = d
+			}
 			DefaultDamageWorld4E0B30(target, source, ray, 500, typ, r)
+			if supported {
+				// Unchanged original DefaultDamage forwards raw500 for all four.
+				u := target.UpdateDataPlayer()
+				if why != "" || calls != 1 || amount != 500 || target.Obj130 != ray || target.Pos132 != ray.PrevPos || target.Frame134 != 1400 || target.Field131 != uint32(typ) || u.Field76 != 88 || u.Field75 != 77 || u.State != PlayerState30 {
+					t.Fatalf("supported non-item player control %s reason=%q", invalid, why)
+				}
+				return
+			}
 			if why == "" || target.Obj130 != nil || target.Pos132 != (types.Pointf{}) || target.Frame134 != 0 {
 				t.Fatalf("ray boundary admitted: %s reason=%q", invalid, why)
 			}

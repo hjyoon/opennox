@@ -265,7 +265,7 @@ func DefaultDamageWorld4E0B30(
 	// Keep the already restored monster self-strike on its existing path;
 	// PLAYER and class-zero self-casters do not qualify the melee predicate.
 	ownedMonster := playerDamageOwnedMonsterShape4E17B0(source, weapon, typ)
-	nonItem := ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ)
+	nonItem := ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ)
 	unitSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfRawShape4E17B0(source, weapon, typ)
 	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || unitSelfRaw || nonItem)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)

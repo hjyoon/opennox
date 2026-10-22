@@ -300,7 +300,17 @@ func TestDefaultDamageArmedElectric4E0B30AdmissionAndServices(t *testing.T) {
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
 				rejected = reason == "unsupported monster damage shape"
 			}
-			if !DefaultDamageWorld4E0B30(v, a, w, 12, typ, r) || !rejected || v.HealthData.Cur != 200 || v.Obj130 != nil {
+			ok := DefaultDamageWorld4E0B30(v, a, w, 12, typ, r)
+			if shape == "world-weapon" {
+				// Retain this historical test identity as an original-confirmed
+				// positive world-weapon control; unrelated invalid shapes stay rejected.
+				u := v.UpdateDataMonster()
+				if !ok || rejected || v.HealthData.Cur != 188 || v.Obj130 != w || v.Field131 != uint32(typ) || v.Frame134 != 1400 || u.Field547 != 1 || u.Field546 != uint32(w.TypeInd) {
+					t.Fatal("world electric control")
+				}
+				return
+			}
+			if !ok || !rejected || v.HealthData.Cur != 200 || v.Obj130 != nil {
 				t.Fatal("armed admission swallowed an unrelated shape")
 			}
 		})

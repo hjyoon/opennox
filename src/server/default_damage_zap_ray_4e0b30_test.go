@@ -328,8 +328,24 @@ func TestDefaultDamageWorld4E0B30ZapRayKeepsShapeBoundary(t *testing.T) {
 			r := damageMeleeWorldRuntime4E0B30(t)
 			why := ""
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { why = reason }
-			r.DamageClear = func(*Object, int32) { t.Fatal("unported ray shape reached HP") }
+			supported := invalid == "distinct world source" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type"
+			calls, amount := 0, int32(0)
+			r.DamageClear = func(v *Object, d int32) {
+				if !supported || v != target {
+					t.Fatal("unported ray shape reached HP")
+				}
+				calls++
+				amount = d
+			}
 			DefaultDamageWorld4E0B30(target, source, ray, 500, typ, r)
+			if supported {
+				// Keep the exact original-confirmed input as a positive control.
+				u := target.UpdateDataMonster()
+				if why != "" || calls != 1 || amount != 500 || target.Obj130 != ray || target.Pos132 != ray.PrevPos || target.Frame134 != 1400 || target.Field131 != uint32(typ) || u.Field547 != 1 || u.Field546 != uint32(ray.TypeInd) {
+					t.Fatalf("supported non-item NPC control %s reason=%q", invalid, why)
+				}
+				return
+			}
 			if why == "" || target.Obj130 != nil || target.Frame134 != 0 {
 				t.Fatalf("ray shape admitted: %q", why)
 			}

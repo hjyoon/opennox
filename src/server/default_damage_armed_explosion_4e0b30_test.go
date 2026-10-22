@@ -301,7 +301,16 @@ func TestDefaultDamageArmedExplosion4E0B30AdmissionAndServices(t *testing.T) {
 			}
 			reason := ""
 			r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why }
-			if !DefaultDamageWorld4E0B30(v, a, w, 3, typ, r) || reason != "unsupported monster damage shape" || v.HealthData.Cur != 200 || v.Obj130 != nil {
+			ok := DefaultDamageWorld4E0B30(v, a, w, 3, typ, r)
+			if shape == "world-weapon" {
+				// Original DefaultDamage forwards raw3 for this exact world shape.
+				u := v.UpdateDataMonster()
+				if !ok || reason != "" || v.HealthData.Cur != 197 || v.Obj130 != w || v.Field131 != uint32(typ) || v.Frame134 != 1400 || u.Field547 != 1 || u.Field546 != uint32(w.TypeInd) {
+					t.Fatal("world explosion control")
+				}
+				return
+			}
+			if !ok || reason != "unsupported monster damage shape" || v.HealthData.Cur != 200 || v.Obj130 != nil {
 				t.Fatalf("unrelated shape admitted: reason=%q HP=%d", reason, v.HealthData.Cur)
 			}
 		})

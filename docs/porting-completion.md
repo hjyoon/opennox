@@ -473,6 +473,54 @@ originals and baseline/admission failures are in `world-self-source-damage-port/
 Test-event totals include parents and subtests and are not a completion
 percentage. Overall 100% remains unproved.
 
+### Remaining distinct non-item terminal owners
+
+A terminal player, monster or world owner may differ from the actual monster
+or world damage object. The remaining initialized non-item combinations now
+share the complete prefix/type switch instead of being rejected by actor
+class. Unit records must be initialized; nonunits need no update. Existing
+player-owned-monster, self-source and specialized collider paths retain
+their admission and partial-runtime contracts. Native ordinary monster
+strike attribution is unchanged.
+
+Original weapon positions, cached target equipment/absorption/marker base,
+live carry/inventory, defenses, Reflect, GodMode/Quest, element protection,
+immunity precedence, signed explosion halving, attribution and the nil-health
+HP guard are preserved. Monster sound selection and successful-hit timestamp
+use the source monster, never the distinct weapon's update. Different nonunit
+owners do not cause a unit-update dereference.
+
+Unchanged original instructions supply 2,304 signed prefixes across six
+owner/attack combinations and 24 known/default type values, plus 540
+integrated immunity rows and the same 540 with nil health. Reached original
+PlayerDamage/DefaultDamage, carry/FISTP, HP-return tail, monster sound getter
+and source latch execute unchanged. Mode/buff/direction, armor wear/scale1,
+zero protection, late defense, sound, ball and HP remain declared services;
+root DoDamage and actual Windows HP/audio are not executed.
+
+Ten old boundary inputs now overlap the supported forms. Separate unchanged
+original standalone DefaultDamage executions confirm raw12 electric, raw3
+explosion and eight raw500 ray/Mana Bomb inputs. Exactly those inputs keep
+their historical test identities as positive damage/metadata controls in four
+files. All other invalid inputs remain rejected; every other prior test,
+fixture and golden is byte-identical. The strict/Linux selection includes
+all four modified boundary families in addition to the existing focused set.
+
+The 5,223 added pass events include 2,916 actual C/caller HP cases across
+player, NPC and ordinary-monster victims, GodMode, immunity and nil health.
+The caller resolves the terminal owner and calls the registered damage
+boundary; the root wrapper itself is not invoked. Source/weapon pointer,
+marker, position, carry, electric adjacent bytes and separate timestamps
+are checked. Signed/default-type prefixes are direct ABI probes.
+
+Normal/HD each pass 96,407 events with 49 skips; server/server-HD each pass
+91,579 with 7 skips. Combined race/checkptr2/cgocheck2 passes 44,442 events
+across three repetitions on the exact 6,718-input candidate. All earlier
+terminal identities/actions/multiplicities/skips survive. Versioned originals,
+baseline/boundary failures and final receipts are in
+`distinct-nonitem-owner-port/`. Test-event totals include parents and subtests
+and are not feature coverage. Overall 100% remains unproved.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

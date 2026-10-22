@@ -430,6 +430,49 @@ Test-event totals include parents and subtests and do not establish overall
 completion. Overall 100% remains unproved.
 
 
+### Nonunit world objects as direct damage sources
+
+NoxScript Damage/DoDamage can retain a nonunit map object as both terminal
+source and actual weapon. Such objects have no unit update record. The
+native damage entry now admits these forms through the shared non-item
+prefix and full type/default switch. Existing fire, cloud, spike, ray and
+UndeadKiller collider slices retain their earlier paths. Complete production
+Coop/DefaultDamage bindings enable the new entry; older incomplete inline
+and shield runtimes retain their contracts and tests.
+
+The existing owned-monster prefix/switch is renamed for shared non-item
+use, with its owner/weapon behavior unchanged. World self-sources retain
+cached equipment/absorption/markers, live carry/inventory, weapon positions,
+defenses, Reflect, signed/default amounts, GodMode and Quest scaling. Shared
+DefaultDamage keeps actual immunity/protection types, explosion halving,
+attribution, late Defend and the guarded nil-health HP tail. Source update
+data is never read for the new nonunit forms.
+
+Unchanged original PlayerDamage/carry/FISTP instructions supply 1,536 prefix
+rows across eight nonunit classes, eighteen known types plus six default
+values, player/NPC victims and four signed amounts. Class-zero, DOOR and
+ARMOR sources add 270 original integrated immunity rows and matching 270
+nil-health rows. Reached original DefaultDamage and the separately sealed
+HP-return tail execute unchanged. Mode/buff/direction, wear, armor-scale1,
+zero protection, late defense, sound, ball and HP remain declared services;
+actual Windows HP/audio and the electric armor helper are not executed.
+Monster sound/latch ranges are sealed but unentered for these nonunit sources.
+
+The 4,077 added pass events include 2,538 actual C/caller HP cases with
+GodMode, immunity, nil health and native attacker/weapon pointers. The caller
+uses owner-resolution/CallDamage, the boundary used by root DoDamage; the
+root wrapper itself is not invoked. Nonpositive/default-type prefix rows
+are direct ABI probes. All previous tests/fixtures/goldens are byte-identical,
+including the partial-runtime shield/charge/fire controls. Every previous
+terminal identity/action/multiplicity/skip survives.
+
+Normal/HD each pass 91,184 events with 49 skips; server/server-HD each pass
+86,356 with 7 skips. Combined race/checkptr2/cgocheck2 passes 28,578 events
+across three repetitions on the exact 6,713-input candidate. Versioned source,
+originals and baseline/admission failures are in `world-self-source-damage-port/`.
+Test-event totals include parents and subtests and are not a completion
+percentage. Overall 100% remains unproved.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

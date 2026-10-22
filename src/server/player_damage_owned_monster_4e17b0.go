@@ -18,7 +18,7 @@ func playerDamageOwnedMonsterShape4E17B0(source, weapon *Object, _ object.Damage
 
 // Cache target layout/equipment before observer callbacks, but reload live
 // attack positions, classes, ownership, inventory and carry at original use.
-func playerDamageOwnedMonster4E17B0(
+func playerDamageNonItem4E17B0(
 	target, source, weapon *Object, damage int32, typ object.DamageType, r PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
 	reject := func(reason string) (bool, bool) {
@@ -29,11 +29,11 @@ func playerDamageOwnedMonster4E17B0(
 	}
 	if target.HasEnchant(playerDamageInvulnerableEnchant4E17B0) {
 		if r.Frame == nil {
-			return reject("missing owned monster invulnerability frame")
+			return reject("missing non-item attack invulnerability frame")
 		}
 		if byte(r.Frame())&3 == 0 {
 			if r.Audio == nil {
-				return reject("missing owned monster invulnerability audio")
+				return reject("missing non-item attack invulnerability audio")
 			}
 			r.Audio(71, target)
 		}
@@ -46,7 +46,7 @@ func playerDamageOwnedMonster4E17B0(
 	// their original use, after the early flags/buff/Coop gates. In particular,
 	// an absent live record is not turned into a silently ignored hit.
 	if target.UpdateData == nil {
-		return reject("missing owned monster target update")
+		return reject("missing non-item attack target update")
 	}
 	cached := target.UpdateData
 	var weaponFlags, armorFlags uint32
@@ -54,7 +54,7 @@ func playerDamageOwnedMonster4E17B0(
 	if target.Class().Has(object.ClassPlayer) {
 		update := target.UpdateDataPlayer()
 		if update.Player == nil {
-			return reject("missing owned monster target player info")
+			return reject("missing non-item attack target player info")
 		}
 		weaponFlags, armorFlags = update.Player.WeaponEquip, update.Player.ArmorEquip
 		absorption = math.Float32frombits(update.Field57)
@@ -63,7 +63,7 @@ func playerDamageOwnedMonster4E17B0(
 		}
 	} else {
 		if !target.Class().Has(object.ClassMonster) || uint32(target.SubClass())&0x10 == 0 {
-			return reject("unsupported owned monster target")
+			return reject("unsupported non-item attack target")
 		}
 		update := target.UpdateDataMonster()
 		weaponFlags, armorFlags = update.WeaponEquipFlags, update.ArmorEquipFlags
@@ -73,7 +73,7 @@ func playerDamageOwnedMonster4E17B0(
 	*marker = 0
 	if target.Class().Has(object.ClassPlayer) && target.UpdateDataPlayer().Player.ObserveTarget() != nil {
 		if r.ObserveClear == nil {
-			return reject("missing owned monster observe clear")
+			return reject("missing non-item attack observe clear")
 		}
 		r.ObserveClear(target)
 	}
@@ -82,37 +82,37 @@ func playerDamageOwnedMonster4E17B0(
 	if target.HasEnchant(playerDamageReflectEnchant4E17B0) && (weapon.Class().Has(object.ClassMissile) || typ == object.DamageZapRay || typ == object.DamageAirborneElectric) {
 		missile := weapon.Class().Has(object.ClassMissile)
 		if r.BlockDirection == nil {
-			return reject("missing owned monster Reflect direction")
+			return reject("missing non-item attack Reflect direction")
 		}
 		if r.BlockDirection(target, weapon.PosVec) {
 			if missile {
 				if r.ProjectileReflect == nil {
-					return reject("missing owned monster Reflect service")
+					return reject("missing non-item attack Reflect service")
 				}
 				r.ProjectileReflect(weapon, target)
 				if uint32(weapon.SubClass())&0x40 == 0 {
 					if r.ClearOwner == nil || r.SetOwner == nil {
-						return reject("missing owned monster Reflect owner")
+						return reject("missing non-item attack Reflect owner")
 					}
 					r.ClearOwner(weapon)
 					r.SetOwner(target, weapon)
 				}
 				if weapon.Class().Has(object.ClassMissile) && uint32(weapon.SubClass())&2 != 0 {
 					if r.ChangeOwner == nil {
-						return reject("missing owned monster Reflect change owner")
+						return reject("missing non-item attack Reflect change owner")
 					}
 					r.ChangeOwner(weapon, target)
 				}
 			}
 			if typ == object.DamageZapRay {
 				if r.PointFX == nil {
-					return reject("missing owned monster Reflect FX")
+					return reject("missing non-item attack Reflect FX")
 				}
 				r.PointFX(132, target.PosVec)
 			}
 
 			if r.Audio == nil {
-				return reject("missing owned monster Reflect audio")
+				return reject("missing non-item attack Reflect audio")
 			}
 			r.Audio(122, target)
 			return true, false
@@ -121,7 +121,7 @@ func playerDamageOwnedMonster4E17B0(
 	if source != nil {
 		pos := weapon.PrevPos
 		if r.BlockSourceExcluded == nil {
-			return reject("missing owned monster exclusion")
+			return reject("missing non-item attack exclusion")
 		}
 		excluded := r.BlockSourceExcluded(weapon)
 		if source != weapon {
@@ -131,7 +131,7 @@ func playerDamageOwnedMonster4E17B0(
 		}
 		if !excluded && typ != object.DamageManaBomb {
 			if r.BlockDirection == nil {
-				return reject("missing owned monster block direction")
+				return reject("missing non-item attack block direction")
 			}
 			if r.BlockDirection(target, pos) {
 				if blocked, h, result := playerDamageCasterImpactBlock4E17B0(target, source, weapon, cached, weaponFlags, armorFlags, damage, typ, r); blocked {
@@ -140,13 +140,13 @@ func playerDamageOwnedMonster4E17B0(
 			}
 		}
 	}
-	return playerDamageOwnedMonsterSwitch4E17B0(target, source, weapon, cached, absorption, damage, typ, r)
+	return playerDamageNonItemSwitch4E17B0(target, source, weapon, cached, absorption, damage, typ, r)
 }
 
 // 004E1E83..004E2040 retains the actual owner and attack through every type.
 // The marker base is cached; its layout follows the live class. Carry uses
 // the live update, including changes made by electric scaling or armor wear.
-func playerDamageOwnedMonsterSwitch4E17B0(target, source, weapon *Object, cached unsafe.Pointer, absorption float32, damage int32, typ object.DamageType, r PlayerDamageRuntime4E17B0) (bool, bool) {
+func playerDamageNonItemSwitch4E17B0(target, source, weapon *Object, cached unsafe.Pointer, absorption float32, damage int32, typ object.DamageType, r PlayerDamageRuntime4E17B0) (bool, bool) {
 	reject := func(reason string) (bool, bool) {
 		return playerDamageUnsupported4E17B0(r, reason, target, source, weapon, damage, typ)
 	}
@@ -154,14 +154,14 @@ func playerDamageOwnedMonsterSwitch4E17B0(target, source, weapon *Object, cached
 	electric := typ == object.DamageElectric || typ == object.DamageAirborneElectric
 	wearArmor := physical || electric || typ == object.DamageFlame || typ == object.DamageLava
 	if wearArmor && !playerDamageArmorReady4E17B0(target, r) {
-		return reject("unsupported owned monster armor durability")
+		return reject("unsupported non-item attack armor durability")
 	}
 	effective, wear := damage, damage
 	if physical || electric {
 		var scaled float32
 		if electric {
 			if r.ElectricArmorScale == nil {
-				return reject("missing owned monster electric armor scale")
+				return reject("missing non-item attack electric armor scale")
 			}
 			scaled = float32(float64(r.ElectricArmorScale(target)) * float64(damage))
 		} else {
@@ -205,7 +205,7 @@ func playerDamageOwnedMonsterSwitch4E17B0(target, source, weapon *Object, cached
 	}
 	if r.QuestMode != nil && r.QuestMode() {
 		if r.QuestDamageScale == nil {
-			return reject("missing owned monster Quest scale")
+			return reject("missing non-item attack Quest scale")
 		}
 		before := effective
 		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
@@ -214,7 +214,7 @@ func playerDamageOwnedMonsterSwitch4E17B0(target, source, weapon *Object, cached
 		}
 	}
 	if r.DefaultDamage == nil {
-		return reject("missing owned monster default damage")
+		return reject("missing non-item attack default damage")
 	}
 	return true, r.DefaultDamage(target, source, weapon, effective, typ)
 }

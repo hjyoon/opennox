@@ -1074,9 +1074,14 @@ func PlayerDamageNative4E17B0(
 	if target == nil {
 		return playerDamageUnsupported4E17B0(runtime, "non-player target", target, source, weapon, damage, typ)
 	}
+	// Production runtimes provide Coop and DefaultDamage. Earlier partial
+	// inline/defense callers retain their existing prefix contracts.
+	if runtime.CoopMode != nil && runtime.DefaultDamage != nil && playerDamageWorldSelfShape4E17B0(source, weapon, typ) && !(target.Class().Has(object.ClassMonster) && !target.Class().Has(object.ClassPlayer) && typ == object.DamageImpact) {
+		return playerDamageNonItem4E17B0(target, source, weapon, damage, typ, runtime)
+	}
 	if playerDamageOwnedMonsterShape4E17B0(source, weapon, typ) &&
 		!(target.Class().Has(object.ClassMonster) && !target.Class().Has(object.ClassPlayer) && typ == object.DamageImpact) {
-		return playerDamageOwnedMonster4E17B0(target, source, weapon, damage, typ, runtime)
+		return playerDamageNonItem4E17B0(target, source, weapon, damage, typ, runtime)
 	}
 	if target.Class().Has(object.ClassPlayer) && source == nil && weapon == nil &&
 		(runtime.DefaultDamage != nil || playerDamageSourceLessPrefixShape4E17B0(source, weapon, damage, typ)) {

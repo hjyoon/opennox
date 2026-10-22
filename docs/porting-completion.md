@@ -1092,6 +1092,32 @@ The qualified Amulet normal/HD branch remains preserved independently.
 Full-resource recovery, remaining Rogue clearance, Wiz03c, Amulet delivery
 and the chapter ending remain open.
 
+Continuations 609 and 610 establish a separate living resource branch from
+the original Gilgore defeat save. One actual Lesser Heal, the original
+northern passage and northeast movement retain mana 34; normal 609 saves
+alive at HP 8 with poison 0. Fresh ordinary HD Load 610 uses the saved
+ground position of original RedPotion 1195, previously contained in
+original crate 1088. The actual client selects its pickup cursor (2) and
+RedPotion drawable type 636. A left click confirms one potion in both
+server and client inventory. Actual X QuickHealth and southwest movement
+then produce an owned living native Save at HP 25, mana 34 and poison 0.
+Both complete runs exit alive. Independent native readers fully consume
+both eight-item inventories and retain gold 400, wand charges 200 and
+PoisonProtect1. XP remains 12993.37, Gilgore remains DEAD and all three
+remaining LeadRogues remain alive. This resource branch has no Amulet;
+the qualified earlier Amulet normal/HD branch remains separate.
+
+Proof `wizard3-original-conserved-mana-potion-hd-verification-v610.json`
+has SHA-256
+`458f7555ea7d0951ba4031699a374c55b6f8f31bd1f3cb820b1c1f6acf17e024`.
+It binds the original crate/potion identity, actual pickup and QuickHealth
+inputs, owned saves, fully consumed native inventories, all complete
+world/script/wall observations and an immutable 615-case audit. All
+6,663 product inputs remain unchanged; historical deaths remain 96 with
+zero forced terminations. Failed pickup assertions and death-ending runs
+remain excluded. Full-resource recovery, Amulet acquisition in this
+resource branch, Wiz03c and the original chapter ending remain pending.
+
 ### Earned Warrior3 WarCry use, cooldown and HD Load
 
 Actual original-menu Load 519 starts from the earned Mayor/Scepter reward

@@ -126,3 +126,15 @@ func playerDamageMonsterSelfStrikeTail4E17B0(target, source, weapon *Object, cac
 	}
 	return true, r.DefaultDamage(target, source, weapon, effective, typ)
 }
+
+// Script Damage retains an initialized player as both source and weapon.
+// These nonelemental cases share the existing self-strike defense/armor
+// prefix; CRUSH/electric and other damage types retain their own admission.
+func playerDamagePlayerSelfSourceShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
+	switch typ {
+	case object.DamageBlade, object.DamageImpale, object.DamageDrain, object.DamageBite, object.DamageClaw:
+	default:
+		return false
+	}
+	return source != nil && source == weapon && source.UpdateData != nil && source.Class().Has(object.ClassPlayer) && !source.Class().HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand|object.ClassMissile) && source.UpdateDataPlayer().Player != nil
+}

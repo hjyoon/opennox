@@ -1298,7 +1298,7 @@ func PlayerDamageNative4E17B0(
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
 	monsterImpact := playerDamageMonsterImpactShape4E17B0(source, weapon, typ)
-	monsterSelfStrike := playerDamageMonsterSelfStrikeShape4E17B0(source, weapon, typ)
+	monsterSelfStrike := playerDamageMonsterSelfStrikeShape4E17B0(source, weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ)
 	playerCharge := typ == object.DamageCrush && damage > 0 && source != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassPlayer) && !source.ObjClass.HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand)
 	fullArmorHit := bite || missileImpact || monsterImpact || monsterSelfStrike

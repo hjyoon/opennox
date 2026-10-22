@@ -226,6 +226,41 @@ corrected execution scope and initial failures are retained in
 `npc-turn-undead-prefix-port/`. Broader attacker/weapon shapes remain partial;
 overall 100% is not established.
 
+### Initialized player supplied as source and weapon
+
+Script Damage/DoDamage retains an initialized player as both terminal source
+and weapon. BLADE, PIERCE, DRAIN, BITE and CLAW now use the existing typed
+self-strike prefixes for player/NPC victims and the non-elemental caster
+DefaultDamage tail. The existing monster, charge and electric paths retain
+their contracts. A missing player-info record is rejected before observer,
+defense or HP callbacks; the malformed player-class/monster-update Bite
+fixtures remain unchanged and rejected.
+
+The original 288-case survey supplies 80 rows for these five types, two
+victim layouts and eight signed callback amounts. Armor wear, DefaultDamage,
+mode/observer/exclusion/rear-facing services are declared boundaries; actual
+Windows HP/audio are not executed. Nonpositive amounts are direct callback
+ABI probes, not public DoDamage inputs. Two additional original executions
+verify the exact NPC BLADE/PIERCE150 inputs now retained as positive HP50,
+marker and injured-state controls. The other five adjacent negatives remain
+rejected; every other previous test, fixture and golden is byte-identical.
+
+The 153 added passing events include 60 real native HP cases across player,
+NPC and ordinary-monster victims, GodMode and separate C dispatch versus
+owner-resolution/CallDamage entry. The latter is the production boundary
+used by root DoDamage; the root wrapper itself is not invoked from legacy
+tests. These cases preserve attacker pointer identity above 4 GiB, armor
+carry, attribution and HP sync, and reject unported diagnostics. Eleven
+additional events verify missing player-info rejection across all five types.
+
+Normal/HD each pass 85,000 events with 49 skips; server/server-HD each pass
+80,172 with 7 skips. All previous terminal identities/results/multiplicities
+and skips survive. Combined race/checkptr2/cgocheck2 passes 9,987 events over
+three repetitions on the exact 6,686-input candidate. Evidence and retained
+initial fixture/build/admission failures are in
+`player-self-source-damage-port/`. Remaining player-source raw and elemental
+types are separate work; overall 100% is not established.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

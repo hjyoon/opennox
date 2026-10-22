@@ -258,7 +258,19 @@ func TestPlayerDamageNPCBerserker4E17B0AdjacentShapes(t *testing.T) {
 			before := *target.UpdateDataMonster()
 			why := ""
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { why = reason }
-			if h, result := PlayerDamageNative4E17B0(target, source, source, 150, tc.typ, r); h || result || why != "unsupported monster damage shape" ||
+			ported := tc.name == "player Blade" || tc.name == "player PIERCE"
+			if ported {
+				// The unchanged original accepts these exact initialized-player
+				// BLADE/PIERCE150 inputs. GodMode still cannot protect an NPC.
+				r.GodMode = func() bool { return true }
+			}
+			h, result := PlayerDamageNative4E17B0(target, source, source, 150, tc.typ, r)
+			if ported {
+				ud := target.UpdateDataMonster()
+				if !h || !result || why != "" || target.HealthData.Cur != 50 || ud.Field547 != 2 || ud.Field546 != uint32(tc.typ) || ud.Field1 != before.Field1 || !ud.StatusFlags.Has(object.MonStatusInjured) || target.Obj130 != source || target.Field131 != uint32(tc.typ) {
+					t.Fatalf("initialized player source=%t/%t HP=%d marker=%d/%d reason=%q", h, result, target.HealthData.Cur, ud.Field547, ud.Field546, why)
+				}
+			} else if h || result || why != "unsupported monster damage shape" ||
 				target.HealthData.Cur != 200 || *target.UpdateDataMonster() != before {
 				t.Fatalf("adjacent shape handled/result=%t/%t reason=%q", h, result, why)
 			}

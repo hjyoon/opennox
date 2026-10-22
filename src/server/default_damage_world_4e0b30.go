@@ -264,7 +264,7 @@ func DefaultDamageWorld4E0B30(
 	// The terminal owner and Earthquake caster need not be the same object.
 	// Keep the already restored monster self-strike on its existing path;
 	// PLAYER and class-zero self-casters do not qualify the melee predicate.
-	casterImpact := !monsterImpact && defaultDamageCasterImpactShape4E0B30(weapon, typ)
+	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ))
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	worldProjectile := playerDamageWorldProjectileShape4E17B0(source, weapon, typ)

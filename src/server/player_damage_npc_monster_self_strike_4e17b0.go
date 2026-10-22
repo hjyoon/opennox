@@ -10,7 +10,7 @@ import (
 // shapes. Spider/Wasp, Scorpion/Zombie, Golem and Ghost use the same native
 // unit as attacker and weapon, not a distinct inventory weapon or missile.
 func playerDamageNPCMonsterSelfStrikeShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
-	if playerDamageMonsterSelfStrikeShape4E17B0(source, weapon, typ) {
+	if playerDamageMonsterSelfStrikeShape4E17B0(source, weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) {
 		return true
 	}
 	return typ == object.DamageBite && source != nil && source == weapon && source.UpdateData != nil &&

@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; original earned WarCry use, reuse rejection after its active duration, and normal/HD Save/Load proved; War03d classification, optional areas and hostile WarCry effects remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; five original B Swordsmen are defeated with native map/XP checks and living Save; natural A resource-return/B reentry retain the first three deaths and recharged wand, followed by two further guard kills; actual B Lightning against Wasps, Primitive refill, retained CurePotion consumption and normal/HD full-resource Save/Load with refuge return proved; original Stravas paired lift/cellar, earned Magic Missile level 2 and original WizardHelm automatic equipment with full-resource normal/HD Save/Load proved; actual upgraded Magic Missile defeats the original lift-carried bandit and three southern Archers with native health/death/XP checks, forest recovery and full-resource normal/HD Save/Load; remaining Wiz03b objectives, Wiz03c and original ending pending |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; five original B Swordsmen are defeated with native map/XP checks and living Save; natural A resource-return/B reentry retain the first three deaths and recharged wand, followed by two further guard kills; actual B Lightning against Wasps, Primitive refill, retained CurePotion consumption and normal/HD full-resource Save/Load with refuge return proved; original Stravas paired lift/cellar, earned Magic Missile level 2 and original WizardHelm automatic equipment with full-resource normal/HD Save/Load proved; actual upgraded Magic Missile defeats the original lift-carried bandit and three southern Archers with native health/death/XP checks, forest recovery and full-resource normal/HD Save/Load; remaining house Swordsman defeat, original Mystic trade and three potion purchases, gold debit and full-resource normal/HD Save/Load proved; remaining Wiz03b objectives, Wiz03c and original ending pending |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -792,6 +792,38 @@ death count is 68 with no forced terminations. Subsequent failed approach
 532b encounters remaining Swordsman 2012 at the house doorway and dies;
 the whole run is excluded and the current count becomes 69. Remaining B/C
 objectives, the Amulet and the original ending remain open.
+
+Original continuation 533b intercepts the remaining house-doorway
+Swordsman 2012 with actual upgraded Magic Missile inputs. Independent
+native map reads prove its HP is 0 and its original DEAD flag is set;
+XP increases to 11989.055 and the named ambush death counter becomes 5.
+Actual Lesser Heal and the forest Primitive route restore HP 33, mana 99
+and poison 0 before reaching the original Mystic merchant. This still
+does not establish complete ten-bandit clearance.
+
+Continuation 534b opens the real Mystic trade and Buy screens and leaves
+without purchasing. Continuation 535b purchases one BluePotion for 20 gold
+and two RedPotions for 40 gold each through the stock cells and original
+quantity-confirmation UI. Server/client gold checks observe
+500 to 480 to 440 to 400. Native inventory decoding proves 11 items,
+including exactly one BluePotion and two RedPotions. Fresh ordinary HD
+Load, actual movement and living re-Save 536 retain HP 33, mana 99,
+poison 0, gold 400 and all three purchased potions. Both saves retain the
+equipped WizardHelm at health 335, PoisonRobe at health 232 with
+PoisonProtect1, and the wand at 200/200 charges. Hover screens identify
+Slow and Haste books at 700 gold each; neither is purchased or credited
+as learned.
+
+Proof `wizard3-original-mystic-purchases-hd-verification-v536.json` has
+SHA-256 `fc8c701346483acb7a4e7ac8134f45e2c6057349e416fc57163a9197a30f9f5d`.
+It binds the immutable 538-case audit, four owned living saves, complete
+world/script/wall observations, native enemy/inventory records and all
+6,663 unchanged product inputs. The reviewed quantity-accept helper only
+reads the visible dialog geometry and queues actual mouse input; the
+existing native-save, death, poison, port and product guards remain.
+Historical deaths remain 69 with no forced terminations. Green-lift
+passage, remaining B/C objectives, the Amulet and the original ending
+remain open.
 
 ### Earned Warrior3 WarCry use, cooldown and HD Load
 

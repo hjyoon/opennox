@@ -379,6 +379,57 @@ subtests; they do not establish an overall completion percentage. Overall
 100% remains unproved.
 
 
+### Distinct player owner and monster damage object
+
+NoxScript Damage/DoDamage can resolve an initialized player owner while
+retaining the owned monster as the actual weapon. The native prefix now
+handles all eighteen known damage types and raw default values for this
+argument form. Ordinary monster strikes still pass the monster itself as
+both source and weapon. Existing NPC IMPACT remains on its previous path.
+
+The new prefix retains cached absorption/equipment/marker base, live carry
+and inventory, weapon current/previous positions, weapon-type attribution,
+Reflect16/17, shield/GreatSword/staff selection, electric shield bypass,
+Mana Bomb's direction/Coop exception and the full original type switch.
+DefaultDamage retains live qualification/friendliness, Shock, actual
+protection types, poison/fire/electric immunity with original precedence,
+signed EXPLOSION halving, late Defend, attribution and nil-health HP guard.
+Original-comparison tests also expose and correct the terminal-monster
+self-poison path's early immunity: qualifying Shock retaliation must execute
+before poison immunity. Source-less partial runtime contracts remain.
+
+Unchanged original instructions provide 384 signed prefix cases, including
+six default/out-of-range type values; 144 front/rear/Reflect conditions with
+distinct owner/weapon positions; 108 shield/GreatSword/staff conditions;
+90 integrated NPC immunity combinations with health and the same 90 with
+nil health; and four standalone poison-immunity/Shock cases. PlayerDamage,
+DefaultDamage and reached carry/FISTP/HP-return tail/attack-qualifier ranges
+execute unchanged. Declared mode/buff/observer/direction, electric-armor
+scale1, zero protection, block/state/random/balance/wear, sound/FX, recursive
+damage, ball and HP services are not original Windows HP/audio execution.
+The monster sound getter and hit-latch routines are sealed but unentered
+for these player terminal owners; the weapon latch stays0. Incorrect early
+scope metadata and fixture assumptions remain preserved with corrections.
+
+The 1,137 added passing events include 490 native HP cases across ordinary
+monsters, NPCs and players, GodMode, immunity, nil health, caller resolution
+and C dispatch. Four of those cases invoke the outer Go DefaultDamage with
+declared Shock balance9/state boundaries, then use the actual registered
+recursive C damage dispatcher and native HP. The root DoDamage wrapper is
+not directly invoked; nonpositive/default-type prefix rows are direct ABI
+probes. Initialized real server objects are required when actual buff removal
+uses synchronization. Actual Shock removal sets NeedSync independently of HP damage. Block fixtures explicitly initialize C allocations;
+HP/damage are not replaced. Every previous test/fixture/golden is byte-identical
+and every earlier terminal identity/action/multiplicity/skip survives.
+
+Normal/HD each pass 87,107 events with 49 skips; server/server-HD each pass
+82,279 with 7 skips. Combined race/checkptr2/cgocheck2 passes 16,347 events
+across three repetitions on the exact 6,708-input candidate. Versioned evidence
+and initial baseline/fixture failures are in `owned-monster-damage-port/`.
+Test-event totals include parents and subtests and do not establish overall
+completion. Overall 100% remains unproved.
+
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

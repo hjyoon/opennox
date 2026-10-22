@@ -264,8 +264,9 @@ func DefaultDamageWorld4E0B30(
 	// The terminal owner and Earthquake caster need not be the same object.
 	// Keep the already restored monster self-strike on its existing path;
 	// PLAYER and class-zero self-casters do not qualify the melee predicate.
+	ownedMonster := playerDamageOwnedMonsterShape4E17B0(source, weapon, typ)
 	unitSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfRawShape4E17B0(source, weapon, typ)
-	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || unitSelfRaw)
+	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || unitSelfRaw || ownedMonster)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	unitSelfFire := playerDamagePlayerSelfFireShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfFireShape4E17B0(source, weapon, typ)
@@ -606,7 +607,7 @@ func DefaultDamageWorld4E0B30(
 	if monsterUpdate != nil {
 		// GAME.EXE rejects type 5 for poison-immune subclass 0x200 before
 		// health, defense callbacks or attribution are touched.
-		if (sourceLessMonsterPoison || (unitSelfRaw && typ == object.DamagePoison)) && uint32(target.SubClass())&0x200 != 0 {
+		if sourceLessMonsterPoison && uint32(target.SubClass())&0x200 != 0 {
 			return true
 		}
 		if target.HealthData == nil && !sourceLessMonster && !unitSelfFire && !armedExplosion && !armedElectric && !dispelUndead && !cloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {
@@ -665,6 +666,22 @@ func DefaultDamageWorld4E0B30(
 		_ = runtime.CallDamage(source, target, nil, shockDamage, object.DamageElectric)
 		if source.Class().Has(object.ClassPlayer) {
 			_ = runtime.PlayerSetState(source, PlayerState23)
+		}
+	}
+	// Reload the live class/subclass after Shock. Unit self-poison must
+	// not bypass retaliation, and owned-monster immunity needs no HP services.
+	if target.Class().Has(object.ClassMonster) {
+		subclass := uint32(target.SubClass())
+		if (ownedMonster || unitSelfRaw) && typ == object.DamagePoison && subclass&0x200 != 0 {
+			return true
+		}
+		if ownedMonster {
+			if (typ == object.DamageFlame || typ == object.DamageLava) && subclass&0x400 != 0 {
+				return true
+			}
+			if (typ == object.DamageElectric || typ == object.DamageAirborneElectric) && subclass&0xc00 == 0x800 {
+				return true
+			}
 		}
 	}
 	// 004E0C9E's Shock retaliation precedes 004E0D69's electric immunity.
@@ -740,7 +757,7 @@ func DefaultDamageWorld4E0B30(
 			return defaultDamageUnsupported4E0B30(runtime, "missing world FLAME tail service", target, source, weapon, damage, typ)
 		}
 	}
-	if (armedExplosion || missileExplosion || monsterWeaponlessExplosion) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
+	if (armedExplosion || missileExplosion || monsterWeaponlessExplosion || (ownedMonster && typ == object.DamageExplosion)) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		// 004E0D5A..004E0D63: signed division truncates toward zero,
 		// before fire protection's separate binary32 rounding/minimum.
 		damage /= 2

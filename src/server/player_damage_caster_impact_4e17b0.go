@@ -194,9 +194,15 @@ func playerDamageCasterImpactBlock4E17B0(
 	shield := (player && (*PlayerUpdateData)(cached).State == PlayerState16) ||
 		(!player && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK)
 	shield = shield && armorFlags&0x3000000 != 0
+	if shield && (typ == object.DamageElectric || typ == object.DamageAirborneElectric) {
+		return false, false, false
+	}
 	mask, sound := uint32(2), 878
 	if !shield {
 		if weaponFlags&0x400 != 0 {
+			if !weapon.Class().Has(object.ClassMissile) && typ != object.DamageBlade && typ != object.DamageImpact {
+				return false, false, false
+			}
 			ready := false
 			if player {
 				state := (*PlayerUpdateData)(cached).State
@@ -216,7 +222,7 @@ func playerDamageCasterImpactBlock4E17B0(
 				shield = r.BerserkShieldBlock(target)
 			}
 			if !shield {
-				if weaponFlags&0x7ff8000 == 0 || weapon.Class().Has(object.ClassMissile) {
+				if (typ != object.DamageBlade && typ != object.DamageImpact) || weaponFlags&0x7ff8000 == 0 || weapon.Class().Has(object.ClassMissile) {
 					return false, false, false
 				}
 				ready := false

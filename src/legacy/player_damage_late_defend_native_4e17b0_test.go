@@ -41,6 +41,10 @@ func TestPlayerDamageLateDefendNative4E17B0CDispatcher(t *testing.T) {
 	target.ObjClass, target.ObjFlags = object.ClassPlayer, 0
 	target.UpdateData, target.HealthData = unsafe.Pointer(update), health
 	target.Damage, target.InvFirstItem = playerDamageMeleeCallbackNative4E17B0(), item
+	// This fixture captures the player-sound callback, so install it as
+	// the original DefaultDamage caller does instead of relying on the old
+	// source-less slice's unconditional player-sound call.
+	target.DamageSound = defaultDamageWorldRuntime4E0B30(srv).PlayerDamageSoundC
 	// Class zero, no item HP/update/damage: only equipped flags gate 004E1320.
 	item.ObjClass, item.ObjFlags, item.InitData = 0, object.FlagEquipped, unsafe.Pointer(initData)
 	fns := playerDamageLateDefendFunctionsNative4E1320()

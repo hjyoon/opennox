@@ -100,10 +100,37 @@ Normal/HD each pass 83,453 events with 49 skips; server/server-HD each pass
 78,625 with 7 skips. Every prior terminal identity, result, multiplicity
 and skip is retained. Strict cgocheck2/race/checkptr2 passes 330 events over
 three repetitions. Versioned evidence is in `source-less-player-physical-port/`.
-The broader source-less switch is still incomplete: independent probes retain
-IMPALE/CLAW/IMPACT rejections and a further 304-condition original prefix
-survey. Those observations are not credited as implemented paths or original
-Windows HP execution. Overall 100% remains unproved.
+This bounded checkpoint is superseded by the complete player switch below;
+its original evidence remains preserved. Overall 100% remains unproved.
+
+### Complete source-less player damage switch
+
+Source-less PlayerDamage now implements all original type-switch branches,
+including electric scaling, raw damage and signed/default type values. Full
+production runtimes enter shared DefaultDamage; partial runtimes retain their
+previous supported services. Cached absorption/markers, live carry/inventory,
+raw electric/fire armor wear, positive minimum, GodMode and Quest order are
+preserved. Default case 13 and out-of-range values do not synthesize a prefix
+marker. The public DoDamage(DamageTrue) bypass remains a separate caller.
+
+Unchanged GAME.EXE instructions supply 192 player prefix rows from 384
+player/NPC comparisons. Electric armor scale 1.0, armor wear and HP remain
+declared oracle boundaries; helper 4E2220 and original Windows HP are not
+certified by that survey. Six additional original DefaultDamage executions
+confirm default sound for a nil callback and player sound when installed.
+The existing C late-Defend fixture now explicitly installs the player-sound
+callback it captures; its HP and sound-count expectations are unchanged.
+
+The 253 new passing events include 48 actual registered-C callback cases
+with pointers above 4 GiB, native HP, GodMode, attribution and electric WORD
+state checks, plus observer replacement, Quest, late Defend and Shield.
+Normal/HD each pass 83,706 events with 49 skips; server/server-HD each pass
+78,878 with 7 skips. Every previous terminal identity, result, multiplicity
+and skip is retained. The focused union passes 1,035 events across race,
+checkptr level 2 and cgocheck2 runs. Versioned evidence and retained initial
+failures are in `source-less-player-complete-port/`. Independent NPC probes
+still reject several source-less types; that next port and overall completion
+remain open. No test-event total is a completion percentage.
 
 ### Current fresh Warrior and Conjurer chapter 1 starts
 

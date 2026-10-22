@@ -1067,8 +1067,9 @@ func PlayerDamageNative4E17B0(
 	if target == nil {
 		return playerDamageUnsupported4E17B0(runtime, "non-player target", target, source, weapon, damage, typ)
 	}
-	if target.Class().Has(object.ClassPlayer) && playerDamageSourceLessPhysicalShape4E17B0(source, weapon, typ) {
-		return playerDamageSourceLessPhysical4E17B0(target, damage, typ, runtime)
+	if target.Class().Has(object.ClassPlayer) && source == nil && weapon == nil &&
+		(runtime.DefaultDamage != nil || playerDamageSourceLessPrefixShape4E17B0(source, weapon, damage, typ)) {
+		return playerDamageSourceLessPlayer4E17B0(target, damage, typ, runtime)
 	}
 	if (target.Class().Has(object.ClassPlayer) || (target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x10 != 0)) &&
 		playerDamageArmedExplosionShape4E17B0(source, weapon, typ) {

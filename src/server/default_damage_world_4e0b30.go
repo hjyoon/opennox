@@ -312,10 +312,11 @@ func DefaultDamageWorld4E0B30(
 		!weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
 		(source == nil || (!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) &&
 			(!source.Class().HasAny(object.MaskUnits) || source.UpdateData != nil)))
-	// Script physical hits have already passed PlayerDamage's armor/carry
-	// prefix, or call DefaultDamage directly. Neither requires an attacker.
-	sourceLessPlayerPhysical := target.Class().Has(object.ClassPlayer) && playerDamageSourceLessPhysicalShape4E17B0(source, weapon, typ)
-	playerTail := sourceLessPlayerPhysical || playerElectric || playerWeaponlessExplosion || ((armedExplosion || cloudPoison || weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldProjectile || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
+	// Source-less hits have passed PlayerDamage's type switch, or call
+	// DefaultDamage directly. No original type, including its raw default
+	// branch, requires an attacker; protection and effects still use typ.
+	sourceLessPlayer := target.Class().Has(object.ClassPlayer) && source == nil && weapon == nil
+	playerTail := sourceLessPlayer || playerElectric || playerWeaponlessExplosion || ((armedExplosion || cloudPoison || weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldProjectile || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
 	if playerTail && !casterImpact && !armedExplosion {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)

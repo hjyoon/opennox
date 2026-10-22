@@ -1,0 +1,2119 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "ranges": [
+    {
+      "address": "0x00419A70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "address": "0x004E17B0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9"
+    },
+    {
+      "address": "0x004E20F0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86"
+    }
+  ],
+  "scope": "192 player rows from the384-case unchanged original source-less prefix survey, including signed default-branch type boundaries. Electric armor scale is an explicit exact1.0 service; 4E2220 is not executed by this oracle. Armor.5/carry.25; wear and DefaultDamage are declared boundaries, not Windows HP. Raw-1 is direct-callback compatibility; the public DamageTrue caller bypasses callbacks and is unchanged.",
+  "rows": [
+    {
+      "damage_type": -1,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -1,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -1,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -1,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -1,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -1,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -1,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -1,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 0,
+      "raw": -11,
+      "forward_damage": 4294967291,
+      "marker": 2,
+      "marker_type": 0,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967290
+      ]
+    },
+    {
+      "damage_type": 0,
+      "raw": -9,
+      "forward_damage": 4294967292,
+      "marker": 2,
+      "marker_type": 0,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967291
+      ]
+    },
+    {
+      "damage_type": 0,
+      "raw": -1,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 0,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 0,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 0,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 0,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 0,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 0,
+      "raw": 9,
+      "forward_damage": 5,
+      "marker": 2,
+      "marker_type": 0,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4
+      ]
+    },
+    {
+      "damage_type": 0,
+      "raw": 11,
+      "forward_damage": 6,
+      "marker": 2,
+      "marker_type": 0,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        5
+      ]
+    },
+    {
+      "damage_type": 0,
+      "raw": 96,
+      "forward_damage": 48,
+      "marker": 2,
+      "marker_type": 0,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        48
+      ]
+    },
+    {
+      "damage_type": 1,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 1,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967285
+      ]
+    },
+    {
+      "damage_type": 1,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 1,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967287
+      ]
+    },
+    {
+      "damage_type": 1,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 1,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 1,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 1,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 1,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 1,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        1
+      ]
+    },
+    {
+      "damage_type": 1,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 1,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        9
+      ]
+    },
+    {
+      "damage_type": 1,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 1,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        11
+      ]
+    },
+    {
+      "damage_type": 1,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 1,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        96
+      ]
+    },
+    {
+      "damage_type": 2,
+      "raw": -11,
+      "forward_damage": 4294967288,
+      "marker": 2,
+      "marker_type": 2,
+      "carry_bits": 0,
+      "return": 1,
+      "wear": [
+        4294967293
+      ]
+    },
+    {
+      "damage_type": 2,
+      "raw": -9,
+      "forward_damage": 4294967290,
+      "marker": 2,
+      "marker_type": 2,
+      "carry_bits": 3204448256,
+      "return": 1,
+      "wear": [
+        4294967293
+      ]
+    },
+    {
+      "damage_type": 2,
+      "raw": -1,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 2,
+      "carry_bits": 3204448256,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 2,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 2,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 2,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 2,
+      "carry_bits": 0,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 2,
+      "raw": 9,
+      "forward_damage": 7,
+      "marker": 2,
+      "marker_type": 2,
+      "carry_bits": 0,
+      "return": 1,
+      "wear": [
+        2
+      ]
+    },
+    {
+      "damage_type": 2,
+      "raw": 11,
+      "forward_damage": 8,
+      "marker": 2,
+      "marker_type": 2,
+      "carry_bits": 1056964608,
+      "return": 1,
+      "wear": [
+        3
+      ]
+    },
+    {
+      "damage_type": 2,
+      "raw": 96,
+      "forward_damage": 72,
+      "marker": 2,
+      "marker_type": 2,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        24
+      ]
+    },
+    {
+      "damage_type": 3,
+      "raw": -11,
+      "forward_damage": 4294967291,
+      "marker": 2,
+      "marker_type": 3,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967290
+      ]
+    },
+    {
+      "damage_type": 3,
+      "raw": -9,
+      "forward_damage": 4294967292,
+      "marker": 2,
+      "marker_type": 3,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967291
+      ]
+    },
+    {
+      "damage_type": 3,
+      "raw": -1,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 3,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 3,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 3,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 3,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 3,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 3,
+      "raw": 9,
+      "forward_damage": 5,
+      "marker": 2,
+      "marker_type": 3,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4
+      ]
+    },
+    {
+      "damage_type": 3,
+      "raw": 11,
+      "forward_damage": 6,
+      "marker": 2,
+      "marker_type": 3,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        5
+      ]
+    },
+    {
+      "damage_type": 3,
+      "raw": 96,
+      "forward_damage": 48,
+      "marker": 2,
+      "marker_type": 3,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        48
+      ]
+    },
+    {
+      "damage_type": 4,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 4,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 4,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 4,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 4,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 4,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 4,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 4,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 4,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 4,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 4,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 4,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 4,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 4,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 4,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 4,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 5,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 5,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 5,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 5,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 5,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 5,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 5,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 5,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 5,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 5,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 5,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 5,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 5,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 5,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 5,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 5,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 6,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 6,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 6,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 6,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 6,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 6,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 6,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 6,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 6,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 6,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 6,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 6,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 6,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 6,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 6,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 6,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 7,
+      "raw": -11,
+      "forward_damage": 4294967291,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967290
+      ]
+    },
+    {
+      "damage_type": 7,
+      "raw": -9,
+      "forward_damage": 4294967292,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967291
+      ]
+    },
+    {
+      "damage_type": 7,
+      "raw": -1,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 7,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 7,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 7,
+      "raw": 9,
+      "forward_damage": 5,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4
+      ]
+    },
+    {
+      "damage_type": 7,
+      "raw": 11,
+      "forward_damage": 6,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        5
+      ]
+    },
+    {
+      "damage_type": 7,
+      "raw": 96,
+      "forward_damage": 48,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        48
+      ]
+    },
+    {
+      "damage_type": 8,
+      "raw": -11,
+      "forward_damage": 4294967291,
+      "marker": 2,
+      "marker_type": 8,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967290
+      ]
+    },
+    {
+      "damage_type": 8,
+      "raw": -9,
+      "forward_damage": 4294967292,
+      "marker": 2,
+      "marker_type": 8,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967291
+      ]
+    },
+    {
+      "damage_type": 8,
+      "raw": -1,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 8,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 8,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 8,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 8,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 8,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 8,
+      "raw": 9,
+      "forward_damage": 5,
+      "marker": 2,
+      "marker_type": 8,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4
+      ]
+    },
+    {
+      "damage_type": 8,
+      "raw": 11,
+      "forward_damage": 6,
+      "marker": 2,
+      "marker_type": 8,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        5
+      ]
+    },
+    {
+      "damage_type": 8,
+      "raw": 96,
+      "forward_damage": 48,
+      "marker": 2,
+      "marker_type": 8,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        48
+      ]
+    },
+    {
+      "damage_type": 9,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 9,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967285
+      ]
+    },
+    {
+      "damage_type": 9,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 9,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967287
+      ]
+    },
+    {
+      "damage_type": 9,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 9,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 9,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 9,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 9,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 9,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        1
+      ]
+    },
+    {
+      "damage_type": 9,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 9,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        9
+      ]
+    },
+    {
+      "damage_type": 9,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 9,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        11
+      ]
+    },
+    {
+      "damage_type": 9,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 9,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        96
+      ]
+    },
+    {
+      "damage_type": 10,
+      "raw": -11,
+      "forward_damage": 4294967291,
+      "marker": 2,
+      "marker_type": 10,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967290
+      ]
+    },
+    {
+      "damage_type": 10,
+      "raw": -9,
+      "forward_damage": 4294967292,
+      "marker": 2,
+      "marker_type": 10,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967291
+      ]
+    },
+    {
+      "damage_type": 10,
+      "raw": -1,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 10,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 10,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 10,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 10,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 10,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 10,
+      "raw": 9,
+      "forward_damage": 5,
+      "marker": 2,
+      "marker_type": 10,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4
+      ]
+    },
+    {
+      "damage_type": 10,
+      "raw": 11,
+      "forward_damage": 6,
+      "marker": 2,
+      "marker_type": 10,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        5
+      ]
+    },
+    {
+      "damage_type": 10,
+      "raw": 96,
+      "forward_damage": 48,
+      "marker": 2,
+      "marker_type": 10,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        48
+      ]
+    },
+    {
+      "damage_type": 11,
+      "raw": -11,
+      "forward_damage": 4294967291,
+      "marker": 2,
+      "marker_type": 11,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967290
+      ]
+    },
+    {
+      "damage_type": 11,
+      "raw": -9,
+      "forward_damage": 4294967292,
+      "marker": 2,
+      "marker_type": 11,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967291
+      ]
+    },
+    {
+      "damage_type": 11,
+      "raw": -1,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 11,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 11,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 11,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 11,
+      "raw": 9,
+      "forward_damage": 5,
+      "marker": 2,
+      "marker_type": 11,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        4
+      ]
+    },
+    {
+      "damage_type": 11,
+      "raw": 11,
+      "forward_damage": 6,
+      "marker": 2,
+      "marker_type": 11,
+      "carry_bits": 3196059648,
+      "return": 1,
+      "wear": [
+        5
+      ]
+    },
+    {
+      "damage_type": 11,
+      "raw": 96,
+      "forward_damage": 48,
+      "marker": 2,
+      "marker_type": 11,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        48
+      ]
+    },
+    {
+      "damage_type": 12,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 12,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967285
+      ]
+    },
+    {
+      "damage_type": 12,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 12,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967287
+      ]
+    },
+    {
+      "damage_type": 12,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 12,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 12,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 12,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 12,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 12,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        1
+      ]
+    },
+    {
+      "damage_type": 12,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 12,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        9
+      ]
+    },
+    {
+      "damage_type": 12,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 12,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        11
+      ]
+    },
+    {
+      "damage_type": 12,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 12,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        96
+      ]
+    },
+    {
+      "damage_type": 13,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 13,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 13,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 13,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 13,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 13,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 13,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 13,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 14,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 14,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 14,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 14,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 14,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 14,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 14,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 14,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 14,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 14,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 14,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 14,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 14,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 14,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 14,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 14,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 15,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 15,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 15,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 15,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 15,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 15,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 15,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 15,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 15,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 15,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 15,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 15,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 15,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 15,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 15,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 15,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 16,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 16,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 16,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 16,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 16,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 16,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 16,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 16,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 16,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 16,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 16,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 16,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 16,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 16,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 16,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 16,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 17,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 2,
+      "marker_type": 17,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967285
+      ]
+    },
+    {
+      "damage_type": 17,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 2,
+      "marker_type": 17,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967287
+      ]
+    },
+    {
+      "damage_type": 17,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 2,
+      "marker_type": 17,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        4294967295
+      ]
+    },
+    {
+      "damage_type": 17,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 2,
+      "marker_type": 17,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        0
+      ]
+    },
+    {
+      "damage_type": 17,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 2,
+      "marker_type": 17,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        1
+      ]
+    },
+    {
+      "damage_type": 17,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 2,
+      "marker_type": 17,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        9
+      ]
+    },
+    {
+      "damage_type": 17,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 2,
+      "marker_type": 17,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        11
+      ]
+    },
+    {
+      "damage_type": 17,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 2,
+      "marker_type": 17,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": [
+        96
+      ]
+    },
+    {
+      "damage_type": -2147483648,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2147483648,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2147483648,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2147483648,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2147483648,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2147483648,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2147483648,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2147483648,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": -2,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 18,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 18,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 18,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 18,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 18,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 18,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 18,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 18,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 19,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 19,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 19,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 19,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 19,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 19,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 19,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 19,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 2147483647,
+      "raw": -11,
+      "forward_damage": 4294967285,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 2147483647,
+      "raw": -9,
+      "forward_damage": 4294967287,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 2147483647,
+      "raw": -1,
+      "forward_damage": 4294967295,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 2147483647,
+      "raw": 0,
+      "forward_damage": 0,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 2147483647,
+      "raw": 1,
+      "forward_damage": 1,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 2147483647,
+      "raw": 9,
+      "forward_damage": 9,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 2147483647,
+      "raw": 11,
+      "forward_damage": 11,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    },
+    {
+      "damage_type": 2147483647,
+      "raw": 96,
+      "forward_damage": 96,
+      "marker": 0,
+      "marker_type": 77,
+      "carry_bits": 1048576000,
+      "return": 1,
+      "wear": []
+    }
+  ]
+}

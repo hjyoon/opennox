@@ -6,16 +6,29 @@ import (
 	"github.com/opennox/libs/object"
 )
 
-func playerDamageSourceLessPhysicalShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
-	return source == nil && weapon == nil &&
-		(typ == object.DamageBlade || typ == object.DamageCrush || typ == object.DamageBite)
+func playerDamageSourceLessPrefixShape4E17B0(source, weapon *Object, damage int32, typ object.DamageType) bool {
+	if source != nil || weapon != nil {
+		return false
+	}
+	switch typ {
+	case object.DamagePoison, object.DamageLava:
+		// A legacy partial runtime can still inline these positive timer/
+		// collision tails using HP/protection services without DefaultDamage.
+		return damage <= 0
+	case object.DamageExplosion, object.DamagePlasma, object.DamageManaBomb, object.DamageZapRay:
+		return false // These signed source-less prefixes are already native.
+	default:
+		return true
+	}
 }
 
-// Source-less script hits skip 004E19CE's entire facing/weapon-defense
-// prefix. Cases 0/8 use full armor at 004E1F84; case 2 uses half armor at
-// 004E1EE8. Absorption and the marker base are cached before ObserveClear,
-// while 004E20F0 and 004E2180 reload live carry and inventory independently.
-func playerDamageSourceLessPhysical4E17B0(
+// Source-less player hits skip 004E19CE's facing/weapon-defense prefix.
+// This is the complete original type switch: full/half armor, raw armor
+// wear, electric scaling, raw damage and the default case have distinct
+// carry/wear/marker behavior. Complete production runtimes use this prefix;
+// callers lacking DefaultDamage retain the earlier supported slices.
+// Cached absorption/markers and live carry/inventory stay separate.
+func playerDamageSourceLessPlayer4E17B0(
 	target *Object, damage int32, typ object.DamageType, r PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
 	reject := func(reason string) (bool, bool) {
@@ -41,7 +54,7 @@ func playerDamageSourceLessPhysical4E17B0(
 		// owner cannot be this player, so it never suppresses script damage.
 		_ = r.CoopMode()
 	}
-	if target.UpdateData == nil {
+	if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
 		return reject("missing source-less physical player update")
 	}
 	cached := target.UpdateDataPlayer()
@@ -65,23 +78,52 @@ func playerDamageSourceLessPhysical4E17B0(
 	livePlayer := func() bool {
 		return target.Class().Has(object.ClassPlayer) && target.UpdateData != nil
 	}
-	if !livePlayer() || !playerDamageArmorReady4E17B0(target, r) || !livePlayer() {
+	if !livePlayer() {
+		return reject("unsupported live source-less physical player record")
+	}
+	physical := typ == object.DamageBlade || typ == object.DamageCrush || typ == object.DamageImpale ||
+		typ == object.DamageExplosion || typ == object.DamageBite || typ == object.DamageClaw || typ == object.DamageImpact
+	electric := typ == object.DamageElectric || typ == object.DamageAirborneElectric
+	wearArmor := physical || electric || typ == object.DamageFlame || typ == object.DamageLava
+	if wearArmor && (!playerDamageArmorReady4E17B0(target, r) || !livePlayer()) {
 		return reject("unsupported live source-less physical armor record")
 	}
-	factor := float64(absorption)
-	if typ == object.DamageCrush {
-		factor *= .5
+	effective, wear := damage, damage
+	if physical || electric {
+		var scaled float32
+		if electric {
+			if r.ElectricArmorScale == nil {
+				return reject("missing source-less electric armor scale")
+			}
+			scaled = float32(float64(r.ElectricArmorScale(target)) * float64(damage))
+		} else {
+			factor := float64(absorption)
+			if typ == object.DamageCrush {
+				factor *= .5
+			}
+			scaled = float32((1 - factor) * float64(damage))
+		}
+		// 004E20F0 reloads the update AFTER electric scaling returns.
+		if !livePlayer() {
+			return reject("unsupported live source-less carry record")
+		}
+		carry := &target.UpdateDataPlayer().Field21
+		accumulated := scaled + math.Float32frombits(*carry)
+		effective = playerDamageRound4E17B0(accumulated)
+		*carry = math.Float32bits(accumulated - float32(effective))
+		if !electric {
+			wear = damage - effective
+		} // Electric cases wear armor with the original signed amount.
 	}
-	carry := &target.UpdateDataPlayer().Field21
-	scaled := float32((1 - factor) * float64(damage))
-	accumulated := scaled + math.Float32frombits(*carry)
-	effective := playerDamageRound4E17B0(accumulated)
-	*carry = math.Float32bits(accumulated - float32(effective))
-	playerDamageApplyArmor4E17B0(target, nil, nil, damage-effective, typ, r)
+	if wearArmor {
+		playerDamageApplyArmor4E17B0(target, nil, nil, wear, typ, r)
+	}
 	if !livePlayer() {
 		return reject("unsupported live source-less physical marker record")
 	}
-	if cached.Field76 == 0 {
+	// Case13 and values outside0..17 take the original default branch,
+	// which forwards raw damage without assigning a type marker here.
+	if typ >= object.DamageBlade && typ <= object.DamageAirborneElectric && typ != object.DamageDeathMagic && cached.Field76 == 0 {
 		cached.Field76, cached.Field75 = 2, uint32(typ)
 	}
 	if damage > 0 && effective == 0 {

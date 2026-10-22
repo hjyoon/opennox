@@ -9,7 +9,7 @@ import (
 )
 
 // 004E17B0 does not require a unit attacker. Retain its cached player/NPC
-// marker and equipment prefix for world-fired arrows/fireballs and DeathBall
+// marker and equipment prefix for world-fired arrows/spell missiles and DeathBall
 // CRUSH, without interpreting the world owner's nonexistent unit update.
 func playerDamageWorldProjectile4E17B0(
 	target, source, weapon *Object, damage int32, typ object.DamageType, r PlayerDamageRuntime4E17B0,
@@ -166,7 +166,7 @@ func playerDamageWorldProjectile4E17B0(
 	}
 	effective, wear := damage, damage
 	if typ != object.DamageFlame {
-		// Case 3 uses full armor; case 2 uses HALF armor. FLAME (case 1)
+		// Cases 3/7 use full armor; case 2 uses HALF armor. FLAME (case 1)
 		// wears armor but bypasses HP absorption and the fractional carry.
 		scale := float64(absorption)
 		if typ == object.DamageCrush {

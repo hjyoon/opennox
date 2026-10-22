@@ -52,9 +52,10 @@ func TestSelfMissileFlameAdmission4E17B0(t *testing.T) {
 			t.Run(fmt.Sprintf("type-%d/extra-%x", id, uint32(extra)), func(t *testing.T) {
 				w := &Object{TypeInd: id, ObjClass: object.Class(2621441) | extra, ObjSubClass: 1}
 				for typ := object.DamageType(0); typ <= object.DamageAirborneElectric; typ++ {
-					// Self-sourced CRUSH already supports DeathBall. Adding FLAME
-					// must preserve that admission and reject all other types.
-					want := extra == 0 && (typ == object.DamageFlame || typ == object.DamageCrush)
+					// Terminal spell missiles use FLAME (Fireball), CRUSH
+					// (DeathBall) or EXPLOSION (Magic Missile). Mixed unit,
+					// weapon and wand classes retain their separate paths.
+					want := extra == 0 && (typ == object.DamageFlame || typ == object.DamageCrush || typ == object.DamageExplosion)
 					if got := playerDamageWorldProjectileShape4E17B0(w, w, typ); got != want {
 						t.Fatalf("class=%x type=%d admitted=%t want=%t", uint32(w.Class()), typ, got, want)
 					}

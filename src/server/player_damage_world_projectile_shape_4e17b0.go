@@ -27,10 +27,10 @@ func playerDamageWorldProjectileShape4E17B0(source, weapon *Object, typ object.D
 		return world && source.Class().Has(object.ClassImmobile) && source != weapon && weapon != nil && weapon.Class().Has(object.ClassMissile) &&
 			!weapon.Class().HasAny(object.MaskUnits|object.ClassWand) &&
 			!defaultDamageAttackQualifies4E1400(source, weapon)
-	case object.DamageFlame:
-		// A terminal Fireball owner can be the missile itself. Preserve both
+	case object.DamageFlame, object.DamageExplosion:
+		// A terminal Fireball or Magic Missile owner can be the missile itself. Preserve both
 		// arguments through the world-projectile prefix: no unit update exists,
-		// and 004E1AA2 leaves the marker clear until case 1 records the type.
+		// and 004E1AA2 leaves the marker clear until case 1/7 records the type.
 		if source == weapon && pureMissile(weapon) {
 			return true
 		}

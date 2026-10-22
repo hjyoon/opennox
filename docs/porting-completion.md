@@ -55,6 +55,29 @@ completion requirements.
 
 ## Current findings
 
+### Terminal and scripted Magic Missile EXPLOSION damage
+
+BoomCollide can pass the same unowned Magic Missile as source and weapon,
+or retain an immobile or class-zero script caster. The native admission
+omitted these type-7 shapes. They now use the existing world-projectile
+prefix, including full armor absorption, fractional carry, durability,
+defenses, GodMode, Quest scaling and DefaultDamage. Fire-immune monsters
+retain the original signed division by two before fire protection.
+
+The change adds 134 passing regression events, including actual C dispatch
+and HP changes with pointers above 4 GiB. Unchanged GAME.EXE PlayerDamage,
+carry and FISTP instructions independently confirm 48 bounded prefix cases;
+armor wear and DefaultDamage are declared service boundaries in that oracle,
+not original Windows HP execution. Two earlier negative admission tests now
+expect supported EXPLOSION behavior and retain rejection checks for other
+types and mixed classes. No prior terminal identity, result, multiplicity or
+skip is lost. Normal/HD each pass 83,366 events with 49 skips; server/server-HD
+each pass 78,538 with 7 skips. Strict cgocheck2/race/checkptr2 checks pass
+1,215 events across three repetitions. Versioned evidence is preserved in
+`world-magic-missile-port/`, alongside the unchanged earlier saves and builds.
+Overall port completion remains unproved; a separately reproduced source-less
+player BLADE admission gap is still open.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

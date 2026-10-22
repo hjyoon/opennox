@@ -979,22 +979,27 @@ func TestDefaultDamageWorld4E0B30MonsterFiredMissileImpactMonster(t *testing.T) 
 }
 
 func TestDefaultDamageWorld4E0B30RejectsOtherMonsterMissileDamage(t *testing.T) {
-	target := &Object{
-		ObjClass:   object.ClassMonster,
-		HealthData: &HealthData{Cur: 30, Max: 30},
-		UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
-	}
-	missile := &Object{ObjClass: object.ClassMissile}
-	var reason string
-	DefaultDamageWorld4E0B30(target, missile, missile, 3, object.DamageExplosion, DefaultDamageWorldRuntime4E0B30{
-		GameplayFlag1: func() bool { return true },
-		DamageClear:   func(*Object, int32) { t.Fatal("unsupported missile explosion dealt damage") },
-		Unsupported: func(got string, _, _, _ *Object, _ int32, _ object.DamageType) {
-			reason = got
-		},
-	})
-	if reason != "unsupported monster damage shape" || target.HealthData.Cur != 30 {
-		t.Fatalf("unsupported branch = %q, target health = %d", reason, target.HealthData.Cur)
+	// A terminal Magic Missile's type 7 is supported. It does not license
+	// other damage types on arbitrary spell-missile records.
+	for _, typ := range []object.DamageType{object.DamageExplosion, object.DamageBite} {
+		target := &Object{
+			ObjClass:   object.ClassMonster,
+			HealthData: &HealthData{Cur: 30, Max: 30},
+			UpdateData: unsafe.Pointer(&MonsterUpdateData{}),
+		}
+		missile := &Object{ObjClass: object.ClassMissile}
+		var reason string
+		r := damageMeleeWorldRuntime4E0B30(t)
+		r.FireProtection = func(*Object) float64 { return 0 }
+		r.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
+		DefaultDamageWorld4E0B30(target, missile, missile, 3, typ, r)
+		wantReason, wantHP := "unsupported monster damage shape", uint16(30)
+		if typ == object.DamageExplosion {
+			wantReason, wantHP = "", 27
+		}
+		if reason != wantReason || target.HealthData.Cur != wantHP {
+			t.Fatalf("type=%d unsupported=%q/%q HP=%d/%d", typ, reason, wantReason, target.HealthData.Cur, wantHP)
+		}
 	}
 }
 

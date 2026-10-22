@@ -587,7 +587,11 @@ func DefaultDamageWorld4E0B30(
 		weapon != nil && weapon.Class().Has(object.ClassMissile) && typ == object.DamageExplosion
 	missileSourcedExplosion := monsterUpdate != nil && source != nil && source.Class().Has(object.ClassMissile) &&
 		!source.Class().HasAny(object.MaskUnits) && weapon == nil && typ == object.DamageExplosion
-	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion || spellMissileExplosion
+	// BoomCollide also passes a terminal missile or non-unit script caster
+	// with the distinct missile. Case 7 still halves fire-immune monster
+	// damage before protection; admission via worldProjectile must retain it.
+	missileExplosion := playerFiredMissileExplosion || missileSourcedExplosion || spellMissileExplosion ||
+		(worldProjectile && typ == object.DamageExplosion)
 	missileDamage := missileImpact || missileExplosion || missilePierce || missileFlame || worldProjectile
 	if monsterUpdate != nil {
 		// GAME.EXE rejects type 5 for poison-immune subclass 0x200 before

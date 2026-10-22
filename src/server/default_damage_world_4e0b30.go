@@ -264,12 +264,12 @@ func DefaultDamageWorld4E0B30(
 	// The terminal owner and Earthquake caster need not be the same object.
 	// Keep the already restored monster self-strike on its existing path;
 	// PLAYER and class-zero self-casters do not qualify the melee predicate.
-	playerSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ)
-	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || playerSelfRaw)
+	unitSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfRawShape4E17B0(source, weapon, typ)
+	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || unitSelfRaw)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
-	playerSelfFire := playerDamagePlayerSelfFireShape4E17B0(source, weapon, typ)
-	worldProjectile := playerDamageWorldProjectileShape4E17B0(source, weapon, typ) || playerSelfFire
+	unitSelfFire := playerDamagePlayerSelfFireShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfFireShape4E17B0(source, weapon, typ)
+	worldProjectile := playerDamageWorldProjectileShape4E17B0(source, weapon, typ) || unitSelfFire
 	// FIRE|SIMPLE|DANGEROUS colliders (Flame/FlameCleanse) also reach
 	// case 1 with signed raw damage, without the missile/melee qualifier.
 	worldFlame := playerDamageWorldFlameShape4E17B0(weapon, typ)
@@ -296,7 +296,7 @@ func DefaultDamageWorld4E0B30(
 	// Death Ray (16) and Mana Bomb (15) enter the ordinary signed raw tail,
 	// not fire/electric protection. Nil weapons skip the second melee enemy
 	// query and Shock, but retain the campaign owner gate and late defense.
-	weaponlessRawSpell := (playerDamageWeaponlessRawSpellShape4E17B0(source, weapon, typ) || playerSelfRaw) &&
+	weaponlessRawSpell := (playerDamageWeaponlessRawSpellShape4E17B0(source, weapon, typ) || unitSelfRaw) &&
 		(source == nil || source.Class() == 0 || source.UpdateData != nil)
 	// 0053D8C0 supplies the terminal owner, including a class-zero
 	// ImaginaryCaster or the cloud itself. Do not require a unit source or a
@@ -319,7 +319,7 @@ func DefaultDamageWorld4E0B30(
 	// branch, requires an attacker; protection and effects still use typ.
 	sourceLessPlayer := target.Class().Has(object.ClassPlayer) && source == nil && weapon == nil
 	playerTail := sourceLessPlayer || playerElectric || playerWeaponlessExplosion || ((armedExplosion || cloudPoison || weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldProjectile || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
-	if playerTail && !casterImpact && !armedExplosion && !playerSelfFire {
+	if playerTail && !casterImpact && !armedExplosion && !unitSelfFire {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
 		}
@@ -606,10 +606,10 @@ func DefaultDamageWorld4E0B30(
 	if monsterUpdate != nil {
 		// GAME.EXE rejects type 5 for poison-immune subclass 0x200 before
 		// health, defense callbacks or attribution are touched.
-		if (sourceLessMonsterPoison || (playerSelfRaw && typ == object.DamagePoison)) && uint32(target.SubClass())&0x200 != 0 {
+		if (sourceLessMonsterPoison || (unitSelfRaw && typ == object.DamagePoison)) && uint32(target.SubClass())&0x200 != 0 {
 			return true
 		}
-		if target.HealthData == nil && !sourceLessMonster && !playerSelfFire && !armedExplosion && !armedElectric && !dispelUndead && !cloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {
+		if target.HealthData == nil && !sourceLessMonster && !unitSelfFire && !armedExplosion && !armedElectric && !dispelUndead && !cloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
 		}
 		// GAME.EXE 004E0EA1 handles WEAPON|WAND (0x1001000) alike,
@@ -716,12 +716,12 @@ func DefaultDamageWorld4E0B30(
 	}
 	// 004E0D20 reloads class/subclass after Shock; 004E0D3E..004E0D52
 	// rejects FLAME for fire-immune monsters before protection or attribution.
-	if (missileFlame || worldFlame || monsterWorldLava || (sourceLessMonster && typ == object.DamageFlame) || (worldProjectile && (typ == object.DamageFlame || (playerSelfFire && typ == object.DamageLava)))) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
+	if (missileFlame || worldFlame || monsterWorldLava || (sourceLessMonster && typ == object.DamageFlame) || (worldProjectile && (typ == object.DamageFlame || (unitSelfFire && typ == object.DamageLava)))) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		return true
 	}
 	// Non-unit map objects can have no health. The original tail still
 	// records attribution/effects; UnitDamageClear owns the nil-health gate.
-	if worldProjectile && ((target.HealthData == nil && !playerSelfFire && target.Class().HasAny(object.MaskUnits)) ||
+	if worldProjectile && ((target.HealthData == nil && !unitSelfFire && target.Class().HasAny(object.MaskUnits)) ||
 		runtime.BuffOff == nil || runtime.DamageClear == nil ||
 		(playerTail && runtime.PlayerSetState == nil) ||
 		(source.Class().Has(object.ClassMonster) && source.UpdateData != nil && runtime.MonsterHasHitSound == nil)) {

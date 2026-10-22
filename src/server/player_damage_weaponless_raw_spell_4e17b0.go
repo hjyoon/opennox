@@ -26,6 +26,16 @@ func playerDamagePlayerSelfRawShape4E17B0(source, weapon *Object, typ object.Dam
 	return source != nil && source == weapon && source.UpdateData != nil && source.Class().Has(object.ClassPlayer) && !source.Class().HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand|object.ClassMissile) && source.UpdateDataPlayer().Player != nil
 }
 
+// Script Damage can retain a terminal monster as both source and weapon.
+func playerDamageMonsterSelfRawShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
+	switch typ {
+	case object.DamagePoison, object.DamageDispelUndead, object.DamageDeathMagic, object.DamagePlasma, object.DamageManaBomb, object.DamageZapRay:
+	default:
+		return false
+	}
+	return source != nil && source == weapon && source.UpdateData != nil && source.Class().Has(object.ClassMonster) && !source.Class().HasAny(object.ClassPlayer|object.ClassWeapon|object.ClassWand|object.ClassMissile)
+}
+
 // GAME.EXE 004E17B0: cached entry equipment/update, live observer/Reflect,
 // and source-only Fist/Meteor exclusions precede case 15/16's signed raw HP
 // tail at 004E1E83. No armor absorption, carry, wear or electric scale runs.

@@ -73,3 +73,11 @@ func playerDamagePlayerSelfFireShape4E17B0(source, weapon *Object, typ object.Da
 func playerDamagePlayerSelfImpactShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
 	return typ == object.DamageImpact && source != nil && source == weapon && source.UpdateData != nil && source.Class().Has(object.ClassPlayer) && !source.Class().HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand|object.ClassMissile) && source.UpdateDataPlayer().Player != nil
 }
+
+// The same three fire cases accept terminal script monster sources.
+func playerDamageMonsterSelfFireShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
+	if typ != object.DamageFlame && typ != object.DamageExplosion && typ != object.DamageLava {
+		return false
+	}
+	return source != nil && source == weapon && source.UpdateData != nil && source.Class().Has(object.ClassMonster) && !source.Class().HasAny(object.ClassPlayer|object.ClassWeapon|object.ClassWand|object.ClassMissile)
+}

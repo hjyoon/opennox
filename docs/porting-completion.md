@@ -339,6 +339,46 @@ including parents and subtests, not a completion percentage. Overall 100%
 remains unproved.
 
 
+### Terminal monster raw and fire source forms
+
+Script Damage/DoDamage can retain a terminal monster as both source and
+weapon. Native PlayerDamage and DefaultDamage now admit the nine missing
+FLAME, POISON, DISPEL_UNDEAD, EXPLOSION, LAVA, DEATH_MAGIC, PLASMA, MANA_BOMB
+and ZAP_RAY forms. Raw cases retain carry and armor, case13 leaves the prefix
+marker unsynthesized, Mana Bomb skips physical direction, and nonmissile
+ZAP_RAY Reflect keeps its point FX/audio ordering. Fire cases preserve full
+EXPLOSION armor/carry/wear, raw FLAME/LAVA wear, early fire immunity and signed
+EXPLOSION halving before fire protection. Poison immunity, late defense,
+nil-NPC-health, metadata and successful-hit source timestamps remain native.
+
+The independent unchanged-original monster survey covers 288 prefixes; a
+read-only selection supplies 144 signed rows for the nine restored types.
+Another 72 original front/rear and Reflect conditions and 45 integrated NPC
+immunity combinations are compared, with the same 45 repeated with nil
+health. Original PlayerDamage/DefaultDamage, reached carry/FISTP, the sealed
+HP-return tail, sound-set getter and successful-hit latch execute unchanged.
+The frame DWORD is controlled at1400. Declared mode/buff/observer, direction,
+armor wear, zero protection, late defense, sound/FX, ball and HP services are
+not original Windows HP/audio execution. Initial missing getter/latch service
+and wear assumptions, plus their failure receipts, remain preserved.
+
+All 463 added pass events include 243 actual C/caller HP, GodMode, immunity,
+nil-health, adjacent-byte and source-latch cases; the caller tests the
+owner-resolution/CallDamage boundary used by root DoDamage, without invoking
+the root wrapper itself. The fixture binds only an unused below-threshold
+hurt-state service, preserving native damage and HP. All previous tests,
+fixtures and goldens remain byte-identical, and every previous terminal
+identity/result/multiplicity and skip survives.
+
+Normal/HD each pass 85,970 events with 49 skips; server/server-HD each pass
+81,142 with 7 skips. Combined race/checkptr2/cgocheck2 passes 12,936 events
+across three repetitions on the exact 6,701-input candidate. Versioned
+source, originals, baseline/assumption failures and final receipts are in
+`monster-self-source-damage-port/`. Test event totals include parents and
+subtests; they do not establish an overall completion percentage. Overall
+100% remains unproved.
+
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

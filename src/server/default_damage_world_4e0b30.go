@@ -267,9 +267,13 @@ func DefaultDamageWorld4E0B30(
 	ownedMonster := playerDamageOwnedMonsterShape4E17B0(source, weapon, typ)
 	// Native tail bindings enable new weaponless forms. Earlier partial
 	// electric/explosion callers retain their existing optional-service contracts.
-	nonItem := ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ) || (playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil) || (playerDamagePureMissileShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil)
+	pureMissile := playerDamagePureMissileSourceShape4E17B0(source, weapon) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil
+	nonItem := ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ) || (playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil) || pureMissile
 	unitSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfRawShape4E17B0(source, weapon, typ)
 	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || unitSelfRaw || nonItem)
+	// Below20 the original hurt-state service is unused. Larger entry
+	// amounts retain the earlier read-only required-service preflight.
+	missingPlayerHurt := runtime.PlayerSetState == nil && (!casterImpact || damage >= 20)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	unitSelfFire := playerDamagePlayerSelfFireShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfFireShape4E17B0(source, weapon, typ)
@@ -385,8 +389,8 @@ func DefaultDamageWorld4E0B30(
 			return true
 		}
 	}
-	// The spell-missile player tail below owns this same original enemy query.
-	if casterImpact && source != nil && weapon != nil && !(spellMissileImpact && playerTail) {
+	// Established world-projectile and player spell-missile tails own this same original enemy query.
+	if casterImpact && source != nil && weapon != nil && !worldProjectile && !(spellMissileImpact && playerTail) {
 		if runtime.IsEnemy == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "missing caster IMPACT enemy service", target, source, weapon, damage, typ)
 		}
@@ -504,7 +508,7 @@ func DefaultDamageWorld4E0B30(
 		return defaultDamageUnsupported4E0B30(runtime, "missing player melee hurt-state service", target, source, weapon, damage, typ)
 	}
 	if monsterImpact && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil || runtime.DamageClear == nil ||
-		(playerTail && runtime.PlayerSetState == nil)) {
+		(playerTail && missingPlayerHurt)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing monster self-weapon IMPACT tail service", target, source, weapon, damage, typ)
 	}
 	if playerElectric && ((source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil) || runtime.PlayerSetState == nil) {
@@ -515,21 +519,21 @@ func DefaultDamageWorld4E0B30(
 		return defaultDamageUnsupported4E0B30(runtime, "missing "+zapRayTarget+" ZAP_RAY tail service", target, source, weapon, damage, typ)
 	}
 	if missilePierce && ((source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil) || runtime.BuffOff == nil ||
-		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
+		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && missingPlayerHurt)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing missile PIERCE tail service", target, source, weapon, damage, typ)
 	}
 	if simpleCrush && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
-		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
+		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && missingPlayerHurt)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing SIMPLE CRUSH tail service", target, source, weapon, damage, typ)
 	}
 	if missileFlame && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
-		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil)) {
+		runtime.IsEnemy == nil || runtime.DamageClear == nil || (playerTail && missingPlayerHurt)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing missile FLAME tail service", target, source, weapon, damage, typ)
 	}
 	// The already ported monster explosion tail permits optional sound/AI
 	// services. Require the complete service set only for the new player tail.
 	if spellMissileExplosion && playerTail && (runtime.MonsterHasHitSound == nil || runtime.BuffOff == nil ||
-		runtime.IsEnemy == nil || runtime.DamageClear == nil || runtime.PlayerSetState == nil) {
+		runtime.IsEnemy == nil || runtime.DamageClear == nil || missingPlayerHurt) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing missile EXPLOSION tail service", target, source, weapon, damage, typ)
 	}
 	if spellMissileImpact && playerTail && (runtime.BuffOff == nil || runtime.DamageClear == nil ||
@@ -545,7 +549,7 @@ func DefaultDamageWorld4E0B30(
 		return defaultDamageUnsupported4E0B30(runtime, "missing weapon-less player EXPLOSION tail service", target, source, weapon, damage, typ)
 	}
 	if weaponlessRawSpell && target.Class().HasAny(object.MaskUnits) && (runtime.DamageClear == nil ||
-		(playerTail && runtime.PlayerSetState == nil) || (source != nil && (runtime.BuffOff == nil ||
+		(playerTail && missingPlayerHurt) || (source != nil && (runtime.BuffOff == nil ||
 		(source.Class().Has(object.ClassMonster) && runtime.MonsterHasHitSound == nil)))) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing weapon-less raw spell tail service", target, source, weapon, damage, typ)
 	}
@@ -727,7 +731,7 @@ func DefaultDamageWorld4E0B30(
 		if target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
 		}
-		if runtime.DamageClear == nil || (playerTail && runtime.PlayerSetState == nil) || (source != nil && (runtime.BuffOff == nil ||
+		if runtime.DamageClear == nil || (playerTail && missingPlayerHurt) || (source != nil && (runtime.BuffOff == nil ||
 			(source.Class().Has(object.ClassMonster) && source.UpdateData != nil && runtime.MonsterHasHitSound == nil))) {
 			return defaultDamageUnsupported4E0B30(runtime, "missing monster world POISON tail service", target, source, weapon, damage, typ)
 		}
@@ -740,11 +744,12 @@ func DefaultDamageWorld4E0B30(
 	if (missileFlame || worldFlame || monsterWorldLava || (sourceLessMonster && typ == object.DamageFlame) || (worldProjectile && (typ == object.DamageFlame || (unitSelfFire && typ == object.DamageLava)))) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		return true
 	}
-	// Non-unit map objects can have no health. The original tail still
-	// records attribution/effects; UnitDamageClear owns the nil-health gate.
-	if worldProjectile && ((target.HealthData == nil && !unitSelfFire && target.Class().HasAny(object.MaskUnits)) ||
+	// An admitted non-item/caster tail records attribution/effects before
+	// UnitDamageClear owns the nil-health gate. Partial service callers
+	// retain the earlier world-projectile admission contract.
+	if worldProjectile && ((target.HealthData == nil && !unitSelfFire && !casterImpact && target.Class().HasAny(object.MaskUnits)) ||
 		runtime.BuffOff == nil || runtime.DamageClear == nil ||
-		(playerTail && runtime.PlayerSetState == nil) ||
+		(playerTail && missingPlayerHurt) ||
 		(source.Class().Has(object.ClassMonster) && source.UpdateData != nil && runtime.MonsterHasHitSound == nil)) {
 		return defaultDamageUnsupported4E0B30(runtime, "missing world projectile tail service", target, source, weapon, damage, typ)
 	}

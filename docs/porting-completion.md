@@ -616,6 +616,55 @@ on the exact 6,738-input final candidate. The earlier private missile stage's
 suite claim. Final combined evidence is in `pure-missile-impact-port/`.
 Test-event totals include parents/subtests; overall 100% remains unproved.
 
+### Remaining pure-missile owner, defense and nullable-health forms
+
+Initialized pure-missile callers now use the complete original prefix for
+FLAME, CRUSH, IMPALE and EXPLOSION as well as the restored raw/electric
+forms. This adds omitted nonunit DOOR and terminal/class-zero owner cases,
+and restores original facing/Reflect/equipment defenses for earlier forms
+that already forwarded the correct amount. Source/missile updates are not
+invented for nonunits. Partial runtimes and the existing unit/self-owned
+SIMPLE/Pixie IMPACT entry retain their earlier contracts.
+
+DefaultDamage now admits original nullable-health tails for complete
+non-item/caster forms, including overlapping projectile aliases. A shared
+caster/world-projectile alias executes one admission enemy query before
+NoUpdate; a surviving monster source retains its separate late query before
+its successful-hit timestamp and HP. Small entry amounts do not preflight
+an unused player hurt callback; larger amounts keep the prior read-only
+required-service check. Cached equipment/markers, live carry/inventory,
+source/weapon positions, defense order, GodMode/Quest, elemental precedence,
+explosion halving, metadata and the real nil-health HP guard are preserved.
+
+The unchanged original survey supplies 320 selected signed prefixes across
+five owners, four types and player/NPC layouts, retaining 224 earlier valid
+leaves alongside 96 previously missing forms. Original integrated NPC rows
+supply 100 normal-health and identical 100 nil-health results; initialized
+PLAYER rows supply 20 normal and identical 20 nil-health results. Another
+32 front/rear/Reflect and 24 shield/GreatSword/staff rows verify defenses.
+A separate 176-row original DefaultDamage/qualifier run covers enemy true/
+false, NoUpdate and nil health, including sixteen overlapping SIMPLE-Fist
+controls. Reached original carry/FISTP, sound getter, timestamp and HP-return
+instructions execute unchanged. Mode/buffs, direction, wear/protection,
+reflection/ownership, HP/audio and other auxiliary calls remain declared
+boundaries; original Windows HP/audio and public root DoDamage are not run.
+
+The 1,379 added pass events include 780 actual registered C/CallDamage cases
+checking normal/nil health across all three victim layouts, GodMode,
+immunity, attribution and synchronization. Additional Go service controls
+check all 176 original query traces and forty small-player cases with an
+unused nil hurt-state service. All previous tests/fixtures/goldens remain
+byte-identical, including partial-runtime/live-callback controls and the
+large-hit missing-hurt preflight. Every old terminal identity/action/
+multiplicity/skip survives.
+
+Normal/HD each pass 105,219 events with 49 skips; server/server-HD each pass
+100,391 with 7 skips. Combined race/checkptr2/cgocheck2 passes 74,775 events
+over three repetitions on the exact 6,746-input candidate. Original,
+baseline/preflight failures and final records are retained in
+`pure-missile-owner-forms-port/`. Test-event counts include parents/subtests;
+overall 100% remains unproved.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; War03d classification, optional areas and actual WarCry use remain open |
+| Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; original earned WarCry use, reuse rejection after its active duration, and normal/HD Save/Load proved; War03d classification, optional areas and hostile WarCry effects remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; five original B Swordsmen are defeated with native map/XP checks and living Save; natural A resource-return/B reentry retain the first three deaths and recharged wand, followed by two further guard kills; actual B Lightning against Wasps, Primitive refill, retained CurePotion consumption and normal/HD full-resource Save/Load with refuge return proved; original Stravas paired lift/cellar, earned Magic Missile level 2 and original WizardHelm automatic equipment with full-resource normal/HD Save/Load proved; actual upgraded Magic Missile defeats the original lift-carried bandit with native death/XP checks and living Save; remaining Wiz03b objectives, Wiz03c and original ending pending |
 
@@ -758,6 +758,43 @@ receive no combat credit. Attempts 511, 513 and 514 die during the original
 ambush and are entirely excluded, including 514's queued Lightning input.
 Historical deaths are now 67, with no forced terminations. No Archer kill,
 complete ambush, Amulet, Wiz03c or ending is claimed at this checkpoint.
+
+### Earned Warrior3 WarCry use, cooldown and HD Load
+
+Actual original-menu Load 519 starts from the earned Mayor/Scepter reward
+save, with both Berserker Charge and WarCry at native level 5. Real S-key
+input changes the player from idle state 13 to WarCry state 1. An immediate
+repeat is rejected while the ability is still active. A second actual use
+after ordinary waiting again enters state 1. The owned save retains HP 49,
+poison 0, eight inventory items, the Urchin guide and both completed Ix and
+Scepter journal entries. Fresh ordinary HD Load 522 retains those values,
+moves through actual input and writes another living save.
+
+HD continuation 526 separates the reuse gates. The original binary balance
+has duration 120 and delay 300. At frame 248 the player is idle, 180 frames
+after the first sampled WarCry state. Retrying S leaves the player idle and
+produces the original tired/cooldown message. At frame 436, beyond the
+300-frame interval, another S input successfully enters WarCry state 1.
+All sampled health remains 49; the final living native save retains the
+earned abilities and completed journal. No spawned target, changed timer,
+enemy stun or hostile anti-magic effect is credited.
+
+Proof `warrior3-original-earned-warcry-hd-verification-v522.json` has
+SHA-256 `bd852948ec8396b939eaf5ea967cdbb0c31888da3e8ff58ada266523c774f199`.
+The cooldown-only proof
+`warrior3-original-warcry-cooldown-boundary-verification-v526.json` has
+SHA-256 `7f9dfcc219d79ebe0c30629386d5aa9b20de12c8b44faea788c83c8a97480c2f`.
+Its original-bin addendum
+`warrior3-original-warcry-bin-balance-addendum-v526b.json` has SHA-256
+`20161bfae1b2e0e2ab8d5ca375a077712b1a562befb4c971a284c0d3fa19e346`.
+The addendum independently reads an exact binary copy without a YAML
+overlay and confirms the queried balance values. Actual campaign copies
+contain that original binary and no YAML overlay. These proofs bind
+immutable audits, owned native saves, actual input/state logs and unchanged
+6,663-file product inputs. Historical deaths at 526 are 68 with no forced
+terminations; Wizard attempt 525 is entirely excluded after its later
+post-Save death. Broader Warrior3 optional-area and combat-effect evidence
+and the overall completion goal remain open.
 
 ### Alerted enemies remain stationary at range
 

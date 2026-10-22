@@ -132,6 +132,37 @@ failures are in `source-less-player-complete-port/`. Independent NPC probes
 still reject several source-less types; that next port and overall completion
 remain open. No test-event total is a completion percentage.
 
+### Complete source-less scripted-NPC damage switch
+
+Scripted NPCs now share the complete source-less player type switch, with
+NPC-specific cached absorption/markers and live carry. This restores the
+previously rejected fire, electric, physical, raw and default types. Full
+runtimes keep the original Coop query; existing partial POISON/EXPLOSION
+runtimes retain their earlier service contracts. Existing tests and goldens
+are unchanged. DefaultDamage preserves poison/fire immunity and the original
+fire-before-electric immunity priority, on-fire/injured stores, byte-width
+NPC electric state, late Defend, Shield and the nil-health HP-service gate.
+
+The original evidence includes 192 NPC prefix rows and three separate
+120-case probes of DefaultDamage, integrated PlayerDamage/DefaultDamage,
+and the same integrated path with nil health. Protection, electric armor
+scale1.0, durability, sound and final HP are declared oracle services;
+Windows HP/audio and electric helper4E2220 are not executed or certified.
+The integrated original rows match the separate nil-health probe exactly.
+The new 565 passing events include 360 real registered-C calls across
+24 type values, five immunity combinations, GodMode and nil-health controls.
+They also check live carry replacement after electric scaling, cached marker
+identity, late Defend, Shield and positive Quest minimum.
+
+Normal/HD each pass 84,271 events with 49 skips; server/server-HD each pass
+79,443 with 7 skips. Every prior terminal identity/result/multiplicity and
+skip is retained. The focused union passes 7,710 events with combined race,
+checkptr2 and cgocheck2 across three repetitions. Versioned evidence and
+initial admission/service-contract failures remain in
+`source-less-npc-complete-port/`. Ordinary-monster source-less DefaultDamage
+still rejects 15 of 24 probed type values and is the next port. Overall
+completion remains unproved; event counts are not a coverage percentage.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

@@ -512,6 +512,13 @@ func playerDamageMonster4E17B0(
 		return true, true
 	}
 
+	// Full runtimes supply the common Coop query and use the whole switch.
+	// Without it, retain the older POISON/EXPLOSION partial-runtime service
+	// contracts (including their early missing-Quest admission and no God query).
+	partialSourceLess := runtime.CoopMode == nil && (typ == object.DamagePoison || typ == object.DamageExplosion)
+	if source == nil && weapon == nil && runtime.DefaultDamage != nil && !partialSourceLess {
+		return playerDamageSourceLessNPC4E17B0(target, damage, typ, runtime)
+	}
 	if source == nil && weapon == nil && typ == object.DamagePoison {
 		return playerDamageMonsterPoison4E17B0(target, damage, runtime)
 	}

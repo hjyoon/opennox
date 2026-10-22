@@ -75,17 +75,38 @@ func playerDamageSourceLessPlayer4E17B0(
 		}
 		r.ObserveClear(target)
 	}
-	livePlayer := func() bool {
-		return target.Class().Has(object.ClassPlayer) && target.UpdateData != nil
+	record := playerDamageSourceLessRecord4E17B0{
+		absorption: absorption, marker: &cached.Field76, markerType: &cached.Field75,
+		carry: func() *uint32 {
+			if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+				return nil
+			}
+			return &target.UpdateDataPlayer().Field21
+		},
 	}
-	if !livePlayer() {
+	return playerDamageSourceLessSwitch4E17B0(target, damage, typ, record, r)
+}
+
+// The original type switch is shared by players and scripted NPCs. Only the
+// cached absorption/marker base and the live carry layout differ.
+type playerDamageSourceLessRecord4E17B0 struct {
+	absorption         float32
+	marker, markerType *uint32
+	carry              func() *uint32
+}
+
+func playerDamageSourceLessSwitch4E17B0(target *Object, damage int32, typ object.DamageType, record playerDamageSourceLessRecord4E17B0, r PlayerDamageRuntime4E17B0) (handled, result bool) {
+	reject := func(reason string) (bool, bool) {
+		return playerDamageUnsupported4E17B0(r, reason, target, nil, nil, damage, typ)
+	}
+	if record.carry() == nil {
 		return reject("unsupported live source-less physical player record")
 	}
 	physical := typ == object.DamageBlade || typ == object.DamageCrush || typ == object.DamageImpale ||
 		typ == object.DamageExplosion || typ == object.DamageBite || typ == object.DamageClaw || typ == object.DamageImpact
 	electric := typ == object.DamageElectric || typ == object.DamageAirborneElectric
 	wearArmor := physical || electric || typ == object.DamageFlame || typ == object.DamageLava
-	if wearArmor && (!playerDamageArmorReady4E17B0(target, r) || !livePlayer()) {
+	if wearArmor && (!playerDamageArmorReady4E17B0(target, r) || record.carry() == nil) {
 		return reject("unsupported live source-less physical armor record")
 	}
 	effective, wear := damage, damage
@@ -97,17 +118,17 @@ func playerDamageSourceLessPlayer4E17B0(
 			}
 			scaled = float32(float64(r.ElectricArmorScale(target)) * float64(damage))
 		} else {
-			factor := float64(absorption)
+			factor := float64(record.absorption)
 			if typ == object.DamageCrush {
 				factor *= .5
 			}
 			scaled = float32((1 - factor) * float64(damage))
 		}
 		// 004E20F0 reloads the update AFTER electric scaling returns.
-		if !livePlayer() {
+		carry := record.carry()
+		if carry == nil {
 			return reject("unsupported live source-less carry record")
 		}
-		carry := &target.UpdateDataPlayer().Field21
 		accumulated := scaled + math.Float32frombits(*carry)
 		effective = playerDamageRound4E17B0(accumulated)
 		*carry = math.Float32bits(accumulated - float32(effective))
@@ -118,13 +139,13 @@ func playerDamageSourceLessPlayer4E17B0(
 	if wearArmor {
 		playerDamageApplyArmor4E17B0(target, nil, nil, wear, typ, r)
 	}
-	if !livePlayer() {
+	if record.carry() == nil {
 		return reject("unsupported live source-less physical marker record")
 	}
 	// Case13 and values outside0..17 take the original default branch,
 	// which forwards raw damage without assigning a type marker here.
-	if typ >= object.DamageBlade && typ <= object.DamageAirborneElectric && typ != object.DamageDeathMagic && cached.Field76 == 0 {
-		cached.Field76, cached.Field75 = 2, uint32(typ)
+	if typ >= object.DamageBlade && typ <= object.DamageAirborneElectric && typ != object.DamageDeathMagic && *record.marker == 0 {
+		*record.marker, *record.markerType = 2, uint32(typ)
 	}
 	if damage > 0 && effective == 0 {
 		effective = 1

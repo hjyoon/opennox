@@ -15,6 +15,17 @@ func playerDamageWeaponlessRawSpellShape4E17B0(source, weapon *Object, typ objec
 			!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile)))
 }
 
+// Script Damage retains an initialized player as source and weapon.
+// These cases share the raw prefix; case13 keeps the original default marker.
+func playerDamagePlayerSelfRawShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
+	switch typ {
+	case object.DamagePoison, object.DamageDispelUndead, object.DamageDeathMagic, object.DamagePlasma, object.DamageManaBomb, object.DamageZapRay:
+	default:
+		return false
+	}
+	return source != nil && source == weapon && source.UpdateData != nil && source.Class().Has(object.ClassPlayer) && !source.Class().HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand|object.ClassMissile) && source.UpdateDataPlayer().Player != nil
+}
+
 // GAME.EXE 004E17B0: cached entry equipment/update, live observer/Reflect,
 // and source-only Fist/Meteor exclusions precede case 15/16's signed raw HP
 // tail at 004E1E83. No armor absorption, carry, wear or electric scale runs.
@@ -120,10 +131,14 @@ func playerDamageWeaponlessRawSpell4E17B0(
 	}
 	if source != nil {
 		pos := source.PrevPos
-		if r.BlockSourceOnlyExcluded == nil {
+		exclusion := r.BlockSourceOnlyExcluded
+		if weapon != nil {
+			exclusion = r.BlockSourceExcluded
+		}
+		if exclusion == nil {
 			return reject("missing raw spell source-only exclusions")
 		}
-		excluded := r.BlockSourceOnlyExcluded(source)
+		excluded := exclusion(source)
 		// Case 15 jumps directly to the raw switch after exclusions, before
 		// physical direction/shield/GreatSword/staff/berserker predicates.
 		if typ != object.DamageManaBomb && !excluded {
@@ -138,6 +153,9 @@ func playerDamageWeaponlessRawSpell4E17B0(
 				shield := (player && (*PlayerUpdateData)(cached).State == PlayerState16) ||
 					(!player && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK)
 				if shield && armorFlags&0x3000000 != 0 {
+					if weapon != nil {
+						return playerDamageWorldProjectileShield4E17B0(target, source, weapon, weapon, damage, typ, r)
+					}
 					return playerDamageWeaponlessRawSpellShield4E17B0(target, source, damage, typ, r)
 				}
 				// Type 16 with an ordinary nonmissile source does not enter
@@ -151,7 +169,7 @@ func playerDamageWeaponlessRawSpell4E17B0(
 	if !liveLayout() {
 		return reject("unsupported raw spell cached marker layout")
 	}
-	if marker, kind := playerDamageCasterImpactMarker4E17B0(target, cached); *marker == 0 {
+	if marker, kind := playerDamageCasterImpactMarker4E17B0(target, cached); *marker == 0 && typ != object.DamageDeathMagic {
 		*marker, *kind = 2, uint32(typ)
 	}
 	if r.GodMode != nil && r.GodMode() && target.Class().Has(object.ClassPlayer) {

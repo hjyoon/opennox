@@ -341,7 +341,29 @@ func TestPlayerDamageNative4E17B0SelfWeaponElectricAdmission(t *testing.T) {
 					},
 					Unsupported: func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why },
 				}
-				if handled, result := PlayerDamageNative4E17B0(target, source, weapon, 8, typ, r); handled || result || reason == "" {
+				defaults := 0
+				if variant == "non-electric" {
+					// Original PLASMA8 forwards raw8 for both layouts. Preserve
+					// this input as a positive non-electric control.
+					r.BlockSourceExcluded = func(*Object) bool { return false }
+					r.BlockDirection = func(*Object, types.Pointf) bool { return false }
+					r.DefaultDamage = func(v, a, w *Object, d int32, k object.DamageType) bool {
+						if v != target || a != source || w != source || d != 8 || k != object.DamagePlasma {
+							t.Fatal("PLASMA8 forwarding")
+						}
+						defaults++
+						return true
+					}
+				}
+				handled, result := PlayerDamageNative4E17B0(target, source, weapon, 8, typ, r)
+				if variant == "non-electric" {
+					marker, kind, carry := playerDamageElectricSelfMetadata4E17B0(target)
+					if !handled || !result || reason != "" || defaults != 1 || marker != 2 || kind != uint32(typ) || carry != beforeCarry || target.HealthData.Cur != 60 || target.Obj130 != nil {
+						t.Fatal("supported PLASMA control changed raw/carry/HP boundary")
+					}
+					return
+				}
+				if handled || result || reason == "" {
 					t.Fatalf("unsupported shape=%t/%t reason=%q", handled, result, reason)
 				}
 				marker, rawType, residual := playerDamageElectricSelfMetadata4E17B0(target)

@@ -1103,7 +1103,7 @@ func PlayerDamageNative4E17B0(
 	// Death Ray and Mana Bomb use case 16/15's raw signed tail, not the
 	// SentryGlobe item path or electric type 9/17 armor/carry calculation.
 	if (target.Class().Has(object.ClassPlayer) || (target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x10 != 0)) &&
-		playerDamageWeaponlessRawSpellShape4E17B0(source, weapon, typ) {
+		(playerDamageWeaponlessRawSpellShape4E17B0(source, weapon, typ) || playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ)) {
 		return playerDamageWeaponlessRawSpell4E17B0(target, source, weapon, damage, typ, runtime)
 	}
 	// SIMPLE spell missiles (stock Pixie) need the terminal-parent path;

@@ -261,6 +261,43 @@ initial fixture/build/admission failures are in
 `player-self-source-damage-port/`. Remaining player-source raw and elemental
 types are separate work; overall 100% is not established.
 
+### Initialized player raw/default damage types
+
+POISON, DISPEL_UNDEAD, DEATH_MAGIC, PLASMA, MANA_BOMB and ZAP_RAY now
+retain an initialized player as both source and weapon. The raw prefix keeps
+six-type weapon exclusions, distinct current/previous-position direction
+checks, nonmissile Reflect and original shield callback identity. Mana Bomb
+skips physical direction and retains its cooperative self-damage exception;
+case13 forwards raw damage without synthesizing a prefix marker. DefaultDamage
+keeps poison immunity, late Defend, Shield, metadata and the guarded nil-HP
+tail. Carry and armor wear are not entered by these raw cases.
+
+Original evidence includes 96 signed prefix rows, 48 front/rear and Reflect
+conditions, and matching 30-row integrated PlayerDamage/DefaultDamage probes
+with health and nil health. Only the documented original routines and sealed
+HP-return tail execute; carry/FISTP ranges are sealed but unentered controls.
+Declared mode/buff/observer/exclusion/direction, NPC idle action, sound/FX,
+defense and HP services are not original Windows HP/audio execution.
+Two further original PLASMA8 rows justify converting exactly those earlier
+negative cases to positive non-electric forwarding controls. Every other
+previous test/fixture/golden stays byte-identical.
+
+The 323 new pass events include 162 native C/caller HP cases, immunity and
+nil-health controls, exact attacker/weapon identity, GodMode, marker/status,
+adjacent bytes and HP sync. The caller path is owner-resolution/CallDamage,
+the boundary used by root DoDamage; the root wrapper itself is not invoked
+by legacy tests. The fixture explicitly binds an unused below-threshold
+hurt-state service and never replaces native HP or damage.
+
+Normal/HD each pass 85,323 events with 49 skips; server/server-HD each pass
+80,495 with 7 skips. Every previous terminal identity/result/multiplicity and
+skip survives. Combined race/checkptr2/cgocheck2 passes 10,995 events across
+three repetitions on the exact 6,691-input candidate. Versioned originals,
+failed admission/build/fixture receipts and final evidence are retained in
+`player-self-source-raw-port/`. Player-source FLAME/EXPLOSION/LAVA and the
+player-target IMPACT path remain separate work; overall 100% is unproved.
+
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

@@ -264,7 +264,8 @@ func DefaultDamageWorld4E0B30(
 	// The terminal owner and Earthquake caster need not be the same object.
 	// Keep the already restored monster self-strike on its existing path;
 	// PLAYER and class-zero self-casters do not qualify the melee predicate.
-	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ))
+	playerSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ)
+	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || playerSelfRaw)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	worldProjectile := playerDamageWorldProjectileShape4E17B0(source, weapon, typ)
@@ -294,7 +295,7 @@ func DefaultDamageWorld4E0B30(
 	// Death Ray (16) and Mana Bomb (15) enter the ordinary signed raw tail,
 	// not fire/electric protection. Nil weapons skip the second melee enemy
 	// query and Shock, but retain the campaign owner gate and late defense.
-	weaponlessRawSpell := playerDamageWeaponlessRawSpellShape4E17B0(source, weapon, typ) &&
+	weaponlessRawSpell := (playerDamageWeaponlessRawSpellShape4E17B0(source, weapon, typ) || playerSelfRaw) &&
 		(source == nil || source.Class() == 0 || source.UpdateData != nil)
 	// 0053D8C0 supplies the terminal owner, including a class-zero
 	// ImaginaryCaster or the cloud itself. Do not require a unit source or a
@@ -604,7 +605,7 @@ func DefaultDamageWorld4E0B30(
 	if monsterUpdate != nil {
 		// GAME.EXE rejects type 5 for poison-immune subclass 0x200 before
 		// health, defense callbacks or attribution are touched.
-		if sourceLessMonsterPoison && uint32(target.SubClass())&0x200 != 0 {
+		if (sourceLessMonsterPoison || (playerSelfRaw && typ == object.DamagePoison)) && uint32(target.SubClass())&0x200 != 0 {
 			return true
 		}
 		if target.HealthData == nil && !sourceLessMonster && !armedExplosion && !armedElectric && !dispelUndead && !cloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {

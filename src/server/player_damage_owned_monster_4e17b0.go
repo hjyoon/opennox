@@ -48,6 +48,10 @@ func playerDamageNonItem4E17B0(
 	if target.UpdateData == nil {
 		return reject("missing non-item attack target update")
 	}
+	attack := weapon
+	if attack == nil {
+		attack = source
+	}
 	cached := target.UpdateData
 	var weaponFlags, armorFlags uint32
 	var absorption float32
@@ -79,29 +83,29 @@ func playerDamageNonItem4E17B0(
 	}
 	// Reflect selects the live attack after observer callbacks. Nonmissile
 	// types16/17 have their original point-FX/audio-only reflection branch.
-	if target.HasEnchant(playerDamageReflectEnchant4E17B0) && (weapon.Class().Has(object.ClassMissile) || typ == object.DamageZapRay || typ == object.DamageAirborneElectric) {
-		missile := weapon.Class().Has(object.ClassMissile)
+	if target.HasEnchant(playerDamageReflectEnchant4E17B0) && (attack.Class().Has(object.ClassMissile) || typ == object.DamageZapRay || typ == object.DamageAirborneElectric) {
+		missile := attack.Class().Has(object.ClassMissile)
 		if r.BlockDirection == nil {
 			return reject("missing non-item attack Reflect direction")
 		}
-		if r.BlockDirection(target, weapon.PosVec) {
+		if r.BlockDirection(target, attack.PosVec) {
 			if missile {
 				if r.ProjectileReflect == nil {
 					return reject("missing non-item attack Reflect service")
 				}
-				r.ProjectileReflect(weapon, target)
-				if uint32(weapon.SubClass())&0x40 == 0 {
+				r.ProjectileReflect(attack, target)
+				if uint32(attack.SubClass())&0x40 == 0 {
 					if r.ClearOwner == nil || r.SetOwner == nil {
 						return reject("missing non-item attack Reflect owner")
 					}
-					r.ClearOwner(weapon)
-					r.SetOwner(target, weapon)
+					r.ClearOwner(attack)
+					r.SetOwner(target, attack)
 				}
-				if weapon.Class().Has(object.ClassMissile) && uint32(weapon.SubClass())&2 != 0 {
+				if attack.Class().Has(object.ClassMissile) && uint32(attack.SubClass())&2 != 0 {
 					if r.ChangeOwner == nil {
 						return reject("missing non-item attack Reflect change owner")
 					}
-					r.ChangeOwner(weapon, target)
+					r.ChangeOwner(attack, target)
 				}
 			}
 			if typ == object.DamageZapRay {
@@ -119,14 +123,22 @@ func playerDamageNonItem4E17B0(
 		}
 	}
 	if source != nil {
-		pos := weapon.PrevPos
-		if r.BlockSourceExcluded == nil {
+		pos := attack.PrevPos
+		exclusion := r.BlockSourceExcluded
+		if weapon == nil {
+			exclusion = r.BlockSourceOnlyExcluded
+		}
+		if exclusion == nil {
 			return reject("missing non-item attack exclusion")
 		}
-		excluded := r.BlockSourceExcluded(weapon)
-		if source != weapon {
+		excluded := exclusion(attack)
+		if weapon != nil && source != weapon {
 			if marker, kind := playerDamageCasterImpactMarker4E17B0(target, cached); marker != nil {
 				*marker, *kind = 1, uint32(weapon.TypeInd)
+			}
+		} else if weapon == nil && (typ == object.DamageCrush || typ == object.DamageClaw) {
+			if marker, kind := playerDamageCasterImpactMarker4E17B0(target, cached); marker != nil {
+				*marker, *kind = 1, uint32(source.TypeInd)
 			}
 		}
 		if !excluded && typ != object.DamageManaBomb {

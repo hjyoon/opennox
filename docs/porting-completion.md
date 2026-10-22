@@ -521,6 +521,49 @@ baseline/boundary failures and final receipts are in
 `distinct-nonitem-owner-port/`. Test-event totals include parents and subtests
 and are not feature coverage. Overall 100% remains unproved.
 
+### Non-item sources without a weapon
+
+Direct damage callbacks can retain an initialized player/monster or a
+nonunit map source while the weapon argument is nil. The native prefix now
+uses the source for Reflect and facing, selects the four source-only type
+exclusions, and preserves the original CRUSH/CLAW source-type markers.
+Armor absorption/carry, wear, default and late defense keep the actual nil
+weapon argument. Shared block selection uses the effective attack for live
+class reads while retaining nil in durability calls. All known and default
+callback types keep their original signed switch behavior.
+
+The default tail skips the second enemy query and Shock when no weapon
+exists. It preserves campaign owner gating, type-specific immunity and
+protection, explosion halving, source attribution, sound/latch, nil health
+and HP. Native BuffOff/HP/monster-sound bindings admit the new tail; older
+partial service callers retain their established contracts. An unused
+player hurt-state service is not required for NPC admission.
+
+Unchanged original PlayerDamage/carry/FISTP instructions supply 1,536
+prefix rows across four source layouts, player/NPC victims, 24 known/default
+types and eight signed amounts. Original integrated DefaultDamage and the
+separately sealed HP-return tail supply 360 immunity rows and identical
+360 nil-health rows. A further 144 front/rear/Reflect and 108 shield,
+GreatSword/staff rows verify source positions, markers, service order and
+nil weapon arguments. HP/audio, mode/buffs, direction, wear, scale1,
+protection and other auxiliary calls remain declared original boundaries;
+actual Windows HP/audio and public root DoDamage are not executed.
+
+Two unchanged original standalone DefaultDamage probes confirm that the
+prior nil-ray/world-source boundaries forward raw500. Those exact inputs
+and test names now serve as positive controls in two existing test files;
+all other earlier tests/fixtures/goldens are byte-identical. Every prior
+terminal identity/action/multiplicity/skip survives.
+
+The 3,737 added pass events include 1,944 actual native C/CallDamage HP cases
+covering GodMode, player/NPC/ordinary-monster layouts, immunity and nil
+health. Normal/HD each pass 100,144 events with 49 skips; server/server-HD
+each pass 95,316 with 7 skips. Combined race/checkptr2/cgocheck2 passes
+57,021 events across three repetitions on the exact 6,725-input
+candidate. Original, baseline/admission failures, source and product records
+are retained in `weaponless-nonitem-source-port/`. Test-event counts include
+parents/subtests; overall 100% remains unproved.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

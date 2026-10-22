@@ -190,6 +190,10 @@ func playerDamageCasterImpactBlock4E17B0(
 		h, result := playerDamageUnsupported4E17B0(r, reason, target, source, weapon, damage, typ)
 		return true, h, result
 	}
+	attack := weapon
+	if attack == nil {
+		attack = source
+	}
 	player := target.Class().Has(object.ClassPlayer)
 	shield := (player && (*PlayerUpdateData)(cached).State == PlayerState16) ||
 		(!player && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK)
@@ -200,7 +204,7 @@ func playerDamageCasterImpactBlock4E17B0(
 	mask, sound := uint32(2), 878
 	if !shield {
 		if weaponFlags&0x400 != 0 {
-			if !weapon.Class().Has(object.ClassMissile) && typ != object.DamageBlade && typ != object.DamageImpact {
+			if !attack.Class().Has(object.ClassMissile) && typ != object.DamageBlade && typ != object.DamageImpact {
 				return false, false, false
 			}
 			ready := false
@@ -222,7 +226,7 @@ func playerDamageCasterImpactBlock4E17B0(
 				shield = r.BerserkShieldBlock(target)
 			}
 			if !shield {
-				if (typ != object.DamageBlade && typ != object.DamageImpact) || weaponFlags&0x7ff8000 == 0 || weapon.Class().Has(object.ClassMissile) {
+				if (typ != object.DamageBlade && typ != object.DamageImpact) || weaponFlags&0x7ff8000 == 0 || attack.Class().Has(object.ClassMissile) {
 					return false, false, false
 				}
 				ready := false
@@ -244,34 +248,34 @@ func playerDamageCasterImpactBlock4E17B0(
 			}
 		}
 	}
-	if mask == 0x400 && weapon.Class().Has(object.ClassMissile) {
+	if mask == 0x400 && attack.Class().Has(object.ClassMissile) {
 		if r.ProjectileReflect == nil {
 			return reject("missing caster IMPACT GreatSword reflection")
 		}
-		r.ProjectileReflect(weapon, target)
-		if weapon.Class().Has(object.ClassMissile) && uint32(weapon.SubClass())&2 == 0 {
+		r.ProjectileReflect(attack, target)
+		if attack.Class().Has(object.ClassMissile) && uint32(attack.SubClass())&2 == 0 {
 			if r.ClearOwner == nil || r.SetOwner == nil {
 				return reject("missing caster IMPACT GreatSword owner")
 			}
-			r.ClearOwner(weapon)
-			r.SetOwner(target, weapon)
+			r.ClearOwner(attack)
+			r.SetOwner(target, attack)
 		}
 	}
 	if r.Audio == nil {
 		return reject("missing caster IMPACT block audio")
 	}
 	r.Audio(sound, target)
-	if mask == 2 && weapon.Class().Has(object.ClassMissile) && uint32(weapon.SubClass())&0x70 == 0 {
+	if mask == 2 && attack.Class().Has(object.ClassMissile) && uint32(attack.SubClass())&0x70 == 0 {
 		if r.ProjectileReflect == nil {
 			return reject("missing caster IMPACT shield reflection")
 		}
-		r.ProjectileReflect(weapon, target)
-		if weapon.Class().Has(object.ClassMissile) && uint32(weapon.SubClass())&2 == 0 {
+		r.ProjectileReflect(attack, target)
+		if attack.Class().Has(object.ClassMissile) && uint32(attack.SubClass())&2 == 0 {
 			if r.ClearOwner == nil || r.SetOwner == nil {
 				return reject("missing caster IMPACT shield owner")
 			}
-			r.ClearOwner(weapon)
-			r.SetOwner(target, weapon)
+			r.ClearOwner(attack)
+			r.SetOwner(target, attack)
 		}
 	}
 	if mask != 2 {

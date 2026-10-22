@@ -1065,6 +1065,33 @@ original potion recovery and living normal/HD Save/Load. Remaining Rogue
 clearance, Wiz03c, Amulet delivery and the original chapter 3 ending remain
 pending; overall 100% completion is not claimed.
 
+Two separate ordinary normal continuations establish further original
+guard combat. Continuation 599 loads the earned Gilgore HD save, reaches
+the western crystals through actual movement, uses Lesser Heal and defeats
+original Swordsman 2043 with Fireball. Its owned living Save has HP 21,
+mana 23 and poison 0. Continuation 604 independently returns to the Gilgore
+normal save, uses one Lesser Heal and defeats original LeadRogue1 2230
+with Fireball. Its owned living Save has HP 11, mana 3 and poison 0. Each
+run displays 51 XP and saves native XP 13044.437. Independent native monster
+tails confirm current HP 0 and DEAD for the respective defeated enemy;
+Gilgore remains DEAD. LeadRogue2 and LeadRogue4 remain alive in both runs.
+The two kills belong to different save branches and are not combined.
+
+Proof `wizard3-original-independent-guard-branches-verification-v608b.json`
+has SHA-256
+`6e749a21432baeb203d98e66625c1281ede6127ad0600eda8c997135ebd756e1`.
+It binds both native-map readers, owned living saves, actual attack and
+Save inputs, every complete world/script/wall observation and an immutable
+613-case audit. All 6,663 product inputs remain unchanged. The audit records
+96 historical deaths and zero forced terminations. The subsequent HD
+retention attempt dies and is excluded in full; HD retention of these
+additional guard defeats is not established. Separate attempts reach the
+northern original dropped-potion area alive with mana 34 but fail the
+pickup assertion; those failed runs receive no continuation credit.
+The qualified Amulet normal/HD branch remains preserved independently.
+Full-resource recovery, remaining Rogue clearance, Wiz03c, Amulet delivery
+and the chapter ending remain open.
+
 ### Earned Warrior3 WarCry use, cooldown and HD Load
 
 Actual original-menu Load 519 starts from the earned Mayor/Scepter reward

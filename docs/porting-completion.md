@@ -28,8 +28,8 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Earlier original completion and chapter Save/Load; current ordinary fresh New Game, town Save, HD QuarterMaster SponsorQuest and normal Gearhart RubyKey/OrchardQuest, actual key consumption/both gate unlocks and living cave entrance Save/Load proved; full current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; original earned WarCry use, reuse rejection after its active duration, and normal/HD Save/Load proved; War03d classification, optional areas and hostile WarCry effects remain open |
-| Conjurer | Earlier natural Con02a entry and manual Save/Load; current ordinary fresh New Game, original cave entrance Save, fresh normal Load and EntranceSwitch Use/100 XP/enabled lift Save, actual paired lift passenger ascent, upper cave/fire jump and original Bat staff defeat with living normal/HD Save/Load proved; full current replay pending | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
+| Warrior | Earlier original completion and chapter Save/Load; current ordinary fresh New Game, town Save, HD QuarterMaster SponsorQuest and normal Gearhart RubyKey/OrchardQuest, actual key consumption/both gate unlocks, original AppleBat1A sword defeat/81 XP and retained HD death/RedApple healing with living Save/Load proved; full current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; original earned WarCry use, reuse rejection after its active duration, and normal/HD Save/Load proved; War03d classification, optional areas and hostile WarCry effects remain open |
+| Conjurer | Earlier natural Con02a entry and manual Save/Load; current ordinary fresh New Game, original cave entrance Save, fresh normal Load and EntranceSwitch Use/100 XP/enabled lift Save, actual paired lift passenger ascent, upper cave/fire jump and original Bat staff defeat, chest SilverKey, both silver doors and actual 5 HP RedApple pickup with living normal/HD Save/Load proved; full current replay pending | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
 | Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; five original B Swordsmen are defeated with native map/XP checks and living Save; natural A resource-return/B reentry retain the first three deaths and recharged wand, followed by two further guard kills; actual B Lightning against Wasps, Primitive refill, retained CurePotion consumption and normal/HD full-resource Save/Load with refuge return proved; original Stravas paired lift/cellar, earned Magic Missile level 2 and original WizardHelm automatic equipment with full-resource normal/HD Save/Load proved; actual upgraded Magic Missile defeats the original lift-carried bandit and three southern Archers with native health/death/XP checks, forest recovery and full-resource normal/HD Save/Load; remaining house Swordsman defeat, original Mystic trade and three potion purchases, gold debit and full-resource normal/HD Save/Load proved; two original northern Archers defeated by actual Fireballs with purchased-potion consumption, original resource recovery and full-resource normal/HD Save/Load; original green paired lift passenger descent and lower Swordsman defeat with native death checks and living normal/HD Save/Load; three southern Wolves defeated with earned spells and actual FlareWand attacks, native charge consumption, original MineCrystal recharge and full-resource normal/HD recovery proved; original SilverKey room guards defeated, chest key acquired by actual pickup, and full-resource normal/HD key Save/Load proved; original SilverKey door use, Gilgore story/hostile transition and native north-door unlock proved; actual earned Chain Lightning injury, fresh HD Heal and living normal/HD combat Save/Load proved; original Gilgore Fireball defeat with independently read native HP0/DEAD, XP reward and living normal/HD Save/Load proved; original Amulet chest/pickup, exact 100 XP reward, RedPotion use and living normal/HD Amulet Save/Load proved; a separate resource branch naturally enters Wiz03c through the original southern exit with living normal Save and fresh HD full-resource crystal/Heal Save/Load; original natural C-to-B return and all three remaining LeadRogue Fireball defeats are verified in one living normal Save, with native HP0/DEAD retained by fresh HD C full-resource recovery; the same qualified lineage then defeats Archer208, acquires the Amulet and naturally returns to C in HD, enabling the original quest FloorPit with full-resource living Save; original C northern/eastern and Push-book passages, sixteen native-confirmed spider defeats, earned Push level 2, original BluePotion/Heal recovery and living normal/HD Save/Load with an actual HD Push cast are proved; original northern C crystal recovery, four Bats and Scorpion defeat, natural FloorPit/Grotto return to A in HD and fresh normal SapphireKey guardian defeat are proved; qualified original SapphireKey pickup/recovery, A Amulet QuestSwitch reactivation of CellarElevator, actual Sapphire gate unlock/key consumption/passage and full-resource normal/HD Save/Load are proved; original Cellar/White passenger return, 1000 XP trigger, Horvath final delivery and Amulet consumption, owned living A Save/Load and natural chapter ending boundary are verified in normal/HD; required A/B/C progression verified; unchanged stock journal-prefix no-op reproduced in original functions; no chapter 4 gameplay credited |
 
 The historical full-game engineering estimate is **79%**. It predates the
@@ -102,18 +102,55 @@ HP20/mana78, poison0 and XP100. Fresh normal case 678 completes the upper cave
 route and crosses the original fire barrier with an actual Space jump,
 saving west of the barrier at HP15/20. Fresh HD case 681 then defeats original
 Bat3949 with wooden-staff input. The original and native saved records show
-HP8 to HP0/DEAD; XP increases exactly80 to180 and the player saves HP12/20,
+HP8 to HP0/DEAD; XP increases exactly 80 to 180 and the player saves HP12/20,
 poison0. The two other original Bats remain HP8/alive and are not credited.
 
-All four whole cases exit0, retain their1,553 stock files and complete
+All four whole cases exit 0, retain their 1,553 stock files and complete
 object/script/wall observations. The follow-up proof is
 `fresh-warrior-conjurer1-gate-lift-jump-bat-verification-v681.json`, SHA-256
 `3a0c8cf50061f37713088375ac182391f652df99982e10deecfb3e4f8223b171`.
-Its immutable audit covers678 cases and106 death branches. Warrior's long
-cave-combat case677 and unsafe refuge-wait case680 are wholly excluded;
+Its immutable audit covers 678 cases and 106 death branches. Warrior's long
+cave-combat case 677 and unsafe refuge-wait case 680 are wholly excluded;
 no partial combat result or save from either authorizes continuation.
-All6,663 frozen product inputs remain unchanged. Chapter1 completion,
-MasterUrchin defeat and overall100% remain unproved at this checkpoint.
+All 6,663 frozen product inputs remain unchanged. Chapter 1 completion,
+MasterUrchin defeat and overall 100% remain unproved at this checkpoint.
+
+### Original chapter 1 key consumption, food and Warrior Bat defeat
+
+Normal Conjurer case 683 opens the original chest through walking collision,
+picks up its SilverKey and saves HP12/mana78, poison0 and XP180. Fresh HD
+case 685 consumes the key at the original door; independent native records
+show Door4256 and Door4257 changing from lock1 to lock0. Actual staff swings
+release original RedApple3968 from its barrel. That run's native HP13 and
+still-present apple do not establish food consumption. Fresh normal case 691
+clicks the visible apple, raises HP13 to 18 within 17 native frames and removes
+the item from the native map. Its manual Save retains HP18, mana78 and XP180.
+
+Normal Warrior case 692 uses actual ground-direction sword inputs against
+original airborne AppleBat1A. The native Save independently records HP0 and
+DEAD for that Bat, XP81 and a living player at HP8/20, poison0. Fresh HD
+case 694 retains the same original death and XP, then clicks the last visible
+original RedApple14077. Player HP rises 8 to 13 within 17 native frames, and
+the apple disappears from the native map. Other original Bats and the
+MasterUrchin remain outside this defeat claim.
+
+Four earlier sprite-targeted attempts remain living partial-combat saves,
+with native Bat HP3 and no DEAD flag; none earns defeat or wound-retention
+credit. A separate named-Bat attempt dies and is wholly excluded. The
+unchanged original MonsterXfer caller and OnSpawn function are also executed
+in eight controlled flag/dormancy cases. They contain the same conditional
+full-health initialization as the native source. The runtime cause of the
+saved HP3 versus later pre-attack HP8 observation remains open; this bounded
+oracle does not establish original Windows Load behavior or a port defect.
+No production health-normalization change is made.
+
+The five successful resource/combat cases retain all 1,553 stock files and
+complete object/script/wall observations. Their proof is
+`fresh-warrior-conjurer1-resources-verification-v694.json`, SHA-256
+`08d8c82829ff3d26eae9c822247014863d7a03b7ff7b0ab12451fc662a0dd2d2`.
+The immutable audit covers 688 cases with 107 recorded death branches and no
+forced termination. All 6,663 product inputs remain unchanged. Both current
+chapter 1 replays and overall 100% remain incomplete.
 
 ### Solo Load Game loses the autosave row color
 

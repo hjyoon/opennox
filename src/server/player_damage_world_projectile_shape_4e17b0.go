@@ -52,3 +52,13 @@ func playerDamageWorldProjectileShape4E17B0(source, weapon *Object, typ object.D
 	}
 	return false
 }
+
+// UndeadKiller is LIGHT|CLIENT_PREDICT, not a missile or melee weapon.
+// The collision supplies a terminal owner or the collider itself; direct
+// callbacks may also retain a nil source with this distinct collider.
+func playerDamageNPCTurnUndeadShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
+	if typ != object.DamageDispelUndead || weapon == nil || !weapon.Class().Has(object.ClassLight) || !weapon.Class().Has(object.ClassClientPredict) || weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile) {
+		return false
+	}
+	return source == nil || (!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) && (!source.Class().HasAny(object.MaskUnits) || source.UpdateData != nil))
+}

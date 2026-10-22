@@ -191,8 +191,40 @@ Normal/HD each pass 84,753 events with 49 skips; server/server-HD each pass
 79,925 with 7 skips. All prior terminal identities/results/multiplicities and
 skips survive. Versioned source, originals, candidate receipts and retained
 initial failures are in `source-less-monster-default-port/`. The separate
-UndeadKiller-to-NPC PlayerDamage prefix still rejects original-supported
-inputs and remains open; overall 100% is not established.
+UndeadKiller-to-NPC PlayerDamage continuation is recorded below; overall
+100% is not established.
+
+### UndeadKiller NPC PlayerDamage prefix
+
+The stock UndeadKiller collider can now reach scripted-NPC PlayerDamage
+instead of being rejected before DefaultDamage. The existing world-attack
+prefix retains cached NPC attribution and its ordinary shield defenses;
+type6 forwards raw signed damage without armor absorption, carry or wear.
+A nil attacker skips ordinary direction/weapon defenses even with a distinct
+collider. Player/monster owners, the unowned collider and class-zero/nil
+sources retain their original distinct marker behavior.
+
+Eighty unchanged original PlayerDamage executions cover five source identities,
+front/rear facing and eight signed amounts. Buff/mode/type lookup, idle NPC
+action and DefaultDamage are declared services. Carry/FISTP ranges are sealed
+controls but are not entered by raw6; earlier imprecise scope text and its
+correction remain preserved. No original Windows HP/audio is claimed.
+
+The 94 new pass events include the 80-row prefix comparison and actual
+C-owned, registered UndeadKillerCollide -> PlayerDamage -> DefaultDamage ->
+UnitSetHP calls above 4 GiB. Three owned/unowned forms retain their collision
+budget/deletion behavior and HP2000->1993->1986->1979 progression, plus unchanged
+invulnerability, no-update and non-undead controls. The large cached armor
+value and fractional carry remain irrelevant to raw6. All earlier tests,
+fixtures and goldens are byte-identical.
+
+Normal/HD each pass 84,847 events with 49 skips; server/server-HD each pass
+80,019 with 7 skips. Every previous terminal identity/result/multiplicity and
+skip survives. Combined race/checkptr2/cgocheck2 passes 9,453 events across
+three repetitions on the exact 6,683-input candidate. Versioned originals,
+corrected execution scope and initial failures are retained in
+`npc-turn-undead-prefix-port/`. Broader attacker/weapon shapes remain partial;
+overall 100% is not established.
 
 ### Current fresh Warrior and Conjurer chapter 1 starts
 

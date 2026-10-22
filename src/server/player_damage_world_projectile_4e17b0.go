@@ -11,6 +11,7 @@ import (
 // 004E17B0 does not require a unit attacker. Retain its cached player/NPC
 // marker and equipment prefix for world-fired arrows/spell missiles and DeathBall
 // CRUSH, without interpreting the world owner's nonexistent unit update.
+// UndeadKiller NPC hits share these defenses but use raw case6 with no wear.
 func playerDamageWorldProjectile4E17B0(
 	target, source, weapon *Object, damage int32, typ object.DamageType, r PlayerDamageRuntime4E17B0,
 ) (handled, result bool) {
@@ -112,60 +113,65 @@ func playerDamageWorldProjectile4E17B0(
 			return true, false
 		}
 	}
-	pos := attack.PrevPos // Snapshot BEFORE exclusion, as 004E1A49/004E1ABE.
-	exclusion := r.BlockSourceExcluded
-	if weapon == nil {
-		exclusion = r.BlockSourceOnlyExcluded
-	}
-	if exclusion == nil {
-		return reject("missing world projectile exclusion")
-	}
-	excluded := exclusion(attack)
-	if !liveRecord() {
-		return reject("unsupported live world projectile attribution record")
-	}
-	if (weapon != nil && source != weapon) || (weapon == nil && typ == object.DamageCrush) {
-		*cached.marker, *cached.markerType = 1, uint32(attack.TypeInd)
-	}
-	front := false
-	if !excluded {
-		if r.BlockDirection == nil {
-			return reject("missing world projectile block direction")
+	// A nil attacker skips ordinary direction/weapon defenses even when
+	// UndeadKiller remains the distinct weapon (004E19CE).
+	if source != nil {
+		pos := attack.PrevPos // Snapshot BEFORE exclusion, as 004E1A49/004E1ABE.
+		exclusion := r.BlockSourceExcluded
+		if weapon == nil {
+			exclusion = r.BlockSourceOnlyExcluded
 		}
-		front = r.BlockDirection(target, pos)
-	}
-	if !liveRecord() {
-		return reject("unsupported live world projectile block record")
-	}
-	if front {
-		shield := (player && *cached.state == PlayerState16) || (!player && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK)
-		if shield && cached.armorFlags&0x3000000 != 0 {
-			return playerDamageWorldProjectileShield4E17B0(target, source, weapon, attack, damage, typ, r)
+		if exclusion == nil {
+			return reject("missing world projectile exclusion")
 		}
-		// Only the original single facing/exclusion pair is externally called.
-		r.BlockSourceExcluded = func(*Object) bool { return excluded }
-		r.BlockSourceOnlyExcluded = r.BlockSourceExcluded
-		r.BlockDirection = func(*Object, types.Pointf) bool { return front }
-		if applicable, h, result := playerDamageGreatSwordMissileBlock4E17B0(target, source, weapon, cached, damage, typ, r); applicable {
-			return h, result
+		excluded := exclusion(attack)
+		if !liveRecord() {
+			return reject("unsupported live world projectile attribution record")
 		}
-		if player && cached.weaponFlags&0x400 == 0 && *cached.state == PlayerState1 && cached.armorFlags&0x3000000 != 0 {
-			if r.BerserkShieldBlock == nil {
-				return reject("missing world projectile berserker shield service")
+		if (weapon != nil && source != weapon) || (weapon == nil && typ == object.DamageCrush) {
+			*cached.marker, *cached.markerType = 1, uint32(attack.TypeInd)
+		}
+		front := false
+		if !excluded {
+			if r.BlockDirection == nil {
+				return reject("missing world projectile block direction")
 			}
-			if r.BerserkShieldBlock(target) {
+			front = r.BlockDirection(target, pos)
+		}
+		if !liveRecord() {
+			return reject("unsupported live world projectile block record")
+		}
+		if front {
+			shield := (player && *cached.state == PlayerState16) || (!player && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK)
+			if shield && cached.armorFlags&0x3000000 != 0 {
 				return playerDamageWorldProjectileShield4E17B0(target, source, weapon, attack, damage, typ, r)
 			}
+			// Only the original single facing/exclusion pair is externally called.
+			r.BlockSourceExcluded = func(*Object) bool { return excluded }
+			r.BlockSourceOnlyExcluded = r.BlockSourceExcluded
+			r.BlockDirection = func(*Object, types.Pointf) bool { return front }
+			if applicable, h, result := playerDamageGreatSwordMissileBlock4E17B0(target, source, weapon, cached, damage, typ, r); applicable {
+				return h, result
+			}
+			if player && cached.weaponFlags&0x400 == 0 && *cached.state == PlayerState1 && cached.armorFlags&0x3000000 != 0 {
+				if r.BerserkShieldBlock == nil {
+					return reject("missing world projectile berserker shield service")
+				}
+				if r.BerserkShieldBlock(target) {
+					return playerDamageWorldProjectileShield4E17B0(target, source, weapon, attack, damage, typ, r)
+				}
+			}
 		}
 	}
-	if !playerDamageArmorReady4E17B0(target, r) {
+	raw := typ == object.DamageDispelUndead
+	if !raw && !playerDamageArmorReady4E17B0(target, r) {
 		return reject("unsupported world projectile armor durability")
 	}
 	if !liveRecord() {
 		return reject("unsupported live world projectile carry record")
 	}
 	effective, wear := damage, damage
-	if typ != object.DamageFlame {
+	if !raw && typ != object.DamageFlame {
 		// Cases 3/7 use full armor; case 2 uses HALF armor. FLAME (case 1)
 		// wears armor but bypasses HP absorption and the fractional carry.
 		scale := float64(absorption)
@@ -183,7 +189,9 @@ func playerDamageWorldProjectile4E17B0(
 		*carry = math.Float32bits(accumulated - float32(effective))
 		wear = damage - effective
 	}
-	playerDamageApplyArmor4E17B0(target, source, weapon, wear, typ, r)
+	if !raw {
+		playerDamageApplyArmor4E17B0(target, source, weapon, wear, typ, r)
+	}
 	if target.Class().HasAny(object.MaskUnits) {
 		if player != target.Class().Has(object.ClassPlayer) {
 			return reject("unsupported live world projectile cached marker layout")

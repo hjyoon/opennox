@@ -564,6 +564,58 @@ candidate. Original, baseline/admission failures, source and product records
 are retained in `weaponless-nonitem-source-port/`. Test-event counts include
 parents/subtests; overall 100% remains unproved.
 
+### Pure-missile damage types and signed IMPACT forms
+
+Pure spell missiles now admit fourteen remaining physical/raw/electric
+known types and the original default switch values through the shared
+non-item prefix/type switch. Initialized player/monster, nonunit DOOR or
+class-zero terminal owners and the unowned missile itself retain their
+actual source/weapon identities. Nonunit/missile update data is not required.
+Existing flame/crush/pierce/explosion and unit/self-owned SIMPLE/Pixie IMPACT
+slices keep their specialized admission and partial-runtime contracts.
+
+The restored paths retain cached equipment/absorption/marker bases, live
+carry/inventory, missile positions, defenses, GodMode/Quest, type-specific
+immunity/protection, nil health and HP. Reflect and shield/GreatSword/staff
+selection preserve reflection/ownership, audio/state and actual durability
+arguments in original order. The source monster owns hit sound/timestamp;
+the missile never supplies a unit update. Player spell-missile/caster
+aliases share the same original enemy query. A terminal missile still
+queries enemy once before damage, even when the result is false and its
+original melee qualifier rejects the missile.
+
+One unchanged original 1,920-row prefix survey supplies 1,600 selected
+regressions across five source forms, fourteen known types plus six default
+values, player/NPC victims and eight signed amounts. The other 320 original
+specialized-type survey controls remain preserved. Original integrated
+PlayerDamage/DefaultDamage and its separately sealed HP-return tail supply
+350 immunity rows and identical 350 nil-health rows; another 112 front/rear/
+Reflect and 84 equipment-block rows verify positions, masks, state, wear and
+service order. Reached original carry/FISTP and source sound/latch code
+execute unchanged. HP/audio, mode/buffs, direction, wear, protection/scale1,
+reflection/ownership and auxiliary calls are declared original boundaries;
+actual Windows HP/audio and public root DoDamage are not executed.
+
+Four independent original standalone inputs confirm prior ray-MISSILE,
+signed type6 missile and terminal BITE controls. A fifth executes original
+DefaultDamage and4E1400 for the exact terminal IMPACT/ordinary-monster input,
+frame1240 and false enemy result: one query precedes HP1 with marker2/type11.
+Those five original-confirmed input/order controls retain their historical
+test identities in four files. Every other prior test/fixture/golden is
+byte-identical; all prior terminal identities/actions/multiplicities/skips
+survive against the last fully verified weaponless checkpoint.
+
+The combined change adds 3,696 pass events, including 1,890 actual registered
+C/CallDamage HP cases with GodMode, player/NPC/ordinary-monster targets,
+immunity, nil health and source/weapon pointers. Normal/HD each pass 103,840
+events with 49 skips; server/server-HD each pass 99,012 with 7 skips.
+Combined race/checkptr2/cgocheck2 passes 69,327 events over three repetitions
+on the exact 6,738-input final candidate. The earlier private missile stage's
+35,526 broad/67,845 strict events and original/failure records remain in
+`pure-missile-damage-port/`; it has no separate committed product or full
+suite claim. Final combined evidence is in `pure-missile-impact-port/`.
+Test-event totals include parents/subtests; overall 100% remains unproved.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

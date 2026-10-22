@@ -226,13 +226,18 @@ func TestDefaultDamageTurnUndeadAdmissionServices4E0B30(t *testing.T) {
 				v.ObjSubClass &^= 0x40
 			}
 			switch name {
-			case "missile-weapon", "unit-weapon", "weapon-class", "wand-class", "source-without-update":
+			case "unit-weapon", "weapon-class", "wand-class", "source-without-update":
 				wantCalls, wantEnemy, wantReason = 0, 0, "unsupported monster damage shape"
 			case "player-target":
 				wantCalls, wantEnemy, wantReason = 0, 0, "non-monster unit target"
 			}
 			if !DefaultDamageWorld4E0B30(v, a, w, -9, object.DamageDispelUndead, r) || calls != wantCalls || enemyCalls != wantEnemy || reason != wantReason {
 				t.Fatalf("tail calls=%d/%d enemy=%d/%d reason=%q/%q", calls, wantCalls, enemyCalls, wantEnemy, reason, wantReason)
+			}
+			if name == "missile-weapon" {
+				if v.Obj130 != w || v.Pos132 != w.PrevPos || v.Frame134 != 1400 || v.Field131 != 6 || v.UpdateDataMonster().Field547 != 1 || v.UpdateDataMonster().Field546 != 777 {
+					t.Fatal("original-confirmed type6 missile attribution")
+				}
 			}
 		})
 	}

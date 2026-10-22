@@ -1076,6 +1076,9 @@ func PlayerDamageNative4E17B0(
 	}
 	// Production runtimes provide Coop and DefaultDamage. Earlier partial
 	// inline/defense callers retain their existing prefix contracts.
+	if runtime.CoopMode != nil && runtime.DefaultDamage != nil && playerDamagePureMissileShape4E17B0(source, weapon, typ) {
+		return playerDamageNonItem4E17B0(target, source, weapon, damage, typ, runtime)
+	}
 	if runtime.CoopMode != nil && runtime.DefaultDamage != nil && playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) {
 		return playerDamageNonItem4E17B0(target, source, weapon, damage, typ, runtime)
 	}

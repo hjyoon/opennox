@@ -526,7 +526,7 @@ func TestDefaultDamageWorld4E0B30PlayerZapRayEarlyGatesAndBoundary(t *testing.T)
 			why := ""
 			r := damageMeleeWorldRuntime4E0B30(t)
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { why = reason }
-			supported := invalid == "distinct world" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type" || invalid == "nil ray with world source"
+			supported := invalid == "distinct world" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type" || invalid == "nil ray with world source" || invalid == "ray missile"
 			calls, amount := 0, int32(0)
 			r.DamageClear = func(v *Object, d int32) {
 				if !supported || v != target {

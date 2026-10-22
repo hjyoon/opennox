@@ -862,9 +862,12 @@ func TestDefaultDamageWorld4E0B30SelfSourcedMissileImpactMonster(t *testing.T) {
 	runtime := DefaultDamageWorldRuntime4E0B30{
 		Frame:         func() uint32 { return 1240 },
 		GameplayFlag1: func() bool { return true },
-		IsEnemy: func(*Object, *Object) bool {
-			t.Fatal("missile impact checked unit allegiance")
-			return false
+		IsEnemy: func(victim, attacker *Object) bool {
+			if victim != target || attacker != missile {
+				t.Fatal("terminal missile enemy identity")
+			}
+			events = append(events, "enemy")
+			return false // Original queries once; the pure missile does not qualify as melee.
 		},
 		BuffOff: func(got *Object, enchant EnchantID) {
 			if got != target || enchant != defaultDamageInvisibleEnchant4E0B30 {
@@ -914,7 +917,7 @@ func TestDefaultDamageWorld4E0B30SelfSourcedMissileImpactMonster(t *testing.T) {
 		t.Fatalf("monster hit state = status:%#x type:%d latch:%d",
 			targetUpdate.StatusFlags, targetUpdate.Field546, targetUpdate.Field547)
 	}
-	want := []string{"buff-off", "sound", "field-guide", "damage"}
+	want := []string{"enemy", "buff-off", "sound", "field-guide", "damage"}
 	if !reflect.DeepEqual(events, want) {
 		t.Fatalf("events = %v, want %v", events, want)
 	}
@@ -979,8 +982,7 @@ func TestDefaultDamageWorld4E0B30MonsterFiredMissileImpactMonster(t *testing.T) 
 }
 
 func TestDefaultDamageWorld4E0B30RejectsOtherMonsterMissileDamage(t *testing.T) {
-	// A terminal Magic Missile's type 7 is supported. It does not license
-	// other damage types on arbitrary spell-missile records.
+	// Keep both historical inputs as original-confirmed terminal missile controls.
 	for _, typ := range []object.DamageType{object.DamageExplosion, object.DamageBite} {
 		target := &Object{
 			ObjClass:   object.ClassMonster,
@@ -993,10 +995,7 @@ func TestDefaultDamageWorld4E0B30RejectsOtherMonsterMissileDamage(t *testing.T) 
 		r.FireProtection = func(*Object) float64 { return 0 }
 		r.Unsupported = func(got string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = got }
 		DefaultDamageWorld4E0B30(target, missile, missile, 3, typ, r)
-		wantReason, wantHP := "unsupported monster damage shape", uint16(30)
-		if typ == object.DamageExplosion {
-			wantReason, wantHP = "", 27
-		}
+		wantReason, wantHP := "", uint16(27)
 		if reason != wantReason || target.HealthData.Cur != wantHP {
 			t.Fatalf("type=%d unsupported=%q/%q HP=%d/%d", typ, reason, wantReason, target.HealthData.Cur, wantHP)
 		}

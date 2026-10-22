@@ -267,7 +267,7 @@ func DefaultDamageWorld4E0B30(
 	ownedMonster := playerDamageOwnedMonsterShape4E17B0(source, weapon, typ)
 	// Native tail bindings enable new weaponless forms. Earlier partial
 	// electric/explosion callers retain their existing optional-service contracts.
-	nonItem := ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ) || (playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil)
+	nonItem := ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ) || (playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil) || (playerDamagePureMissileShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil)
 	unitSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfRawShape4E17B0(source, weapon, typ)
 	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || unitSelfRaw || nonItem)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
@@ -385,7 +385,8 @@ func DefaultDamageWorld4E0B30(
 			return true
 		}
 	}
-	if casterImpact && source != nil && weapon != nil {
+	// The spell-missile player tail below owns this same original enemy query.
+	if casterImpact && source != nil && weapon != nil && !(spellMissileImpact && playerTail) {
 		if runtime.IsEnemy == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "missing caster IMPACT enemy service", target, source, weapon, damage, typ)
 		}

@@ -328,7 +328,7 @@ func TestDefaultDamageWorld4E0B30ZapRayKeepsShapeBoundary(t *testing.T) {
 			r := damageMeleeWorldRuntime4E0B30(t)
 			why := ""
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { why = reason }
-			supported := invalid == "distinct world source" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type" || invalid == "nil ray with world source"
+			supported := invalid == "distinct world source" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type" || invalid == "nil ray with world source" || invalid == "missile ray"
 			calls, amount := 0, int32(0)
 			r.DamageClear = func(v *Object, d int32) {
 				if !supported || v != target {

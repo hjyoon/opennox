@@ -1118,6 +1118,31 @@ zero forced terminations. Failed pickup assertions and death-ending runs
 remain excluded. Full-resource recovery, Amulet acquisition in this
 resource branch, Wiz03c and the original chapter ending remain pending.
 
+Continuation 615 uses actual running and pickup input to acquire original
+Amulet 3632 from the conserved-mana branch. The client selects pickup
+cursor 2 and drawable type 2206; server/client inventory and the original
+100 XP reward are confirmed. The north side of the original solid chest
+provides a living departure route. Its owned normal Save has HP 6, mana 35,
+poison 0 and XP 13093.37. Fresh ordinary HD Load 616 retains the same
+Amulet/script ID and XP. Actual Lesser Heal followed immediately by running
+leaves observed HP 17 and mana 5, then reaches the original southern rocky
+passage at (4734.2217, 4886.3774). Its owned living Save has HP 10, mana 5
+and poison 0. Both complete runs exit alive. Actual Space inputs were
+queued, but successful airborne states or avoided damage are not inferred.
+
+Proof `wizard3-original-amulet-moving-heal-hd-verification-v616.json` has
+SHA-256
+`7d20e979c00e34c8daddc9c9cde97fc52fabb801551e8c9050183fdbdd94718e`.
+It binds the resource-source proof, both owned saves, every complete
+world/script/wall observation, actual pickup and moving-Heal inputs and
+fully consumed native nine-item inventories. Gold 400, wand charges 200,
+PoisonProtect1 and the original Amulet remain present. Gilgore remains
+DEAD and the other three LeadRogues remain alive. The immutable 621-case
+audit retains 6,663 unchanged product inputs, 99 historical deaths and
+zero forced terminations; death-ending attempts remain excluded in full.
+Natural Wiz03c entry, passage-boulder movement, full-resource recovery,
+remaining Rogue clearance, Amulet delivery and the ending remain pending.
+
 ### Earned Warrior3 WarCry use, cooldown and HD Load
 
 Actual original-menu Load 519 starts from the earned Mayor/Scepter reward

@@ -198,16 +198,33 @@ func TestDefaultDamageWorld4E0B30BerserkerChargeAdmissionBoundary(t *testing.T) 
 			target := &Object{ObjClass: object.ClassMonster, HealthData: &HealthData{Cur: 2000, Max: 2000},
 				UpdateData: unsafe.Pointer(&MonsterUpdateData{})}
 			rejected := false
+			damaged := 0
 			DefaultDamageWorld4E0B30(target, tc.source, tc.weapon, 150, tc.typ, DefaultDamageWorldRuntime4E0B30{
 				GameplayFlag1: func() bool { return true },
 				IsEnemy:       func(_, _ *Object) bool { return true },
-				DamageClear:   func(_ *Object, _ int32) { t.Fatal("unported damage shape was admitted") },
+				DamageClear: func(v *Object, amount int32) {
+					if tc.source != nil || tc.weapon != nil || v != target || amount != 150 {
+						t.Fatal("unrelated damage shape was admitted")
+					}
+					damaged++
+					v.HealthData.Cur -= uint16(amount)
+				},
 				Unsupported: func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) {
 					rejected = reason == "unsupported monster damage shape"
 				},
 			})
-			if !rejected {
-				t.Fatal("unported damage shape was not reported")
+			wantRejected, wantCalls, wantHP := true, 0, uint16(2000)
+			if tc.source == nil && tc.weapon == nil {
+				// Original DefaultDamage accepts this exact CRUSH150 input.
+				// Keep it as a positive control; the other three stay rejected.
+				wantRejected, wantCalls, wantHP = false, 1, 1850
+				ud := target.UpdateDataMonster()
+				if ud.Field547 != 2 || ud.Field546 != uint32(tc.typ) || !ud.StatusFlags.Has(object.MonStatusInjured) {
+					t.Fatal("source-less CRUSH marker/injured state")
+				}
+			}
+			if rejected != wantRejected || damaged != wantCalls || target.HealthData.Cur != wantHP {
+				t.Fatalf("rejected=%t/%t damage-calls=%d/%d HP=%d/%d", rejected, wantRejected, damaged, wantCalls, target.HealthData.Cur, wantHP)
 			}
 		})
 	}

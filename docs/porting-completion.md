@@ -128,9 +128,9 @@ Normal/HD each pass 83,706 events with 49 skips; server/server-HD each pass
 78,878 with 7 skips. Every previous terminal identity, result, multiplicity
 and skip is retained. The focused union passes 1,035 events across race,
 checkptr level 2 and cgocheck2 runs. Versioned evidence and retained initial
-failures are in `source-less-player-complete-port/`. Independent NPC probes
-still reject several source-less types; that next port and overall completion
-remain open. No test-event total is a completion percentage.
+failures are in `source-less-player-complete-port/`. The NPC continuation is
+recorded below; overall completion remains open. No test-event total is a
+completion percentage.
 
 ### Complete source-less scripted-NPC damage switch
 
@@ -159,9 +159,40 @@ Normal/HD each pass 84,271 events with 49 skips; server/server-HD each pass
 skip is retained. The focused union passes 7,710 events with combined race,
 checkptr2 and cgocheck2 across three repetitions. Versioned evidence and
 initial admission/service-contract failures remain in
-`source-less-npc-complete-port/`. Ordinary-monster source-less DefaultDamage
-still rejects 15 of 24 probed type values and is the next port. Overall
-completion remains unproved; event counts are not a coverage percentage.
+`source-less-npc-complete-port/`. The ordinary-monster continuation is
+recorded below. Overall completion remains unproved; event counts are not
+a coverage percentage.
+
+### Complete source-less ordinary-monster DefaultDamage types
+
+DefaultDamage now accepts every source-less ordinary-monster type and raw
+signed/default value, completing the same admission already restored for
+players and scripted NPCs. It preserves poison/fire/electric immunity order,
+fire protection, metadata and injured/on-fire stores. Ordinary monsters skip
+NPC-only late defense and electric-state writes; nil health reaches the
+original guarded HP service. This entry does not apply PlayerDamage armor.
+
+Two independent original DefaultDamage probes cover 120 type/immunity
+combinations each, with health and nil health; their result rows agree.
+A further original CRUSH150 execution verifies the exact old boundary input
+now retained as a positive 150-HP/marker control. Its other three negative
+inputs remain rejected. All other earlier tests, fixtures and goldens are
+byte-identical. Protection, sound, game-ball and final HP are declared oracle
+services; original Windows HP/audio are not executed.
+
+The 482 new passing events include 360 actual registered-C calls across
+24 type values, five immunity combinations, GodMode and nil-health controls.
+They verify real HP, attribution, sync, marker/status and adjacent state bytes,
+and reject unported diagnostics. The focused candidate union passes 9,171
+events with combined race/checkptr2/cgocheck2 over three repetitions. Its
+6,680 input hashes match the main worktree exactly.
+
+Normal/HD each pass 84,753 events with 49 skips; server/server-HD each pass
+79,925 with 7 skips. All prior terminal identities/results/multiplicities and
+skips survive. Versioned source, originals, candidate receipts and retained
+initial failures are in `source-less-monster-default-port/`. The separate
+UndeadKiller-to-NPC PlayerDamage prefix still rejects original-supported
+inputs and remains open; overall 100% is not established.
 
 ### Current fresh Warrior and Conjurer chapter 1 starts
 

@@ -1,0 +1,1815 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "ranges": [
+    {
+      "name": "nox_float2int_419A70",
+      "address": "0x00419A70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "load the binary32 argument and convert to signed int through x87 FISTPL with the active rounding mode; Hammer attack 00538960 spills strength times binary32 00583BB0 before this call"
+    },
+    {
+      "name": "nox_xxx_damageDefault_4E0B30_prefix",
+      "address": "0x004E0B30",
+      "size": 1762,
+      "sha256": "241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991",
+      "purpose": "the original DefaultDamage prefix through the byte before the already sealed unit-damage-clear call, used to validate melee admission, all-MONSTER hit attribution at 004E0ED4, source-less POISON damage with subclass 0x200 immunity, unit-self-weapon ELECTRIC/AIRBORNE_ELECTRIC tails and nil-weapon player-sourced electric retaliation with the ordered 004E1400 friendly predicate, Shock retaliation before electric immunity, low-word/byte electric state, native late-defense/Shield arguments and raw type attribution; player- and monster-fired ranged PIERCE share the common tail without elemental protection or melee Shock, retain campaign owner and Quest self-hit gates, require monster hit-sound lookup only for a MONSTER source, and preserve previous-position/weapon attribution, late-defense and pre-damage modifiers, Vampirism, field-guide adjustment, immediate-monster-owner latch, Shield and actual HP/owner-report order through native-width C-entry and C-owned fixtures"
+    },
+    {
+      "name": "DefaultDamage_HP_call_return_tail",
+      "address": "0x4e1212",
+      "size": 30,
+      "sha256": "eff983a318a5b9358edc5c4635b9722eee37e50f63e7e1e6c2a61c6ff87bc4bc",
+      "purpose": "Unchanged original tail through next function4E1230; separately sealed, not an extension of the existing manifest."
+    }
+  ],
+  "rows": [
+    {
+      "damage_type": -2147483648,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483648,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2147483648,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483648,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2147483648,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483648,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2147483648,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483648,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2147483648,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483648,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967294,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967294,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967294,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967294,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -2,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967294,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -1,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967295,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -1,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967295,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -1,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967295,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -1,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967295,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": -1,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4294967295,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 0,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 0,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 0,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 0,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 0,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 0,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 0,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 0,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 0,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 0,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 1,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 1,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 1,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 1,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 1,
+      "subclass": 1024,
+      "forward_damage": [],
+      "marker": 0,
+      "marker_type": 77,
+      "status_flags": 524288,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 1,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 1,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 1,
+      "subclass": 3072,
+      "forward_damage": [],
+      "marker": 0,
+      "marker_type": 77,
+      "status_flags": 524288,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 3,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 3,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 3,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 3,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 3,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 3,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 3,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 3,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 3,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 3,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 4,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 4,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 4,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 4,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 4,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 4,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 5,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 5,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 5,
+      "subclass": 512,
+      "forward_damage": [],
+      "marker": 0,
+      "marker_type": 77,
+      "status_flags": 0,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 5,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 5,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 5,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 5,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 5,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 5,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 6,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 6,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 6,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 6,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 6,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 6,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 6,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 6,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 6,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 6,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 7,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 7,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 7,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 7,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 7,
+      "subclass": 1024,
+      "forward_damage": [
+        4
+      ],
+      "marker": 2,
+      "marker_type": 7,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 7,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 7,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 7,
+      "subclass": 3072,
+      "forward_damage": [
+        4
+      ],
+      "marker": 2,
+      "marker_type": 7,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 8,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 8,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 8,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 8,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 8,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 8,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 8,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 8,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 8,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 8,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 9,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 9,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 9,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 9,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 9,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 9,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 9,
+      "subclass": 2048,
+      "forward_damage": [],
+      "marker": 0,
+      "marker_type": 77,
+      "status_flags": 0,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 9,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 9,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 10,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 10,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 10,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 10,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 10,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 10,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 10,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 10,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 10,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 10,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 11,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 11,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 11,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 11,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 11,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 11,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 11,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 11,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 11,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 11,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 12,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 12,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 12,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 12,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 12,
+      "subclass": 1024,
+      "forward_damage": [],
+      "marker": 0,
+      "marker_type": 77,
+      "status_flags": 524288,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 12,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 12,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 12,
+      "subclass": 3072,
+      "forward_damage": [],
+      "marker": 0,
+      "marker_type": 77,
+      "status_flags": 524288,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 13,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 13,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 13,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 13,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 13,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 13,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 13,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 13,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 13,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 13,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 14,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 14,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 14,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 14,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 14,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 14,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 14,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 14,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 14,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 14,
+      "status_flags": 524800,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 15,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 15,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 15,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 15,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 15,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 15,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 15,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 15,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 15,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 15,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 16,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 16,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 16,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 16,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 16,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 16,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 16,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 16,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 16,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 16,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 17,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 17,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 17,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 17,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 17,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 17,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 17,
+      "subclass": 2048,
+      "forward_damage": [],
+      "marker": 0,
+      "marker_type": 77,
+      "status_flags": 0,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 17,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 17,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 18,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 18,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 18,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 18,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 18,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 18,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 18,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 18,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 18,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 18,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 19,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 19,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 19,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 19,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 19,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 19,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 19,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 19,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 19,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 19,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2147483647,
+      "subclass": 0,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483647,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2147483647,
+      "subclass": 512,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483647,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2147483647,
+      "subclass": 1024,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483647,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2147483647,
+      "subclass": 2048,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483647,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    },
+    {
+      "damage_type": 2147483647,
+      "subclass": 3072,
+      "forward_damage": [
+        9
+      ],
+      "marker": 2,
+      "marker_type": 2147483647,
+      "status_flags": 512,
+      "electric_state_bytes": [
+        17,
+        171
+      ],
+      "return": 1
+    }
+  ],
+  "scope": "120 unchanged original source-less ordinary-monster DefaultDamage executions, including signed raw/default type values and poison/fire/electric immunity precedence. Buff, gameplay/mode, zero elemental protection, late-defend, sound, ball and HP are declared service boundaries. Actual original Windows HP/audio are not executed. Original marker/injured/on-fire stores execute unchanged; ordinary monsters skip NPC late defense and electric state stores."
+}

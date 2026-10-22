@@ -665,6 +665,14 @@ baseline/preflight failures and final records are retained in
 `pure-missile-owner-forms-port/`. Test-event counts include parents/subtests;
 overall 100% remains unproved.
 
+### Nil-source pure-missile damage and LAVA invisibility
+
+Pure missiles with a nil source now enter the complete native PlayerDamage prefix and DefaultDamage tail. The actual missile remains the damage attribution while the source position becomes zero. Ordinary source-facing and enemy queries are skipped; Reflect continues to use the actual missile and preserves ownership/FX/audio order. LAVA removes invisibility even when a nonnil weapon accompanies the nil source, including targets without health data.
+
+Independent unchanged GAME.EXE probes cover 1,152 signed/default prefix cases, 432 reflection cases, 324 equipped-defense cases, and normal/nil-health NPC and PLAYER tails. Declared external services remain explicit; original Windows HP/audio and the public root DoDamage are not executed. Three missile class variants, actual C dispatch/Object.CallDamage, GodMode, immunities, nullable health, real invisibility removal/synchronization, and PLAYER electric lowword plus adjacent canaries are covered. All earlier test inputs, fixtures and goldens remain byte-identical.
+
+The frozen candidate adds 4,032 passing test identities, including 2,118 actual native HP/buff cases. Broad damage validation passes 41,171; race/checkptr2/actual cgocheck2 passes 86,871 events across three repetitions of 28,957 focused identities. Full normal/high-resolution suites each pass 109,251 with 49 skips; server/server-high-resolution each pass 104,423 with 7 skips. Exact terminal identity/action/multiplicity comparison preserves every prior case and skip. The 6,752 tested source inputs are rehashed against the clean commit and archive. Four clean Go 1.26.9 macOS ARM64 products and the focused offline Linux AMD64 Rosetta/Clang result have separate receipts in `tmp/opennox-r344-20261020/source-less-missile-port/`; the final verification receipt is written only after their exact checks pass. This checkpoint adds no campaign credit and does not establish overall 100% completion.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

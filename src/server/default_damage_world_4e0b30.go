@@ -786,7 +786,7 @@ func DefaultDamageWorld4E0B30(
 	}
 
 	nonUnit := !target.Class().HasAny(object.MaskUnits)
-	sourceLessLava := typ == object.DamageLava && source == nil && weapon == nil
+	sourceLessLava := typ == object.DamageLava && source == nil
 	if typ != object.DamageBlade && typ != object.DamageClaw && typ != object.DamageBite &&
 		!sourceLessMonster && !armedExplosion && !ordinaryMelee && !monsterImpact && !casterImpact && !simpleCrush && !missileDamage && !worldFlame && !worldImpale && !monsterWorldLava && !dispelUndead && !cloudPoison && !nonUnit && !monsterElectric && !monsterWeaponlessExplosion && !weaponlessRawSpell && !sourceLessNPCScriptHit && !sourceLessMonsterPoison && !playerTail && !monsterWeaponCrush && !playerCharge && !zapRay {
 		return defaultDamageUnsupported4E0B30(runtime, "unsupported protection branch", target, source, weapon, damage, typ)

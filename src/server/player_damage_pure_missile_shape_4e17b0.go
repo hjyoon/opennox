@@ -16,10 +16,10 @@ func playerDamagePureMissileShape4E17B0(source, weapon *Object, typ object.Damag
 // of which PlayerDamage prefix handled it. No source/missile update exists
 // for nonunits; an unowned missile can be its own terminal source.
 func playerDamagePureMissileSourceShape4E17B0(source, weapon *Object) bool {
-	if source == nil || weapon == nil || !weapon.Class().Has(object.ClassMissile) || weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand) {
+	if weapon == nil || !weapon.Class().Has(object.ClassMissile) || weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand) {
 		return false
 	}
-	if source == weapon {
+	if source == nil || source == weapon {
 		return true
 	}
 	if source.Class().HasAny(object.ClassWeapon | object.ClassWand | object.ClassMissile) {

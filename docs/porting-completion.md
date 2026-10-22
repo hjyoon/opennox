@@ -298,6 +298,47 @@ failed admission/build/fixture receipts and final evidence are retained in
 player-target IMPACT path remain separate work; overall 100% is unproved.
 
 
+### Initialized player fire and IMPACT source forms
+
+Initialized players retained as both source and weapon now reach FLAME,
+EXPLOSION and LAVA for player/NPC victims, plus IMPACT for player victims.
+The already supported NPC IMPACT path remains a positive control. FLAME/LAVA
+wear armor without HP absorption or carry; EXPLOSION/IMPACT use full armor,
+carry and remaining durability damage. Player IMPACT uses the existing
+caster defense helper to retain shield, GreatSword and staff behavior.
+DefaultDamage keeps actual fire types, early fire immunity, signed
+EXPLOSION halving, fire protection, late Defend, attribution and the guarded
+nil-health tail. No type is remapped to bypass protection.
+
+The unchanged original 288-row survey supplies 64 signed prefix rows for
+these four types and both victim layouts. Additional unchanged integrated
+PlayerDamage/DefaultDamage executions cover 20 NPC immunity combinations,
+the same 20 with nil health, and four player nil-health cases. Original
+carry executes for EXPLOSION/IMPACT; FISTP and the separately sealed HP-return
+tail execute only when reached. Mode/buff/possession, rear direction, armor
+wear, zero fire protection, late Defend, sound, ball and HP are declared
+service boundaries, not original Windows HP/audio execution. Initial probe
+service/sound assumptions and their failures remain retained.
+
+The 184 new passing events include 116 native C/caller cases across player,
+NPC and ordinary-monster victims, GodMode, immunity and nil health. Native
+HP, metadata, attacker/weapon identity, carry and adjacent electric bytes
+are checked. The caller path is owner-resolution/CallDamage, the boundary
+used by root DoDamage; the root wrapper itself is not called from legacy
+tests. An unused below-threshold hurt-state service is explicitly bound;
+HP and damage callbacks remain native. All previous tests/fixtures/goldens
+are byte-identical, and every earlier terminal identity/result/multiplicity
+and skip survives.
+
+Normal/HD each pass 85,507 events with 49 skips; server/server-HD each pass
+80,679 with 7 skips. Combined race/checkptr2/cgocheck2 passes 11,547 events
+across three repetitions on the exact 6,696-input candidate. Versioned
+originals, failed baseline/fixture probes and final evidence are preserved
+in `player-self-source-elemental-port/`. These totals are test events,
+including parents and subtests, not a completion percentage. Overall 100%
+remains unproved.
+
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

@@ -27,7 +27,7 @@ func playerDamageCasterImpactMarker4E17B0(target *Object, cached unsafe.Pointer)
 // This is the non-item case 11 used by Earthquake, not the existing Troll
 // self-strike slice. GAME.EXE does not restrict this switch to MONSTER or
 // MISSILE sources: source is the terminal owner and weapon is the full caster.
-// The caller admits only the previously missing NPC shapes; an entry-time
+// Callers admit NPC casters and initialized player self-source forms; an entry-time
 // nonmissile can still become a missile during a defense callback.
 func playerDamageCasterImpact4E17B0(
 	target, source, weapon *Object, damage int32, typ object.DamageType, r PlayerDamageRuntime4E17B0,

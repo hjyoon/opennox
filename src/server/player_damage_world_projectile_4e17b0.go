@@ -171,9 +171,9 @@ func playerDamageWorldProjectile4E17B0(
 		return reject("unsupported live world projectile carry record")
 	}
 	effective, wear := damage, damage
-	if !raw && typ != object.DamageFlame {
-		// Cases 3/7 use full armor; case 2 uses HALF armor. FLAME (case 1)
-		// wears armor but bypasses HP absorption and the fractional carry.
+	if !raw && typ != object.DamageFlame && typ != object.DamageLava {
+		// Cases 3/7 use full armor; case 2 uses HALF armor. FLAME/LAVA
+		// wear armor but bypass HP absorption and fractional carry.
 		scale := float64(absorption)
 		if typ == object.DamageCrush {
 			scale *= 0.5

@@ -1085,7 +1085,10 @@ func PlayerDamageNative4E17B0(
 	if target.Class().Has(object.ClassPlayer) && playerDamageCloudPoisonShape4E17B0(weapon, typ) {
 		return playerDamagePlayerCloudPoison4E17B0(target, source, weapon, damage, runtime)
 	}
-	if playerDamageWorldProjectileShape4E17B0(source, weapon, typ) ||
+	if target.Class().Has(object.ClassPlayer) && target.UpdateData != nil && target.UpdateDataPlayer().Player != nil && playerDamagePlayerSelfImpactShape4E17B0(source, weapon, typ) {
+		return playerDamageCasterImpact4E17B0(target, source, weapon, damage, typ, runtime)
+	}
+	if playerDamageWorldProjectileShape4E17B0(source, weapon, typ) || playerDamagePlayerSelfFireShape4E17B0(source, weapon, typ) ||
 		(target.Class().Has(object.ClassMonster) && !target.Class().Has(object.ClassPlayer) && uint32(target.SubClass())&0x10 != 0 && playerDamageNPCTurnUndeadShape4E17B0(source, weapon, typ)) {
 		return playerDamageWorldProjectile4E17B0(target, source, weapon, damage, typ, runtime)
 	}

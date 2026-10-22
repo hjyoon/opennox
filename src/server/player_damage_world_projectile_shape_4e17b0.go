@@ -62,3 +62,14 @@ func playerDamageNPCTurnUndeadShape4E17B0(source, weapon *Object, typ object.Dam
 	}
 	return source == nil || (!source.Class().HasAny(object.ClassWeapon|object.ClassWand|object.ClassMissile) && (!source.Class().HasAny(object.MaskUnits) || source.UpdateData != nil))
 }
+
+// Complete the initialized-player source/weapon forms of the fire switch.
+func playerDamagePlayerSelfFireShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
+	if typ != object.DamageFlame && typ != object.DamageExplosion && typ != object.DamageLava {
+		return false
+	}
+	return source != nil && source == weapon && source.UpdateData != nil && source.Class().Has(object.ClassPlayer) && !source.Class().HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand|object.ClassMissile) && source.UpdateDataPlayer().Player != nil
+}
+func playerDamagePlayerSelfImpactShape4E17B0(source, weapon *Object, typ object.DamageType) bool {
+	return typ == object.DamageImpact && source != nil && source == weapon && source.UpdateData != nil && source.Class().Has(object.ClassPlayer) && !source.Class().HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand|object.ClassMissile) && source.UpdateDataPlayer().Player != nil
+}

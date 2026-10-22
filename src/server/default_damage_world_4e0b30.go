@@ -268,7 +268,8 @@ func DefaultDamageWorld4E0B30(
 	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || playerSelfRaw)
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
-	worldProjectile := playerDamageWorldProjectileShape4E17B0(source, weapon, typ)
+	playerSelfFire := playerDamagePlayerSelfFireShape4E17B0(source, weapon, typ)
+	worldProjectile := playerDamageWorldProjectileShape4E17B0(source, weapon, typ) || playerSelfFire
 	// FIRE|SIMPLE|DANGEROUS colliders (Flame/FlameCleanse) also reach
 	// case 1 with signed raw damage, without the missile/melee qualifier.
 	worldFlame := playerDamageWorldFlameShape4E17B0(weapon, typ)
@@ -318,7 +319,7 @@ func DefaultDamageWorld4E0B30(
 	// branch, requires an attacker; protection and effects still use typ.
 	sourceLessPlayer := target.Class().Has(object.ClassPlayer) && source == nil && weapon == nil
 	playerTail := sourceLessPlayer || playerElectric || playerWeaponlessExplosion || ((armedExplosion || cloudPoison || weaponlessRawSpell || worldImpale || missilePierce || missileFlame || worldProjectile || worldFlame || spellMissileExplosion || spellMissileImpact || ordinaryMelee || monsterImpact || casterImpact || simpleCrush || zapRay) && target.Class().Has(object.ClassPlayer))
-	if playerTail && !casterImpact && !armedExplosion {
+	if playerTail && !casterImpact && !armedExplosion && !playerSelfFire {
 		if target.UpdateData == nil || target.HealthData == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "player without update/health", target, source, weapon, damage, typ)
 		}
@@ -608,7 +609,7 @@ func DefaultDamageWorld4E0B30(
 		if (sourceLessMonsterPoison || (playerSelfRaw && typ == object.DamagePoison)) && uint32(target.SubClass())&0x200 != 0 {
 			return true
 		}
-		if target.HealthData == nil && !sourceLessMonster && !armedExplosion && !armedElectric && !dispelUndead && !cloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {
+		if target.HealthData == nil && !sourceLessMonster && !playerSelfFire && !armedExplosion && !armedElectric && !dispelUndead && !cloudPoison && !worldFlame && !casterImpact && !monsterWorldLava && !(worldProjectile && typ == object.DamageFlame) {
 			return defaultDamageUnsupported4E0B30(runtime, "monster without health", target, source, weapon, damage, typ)
 		}
 		// GAME.EXE 004E0EA1 handles WEAPON|WAND (0x1001000) alike,
@@ -715,12 +716,12 @@ func DefaultDamageWorld4E0B30(
 	}
 	// 004E0D20 reloads class/subclass after Shock; 004E0D3E..004E0D52
 	// rejects FLAME for fire-immune monsters before protection or attribution.
-	if (missileFlame || worldFlame || monsterWorldLava || (sourceLessMonster && typ == object.DamageFlame) || (worldProjectile && typ == object.DamageFlame)) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
+	if (missileFlame || worldFlame || monsterWorldLava || (sourceLessMonster && typ == object.DamageFlame) || (worldProjectile && (typ == object.DamageFlame || (playerSelfFire && typ == object.DamageLava)))) && target.Class().Has(object.ClassMonster) && uint32(target.SubClass())&0x400 != 0 {
 		return true
 	}
 	// Non-unit map objects can have no health. The original tail still
 	// records attribution/effects; UnitDamageClear owns the nil-health gate.
-	if worldProjectile && ((target.HealthData == nil && target.Class().HasAny(object.MaskUnits)) ||
+	if worldProjectile && ((target.HealthData == nil && !playerSelfFire && target.Class().HasAny(object.MaskUnits)) ||
 		runtime.BuffOff == nil || runtime.DamageClear == nil ||
 		(playerTail && runtime.PlayerSetState == nil) ||
 		(source.Class().Has(object.ClassMonster) && source.UpdateData != nil && runtime.MonsterHasHitSound == nil)) {

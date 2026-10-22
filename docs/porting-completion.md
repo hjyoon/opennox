@@ -30,7 +30,7 @@ or a process exit does not prove a complete chapter.
 | --- | --- | --- | --- |
 | Warrior | Earlier original completion and chapter Save/Load; current replay pending | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; original earned WarCry use, reuse rejection after its active duration, and normal/HD Save/Load proved; War03d classification, optional areas and hostile WarCry effects remain open |
 | Conjurer | Earlier natural Con02a entry and manual Save/Load | Earlier original objectives and natural Con03a Save/Load | Original rescue, Foreman, Captain and ending boundary proved; normal/HD ordinary earned-Save Load; complete current replay pending |
-| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; five original B Swordsmen are defeated with native map/XP checks and living Save; natural A resource-return/B reentry retain the first three deaths and recharged wand, followed by two further guard kills; actual B Lightning against Wasps, Primitive refill, retained CurePotion consumption and normal/HD full-resource Save/Load with refuge return proved; original Stravas paired lift/cellar, earned Magic Missile level 2 and original WizardHelm automatic equipment with full-resource normal/HD Save/Load proved; actual upgraded Magic Missile defeats the original lift-carried bandit and three southern Archers with native health/death/XP checks, forest recovery and full-resource normal/HD Save/Load; remaining house Swordsman defeat, original Mystic trade and three potion purchases, gold debit and full-resource normal/HD Save/Load proved; two original northern Archers defeated by actual Fireballs with purchased-potion consumption, original resource recovery and full-resource normal/HD Save/Load; original green paired lift passenger descent and lower Swordsman defeat with native death checks and living normal/HD Save/Load; three southern Wolves defeated with earned spells and actual FlareWand attacks, native charge consumption, original MineCrystal recharge and full-resource normal/HD recovery proved; original SilverKey room guards defeated, chest key acquired by actual pickup, and full-resource normal/HD key Save/Load proved; original SilverKey door use, Gilgore story/hostile transition, native north-door unlock and living combat injury Save proved; Gilgore defeat, remaining Wiz03b objectives, Wiz03c and original ending pending |
+| Wizard | Earlier original completion and Wiz02a AUTOSAVE Load; current replay pending | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; five original B Swordsmen are defeated with native map/XP checks and living Save; natural A resource-return/B reentry retain the first three deaths and recharged wand, followed by two further guard kills; actual B Lightning against Wasps, Primitive refill, retained CurePotion consumption and normal/HD full-resource Save/Load with refuge return proved; original Stravas paired lift/cellar, earned Magic Missile level 2 and original WizardHelm automatic equipment with full-resource normal/HD Save/Load proved; actual upgraded Magic Missile defeats the original lift-carried bandit and three southern Archers with native health/death/XP checks, forest recovery and full-resource normal/HD Save/Load; remaining house Swordsman defeat, original Mystic trade and three potion purchases, gold debit and full-resource normal/HD Save/Load proved; two original northern Archers defeated by actual Fireballs with purchased-potion consumption, original resource recovery and full-resource normal/HD Save/Load; original green paired lift passenger descent and lower Swordsman defeat with native death checks and living normal/HD Save/Load; three southern Wolves defeated with earned spells and actual FlareWand attacks, native charge consumption, original MineCrystal recharge and full-resource normal/HD recovery proved; original SilverKey room guards defeated, chest key acquired by actual pickup, and full-resource normal/HD key Save/Load proved; original SilverKey door use, Gilgore story/hostile transition and native north-door unlock proved; actual earned Chain Lightning injury, fresh HD Heal and living normal/HD combat Save/Load proved; original Gilgore Fireball defeat with independently read native HP0/DEAD, XP reward and living normal/HD Save/Load proved; Amulet, remaining Wiz03b objectives, Wiz03c and original ending pending |
 
 The historical full-game engineering estimate is **79%**. It predates the
 chapter restriction and is not a measured completion percentage for the nine
@@ -979,6 +979,64 @@ dies before reaching the crystals and is excluded in full, bringing the
 historical death count to 75; the eligible injury save remains intact.
 Gilgore defeat, HD combat Load, successful post-combat recovery, the
 Amulet, Wiz03c and original ending remain pending.
+
+Fresh-Shield continuation 582 uses the original southern crystals before
+the Gilgore story and makes actual earned Chain Lightning inputs against
+the hostile NPC. Cursor observations record health 100, 80 and 70. The
+independent native map records health 65: the duration continues after the
+last combat observation. The owned living normal Save has HP 18, mana 41,
+poison 0 and XP 12517.546. Fresh ordinary HD Load 587 retains the injury,
+uses actual Lesser Heal and saves HP 18, mana 11 and poison 0. A separate
+pre-Save observation has HP 28 after healing; later combat and the native
+Save are distinct points in time. Both native Gilgore records have HP 65
+and no DEAD flag. Both inventories retain eight items, gold 400, the
+200-charge wand and the equipped original PoisonProtect1 robe.
+
+Private input diagnostic 586 opens the actual Escape menu and records
+native frame 32, HP 18 and mana 11 unchanged over 30 menu input iterations.
+Its four world/script/wall observations and captured menu pass; this
+no-Save UI diagnostic receives no campaign progression credit. The private
+continuation template now waits four input iterations before Escape down
+and releases it two iterations later. This changes keyboard timing only;
+it never sets a pause flag or changes a game-state/assertion guard. The
+original template and the timing review's terminology correction are
+retained. Player states 2/10 select animation 21, CAST_SPELL; the earlier
+conversational interpretation of state 2 as a hurt state is withdrawn.
+
+Proof `wizard3-original-gilgore-lightning-hd-verification-v587.json` has
+SHA-256
+`6286ebbe570dda8776ffcc5c83dd2e175b7e9378d590f39675b1f755be444880`.
+It binds the two living saves, independently read native enemy/inventory
+records, original pause-menu observations, the private input review and
+an immutable 593-case audit. Historical deaths are 87 and forced
+terminations remain zero. Death-ending attempts, including attempts with
+an earlier living Save or a dead Gilgore, remain excluded in full.
+
+Continuation 588 returns to the qualified native HP-47 Gilgore injury save,
+follows the original arena crystal approach, uses actual Lesser Heal and
+finishes Gilgore through actual Fireball inputs. The complete run remains
+alive, saves through the original menu and exits naturally. Its owned
+native Save has HP 13, mana 63, poison 0 and XP 12993.37. The independent
+version-62 NPC tail has maximum health 100, current health 0 and DEAD.
+Fresh ordinary HD Load 589 retains the defeat, uses two actual Lesser Heal
+inputs and re-Saves alive with HP 27, mana 3, poison 0 and the same XP.
+The HD native map again has Gilgore HP 0 and DEAD. Both native saves retain eight items,
+eight earned spells, gold 400, wand charges 200 and PoisonProtect1; both
+inventory sections are fully consumed by the independent reader. Normal/HD equipped WizardHelm health
+is 307/305 and PoisonRobe health is 184/180.
+
+Proof `wizard3-original-earned-gilgore-defeat-hd-verification-v589.json`
+has SHA-256
+`2b9673efca797feb7461af07e3707daa9fa4f3e669f83e1d499f5d0dceea3b8f`.
+It binds an immutable 595-case audit, both living owned saves, the original
+injury-source lineage, actual attack observations, independent native
+Gilgore/inventory records and complete world/script/wall observations.
+All 6,663 product inputs remain unchanged from the four-suite-tested
+build. Historical deaths remain 87 with zero forced terminations. This
+establishes Gilgore defeat and living normal/HD Save/Load, not full-resource
+recovery or complete Rogue clearance. The Amulet, remaining Wiz03b
+objectives, Wiz03c and original chapter 3 ending remain pending; overall
+100% completion is not claimed.
 
 ### Earned Warrior3 WarCry use, cooldown and HD Load
 

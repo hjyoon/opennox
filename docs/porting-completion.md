@@ -75,8 +75,35 @@ skip is lost. Normal/HD each pass 83,366 events with 49 skips; server/server-HD
 each pass 78,538 with 7 skips. Strict cgocheck2/race/checkptr2 checks pass
 1,215 events across three repetitions. Versioned evidence is preserved in
 `world-magic-missile-port/`, alongside the unchanged earlier saves and builds.
-Overall port completion remains unproved; a separately reproduced source-less
-player BLADE admission gap is still open.
+Overall port completion remains unproved. Subsequent source-less player
+physical-damage work is described below.
+
+### Source-less player BLADE, CRUSH and BITE
+
+PlayerDamage and DefaultDamage now accept source-less player script hits
+for types 0, 2 and 8. BLADE/BITE use full armor; CRUSH uses half armor.
+The prefix retains cached absorption and markers across ObserveClear,
+reloads live carry and inventory, and applies durability before minimum,
+GodMode and Quest scaling. DefaultDamage retains late Defend, Shield,
+attribution, hurt state and HP without a second armor calculation.
+
+The original's unchanged PlayerDamage/carry/FISTP instructions supply 48
+signed-input player/NPC prefix comparisons with declared armor-wear and HP
+boundaries. Separate C dispatch verifies player HP200 to195 for BLADE/BITE
+and to193 for CRUSH with native pointers above 4 GiB. The 87 new passing
+events also cover early gates, Coop, reflection bypass, Quest, live observer
+replacement, late Defend and Shield. Two older boundary tests now retain
+the supported player input as a positive control or check its missing-HP
+service rejection; their unrelated negative inputs remain rejected.
+
+Normal/HD each pass 83,453 events with 49 skips; server/server-HD each pass
+78,625 with 7 skips. Every prior terminal identity, result, multiplicity
+and skip is retained. Strict cgocheck2/race/checkptr2 passes 330 events over
+three repetitions. Versioned evidence is in `source-less-player-physical-port/`.
+The broader source-less switch is still incomplete: independent probes retain
+IMPALE/CLAW/IMPACT rejections and a further 304-condition original prefix
+survey. Those observations are not credited as implemented paths or original
+Windows HP execution. Overall 100% remains unproved.
 
 ### Current fresh Warrior and Conjurer chapter 1 starts
 

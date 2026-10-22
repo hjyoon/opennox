@@ -397,7 +397,13 @@ func TestPlayerDamageChargePrefixShapeBoundary4E17B0(t *testing.T) {
 				r.BlockSourceExcluded = func(*Object) bool { t.Fatal("unsupported shape entered charge prefix"); return false }
 				before, beforeUpdate, beforePlayer, beforeSource, beforeSourceUpdate, beforeHP := *target, *cached, *cached.Player, *source, *sourceUpdate, *target.HealthData
 				h, result := PlayerDamageNative4E17B0(target, attacker, attacker, raw, object.DamageCrush, r)
-				if h || result || reason != "unsupported player damage shape" || *target != before || *cached != beforeUpdate || *cached.Player != beforePlayer || *source != beforeSource || *sourceUpdate != beforeSourceUpdate || *target.HealthData != beforeHP {
+				wantReason := "unsupported player damage shape"
+				if shape == "nil-source" {
+					// Script CRUSH has its own native path. This deliberately
+					// incomplete charge fixture still lacks its HP service.
+					wantReason = "missing source-less physical default damage"
+				}
+				if h || result || reason != wantReason || *target != before || *cached != beforeUpdate || *cached.Player != beforePlayer || *source != beforeSource || *sourceUpdate != beforeSourceUpdate || *target.HealthData != beforeHP {
 					t.Fatalf("charge boundary=%t/%t reason=%q", h, result, reason)
 				}
 			})

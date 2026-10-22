@@ -219,11 +219,23 @@ func TestPlayerDamageNPCScriptBlade4E17B0RejectsUnrelatedShapes(t *testing.T) {
 			}
 			rejected, defaults := 0, 0
 			r := PlayerDamageRuntime4E17B0{
-				DefaultDamage: func(_, _, _ *Object, _ int32, _ object.DamageType) bool { defaults++; return true },
-				Unsupported:   func(_ string, _, _, _ *Object, _ int32, _ object.DamageType) { rejected++ },
+				DefaultDamage: func(target, a, w *Object, d int32, typ object.DamageType) bool {
+					if target != npc || a != nil || w != nil || d != 500 || typ != object.DamageBlade {
+						t.Fatal("unexpected script BLADE default boundary")
+					}
+					defaults++
+					return true
+				},
+				Unsupported: func(_ string, _, _, _ *Object, _ int32, _ object.DamageType) { rejected++ },
 			}
 			h, result := PlayerDamageNative4E17B0(npc, source, weapon, 500, object.DamageBlade, r)
-			if h || result || rejected != 1 || defaults != 0 || npc.HealthData.Cur != 200 {
+			wantHandled, wantRejected, wantDefaults := false, 1, 0
+			if mode == "player" {
+				// Player source-less BLADE is now ported too. Keep this exact
+				// input as a positive control; the other four stay rejected.
+				wantHandled, wantRejected, wantDefaults = true, 0, 1
+			}
+			if h != wantHandled || result != wantHandled || rejected != wantRejected || defaults != wantDefaults || npc.HealthData.Cur != 200 {
 				t.Fatalf("unrelated=%s handled=%t result=%t reject=%d default=%d HP=%d", mode, h, result, rejected, defaults, npc.HealthData.Cur)
 			}
 		})

@@ -1,0 +1,2011 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "ranges": [
+    {
+      "name": "nox_float2int_419A70",
+      "address": "0x00419A70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "load the binary32 argument and convert to signed int through x87 FISTPL with the active rounding mode; Hammer attack 00538960 spills strength times binary32 00583BB0 before this call"
+    },
+    {
+      "name": "nox_xxx_monsterActionDyingStart_544C40",
+      "address": "0x00544C40",
+      "size": 96,
+      "sha256": "cf6e0702fbe21471d053172bf8d6ec6a1b8e45b59a3ad0603626e2b125ef5265",
+      "purpose": "the complete original ACTION_DYING start interval: death sound, death script callback, and optional monster die callback"
+    },
+    {
+      "name": "nox_xxx_monsterActionDeadStart_544D80",
+      "address": "0x00544D80",
+      "size": 224,
+      "sha256": "4924778e43ec251093815573abbcc95e76addce8626388edfd69d185d6f4e6dc",
+      "purpose": "the complete original ACTION_DEAD start interval used to validate the ordinary non-zombie soul, motion, dead callback, and flag admission"
+    },
+    {
+      "name": "monster_sound_set_getter",
+      "address": "0x00424300",
+      "size": 31,
+      "sha256": "11676dd3929f946c37a619bdcca10071055d69e4a91851643782069ea685fa7e"
+    }
+  ],
+  "rows": [
+    {
+      "input": {
+        "name": "dying-ordinary",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:A"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 42,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-no-sound",
+        "entry": "dying",
+        "sound": false,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "script:entry",
+        "callback:A"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 42,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-function-B",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "function-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:B"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 43,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-definition-B",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "definition-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:B"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 43,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-clear-function",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "clear-function"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry"
+      ],
+      "called": [],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 0,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-nil-definition",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "nil-definition"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry"
+      ],
+      "called": [],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [
+        {
+          "access": 19,
+          "address": 228,
+          "size": 4
+        }
+      ],
+      "return": 0,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-install-function",
+        "entry": "dying",
+        "sound": true,
+        "initial": "none",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "function-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:B"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 43,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-swap-update",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "swap-update"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:A"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 42,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-swap-update-edit-replacement",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "swap-update"
+          },
+          {
+            "at": "audio",
+            "kind": "replacement-function-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:A"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 42,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-swap-update-edit-entry",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "swap-update"
+          },
+          {
+            "at": "audio",
+            "kind": "function-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:B"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 43,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-script-function-B",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "script",
+            "kind": "function-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:B"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 43,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-script-definition-B",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "script",
+            "kind": "definition-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:B"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 43,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-script-clear-function",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "script",
+            "kind": "clear-function"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry"
+      ],
+      "called": [],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 0,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-script-nil-definition",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "script",
+            "kind": "nil-definition"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry"
+      ],
+      "called": [],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [
+        {
+          "access": 19,
+          "address": 228,
+          "size": 4
+        }
+      ],
+      "return": 0,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-script-install-function",
+        "entry": "dying",
+        "sound": true,
+        "initial": "none",
+        "actions": [
+          {
+            "at": "script",
+            "kind": "function-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:B"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 43,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-script-swap-update",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "script",
+            "kind": "swap-update"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:A"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 42,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-script-swap-update-edit-replacement",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "script",
+            "kind": "swap-update"
+          },
+          {
+            "at": "script",
+            "kind": "replacement-function-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:A"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 42,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-script-swap-update-edit-entry",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "script",
+            "kind": "swap-update"
+          },
+          {
+            "at": "script",
+            "kind": "function-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry",
+        "callback:B"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 43,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dying-audio-definition-script-function",
+        "entry": "dying",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "audio",
+            "kind": "definition-B"
+          },
+          {
+            "at": "script",
+            "kind": "clear-function"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "audio:715",
+        "script:entry"
+      ],
+      "called": [],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        1065353216,
+        1073741824,
+        1077936128,
+        1082130432,
+        1084227584,
+        1086324736
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [],
+      "return": 0,
+      "entered_ranges": [
+        "0x424300",
+        "0x544c40"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-ordinary",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-ordinary",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul",
+        "callback:A",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-function-B",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "soul",
+            "kind": "function-B"
+          }
+        ],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul",
+        "callback:B",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-definition-B",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "soul",
+            "kind": "definition-B"
+          }
+        ],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul",
+        "callback:B",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-clear-function",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "soul",
+            "kind": "clear-function"
+          }
+        ],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-nil-definition",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "soul",
+            "kind": "nil-definition"
+          }
+        ],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul"
+      ],
+      "called": [],
+      "flags": 301989892,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 0,
+      "random_args": [],
+      "faults": [
+        {
+          "access": 19,
+          "address": 232,
+          "size": 4
+        }
+      ],
+      "return": 0,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-swap-update",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "soul",
+            "kind": "swap-update"
+          }
+        ],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul",
+        "callback:A",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-install-function",
+        "entry": "dead",
+        "sound": true,
+        "initial": "none",
+        "actions": [
+          {
+            "at": "soul",
+            "kind": "function-B"
+          }
+        ],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul",
+        "callback:B",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-swap-update-edit-replacement",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "soul",
+            "kind": "swap-update"
+          },
+          {
+            "at": "soul",
+            "kind": "replacement-function-B"
+          }
+        ],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul",
+        "callback:A",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-soul-swap-update-edit-entry",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "soul",
+            "kind": "swap-update"
+          },
+          {
+            "at": "soul",
+            "kind": "function-B"
+          }
+        ],
+        "soul": true,
+        "zombie": [
+          false,
+          false
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "soul",
+        "callback:B",
+        "zombie:false",
+        "zombie:false"
+      ],
+      "called": [
+        "B"
+      ],
+      "flags": 301989916,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989916,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-zombie-after-callback",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          true
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:true",
+        "duration:0",
+        "duration:1",
+        "random:8:13"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989908,
+      "entry_duration": 9,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 1,
+      "random_args": [
+        8,
+        13
+      ],
+      "faults": [],
+      "return": 301989908,
+      "entered_ranges": [
+        "0x419a70",
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-second-zombie-query-changes-answer",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          false,
+          true
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:false",
+        "zombie:true"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989908,
+      "entry_duration": 3435925777,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 2,
+      "random_args": [],
+      "faults": [],
+      "return": 301989908,
+      "entered_ranges": [
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-zombie-callback-swaps-update",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "dead",
+            "kind": "swap-update"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          true
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:true",
+        "duration:0",
+        "duration:1",
+        "random:8:13"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989908,
+      "entry_duration": 9,
+      "replacement_duration": 3722256930,
+      "current_update": "replacement",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 1,
+      "random_args": [
+        8,
+        13
+      ],
+      "faults": [],
+      "return": 301989908,
+      "entered_ranges": [
+        "0x419a70",
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-zombie-random-live-flags",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [
+          {
+            "at": "random",
+            "kind": "flags-B"
+          }
+        ],
+        "soul": false,
+        "zombie": [
+          true
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:true",
+        "duration:0",
+        "duration:1",
+        "random:8:13"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 1392508948,
+      "entry_duration": 9,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 1,
+      "random_args": [
+        8,
+        13
+      ],
+      "faults": [],
+      "return": 1392508948,
+      "entered_ranges": [
+        "0x419a70",
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-duration-fractional",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          true
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:true",
+        "duration:0",
+        "duration:1",
+        "random:8:13"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989908,
+      "entry_duration": 9,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 1,
+      "random_args": [
+        8,
+        13
+      ],
+      "faults": [],
+      "return": 301989908,
+      "entered_ranges": [
+        "0x419a70",
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-duration-ties-even",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          true
+        ],
+        "duration": [
+          1.5,
+          2.5
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:true",
+        "duration:0",
+        "duration:1",
+        "random:2:2"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989908,
+      "entry_duration": 9,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 1,
+      "random_args": [
+        2,
+        2
+      ],
+      "faults": [],
+      "return": 301989908,
+      "entered_ranges": [
+        "0x419a70",
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-duration-negative-ties",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          true
+        ],
+        "duration": [
+          -1.5,
+          -2.5
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:true",
+        "duration:0",
+        "duration:1",
+        "random:-2:-2"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989908,
+      "entry_duration": 9,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 1,
+      "random_args": [
+        -2,
+        -2
+      ],
+      "faults": [],
+      "return": 301989908,
+      "entered_ranges": [
+        "0x419a70",
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "dead-duration-integer",
+        "entry": "dead",
+        "sound": true,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          true
+        ],
+        "duration": [
+          7.0,
+          12.0
+        ],
+        "random_return": 9
+      },
+      "events": [
+        "callback:A",
+        "zombie:true",
+        "duration:0",
+        "duration:1",
+        "random:7:12"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 301989908,
+      "entry_duration": 9,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 1,
+      "random_args": [
+        7,
+        12
+      ],
+      "faults": [],
+      "return": 301989908,
+      "entered_ranges": [
+        "0x419a70",
+        "0x544d80"
+      ]
+    },
+    {
+      "input": {
+        "name": "old-zombie-duration-fractional-control",
+        "entry": "dead",
+        "sound": false,
+        "initial": "A",
+        "actions": [],
+        "soul": false,
+        "zombie": [
+          true
+        ],
+        "duration": [
+          7.9,
+          12.9
+        ],
+        "random_return": 9,
+        "flags": 32768,
+        "entry_duration": 0
+      },
+      "events": [
+        "callback:A",
+        "zombie:true",
+        "duration:0",
+        "duration:1",
+        "random:8:13"
+      ],
+      "called": [
+        "A"
+      ],
+      "flags": 32784,
+      "entry_duration": 9,
+      "replacement_duration": 3722256930,
+      "current_update": "entry",
+      "motion_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "zombie_queries": 1,
+      "random_args": [
+        8,
+        13
+      ],
+      "faults": [],
+      "return": 32784,
+      "entered_ranges": [
+        "0x419a70",
+        "0x544d80"
+      ]
+    }
+  ],
+  "code_bytes_unchanged": true,
+  "scope": "Unchanged original ACTION_DYING/ACTION_DEAD start functions and reached sound getter/float conversion. Audio, original three-argument ScriptDeath (the native adapter retains its pre-existing OpenNox event7 extension), ReleasedSoul, accepted A/B/C callbacks, IsZombie, duration-table floats and random service are declared checked boundaries. Callbacks mutate the cached entry definition, callback slot or current UpdateData independently; removal/installation and original nil-definition fault addresses are retained. Full event/motion/flags/cached-duration/query-count vectors are recorded. This is death-entry semantics, not complete Windows/gameplay/campaign or overall porting coverage."
+}

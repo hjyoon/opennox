@@ -51,7 +51,17 @@ func (s *Server) MonsterActionDyingStart544C40(unit *Object, runtime MonsterActi
 		runtime.AudioEvent(*(*uint32)(unsafe.Add(update.SoundSet122, 15*4)), unit)
 	}
 	runtime.ScriptCallback(&update.ScriptDeath, nil, unit, NoxEventMonsterDead)
+	// The original reloads the definition through the cached entry update after
+	// audio and ScriptDeath. Replacing Object.UpdateData does not replace
+	// that cached base, but either callback may replace its definition/slot.
+	if update.MonsterDef == nil {
+		return monsterActionDeathUnsupported544C40(runtime, "live monster definition", unit)
+	}
+	dieFunc = update.MonsterDef.DieFunc228
 	if dieFunc != nil {
+		if runtime.CanDieFunc == nil || !runtime.CanDieFunc(dieFunc) || runtime.DieFunc == nil {
+			return monsterActionDeathUnsupported544C40(runtime, "live monster die function", unit)
+		}
 		runtime.DieFunc(dieFunc, unit)
 	}
 	return true
@@ -142,8 +152,9 @@ func (s *Server) MonsterActionDeadStart544D80(unit *Object, runtime MonsterActio
 	if update.MonsterDef == nil {
 		return monsterActionDeadUnsupported544D80(runtime, "missing monster definition", unit)
 	}
-	zombie := runtime.IsZombie(unit)
-	if zombie && (runtime.ZombieDeadDuration == nil || runtime.RandomInt == nil) {
+	// Preserve the established read-only preflight for partial runtimes.
+	// Fully bound production runtimes query only after the live dead callback.
+	if (runtime.ZombieDeadDuration == nil || runtime.RandomInt == nil) && runtime.IsZombie(unit) {
 		return monsterActionDeadUnsupported544D80(runtime, "zombie dead duration", unit)
 	}
 	needsReleasedSoul := unit.Field131 == 14 && uint32(unit.SubClass())&0x10000 != 0
@@ -161,16 +172,34 @@ func (s *Server) MonsterActionDeadStart544D80(unit *Object, runtime MonsterActio
 	unit.VelVec = types.Pointf{}
 	unit.ForceVec = types.Pointf{}
 	unit.Pos24 = types.Pointf{}
+	// ReleasedSoul may change the definition or callback in the entry update.
+	// The original reads it after zeroing motion, even if current UpdateData changed.
+	if update.MonsterDef == nil {
+		return monsterActionDeadUnsupported544D80(runtime, "live monster definition", unit)
+	}
+	deadFunc = update.MonsterDef.DeadFunc232
 	if deadFunc != nil {
+		if runtime.CanDeadFunc == nil || !runtime.CanDeadFunc(deadFunc) || runtime.DeadFunc == nil {
+			return monsterActionDeadUnsupported544D80(runtime, "live monster dead function", unit)
+		}
 		runtime.DeadFunc(deadFunc, unit)
 	}
-	if zombie {
-		minimum := int(runtime.ZombieDeadDuration(0))
-		maximum := int(runtime.ZombieDeadDuration(1))
+	if runtime.IsZombie(unit) {
+		if runtime.ZombieDeadDuration == nil || runtime.RandomInt == nil {
+			return monsterActionDeadUnsupported544D80(runtime, "live zombie dead duration", unit)
+		}
+		minimum := int(playerCollideRound4E8460(runtime.ZombieDeadDuration(0)))
+		maximum := int(playerCollideRound4E8460(runtime.ZombieDeadDuration(1)))
 		update.Field123 = uint32(runtime.RandomInt(minimum, maximum))
 		unit.ObjFlags |= object.FlagShort
 	} else {
-		unit.ObjFlags |= object.FlagAllowOverlap | object.FlagShort
+		// The original queries again after a false first result. Both calls can
+		// observe state changed by the live dead callback or preceding query.
+		overlap := !runtime.IsZombie(unit)
+		unit.ObjFlags |= object.FlagShort
+		if overlap {
+			unit.ObjFlags |= object.FlagAllowOverlap
+		}
 	}
 	return true
 }

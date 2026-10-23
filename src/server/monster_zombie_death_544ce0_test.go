@@ -46,8 +46,8 @@ func TestMonsterActionDeadStart544D80ZombieDuration(t *testing.T) {
 			return []float32{7.9, 12.9}[index]
 		},
 		RandomInt: func(minimum, maximum int) int {
-			if minimum != 7 || maximum != 12 {
-				t.Fatalf("duration bounds = %d/%d, want 7/12", minimum, maximum)
+			if minimum != 8 || maximum != 13 {
+				t.Fatalf("duration bounds = %d/%d, want 8/13", minimum, maximum)
 			}
 			events = append(events, "random")
 			return 9

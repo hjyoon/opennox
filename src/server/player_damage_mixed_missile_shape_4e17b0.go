@@ -2,14 +2,12 @@ package server
 
 import "github.com/opennox/libs/object"
 
-// Non-melee weapon-class missiles retain the same prefix as other projectiles, then
-// enter original item pre-damage through their initialized modifier record.
+// Weapon-class missiles retain the same prefix as other projectiles, then enter
+// original item pre-damage through their initialized modifier record. DefaultDamage
+// evaluates the live melee qualifier for friendly hits and Shock retaliation.
 // The missile need not carry unit update data; nonnull source unit records do. Nil sources skip source-only work.
 func playerDamageMixedMissileShape4E17B0(source, weapon *Object) bool {
 	if weapon == nil || weapon.InitData == nil || (!weapon.Class().Has(object.ClassMissile) || !weapon.Class().Has(object.ClassWeapon)) || weapon.Class().HasAny(object.MaskUnits|object.ClassWand) {
-		return false
-	}
-	if defaultDamageAttackQualifies4E1400(source, weapon) {
 		return false
 	}
 	if source == nil || source == weapon {

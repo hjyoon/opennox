@@ -299,7 +299,7 @@ func TestDefaultDamageWorld4E0B30PierceAdmissionBoundary(t *testing.T) {
 			tc.change(v, a, w)
 			reason := ""
 			r.Unsupported = func(s string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = s }
-			supported := tc.name == "non-unit source is a separate port" || tc.name == "different type"
+			supported := tc.name == "non-unit source is a separate port" || tc.name == "different type" || tc.name == "mixed missile melee weapon"
 			beforeKind, beforeMarker := v.UpdateDataPlayer().Field75, v.UpdateDataPlayer().Field76
 			calls := 0
 			r.DamageClear = func(target *Object, amount int32) {
@@ -311,7 +311,7 @@ func TestDefaultDamageWorld4E0B30PierceAdmissionBoundary(t *testing.T) {
 			}
 			DefaultDamageWorld4E0B30(v, a, w, 3, tc.typ, r)
 			if supported {
-				// Exact original standalone DefaultDamage confirms both historical
+				// Exact original standalone DefaultDamage confirms these historical
 				// inputs; keep their identity and all other negative controls.
 				u := v.UpdateDataPlayer()
 				wantLatch := uint32(0)

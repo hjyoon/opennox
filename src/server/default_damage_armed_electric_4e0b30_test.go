@@ -301,11 +301,11 @@ func TestDefaultDamageArmedElectric4E0B30AdmissionAndServices(t *testing.T) {
 				rejected = reason == "unsupported monster damage shape"
 			}
 			ok := DefaultDamageWorld4E0B30(v, a, w, 12, typ, r)
-			if shape == "world-weapon" {
-				// Retain this historical test identity as an original-confirmed
-				// positive world-weapon control; unrelated invalid shapes stay rejected.
+			if shape == "world-weapon" || shape == "missile-weapon" {
+				// Preserve both historical identities as independently replayed original
+				// positive controls for world and initialized qualifying missile weapons.
 				u := v.UpdateDataMonster()
-				if !ok || rejected || v.HealthData.Cur != 188 || v.Obj130 != w || v.Field131 != uint32(typ) || v.Frame134 != 1400 || u.Field547 != 1 || u.Field546 != uint32(w.TypeInd) {
+				if !ok || rejected || v.HealthData.Cur != 188 || v.Obj130 != w || v.Field131 != uint32(typ) || v.Frame134 != 1400 || (shape == "missile-weapon" && v.Pos132 != a.PrevPos) || u.Field547 != 1 || u.Field546 != uint32(w.TypeInd) {
 					t.Fatal("world electric control")
 				}
 				return

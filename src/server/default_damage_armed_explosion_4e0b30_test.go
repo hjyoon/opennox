@@ -302,10 +302,18 @@ func TestDefaultDamageArmedExplosion4E0B30AdmissionAndServices(t *testing.T) {
 			reason := ""
 			r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why }
 			ok := DefaultDamageWorld4E0B30(v, a, w, 3, typ, r)
-			if shape == "world-weapon" {
-				// Original DefaultDamage forwards raw3 for this exact world shape.
+			if shape == "poison-type" {
+				// The unchanged original exits through poison immunity before attribution/HP.
 				u := v.UpdateDataMonster()
-				if !ok || reason != "" || v.HealthData.Cur != 197 || v.Obj130 != w || v.Field131 != uint32(typ) || v.Frame134 != 1400 || u.Field547 != 1 || u.Field546 != uint32(w.TypeInd) {
+				if !ok || reason != "" || v.HealthData.Cur != 200 || v.Obj130 != nil || v.Frame134 != 0 || u.Field547 != 0 || u.Field546 != 0 || u.StatusFlags != 0 {
+					t.Fatal("original poison immunity control")
+				}
+				return
+			}
+			if shape == "world-weapon" || shape == "non-unit-source" || shape == "ranged-weapon" {
+				// Independent original replays forward raw3 for each exact historical input.
+				u := v.UpdateDataMonster()
+				if !ok || reason != "" || v.HealthData.Cur != 197 || v.Obj130 != w || v.Field131 != uint32(typ) || v.Frame134 != 1400 || (shape != "world-weapon" && v.Pos132 != a.PrevPos) || u.Field547 != 1 || u.Field546 != uint32(w.TypeInd) {
 					t.Fatal("world explosion control")
 				}
 				return

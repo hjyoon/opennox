@@ -715,6 +715,18 @@ The frozen 6,784-input source adds 10,453 passing regression identities. Exact c
 
 These results do not establish original Windows HP/audio fidelity, public root-wrapper signed/default acceptance, arbitrary modifier callbacks, campaign chapter completion, or 100% overall porting. The Warrior/Conjurer/Wizard chapter 1–3 replay matrix and other open portability work remain required.
 
+### Initialized non-missile weapon damage
+
+Initialized `WEAPON` objects without missile, wand or unit class bits now retain the complete PlayerDamage prefix and DefaultDamage tail for the remaining signed/default damage types and source forms, including nil, world and terminal-weapon sources. The existing armed EXPLOSION prefix continues on its original-confirmed path, preserving the previously qualified GreatSword callback order, missing-service boundaries and live update/layout checks. Shared armed/melee/default paths execute one live enemy query before NoUpdate; the melee qualifier and Hammer exception still own friendly-hit rejection and Shock retaliation.
+
+Independent original-executable evidence records 3,456 signed/default prefix cases, 1,620 integrated NPC cases with health and the same 1,620 with nil health, 768 ordered friendliness/NoUpdate/Shock cases, and five exact historical boundary inputs. Subclasses include qualifying `0`/`0x1000000`, Hammer `0x4000`, and ranged `0x10` where exercised. The original prefix, carry/FISTP, DefaultDamage, melee/Hammer predicates, initialized empty item-pre-damage loop and reached sound/latch ranges execute unchanged. Mode, buffs, facing, armor wear, declared protection/defense/audio/retaliation/state and HP services are explicit boundaries. Historical fixture field `weapon_kind` retains its reused harness label; the actual emulated and native weapon class is `WEAPON` without MISSILE.
+
+The registered native C dispatcher and `Object.CallDamage` add 11,340 HP/immunity cases with God mode, nil health, native source hit timestamps, electric-state canaries, carry/marker state and actual weapon/position attribution. Twelve actual native Shock cases also verify retaliation HP, PLAYER state23 and BuffOff synchronization, including preservation of the Shock buff and source HP when a ranged weapon does not qualify. Five historical boundary inputs retain their identities and exact fields as original-confirmed outcomes: four deliver HP damage and one exits through poison immunity before attribution/HP. Every other prior test, fixture and golden remains byte-identical.
+
+The frozen 6,791-input source adds 15,581 passing regression identities. All previous terminal identities, actions, multiplicities and skips survive: normal and high-resolution full suites each pass 153,068 cases with 49 skips; server and high-resolution server each pass 148,240 with seven skips. Actual `cgocheck2`, race and `checkptr=2` pass 218,370 events across three repetitions of 72,790 focused identities. Focused offline Linux AMD64 Rosetta/Clang runs those exact 72,790 identities. Four clean macOS ARM64 products, the committed source archive and the pushed `port/go1.26-multiarch` revision are independently checked.
+
+This checkpoint does not establish a full Linux/GCC or physical-x86 run, original Windows HP/audio fidelity, arbitrary modifier-callback compatibility, public root-wrapper signed/default acceptance, campaign chapter completion or 100% overall porting. Wand-specific layouts and other remaining portability work, including the Warrior/Conjurer/Wizard chapter 1–3 replay matrix, remain open.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

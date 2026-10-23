@@ -295,11 +295,34 @@ func TestDefaultDamageWorld4E0B30PierceAdmissionBoundary(t *testing.T) {
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			v, a, w, r := defaultDamagePierceFixture4E0B30(t)
+			sourceUpdate := a.UpdateDataMonster()
 			tc.change(v, a, w)
 			reason := ""
 			r.Unsupported = func(s string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = s }
-			r.DamageClear = func(*Object, int32) { t.Fatal("unsupported shape reached HP") }
+			supported := tc.name == "non-unit source is a separate port" || tc.name == "different type"
+			beforeKind, beforeMarker := v.UpdateDataPlayer().Field75, v.UpdateDataPlayer().Field76
+			calls := 0
+			r.DamageClear = func(target *Object, amount int32) {
+				if !supported || target != v || amount != 3 {
+					t.Fatal("unsupported shape or changed original amount reached HP")
+				}
+				calls++
+				target.HealthData.Cur -= uint16(amount)
+			}
 			DefaultDamageWorld4E0B30(v, a, w, 3, tc.typ, r)
+			if supported {
+				// Exact original standalone DefaultDamage confirms both historical
+				// inputs; keep their identity and all other negative controls.
+				u := v.UpdateDataPlayer()
+				wantLatch := uint32(0)
+				if a.Class().Has(object.ClassMonster) {
+					wantLatch = 700
+				}
+				if reason != "" || calls != 1 || v.HealthData.Cur != 17 || v.Obj130 != w || v.Pos132 != a.PrevPos || v.Frame134 != 700 || v.Field131 != uint32(tc.typ) || u.Field75 != beforeKind || u.Field76 != beforeMarker || sourceUpdate.Field130 != wantLatch {
+					t.Fatal("original mixed-missile positive control changed")
+				}
+				return
+			}
 			if reason == "" || v.Obj130 != nil || v.Frame134 != 0 {
 				t.Fatal("unsupported shape was admitted/mutated")
 			}

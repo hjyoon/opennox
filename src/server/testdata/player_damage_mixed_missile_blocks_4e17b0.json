@@ -1,0 +1,8112 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_ranges": [
+    {
+      "name": "nox_float2int_419A70",
+      "address": "0x00419A70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "load the binary32 argument and convert to signed int through x87 FISTPL with the active rounding mode; Hammer attack 00538960 spills strength times binary32 00583BB0 before this call"
+    },
+    {
+      "name": "nox_xxx_playerDamage_4E17B0",
+      "address": "0x004E17B0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
+      "purpose": "the complete original PlayerDamage interval through the next function boundary, used to validate ordinary Spider-to-player damage, lethal transition, death-notification admission, NPC source-less POISON bypass of armor/carry, and player/NPC unit-self-weapon and nil-weapon player-sourced ELECTRIC/AIRBORNE_ELECTRIC with original weapon identity through armor defense/durability, fractional HP carry, raw type attribution, GodMode, Quest scaling and DefaultDamage; NPC Reflect Shield selects hit marker DWORD 2188 rather than the player observer layout, reflects current-position frontal missiles or non-missile types 16/17 before damage-shape admission, preserves conditional projectile ownership and ZapRay point-FX/audio order, and lets ordinary non-missile type 9 and rear electric hits fall through; ordinary NPC shields instead face the attack's previous position, require block action 21 and armor mask 0x3000000, exclude types 9/17/15 and four or six source types according to weapon presence, and preserve marker/audio/reflection/conditional-owner order, weapon-or-source wear with binary32 rounding, inventory removal and actual NPC action pop on shield destruction; unblocked monster-fired NPC PIERCE uses absorption cached before defense callbacks, wider subtraction/multiplication followed by a binary32 spill, live fractional HP and armor carry, missile attribution before wear with cached marker fallback, armor durability before minimum HP and Quest scaling, and the production DefaultDamage tail; native-width C-entry and C-owned armor fixtures prove repeated NPC HP loss, nonlethal item wear and owner-HP wire reports without replacing the damage or HP services"
+    },
+    {
+      "name": "sub_4E20F0",
+      "address": "0x004E20F0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
+      "purpose": "reload the live unit class and update at the fractional HP carry read after the caller's binary32 scaled-damage spill, select player before monster layout, add carry with a binary32 spill, round ties-to-even through 00419A70, store the integer damage and reload the live class/update for the remaining fractional carry; nil target or integer output is a no-op"
+    }
+  ],
+  "scope": "Unchanged original mixed MISSILE|WEAPON subclass0x10 prefixes with initialized PLAYER source, all18 types, NPC/PLAYER targets and front shield/sword/staff forms. Empty modifier init is present. Prefix/carry/FISTP unchanged; mode/buff/direction/wear/DefaultDamage, reflection owner changes, FX/audio and block state/balance are declared boundaries. No Windows HP/audio/rootDoDamage or nonempty modifier effects.",
+  "rows": [
+    {
+      "damage_type": 0,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 0,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 0,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 0,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 0,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 0,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 1,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 1,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 1,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 1,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 1,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 1,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 2,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 2,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 2,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 2,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 2,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        7
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 0,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          2
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          7
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 2,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        7
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 0,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          2
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          7
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 3,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 3,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 3,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 3,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 3,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 3,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 4,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 4,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 4,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 4,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 4,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 4,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 5,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 5,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 5,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 5,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 5,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 5,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 6,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 6,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 6,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 6,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 6,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 6,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 7,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 7,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 7,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 7,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 7,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 7,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 8,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 8,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 8,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 8,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 8,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 8,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 9,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "electric-scale",
+          1
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 9,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "electric-scale",
+          1
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 9,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 9,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 9,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "electric-scale",
+          1
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 9,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "electric-scale",
+          1
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 10,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 10,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 10,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 10,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 10,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 10,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 11,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 11,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 11,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 11,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 11,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 11,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        5
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 3196059648,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          4
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          5
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 12,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 12,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 12,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 12,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 12,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 12,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 13,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 13,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 13,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 13,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 13,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 13,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 14,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 14,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 14,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 14,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 14,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 14,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 15,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 15,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 15,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 15,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 15,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 15,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 16,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 16,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "audio",
+          878
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          2,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          2,
+          2.25
+        ]
+      ],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 16,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 16,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 16,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 16,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 17,
+      "owner": "front-shield",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "electric-scale",
+          1
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 17,
+      "owner": "front-shield",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "electric-scale",
+          1
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 16
+    },
+    {
+      "damage_type": 17,
+      "owner": "front-sword",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "npc-ready-service"
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "monster-action",
+          23
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 17,
+      "owner": "front-sword",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "reflect"
+        ],
+        [
+          "clear-owner"
+        ],
+        [
+          "set-owner"
+        ],
+        [
+          "audio",
+          890
+        ],
+        [
+          "random-state",
+          18
+        ],
+        [
+          "player-state",
+          18
+        ],
+        [
+          "balance",
+          0.25
+        ],
+        [
+          "block",
+          1024,
+          2.25
+        ]
+      ],
+      "return": 0,
+      "memory_faults": [],
+      "blocks": [
+        [
+          1024,
+          2.25
+        ]
+      ],
+      "final_player_state": 18
+    },
+    {
+      "damage_type": 17,
+      "owner": "front-staff",
+      "player": false,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "idle-action-service"
+        ],
+        [
+          "electric-scale",
+          1
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    },
+    {
+      "damage_type": 17,
+      "owner": "front-staff",
+      "player": true,
+      "raw": 9,
+      "forward_damage": [
+        9
+      ],
+      "marker": 1,
+      "marker_type": 73,
+      "carry_bits": 1048576000,
+      "events": [
+        [
+          "buff",
+          23
+        ],
+        [
+          "mode",
+          2048
+        ],
+        [
+          "possess"
+        ],
+        [
+          "buff",
+          27
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "type-lookup"
+        ],
+        [
+          "facing",
+          -20.0,
+          7.0
+        ],
+        [
+          "electric-scale",
+          1
+        ],
+        [
+          "wear",
+          9
+        ],
+        [
+          "mode",
+          4096
+        ],
+        [
+          "default",
+          9
+        ]
+      ],
+      "return": 1,
+      "memory_faults": [],
+      "blocks": [],
+      "final_player_state": 13
+    }
+  ],
+  "code_bytes_unchanged": true
+}

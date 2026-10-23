@@ -269,12 +269,14 @@ func DefaultDamageWorld4E0B30(
 	// electric/explosion callers retain their existing optional-service contracts.
 	pureMissile := playerDamagePureMissileSourceShape4E17B0(source, weapon) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil
 	sourceLessNonItem := playerDamageSourceLessNonItemShape4E17B0(source, weapon) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil
-	nonItem := sourceLessNonItem || ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ) || (playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil) || pureMissile
+	mixedMissile := playerDamageMixedMissileShape4E17B0(source, weapon) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil
+	nonItem := mixedMissile || sourceLessNonItem || ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ) || (playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil) || pureMissile
 	unitSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfRawShape4E17B0(source, weapon, typ)
 	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || unitSelfRaw || nonItem)
 	// Below20 the original hurt-state service is unused. Larger entry
 	// amounts retain the earlier read-only required-service preflight.
-	missingPlayerHurt := runtime.PlayerSetState == nil && (!casterImpact || damage >= 20)
+	// Existing mixed-missile PIERCE callers retain their earlier state-service preflight.
+	missingPlayerHurt := runtime.PlayerSetState == nil && (!casterImpact || damage >= 20 || (mixedMissile && typ == object.DamageImpale))
 	simpleCrush := playerDamageSimpleCrushShape4E17B0(source, weapon, typ)
 	missileFlame := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	unitSelfFire := playerDamagePlayerSelfFireShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfFireShape4E17B0(source, weapon, typ)

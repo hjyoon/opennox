@@ -271,7 +271,8 @@ func DefaultDamageWorld4E0B30(
 	sourceLessNonItem := playerDamageSourceLessNonItemShape4E17B0(source, weapon) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil
 	mixedMissile := playerDamageMixedMissileShape4E17B0(source, weapon) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil
 	initializedWeapon := playerDamageInitializedWeaponShape4E17B0(source, weapon) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil
-	nonItem := initializedWeapon || mixedMissile || sourceLessNonItem || ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ) || (playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil) || pureMissile
+	initializedWand := playerDamageInitializedWandShape4E17B0(source, weapon) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil
+	nonItem := initializedWand || initializedWeapon || mixedMissile || sourceLessNonItem || ownedMonster || playerDamageWorldSelfShape4E17B0(source, weapon, typ) || playerDamageDistinctNonItemShape4E17B0(source, weapon, typ) || (playerDamageWeaponlessNonItemShape4E17B0(source, weapon, typ) && runtime.BuffOff != nil && runtime.DamageClear != nil && runtime.MonsterHasHitSound != nil) || pureMissile
 	unitSelfRaw := playerDamagePlayerSelfRawShape4E17B0(source, weapon, typ) || playerDamageMonsterSelfRawShape4E17B0(source, weapon, typ)
 	casterImpact := !monsterImpact && (defaultDamageCasterImpactShape4E0B30(weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ) || unitSelfRaw || nonItem)
 	// Below20 the original hurt-state service is unused. Larger entry
@@ -394,7 +395,7 @@ func DefaultDamageWorld4E0B30(
 		}
 	}
 	// Established world-projectile and player spell-missile tails own this same original enemy query.
-	if casterImpact && source != nil && weapon != nil && !worldProjectile && !(spellMissileImpact && playerTail) && !(initializedWeapon && (armedElectric || armedExplosion)) {
+	if casterImpact && source != nil && weapon != nil && !worldProjectile && !(spellMissileImpact && playerTail) && !((initializedWeapon || initializedWand) && (armedElectric || armedExplosion)) {
 		if runtime.IsEnemy == nil {
 			return defaultDamageUnsupported4E0B30(runtime, "missing caster IMPACT enemy service", target, source, weapon, damage, typ)
 		}
@@ -493,7 +494,7 @@ func DefaultDamageWorld4E0B30(
 	// 004E0C90 requires both source and weapon. In particular, an unarmed
 	// hit has no melee friendly-fire gate, and 004E1470 exempts War Hammer.
 	// Neither exception bypasses the earlier campaign owner check.
-	if ordinaryMelee && !initializedWeapon && weapon != nil && target.Class().HasAny(object.MaskUnits) &&
+	if ordinaryMelee && !initializedWeapon && !initializedWand && weapon != nil && target.Class().HasAny(object.MaskUnits) &&
 		!defaultDamageFriendlyException4E1470(weapon) &&
 		(runtime.IsEnemy == nil || !runtime.IsEnemy(target, source)) {
 		return true

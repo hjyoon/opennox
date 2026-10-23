@@ -328,7 +328,7 @@ func TestDefaultDamageWorld4E0B30ZapRayKeepsShapeBoundary(t *testing.T) {
 			r := damageMeleeWorldRuntime4E0B30(t)
 			why := ""
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { why = reason }
-			supported := invalid == "distinct world source" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type" || invalid == "nil ray with world source" || invalid == "missile ray"
+			supported := invalid == "nil source" || invalid == "distinct world source" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type" || invalid == "nil ray with world source" || invalid == "missile ray"
 			calls, amount := 0, int32(0)
 			r.DamageClear = func(v *Object, d int32) {
 				if !supported || v != target {
@@ -343,13 +343,17 @@ func TestDefaultDamageWorld4E0B30ZapRayKeepsShapeBoundary(t *testing.T) {
 				if attributed == nil {
 					attributed = source
 				}
+				wantPos := attributed.PrevPos
+				if source == nil {
+					wantPos = types.Pointf{}
+				}
 				// Keep the exact original-confirmed input as a positive control.
 				u := target.UpdateDataMonster()
 				wantMarker, wantKind := uint32(1), uint32(attributed.TypeInd)
-				if ray == nil {
+				if ray == nil || source == nil {
 					wantMarker, wantKind = 2, uint32(typ)
 				}
-				if why != "" || calls != 1 || amount != 500 || target.Obj130 != attributed || target.Pos132 != attributed.PrevPos || target.Frame134 != 1400 || target.Field131 != uint32(typ) || u.Field547 != wantMarker || u.Field546 != wantKind {
+				if why != "" || calls != 1 || amount != 500 || target.Obj130 != attributed || target.Pos132 != wantPos || target.Frame134 != 1400 || target.Field131 != uint32(typ) || u.Field547 != wantMarker || u.Field546 != wantKind {
 					t.Fatalf("supported non-item NPC control %s reason=%q", invalid, why)
 				}
 				return

@@ -526,7 +526,7 @@ func TestDefaultDamageWorld4E0B30PlayerZapRayEarlyGatesAndBoundary(t *testing.T)
 			why := ""
 			r := damageMeleeWorldRuntime4E0B30(t)
 			r.Unsupported = func(reason string, _, _, _ *Object, _ int32, _ object.DamageType) { why = reason }
-			supported := invalid == "distinct world" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type" || invalid == "nil ray with world source" || invalid == "ray missile"
+			supported := invalid == "nil source" || invalid == "distinct world" || invalid == "no simple" || invalid == "no immobile" || invalid == "wrong type" || invalid == "nil ray with world source" || invalid == "ray missile"
 			calls, amount := 0, int32(0)
 			r.DamageClear = func(v *Object, d int32) {
 				if !supported || v != target {
@@ -541,9 +541,13 @@ func TestDefaultDamageWorld4E0B30PlayerZapRayEarlyGatesAndBoundary(t *testing.T)
 				if attributed == nil {
 					attributed = source
 				}
+				wantPos := attributed.PrevPos
+				if source == nil {
+					wantPos = types.Pointf{}
+				}
 				// Unchanged original DefaultDamage forwards raw500 for all four.
 				u := target.UpdateDataPlayer()
-				if why != "" || calls != 1 || amount != 500 || target.Obj130 != attributed || target.Pos132 != attributed.PrevPos || target.Frame134 != 1400 || target.Field131 != uint32(typ) || u.Field76 != 88 || u.Field75 != 77 || u.State != PlayerState30 {
+				if why != "" || calls != 1 || amount != 500 || target.Obj130 != attributed || target.Pos132 != wantPos || target.Frame134 != 1400 || target.Field131 != uint32(typ) || u.Field76 != 88 || u.Field75 != 77 || u.State != PlayerState30 {
 					t.Fatalf("supported non-item player control %s reason=%q", invalid, why)
 				}
 				return

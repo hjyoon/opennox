@@ -1172,6 +1172,14 @@ mine rescues, chapter3 ending and the broader nine-cell campaign audit remain
 open. The unsaved777 knowledge-book run and773 preparation failure are
 preserved and never used as continuation seeds.
 
+### Shared native binary32 integer conversion
+
+The linked C `nox_float2int` (`00419A70`) now returns the original signed-DWORD integer-indefinite value for invalid binary32 input. ARM64 previously saturated positive overflow to INT_MAX and returned zero for NaN. A real unchanged-source candidate reproduced eleven failing original observations and nineteen passing controls before this correction. The native test uses the actual `summonRuntime500DA0().FloatToInt` CGo binding and the existing unchanged Camper Reset original fixture: thirty startup-context input rows, including finite boundaries, infinities and NaNs.
+
+The immutable 6,828-input candidate preserves every previous test, fixture and golden byte, adding 31 passing terminal identities. Broad validation passes 109,032 events; strict cgocheck2/race/checkptr2 validation passes 289,350 events across three repetitions of 96,450 identities. Normal and highres full suites each pass 176,672 events with the same 49 skips; server and server/highres each pass 171,844 with the same 7 skips. Focused offline Rosetta/Clang Linux AMD64 validates the exact 96,450 identities and multiplicities. Four clean committed ARM64 products are rebuilt and independently inspected after commit.
+
+This certifies the shared primitive under the observed startup truncation context. It does not certify complete summon, Charm, generator or save callers, arbitrary x87 rounding/status, or the distinct word, absolute-value, byte and binary64 helpers. In particular, `00419B10` writes a signed QWORD before returning its low DWORD and must not receive the signed-DWORD range rule. Campaign chapter 1–3 completion across all three classes and overall 100% remain open. Detailed evidence: `shared-float-to-int-port/verification.json` in the preserved validation workspace.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

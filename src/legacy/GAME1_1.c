@@ -587,7 +587,14 @@ unsigned int sub_419A30(float a1) {
 }
 
 //----- (00419A70) --------------------------------------------------------
-int nox_float2int(float a1) { return (int)a1; }
+int nox_float2int(float a1) {
+	// Original419A70 returns integer-indefinite for invalid signed-DWORD input.
+	// Native ARM64 conversion otherwise saturates or returns zero for NaN.
+	if (!(a1 >= -2147483648.0f && a1 < 2147483648.0f)) {
+		return INT32_MIN;
+	}
+	return (int)a1;
+}
 
 //----- (00419A90) --------------------------------------------------------
 short nox_float2int16(float a1) { return (int)a1; }

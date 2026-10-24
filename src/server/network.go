@@ -571,8 +571,8 @@ func (s *Server) Nox_xxx_netSendPointFx_522FF0(fx netmsg.Op, pos types.Pointf) {
 func (s *Server) Nox_xxx_netSparkExplosionFx_5231B0(pos types.Pointf, a2 byte) {
 	var buf [6]byte
 	buf[0] = byte(netmsg.MSG_FX_SPARK_EXPLOSION)
-	binary.LittleEndian.PutUint16(buf[1:], uint16(pos.X))
-	binary.LittleEndian.PutUint16(buf[3:], uint16(pos.Y))
+	binary.LittleEndian.PutUint16(buf[1:], uint16(netFXTruncateSignedDWORD419A70(pos.X)))
+	binary.LittleEndian.PutUint16(buf[3:], uint16(netFXTruncateSignedDWORD419A70(pos.Y)))
 	buf[5] = a2
 	s.Nox_xxx_netSendFxAllCli_523030(pos, buf[:6])
 }

@@ -21369,6 +21369,27 @@
       "size": 308,
       "sha256": "28599bf7ae8a597b9d3875dec470fcb15209f9a44eec829d911ac5e2c8faf19f",
       "purpose": "Complete original point-to-segment projection and conditional int32 point writes. Actual startup PC53/chop, FSQRT, both419AF0 calls and both419A70 output conversions execute without service stubs. Preserve retained/stored precision, ordered/unordered gates, zero/extreme geometry and existing positive-zero data58307C. Separate nearest observations remain controls, not native default expectations."
+    },
+    {
+      "name": "original_spark_effect_arm_514426",
+      "address": "0x00514426",
+      "size": 30,
+      "sha256": "551a49aa804bee94df1eb444a2e84dc0564ab6391e1efc1749b1f3fef8e0070d",
+      "purpose": "Complete30-byte spark arm after shared effect-name lookup, including419AD0 count conversion, full5231B0 call and original epilogue/return. Shared VM/name-lookup prefix remains outside this arm fixture."
+    },
+    {
+      "name": "original_complete_spark_explosion_packet_5231B0",
+      "address": "0x005231B0",
+      "size": 69,
+      "sha256": "8bafd360c176d9d8ec7839187faabd8937d0b0f642f1d0cd9c774c67f6e8378c",
+      "purpose": "Complete69-byte six-byte0x93 SparkExplosion packet builder. Both coordinate419A70 signed-DWORD conversions and actual low WORD stores execute unchanged; final523030 send is a checked boundary."
+    },
+    {
+      "name": "original_float_to_signed_DWORD_low_BYTE_419AD0",
+      "address": "0x00419AD0",
+      "size": 17,
+      "sha256": "c2166538353d570ab80e439ec04df52ac5efa757a4abcf7d23d122b0d6f3c93d",
+      "purpose": "Complete17-byte binary32 signed-DWORD FISTP helper returning its low BYTE. Actual startup/chop plus separately captured nearest/down/up controls; invalid signed-DWORD gives zero low BYTE. Native Effect ingress is present and qualified through real packet/view-filter/NetList, not inferred from a missing C label."
     }
   ],
   "data": [

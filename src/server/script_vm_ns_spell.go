@@ -53,7 +53,7 @@ func (s NoxScriptNS) Effect(effect effect.Effect, p1, p2 ns4.Positioner) {
 		netmsg.MSG_FX_SENTRY_RAY:
 		s.s.Nox_xxx_netSendRayFx_5232F0(fx, pos.Point(), pos2.Point())
 	case netmsg.MSG_FX_SPARK_EXPLOSION:
-		s.s.Nox_xxx_netSparkExplosionFx_5231B0(pos, byte(pos2.X))
+		s.s.Nox_xxx_netSparkExplosionFx_5231B0(pos, byte(netFXTruncateSignedDWORD419A70(pos2.X)))
 	case netmsg.MSG_FX_JIGGLE:
 		s.s.Nox_xxx_earthquakeSend_4D9110(pos, int(pos2.X))
 	case netmsg.MSG_FX_GREEN_BOLT:

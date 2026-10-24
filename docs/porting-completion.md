@@ -1113,6 +1113,65 @@ coverage remain separate. Original image, native sources,20 observations
 and failed first harness are preserved in
 `outer-destroy-directive-followup-audit`; no whole-game100 claim follows.
 
+### Native ManaBomb cancellation receive context
+
+The production ManaBomb cancellation binding now preserves the original
+signed-DWORD chop conversion selected by the actual startup and receive path.
+For a radius of1.5, the original uses1 while the previous native branch used2;
+3.5,199.5 and201.5 likewise differed. The binding now supplies the converted
+integer-valued binary32 radius to the existing geometry core. That value is
+exactly representable, so the core's recorded nearest-context conversion is
+idempotent. Existing explicitly-nearest derived-core fixtures retain their
+independently observed context and remain byte-identical. Lookup, RNG,
+allocation, frame, activation, payload and packet-consumption order stay on
+their existing original-confirmed paths.
+
+The unchanged complete103-byte original receive wrapper494E90 executes its
+actual CALL494EAF into the complete48EA70 dispatcher body after the original
+startup/CRT control-word sequence. Actual stack probe, receive counter,
+connected query, binary32 balance FLDS, converter419A70, RNG415FF0 and its
+original table execute unchanged. Seven positive binary32 radii are observed
+under inherited startup chop and an explicit nearest control. The14-row
+successful-allocation fixture records150 original spark coordinates and600
+actual RNG draws per row. A separate14-row failed-allocation control records
+300 draws. Queue input, balance-key lookup, allocation and activation remain
+checked external original-service boundaries; other Windows callers/threads,
+full original allocator/render/transport implementations and FP status are
+not certified by this evidence.
+
+The new native regression runs the actual temporary Balance.Read, production
+packet branch, native drawable allocator/activation and actual RNG. It parses
+a minimal native effect type, checks150 drawable pointers above4GiB on64-bit,
+compares all150 coordinates, and requires exactly600 RNG draws. This is not a
+stock renderer or audio test. The unchanged candidate fails4 leaves and
+passes3 controls before the port. The same7 leaves plus parent pass after it;
+all33 previous related test events also passed in the isolated proposal.
+Native viewport and drawable allocations are cleaned up in the new fixture.
+
+The6827-input candidate preserves108,993 broad parent PASS identities and
+adds8, totaling109,001. The exact96,419 focused identities pass three times
+with actual cgocheck2, race and checkptr2, totaling289,257 PASS events.
+Each full suite preserves every previous terminal identity/action/count/skip:
+normal/HD176,641 PASS49 SKIP; server/server-HD171,813 PASS7 SKIP. Offline
+Linux AMD64 via Rosetta/Clang passes the same96,419 identities before commit.
+Four clean committed ARM64 products, source archive and pushed
+port/go1.26-multiarch revision are independently verified. Evidence remains
+in mana-bomb-cancel-startup-port and mana-bomb-cancel-context-audit under the
+task-owned verification directory. This is focused Linux evidence, not full
+Linux suites, GCC, physical-x86 or overall100 certification.
+
+On the preceding immutable363c72f normal product, fresh original menu Load
+and Save retain the original Foreman-awarded GoldKey and SapphireKey, Imp
+knowledge, LocateMineForeman completion and the mine-worker rescue objective.
+The native Save retains20HP/78mana,513gold and2485.0366XP. All five original
+workers are independently alive in both the loaded world and decoded saved
+Con03B map. The same current lineage previously completed the original Mayor
+quest and natural chapter2 EndMission/Con03a entry in normal and highres;
+no separate Conjurer tournament requirement is inferred. Actual remaining
+mine rescues, chapter3 ending and the broader nine-cell campaign audit remain
+open. The unsaved777 knowledge-book run and773 preparation failure are
+preserved and never used as continuation seeds.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

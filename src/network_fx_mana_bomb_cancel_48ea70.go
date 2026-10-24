@@ -88,7 +88,14 @@ func (c *Client) handleManaBombCancelPacketNative48EA70(data []byte) int {
 	return handleManaBombCancelNative48EA70(data, manaBombCancelHooks48EA70{
 		connected: nox_client_isConnected,
 		radius: func() float32 {
-			return float32(c.srv.Balance.Float("ManaBombOutRadius"))
+			// Original startup and receive wrapper494E90 retain chop for419A70.
+			// Quantize at the production binding; explicit-nearest core fixtures
+			// continue to describe their independently recorded caller context.
+			value := float32(c.srv.Balance.Float("ManaBombOutRadius"))
+			if math.IsNaN(float64(value)) || value < -2147483648 || value >= 2147483648 {
+				return float32(math.MinInt32)
+			}
+			return float32(int32(value))
 		},
 		typeID: func() int {
 			return resolveManaBombCancelTypeNative48EA70(

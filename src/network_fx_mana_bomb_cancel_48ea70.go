@@ -74,7 +74,8 @@ func handleManaBombCancelNative48EA70(data []byte, hooks manaBombCancelHooks48EA
 		effect.Field_109 = uint32(dr.PosVec.Y) << 12
 		dr.Field_74_4 = 0
 		effect.Field_110 = 0
-		effect.Field_112 = hooks.frame() + uint32(hooks.random(30, 40))
+		lifetime := hooks.random(30, 40)
+		effect.Field_112 = hooks.frame() + uint32(lifetime)
 		effect.Field_111 = hooks.frame()
 		dr.ZVal = 0
 		dr.VelZ = int8(hooks.random(4, 10))

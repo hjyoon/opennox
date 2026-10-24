@@ -2471,6 +2471,13 @@
       "purpose": "the exact MSG_REPORT_Z_MINUS dispatcher block: decode the 16-bit drawable namespace/code, resolve the PE32 drawable, negate and store the packet byte's low 16 bits at offset 104, consume four bytes, and rejoin the packet loop"
     },
     {
+      "name": "client_fx_mana_bomb_cancel_492B09_arm",
+      "address": "0x00492B09",
+      "size": 319,
+      "sha256": "4ee9b17a6a0b52ec6d263bd0bceefe19eb339f6488589a47383aed50794be623",
+      "purpose": "Derived ManaBomb cancellation subinterval of0048EA70, not a complete function: retain lifetime RNG before both live frame loads, signed packed coordinates, wrapped DWORD arithmetic, partial spark stores and failed-allocation service boundaries. Live dispatcher CW remains explicitly unresolved."
+    },
+    {
       "name": "nox_xxx_netOnPacketRecvCli_48EA70_smoke_blast",
       "address": "0x00492D39",
       "size": 212,

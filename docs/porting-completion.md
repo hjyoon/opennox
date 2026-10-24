@@ -977,6 +977,37 @@ checked service boundaries. Original type-cache lifetime, balance float
 conversion outside represented exact integer radii, complete external services,
 renderer/audio fidelity, campaign completion and overall 100% remain open.
 
+### Native ManaBomb cancellation order
+
+The native ManaBomb cancellation effect now reads its lifetime RNG before
+both live frame reads, matching the original cancellation arm. Signed packed
+coordinates, wrapped DWORD arithmetic, all 150 allocation attempts, failure
+branches and partial spark stores remain intact. The existing nearest-even
+radius conversion is unchanged; the live network caller's control word remains
+unverified.
+
+The unchanged original derived arm and shared guards produced 32 observations
+under explicit nearest and chop modes. Native comparisons select 16 nearest-mode
+rows; integer controls also match the original chop-mode observations. Before
+porting, 14 vector leaves failed at the same RNG/frame ordering difference while
+allocation-failure and disconnected controls passed. The isolated correction
+passes all 17 new differential events and 16 existing related events. Previous
+tests, fixtures and goldens remain byte-identical.
+
+The immutable 6,821-input source passes 108,931 broad events and 289,047 strict
+events (96,349 identities repeated three times with cgocheck2, race and checkptr2).
+Focused offline Linux AMD64 under Rosetta/Clang preserves the same 96,349
+identities. Four full suites preserve every previous terminal identity, action,
+multiplicity and skip: normal/highres 176,571 PASS and 49 SKIP each;
+server/server-highres 171,743 PASS and 7 SKIP each. Clean committed ARM64 products
+and embedded revisions are verified separately.
+
+The original subinterval is not a complete dispatcher execution. Connectivity,
+balance, preseeded type identity, RNG, allocation, activation and frame are
+declared service boundaries. The live caller control word, type-cache lifecycle,
+complete external services, renderer/audio fidelity, campaign completion and
+overall 100% remain open.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

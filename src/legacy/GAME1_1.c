@@ -597,16 +597,22 @@ int nox_float2int(float a1) {
 }
 
 //----- (00419A90) --------------------------------------------------------
-short nox_float2int16(float a1) { return (int)a1; }
+short nox_float2int16(float a1) { return (short)nox_float2int(a1); }
 
 //----- (00419AB0) --------------------------------------------------------
-short nox_float2int16_abs(float a1) { return (int)fabs(a1); }
+short nox_float2int16_abs(float a1) { return (short)nox_float2int(fabsf(a1)); }
 
 //----- (00419AF0) --------------------------------------------------------
 float nox_double2float(double a1) { return (float)a1; }
 
 //----- (00419B10) --------------------------------------------------------
-int nox_double2int(double a1) { return (int)a1; }
+int nox_double2int(double a1) {
+	// Original419B10 stores a signed QWORD, then returns its low DWORD.
+	if (!(a1 >= -0x1p63 && a1 < 0x1p63)) {
+		return 0;
+	}
+	return (int32_t)(uint32_t)(int64_t)a1;
+}
 
 static int nox_save_header_call(uintptr_t offset) {
 	switch (offset) {

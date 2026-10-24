@@ -1180,6 +1180,16 @@ The immutable 6,828-input candidate preserves every previous test, fixture and g
 
 This certifies the shared primitive under the observed startup truncation context. It does not certify complete summon, Charm, generator or save callers, arbitrary x87 rounding/status, or the distinct word, absolute-value, byte and binary64 helpers. In particular, `00419B10` writes a signed QWORD before returning its low DWORD and must not receive the signed-DWORD range rule. Campaign chapter 1–3 completion across all three classes and overall 100% remain open. Detailed evidence: `shared-float-to-int-port/verification.json` in the preserved validation workspace.
 
+### Native integer conversion widths
+
+The shared C helpers now preserve three distinct original integer widths. `00419A90` converts binary32 to a signed DWORD before returning its low WORD; `00419AB0` takes the absolute value before the same conversion. Both now reuse the guarded signed-DWORD helper. `00419B10` converts binary64 to a signed QWORD before returning its low DWORD, so it checks the signed-64 range and retains the low 32 bits; invalid QWORD conversion returns the original zero low DWORD. This avoids ARM64 saturation and preserves valid wide values that the previous signed-int cast lost.
+
+A real unchanged-source candidate reproduced 38 scalar and 14 complete ArrowTrap packet failures, alongside 110 passing controls. The original fixture retains 984 helper observations and 156 complete `005238A0` packet observations across four explicit control words. New regression coverage selects the actual startup context: 123 scalar rows and 39 complete packets. Exact production C definitions compile in a separate runtime-input driver; the complete native ArrowTrap caller forwards a real position pointer above UINT32_MAX, preserves its source bytes and canaries, and matches all six packet bytes. Its network-send service boundary is checked. This does not certify the whole linked game CGo transport or full player-stat callers.
+
+The immutable 6,830-input candidate adds 167 passing terminal identities without changing any existing test, fixture or golden. Broad validation passes 109,199 events. Strict cgocheck2/race/checkptr2 validation passes 289,851 events across three repetitions of 96,617 identities; separately compiled C child drivers keep their explicit compiler flags. Normal and highres full suites each pass 176,839 events with the same 49 skips, and server/server-highres each pass 172,011 with the same 7 skips. Focused offline Rosetta/Clang Linux AMD64 validates the exact 96,617 identities and multiplicities. Four clean committed ARM64 products are rebuilt and independently inspected.
+
+These corrections preserve the observed startup truncation context. Arbitrary caller rounding/status, the separate binary64-to-binary32 spill helper, complete reachable native closure and all nine class/chapter feature cells remain open. Alex is rescued in the current Conjurer 3 campaign; five named miners and the required ending remain. Overall 100% is not claimed. Detailed evidence: `float-conversion-widths-port/verification.json` in the preserved validation workspace.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

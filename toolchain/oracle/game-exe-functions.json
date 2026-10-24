@@ -21334,6 +21334,34 @@
       "size": 5,
       "sha256": "18e800921eac4b6ea289ffc28abb7e2d58e7521d3568dcacd9e3aa55096f35de",
       "purpose": "the exact five NOP bytes separating point-on-segment projection from the next function at 0057C9A0"
+    },
+    {
+      "name": "original_conversion_width_float_to_DWORD_low_WORD_419A90",
+      "address": "0x00419A90",
+      "size": 18,
+      "sha256": "77a6196e6137bfeca9d85bf442fb2d503f4fa0a8fc2ebec2a31daa0b9057e15d",
+      "purpose": "Complete original419A90: FLDS, signed DWORD FISTP, low WORD AX return. Invalid signed32 returns low WORD0 under observed startup; not a WORD FISTP."
+    },
+    {
+      "name": "original_conversion_width_fabs_float_to_DWORD_low_WORD_419AB0",
+      "address": "0x00419AB0",
+      "size": 20,
+      "sha256": "404077207291918e01ecad881d351383a9e2f71ecbeba784c9560d41a13b8324",
+      "purpose": "Complete original419AB0: FLDS/FABS, signed DWORD FISTP, low WORD AX return. Scalar observations retain signed32 range before low-word extraction."
+    },
+    {
+      "name": "original_conversion_width_double_to_signed_QWORD_low_DWORD_419B10",
+      "address": "0x00419B10",
+      "size": 19,
+      "sha256": "a718f804c0e5b858d4e2151780736557b47f5d6a158597d67b99eba645b5bad6",
+      "purpose": "Complete original419B10: FLDL, signed QWORD FISTP, low DWORD EAX return. Binary64 signed64 range and low32 observations are distinct from419A70 signed-DWORD behavior."
+    },
+    {
+      "name": "original_conversion_width_complete_arrow_trap_packet_5238A0",
+      "address": "0x005238A0",
+      "size": 69,
+      "sha256": "68d30fc475e613759156d9e073b57b7fe9e16297c3db6b8f7b84b7fad4c48ae0",
+      "purpose": "Complete original5238A0 packet body excluding trailing NOPs: both actual419A90 conversions, opcodeA1, position-pointer forwarding and variant, with only523030 network service checked/stubbed. Four CW modes and39 input pairs retained."
     }
   ],
   "data": [

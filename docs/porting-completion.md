@@ -944,6 +944,39 @@ server/server-highres 170,826 PASS and 7 SKIP each. Clean committed ARM64 produc
 and embedded revisions are verified separately. Renderer pixel fidelity,
 campaign completion and overall 100% remain outside this checkpoint.
 
+### Native ManaBomb charge and orbits
+
+ManaBomb charge, orb creation and orbit movement now retain the original
+unsigned WORD coordinates, wrapped signed DWORD products/additions, logical
+radius shifts and signed timer/absolute-value behavior. Spark lifetime reads
+RNG before frame, preserving the original service order. Orb initialization
+preserves the untouched payload byte and upper marker WORD. The typed C payload
+and constructor share the same unsigned-coordinate and wrapped-distance
+semantics, retain the full WORD angle, and avoid undefined negative/out-of-range
+floating-to-integer conversion.
+
+The complete unchanged GAME.EXE charge, constructor and orbit routines plus
+original integer converters produced 754 vectors. The original 512-entry direction
+data matches the existing Go table exactly. Native Go validates 712 represented
+input rows; the actual typed C payload validates 186 constructor observations,
+including generic mode bytes and full WORD angles. Before porting, 437 vector
+leaves failed. All previous tests, fixtures and goldens remain byte-identical.
+Allocation failures, zero/canary initialization, signed/wrapped timers, large
+radii, partial stores and RNG/frame/spawn/activation traces are covered.
+
+The immutable 6,819-input source passes 108,914 broad test events and 288,996 strict
+events (96,332 identities repeated three times with cgocheck2, race and checkptr2).
+Focused offline Linux AMD64 under Rosetta/Clang matches the same 96,332 identities.
+All four full suites preserve previous terminal identities/actions/multiplicities
+and skips: normal/highres 176,554 PASS and 49 SKIP each; server/server-highres 171,726
+PASS and 7 SKIP each. Clean committed ARM64 products and embedded revisions are
+verified separately.
+
+Balance/type lookup, RNG, allocation, activation, position and deletion are
+checked service boundaries. Original type-cache lifetime, balance float
+conversion outside represented exact integer radii, complete external services,
+renderer/audio fidelity, campaign completion and overall 100% remain open.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

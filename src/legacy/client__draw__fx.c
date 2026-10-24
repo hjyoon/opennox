@@ -35,14 +35,17 @@ void sub_499490(int a1, uint16_t* a2, int a3, int a4, char a5, char a6) {
 }
 
 //----- (00499520) --------------------------------------------------------
-void nox_client_mana_bomb_orb_set_payload_499520(nox_drawable* dr, const int16_t* path, uint8_t angle,
+void nox_client_mana_bomb_orb_set_payload_499520(nox_drawable* dr, const int16_t* path, uint16_t angle,
 											 uint8_t reverse, uint8_t fade, uint8_t mode) {
 	if (!dr || !path) {
 		return;
 	}
-	int dx = (int)path[2] - (int)path[0];
-	int dy = (int)path[3] - (int)path[1];
-	uint16_t distance = (uint16_t)sqrt((double)dx * dx + (double)dy * dy);
+	int32_t dx = (int32_t)(uint16_t)path[2] - (int32_t)(uint16_t)path[0];
+	int32_t dy = (int32_t)(uint16_t)path[3] - (int32_t)(uint16_t)path[1];
+	uint32_t square = (uint32_t)dx * (uint32_t)dx + (uint32_t)dy * (uint32_t)dy;
+	// The original FILD interprets the wrapped sum as signed DWORD. A
+	// negative square reaches masked-invalid FISTP and stores low WORD zero.
+	uint16_t distance = (square & UINT32_C(0x80000000)) ? 0 : (uint16_t)sqrt((double)square);
 	uint8_t* payload = (uint8_t*)&dr->union_u32[0];
 	memcpy(payload, path, 4 * sizeof(*path));
 	memcpy(payload + 8, &distance, sizeof(distance));
@@ -59,10 +62,10 @@ void sub_499520(int a1, short* a2, short a3, char a4, char a5) {
 	if (!a2) {
 		return;
 	}
-	nox_drawable* dr = nox_xxx_spriteLoadAdd_45A360_drawable(a1, a2[2], a2[3]);
+	nox_drawable* dr = nox_xxx_spriteLoadAdd_45A360_drawable(a1, (uint16_t)a2[2], (uint16_t)a2[3]);
 	if (dr) {
 		nox_client_mana_bomb_orb_set_payload_499520(
-			dr, a2, (uint8_t)a3, (uint8_t)a4,
+			dr, a2, (uint16_t)a3, (uint8_t)a4,
 			(uint8_t)nox_common_randomIntMinMax_415FF0(3, 10, "C:\\NoxPost\\src\\client\\Draw\\Fx.c", 182),
 			(uint8_t)a5);
 		nox_xxx_sprite_45A110_drawable(dr);

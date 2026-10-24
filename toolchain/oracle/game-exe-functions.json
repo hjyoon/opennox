@@ -2625,6 +2625,13 @@
       "purpose": "the exact fifteen NOP bytes separating friend membership lookup from the next allocator at 00495AB0"
     },
     {
+      "name": "original_mana_bomb_spawn_499520",
+      "address": "0x00499520",
+      "size": 226,
+      "sha256": "5fd90b3399df8fb5d88b149582c33f92e29d34de6157dfcdc3c994d139d79c25",
+      "purpose": "Unchanged original ManaBomb spawn; declared checked balance/type/RNG/allocation/activation/position/deletion services, partial stores and native DWORD arithmetic compared independently."
+    },
+    {
       "name": "sub_499F60_bubble_particle_create",
       "address": "0x00499F60",
       "size": 496,
@@ -3486,6 +3493,13 @@
       "purpose": "Unchanged original linear-orb linear-orb; integer lookup distance and DWORD movement, with position/delete declared checked service boundaries."
     },
     {
+      "name": "original_mana_bomb_step_4CA720",
+      "address": "0x004CA720",
+      "size": 306,
+      "sha256": "cdeee50d6ea62a356a7f8dae693c85ea16496b1f1422a07cc78a0f1154f5befa",
+      "purpose": "Unchanged original ManaBomb step; declared checked balance/type/RNG/allocation/activation/position/deletion services, partial stores and native DWORD arithmetic compared independently."
+    },
+    {
       "name": "input_shell_constructor_4CB880",
       "address": "0x004CB880",
       "size": 740,
@@ -3540,6 +3554,13 @@
       "size": 272,
       "sha256": "1e075fa172d5076276d4de72d5f9a4c3c8b1093bcbb6abd1e8e807bbc8d1191f",
       "purpose": "the shell input-config key-capture modal callback with its PE32 switch tables and alignment"
+    },
+    {
+      "name": "original_mana_bomb_charge_4CCAC0",
+      "address": "0x004CCAC0",
+      "size": 552,
+      "sha256": "b55e785cd99307935f2a5780b2dbc99d0407e7ca871ef43c37aae1af6b356740",
+      "purpose": "Unchanged original ManaBomb charge; declared checked balance/type/RNG/allocation/activation/position/deletion services, partial stores and native DWORD arithmetic compared independently."
     },
     {
       "name": "nox_xxx_colorLightAlterColor_4CE440",

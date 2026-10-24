@@ -5,7 +5,7 @@
 
 void nox_client_orb_set_payload_499490(nox_drawable* dr, const uint16_t* destination, uint8_t radius,
 	uint8_t fade, uint8_t mode);
-void nox_client_mana_bomb_orb_set_payload_499520(nox_drawable* dr, const int16_t* path, uint8_t angle,
+void nox_client_mana_bomb_orb_set_payload_499520(nox_drawable* dr, const int16_t* path, uint16_t angle,
 	uint8_t reverse, uint8_t fade, uint8_t mode);
 void nox_client_ballistic_fx_set_state_499610(nox_drawable* dr, uint32_t speed, uint32_t start_frame,
 	uint32_t end_frame, uint8_t angle);

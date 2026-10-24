@@ -3878,6 +3878,13 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the class-selected inventory respawn at 004EDD00"
     },
     {
+      "name": "nox_xxx_playerCamperUpdate_4D7CC0",
+      "address": "0x004D7CC0",
+      "size": 400,
+      "sha256": "c120400a825fce27405bdfd46428516eb526315c2967586ff5ca8248abc606fa",
+      "purpose": "complete original camper update interval, including enabled-option prefix, binary32 cached-position sampling, unspilled gameplay x87 distance, C0-only comparison, strict unsigned sample/fade gates and audio774/interesting-marker transitions"
+    },
+    {
       "name": "nox_xxx_netReportPlrStatus_4D8270",
       "address": "0x004D8270",
       "size": 60,

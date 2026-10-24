@@ -767,6 +767,61 @@ A further verified99846ff run independently preserves native guard HP4/4 with bo
 
 This checkpoint establishes the specified native death cleanup and ordering. The three-class chapter 1–3 replay matrix and the other open ABI, rendering/input, audio, networking and sustained-runtime evidence remain required. Overall porting 100% is unproved.
 
+### Native camper position sampling and marker updates
+
+The online camper update now reads and stores its two cached coordinates as
+binary32 words. The previous conversion through signed integers misread a
+stationary nonzero position and changed the cached position on every sample.
+The real production entry failed all three new stationary/moved/signed-zero
+cases before the port; those failures remain in the external evidence.
+
+The unchanged original 400-byte `nox_xxx_playerCamperUpdate_4D7CC0` range was
+executed in 97 checked vectors. Its gameplay precision53/chop distance sequence,
+C0-only comparison (including unordered values), unsigned strict sample/fade
+bounds, dead/destroyed and player-role filters, two live roster passes and
+cached update pointer across CTF/audio/marker callbacks are retained. Native
+pointers above 4 GiB exercise both the adapter and those ordered callback
+mutations. The production adapter also emits the original seven-byte marker
+packets to both actual player slots, with the marker store after the sends.
+Only the verified nonoverlapping original range was added to the oracle index;
+every previous test, fixture and golden remains byte-identical.
+
+The frozen 6,806 source inputs passed 100,799 broad regression identities.
+The exact focused set of 88,601 identities passed three times with actual
+`cgocheck2`, race and checkptr=2 (265,803 PASS events). All four complete suites
+preserved the prior terminal identities and skips, adding exactly 105 PASS
+identities each: normal/highres 168,865 PASS and 49 SKIP; server/server-highres
+164,037 PASS and 7 SKIP. The same 88,601 focused identities passed on offline
+Linux AMD64 through Rosetta/Clang before commit. This is focused Linux evidence;
+it does not establish full Linux suites, GCC or physical x86 execution.
+
+Evidence is retained under the external `player-camper-port` directory,
+including original vectors, before-port failures, exact counter comparisons,
+source hashes and committed product/archive verification. The existing outer
+Online/not-Chat/option gate and configuration `Reset` remain unchanged. Reset
+numeric contexts, complete original external services, audible/peer fidelity
+and campaign completion remain open; this checkpoint is not overall 100%.
+
+On the preceding immutable `4c12dbe` normal/HD products, ordinary-clock actual
+menu Load, gameplay input and menu Save continued Conjurer chapter 1. The two
+entrance Urchins remain natively saved dead after fresh HD Load; the exit-room
+SmallAlbinoSpider and Bat reached DEAD; the original ExitSwitch disabled itself,
+enabled ExitElevator and awarded exactly 100 experience. Walking onto the
+original platform and waiting carried the player to `(4015,2749)` with
+`ON_OBJECT`; a living manual Save retained 13/20 HP, zero poison and 743.4713
+experience. Cases v723--v727 independently preserve all six source save files
+and all 1,553 stock resources. The lift is a completed gameplay step; the
+natural Con02a boundary was subsequently earned in ordinary-clock case v730,
+including new-map movement and actual menu Save (14/20 HP, zero poison and
+743.4713 experience). Fresh HD lift-save Load, original-fade wait and actual
+movement/Save also passed in v729. All source save and stock hashes survive.
+Fresh processes also passed Con02a manual Load, actual movement and menu
+Save in HD (v731) and back in normal (v732), retaining 14/20 HP, zero poison
+and exactly the same experience. Each preserves all nine source save files
+and all 1,553 stock resources. The normal/HD roundtrip evidence is retained
+in `conjurer-current-native-boundary-roundtrip-v1.json`.
+The full nine-cell matrix and broader completion requirements remain open.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

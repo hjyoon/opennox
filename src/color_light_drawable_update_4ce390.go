@@ -2,7 +2,6 @@ package opennox
 
 import (
 	"encoding/binary"
-	"math"
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/noxrender"
@@ -104,14 +103,14 @@ func alterColorLightRadius4CE760(dr *client.Drawable, data *[100]byte, count byt
 }
 
 func setColorLightDirection4CE8C0(dr *client.Drawable, direction int) int64 {
-	result := int64(float64(direction)*0.0027777778*65536.0 + 0.5)
+	result := colorLightAngle4CE960(direction)
 	dr.LightDir = uint16(result)
 	dr.Field_42 = 0
 	return result
 }
 
 func setColorLightSize4CE760(dr *client.Drawable, size int) int64 {
-	result := int64(float64(size)*0.0027777778*65536.0 + 0.5)
+	result := colorLightAngle4CE960(size)
 	dr.LightPenumbra = uint16(result)
 	return result
 }
@@ -124,40 +123,41 @@ func trackColorLight4CE8C0(dr *client.Drawable, data *[100]byte, byStaticCode fu
 	if target == nil {
 		return
 	}
-	dx := target.PosVec.X - dr.PosVec.X
-	dy := target.PosVec.Y - dr.PosVec.Y
-	distance := math.Sqrt(float64(dx)*float64(dx) + float64(dy)*float64(dy))
-	if distance == 0 {
-		return
-	}
-	direction := float64(float32(math.Acos(float64(dx)/distance))) * 57.295776
-	if dy < 0 {
-		direction = 360.0 - direction
-	}
-	setColorLightDirection4CE8C0(dr, int(direction))
+	dx := int32(uint32(target.PosVec.X) - uint32(dr.PosVec.X))
+	dy := int32(uint32(target.PosVec.Y) - uint32(dr.PosVec.Y))
+	setColorLightDirection4CE8C0(dr, int(colorLightTrackedAngle4CE8C0(dx, dy)))
 }
 
 func rotateColorLight4CE960(dr *client.Drawable, data *[100]byte, hooks colorLightDrawableHooks4CE390) {
-	flags := binary.LittleEndian.Uint16(data[0:2])
-	step := binary.LittleEndian.Uint16(data[94:96])
-	if dr.Field_42 == 0 || flags&0x80 == 0 || step == 0 {
+	if dr.Field_42 != 0 {
 		return
 	}
-	start := binary.LittleEndian.Uint16(data[92:94])
-	span := 360.0
-	if flags&0x100 != 0 {
-		span = float64(int(binary.LittleEndian.Uint16(data[96:98])) - int(start))
+	flags := binary.LittleEndian.Uint16(data[0:2])
+	step := int16(binary.LittleEndian.Uint16(data[94:96]))
+	if flags&0x80 == 0 || step == 0 {
+		return
 	}
 	fps := float64(hooks.fps())
-	stepD := float64(step)
-	period := span / stepD * fps
-	cycle := float64(hooks.frame()) / period
-	whole := int64(float64(hooks.frame()) / period)
-	direction := int((cycle-float64(int(whole)))*period*(stepD/fps) + float64(start))
-	if direction >= 360 {
-		direction -= 360
-	} else if direction < 0 {
-		direction += 360
+	span := 360.0
+	if flags&0x100 != 0 {
+		span = float64(int(binary.LittleEndian.Uint16(data[96:98])) - int(binary.LittleEndian.Uint16(data[92:94])))
 	}
-	setColorLightDirection4CE8C0(dr, direction)
+	stepD := float64(step)
+	basePeriod := colorLightDivide4CE960(span, stepD)
+	frame := hooks.frame()
+	period := fireballMulChop53_52C790(basePeriod, fps)
+	cycle := colorLightDivide4CE960(float64(frame), period)
+	whole := float64(int32(colorLightTruncate4CE960(cycle)))
+	start := float64(binary.LittleEndian.Uint16(data[92:94]))
+	phase := fireballAddChop53_52C790(cycle, -whole)
+	phase = fireballMulChop53_52C790(phase, period)
+	speed := colorLightDivide4CE960(stepD, fps)
+	value := fireballAddChop53_52C790(fireballMulChop53_52C790(phase, speed), start)
+	direction := int32(colorLightTruncate4CE960(value))
+	if direction < 0 {
+		direction += 360
+	} else if direction >= 360 {
+		direction -= 360
+	}
+	setColorLightDirection4CE8C0(dr, int(direction))
 }

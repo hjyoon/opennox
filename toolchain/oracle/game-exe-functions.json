@@ -294,6 +294,13 @@
       "purpose": "the exact fifteen NOP alignment bytes after binary32-to-int conversion and before word-to-int conversion"
     },
     {
+      "name": "original_color_light_acos_spill_419AF0",
+      "address": "0x00419AF0",
+      "size": 17,
+      "sha256": "6ed976f17118c80253abc72ddf922e02ec71cbd762cfca439e9ac654f1242469",
+      "purpose": "Unchanged original color-light direction checkpoint: acos-spill; gameplay precision53/chop with CRT acos temporarily selecting nearest; checked static lookup and process math-error policy boundaries are documented in the fixture."
+    },
+    {
       "name": "sub_419E10",
       "address": "0x00419E10",
       "size": 71,
@@ -2345,6 +2352,20 @@
       "purpose": "the exact ten NOP bytes separating the capability BYTE getter from the next function"
     },
     {
+      "name": "original_color_light_direction_484C00",
+      "address": "0x00484C00",
+      "size": 48,
+      "sha256": "07fce19addd25067a1fb42f2bfb7f72ae668dc45206fbdc46728da3ee5bc1336",
+      "purpose": "Unchanged original color-light direction checkpoint: direction; gameplay precision53/chop with CRT acos temporarily selecting nearest; checked static lookup and process math-error policy boundaries are documented in the fixture."
+    },
+    {
+      "name": "original_color_light_size_484C30",
+      "address": "0x00484C30",
+      "size": 48,
+      "sha256": "a04ad5b30ead55c4d43a29101cc5d40e54218eaacfec50f5b1b7128f0bdaf55d",
+      "purpose": "Unchanged original color-light direction checkpoint: size; gameplay precision53/chop with CRT acos temporarily selecting nearest; checked static lookup and process math-error policy boundaries are documented in the fixture."
+    },
+    {
       "name": "nox_xxx_wndEditProc_487D70",
       "address": "0x00487D70",
       "size": 1008,
@@ -3519,6 +3540,20 @@
       "size": 352,
       "sha256": "79d3beb724d285f8b33221e60a454f8c2654678d57435268a68ac52cc0008351",
       "purpose": "complete signed-byte count/uint16-delay guards, uint32 frame over the integer count*delay period, gameplay53/chop key selection, wrapped byte subframe and divide-before-multiply interpolation; final renderer setter is a declared boundary"
+    },
+    {
+      "name": "original_color_light_track_4CE8C0",
+      "address": "0x004CE8C0",
+      "size": 160,
+      "sha256": "105d3021e2828ee42c6cb36ecbcf26a73356cfbba369099104ddd3c247ea072f",
+      "purpose": "Unchanged original color-light direction checkpoint: track; gameplay precision53/chop with CRT acos temporarily selecting nearest; checked static lookup and process math-error policy boundaries are documented in the fixture."
+    },
+    {
+      "name": "original_color_light_rotate_4CE960",
+      "address": "0x004CE960",
+      "size": 304,
+      "sha256": "644b3ba36603ac0d8e0423472f13821be77bac9cbbb93f9abd17b6bae6f72ad2",
+      "purpose": "Unchanged original color-light direction checkpoint: rotate; gameplay precision53/chop with CRT acos temporarily selecting nearest; checked static lookup and process math-error policy boundaries are documented in the fixture."
     },
     {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_4CFD90",
@@ -21000,11 +21035,32 @@
       "purpose": "the exact decoded direct rel32 call from mover event handling to the script callback dispatcher at 00502490"
     },
     {
+      "name": "original_color_light_acos_566D00",
+      "address": "0x00566D00",
+      "size": 204,
+      "sha256": "610dc2ab9838ccf508e6333a1fbcc6a77a2b2df6ebc4e1c125db95e57627809c",
+      "purpose": "Unchanged original color-light direction checkpoint: acos; gameplay precision53/chop with CRT acos temporarily selecting nearest; checked static lookup and process math-error policy boundaries are documented in the fixture."
+    },
+    {
       "name": "nox_x87_trunc_signed_qword_566DCC",
       "address": "0x00566DCC",
       "size": 39,
       "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c",
       "purpose": "temporarily select x87 truncate-toward-zero mode, store ST0 as a signed qword, restore the original control word, and return its EDX:EAX bits including integer-indefinite on invalid conversion"
+    },
+    {
+      "name": "original_color_light_CRT_error_frame_56A037",
+      "address": "0x0056A037",
+      "size": 60,
+      "sha256": "efab31f764f3f9050a55f39a31d530bb16e734cc5f27eea6e8cfb1c14ab745b1",
+      "purpose": "Unchanged original color-light direction checkpoint: CRT-error-frame; gameplay precision53/chop with CRT acos temporarily selecting nearest; checked static lookup and process math-error policy boundaries are documented in the fixture."
+    },
+    {
+      "name": "original_color_light_CRT_acos_support_56A095",
+      "address": "0x0056A095",
+      "size": 192,
+      "sha256": "19254c50b6f16141cbd7e3955573b9ab238dfa774fa5cba5d117faa4b08b7c64",
+      "purpose": "Unchanged original color-light direction checkpoint: CRT-acos-support; gameplay precision53/chop with CRT acos temporarily selecting nearest; checked static lookup and process math-error policy boundaries are documented in the fixture."
     },
     {
       "name": "nox_xxx_unitGetHP_4EE780_call_56FB76",

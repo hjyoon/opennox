@@ -889,6 +889,37 @@ The remaining three-class chapter1-3 matrix and broader ABI, UI/input, audible,
 peer/original-Windows and sustained-gameplay evidence remain open. Overall100%
 is not achieved.
 
+### Native color-light rotation and tracking
+
+The native ColorLight path now follows the original zero-lock rotation gate,
+signed 16-bit rotation speed, one unsigned frame read and the original signed
+low-DWORD cycle reload. Reverse rotation, bounded/reversed/equal spans and
+invalid periods retain the original conversion and single angle adjustment.
+Tracking preserves signed DWORD coordinate and squared-distance wrapping, the
+CRT acos construction under temporary nearest rounding, and the subsequent
+chopped binary32 spill. Coincident or invalid tracking still calls the direction
+setter. Direction and cone-size setters use the original binary32 coefficient,
+signed DWORD input and separate precision53/chop operations without changing
+thread floating-point state.
+
+The unchanged GAME.EXE routines, acos helpers, binary32 spill and signed-qword
+conversion produced 4,067 differential vectors. Static drawable lookup and the
+CRT process math-error policy are declared checked service boundaries; Windows
+errno/exception behavior is outside this checkpoint. Before the port, 917 vector
+leaves failed. The identical inputs of the historical locked-rotation test prove
+that the original leaves the direction and lock unchanged without reading the
+frame; only that old expectation family is corrected. All other prior tests,
+fixtures and goldens are byte-identical.
+
+The immutable 6,812-input source passes 106,827 relevant broad test events,
+282,735 strict events (94,245 identities repeated three times with cgocheck2,
+race and checkptr2), and the same 94,245 focused Linux AMD64 identities under
+Rosetta/Clang. All four full suites preserve every previous terminal identity,
+action, multiplicity and skip: normal/highres 174,482 PASS and 49 SKIP each;
+server/server-highres 169,654 PASS and 7 SKIP each. Clean committed ARM64 products
+and their embedded revision are verified separately. This checkpoint does not
+establish renderer pixel fidelity, campaign completion or overall 100% porting.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

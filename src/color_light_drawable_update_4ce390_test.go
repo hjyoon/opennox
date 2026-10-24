@@ -157,14 +157,15 @@ func TestRotateColorLight4CE960(t *testing.T) {
 			return 45
 		},
 	})
-	if frameCalls != 2 {
-		t.Fatalf("frame calls = %d, want 2", frameCalls)
+	// The identical original historical inputs stop at the nonzero lock.
+	if frameCalls != 0 {
+		t.Fatalf("frame calls = %d, want 0", frameCalls)
 	}
-	if got, want := dr.LightDir, uint16(setColorLightDirection4CE8C0(&client.Drawable{}, 45)); got != want {
+	if got, want := dr.LightDir, uint16(0); got != want {
 		t.Fatalf("light direction = %d, want %d", got, want)
 	}
-	if dr.Field_42 != 0 {
-		t.Fatalf("field 42 = %d, want 0", dr.Field_42)
+	if dr.Field_42 != 1 {
+		t.Fatalf("field 42 = %d, want 1", dr.Field_42)
 	}
 }
 

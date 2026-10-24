@@ -84,7 +84,8 @@ func (s *Server) MonsterActionDyingEnd544CA0(unit *Object, runtime MonsterAction
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) || runtime.IsZombie == nil {
 		return false
 	}
-	if !runtime.IsZombie(unit) || !unit.UpdateDataMonster().StatusFlags.Has(object.MonStatusOnFire) {
+	update := unit.UpdateDataMonster()
+	if !runtime.IsZombie(unit) || !update.StatusFlags.Has(object.MonStatusOnFire) {
 		return true
 	}
 	if runtime.ZombieBurnDelete == nil {
@@ -234,29 +235,51 @@ func (s *Server) MonsterActionDeadUpdate544EC0(unit *Object, runtime MonsterActi
 	if runtime.RemoveUpdatable == nil {
 		return false
 	}
-	if update.MonsterDef == nil {
-		return monsterActionDeadUnsupported544D80(runtime, "missing monster definition", unit)
-	}
-	deleteAfterUpdate := uint32(update.MonsterDef.StatusFlags92)&1 != 0
-	if deleteAfterUpdate && runtime.DelayedDelete == nil {
-		return monsterActionDeadUnsupported544D80(runtime, "dead monster deletion", unit)
-	}
-
 	runtime.RemoveUpdatable(unit)
 	unit.Update = nil
-	update.Field523_2 = 0
-	update.Field74 = 0
-	for i := range update.Waypoints {
-		update.Waypoints[i] = nil
+	if !monsterDeadCleanup544F70(unit, runtime) {
+		return false
 	}
-	update.Field91 = 0
-	update.Field282_1 = 0
-	for i := range update.SeenEnemies {
-		update.SeenEnemies[i] = nil
+	// The cleanup helper reloads Object.UpdateData, but the final definition
+	// lookup still uses the update cached on entry to ACTION_DEAD.
+	if update.MonsterDef == nil {
+		return monsterActionDeadUnsupported544D80(runtime, "missing live monster definition", unit)
 	}
-	update.CurrentEnemy = nil
-	if deleteAfterUpdate {
+	if uint32(update.MonsterDef.StatusFlags92)&1 != 0 {
+		if runtime.DelayedDelete == nil {
+			return monsterActionDeadUnsupported544D80(runtime, "dead monster deletion", unit)
+		}
 		runtime.DelayedDelete(unit)
 	}
+	return true
+}
+
+// monsterDeadCleanup544F70 clears only the original counted prefixes. Slots
+// beyond the counts and adjacent byte/word fields are left intact. Malformed
+// counts that would cross the native arrays stop at their store boundary.
+func monsterDeadCleanup544F70(unit *Object, runtime MonsterActionDeadRuntime544D80) bool {
+	if unit.UpdateData == nil {
+		return monsterActionDeadUnsupported544D80(runtime, "missing live monster dead update", unit)
+	}
+	update := unit.UpdateDataMonster()
+	waypoints := int32(update.Field74)
+	update.Field523_2 = 0
+	if waypoints > int32(len(update.Waypoints)) {
+		return monsterActionDeadUnsupported544D80(runtime, "monster dead waypoint count", unit)
+	}
+	for i := int32(0); i < waypoints; i++ {
+		update.Waypoints[i] = nil
+	}
+	update.Field74 = 0
+	update.Field91 = 0
+	seen := int(update.Field282_1)
+	if seen > len(update.SeenEnemies) {
+		return monsterActionDeadUnsupported544D80(runtime, "monster dead seen-enemy count", unit)
+	}
+	for i := 0; i < seen; i++ {
+		update.SeenEnemies[i] = nil
+	}
+	update.Field282_1 = 0
+	update.CurrentEnemy = nil
 	return true
 }

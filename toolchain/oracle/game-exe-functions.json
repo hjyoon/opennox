@@ -21418,6 +21418,13 @@
       "size": 67,
       "sha256": "9834c1cea677cf88ccc32b259c9144da8ef67bdfad796648986a3d5ca357260d",
       "purpose": "Complete67-byte nine-byte ray-effect packet builder. All four low WORD stores execute unchanged and the full signed-DWORD endpoint array is preserved for the checked523340 filtering/delivery boundary. Native public Effect/name-routing/filter/real NetList integration is separately exercised for all eight current ray families."
+    },
+    {
+      "name": "original_complete_weapon_pickup_53A720",
+      "address": "0x0053A720",
+      "size": 664,
+      "sha256": "6f636ed5a7bb39008bbe53a3f22dba4a4edf6a74348ad5fe6926b20cf9d20df7",
+      "purpose": "Complete664-byte WeaponPickup. Twelve explicit valid owner/item/player contexts under Quest2048 independently preserve post-default live-update capture and separate short-circuit state/equip-flag queries, including controlled callback changes. All external services are checked hooks;48 raw startup/nearest/down/up observations remain separate. Native real typed-C body/high-pointer regression does not claim whole linked CGo service, ForceOfNature, duplicate/class, nil or malformed ABI closure."
     }
   ],
   "data": [

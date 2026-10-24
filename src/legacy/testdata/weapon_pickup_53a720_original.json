@@ -1,0 +1,4658 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "cases": 12,
+  "rows": [
+    {
+      "name": "bare-primary-equip",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "bare-primary-equip",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "bare-primary-equip",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "bare-primary-equip",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "bare-primary-equip",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "bare-primary-equip",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "bare-primary-equip",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "bare-primary-equip",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "already-equipped-charge",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "already-equipped-charge",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "other-weapon",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "already-equipped-charge",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "already-equipped-charge",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "other-weapon",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "already-equipped-charge",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "already-equipped-charge",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "other-weapon",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "already-equipped-charge",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "already-equipped-charge",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "other-weapon",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "both-mode-gates-closed",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "both-mode-gates-closed",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          1,
+          1
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "both-mode-gates-closed",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "both-mode-gates-closed",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          1,
+          1
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "both-mode-gates-closed",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "both-mode-gates-closed",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          1,
+          1
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "both-mode-gates-closed",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "both-mode-gates-closed",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          1,
+          1
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "secondary-equip-after-primary-mode-rejection",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "secondary-equip-after-primary-mode-rejection",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          1,
+          0
+        ],
+        "equip_flags": [
+          2,
+          2
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "secondary-equip-after-primary-mode-rejection",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "secondary-equip-after-primary-mode-rejection",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          1,
+          0
+        ],
+        "equip_flags": [
+          2,
+          2
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "secondary-equip-after-primary-mode-rejection",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "secondary-equip-after-primary-mode-rejection",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          1,
+          0
+        ],
+        "equip_flags": [
+          2,
+          2
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "secondary-equip-after-primary-mode-rejection",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "secondary-equip-after-primary-mode-rejection",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          1,
+          0
+        ],
+        "equip_flags": [
+          2,
+          2
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "two-live-equip-flag-queries",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "two-live-equip-flag-queries",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          2
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "two-live-equip-flag-queries",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "two-live-equip-flag-queries",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          2
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "two-live-equip-flag-queries",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "two-live-equip-flag-queries",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          2
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "two-live-equip-flag-queries",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "two-live-equip-flag-queries",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          2
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "changed-second-equip-flags",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "changed-second-equip-flags",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          2,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "changed-second-equip-flags",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "changed-second-equip-flags",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          2,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "changed-second-equip-flags",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "changed-second-equip-flags",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          2,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "changed-second-equip-flags",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "changed-second-equip-flags",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          2,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 2
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            3,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-equipped-old-with-bare-new-update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "pickup-replaces-equipped-old-with-bare-new-update",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_update": true,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-equipped-old-with-bare-new-update",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "pickup-replaces-equipped-old-with-bare-new-update",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_update": true,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-equipped-old-with-bare-new-update",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "pickup-replaces-equipped-old-with-bare-new-update",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_update": true,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-equipped-old-with-bare-new-update",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "pickup-replaces-equipped-old-with-bare-new-update",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_update": true,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "live_equipped": "item",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-bare-old-with-equipped-new-update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "pickup-replaces-bare-old-with-equipped-new-update",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_update": true,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            7,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "live_equipped": "other-weapon",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-bare-old-with-equipped-new-update",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "pickup-replaces-bare-old-with-equipped-new-update",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_update": true,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            7,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "live_equipped": "other-weapon",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-bare-old-with-equipped-new-update",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "pickup-replaces-bare-old-with-equipped-new-update",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_update": true,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            7,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "live_equipped": "other-weapon",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-bare-old-with-equipped-new-update",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "pickup-replaces-bare-old-with-equipped-new-update",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_update": true,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equipFlags",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "charges",
+          "args": [
+            7,
+            "item",
+            134,
+            243
+          ],
+          "result": 0
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "live_equipped": "other-weapon",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-zero",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "default-pickup-rejects-zero",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 0,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-zero",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "default-pickup-rejects-zero",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 0,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-zero",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "default-pickup-rejects-zero",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 0,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-zero",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "default-pickup-rejects-zero",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 0,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-two",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "default-pickup-rejects-two",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 2,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 2
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-two",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "default-pickup-rejects-two",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 2,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 2
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-two",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "default-pickup-rejects-two",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 2,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 2
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-two",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "default-pickup-rejects-two",
+        "owner_class": 4,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 2,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            4096
+          ],
+          "result": 0
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 2
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "non-player-monster-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "non-player-monster-control",
+        "owner_class": 2,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "non-player-monster-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "non-player-monster-control",
+        "owner_class": 2,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "non-player-monster-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "non-player-monster-control",
+        "owner_class": 2,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "non-player-monster-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "non-player-monster-control",
+        "owner_class": 2,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "class-zero-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "class-zero-control",
+        "owner_class": 0,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "class-zero-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "class-zero-control",
+        "owner_class": 0,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "class-zero-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "class-zero-control",
+        "owner_class": 0,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "class-zero-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "class-zero-control",
+        "owner_class": 0,
+        "item_class": 4096,
+        "item_subclass": 65536,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_update": false,
+        "states": [
+          0,
+          0
+        ],
+        "equip_flags": [
+          1,
+          1
+        ],
+        "equip_return": 1,
+        "player_flags": 4
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "finalize",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "live_equipped": 0,
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    }
+  ],
+  "regions": [
+    {
+      "name": "complete-WeaponPickup",
+      "address": "0x53a720",
+      "size": 664,
+      "sha256": "6f636ed5a7bb39008bbe53a3f22dba4a4edf6a74348ad5fe6926b20cf9d20df7"
+    },
+    {
+      "name": "actual-startup-control-call",
+      "address": "0x4014b5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c"
+    },
+    {
+      "name": "actual-CRT-control-word",
+      "address": "0x40209e",
+      "size": 358,
+      "sha256": "da7de6a1ae9b07904d40360b02191a2cdc51ff80da00eaabf02926bbc1ac8820"
+    }
+  ],
+  "boundary": "Complete664-byte53A720 executes unchanged. Every external service is a checked hook with declared return/state effects, including default pickup replacement of owner update and equip mutations. Quest2048 context skips original unrelated duplicate/class/ForceOfNature paths. Four FPU contexts are preserved separately although represented paths do not perform FP arithmetic.",
+  "scope": "Complete function under12 explicit valid owner/item/player/service contexts, not full external service bodies, nil/malformed ABI behavior, ForceOfNature limit or all gameplay/porting closure."
+}

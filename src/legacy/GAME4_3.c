@@ -5512,13 +5512,16 @@ int sub_53A720(nox_object_t* owner, nox_object_t* item, int report, int equip_re
 	if (nox_xxx_pickupDefault_4F31E0(owner, item, report, equip_report) != 1) {
 		return 0;
 	}
+	// 0053A8C1 captures the live update after the default pickup callback.
+	update = owner->data_update;
 	if ((owner->obj_class & 4) && update && update->player) {
 		int equipped = 0;
-		const int equip_flags = nox_xxx_weaponInventoryEquipFlags_415820(item);
-		if (!update->equipped_weapon && !sub_419E60(owner) && equip_flags != 2) {
+		// Both original equip gates query state before their own flag lookup.
+		if (!update->equipped_weapon && !sub_419E60(owner) &&
+			nox_xxx_weaponInventoryEquipFlags_415820(item) != 2) {
 			equipped = nox_xxx_playerEquipWeapon_53A420(owner, item, equip_report, 0);
 		}
-		if (!sub_419E60(owner) && equip_flags == 2 &&
+		if (!sub_419E60(owner) && nox_xxx_weaponInventoryEquipFlags_415820(item) == 2 &&
 			(update->player->field_4 & 0xC) && !(update->player->field_4 & 2)) {
 			equipped = nox_xxx_playerEquipWeapon_53A420(owner, item, equip_report, 0);
 		}

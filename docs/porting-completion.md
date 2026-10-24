@@ -1242,6 +1242,18 @@ The immutable 6,840-input candidate preserves every previous test, fixture, gold
 
 The original shared VM/name/namespace prefix, full original external filtering/network services, green/vamp/other effect paths, other FP contexts/status/payloads and remaining class/chapter features stay open. These bounded checks do not establish overall 100%. Detailed evidence: `ray-effect-integer-port/verification.json` in the preserved validation workspace.
 
+### Native WeaponPickup live state and equip queries
+
+The existing typed 53A720 WeaponPickup callback now snapshots the live owner update after a successful default pickup. A default-pickup callback can replace that record; the previous native body retained the earlier pointer and could choose the wrong automatic equipment or report charges through the wrong player record. Each original equip gate also queries state before its own equip-flags lookup. The previous body always queried flags first and reused one result for both gates, losing short-circuit behavior and changes between callbacks.
+
+Independent unchanged GAME.EXE execution covers the complete 664-byte function with checked external services in twelve explicit valid Coop (flag0x800) contexts. Eight contexts differ in the unchanged native C body, including three with different final equipment; four controls agree. All 48 original startup/nearest/down/up observations remain preserved. The new Go regression compiles the exact production C body with real native headers, seven pointers above UINT32_MAX, canaries and the same declared service inputs. After the correction all twelve contexts and thirteen terminal identities pass. A separate native ASan/UBSan run also agrees on all twelve contexts. The new native64 probe skips32-bit test builds; its guard is inactive on the qualified ARM64/AMD64 targets. No previous test, fixture, golden or oracle entry changes.
+
+The immutable 6,843-input candidate passes 110,637 broad events. Actual cgocheck2/race/checkptr2 checks retain every prior identity and add thirteen across three repetitions, totaling 294,165 events over 98,055 identities. The new C driver runs as a checked standalone process; Go race/checkptr do not instrument its C code, which has separate ASan/UBSan evidence. Normal/highres full suites each pass 178,277 events with the same 49 skips; server/server-highres each pass 173,449 with the same 7 skips. Focused offline Rosetta/Clang Linux AMD64 verifies the exact 98,055 identities and multiplicities, followed by four clean committed ARM64 products and independent archive-member checks.
+
+Existing nil/layout guards and the unselected ForceOfNature, duplicate/class and malformed-ABI paths are unchanged and not newly certified. Full external service bodies, whole linked CGo pickup ownership, other reachable stock callbacks/layouts, the remaining nine-cell campaign/features and overall100 remain open. The initial inherited preparation metadata's packet/API wording is explicitly corrected without changing raw evidence. Detailed evidence: `weapon-pickup-live-state-port/verification.json` in the preserved validation workspace.
+
+The immutable original fixture metadata uses the earlier label `Quest2048`; the checked flag value is0x800, named GameModeCoop in the native flag enum. The later Quest mode is0x1000. This terminology correction changes no original bytes, fixture/service inputs, test expectations or tested source.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

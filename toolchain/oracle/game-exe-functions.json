@@ -3570,6 +3570,13 @@
       "purpose": "Unchanged original ManaBomb charge; declared checked balance/type/RNG/allocation/activation/position/deletion services, partial stores and native DWORD arithmetic compared independently."
     },
     {
+      "name": "original_mana_bomb_radius_ingress_4CCAC0_prefix",
+      "address": "0x004CCAC0",
+      "size": 27,
+      "sha256": "eeba063040f1f3ffcd12ec7cf89b1272232b7425e611617fa43a573a13f47f2a",
+      "purpose": "Derived radius-conversion prefix of004CCAC0, not a full function: original419D40 loads a binary32 record and419A70 converts it to signed DWORD, retaining integer-indefinite for invalid input under the explicit gameplay chop context. Native balance closure and actual charge are independently tested."
+    },
+    {
       "name": "nox_xxx_colorLightAlterColor_4CE440",
       "address": "0x004CE440",
       "size": 464,

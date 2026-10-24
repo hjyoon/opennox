@@ -2,6 +2,7 @@ package opennox
 
 import (
 	"image"
+	"math"
 
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/legacy"
@@ -18,7 +19,15 @@ type manaBombDrawableHooks4CCAC0 struct {
 
 func (c *Client) manaBombDrawableHooks4CCAC0() manaBombDrawableHooks4CCAC0 {
 	return manaBombDrawableHooks4CCAC0{
-		radius:   func() int { return int(c.srv.Balance.Float("ManaBombOutRadius")) },
+		radius: func() int {
+			value := c.srv.Balance.Float("ManaBombOutRadius")
+			// Original 004CCAD4 -> 00419A70 converts to a signed DWORD.
+			// Invalid values retain integer-indefinite before any radius arithmetic.
+			if math.IsNaN(value) || value >= 2147483648 || value < -2147483648 {
+				return math.MinInt32
+			}
+			return int(value)
+		},
 		typeID:   c.Things.IndByID,
 		random:   c.srv.Rand.Other.Int,
 		frame:    c.srv.Frame,

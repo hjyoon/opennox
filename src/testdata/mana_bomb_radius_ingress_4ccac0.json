@@ -1,0 +1,327 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "regions": [
+    {
+      "name": "charge-radius-ingress",
+      "address": "0x4ccac0",
+      "size": 27,
+      "sha256": "eeba063040f1f3ffcd12ec7cf89b1272232b7425e611617fa43a573a13f47f2a"
+    },
+    {
+      "name": "balance-float",
+      "address": "0x419d40",
+      "size": 36,
+      "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300"
+    },
+    {
+      "name": "float-to-int",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    }
+  ],
+  "rows": [
+    {
+      "bits": 0,
+      "fpcw": 639,
+      "result": 0
+    },
+    {
+      "bits": 0,
+      "fpcw": 3711,
+      "result": 0
+    },
+    {
+      "bits": 2147483648,
+      "fpcw": 639,
+      "result": 0
+    },
+    {
+      "bits": 2147483648,
+      "fpcw": 3711,
+      "result": 0
+    },
+    {
+      "bits": 1,
+      "fpcw": 639,
+      "result": 0
+    },
+    {
+      "bits": 1,
+      "fpcw": 3711,
+      "result": 0
+    },
+    {
+      "bits": 2147483649,
+      "fpcw": 639,
+      "result": 0
+    },
+    {
+      "bits": 2147483649,
+      "fpcw": 3711,
+      "result": 0
+    },
+    {
+      "bits": 1056964608,
+      "fpcw": 639,
+      "result": 0
+    },
+    {
+      "bits": 1056964608,
+      "fpcw": 3711,
+      "result": 0
+    },
+    {
+      "bits": 3204448256,
+      "fpcw": 639,
+      "result": 0
+    },
+    {
+      "bits": 3204448256,
+      "fpcw": 3711,
+      "result": 0
+    },
+    {
+      "bits": 1069547520,
+      "fpcw": 639,
+      "result": 2
+    },
+    {
+      "bits": 1069547520,
+      "fpcw": 3711,
+      "result": 1
+    },
+    {
+      "bits": 3217031168,
+      "fpcw": 639,
+      "result": -2
+    },
+    {
+      "bits": 3217031168,
+      "fpcw": 3711,
+      "result": -1
+    },
+    {
+      "bits": 1075838976,
+      "fpcw": 639,
+      "result": 2
+    },
+    {
+      "bits": 1075838976,
+      "fpcw": 3711,
+      "result": 2
+    },
+    {
+      "bits": 3223322624,
+      "fpcw": 639,
+      "result": -2
+    },
+    {
+      "bits": 3223322624,
+      "fpcw": 3711,
+      "result": -2
+    },
+    {
+      "bits": 1128792064,
+      "fpcw": 639,
+      "result": 200
+    },
+    {
+      "bits": 1128792064,
+      "fpcw": 3711,
+      "result": 200
+    },
+    {
+      "bits": 3276275712,
+      "fpcw": 639,
+      "result": -200
+    },
+    {
+      "bits": 3276275712,
+      "fpcw": 3711,
+      "result": -200
+    },
+    {
+      "bits": 1325400063,
+      "fpcw": 639,
+      "result": 2147483520
+    },
+    {
+      "bits": 1325400063,
+      "fpcw": 3711,
+      "result": 2147483520
+    },
+    {
+      "bits": 1325400064,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 1325400064,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 1325400065,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 1325400065,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 3472883712,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 3472883712,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 3472883713,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 3472883713,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 1333788671,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 1333788671,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 1333788672,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 1333788672,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 3481272320,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 3481272320,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 1593835520,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 1593835520,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 3741319168,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 3741319168,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 2139095039,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 2139095039,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 4286578687,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 4286578687,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 2139095040,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 2139095040,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 4286578688,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 4286578688,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 2143289344,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 2143289344,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 4290772992,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 4290772992,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 2139095041,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 2139095041,
+      "fpcw": 3711,
+      "result": -2147483648
+    },
+    {
+      "bits": 4286578689,
+      "fpcw": 639,
+      "result": -2147483648
+    },
+    {
+      "bits": 4286578689,
+      "fpcw": 3711,
+      "result": -2147483648
+    }
+  ],
+  "scope": "Unchanged charge ingress plus actual original balance FLDS and integer converter. Only key-table lookup is checked/substituted; values are explicit original binary32 records. Both CW modes observed. No original file loader, arbitrary non-binary32 balance-value domain, renderer/audio/campaign or overall100 claim."
+}

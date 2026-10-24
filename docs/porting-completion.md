@@ -1008,6 +1008,48 @@ declared service boundaries. The live caller control word, type-cache lifecycle,
 complete external services, renderer/audio fidelity, campaign completion and
 overall 100% remain open.
 
+### Native ManaBomb radius conversion
+
+ManaBomb charge now retains the original signed-DWORD integer-indefinite value
+for NaN and out-of-range balance values before native-width integer conversion.
+Previously, a radius such as binary32 0x4F800000 could become zero after a native
+64-bit conversion and later DWORD narrowing; the original returns 0x80000000.
+Valid represented binary32 values preserve gameplay truncation. Charge, orb and
+spark arithmetic, allocation behavior and service order remain unchanged.
+
+The unchanged original charge ingress, actual balance FLDS and integer converter
+produced 60 observations under two explicit control words. Native tests select
+30 binary32 inputs under the gameplay chop context and execute actual temporary
+Balance.Read, the production radius binding and the actual charge
+branch. Before porting, 15 vector leaves failed while 15 controls passed. All
+31 new differential events pass after porting. Previous tests, fixtures and
+goldens remain byte-identical.
+
+Separate supplemental integration connects the real native RNG. The old native
+binding divides by zero for positive infinity and the largest finite binary32
+radius; both fixed cases return normally and advance 40 RNG draws. Complete
+unchanged original charge/balance/converter/RNG execution independently confirms
+both normal returns, and the 4,096-entry original RNG table matches native data.
+These three supplemental PASS events are separate from the counters below.
+Key-table lookup, preseeded effect identity and failed allocation remain declared
+boundaries in that original execution.
+
+The immutable 6,823-input source passes 108,962 broad events and 289,140 strict
+events (96,380 identities repeated three times with cgocheck2, race and checkptr2).
+Focused offline Linux AMD64 under Rosetta/Clang preserves the same 96,380
+identities. Four full suites preserve every previous terminal identity, action,
+multiplicity and skip: normal/highres 176,602 PASS and 49 SKIP each;
+server/server-highres 171,774 PASS and 7 SKIP each. Clean committed ARM64 products
+and embedded revisions are verified separately.
+
+Only original binary32 records and explicit control-word observations are
+certified. Original file-loader rounding, non-binary32 YAML values, NaN payloads
+and floating exception flags, broader caller contexts, complete external
+services, renderer/audio fidelity, campaign completion and overall 100% remain
+open. Native temporary balance loading validates exact finite values or NaN
+category; original key-table lookup and remaining charge services are declared
+checked boundaries.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

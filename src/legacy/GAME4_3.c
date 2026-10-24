@@ -7850,6 +7850,8 @@ int nox_xxx_pickupArmor_53E7F0(nox_object_t* owner, nox_object_t* item, int a3, 
 	}
 	if (owner->obj_class & 4) {
 		nox_object_t* equipped = nox_xxx_armorHaveSameSubclass_53E7B0(owner, item);
+		// 0053E925 captures the update after the same-subclass callback.
+		update = owner->data_update;
 		if (!sub_419E60(owner)) {
 			if (equipped) {
 				uint16_t equipped_type = equipped->typ_ind;

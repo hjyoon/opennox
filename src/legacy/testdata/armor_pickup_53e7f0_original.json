@@ -1,0 +1,3686 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "cases": 14,
+  "rows": [
+    {
+      "name": "bare-shield-equip-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "bare-shield-equip-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "bare-shield-equip-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "bare-shield-equip-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "bare-shield-equip-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "bare-shield-equip-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "bare-shield-equip-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "bare-shield-equip-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "blocking-weapon-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "blocking-weapon-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "blocking-weapon-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "blocking-weapon-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "blocking-weapon-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "blocking-weapon-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "blocking-weapon-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "blocking-weapon-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-blocked-old-with-bare-new",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "pickup-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "pickup",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "pickup-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "pickup",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "pickup-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "pickup",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "pickup-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "pickup",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-bare-old-with-blocked-new",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "pickup-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "pickup",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "pickup-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "pickup",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "pickup-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "pickup",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "pickup-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "pickup-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "pickup",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "sameSubclass-replaces-blocked-old-with-bare-new",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "sameSubclass-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "sameSubclass",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "sameSubclass-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "sameSubclass-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "sameSubclass",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "sameSubclass-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "sameSubclass-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "sameSubclass",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "sameSubclass-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "sameSubclass-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "sameSubclass",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "sameSubclass-replaces-bare-old-with-blocked-new",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "sameSubclass-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "sameSubclass",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "sameSubclass-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "sameSubclass-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "sameSubclass",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "sameSubclass-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "sameSubclass-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "sameSubclass",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "sameSubclass-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "sameSubclass-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "sameSubclass",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "state-replaces-blocked-old-with-bare-new",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "state-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "state",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "state-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "state-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "state",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "state-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "state-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "state",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "state-replaces-blocked-old-with-bare-new",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "state-replaces-blocked-old-with-bare-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "state",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "state-replaces-bare-old-with-blocked-new",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "state-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "state",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "state-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "state-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "state",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "state-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "state-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "state",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "state-replaces-bare-old-with-blocked-new",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "state-replaces-bare-old-with-blocked-new",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": true,
+        "replace_at": "state",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "new",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "closed-state-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "closed-state-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 1
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "closed-state-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "closed-state-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 1
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "closed-state-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "closed-state-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 1
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "closed-state-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "closed-state-control",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 1
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "nonshield-equip-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "nonshield-equip-control",
+        "owner_class": 4,
+        "item_subclass": 4,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "nonshield-equip-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "nonshield-equip-control",
+        "owner_class": 4,
+        "item_subclass": 4,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "nonshield-equip-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "nonshield-equip-control",
+        "owner_class": 4,
+        "item_subclass": 4,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "nonshield-equip-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "nonshield-equip-control",
+        "owner_class": 4,
+        "item_subclass": 4,
+        "pickup_return": 1,
+        "old_equipped": true,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "state",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "equip",
+          "args": [
+            "owner",
+            "item",
+            23,
+            0
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-zero",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "default-pickup-rejects-zero",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 0,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-zero",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "default-pickup-rejects-zero",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 0,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-zero",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "default-pickup-rejects-zero",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 0,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-zero",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "default-pickup-rejects-zero",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 0,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-two",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "default-pickup-rejects-two",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 2,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 2
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-two",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "default-pickup-rejects-two",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 2,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 2
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-two",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "default-pickup-rejects-two",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 2,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 2
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "default-pickup-rejects-two",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "default-pickup-rejects-two",
+        "owner_class": 4,
+        "item_subclass": 2,
+        "pickup_return": 2,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 2
+        }
+      ],
+      "return_value": 0,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "non-player-monster-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "non-player-monster-control",
+        "owner_class": 2,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "non-player-monster-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "non-player-monster-control",
+        "owner_class": 2,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "non-player-monster-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "non-player-monster-control",
+        "owner_class": 2,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "non-player-monster-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "non-player-monster-control",
+        "owner_class": 2,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "class-zero-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "class-zero-control",
+        "owner_class": 0,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "class-zero-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "class-zero-control",
+        "owner_class": 0,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "class-zero-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "class-zero-control",
+        "owner_class": 0,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    },
+    {
+      "name": "class-zero-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "class-zero-control",
+        "owner_class": 0,
+        "item_subclass": 2,
+        "pickup_return": 1,
+        "old_equipped": false,
+        "new_equipped": false,
+        "replace_at": "none",
+        "state": 0
+      },
+      "events": [
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "flags",
+          "args": [
+            2048
+          ],
+          "result": 1
+        },
+        {
+          "service": "pickup",
+          "args": [
+            "owner",
+            "item",
+            17,
+            23
+          ],
+          "result": 1
+        },
+        {
+          "service": "decay",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "live_update": "old",
+      "stack_balanced": true,
+      "nonoutput_canaries_unchanged": true
+    }
+  ],
+  "regions": [
+    {
+      "name": "complete-ArmorPickup",
+      "address": "0x53e7f0",
+      "size": 743,
+      "sha256": "ab522a1e9a501c0d4ebf547514ed3a1940806bf67fd2b9d1032b6e6c915c02c6"
+    },
+    {
+      "name": "actual-startup-control-call",
+      "address": "0x4014b5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c"
+    },
+    {
+      "name": "actual-CRT-control-word",
+      "address": "0x40209e",
+      "size": 358,
+      "sha256": "da7de6a1ae9b07904d40360b02191a2cdc51ff80da00eaabf02926bbc1ac8820"
+    }
+  ],
+  "boundary": "Complete743-byte ArmorPickup executes unchanged through RET53EAD6. Every external service is a checked hook with declared effects. Warm name-ID cache and Quest2048 skip name initialization, duplicate/class gates. SameSubclass returns no equipped armor; default pickup, SameSubclass or state may replace owner update. The original captures update AFTER SameSubclass and BEFORE state. Four FP contexts preserve raw provenance; selected body performs no FP.",
+  "scope": "Fourteen explicit valid native owner/item/update contexts. No complete external service, equipped armor/modifier, material audio, cold-name cache, duplicate/class, nil/malformed ABI or whole linked CGo closure claim."
+}

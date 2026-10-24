@@ -1254,6 +1254,20 @@ Existing nil/layout guards and the unselected ForceOfNature, duplicate/class and
 
 The immutable original fixture metadata uses the earlier label `Quest2048`; the checked flag value is0x800, named GameModeCoop in the native flag enum. The later Quest mode is0x1000. This terminology correction changes no original bytes, fixture/service inputs, test expectations or tested source.
 
+### Native ArmorPickup live update capture
+
+The typed native 53E7F0 ArmorPickup callback now captures the player update immediately after the same-subclass callback and before the state callback, matching original53E925. The previous native body retained the update loaded before default pickup. If either default pickup or same-subclass lookup replaces that record, shield auto-equipment could use the previous weapon state and choose the wrong result. Replacement by the later state callback must not replace the captured record; both directions remain passing controls.
+
+Independent unchanged GAME.EXE execution covers the complete743-byte function with checked external services in14 explicit valid warm-name-cache Coop (flag0x800) contexts. Four automatic-equipment decisions differ in the unchanged native C body and ten controls agree. All56 startup/nearest/down/up observations remain separately preserved. The new Go regression compiles the exact production helper/body against real native headers with five pointers above UINT32_MAX and canaries. The corrected body passes all14 contexts and15 terminal identities; separate ASan/UBSan execution also agrees on all14 contexts. No previous test, fixture, golden or oracle entry changes.
+
+The immutable6846-input candidate passes110652 broad events. Actual cgocheck2/race/checkptr2 checks preserve all98055 parent identities and add15 identities, repeated3times for294210 events. Normal/highres full suites each pass178292 events with the same49 skips; server/server-highres each pass173464 with the same7 skips. Focused offline Rosetta/Clang Linux AMD64 preserves exactly98070 identities/actions/multiplicities, followed by four clean committed ARM64 products and independent archive-member checks. The native C driver is a checked standalone process; Go race/checkptr do not instrument its C code, which has separate ASan/UBSan evidence.
+
+Existing nil/layout guards and the unselected cold-name-cache, duplicate/class, equipped-armor/modifier/material paths are unchanged and not newly certified. Full original external services, whole linked CGo pickup ownership, other reachable stock callbacks/layouts, remaining campaign/features and overall100 remain open. Detailed evidence: `armor-pickup-live-state-port/verification.json` in the preserved validation workspace.
+
+The immutable original fixture metadata uses the earlier label `Quest2048`; the checked flag value is0x800, named GameModeCoop in the native flag enum. The later Quest mode is0x1000. This terminology correction changes no original bytes, fixture/service inputs, test expectations or tested source.
+
+Supplemental actual registered ArmorPickup CGo execution covers six represented contexts and seven terminal identities in both normal and actual cgocheck2/race/checkptr2 modes. It exercises the real C pickup and same-subclass loop, real C-to-Go player-state and decay services, seven high native pointers per context, controlled default-pickup update replacement and full signed32 argument forwarding. Default pickup remains an explicit checked Go callback; the equip class-check hook is an unexpected-path tripwire. Complete original external service and full armor equip/strength/network/material integration are not claimed. Exactly one separately hashed overlay test file is used; all6846 frozen candidate inputs and existing expectations remain unchanged. An initial probe setup incorrectly called the player-only state setter on a Monster fixture before the native pickup call; its failure is retained, and the corrected setup only skips that invalid player-only preparation.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

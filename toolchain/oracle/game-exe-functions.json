@@ -7,6 +7,13 @@
   "image_base": "0x00400000",
   "functions": [
     {
+      "name": "original_startup_control_word_call_4014B5",
+      "address": "0x004014B5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c",
+      "purpose": "Derived startup call sequence only: push original rounding mode and mask0x300 then invoke original CRT control-word setter. The original body is executed as an independent context control."
+    },
+    {
       "name": "nox_platform_srand",
       "address": "0x00402000",
       "size": 13,
@@ -3689,6 +3696,13 @@
       "purpose": "the sole decoded direct rel32 call from map-switch cleanup to the trade-session reset at 0050E360"
     },
     {
+      "name": "original_player_camper_reset_call_4D16D6",
+      "address": "0x004D16D6",
+      "size": 5,
+      "sha256": "7b7214517bbc388693ba5cf054ed45fa5fde491a229c6ab9cde8583ada2eecef",
+      "purpose": "The sole decoded direct call instruction to complete Camper Reset from original server session initialization; caller context is certified only by explicit recorded original startup execution, not inferred from a generic converter name."
+    },
+    {
       "name": "nox_xxx_allocSpellRelatedArrays_4FC9B0_call_4D171F",
       "address": "0x004D171F",
       "size": 5,
@@ -3988,6 +4002,13 @@
       "size": 5,
       "sha256": "dbcfa05fe7bdce2ca984bf2d2c357e57b90fe56f1db76d67c6b94db595460c58",
       "purpose": "the exact decoded direct rel32 call instruction targeting the class-selected inventory respawn at 004EDD00"
+    },
+    {
+      "name": "original_player_camper_reset_4D7C60",
+      "address": "0x004D7C60",
+      "size": 84,
+      "sha256": "018743d475d350a62173f8bf33fe0ddcbc4ea335bb0e7f1ec15994c0c6538fb9",
+      "purpose": "Complete original Camper Reset: clear sampling stamp, FLDS/FSTPS radius and signed-DWORD conversion of start/fade times in original lookup/store order."
     },
     {
       "name": "nox_xxx_playerCamperUpdate_4D7CC0",

@@ -1050,6 +1050,69 @@ open. Native temporary balance loading validates exact finite values or NaN
 category; original key-table lookup and remaining charge services are declared
 checked boundaries.
 
+### Native Camper Reset timer conversion
+
+Camper Reset now preserves the original signed-DWORD result before storing
+an unsigned start/fade interval. NaN, infinities and values outside signed32
+produce the original integer-indefinite bits `0x80000000`; valid represented
+binary32 values retain truncation and their existing unsigned interval bits.
+The previous direct native `uint32(float64)` conversion could instead retain
+unrelated low bits or zero for invalid original inputs on ARM64. Radius and
+the public Reset lookup/store order remain unchanged.
+
+The unchanged complete84-byte original `004D7C60`, actual balance FLDS at
+`00419D40` and converter `00419A70` execute for90 observations:30 binary32
+inputs under nearest, the actual original startup control-word result, and
+an equivalent gameplay control. The startup sequence at `004014B5` executes
+the unchanged original CRT control setter. Unicorn reports raw CW`0x0e3f`;
+CW`0x0e7f`, differing only in reserved bit6, independently produces identical
+stored values and lookup observations for all30 inputs. The sole direct
+Reset call instruction at `004D16D6` is executed as well. Only the balance
+key-table lookup is a checked external boundary. This does not certify every
+surrounding startup service or other thread/caller control word.
+
+The actual unchanged candidate public Reset and native balance lookup fail
+28 new differential leaves and pass2 controls before the port. The same30
+leaves plus parent pass afterward. Existing tests, fixtures and goldens remain
+byte-identical. The6825-input candidate broad run preserves108,962 parent
+PASS identities and adds31, totaling108,993. The exact focused96,411 identities
+pass three times with actual cgocheck2, race and checkptr2, totaling289,233
+PASS events. Full normal/HD suites each retain176,633 PASS49 SKIP;
+server/server-HD each retain171,805 PASS7 SKIP, with the complete prior
+identity/action/multiplicity/skip counters preserved. The same96,411 focused
+identities pass on offline Linux AMD64 via Rosetta/Clang before commit;
+this is not a full Linux suite, GCC or physical-x86 result. Four clean
+committed ARM64 products, source archive and pushed `port/go1.26-multiarch`
+revision are independently checked. Evidence remains in `camper-reset-port`
+and `camper-reset-followup-audit` under the task-owned verification directory.
+Arbitrary YAML/file-loader rounding, FP status/NaN payloads, other contexts,
+full external services, audio/peer fidelity and overall100 remain open.
+
+### Original outer DESTROY directive classification
+
+DefaultDestroy, NoDestroy and DeactivateDestroy are preserved thing metadata,
+not missing original runtime callbacks. Both unchanged original outer thing
+attribute dispatchers are now executed: server `004E3220` and client
+`0044CE00`. Their complete original handler tables contain no DESTROY entry.
+Twenty executions cover empty and unknown controls, each of the three outer
+DESTROY declarations alone and before known controls. Every ignored case
+consumes the complete stream, returns1, balances the stack and leaves all512
+canary type bytes unchanged. Original DAMAGE/DefaultDamage and
+UPDATE/ProjectileUpdate handlers bind their expected server pointers;
+DRAW/DebugDraw binds its original client pointer identically with and without
+each DESTROY declaration. Original memory reads and aligned reads execute
+unchanged; CRT strtok is the declared external boundary.
+
+The native server leaves OnDestroy metadata unbound and the native client
+continues past unknown attributes, matching these represented original
+observations. The three outer declarations are therefore classified as
+original-unused; no invented callback bodies are added. This closes the
+specific outer-directive item left open in the earlier registration audits.
+Other parser error/binary branches and complete transitive callback/layout
+coverage remain separate. Original image, native sources,20 observations
+and failed first harness are preserved in
+`outer-destroy-directive-followup-audit`; no whole-game100 claim follows.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

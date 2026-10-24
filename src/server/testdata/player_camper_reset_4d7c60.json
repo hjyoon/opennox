@@ -1,0 +1,3648 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "startup_input_control_word": 639,
+  "actual_startup_control_word": 3647,
+  "regions": [
+    {
+      "name": "complete-reset",
+      "address": "0x4d7c60",
+      "size": 84,
+      "sha256": "018743d475d350a62173f8bf33fe0ddcbc4ea335bb0e7f1ec15994c0c6538fb9"
+    },
+    {
+      "name": "actual-balance-float",
+      "address": "0x419d40",
+      "size": 36,
+      "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300"
+    },
+    {
+      "name": "actual-converter",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "startup-control-call",
+      "address": "0x4014b5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c"
+    },
+    {
+      "name": "actual-CRT-control-word",
+      "address": "0x40209e",
+      "size": 358,
+      "sha256": "da7de6a1ae9b07904d40360b02191a2cdc51ff80da00eaabf02926bbc1ac8820"
+    },
+    {
+      "name": "sole-reset-call",
+      "address": "0x4d16d6",
+      "size": 5,
+      "sha256": "7b7214517bbc388693ba5cf054ed45fa5fde491a229c6ab9cde8583ada2eecef"
+    }
+  ],
+  "rows": [
+    {
+      "name": "f32-00000000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 3217031168,
+        "CamperStartTime": 0,
+        "CamperFadeTime": 1325400064
+      },
+      "radius_bits": 3217031168,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 3217031168,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 3217031168,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-00000000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 3217031168,
+        "CamperStartTime": 0,
+        "CamperFadeTime": 1325400064
+      },
+      "radius_bits": 3217031168,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 3217031168,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 3217031168,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-00000000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 3217031168,
+        "CamperStartTime": 0,
+        "CamperFadeTime": 1325400064
+      },
+      "radius_bits": 3217031168,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 3217031168,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 3217031168,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-80000000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1075838976,
+        "CamperStartTime": 2147483648,
+        "CamperFadeTime": 1325400065
+      },
+      "radius_bits": 1075838976,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 1075838976,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 1075838976,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-80000000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1075838976,
+        "CamperStartTime": 2147483648,
+        "CamperFadeTime": 1325400065
+      },
+      "radius_bits": 1075838976,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 1075838976,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 1075838976,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-80000000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1075838976,
+        "CamperStartTime": 2147483648,
+        "CamperFadeTime": 1325400065
+      },
+      "radius_bits": 1075838976,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 1075838976,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 1075838976,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-00000001",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 3223322624,
+        "CamperStartTime": 1,
+        "CamperFadeTime": 3472883712
+      },
+      "radius_bits": 3223322624,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 3223322624,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 3223322624,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-00000001",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 3223322624,
+        "CamperStartTime": 1,
+        "CamperFadeTime": 3472883712
+      },
+      "radius_bits": 3223322624,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 3223322624,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 3223322624,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-00000001",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 3223322624,
+        "CamperStartTime": 1,
+        "CamperFadeTime": 3472883712
+      },
+      "radius_bits": 3223322624,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 3223322624,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 3223322624,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-80000001",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1128792064,
+        "CamperStartTime": 2147483649,
+        "CamperFadeTime": 3472883713
+      },
+      "radius_bits": 1128792064,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 1128792064,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 1128792064,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-80000001",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1128792064,
+        "CamperStartTime": 2147483649,
+        "CamperFadeTime": 3472883713
+      },
+      "radius_bits": 1128792064,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 1128792064,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 1128792064,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-80000001",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1128792064,
+        "CamperStartTime": 2147483649,
+        "CamperFadeTime": 3472883713
+      },
+      "radius_bits": 1128792064,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 1128792064,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 1128792064,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-3f000000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 3276275712,
+        "CamperStartTime": 1056964608,
+        "CamperFadeTime": 1333788671
+      },
+      "radius_bits": 3276275712,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 3276275712,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 3276275712,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-3f000000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 3276275712,
+        "CamperStartTime": 1056964608,
+        "CamperFadeTime": 1333788671
+      },
+      "radius_bits": 3276275712,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 3276275712,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 3276275712,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-3f000000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 3276275712,
+        "CamperStartTime": 1056964608,
+        "CamperFadeTime": 1333788671
+      },
+      "radius_bits": 3276275712,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 3276275712,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 3276275712,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-bf000000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1325400063,
+        "CamperStartTime": 3204448256,
+        "CamperFadeTime": 1333788672
+      },
+      "radius_bits": 1325400063,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 1325400063,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 1325400063,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-bf000000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1325400063,
+        "CamperStartTime": 3204448256,
+        "CamperFadeTime": 1333788672
+      },
+      "radius_bits": 1325400063,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 1325400063,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 1325400063,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-bf000000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1325400063,
+        "CamperStartTime": 3204448256,
+        "CamperFadeTime": 1333788672
+      },
+      "radius_bits": 1325400063,
+      "start": 0,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 1325400063,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 1325400063,
+          "start": 0,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-3fc00000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1325400064,
+        "CamperStartTime": 1069547520,
+        "CamperFadeTime": 3481272320
+      },
+      "radius_bits": 1325400064,
+      "start": 2,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 1325400064,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 1325400064,
+          "start": 2,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-3fc00000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1325400064,
+        "CamperStartTime": 1069547520,
+        "CamperFadeTime": 3481272320
+      },
+      "radius_bits": 1325400064,
+      "start": 1,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 1325400064,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 1325400064,
+          "start": 1,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-3fc00000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1325400064,
+        "CamperStartTime": 1069547520,
+        "CamperFadeTime": 3481272320
+      },
+      "radius_bits": 1325400064,
+      "start": 1,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 1325400064,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 1325400064,
+          "start": 1,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-bfc00000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1325400065,
+        "CamperStartTime": 3217031168,
+        "CamperFadeTime": 1593835520
+      },
+      "radius_bits": 1325400065,
+      "start": 4294967294,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 1325400065,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 1325400065,
+          "start": 4294967294,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-bfc00000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1325400065,
+        "CamperStartTime": 3217031168,
+        "CamperFadeTime": 1593835520
+      },
+      "radius_bits": 1325400065,
+      "start": 4294967295,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 1325400065,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 1325400065,
+          "start": 4294967295,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-bfc00000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1325400065,
+        "CamperStartTime": 3217031168,
+        "CamperFadeTime": 1593835520
+      },
+      "radius_bits": 1325400065,
+      "start": 4294967295,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 1325400065,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 1325400065,
+          "start": 4294967295,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-40200000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 3472883712,
+        "CamperStartTime": 1075838976,
+        "CamperFadeTime": 3741319168
+      },
+      "radius_bits": 3472883712,
+      "start": 2,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 3472883712,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 3472883712,
+          "start": 2,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-40200000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 3472883712,
+        "CamperStartTime": 1075838976,
+        "CamperFadeTime": 3741319168
+      },
+      "radius_bits": 3472883712,
+      "start": 2,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 3472883712,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 3472883712,
+          "start": 2,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-40200000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 3472883712,
+        "CamperStartTime": 1075838976,
+        "CamperFadeTime": 3741319168
+      },
+      "radius_bits": 3472883712,
+      "start": 2,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 3472883712,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 3472883712,
+          "start": 2,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-c0200000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 3472883713,
+        "CamperStartTime": 3223322624,
+        "CamperFadeTime": 2139095039
+      },
+      "radius_bits": 3472883713,
+      "start": 4294967294,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 3472883713,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 3472883713,
+          "start": 4294967294,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-c0200000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 3472883713,
+        "CamperStartTime": 3223322624,
+        "CamperFadeTime": 2139095039
+      },
+      "radius_bits": 3472883713,
+      "start": 4294967294,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 3472883713,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 3472883713,
+          "start": 4294967294,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-c0200000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 3472883713,
+        "CamperStartTime": 3223322624,
+        "CamperFadeTime": 2139095039
+      },
+      "radius_bits": 3472883713,
+      "start": 4294967294,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 3472883713,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 3472883713,
+          "start": 4294967294,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-43480000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1333788671,
+        "CamperStartTime": 1128792064,
+        "CamperFadeTime": 4286578687
+      },
+      "radius_bits": 1333788671,
+      "start": 200,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 1333788671,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 1333788671,
+          "start": 200,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-43480000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1333788671,
+        "CamperStartTime": 1128792064,
+        "CamperFadeTime": 4286578687
+      },
+      "radius_bits": 1333788671,
+      "start": 200,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 1333788671,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 1333788671,
+          "start": 200,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-43480000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1333788671,
+        "CamperStartTime": 1128792064,
+        "CamperFadeTime": 4286578687
+      },
+      "radius_bits": 1333788671,
+      "start": 200,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 1333788671,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 1333788671,
+          "start": 200,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-c3480000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1333788672,
+        "CamperStartTime": 3276275712,
+        "CamperFadeTime": 2139095040
+      },
+      "radius_bits": 1333788672,
+      "start": 4294967096,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 1333788672,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 1333788672,
+          "start": 4294967096,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-c3480000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1333788672,
+        "CamperStartTime": 3276275712,
+        "CamperFadeTime": 2139095040
+      },
+      "radius_bits": 1333788672,
+      "start": 4294967096,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 1333788672,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 1333788672,
+          "start": 4294967096,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-c3480000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1333788672,
+        "CamperStartTime": 3276275712,
+        "CamperFadeTime": 2139095040
+      },
+      "radius_bits": 1333788672,
+      "start": 4294967096,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 1333788672,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 1333788672,
+          "start": 4294967096,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4effffff",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 3481272320,
+        "CamperStartTime": 1325400063,
+        "CamperFadeTime": 4286578688
+      },
+      "radius_bits": 3481272320,
+      "start": 2147483520,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 3481272320,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 3481272320,
+          "start": 2147483520,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4effffff",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 3481272320,
+        "CamperStartTime": 1325400063,
+        "CamperFadeTime": 4286578688
+      },
+      "radius_bits": 3481272320,
+      "start": 2147483520,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 3481272320,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 3481272320,
+          "start": 2147483520,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4effffff",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 3481272320,
+        "CamperStartTime": 1325400063,
+        "CamperFadeTime": 4286578688
+      },
+      "radius_bits": 3481272320,
+      "start": 2147483520,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 3481272320,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 3481272320,
+          "start": 2147483520,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f000000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1593835520,
+        "CamperStartTime": 1325400064,
+        "CamperFadeTime": 2143289344
+      },
+      "radius_bits": 1593835520,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 1593835520,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 1593835520,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f000000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1593835520,
+        "CamperStartTime": 1325400064,
+        "CamperFadeTime": 2143289344
+      },
+      "radius_bits": 1593835520,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 1593835520,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 1593835520,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f000000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1593835520,
+        "CamperStartTime": 1325400064,
+        "CamperFadeTime": 2143289344
+      },
+      "radius_bits": 1593835520,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400064,
+          "last_check": 0,
+          "radius_bits": 1593835520,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 1593835520,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f000001",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 3741319168,
+        "CamperStartTime": 1325400065,
+        "CamperFadeTime": 4290772992
+      },
+      "radius_bits": 3741319168,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 3741319168,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 3741319168,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f000001",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 3741319168,
+        "CamperStartTime": 1325400065,
+        "CamperFadeTime": 4290772992
+      },
+      "radius_bits": 3741319168,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 3741319168,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 3741319168,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f000001",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 3741319168,
+        "CamperStartTime": 1325400065,
+        "CamperFadeTime": 4290772992
+      },
+      "radius_bits": 3741319168,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1325400065,
+          "last_check": 0,
+          "radius_bits": 3741319168,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 3741319168,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf000000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 2139095039,
+        "CamperStartTime": 3472883712,
+        "CamperFadeTime": 2139095041
+      },
+      "radius_bits": 2139095039,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 2139095039,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 2139095039,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf000000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 2139095039,
+        "CamperStartTime": 3472883712,
+        "CamperFadeTime": 2139095041
+      },
+      "radius_bits": 2139095039,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 2139095039,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 2139095039,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf000000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 2139095039,
+        "CamperStartTime": 3472883712,
+        "CamperFadeTime": 2139095041
+      },
+      "radius_bits": 2139095039,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3472883712,
+          "last_check": 0,
+          "radius_bits": 2139095039,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 2139095039,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf000001",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 4286578687,
+        "CamperStartTime": 3472883713,
+        "CamperFadeTime": 4286578689
+      },
+      "radius_bits": 4286578687,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 4286578687,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 4286578687,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf000001",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 4286578687,
+        "CamperStartTime": 3472883713,
+        "CamperFadeTime": 4286578689
+      },
+      "radius_bits": 4286578687,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 4286578687,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 4286578687,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf000001",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 4286578687,
+        "CamperStartTime": 3472883713,
+        "CamperFadeTime": 4286578689
+      },
+      "radius_bits": 4286578687,
+      "start": 2147483648,
+      "fade": 2147483648,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3472883713,
+          "last_check": 0,
+          "radius_bits": 4286578687,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 4286578687,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f7fffff",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 2139095040,
+        "CamperStartTime": 1333788671,
+        "CamperFadeTime": 0
+      },
+      "radius_bits": 2139095040,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 2139095040,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 2139095040,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f7fffff",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 2139095040,
+        "CamperStartTime": 1333788671,
+        "CamperFadeTime": 0
+      },
+      "radius_bits": 2139095040,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 2139095040,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 2139095040,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f7fffff",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 2139095040,
+        "CamperStartTime": 1333788671,
+        "CamperFadeTime": 0
+      },
+      "radius_bits": 2139095040,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1333788671,
+          "last_check": 0,
+          "radius_bits": 2139095040,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 2139095040,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f800000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 4286578688,
+        "CamperStartTime": 1333788672,
+        "CamperFadeTime": 2147483648
+      },
+      "radius_bits": 4286578688,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 4286578688,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 4286578688,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f800000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 4286578688,
+        "CamperStartTime": 1333788672,
+        "CamperFadeTime": 2147483648
+      },
+      "radius_bits": 4286578688,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 4286578688,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 4286578688,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-4f800000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 4286578688,
+        "CamperStartTime": 1333788672,
+        "CamperFadeTime": 2147483648
+      },
+      "radius_bits": 4286578688,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1333788672,
+          "last_check": 0,
+          "radius_bits": 4286578688,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 4286578688,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf800000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 2143289344,
+        "CamperStartTime": 3481272320,
+        "CamperFadeTime": 1
+      },
+      "radius_bits": 2143289344,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 2143289344,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 2143289344,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf800000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 2143289344,
+        "CamperStartTime": 3481272320,
+        "CamperFadeTime": 1
+      },
+      "radius_bits": 2143289344,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 2143289344,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 2143289344,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-cf800000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 2143289344,
+        "CamperStartTime": 3481272320,
+        "CamperFadeTime": 1
+      },
+      "radius_bits": 2143289344,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3481272320,
+          "last_check": 0,
+          "radius_bits": 2143289344,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 2143289344,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-5f000000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 4290772992,
+        "CamperStartTime": 1593835520,
+        "CamperFadeTime": 2147483649
+      },
+      "radius_bits": 4290772992,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 4290772992,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 4290772992,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-5f000000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 4290772992,
+        "CamperStartTime": 1593835520,
+        "CamperFadeTime": 2147483649
+      },
+      "radius_bits": 4290772992,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 4290772992,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 4290772992,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-5f000000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 4290772992,
+        "CamperStartTime": 1593835520,
+        "CamperFadeTime": 2147483649
+      },
+      "radius_bits": 4290772992,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 1593835520,
+          "last_check": 0,
+          "radius_bits": 4290772992,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 4290772992,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-df000000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 2139095041,
+        "CamperStartTime": 3741319168,
+        "CamperFadeTime": 1056964608
+      },
+      "radius_bits": 2139095041,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 2139095041,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 2139095041,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-df000000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 2139095041,
+        "CamperStartTime": 3741319168,
+        "CamperFadeTime": 1056964608
+      },
+      "radius_bits": 2139095041,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 2139095041,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 2139095041,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-df000000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 2139095041,
+        "CamperStartTime": 3741319168,
+        "CamperFadeTime": 1056964608
+      },
+      "radius_bits": 2139095041,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 3741319168,
+          "last_check": 0,
+          "radius_bits": 2139095041,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 2139095041,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f7fffff",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 4286578689,
+        "CamperStartTime": 2139095039,
+        "CamperFadeTime": 3204448256
+      },
+      "radius_bits": 4286578689,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 4286578689,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 4286578689,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f7fffff",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 4286578689,
+        "CamperStartTime": 2139095039,
+        "CamperFadeTime": 3204448256
+      },
+      "radius_bits": 4286578689,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 4286578689,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 4286578689,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f7fffff",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 4286578689,
+        "CamperStartTime": 2139095039,
+        "CamperFadeTime": 3204448256
+      },
+      "radius_bits": 4286578689,
+      "start": 2147483648,
+      "fade": 0,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095039,
+          "last_check": 0,
+          "radius_bits": 4286578689,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 4286578689,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff7fffff",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 0,
+        "CamperStartTime": 4286578687,
+        "CamperFadeTime": 1069547520
+      },
+      "radius_bits": 0,
+      "start": 2147483648,
+      "fade": 2,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 0,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 0,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff7fffff",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 0,
+        "CamperStartTime": 4286578687,
+        "CamperFadeTime": 1069547520
+      },
+      "radius_bits": 0,
+      "start": 2147483648,
+      "fade": 1,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 0,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 0,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff7fffff",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 0,
+        "CamperStartTime": 4286578687,
+        "CamperFadeTime": 1069547520
+      },
+      "radius_bits": 0,
+      "start": 2147483648,
+      "fade": 1,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 0,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578687,
+          "last_check": 0,
+          "radius_bits": 0,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 0,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f800000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 2147483648,
+        "CamperStartTime": 2139095040,
+        "CamperFadeTime": 3217031168
+      },
+      "radius_bits": 2147483648,
+      "start": 2147483648,
+      "fade": 4294967294,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 2147483648,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 2147483648,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f800000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 2147483648,
+        "CamperStartTime": 2139095040,
+        "CamperFadeTime": 3217031168
+      },
+      "radius_bits": 2147483648,
+      "start": 2147483648,
+      "fade": 4294967295,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 2147483648,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 2147483648,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f800000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 2147483648,
+        "CamperStartTime": 2139095040,
+        "CamperFadeTime": 3217031168
+      },
+      "radius_bits": 2147483648,
+      "start": 2147483648,
+      "fade": 4294967295,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2147483648,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095040,
+          "last_check": 0,
+          "radius_bits": 2147483648,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3217031168,
+          "last_check": 0,
+          "radius_bits": 2147483648,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff800000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1,
+        "CamperStartTime": 4286578688,
+        "CamperFadeTime": 1075838976
+      },
+      "radius_bits": 1,
+      "start": 2147483648,
+      "fade": 2,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 1,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 1,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff800000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1,
+        "CamperStartTime": 4286578688,
+        "CamperFadeTime": 1075838976
+      },
+      "radius_bits": 1,
+      "start": 2147483648,
+      "fade": 2,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 1,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 1,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff800000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1,
+        "CamperStartTime": 4286578688,
+        "CamperFadeTime": 1075838976
+      },
+      "radius_bits": 1,
+      "start": 2147483648,
+      "fade": 2,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578688,
+          "last_check": 0,
+          "radius_bits": 1,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1075838976,
+          "last_check": 0,
+          "radius_bits": 1,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7fc00000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 2147483649,
+        "CamperStartTime": 2143289344,
+        "CamperFadeTime": 3223322624
+      },
+      "radius_bits": 2147483649,
+      "start": 2147483648,
+      "fade": 4294967294,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 2147483649,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 2147483649,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7fc00000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 2147483649,
+        "CamperStartTime": 2143289344,
+        "CamperFadeTime": 3223322624
+      },
+      "radius_bits": 2147483649,
+      "start": 2147483648,
+      "fade": 4294967294,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 2147483649,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 2147483649,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7fc00000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 2147483649,
+        "CamperStartTime": 2143289344,
+        "CamperFadeTime": 3223322624
+      },
+      "radius_bits": 2147483649,
+      "start": 2147483648,
+      "fade": 4294967294,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 2147483649,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2143289344,
+          "last_check": 0,
+          "radius_bits": 2147483649,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3223322624,
+          "last_check": 0,
+          "radius_bits": 2147483649,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ffc00000",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1056964608,
+        "CamperStartTime": 4290772992,
+        "CamperFadeTime": 1128792064
+      },
+      "radius_bits": 1056964608,
+      "start": 2147483648,
+      "fade": 200,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 1056964608,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 1056964608,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ffc00000",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1056964608,
+        "CamperStartTime": 4290772992,
+        "CamperFadeTime": 1128792064
+      },
+      "radius_bits": 1056964608,
+      "start": 2147483648,
+      "fade": 200,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 1056964608,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 1056964608,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ffc00000",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1056964608,
+        "CamperStartTime": 4290772992,
+        "CamperFadeTime": 1128792064
+      },
+      "radius_bits": 1056964608,
+      "start": 2147483648,
+      "fade": 200,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1056964608,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4290772992,
+          "last_check": 0,
+          "radius_bits": 1056964608,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1128792064,
+          "last_check": 0,
+          "radius_bits": 1056964608,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f800001",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 3204448256,
+        "CamperStartTime": 2139095041,
+        "CamperFadeTime": 3276275712
+      },
+      "radius_bits": 3204448256,
+      "start": 2147483648,
+      "fade": 4294967096,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 3204448256,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 3204448256,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f800001",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 3204448256,
+        "CamperStartTime": 2139095041,
+        "CamperFadeTime": 3276275712
+      },
+      "radius_bits": 3204448256,
+      "start": 2147483648,
+      "fade": 4294967096,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 3204448256,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 3204448256,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-7f800001",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 3204448256,
+        "CamperStartTime": 2139095041,
+        "CamperFadeTime": 3276275712
+      },
+      "radius_bits": 3204448256,
+      "start": 2147483648,
+      "fade": 4294967096,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 3204448256,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 2139095041,
+          "last_check": 0,
+          "radius_bits": 3204448256,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 3276275712,
+          "last_check": 0,
+          "radius_bits": 3204448256,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff800001",
+      "fpcw": 639,
+      "input_bits": {
+        "CamperRadiusSq": 1069547520,
+        "CamperStartTime": 4286578689,
+        "CamperFadeTime": 1325400063
+      },
+      "radius_bits": 1069547520,
+      "start": 2147483648,
+      "fade": 2147483520,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 1069547520,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 1069547520,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff800001",
+      "fpcw": 3647,
+      "input_bits": {
+        "CamperRadiusSq": 1069547520,
+        "CamperStartTime": 4286578689,
+        "CamperFadeTime": 1325400063
+      },
+      "radius_bits": 1069547520,
+      "start": 2147483648,
+      "fade": 2147483520,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 1069547520,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 1069547520,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    },
+    {
+      "name": "f32-ff800001",
+      "fpcw": 3711,
+      "input_bits": {
+        "CamperRadiusSq": 1069547520,
+        "CamperStartTime": 4286578689,
+        "CamperFadeTime": 1325400063
+      },
+      "radius_bits": 1069547520,
+      "start": 2147483648,
+      "fade": 2147483520,
+      "last_check": 0,
+      "lookups": [
+        {
+          "key": "CamperRadiusSq",
+          "bits": 1069547520,
+          "last_check": 0,
+          "radius_bits": 305419896,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperStartTime",
+          "bits": 4286578689,
+          "last_check": 0,
+          "radius_bits": 1069547520,
+          "start": 2309737967,
+          "fade": 4275878552
+        },
+        {
+          "key": "CamperFadeTime",
+          "bits": 1325400063,
+          "last_check": 0,
+          "radius_bits": 1069547520,
+          "start": 2147483648,
+          "fade": 4275878552
+        }
+      ],
+      "stack_balanced": true
+    }
+  ],
+  "boundary": "Only426890 balance key-table lookup is stubbed and checked; actual419D40 FLDS,419A70 FISTP, complete Reset, sole direct caller instruction and original startup/CRT control-word body execute unchanged.",
+  "scope": "Binary32 input records under explicit nearest control and actual startup chop. Unicorn exposes raw startup CW0xe3f; explicitly compare0xe7f, differing only in reserved bit6, as a positive arithmetic control. Full surrounding initialization services, other caller/thread control words, loader rounding, FP exception/status and NaN payload fidelity remain outside this evidence."
+}

@@ -1232,6 +1232,16 @@ The immutable 6,838-input candidate preserves every previous test, fixture, gold
 
 The original shared VM/name-lookup prefix, full original external networking services, ray/other effect paths, other FP contexts/status/payloads and remaining class/chapter features stay open. No overall 100% claim follows from these bounded packet checks. Detailed evidence: `point-effect-integer-port/verification.json` in the preserved validation workspace.
 
+### Native ray-effect script endpoints and packet conversion
+
+The existing public Effect ray branch now converts both endpoints to the original signed-DWORD range before packet construction and viewport filtering. Platform-width Go Pointf.Point conversion could retain nonzero low WORDs outside that range, where the original returns integer-indefinite. A small endpoint helper reuses the previously qualified guarded converter. Only the existing ray script branch adopts it; the packet builder and viewport filter remain the actual integration path.
+
+An unchanged-source API regression reproduces 96 different nine-byte packets alongside 416 passing controls across all eight currently bound ray families. After the correction all 512 startup cases and 521 terminal identities pass. The independent oracle executes the complete 106-byte original selected arm, complete 67-byte packet builder and all four actual 419A70 conversions. Only final filtering/delivery is checked; shared-prefix namespace offsets are explicit zero context inputs. All 2,048 observations across startup, nearest, down and up control words remain preserved. Native tests invoke actual public Effect name routing, packet construction, native ray viewport filtering and real NetList with player/unit/update pointers above UINT32_MAX, checking both Positioners are read once in order and their position bits stay unchanged.
+
+The immutable 6,840-input candidate preserves every previous test, fixture, golden and existing oracle entry, adding two exact original code regions. Broad validation passes 110,624 events. Actual cgocheck2/race/checkptr2 validation passes 294,126 events across three repetitions of 98,042 identities. Normal/highres full suites each pass 178,264 events with the same 49 skips; server/server-highres each pass 173,436 with the same 7 skips. Focused offline Rosetta/Clang Linux AMD64 verifies the exact 98,042 identities and multiplicities. Four clean committed ARM64 products are rebuilt and independently inspected.
+
+The original shared VM/name/namespace prefix, full original external filtering/network services, green/vamp/other effect paths, other FP contexts/status/payloads and remaining class/chapter features stay open. These bounded checks do not establish overall 100%. Detailed evidence: `ray-effect-integer-port/verification.json` in the preserved validation workspace.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

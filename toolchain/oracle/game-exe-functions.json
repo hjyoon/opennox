@@ -21404,6 +21404,20 @@
       "size": 64,
       "sha256": "088494dbc2a00578faa7f0f47e7745df4c2f443751299088ac7c238b4839047f",
       "purpose": "Complete64-byte five-byte point-effect packet builder. Both actual419A70 signed-DWORD coordinate conversions and low WORD stores execute unchanged under original startup plus separate control contexts; final523030 send is checked. Native public Effect, name routing, view filter and real NetList integration are separately exercised."
+    },
+    {
+      "name": "original_ray_effect_arm_51431A",
+      "address": "0x0051431A",
+      "size": 106,
+      "sha256": "4f41103d6ad53ae2002d79d70178d38821dadcfaa56b429346dcf8b292741361",
+      "purpose": "Complete106-byte selected ray-effect arm after shared name lookup. All four actual419A70 signed-DWORD conversions, zero namespace-offset context inputs, complete5232F0 call and original epilogue/return execute unchanged. Shared original name/VM/namespace prefix remains outside the fixture."
+    },
+    {
+      "name": "original_complete_ray_effect_packet_5232F0",
+      "address": "0x005232F0",
+      "size": 67,
+      "sha256": "9834c1cea677cf88ccc32b259c9144da8ef67bdfad796648986a3d5ca357260d",
+      "purpose": "Complete67-byte nine-byte ray-effect packet builder. All four low WORD stores execute unchanged and the full signed-DWORD endpoint array is preserved for the checked523340 filtering/delivery boundary. Native public Effect/name-routing/filter/real NetList integration is separately exercised for all eight current ray families."
     }
   ],
   "data": [

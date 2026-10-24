@@ -603,7 +603,15 @@ short nox_float2int16(float a1) { return (short)nox_float2int(a1); }
 short nox_float2int16_abs(float a1) { return (short)nox_float2int(fabsf(a1)); }
 
 //----- (00419AF0) --------------------------------------------------------
-float nox_double2float(double a1) { return (float)a1; }
+float nox_double2float(double a1) {
+	// Original419AF0 stores binary32 under the startup ToZero context.
+	// Correct a rounded-away native cast without changing host FP state.
+	volatile float stored = (float)a1;
+	if (fabs((double)stored) > fabs(a1)) {
+		return nextafterf(stored, 0);
+	}
+	return stored;
+}
 
 //----- (00419B10) --------------------------------------------------------
 int nox_double2int(double a1) {
@@ -5646,4 +5654,3 @@ int sub_427DF0(int2* point, int* a2, float a3) {
 	return 1;
 }
 // POINT_SEGMENT_PROJECTION_ORIGINAL427DF0_END
-

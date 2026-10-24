@@ -1202,6 +1202,16 @@ Supplemental caller validation also executes the complete 221-byte original poly
 
 This certifies the complete local projection under the recorded startup context. The whole linked polygon-storage integration, global `00419AF0` caller closure, other caller floating-point contexts/status/payloads, remaining native callbacks and all nine class/chapter feature cells remain open. Five Conjurer 3 miners and the required ending remain. Overall 100% is not claimed. Detailed evidence: `point-segment-projection-port/verification.json` in the preserved validation workspace.
 
+### Native binary64-to-binary32 startup conversion
+
+The shared native `00419AF0` helper now preserves the original startup round-toward-zero binary32 spill. A native cast that rounds away from zero is adjusted by one binary32 step toward zero. This preserves signed zeros, subnormal truncation, finite overflow to the largest finite value, and genuine infinities without changing the host rounding mode. The existing complete point-segment projection keeps its separately qualified local intermediates.
+
+An actual unchanged-source regression reproduces 13 finite rounding differences under the native nearest mode. Across four explicitly selected native host modes it reproduces 38 failing leaves with 126 passing leaf controls; after the change all 169 terminal identities pass. The harness calls the exact production definition through a volatile function pointer after each mode selection, preventing a pure call from being hoisted across `fesetround` under default compiler semantics. The first unsuitable harness and all its raw logs remain preserved. Expected results come from the unchanged existing 984-row original fixture: 41 non-NaN startup cases. Four original NaN rows remain preserved and outside this correction. No previous test, fixture, golden or oracle metadata changes.
+
+The immutable 6,833-input candidate passes 109,532 broad events. Actual cgocheck2/race/checkptr2 validation passes 290,850 events across three repetitions of 96,950 identities; child C drivers retain explicit compiler flags. Normal/highres full suites each pass 177,172 events with the same 49 skips, and server/server-highres each pass 172,344 with the same 7 skips. Focused offline Rosetta/Clang Linux AMD64 checks the exact 96,950 identities and multiplicities. Four clean committed ARM64 products are rebuilt and independently inspected. The sole parent final-blank-line formatting finding is normalized outside all function bodies.
+
+Original FP status/exception/NaN payload behavior, arbitrary original caller rounding contexts, complete reachable native closure and the nine class/chapter feature matrix remain open. Overall 100% is not claimed. Detailed evidence: `double-spill-startup-port/verification.json` in the preserved validation workspace.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

@@ -3,6 +3,7 @@ package opennox
 import (
 	"encoding/binary"
 	"image"
+	"math"
 	"testing"
 	"unsafe"
 
@@ -58,8 +59,9 @@ func TestUpdateColorLightDrawable4CE390NativeWidth(t *testing.T) {
 	if dr.LightFlags != 2 || dr.LightColor.R != 60 || dr.LightColor.G != 70 || dr.LightColor.B != 80 {
 		t.Fatalf("light color = flags %d, rgb %+v", dr.LightFlags, dr.LightColor)
 	}
-	if dr.LightIntensity != 4 {
-		t.Fatalf("light intensity = %v, want 4", dr.LightIntensity)
+	// Unchanged original historical inputs produce the chopped binary32 0x407fffff.
+	if dr.LightIntensity != math.Float32frombits(0x407fffff) {
+		t.Fatalf("light intensity = %v, want original0x407fffff", dr.LightIntensity)
 	}
 	if got, want := dr.LightPenumbra, uint16(setColorLightSize4CE760(&client.Drawable{}, 135)); got != want {
 		t.Fatalf("light penumbra = %d, want %d", got, want)

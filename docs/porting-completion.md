@@ -822,6 +822,73 @@ and all 1,553 stock resources. The normal/HD roundtrip evidence is retained
 in `conjurer-current-native-boundary-roundtrip-v1.json`.
 The full nine-cell matrix and broader completion requirements remain open.
 
+### Native color-light interpolation
+
+The native ColorLight RGB, intensity and radius interpolators now preserve
+the original gameplay precision53/chop sequence. The period uses one integer
+count*delay divisor. The original signed-byte count guards and wrapped byte
+subframe remain intact, including delays above255. Interpolation divides the
+signed key delta by delay before multiplying the byte subframe and adding the
+start key; intensity retains its final binary32 chop spill. Reordering these
+operations into a shared fraction changes actual colors and brightness.
+Existing exact add/multiply/spill primitives are reused without changing FENV.
+
+The unchanged original three routines and existing CRT qword-truncation helper
+supply1,548 vectors. The before-port production entry records1,096 PASS and450
+FAIL events (449 failing vector leaves plus their parent) on the initial1,545
+vectors. Three further original controls preserve the existing native-width
+test's exact inputs. Its intensity2-to6 at frame5/delay10 produces raw binary32
+0x407fffff, so the historical expectation4 is corrected to that original value.
+RGB60/70/80 and radius135 remain unchanged. Every other previous test, fixture
+and golden is byte-identical; the correction changes no test identity or result.
+
+The final native comparisons check raw original setter arguments before the
+unchanged renderer setters clamp intensity or quantize cone size, then check
+the actual production helper outputs, frame reads, packed-data canaries,
+radius guards and pointers above4GiB. Original renderer setters, rotation and
+tracking helpers, arbitrary FPU contexts and full Windows rendering are not
+certified by these interpolation vectors.
+
+The frozen6,809-input source passes102,759 broad identities across root/server/
+legacy: the prior100,799 damage/camper cases,411 already passing root cases
+and1,549 new original-light identities. Exact focused preservation retains
+88,601 parent identities and adds27 existing root damage cases plus1,549 new
+light cases. All90,177 pass three times with actual cgocheck2, race and
+checkptr2, totaling270,531 PASS events. Each complete suite adds exactly1,549
+PASS identities with every prior identity/action/multiplicity/skip preserved:
+normal/HD170,414 PASS49 SKIP; server/server-HD165,586 PASS7 SKIP. Offline Linux
+AMD64 Rosetta/Clang executes the exact90,177 focused identities before commit;
+this is not a full Linux suite, GCC or physical-x86 result. Four clean committed
+ARM64 products, source archive and pushed port/go1.26-multiarch revision are
+independently checked. Evidence remains in color-light-interpolation-port.
+
+The stock callback classification also executes the original complete Init/
+Update lookup parsers for seven absent legacy names and two known-null controls.
+MagicInit, RandomFrameInit, AnimateUpdate, BoulderUpdate, DefaultUpdate,
+ImpEggUpdate and SignUpdate are accepted by the original without changing the
+512-byte target record. Native unknown-name handling therefore preserves their
+original behavior; additional implementations are not inferred from those old
+labels. MonsterGeneratorUpdateDraw and UndeadKillerClientUpdate execute their
+original MOV EAX,1; RET bodies with null arguments. ColorLight resolves through
+the existing native Go client dispatcher, whose scalar interpolation is fixed
+above. The three Destroy labels' outer directive handling and the other open
+internal-branch/layout classification remain separate work.
+
+Current c6ed6be ordinary normal/HD campaign Saves retain four original Con01a
+monsters at native HP0/DEAD through the archived map and Con02a boundary roundtrip.
+Original Necromancer dialogue/scene and the Henrick/Pepper scene, town passage
+and the east road pass on those immutable products. The green-pit approach
+also writes a living manual Save at19/20 HP, poison0 and743.4713 experience.
+A bounded actual walk to the independently observed original shaft center
+(3795,2944) then observes original physical carry to the den at(1805.5,5589)
+and an actual living manual Save at19/20 HP in case739. The earlier case738
+walking control only approached the shaft; it is not credited as transport.
+All nine source save files and1,553 stock resources are preserved per case.
+NPC scene progression does not prove player Charm learning or ownership.
+The remaining three-class chapter1-3 matrix and broader ABI, UI/input, audible,
+peer/original-Windows and sustained-gameplay evidence remain open. Overall100%
+is not achieved.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

@@ -63,72 +63,44 @@ func (c *Client) updateColorLightDrawable4CE390(vp *noxrender.Viewport, dr *clie
 }
 
 func colorLightKeyFrames4CE440(cycle float64, count byte, delay uint16, loop bool) (from, to int, fraction float64) {
-	whole := int64(cycle)
-	phase := cycle - float64(int(whole))
-	scaled := phase * float64(count)
-	index := int(int64(scaled))
-	if loop {
-		from = index
-		to = index + 1
-		if to >= int(count) {
-			to = 0
-		}
-	} else if whole&1 != 0 {
-		from = int(count) - index - 1
-		to = from - 1
-		if to < 0 {
-			to = 0
-		}
-	} else {
-		from = index
-		to = index + 1
-		if to >= int(count) {
-			to = int(count) - 1
-		}
-	}
-	subframe := uint8(int64((scaled - float64(int(int64(scaled)))) * float64(delay)))
-	return from, to, float64(subframe) / float64(delay)
+	from, to, subframe := colorLightFrameSelection4CE440(cycle, count, delay, loop)
+	return from, to, colorLightDivideChop53_4CE440(float64(subframe), float64(delay))
 }
 
 func alterColorLightColor4CE440(dr *client.Drawable, data *[100]byte, count byte, frame func() uint32) {
 	delay := binary.LittleEndian.Uint16(data[82:84])
-	if count <= 1 || delay == 0 {
+	if int8(count) <= 1 || delay == 0 {
 		return
 	}
-	cycle := float64(frame()) / float64(delay)
-	from, to, fraction := colorLightKeyFrames4CE440(cycle/float64(count), count, delay, data[0]&1 != 0)
+	cycle := colorLightDivideChop53_4CE440(float64(frame()), float64(uint32(delay)*uint32(count)))
+	from, to, subframe := colorLightFrameSelection4CE440(cycle, count, delay, data[0]&1 != 0)
 	interpolate := func(offset int) byte {
-		start := float64(data[offset+3*from])
-		end := float64(data[offset+3*to])
-		return byte(int(start + (end-start)*fraction))
+		return byte(int64(colorLightLinear4CE440(int(data[offset+3*from]), int(data[offset+3*to]), subframe, delay)))
 	}
 	dr.SetLightColor(interpolate(2), interpolate(3), interpolate(4))
 }
 
 func alterColorLightIntensity4CE610(dr *client.Drawable, data *[100]byte, count byte, frame func() uint32) {
 	delay := binary.LittleEndian.Uint16(data[84:86])
-	if count <= 1 || delay == 0 {
+	if int8(count) <= 1 || delay == 0 {
 		return
 	}
-	cycle := float64(frame()) / (float64(delay) * float64(count))
-	from, to, fraction := colorLightKeyFrames4CE440(cycle, count, delay, data[0]&4 != 0)
-	start := float64(data[50+from])
-	end := float64(data[50+to])
-	dr.SetLightIntensity(float32(start + (end-start)*fraction))
+	cycle := colorLightDivideChop53_4CE440(float64(frame()), float64(uint32(delay)*uint32(count)))
+	from, to, subframe := colorLightFrameSelection4CE440(cycle, count, delay, data[0]&4 != 0)
+	value := colorLightLinear4CE440(int(data[50+from]), int(data[50+to]), subframe, delay)
+	dr.SetLightIntensity(fireballSpill32_52C790(value))
 }
 
 func alterColorLightRadius4CE760(dr *client.Drawable, data *[100]byte, count byte, frame func() uint32) int {
 	result := int(dr.Field_42)
 	delay := binary.LittleEndian.Uint16(data[86:88])
-	if result != 0 || count <= 1 || delay == 0 {
+	if result != 0 || int8(count) <= 1 || delay == 0 {
 		return result
 	}
-	cycle := float64(frame()) / (float64(delay) * float64(count))
-	from, to, fraction := colorLightKeyFrames4CE440(cycle, count, delay, data[0]&0x10 != 0)
-	start := float64(data[66+from])
-	end := float64(data[66+to])
-	size := int(start + (end-start)*fraction)
-	return int(setColorLightSize4CE760(dr, size))
+	cycle := colorLightDivideChop53_4CE440(float64(frame()), float64(uint32(delay)*uint32(count)))
+	from, to, subframe := colorLightFrameSelection4CE440(cycle, count, delay, data[0]&0x10 != 0)
+	value := colorLightLinear4CE440(int(data[66+from]), int(data[66+to]), subframe, delay)
+	return int(setColorLightSize4CE760(dr, int(int64(value))))
 }
 
 func setColorLightDirection4CE8C0(dr *client.Drawable, direction int) int64 {

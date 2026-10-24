@@ -3500,6 +3500,27 @@
       "purpose": "the shell input-config key-capture modal callback with its PE32 switch tables and alignment"
     },
     {
+      "name": "nox_xxx_colorLightAlterColor_4CE440",
+      "address": "0x004CE440",
+      "size": 464,
+      "sha256": "2ca42069f4ace3a26f585da6d4c9fb52e167239b1b6251d2d5a9fb155b5532cf",
+      "purpose": "complete signed-byte count/uint16-delay guards, uint32 frame over the integer count*delay period, gameplay53/chop key selection, wrapped byte subframe and divide-before-multiply interpolation; final renderer setter is a declared boundary"
+    },
+    {
+      "name": "nox_xxx_colorLightAlterIntensity_4CE610",
+      "address": "0x004CE610",
+      "size": 336,
+      "sha256": "3ccf7809b6ac346b4f34ac7e5f5ee93e3b51fbefc258b7ea7717a75c9cb219da",
+      "purpose": "complete signed-byte count/uint16-delay guards, uint32 frame over the integer count*delay period, gameplay53/chop key selection, wrapped byte subframe and divide-before-multiply interpolation; final renderer setter is a declared boundary"
+    },
+    {
+      "name": "nox_xxx_colorLightAlterRadius_4CE760",
+      "address": "0x004CE760",
+      "size": 352,
+      "sha256": "79d3beb724d285f8b33221e60a454f8c2654678d57435268a68ac52cc0008351",
+      "purpose": "complete signed-byte count/uint16-delay guards, uint32 frame over the integer count*delay period, gameplay53/chop key selection, wrapped byte subframe and divide-before-multiply interpolation; final renderer setter is a declared boundary"
+    },
+    {
       "name": "nox_xxx_servMapLoadPlaceObj_4F3F50_call_4CFD90",
       "address": "0x004CFD90",
       "size": 5,

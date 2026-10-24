@@ -21362,6 +21362,13 @@
       "size": 69,
       "sha256": "68d30fc475e613759156d9e073b57b7fe9e16297c3db6b8f7b84b7fad4c48ae0",
       "purpose": "Complete original5238A0 packet body excluding trailing NOPs: both actual419A90 conversions, opcodeA1, position-pointer forwarding and variant, with only523030 network service checked/stubbed. Four CW modes and39 input pairs retained."
+    },
+    {
+      "name": "original_complete_point_segment_projection_427DF0",
+      "address": "0x00427DF0",
+      "size": 308,
+      "sha256": "28599bf7ae8a597b9d3875dec470fcb15209f9a44eec829d911ac5e2c8faf19f",
+      "purpose": "Complete original point-to-segment projection and conditional int32 point writes. Actual startup PC53/chop, FSQRT, both419AF0 calls and both419A70 output conversions execute without service stubs. Preserve retained/stored precision, ordered/unordered gates, zero/extreme geometry and existing positive-zero data58307C. Separate nearest observations remain controls, not native default expectations."
     }
   ],
   "data": [

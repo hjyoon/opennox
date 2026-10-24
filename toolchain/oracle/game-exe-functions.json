@@ -21390,6 +21390,20 @@
       "size": 17,
       "sha256": "c2166538353d570ab80e439ec04df52ac5efa757a4abcf7d23d122b0d6f3c93d",
       "purpose": "Complete17-byte binary32 signed-DWORD FISTP helper returning its low BYTE. Actual startup/chop plus separately captured nearest/down/up controls; invalid signed-DWORD gives zero low BYTE. Native Effect ingress is present and qualified through real packet/view-filter/NetList, not inferred from a missing C label."
+    },
+    {
+      "name": "original_point_effect_arm_5143F0",
+      "address": "0x005143F0",
+      "size": 24,
+      "sha256": "c8f6cecebadb6145a0b9ecd01d52109e6536f8e4b8b9df7edf119818799959ff",
+      "purpose": "Complete24-byte selected point-effect arm after shared effect-name lookup, including full522FF0 call and original epilogue/return. Fifteen native protocol opcodes are explicit inputs; original shared VM/name lookup remains outside this fixture."
+    },
+    {
+      "name": "original_complete_point_effect_packet_522FF0",
+      "address": "0x00522FF0",
+      "size": 64,
+      "sha256": "088494dbc2a00578faa7f0f47e7745df4c2f443751299088ac7c238b4839047f",
+      "purpose": "Complete64-byte five-byte point-effect packet builder. Both actual419A70 signed-DWORD coordinate conversions and low WORD stores execute unchanged under original startup plus separate control contexts; final523030 send is checked. Native public Effect, name routing, view filter and real NetList integration are separately exercised."
     }
   ],
   "data": [

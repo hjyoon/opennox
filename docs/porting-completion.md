@@ -1222,6 +1222,16 @@ The immutable 6,836-input candidate preserves all previous test, fixture and gol
 
 The shared VM/name-lookup prefix, complete original external networking services, other effect families and other FP contexts/status/payloads remain separate. Naldo is now the second rescued Conjurer 3 miner, with an actual original message reporting four remaining and an independently decoded living Save. Remaining class/chapter features and overall 100% stay open. Detailed evidence: `spark-effect-ingress-port/verification.json` in the preserved validation workspace.
 
+### Native point-effect packet coordinate conversion
+
+The existing 522FF0 five-byte point-effect builder now converts coordinates to signed DWORDs before retaining their low WORDs. A platform-width Go int could keep nonzero low bits for values outside the original signed-DWORD range; the original conversion returns integer-indefinite and sends zero low fields. The correction reuses the guarded converter already qualified for SparkExplosion and changes only the two point-packet coordinate stores.
+
+An unchanged-source API regression reproduces 90 different packets alongside 390 passing controls across all 15 currently bound point-effect families. After the correction, all 480 startup packet cases and 496 terminal identities pass. The independent oracle executes the complete 24-byte selected original arm after shared effect-name lookup, the complete 64-byte packet builder and both actual 419A70 converters. Only final send is checked; all 1,920 observations across startup, nearest, down and up control words remain preserved. The native regression invokes actual public Effect name routing, packet construction, viewport filtering and real NetList with player/unit/update pointers above UINT32_MAX, checking one Positioner read and unchanged position bits.
+
+The immutable 6,838-input candidate preserves every previous test, fixture, golden and existing oracle entry, adding two exact original code regions. Broad validation passes 110,103 events. Actual cgocheck2/race/checkptr2 validation passes 292,563 events across three repetitions of 97,521 identities. Normal/highres full suites each pass 177,743 events with the same 49 skips; server/server-highres each pass 172,915 with the same 7 skips. Focused offline Rosetta/Clang Linux AMD64 verifies the exact 97,521 identities and multiplicities. Four clean committed ARM64 products are rebuilt and independently inspected.
+
+The original shared VM/name-lookup prefix, full original external networking services, ray/other effect paths, other FP contexts/status/payloads and remaining class/chapter features stay open. No overall 100% claim follows from these bounded packet checks. Detailed evidence: `point-effect-integer-port/verification.json` in the preserved validation workspace.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

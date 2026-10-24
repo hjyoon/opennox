@@ -2,7 +2,6 @@ package opennox
 
 import (
 	"image"
-	"math"
 	"sync"
 	"unsafe"
 
@@ -136,23 +135,6 @@ func updateDeathBallCharge4CE0C0(dr *client.Drawable, hooks deathBallDrawableHoo
 		hooks.activate(orb)
 	}
 	return 1
-}
-
-// linearOrbStep4CA650 advances a CharmOrb toward the charge origin stored in
-// its effect union. The old C callback read the drawable through a 32-bit int.
-func linearOrbStep4CA650(dr *client.Drawable) (image.Point, bool) {
-	effect := dr.UnionEffect()
-	dest := image.Pt(int(uint16(effect.Field_108)), int(uint16(effect.Field_108>>16)))
-	dx, dy := dest.X-dr.PosVec.X, dest.Y-dr.PosVec.Y
-	distance := int(math.Sqrt(float64(int64(dx)*int64(dx) + int64(dy)*int64(dy))))
-	speed := int(byte(effect.Field_110 >> 24))
-	next := image.Pt(dr.PosVec.X+dx*speed/(distance+1), dr.PosVec.Y+dy*speed/(distance+1))
-	if distance+1 <= 10 ||
-		int64(dr.PosVec.X-dest.X)*int64(next.X-dest.X)+
-			int64(dr.PosVec.Y-dest.Y)*int64(next.Y-dest.Y) < 0 {
-		return next, true
-	}
-	return next, false
 }
 
 func (c *Client) updateLinearOrb4CA650(dr *client.Drawable) int {

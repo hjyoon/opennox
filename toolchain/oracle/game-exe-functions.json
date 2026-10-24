@@ -2408,6 +2408,20 @@
       "purpose": "the exact single NOP alignment byte after the individual screen-particle draw routine"
     },
     {
+      "name": "original_linear_orb_integer_distance_48C6B0",
+      "address": "0x0048C6B0",
+      "size": 23,
+      "sha256": "a83f4ae7d4efb8138df9aaa711d117777f580cd26fd4190d3ab6cc24547f04ba",
+      "purpose": "Unchanged original linear-orb integer-distance; integer lookup distance and DWORD movement, with position/delete declared checked service boundaries."
+    },
+    {
+      "name": "original_linear_orb_integer_square_root_48C730",
+      "address": "0x0048C730",
+      "size": 305,
+      "sha256": "3a7582cc6dbbc89c19e9b113c48dae22d4e7d6925ad1196df68d10ddd2224508",
+      "purpose": "Unchanged original linear-orb integer-square-root; integer lookup distance and DWORD movement, with position/delete declared checked service boundaries."
+    },
+    {
       "name": "nox_xxx_playerUnsetStatus_417530_call_48EB09",
       "address": "0x0048EB09",
       "size": 5,
@@ -3463,6 +3477,13 @@
       "size": 5,
       "sha256": "901af98fcf1c6cb6a4d9de60adfad82b68a94a5739fbf5f8baa2c601bef234f9",
       "purpose": "the sole decoded direct rel32 call from the client inform subtype-two handler to the ability-result reporter at 004FB960"
+    },
+    {
+      "name": "original_linear_orb_linear_orb_4CA650",
+      "address": "0x004CA650",
+      "size": 208,
+      "sha256": "99b00bce815605c9279a5de3b3c1323c1f6552b6d3651a2ae1f901660ec2a7b6",
+      "purpose": "Unchanged original linear-orb linear-orb; integer lookup distance and DWORD movement, with position/delete declared checked service boundaries."
     },
     {
       "name": "input_shell_constructor_4CB880",
@@ -22204,6 +22225,13 @@
       "size": 37,
       "sha256": "db98de995c595a641057c0d72fa2952416f6e67eb5acd7d0f114cbb907b95235",
       "purpose": "the exact NUL-terminated GUIBrief.c source-file C string passed with line 1756 to the Quest start briefing text lookup at 00450A80"
+    },
+    {
+      "name": "original_linear_orb_square_root_table_5AD134",
+      "address": "0x005AD134",
+      "size": 256,
+      "sha256": "704eefebbdcb8398e53390e39d81ce25c98bfcf6f786881c308ea116158b6f93",
+      "purpose": "Unchanged original linear-orb square-root-table; integer lookup distance and DWORD movement, with position/delete declared checked service boundaries."
     },
     {
       "name": "bubble_particle_type_names",

@@ -920,6 +920,30 @@ server/server-highres 169,654 PASS and 7 SKIP each. Clean committed ARM64 produc
 and their embedded revision are verified separately. This checkpoint does not
 establish renderer pixel fidelity, campaign completion or overall 100% porting.
 
+### Native integer linear-orb movement
+
+The native CharmOrb movement callback now uses the original 256-byte integer
+square-root table and powers-of-four scaling. Coordinate subtraction, squared
+distance, speed multiplication, signed division, position addition and the
+overshoot dot test retain DWORD wrapping. A true square root changed ordinary
+movement: a speed 1 orb 31 pixels from its target stopped, while GAME.EXE advanced
+it by one pixel. Position/deletion remain checked original service boundaries.
+
+Complete unchanged GAME.EXE callback, distance and square-root routines plus
+the unchanged table produced 1,171 vectors, including larger-scale branch
+controls. The actual unchanged Go callback formula failed 573 vector leaves
+before porting. All previous tests, fixtures and goldens are byte-identical;
+the existing high-address orb tests retain their original inputs and assertions.
+
+The immutable 6,815-input candidate passes 108,000 broad test events and 286,254
+strict events (95,418 identities repeated three times with cgocheck2, race and
+checkptr2). Focused offline Linux AMD64 under Rosetta/Clang matches the same
+95,418 identities/actions/multiplicities. All four full suites preserve prior
+terminal identities and skips: normal/highres 175,654 PASS and 49 SKIP each;
+server/server-highres 170,826 PASS and 7 SKIP each. Clean committed ARM64 products
+and embedded revisions are verified separately. Renderer pixel fidelity,
+campaign completion and overall 100% remain outside this checkpoint.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

@@ -1,5 +1,24 @@
 #include <math.h>
 
+// Both original operands are binary32. Its directed binary64 addition followed
+// by a directed binary32 store equals rounding their exact sum toward zero.
+// FastTwoSum recovers which side of the native binary32 sum the exact sum lies
+// on; adjust one ULP only when native rounding went away from zero.
+static float nox_modifierSpeedAddChop32_4DFC5B(float left, float right) {
+ volatile float sum = left + right;
+ volatile float residual;
+ if (fabsf(left) >= fabsf(right)) {
+  residual = right - (sum - left);
+ } else {
+  residual = left - (sum - right);
+ }
+ if ((sum > 0 && residual < 0) || (sum < 0 && residual > 0)) {
+  return nextafterf(sum, 0.0f);
+ }
+ return sum;
+}
+
+
 #include "compat.h"
 
 #include "GAME1.h"
@@ -5668,7 +5687,7 @@ void nox_xxx_effectSpeedEngage_4DFC30(void* effect, nox_object_t* owner, const n
 		return;
 	}
 	owner->field_110 |= 0x10u;
-	owner->float_138 += nox_modifier_effect_getEngageFloat(effect);
+	owner->float_138 = nox_modifierSpeedAddChop32_4DFC5B(owner->float_138, nox_modifier_effect_getEngageFloat(effect));
 	uint32_t speed_bits;
 	memcpy(&speed_bits, &owner->float_138, sizeof(speed_bits));
 	nox_xxx_netReportStatsSpeed_4D9360(update->player->playerInd, owner, 0, (int)speed_bits);
@@ -5687,7 +5706,7 @@ void nox_xxx_effectSpeedDisengage_4DFCA0(void* effect, nox_object_t* owner, cons
 	if (!nox_xxx_enchantItemTestInventory_4DFBB0(owner, 16)) {
 		owner->field_110 &= ~0x10u;
 	}
-	owner->float_138 -= nox_modifier_effect_getEngageFloat(effect);
+	owner->float_138 = nox_modifierSpeedAddChop32_4DFC5B(owner->float_138, -nox_modifier_effect_getEngageFloat(effect));
 	uint32_t speed_bits;
 	memcpy(&speed_bits, &owner->float_138, sizeof(speed_bits));
 	nox_xxx_netReportStatsSpeed_4D9360(update->player->playerInd, owner, 0, (int)speed_bits);

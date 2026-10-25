@@ -1344,6 +1344,16 @@ Original tokenization and thread locale, arbitrary text, complete stock callers,
 
 The preceding float-parser trace counts are qualified by the same audit: 1,358 observed entries comprise 1,357 executed original entries plus the intercepted token lookup; its all-stock supplement has 1,163 observed entries, of which 1,162 execute. The hook records the service entry before substituting its return. These are distinct entry counts, not dynamic instruction steps. Raw records and all expected outputs remain unchanged. Original numeric conversion still executes without a numeric service stub.
 
+### Native speed modifier rounding
+
+`SpeedEngage4DFC30` and `SpeedDisengage4DFCA0` now preserve the original startup rounding of the player's speed field. Native addition and subtraction could round away from zero; a local float residual and one representable-value adjustment reproduce the original result without changing the host rounding mode. Both original routines read the engage parameter at offset 120, including disengagement. Existing typed pointer checks, inventory traversal, flag updates, speed reports and audio calls remain in place.
+
+The complete original 104-byte engage routine, 111-byte disengage routine and 123-byte inventory routine execute 68 contexts under four original control words, yielding 272 raw observations. All 246 actually executed original instruction entries independently match the unchanged executable. The two intercepted report/audio service entries are recorded separately. The selected speed inventory path runs in the original code; unrelated inventory paths and the full report/audio implementations are not claimed by this comparison.
+
+Before the correction, the actual native bodies differ in 20 contexts and pass 48 controls. The unchanged Go regression reproduces these 20 failing leaves (23 failures including groups/root). After the correction, all 71 test identities pass. The native ASan/UBSan run matches all 68 contexts while preserving nine high native addresses, all nonoutput bytes in seven records, service order, packet bits and the host rounding mode. PE32 uses its owner argument slot as floating-point scratch; that original observation is recorded separately and does not imply native caller-stack equivalence.
+
+The checkpoint preserves all prior test identities, fixtures, goldens and oracle entries, including the old padded speed envelopes. It adds 71 identities to the broad suite (111,068), the focused suite (98,486), and each full configuration. Three actual Go cgocheck2/race/checkptr2 repetitions pass 295,458 events; the focused Linux AMD64 run must preserve the same 98,486 identities. Four full configurations, a clean commit pushed to `port/go1.26-multiarch`, four independently inspected ARM64 products and the independently hashed source archive are required by the completion controller. Nonfinite inputs, arbitrary host rounding modes, full stock callers, remaining features and overall 100% remain open.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

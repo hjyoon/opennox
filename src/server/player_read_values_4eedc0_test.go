@@ -430,7 +430,7 @@ func TestPlayerReadValues4EEDC0InterpolatesAndFinalizesInOracleOrder(t *testing.
 	if got, want := math.Float32bits(world.unit.speedBase), math.Float32bits(playerReadValuesScaleSpeedExtended4EEDC0(440)); got != want {
 		t.Fatalf("speed base bits = %#x, want %#x", got, want)
 	}
-	if got, want := math.Float32bits(world.unit.mass), math.Float32bits(24); got != want {
+	if got, want := math.Float32bits(world.unit.mass), uint32(0x41bfffff); got != want {
 		t.Fatalf("mass bits = %#x, want %#x", got, want)
 	}
 	if player.capacityWord != 2437 || world.unit.carry != 2437 || player.overweight != 0 {
@@ -594,14 +594,14 @@ func TestPlayerReadValues4EEDC0ArithmeticEdges(t *testing.T) {
 	if got := math.Float64bits(playerReadValuesInterpolate4EEDC0(190, 100, 100, 4)); got != 0x4061800000a00000 {
 		t.Fatalf("interpolation bits = %#x, want 0x4061800000a00000", got)
 	}
-	if got := math.Float32bits(playerReadValuesScaleSpeed4EEDC0(440)); got != 0x3d343958 {
-		t.Fatalf("scaled speed bits = %#x, want 0x3d343958", got)
+	if got := math.Float32bits(playerReadValuesScaleSpeed4EEDC0(440)); got != 0x3d343957 {
+		t.Fatalf("scaled speed bits = %#x, want 0x3d343957", got)
 	}
 	if got := math.Float32bits(playerReadValuesMass4EEDC0(0xffffffce, 100)); got != math.Float32bits(0) {
 		t.Fatalf("signed strength mass bits = %#x, want zero", got)
 	}
-	if got := playerReadValuesCapacity4EEDC0(70, 100); got != 2437.5 {
-		t.Fatalf("capacity = %g, want 2437.5", got)
+	if got := playerReadValuesCapacity4EEDC0(70, 100); math.Float64bits(got) != 0x40a30affffffffff {
+		t.Fatalf("capacity = %g, want original retained bits40a30affffffffff", got)
 	}
 	if got := playerReadValuesAddWeight4EEDC0(math.MaxInt32, 255); got != math.MinInt32+254 {
 		t.Fatalf("wrapped inventory sum = %d, want %d", got, int32(math.MinInt32+254))

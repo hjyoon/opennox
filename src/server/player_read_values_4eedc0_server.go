@@ -200,13 +200,13 @@ func playerReadValuesInfoPtr4EEDC0(player *Player) *PlayerInfo {
 	return (*PlayerInfo)(unsafe.Pointer(&player.info[0]))
 }
 
-// playerReadValuesRound4EEDC0 models nox_float2int's default x87 FISTP
-// rounding mode. Invalid and out-of-range inputs return integer-indefinite.
+// playerReadValuesRound4EEDC0 models nox_float2int under the original
+// startup toward-zero FISTP mode. Invalid inputs retain integer-indefinite.
 func playerReadValuesRound4EEDC0(value float32) int32 {
 	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
 		return math.MinInt32
 	}
-	return int32(math.RoundToEven(float64(value)))
+	return int32(math.Trunc(float64(value)))
 }
 
 // playerReadValuesTruncInt64_4EEDC0 models GAME.EXE 00566DCC, which changes

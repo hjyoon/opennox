@@ -179,7 +179,7 @@ func TestPlayerReadValuesNative4EEDC0BindsNativeState(t *testing.T) {
 	if player.Info().Field2239() != 70 || player.Info().Field2235() != 440 {
 		t.Fatalf("strength/speed = %d/%d, want 70/440", player.Info().Field2239(), player.Info().Field2235())
 	}
-	if math.Float32bits(unit.SpeedBase) != math.Float32bits(playerReadValuesScaleSpeedExtended4EEDC0(440)) || math.Float32bits(unit.Mass) != math.Float32bits(24) {
+	if math.Float32bits(unit.SpeedBase) != math.Float32bits(playerReadValuesScaleSpeedExtended4EEDC0(440)) || math.Float32bits(unit.Mass) != uint32(0x41bfffff) {
 		t.Fatalf("speed base/mass bits = %#x/%#x", math.Float32bits(unit.SpeedBase), math.Float32bits(unit.Mass))
 	}
 	if player.field3652 != 0xabcd0985 || unit.CarryCapacity != 2437 || player.Field3656 != 0 {
@@ -247,7 +247,7 @@ func TestPlayerReadValues4EEDC0ConversionHelpers(t *testing.T) {
 		value float32
 		want  int32
 	}{
-		{0.5, 0}, {1.5, 2}, {2.5, 2}, {-1.5, -2},
+		{0.5, 0}, {1.5, 1}, {2.5, 2}, {-1.5, -1},
 		{math.Float32frombits(0x4effffff), 2147483520},
 		{math.Float32frombits(0x4f000000), math.MinInt32},
 		{float32(math.Inf(1)), math.MinInt32},

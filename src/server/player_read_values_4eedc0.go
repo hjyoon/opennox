@@ -118,7 +118,7 @@ func playerReadValues4EEDC0[O, U, P, S, H, N any, I comparable](
 			hooks.loadStat(baseStats, playerReadValuesHealth4EEDC0),
 			factor,
 		)
-		healthRounded := float32(healthValue + float64(playerReadValuesFloat32Constant4EEDC0(0x3f000000)))
+		healthRounded := shapeBoxSpill428270(monsterMoveToRunAddChop53_544434(healthValue, float64(playerReadValuesFloat32Constant4EEDC0(0x3f000000))))
 		healthMaximum := uint16(hooks.floatToInt(healthRounded))
 		health := hooks.loadHealthData(unit)
 		hooks.storeHealthMax(health, healthMaximum)
@@ -135,7 +135,7 @@ func playerReadValues4EEDC0[O, U, P, S, H, N any, I comparable](
 		if manaValue > manaMaximumLive {
 			manaValue = manaMaximumLive
 		}
-		manaRounded := float32(manaValue + float64(playerReadValuesFloat32Constant4EEDC0(0x3f000000)))
+		manaRounded := shapeBoxSpill428270(monsterMoveToRunAddChop53_544434(manaValue, float64(playerReadValuesFloat32Constant4EEDC0(0x3f000000))))
 		mana := uint16(hooks.floatToInt(manaRounded))
 		hooks.storeManaMax(update, mana)
 		hooks.storeManaCurrent(update, mana)
@@ -146,7 +146,7 @@ func playerReadValues4EEDC0[O, U, P, S, H, N any, I comparable](
 			hooks.loadStat(baseStats, playerReadValuesStrength4EEDC0),
 			factor,
 		)
-		strengthRounded := float32(strengthValue + float64(playerReadValuesFloat32Constant4EEDC0(0x3f000000)))
+		strengthRounded := shapeBoxSpill428270(monsterMoveToRunAddChop53_544434(strengthValue, float64(playerReadValuesFloat32Constant4EEDC0(0x3f000000))))
 		hooks.storeStrength(player, uint32(hooks.floatToInt(strengthRounded)))
 
 		speedValue := playerReadValuesInterpolate4EEDC0(
@@ -156,7 +156,7 @@ func playerReadValues4EEDC0[O, U, P, S, H, N any, I comparable](
 			factor,
 		)
 		hooks.storeSpeedBase(unit, playerReadValuesScaleSpeedExtended4EEDC0(speedValue))
-		speedRounded := float32(speedValue + float64(playerReadValuesFloat32Constant4EEDC0(0x3f000000)))
+		speedRounded := shapeBoxSpill428270(monsterMoveToRunAddChop53_544434(speedValue, float64(playerReadValuesFloat32Constant4EEDC0(0x3f000000))))
 		hooks.storeSpeedStat(player, uint32(hooks.floatToInt(speedRounded)))
 
 		if hooks.loadPlayerClass(player) == 0 {
@@ -242,11 +242,10 @@ func playerReadValuesClampLevel4EEDC0(level uint8) int8 {
 // sequence. The two base operands are separate because GAME.EXE reads that
 // memory twice and an intervening callback may make the second value differ.
 func playerReadValuesInterpolate4EEDC0(maximum, baseSubtract, baseAdd, factor float32) float64 {
-	value := float64(maximum) - float64(baseSubtract)
-	value *= float64(playerReadValuesFloat32Constant4EEDC0(0x3de38e39))
-	value *= float64(factor)
-	value += float64(baseAdd)
-	return value
+	value := monsterMoveToRunAddChop53_544434(float64(maximum), -float64(baseSubtract))
+	value = experienceMul53TowardZero(value, float64(playerReadValuesFloat32Constant4EEDC0(0x3de38e39)))
+	value = experienceMul53TowardZero(value, float64(factor))
+	return monsterMoveToRunAddChop53_544434(value, float64(baseAdd))
 }
 
 func playerReadValuesScaleSpeed4EEDC0(speed float32) float32 {
@@ -254,22 +253,21 @@ func playerReadValuesScaleSpeed4EEDC0(speed float32) float32 {
 }
 
 func playerReadValuesScaleSpeedExtended4EEDC0(speed float64) float32 {
-	return float32(speed * float64(playerReadValuesFloat32Constant4EEDC0(0x38d1b717)))
+	return shapeBoxSpill428270(experienceMul53TowardZero(speed, float64(playerReadValuesFloat32Constant4EEDC0(0x38d1b717))))
 }
 
 func playerReadValuesMass4EEDC0(strength uint32, baseStrength float32) float32 {
-	value := float64(int32(strength)) / float64(baseStrength)
-	value *= float64(playerReadValuesFloat32Constant4EEDC0(0x41a00000))
-	value += float64(playerReadValuesFloat32Constant4EEDC0(0x41200000))
-	return float32(value)
+	value := playerStatDiv53TowardZero4EEDC0(float64(int32(strength)), float64(baseStrength))
+	value = experienceMul53TowardZero(value, float64(playerReadValuesFloat32Constant4EEDC0(0x41a00000)))
+	value = monsterMoveToRunAddChop53_544434(value, float64(playerReadValuesFloat32Constant4EEDC0(0x41200000)))
+	return shapeBoxSpill428270(value)
 }
 
 func playerReadValuesCapacity4EEDC0(strength uint32, baseStrength float32) float64 {
-	value := float64(int32(strength)) / float64(baseStrength)
-	value *= float64(playerReadValuesFloat32Constant4EEDC0(0x449c4000))
-	value += float64(playerReadValuesFloat32Constant4EEDC0(0x443b8000))
-	value *= 1.5
-	return value
+	value := playerStatDiv53TowardZero4EEDC0(float64(int32(strength)), float64(baseStrength))
+	value = experienceMul53TowardZero(value, float64(playerReadValuesFloat32Constant4EEDC0(0x449c4000)))
+	value = monsterMoveToRunAddChop53_544434(value, float64(playerReadValuesFloat32Constant4EEDC0(0x443b8000)))
+	return experienceMul53TowardZero(value, 1.5)
 }
 
 func playerReadValuesAddWeight4EEDC0(sum int32, weight uint8) int32 {

@@ -21691,6 +21691,55 @@
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete executed original body in bounded dangerous-shape expansion/restoration context. Actual50stockDANGEROUSrecords plus128finiteedges/4kindcontrols,4FPcontrols yield182contexts/728observations. 127actualexecutedentries; only declared bounds-refresh service body excluded, reversedbounds skipgridmembership. Actualoriginalboxgeometry/float-to-int execute. No generalAI-idle fix, full bounds/membership/pathfinding/gameplay or nonfinite claim."
+    },
+    {
+      "name": "original_complete_player_stat_values_4eedc0",
+      "address": "0x4eedc0",
+      "size": 892,
+      "sha256": "6940925f1a498b5e1f212271e28d7b805daef839a3b79aa947f86b840c9d6fd1",
+      "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
+    },
+    {
+      "name": "original_complete_player_stat_base_57b350",
+      "address": "0x57b350",
+      "size": 6,
+      "sha256": "a739d01a36b00ee3307109b3c655539279ac718be426ec27927f5da78bc8ec0d",
+      "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
+    },
+    {
+      "name": "original_complete_player_stat_class_57b360",
+      "address": "0x57b360",
+      "size": 13,
+      "sha256": "790e2830f3cc2c416f892363fa442aa1943b8a1aaf457bb24d42b67a79fe4d37",
+      "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
+    },
+    {
+      "name": "original_complete_player_stat_int_419a70",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
+    },
+    {
+      "name": "original_complete_player_stat_abs_int16_419ab0",
+      "address": "0x419ab0",
+      "size": 20,
+      "sha256": "404077207291918e01ecad881d351383a9e2f71ecbeba784c9560d41a13b8324",
+      "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
+    },
+    {
+      "name": "original_complete_player_stat_qword_566dcc",
+      "address": "0x566dcc",
+      "size": 39,
+      "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c",
+      "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
+    },
+    {
+      "name": "original_complete_player_stat_wcslen_56688d",
+      "address": "0x56688d",
+      "size": 29,
+      "sha256": "66e3418a1b5d16894ce1d41355c902b4edcfab4f1a2d9781a8529990682ce603",
+      "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
     }
   ],
   "data": [

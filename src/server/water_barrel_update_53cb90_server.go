@@ -1,8 +1,6 @@
 package server
 
 import (
-	"math"
-
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
@@ -32,8 +30,14 @@ func waterBarrelUpdateNative53CB90(source *Object, deps waterBarrelUpdateNativeD
 	if age == 8 {
 		pos := source.PosVec
 		rect := types.Rectf{
-			Min: types.Ptf(pos.X-40, pos.Y-40),
-			Max: types.Ptf(pos.X+40, pos.Y+40),
+			Min: types.Ptf(
+				shapeBoxSpill428270(experienceAdd53TowardZero(float64(pos.X), -40)),
+				shapeBoxSpill428270(experienceAdd53TowardZero(float64(pos.Y), -40)),
+			),
+			Max: types.Ptf(
+				shapeBoxSpill428270(experienceAdd53TowardZero(float64(pos.X), 40)),
+				shapeBoxSpill428270(experienceAdd53TowardZero(float64(pos.Y), 40)),
+			),
 		}
 		deletedFire := false
 		deps.eachInRect(rect, func(candidate *Object) bool {
@@ -42,10 +46,14 @@ func waterBarrelUpdateNative53CB90(source *Object, deps waterBarrelUpdateNativeD
 			}
 			// The C callback receives a pointer to the barrel's live position,
 			// not a copy of the rectangle center.
-			dx := source.PosVec.X - candidate.PosVec.X
-			dy := source.PosVec.Y - candidate.PosVec.Y
-			distance := math.Sqrt(float64(dx)*float64(dx) + float64(dy)*float64(dy))
-			if distance-float64(candidate.Shape.Circle.R) <= 40 {
+			// The original retains both differences in precision53 registers.
+			dx := experienceAdd53TowardZero(float64(source.PosVec.X), -float64(candidate.PosVec.X))
+			dy := experienceAdd53TowardZero(float64(source.PosVec.Y), -float64(candidate.PosVec.Y))
+			square := experienceAdd53TowardZero(experienceMul53TowardZero(dy, dy), experienceMul53TowardZero(dx, dx))
+			distance := monsterMoveForceSqrtChop53_50D50C(square)
+			gap := experienceAdd53TowardZero(distance, -float64(candidate.Shape.Circle.R))
+			// C0|C3 accepts less, equal and unordered.
+			if !(gap > 40) {
 				deps.delayedDelete(candidate)
 				deletedFire = true
 			}

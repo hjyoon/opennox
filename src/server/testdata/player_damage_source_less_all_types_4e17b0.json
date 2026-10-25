@@ -918,10 +918,10 @@
     {
       "damage_type": 9,
       "raw": -11,
-      "forward_damage": 4294967285,
+      "forward_damage": 4294967286,
       "marker": 2,
       "marker_type": 9,
-      "carry_bits": 1048576000,
+      "carry_bits": 3208642560,
       "return": 1,
       "wear": [
         4294967285
@@ -930,10 +930,10 @@
     {
       "damage_type": 9,
       "raw": -9,
-      "forward_damage": 4294967287,
+      "forward_damage": 4294967288,
       "marker": 2,
       "marker_type": 9,
-      "carry_bits": 1048576000,
+      "carry_bits": 3208642560,
       "return": 1,
       "wear": [
         4294967287
@@ -942,10 +942,10 @@
     {
       "damage_type": 9,
       "raw": -1,
-      "forward_damage": 4294967295,
+      "forward_damage": 0,
       "marker": 2,
       "marker_type": 9,
-      "carry_bits": 1048576000,
+      "carry_bits": 3208642560,
       "return": 1,
       "wear": [
         4294967295
@@ -1622,10 +1622,10 @@
     {
       "damage_type": 17,
       "raw": -11,
-      "forward_damage": 4294967285,
+      "forward_damage": 4294967286,
       "marker": 2,
       "marker_type": 17,
-      "carry_bits": 1048576000,
+      "carry_bits": 3208642560,
       "return": 1,
       "wear": [
         4294967285
@@ -1634,10 +1634,10 @@
     {
       "damage_type": 17,
       "raw": -9,
-      "forward_damage": 4294967287,
+      "forward_damage": 4294967288,
       "marker": 2,
       "marker_type": 17,
-      "carry_bits": 1048576000,
+      "carry_bits": 3208642560,
       "return": 1,
       "wear": [
         4294967287
@@ -1646,10 +1646,10 @@
     {
       "damage_type": 17,
       "raw": -1,
-      "forward_damage": 4294967295,
+      "forward_damage": 0,
       "marker": 2,
       "marker_type": 17,
-      "carry_bits": 1048576000,
+      "carry_bits": 3208642560,
       "return": 1,
       "wear": [
         4294967295
@@ -2122,5 +2122,11 @@
     "actual_startup_FPCW": 3647,
     "proof_sha256": "24e8910e84749244f496d1b387357a9ec0097a339ad523620830d2e1242fc22b",
     "scope": "Only independently original-qualified source-less physical numeric leaves updated; all old inputs/order/other rows retained. Four original FPcontrol executions per context. Existing ranges and original evidence retained."
+  },
+  "historical_electric_precision_qualification": {
+    "original_report_sha256": "3015c94cee1393ac1ee2e305f0ca691633eceb77c047e8ebf76dc99456bae07d",
+    "contexts": 36,
+    "raw_FP_runs": 144,
+    "scope": "Onlyexactoriginal-qualifiedELECTRIC9/AIRBORNE_ELECTRIC17 numericcorrections; old192inputs/order/otherrows/ranges/physicalqualification retained. Alloldassertions retained."
   }
 }

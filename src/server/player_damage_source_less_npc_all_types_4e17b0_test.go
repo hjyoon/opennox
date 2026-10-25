@@ -109,7 +109,7 @@ func TestSourceLessNPCElectricReloadsCarryAfterScale4E17B0(t *testing.T) {
 			}
 			wear, forward := int32(0), int32(0)
 			r.DamageArmor = func(_, a, w *Object, d int32, k object.DamageType) bool {
-				if a != nil || w != nil || k != typ || live.Field1 != math.Float32bits(-.25) {
+				if a != nil || w != nil || k != typ || live.Field1 != math.Float32bits(.75) {
 					t.Fatal("electric wear arguments/order")
 				}
 				wear += d
@@ -122,9 +122,9 @@ func TestSourceLessNPCElectricReloadsCarryAfterScale4E17B0(t *testing.T) {
 				forward = d
 				return true
 			}
-			if h, ok := PlayerDamageNative4E17B0(v, nil, nil, 9, typ, r); !h || !ok || forward != 14 || wear != 6 ||
+			if h, ok := PlayerDamageNative4E17B0(v, nil, nil, 9, typ, r); !h || !ok || forward != 13 || wear != 6 ||
 				cached.Field547 != 2 || cached.Field546 != uint32(typ) || cached.Field1 != math.Float32bits(.125) ||
-				live.Field547 != 81 || live.Field546 != 83 || live.Field1 != math.Float32bits(-.25) {
+				live.Field547 != 81 || live.Field546 != 83 || live.Field1 != math.Float32bits(.75) {
 				t.Fatalf("NPC cached/live records=%t/%t forward=%d wear=%d", h, ok, forward, wear)
 			}
 		})

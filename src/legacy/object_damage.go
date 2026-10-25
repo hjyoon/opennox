@@ -141,21 +141,8 @@ func electricProtectionCall4DFF40(s *server.Server, target *server.Object) float
 }
 
 func playerDamageElectricArmorScale4E2220(s *server.Server, target *server.Object) float32 {
-	scale := float32(1)
-	for item := target.InvFirstItem; item != nil; item = item.InvNextItem {
-		if !item.ObjFlags.Has(object.FlagEquipped) || !item.ObjClass.Has(object.ClassArmor) ||
-			uint8(item.ObjSubClass)&0x10 == 0 || server.ItemHasMaterial7Modifier4133D0(item) {
-			continue
-		}
-		if uint32(item.ObjSubClass)&0x2000000 != 0 {
-			scale += *memmap.PtrFloat32(0x587000, 201108)
-			continue
-		}
-		if definition := s.Modif.Nox_xxx_equipClothFindDefByTT413270(int(item.TypeInd)); definition != nil {
-			scale += definition.DamageCoeffOrArmor64
-		}
-	}
-	return scale
+	return server.PlayerDamageElectricArmorScale4E2220(target, *memmap.PtrFloat32(0x587000, 201108),
+		s.Modif.Nox_xxx_equipClothFindDefByTT413270)
 }
 
 func defaultDamageWorldRuntime4E0B30(s *server.Server) server.DefaultDamageWorldRuntime4E0B30 {

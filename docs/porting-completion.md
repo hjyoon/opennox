@@ -1384,6 +1384,16 @@ The actual unchanged Go loader has 62 differences and 960 passing controls. Both
 
 Broad validation must retain the parent and add exactly 1,025 identities for 112,627 PASS events. Three actual cgocheck2/race/checkptr2 repetitions must retain 100,045 focused identities for 300,135 events; focused Linux AMD64 must match the same identities. Four full configurations must preserve prior actions, multiplicities and skips, with normal/HD at 180,267 PASS and server/server-HD at 175,439 PASS. Completion requires a clean pushed `port/go1.26-multiarch` commit, four inspected ARM64 products and an independently rehashed source archive. Remaining transitive gameplay, UI/audio/peer/stability, campaign features and the nine-cell audit stay open; these counts do not establish overall 100%.
 
+### Native gamedata mode selection
+
+`serverBalance` now selects SOLO values when `GameFlag22` is set, matching the original `419BAF`–`419BD1` branch. Coop retains its existing priority; online, Quest-online and Host-online retain ARENA selection. Existing fallback selection for no flags, Quest alone, arena mode alone and unrelated flag 23 stays unchanged. This closes the native TODO without treating flag 22 as the separate Quest bit.
+
+The complete unchanged original loader and scalar/array getters execute the actual stock file in eight flag combinations and four FP control settings, for 32 loads and 10,272 raw observations. All 2,568 unique mode/value contexts match the same-tag original baseline at each control setting. Production expectations use actual startup `0xe3f`; 244 contexts vary when the FP control is deliberately changed, and those observations remain separate. All 1,506 executed original entries and six complete regions independently match the unchanged executable. Nine intercepted entries for decrypted byte IO, allocation, hash storage/lookup and the CRT per-thread-state pointer are excluded; full implementations of those services, invalid flag combinations and preview UI behavior are outside this comparison.
+
+The actual unchanged Go consumer differs in 102 stock value contexts while 2,466 stock controls pass; two tag checks and the in-memory mode check also fail. With the branch corrected, all 2,592 new terminal identities pass, including native scalar/array consumers, tag priority and six compatibility controls. The new tests and existing original gamedata-loader tests pass 3,026 identities together. Encrypted input and fixture bytes remain unchanged, and every previous test, fixture, golden and oracle entry is preserved.
+
+Broad validation must preserve its parent and add exactly 2,592 identities for 115,219 PASS events. Three cgocheck2/race/checkptr2 repetitions must preserve 102,637 focused identities for 307,911 events; focused Linux AMD64 must match the same identities. Four full configurations must retain prior actions, multiplicities and skips, with normal/HD at 182,859 PASS and server/server-HD at 178,031 PASS. Completion requires a clean pushed `port/go1.26-multiarch` commit, four inspected ARM64 products and an independently rehashed source archive. Campaign features and the nine-cell audit, transitive gameplay, UI/audio/peer/stability and overall 100% remain open.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

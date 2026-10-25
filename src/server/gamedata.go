@@ -31,8 +31,8 @@ func (s *serverBalance) Read() error {
 }
 
 func (s *serverBalance) Tag() balance.Tag {
-	// TODO: check if it's a valid condition
-	if noxflags.HasGame(noxflags.GameModeCoop) {
+	// Original 419BAF-419BD1 selects SOLO for either Coop or flag 22.
+	if noxflags.HasGame(noxflags.GameModeCoop | noxflags.GameFlag22) {
 		return balance.TagSolo
 	}
 	return balance.TagArena

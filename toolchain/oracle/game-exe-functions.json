@@ -21600,6 +21600,48 @@
       "size": 855,
       "sha256": "6630fad14916162f9da9356b2297367c115a8bac2913ac9b6c97cac89d1e534e",
       "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_mode_selection_gamedata_loader_complete_419B30",
+      "address": "0x419b30",
+      "size": 526,
+      "sha256": "dec3bc34d293d020ac9816c2f9647e8dad23cb7f85a6a143780bc60512c6a924",
+      "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_mode_selection_gamedata_scalar_getter_complete_419D40",
+      "address": "0x419d40",
+      "size": 36,
+      "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
+      "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_mode_selection_gamedata_array_getter_complete_419D70",
+      "address": "0x419d70",
+      "size": 50,
+      "sha256": "c6d176697902aeab72feefdcc6ce998f2bdede457d819d15b8c35ddfabed6c92",
+      "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_mode_selection_gamedata_value_text_complete_4093E0",
+      "address": "0x4093e0",
+      "size": 135,
+      "sha256": "7313175e622069645adbed0ee5c3b39cdc437490aa91c1b05205c3ebba12c7c9",
+      "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_mode_selection_gamedata_word_text_complete_409470",
+      "address": "0x409470",
+      "size": 173,
+      "sha256": "02fb762a89e5ef611d46e5dd64e0b0ac3dbe106f21866a55ddba6ba903c2ecb2",
+      "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_mode_selection_game_flag_test_complete_40A5C0",
+      "address": "0x40a5c0",
+      "size": 18,
+      "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b",
+      "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
     }
   ],
   "data": [

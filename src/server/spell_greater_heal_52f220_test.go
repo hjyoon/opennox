@@ -173,8 +173,8 @@ func TestGreaterHealUpdate52F2E0AccumulationAndPlayerMultiplier(t *testing.T) {
 		wantHP       uint16
 		wantFraction float32
 	}{
-		{"monster", 2, 5, 0.25, 6, -0.25},
-		{"player", 4, 5, 0.25, 7, -0.5},
+		{"monster", 2, 5, 0.25, 5, 0.75},
+		{"player", 4, 5, 0.25, 6, 0.5},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var events []string
@@ -257,7 +257,7 @@ func TestGreaterHealUpdate52F2E0UnknownPlayerClassSkipsMultiplier(t *testing.T) 
 	}
 	h := greaterHealUpdateTestHooks52F2E0(&events)
 	h.playerClass = func(*greaterHealTestObject52F2E0) uint8 { events = append(events, "player-class"); return 3 }
-	if got := spellGreaterHealUpdate52F2E0(r, h); got != 0 || r.target.hp != 6 || r.fraction != -0.25 {
+	if got := spellGreaterHealUpdate52F2E0(r, h); got != 0 || r.target.hp != 5 || r.fraction != 0.75 {
 		t.Fatalf("update=%d hp=%d fraction=%g", got, r.target.hp, r.fraction)
 	}
 	for _, event := range events {

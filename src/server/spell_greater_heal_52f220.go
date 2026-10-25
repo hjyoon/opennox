@@ -98,15 +98,17 @@ func spellGreaterHealUpdate52F2E0[Record, Object comparable](record Record, h gr
 		return 1
 	}
 	caster = h.loadCaster(record)
-	value := h.loadFraction(record) + h.coefficient(h.loadLevel(record))
+	// The original spills the sum and class-scaled value separately under
+	// startup 53-bit rounding toward zero. Keep the accumulator binary32.
+	value := shapeBoxSpill428270(experienceAdd53TowardZero(float64(h.loadFraction(record)), float64(h.coefficient(h.loadLevel(record)))))
 	if caster != nilObject && h.loadClass(caster)&4 != 0 {
 		class := h.playerClass(caster)
 		if class <= 2 {
-			value = float32(float64(value) * float64(h.classHealth(class)))
+			value = shapeBoxSpill428270(experienceMul53TowardZero(float64(value), float64(h.classHealth(class))))
 		}
 	}
-	amount := spellDurationRoundNearestEven(value)
-	h.storeFraction(record, float32(float64(value)-float64(amount)))
+	amount := playerReadValuesRound4EEDC0(value)
+	h.storeFraction(record, shapeBoxSpill428270(experienceAdd53TowardZero(float64(value), -float64(amount))))
 	h.adjustHP(h.loadTarget(record), amount)
 	h.manaSub(h.loadCaster(record), 1)
 	return 0

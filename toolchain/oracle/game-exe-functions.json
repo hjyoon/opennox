@@ -21740,6 +21740,62 @@
       "size": 29,
       "sha256": "66e3418a1b5d16894ce1d41355c902b4edcfab4f1a2d9781a8529990682ce603",
       "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
+    },
+    {
+      "name": "original_complete_greater_heal_update_52f2e0",
+      "address": "0x52f2e0",
+      "size": 378,
+      "sha256": "62fed907999a4747a0836c4c9ce9b2821c35451e6028748933675e10490e4ed1",
+      "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
+    },
+    {
+      "name": "original_complete_greater_heal_int_419a70",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
+    },
+    {
+      "name": "original_complete_greater_heal_buff_4ff350",
+      "address": "0x4ff350",
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
+      "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
+    },
+    {
+      "name": "original_complete_greater_heal_mana_4eec80",
+      "address": "0x4eec80",
+      "size": 39,
+      "sha256": "8f470009f1ba159c2fbc5ae7b7b75129febbb044e0979c803db1297f17be8145",
+      "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
+    },
+    {
+      "name": "original_complete_greater_heal_position_4fea70",
+      "address": "0x4fea70",
+      "size": 103,
+      "sha256": "a3eb11d7ccfa58e2193552251f066a2c62f7bf47086618221df3b53d378b15f5",
+      "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
+    },
+    {
+      "name": "original_complete_greater_heal_damage_4e6bd0",
+      "address": "0x4e6bd0",
+      "size": 42,
+      "sha256": "84c31bbe0639aff1ee431eac960dd3d686a59a73e9119b6a7fd9512f8c94955f",
+      "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
+    },
+    {
+      "name": "original_complete_greater_heal_HP_4ee780",
+      "address": "0x4ee780",
+      "size": 26,
+      "sha256": "c842830466581834b537f438907e121a61547ce43c6d07ef033207e13970b674",
+      "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
+    },
+    {
+      "name": "original_complete_greater_heal_maxHP_4ee7a0",
+      "address": "0x4ee7a0",
+      "size": 27,
+      "sha256": "f45238ed5aa92034eef46ed574b2967bc0595a25e2a1d3b149fe6bc20f6475d6",
+      "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     }
   ],
   "data": [

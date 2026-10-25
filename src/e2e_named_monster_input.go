@@ -68,7 +68,8 @@ func e2eReadMonsterInputTarget(npc *server.Object, offset image.Point, followGro
 	vp := noxClient.Viewport()
 	height := 0
 	if followGround {
-		height = dr.Z() + int(int16(dr.ZVal2))
+		// Cursor bounds use signed ZVal; ZVal2 only offsets drawing.
+		height = int(int16(dr.ZVal))
 	}
 	point, movePoint := e2eMonsterMousePoints(vp.ToScreenPos(noxClient.ClientPlayerUnit().Pos()), vp.ToScreenPos(dr.Pos()), offset, height, followGround)
 	if !point.In(vp.Screen) || !movePoint.In(vp.Screen) {

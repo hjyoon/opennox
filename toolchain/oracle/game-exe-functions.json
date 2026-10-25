@@ -21929,6 +21929,13 @@
       "size": 36,
       "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
       "purpose": "Complete original class-stat calculation and actual float getter:458contexts x4FPcontrols=1832root+29312getter calls,75executedentries,oneexcluded declared lookup pointer service. Full332Broot/36Bgetter and16keys/zero constant independently rehashed. OriginalFMUL/FSTPS executes; no FP substitutes. Sixstock-derived/432finiteedges/16missingkeys/4signedzero controls. Default multipliers are declared, not ordinary Solo initialization evidence."
+    },
+    {
+      "name": "original_cursor_y_bounds_fragment_477140",
+      "address": "0x477140",
+      "size": 57,
+      "sha256": "66efe52cb877907996a5c609b2b9081dd591e7a765d00bc83dacefdc9fed8254",
+      "purpose": "Partial original477050 cursor Y-bound arithmetic only:57-byte477140..477178 fragment plus actual419A70 conversion.18signedZ/visualZ inputs x4FP=72fragment executions,144actual conversioncalls,25executedentries; no services/FP substitutes. Signed16-bit104 affects bounds, visual106 does not. Full hover/class/visibility/shape/admission/global-selection bodies are excluded. Ordinary-input fix independently checked through actual native cursor equality and originalUrchin death in modified diagnostic1010; no clean campaign credit."
     }
   ],
   "data": [

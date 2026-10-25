@@ -1492,6 +1492,14 @@ Actual native Server.CalcClassStats uses the real balance.File getter and full t
 
 Broad validation must preserve the parent and add exactly 463 identities for 126,138 PASS events. Three cgocheck2/race/checkptr2 repetitions must preserve 113,556 identities for 340,668 events; focused Linux AMD64 must match those identities. Four full configurations must preserve previous actions, multiplicities and skips, with normal/HD at 193,778 PASS and server/server-HD at 188,950 PASS. Completion requires a clean pushed port/go1.26-multiarch commit, four inspected ARM64 products and an independently rehashed source archive. Full original dictionary lookup, parser, mode initialization, player application, complete nonfinite behavior, transitive gameplay, remaining campaigns/features/final nine-cell audit, UI/audio/peer/stability and overall 100% remain open.
 
+### Ordinary monster input cursor height
+
+Nearest-monster input now aims with the drawable's signed ZVal alone. The original cursor hit bounds subtract signed Z and the object's height limits; visual ZVal2 shifts the drawing but not those bounds. The old input helper also subtracted ZVal2 and could aim above the selectable region. Ground movement, hostile/visibility/proximity gates, copied target identities and actual cursor equality before a click remain intact. No gameplay or AI state is written.
+
+A diagnostic copy of the preserved Wizard1 source selects the original hostile Urchin2698 and spends 160 frames within 28 pixels without cursor agreement or a completed attack, then dies. A separate modified diagnostic observes Z0, visual Z22 and hit height0..20; corrected aiming permits two actual Staff presses, observed health8 then4 and the original target's DEAD flag. The player survives at12HP/21MP, poison0. The third separate nearest action selects a different live target; no second kill is claimed. Both diagnostic products receive no clean campaign, manual Save or continuation credit, and all source and trial Save hashes remain unchanged.
+
+The unchanged57-byte original Y-bound arithmetic fragment and actual17-byte float converter execute18 signed-Z/visual-Z inputs under four FP controls:72 fragment executions and144 conversion calls. All25 executed entries independently match GAME.EXE. Full cursor callback, visibility, shape admission and global selection services are outside this bounded proof. One helper line and one explicitly partial oracle alias change; no test, fixture or golden is added or altered. Existing broad126138, focused113556 and three-pass strict340668 identities must remain exact. All four full configurations, focused Linux, clean pushed commit, four ARM64 products and source archive are required separately. Actual new manual Save on a clean product is still required for campaign continuation. Overall100 remains open.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

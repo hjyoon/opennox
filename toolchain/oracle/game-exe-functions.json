@@ -21432,6 +21432,13 @@
       "size": 743,
       "sha256": "ab522a1e9a501c0d4ebf547514ed3a1940806bf67fd2b9d1032b6e6c915c02c6",
       "purpose": "Complete743-byte ArmorPickup. Fourteen warm-name-cache Quest2048 checked-service contexts independently preserve update capture after SameSubclass and before state. Four automatic-equip differences plus ten controls,56 separately retained startup/nearest/down/up rows. Exact native real-header C body/high-pointer regression; no cold cache, equipped-armor/modifier/material or full linked CGo service closure claim."
+    },
+    {
+      "name": "original_complete_armor_equip_53E650",
+      "address": "0x0053E650",
+      "size": 354,
+      "sha256": "daa557ba0137be27653d3fbf66b7f8c25c106fb83ccbb972567ca03aa6f4bf4c",
+      "purpose": "Complete354-byte ArmorEquip.24 explicit checked-service contexts preserve the player capture before the armor-flags query, including one differing flags recipient and23controls.96 separately retained startup/nearest/down/up observations. Exact native real-header C/high-pointer/canary regression; stock pure lookup reentrancy and full original external-service/CGo closure are not claimed."
     }
   ],
   "data": [

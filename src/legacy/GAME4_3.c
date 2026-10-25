@@ -7788,7 +7788,10 @@ int nox_xxx_playerEquipArmor_53E650(nox_object_t* owner, nox_object_t* item, int
 		sub_53E430(owner, equipped, 1, 1);
 	}
 	item->obj_flags |= 0x100u;
-	update->player->field_0 |= nox_xxx_unitArmorInventoryEquipFlags_415C70(item);
+	// 0053E737 captures the player before querying armor equipment flags.
+	nox_playerInfo* equipped_player = update->player;
+	const uint32_t equip_flags = (uint32_t)nox_xxx_unitArmorInventoryEquipFlags_415C70(item);
+	equipped_player->field_0 |= equip_flags;
 	nox_xxx_netReportEquip_4D8540(update->player->playerInd, item, a3);
 	if (!sub_53E2D0(item)) {
 		item->obj_flags |= 0x10000000u;

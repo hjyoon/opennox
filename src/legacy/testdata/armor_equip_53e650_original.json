@@ -1,0 +1,7589 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "cases": 24,
+  "rows": [
+    {
+      "name": "ordinary-armor-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "ordinary-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "ordinary-armor-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "ordinary-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "ordinary-armor-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "ordinary-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "ordinary-armor-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "ordinary-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "special-armor-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "special-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 1,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 256,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "special-armor-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "special-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 1,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 256,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "special-armor-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "special-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 1,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 256,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "special-armor-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "special-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 1,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 256,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "shield-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "shield-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 2,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "shield",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "shield-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "shield-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 2,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "shield",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "shield-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "shield-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 2,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "shield",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "shield-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "shield-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 2,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "shield",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "existing-armor-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "existing-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "existing-armor-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "existing-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "existing-armor-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "existing-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "existing-armor-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "existing-armor-control",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "non-armor-reject",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "non-armor-reject",
+        "owner_class": 4,
+        "item_class": 16777216,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "non-armor-reject",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "non-armor-reject",
+        "owner_class": 4,
+        "item_class": 16777216,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "non-armor-reject",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "non-armor-reject",
+        "owner_class": 4,
+        "item_class": 16777216,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "non-armor-reject",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "non-armor-reject",
+        "owner_class": 4,
+        "item_class": 16777216,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "already-equipped-reject",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "already-equipped-reject",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 256,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 256,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "already-equipped-reject",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "already-equipped-reject",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 256,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 256,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "already-equipped-reject",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "already-equipped-reject",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 256,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 256,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "already-equipped-reject",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "already-equipped-reject",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 256,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 256,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-zero-reject",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "class-zero-reject",
+        "owner_class": 0,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-zero-reject",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "class-zero-reject",
+        "owner_class": 0,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-zero-reject",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "class-zero-reject",
+        "owner_class": 0,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-zero-reject",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "class-zero-reject",
+        "owner_class": 0,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "monster-dispatch-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "monster-dispatch-control",
+        "owner_class": 2,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "npcEquip",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "monster-dispatch-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "monster-dispatch-control",
+        "owner_class": 2,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "npcEquip",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "monster-dispatch-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "monster-dispatch-control",
+        "owner_class": 2,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "npcEquip",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "monster-dispatch-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "monster-dispatch-control",
+        "owner_class": 2,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "npcEquip",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-reject-sound",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "class-reject-sound",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 0,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipClassFail",
+            0
+          ],
+          "result": 0
+        },
+        {
+          "service": "audio",
+          "args": [
+            925,
+            "owner",
+            2,
+            91
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-reject-sound",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "class-reject-sound",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 0,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipClassFail",
+            0
+          ],
+          "result": 0
+        },
+        {
+          "service": "audio",
+          "args": [
+            925,
+            "owner",
+            2,
+            91
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-reject-sound",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "class-reject-sound",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 0,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipClassFail",
+            0
+          ],
+          "result": 0
+        },
+        {
+          "service": "audio",
+          "args": [
+            925,
+            "owner",
+            2,
+            91
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-reject-sound",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "class-reject-sound",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 0,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipClassFail",
+            0
+          ],
+          "result": 0
+        },
+        {
+          "service": "audio",
+          "args": [
+            925,
+            "owner",
+            2,
+            91
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-reject-silent",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "class-reject-silent",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 0,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 0,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipClassFail",
+            0
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-reject-silent",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "class-reject-silent",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 0,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 0,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipClassFail",
+            0
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-reject-silent",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "class-reject-silent",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 0,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 0,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipClassFail",
+            0
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "class-reject-silent",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "class-reject-silent",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 0,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 0,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipClassFail",
+            0
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-reject-sound",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "strength-reject-sound",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 0,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipStrengthFail",
+            0
+          ],
+          "result": 0
+        },
+        {
+          "service": "audio",
+          "args": [
+            925,
+            "owner",
+            2,
+            91
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-reject-sound",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "strength-reject-sound",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 0,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipStrengthFail",
+            0
+          ],
+          "result": 0
+        },
+        {
+          "service": "audio",
+          "args": [
+            925,
+            "owner",
+            2,
+            91
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-reject-sound",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "strength-reject-sound",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 0,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipStrengthFail",
+            0
+          ],
+          "result": 0
+        },
+        {
+          "service": "audio",
+          "args": [
+            925,
+            "owner",
+            2,
+            91
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-reject-sound",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "strength-reject-sound",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 0,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipStrengthFail",
+            0
+          ],
+          "result": 0
+        },
+        {
+          "service": "audio",
+          "args": [
+            925,
+            "owner",
+            2,
+            91
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-reject-silent",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "strength-reject-silent",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 0,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 0,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipStrengthFail",
+            0
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-reject-silent",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "strength-reject-silent",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 0,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 0,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipStrengthFail",
+            0
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-reject-silent",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "strength-reject-silent",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 0,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 0,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipStrengthFail",
+            0
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-reject-silent",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "strength-reject-silent",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 0,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 0,
+        "replace_at": "none",
+        "replace_kind": "none"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "message",
+          "args": [
+            "owner",
+            "armor.c:ArmorEquipStrengthFail",
+            0
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 0,
+      "old_player_flags": 4096,
+      "new_player_flags": 8192,
+      "item_flags": 0,
+      "live_update": "old",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "sameSubclass-replaces-update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "sameSubclass-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "sameSubclass",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "sameSubclass-replaces-update",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "sameSubclass-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "sameSubclass",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "sameSubclass-replaces-update",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "sameSubclass-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "sameSubclass",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "sameSubclass-replaces-update",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "sameSubclass-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "sameSubclass",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "sameSubclass-replaces-player",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "sameSubclass-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "sameSubclass",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            2
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "sameSubclass-replaces-player",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "sameSubclass-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "sameSubclass",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            2
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "sameSubclass-replaces-player",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "sameSubclass-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "sameSubclass",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            2
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "sameSubclass-replaces-player",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "sameSubclass-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "sameSubclass",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            2
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "classUse-replaces-update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "classUse-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "classUse",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "classUse-replaces-update",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "classUse-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "classUse",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "classUse-replaces-update",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "classUse-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "classUse",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "classUse-replaces-update",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "classUse-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "classUse",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "classUse-replaces-player",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "classUse-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "classUse",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "classUse-replaces-player",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "classUse-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "classUse",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "classUse-replaces-player",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "classUse-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "classUse",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "classUse-replaces-player",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "classUse-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "classUse",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-replaces-update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "strength-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "strength",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-replaces-update",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "strength-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "strength",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-replaces-update",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "strength-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "strength",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-replaces-update",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "strength-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "strength",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-replaces-player",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "strength-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "strength",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-replaces-player",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "strength-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "strength",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-replaces-player",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "strength-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "strength",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "strength-replaces-player",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "strength-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "strength",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "dequip-replaces-update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "dequip-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "dequip",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "dequip-replaces-update",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "dequip-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "dequip",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "dequip-replaces-update",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "dequip-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "dequip",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "dequip-replaces-update",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "dequip-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "dequip",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "dequip-replaces-player",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "dequip-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "dequip",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "dequip-replaces-player",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "dequip-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "dequip",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "dequip-replaces-player",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "dequip-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "dequip",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "dequip-replaces-player",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "dequip-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": true,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "dequip",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": "other-armor"
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "dequip",
+          "args": [
+            "owner",
+            "other-armor",
+            1,
+            1
+          ],
+          "result": 0
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4096,
+      "new_player_flags": 8224,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "armorFlags-replaces-update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "armorFlags-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "armorFlags",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "armorFlags-replaces-update",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "armorFlags-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "armorFlags",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "armorFlags-replaces-update",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "armorFlags-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "armorFlags",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "armorFlags-replaces-update",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "armorFlags-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "armorFlags",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "armorFlags-replaces-player",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "armorFlags-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "armorFlags",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "armorFlags-replaces-player",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "armorFlags-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "armorFlags",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "armorFlags-replaces-player",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "armorFlags-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "armorFlags",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "armorFlags-replaces-player",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "armorFlags-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "armorFlags",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            7,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "report-replaces-update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "report-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "report",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "report-replaces-update",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "report-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "report",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "report-replaces-update",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "report-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "report",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "report-replaces-update",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "report-replaces-update",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "report",
+        "replace_kind": "update"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "new",
+      "cached_update_player": "old",
+      "stack_balanced": true
+    },
+    {
+      "name": "report-replaces-player",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "report-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "report",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "report-replaces-player",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "report-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "report",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "report-replaces-player",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "report-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "report",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    },
+    {
+      "name": "report-replaces-player",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "report-replaces-player",
+        "owner_class": 4,
+        "item_class": 33554432,
+        "item_flags": 0,
+        "item_subclass": 4,
+        "class_return": 1,
+        "strength_return": 1,
+        "equipped": false,
+        "equip_flags": 32,
+        "special_return": 0,
+        "npc_return": 1,
+        "play_sound": 1,
+        "replace_at": "report",
+        "replace_kind": "player"
+      },
+      "events": [
+        {
+          "service": "sameSubclass",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "classUse",
+          "args": [
+            "item",
+            1
+          ],
+          "result": 1
+        },
+        {
+          "service": "strength",
+          "args": [
+            "owner",
+            "item"
+          ],
+          "result": 1
+        },
+        {
+          "service": "armorFlags",
+          "args": [
+            "item"
+          ],
+          "result": 32
+        },
+        {
+          "service": "report",
+          "args": [
+            3,
+            "item",
+            17
+          ],
+          "result": 0
+        },
+        {
+          "service": "special",
+          "args": [
+            "item"
+          ],
+          "result": 0
+        },
+        {
+          "service": "recalculate",
+          "args": [
+            "owner"
+          ],
+          "result": 0
+        },
+        {
+          "service": "engage",
+          "args": [
+            "item",
+            "owner"
+          ],
+          "result": 0
+        }
+      ],
+      "return_value": 1,
+      "old_player_flags": 4128,
+      "new_player_flags": 8192,
+      "item_flags": 268435712,
+      "live_update": "old",
+      "cached_update_player": "new",
+      "stack_balanced": true
+    }
+  ],
+  "regions": [
+    {
+      "name": "complete-ArmorEquip",
+      "address": "0x53e650",
+      "size": 354,
+      "sha256": "daa557ba0137be27653d3fbf66b7f8c25c106fb83ccbb972567ca03aa6f4bf4c"
+    },
+    {
+      "name": "actual-startup-control-call",
+      "address": "0x4014b5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c"
+    },
+    {
+      "name": "actual-CRT-control-word",
+      "address": "0x40209e",
+      "size": 358,
+      "sha256": "da7de6a1ae9b07904d40360b02191a2cdc51ff80da00eaabf02926bbc1ac8820"
+    }
+  ],
+  "scope": "Complete354byte53E650..53E7A2 through original RET.24 explicit native valid checked-service contexts, four raw FP modes. External service effects are declared; services including armor flag lookup may replace update or cached update player. Not a claim that stock pure lookup triggers replacement or full transitive runtime closure. No nil/malformed pointer, external-service implementation, complete stock campaign or overall100 claim."
+}

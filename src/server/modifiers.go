@@ -627,12 +627,7 @@ func ModEffectParseInt(_ *ModifierEff, p ModParseTarg, s string) bool {
 }
 
 func ModEffectParseFloat(_ *ModifierEff, p ModParseTarg, s string) bool {
-	v, err := strconv.ParseFloat(firstWord(s), 32)
-	if err != nil {
-		*p.Float = -1
-	} else {
-		*p.Float = float32(v)
-	}
+	*p.Float = modifierFloatParameterValue4235C0(firstWord(s))
 	return true
 }
 

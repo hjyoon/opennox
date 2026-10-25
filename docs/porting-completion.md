@@ -1320,6 +1320,18 @@ A separate read-only scan finds 23 matching multiplier declarations in the immut
 
 No prior tests, fixtures, goldens or oracle entries change. The standalone C driver's coefficient getter is a checked declared pure service, with separate sanitizer evidence. Full stock modifier tables, custom callbacks, transitive callers, arbitrary floating inputs, remaining campaign/features and overall 100 percent remain open. This reproduced numeric mismatch does not establish an observed stock campaign damage failure. Detailed evidence: `modifier-attack-multipliers-precision-port/verification.json` in the preserved validation workspace.
 
+### Native modifier float parameter parsing
+
+The float parameter loader at original `004235C0` now preserves decimal `atof` prefix handling through binary64 and the final binary32 store toward zero. The previous direct binary32 parser produced different coefficients for 10 of the 23 stock multiplier declarations, including values such as `1.08`, `1.12`, and `1.2`. Missing parameters remain `-1`; present nonnumeric prefixes, signed zero, partial exponents, trailing text, finite float overflow and double overflow follow the observed original results. The host rounding mode is unchanged.
+
+The complete 37-byte original entry, actual setter, numeric helper and static CRT `atof` execute 63 declared contexts under four FP modes, producing 252 raw observations. All 1,358 executed original instruction records independently match the unchanged executable. Only the next already-separated token lookup is a declared service; numeric conversion is executed by the original code. The unchanged Go parser fails 36 leaves and passes 27 controls. The correction passes all 63 leaves and the root test (64 terminal identities), using real C-owned modifier fields above 4 GiB and complete native frame canaries across all eight output slots. Existing tests, fixtures, goldens and prior oracle entries are byte-identical.
+
+The 6,861-input checkpoint preserves all prior broad and four full-suite identities, actions, counts and skips: broad 110,908 PASS; strict 98,326 identities repeated three times with actual `cgocheck2`, race and `checkptr=2` (294,978 PASS); focused Linux AMD64 98,326 PASS via offline Rosetta/Clang. The normal and HD suites each pass 178,548 tests with 49 skips; server and server HD each pass 173,720 with 7 skips. Four clean committed ARM64 products are checked with REA and Go build metadata, and every source archive member is independently hashed. These results are recorded only after their actual checks complete.
+
+Original tokenization and thread locale, arbitrary text and floating point inputs, complete stock callers, remaining campaign features and overall 100% remain open. The earlier stock numeric multiplier supplement explicitly used the then-current Go loader bits; it is retained unchanged and does not retrospectively claim original parser equivalence.
+
+A separate read-only supplement checks all 75 matching stock declarations across 21 registered float effects: 46 old-parser differences and 29 controls, followed by 75 actual corrected-parser matches against 300 independent original FP observations. Its 1,163 executed original instruction records are verified against the unchanged executable. This adds no primary test identities and does not claim original tokenization or complete modifier-loader/caller execution.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

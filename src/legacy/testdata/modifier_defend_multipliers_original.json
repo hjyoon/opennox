@@ -1,0 +1,3629 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "functions": 2,
+  "contexts_per_function": 32,
+  "rows": [
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "zero",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489772,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260356,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536202,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536203,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536202,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536203,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381697,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668861,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668862,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668861,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668862,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772253,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351539,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711865,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-value",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973420,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973420,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "both-negative",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489772,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 2,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 2,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838860,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838861,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838860,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838861,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095039,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095040,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095039,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095040,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578687,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578688,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578688,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578687,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891646,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158912,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ArmorMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353215,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "zero",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1031798784,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1031798784,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1031798784,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1031798784,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1038174126,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1038174127,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1038174126,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1038174127,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1049247088,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1049247089,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1049247088,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1049247089,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1047904911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1047904911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1047904911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1047904912,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1038509671,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1038509671,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1038509671,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1038509671,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1057971240,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1057971240,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1057971240,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1057971241,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1029114429,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1029114430,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1029114429,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1029114430,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065019349,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065019350,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065019349,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065019350,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1055100471,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1055100472,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1055100471,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1055100472,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1072902963,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1072902963,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1072902963,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1072902964,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1067030937,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1067030938,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1067030937,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1067030938,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1053609164,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1053609164,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1053609164,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1053609164,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-value",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3185657774,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3185657775,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3185657775,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3185657774,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1049918177,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1049918177,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1049918177,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1049918178,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "both-negative",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3197401825,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3197401825,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3197401826,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3197401825,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 2,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 2,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 4,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 4,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 4,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 5,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 15938355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 15938355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 15938355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 15938356,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2134900735,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2134900735,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2134900735,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2134900736,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4282384383,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4282384383,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4282384384,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4282384383,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 1073741823,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 1073741823,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 1065353215,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 1065353216,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 1065353215,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 1065353216,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 1073741825,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492414,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492414,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492414,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492414,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 2147483648,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 3156465408,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 3156465408,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 3156465409,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 3156465408,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 1045220557,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 1045220557,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 1045220557,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 1045220557,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 1050253721,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 1050253722,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 1050253721,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 1050253722,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1048575999,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1048575999,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1048575999,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1048575999,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 864026623,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 864026623,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 864026623,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DurabilityMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 864026623,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    }
+  ],
+  "regions": [
+    {
+      "name": "complete-ArmorMultiplierEffect",
+      "address": "0x4e0370",
+      "size": 16,
+      "sha256": "42d000dbc9587dc7556c34de32e0f6cae29fac5b508044175859c1a864136db5"
+    },
+    {
+      "name": "complete-DurabilityMultiplierEffect",
+      "address": "0x4e0380",
+      "size": 28,
+      "sha256": "461f83fdd9ddbb6fc1bbce6fd20d5aea7404389175b2f0a305433a4e2b5f1b5f"
+    },
+    {
+      "name": "actual-startup-control-call",
+      "address": "0x4014b5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c"
+    },
+    {
+      "name": "actual-CRT-control-word",
+      "address": "0x40209e",
+      "size": 358,
+      "sha256": "da7de6a1ae9b07904d40360b02191a2cdc51ff80da00eaabf02926bbc1ac8820"
+    }
+  ],
+  "data_regions": [
+    {
+      "name": "actual-one",
+      "address": "0x583068",
+      "size": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "bits": "0x3f800000"
+    }
+  ],
+  "scope": "Complete16byte4E0370 and28byte4E0380 closed original leaf bodies, no substituted services.32declared finite contexts per function,256separate raw FP observations. Actual startup rows preserve binary64 ToZero arithmetic and final binary32 ToZero store. Original durability factor is (1-coefficient)+1 in that order with two distinct x87 steps. Return address identity, stack/CW and every nonoutput byte checked. Declared valid finite coefficient/value data are not a complete stock modifier-table, custom callback, transitive engine, campaign or overall100 certificate."
+}

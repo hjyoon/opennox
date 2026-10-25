@@ -21446,6 +21446,20 @@
       "size": 145,
       "sha256": "3a638c4c4ffdd01be49d268675deb067d32bcf6144ce3cb12218d283fc218f4a",
       "purpose": "Complete145-byte armor sum and original112-byte item-value body with declared definition lookup.32checked finite contexts/128startup-nearest-down-up observations. Per-item binary64 and binary32 ToZero spills preserve original armor bits; unchanged native body differs14contexts and passes18controls. Exact native root/high-pointer/canary regression, declared item-value/output services; no full modifier callback, stock gameplay or linked CGo closure claim."
+    },
+    {
+      "name": "original_complete_armor_multiplier_4E0370",
+      "address": "0x004E0370",
+      "size": 16,
+      "sha256": "42d000dbc9587dc7556c34de32e0f6cae29fac5b508044175859c1a864136db5",
+      "purpose": "Complete closed original modifier leaf.32declared finite contexts per function and4raw FP modes retain256total observations. Native output-bit, return-pointer, coefficient-getter and canary regression preserves original startup ToZero arithmetic; durability keeps (1-coefficient)+1 as separate steps. Original native Armor/Durability differences6/12 and controls26/20. No stock-table or full transitive/runtime closure claim."
+    },
+    {
+      "name": "original_complete_durability_multiplier_4E0380",
+      "address": "0x004E0380",
+      "size": 28,
+      "sha256": "461f83fdd9ddbb6fc1bbce6fd20d5aea7404389175b2f0a305433a4e2b5f1b5f",
+      "purpose": "Complete closed original modifier leaf.32declared finite contexts per function and4raw FP modes retain256total observations. Native output-bit, return-pointer, coefficient-getter and canary regression preserves original startup ToZero arithmetic; durability keeps (1-coefficient)+1 as separate steps. Original native Armor/Durability differences6/12 and controls26/20. No stock-table or full transitive/runtime closure claim."
     }
   ],
   "data": [

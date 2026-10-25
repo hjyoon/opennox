@@ -6050,14 +6050,44 @@ void nox_xxx_attribContinualReplen_4E02C0(int a1, uint32_t* a2) {
 #endif
 
 //----- (004E0370) --------------------------------------------------------
+// The original modifier leaves use startup binary64 ToZero arithmetic
+// before their final binary32 ToZero store. Keep the host FP mode unchanged.
+static double nox_modifierAddChop53_4E038A(double left, double right) {
+	volatile double sum = left + right;
+	volatile double residual;
+	if (fabs(left) >= fabs(right)) {
+		residual = right - (sum - left);
+	} else {
+		residual = left - (sum - right);
+	}
+	if ((sum > 0.0 && residual < 0.0) || (sum < 0.0 && residual > 0.0)) {
+		return nextafter(sum, 0.0);
+	}
+	return sum;
+}
+
+static double nox_modifierMulChop53_4E0397(double left, double right) {
+	volatile double product = left * right;
+	const double residual = fma(left, right, -product);
+	if ((product > 0.0 && residual < 0.0) || (product < 0.0 && residual > 0.0)) {
+		return nextafter(product, 0.0);
+	}
+	return product;
+}
+
 float* sub_4E0370(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value) {
-	*value = nox_modifier_effect_getDefendFloat(effect) * *value;
+	const double coefficient = nox_modifier_effect_getDefendFloat(effect);
+	*value = nox_double2float(nox_modifierMulChop53_4E0397(coefficient, (double)*value));
 	return value;
 }
 
 //----- (004E0380) --------------------------------------------------------
 float* sub_4E0380(void* effect, nox_object_t* item, uintptr_t a3, nox_object_t* target, uintptr_t a5, float* value) {
-	*value = (2.0f - nox_modifier_effect_getDefendFloat(effect)) * *value;
+	const double coefficient = nox_modifier_effect_getDefendFloat(effect);
+	// 004E038A subtracts from one; 004E0391 separately adds one.
+	const double difference = nox_modifierAddChop53_4E038A(1.0, -coefficient);
+	const double multiplier = nox_modifierAddChop53_4E038A(difference, 1.0);
+	*value = nox_double2float(nox_modifierMulChop53_4E0397(multiplier, (double)*value));
 	return value;
 }
 

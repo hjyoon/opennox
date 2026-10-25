@@ -26,7 +26,7 @@ func fireProtectionAddModifiers4DFE40(init *ModifierInitData, engage unsafe.Poin
 	}
 	for _, modifier := range init.Modifiers {
 		if modifier != nil && engage != nil && modifier.Engage112 == engage {
-			accumulator += float64(modifier.EngageFloat120)
+			accumulator = elementalProtectionAddChop53(accumulator, float64(modifier.EngageFloat120))
 		}
 	}
 	return accumulator
@@ -62,11 +62,11 @@ func elementalProtectionNative4DFE40(
 				accumulator = fireProtectionAddModifiers4DFE40(item.InitDataModifier(), engage, accumulator)
 			}
 		}
-		subtotal = float32(accumulator)
+		subtotal = elementalProtectionSpill32(accumulator)
 	}
 	if uint32(unit.ObjClass)&fireProtectionClassMask4DFE40 != 0 {
 		accumulator = fireProtectionAddModifiers4DFE40(unit.InitDataModifier(), engage, accumulator)
-		subtotal = float32(accumulator)
+		subtotal = elementalProtectionSpill32(accumulator)
 	}
 	modifierLimit := math.Float32frombits(fireProtectionModifierLimitBits)
 	if accumulator > float64(modifierLimit) {
@@ -77,7 +77,7 @@ func elementalProtectionNative4DFE40(
 	if unit.HasEnchant(enchant) {
 		power := uint8(unit.EnchantPower(enchant))
 		index := int32(uint32(power) - 1)
-		result = loadBalance(balanceKey, index) + float64(subtotal)
+		result = elementalProtectionAddChop53(loadBalance(balanceKey, index), float64(subtotal))
 	}
 	finalLimit := math.Float32frombits(fireProtectionFinalLimitBits)
 	if result > float64(finalLimit) {

@@ -51,13 +51,13 @@ func poisonProtection4E0040[O, I, M comparable](hooks poisonProtectionHooks4E004
 			}
 			item = hooks.loadNextItem(item)
 		}
-		subtotal = float32(accumulator)
+		subtotal = elementalProtectionSpill32(accumulator)
 	}
 
 	class := hooks.loadClass(unit)
 	if class&poisonProtectionClassMask4E0040 != 0 {
 		accumulator = poisonProtectionAddModifiers4E0040(hooks, accumulator, hooks.loadInitData(unit))
-		subtotal = float32(accumulator)
+		subtotal = elementalProtectionSpill32(accumulator)
 	}
 
 	modifierLimit := math.Float32frombits(poisonProtectionModifierLimitBits)
@@ -69,7 +69,7 @@ func poisonProtection4E0040[O, I, M comparable](hooks poisonProtectionHooks4E004
 	if hooks.testBuff(unit, poisonProtectionEnchant4E0040) != 0 {
 		power := uint8(hooks.loadBuffPower(unit, poisonProtectionEnchant4E0040))
 		index := int32(uint32(power) - 1)
-		result = hooks.loadBalance(poisonProtectionBalanceKey4E0040, index) + float64(subtotal)
+		result = elementalProtectionAddChop53(hooks.loadBalance(poisonProtectionBalanceKey4E0040, index), float64(subtotal))
 	}
 
 	finalLimit := math.Float32frombits(poisonProtectionFinalLimitBits)
@@ -88,7 +88,7 @@ func poisonProtectionAddModifiers4E0040[O, I, M comparable](
 	for slot := 0; slot < poisonProtectionModifierSlots; slot++ {
 		modifier := hooks.loadModifier(initData, slot)
 		if modifier != nilModifier && hooks.matchesProtection(modifier) {
-			accumulator += float64(hooks.loadModifierValue(modifier))
+			accumulator = elementalProtectionAddChop53(accumulator, float64(hooks.loadModifierValue(modifier)))
 		}
 	}
 	return accumulator

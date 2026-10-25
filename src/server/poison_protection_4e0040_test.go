@@ -170,7 +170,8 @@ func TestPoisonProtection4E0040ExactTraversalOrder(t *testing.T) {
 	}
 	world := &poisonProtectionTestWorld4E0040{unit: unit, balance: 0.25}
 	got := poisonProtection4E0040(world.hooks())
-	want := 0.25 + float64(float32(float64(float32(0.1))+float64(float32(0.2))))
+	// Original startup x87 control 0xe3f; see historical_contract_supplement in elemental_protection_original.json.
+	want := math.Float64frombits(0x3fe1999990000000)
 	if got != want {
 		t.Fatalf("result bits = %#016x, want %#016x", math.Float64bits(got), math.Float64bits(want))
 	}
@@ -298,7 +299,7 @@ func TestPoisonProtection4E0040NumericContract(t *testing.T) {
 		{
 			name: "single binary32 spill",
 			unit: []float32{0.1, 0.2},
-			want: float64(float32(float64(float32(0.1)) + float64(float32(0.2)))),
+			want: math.Float64frombits(0x3fd3333320000000),
 		},
 		{name: "modifier upper clamp", unit: []float32{0.5, 0.3}, want: float64(modifierLimit)},
 		{

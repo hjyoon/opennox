@@ -97,7 +97,8 @@ func TestPoisonProtectionNative4E0040BindsModifierIdentityAndBalance(t *testing.
 			return 0.25
 		},
 	})
-	want := 0.25 + float64(float32(float64(float32(0.2))+float64(float32(0.1))))
+	// Original startup x87 control 0xe3f; see historical_contract_supplement in elemental_protection_original.json.
+	want := math.Float64frombits(0x3fe1999990000000)
 	if math.Float64bits(got) != math.Float64bits(want) || balanceCalls != 1 {
 		t.Fatalf("result bits/calls = %#016x/%d, want %#016x/1", math.Float64bits(got), balanceCalls, math.Float64bits(want))
 	}

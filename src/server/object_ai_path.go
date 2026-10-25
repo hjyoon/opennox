@@ -330,16 +330,16 @@ func (s *serverAIPaths) IndexObject(obj *Object) {
 func aiPathExpandDangerousShape50B2C0(shape *Shape) {
 	switch shape.Kind {
 	case ShapeKindCircle:
-		// The original x87 sequence keeps the radius addition in extended
-		// precision while calculating R2, even though it stores the rounded
-		// binary32 radius first. Binary64 exactly represents this operation for
-		// binary32 inputs and preserves that observable one-ULP distinction.
-		radius := float64(shape.Circle.R) + float64(aiPathDangerousMargin50B2C0)
-		shape.Circle.R = float32(radius)
-		shape.Circle.R2 = float32(radius * radius)
+		// 50B35B stores the radius but retains the unspilled, 53-bit
+		// toward-zero sum for its square. Keep both arithmetic boundaries
+		// and binary32 stores without changing the host rounding mode.
+		radius := monsterMoveToRunAddChop53_544434(float64(shape.Circle.R), float64(aiPathDangerousMargin50B2C0))
+		shape.Circle.R = shapeBoxSpill428270(radius)
+		shape.Circle.R2 = shapeBoxSpill428270(monsterMoveToRunSquareChop53_544434(radius))
 	case ShapeKindBox:
-		shape.Box.W += 2 * aiPathDangerousMargin50B2C0
-		shape.Box.H += 2 * aiPathDangerousMargin50B2C0
+		margin := float64(2 * aiPathDangerousMargin50B2C0)
+		shape.Box.W = shapeBoxSpill428270(monsterMoveToRunAddChop53_544434(float64(shape.Box.W), margin))
+		shape.Box.H = shapeBoxSpill428270(monsterMoveToRunAddChop53_544434(float64(shape.Box.H), margin))
 		shape.Box.Calc()
 	}
 }

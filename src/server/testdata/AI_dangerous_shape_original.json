@@ -1,0 +1,4398 @@
+{
+  "contexts": 182,
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "stock_sha256": "436f6545169e07abc3eb143b0b8909e67061ceebe13b5eaa45396d3cd5a78768",
+  "regions": [
+    {
+      "name": "AI-dangerous-index-complete",
+      "address": "0x50b2c0",
+      "size": 576,
+      "sha256": "c973fefe94a49f06e4311eed9a93dfb56db7bd1dd64cedbb11768b8a1f49ae0e"
+    },
+    {
+      "name": "shape-box-calculation-complete",
+      "address": "0x428270",
+      "size": 87,
+      "sha256": "529d5f195332115d0a6d76dbbbbf74fdcaefbaf04d7dbb074843d3aa8a6dc8c5"
+    },
+    {
+      "name": "float-to-int-complete",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    }
+  ],
+  "data_regions": [
+    {
+      "name": "AI-dangerous-margin",
+      "address": "0x5c02c0",
+      "size": 4,
+      "bytes": "00003841",
+      "sha256": "8e021905e9d459aa9b52cdbb2b52dfc14f5d645e54d759c1c6ddd13d8426e423"
+    },
+    {
+      "name": "AI-grid-coordinate-scale",
+      "address": "0x583a00",
+      "size": 4,
+      "bytes": "4316323d",
+      "sha256": "497a4185cbf7a56c9bbe00726965dae32bd56ab43502bf1de9930425d7e96e75"
+    },
+    {
+      "name": "shape-box-multiplier",
+      "address": "0x5834cc",
+      "size": 4,
+      "bytes": "8104b53e",
+      "sha256": "477d00f6e1e108b67a3937b4c0812b5b0120851aa8923f0e50dc8f4919497a9a"
+    }
+  ],
+  "cases": [
+    {
+      "group": "stock_dangerous",
+      "name": "0182_LargeBlueFlame",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "LargeBlueFlame",
+      "declaration_index": 182,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0183_LargeBlueFlameImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "LargeBlueFlameImmobile",
+      "declaration_index": 183,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0184_BlueFlame",
+      "kind": 2,
+      "values_bits32": [
+        1090519040
+      ],
+      "stock_name": "BlueFlame",
+      "declaration_index": 184,
+      "expected_expanded_shape_words32": [
+        2,
+        1100742656,
+        1136533504,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0185_BlueFlameImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1090519040
+      ],
+      "stock_name": "BlueFlameImmobile",
+      "declaration_index": 185,
+      "expected_expanded_shape_words32": [
+        2,
+        1100742656,
+        1136533504,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0186_MediumBlueFlame",
+      "kind": 2,
+      "values_bits32": [
+        1086324736
+      ],
+      "stock_name": "MediumBlueFlame",
+      "declaration_index": 186,
+      "expected_expanded_shape_words32": [
+        2,
+        1099694080,
+        1134108672,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0187_MediumBlueFlameImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1086324736
+      ],
+      "stock_name": "MediumBlueFlameImmobile",
+      "declaration_index": 187,
+      "expected_expanded_shape_words32": [
+        2,
+        1099694080,
+        1134108672,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0188_SmallBlueFlame",
+      "kind": 2,
+      "values_bits32": [
+        1082130432
+      ],
+      "stock_name": "SmallBlueFlame",
+      "declaration_index": 188,
+      "expected_expanded_shape_words32": [
+        2,
+        1098383360,
+        1131429888,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0189_SmallBlueFlameImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1082130432
+      ],
+      "stock_name": "SmallBlueFlameImmobile",
+      "declaration_index": 189,
+      "expected_expanded_shape_words32": [
+        2,
+        1098383360,
+        1131429888,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0190_LargeBlueFlameCleanse",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "LargeBlueFlameCleanse",
+      "declaration_index": 190,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0191_BlueFlameCleanse",
+      "kind": 2,
+      "values_bits32": [
+        1090519040
+      ],
+      "stock_name": "BlueFlameCleanse",
+      "declaration_index": 191,
+      "expected_expanded_shape_words32": [
+        2,
+        1100742656,
+        1136533504,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0192_MediumBlueFlameCleanse",
+      "kind": 2,
+      "values_bits32": [
+        1086324736
+      ],
+      "stock_name": "MediumBlueFlameCleanse",
+      "declaration_index": 192,
+      "expected_expanded_shape_words32": [
+        2,
+        1099694080,
+        1134108672,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0193_SmallBlueFlameCleanse",
+      "kind": 2,
+      "values_bits32": [
+        1082130432
+      ],
+      "stock_name": "SmallBlueFlameCleanse",
+      "declaration_index": 193,
+      "expected_expanded_shape_words32": [
+        2,
+        1098383360,
+        1131429888,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0194_LargeFlame",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "LargeFlame",
+      "declaration_index": 194,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0195_LargeFlameCleanse",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "LargeFlameCleanse",
+      "declaration_index": 195,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0196_LargeFlameImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "LargeFlameImmobile",
+      "declaration_index": 196,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0197_Flame",
+      "kind": 2,
+      "values_bits32": [
+        1090519040
+      ],
+      "stock_name": "Flame",
+      "declaration_index": 197,
+      "expected_expanded_shape_words32": [
+        2,
+        1100742656,
+        1136533504,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0198_FlameCleanse",
+      "kind": 2,
+      "values_bits32": [
+        1090519040
+      ],
+      "stock_name": "FlameCleanse",
+      "declaration_index": 198,
+      "expected_expanded_shape_words32": [
+        2,
+        1100742656,
+        1136533504,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0199_FlameImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1090519040
+      ],
+      "stock_name": "FlameImmobile",
+      "declaration_index": 199,
+      "expected_expanded_shape_words32": [
+        2,
+        1100742656,
+        1136533504,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0200_MediumFlame",
+      "kind": 2,
+      "values_bits32": [
+        1086324736
+      ],
+      "stock_name": "MediumFlame",
+      "declaration_index": 200,
+      "expected_expanded_shape_words32": [
+        2,
+        1099694080,
+        1134108672,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0201_MediumFlameCleanse",
+      "kind": 2,
+      "values_bits32": [
+        1086324736
+      ],
+      "stock_name": "MediumFlameCleanse",
+      "declaration_index": 201,
+      "expected_expanded_shape_words32": [
+        2,
+        1099694080,
+        1134108672,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0202_MediumFlameImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1086324736
+      ],
+      "stock_name": "MediumFlameImmobile",
+      "declaration_index": 202,
+      "expected_expanded_shape_words32": [
+        2,
+        1099694080,
+        1134108672,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0203_SmallFlame",
+      "kind": 2,
+      "values_bits32": [
+        1082130432
+      ],
+      "stock_name": "SmallFlame",
+      "declaration_index": 203,
+      "expected_expanded_shape_words32": [
+        2,
+        1098383360,
+        1131429888,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0204_SmallFlameCleanse",
+      "kind": 2,
+      "values_bits32": [
+        1082130432
+      ],
+      "stock_name": "SmallFlameCleanse",
+      "declaration_index": 204,
+      "expected_expanded_shape_words32": [
+        2,
+        1098383360,
+        1131429888,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0205_SmallFlameImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1082130432
+      ],
+      "stock_name": "SmallFlameImmobile",
+      "declaration_index": 205,
+      "expected_expanded_shape_words32": [
+        2,
+        1098383360,
+        1131429888,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0206_PeriodicSpike",
+      "kind": 2,
+      "values_bits32": [
+        1077936128
+      ],
+      "stock_name": "PeriodicSpike",
+      "declaration_index": 206,
+      "expected_expanded_shape_words32": [
+        2,
+        1097334784,
+        1129463808,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0207_Spike",
+      "kind": 2,
+      "values_bits32": [
+        1077936128
+      ],
+      "stock_name": "Spike",
+      "declaration_index": 207,
+      "expected_expanded_shape_words32": [
+        2,
+        1097334784,
+        1129463808,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0259_SpikeBlock",
+      "kind": 3,
+      "values_bits32": [
+        1114636288,
+        1114636288
+      ],
+      "stock_name": "SpikeBlock",
+      "declaration_index": 259,
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1118175232,
+        1118175232,
+        890765312,
+        3261776343,
+        3261776343,
+        890765312,
+        1114292695,
+        0,
+        0,
+        1114292695
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0262_SpikeBlockImmobile",
+      "kind": 3,
+      "values_bits32": [
+        1114636288,
+        1114636288
+      ],
+      "stock_name": "SpikeBlockImmobile",
+      "declaration_index": 262,
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1118175232,
+        1118175232,
+        890765312,
+        3261776343,
+        3261776343,
+        890765312,
+        1114292695,
+        0,
+        0,
+        1114292695
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0284_Polyp",
+      "kind": 2,
+      "values_bits32": [
+        1101004800
+      ],
+      "stock_name": "Polyp",
+      "declaration_index": 284,
+      "expected_expanded_shape_words32": [
+        2,
+        1107034112,
+        1148719104,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0617_Glyph",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "Glyph",
+      "declaration_index": 617,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0618_BearTrap",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "BearTrap",
+      "declaration_index": 618,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0619_ClosedBearTrap",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "ClosedBearTrap",
+      "declaration_index": 619,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0620_PoisonGasTrap",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "PoisonGasTrap",
+      "declaration_index": 620,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0717_Pit",
+      "kind": 3,
+      "values_bits32": [
+        1107296256,
+        1107296256
+      ],
+      "stock_name": "Pit",
+      "declaration_index": 717,
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1113325568,
+        1113325568,
+        903610368,
+        3256586206,
+        3256586206,
+        903610368,
+        1109102558,
+        0,
+        0,
+        1109102558
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0718_ForestPit",
+      "kind": 3,
+      "values_bits32": [
+        1107296256,
+        1107296256
+      ],
+      "stock_name": "ForestPit",
+      "declaration_index": 718,
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1113325568,
+        1113325568,
+        903610368,
+        3256586206,
+        3256586206,
+        903610368,
+        1109102558,
+        0,
+        0,
+        1109102558
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0719_PitCrumblingFloor",
+      "kind": 3,
+      "values_bits32": [
+        1107296256,
+        1107296256
+      ],
+      "stock_name": "PitCrumblingFloor",
+      "declaration_index": 719,
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1113325568,
+        1113325568,
+        903610368,
+        3256586206,
+        3256586206,
+        903610368,
+        1109102558,
+        0,
+        0,
+        1109102558
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0786_CampFire",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "CampFire",
+      "declaration_index": 786,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0790_FireGrateFlame",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "FireGrateFlame",
+      "declaration_index": 790,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0805_RotatingSpikes",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "RotatingSpikes",
+      "declaration_index": 805,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0806_RotatingSpikesImmobile",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "RotatingSpikesImmobile",
+      "declaration_index": 806,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "0860_BlackPowderBurning",
+      "kind": 2,
+      "values_bits32": [
+        1082130432
+      ],
+      "stock_name": "BlackPowderBurning",
+      "declaration_index": 860,
+      "expected_expanded_shape_words32": [
+        2,
+        1098383360,
+        1131429888,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1200_LavaFountain2",
+      "kind": 2,
+      "values_bits32": [
+        1103101952
+      ],
+      "stock_name": "LavaFountain2",
+      "declaration_index": 1200,
+      "expected_expanded_shape_words32": [
+        2,
+        1108213760,
+        1151174656,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1201_LavaFountain3",
+      "kind": 2,
+      "values_bits32": [
+        1094713344
+      ],
+      "stock_name": "LavaFountain3",
+      "declaration_index": 1201,
+      "expected_expanded_shape_words32": [
+        2,
+        1102839808,
+        1141510144,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1220_ToxicCloud",
+      "kind": 2,
+      "values_bits32": [
+        1107296256
+      ],
+      "stock_name": "ToxicCloud",
+      "declaration_index": 1220,
+      "expected_expanded_shape_words32": [
+        2,
+        1110310912,
+        1156352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1221_SmallToxicCloud",
+      "kind": 2,
+      "values_bits32": [
+        1107296256
+      ],
+      "stock_name": "SmallToxicCloud",
+      "declaration_index": 1221,
+      "expected_expanded_shape_words32": [
+        2,
+        1110310912,
+        1156352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1347_Bomber",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "Bomber",
+      "declaration_index": 1347,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1348_BomberBlue",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "BomberBlue",
+      "declaration_index": 1348,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1349_BomberGreen",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "BomberGreen",
+      "declaration_index": 1349,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1350_BomberYellow",
+      "kind": 2,
+      "values_bits32": [
+        1092616192
+      ],
+      "stock_name": "BomberYellow",
+      "declaration_index": 1350,
+      "expected_expanded_shape_words32": [
+        2,
+        1101791232,
+        1139220480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "stock_dangerous",
+      "name": "1579_OgreFirePit",
+      "kind": 2,
+      "values_bits32": [
+        1103626240
+      ],
+      "stock_name": "OgreFirePit",
+      "declaration_index": 1579,
+      "expected_expanded_shape_words32": [
+        2,
+        1108475904,
+        1151764480,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "00_00000000",
+      "kind": 2,
+      "values_bits32": [
+        0
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "01_80000000",
+      "kind": 2,
+      "values_bits32": [
+        2147483648
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "02_00000001",
+      "kind": 2,
+      "values_bits32": [
+        1
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "03_80000001",
+      "kind": 2,
+      "values_bits32": [
+        2147483649
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "04_007fffff",
+      "kind": 2,
+      "values_bits32": [
+        8388607
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "05_00800000",
+      "kind": 2,
+      "values_bits32": [
+        8388608
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "06_3f000006",
+      "kind": 2,
+      "values_bits32": [
+        1056964614
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094713344,
+        1125122048,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "07_3f800000",
+      "kind": 2,
+      "values_bits32": [
+        1065353216
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1095237632,
+        1125924864,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "08_41380000",
+      "kind": 2,
+      "values_bits32": [
+        1094189056
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1102577664,
+        1141129216,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "09_c1380000",
+      "kind": 2,
+      "values_bits32": [
+        3241672704
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        0,
+        0,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "10_c1a00000",
+      "kind": 2,
+      "values_bits32": [
+        3248488448
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3238526976,
+        1116766208,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "11_7f7fffff",
+      "kind": 2,
+      "values_bits32": [
+        2139095039
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        2139095039,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "12_ff7fffff",
+      "kind": 2,
+      "values_bits32": [
+        4286578687
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        4286578686,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "13_261e4bec",
+      "kind": 2,
+      "values_bits32": [
+        639519724
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "14_255560af",
+      "kind": 2,
+      "values_bits32": [
+        626352303
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "15_703e3c1a",
+      "kind": 2,
+      "values_bits32": [
+        1883126810
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1883126810,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "16_27dfd677",
+      "kind": 2,
+      "values_bits32": [
+        668980855
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "17_ebe6c9c1",
+      "kind": 2,
+      "values_bits32": [
+        3957770689
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3957770688,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "18_88e330bf",
+      "kind": 2,
+      "values_bits32": [
+        2296590527
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "19_2f3a12df",
+      "kind": 2,
+      "values_bits32": [
+        792335071
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "20_acbb115e",
+      "kind": 2,
+      "values_bits32": [
+        2897940830
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "21_ac95d3a0",
+      "kind": 2,
+      "values_bits32": [
+        2895500192
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "22_e54cb565",
+      "kind": 2,
+      "values_bits32": [
+        3847009637
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3847009636,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "23_75a07330",
+      "kind": 2,
+      "values_bits32": [
+        1973449520
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1973449520,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "24_af9ff541",
+      "kind": 2,
+      "values_bits32": [
+        2946495809
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "25_166ac054",
+      "kind": 2,
+      "values_bits32": [
+        376094804
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "26_cf9c62aa",
+      "kind": 2,
+      "values_bits32": [
+        3483132586
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3483132585,
+        1606357194,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "27_05d41f2f",
+      "kind": 2,
+      "values_bits32": [
+        97787695
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "28_04c79cd4",
+      "kind": 2,
+      "values_bits32": [
+        80190676
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "29_9bd4a1e3",
+      "kind": 2,
+      "values_bits32": [
+        2614403555
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "30_9f8bf304",
+      "kind": 2,
+      "values_bits32": [
+        2676749060
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "31_64ac1592",
+      "kind": 2,
+      "values_bits32": [
+        1688999314
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1688999314,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "32_b6356fc0",
+      "kind": 2,
+      "values_bits32": [
+        3056955328
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189053,
+        1124351995,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "33_beb86c5f",
+      "kind": 2,
+      "values_bits32": [
+        3199757407
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1093811357,
+        1123561649,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "34_52d3a9f8",
+      "kind": 2,
+      "values_bits32": [
+        1389603320
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1389603320,
+        1714356639,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "35_698b7e09",
+      "kind": 2,
+      "values_bits32": [
+        1770749449
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1770749449,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "36_f098eed2",
+      "kind": 2,
+      "values_bits32": [
+        4036554450
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        4036554449,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "37_3273ed83",
+      "kind": 2,
+      "values_bits32": [
+        846458243
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "38_25549d8c",
+      "kind": 2,
+      "values_bits32": [
+        626302348
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "39_ff2a3b54",
+      "kind": 2,
+      "values_bits32": [
+        4280957780
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        4280957779,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "40_ed624b5e",
+      "kind": 2,
+      "values_bits32": [
+        3982642014
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3982642013,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "41_0d0097ac",
+      "kind": 2,
+      "values_bits32": [
+        218142636
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "42_98937d35",
+      "kind": 2,
+      "values_bits32": [
+        2559802677
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "43_3d487fe1",
+      "kind": 2,
+      "values_bits32": [
+        1028161505
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094240383,
+        1124425940,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "44_cfe95fb5",
+      "kind": 2,
+      "values_bits32": [
+        3488178101
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3488178100,
+        1616166747,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "45_9f50eecb",
+      "kind": 2,
+      "values_bits32": [
+        2672881355
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "46_9edcc97b",
+      "kind": 2,
+      "values_bits32": [
+        2665269627
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "47_d23af407",
+      "kind": 2,
+      "values_bits32": [
+        3527078919
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3527078918,
+        1695057794,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "48_2c67164d",
+      "kind": 2,
+      "values_bits32": [
+        744953421
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "49_714f7ae7",
+      "kind": 2,
+      "values_bits32": [
+        1901034215
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1901034215,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "50_e03cb865",
+      "kind": 2,
+      "values_bits32": [
+        3762075749
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3762075748,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "51_cd4bdc19",
+      "kind": 2,
+      "values_bits32": [
+        3444300825
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3444300824,
+        1528977099,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "52_47fb60c8",
+      "kind": 2,
+      "values_bits32": [
+        1207656648
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1207658120,
+        1349968439,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "53_1e929de6",
+      "kind": 2,
+      "values_bits32": [
+        512925158
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "54_b41e4b91",
+      "kind": 2,
+      "values_bits32": [
+        3021884305
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "55_a46fdec6",
+      "kind": 2,
+      "values_bits32": [
+        2758794950
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "56_e6d8ba63",
+      "kind": 2,
+      "values_bits32": [
+        3872963171
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3872963170,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "57_328df6a8",
+      "kind": 2,
+      "values_bits32": [
+        848164520
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "58_3adba929",
+      "kind": 2,
+      "values_bits32": [
+        987474217
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094190813,
+        1124354526,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "59_9014af88",
+      "kind": 2,
+      "values_bits32": [
+        2417274760
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189055,
+        1124351999,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "60_c9284e6a",
+      "kind": 2,
+      "values_bits32": [
+        3374861930
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3374861746,
+        1390234658,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "61_bf167521",
+      "kind": 2,
+      "values_bits32": [
+        3205920033
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1093572781,
+        1122904015,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "62_e482bffc",
+      "kind": 2,
+      "values_bits32": [
+        3833774076
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        3833774075,
+        2139095039,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_circle",
+      "name": "63_2db4f8cb",
+      "kind": 2,
+      "values_bits32": [
+        766834891
+      ],
+      "expected_expanded_shape_words32": [
+        2,
+        1094189056,
+        1124352000,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "00_00000000",
+      "kind": 3,
+      "values_bits32": [
+        0,
+        3957770689
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        3957770688,
+        3944951988,
+        1797468339,
+        1797468339,
+        3944951988,
+        3944951987,
+        1797468340,
+        1797468340,
+        3944951987
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "01_80000000",
+      "kind": 3,
+      "values_bits32": [
+        2147483648,
+        2296590527
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "02_00000001",
+      "kind": 3,
+      "values_bits32": [
+        1,
+        792335071
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577664,
+        892862464,
+        3246529340,
+        3246529340,
+        892862464,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "03_80000001",
+      "kind": 3,
+      "values_bits32": [
+        2147483649,
+        2897940830
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "04_007fffff",
+      "kind": 3,
+      "values_bits32": [
+        8388607,
+        2895500192
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "05_00800000",
+      "kind": 3,
+      "values_bits32": [
+        8388608,
+        3847009637
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        3847009636,
+        3834691545,
+        1687207896,
+        1687207896,
+        3834691545,
+        3834691544,
+        1687207897,
+        1687207897,
+        3834691544
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "06_3f000006",
+      "kind": 3,
+      "values_bits32": [
+        1056964614,
+        1973449520
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102839808,
+        1973449520,
+        1961027719,
+        4108511367,
+        4108511367,
+        1961027719,
+        1961027719,
+        4108511366,
+        4108511366,
+        1961027719
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "07_3f800000",
+      "kind": 3,
+      "values_bits32": [
+        1065353216,
+        2946495809
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1103101952,
+        1102577663,
+        3199534207,
+        3246714702,
+        3246714702,
+        3199534207,
+        1099231054,
+        1052050560,
+        1052050560,
+        1099231054
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "08_41380000",
+      "kind": 3,
+      "values_bits32": [
+        1094189056,
+        376094804
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1107951616,
+        1102577664,
+        3229752124,
+        3248661003,
+        3248661003,
+        3229752124,
+        1101177355,
+        1082268478,
+        1082268478,
+        1101177355
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "09_c1380000",
+      "kind": 3,
+      "values_bits32": [
+        3241672704,
+        3483132586
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1094189056,
+        3483132585,
+        3470600451,
+        1323116802,
+        1323116802,
+        3470600451,
+        3470600450,
+        1323116803,
+        1323116803,
+        3470600450
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "10_c1a00000",
+      "kind": 3,
+      "values_bits32": [
+        3248488448,
+        97787695
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1077936128,
+        1102577664,
+        1088570785,
+        3239252904,
+        3239252904,
+        1088570785,
+        1091769256,
+        3236054432,
+        3236054432,
+        1091769256
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "11_7f7fffff",
+      "kind": 3,
+      "values_bits32": [
+        2139095039,
+        80190676
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        2139095039,
+        1102577664,
+        4273276031,
+        4273276032,
+        4273276032,
+        4273276031,
+        2125792384,
+        2125792383,
+        2125792383,
+        2125792384
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "12_ff7fffff",
+      "kind": 3,
+      "values_bits32": [
+        4286578687,
+        2614403555
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        4286578686,
+        1102577663,
+        2125792383,
+        2125792382,
+        2125792382,
+        2125792383,
+        4273276030,
+        4273276031,
+        4273276031,
+        4273276030
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "13_261e4bec",
+      "kind": 3,
+      "values_bits32": [
+        639519724,
+        2676749060
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "14_255560af",
+      "kind": 3,
+      "values_bits32": [
+        626352303,
+        1688999314
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1688999314,
+        1676893326,
+        3824376974,
+        3824376974,
+        1676893326,
+        1676893326,
+        3824376973,
+        3824376973,
+        1676893326
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "15_703e3c1a",
+      "kind": 3,
+      "values_bits32": [
+        1883126810,
+        3056955328
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1883126810,
+        1102577662,
+        4018570198,
+        4018570199,
+        4018570199,
+        4018570198,
+        1871086551,
+        1871086550,
+        1871086550,
+        1871086551
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "16_27dfd677",
+      "kind": 3,
+      "values_bits32": [
+        668980855,
+        3199757407
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102388814,
+        3187828679,
+        3246462572,
+        3246462572,
+        3187828679,
+        1098978924,
+        1040345088,
+        1040345088,
+        1098978924
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "17_ebe6c9c1",
+      "kind": 3,
+      "values_bits32": [
+        3957770689,
+        1389603320
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3957770688,
+        1389603320,
+        1797468340,
+        1797468339,
+        1797468339,
+        1797468340,
+        3944951987,
+        3944951988,
+        3944951988,
+        3944951987
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "18_88e330bf",
+      "kind": 3,
+      "values_bits32": [
+        2296590527,
+        1770749449
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1770749449,
+        1757758753,
+        3905242401,
+        3905242401,
+        1757758753,
+        1757758753,
+        3905242400,
+        3905242400,
+        1757758753
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "19_2f3a12df",
+      "kind": 3,
+      "values_bits32": [
+        792335071,
+        4036554450
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        4036554449,
+        4023928597,
+        1876444948,
+        1876444948,
+        4023928597,
+        4023928596,
+        1876444949,
+        1876444949,
+        4023928596
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "20_acbb115e",
+      "kind": 3,
+      "values_bits32": [
+        2897940830,
+        846458243
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1102577664,
+        892862464,
+        3246529340,
+        3246529340,
+        892862464,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "21_ac95d3a0",
+      "kind": 3,
+      "values_bits32": [
+        2895500192,
+        626302348
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1102577664,
+        892862464,
+        3246529340,
+        3246529340,
+        892862464,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "22_e54cb565",
+      "kind": 3,
+      "values_bits32": [
+        3847009637,
+        4280957780
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3847009636,
+        4280957779,
+        4268801504,
+        2121317856,
+        2121317856,
+        4268801504,
+        4268801504,
+        2121317855,
+        2121317855,
+        4268801504
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "23_75a07330",
+      "kind": 3,
+      "values_bits32": [
+        1973449520,
+        3982642014
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1973449520,
+        3982642013,
+        4108511527,
+        4108511206,
+        4108511206,
+        4108511527,
+        1961027558,
+        1961027879,
+        1961027879,
+        1961027558
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "24_af9ff541",
+      "kind": 3,
+      "values_bits32": [
+        2946495809,
+        218142636
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1102577664,
+        892862464,
+        3246529340,
+        3246529340,
+        892862464,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "25_166ac054",
+      "kind": 3,
+      "values_bits32": [
+        376094804,
+        2559802677
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "26_cf9c62aa",
+      "kind": 3,
+      "values_bits32": [
+        3483132586,
+        1028161505
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3483132585,
+        1102603327,
+        1323116803,
+        1323116802,
+        1323116802,
+        1323116803,
+        3470600450,
+        3470600451,
+        3470600451,
+        3470600450
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "27_05d41f2f",
+      "kind": 3,
+      "values_bits32": [
+        97787695,
+        3488178101
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        3488178100,
+        3475309765,
+        1327826116,
+        1327826116,
+        3475309765,
+        3475309764,
+        1327826117,
+        1327826117,
+        3475309764
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "28_04c79cd4",
+      "kind": 3,
+      "values_bits32": [
+        80190676,
+        2672881355
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "29_9bd4a1e3",
+      "kind": 3,
+      "values_bits32": [
+        2614403555,
+        2665269627
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "30_9f8bf304",
+      "kind": 3,
+      "values_bits32": [
+        2676749060,
+        3527078919
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        3527078918,
+        3515101650,
+        1367618001,
+        1367618001,
+        3515101650,
+        3515101649,
+        1367618002,
+        1367618002,
+        3515101649
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "31_64ac1592",
+      "kind": 3,
+      "values_bits32": [
+        1688999314,
+        744953421
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1688999314,
+        1102577664,
+        3824376973,
+        3824376974,
+        3824376974,
+        3824376973,
+        1676893326,
+        1676893325,
+        1676893325,
+        1676893326
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "32_b6356fc0",
+      "kind": 3,
+      "values_bits32": [
+        3056955328,
+        1901034215
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577662,
+        1901034215,
+        1888662923,
+        4036146571,
+        4036146571,
+        1888662923,
+        1888662923,
+        4036146570,
+        4036146570,
+        1888662923
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "33_beb86c5f",
+      "kind": 3,
+      "values_bits32": [
+        3199757407,
+        3762075749
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102388814,
+        3762075748,
+        3750064560,
+        1602580911,
+        1602580911,
+        3750064560,
+        3750064559,
+        1602580912,
+        1602580912,
+        3750064559
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "34_52d3a9f8",
+      "kind": 3,
+      "values_bits32": [
+        1389603320,
+        3444300825
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1389603320,
+        3444300823,
+        3524639977,
+        3524630752,
+        3524630752,
+        3524639977,
+        1377147104,
+        1377156329,
+        1377156329,
+        1377147104
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "35_698b7e09",
+      "kind": 3,
+      "values_bits32": [
+        1770749449,
+        1207656648
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1770749449,
+        1207659592,
+        3905242400,
+        3905242401,
+        3905242401,
+        3905242400,
+        1757758753,
+        1757758752,
+        1757758752,
+        1757758753
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "36_f098eed2",
+      "kind": 3,
+      "values_bits32": [
+        4036554450,
+        512925158
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        4036554449,
+        1102577664,
+        1876444949,
+        1876444948,
+        1876444948,
+        1876444949,
+        4023928596,
+        4023928597,
+        4023928597,
+        4023928596
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "37_3273ed83",
+      "kind": 3,
+      "values_bits32": [
+        846458243,
+        3021884305
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "38_25549d8c",
+      "kind": 3,
+      "values_bits32": [
+        626302348,
+        2758794950
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "39_ff2a3b54",
+      "kind": 3,
+      "values_bits32": [
+        4280957780,
+        3872963171
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        4280957779,
+        3872963170,
+        2121317855,
+        2121317856,
+        2121317856,
+        2121317855,
+        4268801504,
+        4268801503,
+        4268801503,
+        4268801504
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "40_ed624b5e",
+      "kind": 3,
+      "values_bits32": [
+        3982642014,
+        848164520
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3982642013,
+        1102577664,
+        1822425923,
+        1822425922,
+        1822425922,
+        1822425923,
+        3969909570,
+        3969909571,
+        3969909571,
+        3969909570
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "41_0d0097ac",
+      "kind": 3,
+      "values_bits32": [
+        218142636,
+        987474217
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102578542,
+        974873436,
+        3246529650,
+        3246529650,
+        974873436,
+        1099046002,
+        3122348032,
+        3122348032,
+        1099046002
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "42_98937d35",
+      "kind": 3,
+      "values_bits32": [
+        2559802677,
+        2417274760
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1102577663,
+        842981312,
+        3246529340,
+        3246529340,
+        842981312,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "43_3d487fe1",
+      "kind": 3,
+      "values_bits32": [
+        1028161505,
+        3374861930
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102603327,
+        3374861562,
+        3362653391,
+        1215168699,
+        1215168699,
+        3362653391,
+        3362652347,
+        1215169742,
+        1215169742,
+        3362652347
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "44_cfe95fb5",
+      "kind": 3,
+      "values_bits32": [
+        3488178101,
+        3205920033
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3488178100,
+        1102269526,
+        1327826117,
+        1327826116,
+        1327826116,
+        1327826117,
+        3475309764,
+        3475309765,
+        3475309765,
+        3475309764
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "45_9f50eecb",
+      "kind": 3,
+      "values_bits32": [
+        2672881355,
+        3833774076
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        3833774075,
+        3820546066,
+        1673062417,
+        1673062417,
+        3820546066,
+        3820546065,
+        1673062418,
+        1673062418,
+        3820546065
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "46_9edcc97b",
+      "kind": 3,
+      "values_bits32": [
+        2665269627,
+        766834891
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1102577664,
+        892862464,
+        3246529340,
+        3246529340,
+        892862464,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "47_d23af407",
+      "kind": 3,
+      "values_bits32": [
+        3527078919,
+        0
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3527078918,
+        1102577664,
+        1367618002,
+        1367618001,
+        1367618001,
+        1367618002,
+        3515101649,
+        3515101650,
+        3515101650,
+        3515101649
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "48_2c67164d",
+      "kind": 3,
+      "values_bits32": [
+        744953421,
+        2147483648
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577664,
+        892862464,
+        3246529340,
+        3246529340,
+        892862464,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "49_714f7ae7",
+      "kind": 3,
+      "values_bits32": [
+        1901034215,
+        1
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1901034215,
+        1102577664,
+        4036146570,
+        4036146571,
+        4036146571,
+        4036146570,
+        1888662923,
+        1888662922,
+        1888662922,
+        1888662923
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "50_e03cb865",
+      "kind": 3,
+      "values_bits32": [
+        3762075749,
+        2147483649
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3762075748,
+        1102577663,
+        1602580912,
+        1602580911,
+        1602580911,
+        1602580912,
+        3750064559,
+        3750064560,
+        3750064560,
+        3750064559
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "51_cd4bdc19",
+      "kind": 3,
+      "values_bits32": [
+        3444300825,
+        8388607
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3444300823,
+        1102577664,
+        1284515379,
+        1284515376,
+        1284515376,
+        1284515379,
+        3431999024,
+        3431999027,
+        3431999027,
+        3431999024
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "52_47fb60c8",
+      "kind": 3,
+      "values_bits32": [
+        1207656648,
+        8388608
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1207659592,
+        1102577664,
+        3341926361,
+        3341930524,
+        3341930524,
+        3341926361,
+        1194446876,
+        1194442713,
+        1194442713,
+        1194446876
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "53_1e929de6",
+      "kind": 3,
+      "values_bits32": [
+        512925158,
+        1056964614
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102839808,
+        1043661999,
+        3246622021,
+        3246622021,
+        1043661999,
+        1099138373,
+        3191145600,
+        3191145600,
+        1099138373
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "54_b41e4b91",
+      "kind": 3,
+      "values_bits32": [
+        3021884305,
+        1065353216
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1103101952,
+        1052050584,
+        3246714702,
+        3246714702,
+        1052050584,
+        1099231054,
+        3199534208,
+        3199534208,
+        1099231054
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "55_a46fdec6",
+      "kind": 3,
+      "values_bits32": [
+        2758794950,
+        1094189056
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        1107951616,
+        1082268478,
+        3248661003,
+        3248661003,
+        1082268478,
+        1101177355,
+        3229752126,
+        3229752126,
+        1101177355
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "56_e6d8ba63",
+      "kind": 3,
+      "values_bits32": [
+        3872963171,
+        3241672704
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3872963170,
+        1094189056,
+        1712930711,
+        1712930710,
+        1712930710,
+        1712930711,
+        3860414358,
+        3860414359,
+        3860414359,
+        3860414358
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "57_328df6a8",
+      "kind": 3,
+      "values_bits32": [
+        848164520,
+        3248488448
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1077936128,
+        3236054431,
+        3239252904,
+        3239252904,
+        3236054431,
+        1091769256,
+        1088570784,
+        1088570784,
+        1091769256
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "58_3adba929",
+      "kind": 3,
+      "values_bits32": [
+        987474217,
+        2139095039
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102578542,
+        2139095039,
+        2125792384,
+        4273276032,
+        4273276032,
+        2125792384,
+        2125792384,
+        4273276031,
+        4273276031,
+        2125792384
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "59_9014af88",
+      "kind": 3,
+      "values_bits32": [
+        2417274760,
+        4286578687
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577663,
+        4286578686,
+        4273276031,
+        2125792382,
+        2125792382,
+        4273276031,
+        4273276030,
+        2125792383,
+        2125792383,
+        4273276030
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "60_c9284e6a",
+      "kind": 3,
+      "values_bits32": [
+        3374861930,
+        639519724
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3374861562,
+        1102577664,
+        1215169741,
+        1215168700,
+        1215168700,
+        1215169741,
+        3362652348,
+        3362653389,
+        3362653389,
+        3362652348
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "61_bf167521",
+      "kind": 3,
+      "values_bits32": [
+        3205920033,
+        626352303
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102269526,
+        1102577664,
+        1045743406,
+        3246420398,
+        3246420398,
+        1045743406,
+        1098936750,
+        3193227008,
+        3193227008,
+        1098936750
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "62_e482bffc",
+      "kind": 3,
+      "values_bits32": [
+        3833774076,
+        1883126810
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        3833774075,
+        1883126810,
+        1871086551,
+        4018570198,
+        4018570198,
+        1871086551,
+        1871086550,
+        4018570199,
+        4018570199,
+        1871086550
+      ]
+    },
+    {
+      "group": "finite_box",
+      "name": "63_2db4f8cb",
+      "kind": 3,
+      "values_bits32": [
+        766834891,
+        668980855
+      ],
+      "expected_expanded_shape_words32": [
+        3,
+        2779096485,
+        2779096485,
+        1102577664,
+        1102577664,
+        892862464,
+        3246529340,
+        3246529340,
+        892862464,
+        1099045692,
+        0,
+        0,
+        1099045692
+      ]
+    },
+    {
+      "group": "kind_controls",
+      "name": "00000000",
+      "kind": 0,
+      "values_bits32": [],
+      "expected_expanded_shape_words32": [
+        0,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "kind_controls",
+      "name": "00000001",
+      "kind": 1,
+      "values_bits32": [],
+      "expected_expanded_shape_words32": [
+        1,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "kind_controls",
+      "name": "60000002",
+      "kind": 1610612738,
+      "values_bits32": [],
+      "expected_expanded_shape_words32": [
+        1610612738,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    },
+    {
+      "group": "kind_controls",
+      "name": "ffffffff",
+      "kind": 4294967295,
+      "values_bits32": [],
+      "expected_expanded_shape_words32": [
+        4294967295,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485,
+        2779096485
+      ]
+    }
+  ],
+  "scope": "All actual decoded stock DANGEROUS records in stable declaration order, plus128declared finite circle/box edges and4exact-kind controls. Complete original50B2C0 executes with declared empty collision bounds so only shape expansion/restoration and actual419A70 conversions execute; bounds service body and grid membership/transitive AI routing remain excluded. No general far-recognition idle fix inferred."
+}

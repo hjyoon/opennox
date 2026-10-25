@@ -200,9 +200,27 @@ func TestAIPathExpandDangerousShape50B2C0MatchesX87CirclePrecision(t *testing.T)
 	if got := math.Float32bits(shape.Circle.R); got != 0x41400000 {
 		t.Fatalf("expanded radius bits = %#08x, want 0x41400000", got)
 	}
-	if got := math.Float32bits(shape.Circle.R2); got != 0x43100001 {
-		t.Fatalf("expanded radius squared bits = %#08x, want x87 result 0x43100001", got)
+	if got := math.Float32bits(shape.Circle.R2); got != 0x43100000 {
+		t.Fatalf("expanded radius squared bits = %#08x, want x87 result 0x43100000", got)
 	}
+	// The original toward-zero result above no longer distinguishes a
+	// retained sum from its rounded radius. Also retain the independently
+	// executed original cancellation witness: its squared value differs
+	// from squaring the stored binary32 radius.
+	shape = Shape{Kind: ShapeKindCircle}
+	shape.Circle.R = math.Float32frombits(0x80000001)
+	aiPathExpandDangerousShape50B2C0(&shape)
+	if got := math.Float32bits(shape.Circle.R); got != 0x4137ffff {
+		t.Fatalf("expanded cancellation radius = %08x, want original 4137ffff", got)
+	}
+	if got := math.Float32bits(shape.Circle.R2); got != 0x43043fff {
+		t.Fatalf("retained cancellation square = %08x, want original 43043fff", got)
+	}
+	spilled := shapeBoxSpill428270(monsterMoveToRunSquareChop53_544434(float64(shape.Circle.R)))
+	if got := math.Float32bits(spilled); got != 0x43043ffe {
+		t.Fatalf("spilled-radius square = %08x, want 43043ffe", got)
+	}
+
 }
 
 func TestAIPathExpandDangerousShape50B2C0RecalculatesBox(t *testing.T) {

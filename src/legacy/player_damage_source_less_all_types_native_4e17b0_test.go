@@ -53,7 +53,7 @@ func TestSourceLessPlayerAllTypesNativeCallback4E17B0(t *testing.T) {
 				wantHP, wantCarry := uint16(191), float32(.25)
 				switch typ {
 				case object.DamageBlade, object.DamageImpale, object.DamageExplosion, object.DamageBite, object.DamageClaw, object.DamageImpact:
-					wantHP, wantCarry = 195, -.25
+					wantHP, wantCarry = 196, .75
 				case object.DamageCrush:
 					wantHP, wantCarry = 193, 0
 				}

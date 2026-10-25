@@ -153,34 +153,34 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 0,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
       "damage_type": 0,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 0,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {
       "damage_type": 0,
       "raw": 11,
-      "forward_damage": 6,
+      "forward_damage": 5,
       "marker": 2,
       "marker_type": 0,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        5
+        6
       ]
     },
     {
@@ -441,34 +441,34 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 3,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
       "damage_type": 3,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 3,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {
       "damage_type": 3,
       "raw": 11,
-      "forward_damage": 6,
+      "forward_damage": 5,
       "marker": 2,
       "marker_type": 3,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        5
+        6
       ]
     },
     {
@@ -777,34 +777,34 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
       "damage_type": 7,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {
       "damage_type": 7,
       "raw": 11,
-      "forward_damage": 6,
+      "forward_damage": 5,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        5
+        6
       ]
     },
     {
@@ -873,34 +873,34 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 8,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
       "damage_type": 8,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 8,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {
       "damage_type": 8,
       "raw": 11,
-      "forward_damage": 6,
+      "forward_damage": 5,
       "marker": 2,
       "marker_type": 8,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        5
+        6
       ]
     },
     {
@@ -1065,34 +1065,34 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 10,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
       "damage_type": 10,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 10,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {
       "damage_type": 10,
       "raw": 11,
-      "forward_damage": 6,
+      "forward_damage": 5,
       "marker": 2,
       "marker_type": 10,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        5
+        6
       ]
     },
     {
@@ -1161,34 +1161,34 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 11,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
       "damage_type": 11,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 11,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {
       "damage_type": 11,
       "raw": 11,
-      "forward_damage": 6,
+      "forward_damage": 5,
       "marker": 2,
       "marker_type": 11,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        5
+        6
       ]
     },
     {
@@ -2115,5 +2115,12 @@
       "return": 1,
       "wear": []
     }
-  ]
+  ],
+  "historical_physical_precision_qualification": {
+    "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "original_contexts": 2163,
+    "actual_startup_FPCW": 3647,
+    "proof_sha256": "24e8910e84749244f496d1b387357a9ec0097a339ad523620830d2e1242fc22b",
+    "scope": "Only independently original-qualified source-less physical numeric leaves updated; all old inputs/order/other rows retained. Four original FPcontrol executions per context. Existing ranges and original evidence retained."
+  }
 }

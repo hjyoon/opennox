@@ -36,23 +36,8 @@ func TestNPCScriptHits244V1Matrix(t *testing.T) {
 							npc.Obj130, npc.Field131, npc.Frame134 = &Object{}, 999, 777
 							npc.Pos132 = types.Ptf(123, -123)
 							npc.Buffs = 1 << playerDamageReflectEnchant4E17B0
-							factor := float64(absorption)
-							if typ == object.DamageCrush {
-								factor *= .5
-							}
-							accumulated := float32((1-factor)*float64(raw)) + carry
-							before := int32(math.RoundToEven(float64(accumulated)))
-							wantCarry := math.Float32bits(accumulated - float32(before))
-							if raw > 0 && before == 0 {
-								before = 1
-							}
-							want := before
-							if mode.quest {
-								want = int32(math.RoundToEven(float64(float32(float64(mode.scale) * float64(want)))))
-								if before > 0 && want < 1 {
-									want = 1
-								}
-							}
+							original := sourceLessPhysicalHistoricalCase4E17B0(t, "NPC244-matrix", false, typ, raw, absorption, carry, mode.quest, mode.scale)
+							want, wantCarry := int32(original.ExpectedDamage[0]), original.ExpectedCarry
 							world := damageMeleeWorldRuntime4E0B30(t)
 							health, defaults, gods, scales := 0, 0, 0, 0
 							world.BuffOff = func(*Object, EnchantID) { t.Fatal("nil hit cleared invisibility") }
@@ -115,9 +100,9 @@ func TestNPCScriptHits244V1ArmorLiveCarryAndMarker(t *testing.T) {
 			cached := npc.UpdateDataMonster()
 			cached.Field547, cached.Field546 = 99, 77
 			live := &MonsterUpdateData{Field518: math.Float32bits(.25), Field1: math.Float32bits(.25), Field547: 33, Field546: 44}
-			wantEffective, wantCarry, wantWear, wantDefault := int32(5), float32(-.25), int32(4), int32(2)
+			wantEffective, wantCarry, wantWear, wantDefault := int32(4), float32(.75), int32(5), int32(2)
 			if typ == object.DamageCrush {
-				wantEffective, wantCarry, wantWear, wantDefault = 7, 0, 4, 4 // raw9-effective7, live armor .25 / live denominator .25.
+				wantEffective, wantCarry, wantWear, wantDefault = 7, 0, 4, 3 // raw9-effective7, live armor .25 / live denominator .25.
 			}
 			var events []string
 			r := PlayerDamageRuntime4E17B0{
@@ -131,7 +116,7 @@ func TestNPCScriptHits244V1ArmorLiveCarryAndMarker(t *testing.T) {
 				},
 				DamageArmor: func(item, source, weapon *Object, amount int32, got object.DamageType) bool {
 					if typ == object.DamageBite {
-						wantWear = 8
+						wantWear = 10
 					}
 					if item != armor || source != nil || weapon != nil || amount != wantWear || got != typ {
 						t.Fatalf("armor amount=%d want=%d effective=%d", amount, wantWear, wantEffective)
@@ -186,7 +171,7 @@ func TestNPCScriptHits244V1GatesAndLateDefense(t *testing.T) {
 				var events []string
 				want := int32(25)
 				if typ == object.DamageCrush {
-					want = 38
+					want = 37
 				}
 				world.BuffOff = func(*Object, EnchantID) { t.Fatal("nil hit removed buff") }
 				if gate == "late-defend-shield" {

@@ -327,12 +327,12 @@
       "damage_type": 0,
       "subclass": 16,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 0,
       "status_flags": 512,
@@ -346,12 +346,12 @@
       "damage_type": 0,
       "subclass": 528,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 0,
       "status_flags": 512,
@@ -365,12 +365,12 @@
       "damage_type": 0,
       "subclass": 1040,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 0,
       "status_flags": 512,
@@ -384,12 +384,12 @@
       "damage_type": 0,
       "subclass": 2064,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 0,
       "status_flags": 512,
@@ -403,12 +403,12 @@
       "damage_type": 0,
       "subclass": 3088,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 0,
       "status_flags": 512,
@@ -608,12 +608,12 @@
       "damage_type": 3,
       "subclass": 16,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 3,
       "status_flags": 512,
@@ -627,12 +627,12 @@
       "damage_type": 3,
       "subclass": 528,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 3,
       "status_flags": 512,
@@ -646,12 +646,12 @@
       "damage_type": 3,
       "subclass": 1040,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 3,
       "status_flags": 512,
@@ -665,12 +665,12 @@
       "damage_type": 3,
       "subclass": 2064,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 3,
       "status_flags": 512,
@@ -684,12 +684,12 @@
       "damage_type": 3,
       "subclass": 3088,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 3,
       "status_flags": 512,
@@ -986,12 +986,12 @@
       "damage_type": 7,
       "subclass": 16,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 7,
       "status_flags": 524800,
@@ -1005,12 +1005,12 @@
       "damage_type": 7,
       "subclass": 528,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 7,
       "status_flags": 524800,
@@ -1024,12 +1024,12 @@
       "damage_type": 7,
       "subclass": 1040,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 7,
       "status_flags": 524800,
@@ -1043,12 +1043,12 @@
       "damage_type": 7,
       "subclass": 2064,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 7,
       "status_flags": 524800,
@@ -1062,12 +1062,12 @@
       "damage_type": 7,
       "subclass": 3088,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 7,
       "status_flags": 524800,
@@ -1081,12 +1081,12 @@
       "damage_type": 8,
       "subclass": 16,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 8,
       "status_flags": 512,
@@ -1100,12 +1100,12 @@
       "damage_type": 8,
       "subclass": 528,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 8,
       "status_flags": 512,
@@ -1119,12 +1119,12 @@
       "damage_type": 8,
       "subclass": 1040,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 8,
       "status_flags": 512,
@@ -1138,12 +1138,12 @@
       "damage_type": 8,
       "subclass": 2064,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 8,
       "status_flags": 512,
@@ -1157,12 +1157,12 @@
       "damage_type": 8,
       "subclass": 3088,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 8,
       "status_flags": 512,
@@ -1269,12 +1269,12 @@
       "damage_type": 10,
       "subclass": 16,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 10,
       "status_flags": 512,
@@ -1288,12 +1288,12 @@
       "damage_type": 10,
       "subclass": 528,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 10,
       "status_flags": 512,
@@ -1307,12 +1307,12 @@
       "damage_type": 10,
       "subclass": 1040,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 10,
       "status_flags": 512,
@@ -1326,12 +1326,12 @@
       "damage_type": 10,
       "subclass": 2064,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 10,
       "status_flags": 512,
@@ -1345,12 +1345,12 @@
       "damage_type": 10,
       "subclass": 3088,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 10,
       "status_flags": 512,
@@ -1364,12 +1364,12 @@
       "damage_type": 11,
       "subclass": 16,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 11,
       "status_flags": 512,
@@ -1383,12 +1383,12 @@
       "damage_type": 11,
       "subclass": 528,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 11,
       "status_flags": 512,
@@ -1402,12 +1402,12 @@
       "damage_type": 11,
       "subclass": 1040,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 11,
       "status_flags": 512,
@@ -1421,12 +1421,12 @@
       "damage_type": 11,
       "subclass": 2064,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 11,
       "status_flags": 512,
@@ -1440,12 +1440,12 @@
       "damage_type": 11,
       "subclass": 3088,
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "marker": 2,
       "marker_type": 11,
       "status_flags": 512,
@@ -2305,5 +2305,11 @@
       "return": 1
     }
   ],
-  "scope": "120 unchanged original source-less NPC PlayerDamage/carry/DefaultDamage executions, including signed raw/default type values and poison/fire/electric immunity precedence. Buff, gameplay/mode, zero elemental protection, late-defend, sound, ball and HP are declared service boundaries. Armor wear and electric armor-scale1.0 are also declared services; electric helper4E2220 is not executed. Actual original Windows HP/audio are not executed. Original marker/injured/on-fire and byte-width electric stores execute unchanged."
+  "scope": "120 unchanged original source-less NPC PlayerDamage/carry/DefaultDamage executions, including signed raw/default type values and poison/fire/electric immunity precedence. Buff, gameplay/mode, zero elemental protection, late-defend, sound, ball and HP are declared service boundaries. Armor wear and electric armor-scale1.0 are also declared services; electric helper4E2220 is not executed. Actual original Windows HP/audio are not executed. Original marker/injured/on-fire and byte-width electric stores execute unchanged.",
+  "historical_physical_precision_qualification": {
+    "proof_sha256": "3fa4b125a51e8c5100ba5f37b3c1e45366474ac2850dd9dee78e7cb2af76dffe",
+    "original_contexts": 35,
+    "actual_startup_FPCW": 3647,
+    "scope": "Complete original physical prefix/carry/DefaultDamage/fire-protection bodies and HP-return tail; HP/audio and other declared services excluded. Existing immunity/subclass inputs, nonphysical rows and all assertions preserved. No actual Windows nil-HP fault certificate."
+  }
 }

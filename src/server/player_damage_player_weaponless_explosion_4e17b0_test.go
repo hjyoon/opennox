@@ -24,6 +24,13 @@ func TestPlayerDamageNative4E17B0PlayerWeaponlessExplosionArmor(t *testing.T) {
 				if protected {
 					protection, wantHP = 0.5, 198
 				}
+				wantArmor, wantCarry := uint16(21), float64(-.1)
+				if kind == "none" {
+					wantArmor, wantCarry = 20, .9
+					if !protected {
+						wantHP = 196
+					}
+				}
 				r := damageFlameRuntime4E17B0(t, protection)
 				damageMeleeArmorRuntime4E17B0(&r, armor, 0.5)
 				if h, result := PlayerDamageNative4E17B0(target, source, nil, 9, object.DamageExplosion, r); !h || !result {
@@ -33,8 +40,8 @@ func TestPlayerDamageNative4E17B0PlayerWeaponlessExplosionArmor(t *testing.T) {
 				if source != nil {
 					pos = source.PrevPos
 				}
-				if target.HealthData.Cur != wantHP || armor.HealthData.Cur != 21 ||
-					ud.Field76 != 2 || ud.Field75 != 7 || math.Abs(float64(math.Float32frombits(ud.Field21))+0.1) > 1e-6 ||
+				if target.HealthData.Cur != wantHP || armor.HealthData.Cur != wantArmor ||
+					ud.Field76 != 2 || ud.Field75 != 7 || math.Abs(float64(math.Float32frombits(ud.Field21))-wantCarry) > 1e-6 ||
 					target.Obj130 != source || target.Pos132 != pos || target.Field131 != 7 || target.Frame134 != 1400 {
 					t.Fatalf("HP=%d/%d armor=%d marker=%d/%d carry=%g source=%p", target.HealthData.Cur, wantHP,
 						armor.HealthData.Cur, ud.Field76, ud.Field75, math.Float32frombits(ud.Field21), target.Obj130)
@@ -56,6 +63,10 @@ func TestPlayerDamageNative4E17B0PlayerWeaponlessExplosionRounding(t *testing.T)
 			{3, 3, 0.1, 0xbe999998}, {9, 7, 0.2, 0x3e4cccc0}, {3, 2, 0.4, 0xbe4cccd0},
 		} {
 			t.Run(fmt.Sprintf("%s/%d/%g", kind, tc.raw, tc.armor), func(t *testing.T) {
+				if kind == "none" {
+					original := sourceLessPhysicalHistoricalNamed4E17B0(t, fmt.Sprintf("player-exp-rounding-%d-%g", tc.raw, tc.armor))
+					tc.effective, tc.carry = int32(original.ExpectedDamage[0]), original.ExpectedCarry
+				}
 				target := damageMeleeUnitFixture4E17B0(t, true)
 				source := damageWeaponlessExplosionSource4E17B0(t, target, kind)
 				ud := target.UpdateDataPlayer()

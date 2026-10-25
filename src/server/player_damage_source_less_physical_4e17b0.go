@@ -120,20 +120,24 @@ func playerDamageSourceLessSwitch4E17B0(target *Object, damage int32, typ object
 		} else {
 			factor := float64(record.absorption)
 			if typ == object.DamageCrush {
-				factor *= .5
+				factor = experienceMul53TowardZero(factor, .5)
 			}
-			scaled = float32((1 - factor) * float64(damage))
+			factor = experienceAdd53TowardZero(1, -factor)
+			scaled = experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
 		}
 		// 004E20F0 reloads the update AFTER electric scaling returns.
 		carry := record.carry()
 		if carry == nil {
 			return reject("unsupported live source-less carry record")
 		}
-		accumulated := scaled + math.Float32frombits(*carry)
-		effective = playerDamageRound4E17B0(accumulated)
-		*carry = math.Float32bits(accumulated - float32(effective))
-		if !electric {
+		if physical {
+			playerDamageCarry4E20F0(target, &effective, scaled)
 			wear = damage - effective
+		} else {
+			// Electric scaling retains its independently ported path.
+			accumulated := scaled + math.Float32frombits(*carry)
+			effective = playerDamageRound4E17B0(accumulated)
+			*carry = math.Float32bits(accumulated - float32(effective))
 		} // Electric cases wear armor with the original signed amount.
 	}
 	if wearArmor {
@@ -158,7 +162,13 @@ func playerDamageSourceLessSwitch4E17B0(target *Object, damage int32, typ object
 			return reject("missing source-less physical Quest scale")
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
+		scale := r.QuestDamageScale()
+		if physical {
+			scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(scale), float64(effective)))
+			effective = netFXTruncateSignedDWORD419A70(scaled)
+		} else {
+			effective = playerDamageRound4E17B0(float32(float64(scale) * float64(effective)))
+		}
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

@@ -15,7 +15,7 @@ func TestPlayerDamageNPCScriptBladeNativeCallback4E17B0HP(t *testing.T) {
 	npc, _ := npcReflectLegacyObjects4E17B0(t, &pin)
 	ud := npc.UpdateDataMonster()
 	ud.Field518, ud.Field1 = math.Float32bits(.5), math.Float32bits(.4)
-	for i, want := range []uint16{195, 191, 186} {
+	for i, want := range []uint16{196, 191, 187} {
 		// Real C dispatcher -> registered PlayerDamage -> DefaultDamage ->
 		// UnitDamageClear/UnitSetHP. No replacement damage or HP callback.
 		if !objectDamageDispatchCallNative(npc, nil, nil, 9, object.DamageBlade) || npc.HealthData.Cur != want || ud.Field547 != 2 || ud.Field546 != 0 || npc.Obj130 != nil || npc.Field131 != 0 || npc.Frame134 != 1400 {

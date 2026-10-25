@@ -32,7 +32,7 @@ func TestPlayerDamageSourceLessPhysicalNativeCallback4E17B0(t *testing.T) {
 			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(target)) <= math.MaxUint32 {
 				t.Fatal("source-less player fixture must be above 4 GiB")
 			}
-			wantHP, wantCarry := uint16(195), float32(-.25)
+			wantHP, wantCarry := uint16(196), float32(.75)
 			if typ == object.DamageCrush {
 				wantHP, wantCarry = 193, 0
 			}

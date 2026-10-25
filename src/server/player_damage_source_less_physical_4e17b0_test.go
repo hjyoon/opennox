@@ -82,9 +82,9 @@ func TestPlayerDamageSourceLessPhysical4E17B0ArmorAndHP(t *testing.T) {
 		hp, armor uint16
 		carry     float32
 	}{
-		{object.DamageBlade, 195, 21, -.25},
+		{object.DamageBlade, 196, 20, .75},
 		{object.DamageCrush, 193, 23, 0},
-		{object.DamageBite, 195, 21, -.25},
+		{object.DamageBite, 196, 20, .75},
 	} {
 		t.Run(fmt.Sprint(tc.typ), func(t *testing.T) {
 			v := damageMeleeUnitFixture4E17B0(t, true)
@@ -159,7 +159,7 @@ func TestPlayerDamageSourceLessPhysical4E17B0Gates(t *testing.T) {
 				}
 				h, ok := PlayerDamageNative4E17B0(v, nil, nil, 9, typ, r)
 				wantEvents := []string{"coop", "wear", "god", "quest", "default"}
-				wantForward, wantOK := int32(5), true
+				wantForward, wantOK := int32(4), true
 				if typ == object.DamageCrush {
 					wantForward = 7
 				}
@@ -176,7 +176,7 @@ func TestPlayerDamageSourceLessPhysical4E17B0Gates(t *testing.T) {
 					wantEvents = []string{"coop", "wear", "god", "quest", "scale", "default"}
 					wantForward = 2
 					if typ == object.DamageCrush {
-						wantForward = 4
+						wantForward = 3
 					}
 				}
 				if !h || ok != wantOK || forward != wantForward || fmt.Sprint(events) != fmt.Sprint(wantEvents) {
@@ -205,10 +205,10 @@ func TestPlayerDamageSourceLessPhysical4E17B0CachedArmorAndLiveCarry(t *testing.
 		v.UpdateData = unsafe.Pointer(live)
 	}
 	r.DamageArmor = func(_, a, w *Object, d int32, typ object.DamageType) bool {
-		// The outer wear amount is4. The item helper distributes it using
+		// The outer wear amount is5. The item helper distributes it using
 		// live absorption .9 and item value .5, then its existing .4 carry:
-		// round(4*.5/.9+.4) ==3. HP absorption still uses cached .5.
-		if a != nil || w != nil || d != 3 || typ != object.DamageBlade || live.Field21 != math.Float32bits(-.25) {
+		// round(5*.5/.9+.4) ==3. HP absorption still uses cached .5.
+		if a != nil || w != nil || d != 3 || typ != object.DamageBlade || live.Field21 != math.Float32bits(.75) {
 			t.Fatal("wear did not follow cached absorption and live carry")
 		}
 		return true
@@ -216,7 +216,7 @@ func TestPlayerDamageSourceLessPhysical4E17B0CachedArmorAndLiveCarry(t *testing.
 	r.DefaultDamage = func(*Object, *Object, *Object, int32, object.DamageType) bool { return true }
 	if h, ok := PlayerDamageNative4E17B0(v, nil, nil, 9, object.DamageBlade, r); !h || !ok || observations != 1 ||
 		cached.Field76 != 2 || cached.Field75 != 0 || cached.Field21 != math.Float32bits(.125) ||
-		live.Field76 != 71 || live.Field75 != 73 || live.Field21 != math.Float32bits(-.25) {
+		live.Field76 != 71 || live.Field75 != 73 || live.Field21 != math.Float32bits(.75) {
 		t.Fatal("source-less cached marker/live carry contract changed")
 	}
 }
@@ -251,7 +251,7 @@ func TestPlayerDamageSourceLessPhysical4E17B0LateDefendAndShield(t *testing.T) {
 			r.DefaultDamage = func(v, a, w *Object, d int32, k object.DamageType) bool {
 				return DefaultDamageWorld4E0B30(v, a, w, d, k, world)
 			}
-			wantHP := uint16(192) // Full armor:5, late Defend10, Shield8.
+			wantHP := uint16(194) // Full armor:4, late Defend8, Shield6.
 			if typ == object.DamageCrush {
 				wantHP = 188 // Half armor:7, late Defend14, Shield12.
 			}

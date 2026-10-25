@@ -1510,6 +1510,16 @@ Before correction, 216 environment leaves differ and 408 controls pass. Correcte
 
 Broad validation must preserve prior events and reach 127,468 PASS. Three cgocheck2/race/checkptr2 repetitions must preserve 115,405 identities for 346,215 events, and focused Linux AMD64 must match those identities. Four full configurations must preserve all previous actions, multiplicities and skips, reaching 195,108 PASS for normal/HD and 190,280 for server/server-HD. Completion requires a clean pushed port/go1.26-multiarch revision, four inspected ARM64 products and an independently rehashed source archive. All other damage branches, transitive/native service closure, remaining campaigns/features/final nine-cell audit, UI/audio/peer/stability and overall 100% remain open.
 
+### Native source-less physical damage precision
+
+The seven physical damage types with both source and weapon absent now preserve the original startup rounding mode, binary32 spill, signed conversion, fractional carry and late Quest scaling. The player EXPLOSION tail applies this behavior only when its source is absent. Non-nil source and electric paths retain their existing behavior.
+
+Unchanged GAME.EXE supplied 6,622 primary contexts plus 2,163 historical, six repeated-hit and 35 integrated NPC contexts under four FP controls: 172,080 complete original function calls and 140 separately sealed HP-return-tail entries, covering 528 instruction entries. Ten observed services remain excluded; no floating-point return, arithmetic or conversion substitutes are used. The old primary label at 4E1400 is unentered and does not represent observer clear; actual observer clear is an excluded 4DDEF0 service. Synthetic NPC live-update profiles qualify the declared carry-call boundary and do not certify an original Windows preflight callback.
+
+The actual native implementation differed on 2,145 primary leaves before the port; 4,477 controls already matched. All 6,623 new test identities now pass. Original results independently qualify numeric corrections in eight existing test files and 78 old fixture rows; existing inputs, names, callbacks and assertions remain. C-owned native target and update pointers exceed 4 GiB; target/update nonoutput bytes and typed HP fields are preserved. Raw PlayerInfo and HP padding are outside that byte certificate.
+
+All 134,091 related tests pass. Strict cgocheck2/race/checkptr2 repeats 122,028 identities three times, with 366,084 passes; focused Linux AMD64 preserves all 122,028 identities. Normal and HD each retain all prior events plus 6,623 new passes (201,731 PASS, 49 SKIP); server and server HD likewise retain 196,903 PASS and seven SKIP. The checkpoint records 6,905 tested source inputs, a clean pushed commit, four ARM64 products and a rehashed source archive. Physical x86, broader Linux coverage and all remaining native, campaign, UI, audio, peer and sustained gameplay work remain open. This checkpoint does not establish overall porting completion.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

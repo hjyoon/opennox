@@ -37,21 +37,9 @@ func TestPlayerDamageNPCScriptBlade4E17B0SignedArmorQuest(t *testing.T) {
 						}
 						ud := npc.UpdateDataMonster()
 						ud.Field547, ud.Field546 = 99, 77
-						// Independent reconstruction of case 0's x87 spill/carry,
-						// durability-before-minimum and late Quest scaling.
-						accumulated := float32((1-float64(absorption))*float64(raw)) + initialCarry
-						rounded := int32(math.RoundToEven(float64(accumulated)))
-						carry, wear, want := accumulated-float32(rounded), raw-rounded, rounded
-						if raw > 0 && want == 0 {
-							want = 1
-						}
-						if scale >= 0 {
-							before := want
-							want = int32(math.RoundToEven(float64(float32(float64(scale) * float64(want)))))
-							if before > 0 && want < 1 {
-								want = 1
-							}
-						}
+						// Expected numbers come from actual original startup-control execution.
+						original := sourceLessPhysicalHistoricalCase4E17B0(t, "NPCBlade-matrix", false, object.DamageBlade, raw, absorption, initialCarry, scale >= 0, scale)
+						carry, wear, want := math.Float32frombits(original.ExpectedCarry), int32(original.ExpectedWear), int32(original.ExpectedDamage[0])
 						lookups, wears, defaults, gods := 0, 0, 0, 0
 						r := PlayerDamageRuntime4E17B0{
 							BlockSourceExcluded: func(*Object) bool { t.Fatal("nil source ran exclusion"); return false },
@@ -168,14 +156,14 @@ func TestPlayerDamageNPCScriptBlade4E17B0CachedAbsorptionLiveCarryMarker(t *test
 			return true
 		},
 		ItemArmorValue: func(item *Object) float32 {
-			if item != armor || cached.Field547 != 0 || live.Field1 != math.Float32bits(-.25) {
+			if item != armor || cached.Field547 != 0 || live.Field1 != math.Float32bits(.75) {
 				t.Fatal("cached absorption/live carry/marker reset")
 			}
 			events = append(events, "lookup")
 			return .25
 		},
 		DamageArmor: func(item, source, weapon *Object, amount int32, typ object.DamageType) bool {
-			if item != armor || source != nil || weapon != nil || amount != 4 || typ != object.DamageBlade {
+			if item != armor || source != nil || weapon != nil || amount != 5 || typ != object.DamageBlade {
 				t.Fatal("live armor denominator")
 			}
 			events = append(events, "wear")
@@ -197,7 +185,7 @@ func TestPlayerDamageNPCScriptBlade4E17B0CachedAbsorptionLiveCarryMarker(t *test
 	if h, result := PlayerDamageNative4E17B0(npc, nil, nil, 9, object.DamageBlade, r); !h || !result {
 		t.Fatal("live update replacement rejected")
 	}
-	if cached.Field1 != math.Float32bits(.4) || live.Field1 != math.Float32bits(-.25) || !slices.Equal(events, []string{"lookup", "wear", "god", "quest", "scale", "default"}) {
+	if cached.Field1 != math.Float32bits(.4) || live.Field1 != math.Float32bits(.75) || !slices.Equal(events, []string{"lookup", "wear", "god", "quest", "scale", "default"}) {
 		t.Fatalf("carry/order: cached=%x live=%x events=%v", cached.Field1, live.Field1, events)
 	}
 }

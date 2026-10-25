@@ -21460,6 +21460,20 @@
       "size": 28,
       "sha256": "461f83fdd9ddbb6fc1bbce6fd20d5aea7404389175b2f0a305433a4e2b5f1b5f",
       "purpose": "Complete closed original modifier leaf.32declared finite contexts per function and4raw FP modes retain256total observations. Native output-bit, return-pointer, coefficient-getter and canary regression preserves original startup ToZero arithmetic; durability keeps (1-coefficient)+1 as separate steps. Original native Armor/Durability differences6/12 and controls26/20. No stock-table or full transitive/runtime closure claim."
+    },
+    {
+      "name": "original_complete_damage_multiplier_4E04C0",
+      "address": "0x004E04C0",
+      "size": 16,
+      "sha256": "0dc0d6f7a426e38fec1585c6b8700c2037ac8a7aa15a8e1529a906e5e95ef081",
+      "purpose": "Complete closed original attack modifier leaf,32declared finite contexts per function and4raw FP modes retain256total observations. Native output bits, coefficient getter, return-pointer identity and nonoutput-canary regression preserve original startup binary64 multiplication and binary32 store towardzero. Each unchanged native leaf differs in6contexts and passes26controls. No stock table/custom modifier/full transitive caller/campaign failure claim."
+    },
+    {
+      "name": "original_complete_projectile_speed_4E09B0",
+      "address": "0x004E09B0",
+      "size": 24,
+      "sha256": "6b4bd4d0a13b7e79a74040edc638bf03ee643b179abe330ca8004ef422dc1924",
+      "purpose": "Complete closed original attack modifier leaf,32declared finite contexts per function and4raw FP modes retain256total observations. Native output bits, coefficient getter, return-pointer identity and nonoutput-canary regression preserve original startup binary64 multiplication and binary32 store towardzero. Each unchanged native leaf differs in6contexts and passes26controls. No stock table/custom modifier/full transitive caller/campaign failure claim."
     }
   ],
   "data": [

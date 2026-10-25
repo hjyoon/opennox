@@ -6168,7 +6168,8 @@ float* nox_xxx_effectDamageMultiplier_4E04C0(
 	(void)owner;
 	(void)target;
 	if (effect && damage) {
-		*damage = nox_modifier_effect_getAttackFloat(effect) * *damage;
+		const double coefficient = nox_modifier_effect_getAttackFloat(effect);
+		*damage = nox_double2float(nox_modifierMulChop53_4E0397(coefficient, (double)*damage));
 	}
 	return damage;
 }
@@ -6339,7 +6340,9 @@ nox_object_t* nox_xxx_effectProjectileSpeed_4E09B0(
 	(void)owner;
 	(void)target;
 	if (effect && projectile) {
-		projectile->speed_cur = nox_modifier_effect_getAttackFloat(effect) * projectile->speed_cur;
+		const double coefficient = nox_modifier_effect_getAttackFloat(effect);
+		projectile->speed_cur = nox_double2float(
+			nox_modifierMulChop53_4E0397(coefficient, (double)projectile->speed_cur));
 	}
 	return projectile;
 }

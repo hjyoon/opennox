@@ -1,0 +1,3620 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "functions": 2,
+  "contexts_per_function": 32,
+  "rows": [
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "zero",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "zero",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489772,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260356,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536202,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536203,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536202,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536203,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381697,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668861,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668862,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668861,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668862,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772253,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351539,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711865,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-eight",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "half-twelve",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-value",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973420,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-value",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973420,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "both-negative",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "both-negative",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489772,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 2,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 2,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838860,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838861,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838860,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838861,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095039,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095040,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095039,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095040,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578687,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578688,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578688,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578687,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891646,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158912,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "DamageMultiplierEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353215,
+      "return_pointer": "value",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "zero",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "zero",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "zero",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "zero",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 0,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "dyadic-one",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "dyadic-one",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1048576000,
+        "coefficient_bits": 1065353216
+      },
+      "value_bits": 1048576000,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "dyadic-half",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "dyadic-half",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1040187392,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-tenth-nine",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 1035489772,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-three-eleven",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260355,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-three-eleven",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1050253722,
+        "coefficient_bits": 1066192077
+      },
+      "value_bits": 1051260356,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-two-eight",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536202,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536203,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536202,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-two-eight",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1045220557,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1042536203,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381696,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-fifteen-quarter",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1041865114,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 1044381697,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668861,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668862,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668861,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-seven-twelve",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1060320051,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1062668862,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772252,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-five-ninetyfive",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1028443341,
+        "coefficient_bits": 1064514355
+      },
+      "value_bits": 1027772253,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-near-one",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351538,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-near-one",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065185444,
+        "coefficient_bits": 1065437102
+      },
+      "value_bits": 1065351539,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-thirds",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711864,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "decimal-thirds",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1051372202,
+        "coefficient_bits": 1059760811
+      },
+      "value_bits": 1046711865,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-tenth",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-tenth",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 1036831949,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-eight",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-eight",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-eight",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-eight",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1061997773
+      },
+      "value_bits": 1061997773,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "half-twelve",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "half-twelve",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "half-twelve",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "half-twelve",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 1067030938
+      },
+      "value_bits": 1058642330,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-value",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-value",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-value",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973420,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-value",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 1063675494
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973420,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 3182973419,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "both-negative",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "both-negative",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "both-negative",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489771,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "both-negative",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3184315597,
+        "coefficient_bits": 3211159142
+      },
+      "value_bits": 1035489772,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "subnormal-tie",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "subnormal-tie",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "subnormal-chop",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 2,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 1,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "subnormal-chop",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 3,
+        "coefficient_bits": 1056964608
+      },
+      "value_bits": 2,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "min-normal-decimal",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838860,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838861,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838860,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "min-normal-decimal",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 8388608,
+        "coefficient_bits": 1036831949
+      },
+      "value_bits": 838861,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "positive-float-overflow",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095039,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095040,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095039,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "positive-float-overflow",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 2139095039,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 2139095040,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-float-overflow",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578687,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578688,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578688,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-float-overflow",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 4286578687,
+        "coefficient_bits": 1067450368
+      },
+      "value_bits": 4286578687,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-minus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 226492416,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "half-minus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964608,
+        "coefficient_bits": 226492416
+      },
+      "value_bits": 218103808,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "unit-plus-tiny-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 2373976064
+      },
+      "value_bits": 2373976064,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "small-near-unit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "small-near-unit",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 226492416,
+        "coefficient_bits": 1065353217
+      },
+      "value_bits": 226492417,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "durability-zero-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "durability-zero-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1065353216,
+        "coefficient_bits": 1073741824
+      },
+      "value_bits": 1073741824,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "durability-negative-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891645,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "durability-negative-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 1074161254
+      },
+      "value_bits": 1045891646,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "zero-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "zero-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 0
+      },
+      "value_bits": 0,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "negative-unit-coefficient",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1036831949,
+        "coefficient_bits": 3212836864
+      },
+      "value_bits": 3184315597,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "below-half-dyadic",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158911,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "below-half-dyadic",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1069547520
+      },
+      "value_bits": 1061158912,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "small-durability-factor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353214,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "function": "ProjectileSpeedEffect",
+      "name": "small-durability-factor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "value_bits": 1056964607,
+        "coefficient_bits": 1073741823
+      },
+      "value_bits": 1065353215,
+      "return_pointer": "projectile",
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    }
+  ],
+  "regions": [
+    {
+      "name": "complete-DamageMultiplierEffect",
+      "address": "0x4e04c0",
+      "size": 16,
+      "sha256": "0dc0d6f7a426e38fec1585c6b8700c2037ac8a7aa15a8e1529a906e5e95ef081"
+    },
+    {
+      "name": "complete-ProjectileSpeedEffect",
+      "address": "0x4e09b0",
+      "size": 24,
+      "sha256": "6b4bd4d0a13b7e79a74040edc638bf03ee643b179abe330ca8004ef422dc1924"
+    },
+    {
+      "name": "actual-startup-control-call",
+      "address": "0x4014b5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c"
+    },
+    {
+      "name": "actual-CRT-control-word",
+      "address": "0x40209e",
+      "size": 358,
+      "sha256": "da7de6a1ae9b07904d40360b02191a2cdc51ff80da00eaabf02926bbc1ac8820"
+    }
+  ],
+  "scope": "Complete16byte4E04C0 and24byte4E09B0 closed original leaf bodies, no substituted services.32declared finite contexts per function,256separate raw FP observations. Actual startup rows preserve binary64 ToZero arithmetic and final binary32 ToZero store. Both multiply the original Attack40 coefficient (PE32+44); ProjectileSpeedEffect writes only projectile+544 and returns that projectile pointer. Return address identity, stack/CW and every nonoutput byte checked. Declared valid finite coefficient/value data are not a complete stock modifier-table, custom callback, transitive engine, campaign or overall100 certificate."
+}

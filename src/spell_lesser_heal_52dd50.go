@@ -39,9 +39,10 @@ func lesserHeal52DD50[O comparable, A any](
 	var nilObject O
 
 	// The original function caches the first target load for MaxHP, but then
-	// independently reloads the live SpellAcceptArg target for every other use.
+	// tests that cached pointer for nil, then reloads the live SpellAcceptArg
+	// target for every later use.
 	maxTarget := hooks.loadTarget(arg)
-	if hooks.loadTarget(arg) == nilObject {
+	if maxTarget == nilObject {
 		return 0
 	}
 	current := hooks.getHP(hooks.loadTarget(arg))
@@ -55,24 +56,25 @@ func lesserHeal52DD50[O comparable, A any](
 		class := hooks.loadPlayerCls(third)
 		if class <= uint8(player.Conjurer) {
 			// Both operands originate as float32. The x87 multiply is exact at
-			// double precision before the result is spilled back to float32.
-			amount = float32(float64(amount) * float64(hooks.classHealth(class)))
+			// double precision before the original toward-zero binary32 store.
+			amount = fireballSpill32_52C790(float64(amount) * float64(hooks.classHealth(class)))
 		}
 	}
 
-	hooks.adjustHP(hooks.loadTarget(arg), hooks.floatToInt(amount))
+	converted := hooks.floatToInt(amount)
+	hooks.adjustHP(hooks.loadTarget(arg), converted)
 	hooks.audio(spellID, hooks.loadTarget(arg))
 	return 1
 }
 
-// lesserHealFloatToInt52DD50 models nox_float2int's x87 FISTP conversion:
-// round-to-nearest-even, with the signed integer-indefinite value for invalid
+// lesserHealFloatToInt52DD50 models startup x87 FISTP truncation toward
+// zero, with the signed integer-indefinite value for invalid
 // or out-of-range inputs.
 func lesserHealFloatToInt52DD50(value float32) int32 {
 	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
 		return math.MinInt32
 	}
-	return int32(math.RoundToEven(float64(value)))
+	return int32(math.Trunc(float64(value)))
 }
 
 func castLesserHeal52DD50(

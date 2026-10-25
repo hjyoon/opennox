@@ -21530,6 +21530,48 @@
       "size": 255,
       "sha256": "c28bf4cba406652dcd46b17a9ddaad758b83390a9f096d365247392dea164798",
       "purpose": "Complete original protection root with actual inventory/owner four-slot aggregation, retained53-bit directed accumulator, directed binary32 spill, original modifier/final caps, actual buff membership/power and balance-float-table bodies. Named balance hash lookup is the sole declared external service; no numeric conversion replacement.32contexts/128rawFPobservations per element; all old padded envelopes retained.96primary contexts show27native differences69controls; corrected100Go test identities. Four separately executed historical contracts qualify exactly four old nearest-even expected values in three test sources; identities and assertion precision retained. Full hash lookup, arbitrary balance indices/nonfinite/stockcaller/campaign/overall100 remainopen."
+    },
+    {
+      "name": "original_complete_gamedata_loader_complete_419B30",
+      "address": "0x419b30",
+      "size": 526,
+      "sha256": "dec3bc34d293d020ac9816c2f9647e8dad23cb7f85a6a143780bc60512c6a924",
+      "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
+    },
+    {
+      "name": "original_complete_gamedata_scalar_getter_complete_419D40",
+      "address": "0x419d40",
+      "size": 36,
+      "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
+      "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
+    },
+    {
+      "name": "original_complete_gamedata_array_getter_complete_419D70",
+      "address": "0x419d70",
+      "size": 50,
+      "sha256": "c6d176697902aeab72feefdcc6ce998f2bdede457d819d15b8c35ddfabed6c92",
+      "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
+    },
+    {
+      "name": "original_complete_gamedata_value_text_complete_4093E0",
+      "address": "0x4093e0",
+      "size": 135,
+      "sha256": "7313175e622069645adbed0ee5c3b39cdc437490aa91c1b05205c3ebba12c7c9",
+      "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
+    },
+    {
+      "name": "original_complete_gamedata_word_text_complete_409470",
+      "address": "0x409470",
+      "size": 173,
+      "sha256": "02fb762a89e5ef611d46e5dd64e0b0ac3dbe106f21866a55ddba6ba903c2ecb2",
+      "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
+    },
+    {
+      "name": "original_complete_game_flag_test_complete_40A5C0",
+      "address": "0x40a5c0",
+      "size": 18,
+      "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b",
+      "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
     }
   ],
   "data": [

@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"math"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -258,7 +259,7 @@ func readGamedata(path string) (*File, error) {
 			if err != nil {
 				return nil, fmt.Errorf("invalid gamedata value: expected: number or ';', got: %q, while reading line %q", string(v), string(key)+" = "+string(val))
 			}
-			out = append(out, f)
+			out = append(out, gamedataFloat32(f))
 		}
 		if len(out) == 1 {
 			dst[name] = Float(out[0])
@@ -267,6 +268,21 @@ func readGamedata(path string) (*File, error) {
 		}
 	}
 	return file, sc.Err()
+}
+
+// gamedataFloat32 preserves the binary32 store at original 419C94 under the
+// startup rounding mode (toward zero), before the getters widen it to float64.
+// This is specific to legacy gamedata.bin; YAML and in-memory values keep
+// their existing float64 precision. Nonfinite parsing behavior stays unchanged.
+func gamedataFloat32(value float64) float64 {
+	if math.IsNaN(value) || math.IsInf(value, 0) {
+		return value
+	}
+	out := float32(value)
+	if (value > 0 && float64(out) > value) || (value < 0 && float64(out) < value) {
+		out = math.Nextafter32(out, 0)
+	}
+	return float64(out)
 }
 
 var (

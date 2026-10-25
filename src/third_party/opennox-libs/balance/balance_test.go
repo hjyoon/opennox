@@ -1,6 +1,7 @@
 package balance
 
 import (
+	"math"
 	"testing"
 
 	"github.com/shoenig/test/must"
@@ -11,15 +12,15 @@ import (
 func TestReadBalance(t *testing.T) {
 	f, err := ReadBalance(noxtest.DataPath(t, GamedataFile))
 	must.NoError(t, err)
-	must.EqOp(t, float64(0.2), f.FloatDef("", "BerserkerPainRatio", -1))
-	must.EqOp(t, float64(0.2), f.FloatDef(TagSolo, "BerserkerPainRatio", -1))
+	must.EqOp(t, math.Float64frombits(0x3fc9999980000000), f.FloatDef("", "BerserkerPainRatio", -1))
+	must.EqOp(t, math.Float64frombits(0x3fc9999980000000), f.FloatDef(TagSolo, "BerserkerPainRatio", -1))
 	must.EqOp(t, float64(-1), f.FloatDef("", "BerserkerDamage", -1))
 	must.EqOp(t, float64(100), f.FloatDef(TagSolo, "BerserkerDamage", -1))
 	must.EqOp(t, float64(150), f.FloatDef(TagArena, "BerserkerDamage", -1))
-	must.EqOp(t, float64(0.60), f.FloatDef("", "RepairCoefficient", -1))
+	must.EqOp(t, math.Float64frombits(0x3fe3333320000000), f.FloatDef("", "RepairCoefficient", -1))
 	must.EqOp(t, float64(150), f.FloatDef(TagArena, "WarriorMaxHealth", -1))
-	must.Eq(t, []float64{0.5, 0.7, 1.0, 1.3, 1.6}, f.Array(TagSolo, "EnergyBoltDamage"))
-	must.Eq(t, []float64{1.3, 1.6, 2.0, 2.3, 2.6}, f.Array(TagArena, "EnergyBoltDamage"))
+	must.Eq(t, []float64{math.Float64frombits(0x3fe0000000000000), math.Float64frombits(0x3fe6666660000000), math.Float64frombits(0x3ff0000000000000), math.Float64frombits(0x3ff4ccccc0000000), math.Float64frombits(0x3ff9999980000000)}, f.Array(TagSolo, "EnergyBoltDamage"))
+	must.Eq(t, []float64{math.Float64frombits(0x3ff4ccccc0000000), math.Float64frombits(0x3ff9999980000000), math.Float64frombits(0x4000000000000000), math.Float64frombits(0x4002666660000000), math.Float64frombits(0x4004ccccc0000000)}, f.Array(TagArena, "EnergyBoltDamage"))
 	must.Eq(t, []float64{
 		-1,
 		0, 5000, 11000, 18200, 26840,

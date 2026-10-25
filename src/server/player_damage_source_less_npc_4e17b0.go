@@ -24,6 +24,13 @@ func playerDamageSourceLessNPC4E17B0(target *Object, damage int32, typ object.Da
 	}
 	cached := target.UpdateDataMonster()
 	absorption := math.Float32frombits(cached.Field518)
+	if typ == object.DamageLava {
+		// Preserve the common Coop query and cached NPC record, then use
+		// the environment tail's raw wear and original Quest conversion.
+		return playerDamageNPCEnvironment4E17B0(target, nil, nil, playerDamageGreatSwordContext4E17B0{
+			marker: &cached.Field547, markerType: &cached.Field546,
+		}, absorption, damage, typ, r)
+	}
 	cached.Field547 = 0
 	return playerDamageSourceLessSwitch4E17B0(target, damage, typ, playerDamageSourceLessRecord4E17B0{
 		absorption: absorption, marker: &cached.Field547, markerType: &cached.Field546, carry: liveCarry,

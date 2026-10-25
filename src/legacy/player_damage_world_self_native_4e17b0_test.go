@@ -94,6 +94,9 @@ func TestPlayerDamageWorldSelfNativeDamage4E17B0(t *testing.T) {
 							if typ == object.DamageCrush && kind != "ordinary-monster" {
 								wantHP, wantCarry = 193, 0
 							}
+							if typ == object.DamageImpale && kind == "npc" && cls == object.ClassSimple|object.ClassDangerous|object.ClassFire {
+								wantHP, wantCarry = 196, .75
+							}
 							blocked := god && kind == "player"
 							if blocked {
 								wantHP = 200

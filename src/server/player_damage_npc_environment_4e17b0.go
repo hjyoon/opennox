@@ -1,8 +1,6 @@
 package server
 
 import (
-	"math"
-
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
@@ -59,10 +57,9 @@ func playerDamageNPCEnvironment4E17B0(
 	// but case 12 to 004E1DC7. Lava wears armor using the raw signed damage
 	// and never consumes absorption/carry. Impale reloads LIVE carry first.
 	if typ == object.DamageImpale {
-		carry := &target.UpdateDataMonster().Field1
-		accumulated := float32((1-float64(absorption))*float64(damage)) + math.Float32frombits(*carry)
-		effective = playerDamageRound4E17B0(accumulated)
-		*carry = math.Float32bits(accumulated - float32(effective))
+		scale := experienceAdd53TowardZero(1, -float64(absorption))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(scale, float64(damage)))
+		playerDamageCarry4E20F0(target, &effective, scaled)
 		wear = damage - effective
 	}
 	playerDamageApplyArmor4E17B0(target, source, weapon, wear, typ, r)
@@ -85,7 +82,8 @@ func playerDamageNPCEnvironment4E17B0(
 			return reject("missing NPC environment Quest scale")
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(r.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

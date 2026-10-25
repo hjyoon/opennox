@@ -21936,6 +21936,41 @@
       "size": 57,
       "sha256": "66efe52cb877907996a5c609b2b9081dd591e7a765d00bc83dacefdc9fed8254",
       "purpose": "Partial original477050 cursor Y-bound arithmetic only:57-byte477140..477178 fragment plus actual419A70 conversion.18signedZ/visualZ inputs x4FP=72fragment executions,144actual conversioncalls,25executedentries; no services/FP substitutes. Signed16-bit104 affects bounds, visual106 does not. Full hover/class/visibility/shape/admission/global-selection bodies are excluded. Ordinary-input fix independently checked through actual native cursor equality and originalUrchin death in modified diagnostic1010; no clean campaign credit."
+    },
+    {
+      "name": "original_complete_NPC_environment_player_damage_4e17b0",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
+      "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
+    },
+    {
+      "name": "original_complete_player_damage_carry_4e20f0",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
+      "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
+    },
+    {
+      "name": "original_complete_NPC_environment_int_419a70",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
+    },
+    {
+      "name": "original_complete_NPC_environment_quest_scale_4e40b0",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
+      "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
+    },
+    {
+      "name": "original_complete_NPC_environment_action_50a020",
+      "address": "0x50a020",
+      "size": 27,
+      "sha256": "4aaeddd24a479fd9f9ffad57ed0014e32889b80af555fe337d080ffda8847705",
+      "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
     }
   ],
   "data": [

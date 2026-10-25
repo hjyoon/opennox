@@ -3533,10 +3533,10 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 3,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
@@ -3544,13 +3544,13 @@
       "source_class": 1122304,
       "player": false,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 3,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {

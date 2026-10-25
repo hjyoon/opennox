@@ -13,6 +13,11 @@ import (
 // The stock jump table at 004E20A8 sends IMPALE (3) to 004E1F84's
 // absorption/carry tail, but LAVA (12) to 004E1DC7's raw armor-wear tail.
 func TestPlayerDamageNPCEnvironment4E17B0SignedArmorQuest(t *testing.T) {
+	original := loadOriginalPlayerDamageCarryFixture(t)
+	originalByName := make(map[string]originalNPCEnvironmentCarryCase)
+	for _, c := range original.Environment {
+		originalByName[c.Name] = c
+	}
 	for _, typ := range []object.DamageType{object.DamageImpale, object.DamageLava} {
 		for _, raw := range []int32{-9, -1, 0, 1, 3, 9, 19} {
 			for _, absorption := range []float32{0, .5, 1} {
@@ -32,23 +37,11 @@ func TestPlayerDamageNPCEnvironment4E17B0SignedArmorQuest(t *testing.T) {
 							ud := v.UpdateDataMonster()
 							ud.Field518, ud.Field1 = math.Float32bits(absorption), math.Float32bits(initialCarry)
 							ud.Field547, ud.Field546 = 99, 77
-							want, carry, wear := raw, initialCarry, raw
-							if typ == object.DamageImpale {
-								accumulated := float32((1-float64(absorption))*float64(raw)) + initialCarry
-								want = int32(math.RoundToEven(float64(accumulated)))
-								carry = accumulated - float32(want)
-								wear = raw - want
-								if raw > 0 && want == 0 {
-									want = 1
-								}
+							c, found := originalByName[fmt.Sprintf("type-%d/raw-%d/armor-%g/carry-%g/quest-%g", typ, raw, absorption, initialCarry, scale)]
+							if !found {
+								t.Fatal("missing independently executed original numeric contract")
 							}
-							if scale >= 0 {
-								before := want
-								want = int32(math.RoundToEven(float64(float32(float64(scale) * float64(want)))))
-								if before > 0 && want < 1 {
-									want = 1
-								}
-							}
+							want, carry, wear := int32(c.ExpectedDamage), math.Float32frombits(c.ExpectedCarry), int32(c.ExpectedWear)
 							wears, defaults, gods, exclusions := 0, 0, 0, 0
 							r := PlayerDamageRuntime4E17B0{
 								BlockSourceExcluded: func(got *Object) bool {

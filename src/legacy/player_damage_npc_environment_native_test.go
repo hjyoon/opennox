@@ -27,7 +27,7 @@ func TestPlayerDamageNPCEnvironmentNativeCallback(t *testing.T) {
 				ud.Field1, ud.Field518 = math.Float32bits(.25), math.Float32bits(.5)
 				typ := object.DamageImpale
 				var source, weapon *server.Object
-				want := []uint16{195, 191, 186}
+				want := []uint16{196, 191, 187}
 				if hazard == "lava" {
 					typ, want = object.DamageLava, []uint16{191, 182, 173}
 					if immune {
@@ -43,7 +43,7 @@ func TestPlayerDamageNPCEnvironmentNativeCallback(t *testing.T) {
 					source = weapon
 				}
 				for hit, wantHP := range want {
-					wantCarry := float32(-.25)
+					wantCarry := float32(.75)
 					if hit == 1 || hazard == "lava" {
 						wantCarry = .25
 					}

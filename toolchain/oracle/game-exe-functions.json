@@ -21572,6 +21572,34 @@
       "size": 18,
       "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b",
       "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
+    },
+    {
+      "name": "original_complete_monster_loader_complete_517010",
+      "address": "0x517010",
+      "size": 127,
+      "sha256": "3192f722de6c122f669ddb20926dc9a1daf26a24f79b7419d18abac843ae416d",
+      "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_monster_word_reader_complete_517090",
+      "address": "0x517090",
+      "size": 173,
+      "sha256": "425e0cf26c8d1edcb5c013312c82d52cc5d7eccf7ecd967cac8b4e7fe7e9732f",
+      "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_monster_skip_line_complete_517140",
+      "address": "0x517140",
+      "size": 48,
+      "sha256": "6a6ec5e4caa956e4c208174b4c792a58a6b03c1bcbd8f26a239e66ec121ebcf7",
+      "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_monster_definition_loader_complete_517170",
+      "address": "0x517170",
+      "size": 855,
+      "sha256": "6630fad14916162f9da9356b2297367c115a8bac2913ac9b6c97cac89d1e534e",
+      "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
     }
   ],
   "data": [

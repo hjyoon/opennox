@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 	"strconv"
 	"strings"
 	"unsafe"
@@ -231,8 +232,18 @@ func parseMonsterUint32(value string) (uint32, error) {
 }
 
 func parseMonsterFloat32(value string) (float32, error) {
+	// Keep existing syntax and range errors, then reproduce the original
+	// atof/binary32 store at 517322 under startup rounding toward zero.
 	v, err := strconv.ParseFloat(value, 32)
-	return float32(v), err
+	if err != nil {
+		return float32(v), err
+	}
+	wide, _ := strconv.ParseFloat(value, 64)
+	out := float32(wide)
+	if (wide > 0 && float64(out) > wide) || (wide < 0 && float64(out) < wide) {
+		out = math.Nextafter32(out, 0)
+	}
+	return out, nil
 }
 
 func setMonsterDefField(def *server.MonsterDef, field, value string) error {

@@ -21642,6 +21642,13 @@
       "size": 18,
       "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b",
       "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
+    },
+    {
+      "name": "original_complete_shape_box_calculation_428270",
+      "address": "0x428270",
+      "size": 87,
+      "sha256": "529d5f195332115d0a6d76dbbbbf74fdcaefbaf04d7dbb074843d3aa8a6dc8c5",
+      "purpose": "Complete87-byte original box geometry calculation,26actual executed entries, no external calls/substitutions. 1182stock BOX records(1170distinctnames,12duplicate records retained) plus64finite edges under4FPcontrols yield1246contexts/4984original observations. Native actualGo and C-dispatch full52-byte shapes in guarded C allocations above4GiB:1013stockdifferences169controls each; Go edges57differences7controls,Cedges52differences12controls. Original 5834CC binary32constant independently hashed in fixture/evidence index. Original parser/transitivecollision/NaN/Inf equivalence unclaimed."
     }
   ],
   "data": [

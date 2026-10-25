@@ -253,28 +253,44 @@ int sub_428220(float2* a1, float4* a2) {
 }
 
 //----- (00428270) --------------------------------------------------------
+static double nox_shape_box_add_chop53_428270(double a, double b) {
+ volatile double rounded = a + b;
+ double sum = rounded;
+ double b_virtual = sum - a;
+ double residual = (a - (sum - b_virtual)) + (b - b_virtual);
+ if ((sum > 0 && residual < 0) || (sum < 0 && residual > 0)) {
+  return nextafter(sum, 0.0);
+ }
+ return sum;
+}
+
+static float nox_shape_box_spill32_428270(double value) {
+ float narrow = (float)value;
+ if (fabs((double)narrow) > fabs(value)) {
+  return nextafterf(narrow, 0.0f);
+ }
+ return narrow;
+}
+
 void nox_shape_box_calc(nox_shape* s) {
-	const float mul = 0.35354999; // cos(Pi/4) / 2
-	float px = s->box_w * mul;
-	float py = s->box_h * mul;
+ const float mul = 0.35354999f; // original binary32 constant at 5834CC
+ float px = nox_shape_box_spill32_428270((double)s->box_w * (double)mul);
+ double py_live = (double)s->box_h * (double)mul;
+ float py = nox_shape_box_spill32_428270(py_live);
 
-	double v = 0.0;
-
-	v = -px + py;
-	s->box_left_top = v;
-	s->box_left_top_2 = v;
-
-	v = -px - py;
-	s->box_left_bottom = v;
-	s->box_left_bottom_2 = v;
-
-	v = +px + py;
-	s->box_right_top = v;
-	s->box_right_top_2 = v;
-
-	v = +px - py;
-	s->box_right_bottom = v;
-	s->box_right_bottom_2 = v;
+ // FST at 42828B retains the unspilled height product for LeftTop.
+ float left_top = nox_shape_box_spill32_428270(nox_shape_box_add_chop53_428270(py_live, -(double)px));
+ s->box_left_top = left_top;
+ float left_bottom = nox_shape_box_spill32_428270(nox_shape_box_add_chop53_428270(-(double)px, -(double)py));
+ s->box_left_bottom = left_bottom;
+ s->box_left_bottom_2 = left_bottom;
+ s->box_left_top_2 = left_top;
+ float right_top = nox_shape_box_spill32_428270(nox_shape_box_add_chop53_428270((double)py, (double)px));
+ s->box_right_top = right_top;
+ float right_bottom = nox_shape_box_spill32_428270(nox_shape_box_add_chop53_428270((double)px, -(double)py));
+ s->box_right_bottom = right_bottom;
+ s->box_right_bottom_2 = right_bottom;
+ s->box_right_top_2 = right_top;
 }
 
 //----- (004282D0) --------------------------------------------------------

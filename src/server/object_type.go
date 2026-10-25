@@ -732,27 +732,47 @@ type ShapeBox struct {
 }
 
 func (s *ShapeBox) Calc() {
-	const mul = 0.35354999 // cos(Pi/4) / 2
-	px := s.W * mul
-	py := s.H * mul
+	const mul = float64(float32(0.35354999)) // original binary32 constant at 5834CC
+	px := shapeBoxSpill428270(float64(s.W) * mul)
+	pyLive := float64(s.H) * mul
+	py := shapeBoxSpill428270(pyLive)
 
-	v := float32(0.0)
+	// 42828B stores py without popping it. LeftTop retains that product;
+	// the other corners reload the two binary32 stack slots.
+	leftTop := shapeBoxSpill428270(shapeBoxAdd53_428270(pyLive, -float64(px)))
+	s.LeftTop = leftTop
+	leftBottom := shapeBoxSpill428270(shapeBoxAdd53_428270(-float64(px), -float64(py)))
+	s.LeftBottom = leftBottom
+	s.LeftBottom2 = leftBottom
+	s.LeftTop2 = leftTop
+	rightTop := shapeBoxSpill428270(shapeBoxAdd53_428270(float64(py), float64(px)))
+	s.RightTop = rightTop
+	rightBottom := shapeBoxSpill428270(shapeBoxAdd53_428270(float64(px), -float64(py)))
+	s.RightBottom = rightBottom
+	s.RightBottom2 = rightBottom
+	s.RightTop2 = rightTop
+}
 
-	v = -px + py
-	s.LeftTop = v
-	s.LeftTop2 = v
+// Binary32 inputs make each product exact in binary64. Recover the add's
+// residual to reproduce startup 53-bit precision toward zero locally.
+//
+//go:noinline
+func shapeBoxAdd53_428270(a, b float64) float64 {
+	sum := float64(a + b)
+	bVirtual := float64(sum - a)
+	residual := float64(float64(a-float64(sum-bVirtual)) + float64(b-bVirtual))
+	if sum > 0 && residual < 0 || sum < 0 && residual > 0 {
+		return math.Nextafter(sum, 0)
+	}
+	return sum
+}
 
-	v = -px - py
-	s.LeftBottom = v
-	s.LeftBottom2 = v
-
-	v = +px + py
-	s.RightTop = v
-	s.RightTop2 = v
-
-	v = +px - py
-	s.RightBottom = v
-	s.RightBottom2 = v
+func shapeBoxSpill428270(value float64) float32 {
+	narrow := float32(value)
+	if math.Abs(float64(narrow)) > math.Abs(value) {
+		return math.Nextafter32(narrow, 0)
+	}
+	return narrow
 }
 
 type HealthData struct {

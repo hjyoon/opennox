@@ -21481,6 +21481,13 @@
       "size": 37,
       "sha256": "c739e64a00bd027ba191aa3614e8140ca241038fb08c27eceefd26722eccec14",
       "purpose": "Complete37byte original parameter entry with actual setter, numeric helper and static CRT atof execution.63declared contexts/252raw FP observations, including23stock declarations and8output slots. Only next numeric token lookup is a declared service; no substituted numeric conversion. Existing Go parser differsin36contexts andpasses27controls. Prefix parsing, signedzero, finalfloat32ToZero, finiteoverflow, doubleoverflow, missing/nonnumeric tokens andnonoutputcanaries retained. No original tokenization/thread-locale/fullcaller/overall100 claim."
+    },
+    {
+      "name": "original_complete_modifier_integer_parameter_423780",
+      "address": "0x00423780",
+      "size": 38,
+      "sha256": "8fc139b2a77ba76c03d226c2d7c5d28ddda2689b31ce0ac24c2a197c92ca2dfd",
+      "purpose": "Complete38byte original integer parameter entry, actual setter/helper/staticCRTatoi.88declared ASCII contexts including44 unchanged stock integer declarations and8output slots. One declarednext-tokenservice, no numericstub. Actual unchangedGo29differences59controls; decimalprefix/modulo32accumulation/missingtoken/nonnumeric/true-return/fullnonoutputcanaries preserved. Originaltokenizer/threadlocale/arbitrarytext/fullcaller/overall100remainopen."
     }
   ],
   "data": [

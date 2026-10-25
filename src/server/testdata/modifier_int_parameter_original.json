@@ -1,0 +1,3357 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "original_root": "0x423780",
+  "original_numeric_helper": "0x4238f0",
+  "original_atoi_body": "0x402337",
+  "declared_services": [
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    },
+    {
+      "service": "declared already-tokenized numeric tail",
+      "entry": "0x4023cd",
+      "argument_null": true,
+      "delimiters_hex": "203d0a0d0900"
+    }
+  ],
+  "completed_contexts": 88,
+  "raw_rows": 88,
+  "rows": [
+    {
+      "name": "stock/Enchants/Stun1/AttackPreHit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Stun1/AttackPreHit",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "1",
+        "stock": {
+          "group": "Enchants",
+          "name": "Stun1",
+          "field": "AttackPreHit",
+          "function": "StunEffect",
+          "raw": "StunEffect 1"
+        }
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Stun2/AttackPreHit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Stun2/AttackPreHit",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "Stun2",
+          "field": "AttackPreHit",
+          "function": "StunEffect",
+          "raw": "StunEffect 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Stun3/AttackPreHit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Stun3/AttackPreHit",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "Stun3",
+          "field": "AttackPreHit",
+          "function": "StunEffect",
+          "raw": "StunEffect 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Stun4/AttackPreHit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Stun4/AttackPreHit",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "Stun4",
+          "field": "AttackPreHit",
+          "function": "StunEffect",
+          "raw": "StunEffect 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/FireRing1/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/FireRing1/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "FireRing1",
+          "field": "Attack",
+          "function": "FireRingEffect",
+          "raw": "FireRingEffect 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/FireRing2/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/FireRing2/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "FireRing2",
+          "field": "Attack",
+          "function": "FireRingEffect",
+          "raw": "FireRingEffect 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/FireRing3/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/FireRing3/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "FireRing3",
+          "field": "Attack",
+          "function": "FireRingEffect",
+          "raw": "FireRingEffect 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/FireRing4/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/FireRing4/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "5",
+        "stock": {
+          "group": "Enchants",
+          "name": "FireRing4",
+          "field": "Attack",
+          "function": "FireRingEffect",
+          "raw": "FireRingEffect 5"
+        }
+      },
+      "original_bits": 5,
+      "current_Go_bits": 5,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/BlueFireRing1/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/BlueFireRing1/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "BlueFireRing1",
+          "field": "Attack",
+          "function": "BlueFireRingEffect",
+          "raw": "BlueFireRingEffect 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/BlueFireRing2/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/BlueFireRing2/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "BlueFireRing2",
+          "field": "Attack",
+          "function": "BlueFireRingEffect",
+          "raw": "BlueFireRingEffect 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/BlueFireRing3/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/BlueFireRing3/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "BlueFireRing3",
+          "field": "Attack",
+          "function": "BlueFireRingEffect",
+          "raw": "BlueFireRingEffect 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/BlueFireRing4/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/BlueFireRing4/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "5",
+        "stock": {
+          "group": "Enchants",
+          "name": "BlueFireRing4",
+          "field": "Attack",
+          "function": "BlueFireRingEffect",
+          "raw": "BlueFireRingEffect 5"
+        }
+      },
+      "original_bits": 5,
+      "current_Go_bits": 5,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Confuse1/AttackPreHit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Confuse1/AttackPreHit",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "1",
+        "stock": {
+          "group": "Enchants",
+          "name": "Confuse1",
+          "field": "AttackPreHit",
+          "function": "ConfuseEffect",
+          "raw": "ConfuseEffect 1"
+        }
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Confuse2/AttackPreHit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Confuse2/AttackPreHit",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "Confuse2",
+          "field": "AttackPreHit",
+          "function": "ConfuseEffect",
+          "raw": "ConfuseEffect 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Confuse3/AttackPreHit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Confuse3/AttackPreHit",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "Confuse3",
+          "field": "AttackPreHit",
+          "function": "ConfuseEffect",
+          "raw": "ConfuseEffect 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Confuse4/AttackPreHit",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Confuse4/AttackPreHit",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "Confuse4",
+          "field": "AttackPreHit",
+          "function": "ConfuseEffect",
+          "raw": "ConfuseEffect 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Venom1/AttackPreDamage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Venom1/AttackPreDamage",
+        "attribute": "ATTACKPREDAMAGEEFFECT",
+        "offset": 72,
+        "argument": "1",
+        "stock": {
+          "group": "Enchants",
+          "name": "Venom1",
+          "field": "AttackPreDamage",
+          "function": "PoisonEffect",
+          "raw": "PoisonEffect 1"
+        }
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Venom2/AttackPreDamage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Venom2/AttackPreDamage",
+        "attribute": "ATTACKPREDAMAGEEFFECT",
+        "offset": 72,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "Venom2",
+          "field": "AttackPreDamage",
+          "function": "PoisonEffect",
+          "raw": "PoisonEffect 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Venom3/AttackPreDamage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Venom3/AttackPreDamage",
+        "attribute": "ATTACKPREDAMAGEEFFECT",
+        "offset": 72,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "Venom3",
+          "field": "AttackPreDamage",
+          "function": "PoisonEffect",
+          "raw": "PoisonEffect 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Venom4/AttackPreDamage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Venom4/AttackPreDamage",
+        "attribute": "ATTACKPREDAMAGEEFFECT",
+        "offset": 72,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "Venom4",
+          "field": "AttackPreDamage",
+          "function": "PoisonEffect",
+          "raw": "PoisonEffect 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Brilliance1/Engage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Brilliance1/Engage",
+        "attribute": "ENGAGEEFFECT",
+        "offset": 124,
+        "argument": "1",
+        "stock": {
+          "group": "Enchants",
+          "name": "Brilliance1",
+          "field": "Engage",
+          "function": "BrillianceEngage",
+          "raw": "BrillianceEngage 1"
+        }
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Brilliance1/Disengage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Brilliance1/Disengage",
+        "attribute": "DISENGAGEEFFECT",
+        "offset": 132,
+        "argument": "1",
+        "stock": {
+          "group": "Enchants",
+          "name": "Brilliance1",
+          "field": "Disengage",
+          "function": "BrillianceDisengage",
+          "raw": "BrillianceDisengage 1"
+        }
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Brilliance2/Engage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Brilliance2/Engage",
+        "attribute": "ENGAGEEFFECT",
+        "offset": 124,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "Brilliance2",
+          "field": "Engage",
+          "function": "BrillianceEngage",
+          "raw": "BrillianceEngage 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Brilliance2/Disengage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Brilliance2/Disengage",
+        "attribute": "DISENGAGEEFFECT",
+        "offset": 132,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "Brilliance2",
+          "field": "Disengage",
+          "function": "BrillianceDisengage",
+          "raw": "BrillianceDisengage 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Brilliance3/Engage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Brilliance3/Engage",
+        "attribute": "ENGAGEEFFECT",
+        "offset": 124,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "Brilliance3",
+          "field": "Engage",
+          "function": "BrillianceEngage",
+          "raw": "BrillianceEngage 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Brilliance3/Disengage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Brilliance3/Disengage",
+        "attribute": "DISENGAGEEFFECT",
+        "offset": 132,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "Brilliance3",
+          "field": "Disengage",
+          "function": "BrillianceDisengage",
+          "raw": "BrillianceDisengage 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Brilliance4/Engage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Brilliance4/Engage",
+        "attribute": "ENGAGEEFFECT",
+        "offset": 124,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "Brilliance4",
+          "field": "Engage",
+          "function": "BrillianceEngage",
+          "raw": "BrillianceEngage 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Brilliance4/Disengage",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Brilliance4/Disengage",
+        "attribute": "DISENGAGEEFFECT",
+        "offset": 132,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "Brilliance4",
+          "field": "Disengage",
+          "function": "BrillianceDisengage",
+          "raw": "BrillianceDisengage 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Regeneration1/Update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Regeneration1/Update",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "7200",
+        "stock": {
+          "group": "Enchants",
+          "name": "Regeneration1",
+          "field": "Update",
+          "function": "RegenerationUpdate",
+          "raw": "RegenerationUpdate 7200"
+        }
+      },
+      "original_bits": 7200,
+      "current_Go_bits": 7200,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Regeneration2/Update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Regeneration2/Update",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "2700",
+        "stock": {
+          "group": "Enchants",
+          "name": "Regeneration2",
+          "field": "Update",
+          "function": "RegenerationUpdate",
+          "raw": "RegenerationUpdate 2700"
+        }
+      },
+      "original_bits": 2700,
+      "current_Go_bits": 2700,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Regeneration3/Update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Regeneration3/Update",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "1188",
+        "stock": {
+          "group": "Enchants",
+          "name": "Regeneration3",
+          "field": "Update",
+          "function": "RegenerationUpdate",
+          "raw": "RegenerationUpdate 1188"
+        }
+      },
+      "original_bits": 1188,
+      "current_Go_bits": 1188,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Regeneration4/Update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Regeneration4/Update",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "450",
+        "stock": {
+          "group": "Enchants",
+          "name": "Regeneration4",
+          "field": "Update",
+          "function": "RegenerationUpdate",
+          "raw": "RegenerationUpdate 450"
+        }
+      },
+      "original_bits": 450,
+      "current_Go_bits": 450,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Readiness1/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Readiness1/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "1",
+        "stock": {
+          "group": "Enchants",
+          "name": "Readiness1",
+          "field": "Attack",
+          "function": "ReadinessEffect",
+          "raw": "ReadinessEffect 1"
+        }
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Readiness2/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Readiness2/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "Readiness2",
+          "field": "Attack",
+          "function": "ReadinessEffect",
+          "raw": "ReadinessEffect 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Readiness3/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Readiness3/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "Readiness3",
+          "field": "Attack",
+          "function": "ReadinessEffect",
+          "raw": "ReadinessEffect 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Readiness4/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Readiness4/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "Readiness4",
+          "field": "Attack",
+          "function": "ReadinessEffect",
+          "raw": "ReadinessEffect 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Replenishment1/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Replenishment1/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "1",
+        "stock": {
+          "group": "Enchants",
+          "name": "Replenishment1",
+          "field": "Attack",
+          "function": "ReplenishmentEffect",
+          "raw": "ReplenishmentEffect 1"
+        }
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Replenishment2/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Replenishment2/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "2",
+        "stock": {
+          "group": "Enchants",
+          "name": "Replenishment2",
+          "field": "Attack",
+          "function": "ReplenishmentEffect",
+          "raw": "ReplenishmentEffect 2"
+        }
+      },
+      "original_bits": 2,
+      "current_Go_bits": 2,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Replenishment3/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Replenishment3/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "3",
+        "stock": {
+          "group": "Enchants",
+          "name": "Replenishment3",
+          "field": "Attack",
+          "function": "ReplenishmentEffect",
+          "raw": "ReplenishmentEffect 3"
+        }
+      },
+      "original_bits": 3,
+      "current_Go_bits": 3,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/Replenishment4/Attack",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/Replenishment4/Attack",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "4",
+        "stock": {
+          "group": "Enchants",
+          "name": "Replenishment4",
+          "field": "Attack",
+          "function": "ReplenishmentEffect",
+          "raw": "ReplenishmentEffect 4"
+        }
+      },
+      "original_bits": 4,
+      "current_Go_bits": 4,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/ContinualReplenishment1/Update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/ContinualReplenishment1/Update",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "240",
+        "stock": {
+          "group": "Enchants",
+          "name": "ContinualReplenishment1",
+          "field": "Update",
+          "function": "ContinualReplenishmentUpdate",
+          "raw": "ContinualReplenishmentUpdate 240"
+        }
+      },
+      "original_bits": 240,
+      "current_Go_bits": 240,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/ContinualReplenishment2/Update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/ContinualReplenishment2/Update",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "210",
+        "stock": {
+          "group": "Enchants",
+          "name": "ContinualReplenishment2",
+          "field": "Update",
+          "function": "ContinualReplenishmentUpdate",
+          "raw": "ContinualReplenishmentUpdate 210"
+        }
+      },
+      "original_bits": 210,
+      "current_Go_bits": 210,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/ContinualReplenishment3/Update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/ContinualReplenishment3/Update",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "180",
+        "stock": {
+          "group": "Enchants",
+          "name": "ContinualReplenishment3",
+          "field": "Update",
+          "function": "ContinualReplenishmentUpdate",
+          "raw": "ContinualReplenishmentUpdate 180"
+        }
+      },
+      "original_bits": 180,
+      "current_Go_bits": 180,
+      "equal": true
+    },
+    {
+      "name": "stock/Enchants/ContinualReplenishment4/Update",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "stock/Enchants/ContinualReplenishment4/Update",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "150",
+        "stock": {
+          "group": "Enchants",
+          "name": "ContinualReplenishment4",
+          "field": "Update",
+          "function": "ContinualReplenishmentUpdate",
+          "raw": "ContinualReplenishmentUpdate 150"
+        }
+      },
+      "original_bits": 150,
+      "current_Go_bits": 150,
+      "equal": true
+    },
+    {
+      "name": "control/00",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/00",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": ""
+      },
+      "original_bits": 4294967295,
+      "current_Go_bits": 4294967295,
+      "equal": true
+    },
+    {
+      "name": "control/01",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/01",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "0"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 0,
+      "equal": true
+    },
+    {
+      "name": "control/02",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/02",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-0"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 0,
+      "equal": true
+    },
+    {
+      "name": "control/03",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/03",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "1"
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "control/04",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/04",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-1"
+      },
+      "original_bits": 4294967295,
+      "current_Go_bits": 4294967295,
+      "equal": true
+    },
+    {
+      "name": "control/05",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/05",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "+1"
+      },
+      "original_bits": 1,
+      "current_Go_bits": 1,
+      "equal": true
+    },
+    {
+      "name": "control/06",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/06",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "077"
+      },
+      "original_bits": 77,
+      "current_Go_bits": 77,
+      "equal": true
+    },
+    {
+      "name": "control/07",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/07",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "2147483647"
+      },
+      "original_bits": 2147483647,
+      "current_Go_bits": 2147483647,
+      "equal": true
+    },
+    {
+      "name": "control/08",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/08",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-2147483648"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 2147483648,
+      "equal": true
+    },
+    {
+      "name": "control/09",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/09",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "2147483648"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/10",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/10",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-2147483649"
+      },
+      "original_bits": 2147483647,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/11",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/11",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "4294967295"
+      },
+      "original_bits": 4294967295,
+      "current_Go_bits": 4294967295,
+      "equal": true
+    },
+    {
+      "name": "control/12",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/12",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "4294967296"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/13",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/13",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-4294967296"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/14",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/14",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "4294967297"
+      },
+      "original_bits": 1,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/15",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/15",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "18446744073709551615"
+      },
+      "original_bits": 4294967295,
+      "current_Go_bits": 4294967295,
+      "equal": true
+    },
+    {
+      "name": "control/16",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/16",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "18446744073709551616"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/17",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/17",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-18446744073709551617"
+      },
+      "original_bits": 4294967295,
+      "current_Go_bits": 4294967295,
+      "equal": true
+    },
+    {
+      "name": "control/18",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/18",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "99999999999999999999999999999999999999999999999999999999999999999"
+      },
+      "original_bits": 4294967295,
+      "current_Go_bits": 4294967295,
+      "equal": true
+    },
+    {
+      "name": "control/19",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/19",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "garbage"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/20",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/20",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "inf"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/21",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/21",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "nan"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/22",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/22",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "."
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/23",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/23",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/24",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/24",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "+"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/25",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/25",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "0x10"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/26",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/26",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "1.5"
+      },
+      "original_bits": 1,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/27",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/27",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-1.5"
+      },
+      "original_bits": 4294967295,
+      "current_Go_bits": 4294967295,
+      "equal": true
+    },
+    {
+      "name": "control/28",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/28",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "12tail"
+      },
+      "original_bits": 12,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/29",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/29",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-12tail"
+      },
+      "original_bits": 4294967284,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/30",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/30",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "1e2"
+      },
+      "original_bits": 1,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/31",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/31",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "1e+"
+      },
+      "original_bits": 1,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/32",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/32",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "--1"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/33",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/33",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "+-1"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/34",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/34",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "-+1"
+      },
+      "original_bits": 0,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/35",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/35",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "1_000"
+      },
+      "original_bits": 1,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "control/36",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "control/36",
+        "attribute": "ATTACKEFFECT",
+        "offset": 48,
+        "argument": "00000000000000000000000000000042"
+      },
+      "original_bits": 42,
+      "current_Go_bits": 42,
+      "equal": true
+    },
+    {
+      "name": "slot/ATTACKPREHITEFFECT",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "slot/ATTACKPREHITEFFECT",
+        "attribute": "ATTACKPREHITEFFECT",
+        "offset": 60,
+        "argument": "2147483648tail"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "slot/ATTACKPREDAMAGEEFFECT",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "slot/ATTACKPREDAMAGEEFFECT",
+        "attribute": "ATTACKPREDAMAGEEFFECT",
+        "offset": 72,
+        "argument": "2147483648tail"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "slot/DEFENDEFFECT",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "slot/DEFENDEFFECT",
+        "attribute": "DEFENDEFFECT",
+        "offset": 84,
+        "argument": "2147483648tail"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "slot/DEFENDCOLLIDEEFFECT",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "slot/DEFENDCOLLIDEEFFECT",
+        "attribute": "DEFENDCOLLIDEEFFECT",
+        "offset": 96,
+        "argument": "2147483648tail"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "slot/UPDATEEFFECT",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "slot/UPDATEEFFECT",
+        "attribute": "UPDATEEFFECT",
+        "offset": 108,
+        "argument": "2147483648tail"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "slot/ENGAGEEFFECT",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "slot/ENGAGEEFFECT",
+        "attribute": "ENGAGEEFFECT",
+        "offset": 124,
+        "argument": "2147483648tail"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    },
+    {
+      "name": "slot/DISENGAGEEFFECT",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "slot/DISENGAGEEFFECT",
+        "attribute": "DISENGAGEEFFECT",
+        "offset": 132,
+        "argument": "2147483648tail"
+      },
+      "original_bits": 2147483648,
+      "current_Go_bits": 4294967295,
+      "equal": false
+    }
+  ],
+  "failure": null,
+  "executed_original_instructions": [
+    {
+      "address": "0x4014b5",
+      "bytes": "6800030000"
+    },
+    {
+      "address": "0x4014ba",
+      "bytes": "6800030000"
+    },
+    {
+      "address": "0x4014bf",
+      "bytes": "e80f0c0000"
+    },
+    {
+      "address": "0x40209e",
+      "bytes": "55"
+    },
+    {
+      "address": "0x40209f",
+      "bytes": "8bec"
+    },
+    {
+      "address": "0x4020a1",
+      "bytes": "51"
+    },
+    {
+      "address": "0x4020a2",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4020a3",
+      "bytes": "9b"
+    },
+    {
+      "address": "0x4020a4",
+      "bytes": "d97dfc"
+    },
+    {
+      "address": "0x4020a7",
+      "bytes": "ff75fc"
+    },
+    {
+      "address": "0x4020aa",
+      "bytes": "e83a000000"
+    },
+    {
+      "address": "0x4020af",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x4020b1",
+      "bytes": "8b450c"
+    },
+    {
+      "address": "0x4020b4",
+      "bytes": "f7d0"
+    },
+    {
+      "address": "0x4020b6",
+      "bytes": "23f0"
+    },
+    {
+      "address": "0x4020b8",
+      "bytes": "8b4508"
+    },
+    {
+      "address": "0x4020bb",
+      "bytes": "23450c"
+    },
+    {
+      "address": "0x4020be",
+      "bytes": "0bf0"
+    },
+    {
+      "address": "0x4020c0",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4020c1",
+      "bytes": "e8b5000000"
+    },
+    {
+      "address": "0x4020c6",
+      "bytes": "59"
+    },
+    {
+      "address": "0x4020c7",
+      "bytes": "89450c"
+    },
+    {
+      "address": "0x4020ca",
+      "bytes": "59"
+    },
+    {
+      "address": "0x4020cb",
+      "bytes": "d96d0c"
+    },
+    {
+      "address": "0x4020ce",
+      "bytes": "8bc6"
+    },
+    {
+      "address": "0x4020d0",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4020d1",
+      "bytes": "c9"
+    },
+    {
+      "address": "0x4020d2",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4020d3",
+      "bytes": "8b442408"
+    },
+    {
+      "address": "0x4020d7",
+      "bytes": "25fffff7ff"
+    },
+    {
+      "address": "0x4020dc",
+      "bytes": "50"
+    },
+    {
+      "address": "0x4020dd",
+      "bytes": "ff742408"
+    },
+    {
+      "address": "0x4020e1",
+      "bytes": "e8b8ffffff"
+    },
+    {
+      "address": "0x4020e6",
+      "bytes": "59"
+    },
+    {
+      "address": "0x4020e7",
+      "bytes": "59"
+    },
+    {
+      "address": "0x4020e8",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4020e9",
+      "bytes": "53"
+    },
+    {
+      "address": "0x4020ea",
+      "bytes": "8b5c2408"
+    },
+    {
+      "address": "0x4020ee",
+      "bytes": "33c0"
+    },
+    {
+      "address": "0x4020f0",
+      "bytes": "55"
+    },
+    {
+      "address": "0x4020f1",
+      "bytes": "f6c301"
+    },
+    {
+      "address": "0x4020f4",
+      "bytes": "57"
+    },
+    {
+      "address": "0x4020f5",
+      "bytes": "7403"
+    },
+    {
+      "address": "0x4020f7",
+      "bytes": "6a10"
+    },
+    {
+      "address": "0x4020f9",
+      "bytes": "58"
+    },
+    {
+      "address": "0x4020fa",
+      "bytes": "f6c304"
+    },
+    {
+      "address": "0x4020fd",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x4020ff",
+      "bytes": "0c08"
+    },
+    {
+      "address": "0x402101",
+      "bytes": "f6c308"
+    },
+    {
+      "address": "0x402104",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x402106",
+      "bytes": "0c04"
+    },
+    {
+      "address": "0x402108",
+      "bytes": "f6c310"
+    },
+    {
+      "address": "0x40210b",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x40210d",
+      "bytes": "0c02"
+    },
+    {
+      "address": "0x40210f",
+      "bytes": "f6c320"
+    },
+    {
+      "address": "0x402112",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x402114",
+      "bytes": "0c01"
+    },
+    {
+      "address": "0x402116",
+      "bytes": "f6c302"
+    },
+    {
+      "address": "0x402119",
+      "bytes": "7405"
+    },
+    {
+      "address": "0x40211b",
+      "bytes": "0d00000800"
+    },
+    {
+      "address": "0x402120",
+      "bytes": "0fb7cb"
+    },
+    {
+      "address": "0x402123",
+      "bytes": "56"
+    },
+    {
+      "address": "0x402124",
+      "bytes": "8bd1"
+    },
+    {
+      "address": "0x402126",
+      "bytes": "be000c0000"
+    },
+    {
+      "address": "0x40212b",
+      "bytes": "bf00030000"
+    },
+    {
+      "address": "0x402130",
+      "bytes": "23d6"
+    },
+    {
+      "address": "0x402132",
+      "bytes": "bd00020000"
+    },
+    {
+      "address": "0x402137",
+      "bytes": "741f"
+    },
+    {
+      "address": "0x402158",
+      "bytes": "23cf"
+    },
+    {
+      "address": "0x40215a",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x40215b",
+      "bytes": "740b"
+    },
+    {
+      "address": "0x40215d",
+      "bytes": "3bcd"
+    },
+    {
+      "address": "0x40215f",
+      "bytes": "750c"
+    },
+    {
+      "address": "0x402161",
+      "bytes": "0d00000100"
+    },
+    {
+      "address": "0x402166",
+      "bytes": "eb05"
+    },
+    {
+      "address": "0x40216d",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x40216e",
+      "bytes": "5d"
+    },
+    {
+      "address": "0x40216f",
+      "bytes": "f6c710"
+    },
+    {
+      "address": "0x402172",
+      "bytes": "5b"
+    },
+    {
+      "address": "0x402173",
+      "bytes": "7405"
+    },
+    {
+      "address": "0x40217a",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x40217b",
+      "bytes": "53"
+    },
+    {
+      "address": "0x40217c",
+      "bytes": "8b5c2408"
+    },
+    {
+      "address": "0x402180",
+      "bytes": "33c0"
+    },
+    {
+      "address": "0x402182",
+      "bytes": "56"
+    },
+    {
+      "address": "0x402183",
+      "bytes": "f6c310"
+    },
+    {
+      "address": "0x402186",
+      "bytes": "7403"
+    },
+    {
+      "address": "0x402188",
+      "bytes": "6a01"
+    },
+    {
+      "address": "0x40218a",
+      "bytes": "58"
+    },
+    {
+      "address": "0x40218b",
+      "bytes": "f6c308"
+    },
+    {
+      "address": "0x40218e",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x402190",
+      "bytes": "0c04"
+    },
+    {
+      "address": "0x402192",
+      "bytes": "f6c304"
+    },
+    {
+      "address": "0x402195",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x402197",
+      "bytes": "0c08"
+    },
+    {
+      "address": "0x402199",
+      "bytes": "f6c302"
+    },
+    {
+      "address": "0x40219c",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x40219e",
+      "bytes": "0c10"
+    },
+    {
+      "address": "0x4021a0",
+      "bytes": "f6c301"
+    },
+    {
+      "address": "0x4021a3",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x4021a5",
+      "bytes": "0c20"
+    },
+    {
+      "address": "0x4021a7",
+      "bytes": "f7c300000800"
+    },
+    {
+      "address": "0x4021ad",
+      "bytes": "7402"
+    },
+    {
+      "address": "0x4021af",
+      "bytes": "0c02"
+    },
+    {
+      "address": "0x4021b1",
+      "bytes": "8bcb"
+    },
+    {
+      "address": "0x4021b3",
+      "bytes": "ba00030000"
+    },
+    {
+      "address": "0x4021b8",
+      "bytes": "23ca"
+    },
+    {
+      "address": "0x4021ba",
+      "bytes": "be00020000"
+    },
+    {
+      "address": "0x4021bf",
+      "bytes": "741d"
+    },
+    {
+      "address": "0x4021c1",
+      "bytes": "81f900010000"
+    },
+    {
+      "address": "0x4021c7",
+      "bytes": "7412"
+    },
+    {
+      "address": "0x4021c9",
+      "bytes": "3bce"
+    },
+    {
+      "address": "0x4021cb",
+      "bytes": "7409"
+    },
+    {
+      "address": "0x4021cd",
+      "bytes": "3bca"
+    },
+    {
+      "address": "0x4021cf",
+      "bytes": "750d"
+    },
+    {
+      "address": "0x4021d1",
+      "bytes": "80cc0c"
+    },
+    {
+      "address": "0x4021d4",
+      "bytes": "eb08"
+    },
+    {
+      "address": "0x4021de",
+      "bytes": "8bcb"
+    },
+    {
+      "address": "0x4021e0",
+      "bytes": "81e100000300"
+    },
+    {
+      "address": "0x4021e6",
+      "bytes": "740c"
+    },
+    {
+      "address": "0x4021e8",
+      "bytes": "81f900000100"
+    },
+    {
+      "address": "0x4021ee",
+      "bytes": "7506"
+    },
+    {
+      "address": "0x4021f0",
+      "bytes": "0bc6"
+    },
+    {
+      "address": "0x4021f2",
+      "bytes": "eb02"
+    },
+    {
+      "address": "0x4021f6",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4021f7",
+      "bytes": "f7c300000400"
+    },
+    {
+      "address": "0x4021fd",
+      "bytes": "5b"
+    },
+    {
+      "address": "0x4021fe",
+      "bytes": "7403"
+    },
+    {
+      "address": "0x402203",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x402337",
+      "bytes": "53"
+    },
+    {
+      "address": "0x402338",
+      "bytes": "55"
+    },
+    {
+      "address": "0x402339",
+      "bytes": "56"
+    },
+    {
+      "address": "0x40233a",
+      "bytes": "57"
+    },
+    {
+      "address": "0x40233b",
+      "bytes": "8b7c2414"
+    },
+    {
+      "address": "0x40233f",
+      "bytes": "833d8476580001"
+    },
+    {
+      "address": "0x402346",
+      "bytes": "7e0f"
+    },
+    {
+      "address": "0x402357",
+      "bytes": "0fb607"
+    },
+    {
+      "address": "0x40235a",
+      "bytes": "8b0d78745800"
+    },
+    {
+      "address": "0x402360",
+      "bytes": "8a0441"
+    },
+    {
+      "address": "0x402363",
+      "bytes": "83e008"
+    },
+    {
+      "address": "0x402366",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x402368",
+      "bytes": "7403"
+    },
+    {
+      "address": "0x40236d",
+      "bytes": "0fb637"
+    },
+    {
+      "address": "0x402370",
+      "bytes": "47"
+    },
+    {
+      "address": "0x402371",
+      "bytes": "83fe2d"
+    },
+    {
+      "address": "0x402374",
+      "bytes": "8bee"
+    },
+    {
+      "address": "0x402376",
+      "bytes": "7405"
+    },
+    {
+      "address": "0x402378",
+      "bytes": "83fe2b"
+    },
+    {
+      "address": "0x40237b",
+      "bytes": "7504"
+    },
+    {
+      "address": "0x40237d",
+      "bytes": "0fb637"
+    },
+    {
+      "address": "0x402380",
+      "bytes": "47"
+    },
+    {
+      "address": "0x402381",
+      "bytes": "33db"
+    },
+    {
+      "address": "0x402383",
+      "bytes": "833d8476580001"
+    },
+    {
+      "address": "0x40238a",
+      "bytes": "7e0c"
+    },
+    {
+      "address": "0x402398",
+      "bytes": "a178745800"
+    },
+    {
+      "address": "0x40239d",
+      "bytes": "8a0470"
+    },
+    {
+      "address": "0x4023a0",
+      "bytes": "83e004"
+    },
+    {
+      "address": "0x4023a3",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x4023a5",
+      "bytes": "740d"
+    },
+    {
+      "address": "0x4023a7",
+      "bytes": "8d049b"
+    },
+    {
+      "address": "0x4023aa",
+      "bytes": "8d5c46d0"
+    },
+    {
+      "address": "0x4023ae",
+      "bytes": "0fb637"
+    },
+    {
+      "address": "0x4023b1",
+      "bytes": "47"
+    },
+    {
+      "address": "0x4023b2",
+      "bytes": "ebcf"
+    },
+    {
+      "address": "0x4023b4",
+      "bytes": "83fd2d"
+    },
+    {
+      "address": "0x4023b7",
+      "bytes": "8bc3"
+    },
+    {
+      "address": "0x4023b9",
+      "bytes": "7502"
+    },
+    {
+      "address": "0x4023bb",
+      "bytes": "f7d8"
+    },
+    {
+      "address": "0x4023bd",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x4023be",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4023bf",
+      "bytes": "5d"
+    },
+    {
+      "address": "0x4023c0",
+      "bytes": "5b"
+    },
+    {
+      "address": "0x4023c1",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4023c2",
+      "bytes": "ff742404"
+    },
+    {
+      "address": "0x4023c6",
+      "bytes": "e86cffffff"
+    },
+    {
+      "address": "0x4023cb",
+      "bytes": "59"
+    },
+    {
+      "address": "0x4023cc",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4023cd",
+      "bytes": "55"
+    },
+    {
+      "address": "0x423780",
+      "bytes": "8b44240c"
+    },
+    {
+      "address": "0x423784",
+      "bytes": "8b4c2408"
+    },
+    {
+      "address": "0x423788",
+      "bytes": "50"
+    },
+    {
+      "address": "0x423789",
+      "bytes": "51"
+    },
+    {
+      "address": "0x42378a",
+      "bytes": "e861010000"
+    },
+    {
+      "address": "0x42378f",
+      "bytes": "8b54240c"
+    },
+    {
+      "address": "0x423793",
+      "bytes": "83c404"
+    },
+    {
+      "address": "0x423796",
+      "bytes": "50"
+    },
+    {
+      "address": "0x423797",
+      "bytes": "52"
+    },
+    {
+      "address": "0x423798",
+      "bytes": "e813000000"
+    },
+    {
+      "address": "0x42379d",
+      "bytes": "83c40c"
+    },
+    {
+      "address": "0x4237a0",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x4237a5",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4237b0",
+      "bytes": "8b442404"
+    },
+    {
+      "address": "0x4237b4",
+      "bytes": "56"
+    },
+    {
+      "address": "0x4237b5",
+      "bytes": "57"
+    },
+    {
+      "address": "0x4237b6",
+      "bytes": "bf085d5900"
+    },
+    {
+      "address": "0x4237bb",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x4237bd",
+      "bytes": "b90d000000"
+    },
+    {
+      "address": "0x4237c2",
+      "bytes": "33d2"
+    },
+    {
+      "address": "0x4237c4",
+      "bytes": "f3a6"
+    },
+    {
+      "address": "0x4237c6",
+      "bytes": "7513"
+    },
+    {
+      "address": "0x4237c8",
+      "bytes": "8b442414"
+    },
+    {
+      "address": "0x4237cc",
+      "bytes": "8b4c2410"
+    },
+    {
+      "address": "0x4237d0",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x4237d1",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4237d2",
+      "bytes": "894830"
+    },
+    {
+      "address": "0x4237d5",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x4237da",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4237db",
+      "bytes": "bf185d5900"
+    },
+    {
+      "address": "0x4237e0",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x4237e2",
+      "bytes": "b913000000"
+    },
+    {
+      "address": "0x4237e7",
+      "bytes": "33d2"
+    },
+    {
+      "address": "0x4237e9",
+      "bytes": "f3a6"
+    },
+    {
+      "address": "0x4237eb",
+      "bytes": "7513"
+    },
+    {
+      "address": "0x4237ed",
+      "bytes": "8b442414"
+    },
+    {
+      "address": "0x4237f1",
+      "bytes": "8b4c2410"
+    },
+    {
+      "address": "0x4237f5",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x4237f6",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4237f7",
+      "bytes": "89483c"
+    },
+    {
+      "address": "0x4237fa",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x4237ff",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x423800",
+      "bytes": "bf2c5d5900"
+    },
+    {
+      "address": "0x423805",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x423807",
+      "bytes": "b916000000"
+    },
+    {
+      "address": "0x42380c",
+      "bytes": "33d2"
+    },
+    {
+      "address": "0x42380e",
+      "bytes": "f3a6"
+    },
+    {
+      "address": "0x423810",
+      "bytes": "7513"
+    },
+    {
+      "address": "0x423812",
+      "bytes": "8b442414"
+    },
+    {
+      "address": "0x423816",
+      "bytes": "8b4c2410"
+    },
+    {
+      "address": "0x42381a",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x42381b",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x42381c",
+      "bytes": "894848"
+    },
+    {
+      "address": "0x42381f",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x423824",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x423825",
+      "bytes": "bf445d5900"
+    },
+    {
+      "address": "0x42382a",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x42382c",
+      "bytes": "b90d000000"
+    },
+    {
+      "address": "0x423831",
+      "bytes": "33d2"
+    },
+    {
+      "address": "0x423833",
+      "bytes": "f3a6"
+    },
+    {
+      "address": "0x423835",
+      "bytes": "7513"
+    },
+    {
+      "address": "0x423837",
+      "bytes": "8b442414"
+    },
+    {
+      "address": "0x42383b",
+      "bytes": "8b4c2410"
+    },
+    {
+      "address": "0x42383f",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x423840",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x423841",
+      "bytes": "894854"
+    },
+    {
+      "address": "0x423844",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x423849",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x42384a",
+      "bytes": "bf545d5900"
+    },
+    {
+      "address": "0x42384f",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x423851",
+      "bytes": "b914000000"
+    },
+    {
+      "address": "0x423856",
+      "bytes": "33d2"
+    },
+    {
+      "address": "0x423858",
+      "bytes": "f3a6"
+    },
+    {
+      "address": "0x42385a",
+      "bytes": "7513"
+    },
+    {
+      "address": "0x42385c",
+      "bytes": "8b442414"
+    },
+    {
+      "address": "0x423860",
+      "bytes": "8b4c2410"
+    },
+    {
+      "address": "0x423864",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x423865",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x423866",
+      "bytes": "894860"
+    },
+    {
+      "address": "0x423869",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x42386e",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x42386f",
+      "bytes": "bf685d5900"
+    },
+    {
+      "address": "0x423874",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x423876",
+      "bytes": "b90d000000"
+    },
+    {
+      "address": "0x42387b",
+      "bytes": "33d2"
+    },
+    {
+      "address": "0x42387d",
+      "bytes": "f3a6"
+    },
+    {
+      "address": "0x42387f",
+      "bytes": "7513"
+    },
+    {
+      "address": "0x423881",
+      "bytes": "8b442414"
+    },
+    {
+      "address": "0x423885",
+      "bytes": "8b4c2410"
+    },
+    {
+      "address": "0x423889",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x42388a",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x42388b",
+      "bytes": "89486c"
+    },
+    {
+      "address": "0x42388e",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x423893",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x423894",
+      "bytes": "bf785d5900"
+    },
+    {
+      "address": "0x423899",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x42389b",
+      "bytes": "b90d000000"
+    },
+    {
+      "address": "0x4238a0",
+      "bytes": "33d2"
+    },
+    {
+      "address": "0x4238a2",
+      "bytes": "f3a6"
+    },
+    {
+      "address": "0x4238a4",
+      "bytes": "7513"
+    },
+    {
+      "address": "0x4238a6",
+      "bytes": "8b442414"
+    },
+    {
+      "address": "0x4238aa",
+      "bytes": "8b4c2410"
+    },
+    {
+      "address": "0x4238ae",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x4238af",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4238b0",
+      "bytes": "89487c"
+    },
+    {
+      "address": "0x4238b3",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x4238b8",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4238b9",
+      "bytes": "bf885d5900"
+    },
+    {
+      "address": "0x4238be",
+      "bytes": "8bf0"
+    },
+    {
+      "address": "0x4238c0",
+      "bytes": "b910000000"
+    },
+    {
+      "address": "0x4238c5",
+      "bytes": "33d2"
+    },
+    {
+      "address": "0x4238c7",
+      "bytes": "f3a6"
+    },
+    {
+      "address": "0x4238c9",
+      "bytes": "7516"
+    },
+    {
+      "address": "0x4238cb",
+      "bytes": "8b442414"
+    },
+    {
+      "address": "0x4238cf",
+      "bytes": "8b4c2410"
+    },
+    {
+      "address": "0x4238d3",
+      "bytes": "5f"
+    },
+    {
+      "address": "0x4238d4",
+      "bytes": "5e"
+    },
+    {
+      "address": "0x4238d5",
+      "bytes": "898884000000"
+    },
+    {
+      "address": "0x4238db",
+      "bytes": "b801000000"
+    },
+    {
+      "address": "0x4238e0",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x4238f0",
+      "bytes": "83ec08"
+    },
+    {
+      "address": "0x4238f3",
+      "bytes": "a1985d5900"
+    },
+    {
+      "address": "0x4238f8",
+      "bytes": "668b0d9c5d5900"
+    },
+    {
+      "address": "0x4238ff",
+      "bytes": "8d542400"
+    },
+    {
+      "address": "0x423903",
+      "bytes": "89442400"
+    },
+    {
+      "address": "0x423907",
+      "bytes": "52"
+    },
+    {
+      "address": "0x423908",
+      "bytes": "6a00"
+    },
+    {
+      "address": "0x42390a",
+      "bytes": "66894c240c"
+    },
+    {
+      "address": "0x42390f",
+      "bytes": "e8b9eafdff"
+    },
+    {
+      "address": "0x423914",
+      "bytes": "83c408"
+    },
+    {
+      "address": "0x423917",
+      "bytes": "85c0"
+    },
+    {
+      "address": "0x423919",
+      "bytes": "7507"
+    },
+    {
+      "address": "0x42391b",
+      "bytes": "83c8ff"
+    },
+    {
+      "address": "0x42391e",
+      "bytes": "83c408"
+    },
+    {
+      "address": "0x423921",
+      "bytes": "c3"
+    },
+    {
+      "address": "0x423922",
+      "bytes": "50"
+    },
+    {
+      "address": "0x423923",
+      "bytes": "e89aeafdff"
+    },
+    {
+      "address": "0x423928",
+      "bytes": "83c404"
+    },
+    {
+      "address": "0x42392b",
+      "bytes": "83c408"
+    },
+    {
+      "address": "0x42392e",
+      "bytes": "c3"
+    }
+  ],
+  "scope": "Diagnostic actual original parser root, setter, numeric helper and static CRT atoi path. Only next-token lookup is a declared service returning an already separated valid stock numeric token. No production change or parser equivalence claim unless complete execution is established; any missing runtime initialization/service is recorded."
+}

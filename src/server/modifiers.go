@@ -3,7 +3,6 @@ package server
 import (
 	"fmt"
 	"math"
-	"strconv"
 	"strings"
 	"unsafe"
 
@@ -617,12 +616,7 @@ type modFuncs struct {
 type ModifierParseFunc func(mod *ModifierEff, p ModParseTarg, v string) bool
 
 func ModEffectParseInt(_ *ModifierEff, p ModParseTarg, s string) bool {
-	v, err := strconv.ParseInt(firstWord(s), 10, 32)
-	if err != nil {
-		*p.Int = -1
-	} else {
-		*p.Int = int32(v)
-	}
+	*p.Int = modifierIntParameterValue423780(firstWord(s))
 	return true
 }
 

@@ -1332,6 +1332,18 @@ Original tokenization and thread locale, arbitrary text and floating point input
 
 A separate read-only supplement checks all 75 matching stock declarations across 21 registered float effects: 46 old-parser differences and 29 controls, followed by 75 actual corrected-parser matches against 300 independent original FP observations. Its 1,163 executed original instruction records are verified against the unchanged executable. This adds no primary test identities and does not claim original tokenization or complete modifier-loader/caller execution.
 
+### Native modifier integer parameter parsing
+
+The integer parameter loader at original `00423780` now preserves decimal `atoi` prefix handling and its 32-bit wrapping accumulation. Missing parameters remain `-1`; present nonnumeric tokens produce zero, trailing text stops conversion, and signed overflow retains the original low 32 bits. The previous `ParseInt` error path returned `-1` for all of those cases. The 44 stock integer declarations already matched and remain unchanged.
+
+The complete 38-byte original entry, actual setter, numeric helper and static CRT `atoi` execute 88 declared contexts. The 318 distinct observed instruction records include the declared token-service entry; 317 original instruction entries actually execute. Every recorded byte independently matches the unchanged executable. Only the next already-separated token lookup is a declared service; numeric conversion is executed by the original code. The unchanged Go parser fails 29 leaves and passes 59 controls. The correction passes all 88 leaves and the root test (89 terminal identities), using real C-owned modifier fields above 4 GiB and complete native frame canaries across all eight output slots. Existing tests, fixtures, goldens and prior oracle entries remain byte-identical.
+
+The 6,864-input checkpoint preserves all prior broad and four full-suite identities, actions, counts and skips: broad 110,997 PASS; strict 98,415 identities repeated three times with actual `cgocheck2`, race and `checkptr=2` (295,245 PASS); focused Linux AMD64 98,415 PASS via offline Rosetta/Clang. The normal and HD suites each pass 178,637 tests with 49 skips; server and server HD each pass 173,809 with 7 skips. Four clean committed ARM64 products are checked with REA and Go build metadata, and every source archive member is independently hashed. These results are recorded only after the actual checks complete.
+
+Original tokenization and thread locale, arbitrary text, complete stock callers, remaining campaign features and overall 100% remain open. This checkpoint is promoted only after the preceding float parser checkpoint has completed its full suites, Linux qualification, push and clean products.
+
+The preceding float-parser trace counts are qualified by the same audit: 1,358 observed entries comprise 1,357 executed original entries plus the intercepted token lookup; its all-stock supplement has 1,163 observed entries, of which 1,162 execute. The hook records the service entry before substituting its return. These are distinct entry counts, not dynamic instruction steps. Raw records and all expected outputs remain unchanged. Original numeric conversion still executes without a numeric service stub.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

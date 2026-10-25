@@ -121,6 +121,11 @@ func (s *serverPlayers) DefaultStatMult() {
 }
 
 func (s *Server) CalcClassStats() {
+	// Two binary32 operands have an exact binary64 product. The original
+	// FSTPS stores that product toward zero under its startup control word.
+	scaled := func(key string, mult float32) float32 {
+		return experienceSpill32TowardZero(float64(float32(s.Balance.Float(key))) * float64(mult))
+	}
 	s.Players.Stats.Base = ClassStats{
 		Health:   float32(s.Balance.Float("BaseHealth")),
 		Mana:     float32(s.Balance.Float("BaseMana")),
@@ -130,26 +135,26 @@ func (s *Server) CalcClassStats() {
 
 	_ = player.Warrior
 	s.Players.Stats.Warrior = ClassStats{
-		Health:   float32(s.Balance.Float("WarriorMaxHealth")) * s.Players.Mult.Warrior.Health,
-		Mana:     float32(s.Balance.Float("WarriorMaxMana")) * s.Players.Mult.Warrior.Mana,
-		Speed:    float32(s.Balance.Float("WarriorMaxSpeed")) * s.Players.Mult.Warrior.Speed,
-		Strength: float32(s.Balance.Float("WarriorMaxStrength")) * s.Players.Mult.Warrior.Strength,
+		Health:   scaled("WarriorMaxHealth", s.Players.Mult.Warrior.Health),
+		Mana:     scaled("WarriorMaxMana", s.Players.Mult.Warrior.Mana),
+		Speed:    scaled("WarriorMaxSpeed", s.Players.Mult.Warrior.Speed),
+		Strength: scaled("WarriorMaxStrength", s.Players.Mult.Warrior.Strength),
 	}
 
 	_ = player.Wizard
 	s.Players.Stats.Wizard = ClassStats{
-		Health:   float32(s.Balance.Float("WizardMaxHealth")) * s.Players.Mult.Wizard.Health,
-		Mana:     float32(s.Balance.Float("WizardMaxMana")) * s.Players.Mult.Wizard.Mana,
-		Speed:    float32(s.Balance.Float("WizardMaxSpeed")) * s.Players.Mult.Wizard.Speed,
-		Strength: float32(s.Balance.Float("WizardMaxStrength")) * s.Players.Mult.Wizard.Strength,
+		Health:   scaled("WizardMaxHealth", s.Players.Mult.Wizard.Health),
+		Mana:     scaled("WizardMaxMana", s.Players.Mult.Wizard.Mana),
+		Speed:    scaled("WizardMaxSpeed", s.Players.Mult.Wizard.Speed),
+		Strength: scaled("WizardMaxStrength", s.Players.Mult.Wizard.Strength),
 	}
 
 	_ = player.Conjurer
 	s.Players.Stats.Conjurer = ClassStats{
-		Health:   float32(s.Balance.Float("ConjurerMaxHealth")) * s.Players.Mult.Conjurer.Health,
-		Mana:     float32(s.Balance.Float("ConjurerMaxMana")) * s.Players.Mult.Conjurer.Mana,
-		Speed:    float32(s.Balance.Float("ConjurerMaxSpeed")) * s.Players.Mult.Conjurer.Speed,
-		Strength: float32(s.Balance.Float("ConjurerMaxStrength")) * s.Players.Mult.Conjurer.Strength,
+		Health:   scaled("ConjurerMaxHealth", s.Players.Mult.Conjurer.Health),
+		Mana:     scaled("ConjurerMaxMana", s.Players.Mult.Conjurer.Mana),
+		Speed:    scaled("ConjurerMaxSpeed", s.Players.Mult.Conjurer.Speed),
+		Strength: scaled("ConjurerMaxStrength", s.Players.Mult.Conjurer.Strength),
 	}
 }
 

@@ -32,11 +32,16 @@ type objectColliderState4E7350 interface {
 }
 
 func colliderAddBits4E7290(a, b uint32) uint32 {
-	return math.Float32bits(math.Float32frombits(a) + math.Float32frombits(b))
+	// Preserve startup 53-bit directed arithmetic and the binary32 store.
+	return math.Float32bits(shapeBoxSpill428270(experienceAdd53TowardZero(
+		float64(math.Float32frombits(a)), float64(math.Float32frombits(b)),
+	)))
 }
 
 func colliderSubBits4E7290(a, b uint32) uint32 {
-	return math.Float32bits(math.Float32frombits(a) - math.Float32frombits(b))
+	return math.Float32bits(shapeBoxSpill428270(experienceAdd53TowardZero(
+		float64(math.Float32frombits(a)), -float64(math.Float32frombits(b)),
+	)))
 }
 
 func objectUpdateColliderAt4E72x0[T objectColliderShapeState4E72x0](

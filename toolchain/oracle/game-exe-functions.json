@@ -21852,6 +21852,20 @@
       "size": 26,
       "sha256": "c842830466581834b537f438907e121a61547ce43c6d07ef033207e13970b674",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
+    },
+    {
+      "name": "original_complete_current_collider_bounds_4e7290",
+      "address": "0x4e7290",
+      "size": 184,
+      "sha256": "b1025f5786ce1308065c267f274143410516b4ca96b201ae3e62936bfefa8b79",
+      "purpose": "Complete original current/next collider bounds body.2910shape contexts x2functions x4FPcontrols=23280original calls,86executed entries,zero external/arithmetic substitutions. Full original shape/Z/nonoutputs/canaries and returned pointer preserved. Declared stock-radius/original-derived box caches and finite edges; no type/parser initialization/runtime eligibility, grid membership, full pathfinding, generalAI-idle or whole nonfinite arithmetic claim."
+    },
+    {
+      "name": "original_complete_next_collider_bounds_4e7350",
+      "address": "0x4e7350",
+      "size": 184,
+      "sha256": "9449918fecd346e258455c7716b4094fbe2a812ba6660367d559d3bbc7f25471",
+      "purpose": "Complete original current/next collider bounds body.2910shape contexts x2functions x4FPcontrols=23280original calls,86executed entries,zero external/arithmetic substitutions. Full original shape/Z/nonoutputs/canaries and returned pointer preserved. Declared stock-radius/original-derived box caches and finite edges; no type/parser initialization/runtime eligibility, grid membership, full pathfinding, generalAI-idle or whole nonfinite arithmetic claim."
     }
   ],
   "data": [

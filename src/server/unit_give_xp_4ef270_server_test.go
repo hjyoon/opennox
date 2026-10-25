@@ -15,16 +15,16 @@ func TestUnitGiveXPNative4EF270BindsFieldsAndServices(t *testing.T) {
 	got := unitGiveXPNative4EF270(unit, 200, unitGiveXPNativeDeps4EF270{
 		protectExperience: func(token uint32, award float32) {
 			events = append(events, "protect")
-			if token != 0x89abcdef || math.Float32bits(award) != 0x40000000 {
+			if token != 0x89abcdef || math.Float32bits(award) != 0x3fffffff {
 				t.Fatalf("protection args = %08x/%08x", token, math.Float32bits(award))
 			}
-			if unit.Experience != 102 {
-				t.Fatalf("experience at protection = %v, want 102", unit.Experience)
+			if math.Float32bits(unit.Experience) != 0x42cbffff {
+				t.Fatalf("experience at protection = %v, want original bits 42cbffff", unit.Experience)
 			}
 		},
 		reportExperience: func(got *Object) {
 			events = append(events, "report")
-			if got != unit || unit.Experience != 102 {
+			if got != unit || math.Float32bits(unit.Experience) != 0x42cbffff {
 				t.Fatalf("report unit/state = %p/%v", got, unit.Experience)
 			}
 		},
@@ -36,8 +36,8 @@ func TestUnitGiveXPNative4EF270BindsFieldsAndServices(t *testing.T) {
 			unit.Experience = 777
 		},
 	})
-	if math.Float64bits(got) != math.Float64bits(2) {
-		t.Fatalf("award = %v, want 2", got)
+	if math.Float64bits(got) != 0x3fffffffe0000000 {
+		t.Fatalf("award = %v, want original widened binary32 3fffffff", got)
 	}
 	if len(events) != 3 || events[0] != "protect" || events[1] != "report" || events[2] != "sync" {
 		t.Fatalf("service order = %q, want protect/report/sync", events)

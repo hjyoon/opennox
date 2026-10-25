@@ -22,20 +22,20 @@ type unitGiveXPHooks4EF270[O, U, P any] struct {
 	syncLevel           func(O)
 }
 
-// GAME.EXE runs this routine under x87 53-bit precision. Keep every arithmetic
+// GAME.EXE runs this routine under x87 53-bit precision with rounding toward zero. Keep every arithmetic
 // boundary explicit so a host compiler cannot contract or reassociate it.
 //
 //go:noinline
-func unitGiveXPSub64_4EF270(a, b float64) float64 { return a - b }
+func unitGiveXPSub64_4EF270(a, b float64) float64 { return experienceAdd53TowardZero(a, -b) }
 
 //go:noinline
-func unitGiveXPMul64_4EF270(a, b float64) float64 { return a * b }
+func unitGiveXPMul64_4EF270(a, b float64) float64 { return experienceMul53TowardZero(a, b) }
 
 //go:noinline
-func unitGiveXPAdd64_4EF270(a, b float64) float64 { return a + b }
+func unitGiveXPAdd64_4EF270(a, b float64) float64 { return experienceAdd53TowardZero(a, b) }
 
 //go:noinline
-func unitGiveXPSpill32_4EF270(value float64) float32 { return float32(value) }
+func unitGiveXPSpill32_4EF270(value float64) float32 { return experienceSpill32TowardZero(value) }
 
 // unitGiveXP4EF270 preserves GAME.EXE 004EF270. The initial comparison reads
 // Experience before the target and returns exact positive zero for every

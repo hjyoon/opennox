@@ -261,7 +261,7 @@ func TestDirectExperienceGrant4EF3A0AdditionSpillsOnce(t *testing.T) {
 		wantBits   uint32
 	}{
 		{name: "ordinary", experience: 10, award: 2.5, wantBits: 0x41480000},
-		{name: "overflow", experience: math.MaxFloat32, award: math.MaxFloat32, wantBits: 0x7f800000},
+		{name: "overflow", experience: math.MaxFloat32, award: math.MaxFloat32, wantBits: 0x7f7fffff},
 		{name: "negative zeros", experience: math.Float32frombits(0x80000000), award: math.Float32frombits(0x80000000), wantBits: 0x80000000},
 		{name: "cancellation", experience: -2.5, award: 2.5, wantBits: 0},
 	}

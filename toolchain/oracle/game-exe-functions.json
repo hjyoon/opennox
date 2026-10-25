@@ -21649,6 +21649,27 @@
       "size": 87,
       "sha256": "529d5f195332115d0a6d76dbbbbf74fdcaefbaf04d7dbb074843d3aa8a6dc8c5",
       "purpose": "Complete87-byte original box geometry calculation,26actual executed entries, no external calls/substitutions. 1182stock BOX records(1170distinctnames,12duplicate records retained) plus64finite edges under4FPcontrols yield1246contexts/4984original observations. Native actualGo and C-dispatch full52-byte shapes in guarded C allocations above4GiB:1013stockdifferences169controls each; Go edges57differences7controls,Cedges52differences12controls. Original 5834CC binary32constant independently hashed in fixture/evidence index. Original parser/transitivecollision/NaN/Inf equivalence unclaimed."
+    },
+    {
+      "name": "original_complete_direct_experience_complete_precision",
+      "address": "0x4ef3a0",
+      "size": 106,
+      "sha256": "54921e7ae975ad6d13766866e34d0f54b0cd1cc773853d3ed5c85a397a2cc891",
+      "purpose": "Complete executed original XP arithmetic or integer conversion body. Primary128finite contexts under4FPcontrols yield512observations; actual startupE3F supplies production expectations. 80executed original entries,5declared external services excluded with arithmetic/conversion unchanged. Native Object/PlayerUpdateData/Player frames retain64-bit pointers and all nonoutput bytes/canaries. Full service, CRC, level and transitive gameplay equivalence unclaimed."
+    },
+    {
+      "name": "original_complete_scaled_experience_complete_precision",
+      "address": "0x4ef270",
+      "size": 106,
+      "sha256": "ac2f87560b82860ff8ec82a0f34e9098adb8491fed99b202c57bc388247fadd8",
+      "purpose": "Complete executed original XP arithmetic or integer conversion body. Primary128finite contexts under4FPcontrols yield512observations; actual startupE3F supplies production expectations. 80executed original entries,5declared external services excluded with arithmetic/conversion unchanged. Native Object/PlayerUpdateData/Player frames retain64-bit pointers and all nonoutput bytes/canaries. Full service, CRC, level and transitive gameplay equivalence unclaimed."
+    },
+    {
+      "name": "original_complete_experience_message_integer_conversion_complete_precision",
+      "address": "0x566dcc",
+      "size": 39,
+      "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c",
+      "purpose": "Complete executed original XP arithmetic or integer conversion body. Primary128finite contexts under4FPcontrols yield512observations; actual startupE3F supplies production expectations. 80executed original entries,5declared external services excluded with arithmetic/conversion unchanged. Native Object/PlayerUpdateData/Player frames retain64-bit pointers and all nonoutput bytes/canaries. Full service, CRC, level and transitive gameplay equivalence unclaimed."
     }
   ],
   "data": [

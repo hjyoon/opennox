@@ -234,13 +234,13 @@ func TestUnitGiveXP4EF270ActivePathOrderCachingAndSavedAward(t *testing.T) {
 		name: "replacement", player: &unitGiveXPTestPlayer4EF270{name: "replacement-player", token: 9},
 	}
 	w.after["update:unit=update"] = func() { w.unit.update = replacement }
-	w.after["protect:12345678:40000000"] = func() { w.unit.experience = 999 }
+	w.after["protect:12345678:3fffffff"] = func() { w.unit.experience = 999 }
 
 	got := unitGiveXP4EF270(w.hooks())
-	if math.Float64bits(got) != math.Float64bits(2) {
-		t.Fatalf("award bits = %016x, want 2.0", math.Float64bits(got))
+	if math.Float64bits(got) != 0x3fffffffe0000000 {
+		t.Fatalf("award bits = %016x, want original widened binary32 3fffffff", math.Float64bits(got))
 	}
-	if w.protectedToken != entryUpdate.player.token || math.Float32bits(w.protectedAward) != 0x40000000 {
+	if w.protectedToken != entryUpdate.player.token || math.Float32bits(w.protectedAward) != 0x3fffffff {
 		t.Fatalf("protected token/award = %08x/%08x", w.protectedToken, math.Float32bits(w.protectedAward))
 	}
 	want := []string{
@@ -253,10 +253,10 @@ func TestUnitGiveXP4EF270ActivePathOrderCachingAndSavedAward(t *testing.T) {
 		"scale=3c23d70a",
 		"one=3f800000",
 		"experience:3:unit=42c80000",
-		"store:unit=42cc0000",
+		"store:unit=42cbffff",
 		"player:update=player",
 		"token:player=12345678",
-		"protect:12345678:40000000",
+		"protect:12345678:3fffffff",
 		"report:unit",
 		"sync:unit",
 	}
@@ -276,11 +276,24 @@ func TestUnitGiveXP4EF270UsesUnspilledAdjustedValueForExperience(t *testing.T) {
 	if bits := math.Float64bits(got); bits != math.Float64bits(float64(math.Float32frombits(0x49561aa4))) {
 		t.Fatalf("award bits = %016x, want widened binary32 49561aa4", bits)
 	}
-	if bits := math.Float32bits(w.unit.experience); bits != 0x4ab06963 {
-		t.Fatalf("stored experience bits = %08x, want retained-value result 4ab06963", bits)
+	if bits := math.Float32bits(w.unit.experience); bits != 0x4ab06962 {
+		t.Fatalf("stored experience bits = %08x, want original toward-zero result 4ab06962", bits)
 	}
 	if rounded := float32(w.protectedAward + float32(4_903_687)); math.Float32bits(rounded) != 0x4ab06962 {
-		t.Fatalf("precision witness collapsed: rounded-award result = %08x, want 4ab06962", math.Float32bits(rounded))
+		t.Fatalf("historical rounded-award result = %08x, want 4ab06962", math.Float32bits(rounded))
+	}
+	// Under the original toward-zero control word the historical positive
+	// input above no longer distinguishes the retained intermediate. Keep its
+	// original-qualified result and also check a cancellation witness whose
+	// complete original 4EF270 execution yields different stored words.
+	w = newUnitGiveXPTestWorld4EF270()
+	w.unit.experience, w.target = -1, 0
+	unitGiveXP4EF270(w.hooks())
+	if got := math.Float32bits(w.unit.experience); got != 0x3c23d70a {
+		t.Fatalf("retained cancellation result = %08x, want original 3c23d70a", got)
+	}
+	if rounded := unitGiveXPSpill32_4EF270(float64(w.protectedAward) - 1); math.Float32bits(rounded) != 0x3c23d700 {
+		t.Fatalf("spilled cancellation result = %08x, want 3c23d700", math.Float32bits(rounded))
 	}
 }
 
@@ -316,7 +329,7 @@ func TestUnitGiveXP4EF270FaultBoundaries(t *testing.T) {
 		w := newUnitGiveXPTestWorld4EF270()
 		w.unit.update = nil
 		unitGiveXPMustPanic4EF270(t, func() { unitGiveXP4EF270(w.hooks()) })
-		if w.unit.experience != 102 || w.events[len(w.events)-1] != "player:nil" {
+		if math.Float32bits(w.unit.experience) != 0x42cbffff || w.events[len(w.events)-1] != "player:nil" {
 			t.Fatalf("experience/events = %v/%q", w.unit.experience, w.events)
 		}
 	})
@@ -325,7 +338,7 @@ func TestUnitGiveXP4EF270FaultBoundaries(t *testing.T) {
 		w := newUnitGiveXPTestWorld4EF270()
 		w.unit.update.player = nil
 		unitGiveXPMustPanic4EF270(t, func() { unitGiveXP4EF270(w.hooks()) })
-		if w.unit.experience != 102 || w.events[len(w.events)-1] != "token:nil" {
+		if math.Float32bits(w.unit.experience) != 0x42cbffff || w.events[len(w.events)-1] != "token:nil" {
 			t.Fatalf("experience/events = %v/%q", w.unit.experience, w.events)
 		}
 	})

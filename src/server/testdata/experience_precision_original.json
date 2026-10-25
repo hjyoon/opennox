@@ -1,0 +1,3559 @@
+{
+  "contexts": 128,
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_observations": 512,
+  "regions": [
+    {
+      "name": "direct-experience-complete",
+      "address": "0x4ef3a0",
+      "size": 106,
+      "sha256": "54921e7ae975ad6d13766866e34d0f54b0cd1cc773853d3ed5c85a397a2cc891"
+    },
+    {
+      "name": "scaled-experience-complete",
+      "address": "0x4ef270",
+      "size": 106,
+      "sha256": "ac2f87560b82860ff8ec82a0f34e9098adb8491fed99b202c57bc388247fadd8"
+    },
+    {
+      "name": "experience-message-integer-conversion-complete",
+      "address": "0x566dcc",
+      "size": 39,
+      "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c"
+    }
+  ],
+  "data_regions": [
+    {
+      "name": "scaled-experience-scale",
+      "address": "0x5b9544",
+      "size": 4,
+      "bytes": "0ad7233c",
+      "sha256": "0d66bd808e9247acb560fe33efaa62ad6f11ee6f85cc4f61bd17673263de04ee"
+    },
+    {
+      "name": "scaled-experience-one",
+      "address": "0x583068",
+      "size": 4,
+      "bytes": "0000803f",
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c"
+    },
+    {
+      "name": "scaled-experience-zero",
+      "address": "0x58307c",
+      "size": 4,
+      "bytes": "00000000",
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"
+    }
+  ],
+  "executed_original_entries": 80,
+  "excluded_service_entries": [
+    {
+      "address": "0x40f1d0",
+      "bytes": "53",
+      "service": "string"
+    },
+    {
+      "address": "0x4d81a0",
+      "bytes": "83ec08",
+      "service": "report"
+    },
+    {
+      "address": "0x4d9eb0",
+      "bytes": "8b442404",
+      "service": "line"
+    },
+    {
+      "address": "0x4ef2e0",
+      "bytes": "56",
+      "service": "sync"
+    },
+    {
+      "address": "0x56fa40",
+      "bytes": "8b442404",
+      "service": "protect"
+    }
+  ],
+  "cases": [
+    {
+      "group": "direct",
+      "name": "00_00000000_00000000",
+      "experience_bits32": 0,
+      "argument_bits32": 0,
+      "expected_experience_bits32": 0,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 0,
+          "token": 2309737967,
+          "award_bits32": 0
+        },
+        {
+          "service": "report",
+          "experience_bits32": 0
+        },
+        {
+          "service": "string",
+          "experience_bits32": 0,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 0,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 0
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "01_00000000_3f800000",
+      "experience_bits32": 0,
+      "argument_bits32": 1065353216,
+      "expected_experience_bits32": 1065353216,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353216,
+          "token": 2309737967,
+          "award_bits32": 1065353216
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353216
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1065353216,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1065353216,
+          "message_points": 1
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353216
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "02_41200000_40200000",
+      "experience_bits32": 1092616192,
+      "argument_bits32": 1075838976,
+      "expected_experience_bits32": 1095237632,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1095237632,
+          "token": 2309737967,
+          "award_bits32": 1075838976
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1095237632
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1095237632,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1095237632,
+          "message_points": 2
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1095237632
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "03_4499c6bb_447a0000",
+      "experience_bits32": 1150928571,
+      "argument_bits32": 1148846080,
+      "expected_experience_bits32": 1158374237,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1158374237,
+          "token": 2309737967,
+          "award_bits32": 1148846080
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1158374237
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1158374237,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1158374237,
+          "message_points": 1000
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1158374237
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "04_44368d76_43fa0000",
+      "experience_bits32": 1144425846,
+      "argument_bits32": 1140457472,
+      "expected_experience_bits32": 1150928571,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1150928571,
+          "token": 2309737967,
+          "award_bits32": 1140457472
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1150928571
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1150928571,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1150928571,
+          "message_points": 500
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1150928571
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "05_3f800000_1e3ce508",
+      "experience_bits32": 1065353216,
+      "argument_bits32": 507307272,
+      "expected_experience_bits32": 1065353216,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353216,
+          "token": 2309737967,
+          "award_bits32": 507307272
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353216
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1065353216,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1065353216,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353216
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "06_3f800000_9e3ce508",
+      "experience_bits32": 1065353216,
+      "argument_bits32": 2654790920,
+      "expected_experience_bits32": 1065353215,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353215,
+          "token": 2309737967,
+          "award_bits32": 2654790920
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353215
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1065353215,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1065353215,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353215
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "07_bf800000_1e3ce508",
+      "experience_bits32": 3212836864,
+      "argument_bits32": 507307272,
+      "expected_experience_bits32": 3212836863,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3212836863,
+          "token": 2309737967,
+          "award_bits32": 507307272
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3212836863
+        },
+        {
+          "service": "string",
+          "experience_bits32": 3212836863,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 3212836863,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3212836863
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "08_bf800000_9e3ce508",
+      "experience_bits32": 3212836864,
+      "argument_bits32": 2654790920,
+      "expected_experience_bits32": 3212836864,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3212836864,
+          "token": 2309737967,
+          "award_bits32": 2654790920
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3212836864
+        },
+        {
+          "service": "string",
+          "experience_bits32": 3212836864,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 3212836864,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3212836864
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "09_7149f2ca_d01502f9",
+      "experience_bits32": 1900671690,
+      "argument_bits32": 3491037945,
+      "expected_experience_bits32": 1900671689,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1900671689,
+          "token": 2309737967,
+          "award_bits32": 3491037945
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1900671689
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1900671689,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1900671689,
+          "message_points": 2884901888
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1900671689
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "10_0da24260_aedbe6ff",
+      "experience_bits32": 228737632,
+      "argument_bits32": 2933647103,
+      "expected_experience_bits32": 2933647102,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2933647102,
+          "token": 2309737967,
+          "award_bits32": 2933647103
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2933647102
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2933647102,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2933647102,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2933647102
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "11_3f800000_3dcccccd",
+      "experience_bits32": 1065353216,
+      "argument_bits32": 1036831949,
+      "expected_experience_bits32": 1066192076,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1066192076,
+          "token": 2309737967,
+          "award_bits32": 1036831949
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1066192076
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1066192076,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1066192076,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1066192076
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "12_3dcccccd_3e4ccccd",
+      "experience_bits32": 1036831949,
+      "argument_bits32": 1045220557,
+      "expected_experience_bits32": 1050253721,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1050253721,
+          "token": 2309737967,
+          "award_bits32": 1045220557
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1050253721
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1050253721,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1050253721,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1050253721
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "13_42a20000_43fa0000",
+      "experience_bits32": 1117913088,
+      "argument_bits32": 1140457472,
+      "expected_experience_bits32": 1141981184,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1141981184,
+          "token": 2309737967,
+          "award_bits32": 1140457472
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1141981184
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1141981184,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1141981184,
+          "message_points": 500
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1141981184
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "14_00000001_00000001",
+      "experience_bits32": 1,
+      "argument_bits32": 1,
+      "expected_experience_bits32": 2,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2,
+          "token": 2309737967,
+          "award_bits32": 1
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "15_80000001_00000001",
+      "experience_bits32": 2147483649,
+      "argument_bits32": 1,
+      "expected_experience_bits32": 0,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 0,
+          "token": 2309737967,
+          "award_bits32": 1
+        },
+        {
+          "service": "report",
+          "experience_bits32": 0
+        },
+        {
+          "service": "string",
+          "experience_bits32": 0,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 0,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 0
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "16_007fffff_00000001",
+      "experience_bits32": 8388607,
+      "argument_bits32": 1,
+      "expected_experience_bits32": 8388608,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 8388608,
+          "token": 2309737967,
+          "award_bits32": 1
+        },
+        {
+          "service": "report",
+          "experience_bits32": 8388608
+        },
+        {
+          "service": "string",
+          "experience_bits32": 8388608,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 8388608,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 8388608
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "17_00800000_80000001",
+      "experience_bits32": 8388608,
+      "argument_bits32": 2147483649,
+      "expected_experience_bits32": 8388607,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 8388607,
+          "token": 2309737967,
+          "award_bits32": 2147483649
+        },
+        {
+          "service": "report",
+          "experience_bits32": 8388607
+        },
+        {
+          "service": "string",
+          "experience_bits32": 8388607,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 8388607,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 8388607
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "18_7f7fffff_7f7fffff",
+      "experience_bits32": 2139095039,
+      "argument_bits32": 2139095039,
+      "expected_experience_bits32": 2139095039,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2139095039,
+          "token": 2309737967,
+          "award_bits32": 2139095039
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2139095039
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2139095039,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2139095039,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2139095039
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "19_ff7fffff_ff7fffff",
+      "experience_bits32": 4286578687,
+      "argument_bits32": 4286578687,
+      "expected_experience_bits32": 4286578687,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4286578687,
+          "token": 2309737967,
+          "award_bits32": 4286578687
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4286578687
+        },
+        {
+          "service": "string",
+          "experience_bits32": 4286578687,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 4286578687,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4286578687
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "20_7f7fffff_ff7fffff",
+      "experience_bits32": 2139095039,
+      "argument_bits32": 4286578687,
+      "expected_experience_bits32": 0,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 0,
+          "token": 2309737967,
+          "award_bits32": 4286578687
+        },
+        {
+          "service": "report",
+          "experience_bits32": 0
+        },
+        {
+          "service": "string",
+          "experience_bits32": 0,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 0,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 0
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "21_80000000_80000000",
+      "experience_bits32": 2147483648,
+      "argument_bits32": 2147483648,
+      "expected_experience_bits32": 2147483648,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2147483648,
+          "token": 2309737967,
+          "award_bits32": 2147483648
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2147483648
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2147483648,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2147483648,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2147483648
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "22_09064365_e11fbe10",
+      "experience_bits32": 151405413,
+      "argument_bits32": 3776953872,
+      "expected_experience_bits32": 3776953871,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3776953871,
+          "token": 2309737967,
+          "award_bits32": 3776953872
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3776953871
+        },
+        {
+          "service": "string",
+          "experience_bits32": 3776953871,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 3776953871,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3776953871
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "23_52d8b7fc_d24afad2",
+      "experience_bits32": 1389934588,
+      "argument_bits32": 3528129234,
+      "expected_experience_bits32": 1382446374,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1382446374,
+          "token": 2309737967,
+          "award_bits32": 3528129234
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1382446374
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1382446374,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1382446374,
+          "message_points": 1095467008
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1382446374
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "24_2dab44a5_de65ec3e",
+      "experience_bits32": 766198949,
+      "argument_bits32": 3731221566,
+      "expected_experience_bits32": 3731221565,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3731221565,
+          "token": 2309737967,
+          "award_bits32": 3731221566
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3731221565
+        },
+        {
+          "service": "string",
+          "experience_bits32": 3731221565,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 3731221565,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3731221565
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "25_888ca350_8acf0dee",
+      "experience_bits32": 2290918224,
+      "argument_bits32": 2328825326,
+      "expected_experience_bits32": 2329401379,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2329401379,
+          "token": 2309737967,
+          "award_bits32": 2328825326
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2329401379
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2329401379,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2329401379,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2329401379
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "26_a33e5104_38728db1",
+      "experience_bits32": 2738770180,
+      "argument_bits32": 947031473,
+      "expected_experience_bits32": 947031472,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 947031472,
+          "token": 2309737967,
+          "award_bits32": 947031473
+        },
+        {
+          "service": "report",
+          "experience_bits32": 947031472
+        },
+        {
+          "service": "string",
+          "experience_bits32": 947031472,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 947031472,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 947031472
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "27_1a643801_a6f3bf60",
+      "experience_bits32": 442775553,
+      "argument_bits32": 2800992096,
+      "expected_experience_bits32": 2800992095,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2800992095,
+          "token": 2309737967,
+          "award_bits32": 2800992096
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2800992095
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2800992095,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2800992095,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2800992095
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "28_39703b05_1531aa74",
+      "experience_bits32": 963656453,
+      "argument_bits32": 355576436,
+      "expected_experience_bits32": 963656453,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 963656453,
+          "token": 2309737967,
+          "award_bits32": 355576436
+        },
+        {
+          "service": "report",
+          "experience_bits32": 963656453
+        },
+        {
+          "service": "string",
+          "experience_bits32": 963656453,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 963656453,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 963656453
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "29_785961b6_036ea029",
+      "experience_bits32": 2019123638,
+      "argument_bits32": 57581609,
+      "expected_experience_bits32": 2019123638,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2019123638,
+          "token": 2309737967,
+          "award_bits32": 57581609
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2019123638
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2019123638,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2019123638,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2019123638
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "30_282bd0c8_dbc7676b",
+      "experience_bits32": 673960136,
+      "argument_bits32": 3687278443,
+      "expected_experience_bits32": 3687278442,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3687278442,
+          "token": 2309737967,
+          "award_bits32": 3687278443
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3687278442
+        },
+        {
+          "service": "string",
+          "experience_bits32": 3687278442,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 3687278442,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3687278442
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "31_b0e3c18f_6fb7a8f8",
+      "experience_bits32": 2967716239,
+      "argument_bits32": 1874307320,
+      "expected_experience_bits32": 1874307319,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1874307319,
+          "token": 2309737967,
+          "award_bits32": 1874307320
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1874307319
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1874307319,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1874307319,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1874307319
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "32_85f30a1a_6b694017",
+      "experience_bits32": 2247297562,
+      "argument_bits32": 1802059799,
+      "expected_experience_bits32": 1802059798,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1802059798,
+          "token": 2309737967,
+          "award_bits32": 1802059799
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1802059798
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1802059798,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1802059798,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1802059798
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "33_63a37919_8e1bb591",
+      "experience_bits32": 1671657753,
+      "argument_bits32": 2384180625,
+      "expected_experience_bits32": 1671657752,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1671657752,
+          "token": 2309737967,
+          "award_bits32": 2384180625
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1671657752
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1671657752,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1671657752,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1671657752
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "34_e695da66_09b67fdd",
+      "experience_bits32": 3868580454,
+      "argument_bits32": 162955229,
+      "expected_experience_bits32": 3868580453,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3868580453,
+          "token": 2309737967,
+          "award_bits32": 162955229
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3868580453
+        },
+        {
+          "service": "string",
+          "experience_bits32": 3868580453,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 3868580453,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3868580453
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "35_880121df_625910d9",
+      "experience_bits32": 2281775583,
+      "argument_bits32": 1650004185,
+      "expected_experience_bits32": 1650004184,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1650004184,
+          "token": 2309737967,
+          "award_bits32": 1650004185
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1650004184
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1650004184,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1650004184,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1650004184
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "36_86ad5653_1e4e0ed3",
+      "experience_bits32": 2259506771,
+      "argument_bits32": 508432083,
+      "expected_experience_bits32": 508432082,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 508432082,
+          "token": 2309737967,
+          "award_bits32": 508432083
+        },
+        {
+          "service": "report",
+          "experience_bits32": 508432082
+        },
+        {
+          "service": "string",
+          "experience_bits32": 508432082,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 508432082,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 508432082
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "37_6345d8cf_2737e37c",
+      "experience_bits32": 1665521871,
+      "argument_bits32": 657974140,
+      "expected_experience_bits32": 1665521871,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1665521871,
+          "token": 2309737967,
+          "award_bits32": 657974140
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1665521871
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1665521871,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1665521871,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1665521871
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "38_22027d40_50e76526",
+      "experience_bits32": 570588480,
+      "argument_bits32": 1357341990,
+      "expected_experience_bits32": 1357341990,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1357341990,
+          "token": 2309737967,
+          "award_bits32": 1357341990
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1357341990
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1357341990,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1357341990,
+          "message_points": 992555008
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1357341990
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "39_ff59c582_6f4f45d9",
+      "experience_bits32": 4284073346,
+      "argument_bits32": 1867466201,
+      "expected_experience_bits32": 4284073345,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4284073345,
+          "token": 2309737967,
+          "award_bits32": 1867466201
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4284073345
+        },
+        {
+          "service": "string",
+          "experience_bits32": 4284073345,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 4284073345,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4284073345
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "40_31fc2c64_47bed722",
+      "experience_bits32": 838610020,
+      "argument_bits32": 1203689250,
+      "expected_experience_bits32": 1203689250,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1203689250,
+          "token": 2309737967,
+          "award_bits32": 1203689250
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1203689250
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1203689250,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1203689250,
+          "message_points": 97710
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1203689250
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "41_a082b9e1_96bc80af",
+      "experience_bits32": 2692921825,
+      "argument_bits32": 2528936111,
+      "expected_experience_bits32": 2692921836,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2692921836,
+          "token": 2309737967,
+          "award_bits32": 2528936111
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2692921836
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2692921836,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2692921836,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2692921836
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "42_2d0a8f90_9c2ef806",
+      "experience_bits32": 755666832,
+      "argument_bits32": 2620323846,
+      "expected_experience_bits32": 755666831,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 755666831,
+          "token": 2309737967,
+          "award_bits32": 2620323846
+        },
+        {
+          "service": "report",
+          "experience_bits32": 755666831
+        },
+        {
+          "service": "string",
+          "experience_bits32": 755666831,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 755666831,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 755666831
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "43_04ffd189_37930af3",
+      "experience_bits32": 83874185,
+      "argument_bits32": 932383475,
+      "expected_experience_bits32": 932383475,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 932383475,
+          "token": 2309737967,
+          "award_bits32": 932383475
+        },
+        {
+          "service": "report",
+          "experience_bits32": 932383475
+        },
+        {
+          "service": "string",
+          "experience_bits32": 932383475,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 932383475,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 932383475
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "44_a88e7d96_fa37a1ad",
+      "experience_bits32": 2827910550,
+      "argument_bits32": 4197949869,
+      "expected_experience_bits32": 4197949869,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4197949869,
+          "token": 2309737967,
+          "award_bits32": 4197949869
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4197949869
+        },
+        {
+          "service": "string",
+          "experience_bits32": 4197949869,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 4197949869,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4197949869
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "45_94777d35_6a4167d9",
+      "experience_bits32": 2490858805,
+      "argument_bits32": 1782671321,
+      "expected_experience_bits32": 1782671320,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1782671320,
+          "token": 2309737967,
+          "award_bits32": 1782671321
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1782671320
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1782671320,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1782671320,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1782671320
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "46_8edc72e1_062acb32",
+      "experience_bits32": 2396812001,
+      "argument_bits32": 103467826,
+      "expected_experience_bits32": 2396811915,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2396811915,
+          "token": 2309737967,
+          "award_bits32": 103467826
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2396811915
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2396811915,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2396811915,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2396811915
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "47_aa8f962d_fd9f46bf",
+      "experience_bits32": 2861536813,
+      "argument_bits32": 4255073983,
+      "expected_experience_bits32": 4255073983,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4255073983,
+          "token": 2309737967,
+          "award_bits32": 4255073983
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4255073983
+        },
+        {
+          "service": "string",
+          "experience_bits32": 4255073983,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 4255073983,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4255073983
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "48_6a6ffc76_94e1cb8d",
+      "experience_bits32": 1785724022,
+      "argument_bits32": 2497825677,
+      "expected_experience_bits32": 1785724021,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1785724021,
+          "token": 2309737967,
+          "award_bits32": 2497825677
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1785724021
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1785724021,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1785724021,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1785724021
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "49_56bb6f5b_938a34eb",
+      "experience_bits32": 1455124315,
+      "argument_bits32": 2475308267,
+      "expected_experience_bits32": 1455124314,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1455124314,
+          "token": 2309737967,
+          "award_bits32": 2475308267
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1455124314
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1455124314,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1455124314,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1455124314
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "50_acfe1201_8e079ad8",
+      "experience_bits32": 2902331905,
+      "argument_bits32": 2382863064,
+      "expected_experience_bits32": 2902331905,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2902331905,
+          "token": 2309737967,
+          "award_bits32": 2382863064
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2902331905
+        },
+        {
+          "service": "string",
+          "experience_bits32": 2902331905,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 2902331905,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2902331905
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "51_f3c1beac_e5a3ce27",
+      "experience_bits32": 4089560748,
+      "argument_bits32": 3852717607,
+      "expected_experience_bits32": 4089560748,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4089560748,
+          "token": 2309737967,
+          "award_bits32": 3852717607
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4089560748
+        },
+        {
+          "service": "string",
+          "experience_bits32": 4089560748,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 4089560748,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4089560748
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "52_1cd47175_88ba725e",
+      "experience_bits32": 483684725,
+      "argument_bits32": 2293920350,
+      "expected_experience_bits32": 483684724,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 483684724,
+          "token": 2309737967,
+          "award_bits32": 2293920350
+        },
+        {
+          "service": "report",
+          "experience_bits32": 483684724
+        },
+        {
+          "service": "string",
+          "experience_bits32": 483684724,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 483684724,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 483684724
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "53_1ce85110_28da09a5",
+      "experience_bits32": 484987152,
+      "argument_bits32": 685377957,
+      "expected_experience_bits32": 685377957,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 685377957,
+          "token": 2309737967,
+          "award_bits32": 685377957
+        },
+        {
+          "service": "report",
+          "experience_bits32": 685377957
+        },
+        {
+          "service": "string",
+          "experience_bits32": 685377957,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 685377957,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 685377957
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "54_410f84b3_21c24d20",
+      "experience_bits32": 1091536051,
+      "argument_bits32": 566381856,
+      "expected_experience_bits32": 1091536051,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1091536051,
+          "token": 2309737967,
+          "award_bits32": 566381856
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1091536051
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1091536051,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1091536051,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1091536051
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "55_6b7f2fdb_eef899a4",
+      "experience_bits32": 1803497435,
+      "argument_bits32": 4009269668,
+      "expected_experience_bits32": 4009139012,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4009139012,
+          "token": 2309737967,
+          "award_bits32": 4009269668
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4009139012
+        },
+        {
+          "service": "string",
+          "experience_bits32": 4009139012,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 4009139012,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4009139012
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "56_2cd77889_29d5bd96",
+      "experience_bits32": 752318601,
+      "argument_bits32": 701873558,
+      "expected_experience_bits32": 752537471,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 752537471,
+          "token": 2309737967,
+          "award_bits32": 701873558
+        },
+        {
+          "service": "report",
+          "experience_bits32": 752537471
+        },
+        {
+          "service": "string",
+          "experience_bits32": 752537471,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 752537471,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 752537471
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "57_153043ed_5c2caa88",
+      "experience_bits32": 355484653,
+      "argument_bits32": 1546431112,
+      "expected_experience_bits32": 1546431112,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1546431112,
+          "token": 2309737967,
+          "award_bits32": 1546431112
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1546431112
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1546431112,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1546431112,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1546431112
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "58_1ac8871c_4eaf3c7f",
+      "experience_bits32": 449349404,
+      "argument_bits32": 1320107135,
+      "expected_experience_bits32": 1320107135,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1320107135,
+          "token": 2309737967,
+          "award_bits32": 1320107135
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1320107135
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1320107135,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1320107135,
+          "message_points": 1469988736
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1320107135
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "59_fe59d618_9c86cc13",
+      "experience_bits32": 4267300376,
+      "argument_bits32": 2626079763,
+      "expected_experience_bits32": 4267300376,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4267300376,
+          "token": 2309737967,
+          "award_bits32": 2626079763
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4267300376
+        },
+        {
+          "service": "string",
+          "experience_bits32": 4267300376,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 4267300376,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4267300376
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "60_1e74783b_b4da395b",
+      "experience_bits32": 510949435,
+      "argument_bits32": 3034200411,
+      "expected_experience_bits32": 3034200410,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3034200410,
+          "token": 2309737967,
+          "award_bits32": 3034200411
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3034200410
+        },
+        {
+          "service": "string",
+          "experience_bits32": 3034200410,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 3034200410,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3034200410
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "61_1270f370_cae56e69",
+      "experience_bits32": 309392240,
+      "argument_bits32": 3404033641,
+      "expected_experience_bits32": 3404033640,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3404033640,
+          "token": 2309737967,
+          "award_bits32": 3404033641
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3404033640
+        },
+        {
+          "service": "string",
+          "experience_bits32": 3404033640,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 3404033640,
+          "message_points": 4287449292
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3404033640
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "62_9faeea5d_6dea0511",
+      "experience_bits32": 2679040605,
+      "argument_bits32": 1844053265,
+      "expected_experience_bits32": 1844053264,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1844053264,
+          "token": 2309737967,
+          "award_bits32": 1844053265
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1844053264
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1844053264,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1844053264,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1844053264
+        }
+      ]
+    },
+    {
+      "group": "direct",
+      "name": "63_0ca60d1e_68e34e65",
+      "experience_bits32": 212208926,
+      "argument_bits32": 1759727205,
+      "expected_experience_bits32": 1759727205,
+      "expected_award_bits64": null,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1759727205,
+          "token": 2309737967,
+          "award_bits32": 1759727205
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1759727205
+        },
+        {
+          "service": "string",
+          "experience_bits32": 1759727205,
+          "key": "health.c:gainpoints",
+          "path": "C:\\NoxPost\\src\\Server\\GameMech\\explevel.c",
+          "line": 381
+        },
+        {
+          "service": "line",
+          "experience_bits32": 1759727205,
+          "message_points": 0
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1759727205
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "00_00000000_45fa0000",
+      "experience_bits32": 0,
+      "argument_bits32": 1174011904,
+      "expected_experience_bits32": 1117913087,
+      "expected_award_bits64": 4635400284678389760,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1117913087,
+          "token": 2309737967,
+          "award_bits32": 1117913087
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1117913087
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1117913087
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "01_42a20000_45fa0000",
+      "experience_bits32": 1117913088,
+      "argument_bits32": 1174011904,
+      "expected_experience_bits32": 1126248611,
+      "expected_award_bits64": 4635343286167404544,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1126248611,
+          "token": 2309737967,
+          "award_bits32": 1117806919
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1126248611
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1126248611
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "02_432130a4_45fa0000",
+      "experience_bits32": 1126248612,
+      "argument_bits32": 1174011904,
+      "expected_experience_bits32": 1131451390,
+      "expected_award_bits64": 4635286857276456960,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1131451390,
+          "token": 2309737967,
+          "award_bits32": 1117701812
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1131451390
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1131451390
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "03_437093fe_45fa0000",
+      "experience_bits32": 1131451390,
+      "argument_bits32": 1174011904,
+      "expected_experience_bits32": 1134532110,
+      "expected_award_bits64": 4635230993173708800,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1134532110,
+          "token": 2309737967,
+          "award_bits32": 1117597757
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1134532110
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1134532110
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "04_439f960e_45fa0000",
+      "experience_bits32": 1134532110,
+      "argument_bits32": 1174011904,
+      "expected_experience_bits32": 1137081731,
+      "expected_award_bits64": 4635175687416709120,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1137081731,
+          "token": 2309737967,
+          "award_bits32": 1117494742
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1137081731
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1137081731
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "05_43c67d84_45fa0000",
+      "experience_bits32": 1137081732,
+      "argument_bits32": 1174011904,
+      "expected_experience_bits32": 1139605857,
+      "expected_award_bits64": 4635120934636748800,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1139605857,
+          "token": 2309737967,
+          "award_bits32": 1117392757
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1139605857
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1139605857
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "06_43ed0161_45fa0000",
+      "experience_bits32": 1139605857,
+      "argument_bits32": 1174011904,
+      "expected_experience_bits32": 1141477714,
+      "expected_award_bits64": 4635066729465118720,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1141477714,
+          "token": 2309737967,
+          "award_bits32": 1117291792
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1141477714
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1141477714
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "07_44099153_462be000",
+      "experience_bits32": 1141477715,
+      "argument_bits32": 1177280512,
+      "expected_experience_bits32": 1143206182,
+      "expected_award_bits64": 4637124128321568768,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1143206182,
+          "token": 2309737967,
+          "award_bits32": 1121123996
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1143206182
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1143206182
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "08_42c80000_43480000",
+      "experience_bits32": 1120403456,
+      "argument_bits32": 1128792064,
+      "expected_experience_bits32": 1120665599,
+      "expected_award_bits64": 4611686017890516992,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1120665599,
+          "token": 2309737967,
+          "award_bits32": 1073741823
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1120665599
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1120665599
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "09_43480000_43480000",
+      "experience_bits32": 1128792064,
+      "argument_bits32": 1128792064,
+      "expected_experience_bits32": 1128792064,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "10_43490000_43480000",
+      "experience_bits32": 1128857600,
+      "argument_bits32": 1128792064,
+      "expected_experience_bits32": 1128857600,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "11_bf800000_00000000",
+      "experience_bits32": 3212836864,
+      "argument_bits32": 0,
+      "expected_experience_bits32": 1008981770,
+      "expected_award_bits64": 4607227454753341440,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1008981770,
+          "token": 2309737967,
+          "award_bits32": 1065437102
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1008981770
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1008981770
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "12_00000000_00000000",
+      "experience_bits32": 0,
+      "argument_bits32": 0,
+      "expected_experience_bits32": 0,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "13_00000000_3f800000",
+      "experience_bits32": 0,
+      "argument_bits32": 1065353216,
+      "expected_experience_bits32": 1065437102,
+      "expected_award_bits64": 4607227454753341440,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065437102,
+          "token": 2309737967,
+          "award_bits32": 1065437102
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065437102
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065437102
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "14_3f800000_40000000",
+      "experience_bits32": 1065353216,
+      "argument_bits32": 1073741824,
+      "expected_experience_bits32": 1073783767,
+      "expected_award_bits64": 4607227454753341440,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1073783767,
+          "token": 2309737967,
+          "award_bits32": 1065437102
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1073783767
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1073783767
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "15_00000001_00000002",
+      "experience_bits32": 1,
+      "argument_bits32": 2,
+      "expected_experience_bits32": 1065353216,
+      "expected_award_bits64": 4607182418800017408,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353216,
+          "token": 2309737967,
+          "award_bits32": 1065353216
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353216
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353216
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "16_007fffff_00800000",
+      "experience_bits32": 8388607,
+      "argument_bits32": 8388608,
+      "expected_experience_bits32": 1065353216,
+      "expected_award_bits64": 4607182418800017408,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353216,
+          "token": 2309737967,
+          "award_bits32": 1065353216
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353216
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353216
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "17_ff7fffff_7f7fffff",
+      "experience_bits32": 4286578687,
+      "argument_bits32": 2139095039,
+      "expected_experience_bits32": 4286243142,
+      "expected_award_bits64": 5157882580569161728,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4286243142,
+          "token": 2309737967,
+          "award_bits32": 2091112201
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4286243142
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4286243142
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "18_7f7fffff_ff7fffff",
+      "experience_bits32": 2139095039,
+      "argument_bits32": 4286578687,
+      "expected_experience_bits32": 2139095039,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "19_72f0fa4e_c2d5931c",
+      "experience_bits32": 1928395342,
+      "argument_bits32": 3268776732,
+      "expected_experience_bits32": 1928395342,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "20_6c03e0b6_95f28bcd",
+      "experience_bits32": 1812193462,
+      "argument_bits32": 2515700685,
+      "expected_experience_bits32": 1812193462,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "21_53b1603d_55e63567",
+      "experience_bits32": 1404133437,
+      "argument_bits32": 1441150311,
+      "expected_experience_bits32": 1406431104,
+      "expected_award_bits64": 4778749807323774976,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1406431104,
+          "token": 2309737967,
+          "award_bits32": 1384922380
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1406431104
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1406431104
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "22_e4583175_62497219",
+      "experience_bits32": 3830985077,
+      "argument_bits32": 1648980505,
+      "expected_experience_bits32": 3830835141,
+      "expected_award_bits64": 4909571741442899968,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3830835141,
+          "token": 2309737967,
+          "award_bits32": 1628597221
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3830835141
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3830835141
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "23_3e6935d8_00f12ead",
+      "experience_bits32": 1047082456,
+      "argument_bits32": 15806125,
+      "expected_experience_bits32": 1047082456,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "24_b8821092_0e39624c",
+      "experience_bits32": 3095531666,
+      "argument_bits32": 238641740,
+      "expected_experience_bits32": 1065352185,
+      "expected_award_bits64": 4607182421484371968,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065352185,
+          "token": 2309737967,
+          "award_bits32": 1065353221
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065352185
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065352185
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "25_a04f4870_6effaf4f",
+      "experience_bits32": 2689550448,
+      "argument_bits32": 1862250319,
+      "expected_experience_bits32": 1805886309,
+      "expected_award_bits64": 5004753095805108224,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1805886309,
+          "token": 2309737967,
+          "award_bits32": 1805886309
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1805886309
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1805886309
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "26_adf21d22_2d05db9e",
+      "experience_bits32": 2918325538,
+      "argument_bits32": 755358622,
+      "expected_experience_bits32": 1065353215,
+      "expected_award_bits64": 4607182418800017408,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353215,
+          "token": 2309737967,
+          "award_bits32": 1065353216
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353215
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353215
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "27_9fbbb36f_0c3fd905",
+      "experience_bits32": 2679878511,
+      "argument_bits32": 205510917,
+      "expected_experience_bits32": 1065353215,
+      "expected_award_bits64": 4607182418800017408,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353215,
+          "token": 2309737967,
+          "award_bits32": 1065353216
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353215
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353215
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "28_98cca4e7_6bf3a198",
+      "experience_bits32": 2563548391,
+      "argument_bits32": 1811128728,
+      "expected_experience_bits32": 1755049098,
+      "expected_award_bits64": 4977460075972001792,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1755049098,
+          "token": 2309737967,
+          "award_bits32": 1755049098
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1755049098
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1755049098
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "29_e518aa2f_de21099f",
+      "experience_bits32": 3843598895,
+      "argument_bits32": 3726707103,
+      "expected_experience_bits32": 3843498851,
+      "expected_award_bits64": 4915798561406320640,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3843498851,
+          "token": 2309737967,
+          "award_bits32": 1640195577
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3843498851
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3843498851
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "30_f7526611_54177022",
+      "experience_bits32": 4149372433,
+      "argument_bits32": 1410822178,
+      "expected_experience_bits32": 4149234546,
+      "expected_award_bits64": 5080294536995930112,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4149234546,
+          "token": 2309737967,
+          "award_bits32": 1946593208
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4149234546
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4149234546
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "31_0bc4ef2f_fd1a13cf",
+      "experience_bits32": 197455663,
+      "argument_bits32": 4246344655,
+      "expected_experience_bits32": 197455663,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "32_fa33e3ad_86346318",
+      "experience_bits32": 4197704621,
+      "argument_bits32": 2251580184,
+      "expected_experience_bits32": 4197586728,
+      "expected_award_bits64": 5106176274062114816,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4197586728,
+          "token": 2309737967,
+          "award_bits32": 1994801700
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4197586728
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4197586728
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "33_7ddd6c4e_f2e74c93",
+      "experience_bits32": 2111663182,
+      "argument_bits32": 4075244691,
+      "expected_experience_bits32": 2111663182,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "34_93409068_4fb89666",
+      "experience_bits32": 2470482024,
+      "argument_bits32": 1337497190,
+      "expected_experience_bits32": 1282164129,
+      "expected_award_bits64": 4723581891393880064,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1282164129,
+          "token": 2309737967,
+          "award_bits32": 1282164129
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1282164129
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1282164129
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "35_a60af9b3_39eeb2f8",
+      "experience_bits32": 2785737139,
+      "argument_bits32": 971944696,
+      "expected_experience_bits32": 1065353254,
+      "expected_award_bits64": 4607182439201112064,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353254,
+          "token": 2309737967,
+          "award_bits32": 1065353254
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353254
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353254
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "36_3c6b6f71_b91d56fb",
+      "experience_bits32": 1013673841,
+      "argument_bits32": 3105707771,
+      "expected_experience_bits32": 1013673841,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "37_7bf20c39_7e305876",
+      "experience_bits32": 2079460409,
+      "argument_bits32": 2117097590,
+      "expected_experience_bits32": 2081687399,
+      "expected_award_bits64": 5141704820670857216,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2081687399,
+          "token": 2309737967,
+          "award_bits32": 2060978775
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2081687399
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2081687399
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "38_8f8a8caa_f2a889cd",
+      "experience_bits32": 2408221866,
+      "argument_bits32": 4071131597,
+      "expected_experience_bits32": 2408221866,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "39_a0d8d466_c2c6dd51",
+      "experience_bits32": 2698564710,
+      "argument_bits32": 3267812689,
+      "expected_experience_bits32": 2698564710,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "40_14a6a8e5_0da14f09",
+      "experience_bits32": 346466533,
+      "argument_bits32": 228675337,
+      "expected_experience_bits32": 346466533,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "41_96bad578_cc9b8fe2",
+      "experience_bits32": 2528826744,
+      "argument_bits32": 3432746978,
+      "expected_experience_bits32": 2528826744,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "42_b1536124_00bd2c12",
+      "experience_bits32": 2975031588,
+      "argument_bits32": 12397586,
+      "expected_experience_bits32": 1065353215,
+      "expected_award_bits64": 4607182418800017408,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353215,
+          "token": 2309737967,
+          "award_bits32": 1065353216
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353215
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353215
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "43_b1ddb458_80eac60f",
+      "experience_bits32": 2984096856,
+      "argument_bits32": 2162869775,
+      "expected_experience_bits32": 1065353215,
+      "expected_award_bits64": 4607182418800017408,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353215,
+          "token": 2309737967,
+          "award_bits32": 1065353216
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353215
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353215
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "44_751868e8_ac676526",
+      "experience_bits32": 1964533992,
+      "argument_bits32": 2892457254,
+      "expected_experience_bits32": 1964533992,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "45_bae4f1d7_c2f3dd13",
+      "experience_bits32": 3135566295,
+      "argument_bits32": 3270761747,
+      "expected_experience_bits32": 3135566295,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "46_ae98ea59_ef3b1843",
+      "experience_bits32": 2929257049,
+      "argument_bits32": 4013627459,
+      "expected_experience_bits32": 2929257049,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "47_ed3f1a0b_6b11062f",
+      "experience_bits32": 3980335627,
+      "argument_bits32": 1796277807,
+      "expected_experience_bits32": 3980204446,
+      "expected_award_bits64": 4989992118916218880,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3980204446,
+          "token": 2309737967,
+          "award_bits32": 1778391847
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3980204446
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3980204446
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "48_b95cb162_c7a8f934",
+      "experience_bits32": 3109859682,
+      "argument_bits32": 3349739828,
+      "expected_experience_bits32": 3109859682,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "49_1bd5477d_0f3e3d78",
+      "experience_bits32": 466962301,
+      "argument_bits32": 255737208,
+      "expected_experience_bits32": 466962301,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "50_d1e8bf87_36f708de",
+      "experience_bits32": 3521691527,
+      "argument_bits32": 922159326,
+      "expected_experience_bits32": 3521538993,
+      "expected_award_bits64": 4743027829883535360,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3521538993,
+          "token": 2309737967,
+          "award_bits32": 1318385012
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3521538993
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3521538993
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "51_57c24e6a_16a0d74a",
+      "experience_bits32": 1472351850,
+      "argument_bits32": 379639626,
+      "expected_experience_bits32": 1472351850,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "52_886c1a70_31361eaf",
+      "experience_bits32": 2288786032,
+      "argument_bits32": 825630383,
+      "expected_experience_bits32": 1065353216,
+      "expected_award_bits64": 4607182418800017408,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353216,
+          "token": 2309737967,
+          "award_bits32": 1065353216
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353216
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353216
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "53_faaee229_3a08bd49",
+      "experience_bits32": 4205765161,
+      "argument_bits32": 973651273,
+      "expected_experience_bits32": 4205650549,
+      "expected_award_bits64": 5110454427098021888,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4205650549,
+          "token": 2309737967,
+          "award_bits32": 2002770381
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4205650549
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4205650549
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "54_65360171_2b0b7fb3",
+      "experience_bits32": 1698038129,
+      "argument_bits32": 722173875,
+      "expected_experience_bits32": 1698038129,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "55_17b8a28c_69eacf3b",
+      "experience_bits32": 397976204,
+      "argument_bits32": 1776996155,
+      "expected_experience_bits32": 1721124655,
+      "expected_award_bits64": 4959247029319499776,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1721124655,
+          "token": 2309737967,
+          "award_bits32": 1721124655
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1721124655
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1721124655
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "56_5fa5f229_b4a89f00",
+      "experience_bits32": 1604710953,
+      "argument_bits32": 3030949632,
+      "expected_experience_bits32": 1604710953,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "57_f4265441_16d67b06",
+      "experience_bits32": 4096152641,
+      "argument_bits32": 383154950,
+      "expected_experience_bits32": 4096043635,
+      "expected_award_bits64": 5051522379818205184,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 4096043635,
+          "token": 2309737967,
+          "award_bits32": 1893000889
+        },
+        {
+          "service": "report",
+          "experience_bits32": 4096043635
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 4096043635
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "58_90e086b7_3bbf4f3b",
+      "experience_bits32": 2430633655,
+      "argument_bits32": 1002393403,
+      "expected_experience_bits32": 1065353705,
+      "expected_award_bits64": 4607182681329893376,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1065353705,
+          "token": 2309737967,
+          "award_bits32": 1065353705
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1065353705
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1065353705
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "59_7828886e_5d6114d9",
+      "experience_bits32": 2015922286,
+      "argument_bits32": 1566643417,
+      "expected_experience_bits32": 2015922286,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "60_c219fba4_899b9946",
+      "experience_bits32": 3256482724,
+      "argument_bits32": 2308675910,
+      "expected_experience_bits32": 3256119665,
+      "expected_award_bits64": 4608916112413818880,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 3256119665,
+          "token": 2309737967,
+          "award_bits32": 1068582472
+        },
+        {
+          "service": "report",
+          "experience_bits32": 3256119665
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 3256119665
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "61_5baafa8d_057d17ec",
+      "experience_bits32": 1537931917,
+      "argument_bits32": 92084204,
+      "expected_experience_bits32": 1537931917,
+      "expected_award_bits64": 0,
+      "services": []
+    },
+    {
+      "group": "scaled",
+      "name": "62_11f3e3bc_78d5f83c",
+      "experience_bits32": 301196220,
+      "argument_bits32": 2027288636,
+      "expected_experience_bits32": 1971908810,
+      "expected_award_bits64": 5093885747329499136,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 1971908810,
+          "token": 2309737967,
+          "award_bits32": 1971908810
+        },
+        {
+          "service": "report",
+          "experience_bits32": 1971908810
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 1971908810
+        }
+      ]
+    },
+    {
+      "group": "scaled",
+      "name": "63_ed74a78b_7af19b33",
+      "experience_bits32": 3983845259,
+      "argument_bits32": 2062654259,
+      "expected_experience_bits32": 2006622396,
+      "expected_award_bits64": 5112522466199076864,
+      "services": [
+        {
+          "service": "protect",
+          "experience_bits32": 2006622396,
+          "token": 2309737967,
+          "award_bits32": 2006622404
+        },
+        {
+          "service": "report",
+          "experience_bits32": 2006622396
+        },
+        {
+          "service": "sync",
+          "experience_bits32": 2006622396
+        }
+      ]
+    }
+  ],
+  "scope": "Complete original106-byte direct/scaled XP bodies and39-byte actual original integer-conversion helper execute finite input contexts under4FPcontrols. Original arithmetic and FST/FSTP stores execute unchanged; declared protection/report/string/message/level-sync service bodies excluded. Capture return FSTP64 wrapper excluded. Startup0xe3f supplies production expectations. Original full service/level/CRC/network/transitive gameplay/nonfinite equivalence unclaimed. Actual source949 saved history retained without numeric rewriting."
+}

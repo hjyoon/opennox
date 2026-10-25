@@ -23,15 +23,14 @@ type directExperienceGrantHooks4EF3A0[O, U, P, M any] struct {
 	syncLevel           func(O)
 }
 
-// GAME.EXE performs the addition in x87 extended precision and rounds only at
-// the binary32 Experience store. Both inputs originate as binary32 values, so
-// binary64 preserves the required intermediate before the explicit spill.
+// GAME.EXE uses its inherited 53-bit, toward-zero control word for the
+// addition and the binary32 Experience store. Keep both boundaries explicit.
 //
 //go:noinline
-func directExperienceAdd64_4EF3A0(a, b float64) float64 { return a + b }
+func directExperienceAdd64_4EF3A0(a, b float64) float64 { return experienceAdd53TowardZero(a, b) }
 
 //go:noinline
-func directExperienceSpill32_4EF3A0(value float64) float32 { return float32(value) }
+func directExperienceSpill32_4EF3A0(value float64) float32 { return experienceSpill32TowardZero(value) }
 
 // directExperienceTruncLow4EF3A0 models GAME.EXE 00566DCC: truncate the x87
 // value toward zero into a signed qword and retain EAX, its low 32 bits. An

@@ -7625,7 +7625,20 @@ int nox_xxx_recalculateArmorVal_53E300(nox_object_t* owner) {
 	float value = 0.0f;
 	for (nox_object_t* item = owner->inv_first_item; item; item = item->inv_next_item) {
 		if ((item->obj_class & 0x2000000) && (item->obj_flags & 0x100)) {
-			value += nox_xxx_itemApplyDefendEffect_415C00(item);
+			// 0053E330 adds at startup binary64 ToZero precision, then
+			// 0053E337 stores binary32 ToZero after every equipped item.
+			const double armor = nox_xxx_itemApplyDefendEffect_415C00(item);
+			volatile double sum = (double)value + armor;
+			volatile double residual;
+			if (fabs((double)value) >= fabs(armor)) {
+				residual = armor - (sum - (double)value);
+			} else {
+				residual = (double)value - (sum - armor);
+			}
+			if ((sum > 0.0 && residual < 0.0) || (sum < 0.0 && residual > 0.0)) {
+				sum = nextafter(sum, 0.0);
+			}
+			value = nox_double2float(sum);
 		}
 	}
 	if (value > *(double*)&qword_581450_9512) {

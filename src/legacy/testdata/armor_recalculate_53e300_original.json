@@ -1,0 +1,7279 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "cases": 32,
+  "rows": [
+    {
+      "name": "empty-player",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "empty-player",
+        "owner_class": 4,
+        "items": []
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "empty-player",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "empty-player",
+        "owner_class": 4,
+        "items": []
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "empty-player",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "empty-player",
+        "owner_class": 4,
+        "items": []
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "empty-player",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "empty-player",
+        "owner_class": 4,
+        "items": []
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "nonarmor-skip",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "nonarmor-skip",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 16777216,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "nonarmor-skip",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "nonarmor-skip",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 16777216,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "nonarmor-skip",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "nonarmor-skip",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 16777216,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "nonarmor-skip",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "nonarmor-skip",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 16777216,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "unequipped-skip",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "unequipped-skip",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 0,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "unequipped-skip",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "unequipped-skip",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 0,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "unequipped-skip",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "unequipped-skip",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 0,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "unequipped-skip",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "unequipped-skip",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 0,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [],
+      "lookups": [],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "single-dyadic-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "single-dyadic-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "single-dyadic-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "single-dyadic-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "single-dyadic-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "single-dyadic-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "single-dyadic-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "single-dyadic-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "single-decimal-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "single-decimal-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "single-decimal-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "single-decimal-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "single-decimal-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "single-decimal-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "single-decimal-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "single-decimal-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-pair",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "decimal-pair",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-pair",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "decimal-pair",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-pair",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "decimal-pair",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-pair",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "decimal-pair",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "three-tenths",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "three-tenths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "three-tenths",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "three-tenths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "three-tenths",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "three-tenths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "three-tenths",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "three-tenths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-fifths",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "decimal-fifths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1058642329,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-fifths",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "decimal-fifths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1058642330,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-fifths",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "decimal-fifths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1058642329,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-fifths",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "decimal-fifths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1058642330,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-hundredths",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "decimal-hundredths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1022739087,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831948,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-hundredths",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "decimal-hundredths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1022739087,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831948,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-hundredths",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "decimal-hundredths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1022739087,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831948,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-hundredths",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "decimal-hundredths",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1022739087,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "dyadic-sum-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "dyadic-sum-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1052770304,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1061158912,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "dyadic-sum-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "dyadic-sum-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1052770304,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1061158912,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "dyadic-sum-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "dyadic-sum-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1052770304,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1061158912,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "dyadic-sum-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "dyadic-sum-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1052770304,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1061158912,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "exact-cap-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "exact-cap-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "exact-cap-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "exact-cap-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "exact-cap-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "exact-cap-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "exact-cap-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "exact-cap-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "over-cap-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "over-cap-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1061158912,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "over-cap-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "over-cap-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1061158912,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "over-cap-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "over-cap-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1061158912,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "over-cap-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "over-cap-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1061158912,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "below-cap-decimals",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "below-cap-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1063675495,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "below-cap-decimals",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "below-cap-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1063675495,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "below-cap-decimals",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "below-cap-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1063675495,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "below-cap-decimals",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "below-cap-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1063675495,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "at-cap-decimals",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "at-cap-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1053609165,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353215,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "at-cap-decimals",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "at-cap-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1053609165,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "at-cap-decimals",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "at-cap-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1053609165,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353215,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "at-cap-decimals",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "at-cap-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050253722,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1053609165,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353216,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "eleven-small-values",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "eleven-small-values",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 6
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 7
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 8
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 9
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 10
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        },
+        {
+          "type_index": 106,
+          "definition_present": true
+        },
+        {
+          "type_index": 107,
+          "definition_present": true
+        },
+        {
+          "type_index": 108,
+          "definition_present": true
+        },
+        {
+          "type_index": 109,
+          "definition_present": true
+        },
+        {
+          "type_index": 110,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1038174124,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "eleven-small-values",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "eleven-small-values",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 6
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 7
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 8
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 9
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 10
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        },
+        {
+          "type_index": 106,
+          "definition_present": true
+        },
+        {
+          "type_index": 107,
+          "definition_present": true
+        },
+        {
+          "type_index": 108,
+          "definition_present": true
+        },
+        {
+          "type_index": 109,
+          "definition_present": true
+        },
+        {
+          "type_index": 110,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1038174124,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "eleven-small-values",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "eleven-small-values",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 6
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 7
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 8
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 9
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 10
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        },
+        {
+          "type_index": 106,
+          "definition_present": true
+        },
+        {
+          "type_index": 107,
+          "definition_present": true
+        },
+        {
+          "type_index": 108,
+          "definition_present": true
+        },
+        {
+          "type_index": 109,
+          "definition_present": true
+        },
+        {
+          "type_index": 110,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1038174124,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "eleven-small-values",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "eleven-small-values",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 6
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 7
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 8
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 9
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 10
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        },
+        {
+          "type_index": 106,
+          "definition_present": true
+        },
+        {
+          "type_index": 107,
+          "definition_present": true
+        },
+        {
+          "type_index": 108,
+          "definition_present": true
+        },
+        {
+          "type_index": 109,
+          "definition_present": true
+        },
+        {
+          "type_index": 110,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1038174130,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-order-forward",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "decimal-order-forward",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1034147594,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1042536202,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050924810,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1059145645,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-order-forward",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "decimal-order-forward",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1034147594,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1042536202,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050924810,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1059145646,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-order-forward",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "decimal-order-forward",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1034147594,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1042536202,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050924810,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1059145645,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-order-forward",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "decimal-order-forward",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1034147594,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1042536202,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050924810,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1059145646,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-order-reverse",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "decimal-order-reverse",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050924810,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1042536202,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1034147594,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1059145644,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-order-reverse",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "decimal-order-reverse",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050924810,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1042536202,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1034147594,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1059145646,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-order-reverse",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "decimal-order-reverse",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050924810,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1042536202,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1034147594,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1059145644,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "decimal-order-reverse",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "decimal-order-reverse",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1050924810,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1042536202,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1034147594,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1025758986,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1017370378,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1008981770,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 3
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 4
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 5
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        },
+        {
+          "type_index": 103,
+          "definition_present": true
+        },
+        {
+          "type_index": 104,
+          "definition_present": true
+        },
+        {
+          "type_index": 105,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1059145648,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "interspersed-nonarmor",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "interspersed-nonarmor",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 16777216,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "interspersed-nonarmor",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "interspersed-nonarmor",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 16777216,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "interspersed-nonarmor",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "interspersed-nonarmor",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 16777216,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "interspersed-nonarmor",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "interspersed-nonarmor",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 16777216,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "interspersed-unequipped",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "interspersed-unequipped",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 0,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "interspersed-unequipped",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "interspersed-unequipped",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 0,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "interspersed-unequipped",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "interspersed-unequipped",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 0,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "interspersed-unequipped",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "interspersed-unequipped",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 0,
+            "armor_bits": 1040187392,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "missing-definition-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "missing-definition-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": false
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": false
+        }
+      ],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "missing-definition-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "missing-definition-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": false
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": false
+        }
+      ],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "missing-definition-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "missing-definition-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": false
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": false
+        }
+      ],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "missing-definition-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "missing-definition-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": false
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": false
+        }
+      ],
+      "player_armor_bits": 0,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "missing-definition-amid-decimals",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "missing-definition-amid-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": false
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": false
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "missing-definition-amid-decimals",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "missing-definition-amid-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": false
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": false
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "missing-definition-amid-decimals",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "missing-definition-amid-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": false
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": false
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "missing-definition-amid-decimals",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "missing-definition-amid-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1040187392,
+            "definition": false
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": false
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "zero-between-decimals",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "zero-between-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 0,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "zero-between-decimals",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "zero-between-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 0,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "zero-between-decimals",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "zero-between-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 0,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "zero-between-decimals",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "zero-between-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 0,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "player-and-monster-class-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "player-and-monster-class-control",
+        "owner_class": 6,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "player-and-monster-class-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "player-and-monster-class-control",
+        "owner_class": 6,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "player-and-monster-class-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "player-and-monster-class-control",
+        "owner_class": 6,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253721,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "player-and-monster-class-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "player-and-monster-class-control",
+        "owner_class": 6,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1050253722,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-decimal-pair",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "monster-decimal-pair",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1050253721,
+      "incidental_EAX": 1050253721,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-decimal-pair",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "monster-decimal-pair",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1050253722,
+      "incidental_EAX": 1050253722,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-decimal-pair",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "monster-decimal-pair",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1050253721,
+      "incidental_EAX": 1050253721,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-decimal-pair",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "monster-decimal-pair",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1050253722,
+      "incidental_EAX": 1050253722,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-dyadic-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "monster-dyadic-control",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1052770304,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1059061760,
+      "incidental_EAX": 1059061760,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-dyadic-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "monster-dyadic-control",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1052770304,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1059061760,
+      "incidental_EAX": 1059061760,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-dyadic-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "monster-dyadic-control",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1052770304,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1059061760,
+      "incidental_EAX": 1059061760,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-dyadic-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "monster-dyadic-control",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1048576000,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1052770304,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1059061760,
+      "incidental_EAX": 1059061760,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-over-cap-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "monster-over-cap-control",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1061158912,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1065353216,
+      "incidental_EAX": 1065353216,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-over-cap-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "monster-over-cap-control",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1061158912,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1065353216,
+      "incidental_EAX": 1065353216,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-over-cap-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "monster-over-cap-control",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1061158912,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1065353216,
+      "incidental_EAX": 1065353216,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "monster-over-cap-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "monster-over-cap-control",
+        "owner_class": 2,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1061158912,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1065353216,
+      "incidental_EAX": 1065353216,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "nonunit-output-unchanged",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "nonunit-output-unchanged",
+        "owner_class": 0,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 0,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "nonunit-output-unchanged",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "nonunit-output-unchanged",
+        "owner_class": 0,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 0,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "nonunit-output-unchanged",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "nonunit-output-unchanged",
+        "owner_class": 0,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 0,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "nonunit-output-unchanged",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "nonunit-output-unchanged",
+        "owner_class": 0,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1048576000,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 0,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "small-decimals",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "small-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 953267991,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 961656599,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 966609234,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 974997841,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "small-decimals",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "small-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 953267991,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 961656599,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 966609234,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 974997842,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "small-decimals",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "small-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 953267991,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 961656599,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 966609234,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 974997841,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "small-decimals",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "small-decimals",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 953267991,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 961656599,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 966609234,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 2
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        },
+        {
+          "type_index": 102,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 974997842,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "near-one-plus-small",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "near-one-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1065353214,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 855638016,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353214,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "near-one-plus-small",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "near-one-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1065353214,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 855638016,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353214,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "near-one-plus-small",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "near-one-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1065353214,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 855638016,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353214,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "near-one-plus-small",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "near-one-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1065353214,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 855638016,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1065353215,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "half-plus-small",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "half-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 855638016,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1056964608,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "half-plus-small",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "half-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 855638016,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1056964608,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "half-plus-small",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "half-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 855638016,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1056964608,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "half-plus-small",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "half-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964608,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 855638016,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1056964609,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "below-half-plus-small",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "below-half-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964607,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 847249408,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1056964607,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "below-half-plus-small",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "below-half-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964607,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 847249408,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1056964608,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "below-half-plus-small",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "below-half-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964607,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 847249408,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1056964607,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "below-half-plus-small",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "below-half-plus-small",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 1056964607,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 256,
+            "armor_bits": 847249408,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        },
+        {
+          "service": "itemArmor",
+          "item_index": 1
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        },
+        {
+          "type_index": 101,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1056964608,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "mixed-equipped-flags-control",
+      "mode": "actual-startup-inherited",
+      "fpcw": 3647,
+      "inputs": {
+        "name": "mixed-equipped-flags-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 16777472,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 32,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "mixed-equipped-flags-control",
+      "mode": "explicit-nearest-control",
+      "fpcw": 639,
+      "inputs": {
+        "name": "mixed-equipped-flags-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 16777472,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 32,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "mixed-equipped-flags-control",
+      "mode": "explicit-down-control",
+      "fpcw": 1663,
+      "inputs": {
+        "name": "mixed-equipped-flags-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 16777472,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 32,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    },
+    {
+      "name": "mixed-equipped-flags-control",
+      "mode": "explicit-up-control",
+      "fpcw": 2687,
+      "inputs": {
+        "name": "mixed-equipped-flags-control",
+        "owner_class": 4,
+        "items": [
+          {
+            "obj_class": 33554432,
+            "flags": 16777472,
+            "armor_bits": 1036831949,
+            "definition": true
+          },
+          {
+            "obj_class": 33554432,
+            "flags": 32,
+            "armor_bits": 1045220557,
+            "definition": true
+          }
+        ]
+      },
+      "events": [
+        {
+          "service": "itemArmor",
+          "item_index": 0
+        }
+      ],
+      "lookups": [
+        {
+          "type_index": 100,
+          "definition_present": true
+        }
+      ],
+      "player_armor_bits": 1036831949,
+      "monster_armor_bits": 1052770304,
+      "incidental_EAX": 553652224,
+      "stack_balanced": true,
+      "nonoutput_bytes_unchanged": true
+    }
+  ],
+  "regions": [
+    {
+      "name": "complete-ArmorRecalculate",
+      "address": "0x53e300",
+      "size": 145,
+      "sha256": "3a638c4c4ffdd01be49d268675deb067d32bcf6144ce3cb12218d283fc218f4a"
+    },
+    {
+      "name": "complete-ItemArmorValue",
+      "address": "0x415c00",
+      "size": 112,
+      "sha256": "f34af7f913929977ebcd6b9c0a911ec406377a07658d4726a9b647cf2d8d6581"
+    },
+    {
+      "name": "actual-startup-control-call",
+      "address": "0x4014b5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c"
+    },
+    {
+      "name": "actual-CRT-control-word",
+      "address": "0x40209e",
+      "size": 358,
+      "sha256": "da7de6a1ae9b07904d40360b02191a2cdc51ff80da00eaabf02926bbc1ac8820"
+    }
+  ],
+  "scope": "Complete145byte53E300..53E391 and complete112byte415C00..415C70 execute original instructions.32valid contexts/four raw FP modes. Armor definition lookup returns explicitly declared binary32 values; original definition table, modifier callbacks, and full runtime are not certified. Unmodified armor/no callback only. Player/monster final raw stored bits, exact item selection/order, lookup results, stack/CW and nonoutput bytes checked. Incidental EAX is retained separately; native int return is not treated as a meaningful original gameplay result. Actual startup0xe3f rows are authoritative; other control modes are observations, not new runtime policies. No whole-campaign or overall100 claim."
+}

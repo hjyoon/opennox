@@ -88,8 +88,8 @@ func TestChannelLife52F460FullPathAndAccumulation(t *testing.T) {
 	if got := spellChannelLifeUpdate52F460(record, channelLifeTestHooks52F460(&events)); got != 0 {
 		t.Fatalf("update = %d, want 0", got)
 	}
-	if target.mana != 5 || record.fraction != -0.25 {
-		t.Fatalf("mana = %d, fraction = %g; want 5, -0.25", target.mana, record.fraction)
+	if target.mana != 4 || record.fraction != 0.75 {
+		t.Fatalf("mana = %d, fraction = %g; want 4, 0.75", target.mana, record.fraction)
 	}
 	want := []string{"target", "flags", "mode", "caster", "buff", "target", "class", "target", "max", "target", "mana", "caster", "hp", "caster", "hp", "fraction", "level", "coefficient", "store", "target", "add", "caster", "clear"}
 	if !reflect.DeepEqual(events, want) {

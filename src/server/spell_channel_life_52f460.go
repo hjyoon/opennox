@@ -54,9 +54,11 @@ func spellChannelLifeUpdate52F460[Record, Object comparable](
 	}
 	if h.getHP(h.loadCaster(record)) != 0 {
 		fraction := h.loadFraction(record)
-		value := float32(h.coefficient(h.loadLevel(record)-1) + float64(fraction))
-		amount := spellDurationRoundNearestEven(value)
-		h.storeFraction(record, float32(float64(value)-float64(amount)))
+		// Preserve the original startup 53-bit directed addition and the
+		// binary32 spill before FISTP; the prior fraction stays cached.
+		value := shapeBoxSpill428270(experienceAdd53TowardZero(h.coefficient(h.loadLevel(record)-1), float64(fraction)))
+		amount := playerReadValuesRound4EEDC0(value)
+		h.storeFraction(record, shapeBoxSpill428270(experienceAdd53TowardZero(float64(value), -float64(amount))))
 		h.addMana(h.loadTarget(record), int16(amount))
 		h.clearDamage(h.loadCaster(record), 1)
 	}

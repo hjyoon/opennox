@@ -22,7 +22,7 @@ func TestChannelLife52F460NativeBindingUsesWidePointersAndFloatBits(t *testing.T
 	runtime := SpellChannelLifeRuntime52F460{
 		AddMana: func(got *Object, amount int16) {
 			addCalls++
-			if got != target || amount != 1 {
+			if got != target || amount != 0 {
 				t.Fatalf("add = %p/%d", got, amount)
 			}
 		},
@@ -42,7 +42,7 @@ func TestChannelLife52F460NativeBindingUsesWidePointersAndFloatBits(t *testing.T
 	if got := s.SpellChannelLifeUpdate52F460(r, runtime); got != 0 {
 		t.Fatalf("update = %d, want 0", got)
 	}
-	if addCalls != 1 || clearCalls != 1 || math.Float32frombits(uint32(r.Field72)) != -0.25 {
+	if addCalls != 1 || clearCalls != 1 || math.Float32frombits(uint32(r.Field72)) != 0.75 {
 		t.Fatalf("effects = %d/%d, fraction = %g", addCalls, clearCalls, math.Float32frombits(uint32(r.Field72)))
 	}
 }

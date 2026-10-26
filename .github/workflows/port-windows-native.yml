@@ -6,6 +6,7 @@ on:
     branches:
       - port/go1.26-multiarch
     paths:
+      - .gitattributes
       - .github/workflows/port-windows-native.yml
       - scripts/**
       - src/**

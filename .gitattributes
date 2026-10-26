@@ -1,0 +1,10 @@
+# Preserve source, scenario and oracle bytes across native platform checkouts.
+*.go text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.sh text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf

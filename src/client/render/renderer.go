@@ -182,8 +182,9 @@ func (r *Renderer) setViewport(ratio float32) image.Rectangle {
 
 	vpw, vph = wsz.X, wsz.Y
 
-	// Maintain source aspect ratio
-	if r.rotate && float32(vph)-ratio*float32(vpw) > float32(vpw)-ratio*float32(vph) {
+	// Round scaled dimensions to binary32 before subtraction. Otherwise ARM64
+	// can fuse multiply/subtract and shift a 4:3 viewport one pixel from AMD64.
+	if r.rotate && float32(vph)-float32(ratio*float32(vpw)) > float32(vpw)-float32(ratio*float32(vph)) {
 		r.rotated = true
 	} else {
 		r.rotated = false
@@ -192,12 +193,14 @@ func (r *Renderer) setViewport(ratio float32) image.Rectangle {
 		ratio = 1.0 / ratio
 	}
 
-	if ratio*float32(vph) <= float32(vpw) {
-		offx = int(float32(vpw)-float32(vph)*ratio) / 2
-		vpw = int(float32(vph) * ratio)
+	scaledWidth := float32(float32(vph) * ratio)
+	if scaledWidth <= float32(vpw) {
+		offx = int(float32(vpw)-scaledWidth) / 2
+		vpw = int(scaledWidth)
 	} else {
-		offy = int(float32(vph)-float32(vpw)/ratio) / 2
-		vph = int(float32(vpw) / ratio)
+		scaledHeight := float32(float32(vpw) / ratio)
+		offy = int(float32(vph)-scaledHeight) / 2
+		vph = int(scaledHeight)
 	}
 	vpx = offx
 	vpy = offy

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "name": "Wizard2 original first-scene two-Spider earned-input continuation",
+  "seed_contract": "Original healthy1119 Wiz02c Save, A43 D41 F115; original first scene not previously run.",
+  "coverage": "Original first-scene win, observed deaths of both summoned Spiders, poison-free survival/natural recovery and healthy manual Save. Taking damage is not a winning requirement. No whole chapter/overall100 certificate.",
+  "cases": [
+    {
+      "name": "wizard2-cave-first-scene-two-spiders-rest",
+      "scenario": "wizard2-cave-first-scene-two-spiders-rest.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 420,
+      "required_checkpoints": [
+        "original two summoned Spiders combat result",
+        "original natural post-combat recovery2",
+        "original manual Save",
+        "original natural post-combat recovery3"
+      ],
+      "created_type": "Spider",
+      "minimum_created": 2,
+      "minimum_dead_created": 2
+    }
+  ]
+}

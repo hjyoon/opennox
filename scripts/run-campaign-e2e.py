@@ -90,6 +90,29 @@ def check_ports(port):
             sock.close()
 
 
+def created_monster_history(samples, type_id):
+    initial_ids = {obj.get('script_id') for obj in samples[0]}
+    created = set()
+    dead = set()
+    observed_dead = set()
+    for objects in samples[1:]:
+        for obj in objects:
+            ident = obj.get('script_id')
+            if ident is None or ident in initial_ids or obj.get('type', {}).get('id') != type_id:
+                continue
+            created.add(ident)
+            if 'DEAD' in (obj.get('flags') or []):
+                dead.add(ident)
+                observed_dead.add(ident)
+            else:
+                dead.discard(ident)
+    final_ids = {obj.get('script_id') for obj in samples[-1]}
+    return {'type': type_id, 'count': len(created), 'dead': len(dead),
+            'script_ids': sorted(created), 'observed_dead_script_ids': sorted(observed_dead),
+            'last_observed_dead_script_ids': sorted(dead),
+            'absent_from_final_script_ids': sorted(created - final_ids)}
+
+
 def run_case(args, binary, suite_dir, case, port):
     case_dir = args.output / case['name']
     case_dir.mkdir()
@@ -226,13 +249,12 @@ def run_case(args, binary, suite_dir, case, port):
     if case.get('expect_damage'):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
     if case.get('created_type') and snapshots_ok:
-        first = json.loads(Path(report['snapshots'][0]['routes']['objects']['path']).read_text())
-        last = json.loads(Path(report['snapshots'][-1]['routes']['objects']['path']).read_text())
-        old_ids = {p.get('script_id') for p in first}
-        created = [p for p in last if p.get('script_id') not in old_ids and p.get('type', {}).get('id') == case['created_type']]
-        dead = [p for p in created if 'DEAD' in (p.get('flags') or [])]
-        report['original_created_monsters'] = {'type': case['created_type'], 'count': len(created), 'dead': len(dead), 'script_ids': [p.get('script_id') for p in created]}
-        outcomes_ok = outcomes_ok and len(created) >= case['minimum_created'] and len(dead) >= case['minimum_dead_created']
+        samples = [json.loads(Path(sample['routes']['objects']['path']).read_text())
+                   for sample in report['snapshots']]
+        history = created_monster_history(samples, case['created_type'])
+        report['original_created_monsters'] = history
+        outcomes_ok = (outcomes_ok and history['count'] >= case['minimum_created']
+                       and history['dead'] >= case['minimum_dead_created'])
     report['continuation_eligible'] = healthy and poison_free and bool(report.get('manual_save_written')) and not errors
     report['passed'] = (report['exit_code'] == 0 and not report['forced_termination'] and not errors
                         and not reader.is_alive() and not worker.is_alive() and snapshots_ok

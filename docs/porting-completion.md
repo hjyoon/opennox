@@ -1826,6 +1826,34 @@ Current Linux/runtime results require their own recorded evidence. Remaining
 native/transitive work, nine final campaign cells, UI/audio/peer/stability and
 overall porting 100% remain open.
 
+### Campaign E2E corpse cleanup and healthy first-scene progression
+
+The campaign runner now observes created actors across every read-only world
+snapshot. A death remains recorded after normal corpse cleanup. Disappearance
+alone is not a death, preexisting actors and repeated snapshots do not add
+kills, and a later observed resurrection cancels the final death claim. Four
+Python regression tests cover those conditions. Earlier raw failed reports
+remain immutable: the first healthy first-scene run had defeated both Spiders
+but its old final-snapshot-only classifier reported zero after corpse removal.
+
+`scripts/e2e/campaign/wizard2-progression.json` adds the original first-scene
+win and healthy manual Save. It starts independently from the earned Wiz02c
+checkpoint, uses the learned slot-A spell and Heal41 through normal inputs,
+then allows natural recovery and poison expiry. It requires two newly created
+Spiders, two observed deaths, surviving HP, poison zero and an actual manual
+Save. Receiving damage is not a winning requirement; the separate earlier
+incoming-damage diagnostic retains its own assertion.
+
+The new progression case passes in normal and HD, each about 166 seconds.
+Independent read-only Player.plr parsing verifies native living, poison-free
+status, map, XP and retained learned spells. The supplied Save, data and binary
+hashes are unchanged. No actor/HP/mana/poison/XP/RNG setter or debug write is used.
+This is only the first Wiz02c scene, not the entire chapter or a final cell audit.
+The tested binaries remain the four inspected native products of 4e694a74;
+these Python/YAML/JSON changes reuse them without rebuilding Go. Source and
+scenario provenance are recorded separately. Current Linux verification and
+other remaining port/campaign/UI/audio/peer/stability work remain open.
+
 ### Native cloud/projectile callbacks and reusable campaign E2E
 
 This batch ports the reachable NPC/player cloud GreatSword callbacks, player

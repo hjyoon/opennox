@@ -1,0 +1,85 @@
+# Original scene, ordinary earned spell inputs and natural recovery; no gameplay-state writes.
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 600}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 500}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "observe-player-target", "name": "readqualified1119 full20HP78MP original Wiz02c in completed P76 normal product"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "assert-quickbar-spell", "slot": 3, "spell": 115}
+  - {"action": "wait", "dt": 600}
+  - {"action": "walk-to-world", "x": 943, "y": 5355, "name": "ordinary original GalavaHalfDoor2 approach"}
+  - {"action": "move", "x": 512, "y": 322, "name": "ordinary mouse at original entry half-door upper surface"}
+  - {"action": "wait", "dt": 3}
+  - {"action": "observe-player-target", "name": "read actual original entry half-door hover"}
+  - {"action": "click", "x": 512, "y": 322, "name": "ordinary original entry half-door click"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "run-to-world", "x": 950, "y": 5250, "name": "ordinary original Wiz02c corridor toward Piece1Start"}
+  - {"action": "run-to-world", "x": 1080, "y": 5120, "name": "ordinary original Wiz02c corridor toward Piece1Start"}
+  - {"action": "run-to-world", "x": 1190, "y": 5010, "name": "ordinary original Wiz02c corridor toward Piece1Start"}
+  - {"action": "walk", "ang": 0.25, "dt": 25, "name": "ordinary bounded NE entry into original Piece1Start"}
+  - {"action": "wait", "dt": 420}
+  - {"action": "observe-player-target", "name": "read actual original necromancer scene before retreat"}
+  - {"action": "capture-quest-map-audit-frame", "name": "R320 CHECKPOINT original first necromancer Spider scene"}
+  - {"action": "run-to-world", "x": 950, "y": 5250, "name": "ordinary original corridor retreat after first scene control release"}
+  - {"action": "observe-player-target", "name": "read actual original retreat before earned Lightning43"}
+  - {"action": "capture-quest-map-audit-frame", "name": "R320 CHECKPOINT original first-scene retreat spacing"}
+  - {"action": "cast-at-nearest-monster-input", "dt": 5, "item": "Spider", "slot": 1, "count": 20, "name": "ordinary A earned Lightning43 original summoned Spider attempt1"}
+  - {"action": "observe-player-target", "name": "read actual original summoned Spider response1"}
+  - {"action": "cast-at-nearest-monster-input", "dt": 5, "item": "Spider", "slot": 1, "count": 20, "name": "ordinary A earned Lightning43 original summoned Spider attempt2"}
+  - {"action": "observe-player-target", "name": "read actual original summoned Spider response2"}
+  - {"action": "cast-at-nearest-monster-input", "dt": 5, "item": "Spider", "slot": 1, "count": 20, "name": "ordinary A earned Lightning43 original summoned Spider attempt3"}
+  - {"action": "observe-player-target", "name": "read actual original summoned Spider response3"}
+  - {"action": "capture-quest-map-audit-frame", "name": "R320 CHECKPOINT original summoned Spider combat response"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D earned LesserHeal41 after original first-scene combat"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 60}
+  - {"action": "observe-player-target", "name": "read actual first-scene living HP Mana poison after LesserHeal41"}
+  - {"action": "capture-quest-map-audit-frame", "name": "R320 CHECKPOINT original first-scene living Save"}
+  - {"action": "cast-at-nearest-monster-input", "dt": 5, "item": "Spider", "slot": 1, "count": 20, "name": "ordinary A Lightning43 remaining original summoned Spider attempt1"}
+  - {"action": "observe-player-target", "name": "read original remaining Spider response1"}
+  - {"action": "cast-at-nearest-monster-input", "dt": 5, "item": "Spider", "slot": 1, "count": 20, "name": "ordinary A Lightning43 remaining original summoned Spider attempt2"}
+  - {"action": "observe-player-target", "name": "read original remaining Spider response2"}
+  - {"action": "cast-at-nearest-monster-input", "dt": 5, "item": "Spider", "slot": 1, "count": 20, "name": "ordinary A Lightning43 remaining original summoned Spider attempt3"}
+  - {"action": "observe-player-target", "name": "read original remaining Spider response3"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign original two summoned Spiders combat result"}
+  - {"action": "wait", "dt": 600}
+  - {"action": "observe-player-target", "name": "read original post-combat poison and natural recovery1"}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary earned Heal41 after20seconds of natural mana recovery"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "observe-player-target", "name": "read actual late poison-recovery Heal41"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign original natural post-combat recovery1"}
+  - {"action": "wait", "dt": 600}
+  - {"action": "observe-player-target", "name": "read original post-combat poison and natural recovery2"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign original natural post-combat recovery2"}
+  - {"action": "wait", "dt": 600}
+  - {"action": "observe-player-target", "name": "read original final poison expiry"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign original natural post-combat recovery3"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

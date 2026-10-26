@@ -14,6 +14,7 @@ case can allow poison; it is never reported as a healthy continuation.
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import queue
@@ -157,6 +158,43 @@ def required_enable_transitions(samples, requirements):
             'passed': bool(transitions) and all(row['passed'] for row in transitions)}
 
 
+def required_plate_holds(samples, requirements):
+    def position(objects, ident):
+        matches = [obj for obj in objects if obj.get('script_id') == ident]
+        point = matches[0].get('pos', {}) if len(matches) == 1 else {}
+        values = (point.get('x'), point.get('y'))
+        return values if all(type(v) in (int, float) and math.isfinite(v) for v in values) else None
+
+    holds = []
+    for required in requirements:
+        maximum = required['maximum_weight_distance']
+        minimum = required['minimum_player_distance']
+        drift = required['maximum_weight_drift']
+        valid_bounds = (all(type(v) in (int, float) and math.isfinite(v) for v in (maximum, minimum, drift))
+                        and 0 < maximum < minimum and drift >= 0)
+        observations = []
+        for objects in samples:
+            weight = position(objects, required['weight_script_id'])
+            plate = position(objects, required['plate_script_id'])
+            player = position(objects, required['player_script_id'])
+            observations.append((weight, math.dist(weight, plate), math.dist(player, plate))
+                                if weight and plate and player else None)
+        initial, final = (observations[0], observations[-1]) if observations else (None, None)
+        separated = [i for i, row in enumerate(observations)
+                     if valid_bounds and row and row[1] <= maximum and row[2] >= minimum]
+        stable = bool(final and separated) and all(
+            row and row[1] <= maximum and math.dist(row[0], final[0]) <= drift
+            for row in observations[separated[0]:])
+        passed = bool(valid_bounds and initial and final and initial[1] > maximum
+                      and final[1] <= maximum and final[2] >= minimum
+                      and len(separated) >= 2 and stable)
+        holds.append(dict(required, initial_weight_distance=initial[1] if initial else None,
+                          final_weight_distance=final[1] if final else None,
+                          final_player_distance=final[2] if final else None,
+                          separated_samples=len(separated), stable_after_separation=stable, passed=passed))
+    return {'holds': holds, 'passed': bool(holds) and all(row['passed'] for row in holds)}
+
+
 def run_case(args, binary, suite_dir, case, port):
     case_dir = args.output / case['name']
     case_dir.mkdir()
@@ -294,7 +332,7 @@ def run_case(args, binary, suite_dir, case, port):
     if case.get('expect_damage'):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
     if (case.get('created_type') or case.get('required_defeated_script_ids')
-            or case.get('required_enable_transitions')) and snapshots_ok:
+            or case.get('required_enable_transitions') or case.get('required_plate_holds')) and snapshots_ok:
         samples = [json.loads(Path(sample['routes']['objects']['path']).read_text())
                    for sample in report['snapshots']]
     if case.get('created_type') and snapshots_ok:
@@ -310,6 +348,10 @@ def run_case(args, binary, suite_dir, case, port):
         transitions = required_enable_transitions(samples, case['required_enable_transitions'])
         report['required_original_enable_transitions'] = transitions
         outcomes_ok = outcomes_ok and transitions['passed']
+    if case.get('required_plate_holds') and snapshots_ok:
+        holds = required_plate_holds(samples, case['required_plate_holds'])
+        report['required_original_plate_holds'] = holds
+        outcomes_ok = outcomes_ok and holds['passed']
     report['continuation_eligible'] = healthy and poison_free and bool(report.get('manual_save_written')) and not errors
     report['passed'] = (report['exit_code'] == 0 and not report['forced_termination'] and not errors
                         and not reader.is_alive() and not worker.is_alive() and snapshots_ok

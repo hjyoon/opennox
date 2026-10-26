@@ -1,0 +1,76 @@
+# Original menu/input-only campaign regression; use run-campaign-e2e.py.
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "observe-player-target"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "assert-quickbar-spell", "slot": 3, "spell": 115}
+  - {"action": "wait", "dt": 60}
+  - {"action": "observe-player-target", "name": "read fresh original eastern road living source222 Save Load"}
+  - {"action": "wait", "dt": 35}
+  - {"action": "run-to-world", "x": 1995, "y": 5000, "name": "actual original connected southern road toward original crate and pressure plate"}
+  - {"action": "run-to-world", "x": 1916, "y": 5097, "name": "actual original connected southern road toward original crate and pressure plate"}
+  - {"action": "run-to-world", "x": 2057, "y": 5195, "name": "actual original connected southern road toward original crate and pressure plate"}
+  - {"action": "observe-player-target", "name": "read native original south pressure plate and steel crate approach"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original crate phase1 original southern steel crate and pressure plate approach"}
+  - {"action": "wait", "dt": 35}
+  - {"action": "observe-player-target", "name": "read fresh original south steel crate approach living source223 Load"}
+  - {"action": "walk-to-world", "x": 2057, "y": 5195, "name": "actual original player north alignment with original CrateSteel4 extent2400"}
+  - {"action": "walk-to-world", "x": 2057, "y": 5317, "name": "actual original southward body push of SteelCrate2400 toward PressurePlate2399"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "observe-player-target", "name": "read actual original steel crate push and pressure plate response"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original crate phase2 original actual steel crate body push onto pressure plate"}
+  - {"action": "wait", "dt": 35}
+  - {"action": "observe-player-target", "name": "read fresh original partially pushed steel crate living source224 Save Load"}
+  - {"action": "walk-to-world", "x": 2040, "y": 5235, "name": "actual original player west-side route clear of steel crate2400"}
+  - {"action": "walk-to-world", "x": 2110, "y": 5260, "name": "actual original player northeast alignment behind displaced steel crate2400"}
+  - {"action": "walk-to-world", "x": 2068, "y": 5329, "name": "actual original southwest body push aligns steel crate2400 toward plate2399 center"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "observe-player-target", "name": "read native original corrected steel crate push and plate alignment"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original crate phase3 original steel crate actual corrected body push toward pressure plate"}
+  - {"action": "wait", "dt": 35}
+  - {"action": "observe-player-target", "name": "read fresh original steel crate aligned on pressure plate living source225 Load"}
+  - {"action": "run-to-world", "x": 2140, "y": 5295, "name": "actual original player moves east clear of crate and pressure plate"}
+  - {"action": "run-to-world", "x": 2160, "y": 5220, "name": "actual original player approaches original SecretWalls10 from southwest"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "observe-player-target", "name": "read original pressure-plate crate held while player stands away"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original crate phase4 original steel crate holds pressure plate without player overlap"}
+  - {"action": "wait", "dt": 35}
+  - {"action": "run-to-world", "x": 2230, "y": 5150, "name": "actual northeast traversal through original crate-held SecretWalls10 opening"}
+  - {"action": "observe-player-target", "name": "read native original crate-held wall passage living arrival"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original crate phase4 original actual traversal through crate-held wall opening"}
+  - {"action": "wait", "dt": 35}
+  - {"action": "observe-player-target", "name": "read fresh original crate-held gate passage living source226 Save Load"}
+  - {"action": "wait", "dt": 35}
+  - {"action": "run-to-world", "x": 2385, "y": 5042, "name": "actual original eastern room connected road72 approach"}
+  - {"action": "walk-to-world", "x": 2451, "y": 4958, "name": "actual original eastern four-obelisk room center approach"}
+  - {"action": "wait", "dt": 120}
+  - {"action": "observe-player-target", "name": "read native original four-obelisk mana recovery and living player"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original crate phase5 original four-obelisk eastern room after actual crate gate passage"}
+  - {"action": "wait", "dt": 35}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

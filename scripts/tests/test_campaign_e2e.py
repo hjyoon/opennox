@@ -115,5 +115,46 @@ class RequiredEnableTransitionsTests(unittest.TestCase):
             [{'script_id': 1, 'before': None, 'after': None}])['passed'])
 
 
+class RequiredPlateHoldsTests(unittest.TestCase):
+    requirements = [{'weight_script_id': 2400, 'plate_script_id': 2399,
+                     'player_script_id': 1, 'maximum_weight_distance': 16,
+                     'minimum_player_distance': 175, 'maximum_weight_drift': .5}]
+
+    @staticmethod
+    def sample(weight=(0, -101), player=(0, -200)):
+        return [{'script_id': ident, 'pos': {'x': xy[0], 'y': xy[1]}}
+                for ident, xy in ((2400, weight), (2399, (0, 0)), (1, player))]
+
+    def test_crate_stays_on_plate_as_player_leaves(self):
+        samples = [self.sample(), self.sample((-12, -4), (0, -30)),
+                   self.sample((-12, -4), (180, 0)), self.sample((-12, -4), (400, 0))]
+        self.assertTrue(runner.required_plate_holds(samples, self.requirements)['passed'])
+
+    def test_prepositioned_or_absent_weight_does_not_count(self):
+        for samples in ([], [self.sample((0, 0)), self.sample((0, 0))],
+                        [self.sample(), self.sample()[1:]],
+                        [self.sample()[1:], self.sample((0, 0)), self.sample((0, 0))]):
+            with self.subTest(samples=samples):
+                self.assertFalse(runner.required_plate_holds(samples, self.requirements)['passed'])
+
+    def test_player_standing_on_plate_does_not_prove_weight_hold(self):
+        self.assertFalse(runner.required_plate_holds(
+            [self.sample(), self.sample((0, 0), (0, 0)), self.sample((0, 0), (0, 0))],
+            self.requirements)['passed'])
+
+    def test_weight_leaving_or_drifting_after_separation_fails(self):
+        for middle in ((0, 40), (10, 0)):
+            with self.subTest(middle=middle):
+                samples = [self.sample(), self.sample((0, 0)), self.sample(middle), self.sample((0, 0))]
+                self.assertFalse(runner.required_plate_holds(samples, self.requirements)['passed'])
+
+    def test_one_observation_nonfinite_and_duplicate_identity_fail(self):
+        for samples in ([self.sample(), self.sample((0, 0))],
+                        [self.sample(), self.sample((0, 0)), self.sample((float('nan'), 0))],
+                        [self.sample(), self.sample((0, 0)), self.sample((0, 0)) + self.sample((0, 0))[:1]]):
+            with self.subTest(samples=samples):
+                self.assertFalse(runner.required_plate_holds(samples, self.requirements)['passed'])
+
+
 if __name__ == '__main__':
     unittest.main()

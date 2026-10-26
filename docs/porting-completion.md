@@ -1918,6 +1918,36 @@ Fresh products and campaign E2E are recorded separately in
 `poison-activation-precision-port/`. Linux, remaining native/transitive work,
 campaign cells and overall porting 100 percent remain open.
 
+### Campaign E2E steel-crate pressure plate and gate
+
+`scripts/e2e/campaign/wizard2-crate-gate.json` combines the original southern
+approach, body push, crate alignment, player separation, gate traversal and
+four-Obelisk room arrival. No item, position, resource or script state is set.
+The runner requires the crate to start away from the plate, remain within a
+configured 16-unit proximity after the player leaves by at least 175 units,
+and remain stable across multiple later observations. Missing/prepositioned
+weights, player-only overlap, later drift/removal and nonfinite or duplicate
+final identities cannot pass. All 13 existing Python tests and five new
+regressions pass.
+
+Normal passes in 51.155 seconds and HD in 50.696 seconds using the existing
+clean fbaa56a products without rebuilding Go. Both retain the crate at
+(2046.0057,5343.336), about 12.5415 units from the plate; the final player is
+555.628 units away. The separate unpressed control uses the same normal
+binary, seed and gate endpoint, omits the push/alignment, and times out after
+600 ticks in 35.339 seconds. Its raw report remains failed and ineligible.
+The proximity tolerance is a bounded witness, not a collision-shape oracle;
+the ordinary crossing and isolated blocked control qualify this gate result.
+Raw wall Dir/Field12 values are not used as secret-wall openness evidence.
+
+Independent native Save parsing verifies Wiz02c, HP20/20, MP78/78, poison zero,
+XP3459.5488 (bits1163409608) and the three earned spells in both runs. Source
+Save, data, binary and observation hashes are rechecked. Mana was already
+full before arrival, so no Obelisk recovery effect is credited. Evidence is
+retained in `campaign-wiz02c-crate-gate-healthy-verified-v1.json`. GoldKey,
+BookOfOblivion, full Bookcase6 movement, final cell audits and overall100
+remain open.
+
 ### Campaign E2E original switch transitions and central east combat
 
 `scripts/e2e/campaign/wizard2-central-east.json` starts from the earned northern

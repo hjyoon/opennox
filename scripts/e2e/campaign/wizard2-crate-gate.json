@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "name": "Wizard2 original steel-crate gate and weighted plate",
+  "seed_contract": "Earned central east Save20HP72MP0poison, A43 D41 F115; original plate/mover activated and Urchin2349 dead.",
+  "coverage": "Ordinary crate push/alignment, stable weight near plate while player leaves, actual original gate traversal and four-Obelisk room Save. Geometric bounds are witnesses, not a collision-shape oracle; separate unpressed control must time out at the same gate endpoint.",
+  "cases": [
+    {
+      "name": "wizard2-cave-crate-gate",
+      "scenario": "wizard2-cave-crate-gate.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 200,
+      "required_checkpoints": [
+        "original crate phase1 original southern steel crate and pressure plate approach",
+        "original crate phase2 original actual steel crate body push onto pressure plate",
+        "original crate phase3 original steel crate actual corrected body push toward pressure plate",
+        "original crate phase4 original steel crate holds pressure plate without player overlap",
+        "original crate phase4 original actual traversal through crate-held wall opening",
+        "original crate phase5 original four-obelisk eastern room after actual crate gate passage",
+        "original manual Save"
+      ],
+      "expected_mana": 78,
+      "required_plate_holds": [
+        {
+          "weight_script_id": 1000193999,
+          "plate_script_id": 1000194001,
+          "player_script_id": 1000000001,
+          "maximum_weight_distance": 16,
+          "minimum_player_distance": 175,
+          "maximum_weight_drift": 0.5
+        }
+      ]
+    }
+  ]
+}

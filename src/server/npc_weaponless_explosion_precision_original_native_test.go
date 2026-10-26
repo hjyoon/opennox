@@ -186,7 +186,7 @@ func npcWeaponlessExplosionHistoricalExpected(t *testing.T, name string) weaponl
 	if err = json.Unmarshal(b, &fixture); err != nil {
 		t.Fatal(err)
 	}
-	if len(fixture.Cases) != 81 {
+	if len(fixture.Cases) != 91 {
 		t.Fatal("incomplete original historical NPC numeric contexts")
 	}
 	for _, c := range fixture.Cases {

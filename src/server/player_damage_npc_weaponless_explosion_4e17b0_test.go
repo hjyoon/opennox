@@ -38,11 +38,9 @@ func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionArmor(t *testing.T) {
 					armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0.4)
 					protection, want := float64(0), int32(5)
 					wantArmor, wantCarry := uint16(21), float32(-.1)
-					if source != nil {
-						numeric := npcWeaponlessExplosionHistoricalExpected(t, fmt.Sprintf("old-armor/%s/immune-%t", kind, immune))
-						want = int32(numeric.ExpectedDamage[0])
-						wantArmor, wantCarry = 25-uint16(numeric.ExpectedWear), math.Float32frombits(numeric.ExpectedCarry)
-					}
+					numeric := npcWeaponlessExplosionHistoricalExpected(t, fmt.Sprintf("old-armor/%s/immune-%t", kind, immune))
+					want = int32(numeric.ExpectedDamage[0])
+					wantArmor, wantCarry = 25-uint16(numeric.ExpectedWear), math.Float32frombits(numeric.ExpectedCarry)
 					if immune {
 						want = 2
 					}
@@ -104,10 +102,8 @@ func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionRounding(t *testing.T) {
 				}
 				marker, typ, carry := damageMeleeMarker4E17B0(target)
 				want, wantCarry := tc.effective, tc.wantCarry
-				if source != nil {
-					numeric := npcWeaponlessExplosionHistoricalExpected(t, fmt.Sprintf("old-round/%s/%d", kind, i))
-					want, wantCarry = int32(numeric.ExpectedDamage[0]), numeric.ExpectedCarry
-				}
+				numeric := npcWeaponlessExplosionHistoricalExpected(t, fmt.Sprintf("old-round/%s/%d", kind, i))
+				want, wantCarry = int32(numeric.ExpectedDamage[0]), numeric.ExpectedCarry
 				if got != want || marker != 2 || typ != 7 || math.Float32bits(carry) != wantCarry {
 					t.Fatalf("damage=%d marker=%d/%d carry=%#x", got, marker, typ, math.Float32bits(carry))
 				}

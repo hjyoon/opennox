@@ -1753,6 +1753,44 @@ are independently checked. Reachable native/transitive semantics, remaining
 damage paths, campaign features/final nine cells, UI/audio/peer and sustained
 gameplay remain open. Overall porting is not 100 percent.
 
+### Native NPC nil-source explosion startup precision
+
+NPC explosions with literal nil source and nil weapon now keep the original
+startup absorption product, binary32 spill, signed fractional carry/remainder
+and Quest conversion in the dedicated partial runtime. The full generic
+source-less path was already correct. One production file removes the remaining
+nearest-rounding fallback while preserving nonnil-source behavior.
+
+The unchanged executable ran 473 primary and ten exact historical contexts in
+four controls: 1,932 runs, 12,548 complete calls, 204 recorded instruction
+addresses and five entered bodies. Mode, armor and DefaultDamage HP are three
+excluded services, with no floating point output, arithmetic or conversion
+substitutes. Source and weapon arguments are literal NULL. Possession and
+monster-action getters remain unentered and are excluded from new aliases.
+All original and native primary nonoutput frames are preserved; native C-owned
+frames are above 4 GiB. External service effects, other aliases, full geometry,
+HP/network/transitive semantics and general AI remain separately bounded.
+
+The final before/after comparison holds all 6,924 inputs identical except one
+production file. The old code has 148 numeric mismatch leaves, one failed
+partial-runtime parent and 799 passing events including the full-runtime
+parent; the final code passes all 948 identities. Ten independently executed
+old numeric contexts are appended to the historical fixture, preserving all
+81 previous prefix case bytes and 32 integrated row bytes. Existing test names,
+input tables, callback effects and nonnumeric assertions are retained, with
+the historical fixture guard requiring all 91 cases.
+
+Related tests preserve 150,166 prior identities and add 948 for 151,114.
+Focused tests preserve 139,544 and add 948 for 140,492. Three actual
+cgocheck2/race/checkptr2 repetitions pass 421,476 events; the same focused
+identities pass the offline Linux AMD64 Rosetta/Clang lane. Four full suites
+preserve every prior identity, action and skip: normal and HD pass 218,441
+with 49 skips, server and server HD pass 213,613 with seven skips. Four clean
+committed ARM64 products, source archive, build metadata and remote revision
+are independently checked. Remaining native/transitive semantics, campaign
+features/final nine cells, UI/audio/peer and sustained gameplay remain open.
+Overall porting is not 100 percent.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

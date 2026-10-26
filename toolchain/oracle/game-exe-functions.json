@@ -22307,6 +22307,41 @@
       "size": 33,
       "sha256": "73e524dcc8ceaeacaa15850d264310cd0465da1085324a7de94b6564b55e5b7c",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
+    },
+    {
+      "name": "original_NPC_nilsource_explosion_precision_419a70",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
+    },
+    {
+      "name": "original_NPC_nilsource_explosion_precision_4e17b0",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
+      "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
+    },
+    {
+      "name": "original_NPC_nilsource_explosion_precision_4e20f0",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
+      "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
+    },
+    {
+      "name": "original_NPC_nilsource_explosion_precision_4e40b0",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
+      "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
+    },
+    {
+      "name": "original_NPC_nilsource_explosion_precision_4ff350",
+      "address": "0x4ff350",
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
+      "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
     }
   ],
   "data": [

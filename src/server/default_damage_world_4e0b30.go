@@ -2,7 +2,6 @@ package server
 
 import (
 	"image"
-	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -70,6 +69,20 @@ func defaultDamageUnsupported4E0B30(
 	// Returning success is safer than invoking its pointer-truncating ABI32
 	// body, while Unsupported keeps the missing branch visible in test logs.
 	return true
+}
+
+// 004E0DA2/004E0E0B spill protection before FSUB/FIMUL and the final
+// binary32 store passed to 00419A70. The original startup control uses
+// 53-bit precision toward zero for every boundary, including FISTP.
+func defaultDamageScaleProtection4E0B30(protection float64, damage int32) int32 {
+	stored := experienceSpill32TowardZero(protection)
+	factor := experienceAdd53TowardZero(1, -float64(stored))
+	scaled := experienceMul53TowardZero(factor, float64(damage))
+	result := netFXTruncateSignedDWORD419A70(experienceSpill32TowardZero(scaled))
+	if result == 0 {
+		return 1
+	}
+	return result
 }
 
 func defaultDamageWeaponPreDamageModifiers4E0B30(weapon *Object) [4]*ModifierEff {
@@ -844,27 +857,14 @@ func DefaultDamageWorld4E0B30(
 		if protectionValue != 0 && byte(currentFrame())&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(104, target)
 		}
-		// GAME.EXE compares the binary64 return before spilling it to v46,
-		// then evaluates the damage expression in binary64 and spills v42 to
-		// binary32 immediately before FISTP.
-		protection := float32(protectionValue)
-		scaled := float32((1.0 - float64(protection)) * float64(damage))
-		damage = int32(math.RoundToEven(float64(scaled)))
-		if damage == 0 {
-			damage = 1
-		}
+		damage = defaultDamageScaleProtection4E0B30(protectionValue, damage)
 	}
 	if electricProtected {
 		protectionValue := runtime.ElectricProtection(target)
 		if protectionValue != 0 && byte(currentFrame())&3 == 0 && runtime.Audio != nil {
 			runtime.Audio(108, target)
 		}
-		protection := float32(protectionValue)
-		scaled := float32((1.0 - float64(protection)) * float64(damage))
-		damage = int32(math.RoundToEven(float64(scaled)))
-		if damage == 0 {
-			damage = 1
-		}
+		damage = defaultDamageScaleProtection4E0B30(protectionValue, damage)
 		// 004E0E60 reloads the class after protection/audio. PLAYER wins
 		// over MONSTER, and both branches reload their native update address.
 		class := target.Class()

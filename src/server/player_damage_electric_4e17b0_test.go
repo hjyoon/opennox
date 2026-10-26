@@ -43,7 +43,7 @@ func TestPlayerDamageNative4E17B0MonsterElectricPlayer(t *testing.T) {
 			if h, result := PlayerDamageNative4E17B0(target, source, nil, 5, typ, r); !h || !result {
 				t.Fatalf("electric player hit = %t/%t", h, result)
 			}
-			if !reflect.DeepEqual(damages, []int32{2}) || target.HealthData.Cur != 18 || update.Field21 != 0 || update.Field40_0 != 2 || target.Obj130 != source || target.Pos132 != source.PrevPos {
+			if !reflect.DeepEqual(damages, []int32{1}) || target.HealthData.Cur != 19 || update.Field21 != 0 || update.Field40_0 != 2 || target.Obj130 != source || target.Pos132 != source.PrevPos {
 				t.Fatalf("damage=%v HP=%d carry=%g source=%p", damages, target.HealthData.Cur, math.Float32frombits(update.Field21), target.Obj130)
 			}
 		})

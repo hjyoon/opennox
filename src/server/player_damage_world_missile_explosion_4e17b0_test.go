@@ -184,10 +184,7 @@ func TestDefaultDamageWorldMagicMissile4E0B30SignedFireImmunity(t *testing.T) {
 					if !player {
 						want /= 2 // Original signed division precedes protection/minimum.
 					}
-					want = playerDamageRound4E17B0(float32(want))
-					if want == 0 {
-						want = 1
-					}
+					want = defaultDamageOriginalProtected4E0B30(t, want, 0)
 					if !DefaultDamageWorld4E0B30(v, a, w, raw, object.DamageExplosion, r) || got != want {
 						t.Fatalf("HP input=%d want=%d", got, want)
 					}

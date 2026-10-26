@@ -57,7 +57,7 @@ func TestDefaultDamageWorld4E0B30MissileExplosionFireImmuneHalving(t *testing.T)
 	}{
 		{9, 0.5, 2}, {11, 0.5, 2}, {-9, 0.5, -2}, {-11, 0.5, -2},
 		{9, 0, 4}, {-9, 0, -4}, {1, 0, 1}, {0, 0, 1}, {-1, 0, 1},
-		{math.MinInt32, 0, -1073741824}, {math.MaxInt32, 0, 1073741824},
+		{math.MinInt32, 0, -1073741824}, {math.MaxInt32, 0, 1073741760},
 	} {
 		t.Run(fmt.Sprintf("%d/%g", tc.damage, tc.protection), func(t *testing.T) {
 			target, source, weapon, _ := damageExplosionFixture4E17B0(t, true, false, false)

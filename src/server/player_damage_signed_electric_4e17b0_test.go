@@ -72,15 +72,15 @@ func TestPlayerDamageSignedElectric4E17B0(t *testing.T) {
 				{name: "zero positive tie", raw: 0, carry: 0.5, residual: 0.5, toHP: 1, hp: 59},
 				{name: "zero negative tie", raw: 0, carry: -0.5, residual: -0.5, toHP: 1, hp: 59},
 				{name: "negative cancellation", raw: -1, carry: 0.5, toHP: 1, hp: 59},
-				{name: "negative tie", raw: -5, carry: 0.5, toDefault: -2, toHP: -2, hp: 62},
-				{name: "negative fractional carry", raw: -3, carry: 0.25, residual: -0.25, toDefault: -1, toHP: -1, hp: 61},
-				{name: "negative Quest", raw: -5, carry: 0.5, quest: true, questScale: 0.5, toDefault: -1, toHP: -1, hp: 61},
+				{name: "negative tie", raw: -5, carry: 0.5, toDefault: -2, toHP: -1, hp: 61},
+				{name: "negative fractional carry", raw: -3, carry: 0.25, residual: -0.25, toDefault: -1, toHP: 1, hp: 59},
+				{name: "negative Quest", raw: -5, carry: 0.5, quest: true, questScale: 0.5, toDefault: -1, toHP: 1, hp: 59},
 				{name: "negative Quest zero", raw: -5, carry: 0.5, quest: true, questScale: 0, toHP: 1, hp: 59},
 				{name: "positive minimum control", raw: 1, carry: -0.5, toDefault: 1, toHP: 1, hp: 59},
 				{name: "zero God", carry: 0.5, residual: 0.5, god: true, hp: 60},
 				{name: "negative God", raw: -5, carry: 0.5, god: true, hp: 60},
 				{name: "zero Shield", carry: 0.5, residual: 0.5, toHP: 1, shield: true, hp: 60},
-				{name: "negative Shield", raw: -5, carry: 0.5, toDefault: -2, toHP: -2, shield: true, hp: 60},
+				{name: "negative Shield", raw: -5, carry: 0.5, toDefault: -2, toHP: -1, shield: true, hp: 60},
 			} {
 				t.Run(fmt.Sprintf("observed-%t/%s", observed, tc.name), func(t *testing.T) {
 					var events []string

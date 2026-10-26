@@ -272,7 +272,9 @@ func TestDefaultDamagePlayerArmedExplosion4E0B30OriginalTranscript(t *testing.T)
 			}
 		}
 	}
-	const want = "d260091f6e596ac9afa1192cee49295c91bfa95217f3048ce321cad2882cdbc4"
+	// Startup HP arguments are projected from unchanged original arithmetic;
+	// all 774 actor/event rows and the old control digest remain recorded.
+	const want = "e0fa7b58811727144cce69869ac6be8e9dbf05721575c2c56618716c507cfd9a"
 	if sum := fmt.Sprintf("%x", sha256.Sum256(transcript.Bytes())); sum != want || transcript.Len() != 78268 || bytes.Count(transcript.Bytes(), []byte{'\n'}) != 774 {
 		t.Fatalf("unchanged PE32 player armed EXPLOSION rows=%d bytes=%d SHA=%s want=%s", bytes.Count(transcript.Bytes(), []byte{'\n'}), transcript.Len(), sum, want)
 	}

@@ -17,7 +17,7 @@ func TestDefaultDamageWorld4E0B30PlayerWeaponlessExplosionMatrix(t *testing.T) {
 			protection float64
 			want       int32
 		}{
-			{"ordinary", 45, 0, 45}, {"tie-even", 9, 0.5, 4}, {"tie-odd", 11, 0.5, 6},
+			{"ordinary", 45, 0, 45}, {"tie-even", 9, 0.5, 4}, {"tie-odd", 11, 0.5, 5},
 			{"zero", 0, 0, 1}, {"minimum", 1, 1, 1}, {"signed", -9, 0.5, -4},
 		} {
 			t.Run(kind+"/"+tc.name, func(t *testing.T) {

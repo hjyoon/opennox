@@ -257,7 +257,9 @@ func armedExplosionTranscript4E0B30(t *testing.T) []byte {
 
 func TestDefaultDamageArmedExplosion4E0B30OriginalTranscript(t *testing.T) {
 	got := armedExplosionTranscript4E0B30(t)
-	const want = "bf472f152a13c5365a9c47ba20161bc6e0f3b6754ebeb04bcf9d73765e84314b"
+	// Only HP arguments change under independently qualified startup math;
+	// the earlier nearest-control digest is retained in the historical fixture.
+	const want = "11dfeef02ea5889f3c602559f6cae342dad2a954578b4794de6843c82834eb5a"
 	if sum := fmt.Sprintf("%x", sha256.Sum256(got)); sum != want {
 		t.Fatalf("independent original EXPLOSION transcript bytes=%d SHA=%s want=%s", len(got), sum, want)
 	}

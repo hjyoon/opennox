@@ -20,7 +20,7 @@ func TestDefaultDamageWorld4E0B30WeaponlessExplosionMatrix(t *testing.T) {
 				want       int32
 			}{
 				{"ordinary", 45, false, 0, 45}, {"resist-even", 9, false, 0.5, 4},
-				{"resist-odd", 11, false, 0.5, 6}, {"immune", 9, true, 0, 4},
+				{"resist-odd", 11, false, 0.5, 5}, {"immune", 9, true, 0, 4},
 				{"immune-resist", 11, true, 0.5, 2}, {"signed", -9, true, 0.5, -2},
 				{"minimum", 1, true, 0, 1}, {"zero", 0, false, 0, 1},
 			} {

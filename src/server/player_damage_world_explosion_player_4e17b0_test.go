@@ -18,7 +18,7 @@ func TestPlayerDamageWorldExplosionPlayer4E17B0Armor(t *testing.T) {
 				ud.Field76, ud.Field75 = 99, 77
 				protection, wantHP := float64(0), uint16(185)
 				if protected {
-					protection, wantHP = .5, 192
+					protection, wantHP = .5, 193
 				}
 				r := damageFlameRuntime4E17B0(t, protection)
 				damageMeleeArmorRuntime4E17B0(&r, armor, .5)

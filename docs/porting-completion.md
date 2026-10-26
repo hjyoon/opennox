@@ -1918,6 +1918,59 @@ Fresh products and campaign E2E are recorded separately in
 `poison-activation-precision-port/`. Linux, remaining native/transitive work,
 campaign cells and overall porting 100 percent remain open.
 
+### DefaultDamage elemental startup rounding
+
+DefaultDamage's fire and electric branches now preserve the original startup
+53-bit rounding toward zero at the protection store, subtraction, integer
+multiplication, final binary32 store and signed DWORD conversion. They reuse
+the existing local precision helpers without changing host FP state. The
+minimum-one rule and invalid-conversion sentinel remain intact. For example,
+raw3 with protection0.5 yields1 instead of2; raw50 with protection0.25 yields37
+instead of38. The historical Lava5413/0x3defaf0d case yields4779 instead of4780.
+
+The unchanged 1792-byte original DefaultDamage root executes together with
+the real fire/electric protection, buff membership/power, balance float-load,
+signed FISTP, qualifier/effect/owner/GameBall helpers and nil-health clear gate.
+There are 622 world-object contexts under four FP controls, totaling2488
+complete calls. Seven named hash/world services remain declared boundaries;
+no FP arithmetic, protection return or conversion is substituted. The native
+C-owned regression changes from405 PASS/218 FAIL (including its failed parent)
+to623 PASS. All622 native nonoutput frames are preserved before and after.
+
+A further552 independently executed whole-root numeric projections produce
+2208 original calls for historical test inputs. The real getter supplies the
+same binary32 protection spill required by each declared old service value;
+this is a bounded comparison of the common arithmetic. The three retained
+nearest-control armed transcripts contain4290 actor/event rows. Their startup
+predictions change only788 HP arguments, using the original numeric results
+and existing integer effect/Shield services, and match the new native bytes.
+All other transcript fields and event order remain byte-identical. These
+projections are not fresh whole-original replays of the entire armed matrices.
+Old control digests and the original fountain JSON are retained; actor inputs,
+prefix carry, armor, flags, metadata and later effect assertions remain checked.
+
+All115495 prior server actions/multiplicities survive, with623 new passes,
+giving116118 PASS. Related root/legacy checks pass54718 events. Actual
+cgocheck2 and combined race/checkptr2 each pass371541 events at count3.
+The portable replay at
+`src/server/testdata/original_default_damage_elemental_startup_4e0b30.py`
+regenerates all4696 original observations from declared inputs and a supplied
+local GAME.EXE; the proprietary executable is not included. Detailed evidence
+is retained in `default-damage-elemental-startup-port/`. Fresh products and
+campaign runs are recorded separately; these counts do not establish overall100.
+
+### Windows checkout byte preservation
+
+`.gitattributes` fixes LF checkout for source, JSON oracle fixtures and YAML
+scenarios. All7108 scanned tracked source candidates contained neither CRLF
+nor NUL before the policy. With `core.autocrlf=true`, the real Git filter
+changed three pinned original JSON fixtures and two scenario/runner sources
+before the policy; afterward all five match their Git blobs byte for byte.
+Fixture hashes and assertions are retained. The Windows native workflow also
+triggers on `.gitattributes`. This addresses the observed checkout failures;
+the separate386 test-constant overflow and AMD64 executable/handle/resource
+failures remain open until their own native CI checks pass.
+
 ### Campaign E2E original spike switches and hall exit
 
 `scripts/e2e/campaign/wizard2-spike.json` continues from the earned Fireball

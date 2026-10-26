@@ -257,7 +257,9 @@ func armedElectricTranscript4E0B30(t *testing.T) []byte {
 
 func TestDefaultDamageArmedElectric4E0B30OriginalTranscript(t *testing.T) {
 	got := armedElectricTranscript4E0B30(t)
-	const want = "b6f3a51bed04c19e992cc6053fc36ced61281d2c5c49b4ac4b558c7a5285355f"
+	// Original startup numeric projection; the prior nearest-control digest
+	// and all actor/event inputs are retained in the historical fixture.
+	const want = "5259109c4b99dc6e79295aca250c62fedc96e41cb5683883882f86d21e704e6a"
 	if sum := fmt.Sprintf("%x", sha256.Sum256(got)); sum != want {
 		t.Fatalf("independent original electric transcript bytes=%d SHA=%s want=%s", len(got), sum, want)
 	}
@@ -424,7 +426,7 @@ func TestDefaultDamageArmedElectric4E0B30LiveImmunityAndFrame(t *testing.T) {
 				if protections != 0 || v.HealthData.Cur != 200 || v.Obj130 != nil || v.Frame134 != 0 || !v.HasEnchant(defaultDamageInvisibleEnchant4E0B30) {
 					t.Fatal("new immunity must stop the ordinary tail")
 				}
-			} else if protections != 1 || v.HealthData.Cur != 181 || v.Obj130 != w || v.Frame134 != 1504 || v.HasEnchant(defaultDamageInvisibleEnchant4E0B30) || v.UpdateDataMonster().Field523_2 != 2 {
+			} else if protections != 1 || v.HealthData.Cur != 182 || v.Obj130 != w || v.Frame134 != 1504 || v.HasEnchant(defaultDamageInvisibleEnchant4E0B30) || v.UpdateDataMonster().Field523_2 != 2 {
 				t.Fatal("removed immunity must use live protection, BuffOff and timestamp")
 			}
 		})

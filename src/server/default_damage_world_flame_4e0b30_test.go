@@ -53,10 +53,7 @@ func TestDefaultDamageWorldFlame4E0B30SignedTail(t *testing.T) {
 				for _, protection := range []float64{0, 0.5, 1} {
 					t.Run(fmt.Sprintf("%s/%s/raw-%d/protection-%g", victim, owner, raw, protection), func(t *testing.T) {
 						v, a, w := worldFlameFixture4E17B0(t, owner, victim)
-						wantDamage := int32(math.RoundToEven(float64(float32((1 - float64(float32(protection))) * float64(raw)))))
-						if wantDamage == 0 {
-							wantDamage = 1
-						}
+						wantDamage := defaultDamageOriginalProtected4E0B30(t, raw, protection)
 						wantPosition := w.PrevPos
 						if a == nil {
 							wantPosition = types.Pointf{}

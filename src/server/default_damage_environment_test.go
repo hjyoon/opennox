@@ -29,10 +29,7 @@ func TestDefaultDamageEnvironmentProtectionAndSignedTail(t *testing.T) {
 							blocked := hazard == "lava" && immune
 							want := raw
 							if hazard == "lava" {
-								want = int32(math.RoundToEven(float64(float32((1 - float64(float32(protection))) * float64(raw)))))
-								if want == 0 {
-									want = 1
-								}
+								want = defaultDamageOriginalProtected4E0B30(t, raw, protection)
 							}
 							calls, fire, invis := 0, 0, 0
 							r := DefaultDamageWorldRuntime4E0B30{

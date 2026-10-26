@@ -65,7 +65,7 @@ func TestPlayerDamageNative4E17B0UnarmedPlayerElectricArmorAndDefault(t *testing
 					want = append(want, "report")
 				}
 				want = append(want, "quest", "default", "protection")
-				if !slices.Equal(events, want) || !slices.Equal(damages, []int32{2}) || target.HealthData.Cur != 58 || *carry != 0.75 || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) {
+				if !slices.Equal(events, want) || !slices.Equal(damages, []int32{1}) || target.HealthData.Cur != 59 || *carry != 0.75 || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) {
 					t.Fatalf("events=%v damage=%v HP=%d armor-carry=%g source=%p", events, damages, target.HealthData.Cur, *carry, target.Obj130)
 				}
 			})

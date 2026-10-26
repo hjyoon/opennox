@@ -116,6 +116,11 @@ func TestDefaultDamageFountain4E0B30OriginalTranscript(t *testing.T) {
 		t.Fatal("original evidence provenance/count changed")
 	}
 	for _, row := range fixture.Rows {
+		// Retain the nearest-control record and project only its HP input
+		// through the separately qualified original startup arithmetic.
+		if row.HPCalls == 1 && row.Gate != "shield" {
+			row.HPArgument = uint32(defaultDamageOriginalProtected4E0B30(t, row.Damage, row.Protection))
+		}
 		t.Run(row.Name, func(t *testing.T) {
 			v, a, w := worldFlameFixture4E17B0(t, "self", "monster")
 			if a != w {

@@ -28,9 +28,9 @@ func TestPlayerDamageWorldExplosionNPC4E17B0ArmorProtectionAndImmunity(t *testin
 					if protected {
 						protection = .5
 						if immune {
-							damage = 4
+							damage = 3
 						} else {
-							damage = 8
+							damage = 7
 						}
 					}
 					r := damageFlameRuntime4E17B0(t, protection)

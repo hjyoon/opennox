@@ -143,7 +143,7 @@ func TestDefaultDamageWorld4E0B30MissileFlameRounding(t *testing.T) {
 		resistance float64
 		want       int32
 	}{
-		{9, 0.5, 4}, {11, 0.5, 6}, {1, 0.5, 1}, {0, 0, 1}, {-9, 0.5, -4}, {9, 1, 1}, {9, -0.5, 14},
+		{9, 0.5, 4}, {11, 0.5, 5}, {1, 0.5, 1}, {0, 0, 1}, {-9, 0.5, -4}, {9, 1, 1}, {9, -0.5, 13},
 	} {
 		t.Run(fmt.Sprintf("%d/%g", tc.damage, tc.resistance), func(t *testing.T) {
 			target, source, weapon, _ := damageFlameFixture4E17B0(t, true, false, false)

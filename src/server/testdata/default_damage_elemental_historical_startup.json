@@ -1,0 +1,3347 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "whole_original_contexts": 552,
+  "whole_original_calls": 2208,
+  "numeric_or_protection_return_substitutions": 0,
+  "results": [
+    {
+      "protection_bits": 0,
+      "damage": -20,
+      "result": -20,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -19,
+      "result": -19,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -18,
+      "result": -18,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -17,
+      "result": -17,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -16,
+      "result": -16,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -15,
+      "result": -15,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -14,
+      "result": -14,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -13,
+      "result": -13,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -12,
+      "result": -12,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -11,
+      "result": -11,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -10,
+      "result": -10,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -9,
+      "result": -9,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -8,
+      "result": -8,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -7,
+      "result": -7,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -6,
+      "result": -6,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -5,
+      "result": -5,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -4,
+      "result": -4,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -3,
+      "result": -3,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -2,
+      "result": -2,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -1,
+      "result": -1,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 0,
+      "result": 1,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 1,
+      "result": 1,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 2,
+      "result": 2,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 3,
+      "result": 3,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 4,
+      "result": 4,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 5,
+      "result": 5,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 6,
+      "result": 6,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 7,
+      "result": 7,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 8,
+      "result": 8,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 9,
+      "result": 9,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 10,
+      "result": 10,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 11,
+      "result": 11,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 12,
+      "result": 12,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 13,
+      "result": 13,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 14,
+      "result": 14,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 15,
+      "result": 15,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 16,
+      "result": 16,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 17,
+      "result": 17,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 18,
+      "result": 18,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 19,
+      "result": 19,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 20,
+      "result": 20,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 21,
+      "result": 21,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 22,
+      "result": 22,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 23,
+      "result": 23,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 24,
+      "result": 24,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 25,
+      "result": 25,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 26,
+      "result": 26,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 27,
+      "result": 27,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 28,
+      "result": 28,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 29,
+      "result": 29,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 30,
+      "result": 30,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 31,
+      "result": 31,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 32,
+      "result": 32,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 33,
+      "result": 33,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 34,
+      "result": 34,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 35,
+      "result": 35,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 36,
+      "result": 36,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 37,
+      "result": 37,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 38,
+      "result": 38,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 39,
+      "result": 39,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 40,
+      "result": 40,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 41,
+      "result": 41,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 42,
+      "result": 42,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 43,
+      "result": 43,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 44,
+      "result": 44,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 45,
+      "result": 45,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 46,
+      "result": 46,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 47,
+      "result": 47,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 48,
+      "result": 48,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 49,
+      "result": 49,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 50,
+      "result": 50,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 51,
+      "result": 51,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 52,
+      "result": 52,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 53,
+      "result": 53,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 54,
+      "result": 54,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 55,
+      "result": 55,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 56,
+      "result": 56,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 57,
+      "result": 57,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 58,
+      "result": 58,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 59,
+      "result": 59,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 60,
+      "result": 60,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 61,
+      "result": 61,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 62,
+      "result": 62,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 63,
+      "result": 63,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 64,
+      "result": 64,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 5413,
+      "result": 5413,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 2706,
+      "result": 2706,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 1073741823,
+      "result": 1073741760,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -1073741824,
+      "result": -1073741824,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 2147483647,
+      "result": 2147483520,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": -2147483648,
+      "result": -2147483648,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 0,
+      "damage": 16777217,
+      "result": 16777216,
+      "original_protection_spill_bits": 0
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -20,
+      "result": -15,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -19,
+      "result": -14,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -18,
+      "result": -13,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -17,
+      "result": -12,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -16,
+      "result": -12,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -15,
+      "result": -11,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -14,
+      "result": -10,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -13,
+      "result": -9,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -12,
+      "result": -9,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -11,
+      "result": -8,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -10,
+      "result": -7,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -9,
+      "result": -6,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -8,
+      "result": -6,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -7,
+      "result": -5,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -6,
+      "result": -4,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -5,
+      "result": -3,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -4,
+      "result": -3,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -3,
+      "result": -2,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -2,
+      "result": -1,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -1,
+      "result": 1,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 0,
+      "result": 1,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 1,
+      "result": 1,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 2,
+      "result": 1,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 3,
+      "result": 2,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 4,
+      "result": 3,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 5,
+      "result": 3,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 6,
+      "result": 4,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 7,
+      "result": 5,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 8,
+      "result": 6,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 9,
+      "result": 6,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 10,
+      "result": 7,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 11,
+      "result": 8,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 12,
+      "result": 9,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 13,
+      "result": 9,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 14,
+      "result": 10,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 15,
+      "result": 11,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 16,
+      "result": 12,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 17,
+      "result": 12,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 18,
+      "result": 13,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 19,
+      "result": 14,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 20,
+      "result": 15,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 21,
+      "result": 15,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 22,
+      "result": 16,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 23,
+      "result": 17,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 24,
+      "result": 18,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 25,
+      "result": 18,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 26,
+      "result": 19,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 27,
+      "result": 20,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 28,
+      "result": 21,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 29,
+      "result": 21,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 30,
+      "result": 22,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 31,
+      "result": 23,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 32,
+      "result": 24,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 33,
+      "result": 24,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 34,
+      "result": 25,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 35,
+      "result": 26,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 36,
+      "result": 27,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 37,
+      "result": 27,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 38,
+      "result": 28,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 39,
+      "result": 29,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 40,
+      "result": 30,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 41,
+      "result": 30,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 42,
+      "result": 31,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 43,
+      "result": 32,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 44,
+      "result": 33,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 45,
+      "result": 33,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 46,
+      "result": 34,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 47,
+      "result": 35,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 48,
+      "result": 36,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 49,
+      "result": 36,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 50,
+      "result": 37,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 51,
+      "result": 38,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 52,
+      "result": 39,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 53,
+      "result": 39,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 54,
+      "result": 40,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 55,
+      "result": 41,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 56,
+      "result": 42,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 57,
+      "result": 42,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 58,
+      "result": 43,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 59,
+      "result": 44,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 60,
+      "result": 45,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 61,
+      "result": 45,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 62,
+      "result": 46,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 63,
+      "result": 47,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 64,
+      "result": 48,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 5413,
+      "result": 4059,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 2706,
+      "result": 2029,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 1073741823,
+      "result": 805306304,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -1073741824,
+      "result": -805306368,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 2147483647,
+      "result": 1610612608,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": -2147483648,
+      "result": -1610612736,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4598175219545276416,
+      "damage": 16777217,
+      "result": 12582912,
+      "original_protection_spill_bits": 1048576000
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -20,
+      "result": -10,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -19,
+      "result": -9,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -18,
+      "result": -9,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -17,
+      "result": -8,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -16,
+      "result": -8,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -15,
+      "result": -7,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -14,
+      "result": -7,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -13,
+      "result": -6,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -12,
+      "result": -6,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -11,
+      "result": -5,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -10,
+      "result": -5,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -9,
+      "result": -4,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -8,
+      "result": -4,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -7,
+      "result": -3,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -6,
+      "result": -3,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -5,
+      "result": -2,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -4,
+      "result": -2,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -3,
+      "result": -1,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -2,
+      "result": -1,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -1,
+      "result": 1,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 0,
+      "result": 1,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 1,
+      "result": 1,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 2,
+      "result": 1,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 3,
+      "result": 1,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 4,
+      "result": 2,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 5,
+      "result": 2,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 6,
+      "result": 3,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 7,
+      "result": 3,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 8,
+      "result": 4,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 9,
+      "result": 4,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 10,
+      "result": 5,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 11,
+      "result": 5,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 12,
+      "result": 6,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 13,
+      "result": 6,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 14,
+      "result": 7,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 15,
+      "result": 7,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 16,
+      "result": 8,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 17,
+      "result": 8,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 18,
+      "result": 9,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 19,
+      "result": 9,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 20,
+      "result": 10,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 21,
+      "result": 10,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 22,
+      "result": 11,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 23,
+      "result": 11,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 24,
+      "result": 12,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 25,
+      "result": 12,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 26,
+      "result": 13,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 27,
+      "result": 13,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 28,
+      "result": 14,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 29,
+      "result": 14,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 30,
+      "result": 15,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 31,
+      "result": 15,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 32,
+      "result": 16,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 33,
+      "result": 16,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 34,
+      "result": 17,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 35,
+      "result": 17,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 36,
+      "result": 18,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 37,
+      "result": 18,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 38,
+      "result": 19,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 39,
+      "result": 19,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 40,
+      "result": 20,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 41,
+      "result": 20,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 42,
+      "result": 21,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 43,
+      "result": 21,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 44,
+      "result": 22,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 45,
+      "result": 22,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 46,
+      "result": 23,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 47,
+      "result": 23,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 48,
+      "result": 24,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 49,
+      "result": 24,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 50,
+      "result": 25,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 51,
+      "result": 25,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 52,
+      "result": 26,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 53,
+      "result": 26,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 54,
+      "result": 27,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 55,
+      "result": 27,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 56,
+      "result": 28,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 57,
+      "result": 28,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 58,
+      "result": 29,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 59,
+      "result": 29,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 60,
+      "result": 30,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 61,
+      "result": 30,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 62,
+      "result": 31,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 63,
+      "result": 31,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 64,
+      "result": 32,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 5413,
+      "result": 2706,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 2706,
+      "result": 1353,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 1073741823,
+      "result": 536870880,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -1073741824,
+      "result": -536870912,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 2147483647,
+      "result": 1073741760,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": -2147483648,
+      "result": -1073741824,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4602678819172646912,
+      "damage": 16777217,
+      "result": 8388608,
+      "original_protection_spill_bits": 1056964608
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -20,
+      "result": -8,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -19,
+      "result": -7,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -18,
+      "result": -7,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -17,
+      "result": -6,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -16,
+      "result": -6,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -15,
+      "result": -6,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -14,
+      "result": -5,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -13,
+      "result": -5,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -12,
+      "result": -4,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -11,
+      "result": -4,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -10,
+      "result": -4,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -9,
+      "result": -3,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -8,
+      "result": -3,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -7,
+      "result": -2,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -6,
+      "result": -2,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -5,
+      "result": -2,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -4,
+      "result": -1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -3,
+      "result": -1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -2,
+      "result": 1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -1,
+      "result": 1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 0,
+      "result": 1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 1,
+      "result": 1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 2,
+      "result": 1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 3,
+      "result": 1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 4,
+      "result": 1,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 5,
+      "result": 2,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 6,
+      "result": 2,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 7,
+      "result": 2,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 8,
+      "result": 3,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 9,
+      "result": 3,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 10,
+      "result": 4,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 11,
+      "result": 4,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 12,
+      "result": 4,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 13,
+      "result": 5,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 14,
+      "result": 5,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 15,
+      "result": 6,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 16,
+      "result": 6,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 17,
+      "result": 6,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 18,
+      "result": 7,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 19,
+      "result": 7,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 20,
+      "result": 8,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 21,
+      "result": 8,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 22,
+      "result": 8,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 23,
+      "result": 9,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 24,
+      "result": 9,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 25,
+      "result": 10,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 26,
+      "result": 10,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 27,
+      "result": 10,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 28,
+      "result": 11,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 29,
+      "result": 11,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 30,
+      "result": 12,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 31,
+      "result": 12,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 32,
+      "result": 12,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 33,
+      "result": 13,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 34,
+      "result": 13,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 35,
+      "result": 14,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 36,
+      "result": 14,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 37,
+      "result": 14,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 38,
+      "result": 15,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 39,
+      "result": 15,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 40,
+      "result": 16,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 41,
+      "result": 16,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 42,
+      "result": 16,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 43,
+      "result": 17,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 44,
+      "result": 17,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 45,
+      "result": 18,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 46,
+      "result": 18,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 47,
+      "result": 18,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 48,
+      "result": 19,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 49,
+      "result": 19,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 50,
+      "result": 20,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 51,
+      "result": 20,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 52,
+      "result": 20,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 53,
+      "result": 21,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 54,
+      "result": 21,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 55,
+      "result": 22,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 56,
+      "result": 22,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 57,
+      "result": 22,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 58,
+      "result": 23,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 59,
+      "result": 23,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 60,
+      "result": 24,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 61,
+      "result": 24,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 62,
+      "result": 24,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 63,
+      "result": 25,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 64,
+      "result": 25,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 5413,
+      "result": 2165,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 2706,
+      "result": 1082,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 1073741823,
+      "result": 429496736,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -1073741824,
+      "result": -429496768,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 2147483647,
+      "result": 858993472,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": -2147483648,
+      "result": -858993536,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 4603579539098121011,
+      "damage": 16777217,
+      "result": 6710887,
+      "original_protection_spill_bits": 1058642329
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -20,
+      "result": -30,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -19,
+      "result": -28,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -18,
+      "result": -27,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -17,
+      "result": -25,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -16,
+      "result": -24,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -15,
+      "result": -22,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -14,
+      "result": -21,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -13,
+      "result": -19,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -12,
+      "result": -18,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -11,
+      "result": -16,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -10,
+      "result": -15,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -9,
+      "result": -13,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -8,
+      "result": -12,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -7,
+      "result": -10,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -6,
+      "result": -9,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -5,
+      "result": -7,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -4,
+      "result": -6,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -3,
+      "result": -4,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -2,
+      "result": -3,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -1,
+      "result": -1,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 0,
+      "result": 1,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 1,
+      "result": 1,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 2,
+      "result": 3,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 3,
+      "result": 4,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 4,
+      "result": 6,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 5,
+      "result": 7,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 6,
+      "result": 9,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 7,
+      "result": 10,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 8,
+      "result": 12,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 9,
+      "result": 13,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 10,
+      "result": 15,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 11,
+      "result": 16,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 12,
+      "result": 18,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 13,
+      "result": 19,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 14,
+      "result": 21,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 15,
+      "result": 22,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 16,
+      "result": 24,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 17,
+      "result": 25,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 18,
+      "result": 27,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 19,
+      "result": 28,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 20,
+      "result": 30,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 21,
+      "result": 31,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 22,
+      "result": 33,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 23,
+      "result": 34,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 24,
+      "result": 36,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 25,
+      "result": 37,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 26,
+      "result": 39,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 27,
+      "result": 40,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 28,
+      "result": 42,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 29,
+      "result": 43,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 30,
+      "result": 45,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 31,
+      "result": 46,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 32,
+      "result": 48,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 33,
+      "result": 49,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 34,
+      "result": 51,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 35,
+      "result": 52,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 36,
+      "result": 54,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 37,
+      "result": 55,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 38,
+      "result": 57,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 39,
+      "result": 58,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 40,
+      "result": 60,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 41,
+      "result": 61,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 42,
+      "result": 63,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 43,
+      "result": 64,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 44,
+      "result": 66,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 45,
+      "result": 67,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 46,
+      "result": 69,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 47,
+      "result": 70,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 48,
+      "result": 72,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 49,
+      "result": 73,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 50,
+      "result": 75,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 51,
+      "result": 76,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 52,
+      "result": 78,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 53,
+      "result": 79,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 54,
+      "result": 81,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 55,
+      "result": 82,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 56,
+      "result": 84,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 57,
+      "result": 85,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 58,
+      "result": 87,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 59,
+      "result": 88,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 60,
+      "result": 90,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 61,
+      "result": 91,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 62,
+      "result": 93,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 63,
+      "result": 94,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 64,
+      "result": 96,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 5413,
+      "result": 8119,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 2706,
+      "result": 4059,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 1073741823,
+      "result": 1610612608,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -1073741824,
+      "result": -1610612736,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 2147483647,
+      "result": -2147483648,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": -2147483648,
+      "result": -2147483648,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 13826050856027422720,
+      "damage": 16777217,
+      "result": 25165824,
+      "original_protection_spill_bits": 3204448256
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -20,
+      "result": -17,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -19,
+      "result": -16,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -18,
+      "result": -15,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -17,
+      "result": -15,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -16,
+      "result": -14,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -15,
+      "result": -13,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -14,
+      "result": -12,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -13,
+      "result": -11,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -12,
+      "result": -10,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -11,
+      "result": -9,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -10,
+      "result": -8,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -9,
+      "result": -7,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -8,
+      "result": -7,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -7,
+      "result": -6,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -6,
+      "result": -5,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -5,
+      "result": -4,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -4,
+      "result": -3,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -3,
+      "result": -2,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -2,
+      "result": -1,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -1,
+      "result": 1,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 0,
+      "result": 1,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 1,
+      "result": 1,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 2,
+      "result": 1,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 3,
+      "result": 2,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 4,
+      "result": 3,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 5,
+      "result": 4,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 6,
+      "result": 5,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 7,
+      "result": 6,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 8,
+      "result": 7,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 9,
+      "result": 7,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 10,
+      "result": 8,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 11,
+      "result": 9,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 12,
+      "result": 10,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 13,
+      "result": 11,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 14,
+      "result": 12,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 15,
+      "result": 13,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 16,
+      "result": 14,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 17,
+      "result": 15,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 18,
+      "result": 15,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 19,
+      "result": 16,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 20,
+      "result": 17,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 21,
+      "result": 18,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 22,
+      "result": 19,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 23,
+      "result": 20,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 24,
+      "result": 21,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 25,
+      "result": 22,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 26,
+      "result": 22,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 27,
+      "result": 23,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 28,
+      "result": 24,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 29,
+      "result": 25,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 30,
+      "result": 26,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 31,
+      "result": 27,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 32,
+      "result": 28,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 33,
+      "result": 29,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 34,
+      "result": 30,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 35,
+      "result": 30,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 36,
+      "result": 31,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 37,
+      "result": 32,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 38,
+      "result": 33,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 39,
+      "result": 34,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 40,
+      "result": 35,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 41,
+      "result": 36,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 42,
+      "result": 37,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 43,
+      "result": 37,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 44,
+      "result": 38,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 45,
+      "result": 39,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 46,
+      "result": 40,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 47,
+      "result": 41,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 48,
+      "result": 42,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 49,
+      "result": 43,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 50,
+      "result": 44,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 51,
+      "result": 45,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 52,
+      "result": 45,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 53,
+      "result": 46,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 54,
+      "result": 47,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 55,
+      "result": 48,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 56,
+      "result": 49,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 57,
+      "result": 50,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 58,
+      "result": 51,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 59,
+      "result": 52,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 60,
+      "result": 52,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 61,
+      "result": 53,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 62,
+      "result": 54,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 63,
+      "result": 55,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 64,
+      "result": 56,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 5413,
+      "result": 4779,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 2706,
+      "result": 2389,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 1073741823,
+      "result": 948078464,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -1073741824,
+      "result": -948078464,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 2147483647,
+      "result": 1896156928,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": -2147483648,
+      "result": -1896156928,
+      "original_protection_spill_bits": 1039118093
+    },
+    {
+      "protection_bits": 4593097544388575232,
+      "damage": 16777217,
+      "result": 14813727,
+      "original_protection_spill_bits": 1039118093
+    }
+  ],
+  "transcript_controls": [
+    {
+      "name": "default_damage_armed_electric_4e0b30_test.jsonl",
+      "old_control_sha256": "b6f3a51bed04c19e992cc6053fc36ced61281d2c5c49b4ac4b558c7a5285355f",
+      "startup_prediction_sha256": "5259109c4b99dc6e79295aca250c62fedc96e41cb5683883882f86d21e704e6a",
+      "rows": 2598,
+      "bytes": 274116,
+      "changed_rows": 500
+    },
+    {
+      "name": "default_damage_armed_explosion_4e0b30_test.jsonl",
+      "old_control_sha256": "bf472f152a13c5365a9c47ba20161bc6e0f3b6754ebeb04bcf9d73765e84314b",
+      "startup_prediction_sha256": "11dfeef02ea5889f3c602559f6cae342dad2a954578b4794de6843c82834eb5a",
+      "rows": 918,
+      "bytes": 102626,
+      "changed_rows": 144
+    },
+    {
+      "name": "default_damage_player_armed_explosion_4e0b30_test.jsonl",
+      "old_control_sha256": "d260091f6e596ac9afa1192cee49295c91bfa95217f3048ce321cad2882cdbc4",
+      "startup_prediction_sha256": "e0fa7b58811727144cce69869ac6be8e9dbf05721575c2c56618716c507cfd9a",
+      "rows": 774,
+      "bytes": 78268,
+      "changed_rows": 144
+    }
+  ],
+  "limits": "Numeric projections use a real protection getter returning the same binary32 spill required by each declared historical protection value. Earlier unit/effect transcripts keep all inputs, metadata, event order and integer service contracts. They are not new whole-original replays of those full unit/effect matrices. Protection=1 in older scalar-service tests is outside the real getter cap; its exact zero factor and minimum result stay1."
+}

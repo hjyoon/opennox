@@ -94,8 +94,8 @@ func TestDefaultDamageWorld4E0B30LavaUsesBinary64BeforeFloatSpill(t *testing.T) 
 		DamageClear:    func(_ *Object, damage int32) { gotDamage = damage },
 	}
 	DefaultDamageWorld4E0B30(target, nil, nil, 5413, object.DamageLava, runtime)
-	if gotDamage != 4780 {
-		t.Fatalf("binary64 LAVA scaling = %d, want 4780", gotDamage)
+	if gotDamage != 4779 {
+		t.Fatalf("original startup LAVA scaling = %d, want 4779", gotDamage)
 	}
 }
 
@@ -777,8 +777,8 @@ func TestDefaultDamageWorld4E0B30SourceLessElectricMonster(t *testing.T) {
 					}
 				},
 				DamageClear: func(got *Object, amount int32) {
-					if got != target || amount != 38 {
-						t.Fatalf("DamageClear(%p,%d), want (%p,38)", got, amount, target)
+					if got != target || amount != 37 {
+						t.Fatalf("DamageClear(%p,%d), want (%p,37)", got, amount, target)
 					}
 					damage++
 				},

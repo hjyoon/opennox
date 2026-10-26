@@ -20,6 +20,7 @@ static unsigned char* getMemAt(uintptr_t base, uintptr_t offset) {
 #define getMemU32Ptr(base,offset) ((uint32_t*)getMemAt(base,offset))
 #define getMemDoublePtr(base,offset) ((double*)getMemAt(base,offset))
 #define getMemFloatPtr(base,offset) ((float*)getMemAt(base,offset))
+#undef LOBYTE
 #define LOBYTE(value) (*((uint8_t*)&(value)))
 static double measured_sin(double value) { ++sine_calls; return sin(value); }
 static double measured_acos(double value) { ++arc_calls; return acos(value); }

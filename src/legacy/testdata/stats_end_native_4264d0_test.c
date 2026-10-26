@@ -166,7 +166,7 @@ static void print_end(const char* kind) {
 	for(uint32_t i=580;i<596;++i) assert(quest[i]==0xd6);
 	assert(read32(header+608)==0 && read32(header+636)==0 && read32(quest+536)==0 && read32(quest+576)==0);
 	if(!json_mode)return;
-	uint32_t mask=!!nox_stats_quest_columns.names|(!!nox_stats_quest_columns.ips<<1)|(!!nox_stats_quest_columns.classes<<2);
+	uint32_t mask=(!!nox_stats_quest_columns.names)|(!!nox_stats_quest_columns.ips<<1)|(!!nox_stats_quest_columns.classes<<2);
 	for(uint32_t i=0;i<8;++i)mask|=!!nox_stats_quest_columns.scores[i]<<(i+3);
 	printf("{\"kind\":\"%s\",\"flags\":%u,\"variant\":%u,\"count\":%u,\"initial_sequence\":%u,\"column_count\":%u,\"mask\":%u,\"clock\":%u,\"sequence\":%u,\"quest_sequence\":%u,\"index\":%u,\"online_length\":%u,\"quest_length\":%u,\"ip_args\":[",kind,flags,variant,count_value,initial_sequence,dword_5d4594_741332,mask,clock_calls,sequence,quest_sequence,quest_index,length_box->count,quest_length->count);
 	for(uint32_t i=0;i<ip_count;++i)printf("%s%u",i?",":"",ip_args[i]);printf("],\"score_args\":[");

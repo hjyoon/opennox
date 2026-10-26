@@ -1749,7 +1749,12 @@ uint16_t* sub_42A8B0(uint8_t* a1, int* a2) {
 		field->type = field->length = 0;
 		field->data = 0;
 		field->next = 0;
-		strncpy(field->name, (const char*)getMemAt(0x587000, 71480), 4u);
+		const char* name = (const char*)getMemAt(0x587000, 71480);
+		// Keep all four wire bytes and strncpy's padding for a short tag.
+		for (size_t i = 0; i < sizeof(field->name); ++i) {
+			field->name[i] = *name;
+			if (*name) ++name;
+		}
 		field->type = 20;
 		field->length = field_length;
 		field->data = calloc(1, field_length);

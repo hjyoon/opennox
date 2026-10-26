@@ -29,7 +29,7 @@ static uint32_t word(void) {
 int main(int argc, char** argv) {
 	if (argc != 2) return 2;
 	int layout = atoi(argv[1]);
-	_Alignas(16) unsigned char ordinary[96];
+	static _Alignas(16) unsigned char ordinary[96];
 	table = ordinary + 16;
 	void* reservation = NULL;
 	size_t reserve_size = 0;

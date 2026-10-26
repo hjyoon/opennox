@@ -20,6 +20,7 @@ static void* blocks[5];
 static char events[16384];
 static size_t event_length;
 static unsigned char names[][5] = {"CNTL", {'Q', 0, 'x', 'y', 0}, {0xff, 0x80, 0x41, 0x7f, 0}};
+static const uint8_t expected_names[][4] = {{'C', 'N', 'T', 'L'}, {'Q', 0, 0, 0}, {0xff, 0x80, 0x41, 0x7f}};
 static unsigned char empty_name[] = {0};
 
 static void event(char value) {
@@ -187,9 +188,7 @@ static void run_case(uint32_t initial, uint32_t length, uint32_t variant, int re
 		uint32_t packet_length = 12u + data_length + ((0u - data_length) & 3u);
 		assert(result && (sizeof(void*) == 4 || (uintptr_t)result > UINT32_MAX));
 		assert(box->length == packet_length && ntohs(result[0]) == (uint16_t)packet_length && result[1] == 0);
-		uint8_t name[4] = {0};
-		strncpy((char*)name, (const char*)names[choice % 3], 4);
-		assert(!memcmp((uint8_t*)result + 4, name, 4));
+		assert(!memcmp((uint8_t*)result + 4, expected_names[choice % 3], 4));
 		assert(ntohs(result[4]) == 20 && ntohs(result[5]) == data_length);
 		if (!chain) for (uint32_t i = 0; i < data_length; i++) assert(((uint8_t*)result)[12 + i] == data_byte(i));
 		for (uint32_t i = 12 + data_length; i < packet_length; i++) assert(((uint8_t*)result)[i] == 0);

@@ -70,13 +70,13 @@ static void* online_owned[8];
 static void* quest_owned[14];
 static uint32_t quest_owned_count;
 static uint32_t online_mask(void) {
-	return !!nox_stats_columns.names | (!!nox_stats_columns.ips << 1) |
+	return (!!nox_stats_columns.names) | (!!nox_stats_columns.ips << 1) |
 		(!!nox_stats_columns.teams << 2) | (!!nox_stats_columns.classes << 3) |
 		(!!nox_stats_columns.active << 4) | (!!nox_stats_columns.durations << 5) |
 		(!!nox_stats_columns.participants << 6) | (!!nox_stats_columns.pairs << 7);
 }
 static uint32_t quest_present(void) {
-	uint32_t mask = !!nox_stats_quest_columns.names | (!!nox_stats_quest_columns.ips << 1) |
+	uint32_t mask = (!!nox_stats_quest_columns.names) | (!!nox_stats_quest_columns.ips << 1) |
 		(!!nox_stats_quest_columns.classes << 2);
 	for (uint32_t i = 0; i < 8; ++i) mask |= !!nox_stats_quest_columns.scores[i] << (i+3);
 	return mask;

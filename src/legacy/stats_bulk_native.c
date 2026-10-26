@@ -52,7 +52,12 @@ static void nox_stats_field_add(nox_stats_field_native** head, const char* name,
 	if (field) {
 		field->data = NULL;
 		nox_stats_field_clear(field);
-		strncpy(field->name, name, 4);
+		// Four wire bytes, with the original zero padding after a short name.
+		// This field is not a NUL-terminated C string.
+		for (size_t i = 0; i < sizeof(field->name); ++i) {
+			field->name[i] = *name;
+			if (*name) ++name;
+		}
 		field->type = type;
 		if (type == 7) length = (uint16_t)(strlen((const char*)data) + 1);
 		field->length = length;

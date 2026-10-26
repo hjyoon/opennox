@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "name": "Wizard2 original Fireball book and normal S shortcut drag",
+  "seed_contract": "Earned GoldKey gate Save20HP78MP0poison, A43 S43 D41 F115; S is an existing duplicate ChainLightning binding. No Fireball27 or MagicMissile50 grant.",
+  "coverage": "Original SpellBook271 pickup, normal learned Fireball icon drag replacing duplicate S43, retained A43 D41 F115 and healthy Save; independent native parsing must prove learning.",
+  "cases": [
+    {
+      "name": "wizard2-cave-fireball-book",
+      "scenario": "wizard2-cave-fireball-book.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 140,
+      "expected_health": 20,
+      "expected_mana": 78,
+      "required_checkpoints": [
+        "original Fireball learned book UI",
+        "original Fireball learning and S shortcut",
+        "original manual Save"
+      ]
+    }
+  ]
+}

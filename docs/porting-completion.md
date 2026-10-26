@@ -1918,6 +1918,26 @@ Fresh products and campaign E2E are recorded separately in
 `poison-activation-precision-port/`. Linux, remaining native/transitive work,
 campaign cells and overall porting 100 percent remain open.
 
+### Campaign E2E earned Fireball book and shortcut
+
+`scripts/e2e/campaign/wizard2-fireball-book.json` continues from the earned
+GoldKey gate Save. It picks up original SpellBook271 at (2129,4631), then
+drags the learned Fireball icon to S through the normal spell-book UI.
+Read-only assertions verify S43 before the drag and S27 afterward while
+A43, D41 and F115 remain available. S43 was an existing duplicate
+ChainLightning binding. The initial diagnostic that incorrectly expected
+an empty S slot remains failed and uncredited.
+
+Normal passes in 31.619 seconds and HD in 31.958 seconds. The original book
+is present at Load and absent after pickup. Independent native parsing of
+both resulting Saves verifies Wiz02c, HP20/20, MP78/78, poison zero,
+XP3937.6934 (bits1165368088), and Fireball1 alongside the three prior spells.
+No spell or shortcut setter is used; no MagicMissile50 lineage is merged.
+The existing clean fbaa56a products are reused without a Go rebuild.
+Evidence is retained in `campaign-wiz02c-fireball-book-healthy-verified-v1.json`.
+This qualifies learning and binding; spike-hall traversal and overall100
+remain open.
+
 ### Campaign E2E FlyingGolem and original GoldKey
 
 `scripts/e2e/campaign/wizard2-golem.json` defeats original FlyingGolem2277
@@ -1949,9 +1969,10 @@ reused without a Go rebuild. Evidence is retained in
 
 A separate A43 spike-switch diagnostic cannot reach the next hall endpoint
 within600 ticks and remains failed; it supplies no exit or switch credit.
-The nearby original Fireball book is a possible earned projectile route;
-no spell is injected and no older MagicMissile50 lineage is merged. The spike
-hall, BookOfOblivion, remaining cells and overall100 remain open.
+The nearby original Fireball book is now covered by the separate earned-book
+scenario above. No spell is injected and no older MagicMissile50 lineage is
+merged. The spike hall, BookOfOblivion, remaining cells and overall100 remain
+open.
 
 ### Campaign E2E steel-crate pressure plate and gate
 

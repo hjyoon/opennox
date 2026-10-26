@@ -1669,7 +1669,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -1680,12 +1680,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -1718,7 +1718,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -1729,12 +1729,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -1767,7 +1767,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -1778,12 +1778,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -1816,7 +1816,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -1827,12 +1827,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -1865,7 +1865,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -1876,12 +1876,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -5927,7 +5927,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -5939,12 +5939,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x424300",
@@ -5979,7 +5979,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -5991,12 +5991,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x424300",
@@ -6031,7 +6031,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -6043,12 +6043,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x424300",
@@ -6083,7 +6083,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -6095,12 +6095,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x424300",
@@ -6135,7 +6135,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -6147,12 +6147,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x424300",
@@ -10242,7 +10242,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -10253,12 +10253,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -10291,7 +10291,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -10302,12 +10302,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -10340,7 +10340,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -10351,12 +10351,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -10389,7 +10389,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -10400,12 +10400,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -10438,7 +10438,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -10449,12 +10449,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -14404,7 +14404,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -14415,12 +14415,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -14453,7 +14453,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -14464,12 +14464,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -14502,7 +14502,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -14513,12 +14513,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -14551,7 +14551,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -14562,12 +14562,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
-        5
+        4
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -14600,7 +14600,7 @@
         "type-lookup-service",
         "type-lookup-service",
         "rear-direction-service",
-        "armor-wear-4",
+        "armor-wear-5",
         "mode-0x1000",
         "zero-fire-protection",
         "buff-off",
@@ -14611,12 +14611,12 @@
         "HP-boundary"
       ],
       "prefix_damage": [
-        5
+        4
       ],
       "forward_damage": [
         2
       ],
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "entered_sealed_range_starts": [
         "0x419a70",
         "0x4e0b30",
@@ -16950,4 +16950,33 @@
     }
   ],
   "scope": "360 unchanged original integrated PlayerDamage/DefaultDamage executions with nil weapon, four initialized PLAYER/MONSTER or nonunit DOOR/class-zero sources,18 types and5 NPC immunity subclasses. Source type71 is retained. World sources have nil updates. Original reached carry/FISTP/HP-return tail execute unchanged. Monster sound getter and source hit-latch execute only for monster sources that pass immunity; the unused attack update latch remains0. Mode/buff/direction, armor wear/scale1, zero protection, late defense, sound, ball and HP are declared services. Root DoDamage and original Windows HP/audio are not executed."
+,
+  "qualified_npc_weaponless_explosion_numeric_rows_v1": {
+  "rows": [
+    35,
+    36,
+    37,
+    38,
+    39,
+    125,
+    126,
+    127,
+    128,
+    129,
+    215,
+    216,
+    217,
+    218,
+    219,
+    305,
+    306,
+    307,
+    308,
+    309
+  ],
+  "source_fixture": "npc_weaponless_explosion_historical_original.json",
+  "historical_prefix_contexts": 81,
+  "integrated_contexts": 32,
+  "scope": "Only independently original-qualified NPC/nonnil-source/type7 numeric forward/carry/wear fields and their matching numeric event arguments supersede nearest-mode oldvalues. All other row bytes, inputs, prefix events and nonnumeric output fields are preserved. Original coldlookup events remain inherited; no new resolver/HP/audio/nilHP certificate."
+}
 }

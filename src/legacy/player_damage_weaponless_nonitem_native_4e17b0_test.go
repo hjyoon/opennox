@@ -111,7 +111,7 @@ func TestPlayerDamageWeaponlessNonItemNativeDamage4E17B0(t *testing.T) {
 								if typ == object.DamageCrush && kind != "ordinary-monster" {
 									wantHP, wantCarry = 193, 0
 								}
-								if typ == object.DamageExplosion && kind == "player" {
+								if typ == object.DamageExplosion && kind != "ordinary-monster" {
 									wantHP, wantCarry = 196, .75
 								}
 								blocked := god && kind == "player"

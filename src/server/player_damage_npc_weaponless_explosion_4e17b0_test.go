@@ -37,6 +37,12 @@ func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionArmor(t *testing.T) {
 					source := damageWeaponlessExplosionSource4E17B0(t, target, kind)
 					armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0.4)
 					protection, want := float64(0), int32(5)
+					wantArmor, wantCarry := uint16(21), float32(-.1)
+					if source != nil {
+						numeric := npcWeaponlessExplosionHistoricalExpected(t, fmt.Sprintf("old-armor/%s/immune-%t", kind, immune))
+						want = int32(numeric.ExpectedDamage[0])
+						wantArmor, wantCarry = 25-uint16(numeric.ExpectedWear), math.Float32frombits(numeric.ExpectedCarry)
+					}
 					if immune {
 						want = 2
 					}
@@ -55,8 +61,8 @@ func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionArmor(t *testing.T) {
 					if source != nil {
 						position = source.PrevPos
 					}
-					if target.HealthData.Cur != uint16(200-want) || armor.HealthData.Cur != 21 || marker != 2 || typ != 7 ||
-						math.Abs(float64(carry)+0.1) > 1e-6 || target.Obj130 != source || target.Pos132 != position ||
+					if target.HealthData.Cur != uint16(200-want) || armor.HealthData.Cur != wantArmor || marker != 2 || typ != 7 ||
+						math.Abs(float64(carry)-float64(wantCarry)) > 1e-6 || target.Obj130 != source || target.Pos132 != position ||
 						target.Field131 != 7 || target.Frame134 != 1400 ||
 						!target.UpdateDataMonster().StatusFlags.Has(object.MonStatusInjured|object.MonStatusOnFire) {
 						t.Fatalf("HP=%d want=%d armor=%d marker=%d/%d carry=%g source=%p", target.HealthData.Cur, 200-want,
@@ -70,7 +76,7 @@ func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionArmor(t *testing.T) {
 
 func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionRounding(t *testing.T) {
 	for _, kind := range []string{"none", "player", "npc", "self"} {
-		for _, tc := range []struct {
+		for i, tc := range []struct {
 			damage, effective int32
 			armor, carry      float32
 			wantCarry         uint32
@@ -97,7 +103,12 @@ func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionRounding(t *testing.T) {
 					t.Fatalf("handled=%t result=%t", h, result)
 				}
 				marker, typ, carry := damageMeleeMarker4E17B0(target)
-				if got != tc.effective || marker != 2 || typ != 7 || math.Float32bits(carry) != tc.wantCarry {
+				want, wantCarry := tc.effective, tc.wantCarry
+				if source != nil {
+					numeric := npcWeaponlessExplosionHistoricalExpected(t, fmt.Sprintf("old-round/%s/%d", kind, i))
+					want, wantCarry = int32(numeric.ExpectedDamage[0]), numeric.ExpectedCarry
+				}
+				if got != want || marker != 2 || typ != 7 || math.Float32bits(carry) != wantCarry {
 					t.Fatalf("damage=%d marker=%d/%d carry=%#x", got, marker, typ, math.Float32bits(carry))
 				}
 			})
@@ -106,6 +117,7 @@ func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionRounding(t *testing.T) {
 }
 
 func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionCachedLiveOrder(t *testing.T) {
+	numeric := npcWeaponlessExplosionHistoricalExpected(t, "old-cached-live-declared-numeric-stage/player")
 	target := damageMeleeUnitFixture4E17B0(t, false)
 	source := damageMeleeUnitFixture4E17B0(t, true)
 	armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0.4)
@@ -136,8 +148,8 @@ func TestPlayerDamageNative4E17B0NPCWeaponlessExplosionCachedLiveOrder(t *testin
 	}
 	quest := false
 	r.DamageArmor = func(item, s, w *Object, amount int32, typ object.DamageType) bool {
-		if item != armor || s != source || w != nil || amount != 4 || typ != object.DamageExplosion ||
-			cached.Field547 != 77 || cached.Field546 != 88 || cached.Field1 != math.Float32bits(0.4) || live.Field1 != math.Float32bits(-0.25) {
+		if item != armor || s != source || w != nil || amount != int32(numeric.ExpectedWear) || typ != object.DamageExplosion ||
+			cached.Field547 != 77 || cached.Field546 != 88 || cached.Field1 != math.Float32bits(0.4) || live.Field1 != numeric.ExpectedCarry {
 			t.Fatal("cached absorption/marker or live carry/wear order changed")
 		}
 		events = append(events, "armor")

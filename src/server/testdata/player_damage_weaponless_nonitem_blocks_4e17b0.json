@@ -3081,11 +3081,11 @@
       "player": false,
       "raw": 9,
       "forward_damage": [
-        5
+        4
       ],
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "events": [
         [
           "buff",
@@ -3127,7 +3127,7 @@
         ],
         [
           "wear",
-          4
+          5
         ],
         [
           "mode",
@@ -3135,7 +3135,7 @@
         ],
         [
           "default",
-          5
+          4
         ]
       ],
       "return": 1,
@@ -3217,11 +3217,11 @@
       "player": false,
       "raw": 9,
       "forward_damage": [
-        5
+        4
       ],
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "events": [
         [
           "buff",
@@ -3263,7 +3263,7 @@
         ],
         [
           "wear",
-          4
+          5
         ],
         [
           "mode",
@@ -3271,7 +3271,7 @@
         ],
         [
           "default",
-          5
+          4
         ]
       ],
       "return": 1,
@@ -7474,4 +7474,15 @@
     "source_fixture": "weaponless_player_explosion_historical_original.json",
     "scope": "Only numeric player/type7 forward/carry/wear components updated from independently executedoriginal. All previous rowcounts/order/inputfields/prefixevents andotherrowbytes retained. Warmcache andintegerdirection service are declared; inheritedcoldlookup prefix events retained, notnewlycertified. No actualEquipDamage/HP body certificate."
   }
+,
+  "qualified_npc_weaponless_explosion_numeric_rows_v1": {
+  "rows": [
+    44,
+    46
+  ],
+  "source_fixture": "npc_weaponless_explosion_historical_original.json",
+  "historical_prefix_contexts": 81,
+  "integrated_contexts": 32,
+  "scope": "Only independently original-qualified NPC/nonnil-source/type7 numeric forward/carry/wear fields and their matching numeric event arguments supersede nearest-mode oldvalues. All other row bytes, inputs, prefix events and nonnumeric output fields are preserved. Original coldlookup events remain inherited; no new resolver/HP/audio/nilHP certificate."
+}
 }

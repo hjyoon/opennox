@@ -31,12 +31,12 @@ func TestPlayerDamageWorldExplosionNPCNativeCallback4E17B0(t *testing.T) {
 				}
 				ud := target.UpdateDataMonster()
 				ud.Field1, ud.Field518 = math.Float32bits(.25), math.Float32bits(.5)
-				want := []uint16{195, 191, 186}
+				want := []uint16{196, 191, 187}
 				if immune {
 					want = []uint16{198, 196, 194}
 				}
 				for hit, wantHP := range want {
-					wantCarry := float32(-.25)
+					wantCarry := float32(.75)
 					if hit == 1 {
 						wantCarry = .25
 					}

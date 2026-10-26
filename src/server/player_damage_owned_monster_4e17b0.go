@@ -164,9 +164,11 @@ func playerDamageNonItemSwitch4E17B0(target, source, weapon *Object, cached unsa
 	}
 	physical := typ == object.DamageBlade || typ == object.DamageCrush || typ == object.DamageImpale || typ == object.DamageExplosion || typ == object.DamageBite || typ == object.DamageClaw || typ == object.DamageImpact
 	electric := typ == object.DamageElectric || typ == object.DamageAirborneElectric
-	// Weaponless player case 7 has independently qualified startup arithmetic;
-	// other shared damage branches retain their separately ported behavior.
-	preciseExplosion := typ == object.DamageExplosion && weapon == nil && target.Class().Has(object.ClassPlayer)
+	// Weaponless player case 7 and nonnil-source NPC case 7 have
+	// independently qualified startup arithmetic. Other shared branches
+	// retain their separately ported behavior.
+	preciseExplosion := typ == object.DamageExplosion && weapon == nil &&
+		(target.Class().Has(object.ClassPlayer) || source != nil && target.Class().Has(object.ClassMonster))
 	preciseQuest := preciseExplosion || playerDamageWorldFlameShape4E17B0(weapon, typ)
 	wearArmor := physical || electric || typ == object.DamageFlame || typ == object.DamageLava
 	if wearArmor && !playerDamageArmorReady4E17B0(target, r) {

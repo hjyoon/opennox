@@ -616,11 +616,18 @@ func playerDamageMonster4E17B0(
 		if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
 			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC weapon-less EXPLOSION carry record", target, source, weapon, damage, typ)
 		}
-		carry := &target.UpdateDataMonster().Field1
-		scaled := float32((1 - float64(armorValue)) * float64(damage))
-		accumulated := scaled + math.Float32frombits(*carry)
-		effective := playerDamageRound4E17B0(accumulated)
-		*carry = math.Float32bits(accumulated - float32(effective))
+		var effective int32
+		if source != nil {
+			factor := experienceAdd53TowardZero(1, -float64(armorValue))
+			scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
+			playerDamageCarry4E20F0(target, &effective, scaled)
+		} else {
+			carry := &target.UpdateDataMonster().Field1
+			scaled := float32((1 - float64(armorValue)) * float64(damage))
+			accumulated := scaled + math.Float32frombits(*carry)
+			effective = playerDamageRound4E17B0(accumulated)
+			*carry = math.Float32bits(accumulated - float32(effective))
+		}
 		playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, runtime)
 		if update.Field547 == 0 {
 			update.Field547, update.Field546 = 2, uint32(typ)
@@ -633,7 +640,13 @@ func playerDamageMonster4E17B0(
 				return playerDamageUnsupported4E17B0(runtime, "missing live NPC weapon-less EXPLOSION quest scale", target, source, weapon, damage, typ)
 			}
 			before := effective
-			effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+			scale := runtime.QuestDamageScale()
+			if source != nil {
+				scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(scale), float64(effective)))
+				effective = netFXTruncateSignedDWORD419A70(scaled)
+			} else {
+				effective = playerDamageRound4E17B0(float32(float64(scale) * float64(effective)))
+			}
 			if before > 0 && effective < 1 {
 				effective = 1
 			}

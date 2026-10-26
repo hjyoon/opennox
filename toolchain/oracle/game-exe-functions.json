@@ -22531,6 +22531,27 @@
       "size": 38,
       "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859",
       "purpose": "Complete unchanged body entered in1456 player/NPC cloud POISON Quest conditions/four FP controls/29120 complete calls/240 addresses. Signed raw values and scalar zero/subnormal/rounding/nonfinite controls. Three external mode/direction/DefaultHP service addresses; zero FP return/arithmetic/conversion substitutions. No HP/status-poisoning/transitive/campaign/overall100 certificate."
+    },
+    {
+      "name": "original_shared_Reflect_live_owner_PlayerDamage_complete",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
+      "purpose": "Complete unchanged body entered in160 declared player/NPC IMPACT/ZAP_RAY missile Reflect contexts and640 FP-control runs/2240 complete calls/150 instruction addresses. Reflection and owner callbacks mutate live class/subclass. Eight mode/direction/reflection/owner/FX/audio service boundaries; direction is constant true, so its internal reads and marker timing are outside this certificate. Zero FP substitutions; no service-callee, generalAI or overall100 certificate."
+    },
+    {
+      "name": "original_shared_Reflect_live_owner_buff_getter_complete",
+      "address": "0x4ff350",
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
+      "purpose": "Complete unchanged body entered in160 declared player/NPC IMPACT/ZAP_RAY missile Reflect contexts and640 FP-control runs/2240 complete calls/150 instruction addresses. Reflection and owner callbacks mutate live class/subclass. Eight mode/direction/reflection/owner/FX/audio service boundaries; direction is constant true, so its internal reads and marker timing are outside this certificate. Zero FP substitutions; no service-callee, generalAI or overall100 certificate."
+    },
+    {
+      "name": "original_shared_Reflect_live_owner_possession_getter_complete",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
+      "purpose": "Complete unchanged body entered in160 declared player/NPC IMPACT/ZAP_RAY missile Reflect contexts and640 FP-control runs/2240 complete calls/150 instruction addresses. Reflection and owner callbacks mutate live class/subclass. Eight mode/direction/reflection/owner/FX/audio service boundaries; direction is constant true, so its internal reads and marker timing are outside this certificate. Zero FP substitutions; no service-callee, generalAI or overall100 certificate."
     }
   ],
   "data": [

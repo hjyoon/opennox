@@ -1791,6 +1791,41 @@ are independently checked. Remaining native/transitive semantics, campaign
 features/final nine cells, UI/audio/peer and sustained gameplay remain open.
 Overall porting is not 100 percent.
 
+### Shared Reflect live owner reads
+
+The shared Reflect helper now reloads subclass bit 0x40 after reflection,
+then the live missile class and subclass bit 2 after ClearOwner/SetOwner.
+The earlier cached decisions could transfer ownership when reflection had
+disabled it, skip a newly required transfer, or invoke ChangeOwner after a
+callback removed the missile class. Initially required partial-runtime service
+admission remains intact; a newly required missing owner service rejects at
+its actual use after the already executed reflection effects.
+
+Unchanged original PlayerDamage, buff and possession bodies execute in 160
+declared player/NPC IMPACT/ZAP_RAY contexts and 640 FP-control runs, totaling
+2,240 complete calls and 150 instruction addresses. Eight external service
+addresses are declared. Direction is a constant-true external predicate in
+this fixture; its internal reads and marker timing are outside the comparison.
+Original reflection/owner/FX/audio callees and general AI are not certified.
+No floating-point return, arithmetic or conversion is substituted.
+
+The full generic runtime already matched these contexts. The partial runtime
+had 68 original mismatch leaves, now corrected. Three additional tests verify
+the newly required missing-service boundaries. Both final before/after inputs
+are identical except for the production helper, and all 320 original native
+case frames preserve their nonoutput bytes, including the failed before run.
+The final 326 regression events pass. All 162,880 parent related identities,
+actions and multiplicities remain, yielding 163,206 passes. Focused Reflect,
+shield, prefix, melee and GreatSword callers preserve 26,588 identities across
+three actual cgocheck2/race/checkptr2 repetitions, yielding 79,764 passes.
+
+This is a bounded Go helper correction. C/header/module inputs are unchanged.
+The four full suites and initial normal/HD campaign E2E evidence above belong
+to parent ff2eb1d4; they are not relabeled as fresh runs for this helper change.
+Current Linux/runtime results require their own recorded evidence. Remaining
+native/transitive work, nine final campaign cells, UI/audio/peer/stability and
+overall porting 100% remain open.
+
 ### Native cloud/projectile callbacks and reusable campaign E2E
 
 This batch ports the reachable NPC/player cloud GreatSword callbacks, player

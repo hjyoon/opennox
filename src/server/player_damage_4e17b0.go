@@ -126,11 +126,22 @@ func playerDamageReflectShield4E17B0(
 	}
 	if missile {
 		runtime.ProjectileReflect(attack, target)
-		if transferOwner {
+		// 004E193C reloads subclass after reflection. The entry flags above
+		// only admit the partial runtime's initially required services.
+		if uint32(attack.ObjSubClass)&0x40 == 0 {
+			if runtime.ClearOwner == nil || runtime.SetOwner == nil {
+				handled, result = playerDamageUnsupported4E17B0(runtime, "missing live Reflect Shield owner service", target, source, weapon, damage, typ)
+				return true, handled, result
+			}
 			runtime.ClearOwner(attack)
 			runtime.SetOwner(target, attack)
 		}
-		if changeOwner {
+		// 004E1956..004E1964 reload both fields after the owner callbacks.
+		if attack.ObjClass.Has(object.ClassMissile) && uint32(attack.ObjSubClass)&2 != 0 {
+			if runtime.ChangeOwner == nil {
+				handled, result = playerDamageUnsupported4E17B0(runtime, "missing live Reflect Shield change-owner service", target, source, weapon, damage, typ)
+				return true, handled, result
+			}
 			runtime.ChangeOwner(attack, target)
 		}
 	}

@@ -1918,6 +1918,41 @@ Fresh products and campaign E2E are recorded separately in
 `poison-activation-precision-port/`. Linux, remaining native/transitive work,
 campaign cells and overall porting 100 percent remain open.
 
+### Campaign E2E FlyingGolem and original GoldKey
+
+`scripts/e2e/campaign/wizard2-golem.json` defeats original FlyingGolem2277
+using the earned A43/D41 bindings, then returns to the original four-Obelisk
+room. Normal passes in 30.343 seconds and HD in 30.157 seconds. The original
+Golem is observed alive at Load and later DEAD in each run. The first D41 input earns
+no healing-effect credit; later HP1 to16 is observed, so this combat has a low
+health margin and is not a broad stability certificate. Actual mana40 to78
+recovery follows the return to the original Obelisks. Independent native Save
+parsing verifies HP16/20, MP78/78, poison zero and XP3925.9531 (bits1165320000).
+The earlier death remains failed and uncredited.
+
+`scripts/e2e/campaign/wizard2-gold-key.json` heals at those Obelisks, defeats
+original SmallSpider1437, opens original Chest2333 and picks up GoldKey2340
+through normal mouse input. Existing read-only inventory assertions require
+GoldKey counts0,1,0 before pickup, after pickup and after the original key gate
+consumes it. Only admission of that existing compiled assertion to the Python
+runner is added; no inventory setter is admitted. Normal passes in 32.820
+seconds and HD in 32.825 seconds.
+
+Independent native parsing verifies Wiz02c, HP20/20, MP78/78, poison zero,
+XP3937.6934 (bits1165368088), the three earned spells and five inventory items
+with no remaining GoldKey after unlock. The original key is observed in its
+chest and on the ground before pickup. Source Save/data/binary/snapshot hashes
+are rechecked. All 18 Python tests pass; the clean fbaa56a game products are
+reused without a Go rebuild. Evidence is retained in
+`campaign-wiz02c-golem-healthy-verified-v1.json` and
+`campaign-wiz02c-gold-key-healthy-verified-v1.json`.
+
+A separate A43 spike-switch diagnostic cannot reach the next hall endpoint
+within600 ticks and remains failed; it supplies no exit or switch credit.
+The nearby original Fireball book is a possible earned projectile route;
+no spell is injected and no older MagicMissile50 lineage is merged. The spike
+hall, BookOfOblivion, remaining cells and overall100 remain open.
+
 ### Campaign E2E steel-crate pressure plate and gate
 
 `scripts/e2e/campaign/wizard2-crate-gate.json` combines the original southern

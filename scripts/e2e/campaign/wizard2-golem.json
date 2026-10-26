@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "Wizard2 original FlyingGolem earned A43 combat",
+  "seed_contract": "Earned crate/four-Obelisk room Save20HP78MP0poison, A43 D41 F115; no MagicMissile50 lineage.",
+  "coverage": "Original FlyingGolem2277 death and living poison-free manual Save only.",
+  "cases": [
+    {
+      "name": "wizard2-cave-golem",
+      "scenario": "wizard2-cave-golem.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 140,
+      "required_checkpoints": [
+        "original FlyingGolem combat and recovery result",
+        "original manual Save"
+      ],
+      "required_defeated_script_ids": [
+        1000194207
+      ],
+      "expected_mana": 78
+    }
+  ]
+}

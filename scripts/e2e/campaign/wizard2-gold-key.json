@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "Wizard2 original GoldKey chest pickup and gate",
+  "seed_contract": "Earned post-golem room Save16HP78MP0poison, A43 D41 F115; Golem2277 dead, original Chest2333 contains original GoldKey2340, no preowned GoldKey.",
+  "coverage": "Original SmallSpider1437 death, original chest/pickup clicks, GoldKey inventory0->1->0 across pickup and gate use, living poison-free manual Save at original gate entrance.",
+  "cases": [
+    {
+      "name": "wizard2-cave-gold-key",
+      "scenario": "wizard2-cave-gold-key.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 180,
+      "required_checkpoints": [
+        "original GoldKey acquisition",
+        "original GoldKey gate entrance arrival",
+        "original manual Save"
+      ],
+      "required_defeated_script_ids": [
+        1000195231
+      ]
+    }
+  ]
+}

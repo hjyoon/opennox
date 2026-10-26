@@ -1,0 +1,88 @@
+# Original menu/input-only campaign regression; use run-campaign-e2e.py.
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "observe-player-target"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "assert-quickbar-spell", "slot": 3, "spell": 115}
+  - {"action": "wait", "dt": 60}
+  - {"action": "assert-server-inventory-count", "item": "GoldKey", "count": 0, "name": "read no preowned original GoldKey"}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary earned D41 at original four Obelisks"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 90}
+  - {"action": "observe-player-target", "name": "read original four-Obelisk post-golem preparation"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original four-Obelisk post-golem preparation"}
+  - {"action": "run-to-world", "x": 2385, "y": 5042, "name": "ordinary original connected road toward GoldKey chest"}
+  - {"action": "run-to-world", "x": 2312, "y": 4825, "name": "ordinary original connected road toward GoldKey chest"}
+  - {"action": "run-to-world", "x": 2229, "y": 4731, "name": "ordinary original connected road toward GoldKey chest"}
+  - {"action": "run-to-world", "x": 2225, "y": 4544, "name": "ordinary original connected road toward GoldKey chest"}
+  - {"action": "run-to-world", "x": 2296, "y": 4441, "name": "ordinary original connected road toward GoldKey chest"}
+  - {"action": "run-to-world", "x": 2340, "y": 4480, "name": "ordinary original connected road toward GoldKey chest"}
+  - {"action": "cast-at-nearest-monster-input", "item": "SmallAlbinoSpider", "slot": 1, "count": 20, "name": "ordinary earned A43 original SmallSpider1437 early approach1"}
+  - {"action": "observe-player-target", "name": "read original SmallSpider1437 early approach1"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original SmallSpider1437 early approach1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "SmallAlbinoSpider", "slot": 1, "count": 20, "name": "ordinary earned A43 original SmallSpider1437 early approach2"}
+  - {"action": "observe-player-target", "name": "read original SmallSpider1437 early approach2"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original SmallSpider1437 early approach2"}
+  - {"action": "run-to-world", "x": 2482, "y": 4595, "name": "ordinary original GoldKey Chest2333 approach"}
+  - {"action": "cast-at-nearest-monster-input", "item": "SmallAlbinoSpider", "slot": 1, "count": 20, "name": "ordinary earned A43 original SmallSpider1437 chest approach3"}
+  - {"action": "observe-player-target", "name": "read original SmallSpider1437 chest approach3"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original SmallSpider1437 chest approach3"}
+  - {"action": "cast-at-nearest-monster-input", "item": "SmallAlbinoSpider", "slot": 1, "count": 20, "name": "ordinary earned A43 original SmallSpider1437 chest approach4"}
+  - {"action": "observe-player-target", "name": "read original SmallSpider1437 chest approach4"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original SmallSpider1437 chest approach4"}
+  - {"action": "observe-player-target", "name": "read original GoldKey chest arrival"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original GoldKey chest arrival"}
+  - {"action": "move", "x": 534, "y": 329, "name": "ordinary left click original Chest2333 lid hover"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "observe-player-target", "name": "read ordinary left click original Chest2333 lid cursor"}
+  - {"action": "raw", "ev": {"type": "button", "button": 0, "pressed": true}, "name": "ordinary left click original Chest2333 lid"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "raw", "ev": {"type": "button", "button": 0, "pressed": false}}
+  - {"action": "wait", "dt": 35}
+  - {"action": "observe-player-target", "name": "read ordinary left click original Chest2333 lid response"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint ordinary left click original Chest2333 lid response"}
+  - {"action": "move", "x": 492, "y": 331, "name": "ordinary left click original GoldKey2340 pickup hover"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "observe-player-target", "name": "read ordinary left click original GoldKey2340 pickup cursor"}
+  - {"action": "raw", "ev": {"type": "button", "button": 0, "pressed": true}, "name": "ordinary left click original GoldKey2340 pickup"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "raw", "ev": {"type": "button", "button": 0, "pressed": false}}
+  - {"action": "wait", "dt": 35}
+  - {"action": "observe-player-target", "name": "read ordinary left click original GoldKey2340 pickup response"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint ordinary left click original GoldKey2340 pickup response"}
+  - {"action": "assert-server-inventory-count", "item": "GoldKey", "count": 1, "name": "read original GoldKey acquired through original chest and pickup"}
+  - {"action": "observe-player-target", "name": "read original GoldKey acquisition"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original GoldKey acquisition"}
+  - {"action": "run-to-world", "x": 2296, "y": 4441, "name": "ordinary return to original GoldKey gate"}
+  - {"action": "walk-to-world", "x": 2220, "y": 4365, "name": "ordinary original GoldKey gate entrance"}
+  - {"action": "observe-player-target", "name": "read original GoldKey gate entrance arrival"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original GoldKey gate entrance arrival"}
+  - {"action": "assert-server-inventory-count", "item": "GoldKey", "count": 0, "name": "read original GoldKey consumed by gate unlock"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

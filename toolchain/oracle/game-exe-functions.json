@@ -22594,6 +22594,48 @@
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
+    },
+    {
+      "name": "original_toxic_cloud_lifetime_precision_poison_gas_trap_complete",
+      "address": "0x004EB910",
+      "size": 157,
+      "sha256": "566956ddf921d091ac1c077aeb07db25417c6f12fba0d5ff478a9b64e77b6c2e",
+      "purpose": "Independently execute complete original toxic-cloud lifetime activation/getter/converter under recorded startup PC53 toward-zero and three FP controls, without FP substitutions."
+    },
+    {
+      "name": "original_toxic_cloud_lifetime_precision_balance_float_complete",
+      "address": "0x00419D40",
+      "size": 36,
+      "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
+      "purpose": "Independently execute complete original toxic-cloud lifetime activation/getter/converter under recorded startup PC53 toward-zero and three FP controls, without FP substitutions."
+    },
+    {
+      "name": "original_toxic_cloud_lifetime_precision_signed_DWORD_complete",
+      "address": "0x00419A70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Independently execute complete original toxic-cloud lifetime activation/getter/converter under recorded startup PC53 toward-zero and three FP controls, without FP substitutions."
+    },
+    {
+      "name": "original_shared_cloud_lifetime_precision_troll_complete",
+      "address": "0x0054A270",
+      "size": 154,
+      "sha256": "c21a25775cdac2ec64520866b21071063b02b89aaa5818ebfb511a685cc3f79e",
+      "purpose": "Independent full-body original startup/nearest/down/up control comparison for shared lifetime or signed coordinate conversion, retaining prior historical controls and callback inputs."
+    },
+    {
+      "name": "original_shared_cloud_lifetime_precision_polyp_complete",
+      "address": "0x0054CB10",
+      "size": 150,
+      "sha256": "c6edef6b059d3697a5859492ab544beb3000860b6482d78cdf6a119ca414cd14",
+      "purpose": "Independent full-body original startup/nearest/down/up control comparison for shared lifetime or signed coordinate conversion, retaining prior historical controls and callback inputs."
+    },
+    {
+      "name": "original_shared_cloud_lifetime_precision_generator_packet_complete",
+      "address": "0x00523200",
+      "size": 74,
+      "sha256": "044c256f50adfbb2f621ee95999f69c762e8ffbebdcdfaed7f447a7861cf2c89",
+      "purpose": "Independent full-body original startup/nearest/down/up control comparison for shared lifetime or signed coordinate conversion, retaining prior historical controls and callback inputs."
     }
   ],
   "data": [

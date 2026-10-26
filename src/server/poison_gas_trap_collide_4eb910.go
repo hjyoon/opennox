@@ -1,7 +1,5 @@
 package server
 
-import "math"
-
 const (
 	poisonGasTrapCloudType4EB910 = "ToxicCloud"
 	poisonGasTrapLifetime4EB910  = "ToxicCloudLifetime"
@@ -31,7 +29,7 @@ type poisonGasTrapCollideHooks4EB910[O comparable, D any] struct {
 // order. CreateAt receives the original call site's reserved zero slot, after
 // which the cloud's live UpdateData pointer is cached. Balance is loaded
 // before the signed FPS dword; their product is spilled once to binary32 and
-// converted with x87 round-to-nearest-even semantics. The duration store
+// converted with the original startup x87 toward-zero semantics. The duration store
 // precedes source audio and delayed deletion. Collision is never read.
 func poisonGasTrapCollide4EB910[O comparable, D any](
 	source, target O,
@@ -67,14 +65,10 @@ func poisonGasTrapCollide4EB910[O comparable, D any](
 func poisonGasTrapMultiply4EB910(lifetime float32, fps uint32) float32 {
 	// GAME.EXE uses FIMUL with a signed dword while the x87 precision control
 	// is 53 bits, then spills the product once to binary32.
-	return float32(float64(lifetime) * float64(int32(fps)))
+	return experienceSpill32TowardZero(experienceMul53TowardZero(float64(lifetime), float64(int32(fps))))
 }
 
 func poisonGasTrapRound4EB910(value float32) int32 {
-	// nox_float2int at 00419A70 uses FISTP in the default
-	// round-to-nearest-even mode. Invalid conversions yield 0x80000000.
-	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
-		return math.MinInt32
-	}
-	return int32(math.RoundToEven(float64(value)))
+	// Startup FISTP truncates toward zero; invalid inputs yield 0x80000000.
+	return netFXTruncateSignedDWORD419A70(value)
 }

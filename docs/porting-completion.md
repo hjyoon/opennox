@@ -1801,6 +1801,40 @@ now reports failure in 18.0 seconds instead of 136.7 seconds. This is a harness
 negative control, not a completed combat route. All eight Python regressions
 pass; successful runtime checks are recorded separately.
 
+### Shared toxic-cloud lifetime and generator packet startup precision
+
+The shared lifetime helpers now preserve startup PC53 multiplication,
+binary32 truncation and signed-DWORD FISTP truncation for PoisonGasTrap,
+Troll and Polyp clouds. The generator break-effect packet uses the same
+conversion: for example, -3.5 encodes -3 rather than -4. Go's host rounding
+state is unchanged. C/header/module inputs and callback/read order remain.
+
+Independent unchanged GAME.EXE execution covers six complete entered bodies,
+278 declared contexts and 1,112 control runs, plus 52 historical conversion
+controls: 3,348 complete entered calls with zero substituted FP arithmetic,
+returns or conversions. Constructor/gate/hash/lifecycle/audio/send services
+are explicit boundaries. All 30 historical nearest-control Troll rows are
+reproduced unchanged and retained; a separate startup fixture preserves their
+inputs, identities and nonnumeric effects. NaN payload/FP status, stock balance
+loader and full external service implementations are outside this certificate.
+
+The identical final before/after inputs differ only in the production helper.
+The selected 300 native events change from 178 PASS/122 FAIL to 300 PASS.
+All 262 native gas/Troll/Polyp nonoutput frames are checked on both runs,
+including after numeric failure. The complete server package retains all
+115,112 parent identities and adds 265, totaling 115,377 PASS. Related root
+and legacy tests retain 205 identities. Actual cgocheck2/race/checkptr2 retain
+1,002 related identities across three repetitions, totaling 3,006 PASS.
+The four full-suite results still belong to ff2eb1d4 and are not repeated.
+
+All 3,233 code and 669 data seals match the unchanged original executable.
+The older official CLI rejects an overlapping range already present at the
+parent revision; its explicit alias-policy correction is separate work.
+Committed ARM64 products and runtime evidence are recorded separately in
+`toxic-cloud-lifetime-precision-port/`. Fresh northern-room attempts remain
+uncredited; the last qualified upper-combat Save is preserved. Linux, remaining
+native/transitive behavior, nine final campaign cells and overall100 remain open.
+
 ### Poison activation startup precision
 
 ActivatePoison now preserves the original startup rounding context when

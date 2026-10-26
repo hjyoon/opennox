@@ -33,7 +33,9 @@ func trollCloudAlloc54A270[T comparable](t *testing.T, value T) *T {
 }
 
 func TestMonsterDeadTroll54A270OriginalNativeMatrix(t *testing.T) {
-	data, err := os.ReadFile("testdata/troll_dead_cloud_54a270_original.json")
+	// The historical nearest-control receipt remains unchanged. This receipt
+	// replays those same inputs under the independently recorded startup CW.
+	data, err := os.ReadFile("testdata/troll_dead_cloud_54a270_startup_original.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,7 +69,7 @@ func TestMonsterDeadTroll54A270OriginalNativeMatrix(t *testing.T) {
 	if oracle.OriginalSHA != "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a" ||
 		oracle.CallbackSHA != "c21a25775cdac2ec64520866b21071063b02b89aaa5818ebfb511a685cc3f79e" ||
 		oracle.Float2IntSHA != "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186" ||
-		oracle.CW != 0x027f || len(oracle.Rows) != 30 || oracle.Entries["0x54a270"] != 30 ||
+		oracle.CW != 0x0e3f || len(oracle.Rows) != 30 || oracle.Entries["0x54a270"] != 30 ||
 		oracle.Entries["0x419a70"] != 29 || len(oracle.Faults) != 0 || !oracle.Sealed {
 		t.Fatal("bounded original callback receipt differs")
 	}
@@ -88,6 +90,28 @@ func TestMonsterDeadTroll54A270OriginalNativeMatrix(t *testing.T) {
 			cloud := trollCloudAlloc54A270(t, Object{UpdateData: unsafe.Pointer(&old.Data), Field29: 0x87654321})
 			expectedUnit, expectedCloud := *unit, *cloud
 			expectedOld, expectedReplacement := *old, *replacement
+			unitBytes := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(unit)), unsafe.Sizeof(*unit)))
+			cloudBytes := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(cloud)), unsafe.Sizeof(*cloud)))
+			oldBytes := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(old)), unsafe.Sizeof(*old)))
+			replacementBytes := bytes.Clone(unsafe.Slice((*byte)(unsafe.Pointer(replacement)), unsafe.Sizeof(*replacement)))
+			t.Cleanup(func() {
+				// Check all nonoutput bytes even when a numeric assertion fails.
+				copy(unitBytes[unsafe.Offsetof(unit.PosVec):], unsafe.Slice((*byte)(unsafe.Pointer(&expectedUnit.PosVec)), unsafe.Sizeof(unit.PosVec)))
+				copy(cloudBytes[unsafe.Offsetof(cloud.PosVec):], unsafe.Slice((*byte)(unsafe.Pointer(&expectedCloud.PosVec)), unsafe.Sizeof(cloud.PosVec)))
+				copy(cloudBytes[unsafe.Offsetof(cloud.ObjOwner):], unsafe.Slice((*byte)(unsafe.Pointer(&expectedCloud.ObjOwner)), unsafe.Sizeof(cloud.ObjOwner)))
+				copy(cloudBytes[unsafe.Offsetof(cloud.UpdateData):], unsafe.Slice((*byte)(unsafe.Pointer(&expectedCloud.UpdateData)), unsafe.Sizeof(cloud.UpdateData)))
+				if !row.AllocFailed {
+					copy(oldBytes[unsafe.Offsetof(old.Data):], unsafe.Slice((*byte)(unsafe.Pointer(&old.Data.Duration)), 4))
+				}
+				if !bytes.Equal(unitBytes, unsafe.Slice((*byte)(unsafe.Pointer(unit)), unsafe.Sizeof(*unit))) ||
+					!bytes.Equal(cloudBytes, unsafe.Slice((*byte)(unsafe.Pointer(cloud)), unsafe.Sizeof(*cloud))) ||
+					!bytes.Equal(oldBytes, unsafe.Slice((*byte)(unsafe.Pointer(old)), unsafe.Sizeof(*old))) ||
+					!bytes.Equal(replacementBytes, unsafe.Slice((*byte)(unsafe.Pointer(replacement)), unsafe.Sizeof(*replacement))) {
+					t.Error("Troll nonoutput native frame changed")
+				} else {
+					t.Log("all_native_Troll_nonoutput_frames_preserved:true")
+				}
+			})
 			fps := row.FPS
 			var events []string
 			mutate := func(stage string) {

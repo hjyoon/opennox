@@ -49,8 +49,8 @@ func TestPolypDieNative54CB10CachesCloudUpdateAndPreservesOrder(t *testing.T) {
 		},
 		Audio: func(id sound.ID, got *Object) {
 			events = append(events, "audio")
-			if id != sound.SoundPolypExplode || got != source || update.Duration != 8 {
-				t.Fatalf("audio/state = %d/%p/%d, want PolypExplode/%p/8", id, got, update.Duration, source)
+			if id != sound.SoundPolypExplode || got != source || update.Duration != 7 {
+				t.Fatalf("audio/state = %d/%p/%d, want PolypExplode/%p/7", id, got, update.Duration, source)
 			}
 		},
 		DelayedDelete: func(got *Object) {
@@ -65,8 +65,8 @@ func TestPolypDieNative54CB10CachesCloudUpdateAndPreservesOrder(t *testing.T) {
 	if !slices.Equal(events, want) {
 		t.Fatalf("events = %v, want %v", events, want)
 	}
-	if update.Duration != 8 || replacement.Duration != 0 {
-		t.Fatalf("cached/replacement duration = %d/%d, want 8/0", update.Duration, replacement.Duration)
+	if update.Duration != 7 || replacement.Duration != 0 {
+		t.Fatalf("cached/replacement duration = %d/%d, want 7/0", update.Duration, replacement.Duration)
 	}
 }
 
@@ -361,7 +361,7 @@ func TestMonsterGeneratorDieNative54E630PreservesEffectsAndQuestCredit(t *testin
 	if !slices.Equal(events, wantEvents) {
 		t.Fatalf("events = %v, want %v", events, wantEvents)
 	}
-	wantFX := []byte{0xf0, 25, 12, 0, 0xfc, 0xff, 200}
+	wantFX := []byte{0xf0, 25, 12, 0, 0xfd, 0xff, 200}
 	if !slices.Equal(fx, wantFX) {
 		t.Fatalf("FX packet = %v, want %v", fx, wantFX)
 	}
@@ -385,9 +385,10 @@ func TestRecordMonsterGeneratorDestroyed4D61B0RejectsDestroyedPlayer(t *testing.
 }
 
 func TestMonsterGeneratorBreakFXPacket523200UsesNearestEven(t *testing.T) {
+	// Retain the historical identity; original startup FISTP truncates -1.5.
 	packet := monsterGeneratorBreakFXPacket523200(types.Pointf{X: 2.5, Y: -1.5}, 0xa5)
 	if packet[0] != 0xf0 || packet[1] != 25 || binary.LittleEndian.Uint16(packet[2:4]) != 2 ||
-		binary.LittleEndian.Uint16(packet[4:6]) != uint16(0xfffe) || packet[6] != 0xa5 {
+		binary.LittleEndian.Uint16(packet[4:6]) != uint16(0xffff) || packet[6] != 0xa5 {
 		t.Fatalf("packet = %v", packet)
 	}
 }

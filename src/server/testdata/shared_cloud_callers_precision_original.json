@@ -1,0 +1,1147 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "scope": "Whole original Troll154, Polyp150, generator-packet74, scalar balance36 and signed-DWORD17 bodies under inherited startup PC53 toward-zero plus three controls. Troll/Polyp constructor type caches are primed; allocation/CreateAt/hash/audio/delete and packet send are six external service addresses. Original balance FLDS, lifetime FIMUL/FSTPS/FISTP and packet converters execute without FP substitutions. All30 historical nearest Troll rows are independently reproduced unchanged; only startup numeric outputs differ. Stock balance/type-cache lookup implementations, generator death caller, FP status/NaN payload and overall100 are not certified.",
+  "polyp": [
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "historical-seven-half/none",
+        "lifetime_bits": 1075838976,
+        "fps": 3,
+        "mutation": "",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 7,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 3,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "historical-seven-half/create-replace",
+        "lifetime_bits": 1075838976,
+        "fps": 3,
+        "mutation": "create-replace",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 7,
+      "replacement_duration": -456,
+      "final_update": "replacement",
+      "final_fps": 3,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "historical-seven-half/create-nil",
+        "lifetime_bits": 1075838976,
+        "fps": 3,
+        "mutation": "create-nil",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 7,
+      "replacement_duration": -456,
+      "final_update": "nil",
+      "final_fps": 3,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "stock-style-37-half/none",
+        "lifetime_bits": 1067450368,
+        "fps": 30,
+        "mutation": "",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 37,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "stock-style-37-half/create-replace",
+        "lifetime_bits": 1067450368,
+        "fps": 30,
+        "mutation": "create-replace",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 37,
+      "replacement_duration": -456,
+      "final_update": "replacement",
+      "final_fps": 30,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "stock-style-37-half/create-nil",
+        "lifetime_bits": 1067450368,
+        "fps": 30,
+        "mutation": "create-nil",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 37,
+      "replacement_duration": -456,
+      "final_update": "nil",
+      "final_fps": 30,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "positive-half/none",
+        "lifetime_bits": 1069547520,
+        "fps": 1,
+        "mutation": "",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 1,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "positive-half/create-replace",
+        "lifetime_bits": 1069547520,
+        "fps": 1,
+        "mutation": "create-replace",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 1,
+      "replacement_duration": -456,
+      "final_update": "replacement",
+      "final_fps": 1,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "positive-half/create-nil",
+        "lifetime_bits": 1069547520,
+        "fps": 1,
+        "mutation": "create-nil",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": 1,
+      "replacement_duration": -456,
+      "final_update": "nil",
+      "final_fps": 1,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "negative-half/none",
+        "lifetime_bits": 3217031168,
+        "fps": 1,
+        "mutation": "",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": -1,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 1,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "negative-half/create-replace",
+        "lifetime_bits": 3217031168,
+        "fps": 1,
+        "mutation": "create-replace",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": -1,
+      "replacement_duration": -456,
+      "final_update": "replacement",
+      "final_fps": 1,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "negative-half/create-nil",
+        "lifetime_bits": 3217031168,
+        "fps": 1,
+        "mutation": "create-nil",
+        "allocation_failure": false,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": -1,
+      "replacement_duration": -456,
+      "final_update": "nil",
+      "final_fps": 1,
+      "placed_position": [
+        1099694080,
+        3239313408
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "create",
+        "balance:ToxicCloudLifetime",
+        "fps",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419d40": 1,
+        "0x419a70": 1,
+        "0x54cb10": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "polyp",
+      "input": {
+        "kind": "polyp",
+        "name": "allocation-failure",
+        "lifetime_bits": 1075838976,
+        "fps": 3,
+        "mutation": "",
+        "allocation_failure": true,
+        "position_bits": [
+          1099694080,
+          3239313408
+        ]
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 3,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "new:ToxicCloud",
+        "audio:284",
+        "delete"
+      ],
+      "packet": [],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x54cb10": 1
+      }
+    }
+  ],
+  "packets": [
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair0/intensity165",
+        "position_bits": [
+          1075838976,
+          3217031168
+        ],
+        "intensity": 165
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        2,
+        0,
+        255,
+        255,
+        165
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair0/intensity200",
+        "position_bits": [
+          1075838976,
+          3217031168
+        ],
+        "intensity": 200
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        2,
+        0,
+        255,
+        255,
+        200
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair1/intensity165",
+        "position_bits": [
+          1095237632,
+          3227516928
+        ],
+        "intensity": 165
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        12,
+        0,
+        253,
+        255,
+        165
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair1/intensity200",
+        "position_bits": [
+          1095237632,
+          3227516928
+        ],
+        "intensity": 200
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        12,
+        0,
+        253,
+        255,
+        200
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair2/intensity165",
+        "position_bits": [
+          1115619328,
+          3263266816
+        ],
+        "intensity": 165
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        63,
+        0,
+        192,
+        255,
+        165
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair2/intensity200",
+        "position_bits": [
+          1115619328,
+          3263266816
+        ],
+        "intensity": 200
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        63,
+        0,
+        192,
+        255,
+        200
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair3/intensity165",
+        "position_bits": [
+          3204448256,
+          1056964608
+        ],
+        "intensity": 165
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        0,
+        0,
+        0,
+        0,
+        165
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair3/intensity200",
+        "position_bits": [
+          3204448256,
+          1056964608
+        ],
+        "intensity": 200
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        0,
+        0,
+        0,
+        0,
+        200
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair4/intensity165",
+        "position_bits": [
+          1325400063,
+          3472883712
+        ],
+        "intensity": 165
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        128,
+        255,
+        0,
+        0,
+        165
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair4/intensity200",
+        "position_bits": [
+          1325400063,
+          3472883712
+        ],
+        "intensity": 200
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        128,
+        255,
+        0,
+        0,
+        200
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair5/intensity165",
+        "position_bits": [
+          1621981420,
+          3769465068
+        ],
+        "intensity": 165
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        0,
+        0,
+        0,
+        0,
+        165
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair5/intensity200",
+        "position_bits": [
+          1621981420,
+          3769465068
+        ],
+        "intensity": 200
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        0,
+        0,
+        0,
+        0,
+        200
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair6/intensity165",
+        "position_bits": [
+          2139095040,
+          2143289345
+        ],
+        "intensity": 165
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        0,
+        0,
+        0,
+        0,
+        165
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair6/intensity200",
+        "position_bits": [
+          2139095040,
+          2143289345
+        ],
+        "intensity": 200
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        0,
+        0,
+        0,
+        0,
+        200
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair7/intensity165",
+        "position_bits": [
+          1,
+          2147483649
+        ],
+        "intensity": 165
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        0,
+        0,
+        0,
+        0,
+        165
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "kind": "packet",
+      "input": {
+        "kind": "packet",
+        "name": "pair7/intensity200",
+        "position_bits": [
+          1,
+          2147483649
+        ],
+        "intensity": 200
+      },
+      "returned": 0,
+      "old_duration": -123,
+      "replacement_duration": -456,
+      "final_update": "original",
+      "final_fps": 30,
+      "placed_position": [
+        0,
+        0
+      ],
+      "events": [
+        "send"
+      ],
+      "packet": [
+        240,
+        25,
+        0,
+        0,
+        0,
+        0,
+        200
+      ],
+      "guarded_bytes_unchanged": true,
+      "entered_original_functions": {
+        "0x419a70": 2,
+        "0x523200": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,5532 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "cases": [
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps00000000/replace0",
+        "lifetime_bits": 0,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps00000000/replace1",
+        "lifetime_bits": 0,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps00000001/replace0",
+        "lifetime_bits": 0,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps00000001/replace1",
+        "lifetime_bits": 0,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps00000003/replace0",
+        "lifetime_bits": 0,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps00000003/replace1",
+        "lifetime_bits": 0,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps0000001e/replace0",
+        "lifetime_bits": 0,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps0000001e/replace1",
+        "lifetime_bits": 0,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps0000003c/replace0",
+        "lifetime_bits": 0,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps0000003c/replace1",
+        "lifetime_bits": 0,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps01000001/replace0",
+        "lifetime_bits": 0,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps01000001/replace1",
+        "lifetime_bits": 0,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps7fffffff/replace0",
+        "lifetime_bits": 0,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps7fffffff/replace1",
+        "lifetime_bits": 0,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps80000000/replace0",
+        "lifetime_bits": 0,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2147483648,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fps80000000/replace1",
+        "lifetime_bits": 0,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2147483648,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fpsffffffff/replace0",
+        "lifetime_bits": 0,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2147483648,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/fpsffffffff/replace1",
+        "lifetime_bits": 0,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2147483648,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps00000000/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps00000000/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps00000001/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1056964608,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps00000001/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1056964608,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps00000003/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1069547520,
+      "duration": 1,
+      "data0": 1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps00000003/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1069547520,
+      "duration": 1,
+      "data0": 324478056,
+      "data1": 1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps0000001e/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1097859072,
+      "duration": 15,
+      "data0": 15,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps0000001e/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1097859072,
+      "duration": 15,
+      "data0": 324478056,
+      "data1": 15,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps0000003c/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1106247680,
+      "duration": 30,
+      "data0": 30,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps0000003c/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1106247680,
+      "duration": 30,
+      "data0": 324478056,
+      "data1": 30,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps01000001/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1258291200,
+      "duration": 8388608,
+      "data0": 8388608,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps01000001/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1258291200,
+      "duration": 8388608,
+      "data0": 324478056,
+      "data1": 8388608,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps7fffffff/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1317011455,
+      "duration": 1073741760,
+      "data0": 1073741760,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps7fffffff/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1317011455,
+      "duration": 1073741760,
+      "data0": 324478056,
+      "data1": 1073741760,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps80000000/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3464495104,
+      "duration": -1073741824,
+      "data0": -1073741824,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fps80000000/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3464495104,
+      "duration": -1073741824,
+      "data0": 324478056,
+      "data1": -1073741824,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fpsffffffff/replace0",
+        "lifetime_bits": 1056964608,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3204448256,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half/fpsffffffff/replace1",
+        "lifetime_bits": 1056964608,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3204448256,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps00000000/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps00000000/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps00000001/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1069547520,
+      "duration": 1,
+      "data0": 1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps00000001/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1069547520,
+      "duration": 1,
+      "data0": 324478056,
+      "data1": 1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps00000003/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1083179008,
+      "duration": 4,
+      "data0": 4,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps00000003/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1083179008,
+      "duration": 4,
+      "data0": 324478056,
+      "data1": 4,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps0000001e/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1110704128,
+      "duration": 45,
+      "data0": 45,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps0000001e/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1110704128,
+      "duration": 45,
+      "data0": 324478056,
+      "data1": 45,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps0000003c/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1119092736,
+      "duration": 90,
+      "data0": 90,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps0000003c/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1119092736,
+      "duration": 90,
+      "data0": 324478056,
+      "data1": 90,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps01000001/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1270874112,
+      "duration": 25165824,
+      "data0": 25165824,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps01000001/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1270874112,
+      "duration": 25165824,
+      "data0": 324478056,
+      "data1": 25165824,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps7fffffff/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1329594367,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps7fffffff/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1329594367,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps80000000/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3477078016,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fps80000000/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3477078016,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fpsffffffff/replace0",
+        "lifetime_bits": 1069547520,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3217031168,
+      "duration": -1,
+      "data0": -1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "one-half/fpsffffffff/replace1",
+        "lifetime_bits": 1069547520,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3217031168,
+      "duration": -1,
+      "data0": 324478056,
+      "data1": -1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps00000000/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps00000000/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps00000001/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1075838976,
+      "duration": 2,
+      "data0": 2,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps00000001/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1075838976,
+      "duration": 2,
+      "data0": 324478056,
+      "data1": 2,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps00000003/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1089470464,
+      "duration": 7,
+      "data0": 7,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps00000003/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1089470464,
+      "duration": 7,
+      "data0": 324478056,
+      "data1": 7,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps0000001e/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1117126656,
+      "duration": 75,
+      "data0": 75,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps0000001e/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1117126656,
+      "duration": 75,
+      "data0": 324478056,
+      "data1": 75,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps0000003c/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1125515264,
+      "duration": 150,
+      "data0": 150,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps0000003c/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1125515264,
+      "duration": 150,
+      "data0": 324478056,
+      "data1": 150,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps01000001/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1277165568,
+      "duration": 41943040,
+      "data0": 41943040,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps01000001/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1277165568,
+      "duration": 41943040,
+      "data0": 324478056,
+      "data1": 41943040,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps7fffffff/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1335885823,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps7fffffff/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1335885823,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps80000000/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3483369472,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fps80000000/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3483369472,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fpsffffffff/replace0",
+        "lifetime_bits": 1075838976,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3223322624,
+      "duration": -2,
+      "data0": -2,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "two-half/fpsffffffff/replace1",
+        "lifetime_bits": 1075838976,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3223322624,
+      "duration": -2,
+      "data0": 324478056,
+      "data1": -2,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps00000000/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps00000000/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps00000001/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1080033280,
+      "duration": 3,
+      "data0": 3,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps00000001/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1080033280,
+      "duration": 3,
+      "data0": 324478056,
+      "data1": 3,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps00000003/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1093140480,
+      "duration": 10,
+      "data0": 10,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps00000003/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1093140480,
+      "duration": 10,
+      "data0": 324478056,
+      "data1": 10,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps0000001e/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1121058816,
+      "duration": 105,
+      "data0": 105,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps0000001e/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1121058816,
+      "duration": 105,
+      "data0": 324478056,
+      "data1": 105,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps0000003c/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1129447424,
+      "duration": 210,
+      "data0": 210,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps0000003c/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1129447424,
+      "duration": 210,
+      "data0": 324478056,
+      "data1": 210,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps01000001/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1281359872,
+      "duration": 58720256,
+      "data0": 58720256,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps01000001/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1281359872,
+      "duration": 58720256,
+      "data0": 324478056,
+      "data1": 58720256,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps7fffffff/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1340080127,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps7fffffff/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1340080127,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps80000000/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3487563776,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fps80000000/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3487563776,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fpsffffffff/replace0",
+        "lifetime_bits": 1080033280,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3227516928,
+      "duration": -3,
+      "data0": -3,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-half/fpsffffffff/replace1",
+        "lifetime_bits": 1080033280,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3227516928,
+      "duration": -3,
+      "data0": 324478056,
+      "data1": -3,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps00000000/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps00000000/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps00000001/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1067450368,
+      "duration": 1,
+      "data0": 1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps00000001/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1067450368,
+      "duration": 1,
+      "data0": 324478056,
+      "data1": 1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps00000003/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1081081856,
+      "duration": 3,
+      "data0": 3,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps00000003/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1081081856,
+      "duration": 3,
+      "data0": 324478056,
+      "data1": 3,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps0000001e/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1108738048,
+      "duration": 37,
+      "data0": 37,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps0000001e/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1108738048,
+      "duration": 37,
+      "data0": 324478056,
+      "data1": 37,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps0000003c/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1117126656,
+      "duration": 75,
+      "data0": 75,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps0000003c/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1117126656,
+      "duration": 75,
+      "data0": 324478056,
+      "data1": 75,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps01000001/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1268776960,
+      "duration": 20971520,
+      "data0": 20971520,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps01000001/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1268776960,
+      "duration": 20971520,
+      "data0": 324478056,
+      "data1": 20971520,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps7fffffff/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1327497215,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps7fffffff/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1327497215,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps80000000/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3474980864,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fps80000000/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3474980864,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fpsffffffff/replace0",
+        "lifetime_bits": 1067450368,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3214934016,
+      "duration": -1,
+      "data0": -1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "signed/fpsffffffff/replace1",
+        "lifetime_bits": 1067450368,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3214934016,
+      "duration": -1,
+      "data0": 324478056,
+      "data1": -1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps00000000/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps00000000/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps00000001/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1036831949,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps00000001/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1036831949,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps00000003/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1050253721,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps00000003/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1050253721,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps0000001e/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1077936128,
+      "duration": 3,
+      "data0": 3,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps0000001e/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1077936128,
+      "duration": 3,
+      "data0": 324478056,
+      "data1": 3,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps0000003c/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1086324736,
+      "duration": 6,
+      "data0": 6,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps0000003c/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1086324736,
+      "duration": 6,
+      "data0": 324478056,
+      "data1": 6,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps01000001/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1238158541,
+      "duration": 1677721,
+      "data0": 1677721,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps01000001/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1238158541,
+      "duration": 1677721,
+      "data0": 324478056,
+      "data1": 1677721,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps7fffffff/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1296878796,
+      "duration": 214748352,
+      "data0": 214748352,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps7fffffff/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1296878796,
+      "duration": 214748352,
+      "data0": 324478056,
+      "data1": 214748352,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps80000000/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3444362445,
+      "duration": -214748368,
+      "data0": -214748368,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fps80000000/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3444362445,
+      "duration": -214748368,
+      "data0": 324478056,
+      "data1": -214748368,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fpsffffffff/replace0",
+        "lifetime_bits": 1036831949,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3184315597,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "tenth/fpsffffffff/replace1",
+        "lifetime_bits": 1036831949,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3184315597,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps00000000/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps00000000/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps00000001/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1022739087,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps00000001/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1022739087,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps00000003/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1035489771,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps00000003/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1035489771,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps0000001e/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1063675494,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps0000001e/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1063675494,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps0000003c/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1072064102,
+      "duration": 1,
+      "data0": 1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps0000003c/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1072064102,
+      "duration": 1,
+      "data0": 324478056,
+      "data1": 1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps01000001/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1224065679,
+      "duration": 503316,
+      "data0": 503316,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps01000001/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1224065679,
+      "duration": 503316,
+      "data0": 324478056,
+      "data1": 503316,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps7fffffff/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1282785934,
+      "duration": 64424504,
+      "data0": 64424504,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps7fffffff/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1282785934,
+      "duration": 64424504,
+      "data0": 324478056,
+      "data1": 64424504,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps80000000/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3430269583,
+      "duration": -64424508,
+      "data0": -64424508,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fps80000000/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3430269583,
+      "duration": -64424508,
+      "data0": 324478056,
+      "data1": -64424508,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fpsffffffff/replace0",
+        "lifetime_bits": 1022739087,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3170222735,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "three-hundredths/fpsffffffff/replace1",
+        "lifetime_bits": 1022739087,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3170222735,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps00000000/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2147483648,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps00000000/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2147483648,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps00000001/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3214934016,
+      "duration": -1,
+      "data0": -1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps00000001/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3214934016,
+      "duration": -1,
+      "data0": 324478056,
+      "data1": -1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps00000003/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3228565504,
+      "duration": -3,
+      "data0": -3,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps00000003/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3228565504,
+      "duration": -3,
+      "data0": 324478056,
+      "data1": -3,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps0000001e/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3256221696,
+      "duration": -37,
+      "data0": -37,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps0000001e/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3256221696,
+      "duration": -37,
+      "data0": 324478056,
+      "data1": -37,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps0000003c/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3264610304,
+      "duration": -75,
+      "data0": -75,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps0000003c/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3264610304,
+      "duration": -75,
+      "data0": 324478056,
+      "data1": -75,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps01000001/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3416260608,
+      "duration": -20971520,
+      "data0": -20971520,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps01000001/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3416260608,
+      "duration": -20971520,
+      "data0": 324478056,
+      "data1": -20971520,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps7fffffff/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3474980863,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps7fffffff/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3474980863,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps80000000/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1327497216,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fps80000000/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1327497216,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fpsffffffff/replace0",
+        "lifetime_bits": 3214934016,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1067450368,
+      "duration": 1,
+      "data0": 1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/fpsffffffff/replace1",
+        "lifetime_bits": 3214934016,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1067450368,
+      "duration": 1,
+      "data0": 324478056,
+      "data1": 1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps00000000/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps00000000/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps00000001/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1065353217,
+      "duration": 1,
+      "data0": 1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps00000001/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1065353217,
+      "duration": 1,
+      "data0": 324478056,
+      "data1": 1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps00000003/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1077936129,
+      "duration": 3,
+      "data0": 3,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps00000003/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1077936129,
+      "duration": 3,
+      "data0": 324478056,
+      "data1": 3,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps0000001e/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1106247681,
+      "duration": 30,
+      "data0": 30,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps0000001e/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1106247681,
+      "duration": 30,
+      "data0": 324478056,
+      "data1": 30,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps0000003c/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1114636289,
+      "duration": 60,
+      "data0": 60,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps0000003c/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1114636289,
+      "duration": 60,
+      "data0": 324478056,
+      "data1": 60,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps01000001/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1266679809,
+      "duration": 16777218,
+      "data0": 16777218,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps01000001/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1266679809,
+      "duration": 16777218,
+      "data0": 324478056,
+      "data1": 16777218,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps7fffffff/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1325400064,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps7fffffff/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1325400064,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps80000000/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3472883713,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fps80000000/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3472883713,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fpsffffffff/replace0",
+        "lifetime_bits": 1065353217,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3212836865,
+      "duration": -1,
+      "data0": -1,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "mantissa-edge/fpsffffffff/replace1",
+        "lifetime_bits": 1065353217,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3212836865,
+      "duration": -1,
+      "data0": 324478056,
+      "data1": -1,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps00000000/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps00000000/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps00000001/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps00000001/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps00000003/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps00000003/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps0000001e/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps0000001e/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps0000003c/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps0000003c/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps01000001/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps01000001/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps7fffffff/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps7fffffff/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2139095039,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps80000000/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 4286578687,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fps80000000/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 4286578687,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fpsffffffff/replace0",
+        "lifetime_bits": 2139095039,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 4286578687,
+      "duration": -2147483648,
+      "data0": -2147483648,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "max-finite/fpsffffffff/replace1",
+        "lifetime_bits": 2139095039,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 4286578687,
+      "duration": -2147483648,
+      "data0": 324478056,
+      "data1": -2147483648,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps00000000/replace0",
+        "lifetime_bits": 1,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps00000000/replace1",
+        "lifetime_bits": 1,
+        "fps": 0,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 0,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps00000001/replace0",
+        "lifetime_bits": 1,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 1,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps00000001/replace1",
+        "lifetime_bits": 1,
+        "fps": 1,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 1,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps00000003/replace0",
+        "lifetime_bits": 1,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 3,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps00000003/replace1",
+        "lifetime_bits": 1,
+        "fps": 3,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 3,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps0000001e/replace0",
+        "lifetime_bits": 1,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 30,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps0000001e/replace1",
+        "lifetime_bits": 1,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 30,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps0000003c/replace0",
+        "lifetime_bits": 1,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 60,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps0000003c/replace1",
+        "lifetime_bits": 1,
+        "fps": 60,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 60,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps01000001/replace0",
+        "lifetime_bits": 1,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 16777216,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps01000001/replace1",
+        "lifetime_bits": 1,
+        "fps": 16777217,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 16777216,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps7fffffff/replace0",
+        "lifetime_bits": 1,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 75497471,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps7fffffff/replace1",
+        "lifetime_bits": 1,
+        "fps": 2147483647,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 75497471,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps80000000/replace0",
+        "lifetime_bits": 1,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2222981120,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fps80000000/replace1",
+        "lifetime_bits": 1,
+        "fps": 2147483648,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2222981120,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fpsffffffff/replace0",
+        "lifetime_bits": 1,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": false
+      },
+      "scaled_bits": 2147483649,
+      "duration": 0,
+      "data0": 0,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "min-subnormal/fpsffffffff/replace1",
+        "lifetime_bits": 1,
+        "fps": 4294967295,
+        "target": true,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": 2147483649,
+      "duration": 0,
+      "data0": 324478056,
+      "data1": 0,
+      "services": [
+        "gate",
+        "new",
+        "create",
+        "balance",
+        "audio",
+        "delete"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "nil-target",
+        "lifetime_bits": 1069547520,
+        "fps": 30,
+        "target": false,
+        "allow": 1,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": null,
+      "duration": null,
+      "data0": 324478056,
+      "data1": 324478056,
+      "services": [],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "gate-zero",
+        "lifetime_bits": 1069547520,
+        "fps": 30,
+        "target": true,
+        "allow": 0,
+        "allocate": true,
+        "replace_update": true
+      },
+      "scaled_bits": null,
+      "duration": null,
+      "data0": 324478056,
+      "data1": 324478056,
+      "services": [
+        "gate"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "allocation-failure",
+        "lifetime_bits": 1069547520,
+        "fps": 30,
+        "target": true,
+        "allow": 1,
+        "allocate": false,
+        "replace_update": true
+      },
+      "scaled_bits": null,
+      "duration": null,
+      "data0": 324478056,
+      "data1": 324478056,
+      "services": [
+        "gate",
+        "new"
+      ],
+      "all_nonoutput_frame_bytes_preserved": true
+    }
+  ],
+  "historical_conversions": [
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1056964608,
+      "result": 0
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1069547520,
+      "result": 1
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1075838976,
+      "result": 2
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1080033280,
+      "result": 3
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 3204448256,
+      "result": 0
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 3217031168,
+      "result": -1
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 3223322624,
+      "result": -2
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1325400063,
+      "result": 2147483520
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1325400064,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 3472883712,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 2139095040,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 4286578688,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 2143289344,
+      "result": -2147483648
+    }
+  ],
+  "scope": "Whole original PoisonGasTrapCollide157, balance scalar getter36 and signed-DWORD17 bodies. Declared finite balance records execute original FLDS/FIMUL/FSTPS/FISTP with actual startup PC53 toward-zero and three controls. Gate/allocation/CreateAt/hash/audio/delete are six declared external services; CreateAt may replace live UpdateData before its original cache. No FP return/arithmetic/conversion substitution. Standalone historical nonfinite conversion is certified only to integer-indefinite, not NaN payload or FP status. Stock balance loader, lifecycle/audio/gate implementations, cloud update/campaign/overall100 are outside this certificate."
+}

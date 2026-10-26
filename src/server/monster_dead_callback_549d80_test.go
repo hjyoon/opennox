@@ -317,7 +317,7 @@ func TestMonsterDeadCallbackTroll54A270Cloud(t *testing.T) {
 	if !MonsterDeadCallbackNative549D80(unit, MonsterDeadCallbackTroll54A270, runtime) {
 		t.Fatal("Troll callback was not handled")
 	}
-	if createdOwner != unit || createdPosition != unit.PosVec || gotAudio != sound.SoundTrollFlatus || data.Duration != 38 {
+	if createdOwner != unit || createdPosition != unit.PosVec || gotAudio != sound.SoundTrollFlatus || data.Duration != 37 {
 		t.Fatalf("cloud = owner:%p pos:%v audio:%d duration:%d", createdOwner, createdPosition, gotAudio, data.Duration)
 	}
 }

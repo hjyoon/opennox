@@ -309,11 +309,11 @@ func TestPoisonGasTrapMultiply4EB910UsesSignedFPSAndBinary32Spill(t *testing.T) 
 	if got := poisonGasTrapMultiply4EB910(1.25, 0xffffffff); got != -1.25 {
 		t.Fatalf("signed FPS product = %g, want -1.25", got)
 	}
-	// 16777217 must enter FIMUL as an exact signed integer. Converting FPS to
-	// float32 before multiplication would produce bits 0x4b800001 instead.
+	// 16777217 enters FIMUL as an exact signed integer. The independently
+	// executed startup FSTPS truncates the product toward zero.
 	lifetime := math.Float32frombits(0x3f800001)
-	if got := math.Float32bits(poisonGasTrapMultiply4EB910(lifetime, 16777217)); got != 0x4b800002 {
-		t.Fatalf("binary32 product bits = %#x, want 0x4b800002", got)
+	if got := math.Float32bits(poisonGasTrapMultiply4EB910(lifetime, 16777217)); got != 0x4b800001 {
+		t.Fatalf("binary32 product bits = %#x, want 0x4b800001", got)
 	}
 }
 
@@ -322,8 +322,8 @@ func TestPoisonGasTrapRound4EB910MatchesFISTP(t *testing.T) {
 		value float32
 		want  int32
 	}{
-		{0.5, 0}, {1.5, 2}, {2.5, 2}, {3.5, 4},
-		{-0.5, 0}, {-1.5, -2}, {-2.5, -2},
+		{0.5, 0}, {1.5, 1}, {2.5, 2}, {3.5, 3},
+		{-0.5, 0}, {-1.5, -1}, {-2.5, -2},
 		{math.Float32frombits(0x4effffff), 2147483520},
 		{math.Float32frombits(0x4f000000), math.MinInt32},
 		{math.Float32frombits(0xcf000000), math.MinInt32},

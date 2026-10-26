@@ -50,7 +50,8 @@ func TestPlayerDamagePlayerCloudPoison4E17B0SignedQuest(t *testing.T) {
 						DefaultDamage: func(got, src, cloud *Object, d int32, typ object.DamageType) bool {
 							want := raw
 							if scale >= 0 {
-								want = int32(math.RoundToEven(float64(float32(float64(raw) * float64(scale)))))
+								// Original 004E2063 -> 00419A70 uses signed FISTP toward zero.
+								want = int32(math.Trunc(float64(raw) * float64(scale)))
 								if raw > 0 && want < 1 {
 									want = 1
 								}

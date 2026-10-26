@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "name": "Wizard chapter2 cave regressions",
+  "seed_contract": "Original earned Wiz02c SAVE0001, living Wizard, LesserHeal41/Lightning43/Swap115 bound to D/A/F. First scene has not yet run.",
+  "coverage": "Wiz02c load/rest/save and first necromancer summon/combat only. These cases do not certify the whole chapter or porting100.",
+  "cases": [
+    {
+      "name": "wizard2-cave-load-save",
+      "scenario": "wizard2-cave-load-save.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "expected_health": 20,
+      "expected_mana": 78,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 240,
+      "required_checkpoints": [
+        "original entry-room rest",
+        "original manual Save"
+      ]
+    },
+    {
+      "name": "wizard2-cave-first-scene",
+      "scenario": "wizard2-cave-first-scene.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": false,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 300,
+      "required_checkpoints": [
+        "original first necromancer Spider scene",
+        "original summoned Spider combat response",
+        "original manual Save"
+      ],
+      "created_type": "Spider",
+      "minimum_created": 2,
+      "minimum_dead_created": 1,
+      "expect_damage": true
+    }
+  ]
+}

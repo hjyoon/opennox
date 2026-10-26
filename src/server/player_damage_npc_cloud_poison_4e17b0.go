@@ -51,11 +51,13 @@ func playerDamageMonsterCloudPoison4E17B0(
 			if front && target.MonsterActionGet50A020() == ai.ACTION_BLOCK_ATTACK && equipment.armorFlags&0x3000000 != 0 {
 				return playerDamageMonsterCloudPoisonBlock4E17B0(target, source, cloud, damage, runtime)
 			}
-			// Stock clouds are excluded above. If a callback turns another
-			// admitted SIMPLE|DANGEROUS source into a missile, do not bypass
-			// the still-unported live GreatSword branch at 004E1C1C.
+			// Equipment stays cached, while the facing callback may have
+			// changed this admitted cloud into a live missile. Readiness and
+			// the GreatSword effects follow without repeating the prefix.
 			if front && equipment.weaponFlags&0x400 != 0 && cloud.Class().Has(object.ClassMissile) {
-				return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC cloud POISON GreatSword missile", target, source, cloud, damage, typ)
+				if blocked, h, result := playerDamageNPCCloudGreatSword4E17B0(target, source, cloud, damage, runtime); blocked {
+					return h, result
+				}
 			}
 		}
 	}
@@ -74,7 +76,10 @@ func playerDamageMonsterCloudPoison4E17B0(
 		if runtime.QuestDamageScale == nil {
 			return playerDamageUnsupported4E17B0(runtime, "missing NPC cloud POISON quest scale", target, source, cloud, damage, typ)
 		}
-		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		scale := runtime.QuestDamageScale()
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(scale), float64(effective)))
+		// 004E2063 uses signed FISTP under the startup control word.
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if damage > 0 && effective < 1 {
 			effective = 1
 		}
@@ -130,4 +135,84 @@ func playerDamageMonsterCloudPoisonBlock4E17B0(
 		runtime.Melee.MonsterPopBlockAction(target)
 	}
 	return true, false
+}
+
+// 004E1C35..004E1D08 after the cloud caller's cached equipment, marker,
+// exclusion and facing prefix. A direction callback may have made the
+// admitted nonmissile cloud a live missile; do not repeat that prefix.
+func playerDamageNPCCloudGreatSword4E17B0(
+	target, source, cloud *Object, damage int32, r PlayerDamageRuntime4E17B0,
+) (applicable, handled, result bool) {
+	const typ = object.DamagePoison
+	reject := func(reason string) (bool, bool, bool) {
+		h, ok := playerDamageUnsupported4E17B0(r, reason, target, source, cloud, damage, typ)
+		return true, h, ok
+	}
+	if !playerDamageMonsterBlockReady534340(target) {
+		return false, false, false
+	}
+	if r.ProjectileReflect == nil {
+		return reject("missing NPC cloud POISON GreatSword reflection")
+	}
+	r.ProjectileReflect(cloud, target)
+	// The original reloads class and subclass after reflection. Subclass bit2
+	// retains the owner; this branch never calls ChangeOwner.
+	if cloud.Class().Has(object.ClassMissile) && uint32(cloud.SubClass())&2 == 0 {
+		if r.ClearOwner == nil {
+			return reject("missing NPC cloud POISON GreatSword clear-owner")
+		}
+		r.ClearOwner(cloud)
+		if r.SetOwner == nil {
+			return reject("missing NPC cloud POISON GreatSword set-owner")
+		}
+		r.SetOwner(target, cloud)
+	}
+	if r.Audio == nil {
+		return reject("missing NPC cloud POISON GreatSword audio")
+	}
+	r.Audio(890, target)
+	liveNPC := func() bool {
+		return target.Class().Has(object.ClassMonster) && !target.Class().Has(object.ClassPlayer) && target.UpdateData != nil
+	}
+	if !liveNPC() {
+		return reject("unsupported live NPC cloud POISON GreatSword action layout")
+	}
+	if r.Melee.MonsterBlockAction == nil {
+		return reject("missing NPC cloud POISON GreatSword block action")
+	}
+	r.Melee.MonsterBlockAction(target)
+	if r.BlockDamagePercent == nil {
+		return reject("missing NPC cloud POISON GreatSword balance")
+	}
+	// GAME.EXE's startup PC53/toward-zero product and binary32 spill precede
+	// 004E22A0's live inventory scan, including a balance callback replacement.
+	amount := experienceSpill32TowardZero(experienceMul53TowardZero(r.BlockDamagePercent(), float64(damage)))
+	item := playerDamageGreatSwordItem4E22A0(target)
+	if r.Melee.DamageBlockWeapon == nil {
+		return reject("missing NPC cloud POISON GreatSword durability")
+	}
+	if item != nil && item.HealthData != nil &&
+		(r.Melee.CanDamageBlockWeapon == nil || !r.Melee.CanDamageBlockWeapon(item)) {
+		return reject("unsupported live NPC cloud POISON GreatSword durability")
+	}
+	if !r.Melee.DamageBlockWeapon(item, target, source, cloud, amount, typ) && r.Unsupported != nil {
+		r.Unsupported("NPC cloud POISON GreatSword durability failed", target, source, cloud, damage, typ)
+	}
+	if item == nil {
+		// The original nil-item wear is a no-op, followed by a flags dereference
+		// at 004E22EE. Keep preceding effects and report this original fault.
+		return reject("original NPC cloud POISON GreatSword nil-item fault")
+	}
+	// 004E22EE tests the selected pointer after wear, even when wear relinks
+	// the inventory. A replacement head is not the item that just broke.
+	if item.Flags().Has(object.FlagDestroyed) {
+		if !liveNPC() {
+			return reject("unsupported live NPC cloud POISON GreatSword broken-item layout")
+		}
+		if r.Melee.MonsterPopBlockAction == nil {
+			return reject("missing NPC cloud POISON GreatSword pop action")
+		}
+		r.Melee.MonsterPopBlockAction(target)
+	}
+	return true, true, false
 }

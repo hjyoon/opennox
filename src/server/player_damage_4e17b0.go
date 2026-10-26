@@ -512,6 +512,19 @@ func playerDamageMonster4E17B0(
 		return true, true
 	}
 
+	// The cloud branch also queries Coop at 004E1803, before caching the
+	// NPC update/equipment. Even an NPC source performs the owner lookup
+	// when Coop is enabled; only the subsequent player comparison blocks HP.
+	if cloudPoison && runtime.CoopMode != nil {
+		coop := runtime.CoopMode()
+		if coop && source.FindOwnerChainPlayer() == target && target.Class().Has(object.ClassPlayer) {
+			return true, false
+		}
+		if !target.Class().Has(object.ClassMonster) || target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
+			return playerDamageUnsupported4E17B0(runtime, "unsupported live NPC cloud POISON Coop record", target, source, weapon, damage, typ)
+		}
+	}
+
 	// Full runtimes supply the common Coop query and use the whole switch.
 	// Without it, retain the older POISON/EXPLOSION partial-runtime service
 	// contracts (including their early missing-Quest admission and no God query).
@@ -1192,16 +1205,38 @@ func PlayerDamageNative4E17B0(
 		if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
 			return playerDamageUnsupported4E17B0(runtime, "unsupported live player ZAP_RAY observe record", target, source, weapon, damage, typ)
 		}
-		// The nonmissile Reflect branch is selected before the direction
-		// callback. It uses current PosVec, not the later PrevPos snapshot.
+		// Reflect selects the live attack class before the direction callback.
+		// It uses current PosVec, not the later PrevPos snapshot.
 		if target.HasEnchant(playerDamageReflectEnchant4E17B0) {
-			if weapon.Class().Has(object.ClassMissile) {
-				return playerDamageUnsupported4E17B0(runtime, "unsupported live player ZAP_RAY Reflect missile", target, source, weapon, damage, typ)
-			}
+			reflectMissile := weapon.Class().Has(object.ClassMissile)
 			if runtime.BlockDirection == nil {
 				return playerDamageUnsupported4E17B0(runtime, "missing player ZAP_RAY Reflect direction service", target, source, weapon, damage, typ)
 			}
 			if runtime.BlockDirection(target, weapon.PosVec) {
+				if reflectMissile {
+					if runtime.ProjectileReflect == nil {
+						return playerDamageUnsupported4E17B0(runtime, "missing player ZAP_RAY Reflect missile service", target, source, weapon, damage, typ)
+					}
+					runtime.ProjectileReflect(weapon, target)
+					// 004E193C reloads subclass after reflection.
+					if uint32(weapon.SubClass())&0x40 == 0 {
+						if runtime.ClearOwner == nil {
+							return playerDamageUnsupported4E17B0(runtime, "missing player ZAP_RAY Reflect clear-owner", target, source, weapon, damage, typ)
+						}
+						runtime.ClearOwner(weapon)
+						if runtime.SetOwner == nil {
+							return playerDamageUnsupported4E17B0(runtime, "missing player ZAP_RAY Reflect set-owner", target, source, weapon, damage, typ)
+						}
+						runtime.SetOwner(target, weapon)
+					}
+					// 004E1956 reloads class/subclass after owner callbacks.
+					if weapon.Class().Has(object.ClassMissile) && uint32(weapon.SubClass())&2 != 0 {
+						if runtime.ChangeOwner == nil {
+							return playerDamageUnsupported4E17B0(runtime, "missing player ZAP_RAY Reflect change-owner", target, source, weapon, damage, typ)
+						}
+						runtime.ChangeOwner(weapon, target)
+					}
+				}
 				if runtime.PointFX == nil {
 					return playerDamageUnsupported4E17B0(runtime, "missing player ZAP_RAY Reflect FX service", target, source, weapon, damage, typ)
 				}
@@ -1280,10 +1315,11 @@ func PlayerDamageNative4E17B0(
 		}
 		if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil ||
 			!weapon.Class().Has(object.ClassSimple) || !weapon.Class().Has(object.ClassImmobile) ||
-			weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand|object.ClassMissile) {
+			weapon.Class().HasAny(object.MaskUnits|object.ClassWeapon|object.ClassWand) {
 			return playerDamageUnsupported4E17B0(runtime, "unsupported live player ZAP_RAY tail record", target, source, weapon, damage, typ)
 		}
-		// Nonmissile type 16 skips GreatSword and armor/carry. Raw zero
+		// Type 16 skips GreatSword and armor/carry even when an observer
+		// callback introduced the missile class. Raw zero
 		// stays zero; the later Quest minimum applies only to positive input.
 		if update.Field76 == 0 {
 			update.Field76, update.Field75 = 2, uint32(typ)

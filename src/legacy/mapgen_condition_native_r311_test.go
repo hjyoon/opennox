@@ -117,7 +117,8 @@ func TestMapgenConditionNativeEncryptedR311(t *testing.T) {
 		for _, file := range files.byHandle {
 			if file.Name() == path {
 				found++
-				if _, err := file.Stat(); !errors.Is(err, os.ErrClosed) {
+				var probe [1]byte
+				if _, err := file.Read(probe[:]); !errors.Is(err, os.ErrClosed) {
 					t.Fatalf("encrypted fixture handle remained open: %v", err)
 				}
 			}

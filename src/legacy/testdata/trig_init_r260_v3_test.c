@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
-#include <unistd.h>
+#include "native_pages.h"
 
 static unsigned char *sine, *arc;
 static _Alignas(8) unsigned char constants[32];
@@ -46,18 +45,18 @@ int main(int argc,char** argv) {
 	_Alignas(8) unsigned char ordinary_sine[16384+32],ordinary_arc[32769+32];
 	void* reservation=NULL;size_t size=0;uintptr_t boundary=0,wrap=0;int layouts=1;
 #if UINTPTR_MAX > UINT32_MAX
-	long page_size=sysconf(_SC_PAGESIZE);if(page_size<=0)return 2;
+	long page_size=native_fixture_page_size();if(page_size<=0)return 2;
 	size_t page=(size_t)page_size;
 	size_t tail=((sizeof(ordinary_arc)+page-1)/page)*page;
 	size=(size_t)(UINT64_C(1)<<32)+16*page+2*tail;
-	reservation=mmap(NULL,size,PROT_NONE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
-	if(reservation==MAP_FAILED){perror("owned trig mmap");return 2;}
+	reservation=native_fixture_reserve(size);
+	if(reservation==NULL){perror("owned trig mmap");return 2;}
 	uintptr_t first=(uintptr_t)reservation+4*page;
 	boundary=(first+(UINT64_C(1)<<31)-1)&~((UINT64_C(1)<<31)-1);
 	if(!(boundary&(UINT64_C(1)<<31)))boundary+=UINT64_C(1)<<31;
 	wrap=(first+(UINT64_C(1)<<32)-1)&~((UINT64_C(1)<<32)-1);
 	if(boundary+tail>(uintptr_t)reservation+size||wrap+tail>(uintptr_t)reservation+size)return 2;
-	if(mprotect((void*)(boundary-page),page+tail,PROT_READ|PROT_WRITE)||mprotect((void*)(wrap-page),page+tail,PROT_READ|PROT_WRITE)){perror("owned trig mprotect");return 2;}
+	if(native_fixture_commit((void*)(boundary-page), page+tail)||native_fixture_commit((void*)(wrap-page), page+tail)){perror("owned trig mprotect");return 2;}
 	layouts=6;
 #endif
 	for(int layout=0;layout<layouts;++layout){
@@ -87,7 +86,7 @@ int main(int argc,char** argv) {
 		}
 	}
 #if UINTPTR_MAX > UINT32_MAX
-	if(munmap(reservation,size))return 2;
+	if(native_fixture_release(reservation, size))return 2;
 #else
 	(void)reservation;(void)size;(void)boundary;(void)wrap;
 #endif

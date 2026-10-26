@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
-#include <unistd.h>
+#include "native_pages.h"
 
 static unsigned char* state;
 static double constants[5];
@@ -52,16 +51,16 @@ int main(int argc, char** argv) {
 	uintptr_t boundary = 0, wrap = 0;
 	int layouts = 1;
 #if UINTPTR_MAX > UINT32_MAX
-	size_t page = (size_t)sysconf(_SC_PAGESIZE);
+	size_t page = (size_t)native_fixture_page_size();
 	size = (size_t)(UINT64_C(1) << 32) + 4 * page;
-	reservation = mmap(NULL, size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	if (reservation == MAP_FAILED) { perror("owned mmap"); return 2; }
+	reservation = native_fixture_reserve(size);
+	if (reservation == NULL) { perror("owned mmap"); return 2; }
 	uintptr_t first = (uintptr_t)reservation + 2 * page;
 	boundary = (first + (UINT64_C(1) << 31) - 1) & ~((UINT64_C(1) << 31) - 1);
 	if (!(boundary & (UINT64_C(1) << 31))) boundary += UINT64_C(1) << 31;
 	wrap = (first + (UINT64_C(1) << 32) - 1) & ~((UINT64_C(1) << 32) - 1);
 	if (boundary + page > (uintptr_t)reservation + size || wrap + page > (uintptr_t)reservation + size) return 2;
-	if (mprotect((void*)(boundary - page), 2 * page, PROT_READ | PROT_WRITE) || mprotect((void*)(wrap - page), 2 * page, PROT_READ | PROT_WRITE)) { perror("owned mprotect"); return 2; }
+	if (native_fixture_commit((void*)(boundary - page), 2 * page) || native_fixture_commit((void*)(wrap - page), 2 * page)) { perror("owned mprotect"); return 2; }
 	layouts = 4;
 #endif
 	for (uint32_t row = 0; row < rows; ++row) {
@@ -94,7 +93,7 @@ int main(int argc, char** argv) {
 	}
 	if (fgetc(stdin) != EOF) return 2;
 #if UINTPTR_MAX > UINT32_MAX
-	if (munmap(reservation, size)) return 2;
+	if (native_fixture_release(reservation, size)) return 2;
 #else
 	(void)reservation; (void)size; (void)boundary; (void)wrap;
 #endif

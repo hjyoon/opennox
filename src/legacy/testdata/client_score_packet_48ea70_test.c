@@ -183,7 +183,9 @@ static int run_treasure(uint16_t collected, uint16_t total, uint32_t stamp, int 
 
 int main(void) {
 	player=malloc(sizeof(*player));
-	CHECK(player!=NULL);
+	if (!player) return 2;
+	/* Layout-check diagnostics run before the per-case pattern fills. */
+	memset(player,0,sizeof(*player));
 	if (sizeof(void*)==8) CHECK((uintptr_t)player>UINT32_MAX && offsetof(nox_playerInfo,lessons)==2140 && offsetof(nox_playerInfo,name_final)==6008);
 	const uint32_t values[]={0,1,6,0x7fffffff,0x80000000,UINT32_MAX};
 	const uint16_t limits[]={0,1,6,UINT16_MAX};

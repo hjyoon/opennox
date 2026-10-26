@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
-#include <unistd.h>
+#include "native_pages.h"
 
 _Static_assert(sizeof(short) == 2 && sizeof(int) == 4, "fixed original scalar widths");
 static unsigned char* table;
@@ -39,17 +38,17 @@ int main(int argc, char** argv) {
 	if (layout) {
 		/* Reserve only unused address space; never MAP_FIXED or replace
 		 * a process mapping. Two owned pages per boundary become writable. */
-		size_t page_size = (size_t)sysconf(_SC_PAGESIZE);
+		size_t page_size = (size_t)native_fixture_page_size();
 		reserve_size = (size_t)(UINT64_C(1) << 32) + 4 * page_size;
-		reservation = mmap(NULL, reserve_size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-		if (reservation == MAP_FAILED) { perror("mmap owned test reservation"); return 2; }
+		reservation = native_fixture_reserve(reserve_size);
+		if (reservation == NULL) { perror("mmap owned test reservation"); return 2; }
 		uintptr_t begin = (uintptr_t)reservation + 2 * page_size;
 		uintptr_t signed_boundary = (begin + (UINT64_C(1) << 31) - 1) & ~((UINT64_C(1) << 31) - 1);
 		if (!(signed_boundary & (UINT64_C(1) << 31))) signed_boundary += UINT64_C(1) << 31;
 		uintptr_t wrap_boundary = (begin + (UINT64_C(1) << 32) - 1) & ~((UINT64_C(1) << 32) - 1);
 		if (signed_boundary + page_size > (uintptr_t)reservation + reserve_size || wrap_boundary + page_size > (uintptr_t)reservation + reserve_size) return 2;
-		if (mprotect((void*)(signed_boundary - page_size), 2 * page_size, PROT_READ | PROT_WRITE) ||
-			mprotect((void*)(wrap_boundary - page_size), 2 * page_size, PROT_READ | PROT_WRITE)) {
+		if (native_fixture_commit((void*)(signed_boundary - page_size), 2 * page_size) ||
+			native_fixture_commit((void*)(wrap_boundary - page_size), 2 * page_size)) {
 			perror("mprotect owned test pages"); return 2;
 		}
 		table = layout <= 4 ? (unsigned char*)(signed_boundary - 40 + 8 * layout) :
@@ -82,7 +81,7 @@ int main(int argc, char** argv) {
 	if (fgetc(stdin) != EOF) return 2;
 	printf("region: cases=%lu failures=%lu native_pointer_bytes=%zu layout=%d table=%p\n", cases, failures, sizeof(void*), layout, (void*)table);
 #if UINTPTR_MAX > UINT32_MAX
-	if (layout && munmap(reservation, reserve_size)) { perror("munmap owned reservation"); return 2; }
+	if (layout && native_fixture_release(reservation, reserve_size)) { perror("munmap owned reservation"); return 2; }
 #endif
 	return failures ? 1 : 0;
 }

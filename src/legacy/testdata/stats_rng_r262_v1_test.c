@@ -5,8 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
-#include <unistd.h>
+#include "native_pages.h"
 
 enum { STATE_SIZE=308 };
 static unsigned char* state;
@@ -34,18 +33,18 @@ int main(int argc,char** argv) {
  void* allocation=NULL;size_t size=0;
  state=ordinary;
 #if UINTPTR_MAX > UINT32_MAX
- long page_size=sysconf(_SC_PAGESIZE);if(page_size<=0)return 2;
+ long page_size=native_fixture_page_size();if(page_size<=0)return 2;
  size_t page=(size_t)page_size;
  size_t tail=((STATE_SIZE+page-1)/page)*page;
  size=(size_t)(UINT64_C(1)<<32)+16*page+2*tail;
- allocation=mmap(NULL,size,PROT_NONE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
- if(allocation==MAP_FAILED){perror("owned stats RNG mmap");return 2;}
+ allocation=native_fixture_reserve(size);
+ if(allocation==NULL){perror("owned stats RNG mmap");return 2;}
  uintptr_t first=(uintptr_t)allocation+4*page;
  uintptr_t boundary=(first+(UINT64_C(1)<<31)-1)&~((UINT64_C(1)<<31)-1);
  if(!(boundary&(UINT64_C(1)<<31)))boundary+=UINT64_C(1)<<31;
  uintptr_t wrap=(first+(UINT64_C(1)<<32)-1)&~((UINT64_C(1)<<32)-1);
  if(boundary+tail>(uintptr_t)allocation+size||wrap+tail>(uintptr_t)allocation+size)return 2;
- if(mprotect((void*)(boundary-page),page+tail,PROT_READ|PROT_WRITE)||mprotect((void*)(wrap-page),page+tail,PROT_READ|PROT_WRITE)){perror("owned stats RNG mprotect");return 2;}
+ if(native_fixture_commit((void*)(boundary-page), page+tail)||native_fixture_commit((void*)(wrap-page), page+tail)){perror("owned stats RNG mprotect");return 2;}
  if(layout==1)state=(unsigned char*)(boundary-84);
  if(layout==2)state=(unsigned char*)(wrap-84);
  if(layout==3)state=(unsigned char*)(boundary+64);
@@ -73,7 +72,7 @@ int main(int argc,char** argv) {
  if(fgetc(stdin)!=EOF || fegetround()!=rounding)return 2;
 #if UINTPTR_MAX > UINT32_MAX
  if(layout==5)free(state);
- if(munmap(allocation,size))return 2;
+ if(native_fixture_release(allocation, size))return 2;
 #else
  (void)allocation;(void)size;
 #endif

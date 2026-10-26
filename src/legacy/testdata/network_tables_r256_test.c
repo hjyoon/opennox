@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/mman.h>
-#include <unistd.h>
+#include "native_pages.h"
 
 static uint32_t kind;
 static unsigned char* table;
@@ -48,17 +47,17 @@ int main(int argc, char** argv) {
 #if UINTPTR_MAX > UINT32_MAX
 	/* Reserve only previously free virtual space. Never MAP_FIXED or replace
 	 * any process mapping. Only two owned pages per boundary are committed. */
-	page_size = (size_t)sysconf(_SC_PAGESIZE);
+	page_size = (size_t)native_fixture_page_size();
 	reserve_size = (size_t)(UINT64_C(1) << 32) + 4 * page_size;
-	reservation = mmap(NULL, reserve_size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-	if (reservation == MAP_FAILED) { perror("mmap owned test reservation"); return 2; }
+	reservation = native_fixture_reserve(reserve_size);
+	if (reservation == NULL) { perror("mmap owned test reservation"); return 2; }
 	uintptr_t begin = (uintptr_t)reservation + 2 * page_size;
 	signed_boundary = (begin + (UINT64_C(1) << 31) - 1) & ~((UINT64_C(1) << 31) - 1);
 	if (!(signed_boundary & (UINT64_C(1) << 31))) signed_boundary += UINT64_C(1) << 31;
 	wrap_boundary = (begin + (UINT64_C(1) << 32) - 1) & ~((UINT64_C(1) << 32) - 1);
 	if (signed_boundary + page_size > (uintptr_t)reservation + reserve_size || wrap_boundary + page_size > (uintptr_t)reservation + reserve_size) return 2;
-	if (mprotect((void*)(signed_boundary - page_size), 2 * page_size, PROT_READ | PROT_WRITE) ||
-		mprotect((void*)(wrap_boundary - page_size), 2 * page_size, PROT_READ | PROT_WRITE)) {
+	if (native_fixture_commit((void*)(signed_boundary - page_size), 2 * page_size) ||
+		native_fixture_commit((void*)(wrap_boundary - page_size), 2 * page_size)) {
 		perror("mprotect owned test pages"); return 2;
 	}
 	layouts = 4;
@@ -90,7 +89,7 @@ int main(int argc, char** argv) {
 	}
 	if (fgetc(stdin) != EOF) return 2;
 #if UINTPTR_MAX > UINT32_MAX
-	if (munmap(reservation, reserve_size)) { perror("munmap owned reservation"); return 2; }
+	if (native_fixture_release(reservation, reserve_size)) { perror("munmap owned reservation"); return 2; }
 #endif
 	printf("%s: cases=%lu failures=%lu native_pointer_bytes=%zu layouts=%d\n", names[wanted], cases, failures, sizeof(void*), layouts);
 	return failures ? 1 : 0;

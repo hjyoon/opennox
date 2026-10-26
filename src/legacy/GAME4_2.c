@@ -668,8 +668,8 @@ int nox_mapgenReadThemeNative_51E260(int* a1, const char* a2) {
 	v5 = 1;
 LABEL_27:
 	nox_binfile_close_408D90(v3);
-	if (v5 != 1 || nox_xxx_mapgenCheckSettings_520AD0(a1 + 22) && nox_xxx_mapgenCheckSettings_520AD0(a1 + 30) &&
-					   (!a1[46] || nox_xxx_mapgenCheckSettings_520AD0(a1 + 46))) {
+	if (v5 != 1 || (nox_xxx_mapgenCheckSettings_520AD0(a1 + 22) && nox_xxx_mapgenCheckSettings_520AD0(a1 + 30) &&
+					   (!a1[46] || nox_xxx_mapgenCheckSettings_520AD0(a1 + 46)))) {
 		return v5;
 	}
 	return 0;

@@ -84,7 +84,10 @@ uint32_t sub_4F3400(nox_object_t* who,nox_object_t* crown,int32_t a,int32_t b) {
 int main(int argc,char** argv) {
     assert(argc==3);which=atoi(argv[1]);int pattern=atoi(argv[2]);
     assert(which>=0 && which<16 && (pattern==0 || pattern==0x5a || pattern==0xff));
-    signal(SIGSEGV,fault);signal(SIGBUS,fault);
+    signal(SIGSEGV,fault);
+#ifdef SIGBUS
+    signal(SIGBUS,fault);
+#endif
     if(sizeof(void*)>4) {
         assert((uintptr_t)teams>UINT32_MAX && (uintptr_t)players>UINT32_MAX);
         assert((uintptr_t)units>UINT32_MAX && (uintptr_t)crowns>UINT32_MAX);

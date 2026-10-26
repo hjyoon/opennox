@@ -152,7 +152,8 @@ END
 				}
 				found++
 				addresses["actual binfile handle"] = uintptr(handle)
-				if _, err := opened.Stat(); !errors.Is(err, os.ErrClosed) {
+				var probe [1]byte
+				if _, err := opened.Read(probe[:]); !errors.Is(err, os.ErrClosed) {
 					files.RUnlock()
 					t.Fatalf("theme reader did not close its actual encrypted binfile: %v", err)
 				}

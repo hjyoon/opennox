@@ -219,7 +219,7 @@ static void theme_dispatch(int legacy) {
  reset_theme();reset_services();const char* incomplete[]={"AMBIENT_LIGHT","12","34"};reset_stream(incomplete,3);CHECK(read_theme(legacy)==0 && storage->words[134]==12 && storage->words[135]==34 && storage->words[136]==0 && close_calls==1 && setting_calls==0);check_guards();nox_mapgenLegacyPtrForget(theme);++case_count;
 }
 int main(int argc,char** argv) {
- CHECK(argc==2);storage=malloc(sizeof(*storage));file_handle=(FILE*)malloc(1);theme_name=malloc(245);theme=(uint8_t*)storage->words;
+ CHECK(argc==2);storage=malloc(sizeof(*storage));file_handle=malloc(sizeof(*file_handle));theme_name=malloc(245);theme=(uint8_t*)storage->words;
  CHECK(storage && file_handle && theme_name);
 #if UINTPTR_MAX>UINT32_MAX
  CHECK((uintptr_t)theme>UINT32_MAX && (uintptr_t)file_handle>UINT32_MAX && (uintptr_t)theme_name>UINT32_MAX);

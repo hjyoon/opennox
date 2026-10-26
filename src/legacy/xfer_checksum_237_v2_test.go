@@ -227,6 +227,10 @@ func TestMonsterDefinitionChecksum237(t *testing.T) {
 }
 
 func TestMonsterShopChecksum237(t *testing.T) {
+	oldData := datapath.Data()
+	dataDir := t.TempDir()
+	datapath.SetData(dataDir)
+	t.Cleanup(func() { datapath.SetData(oldData) })
 	srv := server.New(nil, nil, strman.New())
 	t.Cleanup(srv.Close)
 	srv.FreeObjectTypes()
@@ -238,7 +242,7 @@ func TestMonsterShopChecksum237(t *testing.T) {
 	}
 	// A synthetic, encrypted one-entry registry exercises live modifier-ID
 	// resolution without loading or changing a user's modifier.bin/datapath.
-	path := filepath.Join(t.TempDir(), "modifier.bin")
+	path := filepath.Join(dataDir, "modifier.bin")
 	plain := []byte("MATERIAL\nMaterial1\nEND\nEND\n")
 	if err := os.WriteFile(path, cryptFileWire236(t, plain, crypt.ModifierBin, false), 0o600); err != nil {
 		t.Fatal(err)

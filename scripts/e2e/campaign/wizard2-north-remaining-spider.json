@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "name": "Wizard2 additional original north room AlbinoSpider2345",
+  "seed_contract": "Earned healthy Wiz02c north-bookcase checkpoint: HP20 MP78 poison0, A43 Lightning S27 Fireball D41 LesserHeal F115 Swap; original Spider2354 and Bats2343/2344 DEAD, Bookcase1 pair open, additional original AlbinoSpider2345 alive near the north chamber.",
+  "coverage": "Ordinary additional original north-room spider combat and recovery; northeast pair objective remains open.",
+  "cases": [
+    {
+      "name": "wizard2-north-additional-spider",
+      "scenario": "wizard2-cave-north-remaining-spider.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 120,
+      "required_checkpoints": [
+        "original north additional AlbinoSpider2345",
+        "original north additional spider recovery",
+        "original manual Save"
+      ],
+      "expected_health": 20,
+      "expected_mana": 78,
+      "required_defeated_script_ids": [
+        1000194081
+      ]
+    }
+  ]
+}

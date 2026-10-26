@@ -1,0 +1,55 @@
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 1, "spell": 27}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "wait", "dt": 35}
+  - {"action": "run-to-world", "x": 1922, "y": 3545, "name": "ordinary east road190"}
+  - {"action": "run-to-world", "x": 1781, "y": 3689, "name": "ordinary east statue plate748"}
+  - {"action": "run-to-world", "x": 1552, "y": 3692, "name": "ordinary north statue plate750"}
+  - {"action": "run-to-world", "x": 1410, "y": 3550, "name": "ordinary approach to original north room AlbinoSpider2345"}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original north room AlbinoSpider2345 input1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original north room AlbinoSpider2345 input2"}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original north room AlbinoSpider2345 input3"}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original north room AlbinoSpider2345 input4"}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original north room AlbinoSpider2345 input5"}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original north room AlbinoSpider2345 input6"}
+  - {"action": "observe-player-target", "name": "read original north room additional AlbinoSpider result"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original north additional AlbinoSpider2345"}
+  - {"action": "run-to-world", "x": 1552, "y": 3692, "name": "ordinary north statue retreat"}
+  - {"action": "run-to-world", "x": 1781, "y": 3689, "name": "ordinary east statue retreat"}
+  - {"action": "run-to-world", "x": 1922, "y": 3545, "name": "ordinary east passage retreat"}
+  - {"action": "run-to-world", "x": 2010, "y": 3467, "name": "ordinary original eastern obelisk retreat"}
+  - {"action": "wait", "dt": 90}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 90}
+  - {"action": "observe-player-target", "name": "read natural original obelisk recovery"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original north additional spider recovery"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

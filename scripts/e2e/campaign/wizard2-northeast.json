@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "Wizard2 original northeast chamber AlbinoSpiders",
+  "seed_contract": "Earned healthy IIckdk: original north Spider2354, AlbinoSpider2345 and Bats2343/2344 DEAD; Bookcase1 pair open. Original northeast2346/2347 alive. HP20 MP78 poison0, A43 S27 D41 F115.",
+  "coverage": "Ordinary return through cleared north passage, original northeast spider pair alive-to-DEAD, ordinary obelisk recovery and healthy manual Save. Earlier eastern-808 history remains in the exact parent lineage; no retroactive passing of earlier failed cases.",
+  "cases": [
+    {
+      "name": "wizard2-northeast",
+      "scenario": "wizard2-cave-northeast.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 120,
+      "required_checkpoints": [
+        "original northeast room approach",
+        "original northeast S27 Fireball",
+        "original northeast original spiders combat",
+        "original northeast healthy obelisk return",
+        "original manual Save"
+      ],
+      "expected_health": 20,
+      "expected_mana": 78,
+      "required_defeated_script_ids": [
+        1000194079,
+        1000194077
+      ]
+    }
+  ]
+}

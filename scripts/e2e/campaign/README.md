@@ -17,6 +17,13 @@ uncleared northern enemies. It checks three original enemy deaths, both original
 bookcase endpoints, a passage crossing and a healthy manual save. This segment
 does not certify the entire chapter.
 
+The subsequent segments have their own seed contracts:
+
+| Suite | Earned source checkpoint | Required original enemies |
+| --- | --- | --- |
+| `wizard2-north-remaining-spider.json` | Healthy north-bookcase save | AlbinoSpider2345 |
+| `wizard2-northeast.json` | Healthy remaining-spider save | AlbinoSpiders2346 and2347 |
+
 Scenario changes reuse the supplied executable. Each run copies the Save and
 preserves its executable, executed scenario, suite, logs, screenshots and
 read-only world observations, including failures. Source saves and campaign data

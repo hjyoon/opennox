@@ -167,6 +167,7 @@ func playerDamageNonItemSwitch4E17B0(target, source, weapon *Object, cached unsa
 	// Weaponless player case 7 has independently qualified startup arithmetic;
 	// other shared damage branches retain their separately ported behavior.
 	preciseExplosion := typ == object.DamageExplosion && weapon == nil && target.Class().Has(object.ClassPlayer)
+	preciseQuest := preciseExplosion || playerDamageWorldFlameShape4E17B0(weapon, typ)
 	wearArmor := physical || electric || typ == object.DamageFlame || typ == object.DamageLava
 	if wearArmor && !playerDamageArmorReady4E17B0(target, r) {
 		return reject("unsupported non-item attack armor durability")
@@ -231,7 +232,7 @@ func playerDamageNonItemSwitch4E17B0(target, source, weapon *Object, cached unsa
 		}
 		before := effective
 		scale := r.QuestDamageScale()
-		if preciseExplosion {
+		if preciseQuest {
 			scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(scale), float64(effective)))
 			effective = netFXTruncateSignedDWORD419A70(scaled)
 		} else {

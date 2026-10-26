@@ -1659,6 +1659,58 @@ Full stock modifier/HP/network, invalid-pointer or alias shapes, other damage
 precision, general AI behavior and remaining campaign/native/UI/audio/peer/
 stability work remain open. Overall porting is not 100 percent.
 
+### Native world flame Quest precision
+
+Unblocked world fire and fountain damage now preserve the original Quest scale
+product, binary32 spill and signed conversion under the startup round-toward-zero
+control. The full generic runtime and dedicated partial world-flame path agree.
+This changes case 1 only; physical/electric carry and shield arithmetic retain
+their separate contracts.
+
+The unchanged original executable ran 1,096 primary and 61 historical numeric
+contexts under four floating point controls: 4,628 runs and 25,008 complete calls
+through PlayerDamage, the real signed converter, Quest getter, buff getter and
+possession getter. All 265 entered instruction addresses are recorded. Mode,
+integer direction, armor distribution and DefaultDamage HP are excluded services;
+there are no floating point output, arithmetic or conversion substitutes. Warm
+descriptor IDs, three actual fire/fountain class masks, player/NPC targets and
+five nil/self/terminal source profiles are declared. Carry and all other frame
+nonoutputs are preserved. Only finite scale inputs and their arithmetic result
+overflow are covered; full geometry, blocked shields, stock resolver, armor/HP/
+network, alias and invalid-pointer behavior are outside this evidence.
+
+The final before/after comparison holds all 6,919 source/test/fixture inputs
+identical except the two production files. The old code has 932 numeric mismatch
+leaves and 1,260 matching controls; all become 2,194 passing native identities
+across the two runtime configurations. Full C-owned frames above 4 GiB preserve
+nonoutputs before and after. Forty original historical input contexts qualify
+72 corrected numeric leaf expectations in one old test, retaining its names,
+input loops, callback effects, events and other assertions.
+
+A separate original startup qualification corrects 21 numeric forward-damage
+fields in the old 228-row visible-fountain fixture; all 207 other row bytes,
+inputs, events and other fields remain unchanged. Its old oracle selected
+nearest rounding and replaced the FP scale getter. The qualification uses the
+real Quest getter and converter. All 306 existing visible-fountain, shape and
+native C-record identities are added to broad and focused coverage. The earlier
+full-suite failure and old-source strict/Linux runs are retained separately.
+
+Related tests pass 147,326 identities, retaining every previous broad identity.
+Focused tests retain all 134,204 previous identities and add 2,194 plus 306 existing fountain identities for 136,704.
+Three cgocheck2/race/checkptr2 repetitions pass 410,112 events; the same identities
+pass the offline Linux AMD64 Rosetta/Clang lane. Four full suites retain every
+prior identity, action and skip: normal and HD pass 214,653 with 49 skips,
+server and server HD pass 209,825 with seven skips. Four committed ARM64 products,
+source archive, build metadata and remote revision are independently checked.
+
+The evidence index also preserves naming corrections for older annotations:
+class 0x10 is FOOD, IMMOBILE is 0x400000, SIMPLE is 0x100000, and Lesser Heal is
+spell 41. Authoritative final P72 numeric inputs and native saved spell names
+remain unchanged, with all superseded diagnostics and failed assumptions kept.
+Remaining damage precision, reachable native services and callbacks, campaign
+features/final nine cells, UI/audio/peer and sustained gameplay remain open.
+Overall porting is not 100 percent.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

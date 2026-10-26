@@ -130,13 +130,7 @@ func TestPlayerDamageWorldFlame4E17B0SignedArmorQuest(t *testing.T) {
 							QuestMode:        func() bool { events = append(events, "quest"); return scale >= 0 },
 							QuestDamageScale: func() float32 { events = append(events, "scale"); return scale },
 							DefaultDamage: func(got, attacker, effective *Object, amount int32, typ object.DamageType) bool {
-								want := raw
-								if scale >= 0 {
-									want = int32(math.RoundToEven(float64(float32(float64(raw) * float64(scale)))))
-									if raw > 0 && want < 1 {
-										want = 1
-									}
-								}
+								want := worldFlameQuestHistoricalExpected(t, victim == "player", raw, scale)
 								if got != v || attacker != a || effective != w || typ != object.DamageFlame || amount != want {
 									t.Fatalf("default amount=%d want=%d", amount, want)
 								}

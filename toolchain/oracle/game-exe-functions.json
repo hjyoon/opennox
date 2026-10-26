@@ -22195,6 +22195,41 @@
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete original item durability or converter body entered under actual startup and three controls; cached update and three declared excluded services, no FP substitutions. Complete original weapon4E1560/equipped4E16D0 durability now uses actual startup PC53/toward-zero add/F32spill, real signed419A70 conversion, directed remainder spill, and the update pointer cached before Defend. 600 primary and391 independently declared historical numeric contexts run in four FP controls:3964 runs,7896 complete calls; separate9 exact old converter inputs have36 real419A70 calls. Three excluded services are opaque external Defend integer-pointer effect, DefaultDamage item callback and health report. OpaqueDefend never changes amount or substitutes FP; historical post-Defend FP amount is a declared numeric input, not a stock modifier-body or original callback reachability certificate. Listed NaN/Inf historical shapes only; no broad payload claim. Native full C-owned frames above4GiB preserve nonoutputs. Existing tests retain names, input tables and callback effects; expected numeric/cached-pointer events change only where independently qualified. Zero positive wear must retain original inventory traversal when no HP/report callback can detach an item. Existing world explosion item carry is .4, hence original portion0x41c7ffff produces25/carry0x3ecccc80; only separate zero-carry control produces24. No full HP/network/stock-modifier/invalid-pointer/alias/generalAI/gameplay/overall100 certificate."
+    },
+    {
+      "name": "original_world_flame_quest_precision_PlayerDamage_complete",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
+      "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
+    },
+    {
+      "name": "original_world_flame_quest_precision_signed_DWORD_complete",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
+    },
+    {
+      "name": "original_world_flame_quest_precision_Quest_getter_complete",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
+      "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
+    },
+    {
+      "name": "original_world_flame_quest_precision_buff_getter_complete",
+      "address": "0x4ff350",
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
+      "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
+    },
+    {
+      "name": "original_world_flame_quest_precision_possession_getter_complete",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
+      "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
     }
   ],
   "data": [

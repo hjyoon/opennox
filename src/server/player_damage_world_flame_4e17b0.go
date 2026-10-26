@@ -160,7 +160,8 @@ func playerDamageWorldFlame4E17B0(
 		if r.QuestDamageScale == nil {
 			return reject("missing world FLAME Quest scale")
 		}
-		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(r.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if damage > 0 && effective < 1 {
 			effective = 1
 		}

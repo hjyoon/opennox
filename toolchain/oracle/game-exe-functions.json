@@ -22552,6 +22552,48 @@
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Complete unchanged body entered in160 declared player/NPC IMPACT/ZAP_RAY missile Reflect contexts and640 FP-control runs/2240 complete calls/150 instruction addresses. Reflection and owner callbacks mutate live class/subclass. Eight mode/direction/reflection/owner/FX/audio service boundaries; direction is constant true, so its internal reads and marker timing are outside this certificate. Zero FP substitutions; no service-callee, generalAI or overall100 certificate."
+    },
+    {
+      "name": "original_activate_poison_precision_activate_poison_complete",
+      "address": "0x4ee7e0",
+      "size": 272,
+      "sha256": "9feaa5b8573f81098b0d4f656dfe531849fceddea5650d990225da2f9dfa439f",
+      "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
+    },
+    {
+      "name": "original_activate_poison_precision_poison_protection_complete",
+      "address": "0x4e0040",
+      "size": 255,
+      "sha256": "c28bf4cba406652dcd46b17a9ddaad758b83390a9f096d365247392dea164798",
+      "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
+    },
+    {
+      "name": "original_activate_poison_precision_buff_membership_complete",
+      "address": "0x4ff350",
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
+      "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
+    },
+    {
+      "name": "original_activate_poison_precision_buff_power_complete",
+      "address": "0x4ff570",
+      "size": 16,
+      "sha256": "28e37d0257bfe49ed51fba22c8405a8166e9e4e2d294fc70e96b147b879140dd",
+      "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
+    },
+    {
+      "name": "original_activate_poison_precision_balance_float_table_complete",
+      "address": "0x419d70",
+      "size": 50,
+      "sha256": "c6d176697902aeab72feefdcc6ce998f2bdede457d819d15b8c35ddfabed6c92",
+      "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
+    },
+    {
+      "name": "original_activate_poison_precision_signed_DWORD_complete",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
     }
   ],
   "data": [

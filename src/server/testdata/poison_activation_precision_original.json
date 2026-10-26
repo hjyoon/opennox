@@ -1,0 +1,6630 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "cases": [
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/NPC/poison0/roll0",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 0
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/NPC/poison0/roll1",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 1
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/NPC/poison0/roll100",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/NPC/poison1/roll0",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 0
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/NPC/poison1/roll1",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 1
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/NPC/poison1/roll100",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/Player/poison0/roll0",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 0
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/Player/poison0/roll1",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 1
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/Player/poison0/roll100",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/Player/poison1/roll0",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 0
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/Player/poison1/roll1",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 1
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "zero/Player/poison1/roll100",
+        "modifier_bits": null,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 0,
+      "threshold": 0,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/NPC/poison0/roll2",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 2
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/NPC/poison0/roll3",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 3
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/NPC/poison0/roll4",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 4
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 4
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/NPC/poison0/roll100",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/NPC/poison1/roll2",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 2
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/NPC/poison1/roll3",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 3
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/NPC/poison1/roll4",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 4
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 4
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/NPC/poison1/roll100",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/Player/poison0/roll2",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 2
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/Player/poison0/roll3",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 3
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/Player/poison0/roll4",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 4
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 4
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/Player/poison0/roll100",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/Player/poison1/roll2",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 2
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/Player/poison1/roll3",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 3
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/Player/poison1/roll4",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 4
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 4
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect1/Player/poison1/roll100",
+        "modifier_bits": 1025087897,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1081081855,
+      "threshold": 3,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/NPC/poison0/roll6",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 6
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 6
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/NPC/poison0/roll7",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 7
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 7
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/NPC/poison0/roll8",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 8
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 8
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/NPC/poison0/roll100",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/NPC/poison1/roll6",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 6
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 6
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/NPC/poison1/roll7",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 7
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 7
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/NPC/poison1/roll8",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 8
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 8
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/NPC/poison1/roll100",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/Player/poison0/roll6",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 6
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 6
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/Player/poison0/roll7",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 7
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 7
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/Player/poison0/roll8",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 8
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 8
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/Player/poison0/roll100",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/Player/poison1/roll6",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 6
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 6
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/Player/poison1/roll7",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 7
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 7
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/Player/poison1/roll8",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 8
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 8
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect2/Player/poison1/roll100",
+        "modifier_bits": 1033476505,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1089470463,
+      "threshold": 7,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/NPC/poison0/roll10",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 10
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 10
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/NPC/poison0/roll11",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 11
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 11
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/NPC/poison0/roll12",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 12
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 12
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/NPC/poison0/roll100",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/NPC/poison1/roll10",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 10
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 10
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/NPC/poison1/roll11",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 11
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 11
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/NPC/poison1/roll12",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 12
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 12
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/NPC/poison1/roll100",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/Player/poison0/roll10",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 10
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 10
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/Player/poison0/roll11",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 11
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 11
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/Player/poison0/roll12",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 12
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 12
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/Player/poison0/roll100",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/Player/poison1/roll10",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 10
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 10
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/Player/poison1/roll11",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 11
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 11
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/Player/poison1/roll12",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 12
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 12
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect3/Player/poison1/roll100",
+        "modifier_bits": 1038509670,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1093926911,
+      "threshold": 11,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/NPC/poison0/roll13",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 13
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 13
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/NPC/poison0/roll14",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 14
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 14
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/NPC/poison0/roll15",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 15
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 15
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/NPC/poison0/roll100",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/NPC/poison1/roll13",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 13
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 13
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/NPC/poison1/roll14",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 14
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 14
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/NPC/poison1/roll15",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 15
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 15
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/NPC/poison1/roll100",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/Player/poison0/roll13",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 13
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 13
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/Player/poison0/roll14",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 14
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 14
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/Player/poison0/roll15",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 15
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 15
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/Player/poison0/roll100",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/Player/poison1/roll13",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 13
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 13
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/Player/poison1/roll14",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 14
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 14
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/Player/poison1/roll15",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 15
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 15
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "stock-PoisonProtect4/Player/poison1/roll100",
+        "modifier_bits": 1041865113,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1097859071,
+      "threshold": 14,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/NPC/poison0/roll0",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 0
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/NPC/poison0/roll1",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 1
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/NPC/poison0/roll2",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 2
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/NPC/poison0/roll100",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/NPC/poison1/roll0",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 0
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/NPC/poison1/roll1",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 1
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/NPC/poison1/roll2",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 2
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/NPC/poison1/roll100",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/Player/poison0/roll0",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 0
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/Player/poison0/roll1",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 1
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/Player/poison0/roll2",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 2
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/Player/poison0/roll100",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/Player/poison1/roll0",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 0
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/Player/poison1/roll1",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 1
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/Player/poison1/roll2",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 2
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-1.5/Player/poison1/roll100",
+        "modifier_bits": 1014350479,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1069547519,
+      "threshold": 1,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/NPC/poison0/roll36",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 36
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 36
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/NPC/poison0/roll37",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 37
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 37
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/NPC/poison0/roll38",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 38
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 38
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/NPC/poison0/roll100",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/NPC/poison1/roll36",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 36
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 36
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/NPC/poison1/roll37",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 37
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 37
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/NPC/poison1/roll38",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 38
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 38
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/NPC/poison1/roll100",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/Player/poison0/roll36",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 36
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 36
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/Player/poison0/roll37",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 37
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 37
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/Player/poison0/roll38",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 38
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 38
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/Player/poison0/roll100",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/Player/poison1/roll36",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 36
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 36
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/Player/poison1/roll37",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 37
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 37
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/Player/poison1/roll38",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 38
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 38
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-37.5/Player/poison1/roll100",
+        "modifier_bits": 1052770304,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1108738048,
+      "threshold": 37,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/NPC/poison0/roll1",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 1
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/NPC/poison0/roll2",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 2
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/NPC/poison0/roll3",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 3
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/NPC/poison0/roll100",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/NPC/poison1/roll1",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 1
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/NPC/poison1/roll2",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 2
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/NPC/poison1/roll3",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 3
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/NPC/poison1/roll100",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/Player/poison0/roll1",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 1
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/Player/poison0/roll2",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 2
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/Player/poison0/roll3",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 3
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/Player/poison0/roll100",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/Player/poison1/roll1",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 1
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/Player/poison1/roll2",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 2
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/Player/poison1/roll3",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 3
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "fraction-3/Player/poison1/roll100",
+        "modifier_bits": 1022739087,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1077936127,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/NPC/poison0/roll1",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 1
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/NPC/poison0/roll2",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 2
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/NPC/poison0/roll3",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 3
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/NPC/poison0/roll100",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/NPC/poison1/roll1",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 1
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/NPC/poison1/roll2",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 2
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/NPC/poison1/roll3",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 3
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/NPC/poison1/roll100",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/Player/poison0/roll1",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 1
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/Player/poison0/roll2",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 2
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/Player/poison0/roll3",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 3
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/Player/poison0/roll100",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/Player/poison1/roll1",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 1
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 1
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/Player/poison1/roll2",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 2
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 2
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/Player/poison1/roll3",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 3
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 3
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "half-2.5/Player/poison1/roll100",
+        "modifier_bits": 1020054733,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1075838976,
+      "threshold": 2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/NPC/poison0/roll68",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 68
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 68
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/NPC/poison0/roll69",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 69
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 69
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/NPC/poison0/roll70",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 70
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 70
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/NPC/poison0/roll100",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/NPC/poison1/roll68",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 68
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 68
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/NPC/poison1/roll69",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 69
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 69
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/NPC/poison1/roll70",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 70
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 70
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/NPC/poison1/roll100",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/Player/poison0/roll68",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 68
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 68
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/Player/poison0/roll69",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 69
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 69
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/Player/poison0/roll70",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 70
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 70
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/Player/poison0/roll100",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/Player/poison1/roll68",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 68
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 0,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 68
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/Player/poison1/roll69",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 69
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 69
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/Player/poison1/roll70",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 70
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 70
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "modifier-cap/Player/poison1/roll100",
+        "modifier_bits": 1061997773,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1116471295,
+      "threshold": 69,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/NPC/poison0/roll0",
+        "modifier_bits": 3170222735,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 0
+      },
+      "scaled_bits": 3225419775,
+      "threshold": -2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/NPC/poison0/roll100",
+        "modifier_bits": 3170222735,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 3225419775,
+      "threshold": -2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/NPC/poison1/roll0",
+        "modifier_bits": 3170222735,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 0
+      },
+      "scaled_bits": 3225419775,
+      "threshold": -2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/NPC/poison1/roll100",
+        "modifier_bits": 3170222735,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 3225419775,
+      "threshold": -2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/Player/poison0/roll0",
+        "modifier_bits": 3170222735,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 0
+      },
+      "scaled_bits": 3225419775,
+      "threshold": -2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/Player/poison0/roll100",
+        "modifier_bits": 3170222735,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 3225419775,
+      "threshold": -2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/Player/poison1/roll0",
+        "modifier_bits": 3170222735,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 0
+      },
+      "scaled_bits": 3225419775,
+      "threshold": -2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 0
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "negative/Player/poison1/roll100",
+        "modifier_bits": 3170222735,
+        "buff": false,
+        "power": 1,
+        "balance_bits": 0,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 3225419775,
+      "threshold": -2,
+      "result": 1,
+      "services": [
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/NPC/poison0/roll11",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": false,
+        "poison": 0,
+        "roll": 11
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 0,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 11
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/NPC/poison0/roll12",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": false,
+        "poison": 0,
+        "roll": 12
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 12
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/NPC/poison0/roll13",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": false,
+        "poison": 0,
+        "roll": 13
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 13
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/NPC/poison0/roll100",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/NPC/poison1/roll11",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": false,
+        "poison": 1,
+        "roll": 11
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 0,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 11
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/NPC/poison1/roll12",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": false,
+        "poison": 1,
+        "roll": 12
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 12
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/NPC/poison1/roll13",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": false,
+        "poison": 1,
+        "roll": 13
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 13
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/NPC/poison1/roll100",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/Player/poison0/roll11",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": true,
+        "poison": 0,
+        "roll": 11
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 0,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 11
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/Player/poison0/roll12",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": true,
+        "poison": 0,
+        "roll": 12
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 12
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/Player/poison0/roll13",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": true,
+        "poison": 0,
+        "roll": 13
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 13
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/Player/poison0/roll100",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/Player/poison1/roll11",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": true,
+        "poison": 1,
+        "roll": 11
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 0,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 11
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/Player/poison1/roll12",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": true,
+        "poison": 1,
+        "roll": 12
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 12
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/Player/poison1/roll13",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": true,
+        "poison": 1,
+        "roll": 13
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 13
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-only/Player/poison1/roll100",
+        "modifier_bits": null,
+        "buff": true,
+        "power": 1,
+        "balance_bits": 1040187392,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1095237632,
+      "threshold": 12,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 0
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/NPC/poison0/roll88",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": false,
+        "poison": 0,
+        "roll": 88
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 0,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 88
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/NPC/poison0/roll89",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": false,
+        "poison": 0,
+        "roll": 89
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 89
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/NPC/poison0/roll90",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": false,
+        "poison": 0,
+        "roll": 90
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 90
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/NPC/poison0/roll100",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": false,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/NPC/poison1/roll88",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": false,
+        "poison": 1,
+        "roll": 88
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 0,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 88
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/NPC/poison1/roll89",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": false,
+        "poison": 1,
+        "roll": 89
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 89
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/NPC/poison1/roll90",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": false,
+        "poison": 1,
+        "roll": 90
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 90
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/NPC/poison1/roll100",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": false,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/Player/poison0/roll88",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": true,
+        "poison": 0,
+        "roll": 88
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 0,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 88
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/Player/poison0/roll89",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": true,
+        "poison": 0,
+        "roll": 89
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 89
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/Player/poison0/roll90",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": true,
+        "poison": 0,
+        "roll": 90
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 90
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/Player/poison0/roll100",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": true,
+        "poison": 0,
+        "roll": 100
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 1
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 42424242,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/Player/poison1/roll88",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": true,
+        "poison": 1,
+        "roll": 88
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 0,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 88
+        },
+        {
+          "service": "message"
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/Player/poison1/roll89",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": true,
+        "poison": 1,
+        "roll": 89
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 89
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/Player/poison1/roll90",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": true,
+        "poison": 1,
+        "roll": 90
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 90
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input": {
+        "name": "spell-final-cap/Player/poison1/roll100",
+        "modifier_bits": 1056964608,
+        "buff": true,
+        "power": 3,
+        "balance_bits": 1053609165,
+        "player": true,
+        "poison": 1,
+        "roll": 100
+      },
+      "scaled_bits": 1119092735,
+      "threshold": 89,
+      "result": 1,
+      "services": [
+        {
+          "service": "balance",
+          "index": 2
+        },
+        {
+          "service": "random",
+          "minimum": 0,
+          "maximum": 100,
+          "value": 100
+        },
+        {
+          "service": "set",
+          "value": 2
+        },
+        {
+          "service": "audio",
+          "value": 100
+        }
+      ],
+      "health_frame": 77,
+      "all_nonoutput_frame_bytes_preserved": true
+    }
+  ],
+  "historical_conversions": [
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1056964608,
+      "result": 0
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1069547520,
+      "result": 1
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1075838976,
+      "result": 2
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 3217031168,
+      "result": -1
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 3472883712,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 1325400064,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 3472883713,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 2139095040,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 4286578688,
+      "result": -2147483648
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "input_bits": 2143289344,
+      "result": -2147483648
+    }
+  ],
+  "scope": "Whole original ActivatePoison272/protection255/buff35/power16/balance-table50/signed-DWORD17 bodies. Qualified stock modifier bits and declared buff-table values flow through original retained PC53 accumulator, F32 spills, percent multiply and signed FISTP. RNG/hash/state assignment/audio/message are declared external services; health-frame store executes in original root. Startup plus three FP controls, and ten original historical scalar conversions. Zero FP return/arithmetic/conversion substitutions. State setter/network/audio/RNG/hash callees, FP exception status/NaN payloads, campaign and overall100 are not certified."
+}

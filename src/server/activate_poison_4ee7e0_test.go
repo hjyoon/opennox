@@ -616,15 +616,17 @@ func TestActivatePoisonScaleProtection4EE7E0(t *testing.T) {
 }
 
 func TestActivatePoisonRound4EE7E0(t *testing.T) {
+	// Keep historical case identities; original startup FISTP truncates the
+	// signed halves, as independently executed in the original fixture.
 	tests := []struct {
 		name  string
 		value float32
 		want  int32
 	}{
 		{"positive half even down", 0.5, 0},
-		{"positive half even up", 1.5, 2},
+		{"positive half even up", 1.5, 1},
 		{"positive half even down two", 2.5, 2},
-		{"negative half even", -1.5, -2},
+		{"negative half even", -1.5, -1},
 		{"minimum valid", -2147483648, math.MinInt32},
 		{"positive overflow", 2147483648, math.MinInt32},
 		{"negative overflow", -2147483904, math.MinInt32},

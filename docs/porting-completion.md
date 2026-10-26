@@ -1791,6 +1791,35 @@ are independently checked. Remaining native/transitive semantics, campaign
 features/final nine cells, UI/audio/peer and sustained gameplay remain open.
 Overall porting is not 100 percent.
 
+### Poison activation startup precision
+
+ActivatePoison now preserves the original startup rounding context when
+scaling poison protection to a percentage and converting it to a signed
+DWORD. The original uses 53-bit multiplication, a binary32 spill and truncation
+toward zero. For example, the stock PoisonProtect1 threshold is 3; the previous
+nearest-rounded calculation produced 4. Two historical half-value expectations
+are corrected from independently executed original conversions, retaining
+their input values, identities and other assertions.
+
+Unchanged original activation, protection, buff, power, balance-table and
+conversion bodies execute across 196 declared contexts, four FP controls,
+13 threshold probes and ten historical conversion contexts. The audit records
+4,285 complete entered calls with zero substituted FP arithmetic, returns or
+conversions. RNG, hash lookup, state assignment, message and audio remain
+declared external services; their implementations are outside this comparison.
+Only the production helper differs between the final before/after source pair.
+Both runs preserve all 196 native nonoutput frames. The original-derived
+regressions change from 68 PASS/140 FAIL to 208 PASS.
+
+The complete server package passes 115,112 events; related root/legacy tests
+pass 330. Actual cgocheck2, race and checkptr2 preserve 4,932 related identities
+across three repetitions, totaling 14,796 passes. These targeted checks reuse
+the existing build cache. The four full-suite results still belong to ff2eb1d4;
+they are not repeated or relabeled for this private Go arithmetic correction.
+Fresh products and campaign E2E are recorded separately in
+`poison-activation-precision-port/`. Linux, remaining native/transitive work,
+campaign cells and overall porting 100 percent remain open.
+
 ### Shared Reflect live owner reads
 
 The shared Reflect helper now reloads subclass bit 0x40 after reflection,

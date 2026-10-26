@@ -126,14 +126,11 @@ func activatePoisonTarget4EE7E0(current uint8, increment, maximum int32) int32 {
 // under the original x87 53-bit precision control, followed by one FSTPS.
 func activatePoisonScaleProtection4EE7E0(protection float64) float32 {
 	scale := math.Float32frombits(activatePoisonPercentBits4EE7E0)
-	return float32(protection * float64(scale))
+	return experienceSpill32TowardZero(experienceMul53TowardZero(protection, float64(scale)))
 }
 
-// activatePoisonRound4EE7E0 models nox_float2int's default x87 FISTP mode.
+// activatePoisonRound4EE7E0 models the original startup FISTP toward zero.
 // Invalid and out-of-range inputs produce the integer-indefinite 0x80000000.
 func activatePoisonRound4EE7E0(value float32) int32 {
-	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
-		return math.MinInt32
-	}
-	return int32(math.RoundToEven(float64(value)))
+	return netFXTruncateSignedDWORD419A70(value)
 }

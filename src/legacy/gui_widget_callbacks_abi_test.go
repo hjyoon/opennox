@@ -8,10 +8,12 @@ import (
 	"unsafe"
 
 	"github.com/opennox/libs/noximage"
+	"github.com/opennox/libs/strman"
 	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/server"
 )
 
 // The 32-bit C draw callbacks use the client's renderer directly. Supply the
@@ -39,6 +41,13 @@ type widgetCallbackClient struct {
 func (c *widgetCallbackClient) Cli() *client.Client { return c.cli }
 func (c *widgetCallbackClient) R2() Render2         { return c.render }
 
+type widgetCallbackServer struct {
+	Server
+	srv *server.Server
+}
+
+func (s *widgetCallbackServer) S() *server.Server { return s.srv }
+
 func newWidgetCallbackGUI(t *testing.T) *gui.GUI {
 	t.Helper()
 	data, free := noxrender.NewRenderData()
@@ -47,9 +56,11 @@ func newWidgetCallbackGUI(t *testing.T) *gui.GUI {
 	r.SetPixBuffer(noximage.NewImage16(image.Rect(0, 0, 640, 480)))
 	g := gui.New(r)
 	c := &widgetCallbackClient{cli: &client.Client{GUI: g}, render: &widgetCallbackRender{NoxRender: r}}
-	old := GetClient
+	s := server.New(nil, nil, strman.New())
+	oldClient, oldServer := GetClient, GetServer
 	GetClient = func() Client { return c }
-	t.Cleanup(func() { GetClient = old; free() })
+	GetServer = func() Server { return &widgetCallbackServer{srv: s} }
+	t.Cleanup(func() { GetClient = oldClient; GetServer = oldServer; s.Close(); free() })
 	return g
 }
 

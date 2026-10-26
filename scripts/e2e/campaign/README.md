@@ -25,6 +25,29 @@ The subsequent segments have their own seed contracts:
 | `wizard2-northeast.json` | Healthy remaining-spider save | AlbinoSpiders2346 and2347 |
 | `wizard2-flying-golem.json` | Healthy northeast save, HP20/MP78 | FlyingGolem2348; earned level gain to HP26/MP88 |
 
+Replay all four segments consecutively with one command and the same prebuilt
+executable:
+
+```sh
+python3 scripts/run-campaign-e2e.py \
+  --sequence scripts/e2e/campaign/sequences/wizard2-cave-east.json \
+  --binary /path/to/opennox \
+  --data /path/to/Nox \
+  --seed /path/to/earned/Save \
+  --output /path/to/new/sequence-report-directory
+```
+
+The initial Save must match the north bookcase contract. The runner validates
+every stage before starting the game, then passes each successful stage's exact
+earned Save to the next stage automatically. It stops at the first failure,
+including an unmet objective with an otherwise healthy player. A passing
+sequence report includes `final_seed` and its file hashes. Each stage keeps its
+own report and runtime Save. To retry one segment, use `--suite` with that
+segment's source Save from `stages.jsonl`; earlier segments need not be replayed.
+For a route edit, run that single suite against the supplied executable first.
+Use the sequence to check that consecutive checkpoints work together. Native
+build and package tests remain separate from these input-only changes.
+
 Scenario changes reuse the supplied executable. Each run copies the Save and
 preserves its executable, executed scenario, suite, logs, screenshots and
 read-only world observations, including failures. Source saves and campaign data

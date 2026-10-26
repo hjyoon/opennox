@@ -26,13 +26,60 @@ steps:
   - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original north room AlbinoSpider2345 input6"}
   - {"action": "observe-player-target", "name": "read original north room additional AlbinoSpider result"}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original north additional AlbinoSpider2345"}
+  - {"action": "run-to-world", "x": 1414, "y": 3414, "name": "ordinary original open Bookcase1 plate"}
+  - {"action": "run-to-world", "x": 1499, "y": 3317, "name": "ordinary original open Bookcase1 passage road195"}
+  - {"action": "run-to-world", "x": 1665, "y": 3148, "name": "ordinary approach to original AlbinoSpider2345 home near road194"}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original AlbinoSpider2345 home input1"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original AlbinoSpider2345 home input2"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original AlbinoSpider2345 home input3"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original AlbinoSpider2345 home input4"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original AlbinoSpider2345 home input5"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "AlbinoSpider", "slot": 1, "count": 18, "name": "ordinary earned A43 at original AlbinoSpider2345 home input6"}
+  - {"action": "observe-player-target", "name": "read original AlbinoSpider2345 home combat"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original AlbinoSpider2345 home combat"}
+  - {"action": "run-to-world", "x": 1499, "y": 3317, "name": "ordinary retreat through original cleared road195"}
+  - {"action": "run-to-world", "x": 1414, "y": 3414, "name": "ordinary retreat through original open Bookcase1 passage"}
+  - {"action": "run-to-world", "x": 1333, "y": 3469, "name": "ordinary cleared north chamber retreat"}
   - {"action": "run-to-world", "x": 1552, "y": 3692, "name": "ordinary north statue retreat"}
   - {"action": "run-to-world", "x": 1781, "y": 3689, "name": "ordinary east statue retreat"}
   - {"action": "run-to-world", "x": 1922, "y": 3545, "name": "ordinary east passage retreat"}
   - {"action": "run-to-world", "x": 2010, "y": 3467, "name": "ordinary original eastern obelisk retreat"}
   - {"action": "wait", "dt": 90}
   - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original spider poison 1"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original spider poison 2"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original spider poison 3"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original spider poison 4"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original spider poison 5"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
   - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 90}
+  - {"action": "run-to-world", "x": 1922, "y": 3545, "name": "ordinary leave original obelisks for native recharge"}
+  - {"action": "wait", "dt": 750, "name": "native obelisks recharge outside their fifty-unit radius"}
+  - {"action": "run-to-world", "x": 2010, "y": 3467, "name": "ordinary return to original recharged obelisks"}
+  - {"action": "wait", "dt": 90}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary earned D41 after natural poison decay and obelisk recharge"}
   - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
   - {"action": "wait", "dt": 90}
   - {"action": "observe-player-target", "name": "read natural original obelisk recovery"}

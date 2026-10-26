@@ -250,6 +250,131 @@ def expected_player_values(player, case):
     return all(key not in case or value == case[key] for key, value in values.items())
 
 
+def load_sequence(path):
+    sequence = json.loads(path.read_text())
+    unknown = set(sequence) - {'version', 'name', 'seed_contract', 'coverage', 'stages'}
+    if unknown or sequence.get('version') != 1 or not sequence.get('stages'):
+        raise ValueError('invalid campaign sequence fields or version')
+    stages = []
+    names = set()
+    for entry in sequence['stages']:
+        if set(entry) != {'name', 'suite'}:
+            raise ValueError('sequence stages require name and suite')
+        name = entry['name']
+        if (not re.fullmatch(r'[A-Za-z0-9._-]+', name) or name in ('.', '..')
+                or name in names):
+            raise ValueError('sequence stage names must be unique simple directory names')
+        names.add(name)
+        suite_path = (path.parent / entry['suite']).resolve()
+        suite = json.loads(suite_path.read_text())
+        validate_suite_fields(suite)
+        if suite.get('version') != 1 or len(suite.get('cases', [])) != 1:
+            raise ValueError('each sequence stage requires one campaign case')
+        case = suite['cases'][0]
+        if (not re.fullmatch(r'[A-Za-z0-9._-]+', case['name']) or case['name'] in ('.', '..')
+                or not case.get('require_poison_free', True)
+                or not case['expected_maps']
+                or not {m.lower() for m in case['expected_maps']} <= MAPS):
+            raise ValueError('sequence stages require healthy chapter 1 through 3 cases')
+        scenario = (suite_path.parent / case['scenario']).resolve()
+        validate_scenario(scenario)
+        stages.append({'name': name, 'suite': suite_path, 'case': case,
+                       'suite_sha256': sha(suite_path), 'scenario_sha256': sha(scenario)})
+    return sequence, stages
+
+
+def continuation_seed(report, stage_dir, case, binary_hash, source_seed):
+    # A healthy save from a FAILED objective is not a passing sequence link.
+    if (report.get('passed') is not True or report.get('binary_sha256') != binary_hash
+            or report.get('source_seed_manifest') != source_seed
+            or len(report.get('cases', [])) != 1):
+        raise ValueError('stage failed or binary/save lineage does not match')
+    result = report['cases'][0]
+    if (result.get('passed') is not True or result.get('continuation_eligible') is not True
+            or result.get('manual_save_written') is not True):
+        raise ValueError('stage did not produce a passing healthy manual save')
+    runtime = Path(result['runtime_data']).resolve()
+    if not runtime.is_relative_to(stage_dir.resolve()) or runtime == stage_dir.resolve():
+        raise ValueError('stage runtime must stay inside its report directory')
+    seed = runtime / 'Save'
+    saved = (seed / case.get('manual_save', 'SAVE0001/Player.plr')).resolve()
+    if (not saved.is_relative_to(seed) or not saved.is_file()
+            or sha(saved) != result.get('saved_player_sha256')):
+        raise ValueError('stage manual save is absent or has changed')
+    manifest = tree(seed)
+    if not manifest:
+        raise ValueError('stage save is empty')
+    return seed, manifest
+
+
+def run_sequence(args, sequence, stages):
+    initial_seed = tree(args.seed)
+    if not initial_seed:
+        raise ValueError('seed must contain an earned campaign save')
+    binary_hash = sha(args.binary)
+    args.output.mkdir(parents=True)
+    shutil.copyfile(args.sequence, args.output / 'sequence.source.json')
+    binary = args.output / 'opennox-tested'
+    shutil.copy2(args.binary, binary)
+    result = {'sequence': sequence['name'], 'binary_sha256': binary_hash,
+              'built_for_each_case': False, 'source_seed_manifest': initial_seed,
+              'stages': [], 'overall_porting_100_percent': False}
+    seed, source_seed = args.seed, initial_seed
+    started = time.monotonic()
+    try:
+        with (args.output / 'stages.jsonl').open('x') as progress:
+            for index, stage in enumerate(stages):
+                stage_dir = args.output / stage['name']
+                command = [sys.executable, str(Path(__file__).resolve()),
+                           '--suite', str(stage['suite']), '--binary', str(binary),
+                           '--data', str(args.data), '--seed', str(seed),
+                           '--output', str(stage_dir), '--port', str(args.port + 4 * index)]
+                for flag in ('config_seed', 'sandbox_profile'):
+                    if getattr(args, flag):
+                        command += ['--' + flag.replace('_', '-'), str(getattr(args, flag))]
+                row = {'name': stage['name'], 'suite': str(stage['suite']),
+                       'seed': str(seed), 'report': str(stage_dir / 'result.json'),
+                       'command': command, 'passed': False}
+                result['stages'].append(row)
+                try:
+                    scenario = (stage['suite'].parent / stage['case']['scenario']).resolve()
+                    if (sha(stage['suite']) != stage['suite_sha256']
+                            or sha(scenario) != stage['scenario_sha256']):
+                        raise ValueError('sequence input changed after validation')
+                    row['exit_code'] = subprocess.run(command, check=False).returncode
+                    child = json.loads((stage_dir / 'result.json').read_text())
+                    if row['exit_code'] != 0 or tree(seed) != source_seed:
+                        raise ValueError('stage execution failed or changed its source save')
+                    # Verify the exact suite and scenario that the child executed.
+                    inputs = json.loads((stage_dir / 'inputs.json').read_text())
+                    if (inputs['suite_sha256'] != stage['suite_sha256']
+                            or child['cases'][0]['scenario_sha256'] != stage['scenario_sha256']):
+                        raise ValueError('executed sequence input does not match validation')
+                    seed, source_seed = continuation_seed(child, stage_dir, stage['case'],
+                                                          binary_hash, source_seed)
+                    row.update(passed=True, next_seed=str(seed), next_seed_manifest=source_seed)
+                except (OSError, ValueError, KeyError, IndexError) as error:
+                    row['error'] = str(error)
+                progress.write(json.dumps(row, ensure_ascii=False) + '\n')
+                progress.flush()
+                print(json.dumps({'stage': row['name'], 'passed': row['passed'],
+                                  'report': row['report'], 'error': row.get('error')}), flush=True)
+                if not row['passed']:
+                    break
+    finally:
+        result['elapsed_seconds'] = round(time.monotonic() - started, 3)
+        result['seed_unchanged'] = tree(args.seed) == initial_seed
+        result['binary_unchanged'] = sha(args.binary) == binary_hash and sha(binary) == binary_hash
+        result['passed'] = (len(result['stages']) == len(stages)
+                            and all(row['passed'] for row in result['stages'])
+                            and result['seed_unchanged'] and result['binary_unchanged'])
+        if result['passed']:
+            result['final_seed'] = str(seed)
+            result['final_seed_manifest'] = source_seed
+        put(args.output / 'result.json', result)
+    return 0 if result['passed'] else 1
+
+
 def run_case(args, binary, suite_dir, case, port):
     case_dir = args.output / case['name']
     case_dir.mkdir()
@@ -431,21 +556,38 @@ def run_case(args, binary, suite_dir, case, port):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ('suite', 'binary', 'data', 'seed', 'output'):
+    selection = parser.add_mutually_exclusive_group(required=True)
+    selection.add_argument('--suite', type=Path)
+    selection.add_argument('--sequence', type=Path,
+                           help='replay ordered suites, passing each healthy earned Save to the next')
+    for name in ('binary', 'data', 'seed', 'output'):
         parser.add_argument('--' + name, required=True, type=Path)
     parser.add_argument('--case', action='append', dest='cases')
     parser.add_argument('--port', type=int, default=23173)
     parser.add_argument('--config-seed', type=Path)
     parser.add_argument('--sandbox-profile', type=Path)
     args = parser.parse_args()
-    for name in ('suite', 'binary', 'data', 'seed', 'output'):
-        setattr(args, name, getattr(args, name).resolve())
+    for name in ('suite', 'sequence', 'binary', 'data', 'seed', 'output'):
+        if getattr(args, name):
+            setattr(args, name, getattr(args, name).resolve())
     if args.config_seed:
         args.config_seed = args.config_seed.resolve()
     if args.sandbox_profile:
         args.sandbox_profile = args.sandbox_profile.resolve()
     if args.output.exists() or args.output.is_relative_to(args.data) or args.output.is_relative_to(args.seed):
         parser.error('output must be a new directory outside data and seed')
+    if args.sequence:
+        if args.cases:
+            parser.error('--case applies to a single suite, not a sequence')
+        if not args.binary.is_file() or not os.access(args.binary, os.X_OK):
+            parser.error('binary must be an executable file')
+        try:
+            sequence, stages = load_sequence(args.sequence)
+            if not tree(args.seed):
+                parser.error('seed must contain an earned campaign save')
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            parser.error(str(error))
+        return run_sequence(args, sequence, stages)
     suite = json.loads(args.suite.read_text())
     try:
         validate_suite_fields(suite)

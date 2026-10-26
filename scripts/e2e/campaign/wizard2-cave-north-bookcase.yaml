@@ -60,9 +60,37 @@ steps:
   - {"action": "walk-to-world", "x": 2010, "y": 3467, "name": "ordinary return through cleared statue route to original mana obelisks"}
   - {"action": "wait", "dt": 90}
   - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original north spider poison 1"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original north spider poison 2"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original north spider poison 3"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original north spider poison 4"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during possible original north spider poison 5"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
   - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary earned D41 heal after crossing original bookcase passage"}
   - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
   - {"action": "wait", "dt": 12}
+  - {"action": "wait", "dt": 90}
+  - {"action": "run-to-world", "x": 1922, "y": 3545, "name": "ordinary leave original obelisks for native recharge"}
+  - {"action": "wait", "dt": 750, "name": "native obelisks recharge outside their fifty-unit radius"}
+  - {"action": "run-to-world", "x": 2010, "y": 3467, "name": "ordinary return to original recharged obelisks"}
+  - {"action": "wait", "dt": 90}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary earned D41 after natural poison decay and obelisk recharge"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
   - {"action": "wait", "dt": 90}
   - {"action": "observe-player-target", "name": "read healthy original mana obelisks after Bookcase1 passage"}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Bookcase1 healthy return"}

@@ -66,6 +66,119 @@ class PlayerOutcomeTests(unittest.TestCase):
         self.assertFalse(runner.expected_player_values(player, {'expected_maximum_mana': 88}))
 
 
+class SequenceTests(unittest.TestCase):
+    def test_published_sequences_validate_all_stages_without_gameplay(self):
+        directory = Path(runner.__file__).parent / 'e2e' / 'campaign' / 'sequences'
+        for path in directory.glob('*.json'):
+            with self.subTest(path=path.name):
+                _, stages = runner.load_sequence(path)
+                self.assertTrue(stages)
+
+    def prepare(self, root):
+        binary = root / 'prebuilt'
+        binary.write_bytes(b'one frozen executable')
+        seed = root / 'earned' / 'Save'
+        (seed / 'SAVE0001').mkdir(parents=True)
+        (seed / 'SAVE0001' / 'Player.plr').write_bytes(b'original earned save')
+        (root / 'route.yaml').write_text('steps:\n  - {"action":"quit"}\n')
+        suite = {'version': 1, 'name': 'stage', 'cases': [
+            {'name': 'case', 'scenario': 'route.yaml', 'expected_maps': ['wiz02c']}]}
+        for name in ('first', 'second', 'third'):
+            (root / (name + '.json')).write_text(json.dumps(suite))
+        plan = root / 'sequence.json'
+        plan.write_text(json.dumps({'version': 1, 'name': 'sequence', 'stages': [
+            {'name': name, 'suite': name + '.json'} for name in ('first', 'second', 'third')]}))
+        args = SimpleNamespace(sequence=plan, binary=binary, seed=seed, data=root / 'assets',
+                               output=root / 'output', config_seed=None, sandbox_profile=None,
+                               port=24973)
+        return args
+
+    def child(self, command, passed=True, **kwargs):
+        options = dict(zip(command[2::2], command[3::2]))
+        output = Path(options['--output'])
+        runtime = output / 'case' / 'runtime-data.test'
+        saved = runtime / 'Save' / 'SAVE0001' / 'Player.plr'
+        saved.parent.mkdir(parents=True)
+        saved.write_bytes(output.name.encode())
+        report = {'passed': passed, 'binary_sha256': runner.sha(Path(options['--binary'])),
+                  'source_seed_manifest': runner.tree(Path(options['--seed'])),
+                  'cases': [{'passed': passed, 'continuation_eligible': True,
+                             'manual_save_written': True, 'runtime_data': str(runtime),
+                             'saved_player_sha256': runner.sha(saved),
+                             'scenario_sha256': runner.sha(Path(options['--suite']).parent / 'route.yaml')}]}
+        runner.put(output / 'result.json', report)
+        runner.put(output / 'inputs.json', {'suite_sha256': runner.sha(Path(options['--suite']))})
+        # Also test exit 0 with failed objectives: healthy alone must never advance.
+        return SimpleNamespace(returncode=0)
+
+    def test_sequence_passes_exact_saves_forward_with_one_binary_and_no_rebuild(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.prepare(Path(directory))
+            sequence, stages = runner.load_sequence(args.sequence)
+            with mock.patch.object(runner.subprocess, 'run', side_effect=self.child) as launch, mock.patch('builtins.print'):
+                self.assertEqual(runner.run_sequence(args, sequence, stages), 0)
+            commands = [call.args[0] for call in launch.call_args_list]
+            options = [dict(zip(cmd[2::2], cmd[3::2])) for cmd in commands]
+            self.assertEqual(len({row['--binary'] for row in options}), 1)
+            self.assertEqual(options[0]['--seed'], str(args.seed))
+            for previous, following in zip(options, options[1:]):
+                self.assertEqual(following['--seed'], str((Path(previous['--output']) / 'case/runtime-data.test/Save').resolve()))
+            report = json.loads((args.output / 'result.json').read_text())
+            self.assertTrue(report['passed'])
+            self.assertEqual(report['final_seed_manifest'], runner.tree(Path(report['final_seed'])))
+            self.assertEqual((args.seed / 'SAVE0001/Player.plr').read_bytes(), b'original earned save')
+            self.assertFalse(report['overall_porting_100_percent'])
+
+    def test_failed_objective_stops_sequence_even_with_healthy_save_and_exit_zero(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.prepare(Path(directory))
+            sequence, stages = runner.load_sequence(args.sequence)
+            def launch(command, **kwargs):
+                return self.child(command, passed='second' not in command[command.index('--output') + 1])
+            with mock.patch.object(runner.subprocess, 'run', side_effect=launch) as run, mock.patch('builtins.print'):
+                self.assertEqual(runner.run_sequence(args, sequence, stages), 1)
+            self.assertEqual(run.call_count, 2)
+            report = json.loads((args.output / 'result.json').read_text())
+            self.assertFalse(report['passed'])
+            self.assertNotIn('final_seed', report)
+            self.assertFalse((args.output / 'third').exists())
+            self.assertTrue((args.output / 'second/case/runtime-data.test/Save/SAVE0001/Player.plr').exists())
+
+    def test_later_invalid_stage_is_rejected_before_any_game_launch(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            args = self.prepare(root)
+            suite = json.loads((root / 'second.json').read_text())
+            suite['cases'][0]['required_monster_deaths'] = [1000195877]
+            (root / 'second.json').write_text(json.dumps(suite))
+            with self.assertRaisesRegex(ValueError, 'unknown campaign case fields'):
+                runner.load_sequence(args.sequence)
+            self.assertFalse(args.output.exists())
+
+    def test_continuation_rejects_wrong_binary_seed_changed_save_and_external_runtime(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            args = self.prepare(root)
+            stage = root / 'stage'
+            command = ['python', 'runner', '--suite', str(root / 'first.json'),
+                       '--binary', str(args.binary), '--seed', str(args.seed), '--output', str(stage)]
+            self.child(command)
+            original = json.loads((stage / 'result.json').read_text())
+            expected_seed, expected_binary = runner.tree(args.seed), runner.sha(args.binary)
+            for change in ({'binary_sha256': 'different'}, {'source_seed_manifest': {}},
+                           {'passed': False}):
+                with self.subTest(change=change), self.assertRaises(ValueError):
+                    runner.continuation_seed(dict(original, **change), stage, {}, expected_binary, expected_seed)
+            changed = json.loads(json.dumps(original))
+            changed['cases'][0]['runtime_data'] = str(args.seed.parent)
+            with self.assertRaisesRegex(ValueError, 'inside its report directory'):
+                runner.continuation_seed(changed, stage, {}, expected_binary, expected_seed)
+            saved = Path(original['cases'][0]['runtime_data']) / 'Save/SAVE0001/Player.plr'
+            saved.write_bytes(b'changed after validation')
+            with self.assertRaisesRegex(ValueError, 'has changed'):
+                runner.continuation_seed(original, stage, {}, expected_binary, expected_seed)
+
+
 class ScenarioEvidenceTests(unittest.TestCase):
     def test_launch_uses_preserved_input_when_the_source_is_edited(self):
         with tempfile.TemporaryDirectory() as directory:

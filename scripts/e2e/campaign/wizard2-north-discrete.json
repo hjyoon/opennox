@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "Wizard2 original northern discrete combat and Obelisk recovery",
+  "seed_contract": "Fresh f14ad309 upper-HD earned Save HP18 MP46 poison0, A43 D41 F115; original upper Urchin/Bat dead.",
+  "coverage": "Original northern two-Spider deaths, discrete earned spells, healing, natural poison expiry, Obelisk recovery and poison-free living manual Save only.",
+  "cases": [
+    {
+      "name": "wizard2-cave-north-discrete",
+      "scenario": "wizard2-cave-north-discrete.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 270,
+      "required_checkpoints": [
+        "original northern discrete combat result",
+        "original manual Save",
+        "original northern Obelisk recovery1",
+        "original northern Obelisk recovery2",
+        "original poison recovery2",
+        "original final poison-free recovery2"
+      ],
+      "required_defeated_script_ids": [
+        1000196689,
+        1000196723
+      ],
+      "expected_mana": 78
+    }
+  ]
+}

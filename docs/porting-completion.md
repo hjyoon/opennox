@@ -1882,6 +1882,32 @@ Fresh products and campaign E2E are recorded separately in
 `poison-activation-precision-port/`. Linux, remaining native/transitive work,
 campaign cells and overall porting 100 percent remain open.
 
+### Campaign E2E original northern combat and recovery
+
+`scripts/e2e/campaign/wizard2-north-discrete.json` starts from the earned
+upper-room Save (HP18/20, MP46/78, poison zero, A43/D41/F115). It requires the
+original northern SmallAlbinoSpider and AlbinoSpider to be alive at Load and
+later observed DEAD. Separate slot-A key presses cast the earned Chain
+Lightning spell while ordinary movement creates space; slot D casts Lesser
+Heal. The cast helper's `count` is the target-tracking duration after one
+press/release, not the number of spell casts.
+
+Ordinary healing, natural poison expiry and the original Obelisk then produce
+a healthy manual Save. Normal passes in 141.736 seconds and HD in 143.468
+seconds using the existing clean f14ad309 products without a Go rebuild.
+Independent read-only Save parsing confirms Wiz02c, HP20/20, MP78/78, poison
+zero, XP3382.3726 (bits1163093494) and the three earned spells in both runs.
+Source Save and snapshot hashes are rechecked; the published scenario is
+byte-identical to the tested input. Evidence is in
+`campaign-wiz02c-north-discrete-healthy-verified-v1.json` under the retained
+artifact root.
+
+Earlier strict recovery attempts defeated both Spiders and restored MP78 but
+retained poison; their failed reports remain unchanged. This passing segment
+uses no game-state setter or debug write. BookOfOblivion, the rest of the fresh
+chapter route, final cell audits, Linux and overall porting 100 percent remain
+open.
+
 ### Campaign E2E original upper actors
 
 `scripts/e2e/campaign/wizard2-upper-landing.json` now traverses the original

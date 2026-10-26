@@ -1,0 +1,102 @@
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 1, "spell": 27}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "wait", "dt": 35}
+  - {"action": "run-to-world", "x": 2318, "y": 3619, "name": "ordinary cleared eastern road92"}
+  - {"action": "run-to-world", "x": 2517, "y": 3866, "name": "ordinary cleared eastern road91"}
+  - {"action": "run-to-world", "x": 2705, "y": 3919, "name": "ordinary cleared eastern road95"}
+  - {"action": "run-to-world", "x": 2845, "y": 4068, "name": "ordinary cleared eastern road96"}
+  - {"action": "observe-player-target", "name": "read original cleared FlyingGolem2348 passage"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original cleared FlyingGolem2348 passage"}
+  - {"action": "run-to-world", "x": 2960, "y": 3910, "name": "ordinary approach to original Spider2341 near road146"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2341 input1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2341 input2"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2341 input3"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2341 input4"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2341 input5"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2341 input6"}
+  - {"action": "observe-player-target", "name": "read original Spider2341 combat"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Spider2341 combat"}
+  - {"action": "run-to-world", "x": 3034, "y": 3832, "name": "ordinary original road146"}
+  - {"action": "run-to-world", "x": 3009, "y": 3643, "name": "ordinary original road147"}
+  - {"action": "run-to-world", "x": 3203, "y": 3706, "name": "ordinary original road149"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2255 input1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2255 input2"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2255 input3"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2255 input4"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2255 input5"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary earned A43 at original Spider2255 input6"}
+  - {"action": "run-to-world", "x": 3393, "y": 3765, "name": "ordinary original road150 after Spider2255"}
+  - {"action": "observe-player-target", "name": "read original Spider2255 combat"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Spider2255 combat"}
+  - {"action": "run-to-world", "x": 3203, "y": 3706, "name": "ordinary cleared retreat road149"}
+  - {"action": "run-to-world", "x": 3009, "y": 3643, "name": "ordinary cleared retreat road147"}
+  - {"action": "run-to-world", "x": 3034, "y": 3832, "name": "ordinary cleared retreat road146"}
+  - {"action": "run-to-world", "x": 2845, "y": 4068, "name": "ordinary cleared retreat road96"}
+  - {"action": "run-to-world", "x": 2705, "y": 3919, "name": "ordinary cleared retreat road95"}
+  - {"action": "run-to-world", "x": 2517, "y": 3866, "name": "ordinary cleared retreat road91"}
+  - {"action": "run-to-world", "x": 2318, "y": 3619, "name": "ordinary cleared retreat road92"}
+  - {"action": "run-to-world", "x": 2408, "y": 3534, "name": "ordinary cleared retreat road1622"}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during original spider poison decay 1"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 200}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during original spider poison decay 2"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 200}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during original spider poison decay 3"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 200}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during original spider poison decay 4"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 200}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during original spider poison decay 5"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 200}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary D41 during original spider poison decay 6"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 200}
+  - {"action": "run-to-world", "x": 2318, "y": 3619, "name": "ordinary original road92 toward alternate obelisk1621"}
+  - {"action": "run-to-world", "x": 2318, "y": 3625, "name": "ordinary recovery beside original obelisk1621"}
+  - {"action": "wait", "dt": 800, "name": "original obelisk1622 naturally recharges while player is at obelisk1621"}
+  - {"action": "run-to-world", "x": 2408, "y": 3534, "name": "ordinary return to original recharged obelisk1622"}
+  - {"action": "wait", "dt": 150}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary final earned D41 after native poison decay"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 150}
+  - {"action": "observe-player-target", "name": "read original eastern spider pair natural recovery"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original eastern spider pair natural recovery"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

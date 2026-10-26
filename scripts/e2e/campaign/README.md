@@ -24,6 +24,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-north-remaining-spider.json` | Healthy north-bookcase save | AlbinoSpider2345 |
 | `wizard2-northeast.json` | Healthy remaining-spider save | AlbinoSpiders2346 and2347 |
 | `wizard2-flying-golem.json` | Healthy northeast save, HP20/MP78 | FlyingGolem2348; earned level gain to HP26/MP88 |
+| `wizard2-eastern-spiders.json` | Healthy FlyingGolem save, HP26/MP88 | Spiders2341 and2255; alternate original obelisks restore full mana |
 
 Replay all four segments consecutively with one command and the same prebuilt
 executable:

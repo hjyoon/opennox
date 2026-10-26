@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "name": "Wizard2 original east corridor Spider2341 and2255",
+  "seed_contract": "Earned healthy Wiz02c FlyingGolem checkpoint, original FlyingGolem2348 DEAD, HP26 MP88 poison0; A43 Lightning S27 Fireball D41 LesserHeal F115 Swap. Original Spider2341 and2255 alive.",
+  "coverage": "Ordinary original road146/147/149/150, both original spiders alive-to-DEAD and healthy manual Save with original obelisk recovery.",
+  "cases": [
+    {
+      "name": "wizard2-eastern-spiders",
+      "scenario": "wizard2-cave-eastern-spiders.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 240,
+      "expected_health": 26,
+      "expected_mana": 88,
+      "expected_maximum_health": 26,
+      "expected_maximum_mana": 88,
+      "required_defeated_script_ids": [
+        1000194089,
+        1000194229
+      ],
+      "required_checkpoints": [
+        "original Spider2341 combat",
+        "original Spider2255 combat",
+        "original eastern spider pair natural recovery",
+        "original manual Save"
+      ]
+    }
+  ]
+}

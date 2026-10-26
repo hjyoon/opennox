@@ -165,6 +165,8 @@ type Server struct {
 func (s *Server) Close() {
 	s.tradeNative.free()
 	s.secondaryWeapons53AB90 = nil
+	s.Players.free()
+	s.Teams.free()
 	servers.Delete(s.handle)
 }
 

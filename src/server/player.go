@@ -32,8 +32,9 @@ type ClassStats struct {
 }
 
 type serverPlayers struct {
-	list  []Player
-	Stats struct {
+	list       []Player
+	freeNative func()
+	Stats      struct {
 		Base     ClassStats
 		Warrior  ClassStats
 		Wizard   ClassStats
@@ -171,7 +172,7 @@ func (s *Server) OnClassStats(cl player.Class, stats ClassStats) {
 }
 
 func (s *serverPlayers) init(srv *Server) {
-	s.list, _ = alloc.Make([]Player{}, common.MaxPlayers)
+	s.list, s.freeNative = alloc.Make([]Player{}, common.MaxPlayers)
 	s.Mult.Warrior = ClassStats{
 		Health:   1,
 		Mana:     1,
@@ -191,6 +192,15 @@ func (s *serverPlayers) init(srv *Server) {
 		Speed:    1,
 	}
 	s.Camper.init(srv)
+}
+
+func (s *serverPlayers) free() {
+	if s.freeNative != nil {
+		s.freeNative()
+		s.freeNative = nil
+	}
+	s.list = nil
+	s.hostPlayer, s.hostUnit = nil, nil
 }
 
 func (s *serverPlayers) ResetAll() {

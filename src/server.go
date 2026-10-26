@@ -78,9 +78,11 @@ func NewServer(log *slog.Logger, pr console.Printer, sm *strman.StringManager) *
 	}
 	s.NetXferLocal = netXferLocal
 	s.ObjectByNetCode = s.getObjectFromNetCode
-	configBoolPtr("network.xor", "NOX_NET_XOR", true, &s.NetStr.Xor)
-	configBoolPtr("network.port_forward", "NOX_NET_NAT", true, &s.Server.UseNAT)
-	configHiddenBoolPtr("network.debug", "NOX_DEBUG_NET", &s.NetStr.Debug)
+	s.configUnbind = []func(){
+		configBoolPtr("network.xor", "NOX_NET_XOR", true, &s.NetStr.Xor),
+		configBoolPtr("network.port_forward", "NOX_NET_NAT", true, &s.Server.UseNAT),
+		configHiddenBoolPtr("network.debug", "NOX_DEBUG_NET", &s.NetStr.Debug),
+	}
 	s.initMetrics()
 	s.abilities.Init(s)
 	s.ai.Init(s)
@@ -107,9 +109,18 @@ type Server struct {
 	quest           questServer
 	springs         serverSprings
 	mapSwitchWPName string
+	configUnbind    []func()
 
 	flag1548704 bool
 	flag3592    bool
+}
+
+func (s *Server) Close() {
+	for _, unbind := range s.configUnbind {
+		unbind()
+	}
+	s.configUnbind = nil
+	s.Server.Close()
 }
 
 func (s *Server) S() *server.Server {

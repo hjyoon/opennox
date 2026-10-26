@@ -54,8 +54,32 @@ var (
 	onConfigRead   []func()
 )
 
-func registerOnConfigRead(fnc func()) {
-	onConfigRead = append(onConfigRead, fnc)
+// Finite owners cancel their binding at shutdown. Process-wide bindings may
+// ignore the returned function; vacant slots are reused without retaining owners.
+func registerOnConfigRead(fnc func()) func() {
+	index := len(onConfigRead)
+	for i, old := range onConfigRead {
+		if old == nil {
+			index = i
+			break
+		}
+	}
+	if index == len(onConfigRead) {
+		onConfigRead = append(onConfigRead, fnc)
+	} else {
+		onConfigRead[index] = fnc
+	}
+	active := true
+	return func() {
+		if !active {
+			return
+		}
+		active = false
+		onConfigRead[index] = nil
+		for len(onConfigRead) > 0 && onConfigRead[len(onConfigRead)-1] == nil {
+			onConfigRead = onConfigRead[:len(onConfigRead)-1]
+		}
+	}
 }
 
 func writeConfig() error {
@@ -92,23 +116,23 @@ func configStrPtr(key, env string, def string, ptr *string) {
 	})
 }
 
-func configBoolPtr(key, env string, def bool, ptr *bool) {
+func configBoolPtr(key, env string, def bool, ptr *bool) func() {
 	viper.SetDefault(key, def)
 	if env != "" {
 		viper.BindEnv(key, env)
 	}
 	*ptr = viper.GetBool(key)
-	registerOnConfigRead(func() {
+	return registerOnConfigRead(func() {
 		*ptr = viper.GetBool(key)
 	})
 }
 
-func configHiddenBoolPtr(key, env string, ptr *bool) {
+func configHiddenBoolPtr(key, env string, ptr *bool) func() {
 	if env != "" {
 		viper.BindEnv(key, env)
 	}
 	*ptr = viper.GetBool(key)
-	registerOnConfigRead(func() {
+	return registerOnConfigRead(func() {
 		*ptr = viper.GetBool(key)
 	})
 }
@@ -116,7 +140,9 @@ func configHiddenBoolPtr(key, env string, ptr *bool) {
 func readConfig(path string) error {
 	defer func() {
 		for _, fnc := range onConfigRead {
-			fnc()
+			if fnc != nil {
+				fnc()
+			}
 		}
 	}()
 	if path != "" {

@@ -19,12 +19,13 @@ type TeamDef struct {
 }
 
 type serverTeams struct {
-	sm        *strman.StringManager
-	pr        console.Printer
-	defs      map[TeamColor]*TeamDef
-	Arr       []Team
-	ActiveCnt int
-	teamFlags map[*Team]*Object
+	sm         *strman.StringManager
+	pr         console.Printer
+	defs       map[TeamColor]*TeamDef
+	Arr        []Team
+	freeNative func()
+	ActiveCnt  int
+	teamFlags  map[*Team]*Object
 
 	// GAME.EXE linked ObjectTeam records through two PE32 uint32 fields:
 	// Team.field_44 was the head and ObjectTeam.Field0 was next. Keep those
@@ -66,10 +67,18 @@ func (s *serverTeams) init(sm *strman.StringManager, pr console.Printer) {
 	}
 	s.teamsReloadTitles()
 	const teamsMax = 17
-	s.Arr, _ = alloc.Make([]Team{}, teamsMax)
+	s.Arr, s.freeNative = alloc.Make([]Team{}, teamsMax)
 	s.teamFlags = make(map[*Team]*Object)
 	s.members = make(map[*Team]map[*ObjectTeam]struct{})
 	s.membership = make(map[*ObjectTeam]*Team)
+}
+
+func (s *serverTeams) free() {
+	if s.freeNative != nil {
+		s.freeNative()
+		s.freeNative = nil
+	}
+	s.Arr = nil
 }
 
 func (s *serverTeams) teamsReloadTitles() {

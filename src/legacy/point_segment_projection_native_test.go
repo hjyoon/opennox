@@ -109,7 +109,7 @@ int main(void){
 	}
 	binary := filepath.Join(t.TempDir(), "point-segment-projection")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fno-inline", "-x", "c", "-", "-lm", "-o", binary)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(strings.Replace(harness, "// PRODUCTION_DEFINITIONS", strings.Join(definitions, "\n"), 1))
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile exact native projection definitions: %v\n%s", err, out)

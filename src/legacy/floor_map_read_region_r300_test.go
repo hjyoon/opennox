@@ -61,7 +61,7 @@ func TestFloorMapNativeRegionDataR300(t *testing.T) {
 	bin := filepath.Join(t.TempDir(), "floor-map-region")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wno-int-conversion", "-Wno-incompatible-pointer-types",
 		"-Wno-pointer-to-int-cast", "-Wno-int-to-pointer-cast", "-I.", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual FloorMap functions: %v\n%s", err, out)

@@ -50,7 +50,7 @@ func checkMapgenItemSetNativeAddresses51F030(t *testing.T, got mapgenItemSetsRes
 		}
 	}
 	for name, address := range addresses {
-		if address <= 1<<32 {
+		if uint64(address) <= 1<<32 {
 			t.Fatalf("%s fixture address=%#x, want address above PE32 range", name, address)
 		}
 	}

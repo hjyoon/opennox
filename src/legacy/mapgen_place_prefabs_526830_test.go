@@ -46,7 +46,7 @@ func TestMapgenPlacePrefabs526830PreservesNativePointers(t *testing.T) {
 			addresses["choice "+strconv.Itoa(i)] = got.choiceAddresses[i]
 		}
 		for name, address := range addresses {
-			if address <= 1<<32 {
+			if uint64(address) <= 1<<32 {
 				t.Fatalf("%s fixture address=%#x, want address above PE32 range", name, address)
 			}
 		}

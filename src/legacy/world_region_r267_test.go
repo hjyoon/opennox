@@ -103,7 +103,7 @@ func TestWorldRegion437860NativeRelocationR267(t *testing.T) {
 	}
 	bin := filepath.Join(t.TempDir(), "world-region-native")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fno-strict-aliasing", "-Wall", "-Wextra", "-Werror", "-Wno-pointer-to-int-cast", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = bytes.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete world-region C body: %v\n%s", err, output)

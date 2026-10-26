@@ -81,7 +81,7 @@ func testChatNearestTeam215(t *testing.T, boundary bool) {
 	if runtime.GOARCH == "386" {
 		args = append([]string{"-m32"}, args...)
 	}
-	if out, err := exec.Command(cc, args...).CombinedOutput(); err != nil {
+	if out, err := exec.Command(cc, nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile complete native Chat body: %v\n%s", err, out)
 	}
 	count := 0

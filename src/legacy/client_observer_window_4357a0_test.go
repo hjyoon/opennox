@@ -44,7 +44,7 @@ func TestClientObserverWindow4357A0NativeBodies(t *testing.T) {
 	bin := filepath.Join(t.TempDir(), "client-observer-window")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror",
 		"-Itestdata", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile native observer visibility bodies: %v\n%s", err, output)

@@ -91,7 +91,7 @@ func clientVideoTablesNative200(t *testing.T, mode string) {
 	}
 	bin := filepath.Join(t.TempDir(), "client-video-tables")
 	args := append(compiler[1:], "-std=c11", "-O2", "-ffp-contract=off", "-fshort-wchar", "-fsigned-char", "-fno-strict-aliasing", "-Wall", "-Wextra", "-Werror", "-Itestdata", "-x", "c", "-", "-lm", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = bytes.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete video bodies: %v\n%s", err, output)

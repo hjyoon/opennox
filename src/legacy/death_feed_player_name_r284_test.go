@@ -38,7 +38,7 @@ func TestDeathFeedPlayerNamesNativeR284(t *testing.T) {
 	bin := filepath.Join(t.TempDir(), "death-feed-player-name-r284")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fsigned-char", "-fno-strict-aliasing",
 		"-Wall", "-Wextra", "-Werror", "-Itestdata", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete death-feed production body: %v\n%s", err, out)

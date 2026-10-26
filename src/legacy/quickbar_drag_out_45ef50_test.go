@@ -86,7 +86,7 @@ func TestQuickbarDragOut45EF50NativeOriginal(t *testing.T) {
 	}
 	binaryPath := filepath.Join(t.TempDir(), "quickbar-drag-out")
 	args := append(cc[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-Itestdata", "-x", "c", "-", "-o", binaryPath)
-	cmd := exec.Command(cc[0], args...)
+	cmd := exec.Command(cc[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile native production handlers: %v\n%s", err, output)

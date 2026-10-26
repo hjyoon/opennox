@@ -144,7 +144,7 @@ func clientCenterMessages202(t *testing.T, mode string) {
 	}
 	bin := filepath.Join(t.TempDir(), "center-messages")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fsigned-char", "-fno-strict-aliasing", "-fno-strict-overflow", "-Wall", "-Wextra", "-Werror", "-Itestdata", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete HUD bodies: %v\n%s", err, out)

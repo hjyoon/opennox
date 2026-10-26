@@ -65,7 +65,8 @@ func scriptNSGroupWanderFixtureNew512930(t *testing.T, flag uint32, initial ai.A
 		update.AIStack[0] = server.AIStackItem{Action: uint32(initial), Args: [4]uintptr{101, 102, 103, 104}}
 		update.AIStack[1] = server.AIStackItem{Action: uint32(ai.ACTION_ROAM), Args: [4]uintptr{uintptr(unsafe.Pointer(waypoint)), 202, 0xabcdef00, 204}, Field5: 77}
 		if unsafe.Sizeof(uintptr(0)) == 8 {
-			update.AIStack[1].Args[2] |= uintptr(uint64(0x12345678) << 32)
+			wide := uint64(0x12345678) << 32
+			update.AIStack[1].Args[2] |= uintptr(wide)
 			if uintptr(unsafe.Pointer(unit)) <= math.MaxUint32 || uintptr(unsafe.Pointer(update)) <= math.MaxUint32 {
 				t.Fatalf("native records are not above 4 GiB: unit=%p update=%p", unit, update)
 			}

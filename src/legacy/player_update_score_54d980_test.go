@@ -76,7 +76,7 @@ int main(void) {
 	binary := filepath.Join(t.TempDir(), "arena-abi32")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-x", "c", "-", "-o", binary)
 	args = append(args, strings.Fields(os.Getenv("NOX_ARENA_SCORE_CFLAGS"))...)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual ABI32 Arena body: %v\n%s", err, output)

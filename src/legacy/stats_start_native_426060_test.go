@@ -69,7 +69,7 @@ func TestStatsStart426060NativeBody(t *testing.T) {
 	binary := filepath.Join(t.TempDir(), "stats-start")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-Wno-int-to-void-pointer-cast", "-x", "c", "-", "-o", binary)
 	args = append(args, strings.Fields(os.Getenv("NOX_STATS_START_CFLAGS"))...)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual statistics startup/packet chain: %v\n%s", err, output)

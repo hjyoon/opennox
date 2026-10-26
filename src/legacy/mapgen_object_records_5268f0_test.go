@@ -27,7 +27,7 @@ func TestMapgenObjectRecords5268F0PreserveNativePointer(t *testing.T) {
 		t.Fatalf("record state survived cleanup: token=%#x lookup=%d",
 			got.tokenAfterCleanup, got.lookupAfterCleanup)
 	}
-	if strconv.IntSize == 64 && got.recordsAddress <= 1<<32 {
+	if strconv.IntSize == 64 && uint64(got.recordsAddress) <= 1<<32 {
 		t.Fatalf("records fixture address = %#x, want address above PE32 range", got.recordsAddress)
 	}
 }

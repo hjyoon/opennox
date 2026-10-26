@@ -156,7 +156,8 @@ func TestLuaCompatGuardV2OriginalNativeOrder(t *testing.T) {
 							}
 							f.update.AIStack[0] = server.AIStackItem{Action: uint32(ai.ACTION_IDLE), Args: [4]uintptr{0x11223344, 0x55667788, 0x9abcdef0, 0x76543210}}
 							if unsafe.Sizeof(uintptr(0)) == 8 {
-								f.update.AIStack[0].Args[3] |= uintptr(uint64(0x12345678) << 32)
+								wide := uint64(0x12345678) << 32
+								f.update.AIStack[0].Args[3] |= uintptr(wide)
 							}
 							if audible {
 								f.update.SoundSet122 = unsafe.Pointer(f.sounds)

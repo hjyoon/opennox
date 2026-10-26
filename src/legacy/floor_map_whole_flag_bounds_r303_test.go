@@ -52,7 +52,7 @@ func TestFloorMapV4WholeFlagBoundsR303(t *testing.T) {
 	}
 	bin := filepath.Join(t.TempDir(), "floor-whole-flag-bounds")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Werror", "-Wno-incompatible-pointer-types", "-I.", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual FloorMap input and writer: %v\n%s", err, out)

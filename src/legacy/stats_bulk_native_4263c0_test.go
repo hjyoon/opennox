@@ -55,7 +55,7 @@ func TestStatsBulk4263C0NativeBody(t *testing.T) {
 	binary := filepath.Join(t.TempDir(), "stats-bulk")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-x", "c", "-", "-o", binary)
 	args = append(args, strings.Fields(os.Getenv("NOX_STATS_BULK_CFLAGS"))...)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual native report helpers and original C entry: %v\n%s", err, output)

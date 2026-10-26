@@ -48,7 +48,7 @@ func TestTrapQuickbarVisibility460B90NativeBodies(t *testing.T) {
 	binary := filepath.Join(t.TempDir(), "trap-quickbar-visibility")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror",
 		"-Itestdata", "-x", "c", "-", "-o", binary)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile native Trap Set bodies: %v\n%s", err, output)

@@ -137,7 +137,7 @@ int main(int argc,char** argv) {
 	}
 	binary := filepath.Join(t.TempDir(), "native-conversion-widths")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fno-inline", "-x", "c", "-", "-lm", "-o", binary)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(strings.Replace(harness, "// EXACT_PRODUCTION_DEFINITIONS", strings.Join(definitions, "\n"), 1))
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile exact production definitions: %v\n%s", err, output)

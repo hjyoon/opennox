@@ -111,7 +111,7 @@ func TestStatsRNG262CompleteNativeBody(t *testing.T) {
 	}
 	bin := filepath.Join(t.TempDir(), "stats-rng-native")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fno-strict-aliasing", "-fno-strict-overflow", "-Wall", "-Wextra", "-Werror", "-Wno-pointer-to-int-cast", "-x", "c", "-", "-o", bin, "-lm")
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = bytes.NewReader(fixture)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete statistics RNG: %v\n%s", err, out)

@@ -64,7 +64,7 @@ func TestClientMapGenText4A9D00NativeOriginalContracts(t *testing.T) {
 	}
 	bin := filepath.Join(t.TempDir(), "client-mapgen-text")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fsigned-char", "-fno-strict-aliasing", "-fno-strict-overflow", "-Wall", "-Wextra", "-Werror", "-I.", "-Itestdata", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = bytes.NewReader(fixture)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete map-generation body: %v\n%s", err, output)

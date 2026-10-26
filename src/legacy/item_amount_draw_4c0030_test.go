@@ -40,7 +40,7 @@ func TestItemAmountDraw4C0030NativeBody(t *testing.T) {
 	program := string(fixture)
 	for marker, value := range map[string]string{
 		"// PRODUCTION_IMAGE_ENUM": enumStart + enum + "\n};",
-		"// PRODUCTION_DRAW_BODY": signature + body,
+		"// PRODUCTION_DRAW_BODY":  signature + body,
 	} {
 		if strings.Count(program, marker) != 1 {
 			t.Fatalf("native fixture marker %q is not unique", marker)
@@ -54,7 +54,7 @@ func TestItemAmountDraw4C0030NativeBody(t *testing.T) {
 	binary := filepath.Join(t.TempDir(), "item-amount-draw")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror",
 		"-Itestdata", "-x", "c", "-", "-o", binary)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile native 004C0030 body: %v\n%s", err, output)

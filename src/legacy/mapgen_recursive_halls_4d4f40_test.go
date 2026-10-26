@@ -63,7 +63,7 @@ func TestMapgenRecursiveHalls4D4F40PreserveNativePointers(t *testing.T) {
 			got.recursiveChildAddress,
 		}
 		for i, address := range addresses {
-			if address <= 1<<32 {
+			if uint64(address) <= 1<<32 {
 				t.Fatalf("fixture address[%d] = %#x, want address above PE32 range", i, address)
 			}
 		}

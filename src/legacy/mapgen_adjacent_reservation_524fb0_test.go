@@ -68,7 +68,7 @@ func TestMapgenAdjacentReservation524FB0PreservesNativePointers(t *testing.T) {
 				"neighbor":  item.neighborAddress,
 				"rectangle": item.rectangleAddress,
 			} {
-				if address <= 1<<32 {
+				if uint64(address) <= 1<<32 {
 					t.Fatalf("direction %d %s fixture address = %#x, want address above PE32 range", direction, name, address)
 				}
 			}

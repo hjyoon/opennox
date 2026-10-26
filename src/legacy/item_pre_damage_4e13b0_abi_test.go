@@ -16,7 +16,7 @@ func TestItemPreDamageABI4E13B0(t *testing.T) {
 	binary := filepath.Join(t.TempDir(), "item-pre-damage-abi")
 	args := append(compiler[1:], "-std=c11", "-Wall", "-Wextra", "-Werror",
 		"testdata/item_pre_damage_4e13b0_abi_test.c", "-o", binary)
-	if output, err := exec.Command(compiler[0], args...).CombinedOutput(); err != nil {
+	if output, err := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("public 004E13B0 C ABI: %v\n%s", err, output)
 	}
 	if output, err := exec.Command(binary).CombinedOutput(); err != nil {

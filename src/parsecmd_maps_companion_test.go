@@ -50,6 +50,9 @@ func TestMapLoadCompanionRepositionContract(t *testing.T) {
 		t.Fatal(err)
 	}
 	binary := filepath.Join(dir, "map-load-companions")
+	if runtime.GOOS == "windows" {
+		binary += ".exe"
+	}
 	cmd := exec.Command(filepath.Join(runtime.GOROOT(), "bin", "go"), "build", "-p=2", "-o", binary, "main.go")
 	cmd.Dir = dir
 	cmd.Env = append(os.Environ(), "GO111MODULE=off")

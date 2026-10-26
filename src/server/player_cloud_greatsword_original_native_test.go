@@ -57,7 +57,7 @@ func playerCloudGreatSwordAllocateR78[T comparable](t *testing.T) *T {
 	t.Helper()
 	p, free := alloc.New(*new(T))
 	t.Cleanup(free)
-	if uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {
+	if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(p)) <= math.MaxUint32 {
 		t.Fatal("native C allocation is not above4GiB")
 	}
 	return p

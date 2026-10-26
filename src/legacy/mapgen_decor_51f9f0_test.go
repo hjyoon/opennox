@@ -111,7 +111,7 @@ END
 			t.Fatalf("%s token=%#x address=%#x, want both nonzero",
 				name, token, addresses[name])
 		}
-		if strconv.IntSize == 64 && addresses[name] <= 1<<32 {
+		if strconv.IntSize == 64 && uint64(addresses[name]) <= 1<<32 {
 			t.Fatalf("%s fixture address=%#x, want address above PE32 range",
 				name, addresses[name])
 		}

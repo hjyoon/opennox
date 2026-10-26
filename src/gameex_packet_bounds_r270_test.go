@@ -40,7 +40,7 @@ func TestGameExPacketBoundsR270(t *testing.T) {
 		t.Fatal("private player slot unavailable")
 	}
 	for i := range units {
-		units[i].NetCode = uint32(0xf1234000 + i)
+		units[i].NetCode = uint32(0xf1234000) + uint32(i)
 		units[i].ObjClass = object.ClassPlayer
 		units[i].UpdateData = unsafe.Pointer(&updates[i])
 		if i+1 < len(units) {

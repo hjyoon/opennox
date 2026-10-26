@@ -71,7 +71,7 @@ func testTeamReport210(t *testing.T, mode string, first int) {
 	if runtime.GOARCH == "386" {
 		args = append([]string{"-m32"}, args...)
 	}
-	if output, err := exec.Command(compiler, args...).CombinedOutput(); err != nil {
+	if output, err := exec.Command(compiler, nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile exact production bodies and headers: %v\n%s", err, output)
 	}
 	data, err := os.ReadFile("testdata/team_report_original_4df2e0_v2.json")

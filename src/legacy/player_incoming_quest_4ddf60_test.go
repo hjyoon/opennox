@@ -92,7 +92,7 @@ func TestIncomingQuest4DDF60CompleteProducer(t *testing.T) {
 	if runtime.GOARCH == "386" {
 		args = append([]string{"-m32"}, args...)
 	}
-	if output, err := exec.Command(compiler, args...).CombinedOutput(); err != nil {
+	if output, err := exec.Command(compiler, nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile complete incoming Quest producer: %v\n%s", err, output)
 	}
 	if output, err := exec.Command(binary).CombinedOutput(); err != nil {

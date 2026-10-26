@@ -42,7 +42,7 @@ func clientSecondaryGridNative4619F0(t *testing.T, mode string) {
 	bin := filepath.Join(t.TempDir(), "client-secondary-grid")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fsigned-char", "-fno-strict-aliasing",
 		"-Wall", "-Wextra", "-Werror", "-Wno-unused-function", "-Itestdata", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(string(program))
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual secondary-weapon subsystem: %v\n%s", err, out)

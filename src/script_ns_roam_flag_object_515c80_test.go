@@ -75,8 +75,8 @@ func TestScriptNSObjectRoamFlag515C80EmptyAndWideArguments(t *testing.T) {
 	}
 	if unsafe.Sizeof(uintptr(0)) == 8 {
 		unit.UpdateData = unsafe.Pointer(update)
-		wide := int(int64(1)<<40 | 0x1a5)
-		(nsObj{Object: asObjectS(unit)}).SetRoamFlag(wide)
+		wide := int64(1)<<40 | 0x1a5
+		(nsObj{Object: asObjectS(unit)}).SetRoamFlag(int(wide))
 		if update.Field333 != 0xdeadbea5 {
 			t.Fatalf("native int did not narrow to one byte: %x", update.Field333)
 		}

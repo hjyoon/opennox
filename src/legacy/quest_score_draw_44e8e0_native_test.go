@@ -34,7 +34,7 @@ func questScoreDrawNative44E8E0(t *testing.T, mode string) {
 	bin := filepath.Join(t.TempDir(), "quest-score-draw")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fsigned-char", "-fno-strict-aliasing",
 		"-Wall", "-Wextra", "-Werror", "-Wno-unused-function", "-Itestdata", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete Quest score renderer: %v\n%s", err, out)

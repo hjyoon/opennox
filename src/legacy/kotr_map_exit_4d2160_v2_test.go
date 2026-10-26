@@ -43,7 +43,7 @@ func testKOTRMapExit216(t *testing.T, first, last int) {
 	if runtime.GOARCH == "386" {
 		args = append([]string{"-m32"}, args...)
 	}
-	if output, err := exec.Command(cc, args...).CombinedOutput(); err != nil {
+	if output, err := exec.Command(cc, nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile complete KOTR body: %v\n%s", err, output)
 	}
 	data, err := os.ReadFile("testdata/kotr_map_exit_original_4d2160_v1.json")

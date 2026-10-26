@@ -101,7 +101,7 @@ func TestModifierSpeedOriginalNativeC(t *testing.T) {
 		cc = []string{"cc"}
 	}
 	args := append(cc[1:], "-std=c11", "-O2", "-fshort-wchar", "-fno-strict-aliasing", "-fno-strict-overflow", "-D_Static_assert(x,y)=", "-I"+include, input, "-lm", "-o", binary)
-	if out, err := exec.Command(cc[0], args...).CombinedOutput(); err != nil {
+	if out, err := exec.Command(cc[0], nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile actual native speed roots: %v\n%s", err, out)
 	}
 	for which, function := range []string{"SpeedEngage", "SpeedDisengage"} {

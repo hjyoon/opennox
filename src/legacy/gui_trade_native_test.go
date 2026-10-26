@@ -9,7 +9,8 @@ import (
 func TestGUITradeSlotsPreserveNativePointers(t *testing.T) {
 	value := uintptr(0x76543210)
 	if unsafe.Sizeof(value) == 8 {
-		value = uintptr(0x1234567887654321)
+		wide := uint64(0x1234567887654321)
+		value = uintptr(wide)
 		if value <= math.MaxUint32 {
 			t.Fatalf("test pointer = %#x, want value above 4 GiB", value)
 		}

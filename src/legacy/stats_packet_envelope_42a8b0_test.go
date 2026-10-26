@@ -41,7 +41,7 @@ func TestStatsPacketEnvelope42A8B0NativeBody(t *testing.T) {
 	binary := filepath.Join(t.TempDir(), "stats-packet-envelope")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-x", "c", "-", "-o", binary)
 	args = append(args, strings.Fields(os.Getenv("NOX_STATS_ENVELOPE_CFLAGS"))...)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual packet/compression/scrambler bodies: %v\n%s", err, output)

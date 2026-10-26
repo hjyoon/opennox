@@ -116,7 +116,7 @@ int main(void) {
 		cc = "cc"
 	}
 	binary := filepath.Join(dir, "double-spill")
-	if output, err := exec.Command(cc, "-std=c11", "-O2", "-fno-inline", file, "-lm", "-o", binary).CombinedOutput(); err != nil {
+	if output, err := exec.Command(cc, nativeFixtureCompileArgs(t, []string{"-std=c11", "-O2", "-fno-inline", file, "-lm", "-o", binary})...).CombinedOutput(); err != nil {
 		t.Fatalf("compile exact production conversion: %v\n%s", err, output)
 	}
 	command := exec.Command(binary)

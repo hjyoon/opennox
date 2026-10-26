@@ -58,6 +58,11 @@ func TestHeadlessServerRunnerDisablesDefaultCLIMapLoad(t *testing.T) {
 	}
 	want := []string{"-config", filepath.Join(data, "opennox.yml"), "-data", data,
 		"-port", "52940", "-autoexec", "", "-pprof", "127.0.0.1:52941", "-noaudio"}
+	if len(got) == len(want) {
+		// Bash appends /opennox.yml to a native Windows directory. Compare
+		// only path spellings canonically; all flags and argv boundaries stay exact.
+		got[1], got[3] = filepath.Clean(got[1]), filepath.Clean(got[3])
+	}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("isolated map-transition launch argv=%q, want %q; CLI startup load must be explicitly disabled", got, want)
 	}

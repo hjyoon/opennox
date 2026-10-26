@@ -114,7 +114,7 @@ func TestNetworkTables256V2CompleteNativeBodies(t *testing.T) {
 	}
 	bin := filepath.Join(t.TempDir(), "network-tables-native")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fno-strict-aliasing", "-Wall", "-Wextra", "-Werror", "-Wno-pointer-to-int-cast", "-Wno-sign-compare", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = bytes.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete C lookup bodies: %v\n%s", err, output)

@@ -21,11 +21,11 @@ func TestMapgenInitialPrefabs525D20NativePointerOrder(t *testing.T) {
 		t.Fatalf("placed mask = %#x, want %#x", got.placedMask, uint32(0b1111))
 	}
 	if strconv.IntSize == 64 {
-		if got.themeAddress <= 1<<32 {
+		if uint64(got.themeAddress) <= 1<<32 {
 			t.Fatalf("theme fixture address = %#x, want address above PE32 range", got.themeAddress)
 		}
 		for i, address := range got.prefabAddresses[:4] {
-			if address <= 1<<32 {
+			if uint64(address) <= 1<<32 {
 				t.Fatalf("prefab %d fixture address = %#x, want address above PE32 range", i, address)
 			}
 		}

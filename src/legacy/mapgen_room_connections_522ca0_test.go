@@ -102,7 +102,7 @@ func TestMapgenRoomConnections522CA0PreserveNativePointers(t *testing.T) {
 			got.neighborAddresses[0], got.neighborAddresses[1],
 			got.waypointAddresses[0], got.waypointAddresses[1]}
 		for i, address := range addresses {
-			if address <= 1<<32 {
+			if uint64(address) <= 1<<32 {
 				t.Fatalf("fixture address[%d] = %#x, want address above PE32 range", i, address)
 			}
 		}

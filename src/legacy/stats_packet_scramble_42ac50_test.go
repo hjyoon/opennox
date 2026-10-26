@@ -36,7 +36,7 @@ func TestStatsPacketScramble42AC50NativeBody(t *testing.T) {
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror",
 		"-x", "c", "-", "-o", binary)
 	args = append(args, strings.Fields(os.Getenv("NOX_STATS_PACKET_CFLAGS"))...)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual scrambler body: %v\n%s", err, output)

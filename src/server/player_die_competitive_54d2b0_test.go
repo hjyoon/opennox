@@ -68,7 +68,7 @@ func playerDieCompetitiveRecordNative54D2B0(t *testing.T, parameters []uint32) p
 		for j := range updates[i].TrapSpells {
 			updates[i].TrapSpells[j] = uint32(1 + j + 10*i)
 		}
-		updates[i].TrapSpellsCnt, updates[i].SpellCastStart = uint32(0xaabbcc05+i), uint32(99+i)
+		updates[i].TrapSpellsCnt, updates[i].SpellCastStart = uint32(0xaabbcc05)+uint32(i), uint32(99+i)
 		updates[i].Field75, updates[i].Field76 = 2, 0xaabbcc02
 		updates[i].ExtraLives, updates[i].Trade70 = 0x80000001, trade
 	}

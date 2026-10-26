@@ -56,7 +56,7 @@ func floorBrushCompileR304(t *testing.T, group string, parts []floorBrushPartR30
 	}
 	bin := filepath.Join(t.TempDir(), "floor-brush-"+strings.ToLower(group))
 	args := append(compiler[1:], "-std=c11", "-O2", "-Werror", "-I.", "-DR304_"+group, "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual floor brush %s functions: %v\n%s", group, err, out)

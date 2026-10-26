@@ -82,7 +82,7 @@ func TestModifierDefendMultipliersOriginalNativeC(t *testing.T) {
 	}
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fno-strict-aliasing",
 		"-fno-strict-overflow", "-D_Static_assert(x,y)=", "-I"+include, input, "-lm", "-o", binary)
-	if output, err := exec.Command(compiler[0], args...).CombinedOutput(); err != nil {
+	if output, err := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile actual native multipliers: %v\n%s", err, output)
 	}
 	for which, function := range []string{"ArmorMultiplierEffect", "DurabilityMultiplierEffect"} {

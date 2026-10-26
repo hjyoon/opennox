@@ -182,7 +182,8 @@ func TestScriptNSObjectGroupRoamFlag515CB0NativeWideArgument(t *testing.T) {
 	}
 	f := scriptNSRoamFlagGroups515CB0(t)
 	var api ns4.ObjGroup = nsObjGroup{s: f.s, g: f.groups["root"]}
-	api.SetRoamFlag(int(int64(1)<<40 | 0x1a5))
+	wide := int64(1)<<40 | 0x1a5
+	api.SetRoamFlag(int(wide))
 	for i, update := range f.updates {
 		want := uint32(0xdeadbeef)
 		if i == 0 || i == 2 {

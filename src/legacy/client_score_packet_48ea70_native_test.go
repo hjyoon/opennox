@@ -53,7 +53,7 @@ func TestClientScorePackets48EA70NativeBodies(t *testing.T) {
 	bin := filepath.Join(t.TempDir(), "client-score-packets")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fsigned-char",
 		"-Wall", "-Wextra", "-Werror", "-Wno-sign-compare", "-Itestdata", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual score packet arms: %v\n%s", err, out)

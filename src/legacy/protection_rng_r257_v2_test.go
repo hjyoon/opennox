@@ -116,7 +116,7 @@ func TestProtectionRNG257CompleteNativeBodies(t *testing.T) {
 	}
 	bin := filepath.Join(t.TempDir(), "protection-rng-native")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fno-strict-aliasing", "-Wall", "-Wextra", "-Werror", "-Wno-pointer-to-int-cast", "-Wno-sign-compare", "-Wno-unused-value", "-x", "c", "-", "-o", bin, "-lm")
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = bytes.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile unchanged full RNG bodies: %v\n%s", err, out)

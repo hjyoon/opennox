@@ -38,7 +38,7 @@ func testObjectiveHUDNoRender212V2(t *testing.T, mode string) {
 	if runtime.GOARCH == "386" {
 		args = append([]string{"-m32"}, args...)
 	}
-	if output, err := exec.Command(cc, args...).CombinedOutput(); err != nil {
+	if output, err := exec.Command(cc, nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile complete active bodies: %v\n%s", err, output)
 	}
 	if output, err := exec.Command(binary, mode).CombinedOutput(); err != nil {

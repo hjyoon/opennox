@@ -37,7 +37,7 @@ func TestPlayerInfoDraw436F50NativePointers(t *testing.T) {
 	bin := filepath.Join(t.TempDir(), "player-info-draw")
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fsigned-char", "-fno-strict-aliasing",
 		"-Wall", "-Wextra", "-Werror", "-Wno-unused-function", "-Itestdata", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(strings.Replace(string(fixture), insertion, "//"+body, 1))
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile complete player info drawer: %v\n%s", err, out)

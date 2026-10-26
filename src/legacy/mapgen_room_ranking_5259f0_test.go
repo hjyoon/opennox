@@ -73,11 +73,11 @@ func TestMapgenRoomRanking5259F0PreservesNativePointers(t *testing.T) {
 	}
 
 	if strconv.IntSize == 64 {
-		if got.themeAddress <= 1<<32 {
+		if uint64(got.themeAddress) <= 1<<32 {
 			t.Fatalf("theme fixture address = %#x, want address above PE32 range", got.themeAddress)
 		}
 		for i, address := range got.roomAddresses {
-			if address <= 1<<32 {
+			if uint64(address) <= 1<<32 {
 				t.Fatalf("room[%d] fixture address = %#x, want address above PE32 range", i, address)
 			}
 			if got.roomTokens[i] == 0 {

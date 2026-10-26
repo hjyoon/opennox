@@ -38,7 +38,7 @@ func TestRegionBoundsSignedOriginalR303(t *testing.T) {
 	}
 	bin := filepath.Join(t.TempDir(), "region-bounds-signed")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Werror", "-I.", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual region bounds function: %v\n%s", err, out)
@@ -165,7 +165,7 @@ func TestFloorMapV3FlagByteR303(t *testing.T) {
 	}
 	bin := filepath.Join(t.TempDir(), "floor-v3-flag-byte")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Werror", "-Wno-incompatible-pointer-types", "-I.", "-x", "c", "-", "-o", bin)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if out, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual v3 tile codec: %v\n%s", err, out)

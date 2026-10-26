@@ -43,7 +43,7 @@ func TestDrawObjectPlayerStatusNative4C4770V2(t *testing.T) {
 	}
 	binary := filepath.Join(t.TempDir(), "draw-object-player-status")
 	args := append(compiler[1:], "-std=c11", "-fshort-wchar", "-I.", "-x", "c", "-", "-lm", "-o", binary)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(strings.Replace(string(harness), insertion, body, 1))
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile unmodified production body: %v\n%s", err, output)

@@ -93,7 +93,7 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 	binary := filepath.Join(t.TempDir(), "stats-end")
 	args := append(compiler[1:], "-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-Wno-unused-function", "-x", "c", "-", "-o", binary)
 	args = append(args, strings.Fields(os.Getenv("NOX_STATS_END_CFLAGS"))...)
-	cmd := exec.Command(compiler[0], args...)
+	cmd := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...)
 	cmd.Stdin = strings.NewReader(program)
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("compile actual end/Quest builder/packet: %v\n%s", err, output)

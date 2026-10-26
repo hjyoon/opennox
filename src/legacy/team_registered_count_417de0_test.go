@@ -40,7 +40,7 @@ func TestRegisteredTeamCount417DE0CompleteNativeBody(t *testing.T) {
 	if runtime.GOARCH == "386" {
 		args = append([]string{"-m32"}, args...)
 	}
-	if output, err := exec.Command(cc, args...).CombinedOutput(); err != nil {
+	if output, err := exec.Command(cc, nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile complete team count body: %v\n%s", err, output)
 	}
 	if output, err := exec.Command(binary).CombinedOutput(); err != nil {

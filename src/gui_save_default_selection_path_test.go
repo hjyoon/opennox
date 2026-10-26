@@ -23,6 +23,7 @@ func TestSaveCharacterDefaultSelectionNative(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	dataDir := t.TempDir()
 	t.Cleanup(func() {
 		winCharList, winCharListNames, winCharListStyle, winSelSave = oldList, oldNames, oldStyle, oldWin
 		nox_xxx_saves_arr = oldSaves
@@ -33,7 +34,7 @@ func TestSaveCharacterDefaultSelectionNative(t *testing.T) {
 			t.Errorf("restore working directory: %v", err)
 		}
 	})
-	datapath.SetData(t.TempDir())
+	datapath.SetData(dataDir)
 	noxflags.ResetGame()
 	for _, tc := range []struct {
 		name                     string

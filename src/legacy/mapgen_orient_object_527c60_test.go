@@ -31,7 +31,7 @@ func TestMapgenOrientObject527C60PreservesNativePointers(t *testing.T) {
 		t.Fatal("legacy wrapper received a zero object token")
 	}
 	if strconv.IntSize == 64 {
-		if got.objectAddress <= 1<<32 || got.updateAddress <= 1<<32 {
+		if uint64(got.objectAddress) <= 1<<32 || uint64(got.updateAddress) <= 1<<32 {
 			t.Fatalf("fixture addresses = object %#x update %#x, want both above PE32 range", got.objectAddress, got.updateAddress)
 		}
 		if uintptr(got.objectToken) == got.objectAddress {

@@ -89,7 +89,7 @@ func TestWeaponPickupOriginal53A720NativeC(t *testing.T) {
 		compiler = []string{"cc"}
 	}
 	args := append(compiler[1:], "-std=c11", "-O2", "-fshort-wchar", "-fno-strict-aliasing", "-fno-strict-overflow", "-D_Static_assert(x,y)=", "-I"+include, input, "-o", binary)
-	if output, err := exec.Command(compiler[0], args...).CombinedOutput(); err != nil {
+	if output, err := exec.Command(compiler[0], nativeFixtureCompileArgs(t, args)...).CombinedOutput(); err != nil {
 		t.Fatalf("compile actual typed WeaponPickup body: %v\n%s", err, output)
 	}
 	boolean := func(value bool) int {

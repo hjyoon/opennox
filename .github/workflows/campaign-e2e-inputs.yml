@@ -1,0 +1,32 @@
+name: Campaign E2E input validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - port/go1.26-multiarch
+    paths:
+      - .github/workflows/campaign-e2e-inputs.yml
+      - scripts/e2e/campaign/**
+      - scripts/run-campaign-e2e.py
+      - scripts/tests/test_campaign_e2e.py
+  pull_request:
+    paths:
+      - .github/workflows/campaign-e2e-inputs.yml
+      - scripts/e2e/campaign/**
+      - scripts/run-campaign-e2e.py
+      - scripts/tests/test_campaign_e2e.py
+
+permissions:
+  contents: read
+
+jobs:
+  inputs:
+    name: Validate campaign inputs and outcome checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      # Game replay is run separately with a prebuilt product and owned assets.
+      - name: Check saved scenarios and the evidence verifier
+        run: python3 -m unittest discover -s scripts/tests -p test_campaign_e2e.py

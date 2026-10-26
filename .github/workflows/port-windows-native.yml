@@ -9,6 +9,11 @@ on:
       - .gitattributes
       - .github/workflows/port-windows-native.yml
       - scripts/**
+      # Campaign replay uses a prebuilt GUI product and local game assets.
+      # These inputs do not change the Windows server build or native tests.
+      - '!scripts/e2e/campaign/**'
+      - '!scripts/run-campaign-e2e.py'
+      - '!scripts/tests/test_campaign_e2e.py'
       - src/**
       - toolchain/go-version.txt
 

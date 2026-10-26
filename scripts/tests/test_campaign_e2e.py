@@ -46,5 +46,35 @@ class CreatedMonsterHistoryTests(unittest.TestCase):
         self.assertEqual(history['dead'], 0)
 
 
+class RequiredMonsterDeathsTests(unittest.TestCase):
+    @staticmethod
+    def monster(ident, dead=False):
+        return dict(spider(ident, dead), **{'class': ['MONSTER']})
+
+    def test_required_original_death_survives_corpse_cleanup(self):
+        history = runner.required_monster_deaths(
+            [[self.monster(2350)], [self.monster(2350, True)], []], [2350])
+        self.assertTrue(history['passed'])
+        self.assertEqual(history['last_observed_dead_script_ids'], [2350])
+
+    def test_preexisting_dead_missing_and_later_created_do_not_count(self):
+        history = runner.required_monster_deaths(
+            [[self.monster(1, True)], [self.monster(1, True), self.monster(2, True)]],
+            [1, 2, 3])
+        self.assertFalse(history['passed'])
+        self.assertEqual(history['initial_alive_script_ids'], [])
+
+    def test_disappearance_without_death_does_not_count(self):
+        history = runner.required_monster_deaths([[self.monster(1)], []], [1])
+        self.assertFalse(history['passed'])
+
+    def test_later_resurrection_cancels_required_death(self):
+        history = runner.required_monster_deaths(
+            [[self.monster(1)], [self.monster(1, True)], [self.monster(1)], []], [1])
+        self.assertFalse(history['passed'])
+        self.assertEqual(history['observed_dead_script_ids'], [1])
+        self.assertEqual(history['last_observed_dead_script_ids'], [])
+
+
 if __name__ == '__main__':
     unittest.main()

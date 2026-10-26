@@ -113,6 +113,30 @@ def created_monster_history(samples, type_id):
             'absent_from_final_script_ids': sorted(created - final_ids)}
 
 
+def required_monster_deaths(samples, required_ids):
+    required = set(required_ids)
+    initial_alive = {obj.get('script_id') for obj in samples[0]
+                     if 'MONSTER' in (obj.get('class') or [])
+                     and 'DEAD' not in (obj.get('flags') or [])} & required
+    dead = set()
+    observed_dead = set()
+    for objects in samples[1:]:
+        for obj in objects:
+            ident = obj.get('script_id')
+            if ident not in initial_alive:
+                continue
+            if 'DEAD' in (obj.get('flags') or []):
+                dead.add(ident)
+                observed_dead.add(ident)
+            else:
+                dead.discard(ident)
+    return {'required_script_ids': sorted(required),
+            'initial_alive_script_ids': sorted(initial_alive),
+            'observed_dead_script_ids': sorted(observed_dead),
+            'last_observed_dead_script_ids': sorted(dead),
+            'passed': bool(required) and required <= dead}
+
+
 def run_case(args, binary, suite_dir, case, port):
     case_dir = args.output / case['name']
     case_dir.mkdir()
@@ -248,13 +272,18 @@ def run_case(args, binary, suite_dir, case, port):
                        and player['mana'] == case.get('expected_mana', player['mana']))
     if case.get('expect_damage'):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
-    if case.get('created_type') and snapshots_ok:
+    if (case.get('created_type') or case.get('required_defeated_script_ids')) and snapshots_ok:
         samples = [json.loads(Path(sample['routes']['objects']['path']).read_text())
                    for sample in report['snapshots']]
+    if case.get('created_type') and snapshots_ok:
         history = created_monster_history(samples, case['created_type'])
         report['original_created_monsters'] = history
         outcomes_ok = (outcomes_ok and history['count'] >= case['minimum_created']
                        and history['dead'] >= case['minimum_dead_created'])
+    if case.get('required_defeated_script_ids') and snapshots_ok:
+        history = required_monster_deaths(samples, case['required_defeated_script_ids'])
+        report['required_original_monsters'] = history
+        outcomes_ok = outcomes_ok and history['passed']
     report['continuation_eligible'] = healthy and poison_free and bool(report.get('manual_save_written')) and not errors
     report['passed'] = (report['exit_code'] == 0 and not report['forced_termination'] and not errors
                         and not reader.is_alive() and not worker.is_alive() and snapshots_ok

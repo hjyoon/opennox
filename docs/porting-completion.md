@@ -1820,6 +1820,33 @@ Fresh products and campaign E2E are recorded separately in
 `poison-activation-precision-port/`. Linux, remaining native/transitive work,
 campaign cells and overall porting 100 percent remain open.
 
+### Campaign E2E original upper actors
+
+`scripts/e2e/campaign/wizard2-upper-landing.json` now traverses the original
+story-opened Bookcase5 corridor and defeats the original upper Urchin and
+pursuing Bat with the earned slot-A spell. Normal and HD each pass in about
+26 seconds using the existing clean 380bae55 ARM64 products. Shorter menu
+waits avoid repeating the earlier long fixed delays; no Go rebuild occurs
+for these Python/JSON/YAML changes.
+
+The runner requires both specified script IDs to be living monsters in the
+initial snapshot and later observed DEAD. Normal corpse removal preserves
+that evidence; disappearance alone, an already dead actor, an actor first
+created later or a later resurrection cannot satisfy the requirement. Four
+new Python regressions and all four existing corpse-history tests pass.
+Snapshots also show the Urchin approaching and attacking, and the Bat pursuing
+the player. This is bounded evidence for these actors, not general AI coverage.
+
+Independent read-only native Save parsing agrees in normal and HD: Wiz02c,
+HP18/20, MP46/78, poison zero, XP3194.4524 (bits1162323773) and all three earned
+spells retained. The source Save, data and binaries retain their hashes.
+The supplied input is a naturally earned HP20/MP57 recovery Save. Earlier
+recovery runs failed an incorrect full-MP78 expectation and remain failed;
+their native healthy input identity is qualified separately. Earlier door
+route attempts remain uncredited. No state setter or debug write is used.
+BookOfOblivion, the remainder of the fresh chapter route, final cell audits,
+Linux and overall porting 100 percent remain open.
+
 ### Shared Reflect live owner reads
 
 The shared Reflect helper now reloads subclass bit 0x40 after reflection,

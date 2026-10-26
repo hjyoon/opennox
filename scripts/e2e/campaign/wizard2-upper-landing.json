@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "name": "Wizard2 Bookcase5 original upper Urchin and pursuing Bat",
+  "seed_contract": "Earned Wiz02c first-scene win and natural recovery Save, HP20 MP57 poison0, A43 D41 F115, both original summoned Spiders defeated.",
+  "coverage": "Story-opened Bookcase5 traversal, original upper Urchin2350 and Bat826 defeated with earned A43, living poison-free manual Save. No whole-chapter or overall100 certificate.",
+  "cases": [
+    {
+      "name": "wizard2-cave-upper-landing",
+      "scenario": "wizard2-cave-upper-landing.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 240,
+      "required_checkpoints": [
+        "original Bookcase5 upper landing before spells",
+        "original upper landing spell outcome",
+        "original upper corridor retreat",
+        "original manual Save",
+        "original pursuing Bat combat outcome"
+      ],
+      "required_defeated_script_ids": [
+        1000194071,
+        1000195849
+      ]
+    }
+  ]
+}

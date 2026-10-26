@@ -212,6 +212,11 @@ static int run_case(unsigned mask, int local, int width, int height, int32_t lev
 	return 0;
 }
 static void* map_near(uintptr_t address) {
+#if UINTPTR_MAX <= UINT32_MAX
+	/* Preserve every data/guard case using an available native allocation.
+	 * Exact high-address and boundary placements remain required on 64-bit. */
+	address=0;
+#endif
 #ifdef _WIN32
 	return VirtualAlloc((void*)address,0x80000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
 #else

@@ -91,7 +91,7 @@ func TestMonsterFloatOriginal517170Native(t *testing.T) {
 			f.Before = canary
 			f.After = canary
 			allocated++
-			if uintptr(unsafe.Pointer(f)) <= 0xffffffff {
+			if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(f)) <= 0xffffffff {
 				t.Fatal("expected actual native record above4GiB")
 			}
 			frames[&f.Def] = f

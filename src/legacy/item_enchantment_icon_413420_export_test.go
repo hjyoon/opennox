@@ -2,6 +2,7 @@ package legacy
 
 import (
 	"bytes"
+	"encoding/binary"
 	"math"
 	"reflect"
 	"testing"
@@ -78,6 +79,14 @@ func TestItemEnchantmentIcon413420NativeSideSlotsPreservePackedNeighbors(t *test
 		}
 	})
 	before := bytes.Clone(packed)
+	expectedPacked := bytes.Clone(before)
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		// PE32 caches use the six original DWORD slots. Only these declared
+		// outputs may change; every surrounding byte stays checked below.
+		for i, image := range images {
+			binary.LittleEndian.PutUint32(expectedPacked[12+20*i:], uint32(uintptr(image)))
+		}
+	}
 	var loadedNames []string
 	itemEnchantmentIconLoad413420 = func(name *byte) unsafe.Pointer {
 		i := len(loadedNames) % 6
@@ -101,8 +110,8 @@ func TestItemEnchantmentIcon413420NativeSideSlotsPreservePackedNeighbors(t *test
 				t.Fatalf("cycle=%d byte=%x got=%p want=%p", cycle, query, got, want)
 			}
 		}
-		if !reflect.DeepEqual(loadedNames, names[:]) || memmap.Uint32(0x5D4594, 251624) != 1 || !bytes.Equal(packed, before) {
-			t.Fatalf("names=%v ready=%d packed neighbors changed=%t", loadedNames, memmap.Uint32(0x5D4594, 251624), !bytes.Equal(packed, before))
+		if !reflect.DeepEqual(loadedNames, names[:]) || memmap.Uint32(0x5D4594, 251624) != 1 || !bytes.Equal(packed, expectedPacked) {
+			t.Fatalf("names=%v ready=%d packed neighbors changed=%t", loadedNames, memmap.Uint32(0x5D4594, 251624), !bytes.Equal(packed, expectedPacked))
 		}
 		for i, want := range images {
 			if got := *memmap.PtrPtr(0x587000, 27340+20*uintptr(i)); got != want {

@@ -97,8 +97,7 @@ func TestStatsBulk4263C0NativeBody(t *testing.T) {
 			if !ok {
 				t.Fatalf("fault boundary became success: err=%v output=%q", err, output)
 			}
-			status, ok := exit.Sys().(syscall.WaitStatus)
-			if !ok || !status.Signaled() || status.Signal() != fault.signal {
+			if !nativeFixtureFaultIs(exit, fault.signal) {
 				t.Fatalf("want native %v, got %v output=%q", fault.signal, exit, output)
 			}
 			if string(output) != fault.events {

@@ -28,7 +28,7 @@ static void exact_write(const void* p,size_t n) { if(fwrite(p,1,n,stdout)!=n)exi
 int main(int argc,char** argv) {
  if(argc!=2)return 2;
  int layout=atoi(argv[1]);if(layout<0||layout>5)return 2;
- _Alignas(8) unsigned char ordinary[STATE_SIZE];
+ static _Alignas(8) unsigned char ordinary[STATE_SIZE];
  _Alignas(8) unsigned char seed_guard[36];
  void* allocation=NULL;size_t size=0;
  state=ordinary;

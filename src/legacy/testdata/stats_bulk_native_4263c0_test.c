@@ -139,7 +139,7 @@ static int sub_420360(char* address, uint16_t* port) {
 }
 static uint16_t* sub_42A8B0(uint8_t* packet, int* length) {
 	event('E');
-	assert(packet && (uintptr_t)packet > UINT32_MAX);
+	assert(packet && (sizeof(void*) == 4 || (uintptr_t)packet > UINT32_MAX));
 	assert(length == (int*)&length_box->count);
 	free(captured);
 	captured_length = (uint32_t)*length;

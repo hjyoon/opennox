@@ -72,8 +72,7 @@ func TestStatsPacketEnvelope42A8B0NativeBody(t *testing.T) {
 			if !ok {
 				t.Fatalf("original fault must not become an early return: err=%v\n%s", err, output)
 			}
-			status, ok := exit.Sys().(syscall.WaitStatus)
-			if !ok || !status.Signaled() || status.Signal() != syscall.SIGSEGV {
+			if !nativeFixtureFaultIs(exit, syscall.SIGSEGV) {
 				t.Fatalf("expected native SIGSEGV, got %v\n%s", exit, output)
 			}
 			if string(output) != fault.events {

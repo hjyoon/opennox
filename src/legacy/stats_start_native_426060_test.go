@@ -109,12 +109,11 @@ func TestStatsStart426060NativeBody(t *testing.T) {
 			if !ok {
 				t.Fatalf("original fault became success: %v %q", err, output)
 			}
-			status, ok := exit.Sys().(syscall.WaitStatus)
 			want := syscall.SIGSEGV
 			if fault == "transport" {
 				want = syscall.SIGABRT
 			}
-			if !ok || !status.Signaled() || status.Signal() != want {
+			if !nativeFixtureFaultIs(exit, want) {
 				t.Fatalf("want %v: %v %q", want, exit, output)
 			}
 			if string(output) != faultPrefixes[fault] {

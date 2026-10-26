@@ -125,12 +125,12 @@ func observeSourceLessElectricOriginalNative(t *testing.T, s *server.Server, c s
 	oldDefs := s.Modif.Dword_5d4594_251608
 	s.Modif.Dword_5d4594_251608 = firstDef
 	defer func() { s.Modif.Dword_5d4594_251608 = oldDefs }()
-	if unsafe.Sizeof(uintptr(0)) != 8 || uintptr(unsafe.Pointer(v)) <= 0xffffffff || uintptr(v.UpdateData) <= 0xffffffff {
+	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(v)) <= 0xffffffff || uintptr(v.UpdateData) <= 0xffffffff) {
 		t.Fatal("expected C-owned high native pointers")
 	}
 	frames = append(frames, sourceLessElectricOriginalFrame(unsafe.Pointer(v), unsafe.Sizeof(*v)), sourceLessElectricOriginalFrame(unsafe.Pointer(hp), unsafe.Sizeof(*hp)), sourceLessElectricOriginalFrame(effect.C(), unsafe.Sizeof(*effect)))
 	for _, frame := range frames {
-		if len(frame) == 0 || uintptr(unsafe.Pointer(&frame[0])) <= 0xffffffff {
+		if len(frame) == 0 || unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(&frame[0])) <= 0xffffffff {
 			t.Fatal("expected full C-owned high native frame")
 		}
 	}

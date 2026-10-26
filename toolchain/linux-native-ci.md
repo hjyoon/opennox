@@ -10,7 +10,9 @@ tests use PIE and `MALLOC_MMAP_THRESHOLD_=0` so their existing C static-region
 and C-owned allocation checks actually exercise addresses above 4GiB. Fixed
 low-address cases, numeric checks and native fault checks are retained. The
 server job also runs the damage regressions with the default product link mode.
-Each test profile is recorded in the artifact; it is not a product setting.
+The allocator setting is passed through `go test -exec` to test processes and
+their children. Compilers and linkers use their default allocator. Each test
+profile is recorded in the artifact; it is not a product setting.
 
 The four variants are `opennox`, `opennox-hd`, `opennox-server` and
 `opennox-server-hd`. JSON test output, expected and observed package lists,

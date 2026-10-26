@@ -89,13 +89,11 @@ jobs:
 
       - name: Test every package for the product variant
         working-directory: src
-        env:
-          # Existing native-pointer fixtures require C-owned records above 4GiB.
-          # Keep the product build/help on the default allocator and link mode.
-          MALLOC_MMAP_THRESHOLD_: '0'
         run: |
           set -euo pipefail
           ulimit -c 0
+          # Compiler/linker allocation is separate from native fixture runtime.
+          unset MALLOC_MMAP_THRESHOLD_
           tags=()
           case "$NATIVE_PRODUCT" in
             opennox) ;;
@@ -108,11 +106,11 @@ jobs:
           set +e
           # PIE also places the real C static regions above 4GiB. All original
           # high-address assertions and the fixed low-address cases still run.
-          ../scripts/go.sh test "${tags[@]}" -buildmode=pie -json -count=1 -timeout=20m ./... > "$NATIVE_REPORT_DIR/test.jsonl" 2> "$NATIVE_REPORT_DIR/test.stderr.log"
+          ../scripts/go.sh test "${tags[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=20m ./... > "$NATIVE_REPORT_DIR/test.jsonl" 2> "$NATIVE_REPORT_DIR/test.stderr.log"
           status=$?
           set -e
           echo "$status" > "$NATIVE_REPORT_DIR/test.exit"
-          printf '%s\n' '{"test_buildmode":"pie","MALLOC_MMAP_THRESHOLD_":"0","product_buildmode":"default","product_allocator":"default"}' > "$NATIVE_REPORT_DIR/test-profile.json"
+          printf '%s\n' '{"test_buildmode":"pie","test_runtime_MALLOC_MMAP_THRESHOLD_":"0","compiler_allocator":"default","product_buildmode":"default","product_allocator":"default"}' > "$NATIVE_REPORT_DIR/test-profile.json"
           python3 - "$NATIVE_REPORT_DIR" <<'PY'
           import collections, json, pathlib, sys
           root = pathlib.Path(sys.argv[1])
@@ -147,13 +145,12 @@ jobs:
       - name: Check damage through the default product link mode
         if: ${{ !cancelled() && steps.native_build.outcome == 'success' && matrix.product == 'opennox-server' }}
         working-directory: src
-        env:
-          MALLOC_MMAP_THRESHOLD_: '0'
         run: |
           set -euo pipefail
           ulimit -c 0
+          unset MALLOC_MMAP_THRESHOLD_
           set +e
-          ../scripts/go.sh test -tags=server -json -count=1 -timeout=20m -run '^Test(PlayerDamage|DefaultDamage|SelfMissileFlame|SourceLessElectricPrecisionOriginal)' . ./server ./legacy > "$NATIVE_REPORT_DIR/default-link-damage.jsonl" 2> "$NATIVE_REPORT_DIR/default-link-damage.stderr.log"
+          ../scripts/go.sh test -tags=server '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=20m -run '^Test(PlayerDamage|DefaultDamage|SelfMissileFlame|SourceLessElectricPrecisionOriginal)' . ./server ./legacy > "$NATIVE_REPORT_DIR/default-link-damage.jsonl" 2> "$NATIVE_REPORT_DIR/default-link-damage.stderr.log"
           status=$?
           set -e
           echo "$status" > "$NATIVE_REPORT_DIR/default-link-damage.exit"

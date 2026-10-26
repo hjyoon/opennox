@@ -246,7 +246,11 @@ def run_case(args, binary, suite_dir, case, port):
     case_dir.mkdir()
     frames = case_dir / 'frames'
     frames.mkdir()
-    scenario = (suite_dir / case['scenario']).resolve()
+    source_scenario = (suite_dir / case['scenario']).resolve()
+    # Keep the exact executed input with successes and failures. Editing the
+    # next route must not change an earlier report's replay or its evidence.
+    scenario = case_dir / 'scenario.yaml'
+    shutil.copyfile(source_scenario, scenario)
     validate_scenario(scenario)
     check_ports(port)
     env = {k: v for k, v in os.environ.items() if not k.startswith('NOX_E2E') and k != 'NOX_DATA'}
@@ -261,7 +265,8 @@ def run_case(args, binary, suite_dir, case, port):
                str(args.data), str(scenario), str(case_dir)]
     if args.sandbox_profile:
         command = ['/usr/bin/sandbox-exec', '-f', str(args.sandbox_profile), *command]
-    report = {'name': case['name'], 'scenario': str(scenario), 'scenario_sha256': sha(scenario),
+    report = {'name': case['name'], 'source_scenario': str(source_scenario),
+              'scenario': str(scenario), 'scenario_sha256': sha(scenario),
               'port': port, 'clock': 'ordinary', 'command': command, 'snapshots': [],
               'player_observations': [], 'observed_maps': [], 'forced_termination': False}
     http = urllib.request.build_opener(urllib.request.ProxyHandler({}))
@@ -304,7 +309,7 @@ def run_case(args, binary, suite_dir, case, port):
     worker.start()
 
     def read_output():
-        with (case_dir / 'game.log').open('xb') as log:
+        with proc.stdout, (case_dir / 'game.log').open('xb') as log:
             for raw in iter(proc.stdout.readline, b''):
                 log.write(raw)
                 log.flush()
@@ -465,6 +470,7 @@ def main():
     data_hashes = {str(path): sha(path) for path in data_inputs}
     binary_hash = sha(args.binary)
     args.output.mkdir(parents=True)
+    shutil.copyfile(args.suite, args.output / 'suite.source.json')
     binary = args.output / 'opennox-tested'
     shutil.copy2(args.binary, binary)
     if sha(binary) != binary_hash:

@@ -4,7 +4,9 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
+from unittest import mock
 
 spec = importlib.util.spec_from_file_location(
     'campaign_e2e', Path(__file__).resolve().parents[1] / 'run-campaign-e2e.py')
@@ -17,6 +19,12 @@ class SuiteFieldsTests(unittest.TestCase):
         for path in (Path(runner.__file__).parent / 'e2e' / 'campaign').glob('*.json'):
             with self.subTest(path=path.name):
                 runner.validate_suite_fields(json.loads(path.read_text()))
+
+    def test_published_scenarios_only_replay_allowed_inputs(self):
+        for path in (Path(runner.__file__).parent / 'e2e' / 'campaign').glob('*.json'):
+            for case in json.loads(path.read_text())['cases']:
+                with self.subTest(suite=path.name, case=case['name']):
+                    runner.validate_scenario(path.parent / case['scenario'])
 
     def test_misspelled_requirement_is_rejected_before_launch_or_output(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -32,6 +40,37 @@ class SuiteFieldsTests(unittest.TestCase):
             self.assertEqual(result.returncode, 2)
             self.assertIn('unknown campaign case fields: required_monster_deaths', result.stderr)
             self.assertFalse((root / 'output').exists())
+
+
+class ScenarioEvidenceTests(unittest.TestCase):
+    def test_launch_uses_preserved_input_when_the_source_is_edited(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'route.yaml'
+            original = 'steps:\n  - {"action":"quit"}\n'
+            source.write_text(original)
+            output = root / 'output'
+            output.mkdir()
+            args = SimpleNamespace(output=output, seed=root / 'Save', data=root,
+                                   config_seed=None, sandbox_profile=None)
+            launch = subprocess.Popen
+
+            def edit_source_at_launch(command, **kwargs):
+                source.write_text('the next route has replaced the source\n')
+                self.assertEqual(Path(command[-2]), output / 'case' / 'scenario.yaml')
+                self.assertEqual(Path(command[-2]).read_text(), original)
+                return launch([sys.executable, '-c', 'pass'], **kwargs)
+
+            with mock.patch.object(runner, 'check_ports'), mock.patch.object(
+                    runner.subprocess, 'Popen', side_effect=edit_source_at_launch), mock.patch('builtins.print'):
+                report = runner.run_case(args, root / 'prebuilt', root,
+                                         {'name': 'case', 'scenario': source.name,
+                                          'expected_maps': ['wiz02c']}, 24989)
+            self.assertEqual(report['source_scenario'], str(source.resolve()))
+            self.assertEqual(Path(report['scenario']).read_text(), original)
+            self.assertEqual(report['scenario_sha256'], runner.sha(output / 'case' / 'scenario.yaml'))
+            # A preservation test without gameplay evidence cannot certify a case.
+            self.assertFalse(report['passed'])
 
 
 def spider(ident, dead=False):

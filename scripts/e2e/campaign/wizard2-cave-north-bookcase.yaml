@@ -1,0 +1,84 @@
+# Earned east-obelisk checkpoint; original north chamber and Bookcase1 passage.
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 1, "spell": 27}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "wait", "dt": 35}
+  - {"action": "run-to-world", "x": 1922, "y": 3545, "name": "ordinary exit from original northern obelisk alcove"}
+  - {"action": "run-to-world", "x": 1781, "y": 3689, "name": "original statue east plate road188"}
+  - {"action": "run-to-world", "x": 1552, "y": 3692, "name": "original north statue pressure plate750"}
+  - {"action": "observe-player-target", "name": "read original north statue selection"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original north statue selection"}
+  - {"action": "run-to-world", "x": 1410, "y": 3550, "name": "ordinary approach from north statue corridor before original Spider2354"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 2"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 3"}
+  - {"action": "run-to-world", "x": 1333, "y": 3469, "name": "original north passage road191"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 4"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 5"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 6"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 7"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 8"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Spider", "slot": 1, "count": 12, "name": "ordinary repeated quickbar input Spider 9"}
+  - {"action": "observe-player-target", "name": "read original north chamber Spider2354"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original north chamber Spider2354"}
+  - {"action": "walk-to-world", "x": 1414, "y": 3414, "name": "ordinary original Bookcase1 pressure plate108"}
+  - {"action": "wait", "dt": 90}
+  - {"action": "observe-player-target", "name": "read original Bookcase1 plate opens paired bookcases"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Bookcase1 plate opens paired bookcases"}
+  - {"action": "run-to-world", "x": 1499, "y": 3317, "name": "original north corridor road195"}
+  - {"action": "observe-player-target", "name": "read original Bookcase1 passage after ordinary crossing"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Bookcase1 passage crossed"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Bat", "slot": 1, "count": 12, "name": "ordinary earned A43 at original north corridor bats input1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Bat", "slot": 1, "count": 12, "name": "ordinary earned A43 at original north corridor bats input2"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Bat", "slot": 1, "count": 12, "name": "ordinary earned A43 at original north corridor bats input3"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Bat", "slot": 1, "count": 12, "name": "ordinary earned A43 at original north corridor bats input4"}
+  - {"action": "observe-player-target", "name": "read original north corridor bat combat result"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original north corridor bats"}
+  - {"action": "walk-to-world", "x": 1414, "y": 3414, "name": "ordinary return to cleared Bookcase1 plate before saving"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Bat", "slot": 1, "count": 18, "name": "ordinary earned A43 at any pursuing original bat input1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Bat", "slot": 1, "count": 18, "name": "ordinary earned A43 at any pursuing original bat input2"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Bat", "slot": 1, "count": 18, "name": "ordinary earned A43 at any pursuing original bat input3"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Bat", "slot": 1, "count": 18, "name": "ordinary earned A43 at any pursuing original bat input4"}
+  - {"action": "observe-player-target", "name": "read original pursuing bat combat result"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original pursuing bat combat"}
+  - {"action": "run-to-world", "x": 1333, "y": 3469, "name": "ordinary return through cleared statue route to original mana obelisks"}
+  - {"action": "run-to-world", "x": 1552, "y": 3692, "name": "ordinary return through cleared statue route to original mana obelisks"}
+  - {"action": "run-to-world", "x": 1781, "y": 3689, "name": "ordinary return through cleared statue route to original mana obelisks"}
+  - {"action": "run-to-world", "x": 1922, "y": 3545, "name": "ordinary return through cleared statue route to original mana obelisks"}
+  - {"action": "walk-to-world", "x": 2010, "y": 3467, "name": "ordinary return through cleared statue route to original mana obelisks"}
+  - {"action": "wait", "dt": 90}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary earned D41 heal after crossing original bookcase passage"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 12}
+  - {"action": "wait", "dt": 90}
+  - {"action": "observe-player-target", "name": "read healthy original mana obelisks after Bookcase1 passage"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Bookcase1 healthy return"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

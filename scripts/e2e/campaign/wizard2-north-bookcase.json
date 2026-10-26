@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "name": "Wizard chapter2 north statue and original Bookcase1 passage",
+  "seed_contract": "Earned Wiz02c SAVE0001 at original eastern mana obelisks, HP20 MP78 poison0, A43 Lightning S27 Fireball D41 LesserHeal F115 Swap. Original Spider2354 and Bats2343/2344 alive and both Bookcase1 halves at original positions.",
+  "coverage": "Ordinary menu Load, statue north pressure plate, original Spider2354 and Bats2343/2344 alive-to-DEAD, both original Bookcase1 halves move to their original endpoint waypoints, ordinary passage crossing and healthy manual Save. Does not certify northeast spiders or the whole chapter.",
+  "cases": [
+    {
+      "name": "wizard2-north-bookcase",
+      "scenario": "wizard2-cave-north-bookcase.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 120,
+      "required_checkpoints": [
+        "original north statue selection",
+        "original north chamber Spider2354",
+        "original Bookcase1 plate opens paired bookcases",
+        "original Bookcase1 passage crossed",
+        "original manual Save",
+        "original Bookcase1 healthy return",
+        "original north corridor bats"
+      ],
+      "expected_health": 20,
+      "required_defeated_script_ids": [
+        1000194063,
+        1000194083,
+        1000194085
+      ],
+      "required_position_transitions": [
+        {
+          "script_id": 1000196853,
+          "before": {
+            "x": 1425,
+            "y": 3378
+          },
+          "after": {
+            "x": 1391,
+            "y": 3366
+          },
+          "tolerance": 1
+        },
+        {
+          "script_id": 1000196851,
+          "before": {
+            "x": 1450,
+            "y": 3403
+          },
+          "after": {
+            "x": 1464,
+            "y": 3439
+          },
+          "tolerance": 1
+        }
+      ],
+      "expected_mana": 78
+    }
+  ]
+}

@@ -76,5 +76,44 @@ class RequiredMonsterDeathsTests(unittest.TestCase):
         self.assertEqual(history['last_observed_dead_script_ids'], [])
 
 
+class RequiredEnableTransitionsTests(unittest.TestCase):
+    requirements = [{'script_id': 1985, 'before': True, 'after': False},
+                    {'script_id': 1982, 'before': False, 'after': True}]
+
+    @staticmethod
+    def sample(plate=True, mover=False):
+        return [{'script_id': 1985, 'enabled': plate},
+                {'script_id': 1982, 'enabled': mover}]
+
+    def test_original_plate_disables_and_mover_enables(self):
+        # Reduced from the original Bookcase6 normal/HD snapshots.
+        result = runner.required_enable_transitions(
+            [self.sample(), self.sample(False, True), self.sample(False, True)],
+            self.requirements)
+        self.assertTrue(result['passed'])
+
+    def test_previously_activated_switch_does_not_count(self):
+        self.assertFalse(runner.required_enable_transitions(
+            [self.sample(False, True), self.sample(False, True)], self.requirements)['passed'])
+
+    def test_missing_or_later_created_actor_does_not_count(self):
+        for samples in ([], [[], self.sample(False, True)], [self.sample(), []]):
+            with self.subTest(samples=samples):
+                self.assertFalse(runner.required_enable_transitions(samples, self.requirements)['passed'])
+
+    def test_later_reversion_cancels_the_transition(self):
+        self.assertFalse(runner.required_enable_transitions(
+            [self.sample(), self.sample(False, True), self.sample()], self.requirements)['passed'])
+
+    def test_boolean_states_and_unique_identity_are_required(self):
+        for samples in ([self.sample(1, 0), self.sample(0, 1)],
+                        [self.sample(), self.sample(False, True) + [{'script_id': 1982, 'enabled': True}]]):
+            with self.subTest(samples=samples):
+                self.assertFalse(runner.required_enable_transitions(samples, self.requirements)['passed'])
+        self.assertFalse(runner.required_enable_transitions(
+            [[{'script_id': 1}], [{'script_id': 1}]],
+            [{'script_id': 1, 'before': None, 'after': None}])['passed'])
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "name": "Wizard2 original central switch and east road combat",
+  "seed_contract": "Earned northern recovery Save HP20 MP78 poison0; A43 D41 F115, original northern Spiders dead.",
+  "coverage": "Original Bookcase6 switch activation, connected eastern roads, original Urchin2349 death and healthy manual Save. Does not certify complete Bookcase6 slide or obstructed passage.",
+  "cases": [
+    {
+      "name": "wizard2-cave-central-east",
+      "scenario": "wizard2-cave-central-east.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 160,
+      "required_checkpoints": [
+        "original Bookcase6 switch activation only",
+        "original central east road living arrival",
+        "original manual Save"
+      ],
+      "required_defeated_script_ids": [
+        1000194073
+      ],
+      "required_enable_transitions": [
+        {
+          "script_id": 1000194579,
+          "before": true,
+          "after": false
+        },
+        {
+          "script_id": 1000194585,
+          "before": false,
+          "after": true
+        }
+      ]
+    }
+  ]
+}

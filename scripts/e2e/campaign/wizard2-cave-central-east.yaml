@@ -1,0 +1,70 @@
+# Original menu/input-only campaign regression; use run-campaign-e2e.py.
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "observe-player-target"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "assert-quickbar-spell", "slot": 3, "spell": 115}
+  - {"action": "wait", "dt": 60}
+  - {"action": "run-to-world", "x": 1211, "y": 4621, "name": "ordinary original connected roads to central library"}
+  - {"action": "run-to-world", "x": 1333, "y": 4530, "name": "ordinary original connected roads to central library"}
+  - {"action": "run-to-world", "x": 1447, "y": 4659, "name": "ordinary original connected roads to central library"}
+  - {"action": "run-to-world", "x": 1360, "y": 4716, "name": "ordinary original connected roads to central library"}
+  - {"action": "run-to-world", "x": 1423, "y": 4801, "name": "ordinary original connected roads to central library"}
+  - {"action": "run-to-world", "x": 1499, "y": 4894, "name": "ordinary original connected roads to central library"}
+  - {"action": "run-to-world", "x": 1603, "y": 4793, "name": "ordinary original connected roads to central library"}
+  - {"action": "run-to-world", "x": 1576, "y": 4769, "name": "ordinary original Bookcase6 pressure plate1985"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "observe-player-target", "name": "read original Bookcase6 switch activation only"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Bookcase6 switch activation only"}
+  - {"action": "run-to-world", "x": 1603, "y": 4793, "name": "ordinary original central road after switch"}
+  - {"action": "run-to-world", "x": 1701, "y": 4672, "name": "ordinary original connected central east road1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 1, "count": 20, "name": "ordinary earned A43 original east road Urchin response1"}
+  - {"action": "observe-player-target", "name": "read original east road Urchin response1"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original east road Urchin response1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 1, "count": 20, "name": "ordinary earned A43 original east road Urchin response2"}
+  - {"action": "observe-player-target", "name": "read original east road Urchin response2"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original east road Urchin response2"}
+  - {"action": "run-to-world", "x": 1816, "y": 4798, "name": "ordinary original connected central east road2"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 1, "count": 20, "name": "ordinary earned A43 original east road Urchin response3"}
+  - {"action": "observe-player-target", "name": "read original east road Urchin response3"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original east road Urchin response3"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 1, "count": 20, "name": "ordinary earned A43 original east road Urchin response4"}
+  - {"action": "observe-player-target", "name": "read original east road Urchin response4"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original east road Urchin response4"}
+  - {"action": "run-to-world", "x": 1903, "y": 4889, "name": "ordinary original connected central east road3"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 1, "count": 20, "name": "ordinary earned A43 original east road Urchin response5"}
+  - {"action": "observe-player-target", "name": "read original east road Urchin response5"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original east road Urchin response5"}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}, "name": "ordinary earned D41 central east road heal"}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 60}
+  - {"action": "observe-player-target", "name": "read original central east road living arrival"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original central east road living arrival"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

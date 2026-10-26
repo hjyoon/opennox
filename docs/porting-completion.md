@@ -1918,6 +1918,31 @@ Fresh products and campaign E2E are recorded separately in
 `poison-activation-precision-port/`. Linux, remaining native/transitive work,
 campaign cells and overall porting 100 percent remain open.
 
+### Campaign E2E original switch transitions and central east combat
+
+`scripts/e2e/campaign/wizard2-central-east.json` starts from the earned northern
+recovery Save. It requires original PressurePlate1985 to change from enabled
+to disabled, Bookcase6AMover1982 from disabled to enabled, and original
+Urchin2349 from living to DEAD. The connected eastern road is traversed with
+ordinary movement and earned Chain Lightning inputs. This checks activation
+and a different connected road; complete Bookcase6 slide/traversal stays open.
+
+The runner now checks both initial and final enabled states from read-only
+snapshots. A previously activated switch, a missing or later-created actor,
+a later reversion, duplicate identity or a nonboolean state cannot pass.
+All eight existing Python tests and five new regressions pass.
+
+Normal passes in 32.687 seconds and HD in 32.620 seconds using the clean
+fbaa56a ARM64 products. Independent read-only native Save parsing verifies
+Wiz02c, HP20/20, MP72/78, poison zero, XP3459.5488 (bits1163409608) and the
+three earned spells. Source Save, stock data, binaries and snapshot hashes
+are independently rechecked. These Python/JSON/YAML changes reuse those
+products without rebuilding Go. Raw earlier failures and the occupied-port
+preflight remain preserved. Evidence is in
+`campaign-wiz02c-central-east-healthy-verified-v1.json` under the artifact root.
+The steel-crate puzzle, BookOfOblivion, final cells, Linux and overall100 remain
+open.
+
 ### Campaign E2E original northern combat and recovery
 
 `scripts/e2e/campaign/wizard2-north-discrete.json` starts from the earned

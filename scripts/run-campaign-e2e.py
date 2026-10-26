@@ -137,6 +137,26 @@ def required_monster_deaths(samples, required_ids):
             'passed': bool(required) and required <= dead}
 
 
+def required_enable_transitions(samples, requirements):
+    def enabled(objects, ident):
+        matches = [obj for obj in objects if obj.get('script_id') == ident]
+        return matches[0].get('enabled') if len(matches) == 1 else None
+
+    transitions = []
+    for required in requirements:
+        ident = required['script_id']
+        initial = enabled(samples[0], ident) if samples else None
+        final = enabled(samples[-1], ident) if samples else None
+        before, after = required['before'], required['after']
+        passed = (type(before) is bool and type(after) is bool and before != after
+                  and initial is before and final is after)
+        transitions.append({'script_id': ident, 'expected_initial_enabled': before,
+                            'expected_final_enabled': after, 'initial_enabled': initial,
+                            'final_enabled': final, 'passed': passed})
+    return {'transitions': transitions,
+            'passed': bool(transitions) and all(row['passed'] for row in transitions)}
+
+
 def run_case(args, binary, suite_dir, case, port):
     case_dir = args.output / case['name']
     case_dir.mkdir()
@@ -273,7 +293,8 @@ def run_case(args, binary, suite_dir, case, port):
                        and player['mana'] == case.get('expected_mana', player['mana']))
     if case.get('expect_damage'):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
-    if (case.get('created_type') or case.get('required_defeated_script_ids')) and snapshots_ok:
+    if (case.get('created_type') or case.get('required_defeated_script_ids')
+            or case.get('required_enable_transitions')) and snapshots_ok:
         samples = [json.loads(Path(sample['routes']['objects']['path']).read_text())
                    for sample in report['snapshots']]
     if case.get('created_type') and snapshots_ok:
@@ -285,6 +306,10 @@ def run_case(args, binary, suite_dir, case, port):
         history = required_monster_deaths(samples, case['required_defeated_script_ids'])
         report['required_original_monsters'] = history
         outcomes_ok = outcomes_ok and history['passed']
+    if case.get('required_enable_transitions') and snapshots_ok:
+        transitions = required_enable_transitions(samples, case['required_enable_transitions'])
+        report['required_original_enable_transitions'] = transitions
+        outcomes_ok = outcomes_ok and transitions['passed']
     report['continuation_eligible'] = healthy and poison_free and bool(report.get('manual_save_written')) and not errors
     report['passed'] = (report['exit_code'] == 0 and not report['forced_termination'] and not errors
                         and not reader.is_alive() and not worker.is_alive() and snapshots_ok

@@ -5,6 +5,13 @@ toolchain and native GCC. It builds, verifies and runs help for the selected
 product, then tests every package with that product's tags. SDL and OpenAL use
 headless backends for tests. Game assets and campaign replay are separate.
 
+Product builds and help use the default link mode and allocator. Full native
+tests use PIE and `MALLOC_MMAP_THRESHOLD_=0` so their existing C static-region
+and C-owned allocation checks actually exercise addresses above 4GiB. Fixed
+low-address cases, numeric checks and native fault checks are retained. The
+server job also runs the damage regressions with the default product link mode.
+Each test profile is recorded in the artifact; it is not a product setting.
+
 The four variants are `opennox`, `opennox-hd`, `opennox-server` and
 `opennox-server-hd`. JSON test output, expected and observed package lists,
 failures, compiler/build metadata and executables are preserved as artifacts.

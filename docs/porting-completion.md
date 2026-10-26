@@ -1563,6 +1563,50 @@ HP, alias or nonfinite payload behavior. Campaign optional features, the final
 nine-cell audit and remaining reachable native/UI/audio/peer/stability work stay
 open. Overall porting is not 100 percent.
 
+### Native weaponless player explosion precision
+
+Player EXPLOSION with a nil weapon now preserves the original startup arithmetic
+in both the full generic runtime and the dedicated partial runtime. Absorption,
+binary32 spill, live fractional carry, signed conversion and Quest scaling use
+the independently executed original boundaries. NPC targets, nonnil weapons and
+other shared damage types retain their current arithmetic.
+
+The unchanged original executable ran 1,419 primary and 94 historical contexts
+under four floating point controls, totaling 44,976 complete calls through the
+damage, carry, conversion, Quest, buff and possession bodies. There are 291
+executed instruction addresses and four excluded services: Mode, integer-facing
+result, armor wear and DefaultDamage HP. No floating point return, arithmetic or
+conversion substitutes were used. Warm descriptor-cache input is declared;
+cold lookup, real geometry/block behavior and full HP or item durability bodies
+are outside this evidence. The actual Simple class bit is 0x100000. Earlier
+0x10 nonitem contexts were valid IMMOBILE diagnostics but were mislabeled; they
+and the partial-tail-only attempt remain preserved and are superseded.
+
+Final native before/after comparison keeps every test and fixture byte identical
+and changes only the two production files: 888 mismatched leaves and 1,950
+matching controls become 2,840 passing identities across both runtimes. C-owned
+target, update, PlayerInfo, raw health and source frames above 4 GiB preserve all
+nonoutputs. Eighteen historical fixture rows and numeric expectations in five
+old test files were corrected while preserving names, inputs, callback effects,
+assertions and unrelated rows/events. Live-update and marker effects are declared
+at original carry-entry numeric boundaries, not as a new callback reachability
+certificate. Armor tests retain the current item quantizer as a separate
+contract; complete item durability precision and modifier state remain open.
+
+All 6,913 frozen source inputs match the clean commit and inspected archive.
+Related tests pass 143,827 identities. Focused tests preserve all 128,967 prior
+identities, add the 2,840 new identities and promote 140 existing related cases
+for 131,947 total. Three cgocheck2/race/checkptr2 repetitions pass 395,841 events;
+the same focused identities pass in the offline Linux AMD64 Rosetta/Clang lane.
+All four full suites preserve prior identities, actions and skips: normal and HD
+pass 211,467 with 49 skips, server and server HD pass 206,639 with seven skips.
+Four clean committed ARM64 products and build metadata are inspected.
+
+This is not a certificate for full item durability, HP, alias/nonfinite payload,
+other damage types or general AI behavior. Campaign optional features, the final
+nine-cell audit and remaining reachable native/UI/audio/peer/stability work stay
+open. Overall porting is not 100 percent.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

@@ -22132,6 +22132,48 @@
       "size": 17,
       "sha256": "f3b228e3b6422e68b5aa75dcd09507a972f1abc4c597aad0e68697f6a65593fd",
       "purpose": "Independently executed original armor wear precision oracle. Declared historical arithmetic fragment entry with binary64ST0=1+2^-24, cachedF32armor=.5 andraw3; not a complete function or real415C00 getter output."
+    },
+    {
+      "name": "original_weaponless_player_explosion_precision_PlayerDamage_complete",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
+      "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
+    },
+    {
+      "name": "original_weaponless_player_explosion_precision_carry_complete",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
+      "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
+    },
+    {
+      "name": "original_weaponless_player_explosion_precision_signed_DWORD_complete",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
+    },
+    {
+      "name": "original_weaponless_player_explosion_precision_Quest_getter_complete",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
+      "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
+    },
+    {
+      "name": "original_weaponless_player_explosion_precision_buff_getter_complete",
+      "address": "0x4ff350",
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
+      "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
+    },
+    {
+      "name": "original_weaponless_player_explosion_precision_possession_getter_complete",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
+      "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
     }
   ],
   "data": [

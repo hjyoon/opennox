@@ -45,9 +45,10 @@ func TestPlayerDamageWorldExplosionTail4E17B0CachedAbsorptionLiveCarryAndQuest(t
 	quest := false
 	wear := r.DamageArmor
 	r.DamageArmor = func(item, s, w *Object, amount int32, typ object.DamageType) bool {
-		// The cached .5 absorption produces four absorbed points; armor wear
-		// reloads the live .1 denominator, so this .5 item receives twenty.
-		if item != armor || s != source || w != nil || amount != 20 || typ != object.DamageExplosion || cached.Field76 != 0 {
+		// Original player carry leaves five absorbed points. Distribution
+		// reloads the live .1 denominator; the existing native item quantizer
+		// rounds that portion to 25. Its own startup precision is a separate port.
+		if item != armor || s != source || w != nil || amount != 25 || typ != object.DamageExplosion || cached.Field76 != 0 {
 			t.Fatalf("world explosion armor identity/order: amount=%d cached marker=%d", amount, cached.Field76)
 		}
 		events = append(events, "wear")
@@ -68,8 +69,8 @@ func TestPlayerDamageWorldExplosionTail4E17B0CachedAbsorptionLiveCarryAndQuest(t
 	if h, result := playerDamagePlayerWeaponlessExplosionTail4E17B0(target, source, cached, .5, 9, object.DamageExplosion, r); !h || !result {
 		t.Fatal("world-source carry tail rejected")
 	}
-	if target.HealthData.Cur != 198 || armor.HealthData.Cur != 5 || cached.Field76 != 2 || cached.Field75 != 7 || live.Field76 != 33 || live.Field75 != 44 ||
-		math.Abs(float64(math.Float32frombits(live.Field21))+.1) > 1e-6 || cached.Field21 != math.Float32bits(.25) || !slices.Equal(events, []string{"wear", "god", "quest", "scale", "default"}) {
+	if target.HealthData.Cur != 198 || armor.HealthData.Cur != 0 || cached.Field76 != 2 || cached.Field75 != 7 || live.Field76 != 33 || live.Field75 != 44 ||
+		math.Abs(float64(math.Float32frombits(live.Field21))-.9) > 1e-6 || cached.Field21 != math.Float32bits(.25) || !slices.Equal(events, []string{"wear", "god", "quest", "scale", "default"}) {
 		t.Fatalf("HP=%d armor=%d cached marker/carry=%d/%d/%x live marker/carry=%d/%d/%x events=%v", target.HealthData.Cur, armor.HealthData.Cur, cached.Field76, cached.Field75, cached.Field21, live.Field76, live.Field75, live.Field21, events)
 	}
 }

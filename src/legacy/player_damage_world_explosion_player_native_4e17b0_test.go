@@ -27,8 +27,8 @@ func TestPlayerDamageWorldExplosionPlayerNativeCallback4E17B0(t *testing.T) {
 			}
 			ud := target.UpdateDataPlayer()
 			ud.Field76, ud.Field75, ud.Field21, ud.Field57 = 99, 77, math.Float32bits(.25), math.Float32bits(.5)
-			for hit, wantHP := range []uint16{195, 191, 186} {
-				wantCarry := float32(-.25)
+			for hit, wantHP := range []uint16{196, 191, 187} {
+				wantCarry := float32(.75)
 				if hit == 1 {
 					wantCarry = .25
 				}
@@ -37,7 +37,7 @@ func TestPlayerDamageWorldExplosionPlayerNativeCallback4E17B0(t *testing.T) {
 					t.Fatalf("C->PlayerDamage barrel hit=%d HP=%d/%d marker=%d/%d carry=%x/%x source=%p/%p sync=%x", hit, target.HealthData.Cur, wantHP, ud.Field76, ud.Field75, ud.Field21, math.Float32bits(wantCarry), target.Obj130, source, target.Field38)
 				}
 			}
-			t.Logf("C->PlayerDamage->DefaultDamage->UnitSetHP: world source=%p no UpdateData HP=200->195->191->186 carry=verified", source)
+			t.Logf("C->PlayerDamage->DefaultDamage->UnitSetHP: world source=%p no UpdateData HP=200->196->191->187 carry=verified", source)
 			runtime.KeepAlive(source)
 			runtime.KeepAlive(target)
 			runtime.KeepAlive(npc)

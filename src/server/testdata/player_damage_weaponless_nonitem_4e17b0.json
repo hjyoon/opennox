@@ -6550,10 +6550,10 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
@@ -6562,25 +6562,10 @@
       "weapon_kind": "none",
       "player": true,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
-      "return": 1,
-      "wear": [
-        4
-      ]
-    },
-    {
-      "damage_type": 7,
-      "source_kind": "player",
-      "weapon_kind": "none",
-      "player": true,
-      "raw": 11,
-      "forward_damage": 6,
-      "marker": 2,
-      "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
         5
@@ -6591,6 +6576,21 @@
       "source_kind": "player",
       "weapon_kind": "none",
       "player": true,
+      "raw": 11,
+      "forward_damage": 5,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 1061158912,
+      "return": 1,
+      "wear": [
+        6
+      ]
+    },
+    {
+      "damage_type": 7,
+      "source_kind": "player",
+      "weapon_kind": "none",
+      "player": true,
       "raw": 96,
       "forward_damage": 48,
       "marker": 2,
@@ -6790,10 +6790,10 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
@@ -6802,25 +6802,10 @@
       "weapon_kind": "none",
       "player": true,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
-      "return": 1,
-      "wear": [
-        4
-      ]
-    },
-    {
-      "damage_type": 7,
-      "source_kind": "monster",
-      "weapon_kind": "none",
-      "player": true,
-      "raw": 11,
-      "forward_damage": 6,
-      "marker": 2,
-      "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
         5
@@ -6831,6 +6816,21 @@
       "source_kind": "monster",
       "weapon_kind": "none",
       "player": true,
+      "raw": 11,
+      "forward_damage": 5,
+      "marker": 2,
+      "marker_type": 7,
+      "carry_bits": 1061158912,
+      "return": 1,
+      "wear": [
+        6
+      ]
+    },
+    {
+      "damage_type": 7,
+      "source_kind": "monster",
+      "weapon_kind": "none",
+      "player": true,
       "raw": 96,
       "forward_damage": 48,
       "marker": 2,
@@ -7030,10 +7030,10 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
@@ -7042,13 +7042,13 @@
       "weapon_kind": "none",
       "player": true,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {
@@ -7057,13 +7057,13 @@
       "weapon_kind": "none",
       "player": true,
       "raw": 11,
-      "forward_damage": 6,
+      "forward_damage": 5,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        5
+        6
       ]
     },
     {
@@ -7270,10 +7270,10 @@
       "forward_damage": 1,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        0
+        1
       ]
     },
     {
@@ -7282,13 +7282,13 @@
       "weapon_kind": "none",
       "player": true,
       "raw": 9,
-      "forward_damage": 5,
+      "forward_damage": 4,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        4
+        5
       ]
     },
     {
@@ -7297,13 +7297,13 @@
       "weapon_kind": "none",
       "player": true,
       "raw": 11,
-      "forward_damage": 6,
+      "forward_damage": 5,
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "return": 1,
       "wear": [
-        5
+        6
       ]
     },
     {
@@ -21401,5 +21401,25 @@
       "return": 1,
       "wear": []
     }
-  ]
+  ],
+  "qualified_weaponless_player_explosion_numeric_rows_v1": {
+    "rows": [
+      460,
+      461,
+      462,
+      476,
+      477,
+      478,
+      492,
+      493,
+      494,
+      508,
+      509,
+      510
+    ],
+    "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "historical_contexts": 94,
+    "source_fixture": "weaponless_player_explosion_historical_original.json",
+    "scope": "Only numeric player/type7 forward/carry/wear components updated from independently executedoriginal. All previous rowcounts/order/inputfields/prefixevents andotherrowbytes retained. Warmcache andintegerdirection service are declared; inheritedcoldlookup prefix events retained, notnewlycertified. No actualEquipDamage/HP body certificate."
+  }
 }

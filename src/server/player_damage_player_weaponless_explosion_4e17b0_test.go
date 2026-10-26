@@ -20,17 +20,11 @@ func TestPlayerDamageNative4E17B0PlayerWeaponlessExplosionArmor(t *testing.T) {
 				armor := damageMeleeArmorFixture4E17B0(target, 0.5, 0.4)
 				ud := target.UpdateDataPlayer()
 				ud.Field76, ud.Field75 = 99, 77
-				protection, wantHP := float64(0), uint16(195)
+				protection, wantHP := float64(0), uint16(196)
 				if protected {
 					protection, wantHP = 0.5, 198
 				}
-				wantArmor, wantCarry := uint16(21), float64(-.1)
-				if kind == "none" {
-					wantArmor, wantCarry = 20, .9
-					if !protected {
-						wantHP = 196
-					}
-				}
+				wantArmor, wantCarry := uint16(20), float64(.9)
 				r := damageFlameRuntime4E17B0(t, protection)
 				damageMeleeArmorRuntime4E17B0(&r, armor, 0.5)
 				if h, result := PlayerDamageNative4E17B0(target, source, nil, 9, object.DamageExplosion, r); !h || !result {
@@ -65,6 +59,9 @@ func TestPlayerDamageNative4E17B0PlayerWeaponlessExplosionRounding(t *testing.T)
 			t.Run(fmt.Sprintf("%s/%d/%g", kind, tc.raw, tc.armor), func(t *testing.T) {
 				if kind == "none" {
 					original := sourceLessPhysicalHistoricalNamed4E17B0(t, fmt.Sprintf("player-exp-rounding-%d-%g", tc.raw, tc.armor))
+					tc.effective, tc.carry = int32(original.ExpectedDamage[0]), original.ExpectedCarry
+				} else {
+					original := weaponlessPlayerExplosionHistoricalRounding(t, kind, tc.raw, tc.armor)
 					tc.effective, tc.carry = int32(original.ExpectedDamage[0]), original.ExpectedCarry
 				}
 				target := damageMeleeUnitFixture4E17B0(t, true)
@@ -189,8 +186,8 @@ func TestPlayerDamageNative4E17B0PlayerWeaponlessExplosionCachedLiveOrder(t *tes
 				return false
 			}
 			r.DamageArmor = func(item, s, w *Object, amount int32, typ object.DamageType) bool {
-				if item != armor || s != source || w != nil || amount != 4 || typ != object.DamageExplosion ||
-					cached.Field21 != math.Float32bits(0.4) || live.Field21 != math.Float32bits(-0.25) ||
+				if item != armor || s != source || w != nil || amount != 5 || typ != object.DamageExplosion ||
+					cached.Field21 != math.Float32bits(0.4) || live.Field21 != math.Float32bits(0.75) ||
 					live.Field76 != 33 || live.Field75 != 44 {
 					t.Fatal("armor used stale carry or duplicated marker/armor prefix")
 				}
@@ -549,7 +546,7 @@ func TestPlayerDamageNative4E17B0PlayerWeaponlessExplosionMissingServices(t *tes
 			if !late && (ud.Field21 != math.Float32bits(0.4) || armor.HealthData.Cur != 25) {
 				t.Fatal("failed admission modified carry/durability")
 			}
-			if late && (ud.Field76 != 2 || ud.Field75 != 7 || armor.HealthData.Cur != 21) {
+			if late && (ud.Field76 != 2 || ud.Field75 != 7 || armor.HealthData.Cur != 20) {
 				t.Fatal("late failure rolled back the original damage prefix")
 			}
 		})

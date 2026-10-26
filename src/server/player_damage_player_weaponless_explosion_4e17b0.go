@@ -168,17 +168,9 @@ func playerDamagePlayerWeaponlessExplosionTail4E17B0(
 		return reject("unsupported weapon-less EXPLOSION armor durability")
 	}
 	var effective int32
-	if source == nil {
-		factor := experienceAdd53TowardZero(1, -float64(absorption))
-		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
-		playerDamageCarry4E20F0(target, &effective, scaled)
-	} else {
-		scaled := float32((1.0 - float64(absorption)) * float64(damage))
-		live := target.UpdateDataPlayer()
-		accumulated := scaled + math.Float32frombits(live.Field21)
-		effective = playerDamageRound4E17B0(accumulated)
-		live.Field21 = math.Float32bits(accumulated - float32(effective))
-	}
+	factor := experienceAdd53TowardZero(1, -float64(absorption))
+	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
+	playerDamageCarry4E20F0(target, &effective, scaled)
 	playerDamageApplyArmor4E17B0(target, source, nil, damage-effective, typ, r)
 	if target.Class().Has(object.ClassPlayer) {
 		if update.Field76 == 0 {
@@ -199,12 +191,8 @@ func playerDamagePlayerWeaponlessExplosionTail4E17B0(
 		}
 		before := effective
 		scale := r.QuestDamageScale()
-		if source == nil {
-			scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(scale), float64(effective)))
-			effective = netFXTruncateSignedDWORD419A70(scaled)
-		} else {
-			effective = playerDamageRound4E17B0(float32(float64(scale) * float64(effective)))
-		}
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(scale), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

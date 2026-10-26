@@ -40,17 +40,11 @@ func TestPlayerDamagePlayerWeaponlessExplosionNativeCallback4E17B0(t *testing.T)
 				source.PrevPos = types.Ptf(23, 9)
 				wantPos = source.PrevPos
 			}
-			wantHealth := []uint16{195, 191, 186}
-			if source == nil {
-				wantHealth = []uint16{196, 191, 187}
-			}
+			wantHealth := []uint16{196, 191, 187}
 			for hit, wantHP := range wantHealth {
-				wantCarry := float32(-0.25)
+				wantCarry := float32(0.75)
 				if hit == 1 {
 					wantCarry = 0.25
-				}
-				if source == nil && hit != 1 {
-					wantCarry = .75
 				}
 				if !objectDamageDispatchCallNative(target, source, nil, 9, object.DamageExplosion) || target.HealthData.Cur != wantHP ||
 					target.Field38 != math.MaxUint32 || target.Obj130 != source || target.Pos132 != wantPos || target.Field131 != 7 || target.Frame134 != 1400 ||

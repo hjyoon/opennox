@@ -3149,11 +3149,11 @@
       "player": true,
       "raw": 9,
       "forward_damage": [
-        5
+        4
       ],
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "events": [
         [
           "buff",
@@ -3195,7 +3195,7 @@
         ],
         [
           "wear",
-          4
+          5
         ],
         [
           "mode",
@@ -3203,7 +3203,7 @@
         ],
         [
           "default",
-          5
+          4
         ]
       ],
       "return": 1,
@@ -3285,11 +3285,11 @@
       "player": true,
       "raw": 9,
       "forward_damage": [
-        5
+        4
       ],
       "marker": 2,
       "marker_type": 7,
-      "carry_bits": 3196059648,
+      "carry_bits": 1061158912,
       "events": [
         [
           "buff",
@@ -3331,7 +3331,7 @@
         ],
         [
           "wear",
-          4
+          5
         ],
         [
           "mode",
@@ -3339,7 +3339,7 @@
         ],
         [
           "default",
-          5
+          4
         ]
       ],
       "return": 1,
@@ -7463,5 +7463,15 @@
       "final_player_state": 13
     }
   ],
-  "code_bytes_unchanged": true
+  "code_bytes_unchanged": true,
+  "qualified_weaponless_player_explosion_numeric_rows_v1": {
+    "rows": [
+      45,
+      47
+    ],
+    "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+    "historical_contexts": 94,
+    "source_fixture": "weaponless_player_explosion_historical_original.json",
+    "scope": "Only numeric player/type7 forward/carry/wear components updated from independently executedoriginal. All previous rowcounts/order/inputfields/prefixevents andotherrowbytes retained. Warmcache andintegerdirection service are declared; inheritedcoldlookup prefix events retained, notnewlycertified. No actualEquipDamage/HP body certificate."
+  }
 }

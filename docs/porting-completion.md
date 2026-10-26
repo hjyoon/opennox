@@ -1819,6 +1819,42 @@ reproduced on the earlier parent manifest; no existing seal is removed.
 Only the CLI sources and validation metadata change. The four clean native
 products of f14ad309 and their normal/HD campaign E2E are reused.
 
+### Mover startup precision and the Bookcase6 boundary
+
+Mover now preserves startup PC53 round-toward-zero subtraction, multiplication,
+addition, square root, division and binary32 stores. The original dy spill
+retains its register value for the following multiply. Initial signed speed
+units also use the original binary32 store; the host FP mode is unchanged.
+The existing target/waypoint reload order and both-nonzero velocity arrival
+condition remain intact.
+
+Independent unchanged GAME.EXE execution covers the whole 608-byte body and
+jump table: 117 contexts, 468 control runs, 468 complete calls and 200 executed
+instruction addresses. Object/waypoint lookup, position-only Move, RNG and
+RemoveUpdatable are five explicit service boundaries. No FP arithmetic,
+return or conversion is substituted. This certifies the mover calculation
+and control flow, not the full collision/movement service or world traversal.
+
+The same 7,275 source inputs differ only in the production mover helper.
+The selected 118 native events change from 52 PASS/66 FAIL to 118 PASS;
+65 of 117 leaf contexts previously had numeric mismatches. All 117 native
+case frames preserve their nonoutput bytes on both runs. The existing
+115,377 server identities, actions and multiplicities are retained, yielding
+115,495 PASS. Related root/legacy tests retain 44 events. Actual cgocheck2,
+race and checkptr2 preserve 1,966 related identities across three repetitions,
+yielding 5,898 PASS. Existing tests and their expectations are unchanged.
+The four full suites still belong to ff2eb1d4 and are not repeated here.
+
+The fresh Bookcase6 E2E observes switch activation and axis oscillation, then
+fails traversal with PlayerDeath; its failed report stays uncredited. Whole
+original mover calls confirm that a zero X velocity skips the arrival test.
+The precision correction does not replace this with an OR condition or prove
+the remaining Bookcase6 passage. Normal/HD campaign continuation, Linux,
+remaining native behavior and final campaign/UI/audio/peer/stability coverage
+require separate evidence. Source, raw original/native comparisons and product
+records are retained under `mover-startup-precision-port/` and
+`mover-startup-precision-context-audit/`.
+
 ### Shared toxic-cloud lifetime and generator packet startup precision
 
 The shared lifetime helpers now preserve startup PC53 multiplication,
@@ -1849,8 +1885,8 @@ All 3,233 code and 669 data seals match the unchanged original executable.
 The explicit alias-policy correction above also verifies them with the
 official CLI while retaining every seal and its original numeric address.
 Committed ARM64 products and runtime evidence are recorded separately in
-`toxic-cloud-lifetime-precision-port/`. Fresh northern-room attempts remain
-uncredited; the last qualified upper-combat Save is preserved. Linux, remaining
+`toxic-cloud-lifetime-precision-port/`. Later normal/HD northern recovery
+passes are recorded below; failed attempts retain their original reports. Linux, remaining
 native/transitive behavior, nine final campaign cells and overall100 remain open.
 
 ### Poison activation startup precision

@@ -109,7 +109,8 @@ func moverUpdate54F740[O, D, W comparable](source O, hooks moverUpdateHooks54F74
 		hooks.storeState(data, 1)
 		hooks.storeWaypoint(data, 3, waypoint)
 		hooks.storeWaypoint(data, 5, zeroWaypoint)
-		speed := float32(float64(speedUnits) * moverUpdateSpeedScale54F740)
+		// FILD/FMUL are exact here; both FST stores use startup ToZero.
+		speed := experienceSpill32TowardZero(float64(speedUnits) * moverUpdateSpeedScale54F740)
 		hooks.storeSpeedBase(source, speed)
 		hooks.storeSpeedCur(source, speed)
 		return
@@ -125,10 +126,11 @@ func moverUpdate54F740[O, D, W comparable](source O, hooks moverUpdateHooks54F74
 			velocityY := hooks.loadVelocityY(source)
 			if moverUpdateNonzero54F740(velocityY) {
 				current := hooks.loadWaypoint(data, 3)
-				dx := float64(hooks.loadWaypointX(current)) - float64(hooks.loadPosX(source))
-				dy := float64(hooks.loadWaypointY(current)) - float64(hooks.loadPosY(source))
-				dot := dy*float64(hooks.loadVelocityY(source)) +
-					dx*float64(hooks.loadVelocityX(source))
+				dx := experienceAdd53TowardZero(float64(hooks.loadWaypointX(current)), -float64(hooks.loadPosX(source)))
+				dy := experienceAdd53TowardZero(float64(hooks.loadWaypointY(current)), -float64(hooks.loadPosY(source)))
+				yProduct := experienceMul53TowardZero(dy, float64(hooks.loadVelocityY(source)))
+				xProduct := experienceMul53TowardZero(dx, float64(hooks.loadVelocityX(source)))
+				dot := experienceAdd53TowardZero(yProduct, xProduct)
 				if dot <= 0 || math.IsNaN(dot) {
 					count := hooks.waypointPointCnt(current)
 					switch count {
@@ -160,18 +162,25 @@ func moverUpdate54F740[O, D, W comparable](source O, hooks moverUpdateHooks54F74
 		}
 		hooks.move(hooks.loadTarget(data), hooks.loadPosition(source))
 		waypoint := hooks.loadWaypoint(data, 3)
-		dx := float64(hooks.loadWaypointX(waypoint)) - float64(hooks.loadPosX(source))
-		dyExtended := float64(hooks.loadWaypointY(waypoint)) - float64(hooks.loadPosY(source))
-		dy := float32(dyExtended)
-		denominator := float32(math.Sqrt(dyExtended*float64(dy)+dx*dx) +
-			float64(moverUpdateSteerEpsilon54F740))
+		dx := experienceAdd53TowardZero(float64(hooks.loadWaypointX(waypoint)), -float64(hooks.loadPosX(source)))
+		dyExtended := experienceAdd53TowardZero(float64(hooks.loadWaypointY(waypoint)), -float64(hooks.loadPosY(source)))
+		// FST at 0054F910 spills dy without popping its 53-bit register.
+		// The following FMUL consumes the retained dy and spilled binary32.
+		dy := experienceSpill32TowardZero(dyExtended)
+		yProduct := experienceMul53TowardZero(dyExtended, float64(dy))
+		xSquare := experienceMul53TowardZero(dx, dx)
+		square := experienceAdd53TowardZero(yProduct, xSquare)
+		root := monsterMoveForceSqrtChop53_50D50C(square)
+		denominator := experienceSpill32TowardZero(experienceAdd53TowardZero(root, float64(moverUpdateSteerEpsilon54F740)))
 		hooks.storeVelocityX(
 			source,
-			float32(dx*float64(hooks.loadSpeedCur(source))/float64(denominator)),
+			experienceSpill32TowardZero(monsterMoveForceDivChop53_50D581(
+				experienceMul53TowardZero(dx, float64(hooks.loadSpeedCur(source))), float64(denominator))),
 		)
 		hooks.storeVelocityY(
 			source,
-			float32(float64(dy)*float64(hooks.loadSpeedCur(source))/float64(denominator)),
+			experienceSpill32TowardZero(monsterMoveForceDivChop53_50D581(
+				experienceMul53TowardZero(float64(dy), float64(hooks.loadSpeedCur(source))), float64(denominator))),
 		)
 		return
 

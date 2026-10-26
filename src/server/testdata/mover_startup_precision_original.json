@@ -1,0 +1,7174 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "root": {
+    "name": "nox_xxx_unitUpdateMover_54F740",
+    "address": "0x0054F740",
+    "size": 608,
+    "sha256": "01cf67b856513e2ea401d9dbbfc6e4f68263ed86c317194bbd5687629b8330c4",
+    "purpose": "resolve the mover target and transient waypoint pointers from the fixed 36-byte PE32 update record, preserve the four-state mover machine and live waypoint reloads, and steer the mover with the original x87 arithmetic through the jump table ending at 0054F99F"
+  },
+  "startup_control_word": 3647,
+  "scope": "Whole unchanged 608-byte original mover including jump table. Object/waypoint lookup, position-only Move, RNG and RemoveUpdatable are explicit services. Full movement/collision implementation and whole-world Bookcase6 traversal are not certified.",
+  "cases": [
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-0/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1030811889,
+        1033937056
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-0/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1058444950,
+        1061734601
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-0/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1073988547,
+        1076866991
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-0/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1082377155,
+        1085255599
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-0/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1100387990,
+        1103677640
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-0/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        501103264,
+        504637205
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-0/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1615599050,
+        1619529351
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-1/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1032274033,
+        1032274033
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-1/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1059655821,
+        1059655821
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-1/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1075048059,
+        1075048059
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-1/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1083436667,
+        1083436667
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-1/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1101598860,
+        1101598860
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-1/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        502890194,
+        502890194
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-1/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1617240086,
+        1617240086
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-2/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          1153581056,
+          1167347712
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1035611788
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167347712
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-2/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          1153581056,
+          1167347712
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1063828015
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167347712
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-2/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1153581056,
+          1167347712
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1078698729
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167347712
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-2/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          1153581056,
+          1167347712
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1087087337
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167347712
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-2/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          1153581056,
+          1167347712
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1105771054
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167347712
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-2/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          1153581056,
+          1167347712
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        506181872
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167347712
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-2/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          1153581056,
+          1167347712
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1620947904
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167347712
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167347712
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-3/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          1153581056,
+          1167353341
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        3183589521
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167353341
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-3/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          1153581056,
+          1167353341
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        3211929269
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167353341
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-3/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1153581056,
+          1167353341
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        3226722782
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167353341
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-3/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          1153581056,
+          1167353341
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        3235111390
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167353341
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-3/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          1153581056,
+          1167353341
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        3253872308
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167353341
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-3/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          1153581056,
+          1167353341
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        2654121233
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167353341
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-3/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          1153581056,
+          1167353341
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        3768850058
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167353341
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167353341
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-4/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          1153581056,
+          1167346202
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1036101435
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167346202
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-4/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          1153581056,
+          1167346202
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1064440073
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167346202
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-4/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1153581056,
+          1167346202
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1079234280
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167346202
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-4/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          1153581056,
+          1167346202
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1087622888
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167346202
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-4/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          1153581056,
+          1167346202
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1106383113
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167346202
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-4/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          1153581056,
+          1167346202
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        506633492
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167346202
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-4/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          1153581056,
+          1167346202
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1153581056,
+          1167349760
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        1621362650
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "target_position_bits": [
+        1153581056,
+        1167346202
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1153581056,
+            1167346202
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-5/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          507307272,
+          2663179528
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          520989638,
+          524084488
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        515695880,
+        529378246
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "target_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            507307272,
+            2663179528
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-5/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          507307272,
+          2663179528
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          520989638,
+          524084488
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        543956553,
+        556865207
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "target_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            507307272,
+            2663179528
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-5/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          507307272,
+          2663179528
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          520989638,
+          524084488
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        558799488,
+        572191712
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "target_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            507307272,
+            2663179528
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-5/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          507307272,
+          2663179528
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          520989638,
+          524084488
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        567188096,
+        580580320
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "target_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            507307272,
+            2663179528
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-5/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          507307272,
+          2663179528
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          520989638,
+          524084488
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        585899592,
+        598808246
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "target_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            507307272,
+            2663179528
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-5/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          507307272,
+          2663179528
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          520989638,
+          524084488
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1427247,
+        4281742
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "target_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            507307272,
+            2663179528
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-5/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          507307272,
+          2663179528
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          520989638,
+          524084488
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1101004799,
+        1114636287
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "target_position_bits": [
+        507307272,
+        2663179528
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            507307272,
+            2663179528
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-6/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          1621981420,
+          3777853676
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3783400113,
+          1638758636
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3177395336,
+        1034577766
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "target_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1621981420,
+            3777853676
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-6/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          1621981420,
+          3777853676
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3783400113,
+          1638758636
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3205365973,
+        1062535487
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "target_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1621981420,
+            3777853676
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-6/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1621981420,
+          3777853676
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3783400113,
+          1638758636
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3220734325,
+        1077567767
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "target_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1621981420,
+            3777853676
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-6/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          1621981420,
+          3777853676
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3783400113,
+          1638758636
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3229122933,
+        1085956375
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "target_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1621981420,
+            3777853676
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-6/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          1621981420,
+          3777853676
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3783400113,
+          1638758636
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3247309012,
+        1104478527
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "target_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1621981420,
+            3777853676
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-6/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          1621981420,
+          3777853676
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3783400113,
+          1638758636
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        2647756623,
+        505228155
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "target_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1621981420,
+            3777853676
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-6/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          1621981420,
+          3777853676
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3783400113,
+          1638758636
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3762320198,
+        1620072053
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "target_position_bits": [
+        1621981420,
+        3777853676
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1621981420,
+            3777853676
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-7/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          1266679808,
+          3414163456
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          3212836864
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3180384451,
+        1032900803
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "target_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1266679808,
+            3414163456
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-7/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          1266679808,
+          3414163456
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          3212836864
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3207922931,
+        1060439283
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "target_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1266679808,
+            3414163456
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-7/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1266679808,
+          3414163456
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          3212836864
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3223217237,
+        1075733589
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "target_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1266679808,
+            3414163456
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-7/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          1266679808,
+          3414163456
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          3212836864
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3231605845,
+        1084122197
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "target_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1266679808,
+            3414163456
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-7/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          1266679808,
+          3414163456
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          3212836864
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3249865970,
+        1102382322
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "target_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1266679808,
+            3414163456
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-7/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          1266679808,
+          3414163456
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          3212836864
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        2651165078,
+        503681430
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "target_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1266679808,
+            3414163456
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-7/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          1266679808,
+          3414163456
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1065353216,
+          3212836864
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3765785523,
+        1618301875
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "target_position_bits": [
+        1266679808,
+        3414163456
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1266679808,
+            3414163456
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-8/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3225419776,
+          1082130432
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3178295537,
+        1033937056
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-8/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3225419776,
+          1082130432
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3205928598,
+        1061734601
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-8/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3225419776,
+          1082130432
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3221472195,
+        1076866991
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-8/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3225419776,
+          1082130432
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3229860803,
+        1085255599
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-8/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3225419776,
+          1082130432
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3247871638,
+        1103677640
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-8/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3225419776,
+          1082130432
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        2648586912,
+        504637205
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-8/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          3225419776,
+          1082130432
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3763082698,
+        1619529351
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-9/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          0,
+          0
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-9/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          0,
+          0
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-9/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          0,
+          0
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-9/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          0,
+          0
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-9/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          0,
+          0
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-9/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          0,
+          0
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-9/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          0,
+          0
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          0,
+          0
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        0,
+        0
+      ],
+      "target_position_bits": [
+        0,
+        0
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            0,
+            0
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-10/speed-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1036831949,
+        "position_bits": [
+          1166016511,
+          3019898880
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1166016512,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1036831949,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        934948490,
+        1035611787
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "target_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1166016511,
+            3019898880
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-10/speed-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1065353216,
+        "position_bits": [
+          1166016511,
+          3019898880
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1166016512,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1065353216,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        963164716,
+        1063828014
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "target_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1166016511,
+            3019898880
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-10/speed-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1166016511,
+          3019898880
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1166016512,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        978035430,
+        1078698728
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "target_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1166016511,
+            3019898880
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-10/speed-3",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1088421888,
+        "position_bits": [
+          1166016511,
+          3019898880
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1166016512,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1088421888,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        986424038,
+        1087087336
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "target_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1166016511,
+            3019898880
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-10/speed-4",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1107296255,
+        "position_bits": [
+          1166016511,
+          3019898880
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1166016512,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1107296255,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1005107755,
+        1105771053
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "target_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1166016511,
+            3019898880
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-10/speed-5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 507307272,
+        "position_bits": [
+          1166016511,
+          3019898880
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1166016512,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 507307272,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        405518574,
+        506181871
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "target_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1166016511,
+            3019898880
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "steer-10/speed-6",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1621981420,
+        "position_bits": [
+          1166016511,
+          3019898880
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1166016512,
+          1065353216
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1621981420,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1520284605,
+        1620947903
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "target_position_bits": [
+        1166016511,
+        3019898880
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1166016511,
+            3019898880
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[1, 1]/links-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 0
+      },
+      "state": 3,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1065353216,
+        1065353216
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1091567616,
+        1100480512
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1091567616,
+            1100480512
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[1, 1]/links-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1073988547,
+        1076866991
+      ],
+      "current_waypoint": "next",
+      "previous_waypoint": "current",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[1, 1]/links-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 2
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3225101238,
+        3220319800
+      ],
+      "current_waypoint": "alternate",
+      "previous_waypoint": "current",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "random",
+          "low": 0,
+          "high": 1,
+          "result": 1
+        },
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[-1, -1]/links-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          3212836864,
+          3212836864
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[-1, -1]/links-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          3212836864,
+          3212836864
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[-1, -1]/links-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          3212836864,
+          3212836864
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 2
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "next",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[0, 1]/links-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[0, 1]/links-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[0, 1]/links-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 2
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "next",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[1, 0]/links-0",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          0
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[1, 0]/links-1",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          0
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "arrival-[1, 0]/links-2",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          0
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 2
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        3222531707,
+        3222531707
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "next",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed-0",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": 0,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 0,
+      "speed_base_bits": 0,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed-1",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": 1,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1048576000,
+      "speed_base_bits": 1048576000,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed--1",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": -1,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 3196059648,
+      "speed_base_bits": 3196059648,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed-14",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1080033280,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed-16777217",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": 16777217,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1249902592,
+      "speed_base_bits": 1249902592,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed-33554431",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": 33554431,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1258291199,
+      "speed_base_bits": 1258291199,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed-2147483647",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": 2147483647,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1308622847,
+      "speed_base_bits": 1308622847,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed--2147483648",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": -2147483648,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 3456106496,
+      "speed_base_bits": 3456106496,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "initialize-speed--2147483647",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": -2147483647,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 3456106495,
+      "speed_base_bits": 3456106495,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-0/active-False",
+        "state": 0,
+        "flags": 0,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 0,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-0/active-True",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1080033280,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-1/active-False",
+        "state": 1,
+        "flags": 0,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 2,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-1/active-True",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1073988547,
+        1076866991
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-2/active-False",
+        "state": 2,
+        "flags": 0,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 2,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-2/active-True",
+        "state": 2,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "source",
+          "position_bits": [
+            1106247680,
+            1109393408
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-3/active-False",
+        "state": 3,
+        "flags": 0,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 3,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "remove-updatable"
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-3/active-True",
+        "state": 3,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 3,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "remove-updatable"
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-4/active-False",
+        "state": 4,
+        "flags": 0,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 4,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-4/active-True",
+        "state": 4,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 4,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-255/active-False",
+        "state": 255,
+        "flags": 0,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 255,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "state-255/active-True",
+        "state": 255,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 255,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "historical-single-link-speed5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1084227584,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1084227584,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1077689404,
+        1081801467
+      ],
+      "current_waypoint": "next",
+      "previous_waypoint": "current",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "missing-extent",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 0,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "remove-updatable"
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "target-no-required-flag",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 0,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "nil",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "remove-updatable"
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "target-blocked-flag",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 36,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "nil",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "remove-updatable"
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "missing-target",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": true,
+        "missing_target": true,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "nil",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "object-lookup"
+        },
+        {
+          "service": "remove-updatable"
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "missing-initial-waypoint",
+        "state": 0,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 999,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 3,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        0,
+        0
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1106247680,
+        1109393408
+      ],
+      "events": [
+        {
+          "service": "waypoint-lookup",
+          "index": 999
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "resolve-current-waypoint",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": true,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1080033280,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          0,
+          0
+        ],
+        "waypoint_bits": [
+          1095761920,
+          1103101952
+        ],
+        "links": 0
+      },
+      "state": 1,
+      "speed_bits": 1080033280,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1073988547,
+        1076866991
+      ],
+      "current_waypoint": "current",
+      "previous_waypoint": "nil",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "waypoint-lookup",
+          "index": 7
+        },
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    }
+  ],
+  "historical_controls": [
+    {
+      "mode": "actual-startup-inherited",
+      "control_word": 3647,
+      "input": {
+        "name": "historical-single-link-speed5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1084227584,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1084227584,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1077689404,
+        1081801467
+      ],
+      "current_waypoint": "next",
+      "previous_waypoint": "current",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "control_word": 639,
+      "input": {
+        "name": "historical-single-link-speed5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1084227584,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1084227584,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1077689404,
+        1081801467
+      ],
+      "current_waypoint": "next",
+      "previous_waypoint": "current",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "down-control",
+      "control_word": 1663,
+      "input": {
+        "name": "historical-single-link-speed5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1084227584,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1084227584,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1077689404,
+        1081801467
+      ],
+      "current_waypoint": "next",
+      "previous_waypoint": "current",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "up-control",
+      "control_word": 2687,
+      "input": {
+        "name": "historical-single-link-speed5",
+        "state": 1,
+        "flags": 16777216,
+        "target_flags": 4,
+        "extent": 123,
+        "resolve_target": false,
+        "missing_target": false,
+        "resolve_waypoint": false,
+        "waypoint_id": 7,
+        "speed_units": 14,
+        "speed_bits": 1084227584,
+        "position_bits": [
+          1092616192,
+          1101004800
+        ],
+        "velocity_bits": [
+          1065353216,
+          1065353216
+        ],
+        "waypoint_bits": [
+          1091567616,
+          1100480512
+        ],
+        "links": 1
+      },
+      "state": 1,
+      "speed_bits": 1084227584,
+      "speed_base_bits": 1065353216,
+      "velocity_bits": [
+        1077689404,
+        1081801466
+      ],
+      "current_waypoint": "next",
+      "previous_waypoint": "current",
+      "target": "target",
+      "source_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "target_position_bits": [
+        1092616192,
+        1101004800
+      ],
+      "events": [
+        {
+          "service": "move",
+          "object": "target",
+          "position_bits": [
+            1092616192,
+            1101004800
+          ]
+        }
+      ],
+      "all_nonoutput_bytes_preserved": true
+    }
+  ]
+}

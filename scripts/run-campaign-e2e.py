@@ -224,8 +224,9 @@ def run_case(args, binary, suite_dir, case, port):
     heartbeat = started
     while proc.poll() is None:
         elapsed = time.monotonic() - started
-        if elapsed > case.get('timeout_seconds', 420):
+        if errors or elapsed > case.get('timeout_seconds', 420):
             report['forced_termination'] = True
+            report['abort_reason'] = 'runtime_error' if errors else 'timeout'
             try:
                 os.killpg(proc.pid, signal.SIGTERM)
             except ProcessLookupError:

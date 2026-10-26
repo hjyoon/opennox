@@ -1791,6 +1791,16 @@ are independently checked. Remaining native/transitive semantics, campaign
 features/final nine cells, UI/audio/peer and sustained gameplay remain open.
 Overall porting is not 100 percent.
 
+### Campaign E2E runtime failure termination
+
+The prebuilt campaign runner now terminates its own process group when a
+panic, fatal error, unsupported native branch or PlayerDeath is observed.
+It records runtime_error separately from a timeout and retains the original
+failure, log and snapshots. The same failed northern-room input/Save/binary
+now reports failure in 18.0 seconds instead of 136.7 seconds. This is a harness
+negative control, not a completed combat route. All eight Python regressions
+pass; successful runtime checks are recorded separately.
+
 ### Poison activation startup precision
 
 ActivatePoison now preserves the original startup rounding context when

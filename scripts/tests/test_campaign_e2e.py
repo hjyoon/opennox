@@ -115,6 +115,48 @@ class RequiredEnableTransitionsTests(unittest.TestCase):
             [{'script_id': 1, 'before': None, 'after': None}])['passed'])
 
 
+class RequiredPositionTransitionsTests(unittest.TestCase):
+    requirements = [
+        {'script_id': 1000193761, 'before': {'x': 1957, 'y': 3780}, 'after': {'x': 1871, 'y': 3998}},
+        {'script_id': 1000193759, 'before': {'x': 1618, 'y': 4109}, 'after': {'x': 1818, 'y': 3928}},
+    ]
+
+    def sample(self, first=False, second=False):
+        return [{'script_id': row['script_id'], 'pos': row['after' if moved else 'before']}
+                for row, moved in zip(self.requirements, (first, second))]
+
+    def test_original_switches_move_both_lights(self):
+        samples = [self.sample(), self.sample(True), self.sample(True, True)]
+        self.assertTrue(runner.required_position_transitions(samples, self.requirements)['passed'])
+
+    def test_prepositioned_or_unmoved_lights_do_not_count(self):
+        for samples in ([self.sample(True, True), self.sample(True, True)],
+                        [self.sample(), self.sample(True)]):
+            with self.subTest(samples=samples):
+                self.assertFalse(runner.required_position_transitions(samples, self.requirements)['passed'])
+
+    def test_missing_later_created_or_duplicate_identity_fails(self):
+        for samples in ([], [[], self.sample(True, True)], [self.sample(), []],
+                        [self.sample(), self.sample(True, True) * 2, self.sample(True, True)]):
+            with self.subTest(samples=samples):
+                self.assertFalse(runner.required_position_transitions(samples, self.requirements)['passed'])
+
+    def test_later_reversion_cancels_the_transition(self):
+        samples = [self.sample(), self.sample(True, True), self.sample()]
+        self.assertFalse(runner.required_position_transitions(samples, self.requirements)['passed'])
+
+    def test_nonfinite_coordinates_and_invalid_or_overlapping_bounds_fail(self):
+        for bad in (float('nan'), float('inf'), True, None):
+            samples = [self.sample(), self.sample(True, True)]
+            samples[-1][0] = dict(samples[-1][0], pos={'x': bad, 'y': 3998})
+            self.assertFalse(runner.required_position_transitions(samples, self.requirements)['passed'])
+        for changes in ({'tolerance': -1}, {'tolerance': float('nan')}, {'tolerance': True},
+                        {'tolerance': 200}, {'before': {'x': None, 'y': 3780}}):
+            required = [dict(self.requirements[0], **changes)]
+            self.assertFalse(runner.required_position_transitions(
+                [self.sample(), self.sample(True, True)], required)['passed'])
+
+
 class RequiredPlateHoldsTests(unittest.TestCase):
     requirements = [{'weight_script_id': 2400, 'plate_script_id': 2399,
                      'player_script_id': 1, 'maximum_weight_distance': 16,

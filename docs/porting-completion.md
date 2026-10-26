@@ -1918,6 +1918,33 @@ Fresh products and campaign E2E are recorded separately in
 `poison-activation-precision-port/`. Linux, remaining native/transitive work,
 campaign cells and overall porting 100 percent remain open.
 
+### Campaign E2E original spike switches and hall exit
+
+`scripts/e2e/campaign/wizard2-spike.json` continues from the earned Fireball
+book Save using S27 at original Button2353 and Button2352. The east shot aims
+at the button's ground projection (640,217). Earlier A43 and low-aim S27
+diagnostics remain failed; the earlier S27 run activated only the first
+switch. The engine is unchanged for this input correction.
+
+The runner now requires both original WallLight movements by unique script
+identity: 1000193761 from (1957,3780) to (1871,3998), and 1000193759 from
+(1618,4109) to (1818,3928). Prepositioned, unmoved, missing, duplicate,
+nonfinite or later reverted objects cannot pass. All 18 existing Python
+tests and five new position-transition regressions pass. Replaying the
+classifier against the retained failed captures rejects both diagnostics;
+the reports are not rewritten.
+
+Normal passes in 32.196 seconds and HD in 32.205 seconds. Both traverse the
+original exit roads and reach the original east statue trigger. The normal
+run predates the new Python classifier; its immutable captures pass the same
+classifier without a game rerun. The HD run includes it directly. Script
+globals74 and77 each change0 to1, and each light moves after its respective
+shot. Independent native parsing verifies both Saves: Wiz02c, HP20/20,
+MP20/78, poison zero, XP3937.6934 (bits1165368088) and the four earned spells.
+The clean fbaa56a game products are reused without a Go rebuild. Evidence is
+retained in `campaign-wiz02c-spike-fireball-healthy-verified-v1.json`.
+Later statue passages, BookOfOblivion and overall100 remain open.
+
 ### Campaign E2E earned Fireball book and shortcut
 
 `scripts/e2e/campaign/wizard2-fireball-book.json` continues from the earned
@@ -1935,8 +1962,8 @@ XP3937.6934 (bits1165368088), and Fireball1 alongside the three prior spells.
 No spell or shortcut setter is used; no MagicMissile50 lineage is merged.
 The existing clean fbaa56a products are reused without a Go rebuild.
 Evidence is retained in `campaign-wiz02c-fireball-book-healthy-verified-v1.json`.
-This qualifies learning and binding; spike-hall traversal and overall100
-remain open.
+This qualifies learning and binding; the separate spike-hall case above
+qualifies the next segment. Overall100 remains open.
 
 ### Campaign E2E FlyingGolem and original GoldKey
 
@@ -1971,8 +1998,8 @@ A separate A43 spike-switch diagnostic cannot reach the next hall endpoint
 within600 ticks and remains failed; it supplies no exit or switch credit.
 The nearby original Fireball book is now covered by the separate earned-book
 scenario above. No spell is injected and no older MagicMissile50 lineage is
-merged. The spike hall, BookOfOblivion, remaining cells and overall100 remain
-open.
+merged. The later statue passages, BookOfOblivion, remaining cells and
+overall100 remain open.
 
 ### Campaign E2E steel-crate pressure plate and gate
 
@@ -2000,9 +2027,9 @@ Independent native Save parsing verifies Wiz02c, HP20/20, MP78/78, poison zero,
 XP3459.5488 (bits1163409608) and the three earned spells in both runs. Source
 Save, data, binary and observation hashes are rechecked. Mana was already
 full before arrival, so no Obelisk recovery effect is credited. Evidence is
-retained in `campaign-wiz02c-crate-gate-healthy-verified-v1.json`. GoldKey,
-BookOfOblivion, full Bookcase6 movement, final cell audits and overall100
-remain open.
+retained in `campaign-wiz02c-crate-gate-healthy-verified-v1.json`. GoldKey is
+covered by the separate scenario above. BookOfOblivion, full Bookcase6
+movement, final cell audits and overall100 remain open.
 
 ### Campaign E2E original switch transitions and central east combat
 

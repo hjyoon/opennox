@@ -158,6 +158,35 @@ def required_enable_transitions(samples, requirements):
             'passed': bool(transitions) and all(row['passed'] for row in transitions)}
 
 
+def required_position_transitions(samples, requirements):
+    def point(value):
+        if not isinstance(value, dict):
+            return None
+        xy = (value.get('x'), value.get('y'))
+        return xy if all(type(v) in (int, float) and math.isfinite(v) for v in xy) else None
+
+    def position(objects, ident):
+        matches = [obj for obj in objects if obj.get('script_id') == ident]
+        return point(matches[0].get('pos')) if len(matches) == 1 else None
+
+    transitions = []
+    for required in requirements:
+        ident = required['script_id']
+        before, after = point(required['before']), point(required['after'])
+        tolerance = required.get('tolerance', 0)
+        valid = (before is not None and after is not None
+                 and type(tolerance) in (int, float) and math.isfinite(tolerance)
+                 and tolerance >= 0 and math.dist(before, after) > 2 * tolerance)
+        positions = [position(objects, ident) for objects in samples]
+        initial, final = (positions[0], positions[-1]) if positions else (None, None)
+        passed = bool(valid and positions and all(p is not None for p in positions)
+                      and math.dist(initial, before) <= tolerance
+                      and math.dist(final, after) <= tolerance)
+        transitions.append(dict(required, initial_position=initial, final_position=final, passed=passed))
+    return {'transitions': transitions,
+            'passed': bool(transitions) and all(row['passed'] for row in transitions)}
+
+
 def required_plate_holds(samples, requirements):
     def position(objects, ident):
         matches = [obj for obj in objects if obj.get('script_id') == ident]
@@ -332,7 +361,8 @@ def run_case(args, binary, suite_dir, case, port):
     if case.get('expect_damage'):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
     if (case.get('created_type') or case.get('required_defeated_script_ids')
-            or case.get('required_enable_transitions') or case.get('required_plate_holds')) and snapshots_ok:
+            or case.get('required_enable_transitions') or case.get('required_position_transitions')
+            or case.get('required_plate_holds')) and snapshots_ok:
         samples = [json.loads(Path(sample['routes']['objects']['path']).read_text())
                    for sample in report['snapshots']]
     if case.get('created_type') and snapshots_ok:
@@ -347,6 +377,10 @@ def run_case(args, binary, suite_dir, case, port):
     if case.get('required_enable_transitions') and snapshots_ok:
         transitions = required_enable_transitions(samples, case['required_enable_transitions'])
         report['required_original_enable_transitions'] = transitions
+        outcomes_ok = outcomes_ok and transitions['passed']
+    if case.get('required_position_transitions') and snapshots_ok:
+        transitions = required_position_transitions(samples, case['required_position_transitions'])
+        report['required_original_position_transitions'] = transitions
         outcomes_ok = outcomes_ok and transitions['passed']
     if case.get('required_plate_holds') and snapshots_ok:
         holds = required_plate_holds(samples, case['required_plate_holds'])

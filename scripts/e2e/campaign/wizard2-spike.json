@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "name": "Wizard2 original spike switches with earned Fireball27",
+  "coverage": "Original S27 Fireball inputs at west and east buttons, both script-driven WallLight relocations, safe original hall exit and manual Save.",
+  "cases": [
+    {
+      "name": "wizard2-cave-spike",
+      "scenario": "wizard2-cave-spike.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 130,
+      "required_checkpoints": [
+        "original spike hall central carpet",
+        "original spike hall exit attempt",
+        "original manual Save"
+      ],
+      "expected_health": 20,
+      "required_position_transitions": [
+        {
+          "script_id": 1000193761,
+          "before": {
+            "x": 1957,
+            "y": 3780
+          },
+          "after": {
+            "x": 1871,
+            "y": 3998
+          }
+        },
+        {
+          "script_id": 1000193759,
+          "before": {
+            "x": 1618,
+            "y": 4109
+          },
+          "after": {
+            "x": 1818,
+            "y": 3928
+          }
+        }
+      ]
+    }
+  ],
+  "seed_contract": "Earned original Fireball book Save20HP78MP0poison, A43 S27 D41 F115; no MagicMissile50 lineage merge."
+}

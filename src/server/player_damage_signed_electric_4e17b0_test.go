@@ -249,7 +249,7 @@ func TestPlayerDamageSignedElectricArmor4E17B0(t *testing.T) {
 					}
 					r.CanDamageArmor = func(v *Object) bool { return v == armor }
 					r.DamageArmor = func(item, a, w *Object, d int32, gotType object.DamageType) bool {
-						if item != armor || a != source || w != weapon || d != 2 || gotType != typ || cached.Field76 != 0 || *carry != -0.25 {
+						if item != armor || a != source || w != weapon || d != 1 || gotType != typ || cached.Field76 != 0 || *carry != 0.75 {
 							t.Fatal("signed armor damage/carry order")
 						}
 						events = append(events, "armor damage")
@@ -257,7 +257,7 @@ func TestPlayerDamageSignedElectricArmor4E17B0(t *testing.T) {
 						return true
 					}
 					r.ReportArmorHealth = func(owner, item *Object, before, after uint16) {
-						if owner != target || item != armor || before != 100 || after != 98 {
+						if owner != target || item != armor || before != 100 || after != 99 {
 							t.Fatal("signed armor report")
 						}
 						events = append(events, "report")
@@ -277,7 +277,7 @@ func TestPlayerDamageSignedElectricArmor4E17B0(t *testing.T) {
 					if raw < 0 {
 						residual = 0
 					}
-					if !h || !result || !slices.Equal(events, want) || target.HealthData.Cur != 60 || armor.HealthData.Cur != 98 || *carry != -0.25 || live.Field21 != math.Float32bits(residual) || cached.Field76 != 2 || cached.Field75 != uint32(typ) {
+					if !h || !result || !slices.Equal(events, want) || target.HealthData.Cur != 60 || armor.HealthData.Cur != 99 || *carry != 0.75 || live.Field21 != math.Float32bits(residual) || cached.Field76 != 2 || cached.Field75 != uint32(typ) {
 						t.Fatalf("signed armor=%t/%t events=%v carry=%g marker=%d/%d", h, result, events, *carry, cached.Field76, cached.Field75)
 					}
 				})

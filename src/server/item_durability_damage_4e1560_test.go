@@ -96,10 +96,10 @@ func TestItemDurabilityRound4E1560MatchesX87Conversion(t *testing.T) {
 		value float32
 		want  int32
 	}{
-		{value: -1.5, want: -2},
+		{value: -1.5, want: -1},
 		{value: -0.5, want: 0},
 		{value: 0.5, want: 0},
-		{value: 1.5, want: 2},
+		{value: 1.5, want: 1},
 		{value: 2.5, want: 2},
 		{value: float32(math.Inf(1)), want: math.MinInt32},
 		{value: float32(math.Inf(-1)), want: math.MinInt32},
@@ -142,7 +142,7 @@ func TestItemDurabilityDamageNative4E1560ModifierOrderAndEquipRules(t *testing.T
 	if !EquipDamageNative4E16D0(item, owner, source, effective, 0.25, object.DamageCrush, runtime) {
 		t.Fatal("equipped-item damage was not handled")
 	}
-	if damage != 1 || health.Cur != 7 || math.Float32frombits(update.Field0) != -0.25 {
+	if damage != 0 || health.Cur != 8 || math.Float32frombits(update.Field0) != 0.75 {
 		t.Fatalf("equipped-item damage = damage:%d health:%d carry:%g", damage, health.Cur, math.Float32frombits(update.Field0))
 	}
 }

@@ -208,9 +208,8 @@ func TestPlayerDamageNative4E17B0LavaDamagesEquippedArmor(t *testing.T) {
 	if handled, result := PlayerDamageNative4E17B0(target, nil, nil, 2, object.DamageLava, runtime); !handled || !result {
 		t.Fatalf("armored LAVA = handled:%t result:%t", handled, result)
 	}
-	wantCarry := float32(float64(float32(0.5)) / float64(float32(0.5)) * float64(int32(2)))
-	wantCarry += float32(0.4)
-	wantCarry -= 2
+	_, wantCarryBits := itemDurabilityHistoricalExpected(t, 2, 0.4)
+	wantCarry := math.Float32frombits(wantCarryBits)
 	if armor.HealthData.Cur != 8 || math.Float32bits(*carry) != math.Float32bits(wantCarry) || !reported {
 		t.Fatalf("armor state = hp:%d carry:%v reported:%t", armor.HealthData.Cur, *carry, reported)
 	}
@@ -255,7 +254,7 @@ func TestPlayerDamageNative4E17B0AppliesArmorDurabilityModifier(t *testing.T) {
 	}
 	runtime.CanDamageArmor = func(got *Object) bool { return got == armor }
 	runtime.DamageArmor = func(got, source, weapon *Object, damage int32, typ object.DamageType) bool {
-		if got != armor || source != nil || weapon != nil || damage != 2 || typ != object.DamageLava {
+		if got != armor || source != nil || weapon != nil || damage != 1 || typ != object.DamageLava {
 			t.Fatalf("DamageArmor(%p,%p,%p,%d,%d)", got, source, weapon, damage, typ)
 		}
 		got.HealthData.Cur -= uint16(damage)
@@ -264,7 +263,7 @@ func TestPlayerDamageNative4E17B0AppliesArmorDurabilityModifier(t *testing.T) {
 	if handled, result := PlayerDamageNative4E17B0(target, nil, nil, 3, object.DamageLava, runtime); !handled || !result {
 		t.Fatalf("modified armor LAVA = handled:%t result:%t", handled, result)
 	}
-	if modifierCalls != 1 || armor.HealthData.Cur != 8 || math.Float32bits(*carry) != math.Float32bits(-0.25) {
+	if modifierCalls != 1 || armor.HealthData.Cur != 9 || math.Float32bits(*carry) != math.Float32bits(0.75) {
 		t.Fatalf("armor modifier state = calls:%d hp:%d carry:%v", modifierCalls, armor.HealthData.Cur, *carry)
 	}
 	if !reflect.DeepEqual(damages, []int32{3}) {

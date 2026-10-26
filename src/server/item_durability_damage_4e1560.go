@@ -31,14 +31,10 @@ func itemDurabilityUnsupported4E1560(
 	return false
 }
 
-// itemDurabilityRound4E1560 models the x87 FISTP conversion reached through
-// nox_float2int. The original returns the integer-indefinite value for NaN and
-// values outside the signed 32-bit range.
+// itemDurabilityRound4E1560 preserves the startup x87 rounding toward zero at
+// the real 00419A70 conversion, including its signed integer-indefinite result.
 func itemDurabilityRound4E1560(value float32) int32 {
-	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
-		return math.MinInt32
-	}
-	return int32(math.RoundToEven(float64(value)))
+	return netFXTruncateSignedDWORD419A70(value)
 }
 
 func itemDurabilityDamage4E1560(
@@ -66,6 +62,8 @@ func itemDurabilityDamage4E1560(
 		)
 	}
 
+	// 004E16F4 (004E1581 for weapons) caches this base before Defend.
+	update := item.UpdateDataWeaponArmor()
 	modifier := item.InitDataModifier().Modifiers[1]
 	if modifier != nil && modifier.Defend76.Fnc != nil {
 		if runtime.ApplyDefend == nil ||
@@ -76,8 +74,7 @@ func itemDurabilityDamage4E1560(
 		}
 	}
 
-	update := item.UpdateDataWeaponArmor()
-	total := amount + math.Float32frombits(update.Field0)
+	total := experienceSpill32TowardZero(experienceAdd53TowardZero(float64(amount), float64(math.Float32frombits(update.Field0))))
 	damage := itemDurabilityRound4E1560(total)
 	if damage > 0 && (item.Damage == nil || runtime.Damage == nil) {
 		return itemDurabilityUnsupported4E1560(
@@ -85,7 +82,7 @@ func itemDurabilityDamage4E1560(
 		)
 	}
 
-	update.Field0 = math.Float32bits(total - float32(damage))
+	update.Field0 = math.Float32bits(experienceSpill32TowardZero(experienceAdd53TowardZero(float64(total), -float64(damage))))
 	if damage <= 0 {
 		return true
 	}

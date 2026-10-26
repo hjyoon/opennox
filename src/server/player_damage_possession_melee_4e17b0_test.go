@@ -239,8 +239,7 @@ func TestPlayerDamagePossessionMeleeTail4E17B0(t *testing.T) {
 				effective := playerDamageRound4E17B0(accumulated)
 				carry := accumulated - float32(effective)
 				wearAmount := float32(tc.damage - effective) // live item/total armor = 0.5/0.5
-				itemTotal := wearAmount + float32(0.4)
-				itemDamage := itemDurabilityRound4E1560(itemTotal)
+				itemDamage, itemCarryBits := itemDurabilityHistoricalExpected(t, wearAmount, 0.4)
 				var events []string
 				liveQuest := false
 				r.ItemArmorValue = func(item *Object) float32 {
@@ -318,7 +317,7 @@ func TestPlayerDamagePossessionMeleeTail4E17B0(t *testing.T) {
 				if tc.clearMarker {
 					marker, markerType = 2, uint32(kind.typ)
 				}
-				if !h || !result || !slices.Equal(events, wantEvents) || live.Field21 != math.Float32bits(carry) || live.Field76 != 31 || live.Field75 != 33 || cached.Field21 != math.Float32bits(0.125) || cached.Field76 != marker || cached.Field75 != markerType || armor.UpdateDataWeaponArmor().Field0 != math.Float32bits(itemTotal-float32(itemDamage)) {
+				if !h || !result || !slices.Equal(events, wantEvents) || live.Field21 != math.Float32bits(carry) || live.Field76 != 31 || live.Field75 != 33 || cached.Field21 != math.Float32bits(0.125) || cached.Field76 != marker || cached.Field75 != markerType || armor.UpdateDataWeaponArmor().Field0 != itemCarryBits {
 					t.Fatalf("tail=%t/%t marker=%d/%d events=%v want=%v", h, result, cached.Field76, cached.Field75, events, wantEvents)
 				}
 			})

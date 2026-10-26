@@ -71,7 +71,7 @@ func TestPlayerDamageNative4E17B0RegisteredOrderedArmorDamage(t *testing.T) {
 			{name: "cloth CRUSH", damage: 9, typ: object.DamageCrush, armor: 0.5, hpCarry: 0.4, itemCarry: 0.4, armorDef: 0.5, wantHP: 193, wantArmor: 23, wantHPCarry: 0.15, wantItemCarry: 0.4},
 			{name: "metal CRUSH doubles wear", damage: 9, typ: object.DamageCrush, armor: 0.5, hpCarry: 0.4, itemCarry: 0.4, armorDef: 0.5, material: object.MaterialMetal, wantHP: 193, wantArmor: 21, wantHPCarry: 0.15, wantItemCarry: 0.4},
 			{name: "metal CRUSH before GodMode", damage: 9, typ: object.DamageCrush, armor: 0.5, hpCarry: 0.4, itemCarry: 0.4, armorDef: 0.5, material: object.MaterialMetal, god: true, wantHP: 193, wantArmor: 21, wantHPCarry: 0.15, wantItemCarry: 0.4},
-			{name: "zero flushes item carry", typ: object.DamageBlade, armor: 0.5, itemCarry: 0.75, armorDef: 0.5, wantHP: 200, wantArmor: 24, wantItemCarry: -0.25},
+			{name: "zero flushes item carry", typ: object.DamageBlade, armor: 0.5, itemCarry: 0.75, armorDef: 0.5, wantHP: 200, wantArmor: 25, wantItemCarry: 0.75},
 			{name: "negative updates item carry", damage: -3, typ: object.DamageBlade, armor: 0.5, itemCarry: 0.1, armorDef: 0.25, wantHP: 202, wantArmor: 25, wantHPCarry: 0.5, wantItemCarry: -0.4},
 			{name: "zero armor preserves NaN", typ: object.DamageBlade, itemCarry: 0.75, armorDef: 0.25, wantHP: 200, wantArmor: 25, wantItemCarry: float32(math.NaN())},
 			{name: "minimum HP follows armor", damage: 1, typ: object.DamageBlade, armor: 1, itemCarry: 0.75, armorDef: 0.25, wantHP: 199, wantArmor: 24},

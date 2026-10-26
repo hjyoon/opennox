@@ -124,7 +124,8 @@ func TestPlayerDamageMonsterSelfStrikeCachedPrefix4E17B0(t *testing.T) {
 			if h, result := PlayerDamageNative4E17B0(v, a, a, 5, typ, r); !h || !result {
 				t.Fatal("cached self-strike rejected")
 			}
-			if live.Field76 != 55 || cached.Field21 != math.Float32bits(0.125) || armor.HealthData.Cur != uint16(25-(5-amount)) {
+			wantWear, wantItemCarryBits := itemDurabilityHistoricalExpected(t, float32(5-amount)*0.25, 0.4)
+			if live.Field76 != 55 || cached.Field21 != math.Float32bits(0.125) || armor.HealthData.Cur != uint16(25-wantWear) || armor.UpdateDataWeaponArmor().Field0 != wantItemCarryBits {
 				t.Fatal("wrong record mutated")
 			}
 		})

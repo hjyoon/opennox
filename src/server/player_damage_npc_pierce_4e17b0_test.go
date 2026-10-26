@@ -156,11 +156,13 @@ func TestPlayerDamageNPCPierce4E17B0ArmorBeforeQuestAndMinimum(t *testing.T) {
 					if h, result := PlayerDamageNative4E17B0(target, source, arrow, tc.damage, object.DamageImpale, r); !h || result {
 						t.Fatalf("result propagation=%t/%t", h, result)
 					}
+					unscaled := playerDamageRound4E17B0(float32((1-float64(tc.armor))*float64(tc.damage)) + tc.carry)
+					_, wantItemCarryBits := itemDurabilityHistoricalExpected(t, float32(tc.damage-unscaled), 0.25)
 					wantEvents := []string{"quest", "HP"}
 					if tc.wear > 0 {
 						wantEvents = []string{"armor", "quest", "HP"}
 					}
-					if !reflect.DeepEqual(events, wantEvents) || math.Float32frombits(ud.Field1) != tc.wantCarry || *itemCarry != 0.25 {
+					if !reflect.DeepEqual(events, wantEvents) || math.Float32frombits(ud.Field1) != tc.wantCarry || math.Float32bits(*itemCarry) != wantItemCarryBits {
 						t.Fatalf("events=%v HP carry=%g armor carry=%g", events, math.Float32frombits(ud.Field1), *itemCarry)
 					}
 				})
@@ -362,8 +364,8 @@ func TestPlayerDamageNPCPierce4E17B0PlayerArmorDefendArguments(t *testing.T) {
 		return tail(v, a, w, d, typ)
 	}
 	if h, result := PlayerDamageNative4E17B0(target, source, arrow, 3, object.DamageImpale, r); !h || !result ||
-		!reflect.DeepEqual(events, []string{"defend", "armor", "default"}) || !reflect.DeepEqual(*damages, []int32{2}) ||
-		target.HealthData.Cur != 18 || item.HealthData.Cur != 49 || *source != beforeSource || *source.UpdateDataPlayer() != beforePlayer {
+		!reflect.DeepEqual(events, []string{"defend", "default"}) || !reflect.DeepEqual(*damages, []int32{2}) ||
+		target.HealthData.Cur != 18 || item.HealthData.Cur != 50 || *carry != 0.75 || *source != beforeSource || *source.UpdateDataPlayer() != beforePlayer {
 		t.Fatalf("result=%t/%t events=%v HP=%d armor=%d", h, result, events, target.HealthData.Cur, item.HealthData.Cur)
 	}
 }

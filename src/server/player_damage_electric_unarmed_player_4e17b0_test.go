@@ -23,7 +23,7 @@ func playerDamageUnarmedPlayerArmorRuntime4E17B0(t *testing.T, target, source, a
 	}
 	r.DamageArmor = func(item, attacker, weapon *Object, damage int32, gotType object.DamageType) bool {
 		marker, _, _ := playerDamageElectricSelfMetadata4E17B0(target)
-		if item != armor || attacker != source || weapon != nil || damage != 6 || gotType != typ || marker != 0 || *(*float32)(item.UpdateData) != -0.25 {
+		if item != armor || attacker != source || weapon != nil || damage != 5 || gotType != typ || marker != 0 || *(*float32)(item.UpdateData) != 0.75 {
 			t.Fatal("armor callback lost nil weapon, damage, carry or prefix order")
 		}
 		*events = append(*events, "armor-damage")
@@ -45,7 +45,7 @@ func TestPlayerDamageNative4E17B0UnarmedPlayerElectricArmorAndDefault(t *testing
 				r.QuestDamageScale = func() float32 { events = append(events, "quest"); return 0.5 }
 				r.DefaultDamage = func(victim, attacker, weapon *Object, damage int32, gotType object.DamageType) bool {
 					marker, rawType, residual := playerDamageElectricSelfMetadata4E17B0(target)
-					if victim != target || attacker != source || weapon != nil || damage != 2 || gotType != typ || marker != 2 || rawType != uint32(typ) || residual != 0 || armor.HealthData.Cur != 94 || target.HealthData.Cur != 60 {
+					if victim != target || attacker != source || weapon != nil || damage != 2 || gotType != typ || marker != 2 || rawType != uint32(typ) || residual != 0 || armor.HealthData.Cur != 95 || target.HealthData.Cur != 60 {
 						t.Fatal("electric default entry lost nil weapon or ordered metadata")
 					}
 					events = append(events, "default")
@@ -65,7 +65,7 @@ func TestPlayerDamageNative4E17B0UnarmedPlayerElectricArmorAndDefault(t *testing
 					want = append(want, "report")
 				}
 				want = append(want, "quest", "default", "protection")
-				if !slices.Equal(events, want) || !slices.Equal(damages, []int32{2}) || target.HealthData.Cur != 58 || *carry != -0.25 || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) {
+				if !slices.Equal(events, want) || !slices.Equal(damages, []int32{2}) || target.HealthData.Cur != 58 || *carry != 0.75 || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) {
 					t.Fatalf("events=%v damage=%v HP=%d armor-carry=%g source=%p", events, damages, target.HealthData.Cur, *carry, target.Obj130)
 				}
 			})
@@ -196,7 +196,7 @@ func TestPlayerDamageNative4E17B0UnarmedPlayerElectricArmorBeforeGodMode(t *test
 		t.Fatalf("GodMode=%t/%t", handled, result)
 	}
 	marker, rawType, residual := playerDamageElectricSelfMetadata4E17B0(target)
-	if !slices.Equal(events, []string{"scale", "armor-defend", "armor-damage", "report", "god"}) || marker != 2 || rawType != 9 || residual != 0 || armor.HealthData.Cur != 94 || *carry != -0.25 || len(damages) != 0 || target.HealthData.Cur != 60 {
+	if !slices.Equal(events, []string{"scale", "armor-defend", "armor-damage", "report", "god"}) || marker != 2 || rawType != 9 || residual != 0 || armor.HealthData.Cur != 95 || *carry != 0.75 || len(damages) != 0 || target.HealthData.Cur != 60 {
 		t.Fatalf("events=%v marker=%d/%d HP=%d", events, marker, rawType, target.HealthData.Cur)
 	}
 }

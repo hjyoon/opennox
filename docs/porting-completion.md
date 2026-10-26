@@ -1607,6 +1607,58 @@ other damage types or general AI behavior. Campaign optional features, the final
 nine-cell audit and remaining reachable native/UI/audio/peer/stability work stay
 open. Overall porting is not 100 percent.
 
+### Native item durability startup precision
+
+Weapon and equipped-item durability now preserve the original startup arithmetic:
+round toward zero in the real signed conversion, round the binary32 sum and
+remainder toward zero, and retain the update-data pointer captured before Defend.
+A modifier that replaces that pointer therefore leaves the replacement carry
+untouched and stores the remainder through the captured pointer.
+
+The unchanged original executable ran 600 primary and 391 historical numeric
+contexts under four floating point controls: 3,964 runs and 7,896 complete calls
+through both durability bodies and the signed converter, covering 167 instruction
+addresses. Nine existing scalar-conversion inputs separately executed the complete
+converter 36 times. Three services are excluded: the item damage callback, health
+report, and an explicitly declared opaque Defend callback whose only effect is an
+integer pointer replacement. It supplies no floating point result or arithmetic.
+Historical post-Defend amounts are declared raw inputs; stock modifier bodies,
+whole old callers, DefaultDamage HP and network bodies are not certified here.
+Only the listed historical NaN and infinity shapes are covered.
+
+With all 6,916 final source/test/fixture inputs identical except the production
+file, 525 mismatched leaves and 466 matching controls become 992 passing native
+identities. The old code writes unexpected nonoutputs in 114 pointer-replacement
+contexts; all final C-owned frames above 4 GiB preserve their nonoutputs. Numeric,
+cached-pointer and zero-wear callback expectations in 15 old test files are
+qualified independently, retaining names, input tables and callback effects.
+When original wear truncates to zero, no HP/report callback detaches an inventory
+link, and the test now requires that exact traversal. The existing explosion
+fixture begins with .4 item carry and still produces 25; its separate zero-carry
+control produces 24. Superseded expectation and transcription mistakes remain in
+their failed diagnostic records and are excluded from the final source freeze.
+
+Related tests pass 144,826 identities, retaining every prior broad identity and
+including seven existing item families. Focused tests retain all 131,947 prior
+identities, add 992 new identities and promote 1,265 existing identities for
+134,204 total. Three cgocheck2/race/checkptr2 repetitions pass 402,612 events;
+the same identities pass the offline Linux AMD64 Rosetta/Clang lane. Four full
+suites preserve every prior identity, action and skip: normal and HD pass 212,459
+with 49 skips, server and server HD pass 207,631 with seven skips. Four committed
+ARM64 products, source archive, build metadata and remote revision are checked.
+
+Earlier P72 notes mislabeled class 0x10 as IMMOBILE. It is FOOD; IMMOBILE is
+0x400000. The final P72 inputs already use the correct SIMPLE bit 0x100000,
+and its independently reexecuted numeric evidence and source inputs are unchanged.
+
+Campaign annotations calling Lesser Heal spell 25 were also incorrect: the
+actual ID is 41. Native saved SPELL_LESSER_HEAL names and earned levels remain
+authoritative and unchanged; the failed harness assumptions are preserved.
+
+Full stock modifier/HP/network, invalid-pointer or alias shapes, other damage
+precision, general AI behavior and remaining campaign/native/UI/audio/peer/
+stability work remain open. Overall porting is not 100 percent.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

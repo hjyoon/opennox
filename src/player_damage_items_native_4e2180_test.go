@@ -65,11 +65,11 @@ func TestPlayerDamageItemsNative4E2180RegisteredArmorDamage(t *testing.T) {
 		health   []uint16
 		carries  []float32
 	}{
-		{name: "fractional wear", armor: 0.5, damages: []int32{3, 3}, typ: object.DamageImpale, health: []uint16{18, 17}, carries: []float32{-0.5, 0}},
-		{name: "zero flushes carry", armor: 0.5, carry: 0.75, damages: []int32{0}, typ: object.DamageImpale, health: []uint16{19}, carries: []float32{-0.25}},
-		{name: "negative carries forward", armor: 0.5, damages: []int32{-3, 3}, typ: object.DamageImpale, health: []uint16{20, 18}, carries: []float32{0.5, 0}},
-		{name: "cloth crush", armor: 0.5, damages: []int32{3}, typ: object.DamageCrush, health: []uint16{18}, carries: []float32{-0.5}},
-		{name: "metal crush doubles wear", armor: 0.5, damages: []int32{3}, typ: object.DamageCrush, material: object.MaterialMetal, health: []uint16{16}, carries: []float32{-0.5}},
+		{name: "fractional wear", armor: 0.5, damages: []int32{3, 3}, typ: object.DamageImpale, health: []uint16{19, 17}, carries: []float32{0.5, 0}},
+		{name: "zero flushes carry", armor: 0.5, carry: 0.75, damages: []int32{0}, typ: object.DamageImpale, health: []uint16{20}, carries: []float32{0.75}},
+		{name: "negative carries forward", armor: 0.5, damages: []int32{-3, 3}, typ: object.DamageImpale, health: []uint16{20, 19}, carries: []float32{-0.5, 0}},
+		{name: "cloth crush", armor: 0.5, damages: []int32{3}, typ: object.DamageCrush, health: []uint16{19}, carries: []float32{0.5}},
+		{name: "metal crush doubles wear", armor: 0.5, damages: []int32{3}, typ: object.DamageCrush, material: object.MaterialMetal, health: []uint16{18}, carries: []float32{0.5}},
 		{name: "zero armor infinity", damages: []int32{3}, typ: object.DamageImpale, health: []uint16{20}, carries: []float32{float32(math.Inf(1))}},
 		{name: "zero armor zero amount", damages: []int32{0}, typ: object.DamageImpale, health: []uint16{20}, carries: []float32{float32(math.NaN())}},
 	}

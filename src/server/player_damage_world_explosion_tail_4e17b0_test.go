@@ -45,9 +45,8 @@ func TestPlayerDamageWorldExplosionTail4E17B0CachedAbsorptionLiveCarryAndQuest(t
 	quest := false
 	wear := r.DamageArmor
 	r.DamageArmor = func(item, s, w *Object, amount int32, typ object.DamageType) bool {
-		// Original player carry leaves five absorbed points. Distribution
-		// reloads the live .1 denominator; the existing native item quantizer
-		// rounds that portion to 25. Its own startup precision is a separate port.
+		// Original distribution spills 24.999998 (0x41c7ffff). The existing
+		// item carry .4 makes the original startup conversion produce 25.
 		if item != armor || s != source || w != nil || amount != 25 || typ != object.DamageExplosion || cached.Field76 != 0 {
 			t.Fatalf("world explosion armor identity/order: amount=%d cached marker=%d", amount, cached.Field76)
 		}

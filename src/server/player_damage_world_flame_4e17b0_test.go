@@ -146,6 +146,7 @@ func TestPlayerDamageWorldFlame4E17B0SignedArmorQuest(t *testing.T) {
 							Audio:       func(int, *Object) { t.Fatal("world fire reflected/blocked") },
 							Unsupported: func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { t.Fatal(why) },
 						}
+						_, wantItemCarryBits := itemDurabilityHistoricalExpected(t, float32(raw), .25)
 						h, result := PlayerDamageNative4E17B0(v, a, w, raw, object.DamageFlame, r)
 						var want []string
 						if a != nil {
@@ -160,7 +161,7 @@ func TestPlayerDamageWorldFlame4E17B0SignedArmorQuest(t *testing.T) {
 							want = append(want, "scale")
 						}
 						want = append(want, "default")
-						if !h || !result || !slices.Equal(events, want) || v.HealthData.Cur != 20 || armor.HealthData.Cur != uint16(50-max(raw, 0)) || armor.UpdateDataWeaponArmor().Field0 != math.Float32bits(.25) || *marker != wantMarker || *kind != wantKind {
+						if !h || !result || !slices.Equal(events, want) || v.HealthData.Cur != 20 || armor.HealthData.Cur != uint16(50-max(raw, 0)) || armor.UpdateDataWeaponArmor().Field0 != wantItemCarryBits || *marker != wantMarker || *kind != wantKind {
 							t.Fatalf("result=%t/%t events=%v want=%v", h, result, events, want)
 						}
 						if victim == "player" && v.UpdateDataPlayer().Field21 != math.Float32bits(.25) || victim == "NPC" && v.UpdateDataMonster().Field1 != math.Float32bits(.25) {

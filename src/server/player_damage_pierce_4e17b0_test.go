@@ -364,8 +364,10 @@ func TestPlayerDamageNative4E17B0PierceSignedDamage(t *testing.T) {
 				if h, result := PlayerDamageNative4E17B0(target, source, arrow, tc.damage, object.DamageImpale, r); !h || !result {
 					t.Fatalf("signed PIERCE = %t/%t", h, result)
 				}
+				absorbed := tc.damage - playerDamageRound4E17B0(float32((1-float64(tc.armor))*float64(tc.damage))+tc.carry)
+				_, wantItemCarryBits := itemDurabilityHistoricalExpected(t, float32(absorbed), 0.125)
 				if !reflect.DeepEqual(*damages, []int32{tc.wantDamage}) || target.HealthData.Cur != uint16(20-tc.wantDamage) ||
-					update.Field21 != math.Float32bits(tc.wantCarry) || itemUpdate.Field0 != math.Float32bits(0.125) || armor.HealthData.Cur != uint16(10-tc.wantWear) || len(wears) != int(tc.wantWear) ||
+					update.Field21 != math.Float32bits(tc.wantCarry) || itemUpdate.Field0 != wantItemCarryBits || armor.HealthData.Cur != uint16(10-tc.wantWear) || len(wears) != int(tc.wantWear) ||
 					update.Field76 != 1 || update.Field75 != 529 || target.Obj130 != arrow || target.Field131 != 3 || target.Frame134 != 700 {
 					t.Fatalf("damage=%v HP=%d carry=%g wears=%v armor=%d item carry=%g", *damages, target.HealthData.Cur, math.Float32frombits(update.Field21), wears, armor.HealthData.Cur, math.Float32frombits(itemUpdate.Field0))
 				}

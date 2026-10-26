@@ -77,6 +77,8 @@ func TestPlayerDamageNative4E17B0OrderedArmorCallers(t *testing.T) {
 			modifier := &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
 			first.InitDataModifier().Modifiers[1] = modifier
 			oldCarry := first.UpdateDataWeaponArmor()
+			wantWear, wantCarryBits := itemDurabilityHistoricalExpected(t, portion, 0)
+			originalHP := first.HealthData
 			liveCarry := &WeaponArmorUpdateData{Field0: math.Float32bits(0.75)}
 			liveHP := &HealthData{Cur: 9, Max: 20}
 			var hpDamages []int32
@@ -96,6 +98,9 @@ func TestPlayerDamageNative4E17B0OrderedArmorCallers(t *testing.T) {
 					setUnit(2) // Helper denominator must already be captured as 0.5.
 				} else if item == next {
 					events = append(events, "lookup-next")
+				} else if item == stale && wantWear == 0 {
+					// No positive original wear means no HP/report callback detaches it.
+					events = append(events, "lookup-stale")
 				} else {
 					t.Fatal("eager inventory snapshot visited the detached item")
 				}
@@ -114,8 +119,8 @@ func TestPlayerDamageNative4E17B0OrderedArmorCallers(t *testing.T) {
 					t.Fatal("wear lost source/effective/raw type")
 				}
 				if item == first {
-					if damage != itemDurabilityRound4E1560(portion+0.75) || oldCarry.Field0 != 0 {
-						t.Fatal("wear used stale update data")
+					if damage != wantWear || oldCarry.Field0 != wantCarryBits || liveCarry.Field0 != math.Float32bits(0.75) {
+						t.Fatal("wear lost the originally captured update data")
 					}
 					events = append(events, "damage-first")
 					first.HealthData = liveHP
@@ -148,18 +153,22 @@ func TestPlayerDamageNative4E17B0OrderedArmorCallers(t *testing.T) {
 			if h, result := PlayerDamageNative4E17B0(target, source, weapon, 3, tc.typ, r); !h || !result {
 				t.Fatalf("ordered armor call failed: %t/%t", h, result)
 			}
-			want := []string{"lookup-first", "defend-first", "damage-first"}
-			if tc.player {
-				want = append(want, "report-first")
-			}
-			want = append(want, "lookup-next")
-			if itemDurabilityRound4E1560(portion) > 0 {
-				want = append(want, "damage-next")
+			want := []string{"lookup-first", "defend-first"}
+			wantHP := originalHP
+			if wantWear > 0 {
+				want = append(want, "damage-first")
+				wantHP = liveHP
+				if tc.player {
+					want = append(want, "report-first")
+				}
+				want = append(want, "lookup-next", "damage-next")
 				if tc.player {
 					want = append(want, "report-next")
 				}
+			} else {
+				want = append(want, "lookup-stale")
 			}
-			if !slices.Equal(events, want) || stale.HealthData.Cur != 20 || first.HealthData != liveHP {
+			if !slices.Equal(events, want) || stale.HealthData.Cur != 20 || first.HealthData != wantHP || oldCarry.Field0 != wantCarryBits || liveCarry.Field0 != math.Float32bits(0.75) || next.HealthData.Cur != uint16(20-wantWear) {
 				t.Fatalf("events=%v, want %v", events, want)
 			}
 			wantMarker, wantType := marker, markerType
@@ -182,8 +191,8 @@ func TestPlayerDamageNative4E17B0ZeroSignedAndNoHealthArmor(t *testing.T) {
 			portion, hpCarry        float32
 			noHealth                bool
 		}{
-			{name: "zero flushes carry", armor: 0.5, carry: 0.75, wear: 1, wantCarry: -0.25},
-			{name: "negative portion updates carry", damage: -3, hp: -2, armor: 0.5, carry: 0.1, portion: -0.5, wantCarry: -0.4, hpCarry: 0.5},
+			{name: "zero flushes carry", armor: 0.5, carry: 0.75, wear: 0, wantCarry: 0.75},
+			{name: "negative portion updates carry", damage: -3, hp: -2, armor: 0.5, carry: 0.1, portion: -0.5, wantCarry: math.Float32frombits(0xbecccccc), hpCarry: 0.5},
 			{name: "zero denominator preserves NaN", carry: 0.75, portion: float32(math.NaN()), wantCarry: float32(math.NaN())},
 			{name: "no health still looks up armor", damage: 3, hp: 2, armor: 0.5, portion: 0.5, hpCarry: -0.5, noHealth: true},
 		} {

@@ -316,7 +316,7 @@ func TestPlayerDamageItems4E2180ZeroDamageFlushesExistingCarry(t *testing.T) {
 			}
 		},
 	})
-	if defends != 1 || wears != 1 || reports != 0 || hp.Cur != 3 {
+	if defends != 1 || wears != 0 || reports != 0 || hp.Cur != 4 || carry.Field0 != math.Float32bits(0.75) {
 		t.Fatalf("defends=%d wears=%d reports=%d HP=%d", defends, wears, reports, hp.Cur)
 	}
 }

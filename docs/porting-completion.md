@@ -1528,6 +1528,41 @@ The unchanged original executable ran 5,376 primary and 36 historical contexts u
 
 Twelve old scalar rows and four cached/live numeric leaves are independently corrected while all old inputs, callbacks and assertions remain. The synthetic live replacement at original electric-service return 004E1DF7 certifies that numeric boundary, without claiming an original Go callback. Related tests retain all prior identities and add 5,377 for 139,468 passes. Strict cgocheck2/race/checkptr2 repeats 127,405 identities three times (382,215 passes), and Linux AMD64 preserves all 127,405 identities. Normal and HD each preserve 207,108 PASS and 49 SKIP; server and server HD each preserve 202,280 PASS and seven SKIP. The checkpoint records 6,908 tested inputs, the clean pushed revision, four ARM64 products and a rehashed source archive. Cold Material7 name resolution, nonfinite and alias behavior, broader damage prefixes, all campaign optional features and final native/UI/audio/peer/stability closure remain open; no overall100 claim follows from these counts.
 
+### Native armor wear distribution precision
+
+The armor wear loop at original `004E2180` now preserves startup rounding toward
+zero at the binary64 division, signed damage multiplication and binary32 spill.
+The cached armor denominator, Player-before-Monster selection, lookup and wear
+callback order, live next link and original unguarded reads remain intact.
+
+The unchanged original executable independently ran 1,518 primary and nine
+historical contexts under four floating point controls, totaling 18,284 complete
+calls through the distribution loop, real coefficient getter and linked lookup.
+A separate four-run instruction fragment qualifies the existing synthetic
+binary64 callback input; it is not a real getter output or a complete function.
+EquipDamage is the one excluded observed service. No floating point return,
+arithmetic or conversion service substitutes were used. Actual native comparison
+changed 453 numerical mismatches to 1,519 passing identities, with C-owned frames
+above 4 GiB preserving all nonoutputs. Two old numerical expectations were
+corrected from original execution; their names, inputs, callbacks and assertions
+remain. The new native test uses the canonical linked lookup and exact binary32
+coefficient, and does not certify a new C getter entry.
+
+All 6,910 frozen source inputs match the clean commit and inspected archive.
+Related tests pass 140,987 identities, preserving every prior identity and action.
+Focused tests pass 128,967 identities, including 43 existing armor cases newly
+promoted to focused coverage; three cgocheck2/race/checkptr2 repetitions pass
+386,901 events. The same focused Linux AMD64 identities pass through the existing
+offline Rosetta/Clang lane. All four full suites preserve prior cases, counts and
+skips and add 1,519 identities: normal and HD pass 208,627 with 49 skips; server
+and server HD pass 203,799 with seven skips. Four clean committed ARM64 products
+and their build metadata are inspected.
+
+This closes the declared distribution arithmetic, not full modifier, durability,
+HP, alias or nonfinite payload behavior. Campaign optional features, the final
+nine-cell audit and remaining reachable native/UI/audio/peer/stability work stay
+open. Overall porting is not 100 percent.
+
 ### Current fresh Warrior and Conjurer chapter 1 starts
 
 The unchanged b7 products begin both lineages through the original New Game

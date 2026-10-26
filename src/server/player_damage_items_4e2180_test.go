@@ -156,9 +156,11 @@ func TestPlayerDamageItems4E2180SignedAmountsAndZeroArmor(t *testing.T) {
 		{name: "positive", armor: 0.5, coefficient: 0.25, damage: 7, want: 3.5},
 		{name: "zero is still dispatched", armor: 0.5, coefficient: 0.25, damage: 0, want: 0},
 		{name: "negative", armor: 0.5, coefficient: 0.25, damage: -7, want: -3.5},
-		{name: "signed maximum", armor: 0.5, coefficient: 0.25, damage: math.MaxInt32, want: 1073741824},
+		{name: "signed maximum", armor: 0.5, coefficient: 0.25, damage: math.MaxInt32, want: math.Float32frombits(0x4e7fffff)},
 		{name: "signed minimum", armor: 0.5, coefficient: 0.25, damage: math.MinInt32, want: -1073741824},
-		{name: "spill after multiply", armor: 0.5, coefficient: 1 + math.Ldexp(1, -24), damage: 3, want: math.Float32frombits(0x40c00001)},
+		// The binary64 callback input is a declared original 004E21E4
+		// arithmetic-fragment entry, rather than a real 00415C00 f32 return.
+		{name: "spill after multiply", armor: 0.5, coefficient: 1 + math.Ldexp(1, -24), damage: 3, want: math.Float32frombits(0x40c00000)},
 		{name: "zero armor positive", coefficient: 0.25, damage: 1, want: float32(math.Inf(1))},
 		{name: "zero armor negative", coefficient: 0.25, damage: -1, want: float32(math.Inf(-1))},
 		{name: "zero armor and damage", coefficient: 0.25, nan: true},

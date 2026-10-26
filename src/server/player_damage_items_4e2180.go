@@ -41,7 +41,9 @@ func playerDamageItems4E2180[O comparable](
 		}
 		// 004E21E4 divides the lookup result by the cached binary32 armor;
 		// 004E21ED multiplies by the signed damage and 004E21F1 spills to f32.
-		portion := float32(hooks.itemArmorValue(item) / float64(armor) * float64(damage))
+		// Each boundary uses the original startup rounding toward zero.
+		ratio := playerStatDiv53TowardZero4EEDC0(hooks.itemArmorValue(item), float64(armor))
+		portion := experienceSpill32TowardZero(experienceMul53TowardZero(ratio, float64(damage)))
 		hooks.equipDamage(item, target, source, effective, portion, typ)
 	}
 }

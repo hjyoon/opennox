@@ -22104,6 +22104,34 @@
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
+    },
+    {
+      "name": "original_armor_wear_precision_armor_distribution_complete",
+      "address": "0x4e2180",
+      "size": 149,
+      "sha256": "76d13e152618dc1a9d8aeedf3335e9f6df2cca3d98bbac840e44bbe1c7ceed6c",
+      "purpose": "Independently executed original armor wear precision oracle. Complete original body entered by the original4E2180 oracle, actualstartupPC53/towardzero plus three FPcontrols; EquipDamage4E16D0 observed/excluded."
+    },
+    {
+      "name": "original_armor_wear_precision_item_armor_getter_complete",
+      "address": "0x415c00",
+      "size": 112,
+      "sha256": "f34af7f913929977ebcd6b9c0a911ec406377a07658d4726a9b647cf2d8d6581",
+      "purpose": "Independently executed original armor wear precision oracle. Complete original body entered by the original4E2180 oracle, actualstartupPC53/towardzero plus three FPcontrols; EquipDamage4E16D0 observed/excluded."
+    },
+    {
+      "name": "original_armor_wear_precision_linked_armor_definition_complete",
+      "address": "0x413270",
+      "size": 28,
+      "sha256": "8a6e224e35a8e7221c0e6d5ebd5dded2950754f11fd08f62f37c681223fec056",
+      "purpose": "Independently executed original armor wear precision oracle. Complete original body entered by the original4E2180 oracle, actualstartupPC53/towardzero plus three FPcontrols; EquipDamage4E16D0 observed/excluded."
+    },
+    {
+      "name": "original_armor_wear_precision_historical_arithmetic_fragment",
+      "address": "0x4e21e4",
+      "size": 17,
+      "sha256": "f3b228e3b6422e68b5aa75dcd09507a972f1abc4c597aad0e68697f6a65593fd",
+      "purpose": "Independently executed original armor wear precision oracle. Declared historical arithmetic fragment entry with binary64ST0=1+2^-24, cachedF32armor=.5 andraw3; not a complete function or real415C00 getter output."
     }
   ],
   "data": [

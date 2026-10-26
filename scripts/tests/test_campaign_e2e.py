@@ -1,11 +1,37 @@
 import importlib.util
+import json
 from pathlib import Path
+import subprocess
+import sys
+import tempfile
 import unittest
 
 spec = importlib.util.spec_from_file_location(
     'campaign_e2e', Path(__file__).resolve().parents[1] / 'run-campaign-e2e.py')
 runner = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(runner)
+
+
+class SuiteFieldsTests(unittest.TestCase):
+    def test_published_suites_keep_their_outcome_requirements(self):
+        for path in (Path(runner.__file__).parent / 'e2e' / 'campaign').glob('*.json'):
+            with self.subTest(path=path.name):
+                runner.validate_suite_fields(json.loads(path.read_text()))
+
+    def test_misspelled_requirement_is_rejected_before_launch_or_output(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            suite = root / 'suite.json'
+            suite.write_text(json.dumps({'version': 1, 'name': 'typo', 'cases': [
+                {'name': 'east', 'scenario': 'never-launched.yaml',
+                 'expected_maps': ['wiz02c'], 'required_monster_deaths': [1000195877]}]}))
+            command = [sys.executable, runner.__file__, '--suite', str(suite)]
+            for name in ('binary', 'data', 'seed', 'output'):
+                command += ['--' + name, str(root / name)]
+            result = subprocess.run(command, capture_output=True, text=True, timeout=10)
+            self.assertEqual(result.returncode, 2)
+            self.assertIn('unknown campaign case fields: required_monster_deaths', result.stderr)
+            self.assertFalse((root / 'output').exists())
 
 
 def spider(ident, dead=False):

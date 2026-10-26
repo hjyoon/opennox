@@ -31,6 +31,23 @@ import urllib.request
 MAPS = set('war01a war02a war02b war03a war03b war03c war03d con01a con02a con03a con03b wiz01a wiz02a wiz02b wiz02c wiz03a wiz03b wiz03c'.split())
 INPUT_ACTIONS = set('slow click interact move raw wait walk run run-start run-dir run-stop walk-start walk-dir walk-stop run-to-world walk-to-world wait-map wait-player-reloaded select-manual-campaign-save click-dialog-yes click-npc-dialog-done assert-quickbar-spell assert-spell-set-row assert-server-inventory-count observe-player-target capture-quest-map-audit-frame cast-at-nearest-monster-input screen quit'.split())
 ROUTES = {'objects': '/debug/nox/objects', 'script': '/debug/nox/script/legacy', 'walls': '/debug/nox/walls'}
+SUITE_FIELDS = {'version', 'name', 'coverage', 'seed_contract', 'cases'}
+CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_poison_free',
+               'timeout_seconds', 'required_checkpoints', 'expected_health', 'expected_mana',
+               'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
+               'required_defeated_script_ids', 'required_enable_transitions',
+               'required_position_transitions', 'required_plate_holds'}
+
+
+def validate_suite_fields(suite):
+    # A misspelled requirement must never silently omit an outcome check.
+    unknown = set(suite) - SUITE_FIELDS
+    if unknown:
+        raise ValueError('unknown campaign suite fields: ' + ', '.join(sorted(unknown)))
+    for case in suite.get('cases', []):
+        unknown = set(case) - CASE_FIELDS
+        if unknown:
+            raise ValueError('unknown campaign case fields: ' + ', '.join(sorted(unknown)))
 
 
 def sha(path):
@@ -417,6 +434,10 @@ def main():
     if args.output.exists() or args.output.is_relative_to(args.data) or args.output.is_relative_to(args.seed):
         parser.error('output must be a new directory outside data and seed')
     suite = json.loads(args.suite.read_text())
+    try:
+        validate_suite_fields(suite)
+    except ValueError as error:
+        parser.error(str(error))
     if suite.get('version') != 1:
         parser.error('unsupported campaign suite version')
     if not args.binary.is_file() or not os.access(args.binary, os.X_OK):

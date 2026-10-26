@@ -89,7 +89,7 @@ func observeArmorWearDistributionOriginalNative(t *testing.T, s *Server, c armor
 	frames := [][]byte{update, armorWearDistributionOriginalFrame(unsafe.Pointer(v), unsafe.Sizeof(*v)), armorWearDistributionOriginalFrame(unsafe.Pointer(source), unsafe.Sizeof(*source)), armorWearDistributionOriginalFrame(unsafe.Pointer(effective), unsafe.Sizeof(*effective)), armorWearDistributionOriginalFrame(unsafe.Pointer(item), unsafe.Sizeof(*item)), armorWearDistributionOriginalFrame(unsafe.Pointer(init), unsafe.Sizeof(*init)), armorWearDistributionOriginalFrame(unsafe.Pointer(def), unsafe.Sizeof(*def))}
 	before := make([][]byte, len(frames))
 	for i, frame := range frames {
-		if unsafe.Sizeof(uintptr(0)) != 8 || len(frame) == 0 || uintptr(unsafe.Pointer(&frame[0])) <= 0xffffffff {
+		if len(frame) == 0 || unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(&frame[0])) <= 0xffffffff {
 			t.Fatal("expected C-owned native frames above4GiB")
 		}
 		before[i] = append([]byte(nil), frame...)

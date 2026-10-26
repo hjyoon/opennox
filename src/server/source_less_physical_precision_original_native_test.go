@@ -63,7 +63,7 @@ func observeSourceLessPhysicalOriginalNative(c sourceLessPhysicalOriginalInput) 
 		update = sourceLessPhysicalOriginalFrame(unsafe.Pointer(u), unsafe.Sizeof(*u))
 		offsets = []uintptr{unsafe.Offsetof(u.Field1), unsafe.Offsetof(u.Field547), unsafe.Offsetof(u.Field546)}
 	}
-	if unsafe.Sizeof(uintptr(0)) != 8 || uintptr(unsafe.Pointer(v)) <= 0xffffffff || uintptr(v.UpdateData) <= 0xffffffff {
+	if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(v)) <= 0xffffffff || uintptr(v.UpdateData) <= 0xffffffff) {
 		panic("expected C-owned high native pointers")
 	}
 	updateBefore = append([]byte(nil), update...)

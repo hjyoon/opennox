@@ -94,7 +94,7 @@ func TestColorLightDirectionOriginal4CE960(t *testing.T) {
 				fps:   func() uint32 { loads = append(loads, "fps"); return in.FPS },
 				frame: func() uint32 { loads = append(loads, "frame"); return in.Frame },
 				byStaticCode: func(code int) *client.Drawable {
-					if uint64(code) != uint64(in.Code) {
+					if code != int(in.Code) {
 						t.Fatalf("static code=%x want=%x", code, in.Code)
 					}
 					lookups = append(lookups, "lookup")

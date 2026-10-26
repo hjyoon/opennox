@@ -1,13 +1,57 @@
 package legacy
 
 import (
+	"image"
+	"image/color"
 	"math"
 	"testing"
 	"unsafe"
 
+	"github.com/opennox/libs/noximage"
+	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/client/gui"
+	"github.com/opennox/opennox/v1/client/noxrender"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 )
+
+// The 32-bit C draw callbacks use the client's renderer directly. Supply the
+// same software renderer to the owning GUI and client on both architectures.
+// Unused root-renderer extensions still fail if unexpectedly called.
+type widgetCallbackUnusedRender interface {
+	SetRectFullScreen()
+	SetColorMultAndIntensityRGB(cr, cg, cb byte) byte
+	DrawCircleSegment(cx, cy, rad, ang int, cl color.Color)
+	DrawImageAt(img *noxrender.Image, pos image.Point)
+	Sub_49F7C0_def_go()
+}
+
+type widgetCallbackRender struct {
+	*noxrender.NoxRender
+	widgetCallbackUnusedRender
+}
+
+type widgetCallbackClient struct {
+	Client
+	cli    *client.Client
+	render *widgetCallbackRender
+}
+
+func (c *widgetCallbackClient) Cli() *client.Client { return c.cli }
+func (c *widgetCallbackClient) R2() Render2         { return c.render }
+
+func newWidgetCallbackGUI(t *testing.T) *gui.GUI {
+	t.Helper()
+	data, free := noxrender.NewRenderData()
+	r := noxrender.NewRender(nil, nil)
+	r.SetData(data)
+	r.SetPixBuffer(noximage.NewImage16(image.Rect(0, 0, 640, 480)))
+	g := gui.New(r)
+	c := &widgetCallbackClient{cli: &client.Client{GUI: g}, render: &widgetCallbackRender{NoxRender: r}}
+	old := GetClient
+	GetClient = func() Client { return c }
+	t.Cleanup(func() { GetClient = old; free() })
+	return g
+}
 
 func requireNativeWindowAddress(t *testing.T, win *gui.Window) {
 	t.Helper()
@@ -17,7 +61,7 @@ func requireNativeWindowAddress(t *testing.T, win *gui.Window) {
 }
 
 func TestEditEventCallbackPreservesNativeWindowPointer(t *testing.T) {
-	g := gui.New(nil)
+	g := newWidgetCallbackGUI(t)
 	defer g.DestroyAll()
 
 	parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
@@ -54,7 +98,7 @@ func TestEditEventCallbackPreservesNativeWindowPointer(t *testing.T) {
 func TestListBoxCallbacksPreserveNativePointers(t *testing.T) {
 	for _, multi := range []bool{false, true} {
 		t.Run(map[bool]string{false: "single", true: "multi"}[multi], func(t *testing.T) {
-			g := gui.New(nil)
+			g := newWidgetCallbackGUI(t)
 			defer g.DestroyAll()
 
 			parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)
@@ -95,7 +139,7 @@ func TestListBoxCallbacksPreserveNativePointers(t *testing.T) {
 func TestInputConfigCallbacksPreserveNativeWindowPointer(t *testing.T) {
 	for _, shell := range []bool{false, true} {
 		t.Run(map[bool]string{false: "in_game", true: "shell"}[shell], func(t *testing.T) {
-			g := gui.New(nil)
+			g := newWidgetCallbackGUI(t)
 			defer g.DestroyAll()
 
 			parent := g.NewWindowRaw(nil, gui.StatusEnabled, 0, 0, 640, 480, nil)

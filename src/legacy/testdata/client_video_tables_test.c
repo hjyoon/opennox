@@ -78,6 +78,11 @@ static double video_sin(double angle) {
 #undef sin
 
 static void* map_near(uintptr_t address) {
+#if UINTPTR_MAX <= UINT32_MAX
+	/* Keep every data/guard case on native 32-bit allocations. Exact high
+	 * address and 4-GiB boundary placements remain mandatory on 64-bit. */
+	address=0;
+#endif
 #ifdef _WIN32
 	return VirtualAlloc((void*)address,0x80000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
 #else

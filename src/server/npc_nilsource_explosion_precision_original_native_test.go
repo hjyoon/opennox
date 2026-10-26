@@ -88,7 +88,7 @@ func observeNilSourceNPCExplosionOriginalNative(t *testing.T, c nilSourceNPCExpl
 	}
 	before := make([][]byte, len(frames))
 	for i, frame := range frames {
-		if unsafe.Sizeof(uintptr(0)) != 8 || uintptr(unsafe.Pointer(&frame[0])) <= 0xffffffff {
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(&frame[0])) <= 0xffffffff {
 			t.Fatal("expected C-owned native frames above4GiB")
 		}
 		before[i] = append([]byte(nil), frame...)
@@ -173,4 +173,3 @@ func TestPlayerDamageNPCNilSourceExplosionPrecisionOriginal4E17B0Native(t *testi
 func TestPlayerDamageNPCNilSourceExplosionPartialPrecisionOriginal4E17B0Native(t *testing.T) {
 	testNPCNilSourceExplosionPrecisionOriginal(t, true)
 }
-

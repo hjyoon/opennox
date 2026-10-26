@@ -114,7 +114,7 @@ func TestActivatePoisonPrecisionOriginal4EE7E0Native(t *testing.T) {
 			}
 			var frames []frame
 			watch := func(p unsafe.Pointer, n uintptr) {
-				if uintptr(p) <= math.MaxUint32 {
+				if p == nil || unsafe.Sizeof(uintptr(0)) == 8 && uintptr(p) <= math.MaxUint32 {
 					t.Fatal("native C frame below 4 GiB")
 				}
 				frames = append(frames, frame{p, slices.Clone(unsafe.Slice((*byte)(p), int(n))), make([]bool, int(n))})

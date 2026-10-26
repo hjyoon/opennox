@@ -107,7 +107,7 @@ func observeWorldFlameQuestOriginalNative(t *testing.T, c worldFlameQuestOrigina
 	}
 	before := make([][]byte, len(frames))
 	for i, b := range frames {
-		if unsafe.Sizeof(uintptr(0)) != 8 || uintptr(unsafe.Pointer(&b[0])) <= 0xffffffff {
+		if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(unsafe.Pointer(&b[0])) <= 0xffffffff {
 			t.Fatal("expected C-owned world flame input frames above4GiB")
 		}
 		before[i] = append([]byte(nil), b...)

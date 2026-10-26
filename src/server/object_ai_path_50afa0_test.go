@@ -107,8 +107,12 @@ func TestAIPathRebuild50AFA0SpecialPriorityAndWaypointRounding(t *testing.T) {
 }
 
 func TestAIPathRebuild50AFA0ReadsNativeObjectFlags(t *testing.T) {
-	if got := unsafe.Offsetof(Object{}.ObjFlags); got != 20 {
-		t.Fatalf("native ObjFlags offset = %d, want 20", got)
+	wantOffset := uintptr(16)
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		wantOffset = 20
+	}
+	if got := unsafe.Offsetof(Object{}.ObjFlags); got != wantOffset {
+		t.Fatalf("native ObjFlags offset = %d, want %d", got, wantOffset)
 	}
 	s := newElevatorStateServer(t)
 	paths := &serverAIPaths{s: s}

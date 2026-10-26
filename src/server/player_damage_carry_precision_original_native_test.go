@@ -60,12 +60,16 @@ func loadOriginalPlayerDamageCarryFixture(t *testing.T) originalPlayerDamageCarr
 
 func TestPlayerDamageCarryPrecisionOriginal4E20F0Native(t *testing.T) {
 	f := loadOriginalPlayerDamageCarryFixture(t)
-	if unsafe.Sizeof(uintptr(0)) != 8 || unsafe.Sizeof(Object{}) != 928 {
+	objectSize := uintptr(780)
+	if unsafe.Sizeof(uintptr(0)) == 8 {
+		objectSize = 928
+	}
+	if unsafe.Sizeof(Object{}) != objectSize {
 		t.Fatal("changed native object layout")
 	}
 	for _, c := range f.Carry {
 		t.Run(c.Name, func(t *testing.T) {
-			obj, freeObj := alloc.Make([]byte(nil), 64+928+64)
+			obj, freeObj := alloc.Make([]byte(nil), 64+objectSize+64)
 			defer freeObj()
 			udSize := max(unsafe.Sizeof(PlayerUpdateData{}), unsafe.Sizeof(MonsterUpdateData{}))
 			update, freeUpdate := alloc.Make([]byte(nil), int(128+udSize))
@@ -85,7 +89,7 @@ func TestPlayerDamageCarryPrecisionOriginal4E20F0Native(t *testing.T) {
 			monster.Field1, player.Field21 = c.Carry, c.Carry
 			binary.LittleEndian.PutUint32(output[4:8], 0x6b6b6b6b)
 			for _, ptr := range []unsafe.Pointer{unsafe.Pointer(v), v.UpdateData, unsafe.Pointer(&output[4])} {
-				if uintptr(ptr) <= 0xffffffff {
+				if unsafe.Sizeof(uintptr(0)) == 8 && uintptr(ptr) <= 0xffffffff {
 					t.Fatal("C-owned native frame not above4GiB")
 				}
 			}
@@ -140,9 +144,6 @@ func TestPlayerDamageNPCEnvironmentPrecisionOriginal4E17B0Native(t *testing.T) {
 			u := v.UpdateDataMonster()
 			u.Field518, u.Field1 = c.Absorption, c.Carry
 			u.Field547, u.Field546 = 99, 77
-			if unsafe.Sizeof(uintptr(0)) != 8 {
-				t.Fatal("native-width context requires 64-bit pointers")
-			}
 			frame := func(ptr unsafe.Pointer, n uintptr) []byte { return unsafe.Slice((*byte)(ptr), int(n)) }
 			vb := append([]byte(nil), frame(unsafe.Pointer(v), unsafe.Sizeof(*v))...)
 			ub := append([]byte(nil), frame(unsafe.Pointer(u), unsafe.Sizeof(*u))...)

@@ -397,7 +397,7 @@ int nox_script_readWriteVvv_541E40(FILE* a1, FILE* a2, FILE* a3) {
 	int v14;   // [esp+38h] [ebp-100Ch]
 	int v15;   // [esp+3Ch] [ebp-1008h]
 	int v16;   // [esp+40h] [ebp-1004h]
-	int v17;   // [esp+44h] [ebp-1000h]
+	unsigned char v17[4096]; // original 4-KiB scratch at [ebp-1000h]
 
 	v4 = 4;
 	nox_fs_fread(a1, &v17, 4u);

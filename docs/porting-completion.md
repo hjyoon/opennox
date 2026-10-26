@@ -1801,6 +1801,24 @@ now reports failure in 18.0 seconds instead of 136.7 seconds. This is a harness
 negative control, not a completed combat route. All eight Python regressions
 pass; successful runtime checks are recorded separately.
 
+### Explicit aliases in the code oracle
+
+The code oracle now accepts an explicit `allow_overlapping_ranges` policy for
+named whole-body and interior-range aliases. Manifests without that opt-in
+retain sorted, disjoint validation. Names remain unique across code and data;
+canonical addresses, sizes, digests, executable/data sections and every actual
+file/range hash are still checked. The repository manifest also normalizes
+159 address strings without changing any numeric address, name, order, size,
+purpose or digest.
+
+All 21 CLI package events pass. Actual code verification now passes all 3,233
+code and 669 data ranges against the unchanged original. Separate negative
+integration probes reject an incorrect overlapping-alias digest and data
+placed in an executable section. This fixes the same overlap rejection
+reproduced on the earlier parent manifest; no existing seal is removed.
+Only the CLI sources and validation metadata change. The four clean native
+products of f14ad309 and their normal/HD campaign E2E are reused.
+
 ### Shared toxic-cloud lifetime and generator packet startup precision
 
 The shared lifetime helpers now preserve startup PC53 multiplication,
@@ -1828,8 +1846,8 @@ and legacy tests retain 205 identities. Actual cgocheck2/race/checkptr2 retain
 The four full-suite results still belong to ff2eb1d4 and are not repeated.
 
 All 3,233 code and 669 data seals match the unchanged original executable.
-The older official CLI rejects an overlapping range already present at the
-parent revision; its explicit alias-policy correction is separate work.
+The explicit alias-policy correction above also verifies them with the
+official CLI while retaining every seal and its original numeric address.
 Committed ARM64 products and runtime evidence are recorded separately in
 `toxic-cloud-lifetime-precision-port/`. Fresh northern-room attempts remain
 uncredited; the last qualified upper-combat Save is preserved. Linux, remaining

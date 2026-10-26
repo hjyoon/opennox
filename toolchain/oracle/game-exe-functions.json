@@ -21491,1106 +21491,1106 @@
     },
     {
       "name": "original_complete_modifier_speed_engage_4DFC30",
-      "address": "0x4dfc30",
+      "address": "0x004DFC30",
       "size": 104,
       "sha256": "86d96dcd6b690289f085e0f1dc64ada73a357bd0947609e3f5b491b62f842af5",
       "purpose": "Complete104byte root, originalEngageFloat+120 addition anddirected32bitstore, reportbeforeaudio.34contexts/136rawFPobservations,11actualnativebefore differences23controls. Rawoldpaddedenvelopesretained.Onlyoriginalreport/audio declaredservices; interceptedentriesexcludedfromexecutedtrace. NativeexactC/realheaders/ninehighaddresses/fullrecordcanaries androundingmodepreserved. Fulloriginalreport/audio/caller/arbitraryFP/nonfinite/overall100remainopen."
     },
     {
       "name": "original_complete_modifier_speed_disengage_4DFCA0",
-      "address": "0x4dfca0",
+      "address": "0x004DFCA0",
       "size": 111,
       "sha256": "7c7f3d050daeb418d0f6e36d022925bc0847df029a699dd9dba63ba75e511b4e",
       "purpose": "Complete111byte root, actualoriginalinventoryselectedflag16branch, originalEngageFloat+120 subtraction(not+128), directedstore/report/audio.34contexts/136rawFPobservations,9actualnativebefore differences25controls. Rawoldpaddedenvelopesretained.Onlyoriginalreport/audio declaredservices; interceptedentriesexcludedfromexecutedtrace. NativeexactC/realheaders/ninehighaddresses/fullrecordcanaries androundingmodepreserved. Fulloriginalreport/audio/caller/arbitraryFP/nonfinite/overall100remainopen."
     },
     {
       "name": "original_complete_modifier_speed_inventory_4DFBB0",
-      "address": "0x4dfbb0",
+      "address": "0x004DFBB0",
       "size": 123,
       "sha256": "c37b85803066903ed6386e0aa92a86a86974773bcf49b0b4c87ff617491009b1",
       "purpose": "Complete123byte originalinventorybody executedonselectedflag16speed path; actualPEtablefunctionidentities/fourequippedmodifierslots. Existingnativeinventorybodyunchanged; otherflagsnotclaimed. Rawoldpaddedenvelopesretained.Onlyoriginalreport/audio declaredservices; interceptedentriesexcludedfromexecutedtrace. NativeexactC/realheaders/ninehighaddresses/fullrecordcanaries androundingmodepreserved. Fulloriginalreport/audio/caller/arbitraryFP/nonfinite/overall100remainopen."
     },
     {
       "name": "original_complete_fire_protection_precision_4DFE40",
-      "address": "0x4dfe40",
+      "address": "0x004DFE40",
       "size": 255,
       "sha256": "27c36e50b7776ffef488fb395ecef673d3aee1cc5d6f3ede8e72923a52e1baa6",
       "purpose": "Complete original protection root with actual inventory/owner four-slot aggregation, retained53-bit directed accumulator, directed binary32 spill, original modifier/final caps, actual buff membership/power and balance-float-table bodies. Named balance hash lookup is the sole declared external service; no numeric conversion replacement.32contexts/128rawFPobservations per element; all old padded envelopes retained.96primary contexts show27native differences69controls; corrected100Go test identities. Four separately executed historical contracts qualify exactly four old nearest-even expected values in three test sources; identities and assertion precision retained. Full hash lookup, arbitrary balance indices/nonfinite/stockcaller/campaign/overall100 remainopen."
     },
     {
       "name": "original_complete_electric_protection_precision_4DFF40",
-      "address": "0x4dff40",
+      "address": "0x004DFF40",
       "size": 255,
       "sha256": "501578683d375506e82ade2f47fd9fafc8e533d07d904039c35d0a6d132f960e",
       "purpose": "Complete original protection root with actual inventory/owner four-slot aggregation, retained53-bit directed accumulator, directed binary32 spill, original modifier/final caps, actual buff membership/power and balance-float-table bodies. Named balance hash lookup is the sole declared external service; no numeric conversion replacement.32contexts/128rawFPobservations per element; all old padded envelopes retained.96primary contexts show27native differences69controls; corrected100Go test identities. Four separately executed historical contracts qualify exactly four old nearest-even expected values in three test sources; identities and assertion precision retained. Full hash lookup, arbitrary balance indices/nonfinite/stockcaller/campaign/overall100 remainopen."
     },
     {
       "name": "original_complete_poison_protection_precision_4E0040",
-      "address": "0x4e0040",
+      "address": "0x004E0040",
       "size": 255,
       "sha256": "c28bf4cba406652dcd46b17a9ddaad758b83390a9f096d365247392dea164798",
       "purpose": "Complete original protection root with actual inventory/owner four-slot aggregation, retained53-bit directed accumulator, directed binary32 spill, original modifier/final caps, actual buff membership/power and balance-float-table bodies. Named balance hash lookup is the sole declared external service; no numeric conversion replacement.32contexts/128rawFPobservations per element; all old padded envelopes retained.96primary contexts show27native differences69controls; corrected100Go test identities. Four separately executed historical contracts qualify exactly four old nearest-even expected values in three test sources; identities and assertion precision retained. Full hash lookup, arbitrary balance indices/nonfinite/stockcaller/campaign/overall100 remainopen."
     },
     {
       "name": "original_complete_gamedata_loader_complete_419B30",
-      "address": "0x419b30",
+      "address": "0x00419B30",
       "size": 526,
       "sha256": "dec3bc34d293d020ac9816c2f9647e8dad23cb7f85a6a143780bc60512c6a924",
       "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
     },
     {
       "name": "original_complete_gamedata_scalar_getter_complete_419D40",
-      "address": "0x419d40",
+      "address": "0x00419D40",
       "size": 36,
       "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
       "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
     },
     {
       "name": "original_complete_gamedata_array_getter_complete_419D70",
-      "address": "0x419d70",
+      "address": "0x00419D70",
       "size": 50,
       "sha256": "c6d176697902aeab72feefdcc6ce998f2bdede457d819d15b8c35ddfabed6c92",
       "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
     },
     {
       "name": "original_complete_gamedata_value_text_complete_4093E0",
-      "address": "0x4093e0",
+      "address": "0x004093E0",
       "size": 135,
       "sha256": "7313175e622069645adbed0ee5c3b39cdc437490aa91c1b05205c3ebba12c7c9",
       "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
     },
     {
       "name": "original_complete_gamedata_word_text_complete_409470",
-      "address": "0x409470",
+      "address": "0x00409470",
       "size": 173,
       "sha256": "02fb762a89e5ef611d46e5dd64e0b0ac3dbe106f21866a55ddba6ba903c2ecb2",
       "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
     },
     {
       "name": "original_complete_game_flag_test_complete_40A5C0",
-      "address": "0x40a5c0",
+      "address": "0x0040A5C0",
       "size": 18,
       "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b",
       "purpose": "Complete original gamedata loading/word/value/mode/getter region. Original numeric atof, strtok, binary32 store and getter FLD execute423contexts with2856rawFP observations;64actualGo differences359controls. Declared byteIO/allocation/hash/per-thread-pointer services are excluded from executed entries. No full cryptfile/hash/TLS implementation or nonfinite/transitive gameplay equivalence claim. Existing padded envelopes preserved."
     },
     {
       "name": "original_complete_monster_loader_complete_517010",
-      "address": "0x517010",
+      "address": "0x00517010",
       "size": 127,
       "sha256": "3192f722de6c122f669ddb20926dc9a1daf26a24f79b7419d18abac843ae416d",
       "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
     },
     {
       "name": "original_complete_monster_word_reader_complete_517090",
-      "address": "0x517090",
+      "address": "0x00517090",
       "size": 173,
       "sha256": "425e0cf26c8d1edcb5c013312c82d52cc5d7eccf7ecd967cac8b4e7fe7e9732f",
       "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
     },
     {
       "name": "original_complete_monster_skip_line_complete_517140",
-      "address": "0x517140",
+      "address": "0x00517140",
       "size": 48,
       "sha256": "6a6ec5e4caa956e4c208174b4c792a58a6b03c1bcbd8f26a239e66ec121ebcf7",
       "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
     },
     {
       "name": "original_complete_monster_definition_loader_complete_517170",
-      "address": "0x517170",
+      "address": "0x00517170",
       "size": 855,
       "sha256": "6630fad14916162f9da9356b2297367c115a8bac2913ac9b6c97cac89d1e534e",
       "purpose": "Complete original monster loader/definition/token/skip-line region. Actual original field/mode tables, atof/atoi and enum/callback lookup execute73stock definitions in2modes4FPcontrols; independently executed float-only projection matches all4088 stock words,8176rawFPcombined. 1022unique float contexts have62nativeGo differences960controls. Declared byteIO/allocation/CRTthread-pointer entries excluded; no full crypto/allocator/TLS/callback-execution/transitive-gameplay equivalence. Existing envelopes retained."
     },
     {
       "name": "original_complete_mode_selection_gamedata_loader_complete_419B30",
-      "address": "0x419b30",
+      "address": "0x00419B30",
       "size": 526,
       "sha256": "dec3bc34d293d020ac9816c2f9647e8dad23cb7f85a6a143780bc60512c6a924",
       "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
     },
     {
       "name": "original_complete_mode_selection_gamedata_scalar_getter_complete_419D40",
-      "address": "0x419d40",
+      "address": "0x00419D40",
       "size": 36,
       "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
       "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
     },
     {
       "name": "original_complete_mode_selection_gamedata_array_getter_complete_419D70",
-      "address": "0x419d70",
+      "address": "0x00419D70",
       "size": 50,
       "sha256": "c6d176697902aeab72feefdcc6ce998f2bdede457d819d15b8c35ddfabed6c92",
       "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
     },
     {
       "name": "original_complete_mode_selection_gamedata_value_text_complete_4093E0",
-      "address": "0x4093e0",
+      "address": "0x004093E0",
       "size": 135,
       "sha256": "7313175e622069645adbed0ee5c3b39cdc437490aa91c1b05205c3ebba12c7c9",
       "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
     },
     {
       "name": "original_complete_mode_selection_gamedata_word_text_complete_409470",
-      "address": "0x409470",
+      "address": "0x00409470",
       "size": 173,
       "sha256": "02fb762a89e5ef611d46e5dd64e0b0ac3dbe106f21866a55ddba6ba903c2ecb2",
       "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
     },
     {
       "name": "original_complete_mode_selection_game_flag_test_complete_40A5C0",
-      "address": "0x40a5c0",
+      "address": "0x0040A5C0",
       "size": 18,
       "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b",
       "purpose": "Complete original gamedata mode loader/getters/text/flag-test region. Eight flag combinations execute complete original stock loader32times including four FPcontrols: flag22 with or without Coop/Online selects SOLO, online/quest-online/host-online controls ARENA. 2568actual native value contexts,10272original observations,1506executed entries and9observed external entries excluded. Startup0xe3f supplies expected values;244FPvariant contexts retained separately. External byteIO/allocation/hash/CRTthread-pointer bodies and invalid flag combinations/full preview UI/transitive gameplay are unclaimed. Existing envelopes retained."
     },
     {
       "name": "original_complete_shape_box_calculation_428270",
-      "address": "0x428270",
+      "address": "0x00428270",
       "size": 87,
       "sha256": "529d5f195332115d0a6d76dbbbbf74fdcaefbaf04d7dbb074843d3aa8a6dc8c5",
       "purpose": "Complete87-byte original box geometry calculation,26actual executed entries, no external calls/substitutions. 1182stock BOX records(1170distinctnames,12duplicate records retained) plus64finite edges under4FPcontrols yield1246contexts/4984original observations. Native actualGo and C-dispatch full52-byte shapes in guarded C allocations above4GiB:1013stockdifferences169controls each; Go edges57differences7controls,Cedges52differences12controls. Original 5834CC binary32constant independently hashed in fixture/evidence index. Original parser/transitivecollision/NaN/Inf equivalence unclaimed."
     },
     {
       "name": "original_complete_direct_experience_complete_precision",
-      "address": "0x4ef3a0",
+      "address": "0x004EF3A0",
       "size": 106,
       "sha256": "54921e7ae975ad6d13766866e34d0f54b0cd1cc773853d3ed5c85a397a2cc891",
       "purpose": "Complete executed original XP arithmetic or integer conversion body. Primary128finite contexts under4FPcontrols yield512observations; actual startupE3F supplies production expectations. 80executed original entries,5declared external services excluded with arithmetic/conversion unchanged. Native Object/PlayerUpdateData/Player frames retain64-bit pointers and all nonoutput bytes/canaries. Full service, CRC, level and transitive gameplay equivalence unclaimed."
     },
     {
       "name": "original_complete_scaled_experience_complete_precision",
-      "address": "0x4ef270",
+      "address": "0x004EF270",
       "size": 106,
       "sha256": "ac2f87560b82860ff8ec82a0f34e9098adb8491fed99b202c57bc388247fadd8",
       "purpose": "Complete executed original XP arithmetic or integer conversion body. Primary128finite contexts under4FPcontrols yield512observations; actual startupE3F supplies production expectations. 80executed original entries,5declared external services excluded with arithmetic/conversion unchanged. Native Object/PlayerUpdateData/Player frames retain64-bit pointers and all nonoutput bytes/canaries. Full service, CRC, level and transitive gameplay equivalence unclaimed."
     },
     {
       "name": "original_complete_experience_message_integer_conversion_complete_precision",
-      "address": "0x566dcc",
+      "address": "0x00566DCC",
       "size": 39,
       "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c",
       "purpose": "Complete executed original XP arithmetic or integer conversion body. Primary128finite contexts under4FPcontrols yield512observations; actual startupE3F supplies production expectations. 80executed original entries,5declared external services excluded with arithmetic/conversion unchanged. Native Object/PlayerUpdateData/Player frames retain64-bit pointers and all nonoutput bytes/canaries. Full service, CRC, level and transitive gameplay equivalence unclaimed."
     },
     {
       "name": "original_complete_AI_dangerous_index_50b2c0",
-      "address": "0x50b2c0",
+      "address": "0x0050B2C0",
       "size": 563,
       "sha256": "83de1d265b8598ae0b2f73485a35ecd4ebc544c385202d8a01f6bc2b87933d01",
       "purpose": "Complete executed original body in bounded dangerous-shape expansion/restoration context. Actual50stockDANGEROUSrecords plus128finiteedges/4kindcontrols,4FPcontrols yield182contexts/728observations. 127actualexecutedentries; only declared bounds-refresh service body excluded, reversedbounds skipgridmembership. Actualoriginalboxgeometry/float-to-int execute. No generalAI-idle fix, full bounds/membership/pathfinding/gameplay or nonfinite claim."
     },
     {
       "name": "original_complete_AI_dangerous_box_428270",
-      "address": "0x428270",
+      "address": "0x00428270",
       "size": 87,
       "sha256": "529d5f195332115d0a6d76dbbbbf74fdcaefbaf04d7dbb074843d3aa8a6dc8c5",
       "purpose": "Complete executed original body in bounded dangerous-shape expansion/restoration context. Actual50stockDANGEROUSrecords plus128finiteedges/4kindcontrols,4FPcontrols yield182contexts/728observations. 127actualexecutedentries; only declared bounds-refresh service body excluded, reversedbounds skipgridmembership. Actualoriginalboxgeometry/float-to-int execute. No generalAI-idle fix, full bounds/membership/pathfinding/gameplay or nonfinite claim."
     },
     {
       "name": "original_complete_AI_dangerous_float_to_int_419a70",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete executed original body in bounded dangerous-shape expansion/restoration context. Actual50stockDANGEROUSrecords plus128finiteedges/4kindcontrols,4FPcontrols yield182contexts/728observations. 127actualexecutedentries; only declared bounds-refresh service body excluded, reversedbounds skipgridmembership. Actualoriginalboxgeometry/float-to-int execute. No generalAI-idle fix, full bounds/membership/pathfinding/gameplay or nonfinite claim."
     },
     {
       "name": "original_complete_player_stat_values_4eedc0",
-      "address": "0x4eedc0",
+      "address": "0x004EEDC0",
       "size": 892,
       "sha256": "6940925f1a498b5e1f212271e28d7b805daef839a3b79aa947f86b840c9d6fd1",
       "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
     },
     {
       "name": "original_complete_player_stat_base_57b350",
-      "address": "0x57b350",
+      "address": "0x0057B350",
       "size": 6,
       "sha256": "a739d01a36b00ee3307109b3c655539279ac718be426ec27927f5da78bc8ec0d",
       "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
     },
     {
       "name": "original_complete_player_stat_class_57b360",
-      "address": "0x57b360",
+      "address": "0x0057B360",
       "size": 13,
       "sha256": "790e2830f3cc2c416f892363fa442aa1943b8a1aaf457bb24d42b67a79fe4d37",
       "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
     },
     {
       "name": "original_complete_player_stat_int_419a70",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
     },
     {
       "name": "original_complete_player_stat_abs_int16_419ab0",
-      "address": "0x419ab0",
+      "address": "0x00419AB0",
       "size": 20,
       "sha256": "404077207291918e01ecad881d351383a9e2f71ecbeba784c9560d41a13b8324",
       "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
     },
     {
       "name": "original_complete_player_stat_qword_566dcc",
-      "address": "0x566dcc",
+      "address": "0x00566DCC",
       "size": 39,
       "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c",
       "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
     },
     {
       "name": "original_complete_player_stat_wcslen_56688d",
-      "address": "0x56688d",
+      "address": "0x0056688D",
       "size": 29,
       "sha256": "66e3418a1b5d16894ce1d41355c902b4edcfab4f1a2d9781a8529990682ce603",
       "purpose": "Complete executed original body in declared player-stat precision context. 288 stock-derived finite class/level/flag/reward/table contexts under four FP controls,1152 raw observations,278 actual executed entries. Seven flag/solo/HP/ability/protection/name services excluded; selectors, arithmetic, conversions and string-length execute unchanged. No complete initialization, CRC/network/level gameplay or nonfinite ReadValues claim."
     },
     {
       "name": "original_complete_greater_heal_update_52f2e0",
-      "address": "0x52f2e0",
+      "address": "0x0052F2E0",
       "size": 378,
       "sha256": "62fed907999a4747a0836c4c9ce9b2821c35451e6028748933675e10490e4ed1",
       "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     },
     {
       "name": "original_complete_greater_heal_int_419a70",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     },
     {
       "name": "original_complete_greater_heal_buff_4ff350",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     },
     {
       "name": "original_complete_greater_heal_mana_4eec80",
-      "address": "0x4eec80",
+      "address": "0x004EEC80",
       "size": 39,
       "sha256": "8f470009f1ba159c2fbc5ae7b7b75129febbb044e0979c803db1297f17be8145",
       "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     },
     {
       "name": "original_complete_greater_heal_position_4fea70",
-      "address": "0x4fea70",
+      "address": "0x004FEA70",
       "size": 103,
       "sha256": "a3eb11d7ccfa58e2193552251f066a2c62f7bf47086618221df3b53d378b15f5",
       "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     },
     {
       "name": "original_complete_greater_heal_damage_4e6bd0",
-      "address": "0x4e6bd0",
+      "address": "0x004E6BD0",
       "size": 42,
       "sha256": "84c31bbe0639aff1ee431eac960dd3d686a59a73e9119b6a7fd9512f8c94955f",
       "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     },
     {
       "name": "original_complete_greater_heal_HP_4ee780",
-      "address": "0x4ee780",
+      "address": "0x004EE780",
       "size": 26,
       "sha256": "c842830466581834b537f438907e121a61547ce43c6d07ef033207e13970b674",
       "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     },
     {
       "name": "original_complete_greater_heal_maxHP_4ee7a0",
-      "address": "0x4ee7a0",
+      "address": "0x004EE7A0",
       "size": 27,
       "sha256": "f45238ed5aa92034eef46ed574b2967bc0595a25e2a1d3b149fe6bc20f6475d6",
       "purpose": "Complete executed original body in bounded GreaterHeal update context:392contexts,1568FP-control context runs,3368actual original function calls;244executed entries. Three CanInteract/AdjustHP/ManaSub service bodies excluded; original buff/mana/position/recent-damage/HP getters and integer conversion execute unchanged. Stock coefficients1-5, declared multiplier1/3, finite edges/early gates. No complete service effects/visibility/gameplay/nonfinite claim."
     },
     {
       "name": "original_complete_channel_life_update_52f460",
-      "address": "0x52f460",
+      "address": "0x0052F460",
       "size": 318,
       "sha256": "4f3c2391b5d8e928ca9a88927acf128043e5c07106da7ffafed9f21ce37eb317",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
     },
     {
       "name": "original_complete_channel_life_getter_419d70",
-      "address": "0x419d70",
+      "address": "0x00419D70",
       "size": 50,
       "sha256": "c6d176697902aeab72feefdcc6ce998f2bdede457d819d15b8c35ddfabed6c92",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
     },
     {
       "name": "original_complete_channel_life_int_419a70",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
     },
     {
       "name": "original_complete_channel_life_buff_4ff350",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
     },
     {
       "name": "original_complete_channel_life_position_4fea70",
-      "address": "0x4fea70",
+      "address": "0x004FEA70",
       "size": 103,
       "sha256": "a3eb11d7ccfa58e2193552251f066a2c62f7bf47086618221df3b53d378b15f5",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
     },
     {
       "name": "original_complete_channel_life_maxmana_4eecb0",
-      "address": "0x4eecb0",
+      "address": "0x004EECB0",
       "size": 29,
       "sha256": "4223931f22787f0c4cec320a79f66584e6d50b86c25cc714420c2ecf5ff26ef7",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
     },
     {
       "name": "original_complete_channel_life_mana_4eec80",
-      "address": "0x4eec80",
+      "address": "0x004EEC80",
       "size": 39,
       "sha256": "8f470009f1ba159c2fbc5ae7b7b75129febbb044e0979c803db1297f17be8145",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
     },
     {
       "name": "original_complete_channel_life_HP_4ee780",
-      "address": "0x4ee780",
+      "address": "0x004EE780",
       "size": 26,
       "sha256": "c842830466581834b537f438907e121a61547ce43c6d07ef033207e13970b674",
       "purpose": "Complete executed original body in bounded ChannelLife update context.322contexts/1288FP-control runs/3088original calls,234executed entries. Original indexed F32 getter/FLD, FISTP and buff/position/max/currentMana/HP helpers execute unchanged; dictionary lookup returns declared entry pointer, AddMana/ClearDamage effects excluded. Stock coefficients and finite/early/class controls. No FP service return/arithmetic/conversion substitution. No complete lookup/effect bodies or actual map spell/network/audio/nonfinite claim."
     },
     {
       "name": "original_complete_current_collider_bounds_4e7290",
-      "address": "0x4e7290",
+      "address": "0x004E7290",
       "size": 184,
       "sha256": "b1025f5786ce1308065c267f274143410516b4ca96b201ae3e62936bfefa8b79",
       "purpose": "Complete original current/next collider bounds body.2910shape contexts x2functions x4FPcontrols=23280original calls,86executed entries,zero external/arithmetic substitutions. Full original shape/Z/nonoutputs/canaries and returned pointer preserved. Declared stock-radius/original-derived box caches and finite edges; no type/parser initialization/runtime eligibility, grid membership, full pathfinding, generalAI-idle or whole nonfinite arithmetic claim."
     },
     {
       "name": "original_complete_next_collider_bounds_4e7350",
-      "address": "0x4e7350",
+      "address": "0x004E7350",
       "size": 184,
       "sha256": "9449918fecd346e258455c7716b4094fbe2a812ba6660367d559d3bbc7f25471",
       "purpose": "Complete original current/next collider bounds body.2910shape contexts x2functions x4FPcontrols=23280original calls,86executed entries,zero external/arithmetic substitutions. Full original shape/Z/nonoutputs/canaries and returned pointer preserved. Declared stock-radius/original-derived box caches and finite edges; no type/parser initialization/runtime eligibility, grid membership, full pathfinding, generalAI-idle or whole nonfinite arithmetic claim."
     },
     {
       "name": "original_complete_lesser_heal_52dd50",
-      "address": "0x52dd50",
+      "address": "0x0052DD50",
       "size": 240,
       "sha256": "43ba43496e806d16565b7a27810cc1fdc1ed02272185b70822982babd99bdc1b",
       "purpose": "Complete executed original LesserHeal bounded native-width generic-root context.406contexts/1624FP-control calls,129executed entries. ActualoriginalgetterFLD/FMUL/FSTPS/FISTP and HP/maxHP bodies execute; acceptance-target memoryreads independently observed. Actualspelltoken41. Sixexcluded lookup/cost/refund/AdjustHP/soundID/audio bodies, no FP return/arithmetic/conversion substituted. No runtimecastwrapper/effectbodies/mapspell/audio/fullinitialization/generalAI or whole nonfinite arithmetic claim."
     },
     {
       "name": "original_complete_lesser_heal_getter_419d40",
-      "address": "0x419d40",
+      "address": "0x00419D40",
       "size": 36,
       "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
       "purpose": "Complete executed original LesserHeal bounded native-width generic-root context.406contexts/1624FP-control calls,129executed entries. ActualoriginalgetterFLD/FMUL/FSTPS/FISTP and HP/maxHP bodies execute; acceptance-target memoryreads independently observed. Actualspelltoken41. Sixexcluded lookup/cost/refund/AdjustHP/soundID/audio bodies, no FP return/arithmetic/conversion substituted. No runtimecastwrapper/effectbodies/mapspell/audio/fullinitialization/generalAI or whole nonfinite arithmetic claim."
     },
     {
       "name": "original_complete_lesser_heal_FISTP_419a70",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete executed original LesserHeal bounded native-width generic-root context.406contexts/1624FP-control calls,129executed entries. ActualoriginalgetterFLD/FMUL/FSTPS/FISTP and HP/maxHP bodies execute; acceptance-target memoryreads independently observed. Actualspelltoken41. Sixexcluded lookup/cost/refund/AdjustHP/soundID/audio bodies, no FP return/arithmetic/conversion substituted. No runtimecastwrapper/effectbodies/mapspell/audio/fullinitialization/generalAI or whole nonfinite arithmetic claim."
     },
     {
       "name": "original_complete_lesser_heal_HP_4ee780",
-      "address": "0x4ee780",
+      "address": "0x004EE780",
       "size": 26,
       "sha256": "c842830466581834b537f438907e121a61547ce43c6d07ef033207e13970b674",
       "purpose": "Complete executed original LesserHeal bounded native-width generic-root context.406contexts/1624FP-control calls,129executed entries. ActualoriginalgetterFLD/FMUL/FSTPS/FISTP and HP/maxHP bodies execute; acceptance-target memoryreads independently observed. Actualspelltoken41. Sixexcluded lookup/cost/refund/AdjustHP/soundID/audio bodies, no FP return/arithmetic/conversion substituted. No runtimecastwrapper/effectbodies/mapspell/audio/fullinitialization/generalAI or whole nonfinite arithmetic claim."
     },
     {
       "name": "original_complete_lesser_heal_maxHP_4ee7a0",
-      "address": "0x4ee7a0",
+      "address": "0x004EE7A0",
       "size": 27,
       "sha256": "f45238ed5aa92034eef46ed574b2967bc0595a25e2a1d3b149fe6bc20f6475d6",
       "purpose": "Complete executed original LesserHeal bounded native-width generic-root context.406contexts/1624FP-control calls,129executed entries. ActualoriginalgetterFLD/FMUL/FSTPS/FISTP and HP/maxHP bodies execute; acceptance-target memoryreads independently observed. Actualspelltoken41. Sixexcluded lookup/cost/refund/AdjustHP/soundID/audio bodies, no FP return/arithmetic/conversion substituted. No runtimecastwrapper/effectbodies/mapspell/audio/fullinitialization/generalAI or whole nonfinite arithmetic claim."
     },
     {
       "name": "original_complete_water_barrel_update_53cb90",
-      "address": "0x53cb90",
+      "address": "0x0053CB90",
       "size": 157,
       "sha256": "eaab16abe0fdcfbee11bb878f43bdfbca20771f89b85d7c466babde807462241",
       "purpose": "Complete original waterbarrel update/firecallback:383contexts x4FPcontrols=1532root+1608callback calls,74executed entries. OriginalFSTPS/differences/squares/sum/FSQRT/radius/C0|C3comparison execute. Threeexcluded declaredenumeration/delete/audio bodies,zeroFPsubstitutions. ActualWizard993 position/radius set independentlyselects samefive firesseenremovedin994; nofulloriginalspatialindex/admission or stockpuzzlebug claim. Finiteedges/age/class/unreadpayload/fourexplicitunordered controls."
     },
     {
       "name": "original_complete_water_barrel_fire_callback_53cc30",
-      "address": "0x53cc30",
+      "address": "0x0053CC30",
       "size": 82,
       "sha256": "8a2964fcc58763b8d3299c513328d57eafdabb1a950a54a3f772322de7d5cdbe",
       "purpose": "Complete original waterbarrel update/firecallback:383contexts x4FPcontrols=1532root+1608callback calls,74executed entries. OriginalFSTPS/differences/squares/sum/FSQRT/radius/C0|C3comparison execute. Threeexcluded declaredenumeration/delete/audio bodies,zeroFPsubstitutions. ActualWizard993 position/radius set independentlyselects samefive firesseenremovedin994; nofulloriginalspatialindex/admission or stockpuzzlebug claim. Finiteedges/age/class/unreadpayload/fourexplicitunordered controls."
     },
     {
       "name": "original_complete_class_stats_57b200",
-      "address": "0x57b200",
+      "address": "0x0057B200",
       "size": 332,
       "sha256": "5e9f032af4881804a9996895e8e92c29f6216bf2042ae31816bc4a051d92b43c",
       "purpose": "Complete original class-stat calculation and actual float getter:458contexts x4FPcontrols=1832root+29312getter calls,75executedentries,oneexcluded declared lookup pointer service. Full332Broot/36Bgetter and16keys/zero constant independently rehashed. OriginalFMUL/FSTPS executes; no FP substitutes. Sixstock-derived/432finiteedges/16missingkeys/4signedzero controls. Default multipliers are declared, not ordinary Solo initialization evidence."
     },
     {
       "name": "original_complete_class_stats_float_getter_419d40",
-      "address": "0x419d40",
+      "address": "0x00419D40",
       "size": 36,
       "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
       "purpose": "Complete original class-stat calculation and actual float getter:458contexts x4FPcontrols=1832root+29312getter calls,75executedentries,oneexcluded declared lookup pointer service. Full332Broot/36Bgetter and16keys/zero constant independently rehashed. OriginalFMUL/FSTPS executes; no FP substitutes. Sixstock-derived/432finiteedges/16missingkeys/4signedzero controls. Default multipliers are declared, not ordinary Solo initialization evidence."
     },
     {
       "name": "original_cursor_y_bounds_fragment_477140",
-      "address": "0x477140",
+      "address": "0x00477140",
       "size": 57,
       "sha256": "66efe52cb877907996a5c609b2b9081dd591e7a765d00bc83dacefdc9fed8254",
       "purpose": "Partial original477050 cursor Y-bound arithmetic only:57-byte477140..477178 fragment plus actual419A70 conversion.18signedZ/visualZ inputs x4FP=72fragment executions,144actual conversioncalls,25executedentries; no services/FP substitutes. Signed16-bit104 affects bounds, visual106 does not. Full hover/class/visibility/shape/admission/global-selection bodies are excluded. Ordinary-input fix independently checked through actual native cursor equality and originalUrchin death in modified diagnostic1010; no clean campaign credit."
     },
     {
       "name": "original_complete_NPC_environment_player_damage_4e17b0",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
     },
     {
       "name": "original_complete_player_damage_carry_4e20f0",
-      "address": "0x4e20f0",
+      "address": "0x004E20F0",
       "size": 131,
       "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
       "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
     },
     {
       "name": "original_complete_NPC_environment_int_419a70",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
     },
     {
       "name": "original_complete_NPC_environment_quest_scale_4e40b0",
-      "address": "0x4e40b0",
+      "address": "0x004E40B0",
       "size": 7,
       "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
       "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
     },
     {
       "name": "original_complete_NPC_environment_action_50a020",
-      "address": "0x50a020",
+      "address": "0x0050A020",
       "size": 27,
       "sha256": "4aaeddd24a479fd9f9ffad57ed0014e32889b80af555fe337d080ffda8847705",
       "purpose": "Unchanged complete original body in bounded NPC IMPALE/LAVA and fractional carry context.704carry+624environment contexts under four FP controls; actual startup0xe3f. Original arithmetic, binary32 stores, FISTP, Quest scalar and action getters execute; six declared buff/mode/type/facing/armor/DefaultDamage services excluded. All504 historical numeric environment leaves independently replayed. No full service effects, allotherdamagebranches, whole nonfinite/FPUstatus/gameplay or overall100 claim."
     },
     {
       "name": "original_source_less_physical_precision_419A70_17",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_physical_precision_4DDF30_35",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_physical_precision_4DFE40_255",
-      "address": "0x4dfe40",
+      "address": "0x004DFE40",
       "size": 255,
       "sha256": "27c36e50b7776ffef488fb395ecef673d3aee1cc5d6f3ede8e72923a52e1baa6",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_physical_precision_4E0B30_1762",
-      "address": "0x4e0b30",
+      "address": "0x004E0B30",
       "size": 1762,
       "sha256": "241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_physical_precision_4E1212_30",
-      "address": "0x4e1212",
+      "address": "0x004E1212",
       "size": 30,
       "sha256": "eff983a318a5b9358edc5c4635b9722eee37e50f63e7e1e6c2a61c6ff87bc4bc",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_physical_precision_4E17B0_2368",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_physical_precision_4E20F0_131",
-      "address": "0x4e20f0",
+      "address": "0x004E20F0",
       "size": 131,
       "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_physical_precision_4E40B0_7",
-      "address": "0x4e40b0",
+      "address": "0x004E40B0",
       "size": 7,
       "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_physical_precision_4EC580_38",
-      "address": "0x4ec580",
+      "address": "0x004EC580",
       "size": 38,
       "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859",
       "purpose": "Finite source=weapon=nil physical types0/2/3/7/8/10/11, startup inherited53-bit chop, directedbinary32store/carry/lateQuest. Complete originalroot/carry/converter/Quest/possession/parentchain bodies; integrated35alsooriginalDefaultDamageprefix/HPreturntail/FireProtection. Explicit buff/mode/armor/default/observerclear/late-defense/sound/HP servicesexcludedperreport. NohostFPstatewrites. Nativeprimarytests assert fulltarget/update nonoutputframes and typedHPfieldpreservation; PlayerInfo/rawHPpadding/highInfoHPpointers notindividuallyasserted. Existinginputloops/actions/assertions retained; old78fixturerows correctedindependently. Allnonnilsource/electric/remainingpaths outofthisport; allcampaigncells/features/UI/audio/peer/stability/overall100 remainopen. Primary6622/historical2163/repeated6/integrated35 inputs under4FPcontrols;172080completefunctioncalls plus140separateHPtailentries. OriginalInstructionUnion=528."
     },
     {
       "name": "original_source_less_electric_precision_413270_28",
-      "address": "0x413270",
+      "address": "0x00413270",
       "size": 28,
       "sha256": "8a6e224e35a8e7221c0e6d5ebd5dded2950754f11fd08f62f37c681223fec056",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_4133D0_72",
-      "address": "0x4133d0",
+      "address": "0x004133D0",
       "size": 72,
       "sha256": "a1a42edb1e60064bc021310a2424ef14b2ea7cd235d5f60e4225062a52e7e2aa",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_415BD0_43",
-      "address": "0x415bd0",
+      "address": "0x00415BD0",
       "size": 43,
       "sha256": "a436028c4a976c92e2b0f1395f0c49c7a649c870892cecd4f347af0d6b8454d3",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_419A70_17",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_4DDF30_35",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_4E17B0_2368",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_4E20F0_131",
-      "address": "0x4e20f0",
+      "address": "0x004E20F0",
       "size": 131,
       "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_4E2220_117",
-      "address": "0x4e2220",
+      "address": "0x004E2220",
       "size": 117,
       "sha256": "3f6c4483bd0a1471dd308a7bda82a58b9ca4685350c3fe821507dfd83bce44f7",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_4E40B0_7",
-      "address": "0x4e40b0",
+      "address": "0x004E40B0",
       "size": 7,
       "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_source_less_electric_precision_4FF350_35",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Source-lessELECTRIC9/AIRBORNE_ELECTRIC17 usesoriginaldirectedscaleproduct/F32spill/carry/Quest. Shared4E2220 armorservice nowtests Materiallowbyte atoriginal+24 independentlyfromSubClass+12, preservesequipment/Material7/specialcoefficient/linkedlookup and directedbinary32additions; correctedscaleadmissionaffectsallcallers, while nonnilsource damageprefix rounding remainsoutside thisport. Completeoriginalroot2368B/armor117B/material72B/armorgetter43B/lookup28B/carry131B/converter17B/Quest7B/possession35B/buff35B, initializedMaterial7descriptorinput; coldnamedresolver/actualarmorwear/DefaultHP andmode servicesexcluded, noFPreturn/arithmetic/conversion substitutes.5376primary+36historicalcontexts x4FPcontrols, actualstartup0xe3f. Nativebefore4256mismatchleaves/1120controls, corrected5377newidentities; both useidentical4byteoriginalcoefficient0x3e19999a initialized/restored onlyinnewunit-testprocess. BeforeV2/afterV1 had448wrongconstantinputs, explicitlyexcludedandpreserved; superseded4444 countunused. Full C-owned target/update/PlayerInfo/HP/item/init/definition/effectframes at explicit>4GiB addresses preserve nonoutputs. Noalias/nonfinite/coldcache/allstockarmorstate orfullWindowsHP/audio/campaign/generalAI/overall100 certificate. Twelveoldscalarrows andfourlive-updateleaves correctedindependently, oldactions/inputs/callbacks/assertions retained; liveupdateeffect at original4E1DF7 declared asnumericboundary, notoriginalGo callbackreachability. Allninecells/18stockmaps/optionalfeatures/native/transitive/UI/audio/peer/stability remainopen."
     },
     {
       "name": "original_armor_wear_precision_armor_distribution_complete",
-      "address": "0x4e2180",
+      "address": "0x004E2180",
       "size": 149,
       "sha256": "76d13e152618dc1a9d8aeedf3335e9f6df2cca3d98bbac840e44bbe1c7ceed6c",
       "purpose": "Independently executed original armor wear precision oracle. Complete original body entered by the original4E2180 oracle, actualstartupPC53/towardzero plus three FPcontrols; EquipDamage4E16D0 observed/excluded."
     },
     {
       "name": "original_armor_wear_precision_item_armor_getter_complete",
-      "address": "0x415c00",
+      "address": "0x00415C00",
       "size": 112,
       "sha256": "f34af7f913929977ebcd6b9c0a911ec406377a07658d4726a9b647cf2d8d6581",
       "purpose": "Independently executed original armor wear precision oracle. Complete original body entered by the original4E2180 oracle, actualstartupPC53/towardzero plus three FPcontrols; EquipDamage4E16D0 observed/excluded."
     },
     {
       "name": "original_armor_wear_precision_linked_armor_definition_complete",
-      "address": "0x413270",
+      "address": "0x00413270",
       "size": 28,
       "sha256": "8a6e224e35a8e7221c0e6d5ebd5dded2950754f11fd08f62f37c681223fec056",
       "purpose": "Independently executed original armor wear precision oracle. Complete original body entered by the original4E2180 oracle, actualstartupPC53/towardzero plus three FPcontrols; EquipDamage4E16D0 observed/excluded."
     },
     {
       "name": "original_armor_wear_precision_historical_arithmetic_fragment",
-      "address": "0x4e21e4",
+      "address": "0x004E21E4",
       "size": 17,
       "sha256": "f3b228e3b6422e68b5aa75dcd09507a972f1abc4c597aad0e68697f6a65593fd",
       "purpose": "Independently executed original armor wear precision oracle. Declared historical arithmetic fragment entry with binary64ST0=1+2^-24, cachedF32armor=.5 andraw3; not a complete function or real415C00 getter output."
     },
     {
       "name": "original_weaponless_player_explosion_precision_PlayerDamage_complete",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
     },
     {
       "name": "original_weaponless_player_explosion_precision_carry_complete",
-      "address": "0x4e20f0",
+      "address": "0x004E20F0",
       "size": 131,
       "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
       "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
     },
     {
       "name": "original_weaponless_player_explosion_precision_signed_DWORD_complete",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
     },
     {
       "name": "original_weaponless_player_explosion_precision_Quest_getter_complete",
-      "address": "0x4e40b0",
+      "address": "0x004E40B0",
       "size": 7,
       "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
       "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
     },
     {
       "name": "original_weaponless_player_explosion_precision_buff_getter_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
     },
     {
       "name": "original_weaponless_player_explosion_precision_possession_getter_complete",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Complete original body entered in independently executed weaponless player EXPLOSION contexts, actual startup PC53/toward-zero plus three FP controls; warm type cache and excluded integer direction/Mode/EquipWear/DefaultHP services are declared. No full callee HP, durability or geometry certificate."
     },
     {
       "name": "original_item_durability_startup_precision_weapon_durability_complete",
-      "address": "0x4e1560",
+      "address": "0x004E1560",
       "size": 239,
       "sha256": "01c730b421118d38a403bdbca258ca82073521b056656a9c84a629fb038d13fa",
       "purpose": "Complete original item durability or converter body entered under actual startup and three controls; cached update and three declared excluded services, no FP substitutions. Complete original weapon4E1560/equipped4E16D0 durability now uses actual startup PC53/toward-zero add/F32spill, real signed419A70 conversion, directed remainder spill, and the update pointer cached before Defend. 600 primary and391 independently declared historical numeric contexts run in four FP controls:3964 runs,7896 complete calls; separate9 exact old converter inputs have36 real419A70 calls. Three excluded services are opaque external Defend integer-pointer effect, DefaultDamage item callback and health report. OpaqueDefend never changes amount or substitutes FP; historical post-Defend FP amount is a declared numeric input, not a stock modifier-body or original callback reachability certificate. Listed NaN/Inf historical shapes only; no broad payload claim. Native full C-owned frames above4GiB preserve nonoutputs. Existing tests retain names, input tables and callback effects; expected numeric/cached-pointer events change only where independently qualified. Zero positive wear must retain original inventory traversal when no HP/report callback can detach an item. Existing world explosion item carry is .4, hence original portion0x41c7ffff produces25/carry0x3ecccc80; only separate zero-carry control produces24. No full HP/network/stock-modifier/invalid-pointer/alias/generalAI/gameplay/overall100 certificate."
     },
     {
       "name": "original_item_durability_startup_precision_equipped_durability_complete",
-      "address": "0x4e16d0",
+      "address": "0x004E16D0",
       "size": 213,
       "sha256": "b2ad08c5146362def8b854c2da72e48b202c3ba611a005c7530c3213551f6748",
       "purpose": "Complete original item durability or converter body entered under actual startup and three controls; cached update and three declared excluded services, no FP substitutions. Complete original weapon4E1560/equipped4E16D0 durability now uses actual startup PC53/toward-zero add/F32spill, real signed419A70 conversion, directed remainder spill, and the update pointer cached before Defend. 600 primary and391 independently declared historical numeric contexts run in four FP controls:3964 runs,7896 complete calls; separate9 exact old converter inputs have36 real419A70 calls. Three excluded services are opaque external Defend integer-pointer effect, DefaultDamage item callback and health report. OpaqueDefend never changes amount or substitutes FP; historical post-Defend FP amount is a declared numeric input, not a stock modifier-body or original callback reachability certificate. Listed NaN/Inf historical shapes only; no broad payload claim. Native full C-owned frames above4GiB preserve nonoutputs. Existing tests retain names, input tables and callback effects; expected numeric/cached-pointer events change only where independently qualified. Zero positive wear must retain original inventory traversal when no HP/report callback can detach an item. Existing world explosion item carry is .4, hence original portion0x41c7ffff produces25/carry0x3ecccc80; only separate zero-carry control produces24. No full HP/network/stock-modifier/invalid-pointer/alias/generalAI/gameplay/overall100 certificate."
     },
     {
       "name": "original_item_durability_startup_precision_signed_DWORD_complete",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete original item durability or converter body entered under actual startup and three controls; cached update and three declared excluded services, no FP substitutions. Complete original weapon4E1560/equipped4E16D0 durability now uses actual startup PC53/toward-zero add/F32spill, real signed419A70 conversion, directed remainder spill, and the update pointer cached before Defend. 600 primary and391 independently declared historical numeric contexts run in four FP controls:3964 runs,7896 complete calls; separate9 exact old converter inputs have36 real419A70 calls. Three excluded services are opaque external Defend integer-pointer effect, DefaultDamage item callback and health report. OpaqueDefend never changes amount or substitutes FP; historical post-Defend FP amount is a declared numeric input, not a stock modifier-body or original callback reachability certificate. Listed NaN/Inf historical shapes only; no broad payload claim. Native full C-owned frames above4GiB preserve nonoutputs. Existing tests retain names, input tables and callback effects; expected numeric/cached-pointer events change only where independently qualified. Zero positive wear must retain original inventory traversal when no HP/report callback can detach an item. Existing world explosion item carry is .4, hence original portion0x41c7ffff produces25/carry0x3ecccc80; only separate zero-carry control produces24. No full HP/network/stock-modifier/invalid-pointer/alias/generalAI/gameplay/overall100 certificate."
     },
     {
       "name": "original_world_flame_quest_precision_PlayerDamage_complete",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
     },
     {
       "name": "original_world_flame_quest_precision_signed_DWORD_complete",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
     },
     {
       "name": "original_world_flame_quest_precision_Quest_getter_complete",
-      "address": "0x4e40b0",
+      "address": "0x004E40B0",
       "size": 7,
       "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
       "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
     },
     {
       "name": "original_world_flame_quest_precision_buff_getter_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
     },
     {
       "name": "original_world_flame_quest_precision_possession_getter_complete",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Complete original body entered in world FLAME Quest cases under actual startup and three controls; integer/warm-cache inputs and four excluded services declared. No FP substitutions."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_419a70",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_424300",
-      "address": "0x424300",
+      "address": "0x00424300",
       "size": 31,
       "sha256": "11676dd3929f946c37a619bdcca10071055d69e4a91851643782069ea685fa7e",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_4dfe40",
-      "address": "0x4dfe40",
+      "address": "0x004DFE40",
       "size": 255,
       "sha256": "27c36e50b7776ffef488fb395ecef673d3aee1cc5d6f3ede8e72923a52e1baa6",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_4e0b30",
-      "address": "0x4e0b30",
+      "address": "0x004E0B30",
       "size": 1762,
       "sha256": "241a41bbd76eaef42c0b52c31f192096e7d1102dd9f98098f3f3715aecfe3991",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_4e1212",
-      "address": "0x4e1212",
+      "address": "0x004E1212",
       "size": 30,
       "sha256": "eff983a318a5b9358edc5c4635b9722eee37e50f63e7e1e6c2a61c6ff87bc4bc",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_4e17b0",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_4e20f0",
-      "address": "0x4e20f0",
+      "address": "0x004E20F0",
       "size": 131,
       "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_4e40b0",
-      "address": "0x4e40b0",
+      "address": "0x004E40B0",
       "size": 7,
       "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_4ff350",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_50a020",
-      "address": "0x50a020",
+      "address": "0x0050A020",
       "size": 27,
       "sha256": "4aaeddd24a479fd9f9ffad57ed0014e32889b80af555fe337d080ffda8847705",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_weaponless_explosion_precision_532880",
-      "address": "0x532880",
+      "address": "0x00532880",
       "size": 33,
       "sha256": "73e524dcc8ceaeacaa15850d264310cd0465da1085324a7de94b6564b55e5b7c",
       "purpose": "Entered original numeric body or explicitly sealed prefix/tail in NPC nonnil-source weaponless case7. Primary1419+historical81+integrated32 contexts, four controls,40528 complete entered calls; possession bytes are unentered and excluded from aliases. Declared integer and external armor/HP/audio services; no FP substitutions. No full transitive/alias/generalAI/gameplay/100 certificate."
     },
     {
       "name": "original_NPC_nilsource_explosion_precision_419a70",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
     },
     {
       "name": "original_NPC_nilsource_explosion_precision_4e17b0",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
     },
     {
       "name": "original_NPC_nilsource_explosion_precision_4e20f0",
-      "address": "0x4e20f0",
+      "address": "0x004E20F0",
       "size": 131,
       "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86",
       "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
     },
     {
       "name": "original_NPC_nilsource_explosion_precision_4e40b0",
-      "address": "0x4e40b0",
+      "address": "0x004E40B0",
       "size": 7,
       "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
       "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
     },
     {
       "name": "original_NPC_nilsource_explosion_precision_4ff350",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Actual entered original body for literalNULLsource/NULLweapon NPC case7:473 primary+10 exactoldnumeric contexts x4controls=1932runs,12548 complete calls and204 entered addresses. Mode/armor/DefaultHP arethreeexcluded services; noFPsubstitutions. Alloriginal/native primary frames preserve nonoutputs. Unenteredpossession/action getters excluded. Otheraliases/transitive/HP/network/AI/gameplay/100 remainopen."
     },
     {
       "name": "original_NPC_cloud_POISON_GreatSword_PlayerDamage_complete",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Complete unchanged original body actually entered in1782NPC cloud POISON late GreatSword contexts/fourFPcontrols/43020completecalls/346enteredaddresses, includingCoopfalse/true andrealownerchainlookup. Mode/direction/reflection/owner/audio/action/integerlookup/durability/DefaultHP are11excludedserviceaddresses; noFPreturn/arithmetic/conversion substitutions. No stockcloud/HP/durability/audio/transitive/fullport100 certificate."
     },
     {
       "name": "original_NPC_cloud_POISON_GreatSword_NPC_block_readiness_complete",
-      "address": "0x534340",
+      "address": "0x00534340",
       "size": 72,
       "sha256": "467b1f4802b0cea280b1877cf5404dc002ce82379fc4230951f810b8f8801f4e",
       "purpose": "Complete unchanged original body actually entered in1782NPC cloud POISON late GreatSword contexts/fourFPcontrols/43020completecalls/346enteredaddresses, includingCoopfalse/true andrealownerchainlookup. Mode/direction/reflection/owner/audio/action/integerlookup/durability/DefaultHP are11excludedserviceaddresses; noFPreturn/arithmetic/conversion substitutions. No stockcloud/HP/durability/audio/transitive/fullport100 certificate."
     },
     {
       "name": "original_NPC_cloud_POISON_GreatSword_NPC_action_getter_complete",
-      "address": "0x50a020",
+      "address": "0x0050A020",
       "size": 27,
       "sha256": "4aaeddd24a479fd9f9ffad57ed0014e32889b80af555fe337d080ffda8847705",
       "purpose": "Complete unchanged original body actually entered in1782NPC cloud POISON late GreatSword contexts/fourFPcontrols/43020completecalls/346enteredaddresses, includingCoopfalse/true andrealownerchainlookup. Mode/direction/reflection/owner/audio/action/integerlookup/durability/DefaultHP are11excludedserviceaddresses; noFPreturn/arithmetic/conversion substitutions. No stockcloud/HP/durability/audio/transitive/fullport100 certificate."
     },
     {
       "name": "original_NPC_cloud_POISON_GreatSword_owner_chain_player_complete",
-      "address": "0x4ec580",
+      "address": "0x004EC580",
       "size": 38,
       "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859",
       "purpose": "Complete unchanged original body actually entered in1782NPC cloud POISON late GreatSword contexts/fourFPcontrols/43020completecalls/346enteredaddresses, includingCoopfalse/true andrealownerchainlookup. Mode/direction/reflection/owner/audio/action/integerlookup/durability/DefaultHP are11excludedserviceaddresses; noFPreturn/arithmetic/conversion substitutions. No stockcloud/HP/durability/audio/transitive/fullport100 certificate."
     },
     {
       "name": "original_NPC_cloud_POISON_GreatSword_weapon_wear_selection_complete",
-      "address": "0x4e22a0",
+      "address": "0x004E22A0",
       "size": 135,
       "sha256": "4294d212dd18138b2a8784ca0fa07ffc15cb4270af5682cb8b4933203a16054e",
       "purpose": "Complete unchanged original body actually entered in1782NPC cloud POISON late GreatSword contexts/fourFPcontrols/43020completecalls/346enteredaddresses, includingCoopfalse/true andrealownerchainlookup. Mode/direction/reflection/owner/audio/action/integerlookup/durability/DefaultHP are11excludedserviceaddresses; noFPreturn/arithmetic/conversion substitutions. No stockcloud/HP/durability/audio/transitive/fullport100 certificate."
     },
     {
       "name": "original_NPC_cloud_POISON_GreatSword_balance_scalar_getter_complete",
-      "address": "0x419d40",
+      "address": "0x00419D40",
       "size": 36,
       "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
       "purpose": "Complete unchanged original body actually entered in1782NPC cloud POISON late GreatSword contexts/fourFPcontrols/43020completecalls/346enteredaddresses, includingCoopfalse/true andrealownerchainlookup. Mode/direction/reflection/owner/audio/action/integerlookup/durability/DefaultHP are11excludedserviceaddresses; noFPreturn/arithmetic/conversion substitutions. No stockcloud/HP/durability/audio/transitive/fullport100 certificate."
     },
     {
       "name": "original_NPC_cloud_POISON_GreatSword_buff_getter_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete unchanged original body actually entered in1782NPC cloud POISON late GreatSword contexts/fourFPcontrols/43020completecalls/346enteredaddresses, includingCoopfalse/true andrealownerchainlookup. Mode/direction/reflection/owner/audio/action/integerlookup/durability/DefaultHP are11excludedserviceaddresses; noFPreturn/arithmetic/conversion substitutions. No stockcloud/HP/durability/audio/transitive/fullport100 certificate."
     },
     {
       "name": "original_Player_cloud_POISON_GreatSword_PlayerDamage_complete",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Complete unchanged original body entered in1872player cloudPOISON lateGreatSword contexts/fourFPcontrols/39456enteredcalls/332enteredaddresses. Entrycachedstate/equipment/marker andliveupdate/state/inventory; Coopfalse/true actualownerlookup. Elevenexternalserviceaddresses declared, noFPreturn/arithmetic/conversion substitutions. EarlyReflect/playercloudQuest/actualRNG/HP/durability/audio/transitive/fullport100 remainopen."
     },
     {
       "name": "original_Player_cloud_POISON_GreatSword_owner_chain_player_complete",
-      "address": "0x4ec580",
+      "address": "0x004EC580",
       "size": 38,
       "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859",
       "purpose": "Complete unchanged original body entered in1872player cloudPOISON lateGreatSword contexts/fourFPcontrols/39456enteredcalls/332enteredaddresses. Entrycachedstate/equipment/marker andliveupdate/state/inventory; Coopfalse/true actualownerlookup. Elevenexternalserviceaddresses declared, noFPreturn/arithmetic/conversion substitutions. EarlyReflect/playercloudQuest/actualRNG/HP/durability/audio/transitive/fullport100 remainopen."
     },
     {
       "name": "original_Player_cloud_POISON_GreatSword_weapon_wear_selection_complete",
-      "address": "0x4e22a0",
+      "address": "0x004E22A0",
       "size": 135,
       "sha256": "4294d212dd18138b2a8784ca0fa07ffc15cb4270af5682cb8b4933203a16054e",
       "purpose": "Complete unchanged original body entered in1872player cloudPOISON lateGreatSword contexts/fourFPcontrols/39456enteredcalls/332enteredaddresses. Entrycachedstate/equipment/marker andliveupdate/state/inventory; Coopfalse/true actualownerlookup. Elevenexternalserviceaddresses declared, noFPreturn/arithmetic/conversion substitutions. EarlyReflect/playercloudQuest/actualRNG/HP/durability/audio/transitive/fullport100 remainopen."
     },
     {
       "name": "original_Player_cloud_POISON_GreatSword_balance_scalar_getter_complete",
-      "address": "0x419d40",
+      "address": "0x00419D40",
       "size": 36,
       "sha256": "9057919e29d605d52f906ebdd96baee444f1914c26ddbd74a54636401b9d7300",
       "purpose": "Complete unchanged original body entered in1872player cloudPOISON lateGreatSword contexts/fourFPcontrols/39456enteredcalls/332enteredaddresses. Entrycachedstate/equipment/marker andliveupdate/state/inventory; Coopfalse/true actualownerlookup. Elevenexternalserviceaddresses declared, noFPreturn/arithmetic/conversion substitutions. EarlyReflect/playercloudQuest/actualRNG/HP/durability/audio/transitive/fullport100 remainopen."
     },
     {
       "name": "original_Player_cloud_POISON_GreatSword_buff_getter_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete unchanged original body entered in1872player cloudPOISON lateGreatSword contexts/fourFPcontrols/39456enteredcalls/332enteredaddresses. Entrycachedstate/equipment/marker andliveupdate/state/inventory; Coopfalse/true actualownerlookup. Elevenexternalserviceaddresses declared, noFPreturn/arithmetic/conversion substitutions. EarlyReflect/playercloudQuest/actualRNG/HP/durability/audio/transitive/fullport100 remainopen."
     },
     {
       "name": "original_Player_cloud_POISON_GreatSword_possession_getter_complete",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Complete unchanged original body entered in1872player cloudPOISON lateGreatSword contexts/fourFPcontrols/39456enteredcalls/332enteredaddresses. Entrycachedstate/equipment/marker andliveupdate/state/inventory; Coopfalse/true actualownerlookup. Elevenexternalserviceaddresses declared, noFPreturn/arithmetic/conversion substitutions. EarlyReflect/playercloudQuest/actualRNG/HP/durability/audio/transitive/fullport100 remainopen."
     },
     {
       "name": "original_Player_cloud_POISON_Reflect_PlayerDamage_complete",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Complete unchanged original body entered in384playercloudPOISONearlyReflect contexts/fourFPcontrols/6912completecalls/258enteredaddresses. ObserveClear mayintroduceMISSILE; current/previouspoint andpostreflect/postowner callbackclass/subclassreloads qualified. Nineexternalserviceaddresses declared; noFPreturn/arithmetic/conversion substitutions. Noobserver/owner/direction/audio/HPcallee/fullport100certificate."
     },
     {
       "name": "original_Player_cloud_POISON_Reflect_buff_getter_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete unchanged original body entered in384playercloudPOISONearlyReflect contexts/fourFPcontrols/6912completecalls/258enteredaddresses. ObserveClear mayintroduceMISSILE; current/previouspoint andpostreflect/postowner callbackclass/subclassreloads qualified. Nineexternalserviceaddresses declared; noFPreturn/arithmetic/conversion substitutions. Noobserver/owner/direction/audio/HPcallee/fullport100certificate."
     },
     {
       "name": "original_Player_cloud_POISON_Reflect_possession_getter_complete",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Complete unchanged original body entered in384playercloudPOISONearlyReflect contexts/fourFPcontrols/6912completecalls/258enteredaddresses. ObserveClear mayintroduceMISSILE; current/previouspoint andpostreflect/postowner callbackclass/subclassreloads qualified. Nineexternalserviceaddresses declared; noFPreturn/arithmetic/conversion substitutions. Noobserver/owner/direction/audio/HPcallee/fullport100certificate."
     },
     {
       "name": "original_Player_cloud_POISON_Reflect_owner_chain_player_complete",
-      "address": "0x4ec580",
+      "address": "0x004EC580",
       "size": 38,
       "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859",
       "purpose": "Complete unchanged original body entered in384playercloudPOISONearlyReflect contexts/fourFPcontrols/6912completecalls/258enteredaddresses. ObserveClear mayintroduceMISSILE; current/previouspoint andpostreflect/postowner callbackclass/subclassreloads qualified. Nineexternalserviceaddresses declared; noFPreturn/arithmetic/conversion substitutions. Noobserver/owner/direction/audio/HPcallee/fullport100certificate."
     },
     {
       "name": "original_Player_ZAP_RAY_Reflect_PlayerDamage_complete",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Complete unchanged original body entered in384 player ZAP_RAY early Reflect conditions/four FP controls/6912 complete calls/271 addresses. ObserveClear-introduced missile, current/previous points, post-reflect and post-owner class/subclass reloads, PointFX132/Audio122 qualified. Ten declared external services; no FP substitutions or full callee/generalAI/overall100 claim."
     },
     {
       "name": "original_Player_ZAP_RAY_Reflect_buff_getter_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete unchanged original body entered in384 player ZAP_RAY early Reflect conditions/four FP controls/6912 complete calls/271 addresses. ObserveClear-introduced missile, current/previous points, post-reflect and post-owner class/subclass reloads, PointFX132/Audio122 qualified. Ten declared external services; no FP substitutions or full callee/generalAI/overall100 claim."
     },
     {
       "name": "original_Player_ZAP_RAY_Reflect_possession_getter_complete",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Complete unchanged original body entered in384 player ZAP_RAY early Reflect conditions/four FP controls/6912 complete calls/271 addresses. ObserveClear-introduced missile, current/previous points, post-reflect and post-owner class/subclass reloads, PointFX132/Audio122 qualified. Ten declared external services; no FP substitutions or full callee/generalAI/overall100 claim."
     },
     {
       "name": "original_Player_ZAP_RAY_Reflect_owner_chain_player_complete",
-      "address": "0x4ec580",
+      "address": "0x004EC580",
       "size": 38,
       "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859",
       "purpose": "Complete unchanged original body entered in384 player ZAP_RAY early Reflect conditions/four FP controls/6912 complete calls/271 addresses. ObserveClear-introduced missile, current/previous points, post-reflect and post-owner class/subclass reloads, PointFX132/Audio122 qualified. Ten declared external services; no FP substitutions or full callee/generalAI/overall100 claim."
     },
     {
       "name": "original_cloud_POISON_Quest_precision_PlayerDamage_complete",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Complete unchanged body entered in1456 player/NPC cloud POISON Quest conditions/four FP controls/29120 complete calls/240 addresses. Signed raw values and scalar zero/subnormal/rounding/nonfinite controls. Three external mode/direction/DefaultHP service addresses; zero FP return/arithmetic/conversion substitutions. No HP/status-poisoning/transitive/campaign/overall100 certificate."
     },
     {
       "name": "original_cloud_POISON_Quest_precision_signed_DWORD_complete",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete unchanged body entered in1456 player/NPC cloud POISON Quest conditions/four FP controls/29120 complete calls/240 addresses. Signed raw values and scalar zero/subnormal/rounding/nonfinite controls. Three external mode/direction/DefaultHP service addresses; zero FP return/arithmetic/conversion substitutions. No HP/status-poisoning/transitive/campaign/overall100 certificate."
     },
     {
       "name": "original_cloud_POISON_Quest_precision_Quest_getter_complete",
-      "address": "0x4e40b0",
+      "address": "0x004E40B0",
       "size": 7,
       "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde",
       "purpose": "Complete unchanged body entered in1456 player/NPC cloud POISON Quest conditions/four FP controls/29120 complete calls/240 addresses. Signed raw values and scalar zero/subnormal/rounding/nonfinite controls. Three external mode/direction/DefaultHP service addresses; zero FP return/arithmetic/conversion substitutions. No HP/status-poisoning/transitive/campaign/overall100 certificate."
     },
     {
       "name": "original_cloud_POISON_Quest_precision_buff_getter_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete unchanged body entered in1456 player/NPC cloud POISON Quest conditions/four FP controls/29120 complete calls/240 addresses. Signed raw values and scalar zero/subnormal/rounding/nonfinite controls. Three external mode/direction/DefaultHP service addresses; zero FP return/arithmetic/conversion substitutions. No HP/status-poisoning/transitive/campaign/overall100 certificate."
     },
     {
       "name": "original_cloud_POISON_Quest_precision_possession_getter_complete",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Complete unchanged body entered in1456 player/NPC cloud POISON Quest conditions/four FP controls/29120 complete calls/240 addresses. Signed raw values and scalar zero/subnormal/rounding/nonfinite controls. Three external mode/direction/DefaultHP service addresses; zero FP return/arithmetic/conversion substitutions. No HP/status-poisoning/transitive/campaign/overall100 certificate."
     },
     {
       "name": "original_cloud_POISON_Quest_precision_owner_chain_player_complete",
-      "address": "0x4ec580",
+      "address": "0x004EC580",
       "size": 38,
       "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859",
       "purpose": "Complete unchanged body entered in1456 player/NPC cloud POISON Quest conditions/four FP controls/29120 complete calls/240 addresses. Signed raw values and scalar zero/subnormal/rounding/nonfinite controls. Three external mode/direction/DefaultHP service addresses; zero FP return/arithmetic/conversion substitutions. No HP/status-poisoning/transitive/campaign/overall100 certificate."
     },
     {
       "name": "original_shared_Reflect_live_owner_PlayerDamage_complete",
-      "address": "0x4e17b0",
+      "address": "0x004E17B0",
       "size": 2368,
       "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9",
       "purpose": "Complete unchanged body entered in160 declared player/NPC IMPACT/ZAP_RAY missile Reflect contexts and640 FP-control runs/2240 complete calls/150 instruction addresses. Reflection and owner callbacks mutate live class/subclass. Eight mode/direction/reflection/owner/FX/audio service boundaries; direction is constant true, so its internal reads and marker timing are outside this certificate. Zero FP substitutions; no service-callee, generalAI or overall100 certificate."
     },
     {
       "name": "original_shared_Reflect_live_owner_buff_getter_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete unchanged body entered in160 declared player/NPC IMPACT/ZAP_RAY missile Reflect contexts and640 FP-control runs/2240 complete calls/150 instruction addresses. Reflection and owner callbacks mutate live class/subclass. Eight mode/direction/reflection/owner/FX/audio service boundaries; direction is constant true, so its internal reads and marker timing are outside this certificate. Zero FP substitutions; no service-callee, generalAI or overall100 certificate."
     },
     {
       "name": "original_shared_Reflect_live_owner_possession_getter_complete",
-      "address": "0x4ddf30",
+      "address": "0x004DDF30",
       "size": 35,
       "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6",
       "purpose": "Complete unchanged body entered in160 declared player/NPC IMPACT/ZAP_RAY missile Reflect contexts and640 FP-control runs/2240 complete calls/150 instruction addresses. Reflection and owner callbacks mutate live class/subclass. Eight mode/direction/reflection/owner/FX/audio service boundaries; direction is constant true, so its internal reads and marker timing are outside this certificate. Zero FP substitutions; no service-callee, generalAI or overall100 certificate."
     },
     {
       "name": "original_activate_poison_precision_activate_poison_complete",
-      "address": "0x4ee7e0",
+      "address": "0x004EE7E0",
       "size": 272,
       "sha256": "9feaa5b8573f81098b0d4f656dfe531849fceddea5650d990225da2f9dfa439f",
       "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
     },
     {
       "name": "original_activate_poison_precision_poison_protection_complete",
-      "address": "0x4e0040",
+      "address": "0x004E0040",
       "size": 255,
       "sha256": "c28bf4cba406652dcd46b17a9ddaad758b83390a9f096d365247392dea164798",
       "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
     },
     {
       "name": "original_activate_poison_precision_buff_membership_complete",
-      "address": "0x4ff350",
+      "address": "0x004FF350",
       "size": 35,
       "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414",
       "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
     },
     {
       "name": "original_activate_poison_precision_buff_power_complete",
-      "address": "0x4ff570",
+      "address": "0x004FF570",
       "size": 16,
       "sha256": "28e37d0257bfe49ed51fba22c8405a8166e9e4e2d294fc70e96b147b879140dd",
       "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
     },
     {
       "name": "original_activate_poison_precision_balance_float_table_complete",
-      "address": "0x419d70",
+      "address": "0x00419D70",
       "size": 50,
       "sha256": "c6d176697902aeab72feefdcc6ce998f2bdede457d819d15b8c35ddfabed6c92",
       "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
     },
     {
       "name": "original_activate_poison_precision_signed_DWORD_complete",
-      "address": "0x419a70",
+      "address": "0x00419A70",
       "size": 17,
       "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
       "purpose": "Complete unchanged body in196 primary caller contexts/784 FP-control runs,13 actual startup boundary probes and10 historical scalar conversions/40 controls;4285 complete entered calls/191 instruction addresses. Real protection inventory/buff/table/percent multiply/F32spill/signedFISTP execute. Five declared RNG/hash/state/audio/message services; zero FP return/arithmetic/conversion substitutions. No service-callee, FP-status/NaN-payload, campaign or overall100 certificate."
@@ -27317,10 +27317,11 @@
     },
     {
       "name": "original_source_less_electric_special_armor_coefficient",
-      "address": "0x5b8194",
+      "address": "0x005B8194",
       "size": 4,
       "sha256": "5059b35a51a066cc88e72daa9017c4e126068c6368cd3b9f45b4d8d5cc94b3e5",
       "purpose": "Read-onlyexactoriginalPEdata; unchangednativeblobatbase587000/off201108. Onlynewunit-testfixtureexplicitlyinitializesthisfourbyteinput; normalgameInitDataalreadyusesit."
     }
-  ]
+  ],
+  "allow_overlapping_ranges": true
 }

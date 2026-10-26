@@ -25,14 +25,15 @@ type codeRecord struct {
 }
 
 type codeManifest struct {
-	Schema     string       `json:"schema"`
-	OracleID   string       `json:"oracle_id"`
-	Path       string       `json:"path"`
-	FileSHA256 string       `json:"file_sha256"`
-	Format     string       `json:"format"`
-	ImageBase  string       `json:"image_base"`
-	Functions  []codeRecord `json:"functions"`
-	Data       []codeRecord `json:"data,omitempty"`
+	Schema                 string       `json:"schema"`
+	OracleID               string       `json:"oracle_id"`
+	Path                   string       `json:"path"`
+	FileSHA256             string       `json:"file_sha256"`
+	Format                 string       `json:"format"`
+	ImageBase              string       `json:"image_base"`
+	AllowOverlappingRanges bool         `json:"allow_overlapping_ranges,omitempty"`
+	Functions              []codeRecord `json:"functions"`
+	Data                   []codeRecord `json:"data,omitempty"`
 }
 
 func verifyCodeOracle(root, manifestPath, oracleManifestPath string) (*codeManifest, error) {
@@ -167,16 +168,16 @@ func validateCodeManifest(m *codeManifest) error {
 		return errors.New("code manifest contains no functions")
 	}
 	names := make(map[string]bool)
-	if err := validateCodeRecords("function", m.Functions, base, names); err != nil {
+	if err := validateCodeRecords("function", m.Functions, base, names, m.AllowOverlappingRanges); err != nil {
 		return err
 	}
-	if err := validateCodeRecords("data", m.Data, base, names); err != nil {
+	if err := validateCodeRecords("data", m.Data, base, names, m.AllowOverlappingRanges); err != nil {
 		return err
 	}
 	return nil
 }
 
-func validateCodeRecords(kind string, records []codeRecord, base uint64, names map[string]bool) error {
+func validateCodeRecords(kind string, records []codeRecord, base uint64, names map[string]bool, allowOverlaps bool) error {
 	var previousEnd uint64
 	for i, rec := range records {
 		if strings.TrimSpace(rec.Name) == "" || strings.TrimSpace(rec.Purpose) == "" {
@@ -197,7 +198,7 @@ func validateCodeRecords(kind string, records []codeRecord, base uint64, names m
 		if end < va {
 			return fmt.Errorf("%s range overflow for %q", kind, rec.Name)
 		}
-		if i > 0 && va < previousEnd {
+		if !allowOverlaps && i > 0 && va < previousEnd {
 			return fmt.Errorf("%s ranges are not sorted and disjoint at %q", kind, rec.Name)
 		}
 		previousEnd = end

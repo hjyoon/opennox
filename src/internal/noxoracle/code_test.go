@@ -131,3 +131,43 @@ func validCodeManifest() codeManifest {
 		},
 	}
 }
+
+func TestValidateCodeManifestOverlappingAliasesRequireOptIn(t *testing.T) {
+	m := validCodeManifest()
+	alias := m.Functions[0]
+	alias.Name, alias.Size, alias.Purpose = "function_prefix_alias", 2, "retained prefix seal"
+	m.Functions = append(m.Functions, alias)
+	dataAlias := m.Data[0]
+	dataAlias.Name, dataAlias.Size, dataAlias.Purpose = "data_prefix_alias", 2, "retained data prefix seal"
+	m.Data = append(m.Data, dataAlias)
+	if err := validateCodeManifest(&m); err == nil || !strings.Contains(err.Error(), "sorted and disjoint") {
+		t.Fatalf("default validation = %v, want strict order/overlap rejection", err)
+	}
+	m.AllowOverlappingRanges = true
+	if err := validateCodeManifest(&m); err != nil {
+		t.Fatalf("explicit overlapping alias policy = %v", err)
+	}
+}
+
+func TestValidateCodeManifestAliasPolicyRetainsRecordChecks(t *testing.T) {
+	cases := []struct {
+		name, want string
+		edit       func(*codeManifest)
+	}{
+		{"duplicate name", "duplicate function name", func(m *codeManifest) { m.Functions[1].Name = m.Functions[0].Name }},
+		{"cross-kind duplicate", "duplicate data name", func(m *codeManifest) { m.Data[0].Name = m.Functions[0].Name }},
+		{"bad digest", "invalid SHA-256", func(m *codeManifest) { m.Functions[0].SHA256 = "00" }},
+		{"zero size", "invalid range", func(m *codeManifest) { m.Functions[0].Size = 0 }},
+		{"noncanonical address", "canonical", func(m *codeManifest) { m.Functions[0].Address = "0x004e44f0" }},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			m := validCodeManifest()
+			m.AllowOverlappingRanges = true
+			tc.edit(&m)
+			if err := validateCodeManifest(&m); err == nil || !strings.Contains(err.Error(), tc.want) {
+				t.Fatalf("alias policy validation = %v, want %q", err, tc.want)
+			}
+		})
+	}
+}

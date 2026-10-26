@@ -1,0 +1,1 @@
+2026-10-27: qualify native Linux AMD64 after the GLOBAL merge buffer, server lifecycle, fixed-width statistics tag and native fixture portability changes.

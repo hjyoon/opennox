@@ -1,0 +1,145 @@
+name: Porting Linux native checkpoint
+
+on:
+  workflow_dispatch:
+    inputs:
+      products:
+        description: Native products to qualify
+        type: choice
+        options:
+          - server
+          - all
+        default: server
+  push:
+    branches:
+      - port/go1.26-multiarch
+    # Full qualification is deliberate: campaign edits reuse existing products.
+    paths:
+      - .github/workflows/port-linux-native.yml
+      - toolchain/linux-native-ci-checkpoint.txt
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    name: Linux/amd64 ${{ matrix.product }}
+    if: github.ref == 'refs/heads/port/go1.26-multiarch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        product: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.products == 'server') && '["opennox-server"]' || '["opennox","opennox-hd","opennox-server","opennox-server-hd"]') }}
+    env:
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: '1'
+      CC: gcc
+      CXX: g++
+      CGO_CFLAGS_ALLOW: '-f.*'
+      CGO_CFLAGS: '-O2 -g -fno-peephole2'
+      GOMAXPROCS: '2'
+      GOFLAGS: '-p=1'
+      NOX_E2E_SEAT: headless
+      NOX_E2E_AUDIO: mock
+      NOX_XWIS: 'false'
+      NOX_NET_NAT: 'false'
+      SDL_VIDEODRIVER: dummy
+      SDL_AUDIODRIVER: dummy
+      ALSOFT_DRIVERS: 'null'
+      NATIVE_PRODUCT: ${{ matrix.product }}
+      NATIVE_REPORT_DIR: ${{ github.workspace }}/build/linux-amd64-${{ matrix.product }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: src/go.mod
+          cache: false
+
+      - name: Install native client libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc g++ pkg-config libsdl2-dev libopenal-dev
+
+      - name: Verify native toolchain
+        working-directory: src
+        run: |
+          test "$(uname -m)" = x86_64
+          test "$(../scripts/go.sh env GOHOSTOS)" = linux
+          test "$(../scripts/go.sh env GOHOSTARCH)" = amd64
+          mkdir -p "$NATIVE_REPORT_DIR"
+          ../scripts/go.sh version | tee "$NATIVE_REPORT_DIR/go-version.txt"
+          gcc --version | tee "$NATIVE_REPORT_DIR/cc-version.txt"
+          pkg-config --modversion sdl2 openal
+          git rev-parse HEAD | tee "$NATIVE_REPORT_DIR/source-revision.txt"
+
+      - name: Build and verify native product
+        working-directory: src
+        run: |
+          ../scripts/go.sh run ./internal/noxbuild -o="$NATIVE_REPORT_DIR" -os=linux -arch=amd64 -cc=gcc -cxx=g++ "$NATIVE_PRODUCT"
+          product="$NATIVE_REPORT_DIR/$NATIVE_PRODUCT"
+          ../scripts/go.sh run ./internal/noxbuild -verify "$product" > "$NATIVE_REPORT_DIR/product-verification.txt"
+          ../scripts/go.sh version -m "$product" > "$NATIVE_REPORT_DIR/product-build-info.txt"
+          sha256sum "$product" > "$NATIVE_REPORT_DIR/product.sha256"
+          "$product" -h > "$NATIVE_REPORT_DIR/product-help.txt" 2>&1
+
+      - name: Test every package for the product variant
+        working-directory: src
+        run: |
+          set -euo pipefail
+          ulimit -c 0
+          tags=()
+          case "$NATIVE_PRODUCT" in
+            opennox) ;;
+            opennox-hd) tags=(-tags=highres) ;;
+            opennox-server) tags=(-tags=server) ;;
+            opennox-server-hd) tags=(-tags=server,highres) ;;
+            *) exit 2 ;;
+          esac
+          ../scripts/go.sh list "${tags[@]}" ./... > "$NATIVE_REPORT_DIR/expected-packages.txt"
+          set +e
+          ../scripts/go.sh test "${tags[@]}" -json -count=1 -timeout=20m ./... > "$NATIVE_REPORT_DIR/test.jsonl" 2> "$NATIVE_REPORT_DIR/test.stderr.log"
+          status=$?
+          set -e
+          echo "$status" > "$NATIVE_REPORT_DIR/test.exit"
+          python3 - "$NATIVE_REPORT_DIR" <<'PY'
+          import collections, json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          tests, packages = collections.Counter(), collections.Counter()
+          terminal, failures = set(), []
+          with (root / 'test.jsonl').open() as stream:
+              for line in stream:
+                  row = json.loads(line)
+                  action = row.get('Action')
+                  if action not in ('pass', 'fail', 'skip'):
+                      continue
+                  if row.get('Test'):
+                      tests[action] += 1
+                  else:
+                      packages[action] += 1
+                      terminal.add(row['Package'])
+                  if action == 'fail':
+                      failures.append(row)
+          expected = set((root / 'expected-packages.txt').read_text().splitlines())
+          summary = dict(test_exit_code=int((root / 'test.exit').read_text()),
+                         test_actions=dict(tests), package_actions=dict(packages),
+                         expected_packages=sorted(expected), terminal_packages=sorted(terminal),
+                         missing_packages=sorted(expected - terminal), failures=failures)
+          (root / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
+          print(json.dumps({k: v for k, v in summary.items() if k != 'failures'}, indent=2))
+          print('Recorded failures:', len(failures))
+          if not expected or expected != terminal:
+              sys.exit('Incomplete package evidence; inspect preserved test output')
+          PY
+          exit "$status"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: linux-amd64-${{ matrix.product }}-${{ github.sha }}
+          path: build/linux-amd64-${{ matrix.product }}/
+          if-no-files-found: warn
+          retention-days: 7

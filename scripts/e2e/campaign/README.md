@@ -23,6 +23,7 @@ The subsequent segments have their own seed contracts:
 | --- | --- | --- |
 | `wizard2-north-remaining-spider.json` | Healthy north-bookcase save | AlbinoSpider2345 |
 | `wizard2-northeast.json` | Healthy remaining-spider save | AlbinoSpiders2346 and2347 |
+| `wizard2-flying-golem.json` | Healthy northeast save, HP20/MP78 | FlyingGolem2348; earned level gain to HP26/MP88 |
 
 Scenario changes reuse the supplied executable. Each run copies the Save and
 preserves its executable, executed scenario, suite, logs, screenshots and

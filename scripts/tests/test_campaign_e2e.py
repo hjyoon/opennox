@@ -42,6 +42,30 @@ class SuiteFieldsTests(unittest.TestCase):
             self.assertFalse((root / 'output').exists())
 
 
+class PlayerOutcomeTests(unittest.TestCase):
+    def test_earned_level_gain_requires_the_reported_maxima(self):
+        # Actual final values from the original FlyingGolem2348 level gain.
+        player = {'player': {'health': 26, 'maximum_health': 26},
+                  'mana': 88, 'maximum_mana': 88}
+        case = {'expected_health': 26, 'expected_mana': 88,
+                'expected_maximum_health': 26, 'expected_maximum_mana': 88}
+        self.assertTrue(runner.expected_player_values(player, case))
+        for key, value in (('maximum_health', 27), ('maximum_mana', 89)):
+            observed = dict(player, player=dict(player['player']))
+            if key == 'maximum_health':
+                observed['player'][key] = value
+            else:
+                observed[key] = value
+            self.assertFalse(runner.expected_player_values(observed, case))
+
+    def test_required_missing_values_fail_and_existing_suites_keep_current_checks(self):
+        player = {'player': {'health': 20}, 'mana': 78}
+        self.assertTrue(runner.expected_player_values(player, {'expected_health': 20, 'expected_mana': 78}))
+        self.assertFalse(runner.expected_player_values(player, {'expected_maximum_health': 26}))
+        self.assertFalse(runner.expected_player_values(player, {'expected_health': 26}))
+        self.assertFalse(runner.expected_player_values(player, {'expected_maximum_mana': 88}))
+
+
 class ScenarioEvidenceTests(unittest.TestCase):
     def test_launch_uses_preserved_input_when_the_source_is_edited(self):
         with tempfile.TemporaryDirectory() as directory:

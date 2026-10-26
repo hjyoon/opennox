@@ -34,6 +34,7 @@ ROUTES = {'objects': '/debug/nox/objects', 'script': '/debug/nox/script/legacy',
 SUITE_FIELDS = {'version', 'name', 'coverage', 'seed_contract', 'cases'}
 CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_poison_free',
                'timeout_seconds', 'required_checkpoints', 'expected_health', 'expected_mana',
+               'expected_maximum_health', 'expected_maximum_mana',
                'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
                'required_defeated_script_ids', 'required_enable_transitions',
                'required_position_transitions', 'required_plate_holds'}
@@ -241,6 +242,14 @@ def required_plate_holds(samples, requirements):
     return {'holds': holds, 'passed': bool(holds) and all(row['passed'] for row in holds)}
 
 
+def expected_player_values(player, case):
+    values = {'expected_health': player['player']['health'],
+              'expected_mana': player['mana'],
+              'expected_maximum_health': player['player'].get('maximum_health'),
+              'expected_maximum_mana': player.get('maximum_mana')}
+    return all(key not in case or value == case[key] for key, value in values.items())
+
+
 def run_case(args, binary, suite_dir, case, port):
     case_dir = args.output / case['name']
     case_dir.mkdir()
@@ -378,8 +387,7 @@ def run_case(args, binary, suite_dir, case, port):
     required = all(any(text in line for line in checkpoints) for text in case.get('required_checkpoints', []))
     outcomes_ok = True
     if player:
-        outcomes_ok = (player['player']['health'] == case.get('expected_health', player['player']['health'])
-                       and player['mana'] == case.get('expected_mana', player['mana']))
+        outcomes_ok = expected_player_values(player, case)
     if case.get('expect_damage'):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
     if (case.get('created_type') or case.get('required_defeated_script_ids')

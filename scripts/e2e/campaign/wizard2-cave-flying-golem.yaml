@@ -1,0 +1,102 @@
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 1, "spell": 27}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "wait", "dt": 35}
+  - {"action": "run-to-world", "x": 1922, "y": 3545, "name": "ordinary road east190"}
+  - {"action": "run-to-world", "x": 1781, "y": 3689, "name": "ordinary road east statue748"}
+  - {"action": "run-to-world", "x": 1552, "y": 3692, "name": "ordinary road north statue750"}
+  - {"action": "run-to-world", "x": 1333, "y": 3469, "name": "ordinary road cleared north191"}
+  - {"action": "run-to-world", "x": 1414, "y": 3414, "name": "ordinary road opened Bookcase1"}
+  - {"action": "run-to-world", "x": 1499, "y": 3317, "name": "ordinary road cleared north195"}
+  - {"action": "run-to-world", "x": 1796, "y": 3008, "name": "ordinary road north194"}
+  - {"action": "run-to-world", "x": 2102, "y": 3309, "name": "ordinary road cleared northeast193"}
+  - {"action": "run-to-world", "x": 2331, "y": 3540, "name": "ordinary road original junction192"}
+  - {"action": "run-to-world", "x": 2408, "y": 3534, "name": "ordinary road original Obelisk1622"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "observe-player-target", "name": "read original central eastern obelisks"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original central eastern obelisks"}
+  - {"action": "run-to-world", "x": 2318, "y": 3619, "name": "ordinary source road92 before original FlyingGolem range"}
+  - {"action": "run-to-world", "x": 2517, "y": 3866, "name": "ordinary road91 original FlyingGolem outer range"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original FlyingGolem outer range"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input1"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input2"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input3"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input4"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input5"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input6"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input7"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input8"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input9"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input10"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input11"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "cast-at-nearest-monster-input", "item": "FlyingGolem", "slot": 1, "count": 1, "name": "ordinary earned A43 at approaching original FlyingGolem input12"}
+  - {"action": "observe-player-target", "name": "read actual original FlyingGolem cursor health if selected"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original FlyingGolem A43 outer-range combat"}
+  - {"action": "run-to-world", "x": 2318, "y": 3619, "name": "ordinary retreat around road92 toward existing obelisks"}
+  - {"action": "run-to-world", "x": 2408, "y": 3534, "name": "ordinary original Obelisk1622 refuge"}
+  - {"action": "wait", "dt": 90}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 90}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original FlyingGolem outer-range recovery"}
+  - {"action": "run-to-world", "x": 2318, "y": 3619, "name": "ordinary return junction92"}
+  - {"action": "run-to-world", "x": 2408, "y": 3534, "name": "ordinary return Obelisk1622"}
+  - {"action": "wait", "dt": 90}
+  - {"action": "move", "x": 512, "y": 384}
+  - {"action": "raw", "ev": {"type": "key", "key": 32, "pressed": true}}
+  - {"action": "raw", "dt": 3, "ev": {"type": "key", "key": 32, "pressed": false}}
+  - {"action": "wait", "dt": 90}
+  - {"action": "observe-player-target", "name": "read original central eastern obelisk recovery"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original central eastern obelisk recovery"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

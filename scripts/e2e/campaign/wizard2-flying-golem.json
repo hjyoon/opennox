@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "Wizard2 original FlyingGolem2348 and earned level gain",
+  "seed_contract": "Earned healthy Wiz02c northeast checkpoint: original north and northeast enemies DEAD, original FlyingGolem2348 alive. HP20 MP78 poison0; earned A43 Lightning S27 Fireball D41 LesserHeal F115 Swap. Original FlyingGolem XP raises the maximum HP/MP to26/88.",
+  "coverage": "Ordinary outer-range A43 combat, original FlyingGolem2348 alive-to-DEAD, original earned HP/MP maximum increases to26/88, obelisk recovery and original manual Save.",
+  "cases": [
+    {
+      "name": "wizard2-flying-golem",
+      "scenario": "wizard2-cave-flying-golem.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 180,
+      "expected_health": 26,
+      "expected_mana": 88,
+      "required_defeated_script_ids": [
+        1000194075
+      ],
+      "required_checkpoints": [
+        "original central eastern obelisks",
+        "original FlyingGolem A43 outer-range combat",
+        "original FlyingGolem outer-range recovery",
+        "original manual Save"
+      ],
+      "expected_maximum_health": 26,
+      "expected_maximum_mana": 88
+    }
+  ]
+}

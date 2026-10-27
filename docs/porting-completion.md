@@ -101,6 +101,18 @@ in 97.550 seconds, including 37 existing Obelisk transfer checks and 27 direct
 Go update-dispatch controls with live Go pointer graphs. These controlled
 results do not certify a live campaign obelisk interaction or overall 100%.
 
+The clean normal ARM64 product at `6d2ae52` builds once in 12.102 seconds.
+The unchanged published recovery E2E passes in 30.200 seconds from the earned
+upper-Urchins Save, retaining HP26/MP56, poison zero and the book, with both
+Urchins still dead, all three resource pickups and a manual Save. Eighteen
+parameterless GET observations, complete manifests and the final save screen
+are qualified; source Save, assets, configuration and executable keep their
+hashes. This is a Load, movement, pickup and Save product smoke. Earlier combat
+and a live Obelisk interaction are not replayed. Current Windows 386/AMD64
+and normal Linux AMD64 jobs are running at `6d2ae52`; all three preceding
+`75ff7d0` native products are qualified. The campaign README supplies the short
+replay command and the bounded validation sequence.
+
 ### PhantomPlayer native entry and original numerical gates
 
 The remaining PhantomPlayer C entry now forwards an object pointer to its

@@ -55,6 +55,42 @@ completion requirements.
 
 ## Current findings
 
+### Native PoisonEffect facing and live class reload
+
+The native PoisonEffect root now sign-extends its 16-bit direction argument,
+matching original `004E086E`, and tests the live target class after the facing
+service, matching `004E0884`. Previously it zero-extended that argument and
+tested unit eligibility before calling the service. The original pre-damage
+power, low-bit blocking decision, activation result, subsequent player message
+and nil damage/context behavior remain intact. Only this existing C body changes.
+
+The unchanged complete 144-byte original root executes in 240 contexts. Facing,
+poison activation and client messages are explicit service boundaries. The
+contexts cover nonunits, players/monsters, blocking state, signed direction and
+power boundaries, both activation outcomes and live class/player-link changes.
+Before the fix, 24 native traces differ in direction argument bits and two
+differ after a facing service clears the target class. Complete native C
+execution now matches all 240 traces and preserves nonoutput bytes; the same
+240 pass ASan and UBSan. The C fixture also checks native addresses above 4 GiB.
+
+The negative direction cases verify the root's call contract; they do not
+establish safety of the original facing table outside its valid 0–255 range.
+Class mutation is an explicitly controlled facing service, not an observed
+stock campaign event. No new stock encounter or chapter completion is claimed.
+The four-slot integration controls retain the real pre-damage entry, typed C
+callback, native CGo export, activation, logic RNG and poison setter. Eight
+cap/power states in each of the four slots cover increments, unchanged caps,
+negative/full int32 power and nil damage context without replacing activation.
+The focused highres cgocheck2/checkptr-level-2 run passes 275 events. A first
+new-test build failed on an unused import and a uint16 timer expectation typed
+as uint32; those logs are retained and only the new test is corrected.
+
+The final normal root/server/legacy run passes 233,904 events with 16 skips
+in 255.576 seconds. It retains all prior terminal identities, results and
+multiplicities, and adds 274 passing events. Existing tests, frozen fixtures
+and campaign scripts retain their contents. Counts describe test events,
+not feature coverage or overall port completion.
+
 ### Reusable upper-cave combat and recovery E2E
 
 The published two-stage Wizard2 replay retains its original upper Urchin

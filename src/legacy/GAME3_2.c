@@ -6304,7 +6304,7 @@ void nox_xxx_poisonEffect_4E0850(
 	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
 	(void)weapon;
 	(void)context;
-	if (!effect || !target || !(target->obj_class & 6)) {
+	if (!effect || !target) {
 		return;
 	}
 	int blocked = 0;
@@ -6312,9 +6312,10 @@ void nox_xxx_poisonEffect_4E0850(
 		nox_player_update_data_t* update = target->data_update;
 		blocked = update->state == 16 &&
 			(nox_server_testTwoPointsAndDirection_4E6E50(
-				(float2*)&target->x, target->direction1, (float2*)&owner->x) & 1);
+				(float2*)&target->x, (int16_t)target->direction1, (float2*)&owner->x) & 1);
 	}
-	if (!blocked && nox_xxx_activatePoison_4EE7E0(
+	// 004E0884 reloads the class after the facing service.
+	if (!blocked && (target->obj_class & 6) && nox_xxx_activatePoison_4EE7E0(
 			target, 1, nox_modifier_effect_getPreDamageInt(effect))) {
 		nox_xxx_modifierEffectInform_4E04D0(target, 2);
 	}

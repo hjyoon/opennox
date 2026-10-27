@@ -1,0 +1,5671 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "regions": [
+    {
+      "name": "PoisonEffect",
+      "address": "0x4e0850",
+      "size": 144,
+      "sha256": "54930be0b7a230ed68f49f7f909e076f14065ab11e1fd5d88abbbd502e52a0b3"
+    }
+  ],
+  "declared_services": [
+    "facing predicate",
+    "poison activation",
+    "client inform message"
+  ],
+  "memory_faults": [],
+  "function_entries": {
+    "PoisonEffect": 240
+  },
+  "rows": [
+    {
+      "input": {
+        "name": "class-0/state-0/direction-0/facing-0/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-0/facing-0/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-0/facing-1/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-0/facing-1/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-0/facing-2/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-0/facing-2/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-32767/facing-0/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-32767/facing-0/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-32767/facing-1/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-32767/facing-1/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-32767/facing-2/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction-32767/facing-2/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--1/facing-0/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--1/facing-0/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--1/facing-1/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--1/facing-1/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--1/facing-2/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--1/facing-2/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--32768/facing-0/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--32768/facing-0/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--32768/facing-1/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--32768/facing-1/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--32768/facing-2/activate-0",
+        "target_class": 0,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-0/direction--32768/facing-2/activate-1",
+        "target_class": 0,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-0/facing-0/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-0/facing-0/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-0/facing-1/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-0/facing-1/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-0/facing-2/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-0/facing-2/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-32767/facing-0/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-32767/facing-0/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-32767/facing-1/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-32767/facing-1/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-32767/facing-2/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction-32767/facing-2/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--1/facing-0/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--1/facing-0/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--1/facing-1/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--1/facing-1/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--1/facing-2/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--1/facing-2/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--32768/facing-0/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--32768/facing-0/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--32768/facing-1/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--32768/facing-1/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--32768/facing-2/activate-0",
+        "target_class": 0,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-0/state-16/direction--32768/facing-2/activate-1",
+        "target_class": 0,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-0/facing-0/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-0/facing-0/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-0/facing-1/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-0/facing-1/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-0/facing-2/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-0/facing-2/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-32767/facing-0/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-32767/facing-0/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-32767/facing-1/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-32767/facing-1/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-32767/facing-2/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction-32767/facing-2/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--1/facing-0/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--1/facing-0/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--1/facing-1/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--1/facing-1/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--1/facing-2/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--1/facing-2/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--32768/facing-0/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--32768/facing-0/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--32768/facing-1/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--32768/facing-1/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--32768/facing-2/activate-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-0/direction--32768/facing-2/activate-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-0/facing-0/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-0/facing-0/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-0/facing-1/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-0/facing-1/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-0/facing-2/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-0/facing-2/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-32767/facing-0/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-32767/facing-0/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-32767/facing-1/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-32767/facing-1/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-32767/facing-2/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction-32767/facing-2/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--1/facing-0/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--1/facing-0/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--1/facing-1/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--1/facing-1/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--1/facing-2/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--1/facing-2/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--32768/facing-0/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--32768/facing-0/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--32768/facing-1/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--32768/facing-1/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--32768/facing-2/activate-0",
+        "target_class": 2,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-2/state-16/direction--32768/facing-2/activate-1",
+        "target_class": 2,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-0/facing-0/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-0/facing-0/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-0/facing-1/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-0/facing-1/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-0/facing-2/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-0/facing-2/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-32767/facing-0/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-32767/facing-0/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-32767/facing-1/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-32767/facing-1/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-32767/facing-2/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction-32767/facing-2/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--1/facing-0/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--1/facing-0/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--1/facing-1/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--1/facing-1/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--1/facing-2/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--1/facing-2/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--32768/facing-0/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--32768/facing-0/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--32768/facing-1/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--32768/facing-1/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--32768/facing-2/activate-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-0/direction--32768/facing-2/activate-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-0/facing-0/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-0/facing-0/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-0/facing-1/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-0/facing-1/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-0/facing-2/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-0/facing-2/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-32767/facing-0/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-32767/facing-0/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-32767/facing-1/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-32767/facing-1/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-32767/facing-2/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction-32767/facing-2/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--1/facing-0/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--1/facing-0/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--1/facing-1/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--1/facing-1/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--1/facing-2/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--1/facing-2/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--32768/facing-0/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--32768/facing-0/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--32768/facing-1/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--32768/facing-1/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--32768/facing-2/activate-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-4/state-16/direction--32768/facing-2/activate-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-0/facing-0/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-0/facing-0/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-0/facing-1/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-0/facing-1/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-0/facing-2/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-0/facing-2/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-32767/facing-0/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-32767/facing-0/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-32767/facing-1/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-32767/facing-1/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-32767/facing-2/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction-32767/facing-2/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--1/facing-0/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--1/facing-0/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--1/facing-1/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--1/facing-1/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--1/facing-2/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--1/facing-2/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--32768/facing-0/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--32768/facing-0/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--32768/facing-1/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--32768/facing-1/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--32768/facing-2/activate-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-0/direction--32768/facing-2/activate-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-0/facing-0/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-0/facing-0/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-0/facing-1/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-0/facing-1/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-0/facing-2/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-0/facing-2/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": 0,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 0,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-32767/facing-0/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-32767/facing-0/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-32767/facing-1/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-32767/facing-1/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-32767/facing-2/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction-32767/facing-2/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": 32767,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 32767,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--1/facing-0/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--1/facing-0/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--1/facing-1/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--1/facing-1/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--1/facing-2/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--1/facing-2/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": -1,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294967295,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--32768/facing-0/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--32768/facing-0/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--32768/facing-1/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--32768/facing-1/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--32768/facing-2/activate-0",
+        "target_class": 6,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "class-6/state-16/direction--32768/facing-2/activate-1",
+        "target_class": 6,
+        "state": 16,
+        "direction": -32768,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 4294934528,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-2/0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 0,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-2/1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 1,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-2/-129",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": -129,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 4294967167
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-2/-2147483648",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": -2147483648,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 2147483648
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-2/2147483647",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 2147483647,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 2147483647
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-2/305419896",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-4/0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 0,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 0
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-4/1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 1,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 1
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-4/-129",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": -129,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 4294967167
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-4/-2147483648",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": -2147483648,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 2147483648
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-4/2147483647",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 2147483647,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 2147483647
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "power/class-4/305419896",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-1/return-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 1,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-1/return-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 1,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-1/return-2",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 1,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-1/class-2/return-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 1
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-1/class-2/return-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 1
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-1/class-4/return-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 1
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-1/class-4/return-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 1
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-1/class-6/return-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 1
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-1/class-6/return-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 1
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-2/return-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 2,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-2/return-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 2,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-2/return-2",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 2,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-2/class-2/return-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 2
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-2/class-2/return-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 2
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-2/class-4/return-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 2
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-2/class-4/return-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 2
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-2/class-6/return-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 2
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-2/class-6/return-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 2
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-3/return-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 3,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 130,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-3/return-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 3,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-3/return-2",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 3,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 130,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-3/class-2/return-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 3
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-3/class-2/return-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 3
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-3/class-4/return-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 3
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-3/class-4/return-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 3
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 130,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-3/class-6/return-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 3
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-3/class-6/return-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 3
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 130,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-4/return-0",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 4,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 4294967167
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-4/return-1",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 1,
+        "activate_return": 1,
+        "facing_mutation": 4,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "facing-mutation-4/return-2",
+        "target_class": 4,
+        "state": 16,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 2,
+        "activate_return": 1,
+        "facing_mutation": 4,
+        "activate_mutation": 0
+      },
+      "events": [
+        {
+          "service": "facing",
+          "direction_bits32": 123,
+          "target_position_bits32": [
+            3242983424,
+            2147483648
+          ],
+          "source_position_bits32": [
+            1105985536,
+            3230138368
+          ]
+        },
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 4294967167
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-4/class-2/return-0",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 4
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-4/class-2/return-1",
+        "target_class": 2,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 4
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-4/class-4/return-0",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 4
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-4/class-4/return-1",
+        "target_class": 4,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 4
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-4/class-6/return-0",
+        "target_class": 6,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 0,
+        "facing_mutation": 0,
+        "activate_mutation": 4
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "activate-mutation-4/class-6/return-1",
+        "target_class": 6,
+        "state": 0,
+        "direction": 123,
+        "power": 305419896,
+        "facing_return": 0,
+        "activate_return": 1,
+        "facing_mutation": 0,
+        "activate_mutation": 4
+      },
+      "events": [
+        {
+          "service": "activate",
+          "increment": 1,
+          "maximum_bits32": 305419896
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 2
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    }
+  ]
+}

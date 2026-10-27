@@ -110,6 +110,20 @@ raw counts are preserved without changing or repeating product tests. A
 single clean normal ARM64 product and the published recovery segment are
 qualified separately. These checks do not establish overall 100%.
 
+The clean normal ARM64 product at `9606177` builds in 15.250 seconds. The
+unchanged published recovery E2E passes in 30.016 seconds from the exact
+earned combat Save, ending with HP26/MP56, poison zero, the retained book,
+both original upper Urchins still dead, the original potion and both food
+pickups, and a manual Save. Eighteen parameterless GET observations, complete
+manifests and the final save screen are qualified. The source Save, assets,
+configuration and executable retain their hashes. This fresh runtime segment
+checks movement, pickup and Save; earlier combat, elevator passenger transport
+and whole chapters are not replayed or newly certified. Its Windows 386/AMD64
+and Linux AMD64 native jobs are running. Earlier product `076d257` has all
+three native products qualified. Existing saves and validation records remain
+preserved; transparent APFS compression rechecks original bytes, hashes,
+paths, ownership, permissions and modification times.
+
 ### Circle collision roots and shared scan geometry
 
 The circle/circle, circle/box and circle/wall movement paths now execute

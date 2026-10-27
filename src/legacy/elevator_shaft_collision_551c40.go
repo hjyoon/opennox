@@ -7,5 +7,5 @@ import "C"
 
 //export sub_551C40_go
 func sub_551C40_go(shaft, candidate *nox_object_t) {
-	GetServer().S().ElevatorShaftCollision551C40(asObjectS(shaft), asObjectS(candidate))
+	GetServer().S().ElevatorShaftCollision551C40(asObjectS(shaft), asObjectS(candidate), elevatorCollisionTypeNative551BF0)
 }

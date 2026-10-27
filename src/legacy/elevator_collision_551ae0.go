@@ -9,7 +9,7 @@ import "github.com/opennox/opennox/v1/server"
 
 //export sub_551AE0_go
 func sub_551AE0_go(elevator, candidate *nox_object_t, candidateMoves C.int) {
-	GetServer().S().ElevatorCollision551AE0(asObjectS(elevator), asObjectS(candidate), candidateMoves != 0,
+	GetServer().S().ElevatorCollision551AE0(asObjectS(elevator), asObjectS(candidate), candidateMoves != 0, elevatorCollisionTypeNative551BF0,
 		func(circle, box *server.Object, moveBox bool) {
 			C.sub_54AD50(asObjectC(circle), asObjectC(box), C.int(bool2int(moveBox)))
 		},

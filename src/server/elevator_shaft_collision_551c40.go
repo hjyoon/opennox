@@ -2,13 +2,15 @@ package server
 
 import (
 	"math"
+	"unsafe"
 
 	"github.com/opennox/libs/object"
 )
 
 type elevatorShaftCollisionHooks551C40 struct {
 	typeIndex func(string) int
-	link      func(*Object) *Object
+	link      func(*Object, unsafe.Pointer) *Object
+	raise     func(*Object, float32)
 }
 
 // elevatorShaftCollision551C40 restores GAME.EXE 00551C40 without reading the
@@ -17,31 +19,35 @@ func elevatorShaftCollision551C40(shaft, candidate *Object, hooks elevatorShaftC
 	if shaft == nil || candidate == nil || shaft.UpdateData == nil {
 		return
 	}
-	elevator := hooks.link(shaft)
+	data := shaft.UpdateData
+	ids := elevatorCollisionTypes551BF0(hooks.typeIndex)
+	elevator := hooks.link(shaft, data)
 	if elevator == nil || elevator.UpdateData == nil {
 		return
 	}
-	for _, id := range [...]string{"SmallFist", "MediumFist", "LargeFist", "Meteor"} {
-		if int(candidate.TypeInd) == hooks.typeIndex(id) {
+	for _, id := range ids {
+		if int(candidate.TypeInd) == id {
 			return
 		}
 	}
 	switch candidate.Shape.Kind {
 	case ShapeKindBox:
-		if shaft.Shape.Box.W < candidate.Shape.Box.W || shaft.Shape.Box.H < candidate.Shape.Box.H {
+		if !(shaft.Shape.Box.W >= candidate.Shape.Box.W) || !(shaft.Shape.Box.H >= candidate.Shape.Box.H) {
 			return
 		}
 	case ShapeKindCircle:
-		diameter := candidate.Shape.Circle.R * 2
-		if diameter > shaft.Shape.Box.W || diameter > shaft.Shape.Box.H {
+		radius := float64(candidate.Shape.Circle.R)
+		diameter := objectForceAdd53_52DF80(radius, radius)
+		if diameter > float64(shaft.Shape.Box.W) || diameter > float64(shaft.Shape.Box.H) {
 			return
 		}
 	}
 	if !MapPointInBox57B850(&shaft.NewPos, &shaft.Shape, &candidate.NewPos) {
 		return
 	}
-	height := float32(int32(elevator.UpdateDataElevator().Field_4) - 64)
-	if math.Abs(float64(candidate.ZVal-height)) > 10 {
+	height := experienceSpill32TowardZero(float64(int32(elevator.UpdateDataElevator().Field_4 - 64)))
+	difference := experienceSpill32TowardZero(objectForceSub53_52DF80(float64(candidate.ZVal), objectForceMemory32_52DF80(height)))
+	if math.Abs(float64(difference)) > 10 {
 		if height <= -10 {
 			candidate.ObjFlags |= object.FlagInHole
 			candidate.Pos39 = shaft.NewPos
@@ -51,13 +57,14 @@ func elevatorShaftCollision551C40(shaft, candidate *Object, hooks elevatorShaftC
 		return
 	}
 	candidate.ObjFlags = candidate.ObjFlags&^object.FlagInHole | object.FlagOnObject
-	candidate.Raise(height + 4)
+	hooks.raise(candidate, experienceSpill32TowardZero(objectForceAdd53_52DF80(float64(height), 4)))
 	candidate.Field27 = 0
 }
 
-func (s *Server) ElevatorShaftCollision551C40(shaft, candidate *Object) {
+func (s *Server) ElevatorShaftCollision551C40(shaft, candidate *Object, typeIndex func(string) int) {
 	elevatorShaftCollision551C40(shaft, candidate, elevatorShaftCollisionHooks551C40{
-		typeIndex: s.Types.IndByID,
-		link:      (*Object).ElevatorLink,
+		typeIndex: typeIndex,
+		link:      (*Object).ElevatorLinkFor,
+		raise:     (*Object).Raise,
 	})
 }

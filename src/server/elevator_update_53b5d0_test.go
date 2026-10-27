@@ -159,10 +159,12 @@ func TestElevatorCarriesPlayerRoundTrip(t *testing.T) {
 		typeIndex: func(string) int { return -1 },
 		circleBox: func(*Object, *Object, bool) {},
 		boxBox:    func(*Object, *Object) {},
+		raise:     (*Object).Raise,
 	}
 	shaftCollision := elevatorShaftCollisionHooks551C40{
 		typeIndex: func(string) int { return -1 },
-		link:      func(unit *Object) *Object { return links[unit] },
+		link:      func(unit *Object, _ unsafe.Pointer) *Object { return links[unit] },
+		raise:     (*Object).Raise,
 	}
 	step := func() {
 		frame++

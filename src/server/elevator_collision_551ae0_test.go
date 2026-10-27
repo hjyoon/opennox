@@ -30,6 +30,7 @@ func TestElevatorCollision551AE0PlacesPlayerOnPlatform(t *testing.T) {
 		typeIndex: func(string) int { return -1 },
 		circleBox: func(*Object, *Object, bool) { t.Fatal("unexpected side collision") },
 		boxBox:    func(*Object, *Object) { t.Fatal("unexpected side collision") },
+		raise:     (*Object).Raise,
 	})
 
 	if !player.ObjFlags.Has(object.FlagOnObject) || player.ObjFlags.Has(object.FlagInHole) {

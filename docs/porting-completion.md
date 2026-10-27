@@ -55,6 +55,61 @@ completion requirements.
 
 ## Current findings
 
+### Elevator and shaft collision startup precision
+
+Elevator and shaft collisions now preserve the original startup PC53/ToZero
+arithmetic, signed height conversion, binary32 stores and unordered shape
+comparisons. Their update pointer is cached before the original type cache
+initialization. The bindings read the four original cached scalar IDs rather
+than repeating live type lookups; the shaft resolves its native-width link
+using that cached update identity. The original point-in-box C symbol now
+forwards to the same native Go helper used by the collision roots. It retains
+the wide second diagonal and the original stored corners and comparison gates.
+Shared arithmetic, Object.Raise, synchronization and elevator update methods
+remain unchanged; the product does not change the host floating-point mode.
+
+Complete unchanged original routines execute for 1,061 conditions in startup
+and nearest control modes: 2,122 top-level executions. Ten sealed code ranges
+total 1,498 bytes, with 40 separately sealed table bytes. The original type
+initialization, absolute-value, raise, synchronization and type-index bodies
+execute. Four type-name lookups and the two side-collision services are explicit
+dependencies. The declared type table is empty in the original and native
+sync controls; this does not establish full external type-catalog behavior.
+The matrix covers signed and large heights, adjacent support thresholds,
+cached versus fresh IDs, initialization ordering and controlled live changes,
+shape gates, quiet special values and point boundaries. Box corners are
+declared stored inputs, not a claim about stock Shape.Calc output. No signaling
+NaN expectations come from Unicorn.
+
+All 1,061 startup conditions match on C-owned native objects and update records
+above 4 GiB. An additional 293 shaft controls use the real native link lookup.
+Full object/update bytes, canary fields, service order and the real
+Object.Raise synchronization effects are checked. Another 476 point controls
+call the actual production C symbol: 50 leaf conditions disagree before the
+port and all now match. Sixteen additional elevator controls enter through
+the production C symbol, retain the actual cached IDs despite an empty live
+type map and execute real Raise. No pre-port full elevator/shaft mismatch
+count is claimed. These are controlled production-path findings, not observed
+campaign incidents.
+
+Two old test files receive only dependency bindings for real Raise and the
+cached-link callback argument. Their inputs, expectations, assertions and
+identities are unchanged, as are earlier frozen fixtures and published E2E
+scripts. The initial old-fixture callback build failure and all before-port
+results remain preserved in `elevator-shaft-startup-precision-port` in the
+validation workspace.
+
+The single final normal root/server/legacy run passes 239,737 events with
+16 skips in 277.225 seconds. All preceding results and multiplicities remain,
+with 1,850 additional passes; comparison normalizes only three unchanged
+ASLR-bearing fault-test names. Focused highres checks with cgocheck2 and
+checkptr level 2 pass 1,931 events in 103.556 seconds, including compilation
+and 63 existing legacy elevator-transfer events. An initial post-run tally
+omitted those 63 events; its failed qualification assertion and the audited
+raw counts are preserved without changing or repeating product tests. A
+single clean normal ARM64 product and the published recovery segment are
+qualified separately. These checks do not establish overall 100%.
+
 ### Circle collision roots and shared scan geometry
 
 The circle/circle, circle/box and circle/wall movement paths now execute
@@ -119,7 +174,12 @@ manual Save. Eighteen parameterless GET observations, full manifests and
 the final save screen are qualified. Source Save, assets, configuration and
 executable retain their hashes; earlier combat is not replayed. Only this
 affected segment runs on the new product. Its Windows 386/AMD64 and normal
-Linux AMD64 native CI remain in progress. Detailed evidence is preserved in
+Linux AMD64 native CI all pass. All three native artifacts are preserved,
+their ZIP digests and clean Go 1.26.9 revisions verified. Linux independently
+recounts 235,311 passes and seven skips across all 56 expected packages; the
+default-link damage check passes 133,041 events with MALLOC_PERTURB_=0.
+Windows verifies both native PE architectures and root/server/legacy package
+tests. Detailed evidence is preserved in
 `circle-collision-native-port` in the validation workspace.
 
 ### Rigid collisions and live C-owned coefficients

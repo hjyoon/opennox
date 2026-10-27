@@ -6393,9 +6393,6 @@ int sub_551A90(float2* a1, float4* a2) {
 //----- (00551AE0) --------------------------------------------------------
 extern void sub_551AE0_go(nox_object_t* elevator, nox_object_t* candidate, int candidate_moves);
 void sub_551AE0(nox_object_t* elevator, nox_object_t* candidate, int candidate_moves) {
-	if (!*getMemU32Ptr(0x5D4594, 2491808)) {
-		sub_551BF0();
-	}
 	sub_551AE0_go(elevator, candidate, candidate_moves);
 }
 
@@ -6446,9 +6443,6 @@ void sub_551BF0() {
 //----- (00551C40) --------------------------------------------------------
 extern void sub_551C40_go(nox_object_t* shaft, nox_object_t* candidate);
 void sub_551C40(nox_object_t* shaft, nox_object_t* candidate) {
-	if (!*getMemU32Ptr(0x5D4594, 2491808)) {
-		sub_551BF0();
-	}
 	sub_551C40_go(shaft, candidate);
 }
 

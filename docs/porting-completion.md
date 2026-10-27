@@ -102,6 +102,17 @@ Focused highres checks with cgocheck2 and checkptr level 2 pass 589 events
 in 99.700 seconds, including 27 existing direct-Go update-dispatch controls
 with live Go pointer graphs. No additional full Mac configuration is repeated.
 
+The clean normal ARM64 product at `fa7ec05` builds once in 11.976 seconds.
+The unchanged published recovery E2E passes in 30.110 seconds from the earned
+upper-Urchins Save, ending at HP26/MP56, poison zero, with the retained book,
+both Urchins still dead, all three resource pickups and a manual Save. Eighteen
+parameterless GET observations, complete manifests and the final save screen
+are qualified. Source Save, assets, configuration and product hashes remain
+unchanged. This is a Load, movement, pickup and Save smoke; earlier combat
+and a campaign powder explosion are not replayed. Current Windows 386/AMD64
+and normal Linux AMD64 native jobs run at `fa7ec05`; all three preceding
+`6d2ae52` native products are qualified.
+
 ### Native Obelisk entries, recharge and live callbacks
 
 All three Obelisk C entries now forward native object pointers to shared Go

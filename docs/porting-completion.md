@@ -105,6 +105,18 @@ pass 2,197 events in 105.004 seconds, including compilation. A single clean
 ARM64 product and the unchanged published recovery segment qualify this
 revision separately; these checks do not establish overall 100%.
 
+The clean normal ARM64 product at `d923dce` builds in 11.791 seconds. The
+unchanged published recovery E2E passes in 29.995 seconds from the exact
+earned combat Save, ending with HP26/MP56, poison zero, the retained book,
+both original upper Urchins still dead, all three original resource pickups
+and a manual Save. Eighteen parameterless GET observations, full manifests
+and the final save screen are qualified. Source Save, assets, configuration
+and executable retain their hashes; earlier combat is not replayed. Only
+this affected segment runs on the new product. Its Windows 386/AMD64 and
+normal Linux AMD64 native CI remain in progress. Detailed original, native,
+product and replay evidence is preserved in
+`rigid-collision-startup-precision-port` in the validation workspace.
+
 ### Box/wall startup geometry and shared impulse accumulation
 
 The native box/wall bundle now preserves startup PC53/ToZero arithmetic,

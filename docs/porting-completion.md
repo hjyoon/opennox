@@ -89,6 +89,17 @@ identities, results and multiplicities remain, adding 149 passing events.
 These totals are test events, not a porting completion percentage. Four
 full macOS configurations are not repeated for this bounded change.
 
+A single clean normal ARM64 executable is built at `8bf5b36` in 11.871
+seconds and reused by the existing input-only Save/Load smoke. That fresh
+replay passes in 17.375 seconds with HP26/MP88, poison zero, the original
+book and bindings, and a real manual Save. All nine parameterless GET
+observations and the final save screen are preserved and qualified. Source
+saves, assets, config and executable retain their hashes. This is a separate
+branch from the upper-cave combat progression; it does not certify combat,
+recovery repeatability or an entire chapter. No new gameplay setters or
+scenario changes are introduced. Windows and normal Linux native CI for
+`8bf5b36` are dispatched and remain pending at this checkpoint.
+
 The preceding defense-adapter revision `8648e18` has completed Windows 386
 and AMD64 native root/server/legacy checks and Linux AMD64 server-HD checks.
 All three artifacts are preserved and qualified. The Linux archive's raw

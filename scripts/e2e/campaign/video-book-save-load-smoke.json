@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "Native video book Save Load smoke",
+  "seed_contract": "Earned BookOfOblivion recovery Save near original lower cave road183; HP26 MP88 poison0 and book inventory1, A43 S27 D41 F115.",
+  "coverage": "Fresh original Load, retained book and spell bindings, ordinary short road99 movement, original manual Save and full-resource read-only observations after the video port. No new combat objective or whole-chapter completion is claimed.",
+  "cases": [
+    {
+      "name": "video-book-save-load-smoke",
+      "scenario": "video-book-save-load-smoke.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 90,
+      "expected_health": 26,
+      "expected_maximum_health": 26,
+      "expected_mana": 88,
+      "expected_maximum_mana": 88,
+      "required_checkpoints": [
+        "original lower cave road99 short movement",
+        "original manual Save"
+      ]
+    }
+  ]
+}

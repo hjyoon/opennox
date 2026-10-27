@@ -28,6 +28,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-necromancer-pit.json` | Healthy eastern-spiders save, HP26/MP88 | Original Necromancer activates; scripted NecroTemp death after the pit scene |
 | `wizard2-book-of-oblivion.json` | Completed pit-scene save, HP26/MP88 | Urchin2362 and original BookOfOblivion pickup; final HP26/MP53 |
 | `wizard2-book-recovery.json` | Book pickup save, HP26/MP53 | Fresh Load retains the book; native passive mana regeneration returns HP26/MP88 |
+| `video-book-save-load-smoke.json` | Healthy book-recovery save, HP26/MP88 | Fresh Load, retained book and spell bindings, original road99 movement and full-resource manual Save; no new enemy objective |
 
 Replay all four segments consecutively with one command and the same prebuilt
 executable:

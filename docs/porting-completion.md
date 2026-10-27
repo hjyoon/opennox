@@ -324,8 +324,18 @@ remain, with 128 added passing events including parents and subtests. Historical
 frozen input tables remain unchanged; numeric expectations now read independent
 startup observations. The affected root/server/legacy tests also pass 589
 terminal events with highres, cgocheck2 and checkptr=2 together. These bounded
-results leave other physical arithmetic,
-campaign recovery and final optional-feature audits open.
+results leave other physical arithmetic and final optional-feature audits open.
+
+One fresh two-stage campaign replay with the clean normal ARM64 executable
+passes in 59.014 seconds: both original upper Urchins die, then BluePotion1940
+recovery reaches HP21/26, MP54/88 and poison0 with the quest book and a manual
+Save. Thirty parameterless GET observations and every stage's Save lineage are
+independently checked. The preceding attempt missed one required Urchin death;
+that failure is preserved, and repeatability of this combat route remains open.
+The Python runner now includes failed objective IDs and actual/required resource
+values in case and sequence summaries. All 44 runner tests pass without a Go
+rebuild. Native Windows and Linux results for this production revision remain
+pending at this checkpoint.
 
 ### Terminal and scripted Magic Missile EXPLOSION damage
 

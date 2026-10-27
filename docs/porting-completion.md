@@ -55,6 +55,53 @@ completion requirements.
 
 ## Current findings
 
+### Native black-powder barrel and burn entries
+
+Both remaining C update entries forward native object pointers to Go while
+retaining their registered callback addresses and dynamic Go dispatch. The
+barrel now uses the existing original-compatible logic float RNG and keeps its
+wide result through +10 before the binary32 store. Flame coordinates preserve
+startup PC53/ToZero products, sums and stores. The ray origin is captured after
+radial push; each destination reloads the live source after RNG calls. Frame
+and FPS reload after their preceding integer RNG calls. The first flame-cache
+slot gates lookup of both type IDs, and allocation reads the selected live
+cached ID after tracing. The burn update body remains unchanged.
+
+Four complete original bodies seal 694 code bytes: barrel, burn, integer RNG
+and float RNG. Separately sealed tables and constants total 18,444 bytes,
+including the unchanged 4,096-entry RNG table and all 256 direction pairs.
+There are 471 conditions and 942 original startup/nearest-control executions,
+with no memory faults. Every first-flame direction is represented, and all
+native direction-table words match. Cases include timing wrap, zero and large
+FPS, cache states, blocked traces, failed allocations, quiet special values
+and declared state changes at named callee entries. Type lookup, damage, push,
+ray tracing, allocation, creation with declared position writes, decay delivery
+and deletion are explicit world services; the original RNG bodies execute.
+
+The existing native path with its previous float RNG binding mismatches 391
+leaf conditions and matches 80 controls. All 471 now match. Actual production
+C/Go bindings pass 77 conditions on C-owned objects above 4 GiB on 64-bit hosts:
+38 barrel timing and 39 burn timing/damage cases. The actual logic RNG drives
+fuse scheduling. Damage and deletion delivery are observed; this C subset does
+not claim flame allocation, tracing or decay-list lifecycle. Complete native
+object records and surrounding canaries are checked.
+
+Existing test inputs, expectations and identities remain unchanged. The barrel
+test and comparison engine adapt only their cache/factory and float-result
+bindings. Common RNG, arithmetic and direction helpers, burn logic, registered
+layouts and published campaign scenarios remain unchanged. No product thread
+FP mode or gameplay state setter is used, and signaling-NaN oracle parity is
+not claimed. Evidence is preserved in `black-powder-native-startup-port` in the
+validation workspace; these controlled results do not establish overall 100%.
+
+The single final normal root/server/legacy run passes 245,982 events with
+16 skips in 271.256 seconds. All preceding results and multiplicities remain,
+with 550 additional passing events; continuity comparison normalizes only
+three unchanged ASLR-bearing fault-test labels.
+Focused highres checks with cgocheck2 and checkptr level 2 pass 589 events
+in 99.700 seconds, including 27 existing direct-Go update-dispatch controls
+with live Go pointer graphs. No additional full Mac configuration is repeated.
+
 ### Native Obelisk entries, recharge and live callbacks
 
 All three Obelisk C entries now forward native object pointers to shared Go
@@ -108,9 +155,12 @@ Urchins still dead, all three resource pickups and a manual Save. Eighteen
 parameterless GET observations, complete manifests and the final save screen
 are qualified; source Save, assets, configuration and executable keep their
 hashes. This is a Load, movement, pickup and Save product smoke. Earlier combat
-and a live Obelisk interaction are not replayed. Current Windows 386/AMD64
-and normal Linux AMD64 jobs are running at `6d2ae52`; all three preceding
-`75ff7d0` native products are qualified. The campaign README supplies the short
+and a live Obelisk interaction are not replayed. Windows 386/AMD64 and normal
+Linux AMD64 products are now qualified at `6d2ae52`, including clean revision
+metadata, product hashes and native execution. Linux passes 242,856 events
+with seven skips across all 56 expected packages, plus the default-link
+damage check. All three preceding `75ff7d0` native products remain qualified.
+The campaign README supplies the short
 replay command and the bounded validation sequence.
 
 ### PhantomPlayer native entry and original numerical gates

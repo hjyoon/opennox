@@ -6487,58 +6487,9 @@ int nox_xxx_getRechargeRate_53C940(nox_object_t* item) {
 }
 
 //----- (0053C9A0) --------------------------------------------------------
-void nox_xxx_updateBlackPowderBarrel_53C9A0(float* a1) {
-	float* v1;     // ebx
-	int v2;        // ecx
-	int v3;        // edx
-	float* v4;     // esi
-	float v5;      // ecx
-	int v6;        // ebp
-	int v7;        // edi
-	int v8;        // eax
-	uint32_t* v9;  // eax
-	uint32_t* v10; // edi
-	int v11;       // eax
-	float4 v12;    // [esp+4h] [ebp-10h]
-	float v13;     // [esp+18h] [ebp+4h]
-
-	v1 = a1;
-	v2 = *((uint32_t*)a1 + 34);
-	v3 = *((uint32_t*)a1 + 32);
-	if (v2 == v3) {
-		*((uint32_t*)a1 + 34) = gameFrame() + nox_common_randomInt_415FA0(1, 5);
-	} else if (v2 == gameFrame()) {
-		if (!*getMemU32Ptr(0x5D4594, 2488684)) {
-			*getMemU32Ptr(0x5D4594, 2488684) = nox_xxx_getNameId_4E3AA0("SmallFlame");
-			*getMemU32Ptr(0x5D4594, 2488688) = nox_xxx_getNameId_4E3AA0("MediumFlame");
-		}
-		v4 = a1 + 14;
-		nox_xxx_mapDamageUnitsAround_4E25B0((int)(a1 + 14), 100.0, 30.0, 30, 7, (int)a1, 0);
-		nox_xxx_mapPushUnitsAround_52E040((int)(a1 + 14), 100.0, 30.0, 60.0, (int)a1, 0, 0);
-		v5 = a1[15];
-		v12.field_0 = a1[14];
-		v12.field_4 = v5;
-		v6 = 4;
-		do {
-			v7 = nox_common_randomInt_415FA0(0, 1);
-			v13 = nox_common_randomFloat_416030(0.0, 15.0) + 10.0;
-			v8 = nox_common_randomInt_415FA0(0, 255);
-			v12.field_8 = v13 * *getMemFloatPtr(0x587000, 194136 + 8 * v8) + *v4;
-			v12.field_C = v13 * *getMemFloatPtr(0x587000, 194140 + 8 * v8) + v1[15];
-			if (nox_xxx_mapTraceRay_535250(&v12, 0, 0, 1)) {
-				v9 = nox_xxx_newObjectWithTypeInd_4E3450(*getMemU32Ptr(0x5D4594, 2488684 + 4 * v7));
-				v10 = v9;
-				if (v9) {
-					nox_xxx_createAt_4DAA50((int)v9, 0, v12.field_8, v12.field_C);
-					v11 = nox_common_randomInt_415FA0(5, 20);
-					nox_xxx_unitSetDecayTime_511660(v10, gameFPS() * v11);
-				}
-			}
-			--v6;
-		} while (v6);
-	} else if ((unsigned int)(gameFrame() - v3) >= (int)gameFPS()) {
-		nox_xxx_delayedDeleteObject_4E5CC0((int)a1);
-	}
+extern void nox_xxx_updateBlackPowderBarrel_53C9A0_go(nox_object_t* source);
+void nox_xxx_updateBlackPowderBarrel_53C9A0(nox_object_t* source) {
+	nox_xxx_updateBlackPowderBarrel_53C9A0_go(source);
 }
 
 //----- (0053CB60) --------------------------------------------------------
@@ -6598,19 +6549,9 @@ void nox_xxx_updateSelfDestruct_53CC90(int a1) {
 }
 
 //----- (0053CCB0) --------------------------------------------------------
-void nox_xxx_updateBlackPowderBurn_53CCB0(int a1) {
-	int v1; // edx
-	int v2; // esi
-
-	v1 = *(uint32_t*)(a1 + 136);
-	v2 = *(uint32_t*)(a1 + 128);
-	if (v1 == v2) {
-		*(uint32_t*)(a1 + 136) = gameFrame() + 3;
-	} else if (v1 == gameFrame()) {
-		nox_xxx_mapDamageUnitsAround_4E25B0(a1 + 56, 15.0, 15.0, 1, 1, a1, 0);
-	} else if (gameFrame() - v2 >= (unsigned int)(2 * gameFPS())) {
-		nox_xxx_delayedDeleteObject_4E5CC0(a1);
-	}
+extern void nox_xxx_updateBlackPowderBurn_53CCB0_go(nox_object_t* source);
+void nox_xxx_updateBlackPowderBurn_53CCB0(nox_object_t* source) {
+	nox_xxx_updateBlackPowderBurn_53CCB0_go(source);
 }
 
 //----- (0053D220) --------------------------------------------------------

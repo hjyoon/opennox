@@ -41,6 +41,7 @@ func TestBlackPowderBarrelUpdate53C9A0ExplodesAndCreatesFlames(t *testing.T) {
 	var decays []uint32
 	flames := [blackPowderBarrelFlameCount53C9A0]Object{}
 	flameIndex := 0
+	var flameTypes [2]int
 	s.BlackPowderBarrelUpdate53C9A0(source, BlackPowderBarrelUpdateRuntime53C9A0{
 		DamageUnitsAround: func(position types.Pointf, outer, inner float32, damage int, damageType object.DamageType, got *Object, excluded Obj) {
 			damaged = true
@@ -68,7 +69,7 @@ func TestBlackPowderBarrelUpdate53C9A0ExplodesAndCreatesFlames(t *testing.T) {
 				return 0
 			}
 		},
-		RandomFloat: func(minimum, maximum float32) float32 {
+		RandomFloat: func(minimum, maximum float32) float64 {
 			if minimum != 0 || maximum != 15 {
 				t.Fatalf("random float range = %v..%v, want 0..15", minimum, maximum)
 			}
@@ -80,7 +81,20 @@ func TestBlackPowderBarrelUpdate53C9A0ExplodesAndCreatesFlames(t *testing.T) {
 			}
 			return true
 		},
-		NewObjectByTypeID: func(typeID string) *Object {
+		LoadFlameType:  func(index int) int { return flameTypes[index] },
+		StoreFlameType: func(index, value int) { flameTypes[index] = value },
+		TypeIndexByID: func(name string) int {
+			if name == "SmallFlame" {
+				return 1
+			}
+			if name == "MediumFlame" {
+				return 2
+			}
+			t.Fatal("unexpected flame type")
+			return 0
+		},
+		NewObjectByTypeIndex: func(index int) *Object {
+			typeID := [2]string{"SmallFlame", "MediumFlame"}[index-1]
 			typeNames = append(typeNames, typeID)
 			return &flames[flameIndex]
 		},

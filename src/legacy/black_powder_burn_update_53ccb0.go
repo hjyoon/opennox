@@ -1,11 +1,25 @@
 package legacy
 
+/*
+#include "GAME4_3.h"
+*/
+import "C"
+
 import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/server"
 )
+
+//export nox_xxx_updateBlackPowderBurn_53CCB0_go
+func nox_xxx_updateBlackPowderBurn_53CCB0_go(source *nox_object_t) {
+	blackPowderBurnUpdateCall53CCB0(asObjectS(source))
+}
+
+func blackPowderBurnC53CCB0(source *server.Object) {
+	C.nox_xxx_updateBlackPowderBurn_53CCB0(asObjectC(source))
+}
 
 func blackPowderBurnUpdateNative53CCB0(source *server.Object) {
 	outer := GetServer()

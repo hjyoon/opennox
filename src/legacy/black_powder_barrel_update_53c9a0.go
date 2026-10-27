@@ -1,11 +1,26 @@
 package legacy
 
+/*
+#include "GAME4_3.h"
+*/
+import "C"
+
 import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/server"
 )
+
+//export nox_xxx_updateBlackPowderBarrel_53C9A0_go
+func nox_xxx_updateBlackPowderBarrel_53C9A0_go(source *nox_object_t) {
+	blackPowderBarrelUpdateCall53C9A0(asObjectS(source))
+}
+
+func blackPowderBarrelC53C9A0(source *server.Object) {
+	C.nox_xxx_updateBlackPowderBarrel_53C9A0(asObjectC(source))
+}
 
 func blackPowderBarrelUpdateNative53C9A0(source *server.Object) {
 	outer := GetServer()
@@ -21,14 +36,15 @@ func blackPowderBarrelUpdateNative53C9A0(source *server.Object) {
 				ApplyForce: outer.ApplyForce,
 			})
 		},
-		RandomInt: world.Rand.Logic.IntClamp,
-		RandomFloat: func(minimum, maximum float32) float32 {
-			return float32(world.Rand.Logic.FloatClamp(float64(minimum), float64(maximum)))
-		},
+		RandomInt:   world.Rand.Logic.IntClamp,
+		RandomFloat: world.RandomFloat416030,
 		TraceRay: func(from, to types.Pointf) bool {
 			return world.MapTraceRay(from, to, server.MapTraceFlag1)
 		},
-		NewObjectByTypeID: world.NewObjectByTypeID,
+		LoadFlameType:        func(index int) int { return int(int32(memmap.Uint32(0x5D4594, 2488684+uintptr(index)*4))) },
+		StoreFlameType:       func(index, value int) { *memmap.PtrUint32(0x5D4594, 2488684+uintptr(index)*4) = uint32(value) },
+		TypeIndexByID:        world.Types.IndByID,
+		NewObjectByTypeIndex: world.NewObjectByTypeInd,
 		CreateAt: func(object, owner *server.Object, position types.Pointf) {
 			outer.CreateObjectAt(object, owner, position)
 		},

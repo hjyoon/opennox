@@ -108,8 +108,8 @@ manifest. The correction changes test data and its reader; product Go/C sources
 and the already qualified executable and two-stage campaign replay are retained.
 
 The separate armed EXPLOSION and unit self-weapon electric arithmetic bodies
-remain outside this change; their existing expectations are retained. The
-dangerous-world IMPALE tail is covered by the following checkpoint.
+remain outside this checkpoint. Subsequent armed EXPLOSION and dangerous-world
+IMPALE work is described below; unit self-weapon electric remains open.
 These bounded results do not establish complete PlayerDamage arithmetic or
 overall 100% port completion.
 
@@ -143,9 +143,47 @@ all historical input files and existing test identities remain.
 
 Complete macOS ARM64 root/server/legacy checks pass 230,544 events with 16 skips.
 The highres world-prefix/collision subset passes 89 events with cgocheck2 and
-checkptr level 2. Counts include parents and subtests. Shared shield-selection
-and blocking arithmetic are separate work, as are the remaining armed
-EXPLOSION and unit self-weapon electric tails. Overall 100% remains unproved.
+checkptr level 2. Counts include parents and subtests. The following checkpoint
+covers armed EXPLOSION; shared blocking arithmetic and the unit self-weapon
+electric tail remain separate work. Overall 100% remains unproved.
+
+### Armed EXPLOSION startup arithmetic
+
+The initialized weapon/wand EXPLOSION body now preserves the original startup
+PC53 operations, binary32 spills and truncating conversion for armor absorption,
+live fractional carry and late Quest scaling. Its shield and GreatSword wear
+amounts use the same explicit arithmetic. No host floating-point mode changes.
+For raw3, absorption .5 and zero initial carry, three hits now forward 1, 2, 1
+damage with carry .5, 0, .5, matching original startup execution.
+
+Independent unchanged-original replays reproduce both historical nearest-mode
+prefix seals before collecting startup observations: all 7,194 armed contexts
+and all 5,904 GreatSword contexts remain. Actual original NPC readiness, action
+reads and inventory loops execute in the GreatSword replay. External reflection,
+RNG, state/action changes, ownership, sound, balance, wear and final HP are
+declared service boundaries. Twelve additional shield contexts capture the
+binary32 wear boundary for balance .3, and 80 C-owned native-width contexts
+compare signed, zero, Quest and overflow armor/carry results. Their before-port
+runs retain 48 failing native cases and all twelve failing shield cases.
+
+The historical initialized weapon/wand input files remain unchanged. Seventy-two
+output observations across four existing tables now use independently captured
+startup results. All existing input loops, nonnumeric assertions, old nearest
+seals and negative missing-item fault checks remain. Actual registered C dispatch,
+armor wear and DefaultDamage separately verify HP2000 -> 1999 -> 1997 -> 1996
+and armor100 -> 98 -> 97 -> 95, using real C-owned records above 4 GiB.
+Complete macOS ARM64 root/server/legacy checks pass 230,638 terminal test events
+with 16 skips. Prior results and multiplicities remain, with only runtime pointer
+labels normalized in three existing fault subtests; all other identities match
+exactly. The 94 added passing events include parents and do not measure coverage.
+The highres armed/initialized-weapon subset passes 29,850 events with cgocheck2
+and checkptr level 2 across the same three packages.
+
+The input-only upper-cave sequence continues to reuse one prebuilt executable
+for original monster defeats followed by original potion pickup and a living
+manual Save. This bounded replay does not certify the entire cave or chapter.
+Unit self-weapon electric and shared blocking arithmetic remain open; overall
+100% port completion is not established by these results.
 
 ### Terminal and scripted Magic Missile EXPLOSION damage
 

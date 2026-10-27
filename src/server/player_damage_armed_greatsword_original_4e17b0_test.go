@@ -318,8 +318,9 @@ func TestPlayerDamageArmedGreatSword4E17B0OriginalTranscript(t *testing.T) {
 			}
 		}
 	}
-	const expected = "6377f57288267ea72e772d8d97ffb84045bed1943614408828682ee6e9924e63"
-	if sum := fmt.Sprintf("%x", sha256.Sum256(transcript.Bytes())); rows != 5904 || sum != expected {
+	const nearestControl = "6377f57288267ea72e772d8d97ffb84045bed1943614408828682ee6e9924e63"
+	expected, expectedBytes := originalArmedStartupSeal4E17B0(t, "testdata/armed_greatsword_startup_prefix_original.json", nearestControl, 5904)
+	if sum := fmt.Sprintf("%x", sha256.Sum256(transcript.Bytes())); rows != 5904 || transcript.Len() != expectedBytes || sum != expected {
 		t.Fatalf("unchanged original GreatSword transcript: rows=%d bytes=%d sha256=%s want=%s", rows, transcript.Len(), sum, expected)
 	}
 	t.Logf("unchanged original armed GreatSword callback boundary: rows=%d bytes=%d sha256=%s", rows, transcript.Len(), expected)

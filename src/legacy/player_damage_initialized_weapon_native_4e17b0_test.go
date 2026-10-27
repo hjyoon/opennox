@@ -123,9 +123,6 @@ func TestPlayerDamageInitializedWeaponNativeDamage4E17B0(t *testing.T) {
 								if typ == object.DamageCrush && kind != "ordinary-monster" {
 									wantHP, wantCarry = 193, 0
 								}
-								if kind != "ordinary-monster" && typ == object.DamageExplosion && (sourceKind == "player" || sourceKind == "monster") && uint32(weaponSubclass)&0x047f00fe == 0 {
-									wantHP, wantCarry = 195, -.25
-								}
 								blocked := god && kind == "player"
 								if blocked {
 									wantHP = 200

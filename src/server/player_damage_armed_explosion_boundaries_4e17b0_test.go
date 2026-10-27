@@ -34,7 +34,7 @@ func TestPlayerDamageArmedExplosion4E17B0ServiceUseBoundaries(t *testing.T) {
 					BlockSourceExcluded: func(*Object) bool { events = append(events, "exclusion"); return false },
 					BlockDirection:      func(*Object, types.Pointf) bool { events = append(events, "direction"); return false },
 					DefaultDamage: func(target, source, weapon *Object, d int32, typ object.DamageType) bool {
-						if target != v || source != a || weapon != w || d != 5 || typ != object.DamageExplosion {
+						if target != v || source != a || weapon != w || d != 4 || typ != object.DamageExplosion {
 							t.Fatal("default args")
 						}
 						defaults++
@@ -59,13 +59,13 @@ func TestPlayerDamageArmedExplosion4E17B0ServiceUseBoundaries(t *testing.T) {
 					armor := damageMeleeArmorFixture4E17B0(v, .5, .25)
 					r.CanDamageArmor = func(*Object) bool { t.Fatal("missing lookup should stop before durability"); return false }
 					_ = armor
-					wantCarry, wantReason = -.25, "unsupported live armed EXPLOSION armor durability"
+					wantCarry, wantReason = .75, "unsupported live armed EXPLOSION armor durability"
 				case "Quest":
 					r.QuestMode = func() bool { return true }
-					wantCarry, wantReason = -.25, "missing live armed EXPLOSION Quest scale"
+					wantCarry, wantReason = .75, "missing live armed EXPLOSION Quest scale"
 				case "default":
 					r.DefaultDamage = nil
-					wantCarry, wantReason = -.25, "missing armed EXPLOSION default damage"
+					wantCarry, wantReason = .75, "missing armed EXPLOSION default damage"
 				case "nil-shield":
 					if player {
 						v.UpdateDataPlayer().Player.ArmorEquip, v.UpdateDataPlayer().State = 0x1000000, PlayerState16
@@ -118,7 +118,7 @@ func TestPlayerDamageArmedExplosion4E17B0ServiceUseBoundaries(t *testing.T) {
 				case "excluded-before-direction":
 					r.BlockSourceExcluded = func(*Object) bool { return true }
 					r.BlockDirection = nil
-					wantCarry, wantHandled, wantResult, wantDefaults = -.25, true, true, 1
+					wantCarry, wantHandled, wantResult, wantDefaults = .75, true, true, 1
 				}
 				h, result := PlayerDamageNative4E17B0(v, a, w, 9, object.DamageExplosion, r)
 				var marker, kind, carry uint32

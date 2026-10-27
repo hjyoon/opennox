@@ -108,8 +108,8 @@ func TestPlayerDamageArmedExplosionNative4E17B0CProductionHP(t *testing.T) {
 								marker, kind, carry = pu.Field76, pu.Field75, pu.Field21
 							}
 							if gate == "ordinary" {
-								if !result || hp.Cur != []uint16{1998, 1997, 1995}[hit] || ahp.Cur != []uint16{99, 97, 96}[hit] ||
-									carry != math.Float32bits([]float32{-.5, 0, -.5}[hit]) || au.Field0 != 0 || marker != 1 || kind != uint32(w.TypeInd) ||
+								if !result || hp.Cur != []uint16{1999, 1997, 1996}[hit] || ahp.Cur != []uint16{98, 97, 95}[hit] ||
+									carry != math.Float32bits([]float32{.5, 0, .5}[hit]) || au.Field0 != 0 || marker != 1 || kind != uint32(w.TypeInd) ||
 									v.Obj130 != w || v.Pos132 != a.PrevPos || v.Field131 != 7 || v.Frame134 != 1400 || v.Field38 != math.MaxUint32 || (!playerSource && amu.Field130 != 1400) {
 									t.Fatalf("real C hit=%d result=%t HP=%d armor=%d marker=%d/%d carry=%08x item-carry=%08x", hit, result, hp.Cur, ahp.Cur, marker, kind, carry, au.Field0)
 								}

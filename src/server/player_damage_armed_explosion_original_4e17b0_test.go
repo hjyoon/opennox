@@ -366,8 +366,9 @@ func TestPlayerDamageArmedExplosion4E17B0OriginalTranscript(t *testing.T) {
 			}
 		}
 	}
-	const expected = "3a7b83ab9d810c8a763452e0db49d8eda01edf8bd2285c5d833bbed06f74c2ac"
-	if sum := fmt.Sprintf("%x", sha256.Sum256(transcript.Bytes())); rows != 7194 || sum != expected {
+	const nearestControl = "3a7b83ab9d810c8a763452e0db49d8eda01edf8bd2285c5d833bbed06f74c2ac"
+	expected, expectedBytes := originalArmedExplosionStartupSeal4E17B0(t, nearestControl)
+	if sum := fmt.Sprintf("%x", sha256.Sum256(transcript.Bytes())); rows != 7194 || sum != expected || transcript.Len() != expectedBytes {
 		t.Fatalf("unchanged original prefix transcript: rows=%d bytes=%d sha256=%s want=%s", rows, transcript.Len(), sum, expected)
 	}
 	t.Logf("unchanged original armed EXPLOSION prefix: rows=%d bytes=%d sha256=%s", rows, transcript.Len(), expected)

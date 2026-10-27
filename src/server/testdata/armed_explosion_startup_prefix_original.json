@@ -1,0 +1,103 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "regions": [
+    {
+      "name": "PlayerDamage",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9"
+    },
+    {
+      "name": "carry",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86"
+    },
+    {
+      "name": "signed-DWORD",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "attack-predicate",
+      "address": "0x4e1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73"
+    },
+    {
+      "name": "parent-chain",
+      "address": "0x4ec580",
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    },
+    {
+      "name": "first-shield",
+      "address": "0x4e2330",
+      "size": 135,
+      "sha256": "834aa819ec9483bd70972c7c10a043796682227701044db778ddf60598e3f693"
+    },
+    {
+      "name": "observer",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6"
+    },
+    {
+      "name": "Quest-getter",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde"
+    }
+  ],
+  "rows": [
+    {
+      "mode": "nearest",
+      "control_word": 895,
+      "rows": 7194,
+      "bytes": 638529,
+      "sha256": "3a7b83ab9d810c8a763452e0db49d8eda01edf8bd2285c5d833bbed06f74c2ac",
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/armed-explosion-startup-precision-port/armed-prefix-v4-nearest.jsonl"
+    },
+    {
+      "mode": "startup",
+      "control_word": 3647,
+      "rows": 7194,
+      "bytes": 638511,
+      "sha256": "b1a78d9afd66834a1895f5ed2fcbc7b50f70913c75dfd87bd0703333455ae19b",
+      "path": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/armed-explosion-startup-precision-port/armed-prefix-v4-startup.jsonl"
+    }
+  ],
+  "original_entries": {
+    "PlayerDamage": 14388,
+    "carry": 14058,
+    "signed-DWORD": 20994,
+    "Quest-getter": 6936,
+    "observer": 7146,
+    "parent-chain": 24,
+    "first-shield": 192
+  },
+  "services": {
+    "0x4ff350": 28614,
+    "0x40a5c0": 24882,
+    "0x4e3aa0": 85500,
+    "0x4e6e50": 14250,
+    "0x4e2180": 14058,
+    "0x4e0b30": 10590,
+    "0x501960": 240,
+    "0x50a020": 96,
+    "0x419d40": 192,
+    "0x4e16d0": 192,
+    "0x50a160": 12,
+    "0x4fa020": 12,
+    "0x4ddef0": 36,
+    "0x4e0a70": 72,
+    "0x4ec300": 36,
+    "0x4ec290": 36,
+    "0x52be40": 12
+  },
+  "faults": [],
+  "block_percent": 0.25,
+  "scope": "Execute unchanged original armed EXPLOSION prefix and serialize its observations.\n\nBuff/mode/facing/audio/reflection/ownership/balance/armor/HP services are declared\nboundaries. Direct observer and current-action getters supply fixture inputs.\nPrefix, carry, integer conversion, owner-chain and first-shield instructions run\nunchanged. The historical nearest seal must match before startup is qualified.\n"
+}

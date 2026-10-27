@@ -33,12 +33,12 @@ func TestPlayerDamageArmedExplosion4E17B0RepeatedHP(t *testing.T) {
 					r.DefaultDamage = func(target, source, weapon *Object, damage int32, typ object.DamageType) bool {
 						return DefaultDamageWorld4E0B30(target, source, weapon, damage, typ, world)
 					}
-					for hit, want := range []uint16{198, 197, 195} {
+					for hit, want := range []uint16{199, 197, 196} {
 						if h, result := PlayerDamageNative4E17B0(v, a, w, 3, object.DamageExplosion, r); !h || !result {
 							t.Fatalf("hit %d handled/result=%t/%t", hit, h, result)
 						}
 						mark, kind, carry := damageMeleeMarker4E17B0(v)
-						if v.HealthData.Cur != want || mark != 1 || kind != uint32(w.TypeInd) || v.Obj130 != w || v.Pos132 != a.PrevPos || v.Field131 != 7 || carry != []float32{-.5, 0, -.5}[hit] {
+						if v.HealthData.Cur != want || mark != 1 || kind != uint32(w.TypeInd) || v.Obj130 != w || v.Pos132 != a.PrevPos || v.Field131 != 7 || carry != []float32{.5, 0, .5}[hit] {
 							t.Fatalf("hit %d HP=%d/%d marker=%d/%d carry=%g type=%d", hit, v.HealthData.Cur, want, mark, kind, carry, v.Field131)
 						}
 					}

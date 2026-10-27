@@ -161,16 +161,10 @@ func playerDamageArmedExplosion4E17B0(
 	if !sameLayout() || target.UpdateData == nil {
 		return reject("unsupported live armed EXPLOSION carry update")
 	}
-	var carry *uint32
-	if player {
-		carry = &target.UpdateDataPlayer().Field21
-	} else {
-		carry = &target.UpdateDataMonster().Field1
-	}
-	scaled := float32((1.0 - float64(absorption)) * float64(damage))
-	accumulated := scaled + math.Float32frombits(*carry)
-	effective := playerDamageRound4E17B0(accumulated)
-	*carry = math.Float32bits(accumulated - float32(effective))
+	factor := experienceAdd53TowardZero(1, -float64(absorption))
+	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
+	var effective int32
+	playerDamageCarry4E20F0(target, &effective, scaled)
 	if !playerDamageArmorReady4E17B0(target, r) {
 		return reject("unsupported live armed EXPLOSION armor durability")
 	}
@@ -192,7 +186,8 @@ func playerDamageArmedExplosion4E17B0(
 			return reject("missing live armed EXPLOSION Quest scale")
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(r.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}
@@ -232,7 +227,7 @@ func playerDamageArmedExplosionShield4E17B0(
 	if r.BlockDamagePercent == nil {
 		return reject("missing armed EXPLOSION shield balance")
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := experienceSpill32TowardZero(experienceMul53TowardZero(r.BlockDamagePercent(), float64(damage)))
 	shield := playerDamageShieldItem4E17B0(target)
 	if r.DamageBlockItem == nil || (shield != nil && shield.HealthData != nil &&
 		(r.CanDamageBlockItem == nil || !r.CanDamageBlockItem(shield))) {

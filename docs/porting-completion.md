@@ -111,6 +111,17 @@ pass 1,199 events in 105.968 seconds, including compilation. A single normal
 ARM64 product and the published affected E2E segment qualify runtime behavior
 separately. These checks do not establish overall 100%.
 
+The clean normal ARM64 product at `076d257` builds in 12.181 seconds. The
+unchanged published recovery E2E passes in 30.060 seconds from the exact
+earned combat Save, ending with HP26/MP56, poison zero, the retained book,
+both original upper Urchins still dead, all three resource pickups and a
+manual Save. Eighteen parameterless GET observations, full manifests and
+the final save screen are qualified. Source Save, assets, configuration and
+executable retain their hashes; earlier combat is not replayed. Only this
+affected segment runs on the new product. Its Windows 386/AMD64 and normal
+Linux AMD64 native CI remain in progress. Detailed evidence is preserved in
+`circle-collision-native-port` in the validation workspace.
+
 ### Rigid collisions and live C-owned coefficients
 
 The native box/box, door/circle and door/box paths now preserve the original

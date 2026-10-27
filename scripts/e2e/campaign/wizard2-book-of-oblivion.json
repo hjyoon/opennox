@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "name": "Wizard2 original pit landing and BookOfOblivion pickup",
+  "seed_contract": "Earned original Necromancer pit cutscene completed, player near3624,3626 HP26 MP88 poison0, BookOfOblivion still at3709,2386 and not owned.",
+  "coverage": "Ordinary player fall through original collapsed pit, original Urchin2362 alive-to-DEAD via earned A43, original BookOfOblivion inventory0-to1 via actual named Pickup cursor, earned D41 recovery and healthy manual Save at observed HP26 MP53 poison0. This case does not certify exact original XP or full-mana recovery.",
+  "cases": [
+    {
+      "name": "wizard2-book-of-oblivion",
+      "scenario": "wizard2-cave-book-of-oblivion.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 120,
+      "expected_health": 26,
+      "expected_maximum_health": 26,
+      "expected_mana": 53,
+      "expected_maximum_mana": 88,
+      "required_checkpoints": [
+        "original Necromancer pit player landing",
+        "original BookOfOblivion pickup",
+        "original manual Save",
+        "original Urchin2362 landing combat",
+        "original BookOfOblivion earned recovery"
+      ],
+      "required_defeated_script_ids": [
+        1000194057
+      ]
+    }
+  ]
+}

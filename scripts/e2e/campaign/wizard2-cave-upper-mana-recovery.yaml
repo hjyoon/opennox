@@ -1,0 +1,52 @@
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 1, "spell": 27}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "assert-quickbar-spell", "slot": 3, "spell": 115}
+  - {"action": "wait", "dt": 35}
+  - {"action": "assert-server-inventory-count", "item": "BookOfOblivion", "count": 1}
+  - {"action": "assert-server-inventory-count", "item": "BluePotion", "count": 0}
+  - {"action": "observe-player-target", "name": "read actual fresh Load of earned BookOfOblivion"}
+  - {"action": "run-to-world", "x": 3545, "y": 2602, "name": "ordinary original road97 toward original BluePotion1940"}
+  - {"action": "run-to-world", "x": 3728, "y": 2543, "name": "ordinary original road98 toward original BluePotion1940"}
+  - {"action": "run-to-world", "x": 3772, "y": 2366, "name": "ordinary original road99 toward original BluePotion1940"}
+  - {"action": "run-to-world", "x": 3926, "y": 2213, "name": "ordinary original road154 toward original BluePotion1940"}
+  - {"action": "run-to-world", "x": 4006, "y": 2095, "name": "ordinary original road100 toward original BluePotion1940"}
+  - {"action": "run-to-world", "x": 4016, "y": 1984, "name": "ordinary original road101 toward original BluePotion1940"}
+  - {"action": "run-to-world", "x": 3869, "y": 1858, "name": "ordinary original road156 toward original BluePotion1940"}
+  - {"action": "observe-player-target", "name": "read original BluePotion approach"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original BluePotion approach"}
+  - {"action": "run-to-world", "x": 3850, "y": 1780, "name": "ordinary original BluePotion1940 alcove"}
+  - {"action": "pickup-map-object-input", "extent": 1940, "item": "BluePotion", "name": "ordinary pickup of unnamed original BluePotion1940"}
+  - {"action": "wait", "dt": 5}
+  - {"action": "assert-server-inventory-count", "item": "BluePotion", "count": 0}
+  - {"action": "observe-player-target", "name": "read original automatic BluePotion use"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original automatic BluePotion use"}
+  - {"action": "assert-server-inventory-count", "item": "BookOfOblivion", "count": 1}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

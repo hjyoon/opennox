@@ -60,6 +60,29 @@ class SuiteFieldsTests(unittest.TestCase):
 
 
 class PlayerOutcomeTests(unittest.TestCase):
+    def test_resource_minimums_keep_combat_variation_and_reject_missing_recovery(self):
+        case = {'minimum_health': 20, 'minimum_mana': 52,
+                'expected_maximum_health': 26, 'expected_maximum_mana': 88}
+        for health in (20, 21, 22, 26):
+            player = {'player': {'health': health, 'maximum_health': 26},
+                      'mana': 54, 'maximum_mana': 88}
+            self.assertTrue(runner.expected_player_values(player, case))
+        for health, mana in ((19, 54), (22, 51), (22, 4), (None, 54), (22, None)):
+            player = {'player': {'health': health, 'maximum_health': 26},
+                      'mana': mana, 'maximum_mana': 88}
+            self.assertFalse(runner.expected_player_values(player, case))
+        self.assertFalse(runner.expected_player_values(
+            {'player': {'health': 22}, 'mana': 54},
+            {'minimum_health': 20, 'expected_health': 21}))
+
+    def test_resource_minimums_are_validated_before_launch(self):
+        for value in (-1, 0x10000, True, '20', None):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                runner.validate_suite_fields({'cases': [{'minimum_health': value}]})
+        with self.assertRaises(ValueError):
+            runner.validate_suite_fields({'cases': [{'minimum_mana': 52, 'expected_mana': 51}]})
+        runner.validate_suite_fields({'cases': [{'minimum_health': 20, 'minimum_mana': 52}]})
+
     def test_earned_level_gain_requires_the_reported_maxima(self):
         # Actual final values from the original FlyingGolem2348 level gain.
         player = {'player': {'health': 26, 'maximum_health': 26},

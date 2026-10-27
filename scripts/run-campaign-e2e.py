@@ -35,6 +35,7 @@ SUITE_FIELDS = {'version', 'name', 'coverage', 'seed_contract', 'cases'}
 CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_poison_free',
                'timeout_seconds', 'required_checkpoints', 'expected_health', 'expected_mana',
                'expected_maximum_health', 'expected_maximum_mana',
+               'minimum_health', 'minimum_mana',
                'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
                'required_defeated_script_ids', 'required_enable_transitions',
                'required_position_transitions', 'required_plate_holds'}
@@ -49,6 +50,13 @@ def validate_suite_fields(suite):
         unknown = set(case) - CASE_FIELDS
         if unknown:
             raise ValueError('unknown campaign case fields: ' + ', '.join(sorted(unknown)))
+        for field in ('health', 'mana'):
+            minimum = case.get('minimum_' + field)
+            if 'minimum_' + field in case:
+                if type(minimum) is not int or not 0 <= minimum <= 0xffff:
+                    raise ValueError('minimum_' + field + ' must be a uint16 value')
+                if 'expected_' + field in case and case['expected_' + field] < minimum:
+                    raise ValueError('expected_' + field + ' is below its required minimum')
 
 
 def sha(path):
@@ -260,7 +268,11 @@ def expected_player_values(player, case):
               'expected_mana': player['mana'],
               'expected_maximum_health': player['player'].get('maximum_health'),
               'expected_maximum_mana': player.get('maximum_mana')}
-    return all(key not in case or value == case[key] for key, value in values.items())
+    minimums = {'minimum_health': player['player'].get('health'),
+                'minimum_mana': player.get('mana')}
+    return (all(key not in case or value == case[key] for key, value in values.items())
+            and all(key not in case or type(value) is int and value >= case[key]
+                    for key, value in minimums.items()))
 
 
 def load_sequence(path):

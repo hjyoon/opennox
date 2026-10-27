@@ -30,6 +30,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-book-recovery.json` | Book pickup save, HP26/MP53 | Fresh Load retains the book; native passive mana regeneration returns HP26/MP88 |
 | `video-book-save-load-smoke.json` | Healthy book-recovery save, HP26/MP88 | Fresh Load, retained book and spell bindings, original road99 movement and full-resource manual Save; no new enemy objective |
 | `wizard2-upper-urchins.json` | Healthy book-recovery save, HP26/MP88 | Original Urchins2363/2364, retained book, HP26/poison0 manual Save; the qualified run ends at MP2 and needs normal recovery before further spell-heavy combat |
+| `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Original unnamed BluePotion1940 automatically restores 50 mana on pickup; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
 
 Replay all four segments consecutively with one command and the same prebuilt
 executable:
@@ -78,6 +79,14 @@ Scenario changes reuse the supplied executable. Each run copies the Save and
 preserves its executable, executed scenario, suite, logs, screenshots and
 read-only world observations, including failures. Source saves and campaign data
 inputs are checked for changes. Always use a new output directory.
+
+Cases can require `minimum_health` and `minimum_mana` for segments where
+ordinary combat or passive regeneration varies the exact final resources.
+Existing `expected_health` and `expected_mana` checks remain exact when present.
+The upper mana recovery segment requires a reserve of HP20/MP52; it does not
+claim full resources or completion of the northern route. The original potion
+is consumed immediately when its class-scaled recovery would stay below maximum
+mana, so the scenario checks zero potion inventory and the recovered mana.
 
 The GitHub input-validation job checks every published scenario's allowed input
 actions and the verifier's outcome checks. Actual gameplay replay requires local

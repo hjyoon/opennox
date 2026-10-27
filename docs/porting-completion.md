@@ -94,6 +94,21 @@ server and final legacy results total 179 passes with cgocheck2 and checkptr
 level 2. Existing tests, frozen fixtures and campaign inputs retain their bytes.
 These event totals do not measure completion percentage or whole-chapter scope.
 
+A single clean normal ARM64 product at `3545e31` builds in 12.143 seconds.
+The existing input-only Save/Load smoke reuses it and passes in 17.087 seconds,
+retaining HP26/MP88, poison zero, the original book and spell bindings, and an
+actual manual Save. Nine parameterless GET observations and the final save
+screen are qualified; source Save, assets, config and executable are unchanged.
+This smoke is a separate branch from upper-cave combat and does not certify
+its mana recovery or a full chapter. Windows and normal Linux native CI for
+this revision are dispatched and pending at this checkpoint.
+
+The preceding resource-effect revision `7035d2d` has completed Windows
+386/AMD64 root/server/legacy and Linux AMD64 server-HD native checks. All three
+artifacts are preserved and qualified. The Linux archive independently confirms
+230,988 passes, seven skips and all 56 expected packages. The HD run does not
+claim a normal-server default-link damage check.
+
 ### Native integer conversion in item damage and resource effects
 
 LightningEffect, DrainManaEffect, VampirismEffect and SympathyEffect now use

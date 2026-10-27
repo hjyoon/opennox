@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "name": "Wizard2 original book fresh Load and passive Wizard mana recovery",
+  "seed_contract": "Earned BookOfOblivion checkpoint after original pit and Urchin2362 defeat, HP26 MP53 poison0, actual BookOfOblivion inventory1.",
+  "coverage": "Fresh original Load retains original quest book, ordinary road183 movement and native passive Wizard mana regeneration to full resources, then original manual Save.",
+  "cases": [
+    {
+      "name": "wizard2-book-recovery",
+      "scenario": "wizard2-cave-book-recovery.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 210,
+      "expected_health": 26,
+      "expected_maximum_health": 26,
+      "expected_mana": 88,
+      "expected_maximum_mana": 88,
+      "required_checkpoints": [
+        "original lower cave road183 refuge",
+        "original passive mana recovery",
+        "original manual Save"
+      ]
+    }
+  ]
+}

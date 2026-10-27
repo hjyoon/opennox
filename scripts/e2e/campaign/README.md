@@ -27,6 +27,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-eastern-spiders.json` | Healthy FlyingGolem save, HP26/MP88 | Spiders2341 and2255; alternate original obelisks restore full mana |
 | `wizard2-necromancer-pit.json` | Healthy eastern-spiders save, HP26/MP88 | Original Necromancer activates; scripted NecroTemp death after the pit scene |
 | `wizard2-book-of-oblivion.json` | Completed pit-scene save, HP26/MP88 | Urchin2362 and original BookOfOblivion pickup; final HP26/MP53 |
+| `wizard2-book-recovery.json` | Book pickup save, HP26/MP53 | Fresh Load retains the book; native passive mana regeneration returns HP26/MP88 |
 
 Replay all four segments consecutively with one command and the same prebuilt
 executable:

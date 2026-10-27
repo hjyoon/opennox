@@ -98,6 +98,17 @@ Detailed evidence is preserved in `phantom-player-startup-port` in the validatio
 workspace. These controlled findings do not certify a complete chapter or
 overall 100%.
 
+The clean normal ARM64 product at `75ff7d0` builds in 13.817 seconds. The
+unchanged published recovery E2E passes in 30.038 seconds from the exact earned
+combat Save, ending with HP26/MP56, poison zero, the retained book, both upper
+Urchins still dead, all three resource pickups and a manual Save. Eighteen
+parameterless GET observations, complete manifests and the final save screen
+are qualified. Source Save, assets, configuration and executable retain their
+hashes. This is a product smoke for Load, movement, pickup and Save; earlier
+combat, a campaign PhantomPlayer actor and whole chapters are not replayed or
+newly certified. Its Windows 386/AMD64 and normal Linux AMD64 native jobs are
+running; all three native products for preceding revision `e4b3950` are qualified.
+
 ### Native elevator updates, passengers and audio entries
 
 All five remaining C elevator update, passenger and audio entry points now

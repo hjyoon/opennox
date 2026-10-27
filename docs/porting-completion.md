@@ -94,6 +94,17 @@ The normal root/server/legacy run passes 234,502 events with 16 skips in
 256.425 seconds. Focused highres checks with cgocheck2 and checkptr level 2
 pass 191 events in 20.408 seconds. No failure remains in either run.
 
+A single clean normal ARM64 product at `5a6f46c` builds in 13.379 seconds.
+The unchanged published recovery E2E passes in 30.168 seconds from the exact
+earned combat Save, ending with HP26/MP56, poison zero, the retained book,
+both original upper Urchins still dead, all three original resource pickups
+and a manual Save. Eighteen parameterless GET observations and the final save
+screen are qualified; source Save, assets, configuration and executable retain
+their hashes. The earlier combat is not replayed. An initial nested-sandbox
+denial occurs before game launch and remains preserved separately; the same
+product and loopback-only profile pass after resolving that launch restriction.
+Current Windows 386/AMD64 and normal Linux AMD64 native CI are running.
+
 ### Common radial ApplyForce startup arithmetic
 
 The common `0052DF80` path now preserves its original PC53/ToZero operations,

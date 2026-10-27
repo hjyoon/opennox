@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "Wizard2 original upper cave Urchins and retained quest book",
+  "seed_contract": "Earned lower cave BookOfOblivion recovery Save at original road183, HP26 MP88 poison0, book inventory1. Original upper Urchins2363 and2364 are alive. A43 Lightning S27 Fireball D41 LesserHeal F115 Swap.",
+  "coverage": "Fresh original Load, ordinary original road99/154/100/101/102 inputs, required original upper Urchins2363/2364 alive-to-dead observations, retained BookOfOblivion, healthy poison-free manual Save. Does not certify all remaining upper cave enemies or the chapter.",
+  "cases": [
+    {
+      "name": "wizard2-upper-urchins",
+      "scenario": "wizard2-cave-upper-urchins.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 210,
+      "expected_health": 26,
+      "expected_maximum_health": 26,
+      "expected_maximum_mana": 88,
+      "required_defeated_script_ids": [
+        1000194055,
+        1000194053
+      ],
+      "required_checkpoints": [
+        "original first upper Urchin contact",
+        "original upper cave living urchins combat",
+        "original upper cave healthy return",
+        "original manual Save"
+      ]
+    }
+  ]
+}

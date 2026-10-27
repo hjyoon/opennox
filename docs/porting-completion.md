@@ -90,6 +90,16 @@ separately; it does not establish a new ordinary-melee gameplay bug.
 Broader native callbacks, campaign repeatability and final feature audits remain
 open.
 
+The clean normal ARM64 product builds once in 12.450 seconds. Fresh original
+Load, retained book/bindings, short road99 movement and manual Save pass in
+17.259 seconds with HP26/26, MP88/88 and poison0; nine parameterless GET samples
+and unchanged source Save/assets/executable hashes are independently checked.
+This full-resource smoke Save remains a separate branch from upper-cave combat
+and does not close the prior failed recovery route. The prior 6a09d3d Windows
+AMD64/386 and Linux normal-server artifacts are also independently qualified:
+Linux retains 230,579 full-suite passes, seven skips and 133,041 default-link
+damage passes. Native CI for the new adapter revision is tracked separately.
+
 ### Original startup arithmetic in the non-item damage switch
 
 The shared non-item PlayerDamage switch and the separate caster IMPACT tail

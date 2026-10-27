@@ -263,16 +263,23 @@ def required_plate_holds(samples, requirements):
     return {'holds': holds, 'passed': bool(holds) and all(row['passed'] for row in holds)}
 
 
-def expected_player_values(player, case):
+def player_value_failures(player, case):
     values = {'expected_health': player['player']['health'],
               'expected_mana': player['mana'],
               'expected_maximum_health': player['player'].get('maximum_health'),
               'expected_maximum_mana': player.get('maximum_mana')}
     minimums = {'minimum_health': player['player'].get('health'),
                 'minimum_mana': player.get('mana')}
-    return (all(key not in case or value == case[key] for key, value in values.items())
-            and all(key not in case or type(value) is int and value >= case[key]
-                    for key, value in minimums.items()))
+    failures = [{'check': key, 'expected': case[key], 'actual': value}
+                for key, value in values.items() if key in case and value != case[key]]
+    failures.extend({'check': key, 'minimum': case[key], 'actual': value}
+                    for key, value in minimums.items()
+                    if key in case and not (type(value) is int and value >= case[key]))
+    return failures
+
+
+def expected_player_values(player, case):
+    return not player_value_failures(player, case)
 
 
 def load_sequence(path):
@@ -444,8 +451,13 @@ def run_sequence(args, sequence, stages):
                     result['executed_stages'] += 1
                     row['exit_code'] = subprocess.run(command, check=False).returncode
                     child = json.loads((stage_dir / 'result.json').read_text())
-                    if row['exit_code'] != 0 or tree(seed) != source_seed:
-                        raise ValueError('stage execution failed or changed its source save')
+                    row['failed_checks'] = [dict(failure, case=case.get('name'))
+                                            for case in child.get('cases', [])
+                                            for failure in case.get('failed_checks', [])]
+                    if row['exit_code'] != 0 or child.get('passed') is not True:
+                        raise ValueError('stage failed; see failed_checks and the stage report')
+                    if tree(seed) != source_seed:
+                        raise ValueError('stage changed its source save')
                     # Verify the exact suite and scenario that the child executed.
                     inputs = json.loads((stage_dir / 'inputs.json').read_text())
                     if (inputs['suite_sha256'] != stage['suite_sha256']
@@ -459,7 +471,8 @@ def run_sequence(args, sequence, stages):
                 progress.write(json.dumps(row, ensure_ascii=False) + '\n')
                 progress.flush()
                 print(json.dumps({'stage': row['name'], 'passed': row['passed'],
-                                  'report': row['report'], 'error': row.get('error')}), flush=True)
+                                  'report': row['report'], 'error': row.get('error'),
+                                  'failed_checks': row.get('failed_checks', [])}), flush=True)
                 if not row['passed']:
                     break
     finally:
@@ -611,9 +624,11 @@ def run_case(args, binary, suite_dir, case, port):
         if saved.is_file():
             report['saved_player_sha256'] = sha(saved)
     required = all(any(text in line for line in checkpoints) for text in case.get('required_checkpoints', []))
+    failures = []
     outcomes_ok = True
     if player:
         outcomes_ok = expected_player_values(player, case)
+        failures.extend(player_value_failures(player, case))
     if case.get('expect_damage'):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
     if (case.get('created_type') or case.get('required_defeated_script_ids')
@@ -630,6 +645,12 @@ def run_case(args, binary, suite_dir, case, port):
         history = required_monster_deaths(samples, case['required_defeated_script_ids'])
         report['required_original_monsters'] = history
         outcomes_ok = outcomes_ok and history['passed']
+        if not history['passed']:
+            failures.append({'check': 'required_defeated_script_ids',
+                             'missing': sorted(set(history['required_script_ids'])
+                                               - set(history['last_observed_dead_script_ids'])),
+                             'initial_alive': history['initial_alive_script_ids'],
+                             'observed_dead': history['last_observed_dead_script_ids']})
     if case.get('required_enable_transitions') and snapshots_ok:
         transitions = required_enable_transitions(samples, case['required_enable_transitions'])
         report['required_original_enable_transitions'] = transitions
@@ -643,15 +664,23 @@ def run_case(args, binary, suite_dir, case, port):
         report['required_original_plate_holds'] = holds
         outcomes_ok = outcomes_ok and holds['passed']
     report['continuation_eligible'] = healthy and poison_free and bool(report.get('manual_save_written')) and not errors
-    report['passed'] = (report['exit_code'] == 0 and not report['forced_termination'] and not errors
-                        and not reader.is_alive() and not worker.is_alive() and snapshots_ok
-                        and actual_maps <= MAPS and expected_maps <= actual_maps and required and outcomes_ok
-                        and healthy and (poison_free or not case.get('require_poison_free', True))
-                        and bool(report.get('manual_save_written')))
+    checks = {'successful_exit': report['exit_code'] == 0,
+              'natural_exit': not report['forced_termination'], 'runtime_errors_absent': not errors,
+              'output_reader_finished': not reader.is_alive(), 'snapshot_reader_finished': not worker.is_alive(),
+              'snapshots_complete': snapshots_ok, 'maps_in_scope': actual_maps <= MAPS,
+              'expected_maps_observed': expected_maps <= actual_maps,
+              'required_checkpoints': required, 'expected_outcomes': outcomes_ok,
+              'player_alive': healthy, 'poison_free': poison_free or not case.get('require_poison_free', True),
+              'manual_save_written': bool(report.get('manual_save_written'))}
+    has_outcome_details = bool(failures)
+    failures.extend({'check': name} for name, passed in checks.items()
+                    if not passed and (name != 'expected_outcomes' or not has_outcome_details))
+    report['failed_checks'] = failures
+    report['passed'] = all(checks.values())
     put(case_dir / 'result.json', report)
     print(json.dumps({'case': case['name'], 'passed': report['passed'],
                       'continuation_eligible': report['continuation_eligible'], 'exit_code': report['exit_code'],
-                      'elapsed_seconds': report['elapsed_seconds']}), flush=True)
+                      'elapsed_seconds': report['elapsed_seconds'], 'failed_checks': failures}), flush=True)
     return report
 
 

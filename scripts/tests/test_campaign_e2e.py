@@ -60,6 +60,14 @@ class SuiteFieldsTests(unittest.TestCase):
 
 
 class PlayerOutcomeTests(unittest.TestCase):
+    def test_failed_recovery_reports_actual_values_and_unchanged_minimums(self):
+        # Preserved upper-cave recovery: a living manual Save is still below HP20.
+        player = {'player': {'health': 17, 'maximum_health': 26},
+                  'mana': 55, 'maximum_mana': 88}
+        self.assertEqual(runner.player_value_failures(player, {
+            'minimum_health': 20, 'minimum_mana': 52}),
+            [{'check': 'minimum_health', 'minimum': 20, 'actual': 17}])
+
     def test_resource_minimums_keep_combat_variation_and_reject_missing_recovery(self):
         case = {'minimum_health': 20, 'minimum_mana': 52,
                 'expected_maximum_health': 26, 'expected_maximum_mana': 88}
@@ -199,12 +207,25 @@ class SequenceTests(unittest.TestCase):
             args = self.prepare(Path(directory))
             sequence, stages = runner.load_sequence(args.sequence)
             def launch(command, **kwargs):
-                return self.child(command, passed='second' not in command[command.index('--output') + 1])
+                output = Path(command[command.index('--output') + 1])
+                result = self.child(command, passed=output.name != 'second')
+                if output.name == 'second':
+                    path = output / 'result.json'
+                    child = json.loads(path.read_text())
+                    child['cases'][0].update(name='upper-urchins', failed_checks=[{
+                        'check': 'required_defeated_script_ids', 'missing': [1000194053],
+                        'initial_alive': [1000194053, 1000194055], 'observed_dead': [1000194055]}])
+                    path.write_text(json.dumps(child))
+                return result
             with mock.patch.object(runner.subprocess, 'run', side_effect=launch) as run, mock.patch('builtins.print'):
                 self.assertEqual(runner.run_sequence(args, sequence, stages), 1)
             self.assertEqual(run.call_count, 2)
             report = json.loads((args.output / 'result.json').read_text())
             self.assertFalse(report['passed'])
+            self.assertEqual(report['stages'][-1]['failed_checks'], [{
+                'case': 'upper-urchins', 'check': 'required_defeated_script_ids',
+                'missing': [1000194053], 'initial_alive': [1000194053, 1000194055],
+                'observed_dead': [1000194055]}])
             self.assertNotIn('final_seed', report)
             self.assertFalse((args.output / 'third').exists())
             self.assertTrue((args.output / 'second/case/runtime-data.test/Save/SAVE0001/Player.plr').exists())

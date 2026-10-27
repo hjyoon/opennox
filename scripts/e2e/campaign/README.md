@@ -87,6 +87,12 @@ preserves its executable, executed scenario, suite, logs, screenshots and
 read-only world observations, including failures. Source saves and campaign data
 inputs are checked for changes. Always use a new output directory.
 
+Case and sequence summaries include `failed_checks`. Resource failures report
+the actual value and required value; missing enemy deaths report their original
+script IDs. A healthy Save with an unmet objective still fails and stops the
+sequence. These summaries let route retries target the failing segment without
+rebuilding the game or manually searching all captured observations.
+
 Cases can require `minimum_health` and `minimum_mana` for segments where
 ordinary combat or passive regeneration varies the exact final resources.
 Existing `expected_health` and `expected_mana` checks remain exact when present.

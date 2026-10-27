@@ -1,0 +1,6719 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "regions": [
+    {
+      "name": "LightningEffect",
+      "address": "0x4e06f0",
+      "size": 80,
+      "sha256": "bccc80abc676d7428523f022f586308eeb6b2e42a9074418a4b4575077228c3f"
+    },
+    {
+      "name": "DrainManaEffect",
+      "address": "0x4e0740",
+      "size": 128,
+      "sha256": "f69f7f336654a17cd3cc349076b39f71a3d0b223c8c52c607aeeb78c917ebefd"
+    },
+    {
+      "name": "VampirismEffect",
+      "address": "0x4e07c0",
+      "size": 144,
+      "sha256": "d09ec356e30851c1afa26b64e8c5b063fe0506dbc8a76872c4847e678b5a7e2f"
+    },
+    {
+      "name": "SympathyEffect",
+      "address": "0x4e08e0",
+      "size": 96,
+      "sha256": "a311cea82c06e823f04e8b875c70a59386fea4cb4f9e2a93e3f3ad71556f8c43"
+    },
+    {
+      "name": "signed-qword",
+      "address": "0x566dcc",
+      "size": 39,
+      "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c"
+    }
+  ],
+  "original_numeric_conversions_substituted": false,
+  "declared_services": [
+    "target damage callback",
+    "point FX transport",
+    "object audio",
+    "HP/mana getters",
+    "HP/mana adjustment"
+  ],
+  "memory_faults": [],
+  "function_entries": {
+    "LightningEffect": 60,
+    "signed-qword": 218,
+    "DrainManaEffect": 60,
+    "VampirismEffect": 60,
+    "SympathyEffect": 60
+  },
+  "rows": [
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/00000000/damage-10/available-200",
+        "coefficient_bits32": 0,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/80000000/damage-10/available-200",
+        "coefficient_bits32": 2147483648,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/00000001/damage-10/available-200",
+        "coefficient_bits32": 1,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3dcccccd/damage-10/available-200",
+        "coefficient_bits32": 1036831949,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f333333/damage-13/available-200",
+        "coefficient_bits32": 1060320051,
+        "damage": 13,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3e800000/damage-16/available-200",
+        "coefficient_bits32": 1048576000,
+        "damage": 16,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f000000/damage--9/available-200",
+        "coefficient_bits32": 1056964608,
+        "damage": -9,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f800000/damage-0/available-0",
+        "coefficient_bits32": 1065353216,
+        "damage": 0,
+        "available": 0,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 1
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f800000/damage-96/available-50",
+        "coefficient_bits32": 1065353216,
+        "damage": 96,
+        "available": 50,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 1
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f800000/damage-65536/available-65535",
+        "coefficient_bits32": 1065353216,
+        "damage": 65536,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 1
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/47800000/damage-65536/available-200",
+        "coefficient_bits32": 1199570944,
+        "damage": 65536,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 65536
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/4f800000/damage-1/available-200",
+        "coefficient_bits32": 1333788672,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/4f000000/damage-1/available-200",
+        "coefficient_bits32": 1325400064,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 2147483648
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/5f000000/damage-1/available-200",
+        "coefficient_bits32": 1593835520,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/df000000/damage-1/available-200",
+        "coefficient_bits32": 3741319168,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/7f7fffff/damage-1/available-200",
+        "coefficient_bits32": 2139095039,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/ff7fffff/damage-1/available-200",
+        "coefficient_bits32": 4286578687,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/7f800000/damage-1/available-200",
+        "coefficient_bits32": 2139095040,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/ff800000/damage-1/available-200",
+        "coefficient_bits32": 4286578688,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/7fc00001/damage-1/available-200",
+        "coefficient_bits32": 2143289345,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/ffc00001/damage-1/available-200",
+        "coefficient_bits32": 4290772993,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 1065353217,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 1
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/bf800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 3212836865,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 4294967295
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/4f000001/damage--2147483647/available-200",
+        "coefficient_bits32": 1325400065,
+        "damage": -2147483647,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 2147483904
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/getter-mutation",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": true,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1117454336,
+            1118863360
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/nil-owner",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": true,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/nil-target",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": true,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/nonunit",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 0,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/undead",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 64
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/player",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 4,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/00000000/damage-10/available-200",
+        "coefficient_bits32": 0,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/80000000/damage-10/available-200",
+        "coefficient_bits32": 2147483648,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/00000001/damage-10/available-200",
+        "coefficient_bits32": 1,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3dcccccd/damage-10/available-200",
+        "coefficient_bits32": 1036831949,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f333333/damage-13/available-200",
+        "coefficient_bits32": 1060320051,
+        "damage": 13,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 9
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 9
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3e800000/damage-16/available-200",
+        "coefficient_bits32": 1048576000,
+        "damage": 16,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 4
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 4
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f000000/damage--9/available-200",
+        "coefficient_bits32": 1056964608,
+        "damage": -9,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 4294967292
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 65532
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f800000/damage-0/available-0",
+        "coefficient_bits32": 1065353216,
+        "damage": 0,
+        "available": 0,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 0
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 0
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f800000/damage-96/available-50",
+        "coefficient_bits32": 1065353216,
+        "damage": 96,
+        "available": 50,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 50
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 50
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 50
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f800000/damage-65536/available-65535",
+        "coefficient_bits32": 1065353216,
+        "damage": 65536,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/47800000/damage-65536/available-200",
+        "coefficient_bits32": 1199570944,
+        "damage": 65536,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/4f800000/damage-1/available-200",
+        "coefficient_bits32": 1333788672,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/4f000000/damage-1/available-200",
+        "coefficient_bits32": 1325400064,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 2147483648
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/5f000000/damage-1/available-200",
+        "coefficient_bits32": 1593835520,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/df000000/damage-1/available-200",
+        "coefficient_bits32": 3741319168,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/7f7fffff/damage-1/available-200",
+        "coefficient_bits32": 2139095039,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/ff7fffff/damage-1/available-200",
+        "coefficient_bits32": 4286578687,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/7f800000/damage-1/available-200",
+        "coefficient_bits32": 2139095040,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/ff800000/damage-1/available-200",
+        "coefficient_bits32": 4286578688,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/7fc00001/damage-1/available-200",
+        "coefficient_bits32": 2143289345,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/ffc00001/damage-1/available-200",
+        "coefficient_bits32": 4290772993,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 1065353217,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 2147483902
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 254
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/bf800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 3212836865,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/4f000001/damage--2147483647/available-200",
+        "coefficient_bits32": 1325400065,
+        "damage": -2147483647,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 2147484672
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1024
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/getter-mutation",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": true,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 5
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/nil-owner",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": true,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/nil-target",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": true,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/nonunit",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 0,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/undead",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 64
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 5
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/player",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 4,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 5
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/00000000/damage-10/available-200",
+        "coefficient_bits32": 0,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/80000000/damage-10/available-200",
+        "coefficient_bits32": 2147483648,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/00000001/damage-10/available-200",
+        "coefficient_bits32": 1,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3dcccccd/damage-10/available-200",
+        "coefficient_bits32": 1036831949,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f333333/damage-13/available-200",
+        "coefficient_bits32": 1060320051,
+        "damage": 13,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 9
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3e800000/damage-16/available-200",
+        "coefficient_bits32": 1048576000,
+        "damage": 16,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 4
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f000000/damage--9/available-200",
+        "coefficient_bits32": 1056964608,
+        "damage": -9,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 4294967292
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f800000/damage-0/available-0",
+        "coefficient_bits32": 1065353216,
+        "damage": 0,
+        "available": 0,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 0
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f800000/damage-96/available-50",
+        "coefficient_bits32": 1065353216,
+        "damage": 96,
+        "available": 50,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 50
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 50
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f800000/damage-65536/available-65535",
+        "coefficient_bits32": 1065353216,
+        "damage": 65536,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/47800000/damage-65536/available-200",
+        "coefficient_bits32": 1199570944,
+        "damage": 65536,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/4f800000/damage-1/available-200",
+        "coefficient_bits32": 1333788672,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/4f000000/damage-1/available-200",
+        "coefficient_bits32": 1325400064,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 2147483648
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/5f000000/damage-1/available-200",
+        "coefficient_bits32": 1593835520,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/df000000/damage-1/available-200",
+        "coefficient_bits32": 3741319168,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/7f7fffff/damage-1/available-200",
+        "coefficient_bits32": 2139095039,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/ff7fffff/damage-1/available-200",
+        "coefficient_bits32": 4286578687,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/7f800000/damage-1/available-200",
+        "coefficient_bits32": 2139095040,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/ff800000/damage-1/available-200",
+        "coefficient_bits32": 4286578688,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/7fc00001/damage-1/available-200",
+        "coefficient_bits32": 2143289345,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/ffc00001/damage-1/available-200",
+        "coefficient_bits32": 4290772993,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 1065353217,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 2147483902
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/bf800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 3212836865,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/4f000001/damage--2147483647/available-200",
+        "coefficient_bits32": 1325400065,
+        "damage": -2147483647,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 2147484672
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/getter-mutation",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": true,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/nil-owner",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": true,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/nil-target",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": true,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/nonunit",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 0,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/undead",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 64
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/player",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 4,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/00000000/damage-10/available-200",
+        "coefficient_bits32": 0,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/80000000/damage-10/available-200",
+        "coefficient_bits32": 2147483648,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/00000001/damage-10/available-200",
+        "coefficient_bits32": 1,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3dcccccd/damage-10/available-200",
+        "coefficient_bits32": 1036831949,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f333333/damage-13/available-200",
+        "coefficient_bits32": 1060320051,
+        "damage": 13,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 9
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3e800000/damage-16/available-200",
+        "coefficient_bits32": 1048576000,
+        "damage": 16,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 4
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f000000/damage--9/available-200",
+        "coefficient_bits32": 1056964608,
+        "damage": -9,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 4294967292
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f800000/damage-0/available-0",
+        "coefficient_bits32": 1065353216,
+        "damage": 0,
+        "available": 0,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 0
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f800000/damage-96/available-50",
+        "coefficient_bits32": 1065353216,
+        "damage": 96,
+        "available": 50,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 50
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 50
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f800000/damage-65536/available-65535",
+        "coefficient_bits32": 1065353216,
+        "damage": 65536,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/47800000/damage-65536/available-200",
+        "coefficient_bits32": 1199570944,
+        "damage": 65536,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 13107200
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/4f800000/damage-1/available-200",
+        "coefficient_bits32": 1333788672,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/4f000000/damage-1/available-200",
+        "coefficient_bits32": 1325400064,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 2147483648
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/5f000000/damage-1/available-200",
+        "coefficient_bits32": 1593835520,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/df000000/damage-1/available-200",
+        "coefficient_bits32": 3741319168,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/7f7fffff/damage-1/available-200",
+        "coefficient_bits32": 2139095039,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/ff7fffff/damage-1/available-200",
+        "coefficient_bits32": 4286578687,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/7f800000/damage-1/available-200",
+        "coefficient_bits32": 2139095040,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/ff800000/damage-1/available-200",
+        "coefficient_bits32": 4286578688,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/7fc00001/damage-1/available-200",
+        "coefficient_bits32": 2143289345,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/ffc00001/damage-1/available-200",
+        "coefficient_bits32": 4290772993,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 1065353217,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/bf800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 3212836865,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 4294901761
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/4f000001/damage--2147483647/available-200",
+        "coefficient_bits32": 1325400065,
+        "damage": -2147483647,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 2147484672
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/getter-mutation",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": true,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/nil-owner",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": true,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/nil-target",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": true,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/nonunit",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 0,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/undead",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 64
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/player",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 4,
+        "target_subclass": 0
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/00000000/damage-10/available-200",
+        "coefficient_bits32": 0,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/80000000/damage-10/available-200",
+        "coefficient_bits32": 2147483648,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/00000001/damage-10/available-200",
+        "coefficient_bits32": 1,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3dcccccd/damage-10/available-200",
+        "coefficient_bits32": 1036831949,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f333333/damage-13/available-200",
+        "coefficient_bits32": 1060320051,
+        "damage": 13,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3e800000/damage-16/available-200",
+        "coefficient_bits32": 1048576000,
+        "damage": 16,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f000000/damage--9/available-200",
+        "coefficient_bits32": 1056964608,
+        "damage": -9,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f800000/damage-0/available-0",
+        "coefficient_bits32": 1065353216,
+        "damage": 0,
+        "available": 0,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 1
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f800000/damage-96/available-50",
+        "coefficient_bits32": 1065353216,
+        "damage": 96,
+        "available": 50,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 1
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f800000/damage-65536/available-65535",
+        "coefficient_bits32": 1065353216,
+        "damage": 65536,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 1
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/47800000/damage-65536/available-200",
+        "coefficient_bits32": 1199570944,
+        "damage": 65536,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 65536
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/4f800000/damage-1/available-200",
+        "coefficient_bits32": 1333788672,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/4f000000/damage-1/available-200",
+        "coefficient_bits32": 1325400064,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 2147483648
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/5f000000/damage-1/available-200",
+        "coefficient_bits32": 1593835520,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/df000000/damage-1/available-200",
+        "coefficient_bits32": 3741319168,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/7f7fffff/damage-1/available-200",
+        "coefficient_bits32": 2139095039,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/ff7fffff/damage-1/available-200",
+        "coefficient_bits32": 4286578687,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/7f800000/damage-1/available-200",
+        "coefficient_bits32": 2139095040,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/ff800000/damage-1/available-200",
+        "coefficient_bits32": 4286578688,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/7fc00001/damage-1/available-200",
+        "coefficient_bits32": 2143289345,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/ffc00001/damage-1/available-200",
+        "coefficient_bits32": 4290772993,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/3f800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 1065353217,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 1
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/bf800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 3212836865,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 4294967295
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/4f000001/damage--2147483647/available-200",
+        "coefficient_bits32": 1325400065,
+        "damage": -2147483647,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 2147483904
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/getter-mutation",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": true,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1117454336,
+            1118863360
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/nil-owner",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": true,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/nil-target",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": true,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/nonunit",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 0,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/undead",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 64
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "LightningEffect/player",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 4,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "amount_bits32": 0
+        },
+        {
+          "service": "point-fx",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ]
+        },
+        {
+          "service": "audio",
+          "amount_bits32": 225
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/00000000/damage-10/available-200",
+        "coefficient_bits32": 0,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/80000000/damage-10/available-200",
+        "coefficient_bits32": 2147483648,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/00000001/damage-10/available-200",
+        "coefficient_bits32": 1,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3dcccccd/damage-10/available-200",
+        "coefficient_bits32": 1036831949,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f333333/damage-13/available-200",
+        "coefficient_bits32": 1060320051,
+        "damage": 13,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 9
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 9
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3e800000/damage-16/available-200",
+        "coefficient_bits32": 1048576000,
+        "damage": 16,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 4
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 4
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f000000/damage--9/available-200",
+        "coefficient_bits32": 1056964608,
+        "damage": -9,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 4294967292
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 65532
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f800000/damage-0/available-0",
+        "coefficient_bits32": 1065353216,
+        "damage": 0,
+        "available": 0,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 0
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 0
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f800000/damage-96/available-50",
+        "coefficient_bits32": 1065353216,
+        "damage": 96,
+        "available": 50,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 50
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 50
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 50
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f800000/damage-65536/available-65535",
+        "coefficient_bits32": 1065353216,
+        "damage": 65536,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/47800000/damage-65536/available-200",
+        "coefficient_bits32": 1199570944,
+        "damage": 65536,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/4f800000/damage-1/available-200",
+        "coefficient_bits32": 1333788672,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/4f000000/damage-1/available-200",
+        "coefficient_bits32": 1325400064,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 2147483648
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/5f000000/damage-1/available-200",
+        "coefficient_bits32": 1593835520,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/df000000/damage-1/available-200",
+        "coefficient_bits32": 3741319168,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/7f7fffff/damage-1/available-200",
+        "coefficient_bits32": 2139095039,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/ff7fffff/damage-1/available-200",
+        "coefficient_bits32": 4286578687,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/7f800000/damage-1/available-200",
+        "coefficient_bits32": 2139095040,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/ff800000/damage-1/available-200",
+        "coefficient_bits32": 4286578688,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/7fc00001/damage-1/available-200",
+        "coefficient_bits32": 2143289345,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/ffc00001/damage-1/available-200",
+        "coefficient_bits32": 4290772993,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 1
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/3f800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 1065353217,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 2147483902
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 254
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/bf800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 3212836865,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/4f000001/damage--2147483647/available-200",
+        "coefficient_bits32": 1325400065,
+        "damage": -2147483647,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 2147483904
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 256
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/getter-mutation",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": true,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 5
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/nil-owner",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": true,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/nil-target",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": true,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/nonunit",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 0,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/undead",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 64
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 5
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "DrainManaEffect/player",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 4,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-mana",
+          "amount_bits32": 200
+        },
+        {
+          "service": "mana-sub",
+          "amount_bits32": 5
+        },
+        {
+          "service": "mana-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/00000000/damage-10/available-200",
+        "coefficient_bits32": 0,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/80000000/damage-10/available-200",
+        "coefficient_bits32": 2147483648,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/00000001/damage-10/available-200",
+        "coefficient_bits32": 1,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3dcccccd/damage-10/available-200",
+        "coefficient_bits32": 1036831949,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f333333/damage-13/available-200",
+        "coefficient_bits32": 1060320051,
+        "damage": 13,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 9
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3e800000/damage-16/available-200",
+        "coefficient_bits32": 1048576000,
+        "damage": 16,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 4
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f000000/damage--9/available-200",
+        "coefficient_bits32": 1056964608,
+        "damage": -9,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 4294967292
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f800000/damage-0/available-0",
+        "coefficient_bits32": 1065353216,
+        "damage": 0,
+        "available": 0,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 0
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f800000/damage-96/available-50",
+        "coefficient_bits32": 1065353216,
+        "damage": 96,
+        "available": 50,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 50
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 50
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f800000/damage-65536/available-65535",
+        "coefficient_bits32": 1065353216,
+        "damage": 65536,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/47800000/damage-65536/available-200",
+        "coefficient_bits32": 1199570944,
+        "damage": 65536,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/4f800000/damage-1/available-200",
+        "coefficient_bits32": 1333788672,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/4f000000/damage-1/available-200",
+        "coefficient_bits32": 1325400064,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 2147483648
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/5f000000/damage-1/available-200",
+        "coefficient_bits32": 1593835520,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/df000000/damage-1/available-200",
+        "coefficient_bits32": 3741319168,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/7f7fffff/damage-1/available-200",
+        "coefficient_bits32": 2139095039,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/ff7fffff/damage-1/available-200",
+        "coefficient_bits32": 4286578687,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/7f800000/damage-1/available-200",
+        "coefficient_bits32": 2139095040,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/ff800000/damage-1/available-200",
+        "coefficient_bits32": 4286578688,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/7fc00001/damage-1/available-200",
+        "coefficient_bits32": 2143289345,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/ffc00001/damage-1/available-200",
+        "coefficient_bits32": 4290772993,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/3f800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 1065353217,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 2147483902
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/bf800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 3212836865,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/4f000001/damage--2147483647/available-200",
+        "coefficient_bits32": 1325400065,
+        "damage": -2147483647,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 2147483904
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/getter-mutation",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": true,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/nil-owner",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": true,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/nil-target",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": true,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/nonunit",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 0,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/undead",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 64
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 2,
+        "name": "VampirismEffect/player",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 4,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-add",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/00000000/damage-10/available-200",
+        "coefficient_bits32": 0,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/80000000/damage-10/available-200",
+        "coefficient_bits32": 2147483648,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/00000001/damage-10/available-200",
+        "coefficient_bits32": 1,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3dcccccd/damage-10/available-200",
+        "coefficient_bits32": 1036831949,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f333333/damage-13/available-200",
+        "coefficient_bits32": 1060320051,
+        "damage": 13,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 9
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3e800000/damage-16/available-200",
+        "coefficient_bits32": 1048576000,
+        "damage": 16,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 4
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f000000/damage--9/available-200",
+        "coefficient_bits32": 1056964608,
+        "damage": -9,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 4294967292
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f800000/damage-0/available-0",
+        "coefficient_bits32": 1065353216,
+        "damage": 0,
+        "available": 0,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 0
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f800000/damage-96/available-50",
+        "coefficient_bits32": 1065353216,
+        "damage": 96,
+        "available": 50,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 50
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 50
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f800000/damage-65536/available-65535",
+        "coefficient_bits32": 1065353216,
+        "damage": 65536,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/47800000/damage-65536/available-200",
+        "coefficient_bits32": 1199570944,
+        "damage": 65536,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 13107200
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/4f800000/damage-1/available-200",
+        "coefficient_bits32": 1333788672,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/4f000000/damage-1/available-200",
+        "coefficient_bits32": 1325400064,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 2147483648
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/5f000000/damage-1/available-200",
+        "coefficient_bits32": 1593835520,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/df000000/damage-1/available-200",
+        "coefficient_bits32": 3741319168,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/7f7fffff/damage-1/available-200",
+        "coefficient_bits32": 2139095039,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/ff7fffff/damage-1/available-200",
+        "coefficient_bits32": 4286578687,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/7f800000/damage-1/available-200",
+        "coefficient_bits32": 2139095040,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/ff800000/damage-1/available-200",
+        "coefficient_bits32": 4286578688,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/7fc00001/damage-1/available-200",
+        "coefficient_bits32": 2143289345,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/ffc00001/damage-1/available-200",
+        "coefficient_bits32": 4290772993,
+        "damage": 1,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/3f800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 1065353217,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 65535
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/bf800001/damage-2147483647/available-65535",
+        "coefficient_bits32": 3212836865,
+        "damage": 2147483647,
+        "available": 65535,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 65535
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 4294901761
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/4f000001/damage--2147483647/available-200",
+        "coefficient_bits32": 1325400065,
+        "damage": -2147483647,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 2147483904
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/getter-mutation",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": true,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/nil-owner",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": true,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/nil-target",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": true,
+        "target_class": 2,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/nonunit",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 0,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/undead",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 2,
+        "target_subclass": 64
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 3,
+        "name": "SympathyEffect/player",
+        "coefficient_bits32": 1056964608,
+        "damage": 10,
+        "available": 200,
+        "mutate": false,
+        "nil_owner": false,
+        "nil_target": false,
+        "target_class": 4,
+        "target_subclass": 0
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "get-hp",
+          "amount_bits32": 200
+        },
+        {
+          "service": "hp-damage",
+          "amount_bits32": 5
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    }
+  ]
+}

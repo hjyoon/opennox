@@ -6250,7 +6250,7 @@ void nox_xxx_lightngEffect_4E06F0(
 	if (effect && target) {
 		if (target->func_damage) {
 			nox_object_call_damage_native(target, owner, weapon,
-				(int32_t)nox_modifier_effect_getPreHitFloat(effect), 9);
+				nox_double2int((double)nox_modifier_effect_getPreHitFloat(effect)), 9);
 		}
 		nox_xxx_netSendPointFx_522FF0(129, (float2*)&target->x);
 		nox_xxx_aud_501960(225, target, 0, 0);
@@ -6264,7 +6264,8 @@ void nox_xxx_drainMEffect_4E0740(
 	if (!effect || !owner || !target || !damage || !(target->obj_class & 6)) {
 		return;
 	}
-	int amount = (int)(nox_modifier_effect_getPreDamageFloat(effect) * (double)*damage);
+	int amount = nox_double2int(nox_modifierMulChop53_4E0397(
+		(double)nox_modifier_effect_getPreDamageFloat(effect), (double)*damage));
 	if (!amount) {
 		amount = 1;
 	}
@@ -6284,7 +6285,8 @@ void nox_xxx_vampirismEffect_4E07C0(
 		((target->obj_class & 2) && (target->obj_subclass & 0x40))) {
 		return;
 	}
-	int amount = (int)((double)*damage * nox_modifier_effect_getPreDamageFloat(effect));
+	int amount = nox_double2int(nox_modifierMulChop53_4E0397(
+		(double)*damage, (double)nox_modifier_effect_getPreDamageFloat(effect)));
 	if (!amount) {
 		amount = 1;
 	}
@@ -6323,13 +6325,15 @@ void nox_xxx_sympathyEffect_4E08E0(
 	if (!effect || !owner || !target || !damage || !(target->obj_class & 6)) {
 		return;
 	}
+	// 004E08FD caches the coefficient before the target HP service.
+	const double coefficient = nox_modifier_effect_getPreDamageFloat(effect);
 	int amount = *damage;
 	uint16_t health = (uint16_t)nox_xxx_unitGetHP_4EE780(target);
 	if (health < amount) {
 		amount = health;
 	}
 	nox_xxx_unitDamageClear_4EE5E0(owner,
-		(int)((double)amount * nox_modifier_effect_getPreDamageFloat(effect)));
+		nox_double2int(nox_modifierMulChop53_4E0397((double)amount, coefficient)));
 }
 
 //----- (004E0960) --------------------------------------------------------

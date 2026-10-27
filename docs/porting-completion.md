@@ -55,6 +55,54 @@ completion requirements.
 
 ## Current findings
 
+### Native integer conversion in item damage and resource effects
+
+LightningEffect, DrainManaEffect, VampirismEffect and SympathyEffect now use
+the existing signed-qword/low-dword conversion helper instead of native C
+float-to-int casts. Resource scaling reuses the existing PC53 multiplication
+toward zero. Sympathy also caches its coefficient before the HP lookup, as
+the original body does. Only these four C bodies change; their typed callback
+interfaces and the shared arithmetic helpers remain. Host FP mode is unchanged.
+
+Unchanged original execution covers all four complete bodies and the integer
+conversion helper: 120 startup contexts and 120 nearest controls. Damage,
+FX/audio transport and HP/mana services are explicit observation boundaries;
+numeric conversions are never substituted. The contexts include signed and
+zero amounts, resource caps, qword boundaries, infinities/NaNs, nil owners and
+targets, nonunits, undead targets and a getter that changes the coefficient.
+Native execution of the complete production C bodies disagreed in 43 startup
+contexts before the fix and matches all 120 afterward. The same 120 pass
+ASan, UBSan and float-cast-overflow checks with native pointer and nonoutput
+canaries. Stock-scale controls already agreed; this defect is not claimed as
+an observed stock campaign encounter.
+
+Four additional controls keep the real pre-damage adapter, typed Vampirism
+callback, HP getter, UnitAdjustHP and UnitSetHP. Exact independent original
+inputs are reexecuted eight times across startup and nearest modes. From
+HP200, the native results are 204 for ordinary absorption and 201 for zero,
+low-dword wrap and invalid conversion. No HP/damage handler is substituted.
+The first new integration test omitted UnitSetHP's normal synchronization
+marker in its canary expectation; its HP values were already correct. That
+failure report is retained and only the new expectation is corrected.
+
+Normal root/server checks pass in the initial full run; the final full legacy
+run passes 74,969 events with one skip in 118.405 seconds. Root/server are not
+repeated for the new test-only correction. Together these runs retain all
+prior terminal identities/results/multiplicities and add 126 passes, totaling
+233,564 passes and 16 skips. A focused highres legacy run with cgocheck2 and
+checkptr level 2 passes 135 events in 79.488 seconds. These totals count test
+events rather than feature coverage. Existing tests, frozen fixtures and
+campaign E2E inputs retain their contents.
+
+The preceding FireEffect revision `8bf5b36` has completed Windows 386/AMD64
+and normal Linux AMD64 native checks. Windows's first attempt failed during
+MSYS2 mirror downloads before code tests; retrying the two jobs without source
+changes passes. Both attempts' logs and all successful artifacts are preserved.
+The Linux archive independently confirms 230,862 passes, seven skips and all
+56 expected packages. Its separate default-link damage check passes 133,041
+events across root/server/legacy. This evidence remains distinct from the
+current resource-effect change.
+
 ### Native FireEffect integer conversion
 
 FireEffect now uses the original signed-qword truncation and low-dword

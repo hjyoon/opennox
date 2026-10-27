@@ -32,6 +32,29 @@ The subsequent segments have their own seed contracts:
 | `wizard2-upper-urchins.json` | Healthy book-recovery save, HP26/MP88 | Original Urchins2363/2364, retained book, HP26/poison0 manual Save; the qualified run ends at MP2 and needs normal recovery before further spell-heavy combat |
 | `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Southern floor bypass, original BluePotion1940 automatic +50 mana and Meat1939/1938 pickups; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
 
+For a short Load, movement, pickup and manual Save regression, use that last
+suite with its earned upper-Urchins checkpoint:
+
+```sh
+python3 scripts/run-campaign-e2e.py \
+  --suite scripts/e2e/campaign/wizard2-upper-mana-recovery.json \
+  --binary /path/to/opennox \
+  --data /path/to/Nox \
+  --seed /path/to/earned/upper-urchins/Save \
+  --output /path/to/new/recovery-report-directory
+```
+
+This segment has taken about 30 seconds on the ARM64 validation machine. It
+checks the listed outcomes automatically and preserves evidence on failure.
+It does not exercise every enemy, an obelisk interaction or an entire chapter.
+Use the suite that exercises the changed behavior for gameplay coverage.
+
+An input-route edit uses the existing executable and the affected suite.
+For a native gameplay port, run the final normal package checks once, focus
+strict pointer checks on the changed paths, build one clean normal product,
+and replay the relevant saved segments. Record native platform CI separately;
+an observation timeout does not require restarting an existing CI job.
+
 Replay all four segments consecutively with one command and the same prebuilt
 executable:
 

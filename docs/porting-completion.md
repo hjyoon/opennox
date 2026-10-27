@@ -55,6 +55,52 @@ completion requirements.
 
 ## Current findings
 
+### Native Obelisk entries, recharge and live callbacks
+
+All three Obelisk C entries now forward native object pointers to shared Go
+update, recharge and recharge-rate implementations. The respawn C caller also
+passes its object pointer without narrowing it to an integer. Distance retains
+the original startup PC53/ToZero subtraction, multiplication and addition.
+Staff balance and class-mana conversions truncate signed DWORDs with the
+existing original conversion helper. Player iteration, mode queries and weapon
+reloads occur at their original points, including changes made by vision,
+balance, protection, report or audio callbacks. Charge reports retain the
+original distinction between the current weapon and the previously cached
+wand data.
+
+Eight complete unchanged original routines seal 1,228 code bytes, with a
+four-byte distance threshold. Their 772 conditions execute 1,544 times across
+startup and nearest control modes. Player iteration, team and vision services,
+balance hash lookup with declared binary32 storage, audio, charge reports and
+protection are explicit dependencies. Actual original flag, balance-load,
+conversion, sync and no-op leaves execute. All 1,542 earlier original rows
+remain unchanged when adding the exact historical passive-return input.
+
+The prior native implementation mismatches 192 leaf conditions and matches
+580 controls. All 772 now match. Actual C entries pass 234 conditions on
+C-owned records above 4 GiB on 64-bit hosts: 169 recharge, 22 modifier-rate
+and 43 empty-player update cases. Full records and surrounding canaries are
+checked. Those C cases do not claim a live-player protection/audio lifecycle
+or live balance-file lookup. The server matrix supplies those dependencies
+explicitly. Signaling-NaN oracle parity is not claimed.
+
+The historical passive test retains its input and identity, with one
+original-qualified return correction: the real NeedSync leaf leaves the owner
+address in EAX. The native Go result and C intptr_t result retain that address
+at native width. Other old assertions and frozen fixtures remain unchanged;
+dependency bindings adapt to live providers. The initial new C-entry test's
+tick-rate type error and every baseline result remain preserved. Detailed
+evidence is in `obelisk-native-startup-port` in the validation workspace.
+
+The single final normal root/server/legacy run passes 245,432 events with
+16 skips in 195.793 seconds. Every preceding result and multiplicity remains,
+with 1,008 additional passing events. Only the three unchanged ASLR-bearing
+fault-test labels are normalized for continuity comparison.
+Focused highres checks with cgocheck2 and checkptr level 2 pass 1,080 events
+in 97.550 seconds, including 37 existing Obelisk transfer checks and 27 direct
+Go update-dispatch controls with live Go pointer graphs. These controlled
+results do not certify a live campaign obelisk interaction or overall 100%.
+
 ### PhantomPlayer native entry and original numerical gates
 
 The remaining PhantomPlayer C entry now forwards an object pointer to its
@@ -106,8 +152,11 @@ parameterless GET observations, complete manifests and the final save screen
 are qualified. Source Save, assets, configuration and executable retain their
 hashes. This is a product smoke for Load, movement, pickup and Save; earlier
 combat, a campaign PhantomPlayer actor and whole chapters are not replayed or
-newly certified. Its Windows 386/AMD64 and normal Linux AMD64 native jobs are
-running; all three native products for preceding revision `e4b3950` are qualified.
+newly certified. Its Windows 386/AMD64 and normal Linux AMD64 native products
+are now qualified at `75ff7d0`, including clean revision metadata, product
+hashes and native execution. Linux passes 241,848 events with seven skips
+across all 56 expected packages, plus the default-link damage check. All three
+native products for preceding revision `e4b3950` also remain qualified.
 
 ### Native elevator updates, passengers and audio entries
 

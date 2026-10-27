@@ -6469,156 +6469,22 @@ void sub_53C240(float* a1, int arg4) {
 }
 
 //----- (0053C520) --------------------------------------------------------
+extern int nox_xxx_rechargeItem_53C520_go(nox_object_t* item, int amount);
 int nox_xxx_rechargeItem_53C520(nox_object_t* item, int amount) {
-	uint8_t* data = item->use_data;
-	if (!data) {
-		return 0;
-	}
-	int progress = *(uint32_t*)(data + 112);
-	if (progress >= 100) {
-		return 0;
-	}
-	progress += amount;
-	*(uint32_t*)(data + 112) = progress < 100 ? progress : 100;
-	int charge = *(uint32_t*)(data + 112) * data[109] / 100;
-	if (charge == data[108]) {
-		return 0;
-	}
-	data[108] = charge;
-	return 1;
+	return nox_xxx_rechargeItem_53C520_go(item, amount);
 }
 
 //----- (0053C580) --------------------------------------------------------
-float get_nox_xxx_warriorMaxMana_587000_312788();
-float get_nox_xxx_wizardMaximumMana_587000_312820();
-float get_nox_xxx_conjurerMaxMana_587000_312804();
-signed int nox_xxx_updateObelisk_53C580(nox_object_t* obelisk) {
-	int32_t* mana = obelisk->data_update;
-	int no_player_nearby = 1;
-	for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
-		 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
-		if (unit->obj_flags & 0x8000) {
-			continue;
-		}
-		nox_player_update_data_t* update = unit->data_update;
-		if (nox_xxx_servObjectHasTeam_419130((nox_object_team_t*)&obelisk->field_12) &&
-			!nox_xxx_servCompareTeams_419150((nox_object_team_t*)&obelisk->field_12,
-				(nox_object_team_t*)&unit->field_12)) {
-			continue;
-		}
-		double dx = obelisk->x - unit->x;
-		double dy = obelisk->y - unit->y;
-		if (dx * dx + dy * dy >= 2500.0 || !nox_xxx_mapCheck_537110(obelisk, unit)) {
-			continue;
-		}
-		no_player_nearby = 0;
-		int consumed = 0;
-		if (*mana >= 1) {
-			int recharge_rate = nox_xxx_getRechargeRate_53C940(update->equipped_weapon);
-			if (nox_common_gameFlags_check_40A5C0(0x2000) && !nox_common_gameFlags_check_40A5C0(4096)) {
-				recharge_rate = 1;
-			}
-			nox_object_t* weapon = update->equipped_weapon;
-			if (recharge_rate && weapon && (weapon->obj_class & 0x1000) &&
-				(weapon->obj_subclass & 0x47F0000)) {
-				uint8_t* data = weapon->use_data;
-				if (*(int32_t*)(data + 112) < 100) {
-					if (nox_common_gameFlags_check_40A5C0(4096)) {
-						if (!(gameFrame() % (gameFPS() >> 1))) {
-							nox_xxx_aud_501960(230, obelisk, 0, 0);
-						}
-					} else {
-						consumed = 1;
-						--*mana;
-					}
-					if (nox_xxx_rechargeItem_53C520(weapon, recharge_rate)) {
-						nox_xxx_netReportCharges_4D82B0(update->player->playerInd, weapon, data[108], data[109]);
-					}
-				}
-			}
-		}
-		if (*mana >= 1 && update->mana_cur < update->mana_max && *mana > 0) {
-			short amount = 1;
-			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				switch (update->player->info.playerClass) {
-				case 0:
-					amount = nox_float2int(get_nox_xxx_warriorMaxMana_587000_312788());
-					break;
-				case 1:
-					amount = nox_float2int(get_nox_xxx_wizardMaximumMana_587000_312820());
-					break;
-				case 2:
-					amount = nox_float2int(get_nox_xxx_conjurerMaxMana_587000_312804());
-					break;
-				}
-			}
-			update->mana_cur += amount;
-			nox_xxx_protectMana_56F9E0(update->player->prot_unit_mana_cur, amount);
-			if (update->mana_cur > update->mana_max) {
-				update->mana_cur = update->mana_max;
-				nox_xxx_protectPlayerHPMana_56F870(update->player->prot_unit_mana_cur, update->mana_max);
-			}
-			if (nox_common_gameFlags_check_40A5C0(4096)) {
-				if (!(gameFrame() % (gameFPS() >> 1))) {
-					nox_xxx_aud_501960(230, obelisk, 0, 0);
-				}
-			} else {
-				--*mana;
-				consumed = 1;
-			}
-		}
-		if (consumed) {
-			if (!(*mana % 8)) {
-				float level = (double)(80 * *mana / 50);
-				nullsub_35((uint32_t)(uintptr_t)obelisk, LODWORD(level));
-				nox_xxx_unitNeedSync_4E44F0(obelisk);
-			}
-			if ((unsigned int)(gameFrame() - obelisk->field_34) > (int)gameFPS() >> 1) {
-				nox_xxx_aud_501960(230, obelisk, 0, 0);
-				obelisk->field_34 = gameFrame();
-			}
-		}
-	}
-	if (!no_player_nearby) {
-		return 0;
-	}
-	int result = gameFrame() / (gameFPS() >> 1);
-	if (!(gameFrame() % (gameFPS() >> 1))) {
-		result = *mana;
-		if (*mana < 50) {
-			if (!(result % 8)) {
-				float level = (double)(80 * result / 50);
-				nullsub_35((uint32_t)(uintptr_t)obelisk, LODWORD(level));
-				nox_xxx_unitNeedSync_4E44F0(obelisk);
-			}
-			++*mana;
-		}
-	}
-	return result;
+extern intptr_t nox_xxx_updateObelisk_53C580_go(nox_object_t* obelisk);
+intptr_t nox_xxx_updateObelisk_53C580(nox_object_t* obelisk) {
+	return nox_xxx_updateObelisk_53C580_go(obelisk);
 }
-// 4E4770: using guessed type void  nullsub_35(uint32_t, uint32_t);
 
 //----- (0053C940) --------------------------------------------------------
+extern int nox_xxx_getRechargeRate_53C940_go(nox_object_t* item);
 int nox_xxx_getRechargeRate_53C940(nox_object_t* item) {
-	float v6;   // [esp+0h] [ebp-4h]
-
-	if (!item) {
-		return 0;
-	}
-	if (item->obj_class & 0x1000 && item->obj_subclass & 0x4000000) {
-		v6 = nox_xxx_gamedataGetFloat_419D40("OblivionStaffRechargeRate");
-		return nox_float2int(v6);
-	}
-	nox_modifier_attrs_t* attrs = item->init_data;
-	for (int i = 2; i < 4; ++i) {
-		void* effect = attrs->modifiers[i];
-		if (effect && nox_modifier_effect_getAttackFunc(effect) == nullsub_36) {
-			return nox_modifier_effect_getAttackInt(effect);
-		}
-	}
-	return 0;
+	return nox_xxx_getRechargeRate_53C940_go(item);
 }
-// 4E09D0: using guessed type void nullsub_36();
 
 //----- (0053C9A0) --------------------------------------------------------
 void nox_xxx_updateBlackPowderBarrel_53C9A0(float* a1) {

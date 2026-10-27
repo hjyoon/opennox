@@ -509,7 +509,7 @@ void sub_4EC720() {
 						nox_xxx_audCreate_501A30(283, (float2*)&obj->x, 0, 0);
 						nox_xxx_unitMove_4E7010(obj, (float2*)&rec->x);
 						if (obj->obj_class & 0x1000) {
-							nox_xxx_rechargeItem_53C520((int)(uintptr_t)obj, 100);
+							nox_xxx_rechargeItem_53C520(obj, 100);
 						} else if (obj->obj_class & UINT32_C(0x01000000) &&
 								   nox_xxx_weaponInventoryEquipFlags_415820(obj) & 0x82) {
 							uint8_t* const use_data = obj->use_data;

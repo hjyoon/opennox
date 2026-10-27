@@ -28,12 +28,13 @@ type ObeliskUpdateRuntime53C580 struct {
 }
 
 type obeliskUpdateNativeDeps53C580 struct {
-	playerUnits         func() []*Object
+	firstPlayerUnit     func() *Object
+	nextPlayerUnit      func(*Object) *Object
 	mapTraceVision      func(*Object, *Object) bool
 	frame               func() uint32
 	tickRate            func() uint32
-	questMode           bool
-	onlineMode          bool
+	questMode           func() bool
+	onlineMode          func() bool
 	balanceFloat        func(string) float32
 	questManaMultiplier func(player.Class) float32
 	replenishmentEffect unsafe.Pointer
@@ -77,7 +78,7 @@ func obeliskRechargeRate53C940(item *Object, deps obeliskUpdateNativeDeps53C580)
 	}
 	if item.ObjClass.Has(object.ClassWand) &&
 		item.ObjSubClass.AsWeapon().Has(object.WeaponStaffOblivionOrb) {
-		return playerUnitInitFloatToInt4EFE80(deps.balanceFloat("OblivionStaffRechargeRate"))
+		return netFXTruncateSignedDWORD419A70(deps.balanceFloat("OblivionStaffRechargeRate"))
 	}
 	attrs := (*ModifierInitData)(item.InitData)
 	if attrs == nil {
@@ -99,7 +100,7 @@ func obeliskQuestManaAmount53C580(pl *Player, deps obeliskUpdateNativeDeps53C580
 	}
 	switch class := pl.PlayerClass(); class {
 	case player.Warrior, player.Wizard, player.Conjurer:
-		amount = int16(playerUnitInitFloatToInt4EFE80(deps.questManaMultiplier(class)))
+		amount = int16(netFXTruncateSignedDWORD419A70(deps.questManaMultiplier(class)))
 	}
 	return amount
 }
@@ -108,23 +109,26 @@ func obeliskQuestManaAmount53C580(pl *Player, deps obeliskUpdateNativeDeps53C580
 // widened pointer through the canonical Go layouts. An eligible nearby player
 // suppresses passive regeneration even when neither the wand nor player mana
 // needs charging, matching the original no_player_nearby transition.
-func obeliskUpdateNative53C580(obelisk *Object, deps obeliskUpdateNativeDeps53C580) int32 {
+func obeliskUpdateNative53C580(obelisk *Object, deps obeliskUpdateNativeDeps53C580) int {
 	if obelisk == nil || obelisk.UpdateData == nil {
 		return 0
 	}
 	data := (*ObeliskUpdateData)(obelisk.UpdateData)
 	noPlayerNearby := true
-	for _, unit := range deps.playerUnits() {
-		if unit == nil || unit.ObjFlags.Has(object.FlagDead) {
+	for unit := deps.firstPlayerUnit(); unit != nil; unit = deps.nextPlayerUnit(unit) {
+		if unit.ObjFlags.Has(object.FlagDead) {
 			continue
 		}
 		update := (*PlayerUpdateData)(unit.UpdateData)
 		if obelisk.TeamVal.Has() && !obelisk.TeamVal.SameAs(&unit.TeamVal) {
 			continue
 		}
-		dx := float64(obelisk.PosVec.X - unit.PosVec.X)
-		dy := float64(obelisk.PosVec.Y - unit.PosVec.Y)
-		if dx*dx+dy*dy >= obeliskUpdateRangeSquared53C580 || !deps.mapTraceVision(obelisk, unit) {
+		dx := objectForceSub53_52DF80(float64(obelisk.PosVec.X), objectForceMemory32_52DF80(unit.PosVec.X))
+		dy := objectForceSub53_52DF80(float64(obelisk.PosVec.Y), objectForceMemory32_52DF80(unit.PosVec.Y))
+		squareY := objectForceMul53_52DF80(dy, dy)
+		squareX := objectForceMul53_52DF80(dx, dx)
+		distance := objectForceAdd53_52DF80(squareY, squareX)
+		if distance >= obeliskUpdateRangeSquared53C580 || !deps.mapTraceVision(obelisk, unit) {
 			continue
 		}
 
@@ -133,15 +137,16 @@ func obeliskUpdateNative53C580(obelisk *Object, deps obeliskUpdateNativeDeps53C5
 		if data.Mana >= 1 {
 			weapon := update.EquippedWeapon
 			rechargeRate := obeliskRechargeRate53C940(weapon, deps)
-			if deps.onlineMode && !deps.questMode {
+			if deps.onlineMode() && !deps.questMode() {
 				rechargeRate = 1
 			}
+			weapon = update.EquippedWeapon
 			if rechargeRate != 0 && weapon != nil &&
 				weapon.ObjClass.Has(object.ClassWand) &&
 				weapon.ObjSubClass.AsWeapon().HasAny(obeliskUpdateWandMask53C580) {
 				wand := weapon.UseData.AsWand()
 				if int32(wand.Progress) < 100 {
-					if deps.questMode {
+					if deps.questMode() {
 						if deps.frame()%(deps.tickRate()>>1) == 0 && deps.audioManaRecharge != nil {
 							deps.audioManaRecharge(obelisk)
 						}
@@ -149,8 +154,8 @@ func obeliskUpdateNative53C580(obelisk *Object, deps obeliskUpdateNativeDeps53C5
 						consumed = true
 						data.Mana--
 					}
-					if obeliskRechargeItem53C520(weapon, rechargeRate) && deps.reportCharges != nil {
-						deps.reportCharges(update.Player.PlayerInd, weapon, wand.Charge, wand.MaxCharge)
+					if obeliskRechargeItem53C520(update.EquippedWeapon, rechargeRate) && deps.reportCharges != nil {
+						deps.reportCharges(update.Player.PlayerInd, update.EquippedWeapon, wand.Charge, wand.MaxCharge)
 					}
 				}
 			}
@@ -158,7 +163,7 @@ func obeliskUpdateNative53C580(obelisk *Object, deps obeliskUpdateNativeDeps53C5
 
 		if data.Mana >= 1 && update.ManaCur < update.ManaMax && data.Mana > 0 {
 			amount := int16(1)
-			if deps.questMode {
+			if deps.questMode() {
 				amount = obeliskQuestManaAmount53C580(update.Player, deps)
 			}
 			update.ManaCur = uint16(int32(update.ManaCur) + int32(amount))
@@ -171,7 +176,7 @@ func obeliskUpdateNative53C580(obelisk *Object, deps obeliskUpdateNativeDeps53C5
 					deps.protectPlayerHPMana(update.Player.ProtUnitManaCur, update.ManaMax)
 				}
 			}
-			if deps.questMode {
+			if deps.questMode() {
 				if deps.frame()%(deps.tickRate()>>1) == 0 && deps.audioManaRecharge != nil {
 					deps.audioManaRecharge(obelisk)
 				}
@@ -198,12 +203,16 @@ func obeliskUpdateNative53C580(obelisk *Object, deps obeliskUpdateNativeDeps53C5
 		return 0
 	}
 	halfRate := deps.tickRate() >> 1
-	result := int32(deps.frame() / halfRate)
+	result := int(int32(deps.frame() / halfRate))
 	if deps.frame()%halfRate == 0 {
-		result = data.Mana
+		result = int(data.Mana)
 		if data.Mana < obeliskUpdateMaxMana53C580 {
-			if result%obeliskUpdateSyncStep53C580 == 0 && deps.needSync != nil {
-				deps.needSync(obelisk)
+			if data.Mana%obeliskUpdateSyncStep53C580 == 0 {
+				if deps.needSync != nil {
+					deps.needSync(obelisk)
+				}
+				// Original NeedSync leaves the object address in the return word.
+				result = int(uintptr(unsafe.Pointer(obelisk)))
 			}
 			data.Mana++
 		}
@@ -216,12 +225,13 @@ func obeliskUpdateServerDeps53C580(
 	runtime ObeliskUpdateRuntime53C580,
 ) obeliskUpdateNativeDeps53C580 {
 	return obeliskUpdateNativeDeps53C580{
-		playerUnits:    s.Players.ListUnits,
-		mapTraceVision: s.MapTraceVision,
-		frame:          s.Frame,
-		tickRate:       s.TickRate,
-		questMode:      noxflags.HasGame(noxflags.GameModeQuest),
-		onlineMode:     noxflags.HasGame(noxflags.GameOnline),
+		firstPlayerUnit: s.Players.FirstUnit,
+		nextPlayerUnit:  s.Players.NextUnit,
+		mapTraceVision:  s.MapTraceVision,
+		frame:           s.Frame,
+		tickRate:        s.TickRate,
+		questMode:       func() bool { return noxflags.HasGame(noxflags.GameModeQuest) },
+		onlineMode:      func() bool { return noxflags.HasGame(noxflags.GameOnline) },
 		balanceFloat: func(name string) float32 {
 			return float32(s.Balance.Float(name))
 		},
@@ -247,6 +257,17 @@ func obeliskUpdateServerDeps53C580(
 
 // ObeliskUpdate53C580 binds the original update callback to native-width
 // Object, PlayerUpdateData, Player, modifier, and wand-use-data records.
-func (s *Server) ObeliskUpdate53C580(obelisk *Object, runtime ObeliskUpdateRuntime53C580) int32 {
+func (s *Server) ObeliskUpdate53C580(obelisk *Object, runtime ObeliskUpdateRuntime53C580) int {
 	return obeliskUpdateNative53C580(obelisk, obeliskUpdateServerDeps53C580(s, runtime))
+}
+
+// ObeliskRechargeItem53C520 also serves callers of the retained C entry.
+func ObeliskRechargeItem53C520(item *Object, amount int32) bool {
+	return obeliskRechargeItem53C520(item, amount)
+}
+
+// ObeliskRechargeRate53C940 shares the live balance and modifier bindings with
+// the normal update callback and the retained C entry.
+func (s *Server) ObeliskRechargeRate53C940(item *Object, runtime ObeliskUpdateRuntime53C580) int32 {
+	return obeliskRechargeRate53C940(item, obeliskUpdateServerDeps53C580(s, runtime))
 }

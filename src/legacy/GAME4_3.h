@@ -202,7 +202,7 @@ int nox_xxx_updateMagicMissile_53BDA0(int a1);
 void nox_xxx_updateBlow_53C160(int a3);
 void sub_53C240(float* a1, int arg4);
 int nox_xxx_rechargeItem_53C520(nox_object_t* item, int amount);
-signed int nox_xxx_updateObelisk_53C580(nox_object_t* obelisk);
+intptr_t nox_xxx_updateObelisk_53C580(nox_object_t* obelisk);
 int nox_xxx_getRechargeRate_53C940(nox_object_t* item);
 void nox_xxx_updateBlackPowderBarrel_53C9A0(float* a1);
 void nox_xxx_updateOneSecondDie_53CB60(int a1);

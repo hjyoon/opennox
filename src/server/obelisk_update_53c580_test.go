@@ -12,7 +12,21 @@ import (
 
 func obeliskTestDeps53C580(units ...*Object) obeliskUpdateNativeDeps53C580 {
 	return obeliskUpdateNativeDeps53C580{
-		playerUnits: func() []*Object { return units },
+		firstPlayerUnit: func() *Object {
+			if len(units) == 0 {
+				return nil
+			}
+			return units[0]
+		},
+		nextPlayerUnit: func(p *Object) *Object {
+			for n, v := range units {
+				if v == p && n+1 < len(units) {
+					return units[n+1]
+				}
+			}
+			return nil
+		},
+		questMode: func() bool { return false }, onlineMode: func() bool { return false },
 		mapTraceVision: func(*Object, *Object) bool {
 			return true
 		},
@@ -140,7 +154,7 @@ func TestObeliskUpdate53C580QuestDoesNotConsumeMana(t *testing.T) {
 
 	var events []string
 	deps := obeliskTestDeps53C580(unit)
-	deps.questMode = true
+	deps.questMode = func() bool { return true }
 	deps.frame = func() uint32 { return 30 }
 	deps.replenishmentEffect = unsafe.Pointer(&replenishment)
 	deps.questManaMultiplier = func(class player.Class) float32 {
@@ -199,7 +213,7 @@ func TestObeliskUpdate53C580OnlineForcesWandRecharge(t *testing.T) {
 
 	reports := 0
 	deps := obeliskTestDeps53C580(unit)
-	deps.onlineMode = true
+	deps.onlineMode = func() bool { return true }
 	deps.reportCharges = func(ind uint8, gotWeapon *Object, charge, max uint8) {
 		if ind != 5 || gotWeapon != weapon || charge != 10 || max != 10 {
 			t.Fatalf("charge report = %d/%p/%d/%d", ind, gotWeapon, charge, max)
@@ -224,8 +238,9 @@ func TestObeliskUpdate53C580PassiveRegenerationAndNearbySuppression(t *testing.T
 		}
 		syncs++
 	}
-	if got := obeliskUpdateNative53C580(obelisk, deps); got != 8 {
-		t.Fatalf("passive result = %d, want previous mana 8", got)
+	// The original NeedSync leaf leaves the owner address in EAX on this path.
+	if got := obeliskUpdateNative53C580(obelisk, deps); got != int(uintptr(unsafe.Pointer(obelisk))) {
+		t.Fatalf("passive result = %d, want the original native object return word", got)
 	}
 	if data.Mana != 9 || syncs != 1 {
 		t.Fatalf("passive mana/syncs = %d/%d, want 9/1", data.Mana, syncs)
@@ -269,6 +284,6 @@ func TestObeliskRechargeRate53C940(t *testing.T) {
 		return 2.5
 	}
 	if got := obeliskRechargeRate53C940(item, deps); got != 2 {
-		t.Fatalf("Oblivion recharge rate = %d, want round-to-even 2", got)
+		t.Fatalf("Oblivion recharge rate = %d, want original startup truncation 2", got)
 	}
 }

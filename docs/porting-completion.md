@@ -120,6 +120,21 @@ The 53 compressed files save 5,755,777,024 physical bytes. Focused highres
 passes all 1,624 selected events in 8.626 seconds after cache reuse. Their
 identities and multiplicities match the same selection from normal results.
 
+The clean normal ARM64 GUI product at `1e0f6fc` builds in 11.827 seconds:
+SHA-256 `3e84759b8779e42b35f34b129ccebd5eca9395c774a31741f34eb19c829c4bfe`,
+65,369,906 bytes, Go 1.26.9 and `vcs.modified=false`. The unchanged input-only
+recovery suite passes in 30.063 seconds with living HP26/26, MP56/88, poison0,
+a retained book, the three original resource pickups and a manual Save. All 18
+parameterless GET observations qualify; source Save/data/config/binary hashes
+remain unchanged. The final frame shows the living Wizard and save-complete
+notification. This is a Load, movement, pickup and Save regression; its retained
+Urchin deaths belong to the earlier earned combat product.
+
+Native qualification for `1e0f6fc` is running separately: Windows 386/AMD64
+run `40603633394` and Linux AMD64 server run `40603646667`. Existing runs and
+job handles are retained while in progress. The preceding `43d5b45` products
+and all three native jobs are fully qualified in their preserved record.
+
 ### Native radial-push callback, arithmetic and live origins
 
 The remaining PE32 radial-push callback now uses native-width arguments, and

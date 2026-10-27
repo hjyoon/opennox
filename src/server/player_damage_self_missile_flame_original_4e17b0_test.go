@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"os"
 	"reflect"
 	"testing"
 
@@ -43,7 +42,7 @@ type selfMissileFlameOriginalRow4E17B0 struct {
 // The declared DefaultDamage boundary records its input, not HP behavior.
 // The legacy test exercises C dispatch and production HP without substitution.
 func TestSelfMissileFlamePlayerPrefixMatchesGAMEEXE4E17B0(t *testing.T) {
-	data, err := os.ReadFile("testdata/player_damage_self_missile_flame_4e17b0.json")
+	data, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_self_missile_flame_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}

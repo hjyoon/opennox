@@ -17,6 +17,10 @@ from unicorn.x86_const import (UC_X86_REG_EAX, UC_X86_REG_EIP, UC_X86_REG_ESP,
     UC_X86_REG_FPCW, UC_X86_REG_FPSW, UC_X86_REG_FPTAG)
 
 repo, original = map(pathlib.Path, sys.argv[1:3])
+# Keep the historical nearest control as the default; pass 0xe3f to replay
+# the original startup mode. This changes CPU configuration, never code bytes.
+control_word = int(sys.argv[3], 0) if len(sys.argv) > 3 else 0x027f
+assert control_word in (0x027f, 0x0e3f)
 blob = original.read_bytes()
 manifest = json.loads((repo / 'toolchain/oracle/game-exe-functions.json').read_text())
 assert hashlib.sha256(blob).hexdigest() == manifest['file_sha256'] == '0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a'
@@ -36,6 +40,12 @@ def read(address, count):
     raise AssertionError(hex(address))
 addresses = {0x4e17b0, 0x4e20f0, 0x4e1400, 0x4ec580, 0x419a70, 0x4e2330}
 ranges = [r for r in manifest['functions'] if int(r['address'], 16) in addresses]
+# Later observations can name the same sealed procedure more than once.
+# Collapse only identical address/size/hash triples, preserving first metadata.
+unique_ranges = {}
+for r in ranges:
+    unique_ranges.setdefault((int(r['address'], 16), r['size'], r['sha256']), r)
+ranges = list(unique_ranges.values())
 assert len(ranges) == len(addresses)
 for r in ranges:
     assert hashlib.sha256(read(int(r['address'],16),r['size'])).hexdigest() == r['sha256']
@@ -184,7 +194,7 @@ for target,type_id,target_class,sub in [('NewPlayer',713,2621444,0),('NPC',1343,
                 initial_sp = stack+0x8000
                 cpu.mem_write(initial_sp,struct.pack('<IIIIII',stop,v,a,a,damage&0xffffffff,1))
                 cpu.reg_write(UC_X86_REG_ESP,initial_sp)
-                cpu.reg_write(UC_X86_REG_FPCW,0x027f);cpu.reg_write(UC_X86_REG_FPSW,0);cpu.reg_write(UC_X86_REG_FPTAG,0xffff)
+                cpu.reg_write(UC_X86_REG_FPCW,control_word);cpu.reg_write(UC_X86_REG_FPSW,0);cpu.reg_write(UC_X86_REG_FPTAG,0xffff)
                 cpu.emu_start(0x4e17b0,stop,count=12000)
                 assert cpu.reg_read(UC_X86_REG_EIP)==stop and cpu.reg_read(UC_X86_REG_ESP)==initial_sp+4
                 guarded = bytearray(cpu.mem_read(heap,0x10000))
@@ -200,6 +210,7 @@ for target,type_id,target_class,sub in [('NewPlayer',713,2621444,0),('NPC',1343,
 assert len(rows)==228 and not faults
 assert all(bytes(cpu.mem_read(start,len(code)))==code for start,code in sealed.items())
 print(json.dumps(dict(original_sha256=manifest['file_sha256'],
+    control_word=control_word,
     function_sha256=hashlib.sha256(read(0x4e17b0,2368)).hexdigest(),
     original_ranges=ranges,source=dict(type=694,class_bits=2621441,subclass=1,flags=553665028),
     rows=rows,unhooked_entries=dict(entries),declared_service_entries=dict(services),

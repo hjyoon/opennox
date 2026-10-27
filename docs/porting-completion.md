@@ -80,9 +80,9 @@ Armor wear, final HP, facing and electric-scale services are explicitly bounded
 in those oracles; actual native C dispatch, HP and armor destruction are checked
 separately with native pointers above 4 GiB.
 
-All 54 historical input tables remain byte-identical. A separate startup
-observation file binds their hashes and row counts and corrects 6,722 output
-rows among 35,124 retained input rows. Original executable replays supply these
+All 55 historical input tables remain byte-identical. A separate startup
+observation file binds their hashes and row counts and corrects 6,732 output
+rows among 35,352 retained input rows. Original executable replays supply these
 outputs; native candidate results are not used as expected values. Existing
 input loops, branch identities, nonnumeric assertions and nearest-control
 transcript seals remain. Failed probes and all original replay reports are
@@ -94,6 +94,18 @@ root, server and legacy packages. The highres subset passes 1,093 events with
 subtests and do not measure feature coverage. The published upper-cave E2E
 sequence reuses one prebuilt executable for combat and subsequent mana recovery;
 its input-validation suite passes all 43 tests.
+
+The complete macOS ARM64 server package subsequently passes 117,080 events.
+Complete Windows amd64 and 386 checks exposed ten historical StrongFireball
+FLAME Quest expectations that the narrower server name filter had missed.
+Re-executing all 228 unchanged inputs at both control settings reproduces every
+old nearest-control row and independently captures only those ten startup
+forward-damage differences. The original table, its input loops and all other
+assertions remain. The same 228 cases and parent pass highres with cgocheck2 and
+checkptr level 2. The producer now accepts an explicit control word and
+deduplicates only identical address/size/hash observations in the growing oracle
+manifest. The correction changes test data and its reader; product Go/C sources
+and the already qualified executable and two-stage campaign replay are retained.
 
 The separate armed EXPLOSION, player dangerous-world IMPALE and unit self-weapon
 electric arithmetic bodies remain outside this change; their existing

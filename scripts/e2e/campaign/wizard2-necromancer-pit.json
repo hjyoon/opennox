@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "name": "Wizard2 original Necromancer PlayerFollowCheck and pit event",
+  "seed_contract": "Earned eastern-spiders checkpoint HP26 MP88 poison0, original Necromancer2716 disabled near3515,3501 and NecroTemp2717 alive, all required northern/eastern enemies dead.",
+  "coverage": "Ordinary road movement and PlayerFollowCheck entry, original NPC dialogue, native crumbling-pit sequence and scripted NecroTemp death, healthy original manual Save.",
+  "cases": [
+    {
+      "name": "wizard2-necromancer-pit",
+      "scenario": "wizard2-cave-necromancer-pit.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 180,
+      "expected_health": 26,
+      "expected_maximum_health": 26,
+      "expected_mana": 88,
+      "expected_maximum_mana": 88,
+      "required_defeated_script_ids": [
+        1000193447
+      ],
+      "required_enable_transitions": [
+        {
+          "script_id": 1000193449,
+          "before": false,
+          "after": true
+        }
+      ],
+      "required_checkpoints": [
+        "original PlayerFollowCheck approach",
+        "original Necromancer taunt",
+        "original Necromancer crumbling-pit aftermath",
+        "original manual Save"
+      ]
+    }
+  ]
+}

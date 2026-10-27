@@ -29,7 +29,7 @@ import time
 import urllib.request
 
 MAPS = set('war01a war02a war02b war03a war03b war03c war03d con01a con02a con03a con03b wiz01a wiz02a wiz02b wiz02c wiz03a wiz03b wiz03c'.split())
-INPUT_ACTIONS = set('slow click interact move raw wait walk run run-start run-dir run-stop walk-start walk-dir walk-stop run-to-world walk-to-world wait-map wait-player-reloaded select-manual-campaign-save click-dialog-yes click-npc-dialog-done assert-quickbar-spell assert-spell-set-row assert-server-inventory-count observe-player-target capture-quest-map-audit-frame cast-at-nearest-monster-input screen quit'.split())
+INPUT_ACTIONS = set('slow click interact move raw wait walk run run-start run-dir run-stop walk-start walk-dir walk-stop run-to-world walk-to-world wait-map wait-player-reloaded select-manual-campaign-save click-dialog-yes click-npc-dialog-done assert-quickbar-spell assert-spell-set-row assert-server-inventory-count observe-player-target capture-quest-map-audit-frame cast-at-nearest-monster-input pickup-named-object-input screen quit'.split())
 ROUTES = {'objects': '/debug/nox/objects', 'script': '/debug/nox/script/legacy', 'walls': '/debug/nox/walls'}
 SUITE_FIELDS = {'version', 'name', 'coverage', 'seed_contract', 'cases'}
 CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_poison_free',

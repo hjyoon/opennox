@@ -1,0 +1,53 @@
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original menu selects the supplied Wizard2 manual checkpoint"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz02c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Wiz02c Load"}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 43}
+  - {"action": "assert-quickbar-spell", "slot": 1, "spell": 27}
+  - {"action": "assert-quickbar-spell", "slot": 2, "spell": 41}
+  - {"action": "wait", "dt": 35}
+  - {"action": "run-to-world", "x": 2318, "y": 3619, "name": "cleared road92"}
+  - {"action": "run-to-world", "x": 2517, "y": 3866, "name": "cleared road91"}
+  - {"action": "run-to-world", "x": 2705, "y": 3919, "name": "cleared road95"}
+  - {"action": "run-to-world", "x": 2845, "y": 4068, "name": "cleared road96"}
+  - {"action": "run-to-world", "x": 3034, "y": 3832, "name": "cleared road146"}
+  - {"action": "run-to-world", "x": 3009, "y": 3643, "name": "cleared road147"}
+  - {"action": "run-to-world", "x": 3203, "y": 3706, "name": "cleared road149"}
+  - {"action": "run-to-world", "x": 3393, "y": 3765, "name": "cleared road150"}
+  - {"action": "run-to-world", "x": 3500, "y": 3680, "name": "ordinary approach to original PlayerFollowCheck"}
+  - {"action": "run-to-world", "x": 3570, "y": 3616, "name": "ordinary approach before original diagonal PlayerFollowCheck strip"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original PlayerFollowCheck approach"}
+  - {"action": "run", "ang": 0.5, "dt": 100, "name": "ordinary east running input across original PlayerFollowCheck strip"}
+  - {"action": "wait", "dt": 120}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Necromancer taunt"}
+  - {"action": "wait", "dt": 15, "name": "allow read-only scene snapshots before dialog input"}
+  - {"action": "click-npc-dialog-done"}
+  - {"action": "wait", "dt": 600}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original Necromancer crumbling-pit aftermath"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original manual Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

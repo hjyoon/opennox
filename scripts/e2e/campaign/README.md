@@ -25,6 +25,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-northeast.json` | Healthy remaining-spider save | AlbinoSpiders2346 and2347 |
 | `wizard2-flying-golem.json` | Healthy northeast save, HP20/MP78 | FlyingGolem2348; earned level gain to HP26/MP88 |
 | `wizard2-eastern-spiders.json` | Healthy FlyingGolem save, HP26/MP88 | Spiders2341 and2255; alternate original obelisks restore full mana |
+| `wizard2-necromancer-pit.json` | Healthy eastern-spiders save, HP26/MP88 | Original Necromancer activates; scripted NecroTemp death after the pit scene |
 
 Replay all four segments consecutively with one command and the same prebuilt
 executable:
@@ -58,3 +59,7 @@ The GitHub input-validation job checks every published scenario's allowed input
 actions and the verifier's outcome checks. Actual gameplay replay requires local
 game assets and produces a separate result. Campaign-only edits do not trigger
 the Windows native build gate; product-source changes retain that gate.
+
+`pickup-named-object-input` selects an original named map item through the
+normal client cursor. It clicks only when that exact drawable has the Pickup
+cursor; distant, unavailable and other-cursor targets remain bounded waits.

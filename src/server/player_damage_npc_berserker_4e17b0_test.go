@@ -31,7 +31,7 @@ func TestPlayerDamageNPCBerserker4E17B0FractionalCarry(t *testing.T) {
 	for i, hit := range []struct {
 		hp    uint16
 		carry float32
-	}{{197, -0.375}, {195, 0.25}, {192, -0.125}} {
+	}{{198, .625}, {195, .25}, {193, .875}} {
 		if h, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageCrush, r); !h || !result {
 			t.Fatalf("charge %d handled=%t result=%t", i, h, result)
 		}
@@ -48,6 +48,7 @@ func TestPlayerDamageNPCBerserker4E17B0FractionalCarry(t *testing.T) {
 
 func TestPlayerDamageNPCBerserker4E17B0ArmorQuestShield(t *testing.T) {
 	target, source, r := npcChargeFixture4E17B0(t)
+	original := physicalOriginal4E17B0(t, object.DamageCrush, false, 150, .4, .25, true, .5)
 	armor := damageMeleeArmorFixture4E17B0(target, 0.4, 0.25)
 	armor.HealthData.Cur, armor.HealthData.Max = 100, 100
 	modifier := &ModifierEff{Defend76: ModifierEffFnc{Fnc: unsafe.Pointer(new(byte))}}
@@ -102,7 +103,7 @@ func TestPlayerDamageNPCBerserker4E17B0ArmorQuestShield(t *testing.T) {
 		t.Fatal("NPC charge rejected")
 	}
 	if !slices.Equal(events, []string{"armor", "quest", "invisible-off", "late-defend", "shield", "HP"}) ||
-		target.HealthData.Cur != 160 || armor.HealthData.Cur != 70 || math.Float32frombits(target.UpdateDataMonster().Field1) != 0.25 ||
+		target.HealthData.Cur != 160 || armor.HealthData.Cur != 70 || target.UpdateDataMonster().Field1 != original.Carry ||
 		!target.HasEnchant(ENCHANT_SHOCK) || target.HasEnchant(ENCHANT_INVISIBLE) {
 		t.Fatalf("events=%v HP=%d armor=%d buffs=%#x", events, target.HealthData.Cur, armor.HealthData.Cur, target.Buffs)
 	}

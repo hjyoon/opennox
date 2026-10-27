@@ -81,9 +81,8 @@ func TestPlayerDamageChargePrefixNative4E17B0(t *testing.T) {
 					}
 				}
 				beforeSource, beforeSourceUD, beforeSourcePlayer := *source, *sourceUD, *sourcePlayer
-				accumulated := float32(0.875*float64(raw)) + 0.5
-				wantDamage := int(math.RoundToEven(float64(accumulated)))
-				wantHP, wantCarry := uint16(200-wantDamage), accumulated-float32(wantDamage)
+				wantDamage, wantCarryBits := rootPhysicalOriginal4E17B0(t, object.DamageCrush, int32(raw), .25, .5)
+				wantHP, wantCarry := uint16(200-wantDamage), math.Float32frombits(wantCarryBits)
 				if !target.CallDamage(source, source, raw, object.DamageCrush) {
 					t.Fatal("real native charge dispatcher rejected damage")
 				}

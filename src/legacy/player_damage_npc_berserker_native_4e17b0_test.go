@@ -29,7 +29,7 @@ func TestPlayerDamageNPCBerserkerNativeCallback4E17B0(t *testing.T) {
 		}
 	}
 	beforeSource, beforeUD, beforePlayer := *source, *playerUD, *player
-	for hit, wantHP := range []uint16{57, 55, 52} {
+	for hit, wantHP := range []uint16{58, 55, 53} {
 		// Real C damage dispatcher, production PlayerDamage adapter, shared
 		// DefaultDamage and UnitSetHP. Only fixture memory is pinned; no HP,
 		// damage, armor or collision callback is replaced.
@@ -40,7 +40,7 @@ func TestPlayerDamageNPCBerserkerNativeCallback4E17B0(t *testing.T) {
 			t.Fatalf("C entry charge=%d HP=%d marker=%d/%d", hit, target.HealthData.Cur, ud.Field547, ud.Field546)
 		}
 	}
-	t.Logf("C->NPC charge: target=%p source/self-weapon=%p HP=60->57->55->52 carry=%g", target, source, math.Float32frombits(ud.Field1))
+	t.Logf("C->NPC charge: target=%p source/self-weapon=%p HP=60->58->55->53 carry=%g", target, source, math.Float32frombits(ud.Field1))
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(source)
 }

@@ -911,7 +911,7 @@ func playerDamageMonster4E17B0(
 	}
 	var scaled float32
 	if crush {
-		scaled = float32((1.0 - float64(armorValue)*0.5) * float64(damage))
+		scaled = playerDamageCrushAmount4E17B0(armorValue, damage)
 	} else {
 		scaled = experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.ElectricArmorScale(target)), float64(damage)))
 	}
@@ -922,9 +922,9 @@ func playerDamageMonster4E17B0(
 		playerDamageCarry4E20F0(target, &effective, scaled)
 	} else {
 		live := target.UpdateDataMonster()
-		accumulated := scaled + math.Float32frombits(live.Field1)
-		effective = playerDamageRound4E17B0(accumulated)
-		live.Field1 = math.Float32bits(accumulated - float32(effective))
+		var carry float32
+		effective, carry = playerDamagePhysicalCarry4E17B0(scaled, math.Float32frombits(live.Field1))
+		live.Field1 = math.Float32bits(carry)
 	}
 	remaining := damage
 	if crush {
@@ -943,12 +943,8 @@ func playerDamageMonster4E17B0(
 			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
 		}
 		before := effective
-		if electric {
-			scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.QuestDamageScale()), float64(effective)))
-			effective = netFXTruncateSignedDWORD419A70(scaled)
-		} else {
-			effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
-		}
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}
@@ -1377,7 +1373,7 @@ func PlayerDamageNative4E17B0(
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
 	monsterImpact := playerDamageMonsterImpactShape4E17B0(source, weapon, typ)
 	monsterSelfStrike := playerDamageMonsterSelfStrikeShape4E17B0(source, weapon, typ) || playerDamagePlayerSelfSourceShape4E17B0(source, weapon, typ)
-	playerCharge := typ == object.DamageCrush && damage > 0 && source != nil && source == weapon &&
+	playerCharge := typ == object.DamageCrush && source != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassPlayer) && !source.ObjClass.HasAny(object.ClassMonster|object.ClassWeapon|object.ClassWand)
 	fullArmorHit := bite || missileImpact || monsterImpact || monsterSelfStrike
 	armorPrefixHit := fullArmorHit || playerCharge
@@ -1587,17 +1583,17 @@ func PlayerDamageNative4E17B0(
 	effective := damage
 	remaining := damage
 	accumulated := math.Float32frombits(carryUpdate.Field21)
+	var chargeCarry float32
 	armorReduced := bite || missileImpact || playerCharge
 	if armorReduced {
-		absorption := float64(armorValue)
 		if playerCharge {
-			// Original CRUSH case 004E1EE8 uses half the armor absorption;
-			// absorbed damage still goes through the usual durability pass.
-			absorption *= 0.5
+			armored := playerDamageCrushAmount4E17B0(armorValue, damage)
+			effective, chargeCarry = playerDamagePhysicalCarry4E17B0(armored, accumulated)
+		} else {
+			armored := float32((1.0 - float64(armorValue)) * float64(damage))
+			accumulated = armored + accumulated
+			effective = playerDamageRound4E17B0(accumulated)
 		}
-		armored := float32((1.0 - absorption) * float64(damage))
-		accumulated = armored + accumulated
-		effective = playerDamageRound4E17B0(accumulated)
 		remaining = damage - effective
 	}
 	damageItems := !poison
@@ -1609,7 +1605,7 @@ func PlayerDamageNative4E17B0(
 	if damageItems && !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
-	if effective == 0 {
+	if effective == 0 && (!playerCharge || damage > 0) {
 		effective = 1
 	}
 	if runtime.DamageClear == nil || (!poison && !flame && runtime.BuffOff == nil) {
@@ -1649,7 +1645,11 @@ func PlayerDamageNative4E17B0(
 		}
 	}
 	if armorReduced {
-		carryUpdate.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
+		if playerCharge {
+			carryUpdate.Field21 = math.Float32bits(chargeCarry)
+		} else {
+			carryUpdate.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
+		}
 	}
 	if damageItems {
 		playerDamageApplyArmor4E17B0(target, source, weapon, remaining, typ, runtime)
@@ -1671,8 +1671,13 @@ func PlayerDamageNative4E17B0(
 	}
 	if quest {
 		before := effective
-		scaled := float32(float64(runtime.QuestDamageScale()) * float64(effective))
-		effective = playerDamageRound4E17B0(scaled)
+		if playerCharge {
+			scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.QuestDamageScale()), float64(effective)))
+			effective = netFXTruncateSignedDWORD419A70(scaled)
+		} else {
+			scaled := float32(float64(runtime.QuestDamageScale()) * float64(effective))
+			effective = playerDamageRound4E17B0(scaled)
+		}
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

@@ -34,15 +34,20 @@ func playerChargeFixture4E17B0(t *testing.T) (*Object, *Object, PlayerDamageRunt
 
 func TestPlayerDamageNative4E17B0BerserkerChargeFractionalCarry(t *testing.T) {
 	target, source, runtime, damages := playerChargeFixture4E17B0(t)
-	for i, want := range []float32{-0.25, -0.5, 0.25} {
+	var expectedDamage []int32
+	inputCarry := float32(0)
+	for i := 0; i < 3; i++ {
+		original := physicalOriginal4E17B0(t, object.DamageCrush, true, 150, .03, inputCarry, false, 1)
+		expectedDamage = append(expectedDamage, original.Damage)
 		if handled, result := PlayerDamageNative4E17B0(target, source, source, 150, object.DamageCrush, runtime); !handled || !result {
 			t.Fatalf("charge %d = %t/%t", i, handled, result)
 		}
-		if got := math.Float32frombits(target.UpdateDataPlayer().Field21); got != want {
-			t.Fatalf("charge %d fractional carry = %g, want %g", i, got, want)
+		if got := target.UpdateDataPlayer().Field21; got != original.Carry {
+			t.Fatalf("charge %d fractional carry = %08x, want %08x", i, got, original.Carry)
 		}
+		inputCarry = math.Float32frombits(original.Carry)
 	}
-	if !reflect.DeepEqual(*damages, []int32{148, 148, 147}) || target.HealthData.Cur != 1557 {
+	if !reflect.DeepEqual(*damages, expectedDamage) || target.HealthData.Cur != 1557 {
 		t.Fatalf("fractional charges = %v hp:%d", *damages, target.HealthData.Cur)
 	}
 }
@@ -50,6 +55,7 @@ func TestPlayerDamageNative4E17B0BerserkerChargeFractionalCarry(t *testing.T) {
 func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 	target, source, runtime, damages := playerChargeFixture4E17B0(t)
 	target.UpdateDataPlayer().Field57 = math.Float32bits(0.4)
+	original := physicalOriginal4E17B0(t, object.DamageCrush, true, 150, .4, 0, true, .5)
 	source.Buffs = 1 << damageVampirismEnchant4E0B30
 	source.BuffsPower[damageVampirismEnchant4E0B30] = 2
 	source.PosVec, target.PosVec = types.Ptf(30.5, 31.5), types.Ptf(40.5, 41.5)
@@ -67,7 +73,7 @@ func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 	runtime.ItemArmorValue = func(*Object) float32 { return 0.4 }
 	runtime.CanDamageArmor = func(item *Object) bool { return item == armor }
 	runtime.DamageArmor = func(item, gotSource, weapon *Object, damage int32, typ object.DamageType) bool {
-		if item != armor || gotSource != source || weapon != source || damage != 30 || typ != object.DamageCrush {
+		if item != armor || gotSource != source || weapon != source || damage != original.Armor || typ != object.DamageCrush {
 			t.Fatalf("charge armor damage = %p/%p/%p/%d/%d", item, gotSource, weapon, damage, typ)
 		}
 		events = append(events, "armor")
@@ -75,7 +81,7 @@ func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 		return true
 	}
 	runtime.ReportArmorHealth = func(owner, item *Object, before, after uint16) {
-		if owner != target || item != armor || before != 100 || after != 70 {
+		if owner != target || item != armor || before != 100 || after != uint16(100-original.Armor) {
 			t.Fatalf("armor report = %p/%p/%d/%d", owner, item, before, after)
 		}
 		events = append(events, "report")
@@ -91,7 +97,7 @@ func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 	}
 	runtime.CanApplyLateDefend = func(got *ModifierEff) bool { return got == modifier }
 	runtime.ApplyLateDefend = func(got *ModifierEff, item, victim, weapon, attacker *Object, damage int32, typ object.DamageType) int32 {
-		if got != modifier || item != armor || victim != target || weapon != source || attacker != source || damage != 60 || typ != object.DamageCrush {
+		if got != modifier || item != armor || victim != target || weapon != source || attacker != source || damage != original.Damage || typ != object.DamageCrush {
 			t.Fatalf("charge late defend = %p/%p/%p/%p/%p/%d/%d", got, item, victim, weapon, attacker, damage, typ)
 		}
 		events = append(events, "late-defend")
@@ -111,13 +117,13 @@ func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 		return 0.5
 	}
 	runtime.AdjustHP = func(obj *Object, amount int32) {
-		if obj != source || amount != 25 {
+		if obj != source || amount != (original.Damage-10)/2 {
 			t.Fatalf("charge Vampirism heal = %p/%d", obj, amount)
 		}
 		events = append(events, "heal")
 	}
 	runtime.VampirismFX = func(id int, from, to image.Point, amount uint16) {
-		if id != damageVampirismFX4E0B30 || from != image.Pt(30, 32) || to != image.Pt(40, 42) || amount != 25 {
+		if id != damageVampirismFX4E0B30 || from != image.Pt(30, 32) || to != image.Pt(40, 42) || amount != uint16((original.Damage-10)/2) {
 			t.Fatalf("charge Vampirism FX = %d/%v/%v/%d", id, from, to, amount)
 		}
 		events = append(events, "fx")
@@ -128,7 +134,7 @@ func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 		return setState(obj, state)
 	}
 	runtime.ShieldReduce = func(obj *Object, damage *int32, typ object.DamageType, weapon *Object) {
-		if obj != target || *damage != 50 || typ != object.DamageCrush || weapon != source {
+		if obj != target || *damage != original.Damage-10 || typ != object.DamageCrush || weapon != source {
 			t.Fatalf("charge Shield = %p/%d/%d/%p", obj, *damage, typ, weapon)
 		}
 		*damage -= 10
@@ -140,8 +146,8 @@ func TestPlayerDamageNative4E17B0BerserkerChargeDefenseTail(t *testing.T) {
 		t.Fatalf("defended charge = %t/%t", handled, result)
 	}
 	want := []string{"armor", "report", "quest", "invisible-off", "late-defend", "sound", "vampirism-sound", "heal", "fx", "hurt", "shield", "damage"}
-	if !reflect.DeepEqual(events, want) || !reflect.DeepEqual(*damages, []int32{40}) ||
-		target.HealthData.Cur != 1960 || armor.HealthData.Cur != 70 || *carry != 0.25 ||
+	if !reflect.DeepEqual(events, want) || !reflect.DeepEqual(*damages, []int32{original.Damage - 20}) ||
+		target.HealthData.Cur != uint16(2000-(original.Damage-20)) || armor.HealthData.Cur != uint16(100-original.Armor) || *carry != 0.25 ||
 		target.HasEnchant(playerDamageInvisibleEnchant4E17B0) || !target.HasEnchant(ENCHANT_SHOCK) {
 		t.Fatalf("defense tail = events:%v damages:%v hp:%d armor:%d carry:%g buffs:%#x", events, *damages, target.HealthData.Cur, armor.HealthData.Cur, *carry, target.Buffs)
 	}
@@ -291,6 +297,7 @@ func TestPlayerDamageNative4E17B0BerserkerCharge(t *testing.T) {
 	target, source, runtime, damages := playerChargeFixture4E17B0(t)
 	update := target.UpdateDataPlayer()
 	update.Field57 = math.Float32bits(0.4)
+	original := physicalOriginal4E17B0(t, object.DamageCrush, true, 150, .4, 0, false, 1)
 	beforeSource := *source.UpdateDataPlayer()
 	var events []string
 	runtime.BuffOff = func(got *Object, enchant EnchantID) {
@@ -320,8 +327,8 @@ func TestPlayerDamageNative4E17B0BerserkerCharge(t *testing.T) {
 	}
 	// GAME.EXE 004E1EE8 halves armor absorption, not the resulting damage.
 	// 004E1F42 writes the integer 2 into both player damage-marker DWORDs.
-	if !reflect.DeepEqual(*damages, []int32{120}) || target.HealthData.Cur != 1880 ||
-		update.Field76 != 2 || update.Field75 != 2 || update.Field21 != 0 || update.State != PlayerState30 ||
+	if !reflect.DeepEqual(*damages, []int32{original.Damage}) || target.HealthData.Cur != uint16(2000-original.Damage) ||
+		update.Field76 != 2 || update.Field75 != 2 || update.Field21 != original.Carry || update.State != PlayerState30 ||
 		target.Obj130 != source || target.Pos132 != source.PrevPos ||
 		target.Field131 != uint32(object.DamageCrush) || target.Frame134 != 700 {
 		t.Fatalf("charge state = damage:%v hp:%d marker:%d/%d carry:%#x state:%d source:%p pos:%v type/frame:%d/%d",

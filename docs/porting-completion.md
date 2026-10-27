@@ -289,6 +289,44 @@ healing, waiting and targeting experiments remain preserved as failures;
 the published inputs are retained and repeatable recovery remains open.
 This checkpoint does not claim a passing complete two-stage replay.
 
+### Berserker CRUSH and monster self-weapon IMPACT arithmetic
+
+The remaining Berserker Charge bodies and the monster self-weapon IMPACT tail
+used by Troll now preserve startup PC53 arithmetic, binary32 storage and integer
+conversion toward zero. Charge halves cached armor absorption before scaling;
+IMPACT uses full absorption. Both preserve the live carry, cached marker,
+armor-before-GodMode/Quest ordering and positive-only minimum. Player Charge
+also accepts the original signed and zero inputs instead of rejecting them.
+The host floating-point mode is unchanged.
+
+Two unchanged-original reports supply sixty source/target/numeric contexts each,
+executed at startup and nearest control settings. They cover Player/NPC targets,
+signed/zero/overflow damage, fractional absorption/carry and Quest scaling.
+The preserved before-port comparisons fail 31 Charge and 30 IMPACT cases.
+Further original executions supply 226 compatibility contexts, including the
+unchanged inputs of existing ordered, possession and native HP tests. Original
+code regions, executable bytes and nonoutput heap bytes are verified unchanged.
+Final armor wear and HP remain declared boundaries in these machine-code
+observations; they are checked separately through native C dispatch.
+
+Registered PlayerDamage, real armor lookup/wear, ArmorDamage and HP handling
+execute on C-owned records above 4 GiB for both target classes. With raw3,
+absorption .5 and initial carry .25, three Charge hits reach
+HP200->198->196->193 and armor100->99->98->98; three self-weapon IMPACT hits reach
+HP200->199->197->196 and armor100->98->97->95. Sound and unused below-threshold
+hurt-state registration are fixture boundaries; damage and HP callbacks are
+not replaced. Initial missing sound/hurt registrations remain recorded as
+failed fixture runs.
+
+Complete macOS ARM64 root/server/legacy packages pass 232,494 terminal events
+with sixteen skips. Existing terminal identities, results and multiplicities
+remain, with 128 added passing events including parents and subtests. Historical
+frozen input tables remain unchanged; numeric expectations now read independent
+startup observations. The affected root/server/legacy tests also pass 589
+terminal events with highres, cgocheck2 and checkptr=2 together. These bounded
+results leave other physical arithmetic,
+campaign recovery and final optional-feature audits open.
+
 ### Terminal and scripted Magic Missile EXPLOSION damage
 
 BoomCollide can pass the same unowned Magic Missile as source and weapon,

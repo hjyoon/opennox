@@ -32,21 +32,14 @@ func TestPlayerDamageMonsterSelfImpactArmor4E17B0(t *testing.T) {
 						return false
 					}
 					r.BlockDirection = func(*Object, types.Pointf) bool { events = append(events, "facing"); return false }
-					accumulated := float32((1-float64(absorption))*float64(raw)) + 0.125
-					unscaled := playerDamageRound4E17B0(accumulated)
-					effective := unscaled
-					if raw > 0 && effective == 0 {
-						effective = 1
-					}
+					scale := float32(1)
 					if mode == "quest" {
-						before := effective
-						effective = playerDamageRound4E17B0(float32(float64(effective) * 0.5))
-						if before > 0 && effective < 1 {
-							effective = 1
-						}
+						scale = .5
 					}
+					original := physicalOriginal4E17B0(t, object.DamageImpact, true, raw, absorption, .125, mode == "quest", scale)
+					effective := original.Damage
 					r.GodMode = func() bool {
-						if ud.Field76 != 2 || ud.Field75 != 11 || ud.Field21 != math.Float32bits(accumulated-float32(unscaled)) {
+						if ud.Field76 != 2 || ud.Field75 != 11 || ud.Field21 != original.Carry {
 							t.Fatal("God preceded carry/type marker")
 						}
 						events = append(events, "god")
@@ -259,7 +252,7 @@ func TestPlayerDamageMonsterSelfImpactActualHP4E17B0(t *testing.T) {
 				v, a := monsterImpactTarget4E17B0(t, "player"), monsterImpactTarget4E17B0(t, "monster")
 				v.UpdateDataPlayer().Field57 = math.Float32bits(absorption)
 				r := damageMeleeRuntimeFixture4E17B0(t)
-				effective := playerDamageRound4E17B0(float32((1 - float64(absorption)) * float64(raw)))
+				effective := physicalOriginal4E17B0(t, object.DamageImpact, true, raw, absorption, 0, false, 1).Damage
 				if h, result := PlayerDamageNative4E17B0(v, a, a, raw, object.DamageImpact, r); !h || !result {
 					t.Fatal("actual HP path rejected")
 				}

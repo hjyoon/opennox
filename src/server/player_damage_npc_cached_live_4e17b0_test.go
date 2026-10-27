@@ -181,9 +181,13 @@ func TestPlayerDamageNPCCachedLive4E17B0QuestAfterWear(t *testing.T) {
 				r.DefaultDamage = func(v, a, w *Object, d int32, gotType object.DamageType) bool {
 					want := int32(2)
 					if typ == object.DamageCrush {
-						want = 3
+						scale := float32(1)
+						if entering {
+							scale = .5
+						}
+						want = physicalOriginal4E17B0(t, object.DamageCrush, false, 4, .5, 0, entering, scale).Damage
 					}
-					if entering {
+					if entering && typ != object.DamageCrush {
 						want = playerDamageRound4E17B0(float32(want) * 0.5)
 					}
 					if v != target || a != source || w != source || d != want || gotType != typ {

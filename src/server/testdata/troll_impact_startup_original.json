@@ -1,0 +1,1810 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "original_startup_control_word": 3647,
+  "cases": 60,
+  "runs": 120,
+  "regions": [
+    {
+      "name": "PlayerDamage",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9"
+    },
+    {
+      "name": "carry",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86"
+    },
+    {
+      "name": "signed-DWORD",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "Quest-getter",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde"
+    },
+    {
+      "name": "attack-predicate",
+      "address": "0x4e1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73"
+    },
+    {
+      "name": "possession",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6"
+    },
+    {
+      "name": "parent-chain",
+      "address": "0x4ec580",
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    }
+  ],
+  "original_entries": {
+    "PlayerDamage": 120,
+    "carry": 120,
+    "signed-DWORD": 152,
+    "Quest-getter": 32,
+    "possession": 60
+  },
+  "services": {
+    "0x4ff350": 240,
+    "0x40a5c0": 240,
+    "0x4e3aa0": 6,
+    "0x4e6e50": 120,
+    "0x4e2180": 120,
+    "0x4e0b30": 120
+  },
+  "memory_faults": [],
+  "scope": "Unchanged original PlayerDamage Troll self-weapon IMPACT full-armor arithmetic.\n\nArmor wear and final HP are declared observation callbacks. PlayerDamage,\ncarry, startup initialization and signed conversion instructions run unchanged.\n",
+  "rows": [
+    {
+      "input": {
+        "name": "player-0/numeric-0",
+        "player": false,
+        "raw": 9,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-1",
+        "player": false,
+        "raw": -9,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967291
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967292
+        }
+      ],
+      "carry_bits32": 3196059648,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-2",
+        "player": false,
+        "raw": 11,
+        "damage_type": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1061158912,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1055286880,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-3",
+        "player": false,
+        "raw": 96,
+        "damage_type": 11,
+        "absorption_bits32": 1036831949,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 10
+        },
+        {
+          "service": "default",
+          "damage_bits32": 86
+        }
+      ],
+      "carry_bits32": 1057383936,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-4",
+        "player": false,
+        "raw": 1,
+        "damage_type": 11,
+        "absorption_bits32": 1063675494,
+        "carry_bits32": 1056964608,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1058642330,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-5",
+        "player": false,
+        "raw": 0,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3196059648,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3196059648,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-6",
+        "player": false,
+        "raw": -1,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3196059648,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3208642560,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-7",
+        "player": false,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1065353217,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1048575976,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-8",
+        "player": false,
+        "raw": 2147483647,
+        "damage_type": 11,
+        "absorption_bits32": 1067450368,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2684354495
+        },
+        {
+          "service": "default",
+          "damage_bits32": 3758096448
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-9",
+        "player": false,
+        "raw": -2147483648,
+        "damage_type": 11,
+        "absorption_bits32": 1067450368,
+        "carry_bits32": 3196059648,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1610612768
+        },
+        {
+          "service": "default",
+          "damage_bits32": 161061264
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-10",
+        "player": false,
+        "raw": 16777217,
+        "damage_type": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1036831949,
+        "quest": true,
+        "quest_scale_bits32": 1065353217,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5033166
+        },
+        {
+          "service": "default",
+          "damage_bits32": 11744052
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-11",
+        "player": false,
+        "raw": 9,
+        "damage_type": 11,
+        "absorption_bits32": 3197737370,
+        "carry_bits32": 3204448256,
+        "quest": true,
+        "quest_scale_bits32": 3204448256,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967294
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1045220544,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-12",
+        "player": false,
+        "raw": 8,
+        "damage_type": 11,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 8
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-13",
+        "player": false,
+        "raw": 1,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-14",
+        "player": false,
+        "raw": 5,
+        "damage_type": 11,
+        "absorption_bits32": 1061158912,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1048576000,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-15",
+        "player": false,
+        "raw": 5,
+        "damage_type": 11,
+        "absorption_bits32": 1061158912,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-16",
+        "player": false,
+        "raw": 5,
+        "damage_type": 11,
+        "absorption_bits32": 1061158912,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-17",
+        "player": false,
+        "raw": 5,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-18",
+        "player": false,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-19",
+        "player": false,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-20",
+        "player": false,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1048576000,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-21",
+        "player": false,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1048576000,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-22",
+        "player": false,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1059061760,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1063256064,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-23",
+        "player": false,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-24",
+        "player": false,
+        "raw": 150,
+        "damage_type": 11,
+        "absorption_bits32": 1022739087,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 145
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-25",
+        "player": false,
+        "raw": 150,
+        "damage_type": 11,
+        "absorption_bits32": 1022739087,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4
+        },
+        {
+          "service": "default",
+          "damage_bits32": 146
+        }
+      ],
+      "carry_bits32": 1048576000,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-26",
+        "player": false,
+        "raw": 150,
+        "damage_type": 11,
+        "absorption_bits32": 1022739087,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4
+        },
+        {
+          "service": "default",
+          "damage_bits32": 146
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-27",
+        "player": false,
+        "raw": 150,
+        "damage_type": 11,
+        "absorption_bits32": 1053609165,
+        "carry_bits32": 1048576000,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 60
+        },
+        {
+          "service": "default",
+          "damage_bits32": 45
+        }
+      ],
+      "carry_bits32": 1048575488,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-28",
+        "player": false,
+        "raw": 0,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-0/numeric-29",
+        "player": false,
+        "raw": 1,
+        "damage_type": 11,
+        "absorption_bits32": 1073741824,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-0",
+        "player": true,
+        "raw": 9,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-1",
+        "player": true,
+        "raw": -9,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967291
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967292
+        }
+      ],
+      "carry_bits32": 3196059648,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-2",
+        "player": true,
+        "raw": 11,
+        "damage_type": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1061158912,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1055286880,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-3",
+        "player": true,
+        "raw": 96,
+        "damage_type": 11,
+        "absorption_bits32": 1036831949,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 10
+        },
+        {
+          "service": "default",
+          "damage_bits32": 86
+        }
+      ],
+      "carry_bits32": 1057383936,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-4",
+        "player": true,
+        "raw": 1,
+        "damage_type": 11,
+        "absorption_bits32": 1063675494,
+        "carry_bits32": 1056964608,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1058642330,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-5",
+        "player": true,
+        "raw": 0,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3196059648,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3196059648,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-6",
+        "player": true,
+        "raw": -1,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3196059648,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3208642560,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-7",
+        "player": true,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1065353217,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1048575976,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-8",
+        "player": true,
+        "raw": 2147483647,
+        "damage_type": 11,
+        "absorption_bits32": 1067450368,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2684354495
+        },
+        {
+          "service": "default",
+          "damage_bits32": 3758096448
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-9",
+        "player": true,
+        "raw": -2147483648,
+        "damage_type": 11,
+        "absorption_bits32": 1067450368,
+        "carry_bits32": 3196059648,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1610612768
+        },
+        {
+          "service": "default",
+          "damage_bits32": 161061264
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-10",
+        "player": true,
+        "raw": 16777217,
+        "damage_type": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1036831949,
+        "quest": true,
+        "quest_scale_bits32": 1065353217,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5033166
+        },
+        {
+          "service": "default",
+          "damage_bits32": 11744052
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-11",
+        "player": true,
+        "raw": 9,
+        "damage_type": 11,
+        "absorption_bits32": 3197737370,
+        "carry_bits32": 3204448256,
+        "quest": true,
+        "quest_scale_bits32": 3204448256,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967294
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1045220544,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-12",
+        "player": true,
+        "raw": 8,
+        "damage_type": 11,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 8
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-13",
+        "player": true,
+        "raw": 1,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-14",
+        "player": true,
+        "raw": 5,
+        "damage_type": 11,
+        "absorption_bits32": 1061158912,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1048576000,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-15",
+        "player": true,
+        "raw": 5,
+        "damage_type": 11,
+        "absorption_bits32": 1061158912,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-16",
+        "player": true,
+        "raw": 5,
+        "damage_type": 11,
+        "absorption_bits32": 1061158912,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-17",
+        "player": true,
+        "raw": 5,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-18",
+        "player": true,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-19",
+        "player": true,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-20",
+        "player": true,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1048576000,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-21",
+        "player": true,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1048576000,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-22",
+        "player": true,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1059061760,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1063256064,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-23",
+        "player": true,
+        "raw": 3,
+        "damage_type": 11,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-24",
+        "player": true,
+        "raw": 150,
+        "damage_type": 11,
+        "absorption_bits32": 1022739087,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 145
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-25",
+        "player": true,
+        "raw": 150,
+        "damage_type": 11,
+        "absorption_bits32": 1022739087,
+        "carry_bits32": 1061158912,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4
+        },
+        {
+          "service": "default",
+          "damage_bits32": 146
+        }
+      ],
+      "carry_bits32": 1048576000,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-26",
+        "player": true,
+        "raw": 150,
+        "damage_type": 11,
+        "absorption_bits32": 1022739087,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4
+        },
+        {
+          "service": "default",
+          "damage_bits32": 146
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-27",
+        "player": true,
+        "raw": 150,
+        "damage_type": 11,
+        "absorption_bits32": 1053609165,
+        "carry_bits32": 1048576000,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 60
+        },
+        {
+          "service": "default",
+          "damage_bits32": 45
+        }
+      ],
+      "carry_bits32": 1048575488,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-28",
+        "player": true,
+        "raw": 0,
+        "damage_type": 11,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "player-1/numeric-29",
+        "player": true,
+        "raw": 1,
+        "damage_type": 11,
+        "absorption_bits32": 1073741824,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 11,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    }
+  ]
+}

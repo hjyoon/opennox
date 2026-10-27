@@ -139,10 +139,9 @@ func playerDamageMonsterImpactTail4E17B0(
 	} else {
 		return playerDamageUnsupported4E17B0(r, "unsupported self-weapon IMPACT live carry record", target, source, weapon, damage, typ)
 	}
-	scaled := float32((1 - float64(armorValue)) * float64(damage))
-	accumulated := scaled + math.Float32frombits(*carry)
-	effective := playerDamageRound4E17B0(accumulated)
-	*carry = math.Float32bits(accumulated - float32(effective))
+	scaled := playerDamageImpactAmount4E17B0(armorValue, damage)
+	effective, remainingCarry := playerDamagePhysicalCarry4E17B0(scaled, math.Float32frombits(*carry))
+	*carry = math.Float32bits(remainingCarry)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, r)
 	if *cached.marker == 0 {
 		*cached.marker, *cached.markerType = 2, uint32(typ)
@@ -158,7 +157,8 @@ func playerDamageMonsterImpactTail4E17B0(
 			return playerDamageUnsupported4E17B0(r, "missing self-weapon IMPACT live quest service", target, source, weapon, damage, typ)
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(r.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

@@ -92,8 +92,8 @@ func TestPlayerDamageChargePrefixOrder4E17B0(t *testing.T) {
 							}
 							events = append(events, "buff")
 						}
-						accumulated := float32(0.875*float64(raw)) + 0.5
-						effective := playerDamageRound4E17B0(accumulated)
+						original := physicalOriginal4E17B0(t, object.DamageCrush, true, raw, .25, .5, false, 1)
+						effective := original.Damage
 						r.DamageClear = func(obj *Object, amount int32) {
 							if obj != target || amount != effective {
 								t.Fatalf("charge HP argument=%d want=%d", amount, effective)
@@ -109,7 +109,7 @@ func TestPlayerDamageChargePrefixOrder4E17B0(t *testing.T) {
 						if facing != "excluded" {
 							want = append(want, "direction")
 						}
-						carry, marker, markerType := accumulated-float32(effective), uint32(2), uint32(object.DamageCrush)
+						carry, marker, markerType := math.Float32frombits(original.Carry), uint32(2), uint32(object.DamageCrush)
 						if blocked {
 							want = append(want, "block-admission", "block-audio", "block-percent", "block-wear")
 							carry, marker, markerType = 0.5, 0, 77
@@ -162,9 +162,10 @@ func TestPlayerDamageChargePrefixLiveRecord4E17B0(t *testing.T) {
 					}
 					var events []string
 					chargePrefixShieldServices4E17B0(t, target, source, shield, 5, &events, &r)
+					original := physicalOriginal4E17B0(t, object.DamageCrush, true, 5, .25, .5, false, 1)
 					calls, reason := 0, ""
 					r.DamageClear = func(obj *Object, amount int32) {
-						if change != "replacement-rear" || obj != target || amount != 5 {
+						if change != "replacement-rear" || obj != target || amount != original.Damage {
 							t.Fatal("invalid charge live carry/record reached HP")
 						}
 						calls++
@@ -179,7 +180,7 @@ func TestPlayerDamageChargePrefixLiveRecord4E17B0(t *testing.T) {
 						}
 					case "replacement-rear":
 						marker, markerType = 2, uint32(object.DamageCrush)
-						if !h || !result || calls != 1 || reason != "" || len(events) != 0 || live.Field21 != math.Float32bits(-0.125) {
+						if !h || !result || calls != 1 || reason != "" || len(events) != 0 || live.Field21 != original.Carry {
 							t.Fatal("charge tail lost entry half-armor/live carry")
 						}
 					default:
@@ -205,6 +206,7 @@ func TestPlayerDamageChargePrefixLateTail4E17B0(t *testing.T) {
 					armor := &Object{ObjClass: object.ClassArmor, ObjFlags: object.FlagEquipped, HealthData: &HealthData{Cur: 10, Max: 10}, UpdateData: unsafe.Pointer(new(WeaponArmorUpdateData)), InitData: unsafe.Pointer(new(ModifierInitData)), Damage: unsafe.Pointer(new(byte))}
 					target.InvFirstItem = armor
 					var events []string
+					original := physicalOriginal4E17B0(t, object.DamageCrush, true, 21, .25, .5, true, .5)
 					worn, quest := false, false
 					r.BlockSourceExcluded = func(*Object) bool { events = append(events, "excluded"); return false }
 					r.BlockDirection = func(*Object, types.Pointf) bool {
@@ -215,7 +217,7 @@ func TestPlayerDamageChargePrefixLateTail4E17B0(t *testing.T) {
 					r.ItemArmorValue = func(*Object) float32 { return 0.5 }
 					r.CanDamageArmor = func(item *Object) bool { return item == armor }
 					r.DamageArmor = func(item, attacker, weapon *Object, amount int32, typ object.DamageType) bool {
-						if item != armor || attacker != source || weapon != source || amount != 2 || typ != object.DamageCrush {
+						if item != armor || attacker != source || weapon != source || amount != original.Armor || typ != object.DamageCrush {
 							t.Fatalf("charge wear=%d, want cached half-armor remaining 2", amount)
 						}
 						worn, quest = true, true
@@ -247,7 +249,7 @@ func TestPlayerDamageChargePrefixLateTail4E17B0(t *testing.T) {
 					r.BuffOff = func(*Object, EnchantID) { events = append(events, "buff") }
 					calls := 0
 					r.DamageClear = func(obj *Object, amount int32) {
-						if obj != target || amount != 10 {
+						if obj != target || amount != original.Damage {
 							t.Fatalf("late Quest HP argument=%d want=10", amount)
 						}
 						calls++
@@ -269,7 +271,7 @@ func TestPlayerDamageChargePrefixLateTail4E17B0(t *testing.T) {
 					if mode == "god-player" {
 						wantCalls = 0
 					}
-					if !h || !result || calls != wantCalls || !reflect.DeepEqual(events, want) || cached.Field76 != marker || cached.Field75 != markerType || cached.Field21 != math.Float32bits(-0.125) || target.HealthData.Cur != 200 || armor.HealthData.Cur != 10 {
+					if !h || !result || calls != wantCalls || !reflect.DeepEqual(events, want) || cached.Field76 != marker || cached.Field75 != markerType || cached.Field21 != original.Carry || target.HealthData.Cur != 200 || armor.HealthData.Cur != 10 {
 						t.Fatalf("charge late tail=%t/%t events=%v marker=%d/%d carry=%g", h, result, events, cached.Field76, cached.Field75, math.Float32frombits(cached.Field21))
 					}
 				})
@@ -395,8 +397,27 @@ func TestPlayerDamageChargePrefixShapeBoundary4E17B0(t *testing.T) {
 				reason := ""
 				r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = why }
 				r.BlockSourceExcluded = func(*Object) bool { t.Fatal("unsupported shape entered charge prefix"); return false }
+				var original physicalOriginalExpected4E17B0
+				calls := 0
+				if shape == "zero" || shape == "negative" {
+					original = physicalOriginal4E17B0(t, object.DamageCrush, true, raw, .25, .125, false, 1)
+					r.BlockSourceExcluded = func(*Object) bool { return false }
+					r.DamageClear = func(obj *Object, amount int32) {
+						if obj != target || amount != original.Damage {
+							t.Fatal("signed charge HP boundary")
+						}
+						calls++
+					}
+				}
+
 				before, beforeUpdate, beforePlayer, beforeSource, beforeSourceUpdate, beforeHP := *target, *cached, *cached.Player, *source, *sourceUpdate, *target.HealthData
 				h, result := PlayerDamageNative4E17B0(target, attacker, attacker, raw, object.DamageCrush, r)
+				if shape == "zero" || shape == "negative" {
+					if !h || !result || reason != "" || calls != 1 || cached.Field21 != original.Carry || cached.Field76 != 2 || cached.Field75 != uint32(object.DamageCrush) || *source != beforeSource || *sourceUpdate != beforeSourceUpdate || *target.HealthData != beforeHP || target.Obj130 != source {
+						t.Fatalf("signed original charge h/result=%t/%t reason=%q calls=%d", h, result, reason, calls)
+					}
+					return
+				}
 				wantReason := "unsupported player damage shape"
 				if shape == "nil-source" {
 					// Script CRUSH has its own native path. This deliberately
@@ -456,6 +477,7 @@ func TestPlayerDamageChargePrefixLiveHurt4E17B0(t *testing.T) {
 			t.Run(mode, func(t *testing.T) {
 				target, source, cached, r := chargePrefixFixture4E17B0(t, observe)
 				live := &PlayerUpdateData{Player: &Player{PlayerInd: 7}, State: PlayerState13}
+				original := physicalOriginal4E17B0(t, object.DamageCrush, true, 61, .25, .125, false, 1)
 				var events []string
 				reason := ""
 				r.Unsupported = func(why string, _, _, _ *Object, _ int32, _ object.DamageType) {
@@ -463,7 +485,7 @@ func TestPlayerDamageChargePrefixLiveHurt4E17B0(t *testing.T) {
 					events = append(events, "unsupported")
 				}
 				r.GameBallOnDamage = func(attacker, obj *Object, amount int32) {
-					if attacker != source || obj != target || amount != 54 || cached.Field76 != 2 || cached.Field75 != uint32(object.DamageCrush) || cached.Field21 != math.Float32bits(-0.5) {
+					if attacker != source || obj != target || amount != original.Damage || cached.Field76 != 2 || cached.Field75 != uint32(object.DamageCrush) || cached.Field21 != original.Carry {
 						t.Fatal("charge live hurt must follow armor/carry/marker and the ordinary damage tail")
 					}
 					events = append(events, "game-ball")
@@ -490,7 +512,7 @@ func TestPlayerDamageChargePrefixLiveHurt4E17B0(t *testing.T) {
 					return true
 				}
 				r.DamageClear = func(obj *Object, amount int32) {
-					if obj != target || amount != 54 || mode == "nil-update" {
+					if obj != target || amount != original.Damage || mode == "nil-update" {
 						t.Fatal("charge HP after live hurt")
 					}
 					events = append(events, "hp")
@@ -513,7 +535,7 @@ func TestPlayerDamageChargePrefixLiveHurt4E17B0(t *testing.T) {
 				if mode == "nil-update" {
 					wantReason = "unsupported live player charge hurt record"
 				}
-				if h != wantHandled || result != wantHandled || reason != wantReason || !reflect.DeepEqual(events, want) || live.State != wantState || live.Field21 != 0 || live.Field76 != 0 || live.Field75 != 0 || target.HealthData.Cur != 200 || cached.Field21 != math.Float32bits(-0.5) || cached.Field76 != 2 || cached.Field75 != uint32(object.DamageCrush) {
+				if h != wantHandled || result != wantHandled || reason != wantReason || !reflect.DeepEqual(events, want) || live.State != wantState || live.Field21 != 0 || live.Field76 != 0 || live.Field75 != 0 || target.HealthData.Cur != 200 || cached.Field21 != original.Carry || cached.Field76 != 2 || cached.Field75 != uint32(object.DamageCrush) {
 					t.Fatalf("charge live hurt=%t/%t mode=%s events=%v reason=%q state=%d", h, result, mode, events, reason, live.State)
 				}
 			})

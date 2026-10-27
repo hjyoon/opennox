@@ -94,6 +94,15 @@ checkptr level 2 passes 135 events in 79.488 seconds. These totals count test
 events rather than feature coverage. Existing tests, frozen fixtures and
 campaign E2E inputs retain their contents.
 
+A single clean normal ARM64 product at `7035d2d` builds in 12.642 seconds.
+The existing input-only Save/Load smoke reuses it and passes in 17.301 seconds,
+retaining HP26/MP88, poison zero, the original book and spell bindings, and an
+actual manual Save. Nine parameterless GET observations, unchanged source
+inputs and the final save screen are qualified. This separate smoke branch
+does not certify upper-cave combat, mana recovery or a full chapter. No gameplay
+setters or campaign input changes are added. Windows and Linux server-HD native
+CI for this revision are dispatched and pending at this checkpoint.
+
 The preceding FireEffect revision `8bf5b36` has completed Windows 386/AMD64
 and normal Linux AMD64 native checks. Windows's first attempt failed during
 MSYS2 mirror downloads before code tests; retrying the two jobs without source

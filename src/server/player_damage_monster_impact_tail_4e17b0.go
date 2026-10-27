@@ -80,7 +80,7 @@ func playerDamageMonsterImpactBlock4E17B0(
 			r.Melee.MonsterBlockAction(target)
 		}
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	// 004E22A0/004E2330 reload inventory after audio/state/balance callbacks.
 	var item *Object
 	for next := target.InvFirstItem; next != nil; next = next.InvNextItem {

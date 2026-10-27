@@ -105,7 +105,7 @@ func TestPlayerDamageWorldExplosionPlayer4E17B0Shield(t *testing.T) {
 			}
 			r.BlockDamagePercent = func() float64 { return .25 }
 			r.DamageBlockItem = func(shield, v, s, w *Object, amount float32, typ object.DamageType) bool {
-				if shield != nil || v != target || s != source || w != nil || amount != 7.5 || typ != object.DamageExplosion {
+				if shield != nil || v != target || s != source || w != source || amount != 7.5 || typ != object.DamageExplosion {
 					t.Fatal("barrel shield wear identity/amount")
 				}
 				wears++

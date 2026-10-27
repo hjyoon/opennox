@@ -120,7 +120,7 @@ func playerDamageMonsterCloudPoisonBlock4E17B0(
 	if runtime.BlockDamagePercent == nil {
 		return playerDamageUnsupported4E17B0(runtime, "missing NPC cloud POISON shield percentage", target, source, cloud, damage, typ)
 	}
-	amount := float32(runtime.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(runtime.BlockDamagePercent(), damage)
 	shield := playerDamageShieldItem4E17B0(target)
 	if runtime.DamageBlockItem == nil || (shield != nil && (runtime.CanDamageBlockItem == nil || !runtime.CanDamageBlockItem(shield))) {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported NPC cloud POISON live shield wear", target, source, cloud, damage, typ)
@@ -186,7 +186,7 @@ func playerDamageNPCCloudGreatSword4E17B0(
 	}
 	// GAME.EXE's startup PC53/toward-zero product and binary32 spill precede
 	// 004E22A0's live inventory scan, including a balance callback replacement.
-	amount := experienceSpill32TowardZero(experienceMul53TowardZero(r.BlockDamagePercent(), float64(damage)))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	item := playerDamageGreatSwordItem4E22A0(target)
 	if r.Melee.DamageBlockWeapon == nil {
 		return reject("missing NPC cloud POISON GreatSword durability")

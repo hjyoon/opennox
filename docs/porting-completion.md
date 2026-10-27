@@ -232,8 +232,47 @@ then passes recovery in 23.278 seconds, followed by the fresh two-stage pass.
 The mana minimum52, original potion pickup, quest book and Save assertions remain.
 The executable is reused throughout; no additional Go build or state override is
 used for the input-route correction.
-Shared blocking and other remaining damage arithmetic, campaign optional
-objectives and final completion audits remain open.
+Shared blocking is covered by the following checkpoint. Other remaining damage
+arithmetic, campaign optional objectives and final completion audits remain open.
+
+### Shared block wear and weaponless attack identity
+
+All nineteen PlayerDamage block-wear call sites now share explicit startup PC53
+multiplication and binary32 storage toward zero. This replaces fifteen remaining
+host-rounded calculations and consolidates four previously corrected calls.
+For balance .3 and raw9, original wear is `0x402ccccc`; nearest rounding produced
+`0x402ccccd`. With initial item carry .3, the original durability chain forwards
+two damage and retains `0x3f7ffffc`, rather than forwarding three with zero carry.
+Weaponless blocks also pass the effective source to the equipment-wear callback,
+as the original does; subsequent HP and ordinary armor callbacks retain their
+original incoming weapon identity.
+
+Unchanged original instructions supply 3,672 executions under startup and
+nearest controls. The native-width comparison checks all 1,260 blocked startup
+contexts across Player/NPC targets, shield/GreatSword/staff defenses, signed and
+zero damage and seventeen source profiles. Inventory/readiness instructions run
+unchanged, nonoutput heap bytes are verified, and final wear/HP remain declared
+services. A further 11,340-execution compatibility report supplies 45 distinct
+balance/damage pairs. Earlier probes with an incorrect IMPACT type or incomplete
+item classes remain preserved and excluded from the qualified observations.
+
+Sixteen separate original executions continue through EquipDamage/WeaponDamage
+and record integer wear and carry at the declared final item-damage callback;
+they do not change original item HP. Separate real C dispatch through registered
+PlayerDamage, EquipDamage, ArmorDamage and HP handling verifies item100->98,
+unit HP200 unchanged and the original carry for all four Player/NPC source-target
+shield combinations using C-owned records above 4 GiB. The initial native test's
+missing inventory-holder setup and its failed output remain preserved.
+
+Complete macOS ARM64 root/server/legacy packages pass 232,366 terminal test events
+with sixteen skips. All prior terminal identities and multiplicities remain,
+with 1,262 added passing events. The highres block/shield/GreatSword/Berserker
+subset passes 13,088 events with cgocheck2 and checkptr level 2. The server
+coverage report confirms execution of all nineteen shared call statements; the
+independent original matrix itself reaches four shared caller families.
+Existing frozen input tables remain unchanged. This
+bounded checkpoint does not complete the remaining damage arithmetic or the
+overall port.
 
 ### Terminal and scripted Magic Missile EXPLOSION damage
 

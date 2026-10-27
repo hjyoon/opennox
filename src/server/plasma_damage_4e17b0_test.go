@@ -116,7 +116,7 @@ func TestPlasmaDamageNative4E17B0ReflectAndPhysicalShield(t *testing.T) {
 					r.BlockDamagePercent = func() float64 { events = append(events, "balance"); return .5 }
 					r.CanDamageBlockItem = func(got *Object) bool { return got == shield }
 					r.DamageBlockItem = func(item, owner, attacker, weapon *Object, amount float32, typ object.DamageType) bool {
-						if item != shield || owner != target || attacker != source || weapon != nil || amount != 12.5 || typ != object.DamagePlasma {
+						if item != shield || owner != target || attacker != source || weapon != source || amount != 12.5 || typ != object.DamagePlasma {
 							t.Fatal("wrong Plasma shield wear")
 						}
 						events = append(events, "wear")

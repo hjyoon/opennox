@@ -238,7 +238,7 @@ func TestPlayerDamageNative4E17B0WeaponlessRawSpellReflectAndShield(t *testing.T
 						r.BlockDamagePercent = func() float64 { events = append(events, "balance"); return .5 }
 						r.CanDamageBlockItem = func(item *Object) bool { return item == shield }
 						r.DamageBlockItem = func(item, owner, attacker, weapon *Object, amount float32, got object.DamageType) bool {
-							if item != shield || owner != target || attacker != source || weapon != nil || amount != 12.5 || got != typ {
+							if item != shield || owner != target || attacker != source || weapon != source || amount != 12.5 || got != typ {
 								t.Fatal("wrong shield wear context")
 							}
 							events = append(events, "wear")
@@ -320,7 +320,7 @@ func TestPlayerDamageNative4E17B0WeaponlessRawSpellCachedAndLive(t *testing.T) {
 				r.BlockDamagePercent = func() float64 { events = append(events, "balance"); return .25 }
 				r.CanDamageBlockItem = func(item *Object) bool { return item == liveShield }
 				r.DamageBlockItem = func(item, _, _, w *Object, amount float32, _ object.DamageType) bool {
-					if item != liveShield || item == shield || w != nil || amount != 2 {
+					if item != liveShield || item == shield || w != source || amount != 2 {
 						t.Fatal("stale shield/nonnil weapon")
 					}
 					events = append(events, "wear")

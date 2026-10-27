@@ -229,12 +229,12 @@ func playerDamageWeaponlessRawSpellShield4E17B0(
 	if r.BlockDamagePercent == nil {
 		return reject("missing raw spell shield balance")
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	shield := playerDamageShieldItem4E17B0(target)
 	if r.DamageBlockItem == nil || (shield != nil && (r.CanDamageBlockItem == nil || !r.CanDamageBlockItem(shield))) {
 		return reject("unsupported raw spell live shield wear")
 	}
-	if !r.DamageBlockItem(shield, target, source, nil, amount, typ) && r.Unsupported != nil {
+	if !r.DamageBlockItem(shield, target, source, source, amount, typ) && r.Unsupported != nil {
 		r.Unsupported("raw spell shield wear failed", target, source, nil, damage, typ)
 	}
 	if shield != nil && shield.Flags().Has(object.FlagDestroyed) {

@@ -127,7 +127,7 @@ func playerDamageGreatSwordMissileBlock4E17B0(
 		}
 		r.Melee.MonsterBlockAction(target)
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	// 004E22A6 reloads the inventory head only after reflection, audio,
 	// state/action and balance callbacks. Do not wear an eagerly cached item.
 	item = playerDamageGreatSwordItem4E22A0(target)

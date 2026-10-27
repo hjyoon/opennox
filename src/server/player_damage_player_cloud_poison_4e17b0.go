@@ -214,7 +214,7 @@ func playerDamagePlayerCloudGreatSword4E17B0(
 	if r.BlockDamagePercent == nil {
 		return reject("missing player cloud POISON GreatSword balance")
 	}
-	amount := experienceSpill32TowardZero(experienceMul53TowardZero(r.BlockDamagePercent(), float64(damage)))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	item := playerDamageGreatSwordItem4E22A0(target)
 	if r.Melee.DamageBlockWeapon == nil {
 		return reject("missing player cloud POISON GreatSword durability")

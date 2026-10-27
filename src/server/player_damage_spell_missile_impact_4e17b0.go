@@ -179,7 +179,7 @@ func playerDamageSpellMissileImpactShield4E17B0(
 	if r.BlockDamagePercent == nil {
 		return reject("missing spell-missile IMPACT shield balance")
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	shield := playerDamageShieldItem4E17B0(target)
 	if r.DamageBlockItem == nil || (shield != nil && (r.CanDamageBlockItem == nil || !r.CanDamageBlockItem(shield))) {
 		return reject("unsupported live spell-missile IMPACT shield durability")

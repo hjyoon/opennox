@@ -350,7 +350,7 @@ func TestPlayerDamageWeaponlessNonItemBlocksMatchesGAMEEXE4E17B0(t *testing.T) {
 			r.BlockDamagePercent = func() float64 { trace = append(trace, "balance"); return .25 }
 			blocks := 0
 			block := func(got, target, source, weapon *Object, amount float32, typ object.DamageType) bool {
-				if got != item || target != v || source != owner || weapon != w || typ != row.Type || len(row.Blocks) != 1 || math.Float32bits(amount) != math.Float32bits(float32(row.Blocks[0][1])) || uint32(row.Blocks[0][0])&mask == 0 {
+				if got != item || target != v || source != owner || weapon != owner || typ != row.Type || len(row.Blocks) != 1 || math.Float32bits(amount) != math.Float32bits(float32(row.Blocks[0][1])) || uint32(row.Blocks[0][0])&mask == 0 {
 					t.Fatal("block item/owner/weapon/wear identity")
 				}
 				blocks++

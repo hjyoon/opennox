@@ -81,7 +81,7 @@ func playerDamageArmedExplosionGreatSword4E17B0(
 	if r.BlockDamagePercent == nil {
 		return reject("missing armed EXPLOSION GreatSword balance")
 	}
-	amount := experienceSpill32TowardZero(experienceMul53TowardZero(r.BlockDamagePercent(), float64(damage)))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	// 004E22A0 scans live inventory after sound, state/action and balance.
 	// The selected pointer, not a second inventory lookup, is tested for
 	// destruction after the actual weapon-wear callback.

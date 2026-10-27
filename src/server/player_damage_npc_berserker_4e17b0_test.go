@@ -178,7 +178,7 @@ func TestPlayerDamageNPCBerserker4E17B0ShieldFrontRear(t *testing.T) {
 			r.CanDamageBlockItem = func(v *Object) bool { return v == shield }
 			blocked := false
 			r.DamageBlockItem = func(item, owner, attacker, weapon *Object, wear float32, typ object.DamageType) bool {
-				if item != shield || owner != target || attacker != source || weapon != source || wear != 1.6 || typ != object.DamageCrush {
+				if item != shield || owner != target || attacker != source || weapon != source || math.Float32bits(wear) != sharedBlockOriginalWearBits4E17B0(t, .2, 8) || typ != object.DamageCrush {
 					t.Fatal("charge shield wear arguments")
 				}
 				blocked = true

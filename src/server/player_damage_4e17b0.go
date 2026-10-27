@@ -272,7 +272,7 @@ func playerDamageShieldBlock4E17B0(
 	}
 	// The 004E1BFD call through sub_4E2330 reaches EquipDamage without a selected
 	// shield; its nil/no-health guard is a successful wear no-op.
-	amount := float32(runtime.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(runtime.BlockDamagePercent(), damage)
 	effective := weapon
 	if effective == nil {
 		effective = source
@@ -614,12 +614,12 @@ func playerDamageMonster4E17B0(
 						runtime.SetOwner(target, source)
 					}
 				}
-				amount := float32(runtime.BlockDamagePercent() * float64(damage))
+				amount := playerDamageBlockAmount4E17B0(runtime.BlockDamagePercent(), damage)
 				shield := playerDamageShieldItem4E17B0(target)
 				if runtime.DamageBlockItem == nil || (shield != nil && (runtime.CanDamageBlockItem == nil || !runtime.CanDamageBlockItem(shield))) {
 					return playerDamageUnsupported4E17B0(runtime, "unsupported NPC weapon-less EXPLOSION live shield wear", target, source, weapon, damage, typ)
 				}
-				if !runtime.DamageBlockItem(shield, target, source, weapon, amount, typ) && runtime.Unsupported != nil {
+				if !runtime.DamageBlockItem(shield, target, source, source, amount, typ) && runtime.Unsupported != nil {
 					runtime.Unsupported("NPC weapon-less EXPLOSION shield wear failed", target, source, weapon, damage, typ)
 				}
 				if shield != nil && shield.Flags().Has(object.FlagDestroyed) {
@@ -768,7 +768,7 @@ func playerDamageMonster4E17B0(
 					if runtime.BlockDamagePercent == nil {
 						return playerDamageUnsupported4E17B0(runtime, "missing NPC ZAP_RAY shield balance service", target, source, weapon, damage, typ)
 					}
-					amount := float32(runtime.BlockDamagePercent() * float64(damage))
+					amount := playerDamageBlockAmount4E17B0(runtime.BlockDamagePercent(), damage)
 					// 004E1BFD selects the live inventory shield only after
 					// audio/reflection/balance. Nil/no-health wear is a no-op.
 					shield := playerDamageShieldItem4E17B0(target)
@@ -1310,7 +1310,7 @@ func PlayerDamageNative4E17B0(
 					if runtime.BlockDamagePercent == nil {
 						return playerDamageUnsupported4E17B0(runtime, "missing player ZAP_RAY shield balance service", target, source, weapon, damage, typ)
 					}
-					amount := float32(runtime.BlockDamagePercent() * float64(damage))
+					amount := playerDamageBlockAmount4E17B0(runtime.BlockDamagePercent(), damage)
 					// 004E1BFD selects live inventory after sound/reflection/
 					// balance; nil/no-health wear is a successful no-op.
 					shield := playerDamageShieldItem4E17B0(target)

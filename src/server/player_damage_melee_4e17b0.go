@@ -182,7 +182,7 @@ func playerDamageMeleeApplyBlock4E17B0(
 	if effective == nil {
 		effective = source
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	apply := r.DamageBlockItem
 	if plan.weapon {
 		apply = r.Melee.DamageBlockWeapon

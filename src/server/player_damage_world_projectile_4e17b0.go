@@ -248,7 +248,7 @@ func playerDamageWorldProjectileShield4E17B0(target, source, weapon, attack *Obj
 	if r.BlockDamagePercent == nil {
 		return reject("missing world projectile shield balance")
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	shield := playerDamageShieldItem4E17B0(target)
 	if r.DamageBlockItem == nil || (shield != nil && (r.CanDamageBlockItem == nil || !r.CanDamageBlockItem(shield))) {
 		return reject("unsupported live world projectile shield durability")

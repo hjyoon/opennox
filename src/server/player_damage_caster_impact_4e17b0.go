@@ -294,7 +294,7 @@ func playerDamageCasterImpactBlock4E17B0(
 	if r.BlockDamagePercent == nil {
 		return reject("missing caster IMPACT block balance")
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	var item *Object
 	for next := target.InvFirstItem; next != nil; next = next.InvNextItem {
 		if next.Flags().Has(object.FlagEquipped) && uint32(next.SubClass())&mask != 0 {
@@ -309,7 +309,7 @@ func playerDamageCasterImpactBlock4E17B0(
 	if apply == nil || (item != nil && (admit == nil || !admit(item))) {
 		return reject("unsupported caster IMPACT live block durability")
 	}
-	if !apply(item, target, source, weapon, amount, typ) && r.Unsupported != nil {
+	if !apply(item, target, source, attack, amount, typ) && r.Unsupported != nil {
 		r.Unsupported("caster IMPACT block durability failed", target, source, weapon, damage, typ)
 	}
 	// The original weapon helper dereferences a missing item after its

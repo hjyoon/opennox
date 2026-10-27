@@ -304,7 +304,7 @@ func TestPlayerDamageNative4E17B0NPCShieldSourceOnlyMarkerAndExclusion(t *testin
 						return true
 					}
 					r.DamageBlockItem = func(item, owner, attacker, effective *Object, wear float32, gotType object.DamageType) bool {
-						if item != shield || owner != target || attacker != source || effective != nil || wear != float32(0.2*9) || gotType != typ {
+						if item != shield || owner != target || attacker != source || effective != source || wear != float32(0.2*9) || gotType != typ {
 							t.Fatal("world EXPLOSION shield durability arguments")
 						}
 						events = append(events, "durability")

@@ -53,7 +53,7 @@ func playerDamageMonsterSelfBladeBlock4E17B0(target, source, weapon *Object, cac
 		state = PlayerState(r.Melee.RandomInt(18, 20))
 	}
 	r.PlayerSetState(target, state)
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	// 004E22A0 reloads inventory only after audio/state/balance callbacks.
 	var item *Object
 	for next := target.InvFirstItem; next != nil; next = next.InvNextItem {

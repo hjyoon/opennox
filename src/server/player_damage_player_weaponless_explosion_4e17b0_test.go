@@ -298,7 +298,7 @@ func TestPlayerDamageNative4E17B0PlayerWeaponlessExplosionShield(t *testing.T) {
 					}
 					r.CanDamageBlockItem = func(v *Object) bool { return v == shield }
 					r.DamageBlockItem = func(v, by, s, w *Object, amount float32, typ object.DamageType) bool {
-						if v != shield || by != target || s != source || w != nil || amount != 2.25 || typ != object.DamageExplosion {
+						if v != shield || by != target || s != source || w != source || amount != 2.25 || typ != object.DamageExplosion {
 							t.Fatal("live shield wear identity/order")
 						}
 						events = append(events, "wear")

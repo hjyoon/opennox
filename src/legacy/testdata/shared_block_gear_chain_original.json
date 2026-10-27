@@ -1,0 +1,387 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "regions": [
+    {
+      "name": "PlayerDamage",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9"
+    },
+    {
+      "name": "carry",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86"
+    },
+    {
+      "name": "signed-DWORD",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "attack-predicate",
+      "address": "0x4e1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73"
+    },
+    {
+      "name": "parent-chain",
+      "address": "0x4ec580",
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    },
+    {
+      "name": "first-shield",
+      "address": "0x4e2330",
+      "size": 135,
+      "sha256": "834aa819ec9483bd70972c7c10a043796682227701044db778ddf60598e3f693"
+    },
+    {
+      "name": "observer",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6"
+    },
+    {
+      "name": "Quest-getter",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde"
+    },
+    {
+      "name": "weapon-loop",
+      "address": "0x4e22a0",
+      "size": 135,
+      "sha256": "4294d212dd18138b2a8784ca0fa07ffc15cb4270af5682cb8b4933203a16054e"
+    },
+    {
+      "name": "readiness",
+      "address": "0x534340",
+      "size": 72,
+      "sha256": "467b1f4802b0cea280b1877cf5404dc002ce82379fc4230951f810b8f8801f4e"
+    },
+    {
+      "name": "current-action",
+      "address": "0x50a020",
+      "size": 27,
+      "sha256": "4aaeddd24a479fd9f9ffad57ed0014e32889b80af555fe337d080ffda8847705"
+    },
+    {
+      "name": "equip-durability",
+      "address": "0x4e16d0",
+      "size": 213,
+      "sha256": "b2ad08c5146362def8b854c2da72e48b202c3ba611a005c7530c3213551f6748"
+    },
+    {
+      "name": "weapon-durability",
+      "address": "0x4e1560",
+      "size": 239,
+      "sha256": "01c730b421118d38a403bdbca258ca82073521b056656a9c84a629fb038d13fa"
+    }
+  ],
+  "original_entries": {
+    "PlayerDamage": 16,
+    "current-action": 8,
+    "first-shield": 8,
+    "equip-durability": 8,
+    "signed-DWORD": 16,
+    "readiness": 4,
+    "weapon-loop": 8,
+    "weapon-durability": 8,
+    "observer": 8
+  },
+  "memory_faults": [],
+  "scope": "Execute original PlayerDamage -> block selection -> item durability math.\n\nItem Damage is a declared observation callback recording the original integer\nwear; HP is not changed by this oracle. Native registered ArmorDamage is tested\nseparately. Reflection, balance, RNG/state/action and sound remain boundaries.\n",
+  "rows": [
+    {
+      "input": {
+        "player": false,
+        "player_source": false,
+        "defense": "shield",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "nearest-control",
+      "wear_bits32": 1076677837,
+      "integer_gear_damage": [
+        3
+      ],
+      "gear_carry_bits32": 0,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": false,
+        "player_source": false,
+        "defense": "greatsword",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "nearest-control",
+      "wear_bits32": 1076677837,
+      "integer_gear_damage": [
+        3
+      ],
+      "gear_carry_bits32": 0,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": false,
+        "player_source": true,
+        "defense": "shield",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "nearest-control",
+      "wear_bits32": 1076677837,
+      "integer_gear_damage": [
+        3
+      ],
+      "gear_carry_bits32": 0,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": false,
+        "player_source": true,
+        "defense": "greatsword",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "nearest-control",
+      "wear_bits32": 1076677837,
+      "integer_gear_damage": [
+        3
+      ],
+      "gear_carry_bits32": 0,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": true,
+        "player_source": false,
+        "defense": "shield",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "nearest-control",
+      "wear_bits32": 1076677837,
+      "integer_gear_damage": [
+        3
+      ],
+      "gear_carry_bits32": 0,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": true,
+        "player_source": false,
+        "defense": "greatsword",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "nearest-control",
+      "wear_bits32": 1076677837,
+      "integer_gear_damage": [
+        3
+      ],
+      "gear_carry_bits32": 0,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": true,
+        "player_source": true,
+        "defense": "shield",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "nearest-control",
+      "wear_bits32": 1076677837,
+      "integer_gear_damage": [
+        3
+      ],
+      "gear_carry_bits32": 0,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": true,
+        "player_source": true,
+        "defense": "greatsword",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "nearest-control",
+      "wear_bits32": 1076677837,
+      "integer_gear_damage": [
+        3
+      ],
+      "gear_carry_bits32": 0,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": false,
+        "player_source": false,
+        "defense": "shield",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "actual-startup",
+      "wear_bits32": 1076677836,
+      "integer_gear_damage": [
+        2
+      ],
+      "gear_carry_bits32": 1065353212,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": false,
+        "player_source": false,
+        "defense": "greatsword",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "actual-startup",
+      "wear_bits32": 1076677836,
+      "integer_gear_damage": [
+        2
+      ],
+      "gear_carry_bits32": 1065353212,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": false,
+        "player_source": true,
+        "defense": "shield",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "actual-startup",
+      "wear_bits32": 1076677836,
+      "integer_gear_damage": [
+        2
+      ],
+      "gear_carry_bits32": 1065353212,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": false,
+        "player_source": true,
+        "defense": "greatsword",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "actual-startup",
+      "wear_bits32": 1076677836,
+      "integer_gear_damage": [
+        2
+      ],
+      "gear_carry_bits32": 1065353212,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": true,
+        "player_source": false,
+        "defense": "shield",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "actual-startup",
+      "wear_bits32": 1076677836,
+      "integer_gear_damage": [
+        2
+      ],
+      "gear_carry_bits32": 1065353212,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": true,
+        "player_source": false,
+        "defense": "greatsword",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "actual-startup",
+      "wear_bits32": 1076677836,
+      "integer_gear_damage": [
+        2
+      ],
+      "gear_carry_bits32": 1065353212,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": true,
+        "player_source": true,
+        "defense": "shield",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "actual-startup",
+      "wear_bits32": 1076677836,
+      "integer_gear_damage": [
+        2
+      ],
+      "gear_carry_bits32": 1065353212,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    },
+    {
+      "input": {
+        "player": true,
+        "player_source": true,
+        "defense": "greatsword",
+        "percent": 0.3,
+        "type": 3,
+        "raw": 9
+      },
+      "mode": "actual-startup",
+      "wear_bits32": 1076677836,
+      "integer_gear_damage": [
+        2
+      ],
+      "gear_carry_bits32": 1065353212,
+      "returned": 0,
+      "item_HP_unchanged_at_declared_callback": 100
+    }
+  ]
+}

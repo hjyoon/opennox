@@ -1,0 +1,232 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_startup_control_word": 3647,
+  "source_report_sha256": "35c9d2173db17f751f4781b27241f999054967ffc7351d3e1cb6ce94ae1cdd8e",
+  "rows": [
+    {
+      "percent": 0.2,
+      "raw": -9,
+      "wear_bits32": 3219547750
+    },
+    {
+      "percent": 0.2,
+      "raw": 0,
+      "wear_bits32": 0
+    },
+    {
+      "percent": 0.2,
+      "raw": 1,
+      "wear_bits32": 1045220556
+    },
+    {
+      "percent": 0.2,
+      "raw": 3,
+      "wear_bits32": 1058642329
+    },
+    {
+      "percent": 0.2,
+      "raw": 8,
+      "wear_bits32": 1070386380
+    },
+    {
+      "percent": 0.2,
+      "raw": 9,
+      "wear_bits32": 1072064102
+    },
+    {
+      "percent": 0.2,
+      "raw": 11,
+      "wear_bits32": 1074580684
+    },
+    {
+      "percent": 0.2,
+      "raw": 25,
+      "wear_bits32": 1084227584
+    },
+    {
+      "percent": 0.2,
+      "raw": 61,
+      "wear_bits32": 1094923059
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": -9,
+      "wear_bits32": 3219547750
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": 0,
+      "wear_bits32": 0
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": 1,
+      "wear_bits32": 1045220556
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": 3,
+      "wear_bits32": 1058642329
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": 8,
+      "wear_bits32": 1070386380
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": 9,
+      "wear_bits32": 1072064102
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": 11,
+      "wear_bits32": 1074580684
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": 25,
+      "wear_bits32": 1084227584
+    },
+    {
+      "percent": 0.20000000000000007,
+      "raw": 61,
+      "wear_bits32": 1094923059
+    },
+    {
+      "percent": 0.25,
+      "raw": -9,
+      "wear_bits32": 3222274048
+    },
+    {
+      "percent": 0.25,
+      "raw": 0,
+      "wear_bits32": 0
+    },
+    {
+      "percent": 0.25,
+      "raw": 1,
+      "wear_bits32": 1048576000
+    },
+    {
+      "percent": 0.25,
+      "raw": 3,
+      "wear_bits32": 1061158912
+    },
+    {
+      "percent": 0.25,
+      "raw": 8,
+      "wear_bits32": 1073741824
+    },
+    {
+      "percent": 0.25,
+      "raw": 9,
+      "wear_bits32": 1074790400
+    },
+    {
+      "percent": 0.25,
+      "raw": 11,
+      "wear_bits32": 1076887552
+    },
+    {
+      "percent": 0.25,
+      "raw": 25,
+      "wear_bits32": 1086849024
+    },
+    {
+      "percent": 0.25,
+      "raw": 61,
+      "wear_bits32": 1098121216
+    },
+    {
+      "percent": 0.3,
+      "raw": -9,
+      "wear_bits32": 3224161484
+    },
+    {
+      "percent": 0.3,
+      "raw": 0,
+      "wear_bits32": 0
+    },
+    {
+      "percent": 0.3,
+      "raw": 1,
+      "wear_bits32": 1050253721
+    },
+    {
+      "percent": 0.3,
+      "raw": 3,
+      "wear_bits32": 1063675494
+    },
+    {
+      "percent": 0.3,
+      "raw": 8,
+      "wear_bits32": 1075419545
+    },
+    {
+      "percent": 0.3,
+      "raw": 9,
+      "wear_bits32": 1076677836
+    },
+    {
+      "percent": 0.3,
+      "raw": 11,
+      "wear_bits32": 1079194419
+    },
+    {
+      "percent": 0.3,
+      "raw": 25,
+      "wear_bits32": 1089470463
+    },
+    {
+      "percent": 0.3,
+      "raw": 61,
+      "wear_bits32": 1100113510
+    },
+    {
+      "percent": 0.5,
+      "raw": -9,
+      "wear_bits32": 3230662656
+    },
+    {
+      "percent": 0.5,
+      "raw": 0,
+      "wear_bits32": 0
+    },
+    {
+      "percent": 0.5,
+      "raw": 1,
+      "wear_bits32": 1056964608
+    },
+    {
+      "percent": 0.5,
+      "raw": 3,
+      "wear_bits32": 1069547520
+    },
+    {
+      "percent": 0.5,
+      "raw": 8,
+      "wear_bits32": 1082130432
+    },
+    {
+      "percent": 0.5,
+      "raw": 9,
+      "wear_bits32": 1083179008
+    },
+    {
+      "percent": 0.5,
+      "raw": 11,
+      "wear_bits32": 1085276160
+    },
+    {
+      "percent": 0.5,
+      "raw": 25,
+      "wear_bits32": 1095237632
+    },
+    {
+      "percent": 0.5,
+      "raw": 61,
+      "wear_bits32": 1106509824
+    }
+  ]
+}

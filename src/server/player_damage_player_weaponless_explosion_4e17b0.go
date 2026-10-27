@@ -132,12 +132,12 @@ func playerDamagePlayerWeaponlessExplosionShield4E17B0(
 	if r.BlockDamagePercent == nil {
 		return reject("missing weapon-less EXPLOSION shield balance")
 	}
-	amount := float32(r.BlockDamagePercent() * float64(damage))
+	amount := playerDamageBlockAmount4E17B0(r.BlockDamagePercent(), damage)
 	shield := playerDamageShieldItem4E17B0(target)
 	if r.DamageBlockItem == nil || (shield != nil && (r.CanDamageBlockItem == nil || !r.CanDamageBlockItem(shield))) {
 		return reject("unsupported live weapon-less EXPLOSION shield durability")
 	}
-	if !r.DamageBlockItem(shield, target, source, nil, amount, typ) && r.Unsupported != nil {
+	if !r.DamageBlockItem(shield, target, source, source, amount, typ) && r.Unsupported != nil {
 		r.Unsupported("weapon-less EXPLOSION shield durability failed", target, source, nil, damage, typ)
 	}
 	if shield != nil && shield.Flags().Has(object.FlagDestroyed) {

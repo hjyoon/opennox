@@ -59,7 +59,7 @@ func TestPlayerDamageNative4E17B0ElectricFractionalCarry(t *testing.T) {
 		forwarded = append(forwarded, d)
 		return true
 	}
-	for i, want := range []float32{-0.25, -0.5, 0.25} {
+	for i, want := range []float32{0.75, 0.5, 0.25} {
 		if h, result := PlayerDamageNative4E17B0(target, source, nil, 5, object.DamageAirborneElectric, r); !h || !result {
 			t.Fatalf("electric tick %d = %t/%t", i, h, result)
 		}
@@ -67,7 +67,7 @@ func TestPlayerDamageNative4E17B0ElectricFractionalCarry(t *testing.T) {
 			t.Fatalf("carry tick %d=%g want=%g", i, got, want)
 		}
 	}
-	if !reflect.DeepEqual(forwarded, []int32{4, 4, 3}) || len(damages) != 0 {
+	if !reflect.DeepEqual(forwarded, []int32{3, 4, 4}) || len(damages) != 0 {
 		t.Fatalf("forwarded=%v inline=%v", forwarded, damages)
 	}
 }

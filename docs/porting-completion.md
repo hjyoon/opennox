@@ -108,8 +108,8 @@ manifest. The correction changes test data and its reader; product Go/C sources
 and the already qualified executable and two-stage campaign replay are retained.
 
 The separate armed EXPLOSION and unit self-weapon electric arithmetic bodies
-remain outside this checkpoint. Subsequent armed EXPLOSION and dangerous-world
-IMPALE work is described below; unit self-weapon electric remains open.
+remain outside this checkpoint. Subsequent armed EXPLOSION, dangerous-world
+IMPALE and unit self-weapon electric work is described below.
 These bounded results do not establish complete PlayerDamage arithmetic or
 overall 100% port completion.
 
@@ -144,8 +144,8 @@ all historical input files and existing test identities remain.
 Complete macOS ARM64 root/server/legacy checks pass 230,544 events with 16 skips.
 The highres world-prefix/collision subset passes 89 events with cgocheck2 and
 checkptr level 2. Counts include parents and subtests. The following checkpoint
-covers armed EXPLOSION; shared blocking arithmetic and the unit self-weapon
-electric tail remain separate work. Overall 100% remains unproved.
+covers armed EXPLOSION, followed by unit self-weapon electric work. Shared
+blocking arithmetic remains separate work. Overall 100% remains unproved.
 
 ### Armed EXPLOSION startup arithmetic
 
@@ -182,8 +182,49 @@ and checkptr level 2 across the same three packages.
 The input-only upper-cave sequence continues to reuse one prebuilt executable
 for original monster defeats followed by original potion pickup and a living
 manual Save. This bounded replay does not certify the entire cave or chapter.
-Unit self-weapon electric and shared blocking arithmetic remain open; overall
-100% port completion is not established by these results.
+The following checkpoint covers unit self-weapon electric. Shared blocking
+arithmetic remains open; overall 100% is not established by these results.
+
+### Unit self-weapon electric startup arithmetic
+
+Player and scripted-NPC ELECTRIC/AIRBORNE_ELECTRIC now preserve startup PC53
+multiplication, binary32 spills, fractional carry and truncating Quest scaling
+when a unit is supplied as both source and weapon. The shared weaponless
+electric entry uses the same corrected body. Electric scale still runs before
+the live carry reload; cached hit metadata, raw armor wear, positive-only
+minimum damage and late GodMode/Quest ordering remain.
+
+Unchanged original instructions supply 456 self-weapon contexts, each executed
+under the actual startup control word and the historical nearest control.
+Another 456 weaponless contexts execute under both modes and independently
+confirm the same numeric and marker observations. Player/NPC sources and targets,
+both electric types, signed/zero/overflow inputs, Quest scales, replacement live
+updates and callback carry changes are covered. Original region hashes and
+nonoutput heap bytes remain unchanged. Electric scale, armor wear and final HP
+are declared boundaries in these machine-code comparisons. Native C-owned
+records above 4 GiB separately compare all 456 startup contexts and unchanged
+nonoutput bytes. The preserved before-port 312-context subset has 224 failing
+native cases.
+
+Existing callback-order, live-class, cached-marker and GodMode assertions remain;
+only independently confirmed numeric expectations change. Original startup gives
+raw5/scale.5/carry.5 effective3, then Quest scale.5 effective1. Repeated
+raw5/scale.75 hits from zero carry forward 3, 4, 4 with carry .75, .5, .25.
+
+Actual registered C dispatch, electric scale, DefaultDamage and UnitSetHP are
+tested separately without replacing damage or HP. With no armor, raw8 and carry
+.75, Player/NPC source-target combinations and both electric types must retain
+.75 carry and reach HP200 -> 192 -> 184 -> 176 across three hits. All referenced
+records are C-owned. Complete macOS ARM64 root/server/legacy checks pass 231,104
+terminal test events with 16 skips. The initial combined run retains its failed
+root expectations and successful complete legacy package; a separate complete
+root rerun passes after the original numeric controls remove its self-weapon
+exceptions. Prior test results and multiplicities remain, with only three runtime
+pointer labels normalized. The 466 new passing events include parent tests.
+The highres electric/ordered-armor subset passes 1,640 events across all three
+packages with cgocheck2 and checkptr level 2.
+Shared blocking and other remaining damage arithmetic, campaign optional
+objectives and final completion audits remain open.
 
 ### Terminal and scripted Magic Missile EXPLOSION damage
 

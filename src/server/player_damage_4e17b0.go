@@ -913,14 +913,19 @@ func playerDamageMonster4E17B0(
 	if crush {
 		scaled = float32((1.0 - float64(armorValue)*0.5) * float64(damage))
 	} else {
-		scaled = float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
+		scaled = experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.ElectricArmorScale(target)), float64(damage)))
 	}
 	// The electric scale callback can replace UpdateData or its carry. Read
 	// it after the callback and binary32 spill, just like 004E20F0.
-	live := target.UpdateDataMonster()
-	accumulated := scaled + math.Float32frombits(live.Field1)
-	effective := playerDamageRound4E17B0(accumulated)
-	live.Field1 = math.Float32bits(accumulated - float32(effective))
+	var effective int32
+	if electric {
+		playerDamageCarry4E20F0(target, &effective, scaled)
+	} else {
+		live := target.UpdateDataMonster()
+		accumulated := scaled + math.Float32frombits(live.Field1)
+		effective = playerDamageRound4E17B0(accumulated)
+		live.Field1 = math.Float32bits(accumulated - float32(effective))
+	}
 	remaining := damage
 	if crush {
 		remaining = damage - effective
@@ -938,7 +943,12 @@ func playerDamageMonster4E17B0(
 			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		if electric {
+			scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.QuestDamageScale()), float64(effective)))
+			effective = netFXTruncateSignedDWORD419A70(scaled)
+		} else {
+			effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		}
 		if before > 0 && effective < 1 {
 			effective = 1
 		}
@@ -982,16 +992,14 @@ func playerDamageElectricPlayer4E17B0(
 	if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported live player electric record", target, source, weapon, damage, typ)
 	}
-	scaled := float32(float64(runtime.ElectricArmorScale(target)) * float64(damage))
+	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.ElectricArmorScale(target)), float64(damage)))
 	if !target.Class().Has(object.ClassPlayer) || target.UpdateData == nil {
 		return playerDamageUnsupported4E17B0(runtime, "unsupported live player electric carry", target, source, weapon, damage, typ)
 	}
 	// 004E20F0 reloads the live carry after ElectricArmorScale, not from
 	// the cached marker base. 004E2180 similarly reloads live armor data.
-	live := target.UpdateDataPlayer()
-	accumulated := scaled + math.Float32frombits(live.Field21)
-	effective := playerDamageRound4E17B0(accumulated)
-	live.Field21 = math.Float32bits(accumulated - float32(effective))
+	var effective int32
+	playerDamageCarry4E20F0(target, &effective, scaled)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage, typ, runtime)
 	if target.Class().Has(object.ClassPlayer) && update.Field76 == 0 {
 		update.Field76 = 2
@@ -1010,7 +1018,8 @@ func playerDamageElectricPlayer4E17B0(
 			return playerDamageUnsupported4E17B0(runtime, "missing live quest damage service", target, source, weapon, damage, typ)
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(runtime.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

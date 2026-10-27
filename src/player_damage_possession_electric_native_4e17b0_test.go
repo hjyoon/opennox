@@ -102,11 +102,7 @@ func TestPlayerDamagePossessionElectricNative4E17B0(t *testing.T) {
 						beforeSourceUD.Field130 = 1400
 					}
 					// Startup truncation: 1*5 + live carry .5 gives 5/.5.
-					// The separate unit self-weapon body is outside this port.
 					wantHP, wantCarry := uint16(55), float32(0.5)
-					if selfWeapon {
-						wantHP, wantCarry = 54, -0.5
-					}
 					if !target.CallDamage(source, weapon, 5, typ) || health.Cur != wantHP || player.Field3680 != 0x20 || player.CameraFollowObj != nil || player.ObserveTarget() != nil || target.Update != legacy.Get_nox_xxx_updatePlayer_4F8100() || ud.Field76 != 2 || ud.Field75 != uint32(typ) || ud.Field21 != math.Float32bits(wantCarry) || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) || target.Frame134 != 1400 || *source != beforeSource || *sourceUD != beforeSourceUD || *sourcePlayerUD != beforePlayerUD || *sourcePlayer != beforePlayer {
 						t.Fatalf("native electric possession: HP=%d status=%x camera=%p update=%p marker=%d/%d carry=%g attribution=%p position=%v", health.Cur, player.Field3680, player.CameraFollowObj, target.Update, ud.Field76, ud.Field75, math.Float32frombits(ud.Field21), target.Obj130, target.Pos132)
 					}

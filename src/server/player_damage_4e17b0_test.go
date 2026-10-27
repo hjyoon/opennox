@@ -1481,7 +1481,7 @@ func TestPlayerDamageNative4E17B0ScriptedMonsterAirborneElectric(t *testing.T) {
 	if handled, result := PlayerDamageNative4E17B0(target, source, nil, 1, object.DamageAirborneElectric, runtime); !handled || !result {
 		t.Fatalf("scripted monster AIRBORNE_ELECTRIC = handled:%t result:%t", handled, result)
 	}
-	if gotDamage != 1 || math.Float32bits(math.Float32frombits(update.Field1)) != math.Float32bits(-0.25) ||
+	if gotDamage != 1 || math.Float32bits(math.Float32frombits(update.Field1)) != math.Float32bits(0.75) ||
 		update.Field547 != 2 || update.Field546 != uint32(object.DamageAirborneElectric) {
 		t.Fatalf("electric state = damage:%d carry:%v hit:%d/%d",
 			gotDamage, math.Float32frombits(update.Field1), update.Field546, update.Field547)

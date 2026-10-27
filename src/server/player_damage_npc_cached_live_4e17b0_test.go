@@ -127,7 +127,7 @@ func TestPlayerDamageNPCCachedLive4E17B0Electric(t *testing.T) {
 				r.ItemArmorValue = func(*Object) float32 { events = append(events, "armor-value"); return 1 }
 				r.CanDamageArmor = func(v *Object) bool { return v == armor }
 				r.DamageArmor = func(v, a, w *Object, d int32, gotType object.DamageType) bool {
-					if v != armor || a != source || w != source || d != 3 || gotType != typ || live.Field1 != math.Float32bits(-0.25) || old.Field547 != 0 || old.Field546 != 77 {
+					if v != armor || a != source || w != source || d != 3 || gotType != typ || live.Field1 != math.Float32bits(0.75) || old.Field547 != 0 || old.Field546 != 77 {
 						t.Fatalf("electric raw wear/carry/marker=%d/%g/%d/%d", d, math.Float32frombits(live.Field1), old.Field547, old.Field546)
 					}
 					events = append(events, "armor")
@@ -139,14 +139,14 @@ func TestPlayerDamageNPCCachedLive4E17B0Electric(t *testing.T) {
 				world := damageMeleeWorldRuntime4E0B30(t)
 				world.ElectricProtection = func(*Object) float64 { return 0 }
 				r.DefaultDamage = func(v, a, w *Object, d int32, gotType object.DamageType) bool {
-					if d != 2 || old.Field547 != 2 || old.Field546 != uint32(typ) {
+					if d != 1 || old.Field547 != 2 || old.Field546 != uint32(typ) {
 						t.Fatalf("electric damage/marker=%d/%d/%d", d, old.Field547, old.Field546)
 					}
 					events = append(events, "default")
 					return DefaultDamageWorld4E0B30(v, a, w, d, gotType, world)
 				}
 				if h, result := PlayerDamageNative4E17B0(target, source, source, 3, typ, r); !h || !result ||
-					target.HealthData.Cur != 198 || armor.HealthData.Cur != 47 || *carry != 0 ||
+					target.HealthData.Cur != 199 || armor.HealthData.Cur != 47 || *carry != 0 ||
 					!slices.Equal(events, []string{"electric", "armor-value", "armor", "quest-mode", "default"}) {
 					t.Fatalf("electric=%t/%t HP=%d armor=%d events=%v", h, result, target.HealthData.Cur, armor.HealthData.Cur, events)
 				}

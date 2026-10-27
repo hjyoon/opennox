@@ -152,7 +152,7 @@ func TestPlayerDamageElectricPlayerLiveTail4E17B0(t *testing.T) {
 				god := tc.god && tc.dropPlayer == ""
 				wantDamage := int32(3)
 				if tc.quest {
-					wantDamage = 2
+					wantDamage = 1
 				}
 				r.DefaultDamage = func(v, a, w *Object, d int32, gotType object.DamageType) bool {
 					if v != target || a != source || w != weapon || d != wantDamage || gotType != typ {

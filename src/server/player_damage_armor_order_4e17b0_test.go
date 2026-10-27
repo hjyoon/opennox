@@ -40,7 +40,7 @@ func TestPlayerDamageNative4E17B0OrderedArmorCallers(t *testing.T) {
 			residual, portion := float32(-0.25), float32(0.5)
 			switch tc.typ {
 			case object.DamageElectric:
-				weapon, marker, markerType, portion = source, 0, 77, 1.5
+				weapon, marker, markerType, residual, portion = source, 0, 77, .75, 1.5
 			case object.DamageBlade:
 				weapon.ObjClass = object.ClassWeapon
 			case object.DamageLava:

@@ -628,8 +628,10 @@ func ModEffectParseFloat(_ *ModifierEff, p ModParseTarg, s string) bool {
 func (s *Server) Nox_xxx_fireEffect_4E0550(a1 unsafe.Pointer, a2, src, targ *Object) {
 	v5 := (*ModifierEff)(a1).AttackPreHit52.Valf
 	if targ != nil {
-		targ.CallDamage(src, a2, int(v5), object.DamageExplosion)
-		s.Nox_xxx_netSparkExplosionFx_5231B0(targ.PosVec, byte(int8(int64(float64(v5)*10.0))))
+		// Both original __ftol calls truncate to signed qword and expose its
+		// low dword. Native int conversions differ for out-of-range values.
+		targ.CallDamage(src, a2, int(x87TruncSignedQwordLow566DCC(float64(v5))), object.DamageExplosion)
+		s.Nox_xxx_netSparkExplosionFx_5231B0(targ.PosVec, byte(x87TruncSignedQwordLow566DCC(float64(v5)*10.0)))
 		s.Audio.EventObj(sound.SoundWeaponEffectFire, targ, 0, 0)
 	}
 }

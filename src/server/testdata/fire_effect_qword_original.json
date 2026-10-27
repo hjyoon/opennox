@@ -1,0 +1,4695 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "original_startup_control_word": 3647,
+  "regions": [
+    {
+      "name": "FireEffect",
+      "address": "0x4e0550",
+      "size": 96,
+      "sha256": "3d7a9243fc8ab8e867bfe708d717b30634783c0f18d0400643c3335e6f878987"
+    },
+    {
+      "name": "signed-qword",
+      "address": "0x566dcc",
+      "size": 39,
+      "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c"
+    },
+    {
+      "name": "startup",
+      "address": "0x4014b5",
+      "size": 15,
+      "sha256": "11106fa02eca473d04e1005f8d0a561681ef3db354bea12d02879f2215fd950c"
+    }
+  ],
+  "executed_instructions": 177,
+  "function_entries": {
+    "FireEffect": 148,
+    "signed-qword": 288
+  },
+  "declared_services": [
+    "target damage callback",
+    "spark transport",
+    "object audio emitter"
+  ],
+  "original_numeric_conversions_substituted": false,
+  "memory_faults": [],
+  "rows": [
+    {
+      "input": {
+        "name": "00000000/accepted-False",
+        "coefficient_bits32": 0,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00000000/accepted-True",
+        "coefficient_bits32": 0,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "80000000/accepted-False",
+        "coefficient_bits32": 2147483648,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "80000000/accepted-True",
+        "coefficient_bits32": 2147483648,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00000001/accepted-False",
+        "coefficient_bits32": 1,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00000001/accepted-True",
+        "coefficient_bits32": 1,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "80000001/accepted-False",
+        "coefficient_bits32": 2147483649,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "80000001/accepted-True",
+        "coefficient_bits32": 2147483649,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "007fffff/accepted-False",
+        "coefficient_bits32": 8388607,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "007fffff/accepted-True",
+        "coefficient_bits32": 8388607,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00800000/accepted-False",
+        "coefficient_bits32": 8388608,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00800000/accepted-True",
+        "coefficient_bits32": 8388608,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3dcccccd/accepted-False",
+        "coefficient_bits32": 1036831949,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 1
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3dcccccd/accepted-True",
+        "coefficient_bits32": 1036831949,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 1
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3f333333/accepted-False",
+        "coefficient_bits32": 1060320051,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 6
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3f333333/accepted-True",
+        "coefficient_bits32": 1060320051,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 6
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3f800000/accepted-False",
+        "coefficient_bits32": 1065353216,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 1,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 10
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3f800000/accepted-True",
+        "coefficient_bits32": 1065353216,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 1,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 10
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "40bccccd/accepted-False",
+        "coefficient_bits32": 1086115021,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 5,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 59
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "40bccccd/accepted-True",
+        "coefficient_bits32": 1086115021,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 5,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 59
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "c0bccccd/accepted-False",
+        "coefficient_bits32": 3233598669,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294967291,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 197
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "c0bccccd/accepted-True",
+        "coefficient_bits32": 3233598669,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294967291,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 197
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "41cccccd/accepted-False",
+        "coefficient_bits32": 1103940813,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 25,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "41cccccd/accepted-True",
+        "coefficient_bits32": 1103940813,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 25,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "42c00000/accepted-False",
+        "coefficient_bits32": 1119879168,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 96,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 192
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "42c00000/accepted-True",
+        "coefficient_bits32": 1119879168,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 96,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 192
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4effffff/accepted-False",
+        "coefficient_bits32": 1325400063,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483520,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4effffff/accepted-True",
+        "coefficient_bits32": 1325400063,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483520,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f000000/accepted-False",
+        "coefficient_bits32": 1325400064,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483648,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f000000/accepted-True",
+        "coefficient_bits32": 1325400064,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483648,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cf000000/accepted-False",
+        "coefficient_bits32": 3472883712,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483648,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cf000000/accepted-True",
+        "coefficient_bits32": 3472883712,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483648,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f7fffff/accepted-False",
+        "coefficient_bits32": 1333788671,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294967040,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f7fffff/accepted-True",
+        "coefficient_bits32": 1333788671,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294967040,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f800000/accepted-False",
+        "coefficient_bits32": 1333788672,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f800000/accepted-True",
+        "coefficient_bits32": 1333788672,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f800001/accepted-False",
+        "coefficient_bits32": 1333788673,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 512,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f800001/accepted-True",
+        "coefficient_bits32": 1333788673,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 512,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cf800001/accepted-False",
+        "coefficient_bits32": 3481272321,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294966784,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cf800001/accepted-True",
+        "coefficient_bits32": 3481272321,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294966784,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5d000000/accepted-False",
+        "coefficient_bits32": 1560281088,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5d000000/accepted-True",
+        "coefficient_bits32": 1560281088,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "dd000000/accepted-False",
+        "coefficient_bits32": 3707764736,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "dd000000/accepted-True",
+        "coefficient_bits32": 3707764736,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5dcccccc/accepted-False",
+        "coefficient_bits32": 1573702860,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5dcccccc/accepted-True",
+        "coefficient_bits32": 1573702860,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5dcccccd/accepted-False",
+        "coefficient_bits32": 1573702861,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5dcccccd/accepted-True",
+        "coefficient_bits32": 1573702861,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5effffff/accepted-False",
+        "coefficient_bits32": 1593835519,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5effffff/accepted-True",
+        "coefficient_bits32": 1593835519,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5f000000/accepted-False",
+        "coefficient_bits32": 1593835520,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5f000000/accepted-True",
+        "coefficient_bits32": 1593835520,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "df000000/accepted-False",
+        "coefficient_bits32": 3741319168,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "df000000/accepted-True",
+        "coefficient_bits32": 3741319168,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5f000001/accepted-False",
+        "coefficient_bits32": 1593835521,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5f000001/accepted-True",
+        "coefficient_bits32": 1593835521,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "df000001/accepted-False",
+        "coefficient_bits32": 3741319169,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "df000001/accepted-True",
+        "coefficient_bits32": 3741319169,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7f7fffff/accepted-False",
+        "coefficient_bits32": 2139095039,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7f7fffff/accepted-True",
+        "coefficient_bits32": 2139095039,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ff7fffff/accepted-False",
+        "coefficient_bits32": 4286578687,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ff7fffff/accepted-True",
+        "coefficient_bits32": 4286578687,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7f800000/accepted-False",
+        "coefficient_bits32": 2139095040,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7f800000/accepted-True",
+        "coefficient_bits32": 2139095040,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ff800000/accepted-False",
+        "coefficient_bits32": 4286578688,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ff800000/accepted-True",
+        "coefficient_bits32": 4286578688,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7fc00001/accepted-False",
+        "coefficient_bits32": 2143289345,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7fc00001/accepted-True",
+        "coefficient_bits32": 2143289345,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ffc00001/accepted-False",
+        "coefficient_bits32": 4290772993,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ffc00001/accepted-True",
+        "coefficient_bits32": 4290772993,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cached-coefficient/accepted-False",
+        "coefficient_bits32": 1086115021,
+        "accepted": false,
+        "mutate": true,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 5,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1117454336,
+            1118863360
+          ],
+          "intensity": 59
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cached-coefficient/accepted-True",
+        "coefficient_bits32": 1086115021,
+        "accepted": true,
+        "mutate": true,
+        "nil_target": false
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 5,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1117454336,
+            1118863360
+          ],
+          "intensity": 59
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "nil-target/40bccccd",
+        "coefficient_bits32": 1086115021,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": true
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "nil-target/7f800000",
+        "coefficient_bits32": 2139095040,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": true
+      },
+      "mode": "actual-startup",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00000000/accepted-False",
+        "coefficient_bits32": 0,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00000000/accepted-True",
+        "coefficient_bits32": 0,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "80000000/accepted-False",
+        "coefficient_bits32": 2147483648,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "80000000/accepted-True",
+        "coefficient_bits32": 2147483648,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00000001/accepted-False",
+        "coefficient_bits32": 1,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00000001/accepted-True",
+        "coefficient_bits32": 1,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "80000001/accepted-False",
+        "coefficient_bits32": 2147483649,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "80000001/accepted-True",
+        "coefficient_bits32": 2147483649,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "007fffff/accepted-False",
+        "coefficient_bits32": 8388607,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "007fffff/accepted-True",
+        "coefficient_bits32": 8388607,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00800000/accepted-False",
+        "coefficient_bits32": 8388608,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "00800000/accepted-True",
+        "coefficient_bits32": 8388608,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3dcccccd/accepted-False",
+        "coefficient_bits32": 1036831949,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 1
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3dcccccd/accepted-True",
+        "coefficient_bits32": 1036831949,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 1
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3f333333/accepted-False",
+        "coefficient_bits32": 1060320051,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 6
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3f333333/accepted-True",
+        "coefficient_bits32": 1060320051,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 6
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3f800000/accepted-False",
+        "coefficient_bits32": 1065353216,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 1,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 10
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "3f800000/accepted-True",
+        "coefficient_bits32": 1065353216,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 1,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 10
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "40bccccd/accepted-False",
+        "coefficient_bits32": 1086115021,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 5,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 59
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "40bccccd/accepted-True",
+        "coefficient_bits32": 1086115021,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 5,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 59
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "c0bccccd/accepted-False",
+        "coefficient_bits32": 3233598669,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294967291,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 197
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "c0bccccd/accepted-True",
+        "coefficient_bits32": 3233598669,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294967291,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 197
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "41cccccd/accepted-False",
+        "coefficient_bits32": 1103940813,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 25,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "41cccccd/accepted-True",
+        "coefficient_bits32": 1103940813,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 25,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "42c00000/accepted-False",
+        "coefficient_bits32": 1119879168,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 96,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 192
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "42c00000/accepted-True",
+        "coefficient_bits32": 1119879168,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 96,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 192
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4effffff/accepted-False",
+        "coefficient_bits32": 1325400063,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483520,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4effffff/accepted-True",
+        "coefficient_bits32": 1325400063,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483520,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f000000/accepted-False",
+        "coefficient_bits32": 1325400064,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483648,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f000000/accepted-True",
+        "coefficient_bits32": 1325400064,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483648,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cf000000/accepted-False",
+        "coefficient_bits32": 3472883712,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483648,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cf000000/accepted-True",
+        "coefficient_bits32": 3472883712,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 2147483648,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f7fffff/accepted-False",
+        "coefficient_bits32": 1333788671,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294967040,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f7fffff/accepted-True",
+        "coefficient_bits32": 1333788671,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294967040,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f800000/accepted-False",
+        "coefficient_bits32": 1333788672,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f800000/accepted-True",
+        "coefficient_bits32": 1333788672,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f800001/accepted-False",
+        "coefficient_bits32": 1333788673,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 512,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "4f800001/accepted-True",
+        "coefficient_bits32": 1333788673,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 512,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cf800001/accepted-False",
+        "coefficient_bits32": 3481272321,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294966784,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cf800001/accepted-True",
+        "coefficient_bits32": 3481272321,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 4294966784,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5d000000/accepted-False",
+        "coefficient_bits32": 1560281088,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5d000000/accepted-True",
+        "coefficient_bits32": 1560281088,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "dd000000/accepted-False",
+        "coefficient_bits32": 3707764736,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "dd000000/accepted-True",
+        "coefficient_bits32": 3707764736,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5dcccccc/accepted-False",
+        "coefficient_bits32": 1573702860,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5dcccccc/accepted-True",
+        "coefficient_bits32": 1573702860,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5dcccccd/accepted-False",
+        "coefficient_bits32": 1573702861,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5dcccccd/accepted-True",
+        "coefficient_bits32": 1573702861,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5effffff/accepted-False",
+        "coefficient_bits32": 1593835519,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5effffff/accepted-True",
+        "coefficient_bits32": 1593835519,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5f000000/accepted-False",
+        "coefficient_bits32": 1593835520,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5f000000/accepted-True",
+        "coefficient_bits32": 1593835520,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "df000000/accepted-False",
+        "coefficient_bits32": 3741319168,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "df000000/accepted-True",
+        "coefficient_bits32": 3741319168,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5f000001/accepted-False",
+        "coefficient_bits32": 1593835521,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "5f000001/accepted-True",
+        "coefficient_bits32": 1593835521,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "df000001/accepted-False",
+        "coefficient_bits32": 3741319169,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "df000001/accepted-True",
+        "coefficient_bits32": 3741319169,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7f7fffff/accepted-False",
+        "coefficient_bits32": 2139095039,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7f7fffff/accepted-True",
+        "coefficient_bits32": 2139095039,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ff7fffff/accepted-False",
+        "coefficient_bits32": 4286578687,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ff7fffff/accepted-True",
+        "coefficient_bits32": 4286578687,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7f800000/accepted-False",
+        "coefficient_bits32": 2139095040,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7f800000/accepted-True",
+        "coefficient_bits32": 2139095040,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ff800000/accepted-False",
+        "coefficient_bits32": 4286578688,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ff800000/accepted-True",
+        "coefficient_bits32": 4286578688,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7fc00001/accepted-False",
+        "coefficient_bits32": 2143289345,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "7fc00001/accepted-True",
+        "coefficient_bits32": 2143289345,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ffc00001/accepted-False",
+        "coefficient_bits32": 4290772993,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "ffc00001/accepted-True",
+        "coefficient_bits32": 4290772993,
+        "accepted": true,
+        "mutate": false,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 0,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1095499776,
+            1100611584
+          ],
+          "intensity": 0
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cached-coefficient/accepted-False",
+        "coefficient_bits32": 1086115021,
+        "accepted": false,
+        "mutate": true,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 5,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1117454336,
+            1118863360
+          ],
+          "intensity": 59
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "cached-coefficient/accepted-True",
+        "coefficient_bits32": 1086115021,
+        "accepted": true,
+        "mutate": true,
+        "nil_target": false
+      },
+      "mode": "nearest-control",
+      "events": [
+        {
+          "service": "damage",
+          "damage_bits32": 5,
+          "damage_type": 7
+        },
+        {
+          "service": "spark",
+          "position_bits32": [
+            1117454336,
+            1118863360
+          ],
+          "intensity": 59
+        },
+        {
+          "service": "audio",
+          "sound": 224,
+          "kind": 0,
+          "code": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "nil-target/40bccccd",
+        "coefficient_bits32": 1086115021,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": true
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "nil-target/7f800000",
+        "coefficient_bits32": 2139095040,
+        "accepted": false,
+        "mutate": false,
+        "nil_target": true
+      },
+      "mode": "nearest-control",
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    }
+  ]
+}

@@ -55,6 +55,47 @@ completion requirements.
 
 ## Current findings
 
+### Native FireEffect integer conversion
+
+FireEffect now uses the original signed-qword truncation and low-dword
+contract for both damage and spark intensity. An invalid conversion has low
+dword zero. The previous native Go conversions produced different results
+on ARM64 for positive overflow, including a spark intensity of 255 instead
+of zero. Ordinary stock-scale values already agreed; this boundary defect
+was reproduced in controlled native fixtures, not observed in a stock
+campaign encounter. Host FP mode is unchanged.
+
+The complete unchanged original 96-byte FireEffect body and 39-byte integer
+conversion helper execute for 74 contexts under actual startup CW `0xe3f`
+and again under a nearest control. Numeric conversions are not substituted.
+Damage acceptance, spark transport and object audio are declared services.
+The frozen observations cover 35 float32 values, both damage return values,
+nil targets, and a damage callback that changes the effect and target
+position. The coefficient remains cached while FX and audio use the live
+position; rejecting damage still emits both effects. Memory canaries,
+stack balance, control word and original executable hashes are checked.
+
+The actual Go server method is tested with C-owned native records, the
+registered damage dispatch, real FX message queue and real audio emitter.
+Its 148 original comparisons had 28 failing leaves before the conversion
+fix and all pass afterward. The controlled damage callback does not claim
+real HP or campaign coverage. Existing tests, frozen fixtures and campaign
+inputs retain their contents.
+
+One normal root/server/legacy run passes 233,438 terminal events with 16
+skips in 274.417 seconds. One focused highres server run with cgocheck2 and
+checkptr level 2 passes 1,241 events in 20.763 seconds. All prior terminal
+identities, results and multiplicities remain, adding 149 passing events.
+These totals are test events, not a porting completion percentage. Four
+full macOS configurations are not repeated for this bounded change.
+
+The preceding defense-adapter revision `8648e18` has completed Windows 386
+and AMD64 native root/server/legacy checks and Linux AMD64 server-HD checks.
+All three artifacts are preserved and qualified. The Linux archive's raw
+JSON independently confirms 230,713 passes, seven skips, and all 56 expected
+packages. That HD run does not claim the normal server's default-link damage
+check; the earlier `6a09d3d` normal-server evidence remains separate.
+
 ### Native Go defense multiplier adapters
 
 The durability and equipped-item Defend adapters now preserve the original

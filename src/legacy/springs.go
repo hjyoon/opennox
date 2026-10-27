@@ -14,5 +14,5 @@ var (
 //export nox_xxx_updateSprings_5113A0
 func nox_xxx_updateSprings_5113A0() { Nox_xxx_updateSprings_5113A0() }
 func Nox_xxx_unitHasCollideOrUpdateFn_537610(a1 *server.Object) {
-	C.nox_xxx_unitHasCollideOrUpdateFn_537610(asObjectC(a1))
+	pendingCollisionEnqueue537610(a1)
 }

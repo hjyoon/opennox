@@ -3203,146 +3203,32 @@ int sub_536E80(char* a1, int* a2) {
 int nox_xxx_traceRay_5374B0(float4* a1) { return nox_xxx_mapTraceRay_535250(a1, 0, 0, 9); }
 
 //----- (00537580) --------------------------------------------------------
-typedef struct nox_pending_collision_node {
-	nox_object_t* object;
-	struct nox_pending_collision_node* next;
-} nox_pending_collision_node;
+extern int nox_pending_collision_contains_native_537580(nox_object_t*);
+int sub_537580(nox_object_t* object) { return nox_pending_collision_contains_native_537580(object); }
 
-static nox_pending_collision_node* nox_pending_collision_head;
-static nox_pending_collision_node* nox_pending_collision_tail;
-
-static void nox_pending_collision_sync_compat_globals(void) {
-	// These ABI32 globals held object pointers in GAME.EXE. Native pointers do
-	// not fit there on 64-bit targets, and no remaining caller consumes their
-	// pointer value; retain their observable empty/non-empty state instead.
-	dword_5d4594_2488604 = nox_pending_collision_head != NULL;
-	dword_5d4594_2488608 = nox_pending_collision_tail != NULL;
-}
-
-static nox_pending_collision_node* nox_pending_collision_find(
-	nox_object_t* object,
-	nox_pending_collision_node** previous) {
-	nox_pending_collision_node* prev = NULL;
-	for (nox_pending_collision_node* node = nox_pending_collision_head; node; node = node->next) {
-		if (node->object == object) {
-			if (previous) {
-				*previous = prev;
-			}
-			return node;
-		}
-		prev = node;
-	}
-	if (previous) {
-		*previous = NULL;
-	}
-	return NULL;
-}
-
-int sub_537580(nox_object_t* a1) { return a1->field_116 & 1; }
+//----- (00537590) --------------------------------------------------------
+extern int nox_pending_collision_empty_native_537590(void);
+int sub_537590(void) { return nox_pending_collision_empty_native_537590(); }
 
 //----- (005375A0) --------------------------------------------------------
-void sub_5375A0(nox_object_t* a1) {
-	if (!(a1->field_116 & 1)) {
-		return;
-	}
-	nox_pending_collision_node* previous = NULL;
-	nox_pending_collision_node* node = nox_pending_collision_find(a1, &previous);
-	if (!node) {
-		return;
-	}
-	if (previous) {
-		previous->next = node->next;
-	} else {
-		nox_pending_collision_head = node->next;
-	}
-	if (nox_pending_collision_tail == node) {
-		nox_pending_collision_tail = previous;
-	}
-	free(node);
-	a1->field_115 = UINT32_MAX;
-	a1->field_116 &= ~UINT32_C(1);
-	nox_pending_collision_sync_compat_globals();
-}
+extern void nox_pending_collision_remove_native_5375A0(nox_object_t*);
+void sub_5375A0(nox_object_t* object) { nox_pending_collision_remove_native_5375A0(object); }
 
 //----- (00537610) --------------------------------------------------------
-void sub_50B500();
-char nox_xxx_unitHasCollideOrUpdateFn_537610(nox_object_t* a1p) {
-	uintptr_t result = (uintptr_t)a1p->func_update;
-	if (a1p->func_update ||
-		((result = (uintptr_t)a1p->func_collide) != 0 && !(a1p->obj_flags & UINT32_C(0x40)))) {
-		uint32_t object_class = a1p->obj_class;
-		int should_queue = !(object_class & UINT32_C(0x400000)) && !(a1p->obj_flags & UINT32_C(8));
-		if (!should_queue) {
-			uint16_t spike_type = (uint16_t)nox_xxx_getNameId_4E3AA0("Spike");
-			uint16_t periodic_spike_type = (uint16_t)nox_xxx_getNameId_4E3AA0("PeriodicSpike");
-			void (*collide)(nox_object_t*, nox_object_t*, float*) =
-				(void (*)(nox_object_t*, nox_object_t*, float*))a1p->func_collide;
-			result = periodic_spike_type;
-			should_queue = (object_class & UINT32_C(0xE080)) ||
-				collide == nox_xxx_collideFist_4EADF0 ||
-				collide == nox_xxx_collideUndeadKiller_4EBD40 ||
-				a1p->typ_ind == spike_type || a1p->typ_ind == periodic_spike_type;
-		}
-		if (should_queue && (a1p->obj_flags & UINT32_C(4))) {
-			if (object_class & UINT32_C(0x2008)) {
-				sub_50B500();
-			}
-			nullsub_30((uint32_t)(uintptr_t)a1p);
-			result = a1p->field_116;
-			if (!(a1p->field_116 & 1)) {
-				nox_pending_collision_node* node = malloc(sizeof(*node));
-				if (node) {
-					node->object = a1p;
-					node->next = NULL;
-					if (nox_pending_collision_tail) {
-						nox_pending_collision_tail->next = node;
-					} else {
-						nox_pending_collision_head = node;
-					}
-					nox_pending_collision_tail = node;
-					a1p->field_115 = 0;
-					a1p->field_116 |= UINT32_C(1);
-					result = a1p->field_116;
-					nox_pending_collision_sync_compat_globals();
-				}
-			}
-		}
-	}
-	return (char)result;
-}
-// 5485F0: using guessed type void  nullsub_30(uint32_t);
+extern char nox_pending_collision_enqueue_native_537610(nox_object_t*);
+char nox_xxx_unitHasCollideOrUpdateFn_537610(nox_object_t* object) { return nox_pending_collision_enqueue_native_537610(object); }
 
 //----- (00537700) --------------------------------------------------------
-nox_object_t* sub_537700() {
-	nox_pending_collision_node* node = nox_pending_collision_head;
-	if (!node) {
-		return NULL;
-	}
-	nox_object_t* result = node->object;
-	nox_pending_collision_head = node->next;
-	if (!nox_pending_collision_head) {
-		nox_pending_collision_tail = NULL;
-	}
-	free(node);
-	result->field_115 = UINT32_MAX;
-	result->field_116 &= ~UINT32_C(1);
-	nox_pending_collision_sync_compat_globals();
-	return result;
-}
+extern nox_object_t* nox_pending_collision_pop_native_537700(void);
+nox_object_t* sub_537700(void) { return nox_pending_collision_pop_native_537700(); }
 
 //----- (00537740) --------------------------------------------------------
-nox_object_t* sub_537740() {
-	return nox_pending_collision_head ? nox_pending_collision_head->object : NULL;
-}
+extern nox_object_t* nox_pending_collision_head_native_537740(void);
+nox_object_t* sub_537740(void) { return nox_pending_collision_head_native_537740(); }
 
 //----- (00537750) --------------------------------------------------------
-nox_object_t* sub_537750(nox_object_t* a1) {
-	if (!a1) {
-		return NULL;
-	}
-	nox_pending_collision_node* node = nox_pending_collision_find(a1, NULL);
-	return node && node->next ? node->next->object : NULL;
-}
+extern uintptr_t nox_pending_collision_next_native_537750(nox_object_t*);
+nox_object_t* sub_537750(nox_object_t* object) { return (nox_object_t*)nox_pending_collision_next_native_537750(object); }
 
 //----- (00537760) --------------------------------------------------------
 unsigned int sub_537760() { return dword_5d4594_2488620 != 0 ? (unsigned int)getMemAt(0x5D4594, 2488612) : 0; }

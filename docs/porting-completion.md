@@ -55,6 +55,71 @@ completion requirements.
 
 ## Current findings
 
+### Native pending-collision queue and activation entries
+
+All seven original pending-collision entry points now forward to Go on every
+architecture: membership, empty, remove, activate/enqueue, pop, head and next.
+Go owns full-width links keyed by object identity. The legacy link DWORD keeps
+its zero/removed marker, and the two compatibility globals keep their existing
+empty/nonempty projection. No object pointer is stored in either DWORD.
+Known next links return native pointers; an unowned object's original raw link
+word, including the removed sentinel, remains an integer until its C return.
+The queue keeps original insertion/drain order, duplicate gates, byte-level
+status results and unaffected status bits. Empty Pop and the other original
+nil-dependent reads retain their fault boundaries.
+
+Activation retains full type-lookup result words and reloads object class after
+both Spike lookups. It preserves the initial update/collision/no-collide gate,
+special class and callback identities, live active flag, cached class for the
+AI-path reset and final status reads. The original no-op is sealed as RET;
+the existing native AI-path reset and all radial arithmetic remain unchanged.
+
+Nine complete original bodies seal 449 code bytes with 20 name-string bytes.
+The valid-operation corpus has 887 conditions and 5,353 original calls, including
+all seven queue operations, type-width boundaries, named lookup mutations,
+all small insertion orders and deterministic mixed sequences. Original path
+reset and no-op bodies execute. Four separate original nil probes record the
+expected dependent-read faults. The comparison fixture checks all native object
+records and canaries, with intrusive pointer slots explicitly projected to
+native reference links rather than compared as PE32 address bits.
+
+The unchanged previous native C cluster is compiled separately under declared
+type-lookup and path-reset providers. It mismatches 14 leaf conditions and
+matches 873 controls. The source cluster, compiled baseline fixture, all failed
+records and prior comparison engine are preserved. The final actual C entries
+match all 887 original conditions; additional controls check both real static
+C callback identities above 4 GiB on 64-bit hosts and all four nil faults.
+Existing test files, object layouts and callback registrations remain unchanged.
+
+Two additional conditions compose the original radial push and actual original
+activation/enqueue bodies, plus the complete original ordinary/missile spatial
+enumerators and coordinate conversion: 1,757 sealed code bytes and 24 constant
+bytes. Four startup/nearest-control calls execute eight actual enqueues and
+both original enumerators. A declared prepared PE32 index supplies the nodes. The
+actual native integration uses C-owned ordinary units, the real spatial and
+empty wall indexes, both insertion orders, and a C callback changing the
+borrowed origin. It checks exact force vectors, native links, status, queue
+drain order, raw callback distance, full callback userdata and surrounding
+canaries. Full original enumeration supplies the exact object visit words;
+the earlier fixture's missing visit writes and both failed native cases are
+preserved, while all earlier force/queue rows remain exact by projection. Vision
+and the optional callback remain declared services; original index insertion
+is outside this composition. These controlled fixtures do not establish a live campaign incident
+or complete chapter coverage. Evidence is retained in
+`pending-collision-native-port`; overall 100% remains unproved.
+
+Final normal evidence contains 247,374 PASS and 16 SKIP, with 899 added passing
+events and all prior results and multiplicities retained. The passing root and
+server results are reused after retrying only legacy for the visit fixture
+correction. An initial strict legacy link and analysis run stops on disk-full;
+its raw output is preserved. Closed cache files are transparently compressed
+with logical bytes, hashes, paths, ownership, permissions and mtime retained;
+no cache entries, Saves, products or validation records are deleted.
+The 53 compressed files save 5,755,777,024 physical bytes. Focused highres
+`cgocheck2` plus `checkptr=2`, including both corrected integration orders,
+passes all 1,624 selected events in 8.626 seconds after cache reuse. Their
+identities and multiplicities match the same selection from normal results.
+
 ### Native radial-push callback, arithmetic and live origins
 
 The remaining PE32 radial-push callback now uses native-width arguments, and
@@ -122,10 +187,13 @@ qualify. The final frame visibly shows the living Wizard and save-complete
 notification. This covers Load, movement, pickup and Save; its two retained
 Urchin deaths originate from the separately preserved earned combat product.
 
-Native source qualification for `43d5b45` is running separately: Windows
-386/AMD64 run `40598133164` and Linux AMD64 server run `40598152790`.
-Existing runs are retained while in progress. The preceding `fa7ec05` products
-and all three native jobs are fully qualified in their preserved record.
+Native source qualification for `43d5b45` is complete: Windows 386/AMD64
+run `40598133164` passes all root/server/legacy packages; Linux AMD64 server
+run `40598152790` independently recounts 243,899 PASS and seven SKIP across all
+56 expected packages, plus the three-package default-link damage checks.
+All three products, build metadata, native architecture headers, raw reports,
+logs and artifact SHA-256 digests are preserved and qualified. The preceding
+`fa7ec05` products and all three native jobs also retain their qualified record.
 
 ### Native black-powder barrel and burn entries
 

@@ -1,0 +1,51 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "all_four_nil_boundaries_fault": true,
+  "rows": [
+    {
+      "name": "contains",
+      "address": "0x537580",
+      "size": 14,
+      "sha256": "1be0b3d68d0a71488bacad08ae797c490e1b17b33d017318377c860a61f2ab9d",
+      "fault": {
+        "access": 19,
+        "address": 464,
+        "size": 1
+      }
+    },
+    {
+      "name": "remove",
+      "address": "0x5375a0",
+      "size": 107,
+      "sha256": "965b88ca51c5f01233793284b638176c419b1c0229b897ccc9902dad15b3b8fb",
+      "fault": {
+        "access": 19,
+        "address": 464,
+        "size": 1
+      }
+    },
+    {
+      "name": "enqueue",
+      "address": "0x537610",
+      "size": 225,
+      "sha256": "a910cd17f03568cf0d9f65bffd78ddec769c92bfc9829b48baa26a60ef0e5f43",
+      "fault": {
+        "access": 19,
+        "address": 744,
+        "size": 4
+      }
+    },
+    {
+      "name": "pop",
+      "address": "0x537700",
+      "size": 55,
+      "sha256": "ba08fc13683a77f5808c083aeac1065b804aaa0384de527c568d36141f2d20e6",
+      "fault": {
+        "access": 19,
+        "address": 460,
+        "size": 4
+      }
+    }
+  ]
+}

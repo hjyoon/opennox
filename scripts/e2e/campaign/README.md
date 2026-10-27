@@ -30,7 +30,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-book-recovery.json` | Book pickup save, HP26/MP53 | Fresh Load retains the book; native passive mana regeneration returns HP26/MP88 |
 | `video-book-save-load-smoke.json` | Healthy book-recovery save, HP26/MP88 | Fresh Load, retained book and spell bindings, original road99 movement and full-resource manual Save; no new enemy objective |
 | `wizard2-upper-urchins.json` | Healthy book-recovery save, HP26/MP88 | Original Urchins2363/2364, retained book, HP26/poison0 manual Save; the qualified run ends at MP2 and needs normal recovery before further spell-heavy combat |
-| `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Original unnamed BluePotion1940 automatically restores 50 mana on pickup; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
+| `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Southern floor bypass, original BluePotion1940 automatic +50 mana and Meat1939/1938 pickups; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
 
 Replay all four segments consecutively with one command and the same prebuilt
 executable:
@@ -79,8 +79,10 @@ For a short combat and resource regression, use
 `--sequence scripts/e2e/campaign/sequences/wizard2-upper-cave.json` with the
 earned BookOfOblivion recovery Save (HP26/MP88, both upper Urchins alive).
 It reuses one executable for the upper Urchin fights and the following original
-mana potion pickup, passing the actual manual Save between them. Replaying this
-pair does not require rebuilding or repeating the earlier cave route.
+BluePotion1940 and Meat1939/1938 pickups, passing the actual manual Save between
+them. Recovery leaves the lower room along its southern floor before road154;
+the direct road99 goal can overlap the moving Troll group and trap the player.
+Replaying this pair does not require rebuilding or repeating the earlier cave route.
 
 Scenario changes reuse the supplied executable. Each run copies the Save and
 preserves its executable, executed scenario, suite, logs, screenshots and
@@ -92,6 +94,13 @@ the actual value and required value; missing enemy deaths report their original
 script IDs. A healthy Save with an unmet objective still fails and stops the
 sequence. These summaries let route retries target the failing segment without
 rebuilding the game or manually searching all captured observations.
+
+For consumed map items, `required_map_pickups` lists each original `extent`
+and `item` type. The verifier requires initial presence, actual ordinary Pickup
+cursor input for that exact identity, and removal from a final live scene.
+The observed map must match the single expected map. Missing food, a different
+cursor or item, another map, or an unloaded scene fails the case even if its
+final health and mana are sufficient.
 
 Cases can require `minimum_health` and `minimum_mana` for segments where
 ordinary combat or passive regeneration varies the exact final resources.

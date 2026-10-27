@@ -18,7 +18,12 @@ steps:
   - {"action": "assert-server-inventory-count", "item": "BookOfOblivion", "count": 1}
   - {"action": "assert-server-inventory-count", "item": "BluePotion", "count": 0}
   - {"action": "observe-player-target", "name": "read actual fresh Load of earned BookOfOblivion"}
-  - {"action": "run-to-world", "x": 3772, "y": 2366, "name": "ordinary original road99 toward original BluePotion1940"}
+  - {"action": "run-to-world", "x": 3460, "y": 2475, "name": "ordinary lower cave southward escape from original Troll949"}
+  - {"action": "run-to-world", "x": 3590, "y": 2550, "name": "ordinary southern room floor bypass"}
+  - {"action": "run-to-world", "x": 3750, "y": 2495, "name": "ordinary southern flank below original Troll group"}
+  - {"action": "run-to-world", "x": 3860, "y": 2375, "name": "ordinary eastern room exit bypass"}
+  - {"action": "observe-player-target", "name": "read original southern lower cave bypass"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original southern lower cave bypass"}
   - {"action": "run-to-world", "x": 3926, "y": 2213, "name": "ordinary original road154 toward original BluePotion1940"}
   - {"action": "run-to-world", "x": 4006, "y": 2095, "name": "ordinary original road100 toward original BluePotion1940"}
   - {"action": "run-to-world", "x": 4016, "y": 1984, "name": "ordinary original road101 toward original BluePotion1940"}
@@ -31,6 +36,15 @@ steps:
   - {"action": "assert-server-inventory-count", "item": "BluePotion", "count": 0}
   - {"action": "observe-player-target", "name": "read original automatic BluePotion use"}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original automatic BluePotion use"}
+  - {"action": "run-to-world", "x": 3869, "y": 1858, "name": "ordinary original road156 after BluePotion"}
+  - {"action": "run-to-world", "x": 4016, "y": 1984, "name": "ordinary original road101 toward original food"}
+  - {"action": "run-to-world", "x": 4210, "y": 2006, "name": "ordinary original Urchin2364 ground toward original food"}
+  - {"action": "run-to-world", "x": 4339, "y": 2028, "name": "ordinary original Meat1939 ground"}
+  - {"action": "pickup-map-object-input", "extent": 1939, "item": "Meat", "name": "ordinary pickup original Meat1939"}
+  - {"action": "run-to-world", "x": 4363, "y": 2036, "name": "ordinary original Meat1938 ground"}
+  - {"action": "pickup-map-object-input", "extent": 1938, "item": "Meat", "name": "ordinary pickup original Meat1938"}
+  - {"action": "observe-player-target", "name": "read original upper cave food recovery"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original upper cave food recovery"}
   - {"action": "assert-server-inventory-count", "item": "BookOfOblivion", "count": 1}
   - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
   - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}

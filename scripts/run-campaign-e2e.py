@@ -38,7 +38,7 @@ CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_pois
                'minimum_health', 'minimum_mana',
                'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
                'required_defeated_script_ids', 'required_enable_transitions',
-               'required_position_transitions', 'required_plate_holds'}
+               'required_position_transitions', 'required_plate_holds', 'required_map_pickups'}
 
 
 def validate_suite_fields(suite):
@@ -50,6 +50,22 @@ def validate_suite_fields(suite):
         unknown = set(case) - CASE_FIELDS
         if unknown:
             raise ValueError('unknown campaign case fields: ' + ', '.join(sorted(unknown)))
+        if 'required_map_pickups' in case:
+            pickups = case['required_map_pickups']
+            if not isinstance(pickups, list) or not pickups:
+                raise ValueError('required_map_pickups must be a nonempty list')
+            if len(case.get('expected_maps', [])) != 1:
+                raise ValueError('required_map_pickups requires one expected map')
+            extents = set()
+            for pickup in pickups:
+                if (not isinstance(pickup, dict) or set(pickup) != {'extent', 'item'}
+                        or type(pickup['extent']) is not int or pickup['extent'] <= 0
+                        or not isinstance(pickup['item'], str)
+                        or not re.fullmatch(r'[A-Za-z0-9_]+', pickup['item'])):
+                    raise ValueError('required_map_pickups needs positive extents and item type names')
+                if pickup['extent'] in extents:
+                    raise ValueError('required_map_pickups contains a duplicate extent')
+                extents.add(pickup['extent'])
         for field in ('health', 'mana'):
             minimum = case.get('minimum_' + field)
             if 'minimum_' + field in case:
@@ -175,6 +191,32 @@ def required_monster_deaths(samples, required_ids):
             'observed_dead_script_ids': sorted(observed_dead),
             'last_observed_dead_script_ids': sorted(dead),
             'passed': bool(required) and required <= dead}
+
+
+def required_map_pickups(samples, log, requirements, *, actual_maps, expected_maps):
+    # For consumed map items, require the original object, ordinary Pickup
+    # cursor input for that exact identity, and its removal from a live scene.
+    first, last = (samples[0], samples[-1]) if samples else ([], [])
+    final_player = any('PLAYER' in (obj.get('class') or []) for obj in last)
+    map_scope = len(expected_maps) == 1 and set(actual_maps) == set(expected_maps)
+    inputs = {(int(extent), item) for item, extent in re.findall(
+        r'NAMED PICKUP ACTUAL INPUT: id="([A-Za-z0-9_]+) extent=(\d+)" [^\n]*\bcursor=2\b', log)}
+
+    def present(objects, extent, item):
+        return any(obj.get('ind') == extent and (obj.get('type') or {}).get('id') == item
+                   for obj in objects)
+
+    rows = []
+    for requirement in requirements:
+        extent, item = requirement['extent'], requirement['item']
+        initial = present(first, extent, item)
+        clicked = (extent, item) in inputs
+        removed = final_player and not present(last, extent, item)
+        rows.append(dict(extent=extent, item=item, initially_present=initial,
+                         pickup_input_observed=clicked, removed_from_final_scene=removed,
+                         passed=initial and clicked and removed))
+    return dict(objects=rows, final_player_present=final_player, map_scope_passed=map_scope,
+                passed=map_scope and bool(requirements) and all(row['passed'] for row in rows))
 
 
 def required_enable_transitions(samples, requirements):
@@ -633,7 +675,7 @@ def run_case(args, binary, suite_dir, case, port):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
     if (case.get('created_type') or case.get('required_defeated_script_ids')
             or case.get('required_enable_transitions') or case.get('required_position_transitions')
-            or case.get('required_plate_holds')) and snapshots_ok:
+            or case.get('required_plate_holds') or case.get('required_map_pickups')) and snapshots_ok:
         samples = [json.loads(Path(sample['routes']['objects']['path']).read_text())
                    for sample in report['snapshots']]
     if case.get('created_type') and snapshots_ok:
@@ -651,6 +693,19 @@ def run_case(args, binary, suite_dir, case, port):
                                                - set(history['last_observed_dead_script_ids'])),
                              'initial_alive': history['initial_alive_script_ids'],
                              'observed_dead': history['last_observed_dead_script_ids']})
+    if case.get('required_map_pickups'):
+        log_path = case_dir / 'game.log'
+        pickups = required_map_pickups(samples if snapshots_ok else [],
+                                       log_path.read_text(errors='replace') if log_path.exists() else '',
+                                       case['required_map_pickups'], actual_maps=actual_maps,
+                                       expected_maps=expected_maps)
+        report['required_original_map_pickups'] = pickups
+        outcomes_ok = outcomes_ok and pickups['passed']
+        if not pickups['passed']:
+            failures.append({'check': 'required_map_pickups',
+                             'missing': [row for row in pickups['objects'] if not row['passed']],
+                             'final_player_present': pickups['final_player_present'],
+                             'map_scope_passed': pickups['map_scope_passed']})
     if case.get('required_enable_transitions') and snapshots_ok:
         transitions = required_enable_transitions(samples, case['required_enable_transitions'])
         report['required_original_enable_transitions'] = transitions

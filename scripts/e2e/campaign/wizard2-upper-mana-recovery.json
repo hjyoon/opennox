@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "name": "Wizard2 original unnamed BluePotion pickup and automatic mana recovery",
-  "seed_contract": "Earned upper Urchins2363/2364 Save, HP26 MP2 poison0, BookOfOblivion1; original BluePotion1940 alive at3850,1780.",
-  "coverage": "Fresh original Load, ordinary original road99/154/100/101/156 inputs using the upper-combat route's direct road99 connection, exact original BluePotion1940 Pickup cursor, original automatic +50 mana recovery, retained quest book and poison0 manual Save with HP at least20 and MP at least52. Combat damage varies; full health, full mana, northern obelisks, remaining enemies and the chapter are not certified.",
+  "name": "Wizard2 original BluePotion and upper cave food recovery",
+  "seed_contract": "Earned upper Urchins2363/2364 Save, HP26 MP2 poison0, BookOfOblivion1; original BluePotion1940 alive at3850,1780. Original Meat1939/1938 remain present at4339,2028 and4363,2036.",
+  "coverage": "Fresh original Load, ordinary roads and original BluePotion1940 automatic +50 mana recovery, then original Meat1939/1938 pickups. Requires native Pickup cursor inputs and initial-to-final removal of all three map items, retained quest book, poison0 and a manual Save with HP at least20 and MP at least52. Remaining enemies, northern obelisks and the whole chapter are not certified. A southern room-floor bypass avoids the original road99 Troll group before road154.",
   "cases": [
     {
       "name": "wizard2-upper-mana-recovery",
@@ -18,10 +18,26 @@
       "required_checkpoints": [
         "original BluePotion approach",
         "original automatic BluePotion use",
-        "original manual Save"
+        "original manual Save",
+        "original upper cave food recovery",
+        "original southern lower cave bypass"
       ],
       "minimum_health": 20,
-      "minimum_mana": 52
+      "minimum_mana": 52,
+      "required_map_pickups": [
+        {
+          "extent": 1940,
+          "item": "BluePotion"
+        },
+        {
+          "extent": 1939,
+          "item": "Meat"
+        },
+        {
+          "extent": 1938,
+          "item": "Meat"
+        }
+      ]
     }
   ]
 }

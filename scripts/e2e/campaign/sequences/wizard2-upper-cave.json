@@ -1,10 +1,16 @@
 {
   "version": 1,
   "name": "Wizard2 upper cave combat and mana recovery",
-  "seed_contract": "Earned BookOfOblivion recovery Save at original road183, HP26 MP88 poison0, book inventory1. Original upper Urchins2363 and2364 and BluePotion1940 remain present. A43 Lightning S27 Fireball D41 LesserHeal F115 Swap.",
-  "coverage": "Two consecutive ordinary-input segments using one prebuilt executable: original upper Urchin defeats, retained quest book, original BluePotion automatic recovery and living manual Save between segments. Does not certify the entire cave or chapter.",
+  "seed_contract": "Earned BookOfOblivion recovery Save at original road183, HP26 MP88 poison0, book inventory1. Original upper Urchins2363 and2364 and BluePotion1940 remain present. A43 ChainLightning S27 Fireball D41 LesserHeal F115 Swap. Original Meat1939/1938 remain present.",
+  "coverage": "Two consecutive ordinary-input segments using one prebuilt executable: original upper Urchin defeats, retained quest book, original BluePotion recovery and Meat1939/1938 pickups, with a living manual Save between segments and unchanged HP20/MP52 recovery requirements. Does not certify the entire cave or chapter.",
   "stages": [
-    {"name": "upper-urchins", "suite": "../wizard2-upper-urchins.json"},
-    {"name": "upper-mana-recovery", "suite": "../wizard2-upper-mana-recovery.json"}
+    {
+      "name": "upper-urchins",
+      "suite": "../wizard2-upper-urchins.json"
+    },
+    {
+      "name": "upper-mana-recovery",
+      "suite": "../wizard2-upper-mana-recovery.json"
+    }
   ]
 }

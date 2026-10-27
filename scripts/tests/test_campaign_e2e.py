@@ -59,6 +59,72 @@ class SuiteFieldsTests(unittest.TestCase):
             self.assertFalse((root / 'output').exists())
 
 
+class RequiredMapPickupTests(unittest.TestCase):
+    def setUp(self):
+        self.player = {'ind': 0, 'class': ['PLAYER']}
+        self.food = {'ind': 1939, 'type': {'id': 'Meat'}}
+        self.required = [{'extent': 1939, 'item': 'Meat'}]
+        self.log = ('NAMED PICKUP ACTUAL INPUT: id="Meat extent=1939" '
+                    'wire=0x27a point=(522,402) cursor=2 frame=381\n')
+
+    def check(self, samples, log=None):
+        return runner.required_map_pickups(samples, self.log if log is None else log, self.required,
+                                           actual_maps={'wiz02c'}, expected_maps={'wiz02c'})
+
+    def test_original_item_actual_pickup_and_removal_are_all_required(self):
+        self.assertTrue(self.check([[self.player, self.food], [self.player]])['passed'])
+        for samples, log in (([[self.player], [self.player]], self.log),
+                             ([[self.player, self.food], [self.player, self.food]], self.log),
+                             ([[self.player, self.food], [self.player]], ''),
+                             ([], self.log)):
+            with self.subTest(samples=samples, log=log):
+                self.assertFalse(self.check(samples, log)['passed'])
+
+    def test_wrong_identity_or_cursor_does_not_prove_pickup(self):
+        for log in (self.log.replace('1939', '1938'), self.log.replace('Meat', 'RedPotion'),
+                    self.log.replace('cursor=2', 'cursor=20'), self.log.replace('cursor=2', 'cursor=1')):
+            with self.subTest(log=log):
+                self.assertFalse(self.check([[self.player, self.food], [self.player]], log)['passed'])
+        wrong_type = dict(self.food, type={'id': 'RedPotion'})
+        self.assertFalse(self.check([[self.player, wrong_type], [self.player]])['passed'])
+
+    def test_unloaded_scene_cannot_prove_item_removal(self):
+        result = self.check([[self.player, self.food], []])
+        self.assertFalse(result['passed'])
+        self.assertFalse(result['final_player_present'])
+
+    def test_extent_reuse_in_another_map_cannot_prove_pickup(self):
+        for maps in ({'wiz02a'}, {'wiz02a', 'wiz02c'}, set()):
+            with self.subTest(maps=maps):
+                result = runner.required_map_pickups(
+                    [[self.player, self.food], [self.player]], self.log, self.required,
+                    actual_maps=maps, expected_maps={'wiz02c'})
+                self.assertFalse(result['passed'])
+                self.assertFalse(result['map_scope_passed'])
+
+    def test_missing_one_of_two_foods_fails_despite_healthy_player(self):
+        other = {'ind': 1938, 'type': {'id': 'Meat'}}
+        result = runner.required_map_pickups(
+            [[self.player, self.food, other], [self.player, other]], self.log,
+            self.required + [{'extent': 1938, 'item': 'Meat'}],
+            actual_maps={'wiz02c'}, expected_maps={'wiz02c'})
+        self.assertFalse(result['passed'])
+        self.assertEqual([row['extent'] for row in result['objects'] if not row['passed']], [1938])
+
+    def test_requirements_are_validated_before_launch(self):
+        valid = {'cases': [{'expected_maps': ['wiz02c'], 'required_map_pickups': self.required}]}
+        runner.validate_suite_fields(valid)
+        for requirement in (None, [], [dict(extent=True, item='Meat')],
+                            [dict(extent=-1, item='Meat')], [dict(extent=1, item='')],
+                            [dict(extent=1, item='Meat', typo=True)], self.required * 2):
+            with self.subTest(requirement=requirement), self.assertRaises(ValueError):
+                runner.validate_suite_fields({'cases': [dict(expected_maps=['wiz02c'],
+                                                           required_map_pickups=requirement)]})
+        with self.assertRaises(ValueError):
+            runner.validate_suite_fields({'cases': [dict(expected_maps=['wiz02b', 'wiz02c'],
+                                                       required_map_pickups=self.required)]})
+
+
 class PlayerOutcomeTests(unittest.TestCase):
     def test_failed_recovery_reports_actual_values_and_unchanged_minimums(self):
         # Preserved upper-cave recovery: a living manual Save is still below HP20.

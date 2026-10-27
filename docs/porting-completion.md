@@ -55,6 +55,35 @@ completion requirements.
 
 ## Current findings
 
+### Reusable upper-cave combat and recovery E2E
+
+The published two-stage Wizard2 replay retains its original upper Urchin
+objectives and HP20/MP52 recovery requirements. Recovery now follows the
+southern lower-room floor before road154, collects original BluePotion1940,
+then picks up original Meat1939/1938. A fresh combat Save exposed a moving
+Troll group at the previous direct road99 goal: that recovery died before
+reaching the potion. The failed gameplay report and Save remain preserved.
+The southern route passes against that exact combat Save with HP26/MP56.
+
+The canonical sequence then resumes from the failed report, authenticates and
+reuses only its passing combat stage, and executes only recovery in 30.228
+seconds. It reports one reused stage, one executed stage and `fresh_replay:
+false`. An earlier fresh two-stage food-route replay passed in 65.344 seconds,
+but it predates the southern bypass and does not certify that final route as
+a fresh full sequence. These are bounded regression results, not whole-cave
+or whole-chapter completion or a proof against every enemy arrangement.
+
+The new `required_map_pickups` gate requires all three original item identities
+in the initial native scene, actual Pickup-cursor input for each, and removal
+from a final scene containing the player on the same expected map. Six new
+verifier tests reject missing items, wrong types/cursors, unloaded scenes,
+cross-map extent reuse and malformed requirements. All 50 Python tests pass;
+the prior 44 test bodies and combat inputs are unchanged. This input-only work
+reuses the clean `3545e31` product without another build or Go package run.
+Original saves, assets, configuration, binary, failed attempts and screenshots
+are retained. A sandbox initialization failure before gameplay and a wrapper
+record-path collision are preserved separately from gameplay failures.
+
 ### Native Stun and Confuse modifier spell dispatch
 
 StunEffect and ConfuseEffect now invoke their already-restored common spell
@@ -100,8 +129,10 @@ retaining HP26/MP88, poison zero, the original book and spell bindings, and an
 actual manual Save. Nine parameterless GET observations and the final save
 screen are qualified; source Save, assets, config and executable are unchanged.
 This smoke is a separate branch from upper-cave combat and does not certify
-its mana recovery or a full chapter. Windows and normal Linux native CI for
-this revision are dispatched and pending at this checkpoint.
+its mana recovery or a full chapter. Windows 386/AMD64 and normal Linux AMD64
+native CI for this revision have now passed, with all three artifacts preserved
+and qualified. Linux confirms 231,054 passes, seven skips and all 56 expected
+packages; its separate default-link damage check passes 133,041 events.
 
 The preceding resource-effect revision `7035d2d` has completed Windows
 386/AMD64 root/server/legacy and Linux AMD64 server-HD native checks. All three

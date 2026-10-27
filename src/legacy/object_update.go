@@ -268,7 +268,7 @@ func nox_xxx_updatePlayer_4F8100(up *nox_object_t) { Nox_xxx_updatePlayer_4F8100
 
 //export nox_xxx_objectApplyForce_52DF80
 func nox_xxx_objectApplyForce_52DF80(vec *C.float, obj *nox_object_t, force C.float) {
-	GetServer().ApplyForce(asObjectS(obj), AsPointf(unsafe.Pointer(vec)), float64(force))
+	applyForceExport52DF80(asObjectS(obj), unsafe.Pointer(vec), float32(force))
 }
 
 //export nox_xxx_updatePixie_53CD20

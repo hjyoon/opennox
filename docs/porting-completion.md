@@ -55,6 +55,49 @@ completion requirements.
 
 ## Current findings
 
+### Common radial ApplyForce startup arithmetic
+
+The common `0052DF80` path now preserves its original PC53/ToZero operations,
+binary32 stores and force accumulation. The original Y subtraction is stored
+without popping its wider accumulator before the square, and force divided by
+mass remains wide until component normalization and final accumulation. The
+previous implementation rounded that factor and each force increment early.
+Ordinary map-sized native fixtures already show a one-bit force difference;
+51 of the initial 97 contexts disagree before the fix. This is a fixture finding,
+not an observed campaign encounter. Shared arithmetic helpers and host FP mode
+remain unchanged. The CGo export also keeps the original movable gate before
+reading the origin pointer, including a nil origin for blocked objects.
+
+The complete unchanged original force root, movable gate and raw mass getter
+execute for 97 base and 307 supplemental contexts under both startup and nearest
+controls: 808 root executions, with some inputs repeated between matrices.
+Only collision/update wakeup is a declared service. Actual production-entry
+tests check native C-owned objects, exact force bits and all nonoutput bytes.
+Six additional controls enter through the real C RecoilEffect, native CGo
+export and common force implementation. Eight blocked-export controls verify
+that a nil origin and server lookup are never reached before the movable gate.
+
+Supplemental signaling-NaN cases exposed a defect in the original-execution
+oracle: Unicorn leaves an SNaN unchanged on FLDS and omits its invalid flag.
+An isolated unchanged original FLDS instruction reproduces that difference.
+A separate x86-64 Rosetta diagnostic quiets the value, agreeing with the
+[Intel NaN rules](https://www.intel.com/content/dam/develop/external/us/en/documents-tps/253665-sdm-vol-11.pdf#page=102).
+That diagnostic replays 88 verified original FPU instruction bytes, relocates
+two constant memory operands to identical binary32 values, and adapts the
+integer/call scaffold. It agrees with 297 supplemental emulator results and
+establishes the ten corrected signaling-NaN expectations. The complete PE32
+root is still executed by Unicorn; the Rosetta diagnostic is an independent
+arithmetic check with its adapted scaffold stated explicitly. Every condition,
+raw emulator result, failed Go run and prior expectation remains preserved.
+
+The final normal root/server/legacy run passes 234,326 events with 16 skips
+in 288.253 seconds, retaining all prior identities/results/multiplicities and
+adding 422 passes. Focused highres checks with cgocheck2 and checkptr level 2
+pass 422 events. Existing tests, frozen inputs and campaign scripts retain
+their contents. All 97 base and 307 supplemental startup observations pass
+through the actual common entry. These event totals do not certify a whole
+chapter or overall port completion.
+
 ### Native PoisonEffect facing and live class reload
 
 The native PoisonEffect root now sign-extends its 16-bit direction argument,

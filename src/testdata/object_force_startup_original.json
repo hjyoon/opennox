@@ -1,0 +1,6991 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "regions": [
+    {
+      "name": "ApplyForce",
+      "address": "0x52df80",
+      "size": 160,
+      "sha256": "9133ecb5168c6278362a655c42dac9bd3e4685c24812a2237bdc9abeae819a86"
+    },
+    {
+      "name": "IsMovable",
+      "address": "0x52e020",
+      "size": 32,
+      "sha256": "c7ca9e2a06ae508b7762bf011e7da4346039bd9ff466676d0714d65cf398e922"
+    },
+    {
+      "name": "GetMass",
+      "address": "0x4e4a70",
+      "size": 16,
+      "sha256": "cf9c3255529d14366dbd42d26bca2894ed87a1a26996f444770b4f68e1c79b5d"
+    }
+  ],
+  "declared_services": [
+    "collision/update wakeup"
+  ],
+  "memory_faults": [],
+  "function_entries": {
+    "ApplyForce": 194,
+    "IsMovable": 194,
+    "GetMass": 178
+  },
+  "contexts": 97,
+  "rows": [
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "three-four-five/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1083623110,
+        1085815868
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1083623110,
+            1085815868
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "map-horizontal/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1129578496,
+          1128792064
+        ],
+        "origin_bits32": [
+          1120403456,
+          1128792064
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1090085578,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1090085578,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "map-diagonal/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1166563328,
+          1157529600
+        ],
+        "origin_bits32": [
+          1165688832,
+          1157103616
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1089921490,
+        1065121547
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1089921490,
+            1065121547
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "retained-y/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1092616192,
+          1092616192
+        ],
+        "origin_bits32": [
+          3129152111,
+          3137540719
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085414166,
+        1084523981
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085414166,
+            1084523981
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "large-subtraction/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1199570944,
+          1199570944
+        ],
+        "origin_bits32": [
+          981467136,
+          973078528
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085492785,
+        1084601496
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085492785,
+            1084601496
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "same-point/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "origin_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "three-four-five/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1083623110,
+        1085815868
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "map-horizontal/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1129578496,
+          1128792064
+        ],
+        "origin_bits32": [
+          1120403456,
+          1128792064
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1090085578,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "map-diagonal/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1166563328,
+          1157529600
+        ],
+        "origin_bits32": [
+          1165688832,
+          1157103616
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1089921490,
+        1065121547
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "retained-y/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1092616192,
+          1092616192
+        ],
+        "origin_bits32": [
+          3129152111,
+          3137540719
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085414166,
+        1084523981
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "large-subtraction/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1199570944,
+          1199570944
+        ],
+        "origin_bits32": [
+          981467136,
+          973078528
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085492785,
+        1084601496
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "same-point/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "origin_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "three-four-five/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1083623110,
+        1085815868
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1083623110,
+            1085815868
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "map-horizontal/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1129578496,
+          1128792064
+        ],
+        "origin_bits32": [
+          1120403456,
+          1128792064
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1090085578,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1090085578,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "map-diagonal/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1166563328,
+          1157529600
+        ],
+        "origin_bits32": [
+          1165688832,
+          1157103616
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1089921490,
+        1065121547
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1089921490,
+            1065121547
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "retained-y/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1092616192,
+          1092616192
+        ],
+        "origin_bits32": [
+          3129152111,
+          3137540719
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085414166,
+        1084523981
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085414166,
+            1084523981
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "large-subtraction/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1199570944,
+          1199570944
+        ],
+        "origin_bits32": [
+          981467136,
+          973078528
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085492785,
+        1084601496
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085492785,
+            1084601496
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "same-point/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "origin_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "three-four-five/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1083623110,
+        1085815868
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1083623110,
+            1085815868
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "map-horizontal/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1129578496,
+          1128792064
+        ],
+        "origin_bits32": [
+          1120403456,
+          1128792064
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1090085578,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1090085578,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "map-diagonal/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1166563328,
+          1157529600
+        ],
+        "origin_bits32": [
+          1165688832,
+          1157103616
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1089921490,
+        1065121547
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1089921490,
+            1065121547
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "retained-y/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1092616192,
+          1092616192
+        ],
+        "origin_bits32": [
+          3129152111,
+          3137540719
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085414166,
+        1084523981
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085414166,
+            1084523981
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "large-subtraction/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1199570944,
+          1199570944
+        ],
+        "origin_bits32": [
+          981467136,
+          973078528
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085492785,
+        1084601496
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085492785,
+            1084601496
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "same-point/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "origin_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-80000000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-80000000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-80000000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-80000000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-80000000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-80000000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-80000000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-3dcccccd/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        3317157996,
+        3321174553
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            3317157996,
+            3321174553
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-3dcccccd/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        3247097542,
+        3250404412
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            3247097542,
+            3250404412
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-3dcccccd/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-3dcccccd/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-3dcccccd/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671039
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671039
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-3dcccccd/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095039,
+        2139095039
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095039,
+            2139095039
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-3dcccccd/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-41a00000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        3253265637,
+        3256704221
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            3253265637,
+            3256704221
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-41a00000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1046010073,
+        3195566200
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1046010073,
+            3195566200
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-41a00000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-41a00000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-41a00000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671039
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671039
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-41a00000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2096165104,
+        2099290272
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2096165104,
+            2099290272
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-41a00000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000001/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578687,
+        4286578687
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578687,
+            4286578687
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000001/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578687,
+        4286578687
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578687,
+            4286578687
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000001/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000001/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000001/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1086707158,
+        1089927931
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1086707158,
+            1089927931
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000001/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095039,
+        2139095039
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095039,
+            2139095039
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-00000001/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f7fffff/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253721,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253721,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f7fffff/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253721,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253721,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f7fffff/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f7fffff/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f7fffff/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671039
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671039
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f7fffff/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1063478115,
+        1059637449
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1063478115,
+            1059637449
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f7fffff/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f800000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f800000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f800000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f800000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f800000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f800000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-7f800000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-c0200000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1131124760,
+        1134349533
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1131124760,
+            1134349533
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-c0200000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1065402560,
+        1062269169
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1065402560,
+            1062269169
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-c0200000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-c0200000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-c0200000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253721,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253721,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-c0200000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4268814576,
+        4271939744
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4268814576,
+            4271939744
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-c0200000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "large-difference",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          2139095039,
+          4286578687
+        ],
+        "origin_bits32": [
+          4286578687,
+          2139095039
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1091043328,
+        3238526976
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1091043328,
+            3238526976
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "subnormal-distance",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1,
+          2147483649
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          0,
+          0
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        74,
+        2147483722
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            74,
+            2147483722
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "large-accumulator",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          2139095039,
+          4286578687
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095039,
+        4286578686
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095039,
+            4286578686
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "negative-vector",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          3225419776,
+          3229614080
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          3197737370,
+          1040187392
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        3231106758,
+        3233299516
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            3231106758,
+            3233299516
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "force-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 2143363909,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        2143363909
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            2143363909
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "mass-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2143363909,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        2143363909
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            2143363909
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "position-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          2143363909,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        2143363909
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            2143363909
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "origin-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          2143363909,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        2143363909
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            2143363909
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "accumulator-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          2143363909,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        1085815868
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            1085815868
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "blocked-flags-0008",
+        "target_class": 4,
+        "target_flags": 8,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "blocked-flags-0020",
+        "target_class": 4,
+        "target_flags": 32,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "blocked-flags-0040",
+        "target_class": 4,
+        "target_flags": 64,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "blocked-flags-8000",
+        "target_class": 4,
+        "target_flags": 32768,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "blocked-flags-8068",
+        "target_class": 4,
+        "target_flags": 32872,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "immobile-class-00400000",
+        "target_class": 4194304,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "immobile-class-00400001",
+        "target_class": 4194305,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "actual-startup",
+      "input": {
+        "name": "immobile-class-00400004",
+        "target_class": 4194308,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "three-four-five/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1083623111,
+        1085815868
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1083623111,
+            1085815868
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "map-horizontal/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1129578496,
+          1128792064
+        ],
+        "origin_bits32": [
+          1120403456,
+          1128792064
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1090085579,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1090085579,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "map-diagonal/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1166563328,
+          1157529600
+        ],
+        "origin_bits32": [
+          1165688832,
+          1157103616
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1089921491,
+        1065121548
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1089921491,
+            1065121548
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "retained-y/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1092616192,
+          1092616192
+        ],
+        "origin_bits32": [
+          3129152111,
+          3137540719
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085414167,
+        1084523981
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085414167,
+            1084523981
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "large-subtraction/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1199570944,
+          1199570944
+        ],
+        "origin_bits32": [
+          981467136,
+          973078528
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085492786,
+        1084601496
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085492786,
+            1084601496
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "same-point/class-0",
+        "target_class": 0,
+        "target_flags": 0,
+        "position_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "origin_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "three-four-five/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1083623111,
+        1085815868
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "map-horizontal/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1129578496,
+          1128792064
+        ],
+        "origin_bits32": [
+          1120403456,
+          1128792064
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1090085579,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "map-diagonal/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1166563328,
+          1157529600
+        ],
+        "origin_bits32": [
+          1165688832,
+          1157103616
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1089921491,
+        1065121548
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "retained-y/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1092616192,
+          1092616192
+        ],
+        "origin_bits32": [
+          3129152111,
+          3137540719
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085414167,
+        1084523981
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "large-subtraction/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1199570944,
+          1199570944
+        ],
+        "origin_bits32": [
+          981467136,
+          973078528
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085492786,
+        1084601496
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "same-point/class-1",
+        "target_class": 1,
+        "target_flags": 0,
+        "position_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "origin_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "three-four-five/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1083623111,
+        1085815868
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1083623111,
+            1085815868
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "map-horizontal/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1129578496,
+          1128792064
+        ],
+        "origin_bits32": [
+          1120403456,
+          1128792064
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1090085579,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1090085579,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "map-diagonal/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1166563328,
+          1157529600
+        ],
+        "origin_bits32": [
+          1165688832,
+          1157103616
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1089921491,
+        1065121548
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1089921491,
+            1065121548
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "retained-y/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1092616192,
+          1092616192
+        ],
+        "origin_bits32": [
+          3129152111,
+          3137540719
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085414167,
+        1084523981
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085414167,
+            1084523981
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "large-subtraction/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1199570944,
+          1199570944
+        ],
+        "origin_bits32": [
+          981467136,
+          973078528
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085492786,
+        1084601496
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085492786,
+            1084601496
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "same-point/class-2",
+        "target_class": 2,
+        "target_flags": 0,
+        "position_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "origin_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "three-four-five/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1083623111,
+        1085815868
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1083623111,
+            1085815868
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "map-horizontal/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1129578496,
+          1128792064
+        ],
+        "origin_bits32": [
+          1120403456,
+          1128792064
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1090085579,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1090085579,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "map-diagonal/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1166563328,
+          1157529600
+        ],
+        "origin_bits32": [
+          1165688832,
+          1157103616
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1089921491,
+        1065121548
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1089921491,
+            1065121548
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "retained-y/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1092616192,
+          1092616192
+        ],
+        "origin_bits32": [
+          3129152111,
+          3137540719
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085414167,
+        1084523981
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085414167,
+            1084523981
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "large-subtraction/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1199570944,
+          1199570944
+        ],
+        "origin_bits32": [
+          981467136,
+          973078528
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1085492786,
+        1084601496
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1085492786,
+            1084601496
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "same-point/class-4",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "origin_bits32": [
+          1065353216,
+          1073741824
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 0,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-80000000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-80000000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-80000000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-80000000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-80000000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-80000000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-80000000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2147483648,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-3dcccccd/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        3317157996,
+        3321174553
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            3317157996,
+            3321174553
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-3dcccccd/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        3247097543,
+        3250404412
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            3247097543,
+            3250404412
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-3dcccccd/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-3dcccccd/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-3dcccccd/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-3dcccccd/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-3dcccccd/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1036831949,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-41a00000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        3253265637,
+        3256704221
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            3253265637,
+            3256704221
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-41a00000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1046010074,
+        3195566201
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1046010074,
+            3195566201
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-41a00000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-41a00000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-41a00000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-41a00000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-41a00000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000001/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000001/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000001/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000001/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000001/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1086707158,
+        1089927931
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1086707158,
+            1089927931
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000001/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-00000001/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f7fffff/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f7fffff/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f7fffff/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f7fffff/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f7fffff/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f7fffff/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f7fffff/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095039,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095040,
+        2139095040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095040,
+            2139095040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f800000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f800000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f800000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f800000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f800000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f800000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-7f800000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2139095040,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-c0200000/force-c2c80000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 3267887104,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1131124760,
+        1134349533
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1131124760,
+            1134349533
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-c0200000/force-be99999a",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 3197737370,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1065402561,
+        1062269169
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1065402561,
+            1062269169
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-c0200000/force-00000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 0,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-c0200000/force-80000000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 2147483648,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-c0200000/force-00000001",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 1,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            1050253722,
+            3187671040
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-c0200000/force-7f7fffff",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 2139095039,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-c0200000/force-7f800000",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 3223322624,
+        "force_bits32": 2139095040,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4286578688,
+        4286578688
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4286578688,
+            4286578688
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "large-difference",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          2139095039,
+          4286578687
+        ],
+        "origin_bits32": [
+          4286578687,
+          2139095039
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        4290772992,
+        4290772992
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            4290772992,
+            4290772992
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "subnormal-distance",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1,
+          2147483649
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          0,
+          0
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        75,
+        2147483723
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            75,
+            2147483723
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "large-accumulator",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          2139095039,
+          4286578687
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2139095039,
+        4286578687
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2139095039,
+            4286578687
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "negative-vector",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          3225419776,
+          3229614080
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          3197737370,
+          1040187392
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        3231106759,
+        3233299516
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            3231106759,
+            3233299516
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "force-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 2143363909,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        2143363909
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            2143363909
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "mass-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 2143363909,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        2143363909
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            2143363909
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "position-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          2143363909,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        2143363909
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            2143363909
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "origin-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          2143363909,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        2143363909
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            2143363909
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "accumulator-qnan",
+        "target_class": 4,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          2143363909,
+          3187671040
+        ],
+        "nil_origin": false
+      },
+      "final_force_bits32": [
+        2143363909,
+        1085815868
+      ],
+      "events": [
+        {
+          "service": "wake",
+          "force_bits32": [
+            2143363909,
+            1085815868
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "blocked-flags-0008",
+        "target_class": 4,
+        "target_flags": 8,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "blocked-flags-0020",
+        "target_class": 4,
+        "target_flags": 32,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "blocked-flags-0040",
+        "target_class": 4,
+        "target_flags": 64,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "blocked-flags-8000",
+        "target_class": 4,
+        "target_flags": 32768,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "blocked-flags-8068",
+        "target_class": 4,
+        "target_flags": 32872,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "immobile-class-00400000",
+        "target_class": 4194304,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "immobile-class-00400001",
+        "target_class": 4194305,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "mode": "nearest-control",
+      "input": {
+        "name": "immobile-class-00400004",
+        "target_class": 4194308,
+        "target_flags": 0,
+        "position_bits32": [
+          1077936128,
+          1082130432
+        ],
+        "origin_bits32": [
+          0,
+          0
+        ],
+        "mass_bits32": 1101004800,
+        "force_bits32": 1097859072,
+        "initial_force_bits32": [
+          1050253722,
+          3187671040
+        ],
+        "nil_origin": true
+      },
+      "final_force_bits32": [
+        1050253722,
+        3187671040
+      ],
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    }
+  ]
+}

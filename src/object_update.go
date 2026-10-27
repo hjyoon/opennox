@@ -632,16 +632,9 @@ func (s *Server) ApplyForce(obj *server.Object, vec types.Pointf, force float64)
 }
 
 func (obj *Object) applyForce(vec types.Pointf, force float64) { // nox_xxx_objectApplyForce_52DF80
-	if !obj.IsMovable() {
+	if !server.ApplyObjectForce52DF80(obj.SObj(), vec, float32(force)) {
 		return
 	}
-	dp := obj.Pos().Sub(vec)
-	r := float32(dp.Len() + 0.1)
-	f := 10.0 * float32(force) / obj.Mass
-	// This weird conversion is how Nox is doing it.
-	// Be aware that changing it may cause minor deviation in physics.
-	obj.ForceVec.X += float32(float64(dp.X) * float64(f) / float64(r))
-	obj.ForceVec.Y += float32(float64(dp.Y) * float64(f) / float64(r))
 	if !obj.Class().Has(object.ClassMissile) {
 		legacy.Nox_xxx_unitHasCollideOrUpdateFn_537610(obj.SObj())
 	}

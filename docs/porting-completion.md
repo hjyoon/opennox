@@ -55,6 +55,61 @@ completion requirements.
 
 ## Current findings
 
+### Native elevator updates, passengers and audio entries
+
+All five remaining C elevator update, passenger and audio entry points now
+forward to native-width Go with object-pointer arguments. The shaft keeps its
+original byte return. Both update roots preserve signed height gates and the
+signed upper clamp. Passenger callbacks read the live update record after the
+point test, retain its identity, reload the destination before movement and
+reload height after movement. The descending callback preserves startup
+PC53/ToZero operations, the binary32 support-difference store and its unordered
+gate. Box fit rejects unordered dimensions. The shaft reloads its link after
+collision queueing and its cached elevator record's state after enumeration
+and audio. Shared arithmetic, Raise, sync, native-link storage and the ordinary
+top-level movement binding remain unchanged.
+
+Twelve complete unchanged original routines total 1,940 sealed code bytes,
+with 72 separately sealed table/constant bytes. There are 1,229 conditions in
+startup and nearest control modes: 2,458 top-level executions, plus actual
+original passenger callbacks and real point, absolute-value, Raise, sync and
+type-index callees. Circle enumeration, successful movement with declared
+position writes, collision queueing and audio delivery are explicit services.
+Four immutable service trampolines call the unchanged original passenger
+bodies. Initial mutable-trampoline preparation failures are retained. Stored
+box corners are declared inputs; no stock Shape.Calc or signaling-NaN oracle
+claim is made. The declared original/native type tables are empty.
+
+The unchanged native server path disagrees on 81 leaf conditions and matches
+1,148 controls. All 1,229 now match. An additional 1,221 conditions use the real
+native link lookup. Eight controlled owner-update replacements use the declared
+multi-record provider and do not claim simultaneous native bindings. Five C
+symbols are exercised on native C-owned objects above 4 GiB for 1,143 conditions:
+530 direct passenger callbacks with real Raise and a declared movement service,
+513 update-state/return controls against an actual empty map, and 100 audio
+pointer/nonzero-mode controls. Empty-map update checks do not claim passenger
+enumeration. Another 100 original audio conditions verify the actual native
+event binding and queue. Full native object/update bytes and canary fields are
+checked; actual original movement and transitive audio fidelity remain separate.
+
+Two existing test files receive only link-provider and carry-call dependency
+bindings; their inputs, expectations, assertions and identities are unchanged.
+The new comparison engine's changes after baseline are also only dependency
+bindings. Original rows, earlier frozen fixtures and published E2E scripts stay
+unchanged. A new fixture subset-count/missing-file setup failure and the C-entry
+fixture's missing string manager are corrected with their raw records retained.
+Detailed evidence is preserved in `elevator-passenger-native-port` in the
+validation workspace. These controlled comparisons do not establish overall
+100% or a newly completed chapter.
+
+The single final normal root/server/legacy run passes 243,434 events with
+16 skips in 271.292 seconds. Every preceding result and multiplicity remains,
+with 3,697 added passes; comparison normalizes only the three unchanged
+ASLR-bearing fault-test names. Focused highres checks with cgocheck2 and
+checkptr level 2 pass 5,628 events in 100.202 seconds, including compilation.
+A single clean normal ARM64 product and the
+unchanged published recovery E2E qualify runtime behavior separately.
+
 ### Elevator and shaft collision startup precision
 
 Elevator and shaft collisions now preserve the original startup PC53/ToZero
@@ -119,8 +174,13 @@ manifests and the final save screen are qualified. The source Save, assets,
 configuration and executable retain their hashes. This fresh runtime segment
 checks movement, pickup and Save; earlier combat, elevator passenger transport
 and whole chapters are not replayed or newly certified. Its Windows 386/AMD64
-and Linux AMD64 native jobs are running. Earlier product `076d257` has all
-three native products qualified. Existing saves and validation records remain
+and Linux AMD64 native jobs all pass, with all three products preserved and
+ZIP digests, architecture and clean Go 1.26.9 revision verified. Linux raw
+records independently recount 237,161 passes and seven skips across all 56
+expected packages; the default-link damage check passes 133,041 events with
+MALLOC_PERTURB_=0. Windows root/server/legacy package tests pass on both
+architectures. Earlier product `076d257` also has all native products qualified.
+Existing saves and validation records remain
 preserved; transparent APFS compression rechecks original bytes, hashes,
 paths, ownership, permissions and modification times.
 

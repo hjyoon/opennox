@@ -61,8 +61,8 @@ func TestElevatorCarryUp53B750MovesPlayerToShaft(t *testing.T) {
 	player.Shape.Kind = ShapeKindCircle
 	player.Shape.Circle.R = 5
 
-	elevatorCarryUp53B750(elevator, update, elevatorUpdateHooks53B5D0{
-		link: func(got *Object) *Object {
+	elevatorCarryUp53B750(elevator, elevatorUpdateHooks53B5D0{
+		link: func(got *Object, _ unsafe.Pointer) *Object {
 			if got != elevator {
 				t.Fatalf("link source = %p, want elevator %p", got, elevator)
 			}

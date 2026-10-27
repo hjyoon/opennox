@@ -28,7 +28,7 @@ func elevatorTestHooks53B5D0(frame, tickRate uint32, links map[*Object]*Object, 
 	return elevatorUpdateHooks53B5D0{
 		frame:    func() uint32 { return frame },
 		tickRate: func() uint32 { return tickRate },
-		link:     func(unit *Object) *Object { return links[unit] },
+		link:     func(unit *Object, _ unsafe.Pointer) *Object { return links[unit] },
 		needSync: func(unit *Object) { *events = append(*events, fmt.Sprintf("sync:%p", unit)) },
 		audio: func(unit *Object, upward bool) {
 			*events = append(*events, fmt.Sprintf("audio:%p:%t", unit, upward))
@@ -140,7 +140,7 @@ func TestElevatorCarriesPlayerRoundTrip(t *testing.T) {
 	hooks := elevatorUpdateHooks53B5D0{
 		frame:    func() uint32 { return frame },
 		tickRate: func() uint32 { return 30 },
-		link:     func(unit *Object) *Object { return links[unit] },
+		link:     func(unit *Object, _ unsafe.Pointer) *Object { return links[unit] },
 		needSync: func(*Object) {},
 		audio:    func(*Object, bool) {},
 		eachInCircle: func(_ types.Pointf, _ float32, fn func(*Object) bool) {

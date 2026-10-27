@@ -5889,211 +5889,33 @@ char nox_xxx_updateSwitch_53B320(uint32_t* a1) {
 }
 
 //----- (0053B380) --------------------------------------------------------
-char nox_xxx_updateElevatorShaft_53B380(int a1) {
-	int v1; // esi
-	int v2; // eax
-	int v3; // edi
-
-	v1 = *(uint32_t*)(a1 + 748);
-	v2 = *(uint32_t*)(v1 + 4);
-	if (v2) {
-		nox_xxx_unitHasCollideOrUpdateFn_537610(a1);
-		v3 = *(uint32_t*)(*(uint32_t*)(v1 + 4) + 748);
-		if (*(uint8_t*)(v3 + 12) == 1) {
-			if (*(uint32_t*)(v3 + 16) <= 32) {
-				nox_xxx_unitsGetInCircle_517F90((float2*)(a1 + 56), 64.0, nox_xxx_fnElevatorShaft_53B410, a1);
-			}
-			if (*(uint8_t*)(v1 + 12) != *(uint8_t*)(v3 + 12)) {
-				nox_xxx_elevatorAud_53B490(a1, 0);
-			}
-		} else if (*(uint8_t*)(v3 + 12) == 3 && *(uint8_t*)(v1 + 12) != *(uint8_t*)(v3 + 12)) {
-			nox_xxx_elevatorAud_53B490(a1, 1);
-			LOBYTE(v2) = *(uint8_t*)(v3 + 12);
-			*(uint8_t*)(v1 + 12) = v2;
-			return v2;
-		}
-		LOBYTE(v2) = *(uint8_t*)(v3 + 12);
-		*(uint8_t*)(v1 + 12) = v2;
-	}
-	return v2;
+extern char nox_xxx_updateElevatorShaft_53B380_go(nox_object_t* unit);
+char nox_xxx_updateElevatorShaft_53B380(nox_object_t* unit) {
+    return nox_xxx_updateElevatorShaft_53B380_go(unit);
 }
 
 //----- (0053B410) --------------------------------------------------------
-void nox_xxx_fnElevatorShaft_53B410(int a1, int a2) {
-	int v2;   // edi
-	int v3;   // ebx
-	float v4; // [esp+0h] [ebp-10h]
-	float v5; // [esp+0h] [ebp-10h]
-
-	if (nox_xxx_map_57B850((float2*)(a2 + 56), (float*)(a2 + 172), (float2*)(a1 + 56))) {
-		v2 = *(uint32_t*)(a2 + 748);
-		v3 = *(uint32_t*)(*(uint32_t*)(v2 + 4) + 748);
-		v4 = *(float*)(a1 + 104) + 64.0 - (double)*(int*)(v3 + 16);
-		if (sub_419A10(v4) < 10.0) {
-			nox_xxx_unitMove_4E7010(a1, (float2*)(*(uint32_t*)(v2 + 4) + 56));
-			v5 = (double)*(int*)(v3 + 16);
-			nox_xxx_unitRaise_4E46F0(a1, v5);
-		}
-	}
+extern void nox_xxx_fnElevatorShaft_53B410_go(nox_object_t* candidate, nox_object_t* shaft);
+void nox_xxx_fnElevatorShaft_53B410(nox_object_t* candidate, nox_object_t* shaft) {
+    nox_xxx_fnElevatorShaft_53B410_go(candidate, shaft);
 }
 
 //----- (0053B490) --------------------------------------------------------
-void nox_xxx_elevatorAud_53B490(int a1, int a2) {
-	uint32_t* result; // eax
-	int v3;           // ecx
-	int v4;           // ecx
-	int v5;           // ecx
-	int v6;           // ecx
-
-	if (a2) {
-		result = (uint32_t*)a1;
-		v3 = *(unsigned short*)(a1 + 24);
-		if ((unsigned short)v3 == 8) {
-			nox_xxx_aud_501960(257, a1, 0, 0);
-		} else if (v3 == 16) {
-			v4 = *(uint32_t*)(a1 + 12);
-			if (v4 & 0x20) {
-				nox_xxx_aud_501960(253, a1, 0, 0);
-			} else if (v4 & 0x40) {
-				nox_xxx_aud_501960(259, a1, 0, 0);
-			} else {
-				nox_xxx_aud_501960(251, a1, 0, 0);
-			}
-		} else if (v3 == 32) {
-			if (*(uint8_t*)(a1 + 12) & 2) {
-				nox_xxx_aud_501960(255, a1, 0, 0);
-			} else {
-				nox_xxx_aud_501960(249, a1, 0, 0);
-			}
-		}
-	} else {
-		result = (uint32_t*)a1;
-		v5 = *(unsigned short*)(a1 + 24);
-		if ((unsigned short)v5 == 8) {
-			nox_xxx_aud_501960(258, a1, 0, 0);
-		} else if (v5 == 16) {
-			v6 = *(uint32_t*)(a1 + 12);
-			if (v6 & 0x20) {
-				nox_xxx_aud_501960(254, a1, 0, 0);
-			} else if (v6 & 0x40) {
-				nox_xxx_aud_501960(260, a1, 0, 0);
-			} else {
-				nox_xxx_aud_501960(252, a1, 0, 0);
-			}
-		} else if (v5 == 32) {
-			if (*(uint8_t*)(a1 + 12) & 2) {
-				nox_xxx_aud_501960(256, a1, 0, 0);
-			} else {
-				nox_xxx_aud_501960(250, a1, 0, 0);
-			}
-		}
-	}
+extern void nox_xxx_elevatorAud_53B490_go(nox_object_t* unit, int upward);
+void nox_xxx_elevatorAud_53B490(nox_object_t* unit, int upward) {
+    nox_xxx_elevatorAud_53B490_go(unit, upward);
 }
 
 //----- (0053B5D0) --------------------------------------------------------
-void nox_xxx_updateElevator_53B5D0(uint32_t* a1) {
-	int v1; // esi
-	int v2; // eax
-	int v3; // eax
-	int v4; // eax
-
-	v1 = a1[187];
-	switch (*(unsigned char*)(v1 + 12)) {
-	case 0u:
-		if (a1[4] & 0x1000000) {
-			if ((unsigned int)(gameFrame() - a1[34]) > (int)gameFPS()) {
-				*(uint8_t*)(v1 + 12) = 3;
-				nox_xxx_elevatorAud_53B490((int)a1, 1);
-			}
-		}
-		break;
-	case 1u:
-		v2 = *(uint32_t*)(v1 + 16);
-		if (v2 > 0) {
-			*(uint32_t*)(v1 + 16) = v2 - 2;
-		} else {
-			*(uint8_t*)(v1 + 12) = 0;
-			a1[34] = gameFrame();
-		}
-		nox_xxx_unitNeedSync_4E44F0((int)a1);
-		if (*(uint32_t*)(v1 + 4)) {
-			nox_xxx_unitNeedSync_4E44F0(*(uint32_t*)(v1 + 4));
-		}
-		if ((double)*(int*)(v1 + 16) <= 20.0) {
-			v3 = a1[4];
-			LOBYTE(v3) = v3 | 0x10;
-			a1[4] = v3;
-		}
-		break;
-	case 2u:
-		if (a1[4] & 0x1000000 && (unsigned int)(gameFrame() - a1[34]) > (int)gameFPS()) {
-			*(uint8_t*)(v1 + 12) = 1;
-			nox_xxx_elevatorAud_53B490((int)a1, 0);
-		}
-		break;
-	case 3u:
-		*(uint32_t*)(v1 + 16) += 2;
-		nox_xxx_unitNeedSync_4E44F0((int)a1);
-		if (*(uint32_t*)(v1 + 4)) {
-			nox_xxx_unitNeedSync_4E44F0(*(uint32_t*)(v1 + 4));
-		}
-		if ((double)*(int*)(v1 + 16) >= 20.0) {
-			v4 = a1[4];
-			LOBYTE(v4) = v4 & 0xEF;
-			a1[4] = v4;
-		}
-		if ((double)*(int*)(v1 + 16) >= 32.0) {
-			nox_xxx_unitsGetInCircle_517F90((float2*)a1 + 7, 64.0, nox_xxx_elevatorFn_53B750, (int)a1);
-		}
-		if (*(uint32_t*)(v1 + 16) >= 64) {
-			*(uint32_t*)(v1 + 16) = 64;
-			*(uint8_t*)(v1 + 12) = 2;
-			a1[34] = gameFrame();
-		}
-		break;
-	default:
-		return;
-	}
+extern void nox_xxx_updateElevator_53B5D0_go(nox_object_t* unit);
+void nox_xxx_updateElevator_53B5D0(nox_object_t* unit) {
+    nox_xxx_updateElevator_53B5D0_go(unit);
 }
 
 //----- (0053B750) --------------------------------------------------------
-void nox_xxx_elevatorFn_53B750(int a1, int a2) {
-	int v2;    // ebx
-	int v3;    // edi
-	int v4;    // eax
-	double v5; // st7
-	float v6;  // [esp+0h] [ebp-10h]
-	float v7;  // [esp+0h] [ebp-10h]
-
-	if (nox_xxx_map_57B850((float2*)(a2 + 56), (float*)(a2 + 172), (float2*)(a1 + 56))) {
-		v2 = *(uint32_t*)(a2 + 748);
-		v3 = *(uint32_t*)(v2 + 4);
-		if (v3) {
-			v6 = *(float*)(a1 + 104) - (double)*(int*)(v2 + 16);
-			if (sub_419A10(v6) < 10.0) {
-				v4 = *(uint32_t*)(a1 + 172);
-				if (v4 == 3) {
-					if (*(float*)(v3 + 184) < (double)*(float*)(a1 + 184) ||
-						*(float*)(v3 + 188) < (double)*(float*)(a1 + 188)) {
-						*(uint32_t*)(a1 + 16) &= 0xFFEFFFFF;
-						nox_xxx_unitRaise_4E46F0(a1, 0.0);
-						return;
-					}
-				} else if (v4 == 2) {
-					v5 = *(float*)(a1 + 176) + *(float*)(a1 + 176);
-					if (v5 > *(float*)(v3 + 184) || v5 > *(float*)(v3 + 188)) {
-						*(uint32_t*)(a1 + 16) &= 0xFFEFFFFF;
-						nox_xxx_unitRaise_4E46F0(a1, 0.0);
-						return;
-					}
-				}
-				nox_xxx_unitMove_4E7010(a1, (float2*)(*(uint32_t*)(v2 + 4) + 56));
-				v7 = (double)(int)(*(uint32_t*)(v2 + 16) - 64);
-				nox_xxx_unitRaise_4E46F0(a1, v7);
-				return;
-			}
-		}
-	}
+extern void nox_xxx_elevatorFn_53B750_go(nox_object_t* candidate, nox_object_t* elevator);
+void nox_xxx_elevatorFn_53B750(nox_object_t* candidate, nox_object_t* elevator) {
+    nox_xxx_elevatorFn_53B750_go(candidate, elevator);
 }
 
 //----- (0053B860) --------------------------------------------------------

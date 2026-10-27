@@ -21,7 +21,7 @@ type SparkExplosionCollideData struct {
 // networking stay in the native-width server representation.
 type SparkExplosionCollideRuntime4E9AC0 struct {
 	CheckDirection func(types.Pointf, int16, types.Pointf) int32
-	MapPushUnits   func(types.Pointf, float32, float32, float32, *Object, int32, int32)
+	MapPushUnits   func(*types.Pointf, float32, float32, float32, *Object, int32, int32)
 	MapDamageUnits func(types.Pointf, float32, float32, int32, object.DamageType, *Object, *Object)
 	Scorch         func(types.Pointf, int32)
 	DelayedDelete  func(*Object)
@@ -36,7 +36,7 @@ type sparkExplosionCollideNativeDeps4E9AC0 struct {
 	audio          func(uint32, *Object, int32, uint32)
 	findParent     func(*Object) *Object
 	isEnemy        func(*Object, *Object) int32
-	mapPushUnits   func(types.Pointf, float32, float32, float32, *Object, int32, int32)
+	mapPushUnits   func(*types.Pointf, float32, float32, float32, *Object, int32, int32)
 	targetDamage   func(*Object, *Object, *Object, int32, object.DamageType) int32
 	mapDamageUnits func(types.Pointf, float32, float32, int32, object.DamageType, *Object, *Object)
 	sparkFX        func(types.Pointf, uint8)
@@ -83,7 +83,7 @@ func sparkExplosionCollideNative4E9AC0(
 			},
 			isEnemy: deps.isEnemy,
 			mapPushUnits: func(pos *Object, first, second, force float32, owner *Object, arg6, arg7 int32) {
-				deps.mapPushUnits(pos.PosVec, first, second, force, owner, arg6, arg7)
+				deps.mapPushUnits(&pos.PosVec, first, second, force, owner, arg6, arg7)
 			},
 			targetDamage: func(target, parent, source *Object, damage int32, damageType uint32) int32 {
 				return deps.targetDamage(target, parent, source, damage, object.DamageType(damageType))

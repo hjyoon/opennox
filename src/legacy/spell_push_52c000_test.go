@@ -46,7 +46,11 @@ func TestPushCastGoEntryPreservesNativePosition52C000(t *testing.T) {
 	t.Cleanup(func() { GetServer, mapPushUnitsAroundCall52E040 = oldServer, oldPush })
 	GetServer = func() Server { return &pushCastLegacyServer52C000{srv: new(server.Server)} }
 	calls := 0
-	mapPushUnitsAroundCall52E040 = func(origin types.Pointf, outer, inner, force float32, source *server.Object, callback, callbackArg int) {
+	mapPushUnitsAroundCall52E040 = func(originRef *types.Pointf, outer, inner, force float32, source *server.Object, callback, callbackArg int) {
+		if originRef != &caster.PosVec {
+			t.Fatal("caster point reference changed")
+		}
+		origin := *originRef
 		calls++
 		if origin != caster.PosVec || outer != 600 || inner != 10 || force != 0 || source != nil || callback != 0 || callbackArg != 0 {
 			t.Fatalf("Push radial arguments=%v/%g/%g/%g/%p/%d/%d", origin, outer, inner, force, source, callback, callbackArg)

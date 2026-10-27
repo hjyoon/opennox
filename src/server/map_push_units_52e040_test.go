@@ -10,6 +10,7 @@ import (
 func TestMapPushUnitsAround52E040FiltersAndAttenuates(t *testing.T) {
 	type candidate struct {
 		position types.Pointf
+		force    types.Pointf
 		movable  bool
 		visible  bool
 	}
@@ -24,7 +25,7 @@ func TestMapPushUnitsAround52E040FiltersAndAttenuates(t *testing.T) {
 	var gotRect types.Rectf
 	var pushed []*candidate
 	var forces []float64
-	if !mapPushUnitsAround52E040(origin, 50, 10, 100, mapPushUnitsAroundHooks52E040[*candidate]{
+	if !mapPushUnitsAround52E040(&origin, 50, 10, 100, mapPushUnitsAroundHooks52E040[*candidate]{
 		eachInRect: func(rect types.Rectf, fn func(*candidate) bool) {
 			gotRect = rect
 			for _, it := range candidates {
@@ -43,12 +44,17 @@ func TestMapPushUnitsAround52E040FiltersAndAttenuates(t *testing.T) {
 			}
 			return false
 		},
-		applyForce: func(it *candidate, from types.Pointf, force float64) {
+		mass:      func(*candidate) float32 { return 1 },
+		isMissile: func(*candidate) bool { return false },
+		loadForce: func(it *candidate) types.Pointf { return it.force },
+		wake:      func(*candidate) {},
+		storeForce: func(it *candidate, from types.Pointf, force types.Pointf) {
 			if from != origin {
 				t.Fatalf("force origin = %v, want %v", from, origin)
 			}
 			pushed = append(pushed, it)
-			forces = append(forces, force)
+			forces = append(forces, float64(force.X))
+			it.force = force
 		},
 	}) {
 		t.Fatal("native radial push was not handled")
@@ -59,18 +65,19 @@ func TestMapPushUnitsAround52E040FiltersAndAttenuates(t *testing.T) {
 	if len(pushed) != 2 || pushed[0] != candidates[0] || pushed[1] != candidates[1] {
 		t.Fatalf("pushed candidates = %v", pushed)
 	}
-	if forces[0] != 100 {
-		t.Fatalf("inner force = %v, want 100", forces[0])
+	// Complete original historical-filter-attenuation row, mass 1.
+	if forces[0] != float64(math.Float32frombits(1148524825)) {
+		t.Fatalf("inner force = %v, want original force X", forces[0])
 	}
-	want := float64(float32(100) * (1 - (float32(30.1)-10)/(50-10)))
-	if math.Abs(forces[1]-want) > 1e-6 {
+	want := float64(math.Float32frombits(1140321394))
+	if forces[1] != want {
 		t.Fatalf("attenuated force = %.9f, want %.9f", forces[1], want)
 	}
 }
 
 func TestMapPushUnitsAround52E040UsesLargerRadiusForDistance(t *testing.T) {
 	called := false
-	if !mapPushUnitsAround52E040(types.Pointf{}, 10, 20, 7, mapPushUnitsAroundHooks52E040[int]{
+	if !mapPushUnitsAround52E040(&types.Pointf{}, 10, 20, 7, mapPushUnitsAroundHooks52E040[int]{
 		eachInRect: func(rect types.Rectf, fn func(int) bool) {
 			if rect != (types.Rectf{Min: types.Ptf(-10, -10), Max: types.Ptf(10, 10)}) {
 				t.Fatalf("query rect = %v", rect)
@@ -80,7 +87,11 @@ func TestMapPushUnitsAround52E040UsesLargerRadiusForDistance(t *testing.T) {
 		isMovable: func(int) bool { return true },
 		position:  func(int) types.Pointf { return types.Ptf(15, 0) },
 		traceRay:  func(types.Pointf, types.Pointf) bool { return true },
-		applyForce: func(int, types.Pointf, float64) {
+		mass:      func(int) float32 { return 1 },
+		isMissile: func(int) bool { return false },
+		loadForce: func(int) types.Pointf { return types.Pointf{} },
+		wake:      func(int) {},
+		storeForce: func(int, types.Pointf, types.Pointf) {
 			called = true
 		},
 	}) {
@@ -92,7 +103,7 @@ func TestMapPushUnitsAround52E040UsesLargerRadiusForDistance(t *testing.T) {
 }
 
 func TestMapPushUnitsAround52E040RejectsMissingHooks(t *testing.T) {
-	if mapPushUnitsAround52E040(types.Pointf{}, 1, 0, 1, mapPushUnitsAroundHooks52E040[int]{}) {
+	if mapPushUnitsAround52E040(&types.Pointf{}, 1, 0, 1, mapPushUnitsAroundHooks52E040[int]{}) {
 		t.Fatal("missing dependencies were accepted")
 	}
 	if new(Server).MapPushUnitsAround52E040(types.Pointf{}, 1, 0, 1, MapPushUnitsAroundRuntime52E040{}) {

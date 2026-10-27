@@ -437,8 +437,8 @@ func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 					return s.MonsterDeadRandomFloat549D80(minimum, maximum)
 				},
 				PushUnits: func(position types.Pointf, outer, inner, force float32, _ *server.Object) {
-					s.MapPushUnitsAround52E040(position, outer, inner, force, server.MapPushUnitsAroundRuntime52E040{
-						ApplyForce: srv.ApplyForce,
+					s.MapPushUnitsAroundPtr52E040(&unit.PosVec, outer, inner, force, server.MapPushUnitsAroundRuntime52E040{
+						Wake: Nox_xxx_unitHasCollideOrUpdateFn_537610,
 					})
 				},
 				DamageUnits: func(position types.Pointf, outer, inner float32, damage int, damageType object.DamageType, source *server.Object) {

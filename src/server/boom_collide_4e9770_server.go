@@ -33,7 +33,7 @@ type BoomCollideRuntime4E9770 struct {
 	TraceHitPoint   func() *ntype.Point32
 	DamageMap       func(int32, int32, int32, object.DamageType, *Object)
 	MapDamageUnits  func(types.Pointf, float32, float32, int32, object.DamageType, *Object, *Object)
-	MapPushUnits    func(types.Pointf, float32, float32, float32, *Object, int32, int32)
+	MapPushUnits    func(*types.Pointf, float32, float32, float32, *Object, int32, int32)
 	DelayedDelete   func(*Object)
 	InversionEffect unsafe.Pointer
 }
@@ -56,7 +56,7 @@ type boomCollideNativeDeps4E9770 struct {
 	traceHitPoint  func() *ntype.Point32
 	damageMap      func(int32, int32, int32, object.DamageType, *Object)
 	mapDamageUnits func(types.Pointf, float32, float32, int32, object.DamageType, *Object, *Object)
-	mapPushUnits   func(types.Pointf, float32, float32, float32, *Object, int32, int32)
+	mapPushUnits   func(*types.Pointf, float32, float32, float32, *Object, int32, int32)
 	delayedDelete  func(*Object)
 }
 
@@ -169,7 +169,7 @@ func boomCollideNative4E9770(
 			return deps.balance.PushRange
 		},
 		mapPushUnits: func(pos *Object, first, second, force float32, source *Object, arg6, arg7 int32) {
-			deps.mapPushUnits(pos.PosVec, first, second, force, source, arg6, arg7)
+			deps.mapPushUnits(&pos.PosVec, first, second, force, source, arg6, arg7)
 		},
 		delayedDelete: deps.delayedDelete,
 	})

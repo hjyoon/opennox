@@ -33,7 +33,7 @@ func TestMarkCastRetiredCEntry52CA80(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if fmt.Sprintf("%x", sha256.Sum256(header)) != "53bb95d58f580db49b1939dd9a220a4ed2c5874b0fce06233ea674bfc21f0be4" {
+	if fmt.Sprintf("%x", sha256.Sum256(header)) != "cd8cbe415360dd60fe7d8b78a488cb12c0df3f602dd4b2e423f020fd3b841949" {
 		t.Fatal("original C declarations changed while retiring Mark")
 	}
 	entry, err := os.ReadFile("spells.go")

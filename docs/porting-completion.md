@@ -55,6 +55,63 @@ completion requirements.
 
 ## Current findings
 
+### Native radial-push callback, arithmetic and live origins
+
+The remaining PE32 radial-push callback now uses native-width arguments, and
+the C root forwards to Go on both 32-bit and 64-bit targets. The callback and
+opaque argument words retain native width. The optional callback receives the
+original raw binary32 distance word. Its record remains 28 bytes on 32-bit
+hosts and is 48 bytes on 64-bit hosts. Origin references remain live across
+candidates. Push/Pull spells, powder barrels, PushUpdate, monster-death push,
+and Boom/Spark explosion adapters now preserve their original point owner.
+
+The radial callback computes its original force directly rather than routing
+through the common single-object force helper. The rectangle, radius selection,
+retained Y difference, wide outer-distance comparison, binary32 distance,
+attenuation, scaled force, mass quotient and final vector stores preserve
+startup PC53/ToZero. Vision reloads origin and candidate position. The optional
+callback follows the cached mass quotient, then class and accumulated force
+reload before the vector stores and conditional activation.
+
+Four complete unchanged original bodies seal 486 bytes, with 12 constant bytes:
+root, callback, movable predicate and mass load. There are 454 conditions and
+908 original startup/nearest-control calls. The original callback executes via
+six immutable enumeration-service trampolines. Enumeration, vision, the optional
+callback and activation delivery are explicit services. All earlier 900 and
+904 original rows remain exact when adding native-index conditions. The initial
+observer preparation failure is preserved. Signaling-NaN parity and complete
+original enumeration/activation lifecycle are not claimed.
+
+The previous native root mismatches 271 of its 346 baseline leaf conditions
+and matches 75 controls. The final 350 root and 104 direct-callback conditions
+all match. Actual C callback entries pass 32 finite missile conditions using
+native C-owned records and an actual empty wall index. Two more conditions use
+the real native spatial index, both insertion orders, and a C callback that
+changes the borrowed origin before the next candidate. They match the exact
+original activation/partition flags, force vectors and raw callback distance.
+Another control checks native callback/argument words and point identity above
+4 GiB. Object records and surrounding canaries are checked.
+
+One historical test adapts its hook from an unscaled force coefficient to
+the resulting vector, using the same coordinates, candidate order and gating
+inputs with declared unit mass. Exact original X words `44751919/43f7ec72`
+replace its old coefficient expectations and tolerance. Other old expectations
+remain; binding changes add four point-identity assertions and extend C dispatch
+coverage to 32-bit hosts. Seven retained spell-provenance tests refresh only
+the whole-header checksum after independently proving that its sole change is
+the two radial declarations. Their original body hashes and behavior checks
+remain exact. The initial normal checksum failures, runtime-field build failure
+and native-index admission fixture failures are preserved. Common force/math helpers, update registrations
+and published campaign scenarios remain unchanged. Evidence is retained in
+`radial-push-native-startup-port`; overall 100% remains unproved.
+
+Final normal evidence contains 246,475 PASS and 16 SKIP, with all prior
+terminal results and multiplicities retained and 493 added passing events.
+The already passing root/server results are reused; only legacy is retried
+after its checksum correction. Focused highres `cgocheck2` plus
+`checkptr=2` passes all 707 selected events in 98.255 seconds. Their identities
+and multiplicities match the same selection from normal results.
+
 ### Native black-powder barrel and burn entries
 
 Both remaining C update entries forward native object pointers to Go while
@@ -110,8 +167,10 @@ parameterless GET observations, complete manifests and the final save screen
 are qualified. Source Save, assets, configuration and product hashes remain
 unchanged. This is a Load, movement, pickup and Save smoke; earlier combat
 and a campaign powder explosion are not replayed. Current Windows 386/AMD64
-and normal Linux AMD64 native jobs run at `fa7ec05`; all three preceding
-`6d2ae52` native products are qualified.
+and normal Linux AMD64 products are now qualified at `fa7ec05`, including clean
+revision metadata, product hashes and native execution. Linux passes 243,406
+events with seven skips across all 56 expected packages, plus the default-link
+damage check. All three preceding `6d2ae52` native products remain qualified.
 
 ### Native Obelisk entries, recharge and live callbacks
 

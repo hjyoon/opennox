@@ -65,7 +65,11 @@ func TestSparkExplosionCollideNative4E9AC0UsesCachedDataAndPointers(t *testing.T
 			}
 			return parent
 		},
-		mapPushUnits: func(pos types.Pointf, first, second, force float32, owner *Object, arg6, arg7 int32) {
+		mapPushUnits: func(posRef *types.Pointf, first, second, force float32, owner *Object, arg6, arg7 int32) {
+			if posRef != &source.PosVec {
+				t.Fatal("explosion point reference changed")
+			}
+			pos := *posRef
 			events = append(events, "push")
 			if pos != source.PosVec || first != 6 || second != 0 ||
 				force != math.Float32frombits(sparkExplosionPushForceBits4E9AC0) ||

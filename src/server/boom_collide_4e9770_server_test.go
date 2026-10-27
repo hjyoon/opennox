@@ -33,7 +33,7 @@ func defaultBoomCollideNativeDeps4E9770(balance *boomCollideBalance4E9770) boomC
 		traceHitPoint:  func() *ntype.Point32 { return nil },
 		damageMap:      func(int32, int32, int32, object.DamageType, *Object) {},
 		mapDamageUnits: func(types.Pointf, float32, float32, int32, object.DamageType, *Object, *Object) {},
-		mapPushUnits:   func(types.Pointf, float32, float32, float32, *Object, int32, int32) {},
+		mapPushUnits:   func(*types.Pointf, float32, float32, float32, *Object, int32, int32) {},
 		delayedDelete:  func(*Object) {},
 	}
 }
@@ -69,7 +69,11 @@ func TestBoomCollide4E9770NativeInitializesCacheAndUsesLiveCommonState(t *testin
 		cache.Force = 66.5
 		cache.PushRange = 77.25
 	}
-	deps.mapPushUnits = func(pos types.Pointf, first, second, force float32, gotSource *Object, arg6, arg7 int32) {
+	deps.mapPushUnits = func(posRef *types.Pointf, first, second, force float32, gotSource *Object, arg6, arg7 int32) {
+		if posRef != &source.PosVec {
+			t.Fatal("explosion point reference changed")
+		}
+		pos := *posRef
 		if pos != (types.Ptf(-3, 7)) || first != 77.25 || second != 77.25 || force != 66.5 || gotSource != source || arg6 != 0 || arg7 != 0 {
 			t.Fatalf("map push args = (%v,%g,%g,%g,%p,%d,%d)", pos, first, second, force, gotSource, arg6, arg7)
 		}
@@ -182,7 +186,7 @@ func TestBoomCollide4E9770NativeDamageCallbackThenLiveScorchPosition(t *testing.
 	deps.mapDamageUnits = func(types.Pointf, float32, float32, int32, object.DamageType, *Object, *Object) {
 		events = append(events, "map-damage")
 	}
-	deps.mapPushUnits = func(types.Pointf, float32, float32, float32, *Object, int32, int32) {
+	deps.mapPushUnits = func(*types.Pointf, float32, float32, float32, *Object, int32, int32) {
 		events = append(events, "map-push")
 	}
 	deps.audio = func(uint32, *Object, int32, uint32) { events = append(events, "audio") }

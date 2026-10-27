@@ -18,7 +18,8 @@ func TestMapPushUnitsAround52E040UsesNativeDispatch(t *testing.T) {
 	old := mapPushUnitsAroundCall52E040
 	t.Cleanup(func() { mapPushUnitsAroundCall52E040 = old })
 	called := false
-	mapPushUnitsAroundCall52E040 = func(gotOrigin types.Pointf, outerRadius, innerRadius, force float32, gotSource *server.Object, callback, callbackArg int) {
+	mapPushUnitsAroundCall52E040 = func(gotOriginRef *types.Pointf, outerRadius, innerRadius, force float32, gotSource *server.Object, callback, callbackArg int) {
+		gotOrigin := *gotOriginRef
 		called = true
 		if gotOrigin != origin || outerRadius != 100 || innerRadius != 30 || force != 60 {
 			t.Fatalf("push args = (%v, %v, %v, %v)", gotOrigin, outerRadius, innerRadius, force)
@@ -38,15 +39,13 @@ func TestMapPushUnitsAround52E040UsesNativeDispatch(t *testing.T) {
 }
 
 func TestMapPushUnitsAround52E040LegacyEntryUsesNativeDispatch(t *testing.T) {
-	if unsafe.Sizeof(uintptr(0)) <= 4 {
-		t.Skip("the PE32 C entry remains authoritative on 32-bit hosts")
-	}
 	origin := types.Ptf(321.5, 654.25)
 
 	old := mapPushUnitsAroundCall52E040
 	t.Cleanup(func() { mapPushUnitsAroundCall52E040 = old })
 	called := false
-	mapPushUnitsAroundCall52E040 = func(gotOrigin types.Pointf, outerRadius, innerRadius, force float32, gotSource *server.Object, callback, callbackArg int) {
+	mapPushUnitsAroundCall52E040 = func(gotOriginRef *types.Pointf, outerRadius, innerRadius, force float32, gotSource *server.Object, callback, callbackArg int) {
+		gotOrigin := *gotOriginRef
 		called = true
 		if gotOrigin != origin || outerRadius != 96 || innerRadius != 10 || force != 100 {
 			t.Fatalf("push args = (%v, %v, %v, %v)", gotOrigin, outerRadius, innerRadius, force)

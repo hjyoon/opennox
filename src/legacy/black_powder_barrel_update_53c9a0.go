@@ -32,8 +32,8 @@ func blackPowderBarrelUpdateNative53C9A0(source *server.Object) {
 			)
 		},
 		PushUnitsAround: func(position types.Pointf, outerRadius, innerRadius, force float32) {
-			world.MapPushUnitsAround52E040(position, outerRadius, innerRadius, force, server.MapPushUnitsAroundRuntime52E040{
-				ApplyForce: outer.ApplyForce,
+			world.MapPushUnitsAroundPtr52E040(&source.PosVec, outerRadius, innerRadius, force, server.MapPushUnitsAroundRuntime52E040{
+				Wake: Nox_xxx_unitHasCollideOrUpdateFn_537610,
 			})
 		},
 		RandomInt:   world.Rand.Logic.IntClamp,

@@ -51,12 +51,12 @@ var boomCollideCall4E9770 = func(source, target *server.Object, collision unsafe
 				)
 			},
 			MapPushUnits: func(
-				pos types.Pointf,
+				pos *types.Pointf,
 				first, second, force float32,
 				source *server.Object,
 				arg6, arg7 int32,
 			) {
-				Nox_xxx_mapPushUnitsAround_52E040(pos, first, second, force, source, int(arg6), int(arg7))
+				Nox_xxx_mapPushUnitsAroundPtr52E040(pos, first, second, force, source, int(arg6), int(arg7))
 			},
 			DelayedDelete:   srv.DelayedDelete,
 			InversionEffect: InversionEffectPointer4E03D0(),

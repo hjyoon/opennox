@@ -25,12 +25,12 @@ var sparkExplosionCollideCall4E9AC0 = func(source, target *server.Object, collis
 				return twoPointsAndDirection4E6E50(first, int32(direction), second)
 			},
 			MapPushUnits: func(
-				pos types.Pointf,
+				pos *types.Pointf,
 				first, second, force float32,
 				source *server.Object,
 				arg6, arg7 int32,
 			) {
-				Nox_xxx_mapPushUnitsAround_52E040(pos, first, second, force, source, int(arg6), int(arg7))
+				Nox_xxx_mapPushUnitsAroundPtr52E040(pos, first, second, force, source, int(arg6), int(arg7))
 			},
 			MapDamageUnits: func(
 				pos types.Pointf,

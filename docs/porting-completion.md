@@ -104,6 +104,18 @@ in 274.553 seconds. It retains every prior terminal identity, result and
 multiplicity and adds 916 passes. The focused highres strict run takes
 19.489 seconds. These totals do not measure feature or chapter completion.
 
+A single clean normal ARM64 product at `68e2977` builds in 12.799 seconds.
+The unchanged published recovery E2E passes in 30.022 seconds from the exact
+earned combat Save, ending with HP26/MP56, poison zero, the retained book,
+both original upper Urchins still dead, all three original resource pickups
+and a manual Save. Eighteen parameterless GET observations, full input/save
+manifests and the final save screen are qualified. Source Save, assets,
+configuration and executable retain their hashes; earlier combat is not
+replayed. Windows 386/AMD64 and normal Linux AMD64 native CI are running.
+Ten closed text logs are transparently APFS-compressed, preserving their
+contents, paths, hashes, permissions, ownership and modification times and
+saving 3,574,419,456 physical bytes. Saves, assets, products and caches remain.
+
 ### Projectile trace startup precision and small colliders
 
 The actual native `00537850` projectile trace now uses startup PC53/ToZero

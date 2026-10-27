@@ -66,6 +66,14 @@ def tree(path):
     return result
 
 
+def data_manifest(path):
+    files = [path / 'GAME.EXE', path / 'thing.bin']
+    for directory in (path / 'maps').iterdir():
+        if directory.is_dir() and directory.name.lower() in MAPS:
+            files.extend(file for file in directory.rglob('*') if file.is_file())
+    return {str(file): sha(file) for file in sorted(files)}
+
+
 def put(path, value):
     with path.open('x') as stream:
         json.dump(value, stream, indent=2, ensure_ascii=False)
@@ -307,23 +315,98 @@ def continuation_seed(report, stage_dir, case, binary_hash, source_seed):
     return seed, manifest
 
 
+def resume_stages(args, stages, binary_hash, initial_seed):
+    previous = getattr(args, 'resume_from', None)
+    if previous is None:
+        return []
+    # Validate everything before creating output or launching a game. An old
+    # success is reusable evidence only for this exact executable and inputs.
+    if sha(previous / 'opennox-tested') != binary_hash:
+        raise ValueError('resume requires the same tested executable')
+    assets = data_manifest(args.data)
+    config_hash = sha(args.config_seed) if args.config_seed else None
+    source_seed = initial_seed
+    reused = []
+    for line in (previous / 'stages.jsonl').read_text().splitlines(keepends=True):
+        if not line.endswith('\n'):
+            break  # Interrupted progress writes cannot certify a stage.
+        row = json.loads(line)
+        if row.get('passed') is not True:
+            break
+        index = len(reused)
+        if index >= len(stages) or row['name'] != stages[index]['name'] or row['exit_code'] != 0:
+            raise ValueError('resume stage order or successful exit does not match')
+        stage = stages[index]
+        stage_dir = Path(row['report']).resolve().parent
+        child = json.loads((stage_dir / 'result.json').read_text())
+        inputs = json.loads((stage_dir / 'inputs.json').read_text())
+        current_scenario = (stage['suite'].parent / stage['case']['scenario']).resolve()
+        if (sha(stage['suite']) != stage['suite_sha256']
+                or sha(current_scenario) != stage['scenario_sha256']
+                or inputs['suite_sha256'] != stage['suite_sha256']
+                or sha(stage_dir / 'suite.source.json') != stage['suite_sha256']
+                or inputs['binary_sha256'] != binary_hash
+                or sha(stage_dir / 'opennox-tested') != binary_hash
+                or inputs['seed'] != source_seed or tree(Path(row['seed'])) != source_seed
+                or inputs['config_sha256'] != config_hash or inputs['data'] != assets
+                or not all(child.get(key) is True for key in
+                           ('seed_unchanged', 'data_inputs_unchanged', 'config_unchanged', 'binary_unchanged'))):
+            raise ValueError('resume suite, executable, seed, config or data inputs changed')
+        if len(child.get('cases', [])) != 1:
+            raise ValueError('resume requires exactly one case per stage')
+        case = child['cases'][0]
+        scenario = Path(case['scenario']).resolve()
+        if (not scenario.is_relative_to(stage_dir)
+                or case['scenario_sha256'] != stage['scenario_sha256']
+                or sha(scenario) != stage['scenario_sha256'] or not case['snapshots']):
+            raise ValueError('resume scenario or observation evidence changed')
+        for sample in case['snapshots']:
+            if set(sample['routes']) != set(ROUTES):
+                raise ValueError('resume requires all read-only observation routes')
+            for name, evidence in sample['routes'].items():
+                path = Path(evidence['path']).resolve()
+                if (not path.is_relative_to(stage_dir) or evidence['status'] != 200
+                        or evidence['method'] != 'GET' or evidence['route'] != ROUTES[name]
+                        or evidence['observation_only'] is not True
+                        or path.stat().st_size != evidence['bytes'] or sha(path) != evidence['sha256']):
+                    raise ValueError('resume observation evidence is absent or changed')
+        seed, source_seed = continuation_seed(child, stage_dir, stage['case'], binary_hash, source_seed)
+        if source_seed != row['next_seed_manifest'] or seed != Path(row['next_seed']).resolve():
+            raise ValueError('resume earned Save files changed')
+        reused.append(dict(row, reused=True, reused_from=str(previous)))
+    return reused
+
+
 def run_sequence(args, sequence, stages):
     initial_seed = tree(args.seed)
     if not initial_seed:
         raise ValueError('seed must contain an earned campaign save')
     binary_hash = sha(args.binary)
+    reused = resume_stages(args, stages, binary_hash, initial_seed)
     args.output.mkdir(parents=True)
     shutil.copyfile(args.sequence, args.output / 'sequence.source.json')
     binary = args.output / 'opennox-tested'
     shutil.copy2(args.binary, binary)
     result = {'sequence': sequence['name'], 'binary_sha256': binary_hash,
               'built_for_each_case': False, 'source_seed_manifest': initial_seed,
-              'stages': [], 'overall_porting_100_percent': False}
+              'stages': list(reused), 'reused_stages': len(reused), 'executed_stages': 0,
+              'fresh_replay': not reused, 'overall_porting_100_percent': False}
+    if getattr(args, 'resume_from', None):
+        result['resume_from'] = str(args.resume_from)
     seed, source_seed = args.seed, initial_seed
+    if reused:
+        seed = Path(reused[-1]['next_seed'])
+        source_seed = reused[-1]['next_seed_manifest']
     started = time.monotonic()
     try:
         with (args.output / 'stages.jsonl').open('x') as progress:
-            for index, stage in enumerate(stages):
+            for row in reused:
+                progress.write(json.dumps(row, ensure_ascii=False) + '\n')
+                print(json.dumps({'stage': row['name'], 'passed': True, 'reused': True,
+                                  'report': row['report']}), flush=True)
+            progress.flush()
+            for index in range(len(reused), len(stages)):
+                stage = stages[index]
                 stage_dir = args.output / stage['name']
                 command = [sys.executable, str(Path(__file__).resolve()),
                            '--suite', str(stage['suite']), '--binary', str(binary),
@@ -334,13 +417,14 @@ def run_sequence(args, sequence, stages):
                         command += ['--' + flag.replace('_', '-'), str(getattr(args, flag))]
                 row = {'name': stage['name'], 'suite': str(stage['suite']),
                        'seed': str(seed), 'report': str(stage_dir / 'result.json'),
-                       'command': command, 'passed': False}
+                       'command': command, 'passed': False, 'reused': False}
                 result['stages'].append(row)
                 try:
                     scenario = (stage['suite'].parent / stage['case']['scenario']).resolve()
                     if (sha(stage['suite']) != stage['suite_sha256']
                             or sha(scenario) != stage['scenario_sha256']):
                         raise ValueError('sequence input changed after validation')
+                    result['executed_stages'] += 1
                     row['exit_code'] = subprocess.run(command, check=False).returncode
                     child = json.loads((stage_dir / 'result.json').read_text())
                     if row['exit_code'] != 0 or tree(seed) != source_seed:
@@ -566,8 +650,10 @@ def main():
     parser.add_argument('--port', type=int, default=23173)
     parser.add_argument('--config-seed', type=Path)
     parser.add_argument('--sandbox-profile', type=Path)
+    parser.add_argument('--resume-from', type=Path,
+                        help='reuse a sequence report\'s unchanged passing prefix and replay the rest')
     args = parser.parse_args()
-    for name in ('suite', 'sequence', 'binary', 'data', 'seed', 'output'):
+    for name in ('suite', 'sequence', 'binary', 'data', 'seed', 'output', 'resume_from'):
         if getattr(args, name):
             setattr(args, name, getattr(args, name).resolve())
     if args.config_seed:
@@ -576,6 +662,10 @@ def main():
         args.sandbox_profile = args.sandbox_profile.resolve()
     if args.output.exists() or args.output.is_relative_to(args.data) or args.output.is_relative_to(args.seed):
         parser.error('output must be a new directory outside data and seed')
+    if args.resume_from and not args.sequence:
+        parser.error('--resume-from requires --sequence')
+    if args.resume_from and args.output.is_relative_to(args.resume_from):
+        parser.error('resume output must stay outside the previous report')
     if args.sequence:
         if args.cases:
             parser.error('--case applies to a single suite, not a sequence')
@@ -585,9 +675,9 @@ def main():
             sequence, stages = load_sequence(args.sequence)
             if not tree(args.seed):
                 parser.error('seed must contain an earned campaign save')
+            return run_sequence(args, sequence, stages)
         except (OSError, ValueError, KeyError, TypeError) as error:
             parser.error(str(error))
-        return run_sequence(args, sequence, stages)
     suite = json.loads(args.suite.read_text())
     try:
         validate_suite_fields(suite)
@@ -613,11 +703,7 @@ def main():
     if not before_seed:
         parser.error('seed must contain an earned campaign save')
     config_hash = sha(args.config_seed) if args.config_seed else None
-    data_inputs = [args.data / 'GAME.EXE', args.data / 'thing.bin']
-    for directory in (args.data / 'maps').iterdir():
-        if directory.is_dir() and directory.name.lower() in MAPS:
-            data_inputs.extend(path for path in directory.rglob('*') if path.is_file())
-    data_hashes = {str(path): sha(path) for path in data_inputs}
+    data_hashes = data_manifest(args.data)
     binary_hash = sha(args.binary)
     args.output.mkdir(parents=True)
     shutil.copyfile(args.suite, args.output / 'suite.source.json')

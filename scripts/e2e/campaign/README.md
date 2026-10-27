@@ -52,6 +52,26 @@ For a route edit, run that single suite against the supplied executable first.
 Use the sequence to check that consecutive checkpoints work together. Native
 build and package tests remain separate from these input-only changes.
 
+The eight-stage `sequences/wizard2-cave-north-to-book.json` extends that same
+starting checkpoint through the eastern spiders, Necromancer pit scene, book
+pickup and full mana recovery. Use an executable with
+`pickup-named-object-input` for this longer sequence. Each individual segment
+has passed gameplay replay; the eight-stage sequence still needs its own full
+consecutive replay before claiming that combined result.
+
+Resume a stopped sequence into a new report directory by adding
+`--resume-from /path/to/previous-sequence-report` to the original command.
+Keep the original `--seed` and the same executable, data path and config. The
+runner validates the passing prefix's suite, scenario, full earned Save,
+executable, input assets and read-only observation hashes before starting any
+game. It replays the first failed or unattempted stage and everything after it.
+Routes in those later stages may be fixed; changing a passed stage or its
+evidence rejects reuse. Interrupted runs can resume from complete passing
+`stages.jsonl` entries even without a final report. Earlier reports stay intact.
+The new report distinguishes `reused_stages` from `executed_stages` and sets
+`fresh_replay: false` when it reuses evidence. To perform a fresh full replay
+after rebuilding the product, omit `--resume-from`.
+
 Scenario changes reuse the supplied executable. Each run copies the Save and
 preserves its executable, executed scenario, suite, logs, screenshots and
 read-only world observations, including failures. Source saves and campaign data

@@ -80,6 +80,10 @@ class SequenceTests(unittest.TestCase):
         seed = root / 'earned' / 'Save'
         (seed / 'SAVE0001').mkdir(parents=True)
         (seed / 'SAVE0001' / 'Player.plr').write_bytes(b'original earned save')
+        assets = root / 'assets'
+        (assets / 'maps').mkdir(parents=True)
+        for name in ('GAME.EXE', 'thing.bin'):
+            (assets / name).write_bytes(name.encode())
         (root / 'route.yaml').write_text('steps:\n  - {"action":"quit"}\n')
         suite = {'version': 1, 'name': 'stage', 'cases': [
             {'name': 'case', 'scenario': 'route.yaml', 'expected_maps': ['wiz02c']}]}
@@ -100,14 +104,35 @@ class SequenceTests(unittest.TestCase):
         saved = runtime / 'Save' / 'SAVE0001' / 'Player.plr'
         saved.parent.mkdir(parents=True)
         saved.write_bytes(output.name.encode())
+        suite_path = Path(options['--suite'])
+        scenario = suite_path.parent / json.loads(suite_path.read_text())['cases'][0]['scenario']
+        preserved = output / 'case' / 'scenario.yaml'
+        preserved.write_bytes(scenario.read_bytes())
+        (output / 'suite.source.json').write_bytes(suite_path.read_bytes())
+        (output / 'opennox-tested').write_bytes(Path(options['--binary']).read_bytes())
+        routes = {}
+        for name, route in runner.ROUTES.items():
+            path = output / 'case' / (name + '-0.json')
+            path.write_text('[]')
+            routes[name] = {'method': 'GET', 'route': route, 'observation_only': True,
+                            'status': 200, 'path': str(path), 'bytes': path.stat().st_size,
+                            'sha256': runner.sha(path)}
         report = {'passed': passed, 'binary_sha256': runner.sha(Path(options['--binary'])),
                   'source_seed_manifest': runner.tree(Path(options['--seed'])),
+                  'seed_unchanged': True, 'data_inputs_unchanged': True,
+                  'config_unchanged': True, 'binary_unchanged': True,
                   'cases': [{'passed': passed, 'continuation_eligible': True,
                              'manual_save_written': True, 'runtime_data': str(runtime),
                              'saved_player_sha256': runner.sha(saved),
-                             'scenario_sha256': runner.sha(Path(options['--suite']).parent / 'route.yaml')}]}
+                             'scenario': str(preserved), 'scenario_sha256': runner.sha(scenario),
+                             'snapshots': [{'routes': routes}]}]}
         runner.put(output / 'result.json', report)
-        runner.put(output / 'inputs.json', {'suite_sha256': runner.sha(Path(options['--suite']))})
+        data = Path(options.get('--data', str(suite_path.parent / 'assets')))
+        runner.put(output / 'inputs.json', {
+            'suite_sha256': runner.sha(suite_path), 'binary_sha256': report['binary_sha256'],
+            'seed': report['source_seed_manifest'],
+            'config_sha256': runner.sha(Path(options['--config-seed'])) if '--config-seed' in options else None,
+            'data': {str(data / name): runner.sha(data / name) for name in ('GAME.EXE', 'thing.bin')}})
         # Also test exit 0 with failed objectives: healthy alone must never advance.
         return SimpleNamespace(returncode=0)
 
@@ -177,6 +202,129 @@ class SequenceTests(unittest.TestCase):
             saved.write_bytes(b'changed after validation')
             with self.assertRaisesRegex(ValueError, 'has changed'):
                 runner.continuation_seed(original, stage, {}, expected_binary, expected_seed)
+
+
+class SequenceResumeTests(unittest.TestCase):
+    prepare = SequenceTests.prepare
+    child = SequenceTests.child
+
+    def previous(self, root, failed='second'):
+        args = self.prepare(root)
+        sequence, stages = runner.load_sequence(args.sequence)
+
+        def launch(command, **kwargs):
+            output = Path(command[command.index('--output') + 1])
+            return self.child(command, passed=output.name != failed)
+
+        with mock.patch.object(runner.subprocess, 'run', side_effect=launch), mock.patch('builtins.print'):
+            runner.run_sequence(args, sequence, stages)
+        args.resume_from = args.output
+        args.output = root / 'resumed'
+        return args
+
+    def test_replays_only_failed_and_later_stages_and_keeps_failure_evidence(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.previous(Path(directory))
+            before = runner.tree(args.resume_from)
+            sequence, stages = runner.load_sequence(args.sequence)
+            with mock.patch.object(runner.subprocess, 'run', side_effect=self.child) as launch, mock.patch('builtins.print'):
+                self.assertEqual(runner.run_sequence(args, sequence, stages), 0)
+            commands = [call.args[0] for call in launch.call_args_list]
+            self.assertEqual([Path(cmd[cmd.index('--output') + 1]).name for cmd in commands], ['second', 'third'])
+            report = json.loads((args.output / 'result.json').read_text())
+            self.assertEqual(report['reused_stages'], 1)
+            self.assertEqual(report['executed_stages'], 2)
+            self.assertFalse(report['fresh_replay'])
+            self.assertTrue(report['stages'][0]['reused'])
+            self.assertEqual(commands[0][commands[0].index('--seed') + 1], report['stages'][0]['next_seed'])
+            self.assertEqual(runner.tree(args.resume_from), before)
+
+    def test_completed_replay_can_be_reused_again_without_game_launch(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            args = self.previous(root, failed=None)
+            sequence, stages = runner.load_sequence(args.sequence)
+            for destination in ('resumed', 'resumed-again'):
+                args.output = root / destination
+                with mock.patch.object(runner.subprocess, 'run') as launch, mock.patch('builtins.print'):
+                    self.assertEqual(runner.run_sequence(args, sequence, stages), 0)
+                launch.assert_not_called()
+                report = json.loads((args.output / 'result.json').read_text())
+                self.assertEqual(report['reused_stages'], 3)
+                self.assertEqual(report['executed_stages'], 0)
+                self.assertFalse(report['fresh_replay'])
+                args.resume_from = args.output
+
+    def test_changed_binary_inputs_save_or_evidence_reject_before_launch(self):
+        changes = ('binary', 'seed', 'suite', 'scenario', 'data', 'config', 'player-save',
+                   'map-save', 'snapshot', 'preserved-scenario', 'preserved-suite')
+        for change in changes:
+            with self.subTest(change=change), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                args = self.previous(root)
+                stage_dir = args.resume_from / 'first'
+                child = json.loads((stage_dir / 'result.json').read_text())['cases'][0]
+                paths = {'binary': args.binary, 'seed': args.seed / 'SAVE0001/Player.plr',
+                         'suite': root / 'first.json', 'scenario': root / 'route.yaml',
+                         'data': args.data / 'thing.bin',
+                         'player-save': Path(child['runtime_data']) / 'Save/SAVE0001/Player.plr',
+                         'map-save': Path(child['runtime_data']) / 'Save/SAVE0001/changed.map',
+                         'snapshot': Path(child['snapshots'][0]['routes']['objects']['path']),
+                         'preserved-scenario': Path(child['scenario']),
+                         'preserved-suite': stage_dir / 'suite.source.json'}
+                if change == 'config':
+                    args.config_seed = root / 'different.cfg'
+                    args.config_seed.write_text('different config')
+                else:
+                    path = paths[change]
+                    path.write_bytes(path.read_bytes() + b'\n' if path.exists() else b'changed map')
+                sequence, stages = runner.load_sequence(args.sequence)
+                with mock.patch.object(runner.subprocess, 'run') as launch, self.assertRaises(ValueError):
+                    runner.run_sequence(args, sequence, stages)
+                launch.assert_not_called()
+                self.assertFalse(args.output.exists())
+
+    def test_failed_stage_route_can_change_without_replaying_passed_prefix(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            args = self.previous(root)
+            suite = json.loads((root / 'second.json').read_text())
+            suite['cases'][0]['scenario'] = 'new-route.yaml'
+            (root / 'new-route.yaml').write_text('steps:\n  - {"action":"wait","dt":1}\n  - {"action":"quit"}\n')
+            (root / 'second.json').write_text(json.dumps(suite))
+            sequence, stages = runner.load_sequence(args.sequence)
+            with mock.patch.object(runner.subprocess, 'run', side_effect=self.child) as launch, mock.patch('builtins.print'):
+                self.assertEqual(runner.run_sequence(args, sequence, stages), 0)
+            self.assertEqual(launch.call_count, 2)
+
+    def test_interrupted_sequence_uses_only_complete_passing_progress_records(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.previous(Path(directory))
+            (args.resume_from / 'result.json').unlink()
+            progress = args.resume_from / 'stages.jsonl'
+            first = progress.read_text().splitlines()[0]
+            progress.write_text(first + '\n{"name":"second",')
+            sequence, stages = runner.load_sequence(args.sequence)
+            with mock.patch.object(runner.subprocess, 'run', side_effect=self.child) as launch, mock.patch('builtins.print'):
+                self.assertEqual(runner.run_sequence(args, sequence, stages), 0)
+            self.assertEqual(launch.call_count, 2)
+
+    def test_cli_rejects_resume_for_single_suite_and_output_inside_old_report(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            args = self.previous(root)
+            for selection, output in (('--suite', root / 'single-output'),
+                                      ('--sequence', args.resume_from / 'new-output')):
+                source = root / 'first.json' if selection == '--suite' else args.sequence
+                command = [sys.executable, runner.__file__, selection, str(source),
+                           '--resume-from', str(args.resume_from)]
+                for name in ('binary', 'data', 'seed'):
+                    command += ['--' + name, str(getattr(args, name))]
+                command += ['--output', str(output)]
+                result = subprocess.run(command, capture_output=True, text=True, timeout=10)
+                self.assertEqual(result.returncode, 2)
+                self.assertFalse(output.exists())
+                self.assertIn('resume', result.stderr)
 
 
 class ScenarioEvidenceTests(unittest.TestCase):

@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "name": "Wizard2 north bookcase through BookOfOblivion and recovery",
+  "seed_contract": "Earned healthy Wiz02c eastern-statue checkpoint matching wizard2-north-bookcase.json. North chamber, additional north spider, northeast spiders and FlyingGolem must still be alive. A43 Lightning S27 Fireball D41 LesserHeal F115 Swap, HP20 MP78 poison0.",
+  "coverage": "Eight consecutive ordinary-input segments: original north/east enemies and paired bookcases, FlyingGolem level gain, eastern spiders, Necromancer pit scene, BookOfOblivion pickup, fresh Load and native passive mana recovery. Requires an executable with pickup-named-object-input. Does not certify the whole chapter.",
+  "stages": [
+    {"name": "north-bookcase", "suite": "../wizard2-north-bookcase.json"},
+    {"name": "north-remaining-spider", "suite": "../wizard2-north-remaining-spider.json"},
+    {"name": "northeast", "suite": "../wizard2-northeast.json"},
+    {"name": "flying-golem", "suite": "../wizard2-flying-golem.json"},
+    {"name": "eastern-spiders", "suite": "../wizard2-eastern-spiders.json"},
+    {"name": "necromancer-pit", "suite": "../wizard2-necromancer-pit.json"},
+    {"name": "book-of-oblivion", "suite": "../wizard2-book-of-oblivion.json"},
+    {"name": "book-recovery", "suite": "../wizard2-book-recovery.json"}
+  ]
+}

@@ -274,6 +274,21 @@ Existing frozen input tables remain unchanged. This
 bounded checkpoint does not complete the remaining damage arithmetic or the
 overall port.
 
+The clean shared-block revision `316b796` also passes complete native Windows
+amd64/386 root/server/legacy checks. Linux AMD64 normal-server checks pass
+229,790 terminal events with seven skips and account for all 56 packages;
+the separate default-link damage check passes 132,252 events across the three
+affected packages. Native PE/ELF products, build revisions, hashes and original
+workflow logs/artifacts are retained.
+
+One clean normal ARM64 game is built in 13.142 seconds and reused for every
+campaign attempt. Its upper-Urchin combat stage passes in 34.540 seconds with
+both required original deaths and a manual Save at HP26/MP2. The following
+recovery stage fails its unchanged minimum HP20 at HP17/MP55. Subsequent
+healing, waiting and targeting experiments remain preserved as failures;
+the published inputs are retained and repeatable recovery remains open.
+This checkpoint does not claim a passing complete two-stage replay.
+
 ### Terminal and scripted Magic Missile EXPLOSION damage
 
 BoomCollide can pass the same unowned Magic Missile as source and weapon,

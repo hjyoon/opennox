@@ -18,8 +18,6 @@ steps:
   - {"action": "assert-server-inventory-count", "item": "BookOfOblivion", "count": 1}
   - {"action": "assert-server-inventory-count", "item": "BluePotion", "count": 0}
   - {"action": "observe-player-target", "name": "read actual fresh Load of earned BookOfOblivion"}
-  - {"action": "run-to-world", "x": 3545, "y": 2602, "name": "ordinary original road97 toward original BluePotion1940"}
-  - {"action": "run-to-world", "x": 3728, "y": 2543, "name": "ordinary original road98 toward original BluePotion1940"}
   - {"action": "run-to-world", "x": 3772, "y": 2366, "name": "ordinary original road99 toward original BluePotion1940"}
   - {"action": "run-to-world", "x": 3926, "y": 2213, "name": "ordinary original road154 toward original BluePotion1940"}
   - {"action": "run-to-world", "x": 4006, "y": 2095, "name": "ordinary original road100 toward original BluePotion1940"}

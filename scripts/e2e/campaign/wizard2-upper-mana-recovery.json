@@ -2,7 +2,7 @@
   "version": 1,
   "name": "Wizard2 original unnamed BluePotion pickup and automatic mana recovery",
   "seed_contract": "Earned upper Urchins2363/2364 Save, HP26 MP2 poison0, BookOfOblivion1; original BluePotion1940 alive at3850,1780.",
-  "coverage": "Fresh original Load, ordinary original road97/98/99/154/100/101/156 inputs, exact original BluePotion1940 Pickup cursor, original automatic +50 mana recovery, retained quest book and poison0 manual Save with HP at least20 and MP at least52. Combat damage varies; full health, full mana, northern obelisks, remaining enemies and the chapter are not certified.",
+  "coverage": "Fresh original Load, ordinary original road99/154/100/101/156 inputs using the upper-combat route's direct road99 connection, exact original BluePotion1940 Pickup cursor, original automatic +50 mana recovery, retained quest book and poison0 manual Save with HP at least20 and MP at least52. Combat damage varies; full health, full mana, northern obelisks, remaining enemies and the chapter are not certified.",
   "cases": [
     {
       "name": "wizard2-upper-mana-recovery",

@@ -223,6 +223,15 @@ exceptions. Prior test results and multiplicities remain, with only three runtim
 pointer labels normalized. The 466 new passing events include parent tests.
 The highres electric/ordered-armor subset passes 1,640 events across all three
 packages with cgocheck2 and checkptr level 2.
+One prebuilt normal ARM64 product also completes the two-stage upper-cave replay
+in 59.779 seconds, retaining HP21/26, MP54/88 and poison0 in the final manual Save.
+An earlier mana-recovery attempt is preserved as a failure at HP18 against the
+unchanged minimum20. Its road97/98 detour is replaced with the combat route's
+already traversed direct road99 connection. Reusing the same passed combat Save
+then passes recovery in 23.278 seconds, followed by the fresh two-stage pass.
+The mana minimum52, original potion pickup, quest book and Save assertions remain.
+The executable is reused throughout; no additional Go build or state override is
+used for the input-route correction.
 Shared blocking and other remaining damage arithmetic, campaign optional
 objectives and final completion audits remain open.
 

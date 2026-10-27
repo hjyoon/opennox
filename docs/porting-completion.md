@@ -98,6 +98,17 @@ their contents. All 97 base and 307 supplemental startup observations pass
 through the actual common entry. These event totals do not certify a whole
 chapter or overall port completion.
 
+A single clean normal ARM64 product at `da55f92` builds in 12.289 seconds.
+The unchanged published recovery E2E reuses the exact earned combat Save and
+passes in 31.071 seconds with HP26/MP56, poison zero, retained book, both
+original upper Urchins still dead, all three original resource pickups and a
+manual Save. Eighteen parameterless GET observations and the final save screen
+are qualified; source Save, assets, configuration and executable are unchanged.
+The earlier combat is not replayed. Current Windows 386/AMD64 and normal Linux
+AMD64 native CI are running. Closed text logs are transparently APFS-compressed
+with paths, bytes, hashes, ownership, permissions and modification times
+verified; no source, Save, asset, product or cache is removed.
+
 ### Native PoisonEffect facing and live class reload
 
 The native PoisonEffect root now sign-extends its 16-bit direction argument,
@@ -142,7 +153,10 @@ resource pickups and an actual manual Save. Eighteen parameterless GET
 observations, unchanged source Save/assets/config/binary and the final save
 screen are qualified. This is a fresh recovery segment on the new product;
 the earlier combat is not replayed or claimed as a new two-stage sequence.
-Current Windows 386/AMD64 and normal Linux AMD64 native CI are running.
+This revision's Windows 386/AMD64 and normal Linux AMD64 native CI have now
+passed, with all three products and raw reports preserved and qualified.
+Linux independently confirms 231,328 passes, seven skips and all 56 expected
+packages; its separate normal default-link damage check passes 133,041 events.
 
 ### Reusable upper-cave combat and recovery E2E
 

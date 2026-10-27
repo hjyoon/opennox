@@ -29,7 +29,7 @@ import time
 import urllib.request
 
 MAPS = set('war01a war02a war02b war03a war03b war03c war03d con01a con02a con03a con03b wiz01a wiz02a wiz02b wiz02c wiz03a wiz03b wiz03c'.split())
-INPUT_ACTIONS = set('slow click interact move raw wait walk run run-start run-dir run-stop walk-start walk-dir walk-stop run-to-world walk-to-world wait-map wait-player-reloaded select-manual-campaign-save click-dialog-yes click-npc-dialog-done assert-quickbar-spell assert-spell-set-row assert-server-inventory-count observe-player-target capture-quest-map-audit-frame cast-at-nearest-monster-input pickup-named-object-input screen quit'.split())
+INPUT_ACTIONS = set('slow click interact move raw wait walk run run-start run-dir run-stop walk-start walk-dir walk-stop run-to-world walk-to-world wait-map wait-player-reloaded select-manual-campaign-save click-dialog-yes click-npc-dialog-done assert-quickbar-spell assert-spell-set-row assert-server-inventory-count observe-player-target capture-quest-map-audit-frame cast-at-nearest-monster-input pickup-named-object-input pickup-map-object-input screen quit'.split())
 ROUTES = {'objects': '/debug/nox/objects', 'script': '/debug/nox/script/legacy', 'walls': '/debug/nox/walls'}
 SUITE_FIELDS = {'version', 'name', 'coverage', 'seed_contract', 'cases'}
 CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_poison_free',
@@ -96,6 +96,11 @@ def validate_scenario(path):
             raise ValueError('movement uses ang, not dir')
         if step.get('action') == 'wait-map' and step.get('map', '').lower() not in MAPS:
             raise ValueError('campaign map must be in chapters 1 through 3')
+        if step.get('action') == 'pickup-map-object-input':
+            extent = step.get('extent')
+            if (type(extent) is not int or not 0 < extent <= 0xffffffff
+                    or not isinstance(step.get('item'), str) or not step['item']):
+                raise ValueError('map pickup requires a nonzero ABI32 extent and expected item type')
         steps.append(step)
     if not steps or steps[-1]['action'] != 'quit':
         raise ValueError('campaign scenario must finish with quit')

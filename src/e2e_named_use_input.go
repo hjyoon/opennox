@@ -8,6 +8,7 @@ import (
 	"github.com/opennox/libs/object"
 	"github.com/opennox/opennox/v1/client/gui"
 	"github.com/opennox/opennox/v1/legacy"
+	"github.com/opennox/opennox/v1/server"
 )
 
 type e2eNamedUseInputTarget struct {
@@ -32,12 +33,38 @@ func (sc *e2eScenario) PickupNamedObject(id string, offset image.Point, name str
 	sc.clickNamedObjectInput(id, offset, gui.CursorPickup, name)
 }
 
+// PickupMapObjectInput also supports original map items without a script name.
+// The extent and expected type identify the item; pickup still requires the
+// normal client's exact drawable and near Pickup cursor on every observation.
+func (sc *e2eScenario) PickupMapObjectInput(extent uint32, typ string, offset image.Point, name string) {
+	id := fmt.Sprintf("%s extent=%d", typ, extent)
+	sc.clickLiveObjectInput(id, offset, gui.CursorPickup, name, func() *server.Object {
+		if extent == 0 || typ == "" {
+			return nil
+		}
+		obj := noxServer.Objs.GetObjectByInd(int(extent))
+		if obj == nil {
+			return nil
+		}
+		if actual := noxServer.Types.ByInd(int(obj.TypeInd)); actual == nil || actual.ID() != typ {
+			return nil
+		}
+		return obj
+	})
+}
+
 func (sc *e2eScenario) clickNamedObjectInput(id string, offset image.Point, cursor gui.Cursor, name string) {
+	sc.clickLiveObjectInput(id, offset, cursor, name, func() *server.Object {
+		return noxServer.Objs.GetObjectByID(id)
+	})
+}
+
+func (sc *e2eScenario) clickLiveObjectInput(id string, offset image.Point, cursor gui.Cursor, name string, resolve func() *server.Object) {
 	sc.clickNamedObjectCursorInput(name, cursor, func() (e2eNamedUseInputTarget, bool) {
 		if noxServer == nil || noxClient == nil || noxClient.ClientPlayerUnit() == nil || noxClient.Viewport() == nil {
 			return e2eNamedUseInputTarget{}, false
 		}
-		obj := noxServer.Objs.GetObjectByID(id)
+		obj := resolve()
 		if obj == nil || obj.Flags().HasAny(object.FlagDead|object.FlagDestroyed) || !obj.Flags().Has(object.FlagEnabled) {
 			return e2eNamedUseInputTarget{}, false
 		}

@@ -26,6 +26,23 @@ class SuiteFieldsTests(unittest.TestCase):
                 with self.subTest(suite=path.name, case=case['name']):
                     runner.validate_scenario(path.parent / case['scenario'])
 
+    def test_map_pickup_requires_an_unambiguous_original_item(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'pickup.yaml'
+            step = {'action': 'pickup-map-object-input', 'extent': 1940, 'item': 'BluePotion'}
+
+            def validate(value):
+                path.write_text('steps:\n  - ' + json.dumps(value) + '\n  - {"action":"quit"}\n')
+                return runner.validate_scenario(path)
+
+            self.assertEqual(validate(step)[0], step)
+            for extent in (None, 0, -1, 1 << 32, True, '1940'):
+                with self.subTest(extent=extent), self.assertRaises(ValueError):
+                    validate(dict(step, extent=extent))
+            for item in (None, '', 638):
+                with self.subTest(item=item), self.assertRaises(ValueError):
+                    validate(dict(step, item=item))
+
     def test_misspelled_requirement_is_rejected_before_launch_or_output(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

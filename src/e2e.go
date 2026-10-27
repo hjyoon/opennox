@@ -9593,6 +9593,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "pickup-named-object-input":
 			sc.Wait(dt, "")
 			sc.PickupNamedObject(l.Item, image.Pt(l.X, l.Y), l.Name)
+		case "pickup-map-object-input":
+			sc.Wait(dt, "")
+			sc.PickupMapObjectInput(l.Extent, l.Item, image.Pt(l.X, l.Y), l.Name)
 		case "strike-named-monster":
 			sc.Wait(dt, "")
 			sc.StrikeNamedMonster(l.Item, image.Pt(l.X, l.Y), l.Name)

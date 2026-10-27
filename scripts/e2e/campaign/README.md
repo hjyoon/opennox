@@ -87,3 +87,8 @@ the Windows native build gate; product-source changes retain that gate.
 `pickup-named-object-input` selects an original named map item through the
 normal client cursor. It clicks only when that exact drawable has the Pickup
 cursor; distant, unavailable and other-cursor targets remain bounded waits.
+
+`pickup-map-object-input` uses the original map object's `extent` and expected
+`item` type for unnamed items. It uses the same live drawable and near Pickup
+cursor gate, followed by an ordinary mouse press and release. It neither moves
+the item nor inserts it into inventory.

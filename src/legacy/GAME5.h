@@ -4,6 +4,18 @@
 #include "defs.h"
 #include "mover_update_54f740.h"
 
+typedef struct {
+	uint32_t f0;
+	float f4;
+	float f8;
+	uint32_t f12;
+	float f16;
+	float f20;
+} struct313272;
+
+_Static_assert(sizeof(struct313272) == 24, "wrong circle wall definition size");
+extern struct313272 table_313272[11];
+
 char nox_xxx_mobActionRandomWalk_545020(int a1);
 int sub_545090(int a1);
 char nox_xxx_mobActionConfuse_545140(int a1);

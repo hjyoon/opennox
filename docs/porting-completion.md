@@ -55,6 +55,62 @@ completion requirements.
 
 ## Current findings
 
+### Circle collision roots and shared scan geometry
+
+The circle/circle, circle/box and circle/wall movement paths now execute
+native-width Go arithmetic instead of the reconstructed C calculations.
+Eight existing C symbols forward to the ported roots, shared circle/box
+geometry, wall cell, nearest-point and response helpers with their original
+pointer and scalar signatures. Attack scans and elevator side collisions
+therefore use the same ported geometry. Live C-owned push/spring coefficients
+and all eleven C-owned wall definitions remain the production inputs.
+The C GameBall predicate, collision queue and ordinary world queries remain.
+
+The port preserves startup PC53/ToZero operations and binary32 stores,
+including wide penetration, unequal friction stores, retained corner/distance
+intermediates and unordered comparisons. Circle/box mode keeps its original
+any-nonzero meaning. Class/flag gates, ray tracing, random direction selection,
+post-service reloads, player collision-wall pointers and wall endpoint
+allowances retain their original order. The second wall face reads its live
+definition after the first response. Product FP mode, shared arithmetic
+helpers and the impulse accumulator are unchanged.
+
+Complete unchanged original routines execute for 966 conditions in startup
+and nearest control modes: 1,932 top-level executions. Twelve sealed ranges
+total 3,541 bytes and include the real GameBall, mass, impulse and signed-grid
+conversion callees. Random selection, ray tracing, queueing, wakeup, wall
+lookup, wall-object lookup, secret contact and type lookup are explicit
+services. The matrix includes isolated and connected walls, all stock wall
+definitions, coincident geometry, class/movement gates, finite coordinates,
+quiet special controls and declared live service changes. Fixture box corners
+are declared inputs, not a claim about stock Shape.Calc output. No signaling
+NaN expectations come from Unicorn.
+
+An additional 197 controls call the actual production C symbols on native
+C-owned objects above 4 GiB, including 36 object cases using the real collision
+queue and impulse callee. Before the port, 130 leaf conditions disagree with
+the original; all 197 now match. Twenty-two further controls use the real wall
+index and actual C-owned definition/coefficient providers. All eleven live
+definitions match the original table. Native outputs, service snapshots,
+object/update bytes and surrounding canaries match all 966 startup conditions.
+These are controlled production-path findings, not observed campaign incidents.
+
+Two new verification setup issues are corrected with raw failures retained:
+the C queue fixture requires its ordinary handle arena, and the oracle's wall
+service must observe its char argument as eight bits. The latter changes only
+that declared observation field; every input and all other original outputs
+and events remain identical. Twenty-four additional conditions preserve all
+1,884 preceding rows. Existing tests, earlier frozen inputs and published E2E
+scripts are unchanged.
+
+The final normal root/server/legacy run passes 237,887 events with 16 skips
+in 188.387 seconds. Prior results and multiplicities remain, with 1,188 added
+passes; comparison normalizes only the three ASLR-bearing names in unchanged
+fault-boundary tests. Focused highres checks with cgocheck2 and checkptr level 2
+pass 1,199 events in 105.968 seconds, including compilation. A single normal
+ARM64 product and the published affected E2E segment qualify runtime behavior
+separately. These checks do not establish overall 100%.
+
 ### Rigid collisions and live C-owned coefficients
 
 The native box/box, door/circle and door/box paths now preserve the original
@@ -113,7 +169,10 @@ and a manual Save. Eighteen parameterless GET observations, full manifests
 and the final save screen are qualified. Source Save, assets, configuration
 and executable retain their hashes; earlier combat is not replayed. Only
 this affected segment runs on the new product. Its Windows 386/AMD64 and
-normal Linux AMD64 native CI remain in progress. Detailed original, native,
+normal Linux AMD64 native CI have passed; all three products and raw reports
+are preserved and qualified. Linux confirms 234,123 passes, seven skips and
+all 56 expected packages, plus the separate normal default-link damage gate.
+Detailed original, native,
 product and replay evidence is preserved in
 `rigid-collision-startup-precision-port` in the validation workspace.
 

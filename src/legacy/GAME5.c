@@ -41,14 +41,6 @@ extern uint32_t dword_587000_292492;
 extern uint32_t dword_5d4594_2650652;
 extern uint32_t nox_player_netCode_85319C;
 
-typedef struct {
-	uint32_t f0;
-	float f4;
-	float f8;
-	uint32_t f12;
-	float f16;
-	float f20;
-} struct313272;
 
 typedef struct nox_collision_hit_t {
 	struct nox_collision_hit_t* bucket_next;
@@ -3199,186 +3191,12 @@ int sub_54A950(int a1) {
 }
 
 //----- (0054A990) --------------------------------------------------------
-double sub_54A990(float2* center, float radius, nox_object_t* box, float2* normal) {
-	double result = -1.0;
-	char region = 0;
-	float left_top_x = box->shape.box_left_top + box->new_x;
-	float left_top_y = box->shape.box_left_bottom + box->new_y;
-	float left_bottom_x = box->shape.box_left_bottom_2 + box->new_x;
-	float left_bottom_y = box->shape.box_left_top_2 + box->new_y;
-	float right_top_x = box->shape.box_right_top + box->new_x;
-	float right_top_y = box->shape.box_right_bottom + box->new_y;
-	float right_bottom_x = box->shape.box_right_bottom_2 + box->new_x;
-	float right_bottom_y = box->shape.box_right_top_2 + box->new_y;
-	float left_top_distance = (left_top_y - left_top_x + center->field_0 - center->field_4) * 0.70709997;
-	float left_bottom_distance =
-		(left_bottom_y - left_bottom_x + center->field_0 - center->field_4) * 0.70709997;
-	float right_distance = (right_top_y + right_top_x - center->field_0 - center->field_4) * 0.70709997;
-	float left_distance = (left_top_y + left_top_x - center->field_0 - center->field_4) * 0.70709997;
-
-	if (left_top_distance <= 0.0) {
-		if (left_bottom_distance < 0.0) {
-			region = 2;
-		}
-	} else {
-		region = 1;
-	}
-	if (right_distance >= 0.0) {
-		if (left_distance > 0.0) {
-			region |= 4;
-		}
-	} else {
-		region |= 8;
-	}
-
-	switch (region) {
-	case 0: {
-		float dx = center->field_0 - box->new_x;
-		float dy = center->field_4 - box->new_y;
-		if (dx == 0.0 && dy == 0.0) {
-			int direction = nox_common_randomInt_415FA0(0, 3);
-			dx = *getMemFloatPtr(0x587000, 289928 + 8 * direction);
-			dy = *getMemFloatPtr(0x587000, 289932 + 8 * direction);
-		}
-		result = sqrt(dy * dy + dx * dx);
-		if (result == 0.0) {
-			result = 0.1;
-		}
-		normal->field_0 = dx / result;
-		normal->field_4 = dy / result;
-		return result;
-	}
-	case 1:
-		result = radius - left_top_distance;
-		normal->field_0 = 0.70709997;
-		normal->field_4 = -0.70709997;
-		return result;
-	case 2:
-		result = radius + left_bottom_distance;
-		normal->field_0 = -0.70709997;
-		normal->field_4 = 0.70709997;
-		return result;
-	case 4:
-		result = radius - left_distance;
-		normal->field_0 = -0.70709997;
-		normal->field_4 = -0.70709997;
-		return result;
-	case 5: {
-		float dx = center->field_0 - left_top_x;
-		float dy = center->field_4 - left_top_y;
-		float distance = sqrt(dy * dy + dx * dx);
-		if (distance == 0.0) {
-			distance = 0.1;
-		}
-		result = radius - distance;
-		if (result >= 0.0) {
-			normal->field_0 = dx / distance;
-			normal->field_4 = dy / distance;
-		}
-		return result;
-	}
-	case 6: {
-		float dx = center->field_0 - left_bottom_x;
-		float dy = center->field_4 - left_bottom_y;
-		float distance = sqrt(dy * dy + dx * dx);
-		if (distance == 0.0) {
-			distance = 0.1;
-		}
-		result = radius - distance;
-		if (result >= 0.0) {
-			normal->field_0 = dx / distance;
-			normal->field_4 = dy / distance;
-		}
-		return result;
-	}
-	case 8:
-		result = radius + right_distance;
-		normal->field_0 = 0.70709997;
-		normal->field_4 = 0.70709997;
-		return result;
-	case 9: {
-		float dx = center->field_0 - right_top_x;
-		float dy = center->field_4 - right_top_y;
-		float distance = sqrt(dy * dy + dx * dx);
-		if (distance == 0.0) {
-			distance = 0.1;
-		}
-		result = radius - distance;
-		if (result >= 0.0) {
-			normal->field_0 = dx / distance;
-			normal->field_4 = dy / distance;
-		}
-		return result;
-	}
-	case 0xA: {
-		float dx = center->field_0 - right_bottom_x;
-		float dy = center->field_4 - right_bottom_y;
-		float distance = sqrt(dy * dy + dx * dx);
-		if (distance == 0.0) {
-			distance = 0.1;
-		}
-		result = radius - distance;
-		if (result >= 0.0) {
-			normal->field_0 = dx / distance;
-			normal->field_4 = dy / distance;
-		}
-		return result;
-	}
-	default:
-		return result;
-	}
-}
+extern double sub_54A990_go(float2* center, float radius, nox_object_t* box, float2* normal);
+double sub_54A990(float2* center, float radius, nox_object_t* box, float2* normal) { return sub_54A990_go(center, radius, box, normal); }
 
 //----- (0054AD50) --------------------------------------------------------
-void sub_54AD50(nox_object_t* circle, nox_object_t* box, int move_box) {
-	float2 normal;
-	double penetration = sub_54A990((float2*)&circle->new_x, circle->shape.circle_r, box, &normal);
-	if (penetration < 0.0) {
-		return;
-	}
-	if ((circle->obj_class & 0x2204) && (box->obj_class & 0x2204)) {
-		float4 ray = {circle->x, circle->y, box->x, box->y};
-		if (!nox_xxx_mapTraceRay_535250(&ray, 0, 0, 0)) {
-			return;
-		}
-	}
-
-	nox_xxx_collSysAddCollision_548630(circle, (uintptr_t)box, &normal);
-	int can_push = !(circle->obj_flags & 8) && !(box->obj_flags & 8);
-	if ((move_box || !(circle->obj_class & 6) || !(box->obj_flags & 0x2000)) && can_push) {
-		float push_scale = *(float*)&dword_587000_292488 * (float)penetration;
-		float push_x = normal.field_0 * push_scale;
-		float push_y = normal.field_4 * push_scale;
-		float relative_x = circle->vel_x - box->vel_x;
-		float relative_y = circle->vel_y - box->vel_y;
-		float tangent_x = -normal.field_4;
-		float tangent_y = normal.field_0;
-		float tangent_velocity = tangent_x * relative_x + tangent_y * relative_y;
-		float circle_mass = nox_xxx_objectGetMass_4E4A70(circle);
-		double min_mass;
-		if (nox_xxx_objectGetMass_4E4A70(box) <= circle_mass) {
-			min_mass = nox_xxx_objectGetMass_4E4A70(box);
-		} else {
-			min_mass = nox_xxx_objectGetMass_4E4A70(circle);
-		}
-		double tangent_force = min_mass * tangent_velocity;
-		float force_x = push_x - tangent_force * tangent_x * 0.69999999;
-		float force_y = push_y - tangent_force * tangent_y * 0.69999999;
-		if (move_box) {
-			sub_548600(box, -force_x, -force_y);
-		} else {
-			sub_548600(circle, force_x, force_y);
-		}
-	}
-	if (circle->obj_flags & 0x8000000) {
-		nox_xxx_unitHasCollideOrUpdateFn_537610(circle);
-		circle->obj_flags &= 0xF7FFFFFF;
-	}
-	if (box->obj_flags & 0x8000000) {
-		nox_xxx_unitHasCollideOrUpdateFn_537610(box);
-		box->obj_flags &= 0xF7FFFFFF;
-	}
-}
+extern void sub_54AD50_go(nox_object_t* circle, nox_object_t* box, int move_box);
+void sub_54AD50(nox_object_t* circle, nox_object_t* box, int move_box) { sub_54AD50_go(circle, box, move_box); }
 
 //----- (0054AF40) --------------------------------------------------------
 static nox_object_t* nox_cursor_scan_result_native;
@@ -5896,185 +5714,24 @@ float* nox_xxx_createSpark_54FD80(float a1, float a2, int a3, int a4, float a5, 
 }
 
 //----- (0054FEF0) --------------------------------------------------------
-void sub_54FEF0(nox_object_t* obj) {
-	if (obj->obj_class & 0x400000) {
-		return;
-	}
-	int min_x = nox_float2int(obj->collide_x1 * 0.043478262f);
-	int min_y = nox_float2int(obj->collide_y1 * 0.043478262f);
-	int max_x = nox_float2int(obj->collide_x2 * 0.043478262f);
-	int max_y = nox_float2int(obj->collide_y2 * 0.043478262f);
-	for (int y = min_y; y <= max_y; ++y) {
-		for (int x = min_x; x <= max_x; ++x) {
-			int2 grid = {x, y};
-			if (sub_54FFC0(&grid, obj)) {
-				sub_548100(&grid, obj);
-			}
-	}
-	}
-}
+extern void sub_54FEF0_go(nox_object_t* obj);
+void sub_54FEF0(nox_object_t* obj) { sub_54FEF0_go(obj); }
 
 //----- (0054FFC0) --------------------------------------------------------
-int sub_54FFC0(int2* a1, nox_object_t* obj) {
-	int edge_first = 0;
-	int edge_second = 0;
-	int collided = 0;
-	char trace_flags;
-	if (!(obj->obj_flags & 0x4000) || obj->shape.kind != NOX_SHAPE_CIRCLE ||
-		(trace_flags = 0, obj->shape.circle_r > 9.0f)) {
-		trace_flags = 64;
-	}
-	int wall_type = (unsigned char)sub_57B500(a1->field_0, a1->field_4, trace_flags);
-	if (wall_type == 255) {
-		return 0;
-	}
-	float2 wall_origin = {(float)(23 * a1->field_0), (float)(23 * a1->field_4)};
-	if (table_313272[wall_type].f0) {
-		if ((getMemByte(0x587000, 292496 + wall_type) & 2) &&
-			sub_57B500(a1->field_0 - 1, a1->field_4 - 1, trace_flags) == -1) {
-			edge_first = 1;
-		}
-		if ((getMemByte(0x587000, 292496 + wall_type) & 4) &&
-			sub_57B500(a1->field_0 + 1, a1->field_4 + 1, trace_flags) == -1) {
-			edge_second = 1;
-		}
-		if (wall_type == 7 || wall_type == 10) {
-			edge_second = 1;
-		} else if (wall_type == 8 || wall_type == 9) {
-			edge_first = 1;
-		}
-		float2 nearest;
-		if (sub_550280(&wall_origin, table_313272[wall_type].f4, table_313272[wall_type].f8,
-			wall_type == 8 || wall_type == 9 ? 1 : edge_first, edge_second,
-			(float2*)&obj->new_x, &nearest)) {
-			if (obj->obj_class & 4) {
-				nox_player_update_data_t* update = obj->data_update;
-				if (update) {
-					update->collision_wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
-				}
-			}
-			if (sub_550380(wall_type, obj, &nearest)) {
-				collided = 1;
-			}
-		}
-	}
-	if (table_313272[wall_type].f12) {
-		if ((getMemByte(0x587000, 292496 + wall_type) & 8) &&
-			sub_57B500(a1->field_0 - 1, a1->field_4 + 1, trace_flags) == -1) {
-			edge_first = 1;
-		}
-		if ((getMemByte(0x587000, 292496 + wall_type) & 1) &&
-			sub_57B500(a1->field_0 + 1, a1->field_4 - 1, trace_flags) == -1) {
-			edge_second = 1;
-		}
-		if (wall_type == 7 || wall_type == 8) {
-			edge_first = 1;
-		} else if (wall_type == 9 || wall_type == 10) {
-			edge_second = 1;
-		}
-		float2 nearest;
-		if (sub_5502F0(&wall_origin, table_313272[wall_type].f16, table_313272[wall_type].f20,
-			edge_first, wall_type == 9 || wall_type == 10 ? 1 : edge_second,
-			(float2*)&obj->new_x, &nearest)) {
-			if (obj->obj_class & 4) {
-				nox_player_update_data_t* update = obj->data_update;
-				if (update) {
-					update->collision_wall = nox_server_getWallAtGrid_410580(a1->field_0, a1->field_4);
-				}
-			}
-			if (sub_550380(wall_type, obj, &nearest)) {
-				collided = 1;
-			}
-		}
-	}
-	return collided;
-}
+extern int sub_54FFC0_go(int2* a1, nox_object_t* obj);
+int sub_54FFC0(int2* a1, nox_object_t* obj) { return sub_54FFC0_go(a1, obj); }
 
 //----- (00550280) --------------------------------------------------------
-int sub_550280(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float2* a7) {
-	double v7 = (a6->field_0 - a1->field_0 + a6->field_4 - a1->field_4) * 0.70709997 * 0.70709997;
-	if (v7 < a2) {
-		if (!a4) {
-			return 0;
-		}
-		v7 = a2;
-	}
-	if (v7 > a3) {
-		if (!a5) {
-			return 0;
-		}
-		v7 = a3;
-	}
-	a7->field_0 = v7 + a1->field_0;
-	a7->field_4 = v7 + a1->field_4;
-	return 1;
-}
+extern int sub_550280_go(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float2* a7);
+int sub_550280(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float2* a7) { return sub_550280_go(a1, a2, a3, a4, a5, a6, a7); }
 
 //----- (005502F0) --------------------------------------------------------
-int sub_5502F0(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float2* a7) {
-	double v7; // st7
-
-	v7 = 23.0 -
-		 ((a6->field_4 - a1->field_4) * 0.70709997 - (a6->field_0 - (a1->field_0 + 23.0)) * 0.70709997) * 0.70709997;
-	if (v7 < a2) {
-		if (!a4) {
-			return 0;
-		}
-		v7 = a2;
-	}
-	if (v7 > a3) {
-		if (!a5) {
-			return 0;
-		}
-		v7 = a3;
-	}
-	a7->field_0 = v7 + a1->field_0;
-	a7->field_4 = 23.0 - v7 + a1->field_4;
-	return 1;
-}
+extern int sub_5502F0_go(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float2* a7);
+int sub_5502F0(float2* a1, float a2, float a3, int a4, int a5, float2* a6, float2* a7) { return sub_5502F0_go(a1, a2, a3, a4, a5, a6, a7); }
 
 //----- (00550380) --------------------------------------------------------
-int sub_550380(int a1, nox_object_t* obj, float2* a3) {
-	double v4;      // st7
-	double v5;      // st6
-	long double v6; // st6
-	double v7;      // st7
-	double v8;      // st7
-	double v9;      // st7
-	float v11;      // [esp+0h] [ebp-14h]
-	float v12;      // [esp+4h] [ebp-10h]
-	float2 v13;     // [esp+Ch] [ebp-8h]
-	float v14;      // [esp+1Ch] [ebp+8h]
-	float v15;      // [esp+20h] [ebp+Ch]
-	float v16;      // [esp+20h] [ebp+Ch]
-
-	v4 = obj->new_x - a3->field_0;
-	v5 = obj->new_y - a3->field_4;
-	v15 = v5;
-	v6 = sqrt(v5 * v15 + v4 * v4);
-	v14 = v6;
-	if (v6 == 0.0) {
-		v14 = 0.0099999998;
-	}
-	if (v14 >= (double)obj->shape.circle_r) {
-		return 0;
-	}
-	v13.field_0 = v4 / v14;
-	v7 = v15 / v14;
-	v13.field_4 = v7;
-	v8 = -v7 * obj->vel_y + -v13.field_0 * obj->vel_x;
-	v16 = v8;
-	if (v8 > 0.0 && !sub_550480(obj)) {
-		obj->vel_x = v16 * v13.field_0 + obj->vel_x;
-		obj->vel_y = v16 * v13.field_4 + obj->vel_y;
-	}
-	v9 = (obj->shape.circle_r - v14) * *(float*)&dword_587000_292492;
-	v12 = v9 * v13.field_4;
-	v11 = v9 * v13.field_0;
-	sub_548600(obj, v11, v12);
-	nox_xxx_collSysAddCollision_548630(obj, 0, &v13);
-	return 1;
-}
+extern int sub_550380_go(int a1, nox_object_t* obj, float2* a3);
+int sub_550380(int a1, nox_object_t* obj, float2* a3) { return sub_550380_go(a1, obj, a3); }
 
 //----- (00550480) --------------------------------------------------------
 int sub_550480(nox_object_t* a1) {
@@ -6398,61 +6055,8 @@ char sub_550CB0(float2* a1, float2* a2) {
 }
 
 //----- (00550D00) --------------------------------------------------------
-void nox_xxx_collisionCheckCircleCircle_550D00(nox_object_t* moving, nox_object_t* candidate) {
-	float2 normal = {
-		candidate->new_x - moving->new_x,
-		candidate->new_y - moving->new_y,
-	};
-	if (normal.field_0 == 0.0f && normal.field_4 == 0.0f) {
-		int direction = nox_common_randomInt_415FA0(0, 3);
-		normal.field_0 = *getMemFloatPtr(0x587000, 292784 + 8 * direction);
-		normal.field_4 = *getMemFloatPtr(0x587000, 292788 + 8 * direction);
-	}
-	float distance = sqrt(normal.field_4 * normal.field_4 + normal.field_0 * normal.field_0);
-	if (distance == 0.0f) {
-		distance = 0.0099999998f;
-	}
-	float penetration = moving->shape.circle_r + candidate->shape.circle_r - distance;
-	if (penetration <= 0.0f) {
-		return;
-	}
-	if ((moving->obj_class & 0x2204) && (candidate->obj_class & 0x2204)) {
-		float4 ray = {moving->x, moving->y, candidate->x, candidate->y};
-		if (!nox_xxx_mapTraceRay_535250(&ray, 0, 0, 0)) {
-			return;
-		}
-	}
-
-	nox_xxx_collSysAddCollision_548630(candidate, (uintptr_t)moving, &normal);
-	int can_push = !(moving->obj_flags & 8) && !(candidate->obj_flags & 8);
-	if ((!(moving->obj_class & 6) || !(candidate->obj_flags & 0x2000)) && can_push) {
-		float normal_x = normal.field_0 / distance;
-		float normal_y = normal.field_4 / distance;
-		float relative_x = moving->vel_x - candidate->vel_x;
-		float relative_y = moving->vel_y - candidate->vel_y;
-		double moving_mass = nox_xxx_objectGetMass_4E4A70(moving);
-		double candidate_mass = nox_xxx_objectGetMass_4E4A70(candidate);
-		double min_mass = candidate_mass <= moving_mass ? candidate_mass : moving_mass;
-		float push_scale = *(float*)&dword_587000_292488 * penetration;
-		float force_x = -(push_scale * normal_x);
-		float force_y = -(push_scale * normal_y);
-		if (!(moving->obj_class & 6) || !(candidate->obj_class & 6)) {
-			float tangent_x = -normal_y;
-			double tangent_velocity = tangent_x * relative_x + relative_y * normal_x;
-			force_x -= tangent_velocity * tangent_x * min_mass * 0.69999999;
-			force_y -= tangent_velocity * min_mass * normal_x * 0.69999999;
-		}
-		sub_548600(moving, force_x, force_y);
-	}
-	if (moving->obj_flags & 0x8000000) {
-		nox_xxx_unitHasCollideOrUpdateFn_537610(moving);
-		moving->obj_flags &= 0xF7FFFFFF;
-	}
-	if (candidate->obj_flags & 0x8000000) {
-		nox_xxx_unitHasCollideOrUpdateFn_537610(candidate);
-		candidate->obj_flags &= 0xF7FFFFFF;
-	}
-}
+extern void nox_xxx_collisionCheckCircleCircle_550D00_go(nox_object_t* moving, nox_object_t* candidate);
+void nox_xxx_collisionCheckCircleCircle_550D00(nox_object_t* moving, nox_object_t* candidate) { nox_xxx_collisionCheckCircleCircle_550D00_go(moving, candidate); }
 
 //----- (00550F80) --------------------------------------------------------
 extern void sub_550F80_go(nox_object_t* first, nox_object_t* second);

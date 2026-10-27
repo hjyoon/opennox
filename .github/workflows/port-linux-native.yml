@@ -8,6 +8,7 @@ on:
         type: choice
         options:
           - server
+          - server-hd
           - all
         default: server
   push:
@@ -30,7 +31,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        product: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.products == 'server') && '["opennox-server"]' || '["opennox","opennox-hd","opennox-server","opennox-server-hd"]') }}
+        product: ${{ fromJSON((github.event_name == 'workflow_dispatch' && inputs.products == 'server') && '["opennox-server"]' || (github.event_name == 'workflow_dispatch' && inputs.products == 'server-hd') && '["opennox-server-hd"]' || '["opennox","opennox-hd","opennox-server","opennox-server-hd"]') }}
     env:
       GOOS: linux
       GOARCH: amd64

@@ -369,6 +369,16 @@ root/server/legacy tests also pass 1,716 events with highres, cgocheck2 and
 checkptr=2 together. Remaining
 armed/PIERCE arithmetic, campaign repeatability and final feature audits stay open.
 
+The new clean normal product completes the original upper-Urchin combat in
+34.357 seconds with both required deaths, HP26/26, MP2/88, poison0 and a manual
+Save. The following recovery reaches MP54 but HP17, below the unchanged HP20
+minimum. A same-product retry reuses the exact passing combat Save, reduces
+initial waiting and observes HP19 after road99, HP15 after road154 and HP13 at
+the final Save. Both failures and their exact inputs are preserved; published
+inputs are restored. This revision does not have a passing complete two-stage
+campaign replay. Native Windows and Linux verification for this new revision
+is running separately from the completed prior-production native results.
+
 ### Terminal and scripted Magic Missile EXPLOSION damage
 
 BoomCollide can pass the same unowned Magic Missile as source and weapon,

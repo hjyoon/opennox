@@ -154,36 +154,32 @@ type projectileTraceHitHooks537850[O comparable] struct {
 	wallNormal     func(image.Point, types.Rectf) (types.Pointf, bool)
 }
 
-// Keep the Win32 x87 53-bit arithmetic and binary32 spill boundaries
-// explicit. Separate helpers also prevent target compilers from contracting
-// multiply-plus-add sequences to FMA.
+// Keep startup x87 PC53/ToZero arithmetic and binary32 stores explicit.
+// Reuse the verified local operations without changing host FP state.
 
 //go:noinline
-func projectileAdd64_537850(a, b float64) float64 { return a + b }
+func projectileAdd64_537850(a, b float64) float64 { return objectForceAdd53_52DF80(a, b) }
 
 //go:noinline
-func projectileSub64_537850(a, b float64) float64 { return a - b }
+func projectileSub64_537850(a, b float64) float64 { return objectForceSub53_52DF80(a, b) }
 
 //go:noinline
-func projectileMul64_537850(a, b float64) float64 { return a * b }
+func projectileMul64_537850(a, b float64) float64 { return objectForceMul53_52DF80(a, b) }
 
 //go:noinline
-func projectileDiv64_537850(a, b float64) float64 { return a / b }
+func projectileDiv64_537850(a, b float64) float64 { return objectForceDiv53_52DF80(a, b) }
 
 //go:noinline
-func projectileSqrt64_537850(value float64) float64 { return math.Sqrt(value) }
+func projectileSqrt64_537850(value float64) float64 { return monsterMoveForceSqrtChop53_50D50C(value) }
 
 //go:noinline
-func projectileSpill32_537850(value float64) float32 { return float32(value) }
+func projectileSpill32_537850(value float64) float32 { return experienceSpill32TowardZero(value) }
 
 // projectileDoubleToIntLow32_419B10 models nox_double2int's FISTP qword
-// under the default nearest-even x87 rounding mode, followed by EAX's low
+// under the actual startup ToZero rounding mode, followed by EAX's low
 // dword return. The x87 indefinite integer has a zero low dword.
 func projectileDoubleToIntLow32_419B10(value float64) int32 {
-	if math.IsNaN(value) || value >= 0x1p63 || value < -0x1p63 {
-		return 0
-	}
-	return int32(int64(math.RoundToEven(value)))
+	return x87TruncSignedQwordLow566DCC(value)
 }
 
 func projectileObjectNormal537850[O comparable](
@@ -193,10 +189,10 @@ func projectileObjectNormal537850[O comparable](
 ) types.Pointf {
 	return types.Ptf(
 		projectileSpill32_537850(projectileSub64_537850(
-			float64(previous.X), float64(hooks.loadObjectPosX(hit)),
+			float64(previous.X), objectForceMemory32_52DF80(hooks.loadObjectPosX(hit)),
 		)),
 		projectileSpill32_537850(projectileSub64_537850(
-			float64(previous.Y), float64(hooks.loadObjectPosY(hit)),
+			float64(previous.Y), objectForceMemory32_52DF80(hooks.loadObjectPosY(hit)),
 		)),
 	)
 }
@@ -212,13 +208,15 @@ func projectileTraceHit537850[O comparable](
 	hooks projectileTraceHitHooks537850[O],
 ) (O, types.Pointf, bool) {
 	deltaX := projectileSpill32_537850(projectileSub64_537850(
-		float64(hooks.loadNewPosX(source)), float64(hooks.loadPosX(source)),
+		float64(hooks.loadNewPosX(source)), objectForceMemory32_52DF80(hooks.loadPosX(source)),
 	))
-	deltaY := projectileSpill32_537850(projectileSub64_537850(
-		float64(hooks.loadNewPosY(source)), float64(hooks.loadPosY(source)),
-	))
+	deltaYWide := projectileSub64_537850(
+		float64(hooks.loadNewPosY(source)), objectForceMemory32_52DF80(hooks.loadPosY(source)),
+	)
+	deltaY := projectileSpill32_537850(deltaYWide)
 	distanceSquared := projectileAdd64_537850(
-		projectileMul64_537850(float64(deltaY), float64(deltaY)),
+		// 00537871 stores Y without popping its wider subtraction.
+		projectileMul64_537850(deltaYWide, float64(deltaY)),
 		projectileMul64_537850(float64(deltaX), float64(deltaX)),
 	)
 
@@ -284,17 +282,17 @@ func projectileTraceHit537850[O comparable](
 			return hit, objectNormal, true
 		}
 		objectDX := projectileSub64_537850(
-			float64(hooks.loadPosX(source)), float64(hooks.loadObjectPosX(hit)),
+			float64(hooks.loadPosX(source)), objectForceMemory32_52DF80(hooks.loadObjectPosX(hit)),
 		)
 		objectDY := projectileSub64_537850(
-			float64(hooks.loadPosY(source)), float64(hooks.loadObjectPosY(hit)),
+			float64(hooks.loadPosY(source)), objectForceMemory32_52DF80(hooks.loadObjectPosY(hit)),
 		)
 		objectDistanceSquared := projectileAdd64_537850(
 			projectileMul64_537850(objectDY, objectDY),
 			projectileMul64_537850(objectDX, objectDX),
 		)
-		wallDX := projectileSub64_537850(float64(hooks.loadPosX(source)), float64(trace.point.X))
-		wallDY := projectileSub64_537850(float64(hooks.loadPosY(source)), float64(trace.point.Y))
+		wallDX := projectileSub64_537850(float64(hooks.loadPosX(source)), objectForceMemory32_52DF80(trace.point.X))
+		wallDY := projectileSub64_537850(float64(hooks.loadPosY(source)), objectForceMemory32_52DF80(trace.point.Y))
 		wallDistanceSquared := projectileAdd64_537850(
 			projectileMul64_537850(wallDY, wallDY),
 			projectileMul64_537850(wallDX, wallDX),

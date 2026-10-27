@@ -55,6 +55,45 @@ completion requirements.
 
 ## Current findings
 
+### Projectile trace startup precision and small colliders
+
+The actual native `00537850` projectile trace now uses startup PC53/ToZero
+arithmetic and stores, including signed-qword truncation in `00419B10` and
+the original retained Y subtraction. Previously it used nearest-even
+operations and integer rounding. A 15-pixel trace consequently sampled at
+3.75, 7.5, 11.25 and 15 instead of the original 5, 10 and 15. Controlled
+small-circle fixtures at the original first sample show a missed collision
+under the previous calculation. This is a production-path fixture finding,
+not an observed stock campaign incident. Shared arithmetic implementations
+and the host FP mode remain unchanged.
+
+The complete unchanged 672-byte trace and 19-byte conversion execute for
+166 contexts in both startup and nearest control modes: 332 trace executions
+and 272 conversion entries. Object sampling, map tracing and wall normals
+are the three declared services. Native C-owned objects above 4 GiB match
+all 166 startup results, exact sample/event bits, service order, final live
+positions, grid/ready outputs and nonoutput bytes. Reentrant position changes,
+object/wall distance ties, invalid wall normals, finite map coordinates and
+quiet nonfinite controls are retained. Before the fix, 117 leaf contexts
+disagree. Eight further native cases use the real spatial index, candidate
+filter, circle intersection and clear-map wall query without replacing a
+world query. Their opaque C-owned callback tokens establish filter identity;
+trace selection does not invoke collision callbacks or prove damage effects.
+
+One prior test incorrectly assumed nearest-even startup behavior. It is
+explicitly renamed from `LongPathUsesNearestEvenSteps` to
+`LongPathUsesStartupTruncationSteps`, with its sample positions and resulting
+normal corrected from the complete original observations. Both modes and
+the original test source remain preserved. Every other prior test body,
+frozen fixture and campaign input is unchanged. Terminal comparison reports
+this one identity replacement separately, retaining all other prior results
+and multiplicities and adding 176 net passing events. Test totals measure
+checks, not port completion.
+
+The normal root/server/legacy run passes 234,502 events with 16 skips in
+256.425 seconds. Focused highres checks with cgocheck2 and checkptr level 2
+pass 191 events in 20.408 seconds. No failure remains in either run.
+
 ### Common radial ApplyForce startup arithmetic
 
 The common `0052DF80` path now preserves its original PC53/ToZero operations,
@@ -104,8 +143,11 @@ passes in 31.071 seconds with HP26/MP56, poison zero, retained book, both
 original upper Urchins still dead, all three original resource pickups and a
 manual Save. Eighteen parameterless GET observations and the final save screen
 are qualified; source Save, assets, configuration and executable are unchanged.
-The earlier combat is not replayed. Current Windows 386/AMD64 and normal Linux
-AMD64 native CI are running. Closed text logs are transparently APFS-compressed
+The earlier combat is not replayed. This revision's Windows 386/AMD64 and normal
+Linux AMD64 native CI have passed, with all three products and raw reports
+preserved and qualified. Linux confirms 231,750 passes, seven skips and all 56
+expected packages; its separate default-link damage check passes 133,041 events
+with `MALLOC_MMAP_THRESHOLD_=0`. Closed text logs are transparently APFS-compressed
 with paths, bytes, hashes, ownership, permissions and modification times
 verified; no source, Save, asset, product or cache is removed.
 

@@ -403,7 +403,7 @@ func TestProjectileTraceHit537850ShortSampleLoadOrder(t *testing.T) {
 	}
 }
 
-func TestProjectileTraceHit537850LongPathUsesNearestEvenSteps(t *testing.T) {
+func TestProjectileTraceHit537850LongPathUsesStartupTruncationSteps(t *testing.T) {
 	source := &projectileTestObject537770{newPos: types.Ptf(15, 0)}
 	hooks := projectileTraceTestHooks537850(source)
 	var samples []types.Pointf
@@ -415,7 +415,9 @@ func TestProjectileTraceHit537850LongPathUsesNearestEvenSteps(t *testing.T) {
 	if ok {
 		t.Fatal("clear long trace unexpectedly reported a hit")
 	}
-	want := []types.Pointf{types.Ptf(3.75, 0), types.Ptf(7.5, 0), types.Ptf(11.25, 0), types.Ptf(15, 0)}
+	// Unchanged 00537850/00419B10 at startup CW 0xe3f samples three
+	// points; the preserved nearest-control observations sample four.
+	want := []types.Pointf{types.Ptf(5, 0), types.Ptf(10, 0), types.Ptf(15, 0)}
 	if !reflect.DeepEqual(samples, want) {
 		t.Fatalf("samples = %v, want %v", samples, want)
 	}
@@ -430,7 +432,7 @@ func TestProjectileTraceHit537850LongPathUsesNearestEvenSteps(t *testing.T) {
 		return nil
 	}
 	gotHit, normal, ok := projectileTraceHit537850(source, hooks)
-	if !ok || gotHit != hit || normal != (types.Ptf(0.75, 0)) {
+	if !ok || gotHit != hit || normal != (types.Ptf(2, 0)) {
 		t.Fatalf("second sample result = (%p, %v, %v)", gotHit, normal, ok)
 	}
 }

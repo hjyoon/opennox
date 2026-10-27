@@ -132,11 +132,10 @@ func playerDamageWorldImpaleTail4E17B0(
 	if !playerDamageArmorReady4E17B0(target, r) {
 		return reject("unsupported world IMPALE armor durability")
 	}
-	scaled := float32((1.0 - float64(absorption)) * float64(damage))
-	live := target.UpdateDataPlayer()
-	accumulated := scaled + math.Float32frombits(live.Field21)
-	effective := playerDamageRound4E17B0(accumulated)
-	live.Field21 = math.Float32bits(accumulated - float32(effective))
+	factor := experienceAdd53TowardZero(1, -float64(absorption))
+	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
+	var effective int32
+	playerDamageCarry4E20F0(target, &effective, scaled)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, r)
 	if target.Class().Has(object.ClassPlayer) {
 		if update.Field76 == 0 {
@@ -156,7 +155,8 @@ func playerDamageWorldImpaleTail4E17B0(
 			return reject("missing live world IMPALE Quest scale")
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(r.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

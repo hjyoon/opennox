@@ -14,7 +14,8 @@ import (
 
 // Actual C collision entry -> native DamageCollide -> registered PlayerDamage ->
 // DefaultDamage -> UnitSetHP. No damage/HP callback is replaced. These scalar
-// records model the six stock declarations; headless tests load thing.bin itself.
+// records model six stock declarations and one synthetic rounding boundary;
+// headless tests load thing.bin itself.
 func TestPlayerDamageSpikesCollisionCRecords4E17B0(t *testing.T) {
 	srv := npcReflectLegacyServer4E17B0(t)
 	if !srv.Objs.Init(64) {
@@ -37,6 +38,7 @@ func TestPlayerDamageSpikesCollisionCRecords4E17B0(t *testing.T) {
 		{"SpikeBlockImmobile", object.ClassObstacle | object.ClassDangerous | object.ClassImmobile, 3, 59},
 		{"RotatingSpikes", object.ClassObstacle | object.ClassDangerous | object.ClassSimple | object.ClassVisibleEnable, 8, 57},
 		{"RotatingSpikesImmobile", object.ClassObstacle | object.ClassDangerous | object.ClassImmobile | object.ClassVisibleEnable, 8, 57},
+		{"synthetic rounding boundary", object.ClassDangerous | object.ClassImmobile, 4, 59},
 	} {
 		for _, owner := range []string{"self", "player", "NPC"} {
 			t.Run(fmt.Sprintf("%s/%s", hazard.name, owner), func(t *testing.T) {
@@ -51,6 +53,11 @@ func TestPlayerDamageSpikesCollisionCRecords4E17B0(t *testing.T) {
 				v.Damage = playerDamageMeleeCallbackNative4E17B0()
 				ud := v.UpdateDataPlayer()
 				ud.Field57 = math.Float32bits(.25)
+				if hazard.damage == 4 {
+					// Collision forwards raw2. Original startup truncates
+					// 2*(1-.25)+0 to 1 and retains carry .5.
+					ud.Field21 = 0
+				}
 				before := *w
 				ccall.CallVoidPtr3(callback, unsafe.Pointer(w), unsafe.Pointer(v), nil)
 				if v.HealthData.Cur != hazard.hp || v.Obj130 != w || v.Field131 != 3 || v.Pos132 != w.PrevPos ||
@@ -60,6 +67,9 @@ func TestPlayerDamageSpikesCollisionCRecords4E17B0(t *testing.T) {
 				if (a == w && (ud.Field76 != 2 || ud.Field75 != 3)) ||
 					(a != w && (ud.Field76 != 1 || ud.Field75 != uint32(w.TypeInd))) {
 					t.Fatal("collision attribution marker")
+				}
+				if hazard.damage == 4 && ud.Field21 != math.Float32bits(.5) {
+					t.Fatal("native world IMPALE startup carry")
 				}
 				t.Logf("C-owned >4 GiB %s source=%s actual C collision HP=60->%d byte=%d IMPALE=3", hazard.name, owner, v.HealthData.Cur, data.Damage)
 			})

@@ -81,7 +81,7 @@ in those oracles; actual native C dispatch, HP and armor destruction are checked
 separately with native pointers above 4 GiB.
 
 All 55 historical input tables remain byte-identical. A separate startup
-observation file binds their hashes and row counts and corrects 6,732 output
+observation file binds their hashes and row counts and corrects 6,734 output
 rows among 35,352 retained input rows. Original executable replays supply these
 outputs; native candidate results are not used as expected values. Existing
 input loops, branch identities, nonnumeric assertions and nearest-control
@@ -107,11 +107,45 @@ deduplicates only identical address/size/hash observations in the growing oracle
 manifest. The correction changes test data and its reader; product Go/C sources
 and the already qualified executable and two-stage campaign replay are retained.
 
-The separate armed EXPLOSION, player dangerous-world IMPALE and unit self-weapon
-electric arithmetic bodies remain outside this change; their existing
-expectations are retained.
+The separate armed EXPLOSION and unit self-weapon electric arithmetic bodies
+remain outside this change; their existing expectations are retained. The
+dangerous-world IMPALE tail is covered by the following checkpoint.
 These bounded results do not establish complete PlayerDamage arithmetic or
 overall 100% port completion.
+
+### Dangerous-world IMPALE startup arithmetic
+
+The player world-hazard tail now preserves startup PC53 arithmetic, binary32
+spills, live fractional carry and truncating integer conversion through armor
+absorption and late Quest scaling. Entry guards, source ownership, cached
+markers, armor-before-GodMode ordering and the positive-only minimum remain.
+The host floating-point mode is not changed. For raw2, absorption .25 and carry0,
+the original forwards damage1 and retains carry .5; the previous implementation
+forwarded damage2 and retained -.5.
+
+Sixty-six unchanged original contexts cover three dangerous-world source forms,
+Player targets and NPC controls, signed/zero/overflow inputs and Quest scaling.
+Both control modes execute original PlayerDamage/carry/conversion instructions;
+code-region hashes, original input classes and nonoutput heap bytes are checked.
+The native test explicitly asserts DANGEROUS world-IMPALE admission so a passing
+common-body control cannot substitute for this path. Earlier probes with the
+incorrect FIRE class are preserved and explicitly excluded. Facing, armor wear
+and final HP remain declared services in this machine-code oracle.
+
+Actual C collision, registered PlayerDamage, DefaultDamage and UnitSetHP execute
+separately on native-width C-owned records. All six stock hazard declarations
+remain covered. A synthetic byte4 collision forwards raw2 with zero carry and
+proves HP60->59 and carry .5 for self, player and NPC source ownership; the
+preserved before-port run instead reaches HP58. The 66-context native comparison
+also retains its 21 failing before-port Player cases. Two previously excluded
+world-self observations now use their already captured original startup values;
+all historical input files and existing test identities remain.
+
+Complete macOS ARM64 root/server/legacy checks pass 230,544 events with 16 skips.
+The highres world-prefix/collision subset passes 89 events with cgocheck2 and
+checkptr level 2. Counts include parents and subtests. Shared shield-selection
+and blocking arithmetic are separate work, as are the remaining armed
+EXPLOSION and unit self-weapon electric tails. Overall 100% remains unproved.
 
 ### Terminal and scripted Magic Missile EXPLOSION damage
 

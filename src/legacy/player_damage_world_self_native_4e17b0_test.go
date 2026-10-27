@@ -94,11 +94,6 @@ func TestPlayerDamageWorldSelfNativeDamage4E17B0(t *testing.T) {
 							if typ == object.DamageCrush && kind != "ordinary-monster" {
 								wantHP, wantCarry = 193, 0
 							}
-							if typ == object.DamageImpale && kind == "player" && cls.Has(object.ClassDangerous) {
-								// The separate player world-IMPALE tail is outside
-								// this non-item switch rounding port.
-								wantHP, wantCarry = 195, -.25
-							}
 							blocked := god && kind == "player"
 							if blocked {
 								wantHP = 200

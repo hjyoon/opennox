@@ -1,0 +1,2103 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "original_startup_control_word": 3647,
+  "regions": [
+    {
+      "name": "PlayerDamage",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9"
+    },
+    {
+      "name": "carry",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86"
+    },
+    {
+      "name": "signed-DWORD",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "Quest-getter",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde"
+    },
+    {
+      "name": "attack-predicate",
+      "address": "0x4e1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73"
+    },
+    {
+      "name": "possession",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6"
+    },
+    {
+      "name": "parent-chain",
+      "address": "0x4ec580",
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    }
+  ],
+  "memory_faults": [],
+  "cases": 66,
+  "source_oracle_cases": 146,
+  "source_oracle_runs": 292,
+  "source_report_sha256": "9fb8b266d32ea606eb67e09ac10d5e7f9dab70589d22130bff830d1b62e82a42",
+  "scope": "Unchanged original PlayerDamage/carry/Quest arithmetic for dangerous-world IMPALE. Facing, armor wear and final HP are declared service boundaries. Native C collision and real HP are checked separately.",
+  "rows": [
+    {
+      "input": {
+        "name": "world-self/player-0/case-0",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 9,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-1",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-2",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-3",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": -3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967294
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 3204448256,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-4",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 0,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3208642560,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3208642560,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-5",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 1,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-6",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1061158912,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1055286880,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-7",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 96,
+        "absorption_bits32": 1036831949,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 10
+        },
+        {
+          "service": "default",
+          "damage_bits32": 43
+        }
+      ],
+      "carry_bits32": 1057383936,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-8",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 2147483647,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 1339031551,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/case-9",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": -2147483648,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 3196059648,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 3474980864,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-0",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 9,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-1",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-2",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-3",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": -3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967294
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 3204448256,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-4",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 0,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3208642560,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3208642560,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-5",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 1,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-6",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1061158912,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1055286880,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-7",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 96,
+        "absorption_bits32": 1036831949,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 10
+        },
+        {
+          "service": "default",
+          "damage_bits32": 43
+        }
+      ],
+      "carry_bits32": 1057383936,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-8",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 2147483647,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 1339031551,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/case-9",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": -2147483648,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 3196059648,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 3474980864,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-0",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 9,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-1",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-2",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-3",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": -3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967294
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 3204448256,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-4",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 0,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3208642560,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3208642560,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-5",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 1,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-6",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1061158912,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1055286880,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-7",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 96,
+        "absorption_bits32": 1036831949,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 10
+        },
+        {
+          "service": "default",
+          "damage_bits32": 43
+        }
+      ],
+      "carry_bits32": 1057383936,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-8",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 2147483647,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 1339031551,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/case-9",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": -2147483648,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 3196059648,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 3474980864,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-0",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 9,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-1",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-2",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-3",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": -3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967294
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 3204448256,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-4",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 0,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3208642560,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3208642560,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-5",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 1,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-6",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1061158912,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1055286880,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-7",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 96,
+        "absorption_bits32": 1036831949,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 10
+        },
+        {
+          "service": "default",
+          "damage_bits32": 43
+        }
+      ],
+      "carry_bits32": 1057383936,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-8",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 2147483647,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 1339031551,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/case-9",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": -2147483648,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 3196059648,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 3474980864,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-0",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 9,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-1",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-2",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-3",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": -3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967294
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 3204448256,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-4",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 0,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3208642560,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3208642560,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-5",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 1,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-6",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1061158912,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1055286880,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-7",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 96,
+        "absorption_bits32": 1036831949,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 10
+        },
+        {
+          "service": "default",
+          "damage_bits32": 43
+        }
+      ],
+      "carry_bits32": 1057383936,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-8",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 2147483647,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 1339031551,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/case-9",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": -2147483648,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 3196059648,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 3474980864,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-0",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 9,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1061158912,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-1",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-2",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 1056964608,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-3",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": -3,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967294
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 3204448256,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-4",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 0,
+        "absorption_bits32": 1056964608,
+        "carry_bits32": 3208642560,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 3208642560,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-5",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 1,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 0,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-6",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 11,
+        "absorption_bits32": 1050253722,
+        "carry_bits32": 1061158912,
+        "quest": true,
+        "quest_scale_bits32": 1050253722,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 3
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1055286880,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-7",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 96,
+        "absorption_bits32": 1036831949,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 10
+        },
+        {
+          "service": "default",
+          "damage_bits32": 43
+        }
+      ],
+      "carry_bits32": 1057383936,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-8",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 2147483647,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 1048576000,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 1339031551,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/case-9",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": -2147483648,
+        "absorption_bits32": 3214934016,
+        "carry_bits32": 3196059648,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2147483648
+        }
+      ],
+      "carry_bits32": 3474980864,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-0/raw2-armor025",
+        "player": false,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 2,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-0/raw2-armor025",
+        "player": false,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 2,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-0/raw2-armor025",
+        "player": false,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 2,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-self/player-1/raw2-armor025",
+        "player": true,
+        "shape": "world-self",
+        "damage_type": 3,
+        "raw": 2,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 2,
+      "marker_type": 3,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-player/player-1/raw2-armor025",
+        "player": true,
+        "shape": "world-player",
+        "damage_type": 3,
+        "raw": 2,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "world-monster/player-1/raw2-armor025",
+        "player": true,
+        "shape": "world-monster",
+        "damage_type": 3,
+        "raw": 2,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 0,
+        "quest": false,
+        "quest_scale_bits32": 1065353216,
+        "electric_scale_bits32": 1065353216,
+        "weapon_class": 4259840
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1056964608,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    }
+  ]
+}

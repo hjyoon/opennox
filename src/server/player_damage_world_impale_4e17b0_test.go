@@ -22,7 +22,7 @@ func TestPlayerDamageWorldImpale4E17B0(t *testing.T) {
 			{"armored-8", 8, 6, .25, .25, .25},
 			{"positive-minimum", 1, 1, .5, 0, .5},
 			{"tie-even-down", 5, 2, .5, 0, .5},
-			{"tie-even-up", 3, 2, .5, 0, -.5},
+			{"tie-even-up", 3, 1, .5, 0, .5}, // Retained identity; original startup truncates 1.5 to 1.
 			{"raw-zero", 0, 0, .25, .25, .25},
 			{"negative", -3, -2, .25, .25, 0},
 			{"negative-tie", -5, -2, .5, 0, -.5},

@@ -95,6 +95,10 @@ func ReadinessEffectPointer4E0960() unsafe.Pointer {
 	return C.nullsub_22
 }
 
+func modifierStatusEffectPointers4E04D0() [2]unsafe.Pointer {
+	return [2]unsafe.Pointer{C.nox_xxx_stunEffect_4E04D0, C.nox_xxx_confuseEffect_4E0670}
+}
+
 // RecoilEffectPointer4E0640 exposes only the identity checked by the restored
 // projectile launch path. The legacy callback itself is never invoked there;
 // GAME.EXE stores the modifier on the projectile for collision-time handling.
@@ -361,14 +365,15 @@ var (
 )
 
 func init() {
+	statusEffects := modifierStatusEffectPointers4E04D0()
 	server.RegisterModifDamageEffect("DamageMultiplierEffect", C.nox_xxx_effectDamageMultiplier_4E04C0, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("StunEffect", C.nox_xxx_stunEffect_4E04D0, server.ModEffectParseInt)
+	server.RegisterModifDamageEffect("StunEffect", statusEffects[0], server.ModEffectParseInt)
 	server.RegisterModifDamageEffect("FireEffect", C.nox_xxx_fireEffect_4E0550, server.ModEffectParseFloat)
 	server.RegisterModifDamageEffect("FireRingEffect", C.nox_xxx_fireRingEffect_4E05B0, server.ModEffectParseInt)
 	server.RegisterModifDamageEffect("BlueFireRingEffect", C.nox_xxx_blueFREffect_4E05F0, server.ModEffectParseInt)
 	server.RegisterModifDamageEffect("FrostEffect", C.nullsub_38, server.ModEffectParseInt)
 	server.RegisterModifDamageEffect("RecoilEffect", C.nox_xxx_recoilEffect_4E0640, server.ModEffectParseFloat)
-	server.RegisterModifDamageEffect("ConfuseEffect", C.nox_xxx_confuseEffect_4E0670, server.ModEffectParseInt)
+	server.RegisterModifDamageEffect("ConfuseEffect", statusEffects[1], server.ModEffectParseInt)
 	server.RegisterModifDamageEffect("LightningEffect", C.nox_xxx_lightngEffect_4E06F0, server.ModEffectParseFloat)
 	server.RegisterModifDamageEffect("DrainManaEffect", C.nox_xxx_drainMEffect_4E0740, server.ModEffectParseFloat)
 	server.RegisterModifDamageEffect("VampirismEffect", C.nox_xxx_vampirismEffect_4E07C0, server.ModEffectParseFloat)

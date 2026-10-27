@@ -37,6 +37,7 @@ static float nox_modifierSpeedAddChop32_4DFC5B(float left, float right) {
 #include "GAME4_1.h"
 #include "GAME4_2.h"
 #include "GAME4_3.h"
+#include "spell_accept_4fd400.h"
 #include "GAME5.h"
 #include "GAME5_2.h"
 #include "client__system__parsecmd.h"
@@ -6198,23 +6199,19 @@ void nox_xxx_stunEffect_4E04D0(
 	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
 	(void)weapon;
 	(void)context;
-	if (!effect || !target || !(target->obj_class & 6)) {
+	if (!(target->obj_class & 6)) {
 		return;
 	}
-	short duration = nox_float2int(nox_xxx_gamedataGetFloat_419D40("StunEnchantDuration"));
-	char power = (char)nox_modifier_effect_getPreHitInt(effect);
-	int buff = 5;
+	nox_spell_accept_arg_t arg;
+	arg.obj = target;
+	memcpy(&arg.x, &target->x, 2 * sizeof(float));
+	const int32_t power = nox_modifier_effect_getPreHitInt(effect);
+	nox_xxx_castStun_52C2C0(74, owner, owner, owner, &arg, power);
 	if (target->obj_class & 4) {
-		nox_playerInfo* player = nox_xxx_modifierEffectPlayer_4E04D0(target);
-		if (player && !player->info.playerClass) {
-			buff = 4;
-		}
-	} else if ((target->obj_class & 2) && target->mass > 15.0f) {
-		buff = 4;
+		nox_player_update_data_t* update = target->data_update;
+		int message = 0;
+		nox_xxx_netInformTextMsg_4DA0F0(update->player->playerInd, 13, &message);
 	}
-	nox_xxx_buffApplyTo_4FF380(target, buff, duration, power);
-	sub_4E7540(owner, target);
-	nox_xxx_modifierEffectInform_4E04D0(target, 0);
 }
 
 //----- (004E0640) --------------------------------------------------------
@@ -6233,14 +6230,19 @@ void nox_xxx_confuseEffect_4E0670(
 	void* effect, nox_object_t* weapon, nox_object_t* owner, nox_object_t* target, void* context) {
 	(void)weapon;
 	(void)context;
-	if (!effect || !target || !(target->obj_class & 6)) {
+	if (!(target->obj_class & 6)) {
 		return;
 	}
-	short duration = nox_float2int(nox_xxx_gamedataGetFloat_419D40("ConfuseEnchantDuration"));
-	char power = (char)nox_modifier_effect_getPreHitInt(effect);
-	nox_xxx_buffApplyTo_4FF380(target, 3, duration, power);
-	sub_4E7540(owner, target);
-	nox_xxx_modifierEffectInform_4E04D0(target, 1);
+	nox_spell_accept_arg_t arg;
+	arg.obj = target;
+	memcpy(&arg.x, &target->x, 2 * sizeof(float));
+	const int32_t power = nox_modifier_effect_getPreHitInt(effect);
+	nox_xxx_castConfuse_52C1E0(12, owner, owner, owner, &arg, power);
+	if (target->obj_class & 4) {
+		nox_player_update_data_t* update = target->data_update;
+		int message = 1;
+		nox_xxx_netInformTextMsg_4DA0F0(update->player->playerInd, 13, &message);
+	}
 }
 
 //----- (004E06F0) --------------------------------------------------------

@@ -1,0 +1,1336 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "actual_startup_control_word": 3647,
+  "regions": [
+    {
+      "name": "StunEffect",
+      "address": "0x4e04d0",
+      "size": 128,
+      "sha256": "99588978e4dbcdccc919e6b5f1c9216b4328d85e1bcba67cca0638fa97fcb135"
+    },
+    {
+      "name": "ConfuseEffect",
+      "address": "0x4e0670",
+      "size": 128,
+      "sha256": "c0e61e6e49def4c6a28f463b43f0f1e0d0206ded0c4e26e808956e0834a6b056"
+    }
+  ],
+  "declared_services": [
+    "complete spell cast",
+    "client inform message"
+  ],
+  "memory_faults": [],
+  "function_entries": {
+    "StunEffect": 28,
+    "ConfuseEffect": 28
+  },
+  "rows": [
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-0/power-0",
+        "target_class": 0,
+        "power": 0,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-0/power-1",
+        "target_class": 0,
+        "power": 1,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-0/power--129",
+        "target_class": 0,
+        "power": -129,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-0/power--2147483648",
+        "target_class": 0,
+        "power": -2147483648,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-0/power-2147483647",
+        "target_class": 0,
+        "power": 2147483647,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-0/power-305419896",
+        "target_class": 0,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-2/power-0",
+        "target_class": 2,
+        "power": 0,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 0,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-2/power-1",
+        "target_class": 2,
+        "power": 1,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 1,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-2/power--129",
+        "target_class": 2,
+        "power": -129,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 4294967167,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-2/power--2147483648",
+        "target_class": 2,
+        "power": -2147483648,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 2147483648,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-2/power-2147483647",
+        "target_class": 2,
+        "power": 2147483647,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 2147483647,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-2/power-305419896",
+        "target_class": 2,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-4/power-0",
+        "target_class": 4,
+        "power": 0,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 0,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-4/power-1",
+        "target_class": 4,
+        "power": 1,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 1,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-4/power--129",
+        "target_class": 4,
+        "power": -129,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 4294967167,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-4/power--2147483648",
+        "target_class": 4,
+        "power": -2147483648,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 2147483648,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-4/power-2147483647",
+        "target_class": 4,
+        "power": 2147483647,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 2147483647,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-4/power-305419896",
+        "target_class": 4,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-6/power-0",
+        "target_class": 6,
+        "power": 0,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 0,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-6/power-1",
+        "target_class": 6,
+        "power": 1,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 1,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-6/power--129",
+        "target_class": 6,
+        "power": -129,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 4294967167,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-6/power--2147483648",
+        "target_class": 6,
+        "power": -2147483648,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 2147483648,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-6/power-2147483647",
+        "target_class": 6,
+        "power": 2147483647,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 2147483647,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/class-6/power-305419896",
+        "target_class": 6,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/mutation-1",
+        "target_class": 2,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 1
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/mutation-2",
+        "target_class": 4,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 2
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/mutation-3",
+        "target_class": 4,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 3
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 130,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 0,
+        "name": "StunEffect/mutation-4",
+        "target_class": 4,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 4
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 74,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 0
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-0/power-0",
+        "target_class": 0,
+        "power": 0,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-0/power-1",
+        "target_class": 0,
+        "power": 1,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-0/power--129",
+        "target_class": 0,
+        "power": -129,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-0/power--2147483648",
+        "target_class": 0,
+        "power": -2147483648,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-0/power-2147483647",
+        "target_class": 0,
+        "power": 2147483647,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-0/power-305419896",
+        "target_class": 0,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-2/power-0",
+        "target_class": 2,
+        "power": 0,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 0,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-2/power-1",
+        "target_class": 2,
+        "power": 1,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 1,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-2/power--129",
+        "target_class": 2,
+        "power": -129,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 4294967167,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-2/power--2147483648",
+        "target_class": 2,
+        "power": -2147483648,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 2147483648,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-2/power-2147483647",
+        "target_class": 2,
+        "power": 2147483647,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 2147483647,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-2/power-305419896",
+        "target_class": 2,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-4/power-0",
+        "target_class": 4,
+        "power": 0,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 0,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-4/power-1",
+        "target_class": 4,
+        "power": 1,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 1,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-4/power--129",
+        "target_class": 4,
+        "power": -129,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 4294967167,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-4/power--2147483648",
+        "target_class": 4,
+        "power": -2147483648,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 2147483648,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-4/power-2147483647",
+        "target_class": 4,
+        "power": 2147483647,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 2147483647,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-4/power-305419896",
+        "target_class": 4,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-6/power-0",
+        "target_class": 6,
+        "power": 0,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 0,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-6/power-1",
+        "target_class": 6,
+        "power": 1,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 1,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-6/power--129",
+        "target_class": 6,
+        "power": -129,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 4294967167,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-6/power--2147483648",
+        "target_class": 6,
+        "power": -2147483648,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 2147483648,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-6/power-2147483647",
+        "target_class": 6,
+        "power": 2147483647,
+        "nil_source": true,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 2147483647,
+          "source_nil": true,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/class-6/power-305419896",
+        "target_class": 6,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 0
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/mutation-1",
+        "target_class": 2,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 1
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/mutation-2",
+        "target_class": 4,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 2
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/mutation-3",
+        "target_class": 4,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 3
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 130,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "which": 1,
+        "name": "ConfuseEffect/mutation-4",
+        "target_class": 4,
+        "power": 305419896,
+        "nil_source": false,
+        "mutation": 4
+      },
+      "events": [
+        {
+          "service": "cast",
+          "spell": 12,
+          "power_bits32": 305419896,
+          "source_nil": false,
+          "position_bits32": [
+            3242983424,
+            2147483648
+          ]
+        },
+        {
+          "service": "inform",
+          "player_index": 254,
+          "value": 1
+        }
+      ],
+      "nonoutput_bytes_preserved": true
+    }
+  ]
+}

@@ -55,6 +55,45 @@ completion requirements.
 
 ## Current findings
 
+### Native Stun and Confuse modifier spell dispatch
+
+StunEffect and ConfuseEffect now invoke their already-restored common spell
+casts instead of duplicating part of the spell logic in C. The complete
+original roots pass full signed 32-bit power, three identical source arguments
+and a local SpellAcceptArg containing the target and a raw copy of its position.
+The position is captured before the call; afterward, the roots reload the
+cached target's live class and player links for its inform message. A changed
+SpellAcceptArg target does not replace that cached target. A failed spell return
+does not suppress the original subsequent message. Duration conversion remains
+in the shared spell implementations, where it was already ported correctly.
+
+Unchanged original execution covers both complete 128-byte root regions in
+56 contexts. Spell casting and client messages are declared service boundaries.
+These include nonunits, player/monster combinations, nil sources, signed power
+extremes, signed-zero coordinates, changed class/player records and a retargeted
+spell argument. The old C roots disagreed in 44 contexts. Complete production
+C execution now agrees in all 56, including native pointer/stack argument and
+nonoutput canaries. The same 56 pass ASan and UBSan.
+
+Eight separate native integration controls enter through actual enchantment
+slots 2 and 3, invoke the registered C callback and native CGo export, delegate
+to the real shared server spell, and retain real live-player attribution.
+Buff application is the explicit controlled service that changes the local
+spell target before attribution. The spell implementation and attribution are
+not substituted. Full int32 power reaches the spell and narrows to int8 only
+at buff application. Native C-owned records and the C stack argument exceed
+4 GiB on the 64-bit host. The two callback identities remain unchanged.
+
+Normal root/server checks pass in the initial full run. A misspelled frame-hook
+name in the new test stopped its legacy test build; those failure logs are
+preserved. Correcting only that new test yields a final full legacy run with
+75,035 passes and one skip in 128.532 seconds. Root/server are not repeated.
+Together these runs retain every prior terminal identity/result/multiplicity
+and add 66 passes, totaling 233,630 passes and 16 skips. Focused highres strict
+server and final legacy results total 179 passes with cgocheck2 and checkptr
+level 2. Existing tests, frozen fixtures and campaign inputs retain their bytes.
+These event totals do not measure completion percentage or whole-chapter scope.
+
 ### Native integer conversion in item damage and resource effects
 
 LightningEffect, DrainManaEffect, VampirismEffect and SympathyEffect now use

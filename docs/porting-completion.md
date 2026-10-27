@@ -55,6 +55,55 @@ completion requirements.
 
 ## Current findings
 
+### Box/wall startup geometry and shared impulse accumulation
+
+The native box/wall bundle now preserves startup PC53/ToZero arithmetic,
+binary32 stores and signed-DWORD grid truncation. The prior nearest-even
+grid selection could choose a different wall cell. Rotations, crossing tests,
+retained line endpoints, overlap, spring/damping response, velocity projection
+and friction now retain the original operation boundaries. The second wall
+definition is reloaded after the first collision service. The shared
+`00548600` impulse accumulator also retains division through addition before
+its component store, preserving memory-operand NaNs until arithmetic. Shared
+arithmetic implementations and the host FP mode remain unchanged.
+
+Complete unchanged original box/wall, cell, quadrant, both narrow-phase,
+impulse, mass-getter and conversion routines execute in 553 box/wall and
+38 direct impulse contexts under both startup and nearest control modes.
+That is 1,106 top-level box/wall and 76 direct impulse executions; internal
+impulse calls remain real. The eight sealed ranges total 2,162 bytes. Wall
+lookup, collision queueing and secret-wall contact are explicit services.
+All eleven stock wall definitions, map-sized geometry, crossings, friction,
+signed grid boundaries, gates and controlled live service changes remain in
+the matrix. Before the fix, 545 box/wall and 26 impulse conditions disagree.
+All 591 startup conditions now match exact outputs, service traces and native
+C-owned object bytes above 4 GiB. These are controlled fixture findings, not
+observed stock campaign incidents.
+
+Sixty-six further native controls use the real wall index, `0057B500` lookup,
+and production wall-definition getter. The sealed stock definitions initialize
+the actual table for these standalone tests and its previous contents are
+restored. World queries are not replaced; collision queueing and secret contact
+remain declared observation services. The exact original results are retained.
+Two new-test setup mistakes, empty-list representation and uninitialized wall
+coordinates, are corrected separately, with all failures preserved. Existing
+tests and frozen inputs are unchanged.
+
+A separate x86-64 Rosetta diagnostic checks 256 special-value combinations by
+replaying 26 verified original FPU bytes, including both mass loads. Its
+integer, stack and call scaffold adapts PE32 execution; it is not native
+execution of the complete original root. Both the source sequences and the
+actual Mach-O instruction bytes are sealed. Eight NaN memory-operand results
+initially disagree because conversion quieted the operand before division.
+Preserving that operand until arithmetic resolves all eight. The earlier full
+finite run and every raw diagnostic/failure remain preserved. Final highres
+checks with cgocheck2 and checkptr level 2 pass all 916 focused events.
+
+The final normal root/server/legacy run passes 235,418 events with 16 skips
+in 274.553 seconds. It retains every prior terminal identity, result and
+multiplicity and adds 916 passes. The focused highres strict run takes
+19.489 seconds. These totals do not measure feature or chapter completion.
+
 ### Projectile trace startup precision and small colliders
 
 The actual native `00537850` projectile trace now uses startup PC53/ToZero
@@ -103,7 +152,10 @@ screen are qualified; source Save, assets, configuration and executable retain
 their hashes. The earlier combat is not replayed. An initial nested-sandbox
 denial occurs before game launch and remains preserved separately; the same
 product and loopback-only profile pass after resolving that launch restriction.
-Current Windows 386/AMD64 and normal Linux AMD64 native CI are running.
+This revision's Windows 386/AMD64 and normal Linux AMD64 native CI have passed;
+all three products and raw reports are preserved and qualified. Linux confirms
+231,926 passes, seven skips and all 56 expected packages. Its separate normal
+default-link damage check passes 133,041 events with `MALLOC_MMAP_THRESHOLD_=0`.
 
 ### Common radial ApplyForce startup arithmetic
 

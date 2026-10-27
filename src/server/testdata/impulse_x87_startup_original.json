@@ -1,0 +1,4400 @@
+{
+  "contexts": 256,
+  "rows": [
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2139095040,
+        4286578688
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4286578688,
+        2139095040
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2139095040,
+        4286578688
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 0,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4286578688,
+        2139095040
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2139095040,
+        4286578688
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4286578688,
+        2139095040
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2147483648,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1065353216,
+        3212836864
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1065353216,
+        3212836864
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1073741824,
+        3221225472
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        0,
+        0
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2139095040,
+        4286578688
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 1065353216,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1065353216,
+        3212836864
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1065353216,
+        3212836864
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        0,
+        0
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1073741824,
+        3221225472
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4286578688,
+        2139095040
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 3212836864,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1065353216,
+        3212836864
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1065353216,
+        3212836864
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1065353216,
+        3212836864
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        1065353216,
+        3212836864
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145871171,
+        4293354819
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290772992,
+        4290772992
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        4290842897
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        4293215009
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2139095040,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2143359249,
+        2143359249
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2143359249,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 2141537057,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        2145731361,
+        2145731361
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          0,
+          2147483648
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2147483648,
+          0
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          1065353216,
+          3212836864
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          3212836864,
+          1065353216
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2139095040,
+          4286578688
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2143359249,
+          4290842897
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        4290847557
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          2141537057,
+          4289020705
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          1065353216,
+          3212836864
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2143499059,
+          4290982707
+        ]
+      },
+      "accumulator_bits32": [
+        2143499059,
+        4290982707
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          2141676867,
+          4289160515
+        ]
+      },
+      "accumulator_bits32": [
+        4290847557,
+        2143363909
+      ]
+    },
+    {
+      "input": {
+        "mass_bits32": 4290847557,
+        "impulse_bits32": [
+          4290847557,
+          2143363909
+        ],
+        "initial_accumulator_bits32": [
+          4291052612,
+          2143568964
+        ]
+      },
+      "accumulator_bits32": [
+        4291052612,
+        2143568964
+      ]
+    }
+  ],
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "verified_original_FPU_bytes": 26,
+  "original_regions": [
+    {
+      "address": "0x4e4a74",
+      "size": 3,
+      "bytes": "d94078"
+    },
+    {
+      "address": "0x54860b",
+      "size": 4,
+      "bytes": "d87c2410"
+    },
+    {
+      "address": "0x548610",
+      "size": 6,
+      "bytes": "d84660d95e60"
+    },
+    {
+      "address": "0x4e4a74",
+      "size": 3,
+      "bytes": "d94078"
+    },
+    {
+      "address": "0x54861b",
+      "size": 4,
+      "bytes": "d87c2418"
+    },
+    {
+      "address": "0x548622",
+      "size": 6,
+      "bytes": "d84664d95e64"
+    }
+  ],
+  "reference": "Original x87 FPU byte replay in a separate x86-64 Rosetta process, startup CW 0xe3f; PE32 integer/call/stack scaffold adapted.",
+  "whole_original_root_native_execution_claim": false,
+  "source": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/box-wall-startup-precision-port/impulse-x87-byte-replay-v1.c",
+  "source_sha256": "37394cfb557d3ee51aa03aafbcfcc333c9d793e38d144d9e9687a29b1697ac09",
+  "binary": "/Users/ghost/codex-sandbox/tmp/opennox-r344-20261020/box-wall-startup-precision-port/impulse-x87-byte-replay-v1",
+  "binary_sha256": "c2ef4e0561aad976f1b2529675d9762183bdba4fa662fd7393f47dd17515fc7e",
+  "raw_output_sha256": "bd112d016fdbce2a9d57ccd8683963d65b11a600bdb0c0e5196c093e92d2c9ec",
+  "inputs_sha256": "bdf832adb0665d96d31c1b7fc5351eee2967b79b7fa8fc47b872ee3b803035d6",
+  "original_executable_unchanged": true
+}

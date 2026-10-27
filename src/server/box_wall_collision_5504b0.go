@@ -43,140 +43,165 @@ type boxWallCollisionHooks5504B0 struct {
 }
 
 func boxWallRound5504B0(value float32) int {
-	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
-		return math.MinInt32
-	}
-	return int(math.RoundToEven(float64(value)))
+	return int(netFXTruncateSignedDWORD419A70(value))
+}
+
+func boxWallGrid5504B0(value float32) int32 {
+	return int32(boxWallRound5504B0(experienceSpill32TowardZero(
+		objectForceMul53_52DF80(float64(value), float64(boxWallGridScale5504B0)))))
 }
 
 func boxWallQuadrant550CB0(point, wall types.Pointf) byte {
-	x := point.X - wall.X
-	y := point.Y - wall.Y
-	if x <= boxWallHalfStep5504B0 {
-		if y <= 0 {
+	x := experienceSpill32TowardZero(objectForceSub53_52DF80(float64(point.X), objectForceMemory32_52DF80(wall.X)))
+	y := objectForceSub53_52DF80(float64(point.Y), objectForceMemory32_52DF80(wall.Y))
+	// Original C0/ZF tests send unordered comparisons down the <= arms.
+	if !(x > boxWallHalfStep5504B0) {
+		if !(y > 0) {
 			return 1
 		}
 		return 8
 	}
-	if y <= 0 {
+	if !(y > 0) {
 		return 2
 	}
 	return 4
 }
 
-func boxWallCollisionSecond550760(obj *Object, current, previous *types.Pointf, bounds *boxWallBounds5504B0, line types.Pointf, length float32, addCollision func(*Object, types.Pointf)) bool {
-	low := max(bounds.minX, line.X)
-	high := min(bounds.maxX, line.X+length)
-	if low > line.X+length || high < line.X {
-		return false
-	}
-
-	delta := current.Y - line.Y
-	previousDelta := previous.Y - line.Y
-	if previousDelta*delta < 0 {
-		if previousDelta >= 0 {
-			current.Y = line.Y + 2
-		} else {
-			current.Y = line.Y - 2
-		}
-		obj.NewPos.X = (current.X - current.Y) * boxWallSqrtHalf5504B0
-		obj.NewPos.Y = (current.X + current.Y) * boxWallSqrtHalf5504B0
-		bounds.minY = current.Y - obj.Shape.Box.H*0.5
-		bounds.maxY = current.Y + obj.Shape.Box.H*0.5
-		delta = current.Y - line.Y
-	}
-	if bounds.minY > line.Y || bounds.maxY < line.Y {
-		return false
-	}
-
-	overlap := (high - low) / (bounds.maxX - bounds.minX)
-	velocity := (obj.VelVec.Y - obj.VelVec.X) * boxWallSqrtHalf5504B0
-	var penetration, spring float32
-	if delta >= 0 {
-		penetration = line.Y - bounds.minY
-		spring = boxWallSpring5504B0 * penetration
+// boxWallResponse550760 retains the wide spring/damping result until its
+// component stores. The first wall rotates it before both equal stores;
+// the second rotates the unspilled result separately for X and Y.
+func boxWallResponse550760(obj *Object, velocity, penetration, spring, overlap float32, first bool, addCollision func(*Object, types.Pointf)) {
+	mul, add, sub := objectForceMul53_52DF80, objectForceAdd53_52DF80, objectForceSub53_52DF80
+	spill := experienceSpill32TowardZero
+	k := float64(boxWallSqrtHalf5504B0)
+	force := mul(mul(monsterMoveForceSqrtChop53_50D50C(mul(mul(float64(obj.Mass), float64(boxWallSpring5504B0)), 4)), -float64(velocity)), .5)
+	force = mul(add(force, float64(spring)), float64(overlap))
+	var impulse types.Pointf
+	normal := types.Ptf(-boxWallSqrtHalf5504B0, boxWallSqrtHalf5504B0)
+	if first {
+		value := spill(mul(force, k))
+		impulse = types.Ptf(value, value)
+		normal.X = boxWallSqrtHalf5504B0
 	} else {
-		penetration = bounds.maxY - line.Y
-		spring = -boxWallSpring5504B0 * penetration
+		impulse = types.Ptf(spill(mul(force, -k)), spill(mul(force, k)))
 	}
-	force := float32((math.Sqrt(float64(obj.Mass*boxWallSpring5504B0*4))*float64(-velocity)*0.5 + float64(spring)) * float64(overlap))
-	impulse := types.Ptf(-force*boxWallSqrtHalf5504B0, force*boxWallSqrtHalf5504B0)
-
-	var normal types.Pointf
-	if penetration >= 0 {
-		normal = types.Ptf(-boxWallSqrtHalf5504B0, boxWallSqrtHalf5504B0)
-	} else {
-		normal = types.Ptf(boxWallSqrtHalf5504B0, -boxWallSqrtHalf5504B0)
+	if !(penetration >= 0) {
+		normal.X, normal.Y = -normal.X, -normal.Y
 	}
-	velocityNormal := normal.X*obj.VelVec.X + normal.Y*obj.VelVec.Y
-	if velocityNormal < 0 {
-		obj.VelVec.X -= velocityNormal * normal.X
-		obj.VelVec.Y -= velocityNormal * normal.Y
+	vn := add(mul(float64(normal.X), float64(obj.VelVec.X)), mul(float64(normal.Y), float64(obj.VelVec.Y)))
+	if !(vn >= 0) {
+		obj.VelVec.X = spill(sub(float64(obj.VelVec.X), mul(vn, float64(normal.X))))
+		obj.VelVec.Y = spill(sub(float64(obj.VelVec.Y), mul(vn, float64(normal.Y))))
 	}
 	tangent := types.Ptf(-normal.Y, normal.X)
-	velocityTangent := tangent.X*obj.VelVec.X + tangent.Y*obj.VelVec.Y
-	impulse.X -= obj.Mass * velocityTangent * tangent.X * 0.7
-	impulse.Y -= obj.Mass * velocityTangent * tangent.Y * 0.7
+	vt := spill(add(mul(float64(tangent.X), float64(obj.VelVec.X)), mul(float64(tangent.Y), float64(obj.VelVec.Y))))
+	frictionX := mul(mul(mul(float64(obj.Mass), float64(vt)), float64(tangent.X)), float64(float32(.7)))
+	impulse.X = spill(sub(float64(impulse.X), frictionX))
+	frictionY := mul(mul(mul(float64(obj.Mass), float64(vt)), float64(tangent.Y)), float64(float32(.7)))
+	impulse.Y = spill(sub(float64(impulse.Y), frictionY))
 	obj.Sub548600(impulse)
 	addCollision(obj, impulse)
+}
+
+func boxWallCollisionSecond550760(obj *Object, current, previous *types.Pointf, bounds *boxWallBounds5504B0, line types.Pointf, length float32, addCollision func(*Object, types.Pointf)) bool {
+	add, sub, mul, div := objectForceAdd53_52DF80, objectForceSub53_52DF80, objectForceMul53_52DF80, objectForceDiv53_52DF80
+	spill, memory := experienceSpill32TowardZero, objectForceMemory32_52DF80
+	end := add(float64(length), memory(line.X))
+	low := line.X
+	if bounds.minX > line.X {
+		low = bounds.minX
+	}
+	high := spill(end)
+	if float64(bounds.maxX) < end || math.IsNaN(float64(bounds.maxX)) || math.IsNaN(end) {
+		high = bounds.maxX
+	}
+	if float64(low) > end || !(high >= line.X) {
+		return false
+	}
+
+	delta := sub(float64(current.Y), memory(line.Y))
+	previousWide := sub(float64(previous.Y), memory(line.Y))
+	previousDelta := spill(previousWide)
+	if !(mul(previousWide, delta) >= 0) {
+		if previousDelta >= 0 {
+			current.Y = spill(add(float64(line.Y), 2))
+		} else {
+			current.Y = spill(sub(float64(line.Y), 2))
+		}
+		obj.NewPos.X = spill(mul(sub(float64(current.X), memory(current.Y)), float64(boxWallSqrtHalf5504B0)))
+		obj.NewPos.Y = spill(mul(add(float64(current.X), memory(current.Y)), float64(boxWallSqrtHalf5504B0)))
+		bounds.minY = spill(sub(float64(current.Y), mul(float64(obj.Shape.Box.H), .5)))
+		bounds.maxY = spill(add(mul(float64(obj.Shape.Box.H), .5), memory(current.Y)))
+		delta = sub(float64(current.Y), memory(line.Y))
+	}
+	if bounds.minY > line.Y || !(bounds.maxY >= line.Y) {
+		return false
+	}
+
+	overlap := spill(div(sub(float64(high), memory(low)), sub(float64(bounds.maxX), memory(bounds.minX))))
+	velocity := spill(mul(sub(float64(obj.VelVec.Y), memory(obj.VelVec.X)), float64(boxWallSqrtHalf5504B0)))
+	var penetration float32
+	if delta >= 0 {
+		penetration = spill(sub(float64(line.Y), memory(bounds.minY)))
+	} else {
+		penetration = spill(sub(float64(bounds.maxY), memory(line.Y)))
+	}
+	spring := mul(float64(boxWallSpring5504B0), float64(penetration))
+	if !(delta >= 0) {
+		spring = -spring
+	}
+	boxWallResponse550760(obj, velocity, penetration, spill(spring), overlap, false, addCollision)
 	return true
 }
 
 func boxWallCollisionFirst550A10(obj *Object, current, previous *types.Pointf, bounds *boxWallBounds5504B0, line types.Pointf, length float32, addCollision func(*Object, types.Pointf)) bool {
-	low := max(line.Y, bounds.minY)
-	high := min(bounds.maxY, line.Y+length)
-	if low > line.Y+length || high < line.Y {
+	add, sub, mul, div := objectForceAdd53_52DF80, objectForceSub53_52DF80, objectForceMul53_52DF80, objectForceDiv53_52DF80
+	spill, memory := experienceSpill32TowardZero, objectForceMemory32_52DF80
+	end := add(float64(length), memory(line.Y))
+	low := line.Y
+	if line.Y < bounds.minY || math.IsNaN(float64(line.Y)) || math.IsNaN(float64(bounds.minY)) {
+		low = bounds.minY
+	}
+	high := spill(end)
+	if float64(bounds.maxY) < end || math.IsNaN(float64(bounds.maxY)) || math.IsNaN(end) {
+		high = bounds.maxY
+	}
+	if float64(low) > end || !(high >= line.Y) {
 		return false
 	}
 
-	delta := current.X - line.X
-	previousDelta := previous.X - line.X
-	if previousDelta*delta < 0 {
+	delta := sub(float64(current.X), memory(line.X))
+	previousWide := sub(float64(previous.X), memory(line.X))
+	previousDelta := spill(previousWide)
+	if !(mul(previousWide, delta) >= 0) {
 		if previousDelta >= 0 {
-			current.X = line.X + 2
+			current.X = spill(add(float64(line.X), 2))
 		} else {
-			current.X = line.X - 2
+			current.X = spill(sub(float64(line.X), 2))
 		}
-		obj.NewPos.X = (current.X - current.Y) * boxWallSqrtHalf5504B0
-		obj.NewPos.Y = (current.Y + current.X) * boxWallSqrtHalf5504B0
-		bounds.minX = current.X - obj.Shape.Box.W*0.5
-		bounds.maxX = current.X + obj.Shape.Box.W*0.5
-		delta = current.X - line.X
+		obj.NewPos.X = spill(mul(sub(float64(current.X), memory(current.Y)), float64(boxWallSqrtHalf5504B0)))
+		obj.NewPos.Y = spill(mul(add(float64(current.Y), memory(current.X)), float64(boxWallSqrtHalf5504B0)))
+		bounds.minX = spill(sub(float64(current.X), mul(float64(obj.Shape.Box.W), .5)))
+		bounds.maxX = spill(add(mul(float64(obj.Shape.Box.W), .5), memory(current.X)))
+		delta = sub(float64(current.X), memory(line.X))
 	}
-	if bounds.minX > line.X || bounds.maxX < line.X {
+	if bounds.minX > line.X || !(bounds.maxX >= line.X) {
 		return false
 	}
 
-	overlap := (high - low) / (bounds.maxY - bounds.minY)
-	velocity := (obj.VelVec.X + obj.VelVec.Y) * boxWallSqrtHalf5504B0
-	var penetration, spring float32
+	overlap := spill(div(sub(float64(high), memory(low)), sub(float64(bounds.maxY), memory(bounds.minY))))
+	velocity := spill(mul(add(float64(obj.VelVec.X), memory(obj.VelVec.Y)), float64(boxWallSqrtHalf5504B0)))
+	var penetration float32
 	if delta >= 0 {
-		penetration = line.X - bounds.minX
-		spring = boxWallSpring5504B0 * penetration
+		penetration = spill(sub(float64(line.X), memory(bounds.minX)))
 	} else {
-		penetration = bounds.maxX - line.X
-		spring = -boxWallSpring5504B0 * penetration
+		penetration = spill(sub(float64(bounds.maxX), memory(line.X)))
 	}
-	force := float32((math.Sqrt(float64(obj.Mass*boxWallSpring5504B0*4))*float64(-velocity)*0.5 + float64(spring)) * float64(overlap) * float64(boxWallSqrtHalf5504B0))
-	impulse := types.Ptf(force, force)
-
-	var normal types.Pointf
-	if penetration >= 0 {
-		normal = types.Ptf(boxWallSqrtHalf5504B0, boxWallSqrtHalf5504B0)
-	} else {
-		normal = types.Ptf(-boxWallSqrtHalf5504B0, -boxWallSqrtHalf5504B0)
+	spring := mul(float64(boxWallSpring5504B0), float64(penetration))
+	if !(delta >= 0) {
+		spring = -spring
 	}
-	velocityNormal := normal.X*obj.VelVec.X + normal.Y*obj.VelVec.Y
-	if velocityNormal < 0 {
-		obj.VelVec.X -= velocityNormal * normal.X
-		obj.VelVec.Y -= velocityNormal * normal.Y
-	}
-	tangent := types.Ptf(-normal.Y, normal.X)
-	velocityTangent := tangent.X*obj.VelVec.X + tangent.Y*obj.VelVec.Y
-	impulse.X -= obj.Mass * velocityTangent * tangent.X * 0.7
-	impulse.Y -= obj.Mass * velocityTangent * tangent.Y * 0.7
-	obj.Sub548600(impulse)
-	addCollision(obj, impulse)
+	boxWallResponse550760(obj, velocity, penetration, spill(spring), overlap, true, addCollision)
 	return true
 }
 
@@ -185,39 +210,45 @@ func boxWallCollisionAt550580(grid image.Point, obj *Object, hooks boxWallCollis
 	if wallType == -1 {
 		return false
 	}
-	def := hooks.wallDef(byte(wallType))
-	wallX := float32(grid.X) * boxWallGridStep5504B0
-	wallY := float32(grid.Y) * boxWallGridStep5504B0
+	add, sub, mul := objectForceAdd53_52DF80, objectForceSub53_52DF80, objectForceMul53_52DF80
+	spill, memory := experienceSpill32TowardZero, objectForceMemory32_52DF80
+	k := float64(boxWallSqrtHalf5504B0)
+	// The original multiplies signed DWORD grid coordinates by 23 before FILD.
+	wallX := float64(int32(grid.X) * int32(boxWallGridStep5504B0))
+	wallY := float64(int32(grid.Y) * int32(boxWallGridStep5504B0))
 	current := types.Ptf(
-		(obj.NewPos.Y+obj.NewPos.X)*boxWallSqrtHalf5504B0,
-		(obj.NewPos.Y-obj.NewPos.X)*boxWallSqrtHalf5504B0,
+		spill(mul(add(float64(obj.NewPos.Y), memory(obj.NewPos.X)), k)),
+		spill(mul(sub(float64(obj.NewPos.Y), memory(obj.NewPos.X)), k)),
 	)
 	previous := types.Ptf(
-		(obj.PrevPos.Y+obj.PrevPos.X)*boxWallSqrtHalf5504B0,
-		(obj.PrevPos.Y-obj.PrevPos.X)*boxWallSqrtHalf5504B0,
+		spill(mul(add(float64(obj.PrevPos.Y), memory(obj.PrevPos.X)), k)),
+		spill(mul(sub(float64(obj.PrevPos.Y), memory(obj.PrevPos.X)), k)),
 	)
-	halfW := obj.Shape.Box.W * 0.5
-	halfH := obj.Shape.Box.H * 0.5
+	halfW := mul(float64(obj.Shape.Box.W), .5)
+	halfH := spill(mul(float64(obj.Shape.Box.H), .5))
 	bounds := boxWallBounds5504B0{
-		minX: current.X - halfW,
-		minY: current.Y - halfH,
-		maxX: current.X + halfW,
-		maxY: current.Y + halfH,
+		minX: spill(sub(float64(current.X), halfW)),
+		minY: spill(sub(float64(current.Y), memory(halfH))),
+		maxX: spill(add(halfW, memory(current.X))),
+		maxY: spill(add(float64(halfH), memory(current.Y))),
 	}
-	wall := types.Ptf(
-		(wallY+wallX)*boxWallSqrtHalf5504B0,
-		(wallY-wallX)*boxWallSqrtHalf5504B0,
-	)
+	wall := types.Ptf(spill(mul(add(wallY, wallX), k)), spill(mul(sub(wallY, wallX), k)))
 	quadrant := boxWallQuadrant550CB0(current, wall)
 	collided := false
+	def := hooks.wallDef(byte(wallType))
 	if def.firstEnabled != 0 && quadrant&def.firstMask == 0 {
-		line := types.Ptf(wall.X+boxWallHalfStep5504B0, wall.Y-boxWallHalfStep5504B0+def.firstOffset)
+		line := types.Ptf(
+			spill(add(float64(wall.X), float64(boxWallHalfStep5504B0))),
+			spill(add(sub(float64(wall.Y), float64(boxWallHalfStep5504B0)), memory(def.firstOffset))),
+		)
 		if boxWallCollisionFirst550A10(obj, &current, &previous, &bounds, line, def.firstLength, hooks.addCollision) {
 			collided = true
 		}
 	}
+	// Collision services may update the live wall definition before side two.
+	def = hooks.wallDef(byte(wallType))
 	if def.secondEnabled != 0 && quadrant&def.secondMask == 0 {
-		line := types.Ptf(wall.X+def.secondOffset, wall.Y)
+		line := types.Ptf(spill(add(float64(wall.X), memory(def.secondOffset))), wall.Y)
 		if boxWallCollisionSecond550760(obj, &current, &previous, &bounds, line, def.secondLength, hooks.addCollision) {
 			collided = true
 		}
@@ -231,13 +262,13 @@ func boxWallCollision5504B0(obj *Object, hooks boxWallCollisionHooks5504B0) {
 	if obj == nil || obj.ObjClass&0x00400000 != 0 {
 		return
 	}
-	minX := boxWallRound5504B0(obj.CollideP1.X * boxWallGridScale5504B0)
-	minY := boxWallRound5504B0(obj.CollideP1.Y * boxWallGridScale5504B0)
-	maxX := boxWallRound5504B0(obj.CollideP2.X * boxWallGridScale5504B0)
-	maxY := boxWallRound5504B0(obj.CollideP2.Y * boxWallGridScale5504B0)
+	minX := boxWallGrid5504B0(obj.CollideP1.X)
+	minY := boxWallGrid5504B0(obj.CollideP1.Y)
+	maxX := boxWallGrid5504B0(obj.CollideP2.X)
+	maxY := boxWallGrid5504B0(obj.CollideP2.Y)
 	for y := minY; y <= maxY; y++ {
 		for x := minX; x <= maxX; x++ {
-			grid := image.Pt(x, y)
+			grid := image.Pt(int(x), int(y))
 			if boxWallCollisionAt550580(grid, obj, hooks) {
 				hooks.openSecret(grid, obj)
 			}

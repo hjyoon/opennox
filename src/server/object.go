@@ -1216,7 +1216,12 @@ func (obj *Object) LookAtObject(targ ns4.Positioner) {
 }
 
 func (obj *Object) Sub548600(dp types.Pointf) {
-	obj.Pos24 = obj.Pos24.Add(dp.Div(obj.Mass))
+	// Original 00548600 retains each division through its accumulation and
+	// only then stores binary32, using startup PC53/ToZero locally.
+	x := objectForceDiv53_52DF80(objectForceMemory32_52DF80(dp.X), float64(obj.Mass))
+	obj.Pos24.X = experienceSpill32TowardZero(objectForceAdd53_52DF80(x, objectForceMemory32_52DF80(obj.Pos24.X)))
+	y := objectForceDiv53_52DF80(objectForceMemory32_52DF80(dp.Y), float64(obj.Mass))
+	obj.Pos24.Y = experienceSpill32TowardZero(objectForceAdd53_52DF80(y, objectForceMemory32_52DF80(obj.Pos24.Y)))
 }
 
 func (obj *Object) Health() (cur, max int) {

@@ -91,6 +91,16 @@ multiplicities, and adds 274 passing events. Existing tests, frozen fixtures
 and campaign scripts retain their contents. Counts describe test events,
 not feature coverage or overall port completion.
 
+A single clean normal ARM64 product at `2de862e` builds in 12.682 seconds.
+It reuses the unchanged published recovery E2E and the exact previously earned
+combat Save. The recovery passes in 30.092 seconds with HP26/MP56, poison zero,
+the retained book, both original upper Urchins still dead, all three original
+resource pickups and an actual manual Save. Eighteen parameterless GET
+observations, unchanged source Save/assets/config/binary and the final save
+screen are qualified. This is a fresh recovery segment on the new product;
+the earlier combat is not replayed or claimed as a new two-stage sequence.
+Current Windows 386/AMD64 and normal Linux AMD64 native CI are running.
+
 ### Reusable upper-cave combat and recovery E2E
 
 The published two-stage Wizard2 replay retains its original upper Urchin

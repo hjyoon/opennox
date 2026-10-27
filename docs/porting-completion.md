@@ -112,6 +112,21 @@ after its checksum correction. Focused highres `cgocheck2` plus
 `checkptr=2` passes all 707 selected events in 98.255 seconds. Their identities
 and multiplicities match the same selection from normal results.
 
+The clean normal ARM64 GUI product at `43d5b45` builds in 12.178 seconds:
+SHA-256 `84710deea2fd2d644bf298547850f52bbe87dacb8d2dc800eaa65b3d8c29c985`,
+65,367,234 bytes, Go 1.26.9 and `vcs.modified=false`. The unchanged input-only
+recovery suite passes in 30.020 seconds: living HP26/26, MP56/88, poison0,
+retained book, three original resource pickups and a manual Save. All 18
+parameterless GET observations and source Save/data/config/binary hashes
+qualify. The final frame visibly shows the living Wizard and save-complete
+notification. This covers Load, movement, pickup and Save; its two retained
+Urchin deaths originate from the separately preserved earned combat product.
+
+Native source qualification for `43d5b45` is running separately: Windows
+386/AMD64 run `40598133164` and Linux AMD64 server run `40598152790`.
+Existing runs are retained while in progress. The preceding `fa7ec05` products
+and all three native jobs are fully qualified in their preserved record.
+
 ### Native black-powder barrel and burn entries
 
 Both remaining C update entries forward native object pointers to Go while

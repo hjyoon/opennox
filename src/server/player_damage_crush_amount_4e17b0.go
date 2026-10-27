@@ -18,7 +18,7 @@ func playerDamagePhysicalCarry4E17B0(amount, carry float32) (int32, float32) {
 	return effective, remaining
 }
 
-func playerDamageImpactAmount4E17B0(armor float32, damage int32) float32 {
+func playerDamageFullArmorAmount4E17B0(armor float32, damage int32) float32 {
 	factor := experienceAdd53TowardZero(1, -float64(armor))
 	return experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
 }

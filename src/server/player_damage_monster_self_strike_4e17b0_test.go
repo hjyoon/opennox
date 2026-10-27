@@ -23,23 +23,12 @@ func TestPlayerDamageMonsterSelfStrikeArmor4E17B0(t *testing.T) {
 						ud := v.UpdateDataPlayer()
 						ud.Field57, ud.Field21 = math.Float32bits(armor), math.Float32bits(0.125)
 						ud.Field76, ud.Field75 = 99, 77
-						absorption := float64(armor)
-						if typ == object.DamageCrush {
-							absorption *= 0.5
-						}
-						accumulated := float32((1-absorption)*float64(raw)) + 0.125
-						unscaled := int32(math.RoundToEven(float64(accumulated)))
-						amount := unscaled
-						if raw > 0 && amount == 0 {
-							amount = 1
-						}
+						scale := float32(1)
 						if mode == "quest" {
-							before := amount
-							amount = int32(math.RoundToEven(float64(float32(float64(amount) * 0.5))))
-							if before > 0 && amount < 1 {
-								amount = 1
-							}
+							scale = .5
 						}
+						original := selfStrikeOriginal4E17B0(t, false, true, typ, raw, armor, .125, mode == "quest", scale)
+						amount := original.Damage
 						r := damageMeleeRuntimeFixture4E17B0(t)
 						var events []string
 						r.BlockSourceExcluded = func(attack *Object) bool {
@@ -51,7 +40,7 @@ func TestPlayerDamageMonsterSelfStrikeArmor4E17B0(t *testing.T) {
 						}
 						r.BlockDirection = func(*Object, types.Pointf) bool { events = append(events, "facing"); return false }
 						r.GodMode = func() bool {
-							if ud.Field76 != 2 || ud.Field75 != uint32(typ) || ud.Field21 != math.Float32bits(accumulated-float32(unscaled)) {
+							if ud.Field76 != 2 || ud.Field75 != uint32(typ) || ud.Field21 != original.Carry {
 								t.Fatal("God before cached marker/live carry")
 							}
 							events = append(events, "god")
@@ -111,10 +100,8 @@ func TestPlayerDamageMonsterSelfStrikeCachedPrefix4E17B0(t *testing.T) {
 				}
 				return false
 			}
-			amount, carry := int32(4), float32(0.25)
-			if typ == object.DamageCrush {
-				amount, carry = 5, -0.125
-			}
+			original := selfStrikeOriginal4E17B0(t, false, true, typ, 5, .25, .5, false, 1)
+			amount, carry := original.Damage, math.Float32frombits(original.Carry)
 			r.DefaultDamage = func(_, source, weapon *Object, damage int32, dt object.DamageType) bool {
 				if source != a || weapon != a || damage != amount || dt != typ || cached.Field76 != 2 || cached.Field75 != uint32(typ) || live.Field21 != math.Float32bits(carry) {
 					t.Fatal("cached armor/marker vs live carry")
@@ -157,13 +144,11 @@ func TestPlayerDamageMonsterSelfStrikeDrainRaw4E17B0(t *testing.T) {
 				r.QuestDamageScale = func() float32 { return 0.5 }
 				called := false
 				r.DefaultDamage = func(target, source, weapon *Object, d int32, typ object.DamageType) bool {
-					want := raw
+					scale := float32(1)
 					if mode == "quest" {
-						want = int32(math.RoundToEven(float64(float32(float64(raw) * 0.5))))
-						if raw > 0 && want < 1 {
-							want = 1
-						}
+						scale = .5
 					}
+					want := selfStrikeOriginal4E17B0(t, false, true, object.DamageDrain, raw, 1, .125, mode == "quest", scale).Damage
 					if target != v || source != a || weapon != a || typ != object.DamageDrain || d != want {
 						t.Fatalf("DRAIN default damage = %d, want %d", d, want)
 					}

@@ -334,8 +334,40 @@ independently checked. The preceding attempt missed one required Urchin death;
 that failure is preserved, and repeatability of this combat route remains open.
 The Python runner now includes failed objective IDs and actual/required resource
 values in case and sequence summaries. All 44 runner tests pass without a Go
-rebuild. Native Windows and Linux results for this production revision remain
-pending at this checkpoint.
+rebuild. Subsequent native Windows AMD64/386 and Linux AMD64 high-resolution
+server runs pass for this production revision. The Linux artifact independently
+retains 229,918 passes, seven skips and every one of its 56 expected packages.
+
+### Unit self-weapon strikes and monster BITE startup precision
+
+Ordinary monster self-weapon BLADE, CRUSH, IMPALE, BITE and CLAW now preserve
+PC53 arithmetic, binary32 storage and signed conversion toward zero for armor,
+live fractional carry and late Quest scaling. Initialized player self-weapon
+strikes use the same original arithmetic. Raw DRAIN retains its armor/carry
+bypass and now truncates the Quest product at the original stores. Monster
+BITE also retains signed and zero callback inputs and its positive-only minimum.
+Cached markers, live update reloads, defenses, armor-before-GodMode ordering,
+late item effects and attribution keep their existing checks.
+
+The unchanged original executable supplies 660 source/type/target/numeric
+contexts at startup and nearest control settings. Before the port, 273 leaf
+comparisons fail; all 660 now pass. Another 764 original compatibility contexts
+retain the exact inputs of existing ordered, cached/live, signed, GodMode and
+native HP tests, including a seven-hit Spider sequence. Its original startup
+damage sequence is 2,3,3,3,3,3,3 instead of the previous nearest-mode expectation.
+All original code bytes and nonoutput heap bytes remain unchanged. Armor wear
+and DefaultDamage are declared observation boundaries in the emulation.
+
+Separate existing native fixtures execute 99 C-dispatch contexts and 135 calls,
+including registered NPC armor wear/owner-HP transport, player strikes, observer
+BITE and player-source GodMode/ordinary-monster controls. They exercise actual
+damage and HP callbacks; their numeric expectations use independent original
+observations. Historical frozen inputs remain unchanged. Complete macOS ARM64
+root/server/legacy packages pass 233,155 events with sixteen skips; the new
+original comparison adds 661 passing events, including its parent. The affected
+root/server/legacy tests also pass 1,716 events with highres, cgocheck2 and
+checkptr=2 together. Remaining
+armed/PIERCE arithmetic, campaign repeatability and final feature audits stay open.
 
 ### Terminal and scripted Magic Missile EXPLOSION damage
 

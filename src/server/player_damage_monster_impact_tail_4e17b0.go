@@ -139,7 +139,7 @@ func playerDamageMonsterImpactTail4E17B0(
 	} else {
 		return playerDamageUnsupported4E17B0(r, "unsupported self-weapon IMPACT live carry record", target, source, weapon, damage, typ)
 	}
-	scaled := playerDamageImpactAmount4E17B0(armorValue, damage)
+	scaled := playerDamageFullArmorAmount4E17B0(armorValue, damage)
 	effective, remainingCarry := playerDamagePhysicalCarry4E17B0(scaled, math.Float32frombits(*carry))
 	*carry = math.Float32bits(remainingCarry)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, r)

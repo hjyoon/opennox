@@ -124,21 +124,10 @@ func TestPlayerDamageNPCMonsterSelfStrikeNative4E17B0HPAndDurability(t *testing.
 				}
 				wantHP, wantArmor, carry := uint16(60), uint16(100), float32(0)
 				for hit := 0; hit < 3; hit++ {
-					x := float64(absorption)
-					if typ == object.DamageCrush {
-						x *= 0.5
-					}
-					accumulated := float32((1-x)*3) + carry
-					rounded := int32(math.RoundToEven(float64(accumulated)))
-					effective := rounded
-					carry = accumulated - float32(rounded)
-					if typ == object.DamageDrain {
-						effective, carry = 3, 0
-					} else if absorption != 0 {
-						wantArmor -= uint16(3 - rounded)
-					}
-					if effective == 0 {
-						effective = 1
+					effective, carryBits, absorbed := nativeSelfStrikeOriginal4E17B0(t, false, false, typ, 3, absorption, carry)
+					carry = math.Float32frombits(carryBits)
+					if typ != object.DamageDrain && absorption != 0 {
+						wantArmor -= uint16(absorbed)
 					}
 					wantHP -= uint16(effective)
 					if !target.CallDamage(source, source, 3, typ) {

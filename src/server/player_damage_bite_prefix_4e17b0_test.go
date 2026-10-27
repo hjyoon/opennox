@@ -125,8 +125,8 @@ func TestPlayerDamageBitePrefixOrder4E17B0(t *testing.T) {
 							}
 							events = append(events, "buff")
 						}
-						accumulated := float32(0.75*float64(raw)) + 0.5
-						effective := playerDamageRound4E17B0(accumulated)
+						original := selfStrikeOriginal4E17B0(t, false, true, object.DamageBite, raw, .25, .5, false, 1)
+						effective := original.Damage
 						r.DamageClear = func(obj *Object, damage int32) {
 							if obj != target || damage != effective {
 								t.Fatalf("HP argument=%d, want %d", damage, effective)
@@ -142,7 +142,7 @@ func TestPlayerDamageBitePrefixOrder4E17B0(t *testing.T) {
 						if facing != "excluded" {
 							want = append(want, "direction")
 						}
-						marker, markerType, carry := uint32(2), uint32(object.DamageBite), accumulated-float32(effective)
+						marker, markerType, carry := uint32(2), uint32(object.DamageBite), math.Float32frombits(original.Carry)
 						if blocked {
 							want = append(want, "block-admission", "block-audio", "block-percent", "block-wear")
 							marker, markerType, carry = 0, 77, 0.5
@@ -423,6 +423,21 @@ func TestPlayerDamageBitePrefixShapeBoundary4E17B0(t *testing.T) {
 					source.ObjClass = object.ClassPlayer
 				case "nil-source-update":
 					source.UpdateData = nil
+				}
+				if shape == "zero" || shape == "negative" {
+					original := selfStrikeOriginal4E17B0(t, false, true, object.DamageBite, raw, .25, .125, false, 1)
+					calls := 0
+					r.DamageClear = func(v *Object, amount int32) {
+						if v != target || amount != original.Damage {
+							t.Fatal("signed BITE original HP argument")
+						}
+						calls++
+					}
+					h, result := PlayerDamageNative4E17B0(target, source, weapon, raw, object.DamageBite, r)
+					if !h || !result || calls != 1 || cached.Field21 != original.Carry || cached.Field76 != 2 || cached.Field75 != uint32(object.DamageBite) || target.HealthData.Cur != 200 {
+						t.Fatal("original signed/zero BITE was not preserved")
+					}
+					return
 				}
 				beforeObj, beforeUD, beforePlayer, beforeHP := *target, *cached, *cached.Player, *target.HealthData
 				reason := ""

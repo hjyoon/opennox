@@ -37,26 +37,12 @@ func TestPlayerDamageNPCMonsterSelfStrikeArmor4E17B0(t *testing.T) {
 							return false
 						}
 						r.BlockDirection = func(*Object, types.Pointf) bool { events = append(events, "facing"); return false }
-						x := float64(absorption)
-						if typ == object.DamageCrush {
-							x *= 0.5
-						}
-						accumulated := float32((1-x)*float64(raw)) + 0.125
-						rounded := int32(math.RoundToEven(float64(accumulated)))
-						effective, carry := rounded, accumulated-float32(rounded)
-						if typ == object.DamageDrain {
-							effective, carry = raw, 0.125
-						}
-						if raw > 0 && effective == 0 {
-							effective = 1
-						}
+						scale := float32(1)
 						if mode == "quest" {
-							before := effective
-							effective = int32(math.RoundToEven(float64(float32(float64(effective) * 0.5))))
-							if before > 0 && effective < 1 {
-								effective = 1
-							}
+							scale = .5
 						}
+						original := selfStrikeOriginal4E17B0(t, false, false, typ, raw, absorption, .125, mode == "quest", scale)
+						effective, carry := original.Damage, math.Float32frombits(original.Carry)
 						r.GodMode = func() bool {
 							if ud.Field547 != 2 || ud.Field546 != uint32(typ) || ud.Field1 != math.Float32bits(carry) {
 								t.Fatal("NPC carry/marker precede the player-only GodMode gate")
@@ -104,16 +90,8 @@ func TestPlayerDamageNPCMonsterSelfStrikeCachedPrefix4E17B0(t *testing.T) {
 				pos := a.PrevPos
 				exclusions, directions, wear, armorLookups := 0, 0, 0, 0
 				r.ItemArmorValue = func(*Object) float32 { armorLookups++; return 0.875 }
-				x := 0.25
-				if typ == object.DamageCrush {
-					x *= 0.5
-				}
-				accumulated := float32((1-x)*5) + 0.5
-				effective := int32(math.RoundToEven(float64(accumulated)))
-				carry := accumulated - float32(effective)
-				if typ == object.DamageDrain {
-					effective, carry = 5, 0.5
-				}
+				original := selfStrikeOriginal4E17B0(t, false, false, typ, 5, .25, .5, false, 1)
+				effective, carry := original.Damage, math.Float32frombits(original.Carry)
 				r.BlockSourceExcluded = func(*Object) bool {
 					if cached.Field547 != 0 || cached.Field546 != 77 {
 						t.Fatal("self-weapon must not be attributed as a separate projectile")
@@ -245,14 +223,7 @@ func TestPlayerDamageNPCMonsterSelfStrikeActualHP4E17B0(t *testing.T) {
 				v, a := monsterImpactTarget4E17B0(t, "NPC"), monsterImpactTarget4E17B0(t, "monster")
 				v.UpdateDataMonster().Field518 = math.Float32bits(absorption)
 				r := damageMeleeRuntimeFixture4E17B0(t)
-				x := float64(absorption)
-				if typ == object.DamageCrush {
-					x *= 0.5
-				}
-				effective := int32(math.RoundToEven(float64(float32((1 - x) * 10))))
-				if typ == object.DamageDrain {
-					effective = 10
-				}
+				effective := selfStrikeOriginal4E17B0(t, false, false, typ, 10, absorption, 0, false, 1).Damage
 				if h, result := PlayerDamageNative4E17B0(v, a, a, 10, typ, r); !h || !result {
 					t.Fatal("NPC actual HP path rejected")
 				}

@@ -410,7 +410,8 @@ func TestPlayerDamageNative4E17B0SpiderBiteSequence(t *testing.T) {
 			t.Fatalf("hit %d = handled:%t result:%t", i, handled, result)
 		}
 	}
-	want := []int32{3, 3, 3, 3, 3, 2, 3}
+	// Seven unchanged-original startup executions retain the exact carry chain.
+	want := []int32{2, 3, 3, 3, 3, 3, 3}
 	if len(damages) != len(want) {
 		t.Fatalf("damages = %v, want %v", damages, want)
 	}
@@ -787,7 +788,8 @@ func TestPlayerDamageNative4E17B0ReflectShieldDoesNotBlockBite(t *testing.T) {
 	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
 		t.Fatalf("Reflect Shield BITE = handled:%t result:%t", handled, result)
 	}
-	if !reflect.DeepEqual(damages, []int32{3}) || target.HealthData.Cur != 17 {
+	wantDamage := selfStrikeOriginal4E17B0(t, false, true, object.DamageBite, 3, .03, 0, false, 1).Damage
+	if !reflect.DeepEqual(damages, []int32{wantDamage}) || target.HealthData.Cur != uint16(20-wantDamage) {
 		t.Fatalf("Reflect Shield BITE damage = %v health:%d", damages, target.HealthData.Cur)
 	}
 }
@@ -826,14 +828,15 @@ func TestPlayerDamageNative4E17B0SpiderBiteQuestDamageScale(t *testing.T) {
 	if handled, result := PlayerDamageNative4E17B0(target, source, source, 5, object.DamageBite, runtime); !handled || !result {
 		t.Fatalf("quest bite = handled:%t result:%t", handled, result)
 	}
-	if gotDamage != 2 {
-		t.Fatalf("quest bite damage = %d, want 2", gotDamage)
+	original := selfStrikeOriginal4E17B0(t, false, true, object.DamageBite, 5, .2, 0, true, .5)
+	if gotDamage != original.Damage {
+		t.Fatalf("quest bite damage = %d, want %d", gotDamage, original.Damage)
 	}
 	wantEvents := []string{"quest-scale", "buff-off", "damage-sound", "damage"}
 	if !reflect.DeepEqual(events, wantEvents) {
 		t.Fatalf("quest bite events = %v, want %v", events, wantEvents)
 	}
-	if target.UpdateDataPlayer().Field21 != 0 || target.Pos132 != source.PrevPos ||
+	if target.UpdateDataPlayer().Field21 != original.Carry || target.Pos132 != source.PrevPos ||
 		target.Obj130 != source || target.Field131 != uint32(object.DamageBite) || target.Frame134 != 700 {
 		t.Fatalf("quest bite state = carry:%#x pos:%v source:%p type:%d frame:%d",
 			target.UpdateDataPlayer().Field21, target.Pos132, target.Obj130, target.Field131, target.Frame134)
@@ -1139,7 +1142,8 @@ func TestPlayerDamageNative4E17B0ShieldStanceNeedsFrontHit(t *testing.T) {
 			if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
 				t.Fatalf("unblocked bite = %t/%t", handled, result)
 			}
-			if !reflect.DeepEqual(damages, []int32{3}) {
+			wantDamage := selfStrikeOriginal4E17B0(t, false, true, object.DamageBite, 3, .03, 0, false, 1).Damage
+			if !reflect.DeepEqual(damages, []int32{wantDamage}) {
 				t.Fatalf("unblocked bite damages = %v", damages)
 			}
 			if directions != 1 || update.State != test.state || update.Player.ArmorEquip != 0x1000000 || update.Player.WeaponEquip != test.weapon || update.Field76 != 2 || update.Field75 != uint32(object.DamageBite) {
@@ -1168,7 +1172,8 @@ func TestPlayerDamageNative4E17B0ShieldExcludesFistType(t *testing.T) {
 	if handled, result := PlayerDamageNative4E17B0(target, source, source, 3, object.DamageBite, runtime); !handled || !result {
 		t.Fatalf("excluded source bite = %t/%t", handled, result)
 	}
-	if !reflect.DeepEqual(damages, []int32{3}) {
+	wantDamage := selfStrikeOriginal4E17B0(t, false, true, object.DamageBite, 3, .03, 0, false, 1).Damage
+	if !reflect.DeepEqual(damages, []int32{wantDamage}) {
 		t.Fatalf("excluded source damages = %v", damages)
 	}
 }
@@ -1304,8 +1309,9 @@ func TestPlayerDamageNative4E17B0AppliesLateDefendInInventoryOrder(t *testing.T)
 	if !reflect.DeepEqual(canCalls, []*ModifierEff{first, second, first, second}) {
 		t.Fatalf("admission then live callback checks = %v, want [%p %p %p %p]", canCalls, first, second, first, second)
 	}
-	if gotDamage != 14 {
-		t.Fatalf("late-defend damage = %d, want 14", gotDamage)
+	wantDamage := (selfStrikeOriginal4E17B0(t, false, true, object.DamageBite, 3, .03, 0, false, 1).Damage + 4) * 2
+	if gotDamage != wantDamage {
+		t.Fatalf("late-defend damage = %d, want %d", gotDamage, wantDamage)
 	}
 	wantEvents := []string{"buff-off", "first-defend", "second-defend", "damage-sound", "damage"}
 	if !reflect.DeepEqual(events, wantEvents) {

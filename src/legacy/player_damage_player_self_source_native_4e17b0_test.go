@@ -72,9 +72,10 @@ func TestPlayerDamagePlayerSelfSourceNativeDamage4E17B0(t *testing.T) {
 							u.Field518, u.Field1, u.Field547, u.Field546 = math.Float32bits(.5), math.Float32bits(.25), 99, 77
 							carry, marker, kindField = &u.Field1, &u.Field547, &u.Field546
 						}
-						wantHP, wantCarry := uint16(195), float32(-.25)
-						if typ == object.DamageDrain || kind == "ordinary-monster" {
-							wantHP, wantCarry = 191, .25
+						wantHP, wantCarry := uint16(191), float32(.25)
+						if kind != "ordinary-monster" {
+							damage, carryBits, _ := nativeSelfStrikeOriginal4E17B0(t, true, kind == "player", typ, 9, .5, .25)
+							wantHP, wantCarry = uint16(200-damage), math.Float32frombits(carryBits)
 						}
 						blocked := god && kind == "player"
 						if blocked {

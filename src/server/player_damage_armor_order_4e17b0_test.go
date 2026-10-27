@@ -47,6 +47,8 @@ func TestPlayerDamageNative4E17B0OrderedArmorCallers(t *testing.T) {
 				source, weapon, marker, markerType, residual, portion = nil, nil, 0, 77, 0.25, 1.5
 			case object.DamageBite:
 				weapon, marker, markerType = source, 0, 77
+				original := selfStrikeOriginal4E17B0(t, false, true, tc.typ, 3, .5, .25, false, 1)
+				residual, portion = math.Float32frombits(original.Carry), float32(original.Armor)*.5
 			case object.DamageCrush:
 				weapon, marker, markerType, residual, portion = source, 0, 77, 0.5, 0.5
 			}

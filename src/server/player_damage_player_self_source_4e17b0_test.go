@@ -89,12 +89,10 @@ func TestPlayerDamagePlayerSelfSourceMatchesGAMEEXE4E17B0(t *testing.T) {
 			r.Unsupported = func(s string, _, _, _ *Object, _ int32, _ object.DamageType) { reason = s }
 			h, ok := PlayerDamageNative4E17B0(v, attacker, attacker, row.Raw, row.Type, r)
 			marker, kind, carry := damageMeleeMarker4E17B0(v)
-			wantWear := int32(0)
-			if len(row.Wear) != 0 {
-				wantWear = max(int32(row.Wear[0]), 0)
-			}
-			if !h || ok != (row.Return != 0) || calls != 1 || uint32(forward) != row.Forward || marker != row.Marker || kind != row.Kind || math.Float32bits(carry) != row.Carry || wear != wantWear || reason != "" {
-				t.Fatalf("handled/result=%t/%t forward=%d/%d calls=%d marker=%d/%d carry=%g/%g wear=%d/%d reason=%s", h, ok, forward, int32(row.Forward), calls, marker, kind, carry, math.Float32frombits(row.Carry), wear, wantWear, reason)
+			original := selfStrikeOriginal4E17B0(t, true, row.Player, row.Type, row.Raw, .5, .25, false, 1)
+			wantWear := max(original.Armor, 0)
+			if !h || ok != (row.Return != 0) || calls != 1 || forward != original.Damage || marker != row.Marker || kind != row.Kind || math.Float32bits(carry) != original.Carry || wear != wantWear || reason != "" {
+				t.Fatalf("handled/result=%t/%t forward=%d/%d calls=%d marker=%d/%d carry=%g/%g wear=%d/%d reason=%s", h, ok, forward, original.Damage, calls, marker, kind, carry, math.Float32frombits(original.Carry), wear, wantWear, reason)
 			}
 		})
 	}

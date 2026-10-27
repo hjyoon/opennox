@@ -43,14 +43,13 @@ func playerDamageNPCMonsterSelfStrikeTail4E17B0(
 	// Ghost DRAIN enters 004E1E83 raw, leaving carry/durability untouched.
 	if typ != object.DamageDrain {
 		carry := &target.UpdateDataMonster().Field1
-		absorption := float64(armorValue)
+		scaled := playerDamageFullArmorAmount4E17B0(armorValue, damage)
 		if typ == object.DamageCrush {
-			absorption *= 0.5
+			scaled = playerDamageCrushAmount4E17B0(armorValue, damage)
 		}
-		scaled := float32((1 - absorption) * float64(damage))
-		accumulated := scaled + math.Float32frombits(*carry)
-		effective = playerDamageRound4E17B0(accumulated)
-		*carry = math.Float32bits(accumulated - float32(effective))
+		var remainingCarry float32
+		effective, remainingCarry = playerDamagePhysicalCarry4E17B0(scaled, math.Float32frombits(*carry))
+		*carry = math.Float32bits(remainingCarry)
 		playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, r)
 	}
 	if target.Class().Has(object.ClassMonster) && !target.Class().Has(object.ClassPlayer) && *cached.marker == 0 {
@@ -67,7 +66,8 @@ func playerDamageNPCMonsterSelfStrikeTail4E17B0(
 			return playerDamageUnsupported4E17B0(r, "missing NPC self-strike live quest service", target, source, weapon, damage, typ)
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(r.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

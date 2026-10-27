@@ -1367,7 +1367,7 @@ func PlayerDamageNative4E17B0(
 	flameMissile := playerDamageMissileFlameShape4E17B0(source, weapon, typ)
 	explosionMissile := playerDamageMissileExplosionShape4E17B0(source, weapon, typ)
 	electricHit := playerDamageElectricShape4E17B0(source, weapon, typ)
-	bite := typ == object.DamageBite && damage > 0 && source != nil && weapon != nil && source == weapon &&
+	bite := typ == object.DamageBite && source != nil && weapon != nil && source == weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil
 	missileImpact := typ == object.DamageImpact && damage > 0 && source != nil && weapon != nil && source != weapon &&
 		source.ObjClass.Has(object.ClassMonster) && source.UpdateData != nil && weapon.ObjClass.Has(object.ClassMissile)
@@ -1583,12 +1583,16 @@ func PlayerDamageNative4E17B0(
 	effective := damage
 	remaining := damage
 	accumulated := math.Float32frombits(carryUpdate.Field21)
-	var chargeCarry float32
+	var physicalCarry float32
+	startupPhysical := playerCharge || bite
 	armorReduced := bite || missileImpact || playerCharge
 	if armorReduced {
 		if playerCharge {
 			armored := playerDamageCrushAmount4E17B0(armorValue, damage)
-			effective, chargeCarry = playerDamagePhysicalCarry4E17B0(armored, accumulated)
+			effective, physicalCarry = playerDamagePhysicalCarry4E17B0(armored, accumulated)
+		} else if bite {
+			armored := playerDamageFullArmorAmount4E17B0(armorValue, damage)
+			effective, physicalCarry = playerDamagePhysicalCarry4E17B0(armored, accumulated)
 		} else {
 			armored := float32((1.0 - float64(armorValue)) * float64(damage))
 			accumulated = armored + accumulated
@@ -1605,7 +1609,7 @@ func PlayerDamageNative4E17B0(
 	if damageItems && !playerDamageArmorReady4E17B0(target, runtime) {
 		return playerDamageUnsupported4E17B0(runtime, "armor durability callback", target, source, weapon, damage, typ)
 	}
-	if effective == 0 && (!playerCharge || damage > 0) {
+	if effective == 0 && (!startupPhysical || damage > 0) {
 		effective = 1
 	}
 	if runtime.DamageClear == nil || (!poison && !flame && runtime.BuffOff == nil) {
@@ -1645,8 +1649,8 @@ func PlayerDamageNative4E17B0(
 		}
 	}
 	if armorReduced {
-		if playerCharge {
-			carryUpdate.Field21 = math.Float32bits(chargeCarry)
+		if startupPhysical {
+			carryUpdate.Field21 = math.Float32bits(physicalCarry)
 		} else {
 			carryUpdate.Field21 = math.Float32bits(accumulated - float32(playerDamageRound4E17B0(accumulated)))
 		}
@@ -1671,7 +1675,7 @@ func PlayerDamageNative4E17B0(
 	}
 	if quest {
 		before := effective
-		if playerCharge {
+		if startupPhysical {
 			scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(runtime.QuestDamageScale()), float64(effective)))
 			effective = netFXTruncateSignedDWORD419A70(scaled)
 		} else {

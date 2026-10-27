@@ -38,17 +38,8 @@ func TestPlayerDamageMonsterSelfStrikeNative4E17B0(t *testing.T) {
 						t.Fatalf("pointer=%p, want >4 GiB", p)
 					}
 				}
-				x := float64(absorption)
-				if typ == object.DamageCrush {
-					x *= 0.5
-				}
-				accumulated := float32((1-x)*10) + 0.125
-				rounded := int32(math.RoundToEven(float64(accumulated)))
-				effective := max(rounded, 1)
-				carry := accumulated - float32(rounded)
-				if typ == object.DamageDrain {
-					effective, carry = 10, 0.125
-				}
+				effective, carryBits, _ := nativeSelfStrikeOriginal4E17B0(t, false, true, typ, 10, absorption, .125)
+				carry := math.Float32frombits(carryBits)
 				if !srv.IsEnemyTo(v, a) {
 					t.Fatal("native self-strike fixture is not hostile")
 				}

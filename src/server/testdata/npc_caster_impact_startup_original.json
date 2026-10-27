@@ -1,0 +1,1149 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_unchanged": true,
+  "original_startup_control_word": 3647,
+  "cases": 36,
+  "runs": 72,
+  "regions": [
+    {
+      "name": "PlayerDamage",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9"
+    },
+    {
+      "name": "carry",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86"
+    },
+    {
+      "name": "signed-DWORD",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "Quest-getter",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde"
+    },
+    {
+      "name": "attack-predicate",
+      "address": "0x4e1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73"
+    },
+    {
+      "name": "possession",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6"
+    },
+    {
+      "name": "parent-chain",
+      "address": "0x4ec580",
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    }
+  ],
+  "original_entries": {
+    "PlayerDamage": 72,
+    "carry": 72,
+    "signed-DWORD": 108,
+    "Quest-getter": 36
+  },
+  "services": {
+    "0x4ff350": 144,
+    "0x40a5c0": 144,
+    "0x4e3aa0": 6,
+    "0x4e6e50": 72,
+    "0x4e2180": 72,
+    "0x4e0b30": 72
+  },
+  "memory_faults": [],
+  "scope": "Run unchanged GAME.EXE PlayerDamage and carry with its actual startup CW.\n\nArmor wear, final HP, lookup/facing and electric armor-scale are explicit\nservices. x87 arithmetic, stores, carry and integer conversions execute as-is.\nThe nearest control is evidence about older probes, not the game startup mode.\n",
+  "rows": [
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw--3/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": -3,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967294
+        }
+      ],
+      "carry_bits32": 3210739712,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw--3/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": -3,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 3210739712,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-0/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 0,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-0/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 0,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-1/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 1,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-1/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 1,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-5/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 5,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 5
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-5/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 5,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 2
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-8/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 8,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 8
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-8/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 8,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-33/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 33,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 33
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0/raw-33/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 33,
+        "absorption_bits32": 0,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 16
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw--3/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": -3,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967294
+        }
+      ],
+      "carry_bits32": 3187671040,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw--3/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": -3,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967295
+        },
+        {
+          "service": "default",
+          "damage_bits32": 4294967295
+        }
+      ],
+      "carry_bits32": 3187671040,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-0/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 0,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-0/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 0,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-1/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 1,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1063256064,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-1/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 1,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1063256064,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-5/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 5,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 3
+        }
+      ],
+      "carry_bits32": 1063256064,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-5/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 5,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1063256064,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-8/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 8,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 6
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-8/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 8,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 2
+        },
+        {
+          "service": "default",
+          "damage_bits32": 3
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-33/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 33,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 9
+        },
+        {
+          "service": "default",
+          "damage_bits32": 24
+        }
+      ],
+      "carry_bits32": 1063256064,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-0.25/raw-33/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 33,
+        "absorption_bits32": 1048576000,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 9
+        },
+        {
+          "service": "default",
+          "damage_bits32": 12
+        }
+      ],
+      "carry_bits32": 1063256064,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw--3/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": -3,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967293
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw--3/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": -3,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 4294967293
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-0/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 0,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-0/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 0,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 0
+        },
+        {
+          "service": "default",
+          "damage_bits32": 0
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-1/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 1,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-1/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 1,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 1
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-5/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 5,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-5/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 5,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 5
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-8/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 8,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 8
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-8/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 8,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 8
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-33/quest-0",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 33,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": false,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 33
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    },
+    {
+      "input": {
+        "name": "NPC-caster/armor-1/raw-33/quest-1",
+        "player": false,
+        "shape": "owned-monster",
+        "damage_type": 11,
+        "raw": 33,
+        "absorption_bits32": 1065353216,
+        "carry_bits32": 1040187392,
+        "quest": true,
+        "quest_scale_bits32": 1056964608,
+        "electric_scale_bits32": 1065353216
+      },
+      "mode": "actual-startup",
+      "events": [
+        {
+          "service": "armor",
+          "damage_bits32": 33
+        },
+        {
+          "service": "default",
+          "damage_bits32": 1
+        }
+      ],
+      "carry_bits32": 1040187392,
+      "marker": 1,
+      "marker_type": 73,
+      "returned": 1,
+      "nonoutput_bytes_preserved": true
+    }
+  ]
+}

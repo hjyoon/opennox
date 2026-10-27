@@ -46,17 +46,17 @@ func TestPlayerDamagePlayerPierceNativeCallback4E17B0(t *testing.T) {
 					}
 				}
 				beforeSource, beforePlayerUD, beforePlayer, beforeArrow := *source, *sourcePlayerUD, *sourcePlayer, *arrow
-				for hit, carry := range []float32{0.25, 0.5, -0.25} {
+				for hit, carry := range []float32{0.25, 0.5, 0.75} {
 					// Actual C dispatcher -> registered PlayerDamage -> DefaultDamage
 					// -> UnitSetHP. No HP or damage callback is replaced.
-					if !objectDamageDispatchCallNative(target, source, arrow, 3, object.DamageImpale) || target.HealthData.Cur != []uint16{58, 56, 53}[hit] ||
+					if !objectDamageDispatchCallNative(target, source, arrow, 3, object.DamageImpale) || target.HealthData.Cur != []uint16{58, 56, 54}[hit] ||
 						ud.Field21 != math.Float32bits(carry) || ud.Field76 != 1 || ud.Field75 != 529 || ud.Field40_0 != 0x1234 || ud.Field40_1 != 0xabcd || ud.State != server.PlayerState13 ||
 						target.Obj130 != arrow || target.Field131 != 3 || target.Frame134 != srv.Frame() || target.Field38 != math.MaxUint32 ||
 						(playerSource && (*source != beforeSource || *sourcePlayerUD != beforePlayerUD || *sourcePlayer != beforePlayer)) || *arrow != beforeArrow {
 						t.Fatalf("C entry hit=%d HP=%d marker=%d/%d carry=%g", hit, target.HealthData.Cur, ud.Field76, ud.Field75, math.Float32frombits(ud.Field21))
 					}
 				}
-				t.Logf("C->player PlayerDamage: target=%p source=%p missile=%p HP=60->58->56->53", target, source, arrow)
+				t.Logf("C->player PlayerDamage: target=%p source=%p missile=%p HP=60->58->56->54", target, source, arrow)
 				runtime.KeepAlive(target)
 				runtime.KeepAlive(source)
 				runtime.KeepAlive(arrow)

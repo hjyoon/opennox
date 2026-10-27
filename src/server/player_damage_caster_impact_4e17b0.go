@@ -140,18 +140,10 @@ func playerDamageCasterImpact4E17B0(
 	}
 	// 004E20F0 selects the live class/update for carry, even if callbacks have
 	// replaced the cached NPC record or removed unit class bits altogether.
-	accumulated := float32((1 - float64(absorption)) * float64(damage))
-	if target.Class().Has(object.ClassPlayer) {
-		accumulated += math.Float32frombits(target.UpdateDataPlayer().Field21)
-	} else if target.Class().Has(object.ClassMonster) {
-		accumulated += math.Float32frombits(target.UpdateDataMonster().Field1)
-	}
-	effective := playerDamageRound4E17B0(accumulated)
-	if target.Class().Has(object.ClassPlayer) {
-		target.UpdateDataPlayer().Field21 = math.Float32bits(accumulated - float32(effective))
-	} else if target.Class().Has(object.ClassMonster) {
-		target.UpdateDataMonster().Field1 = math.Float32bits(accumulated - float32(effective))
-	}
+	factor := experienceAdd53TowardZero(1, -float64(absorption))
+	scaled := experienceSpill32TowardZero(experienceMul53TowardZero(factor, float64(damage)))
+	var effective int32
+	playerDamageCarry4E20F0(target, &effective, scaled)
 	playerDamageApplyArmor4E17B0(target, source, weapon, damage-effective, typ, r)
 	if marker, kind := playerDamageCasterImpactMarker4E17B0(target, cached); marker != nil && *marker == 0 {
 		*marker, *kind = 2, uint32(typ)
@@ -167,7 +159,8 @@ func playerDamageCasterImpact4E17B0(
 			return reject("missing live caster IMPACT Quest scale")
 		}
 		before := effective
-		effective = playerDamageRound4E17B0(float32(float64(r.QuestDamageScale()) * float64(effective)))
+		scaled := experienceSpill32TowardZero(experienceMul53TowardZero(float64(r.QuestDamageScale()), float64(effective)))
+		effective = netFXTruncateSignedDWORD419A70(scaled)
 		if before > 0 && effective < 1 {
 			effective = 1
 		}

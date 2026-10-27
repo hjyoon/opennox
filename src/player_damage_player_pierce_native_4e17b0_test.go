@@ -14,6 +14,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -21,6 +22,8 @@ import (
 // Registered PlayerDamage, C armor lookup and facing, the native armor-wear
 // tail, DefaultDamage and UnitSetHP run without replacement damage/HP callbacks.
 func TestPlayerDamagePlayerPierceNative4E17B0HPAndDurability(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
 	base := server.New(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
@@ -127,7 +130,7 @@ func TestPlayerDamagePlayerPierceNative4E17B0HPAndDurability(t *testing.T) {
 							t.Fatalf("pointer=%p, want above 4 GiB", pointer)
 						}
 					}
-					damages, carries, expectedHP, expectedArmor := []int{3, 3, 3}, []float32{0.25, 0.5, -0.25}, []uint16{58, 56, 53}, []uint16{2, 1, 1}
+					damages, carries, expectedHP, expectedArmor := []int{3, 3, 3}, []float32{0.25, 0.5, 0.75}, []uint16{58, 56, 54}, []uint16{2, 1, 0}
 					switch mode {
 					case "GodMode":
 						expectedHP = []uint16{60, 60, 60}
@@ -137,17 +140,28 @@ func TestPlayerDamagePlayerPierceNative4E17B0HPAndDurability(t *testing.T) {
 						damages, carries, expectedHP, expectedArmor = []int{-3}, []float32{-0.25}, []uint16{62}, []uint16{3}
 					case "zero with negative carry":
 						ud.Field21 = math.Float32bits(-0.75)
-						damages, carries, expectedHP, expectedArmor = []int{0}, []float32{0.25}, []uint16{61}, []uint16{2}
+						damages, carries, expectedHP, expectedArmor = []int{0}, []float32{-0.75}, []uint16{60}, []uint16{3}
 					}
 					beforeTarget, beforeSource, beforeSourcePlayerUD, beforeSourcePlayer, beforeArrow, beforePlayer, beforeBuffs, beforeState := *target, *source, *sourcePlayerUD, *sourcePlayer, *arrow, *player, target.Buffs, ud.State
+					beforeDeleted := s.Objs.DeletedList
 					for hit, damage := range damages {
 						if !target.CallDamage(source, arrow, damage, object.DamageImpale) {
 							t.Fatalf("registered hit %d rejected", hit)
 						}
+						wantInventory, wantHolder, wantDeleted, wantState := item, target, beforeDeleted, beforeState
+						if expectedArmor[hit] == 0 {
+							wantInventory, wantHolder, wantDeleted = nil, nil, item
+							if beforeState >= server.PlayerState15 && beforeState <= server.PlayerState17 {
+								wantState = server.PlayerState13
+							}
+							if !item.Flags().Has(object.FlagDestroyed) || item.Flags().Has(object.FlagEquipped) || item.DeletedNext != beforeDeleted || item.DeletedAt != 1400 {
+								t.Fatalf("broken armor flags=%x deleted=%d/%p, want frame 1400/previous head %p", item.ObjFlags, item.DeletedAt, item.DeletedNext, beforeDeleted)
+							}
+						}
 						if hp.Cur != expectedHP[hit] || itemHP.Cur != expectedArmor[hit] || ud.Field21 != math.Float32bits(carries[hit]) || itemUD.Field0 != 0 || ud.Field76 != 1 || ud.Field75 != 529 ||
-							ud.Field40_0 != 0x1234 || ud.Field40_1 != 0xabcd || ud.State != beforeState || *player != beforePlayer || target.Buffs != beforeBuffs ||
-							target.InvFirstItem != item || item.InvHolder != target || *arrow != beforeArrow ||
-							(playerSource && (*source != beforeSource || *sourcePlayerUD != beforeSourcePlayerUD || *sourcePlayer != beforeSourcePlayer)) || s.Objs.DeletedList != nil {
+							ud.Field40_0 != 0x1234 || ud.Field40_1 != 0xabcd || ud.State != wantState || *player != beforePlayer || target.Buffs != beforeBuffs ||
+							target.InvFirstItem != wantInventory || item.InvHolder != wantHolder || *arrow != beforeArrow ||
+							(playerSource && (*source != beforeSource || *sourcePlayerUD != beforeSourcePlayerUD || *sourcePlayer != beforeSourcePlayer)) || s.Objs.DeletedList != wantDeleted {
 							t.Fatalf("hit=%d raw=%d HP=%d armor=%d carry=%g marker=%d/%d", hit, damage, hp.Cur, itemHP.Cur, math.Float32frombits(ud.Field21), ud.Field76, ud.Field75)
 						}
 						if mode == "GodMode" {

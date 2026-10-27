@@ -113,7 +113,12 @@ func TestPlayerDamageSignedElectricNative4E17B0(t *testing.T) {
 							if observed {
 								wantUpdate = legacy.Get_nox_xxx_updatePlayer_4F8100()
 							}
-							if !target.CallDamage(source, weapon, int(tc.raw), typ) || health.Cur != tc.hp || health.Max != 60 || health.Field2 != 60 || player.Field3680 != 0x20 || player.CameraFollowObj != nil || player.ObserveTarget() != nil || target.Update != wantUpdate || ud.Field76 != 2 || ud.Field75 != uint32(typ) || ud.Field21 != math.Float32bits(tc.residual) || ud.Field40_0 != 2 || ud.Field40_1 != 0xabcd || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) || target.Frame134 != 1400 || *source != beforeSource || *sourceUD != beforeSourceUD || *sourcePlayerUD != beforePlayerUD || *sourcePlayer != beforePlayer {
+							wantHP, wantCarry := tc.hp, tc.residual
+							if !selfWeapon && tc.raw == 1 {
+								// Original startup 1+.5 -> 1, retaining .5.
+								wantHP, wantCarry = 59, 0.5
+							}
+							if !target.CallDamage(source, weapon, int(tc.raw), typ) || health.Cur != wantHP || health.Max != 60 || health.Field2 != 60 || player.Field3680 != 0x20 || player.CameraFollowObj != nil || player.ObserveTarget() != nil || target.Update != wantUpdate || ud.Field76 != 2 || ud.Field75 != uint32(typ) || ud.Field21 != math.Float32bits(wantCarry) || ud.Field40_0 != 2 || ud.Field40_1 != 0xabcd || target.Obj130 != source || target.Pos132 != source.PrevPos || target.Field131 != uint32(typ) || target.Frame134 != 1400 || *source != beforeSource || *sourceUD != beforeSourceUD || *sourcePlayerUD != beforePlayerUD || *sourcePlayer != beforePlayer {
 								t.Fatalf("native signed electric: raw=%d HP=%d status=%x camera=%p update=%p marker=%d/%d carry=%g attribution=%p", tc.raw, health.Cur, player.Field3680, player.CameraFollowObj, target.Update, ud.Field76, ud.Field75, math.Float32frombits(ud.Field21), target.Obj130)
 							}
 							t.Logf("C signed electric: target=%p source=%p raw=%d HP=60->%d carry=%g observed=%t", target, source, tc.raw, health.Cur, math.Float32frombits(ud.Field21), observed)

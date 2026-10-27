@@ -63,7 +63,7 @@ func TestPlayerDamageWorldMagicMissileNativeCallback4E17B0(t *testing.T) {
 						marker, kind, carry = &ud.Field547, &ud.Field546, &ud.Field1
 					}
 					*marker, *kind, *carry = 99, 77, math.Float32bits(.25)
-					wantHP := []uint16{195, 191, 186}
+					wantHP := []uint16{196, 191, 187}
 					if immune && !player {
 						wantHP = []uint16{198, 196, 194}
 					}
@@ -75,7 +75,7 @@ func TestPlayerDamageWorldMagicMissileNativeCallback4E17B0(t *testing.T) {
 						if owner == "terminal" {
 							wantMarker, wantKind = 2, 7
 						}
-						wantCarry := []float32{-.25, .25, -.25}[hit]
+						wantCarry := []float32{.75, .25, .75}[hit]
 						if *marker != wantMarker || *kind != wantKind || *carry != math.Float32bits(wantCarry) ||
 							target.Field38 != math.MaxUint32 || target.Obj130 != missile || target.Pos132 != missile.PrevPos || target.Field131 != 7 || target.Frame134 != 1400 {
 							t.Fatalf("marker=%d/%d carry=%x attribution=%p sync=%x", *marker, *kind, *carry, target.Obj130, target.Field38)

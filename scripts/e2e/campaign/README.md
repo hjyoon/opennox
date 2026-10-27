@@ -75,6 +75,13 @@ The new report distinguishes `reused_stages` from `executed_stages` and sets
 `fresh_replay: false` when it reuses evidence. To perform a fresh full replay
 after rebuilding the product, omit `--resume-from`.
 
+For a short combat and resource regression, use
+`--sequence scripts/e2e/campaign/sequences/wizard2-upper-cave.json` with the
+earned BookOfOblivion recovery Save (HP26/MP88, both upper Urchins alive).
+It reuses one executable for the upper Urchin fights and the following original
+mana potion pickup, passing the actual manual Save between them. Replaying this
+pair does not require rebuilding or repeating the earlier cave route.
+
 Scenario changes reuse the supplied executable. Each run copies the Save and
 preserves its executable, executed scenario, suite, logs, screenshots and
 read-only world observations, including failures. Source saves and campaign data

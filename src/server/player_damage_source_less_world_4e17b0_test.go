@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"os"
 	"strings"
 	"testing"
 
@@ -17,7 +16,7 @@ import (
 // Unchanged original callbacks retain a nil source and the actual missile.
 // Signed/default rows exercise the ABI, not public root DoDamage.
 func TestPlayerDamageSourceLessWorldMatchesGAMEEXE4E17B0(t *testing.T) {
-	data, err := os.ReadFile("testdata/player_damage_source_less_world_4e17b0.json")
+	data, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_source_less_world_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -105,7 +104,7 @@ func TestPlayerDamageSourceLessWorldMatchesGAMEEXE4E17B0(t *testing.T) {
 }
 
 func TestPlayerDamageSourceLessWorldFrontReflectMatchesGAMEEXE4E17B0(t *testing.T) {
-	blob, err := os.ReadFile("testdata/player_damage_source_less_world_front_4e17b0.json")
+	blob, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_source_less_world_front_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -238,7 +237,7 @@ func TestPlayerDamageSourceLessWorldFrontReflectMatchesGAMEEXE4E17B0(t *testing.
 // Original equipment rows declare block-item wear, state and balance as
 // boundaries. Native prefix selection must retain the actual owner/weapon.
 func TestPlayerDamageSourceLessWorldBlocksMatchesGAMEEXE4E17B0(t *testing.T) {
-	blob, err := os.ReadFile("testdata/player_damage_source_less_world_blocks_4e17b0.json")
+	blob, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_source_less_world_blocks_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -12,8 +12,8 @@ import (
 
 // C-owned records retain the actual class-zero script caster and separate
 // terminal-owner/caster identities. The expected arithmetic is independent of
-// the port's rounding helper: GAME.EXE spills absorption and carry to f32 and
-// rounds to nearest even before the positive-only minimum and late Quest scale.
+// the port's rounding helper: frozen unchanged GAME.EXE startup executions
+// supply absorption/carry and the positive-only minimum and late Quest scale.
 func TestPlayerDamageNPCCasterImpact4E17B0ArmorAndOwners(t *testing.T) {
 	for _, owner := range []string{"player-self", "player-owned-NPC", "imaginary-self", "imaginary-owned-NPC", "monster-owner", "proxy-monster", "world-self", "nil"} {
 		for _, absorption := range []float32{0, 0.25, 1} {
@@ -53,25 +53,13 @@ func TestPlayerDamageNPCCasterImpact4E17B0ArmorAndOwners(t *testing.T) {
 							events = append(events, "facing")
 							return false
 						}
-						accumulated := float32((1-float64(absorption))*float64(raw)) + float32(0.125)
-						rounded := int32(math.RoundToEven(float64(accumulated)))
-						effective := rounded
-						if raw > 0 && effective == 0 {
-							effective = 1
-						}
-						if mode == "quest" {
-							before := effective
-							effective = int32(math.RoundToEven(float64(float32(float64(effective) * 0.5))))
-							if before > 0 && effective < 1 {
-								effective = 1
-							}
-						}
+						wantCarry, effective := originalNPCCasterImpactStartup4E17B0(t, absorption, raw, mode == "quest")
 						marker, markerType := uint32(2), uint32(11)
 						if a != nil && a != w {
 							marker, markerType = 1, uint32(w.TypeInd)
 						}
 						r.GodMode = func() bool {
-							if ud.Field547 != marker || ud.Field546 != markerType || ud.Field1 != math.Float32bits(accumulated-float32(rounded)) {
+							if ud.Field547 != marker || ud.Field546 != markerType || ud.Field1 != wantCarry {
 								t.Fatal("NPC God query preceded live carry/cached hit marker")
 							}
 							events = append(events, "god")

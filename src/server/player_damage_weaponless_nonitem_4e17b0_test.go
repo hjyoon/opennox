@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"os"
 	"strings"
 	"testing"
 
@@ -17,7 +16,7 @@ import (
 // Direct damage callbacks may supply a non-item source without a weapon.
 // Signed/default values exercise the ABI; HP and defenses are separate.
 func TestPlayerDamageWeaponlessNonItemMatchesGAMEEXE4E17B0(t *testing.T) {
-	data, err := os.ReadFile("testdata/player_damage_weaponless_nonitem_4e17b0.json")
+	data, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_weaponless_nonitem_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -115,7 +114,7 @@ func TestPlayerDamageWeaponlessNonItemMatchesGAMEEXE4E17B0(t *testing.T) {
 }
 
 func TestPlayerDamageWeaponlessNonItemFrontReflectMatchesGAMEEXE4E17B0(t *testing.T) {
-	blob, err := os.ReadFile("testdata/player_damage_weaponless_nonitem_front_4e17b0.json")
+	blob, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_weaponless_nonitem_front_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -230,7 +229,7 @@ func TestPlayerDamageWeaponlessNonItemFrontReflectMatchesGAMEEXE4E17B0(t *testin
 // Original equipment rows declare block-item wear, state and balance as
 // boundaries. Native prefix selection must retain the actual owner/weapon.
 func TestPlayerDamageWeaponlessNonItemBlocksMatchesGAMEEXE4E17B0(t *testing.T) {
-	blob, err := os.ReadFile("testdata/player_damage_weaponless_nonitem_blocks_4e17b0.json")
+	blob, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_weaponless_nonitem_blocks_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}

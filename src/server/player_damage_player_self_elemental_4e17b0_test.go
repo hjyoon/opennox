@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"os"
 	"testing"
 
 	"github.com/opennox/libs/object"
@@ -15,7 +14,7 @@ import (
 // public DoDamage rejects those amounts. DefaultDamage/wear are declared
 // original boundaries here, and native HP is checked separately.
 func TestPlayerDamagePlayerSelfElementalMatchesGAMEEXE4E17B0(t *testing.T) {
-	data, err := os.ReadFile("testdata/player_damage_player_self_elemental_4e17b0.json")
+	data, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_player_self_elemental_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}

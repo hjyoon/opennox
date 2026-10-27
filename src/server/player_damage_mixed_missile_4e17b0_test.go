@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"os"
 	"strings"
 	"testing"
 	"unsafe"
@@ -18,7 +17,7 @@ import (
 // Original direct callback probes keep a pure MISSILE and its terminal owner.
 // Signed/default values do not invoke the public root DoDamage wrapper.
 func TestPlayerDamageMixedMissileMatchesGAMEEXE4E17B0(t *testing.T) {
-	data, err := os.ReadFile("testdata/player_damage_mixed_missile_4e17b0.json")
+	data, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_mixed_missile_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -132,7 +131,7 @@ func TestPlayerDamageMixedMissileMatchesGAMEEXE4E17B0(t *testing.T) {
 }
 
 func TestPlayerDamageMixedMissileFrontReflectMatchesGAMEEXE4E17B0(t *testing.T) {
-	blob, err := os.ReadFile("testdata/player_damage_mixed_missile_front_4e17b0.json")
+	blob, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_mixed_missile_front_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -273,7 +272,7 @@ func TestPlayerDamageMixedMissileFrontReflectMatchesGAMEEXE4E17B0(t *testing.T) 
 // Original equipment rows declare block-item wear, state and balance as
 // boundaries. Native prefix selection must retain the actual owner/weapon.
 func TestPlayerDamageMixedMissileBlocksMatchesGAMEEXE4E17B0(t *testing.T) {
-	blob, err := os.ReadFile("testdata/player_damage_mixed_missile_blocks_4e17b0.json")
+	blob, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_mixed_missile_blocks_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}

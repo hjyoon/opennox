@@ -18,7 +18,8 @@ import (
 // services. This compares the prefix outputs, not whole Windows gameplay.
 func TestPlayerDamageSelfArrow4E17B0OriginalPrefixTranscript(t *testing.T) {
 	got := nonunitDamagePrefixTranscript4E17B0(t, 0)
-	const want = "fdc72e86f8333ca03df633733ce67e8231a18fe9b994caf9ed5320c0a1cb4f28"
+	const nearestControl = "fdc72e86f8333ca03df633733ce67e8231a18fe9b994caf9ed5320c0a1cb4f28"
+	want, _ := originalNonItemStartupPrefixSeal4E17B0(t, 0, nearestControl)
 	if sum := fmt.Sprintf("%x", sha256.Sum256(got)); sum != want {
 		t.Fatalf("1164 original prefix rows SHA=%s want=%s", sum, want)
 	}

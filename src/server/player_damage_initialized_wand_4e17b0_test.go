@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
-	"os"
 	"testing"
 	"unsafe"
 
@@ -15,7 +14,7 @@ import (
 // Original direct callback probes retain qualifying MISSILE|WEAPON forms and six source identities.
 // Signed/default values do not invoke the public root DoDamage wrapper.
 func TestPlayerDamageInitializedWandMatchesGAMEEXE4E17B0(t *testing.T) {
-	data, err := os.ReadFile("testdata/player_damage_initialized_wand_4e17b0.json")
+	data, err := readOriginalNonItemStartupFixture4E17B0("testdata/player_damage_initialized_wand_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}

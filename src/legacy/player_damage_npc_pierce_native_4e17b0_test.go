@@ -40,7 +40,7 @@ func TestPlayerDamageNPCPierceNativeCallback4E17B0(t *testing.T) {
 					}
 				}
 				beforeSource, beforePlayerUD, beforePlayer := *source, *playerUD, *player
-				for hit, wantHP := range []uint16{58, 56, 53} {
+				for hit, wantHP := range []uint16{58, 56, 54} {
 					// The C damage dispatcher invokes the registered production
 					// PlayerDamage shim and its unmodified DefaultDamage/UnitSetHP.
 					if !objectDamageDispatchCallNative(target, source, arrow, 3, object.DamageImpale) || target.HealthData.Cur != wantHP ||
@@ -49,7 +49,7 @@ func TestPlayerDamageNPCPierceNativeCallback4E17B0(t *testing.T) {
 						t.Fatalf("C entry hit=%d HP=%d marker=%d/%d", hit, target.HealthData.Cur, ud.Field547, ud.Field546)
 					}
 				}
-				t.Logf("C->NPC PlayerDamage: target=%p source=%p missile=%p HP=60->58->56->53 carry=%g", target, source, arrow, math.Float32frombits(ud.Field1))
+				t.Logf("C->NPC PlayerDamage: target=%p source=%p missile=%p HP=60->58->56->54 carry=%g", target, source, arrow, math.Float32frombits(ud.Field1))
 				runtime.KeepAlive(target)
 				runtime.KeepAlive(source)
 				runtime.KeepAlive(arrow)

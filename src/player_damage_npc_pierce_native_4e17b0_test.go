@@ -15,6 +15,7 @@ import (
 	"github.com/opennox/opennox/v1/common/unit/ai"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
+	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -25,6 +26,8 @@ import (
 // links crossing those C boundaries are C-owned native-width allocations.
 // The outgoing owner-HP transport alone is captured to verify the wire packet.
 func TestPlayerDamageNPCPierceNative4E17B0HPAndDurability(t *testing.T) {
+	handles.Init()
+	t.Cleanup(handles.Release)
 	base := server.New(nil, nil, strman.New())
 	t.Cleanup(base.Close)
 	s := &Server{Server: base}
@@ -156,25 +159,33 @@ func TestPlayerDamageNPCPierceNative4E17B0HPAndDurability(t *testing.T) {
 					}
 					beforeSource, beforeSourcePlayerUD, beforeSourcePlayer := *source, *sourcePlayerUD, *sourcePlayer
 					beforeArrow, beforeAction, beforeBuffs := *arrow, ud.AIStack[0], target.Buffs
-					for hit, carry := range []float32{0.25, 0.5, -0.25} {
+					beforeDeleted := s.Objs.DeletedList
+					for hit, carry := range []float32{0.25, 0.5, 0.75} {
 						if !target.CallDamage(source, arrow, 3, object.DamageImpale) {
 							t.Fatalf("registered hit %d rejected", hit)
 						}
-						wantHP, wantArmor := []uint16{58, 56, 53}[hit], []uint16{2, 1, 1}[hit]
+						wantHP, wantArmor := []uint16{58, 56, 54}[hit], []uint16{2, 1, 0}[hit]
 						wantPos := source.PrevPos
 						if pure {
 							wantPos = arrow.PrevPos
+						}
+						wantInventory, wantHolder, wantDeleted := item, target, beforeDeleted
+						if wantArmor == 0 {
+							wantInventory, wantHolder, wantDeleted = nil, nil, item
+							if !item.Flags().Has(object.FlagDestroyed) || item.Flags().Has(object.FlagEquipped) || item.DeletedNext != beforeDeleted || item.DeletedAt != 1400 {
+								t.Fatalf("broken armor flags=%x deleted=%d/%p, want frame 1400/previous head %p", item.ObjFlags, item.DeletedAt, item.DeletedNext, beforeDeleted)
+							}
 						}
 						if npcHP.Cur != wantHP || itemHP.Cur != wantArmor || ud.Field1 != math.Float32bits(carry) || itemUD.Field0 != 0 ||
 							ud.Field547 != 1 || ud.Field546 != uint32(arrow.TypeInd) || ud.Field523_2 != 0x34 || !ud.StatusFlags.Has(object.MonStatusInjured) ||
 							target.Obj130 != arrow || target.Field131 != 3 || target.Frame134 != 1400 || target.Pos132 != wantPos || target.Field38 != math.MaxUint32 ||
 							item.Obj130 != arrow || item.Field131 != 3 || item.Frame134 != 1400 || (!playerSource && sourceUD.Field130 != 1400) ||
 							(playerSource && (*source != beforeSource || *sourcePlayerUD != beforeSourcePlayerUD || *sourcePlayer != beforeSourcePlayer)) ||
-							*arrow != beforeArrow || ud.AIStack[0] != beforeAction || target.Buffs != beforeBuffs || target.InvFirstItem != item || item.InvHolder != target || target.ObjOwner != owner || owner.Field129 != target || ownerReports != hit+1 || s.Objs.DeletedList != nil {
+							*arrow != beforeArrow || ud.AIStack[0] != beforeAction || target.Buffs != beforeBuffs || target.InvFirstItem != wantInventory || item.InvHolder != wantHolder || target.ObjOwner != owner || owner.Field129 != target || ownerReports != hit+1 || s.Objs.DeletedList != wantDeleted {
 							t.Fatalf("hit=%d HP=%d armor=%d carry=%g NPC marker=%d/%d item source=%p", hit, npcHP.Cur, itemHP.Cur, math.Float32frombits(ud.Field1), ud.Field547, ud.Field546, item.Obj130)
 						}
 					}
-					t.Logf("registered NPC PIERCE player-source=%t: target=%p arrow=%p armor=%p native definition=%p HP=60->58->56->53 armor=3->2->1->1 carry=0.25,0.5,-0.25", playerSource, target, arrow, item, armorDef)
+					t.Logf("registered NPC PIERCE player-source=%t: target=%p arrow=%p armor=%p native definition=%p HP=60->58->56->54 armor=3->2->1->0 carry=0.25,0.5,0.75", playerSource, target, arrow, item, armorDef)
 				})
 			}
 		}

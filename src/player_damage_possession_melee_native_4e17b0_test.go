@@ -112,7 +112,7 @@ func TestPlayerDamagePossessionMeleeNative4E17B0(t *testing.T) {
 				beforeSource, beforeItem, beforePlayerUD, beforePlayer := *source, *item, *sourcePlayerUD, *sourcePlayer
 				wantHP, carry := uint16(56), float32(0.25)
 				if kind.typ == object.DamageCrush {
-					wantHP, carry = 55, -0.125
+					wantHP, carry = 56, 0.875
 				}
 				wantPos := source.PrevPos
 				if kind.class == object.ClassSimple {

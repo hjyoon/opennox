@@ -55,6 +55,52 @@ completion requirements.
 
 ## Current findings
 
+### Original startup arithmetic in the non-item damage switch
+
+The shared non-item PlayerDamage switch and the separate caster IMPACT tail
+now reproduce the original startup x87 control word `0xe3f`: 53-bit arithmetic,
+binary32 spills and integer conversion toward zero. This covers physical
+absorption, CRUSH's half absorption, electric armor scaling, fractional carry
+and Quest scaling in these two bodies. The implementation uses the existing
+explicit arithmetic helpers and does not change the host floating-point mode.
+For raw damage 9, absorption 0.5 and initial carry 0.25, the original applies
+damage 4 and retains carry 0.75; the former nearest-control calculation applied
+damage 5 and retained carry -0.25. Repeated hits also change armor wear and its
+eventual dequip, inventory removal and delayed deletion.
+
+The unchanged original executable supplies 960 input contexts, each executed
+at startup and nearest control settings (1,920 executions). These cover Player
+and scripted-NPC targets, four source shapes, all switch types, signed and zero
+damage, fractional armor/carry, electric scaling and Quest scaling. The fixture
+records original code-region hashes and reports no memory faults. A separate
+6,984-execution original replay reproduces all three historical 1,164-row prefix
+transcript seals at the old control setting before supplying their startup
+seals. Another 36 original NPC caster contexts provide independent expectations.
+Armor wear, final HP, facing and electric-scale services are explicitly bounded
+in those oracles; actual native C dispatch, HP and armor destruction are checked
+separately with native pointers above 4 GiB.
+
+All 54 historical input tables remain byte-identical. A separate startup
+observation file binds their hashes and row counts and corrects 6,722 output
+rows among 35,124 retained input rows. Original executable replays supply these
+outputs; native candidate results are not used as expected values. Existing
+input loops, branch identities, nonnumeric assertions and nearest-control
+transcript seals remain. Failed probes and all original replay reports are
+preserved under `nonitem-player-damage-precision-port/`.
+
+Focused macOS ARM64 damage checks pass 130,110 terminal test events across the
+root, server and legacy packages. The highres subset passes 1,093 events with
+`GOEXPERIMENT=cgocheck2` and checkptr level 2. These counts include parents and
+subtests and do not measure feature coverage. The published upper-cave E2E
+sequence reuses one prebuilt executable for combat and subsequent mana recovery;
+its input-validation suite passes all 43 tests.
+
+The separate armed EXPLOSION, player dangerous-world IMPALE and unit self-weapon
+electric arithmetic bodies remain outside this change; their existing
+expectations are retained.
+These bounded results do not establish complete PlayerDamage arithmetic or
+overall 100% port completion.
+
 ### Terminal and scripted Magic Missile EXPLOSION damage
 
 BoomCollide can pass the same unowned Magic Missile as source and weapon,

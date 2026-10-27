@@ -37,7 +37,7 @@ func TestPlayerDamageNPCHarpoonNativeCallback4E17B0(t *testing.T) {
 	for hit, want := range []struct {
 		hp    uint16
 		carry float32
-	}{{58, 0.25}, {56, 0.5}, {53, -0.25}} {
+	}{{58, 0.25}, {56, 0.5}, {54, 0.75}} {
 		// Real C dispatcher and production PlayerDamage, DefaultDamage and
 		// UnitSetHP services. No damage, HP, armor or collision substitution.
 		// Stock WEAPON|MISSILE uses the owner's previous position for pain
@@ -52,7 +52,7 @@ func TestPlayerDamageNPCHarpoonNativeCallback4E17B0(t *testing.T) {
 				*source == beforeSource, *playerUD == beforeUD, *player == beforePlayer, *bolt == beforeBolt)
 		}
 	}
-	t.Logf("C->NPC harpoon: target=%p player=%p bolt=%p HP=60->58->56->53 carry=%g", target, source, bolt, math.Float32frombits(ud.Field1))
+	t.Logf("C->NPC harpoon: target=%p player=%p bolt=%p HP=60->58->56->54 carry=%g", target, source, bolt, math.Float32frombits(ud.Field1))
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(source)
 	runtime.KeepAlive(bolt)

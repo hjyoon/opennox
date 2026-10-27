@@ -44,7 +44,7 @@ func TestPlayerDamageSelfArrowCRecords4E17B0(t *testing.T) {
 				for hit := range 3 {
 					wantHP, wantCarry := uint16(60-3*(hit+1)), float32(0)
 					if armor != 0 {
-						wantHP, wantCarry = []uint16{58, 56, 53}[hit], []float32{0.25, 0.5, -0.25}[hit]
+						wantHP, wantCarry = []uint16{58, 56, 54}[hit], []float32{0.25, 0.5, 0.75}[hit]
 					}
 					if !objectDamageDispatchCallNative(v, w, w, 3, object.DamageImpale) || v.HealthData.Cur != wantHP ||
 						ud.Field21 != math.Float32bits(wantCarry) || ud.Field76 != 2 || ud.Field75 != 3 ||

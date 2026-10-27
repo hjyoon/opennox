@@ -1,0 +1,101 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "regions": [
+    {
+      "name": "PlayerDamage",
+      "address": "0x4e17b0",
+      "size": 2368,
+      "sha256": "c3e71619fd8d5e8c0aff27b5d098db02ee5bed0c6827f495ce6cf54326062ed9"
+    },
+    {
+      "name": "carry",
+      "address": "0x4e20f0",
+      "size": 131,
+      "sha256": "c165a8f6228b422aa67b51449fd926808baf180ef5153d65e94cd1bf39a22d86"
+    },
+    {
+      "name": "signed-DWORD",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "Quest-getter",
+      "address": "0x4e40b0",
+      "size": 7,
+      "sha256": "ec14e5fbeaddb1c26f00bf31e2b5eb9a6efe81521efe56b10cd576534fe7bbde"
+    },
+    {
+      "name": "attack-predicate",
+      "address": "0x4e1400",
+      "size": 112,
+      "sha256": "0ac2ef45c5c13d020b99663c9fcac15321cdf3b825cabb3b44c746aae5a4fb73"
+    },
+    {
+      "name": "possession",
+      "address": "0x4ddf30",
+      "size": 35,
+      "sha256": "7ee2b9e40f3db2d04c3667882b2cc52419f636f0a9089d72505b556c29500db6"
+    },
+    {
+      "name": "parent-chain",
+      "address": "0x4ec580",
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    }
+  ],
+  "original_unchanged": true,
+  "rows": [
+    {
+      "shape": 0,
+      "mode": "nearest-control",
+      "rows": 1164,
+      "bytes": 55675,
+      "sha256": "fdc72e86f8333ca03df633733ce67e8231a18fe9b994caf9ed5320c0a1cb4f28",
+      "matches_historical_nearest_seal": true
+    },
+    {
+      "shape": 1,
+      "mode": "nearest-control",
+      "rows": 1164,
+      "bytes": 59708,
+      "sha256": "edb5fb672123a1c171647968296512acf69f6d496544924dc332bebc6a1a83f7",
+      "matches_historical_nearest_seal": true
+    },
+    {
+      "shape": 2,
+      "mode": "nearest-control",
+      "rows": 1164,
+      "bytes": 58296,
+      "sha256": "dcca890db4bcb542d9699c856bd027fd864646841af8b972ba12286401288a79",
+      "matches_historical_nearest_seal": true
+    },
+    {
+      "shape": 0,
+      "mode": "actual-startup",
+      "rows": 1164,
+      "bytes": 55669,
+      "sha256": "a3da6da583e678663c6baabb6ee95eb93d534bd6e1cbe9016e439eb6f7298def",
+      "matches_historical_nearest_seal": false
+    },
+    {
+      "shape": 1,
+      "mode": "actual-startup",
+      "rows": 1164,
+      "bytes": 59702,
+      "sha256": "ff3eb5b83584bd24481255fd70693e1dd7c8a205006bd87e528467544c9d3b75",
+      "matches_historical_nearest_seal": false
+    },
+    {
+      "shape": 2,
+      "mode": "actual-startup",
+      "rows": 1164,
+      "bytes": 58296,
+      "sha256": "31ab54577c24c379da998762e3059734bbcbe2e2c699292c66289a8389e9add6",
+      "matches_historical_nearest_seal": false
+    }
+  ],
+  "faults": [],
+  "startup_control_word": 3647,
+  "nearest_control_word": 895
+}

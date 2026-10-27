@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log/slog"
 	"math"
-	"os"
 	"runtime"
 	"strings"
 	"testing"
@@ -114,7 +113,8 @@ func TestPlayerDamageMixedMissileNativeDamage4E17B0(t *testing.T) {
 									u.Field518, u.Field1, u.Field547, u.Field546 = math.Float32bits(.5), math.Float32bits(.25), 99, 77
 									carry, marker, kindField = &u.Field1, &u.Field547, &u.Field546
 								}
-								wantHP, wantCarry := uint16(195), float32(-.25)
+								// Original startup: raw9, armor.5, carry.25 gives4 HP and carry.75.
+								wantHP, wantCarry := uint16(196), float32(.75)
 								physical := typ == object.DamageBlade || typ == object.DamageImpale || typ == object.DamageExplosion || typ == object.DamageBite || typ == object.DamageClaw || typ == object.DamageImpact || typ == object.DamageCrush
 								if !physical || kind == "ordinary-monster" {
 									wantHP, wantCarry = 191, .25
@@ -197,7 +197,7 @@ func TestPlayerDamageMixedMissileImmunityNative4E17B0(t *testing.T) {
 	callback := srv.Types.ByID(id).Damage
 	oldLog := srv.Log
 	t.Cleanup(func() { srv.Log = oldLog })
-	blob, err := os.ReadFile("../server/testdata/player_damage_mixed_missile_integrated_4e17b0.json")
+	blob, err := readOriginalNonItemStartupFixture4E17B0("../server/testdata/player_damage_mixed_missile_integrated_4e17b0.json")
 	if err != nil {
 		t.Fatal(err)
 	}

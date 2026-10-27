@@ -36,6 +36,7 @@ type boxWallBounds5504B0 struct {
 }
 
 type boxWallCollisionHooks5504B0 struct {
+	spring       func() float32
 	wallType     func(image.Point, byte) int8
 	wallDef      func(byte) boxWallDef5504B0
 	addCollision func(*Object, types.Pointf)
@@ -70,11 +71,11 @@ func boxWallQuadrant550CB0(point, wall types.Pointf) byte {
 // boxWallResponse550760 retains the wide spring/damping result until its
 // component stores. The first wall rotates it before both equal stores;
 // the second rotates the unspilled result separately for X and Y.
-func boxWallResponse550760(obj *Object, velocity, penetration, spring, overlap float32, first bool, addCollision func(*Object, types.Pointf)) {
+func boxWallResponse550760(obj *Object, velocity, penetration, spring, overlap float32, first bool, coefficient func() float32, addCollision func(*Object, types.Pointf)) {
 	mul, add, sub := objectForceMul53_52DF80, objectForceAdd53_52DF80, objectForceSub53_52DF80
 	spill := experienceSpill32TowardZero
 	k := float64(boxWallSqrtHalf5504B0)
-	force := mul(mul(monsterMoveForceSqrtChop53_50D50C(mul(mul(float64(obj.Mass), float64(boxWallSpring5504B0)), 4)), -float64(velocity)), .5)
+	force := mul(mul(collisionSqrt53_5488B0(mul(mul(float64(obj.Mass), objectForceMemory32_52DF80(coefficient())), 4)), -float64(velocity)), .5)
 	force = mul(add(force, float64(spring)), float64(overlap))
 	var impulse types.Pointf
 	normal := types.Ptf(-boxWallSqrtHalf5504B0, boxWallSqrtHalf5504B0)
@@ -103,7 +104,7 @@ func boxWallResponse550760(obj *Object, velocity, penetration, spring, overlap f
 	addCollision(obj, impulse)
 }
 
-func boxWallCollisionSecond550760(obj *Object, current, previous *types.Pointf, bounds *boxWallBounds5504B0, line types.Pointf, length float32, addCollision func(*Object, types.Pointf)) bool {
+func boxWallCollisionSecond550760(obj *Object, current, previous *types.Pointf, bounds *boxWallBounds5504B0, line types.Pointf, length float32, coefficient func() float32, addCollision func(*Object, types.Pointf)) bool {
 	add, sub, mul, div := objectForceAdd53_52DF80, objectForceSub53_52DF80, objectForceMul53_52DF80, objectForceDiv53_52DF80
 	spill, memory := experienceSpill32TowardZero, objectForceMemory32_52DF80
 	end := add(float64(length), memory(line.X))
@@ -146,15 +147,15 @@ func boxWallCollisionSecond550760(obj *Object, current, previous *types.Pointf, 
 	} else {
 		penetration = spill(sub(float64(bounds.maxY), memory(line.Y)))
 	}
-	spring := mul(float64(boxWallSpring5504B0), float64(penetration))
+	spring := mul(float64(coefficient()), float64(penetration))
 	if !(delta >= 0) {
 		spring = -spring
 	}
-	boxWallResponse550760(obj, velocity, penetration, spill(spring), overlap, false, addCollision)
+	boxWallResponse550760(obj, velocity, penetration, spill(spring), overlap, false, coefficient, addCollision)
 	return true
 }
 
-func boxWallCollisionFirst550A10(obj *Object, current, previous *types.Pointf, bounds *boxWallBounds5504B0, line types.Pointf, length float32, addCollision func(*Object, types.Pointf)) bool {
+func boxWallCollisionFirst550A10(obj *Object, current, previous *types.Pointf, bounds *boxWallBounds5504B0, line types.Pointf, length float32, coefficient func() float32, addCollision func(*Object, types.Pointf)) bool {
 	add, sub, mul, div := objectForceAdd53_52DF80, objectForceSub53_52DF80, objectForceMul53_52DF80, objectForceDiv53_52DF80
 	spill, memory := experienceSpill32TowardZero, objectForceMemory32_52DF80
 	end := add(float64(length), memory(line.Y))
@@ -197,11 +198,11 @@ func boxWallCollisionFirst550A10(obj *Object, current, previous *types.Pointf, b
 	} else {
 		penetration = spill(sub(float64(bounds.maxX), memory(line.X)))
 	}
-	spring := mul(float64(boxWallSpring5504B0), float64(penetration))
+	spring := mul(float64(coefficient()), float64(penetration))
 	if !(delta >= 0) {
 		spring = -spring
 	}
-	boxWallResponse550760(obj, velocity, penetration, spill(spring), overlap, true, addCollision)
+	boxWallResponse550760(obj, velocity, penetration, spill(spring), overlap, true, coefficient, addCollision)
 	return true
 }
 
@@ -241,7 +242,7 @@ func boxWallCollisionAt550580(grid image.Point, obj *Object, hooks boxWallCollis
 			spill(add(float64(wall.X), float64(boxWallHalfStep5504B0))),
 			spill(add(sub(float64(wall.Y), float64(boxWallHalfStep5504B0)), memory(def.firstOffset))),
 		)
-		if boxWallCollisionFirst550A10(obj, &current, &previous, &bounds, line, def.firstLength, hooks.addCollision) {
+		if boxWallCollisionFirst550A10(obj, &current, &previous, &bounds, line, def.firstLength, hooks.spring, hooks.addCollision) {
 			collided = true
 		}
 	}
@@ -249,7 +250,7 @@ func boxWallCollisionAt550580(grid image.Point, obj *Object, hooks boxWallCollis
 	def = hooks.wallDef(byte(wallType))
 	if def.secondEnabled != 0 && quadrant&def.secondMask == 0 {
 		line := types.Ptf(spill(add(float64(wall.X), memory(def.secondOffset))), wall.Y)
-		if boxWallCollisionSecond550760(obj, &current, &previous, &bounds, line, def.secondLength, hooks.addCollision) {
+		if boxWallCollisionSecond550760(obj, &current, &previous, &bounds, line, def.secondLength, hooks.spring, hooks.addCollision) {
 			collided = true
 		}
 	}
@@ -278,8 +279,9 @@ func boxWallCollision5504B0(obj *Object, hooks boxWallCollisionHooks5504B0) {
 
 // BoxWallCollision5504B0 binds the restored box/wall collision to the live
 // server wall lookup and the legacy collision queue callbacks.
-func (s *Server) BoxWallCollision5504B0(obj *Object, addCollision func(*Object, types.Pointf), openSecret func(image.Point, *Object)) {
+func (s *Server) BoxWallCollision5504B0(obj *Object, spring func() float32, addCollision func(*Object, types.Pointf), openSecret func(image.Point, *Object)) {
 	boxWallCollision5504B0(obj, boxWallCollisionHooks5504B0{
+		spring:   spring,
 		wallType: s.Sub_57B500,
 		wallDef: func(wallType byte) boxWallDef5504B0 {
 			offset := uintptr(wallType) * 24

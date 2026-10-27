@@ -17,7 +17,7 @@ import (
 
 //export sub_5504B0_go
 func sub_5504B0_go(obj *nox_object_t) {
-	GetServer().S().BoxWallCollision5504B0(asObjectS(obj),
+	GetServer().S().BoxWallCollision5504B0(asObjectS(obj), collisionSpringNative5488B0,
 		func(first *server.Object, impulse types.Pointf) {
 			C.nox_xxx_collSysAddCollision_548630(asObjectC(first), 0, (*C.float2)(unsafe.Pointer(&impulse)))
 		},

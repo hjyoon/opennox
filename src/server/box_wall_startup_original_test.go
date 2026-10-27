@@ -159,6 +159,7 @@ func testBoxWall5504B0Original(t *testing.T, native bool) {
 			}
 			collisions := 0
 			h := boxWallCollisionHooks5504B0{
+				spring: func() float32 { return boxWallSpring5504B0 },
 				wallType: func(grid image.Point, flags byte) int8 {
 					events = append(events, boxWallOriginalEvent5504B0{Service: "wall", Grid: []int32{int32(grid.X), int32(grid.Y)}, Flags: uint32(flags)})
 					if i.Mutation == 3 {
@@ -233,7 +234,7 @@ func testBoxWall5504B0Original(t *testing.T, native bool) {
 						wantEvents = append(wantEvents, event)
 					}
 				}
-				s.BoxWallCollision5504B0(obj, h.addCollision, h.openSecret)
+				s.BoxWallCollision5504B0(obj, h.spring, h.addCollision, h.openSecret)
 			} else if i.Entry == "impulse" {
 				obj.Sub548600(point(i.Impulse))
 			} else {

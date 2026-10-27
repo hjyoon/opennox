@@ -55,6 +55,56 @@ completion requirements.
 
 ## Current findings
 
+### Rigid collisions and live C-owned coefficients
+
+The native box/box, door/circle and door/box paths now preserve the original
+startup PC53/ToZero operations, retained intermediates, binary32 stores and
+unordered comparisons. Door mode remains a signed C integer: exactly one
+applies linear force, zero selects torque, and other values perform contact
+and wakeup processing without either force. Direction-table and object fields
+are reloaded at their original service boundaries while the cached door
+update pointer remains stable.
+
+The production box/box binding previously read the retired mapped push slot,
+which is zero, instead of its extracted C-owned variable, whose original value
+is 40. Both door roots and box/wall also used a fixed spring of 100. All four
+bindings now read the actual C-owned coefficients at the original load points.
+An executed ownership check confirms the live 40/100 globals, zero retired
+slots and independent changes to the live variables. Fourteen additional
+controls call the public native bodies with those actual providers, real
+mapped direction tables and, for eight box/wall controls, the real wall index
+and stock definition table. All fixture state and tables are restored.
+Queueing, wakeup and secret contact remain declared observation services;
+these controls do not claim direct execution of the C export ABI.
+
+Complete unchanged original roots, geometry helpers, impulse/mass routines
+and team predicates run for 1,263 conditions in both startup and nearest
+control modes: 2,526 top-level executions. Sixteen sealed ranges total
+4,088 bytes; the sealed NextTeam routine is not entered by the empty-registry
+controls. Collision queueing, wakeup, door queueing, updatable insertion and
+priority messages are the five explicit services. The initial 1,251-condition
+matrix exposes 540 mismatching leaf conditions before the fix. Twelve added
+negative, zero and infinite damping conditions preserve every previous row.
+All 1,263 startup outputs, service snapshots and native C-owned object/update
+bytes match. Eight separate spring conditions execute the complete original
+box/wall bundle in both modes. No signaling-NaN expectations come from
+Unicorn; shared arithmetic helpers, the impulse method and the product FP mode
+remain unchanged. These are controlled production-path fixtures, not observed
+stock campaign incidents.
+
+The existing box/wall test receives only its original stock-100 spring
+provider and the new public-call argument. Its conditions, expected outputs
+and assertions are unchanged. Every other prior test body, all prior frozen
+fixtures and the published E2E inputs remain unchanged. The final normal
+root/server/legacy run passes 236,699 events with 16 skips in 195.745 seconds.
+Every prior terminal result and multiplicity is retained, with 1,281 added
+passes. Comparison normalizes three ASLR address suffixes in unchanged
+fault-boundary test names; the raw label differences remain preserved.
+Focused highres checks with cgocheck2 and checkptr level 2
+pass 2,197 events in 105.004 seconds, including compilation. A single clean
+ARM64 product and the unchanged published recovery segment qualify this
+revision separately; these checks do not establish overall 100%.
+
 ### Box/wall startup geometry and shared impulse accumulation
 
 The native box/wall bundle now preserves startup PC53/ToZero arithmetic,
@@ -111,7 +161,10 @@ both original upper Urchins still dead, all three original resource pickups
 and a manual Save. Eighteen parameterless GET observations, full input/save
 manifests and the final save screen are qualified. Source Save, assets,
 configuration and executable retain their hashes; earlier combat is not
-replayed. Windows 386/AMD64 and normal Linux AMD64 native CI are running.
+replayed. This revision's Windows 386/AMD64 and normal Linux AMD64 native CI
+have passed; all three products and raw reports are preserved and qualified.
+Linux confirms 232,842 passes, seven skips and all 56 expected packages, plus
+the separate normal default-link damage gate.
 Ten closed text logs are transparently APFS-compressed, preserving their
 contents, paths, hashes, permissions, ownership and modification times and
 saving 3,574,419,456 physical bytes. Saves, assets, products and caches remain.

@@ -17,7 +17,7 @@ import (
 
 //export sub_5488B0_go
 func sub_5488B0_go(door, circle *nox_object_t, moveCircle C.int) {
-	GetServer().S().DoorCircleCollision5488B0(asObjectS(door), asObjectS(circle), moveCircle != 0,
+	GetServer().S().DoorCircleCollision5488B0(asObjectS(door), asObjectS(circle), int32(moveCircle), collisionSpringNative5488B0,
 		func(first, second *server.Object, normal types.Pointf) {
 			C.nox_xxx_collSysAddCollision_548630(asObjectC(first), C.uintptr_t(uintptr(second.CObj())), (*C.float2)(unsafe.Pointer(&normal)))
 		},

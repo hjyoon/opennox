@@ -16,7 +16,7 @@ import (
 
 //export sub_550F80_go
 func sub_550F80_go(first, second *nox_object_t) {
-	GetServer().S().BoxBoxCollision550F80(asObjectS(first), asObjectS(second),
+	GetServer().S().BoxBoxCollision550F80(asObjectS(first), asObjectS(second), collisionPushScaleNative550F80,
 		func(collisionFirst, collisionSecond *server.Object, normal types.Pointf) {
 			C.nox_xxx_collSysAddCollision_548630(asObjectC(collisionFirst), C.uintptr_t(uintptr(collisionSecond.CObj())), (*C.float2)(unsafe.Pointer(&normal)))
 		},

@@ -16,7 +16,7 @@ import (
 
 //export sub_551250_go
 func sub_551250_go(door, box *nox_object_t, moveBox C.int) {
-	GetServer().S().DoorBoxCollision551250(asObjectS(door), asObjectS(box), moveBox != 0,
+	GetServer().S().DoorBoxCollision551250(asObjectS(door), asObjectS(box), int32(moveBox), collisionSpringNative5488B0,
 		func(first, second *server.Object, normal types.Pointf) {
 			C.nox_xxx_collSysAddCollision_548630(asObjectC(first), C.uintptr_t(uintptr(second.CObj())), (*C.float2)(unsafe.Pointer(&normal)))
 		},

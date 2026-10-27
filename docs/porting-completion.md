@@ -110,6 +110,20 @@ checkptr level 2 pass 5,628 events in 100.202 seconds, including compilation.
 A single clean normal ARM64 product and the
 unchanged published recovery E2E qualify runtime behavior separately.
 
+The clean normal ARM64 product at `e4b3950` builds in 12.281 seconds. The
+unchanged published recovery E2E passes in 30.050 seconds from the exact
+earned combat Save, ending with HP26/MP56, poison zero, the retained book,
+both upper Urchins still dead, all three resource pickups and a manual Save.
+Eighteen parameterless GET observations, full manifests and the final save
+screen are qualified. The source Save, assets, configuration and executable
+retain their hashes. Earlier combat, live elevator passenger transport and
+whole chapters are not replayed or newly certified. Its Windows 386/AMD64
+and normal Linux AMD64 native jobs are running; all three native products
+for preceding revision `9606177` are qualified. Detailed workspace evidence
+also records 37 closed build archives transparently compressed without deleting
+cache entries, preserving their original bytes, hashes, paths, ownership,
+permissions and modification times at compression.
+
 ### Elevator and shaft collision startup precision
 
 Elevator and shaft collisions now preserve the original startup PC53/ToZero
@@ -178,7 +192,7 @@ and Linux AMD64 native jobs all pass, with all three products preserved and
 ZIP digests, architecture and clean Go 1.26.9 revision verified. Linux raw
 records independently recount 237,161 passes and seven skips across all 56
 expected packages; the default-link damage check passes 133,041 events with
-MALLOC_PERTURB_=0. Windows root/server/legacy package tests pass on both
+`MALLOC_MMAP_THRESHOLD_=0`. Windows root/server/legacy package tests pass on both
 architectures. Earlier product `076d257` also has all native products qualified.
 Existing saves and validation records remain
 preserved; transparent APFS compression rechecks original bytes, hashes,
@@ -251,7 +265,7 @@ affected segment runs on the new product. Its Windows 386/AMD64 and normal
 Linux AMD64 native CI all pass. All three native artifacts are preserved,
 their ZIP digests and clean Go 1.26.9 revisions verified. Linux independently
 recounts 235,311 passes and seven skips across all 56 expected packages; the
-default-link damage check passes 133,041 events with MALLOC_PERTURB_=0.
+default-link damage check passes 133,041 events with `MALLOC_MMAP_THRESHOLD_=0`.
 Windows verifies both native PE architectures and root/server/legacy package
 tests. Detailed evidence is preserved in
 `circle-collision-native-port` in the validation workspace.

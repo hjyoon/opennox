@@ -5919,32 +5919,9 @@ void nox_xxx_elevatorFn_53B750(nox_object_t* candidate, nox_object_t* elevator) 
 }
 
 //----- (0053B860) --------------------------------------------------------
-void nox_xxx_updatePhantomPlayer_53B860(int a1) {
-	float* v1; // edx
-	double v2; // st7
-	double v3; // st6
-	int v4;    // edx
-	short v5;  // ax
-	bool v6;   // sf
-	float v7;  // [esp+8h] [ebp-4h]
-
-	v1 = *(float**)(a1 + 748);
-	v2 = *(float*)(*(uint32_t*)v1 + 56) - v1[1];
-	v3 = *(float*)(*(uint32_t*)v1 + 60) - v1[2];
-	v7 = v3;
-	if (v3 * v7 + v2 * v2 <= 160000.0) {
-		*(float*)(a1 + 64) = *(float*)(*(uint32_t*)v1 + 56) - v2;
-		*(float*)(a1 + 68) = *(float*)(*(uint32_t*)v1 + 60) - v7;
-		v4 = *(uint32_t*)v1;
-		v5 = *(uint16_t*)(v4 + 124) + 128;
-		v6 = (short)(*(uint16_t*)(v4 + 124) - 128) < 0;
-		*(uint16_t*)(a1 + 126) = v5;
-		while (*(uint16_t*)(a1 + 126) >= 256) {
-			*(uint16_t*)(a1 + 126) -= 256;
-		}
-	} else {
-		nox_xxx_delayedDeleteObject_4E5CC0(a1);
-	}
+extern void nox_xxx_updatePhantomPlayer_53B860_go(nox_object_t* source);
+void nox_xxx_updatePhantomPlayer_53B860(nox_object_t* source) {
+    nox_xxx_updatePhantomPlayer_53B860_go(source);
 }
 
 //----- (0053B8F0) --------------------------------------------------------

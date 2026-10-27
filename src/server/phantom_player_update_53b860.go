@@ -51,22 +51,29 @@ func phantomPlayerUpdateNative53B860(source *Object, delayedDelete func(*Object)
 		return
 	}
 
-	// The original x87 code keeps the coordinate differences in extended
-	// precision, except for the Y operand that it explicitly rounds to float.
-	dx := float64(target.PosVec.X) - float64(update.Position.X)
-	dy := float64(target.PosVec.Y) - float64(update.Position.Y)
-	dyRounded := float64(float32(dy))
-	distanceSquared := dx*dx + dy*dyRounded
-	if !(distanceSquared <= phantomPlayerMaxDistanceSquared53B860) {
+	// Startup PC53/ToZero retains both differences. FST stores Y without
+	// popping it, and the product uses that stored Y as its memory operand.
+	dx := objectForceSub53_52DF80(float64(target.PosVec.X), objectForceMemory32_52DF80(update.Position.X))
+	dy := objectForceSub53_52DF80(float64(target.PosVec.Y), objectForceMemory32_52DF80(update.Position.Y))
+	dyStored := experienceSpill32TowardZero(dy)
+	squareY := objectForceMul53_52DF80(dy, objectForceMemory32_52DF80(dyStored))
+	squareX := objectForceMul53_52DF80(dx, dx)
+	distanceSquared := objectForceAdd53_52DF80(squareY, squareX)
+	// The original C0|C3 gate keeps unordered distances as well as <=.
+	if distanceSquared > phantomPlayerMaxDistanceSquared53B860 {
 		if delayedDelete != nil {
 			delayedDelete(source)
 		}
 		return
 	}
 
-	source.NewPos.X = float32(float64(target.PosVec.X) - dx)
-	source.NewPos.Y = float32(float64(target.PosVec.Y) - dyRounded)
-	source.Direction2 = Dir16((uint32(target.Direction1) + 128) & 0xff)
+	source.NewPos.X = experienceSpill32TowardZero(objectForceSub53_52DF80(float64(target.PosVec.X), dx))
+	source.NewPos.Y = experienceSpill32TowardZero(objectForceSub53_52DF80(float64(update.Target.PosVec.Y), objectForceMemory32_52DF80(dyStored)))
+	direction := uint16(update.Target.Direction1) + 128
+	if int16(direction) >= 256 {
+		direction &= 255
+	}
+	source.Direction2 = Dir16(direction)
 }
 
 // PhantomPlayerUpdate53B860 restores GAME.EXE 0053B860 without truncating the

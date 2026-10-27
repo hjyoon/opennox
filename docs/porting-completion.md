@@ -55,6 +55,49 @@ completion requirements.
 
 ## Current findings
 
+### PhantomPlayer native entry and original numerical gates
+
+The remaining PhantomPlayer C entry now forwards an object pointer to its
+existing native Go dispatch. The update preserves startup PC53/ToZero
+subtraction, multiplication, addition and binary32 stores. Y keeps its wide
+difference while the squared-distance product also reads its stored binary32
+value. The original C0|C3 gate retains unordered distances; the previous Go
+predicate deleted them. Direction addition wraps at sixteen bits, and its
+signed comparison preserves negative encoded words instead of unconditionally
+masking to eight bits. Target reloads retain their original order. Shared
+arithmetic, the registered native record layout, dynamic Go dispatch and the
+world deletion binding remain unchanged.
+
+The complete unchanged 135-byte original body and its four-byte threshold
+execute for 494 conditions in startup and nearest control modes: 988 original
+calls. Inputs include deterministic finite coordinates, adjacent radius edges,
+signed direction boundaries, eight source-as-target aliases, quiet special
+values and the exact historical NaN-test input. Deletion is an explicit service
+whose target and visible state are observed; the transitive world lifecycle is
+not part of this comparison. No signaling-NaN expectations come from Unicorn.
+The existing native invalid-data guards are retained; these valid-record
+observations do not claim parity with original null faults.
+
+Before correction, the native server path differs on 110 leaves and matches
+384 controls. All 494 now match through both the public server method and the
+actual C entry on guarded C-owned source, target and update frames above 4 GiB.
+Every native frame and surrounding canary is checked. One historical NaN test
+keeps its identity and inputs, but its expectations are original-qualified:
+no deletion, exact position words `7fc00000/43480000` and direction `0080`.
+All other old assertions, earlier frozen inputs and the new comparison engine
+are unchanged. The initial new-test syntax/build failure, original old source
+and every before result remain preserved.
+
+The single final normal root/server/legacy run passes 244,424 events with
+16 skips in 180.226 seconds. All previous results and multiplicities remain,
+with 990 additional passes; comparison normalizes only three unchanged
+ASLR-bearing fault-test names. Focused highres checks with cgocheck2 and
+checkptr level 2 pass 1,027 events in 99.631 seconds, including compilation
+and 27 existing direct-Go update-dispatch controls with live Go pointer graphs.
+Detailed evidence is preserved in `phantom-player-startup-port` in the validation
+workspace. These controlled findings do not certify a complete chapter or
+overall 100%.
+
 ### Native elevator updates, passengers and audio entries
 
 All five remaining C elevator update, passenger and audio entry points now
@@ -118,8 +161,13 @@ Eighteen parameterless GET observations, full manifests and the final save
 screen are qualified. The source Save, assets, configuration and executable
 retain their hashes. Earlier combat, live elevator passenger transport and
 whole chapters are not replayed or newly certified. Its Windows 386/AMD64
-and normal Linux AMD64 native jobs are running; all three native products
-for preceding revision `9606177` are qualified. Detailed workspace evidence
+and normal Linux AMD64 native jobs all pass, with all three products preserved
+and ZIP digest, architecture and clean Go 1.26.9 revision verified. Linux raw
+records independently recount 240,858 passes and seven skips across all 56
+expected packages. The default-link damage check passes 133,041 events with
+`MALLOC_MMAP_THRESHOLD_=0`; Windows root/server/legacy package tests pass on
+both architectures. All three native products for preceding revision
+`9606177` are also qualified. Detailed workspace evidence
 also records 37 closed build archives transparently compressed without deleting
 cache entries, preserving their original bytes, hashes, paths, ownership,
 permissions and modification times at compression.

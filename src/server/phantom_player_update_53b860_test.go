@@ -100,6 +100,8 @@ func TestPhantomPlayerUpdateNative53B860DeletesOutsideRadius(t *testing.T) {
 }
 
 func TestPhantomPlayerUpdateNative53B860DeletesNaNDistance(t *testing.T) {
+	// Historical test identity retained. Complete original 0053B860 keeps
+	// the unordered distance and writes 7fc00000/43480000 with direction 0080.
 	target := &Object{PosVec: types.Ptf(float32(math.NaN()), 200)}
 	update := &PhantomPlayerUpdateData{Target: target, Position: types.Ptf(100, 200)}
 	source := &Object{
@@ -111,11 +113,11 @@ func TestPhantomPlayerUpdateNative53B860DeletesNaNDistance(t *testing.T) {
 
 	phantomPlayerUpdateNative53B860(source, func(obj *Object) { deleted = obj })
 
-	if deleted != source {
-		t.Fatalf("deleted = %p, want %p", deleted, source)
+	if deleted != nil {
+		t.Fatalf("deleted = %p, want nil for the original unordered gate", deleted)
 	}
-	if source.NewPos != (types.Ptf(7, 8)) || source.Direction2 != 33 {
-		t.Fatalf("state changed to NewPos=%v Direction2=%d", source.NewPos, source.Direction2)
+	if math.Float32bits(source.NewPos.X) != 0x7fc00000 || math.Float32bits(source.NewPos.Y) != 0x43480000 || source.Direction2 != 128 {
+		t.Fatalf("original unordered state differs: NewPos=%v Direction2=%d", source.NewPos, source.Direction2)
 	}
 	runtime.KeepAlive(target)
 	runtime.KeepAlive(update)

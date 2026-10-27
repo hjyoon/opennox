@@ -1,1 +1,1 @@
-2026-10-27: qualify native Linux AMD64 after the GLOBAL merge buffer, server lifecycle, fixed-width statistics tag and native fixture portability changes.
+2026-10-27: qualify native Linux AMD64 after original backbuffer selector/counter/skip semantics, native pixel-and-row ownership swaps, renderer retirement handling and original unavailable surface initialization were ported and checked against GAME.EXE.

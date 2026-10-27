@@ -22,19 +22,34 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
+type videoPixelBuffer struct {
+	img      *noximage.Image16
+	free     func()
+	rows     []*uint16
+	freeRows func()
+}
+
+type videoPixelBuffers struct {
+	videoPixelBuffer
+	back     videoPixelBuffer
+	onResize []func(sz image.Point)
+}
+
+type videoBackBufferCopyMode uint8
+
+const (
+	videoCopyLocked videoBackBufferCopyMode = iota
+	videoCopyDirect
+	videoCopyBlit
+)
+
 var (
-	nox_win_width             int = noxDefaultWidth
-	nox_win_height            int = noxDefaultHeight
-	nox_pixbuffer_3798788_arr []byte
-	dword_5d4594_805860       bool
-	nox_enable_threads        = true
-	noxPixBuffer              struct {
-		img      *noximage.Image16
-		free     func()
-		rows     []*uint16
-		freeRows func()
-		onResize []func(sz image.Point)
-	}
+	nox_win_width        int = noxDefaultWidth
+	nox_win_height       int = noxDefaultHeight
+	dword_5d4594_805860  bool
+	nox_enable_threads   = true
+	noxPixBuffer         videoPixelBuffers
+	videoCopyMode        videoBackBufferCopyMode
 	dword_5d4594_1311936 bool
 	func_5d4594_1311924  func()
 	dword_5d4594_1193672 bool
@@ -152,7 +167,7 @@ func (c *Client) videoSetGameMode(mode image.Point) {
 
 func nox_video_setBackBufferCopyFunc_4AD100() error {
 	if nox_video_renderTargetFlags&0x40 != 0 {
-		return errors.New("nox_video_setBackBufferCopyFunc_4AD100: flag not implemented")
+		videoCopyMode = videoCopyBlit
 	} else {
 		nox_video_setBackBufferCopyFunc2_4AD150()
 	}
@@ -161,9 +176,38 @@ func nox_video_setBackBufferCopyFunc_4AD100() error {
 }
 
 func nox_video_setBackBufferCopyFunc2_4AD150() {
-	if nox_video_renderTargetFlags&0x40 != 0 {
-		panic("not implemented")
+	videoCopyMode = videoCopyLocked
+	if nox_video_renderTargetFlags&0x20 != 0 {
+		videoCopyMode = videoCopyDirect
 	}
+}
+
+// DirectDraw's locked and direct copies share the native upload boundary. The
+// original direct copy has no failure return; the locked copy can fail before
+// copying. Blits ignore the software skip flag and swap only after success.
+func copyVideoBackBuffer(present func(*noximage.Image16) bool) {
+	if videoCopyMode != videoCopyBlit && memmap.Uint32(0x973A20, 592) != 0 {
+		return
+	}
+	if videoCopyMode == videoCopyDirect {
+		present(noxPixBuffer.img)
+		*memmap.PtrUint32(0x973A20, 496)++
+		return
+	}
+	if videoCopyMode == videoCopyBlit && (noxPixBuffer.img == nil || noxPixBuffer.back.img == nil) {
+		return
+	}
+	if !present(noxPixBuffer.img) {
+		return
+	}
+	if videoCopyMode == videoCopyBlit {
+		// 4861A0 exchanges pixel/row pairs; 48A5E0 exchanges the surfaces
+		// attached to those pixels. Each Image16 is the native source view.
+		noxPixBuffer.videoPixelBuffer, noxPixBuffer.back = noxPixBuffer.back, noxPixBuffer.videoPixelBuffer
+		publishVideoPixBuffer()
+		return
+	}
+	*memmap.PtrUint32(0x973A20, 496)++
 }
 
 func nox_video_callCopyBackBuffer_4AD170() {
@@ -209,7 +253,9 @@ func drawInitAll(sz image.Point, flags int) error {
 		return err
 	}
 	sub_47D200()
-	nox_video_initPixbuffer_486090(sz)
+	if err := nox_video_initPixbuffer_486090(sz); err != nil {
+		return err
+	}
 	sub_49F610(sz)
 	if res := sub_4338D0(); res == 0 {
 		return errors.New("sub_4338D0 failed")
@@ -381,59 +427,77 @@ func nox_client_clearScreen_440900() {
 }
 
 func nox_free_pixbuffers_486110() {
-	if memmap.Uint32(0x5D4594, 1193200) == 0 {
-		noxPixBuffer.img = nil
-		if noxPixBuffer.free != nil {
-			noxPixBuffer.free()
-			noxPixBuffer.free = nil
+	owned := memmap.Uint32(0x5D4594, 1193200) == 0
+	for _, buffer := range []*videoPixelBuffer{&noxPixBuffer.videoPixelBuffer, &noxPixBuffer.back} {
+		if owned {
+			buffer.img = nil
+			if buffer.free != nil {
+				buffer.free()
+				buffer.free = nil
+			}
 		}
-
-		if nox_pixbuffer_3798788_arr != nil {
-			alloc.FreeSlice(nox_pixbuffer_3798788_arr)
-			nox_pixbuffer_3798788_arr = nil
+		buffer.rows = nil
+		if buffer.freeRows != nil {
+			buffer.freeRows()
+			buffer.freeRows = nil
 		}
 	}
-	noxPixBuffer.rows = nil
-	if noxPixBuffer.freeRows != nil {
-		noxPixBuffer.freeRows()
-		noxPixBuffer.freeRows = nil
-		legacy.Set_nox_pixbuffer_rows_3798784(nil)
-	}
+	publishVideoPixBuffer()
 }
 
-func nox_video_initPixbuffer_486090(sz image.Point) {
+func nox_video_initPixbuffer_486090(sz image.Point) error {
 	videoLog.Printf("initializing pixbuffer: %v", sz)
 	nox_video_initPixbufferData_4861D0(sz)
 	nox_video_initPixbufferRows_486230()
+	if nox_video_renderTargetFlags&0x40 != 0 {
+		// The original 48A5D0 is xor eax,eax; ret: creation of a wrapped
+		// surface fails even after both buffers and row tables are allocated.
+		return errors.New("pixel-buffer surface is unavailable")
+	}
 	for _, fnc := range noxPixBuffer.onResize {
 		fnc(sz)
 	}
+	return nil
 }
 
 func nox_video_initPixbufferData_4861D0(sz image.Point) {
 	if memmap.Uint32(0x5D4594, 1193200) != 0 {
 		return
 	}
-	data, free := alloc.Make([]uint16{}, sz.X*sz.Y)
-	noxPixBuffer.free = free
-	noxPixBuffer.img = noximage.NewImage16WithData(data, sz)
-	noxClient.r.SetPixBuffer(noxPixBuffer.img)
-	if nox_video_renderTargetFlags&0x40 == 0 {
-		return
+	for i, buffer := range []*videoPixelBuffer{&noxPixBuffer.videoPixelBuffer, &noxPixBuffer.back} {
+		if i == 1 && nox_video_renderTargetFlags&0x40 == 0 {
+			break
+		}
+		data, free := alloc.Make([]uint16{}, sz.X*sz.Y)
+		buffer.free = free
+		buffer.img = noximage.NewImage16WithData(data, sz)
 	}
-
-	nox_pixbuffer_3798788_arr, _ = alloc.Make([]byte{}, len(data))
+	publishVideoPixBuffer()
 }
 
 func nox_video_initPixbufferRows_486230() {
-	sz := noxPixBuffer.img.Size()
-	ptrs, freeRows := alloc.Make([]*uint16{}, sz.Y)
-	noxPixBuffer.rows = ptrs
-	noxPixBuffer.freeRows = freeRows
-	legacy.Set_nox_pixbuffer_rows_3798784(unsafe.Pointer(&noxPixBuffer.rows[0]))
-	for y := 0; y < sz.Y; y++ {
-		noxPixBuffer.rows[y] = &noxPixBuffer.img.Row(y)[0]
+	for i, buffer := range []*videoPixelBuffer{&noxPixBuffer.videoPixelBuffer, &noxPixBuffer.back} {
+		if i == 1 && nox_video_renderTargetFlags&0x40 == 0 {
+			break
+		}
+		sz := buffer.img.Size()
+		buffer.rows, buffer.freeRows = alloc.Make([]*uint16{}, sz.Y)
+		for y := 0; y < sz.Y; y++ {
+			buffer.rows[y] = &buffer.img.Row(y)[0]
+		}
 	}
+	publishVideoPixBuffer()
+}
+
+func publishVideoPixBuffer() {
+	if noxClient != nil && noxClient.r != nil {
+		noxClient.r.SetPixBuffer(noxPixBuffer.img)
+	}
+	var rows unsafe.Pointer
+	if len(noxPixBuffer.rows) != 0 {
+		rows = unsafe.Pointer(&noxPixBuffer.rows[0])
+	}
+	legacy.Set_nox_pixbuffer_rows_3798784(rows)
 }
 
 func (r *NoxRender) noxDrawCursor(a1 *noxrender.Image, pos image.Point) int {

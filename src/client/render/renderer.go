@@ -104,9 +104,15 @@ func (r *Renderer) CopyBuffer(img *noximage.Image16) {
 	r.present(img)
 }
 
-func (r *Renderer) present(img *noximage.Image16) {
+// TryCopyBuffer reports whether the live renderer accepted this presentation.
+// Closed renderers have retired their surface and cannot accept a frame.
+func (r *Renderer) TryCopyBuffer(img *noximage.Image16) bool {
+	return r.present(img)
+}
+
+func (r *Renderer) present(img *noximage.Image16) bool {
 	if r.closed {
-		return
+		return false
 	}
 	sz := img.Size()
 	if img == nil {
@@ -150,6 +156,7 @@ func (r *Renderer) present(img *noximage.Image16) {
 	r.backbuf.Draw(view)
 	r.sc.Present()
 	atomic.AddUint32(&r.ticks, 1)
+	return true
 }
 
 func (r *Renderer) SetStretched(stretch bool) {

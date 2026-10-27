@@ -29,6 +29,7 @@ import (
 	"github.com/opennox/opennox/v1/client/input"
 	"github.com/opennox/opennox/v1/client/render"
 	"github.com/opennox/opennox/v1/client/seat/headless"
+	"github.com/opennox/opennox/v1/common/memmap"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/legacy/common/alloc"
 	"github.com/opennox/opennox/v1/legacy/common/alloc/handles"
@@ -49,6 +50,10 @@ func TestVideoModeTransitionsHeadless(t *testing.T) {
 
 func TestVideoModePersistentGUIFontsHeadless(t *testing.T) {
 	runVideoModeTransitionChild(t, "fonts")
+}
+
+func TestVideoBackBufferHeadless(t *testing.T) {
+	runVideoModeTransitionChild(t, "back-buffer")
 }
 
 func runVideoModeTransitionChild(t *testing.T, phase string) {
@@ -129,6 +134,10 @@ func TestVideoModeTransitionsHeadlessChild(t *testing.T) {
 		t.Fatal(err)
 	}
 	defer c.nox_video_freeFloorBuffer_430EC0()
+	if phase == "back-buffer" {
+		verifyHeadlessBackBuffer(t, c, sc)
+		return
+	}
 	if phase == "fonts" {
 		verifyHeadlessPersistentGUIFonts(t, c, sc)
 		return
@@ -224,6 +233,92 @@ func TestVideoModeTransitionsHeadlessChild(t *testing.T) {
 		t.Fatal("video cleanup left live pixel/row/initialized state")
 	}
 	t.Logf("HEADLESS VIDEO: %d frame checks, %d resize callbacks, %d native row tables above 4 GiB; 3 signed window modes; configs unchanged", steps, resizes, highRows)
+}
+
+// Exercise the raw copy entry with native source views. Original flag0x40
+// surface creation still fails; this is not a successful game-mode startup.
+func verifyHeadlessBackBuffer(t *testing.T, c *Client, sc *headless.Seat) {
+	t.Helper()
+	defer c.Win.Close()
+	notifications, highRows, frames := 0, 0, 0
+	OnPixBufferResize(func(image.Point) { notifications++ })
+	for index, size := range []image.Point{{X: 640, Y: 480}, {X: 800, Y: 600}, {X: 1024, Y: 768}} {
+		nox_free_pixbuffers_486110()
+		nox_video_renderTargetFlags = 0x40
+		if err := nox_video_initPixbuffer_486090(size); err == nil {
+			t.Fatal("original unavailable surface factory unexpectedly initialized")
+		}
+		if err := nox_video_setBackBufferCopyFunc_4AD100(); err != nil {
+			t.Fatal(err)
+		}
+		var frees [4]int
+		for i, buffer := range []*videoPixelBuffer{&noxPixBuffer.videoPixelBuffer, &noxPixBuffer.back} {
+			dataFree, rowsFree := buffer.free, buffer.freeRows
+			buffer.free = func() { frees[2*i]++; dataFree() }
+			buffer.freeRows = func() { frees[2*i+1]++; rowsFree() }
+			if uint64(uintptr(unsafe.Pointer(&buffer.rows[0]))) > 0xffffffff {
+				highRows++
+			}
+		}
+		for frame := 0; frame < 3; frame++ {
+			active, next := noxPixBuffer.img, noxPixBuffer.back.img
+			for i := range active.Pix {
+				active.Pix[i] = uint16((i + 31*frame + 7) & 0x7fff)
+			}
+			want := slices.Clone(active.Pix)
+			before := sc.PresentCount()
+			*memmap.PtrUint32(0x973A20, 496) = 0xffffffff
+			c.copyPixBuffer()
+			got, _ := sc.Snapshot()
+			if sc.PresentCount() != before+1 || got.Size() != size || !slices.Equal(got.Pix, want) {
+				t.Fatal("native renderer did not present the exact pre-swap image")
+			}
+			if noxPixBuffer.img != next || noxPixBuffer.back.img != active || c.r.PixBuffer() != next || *legacy.VideoModeRowsC != &noxPixBuffer.rows[0] || noxPixBuffer.rows[size.Y-1] != &next.Row(size.Y - 1)[0] || memmap.Uint32(0x973A20, 496) != 0xffffffff {
+				t.Fatal("native image, renderer, C rows or software-only counter disagrees after blit")
+			}
+			frames++
+		}
+		if index == 2 {
+			for _, flags := range []int{0, 0x20} {
+				nox_video_renderTargetFlags = flags
+				if err := nox_video_setBackBufferCopyFunc_4AD100(); err != nil {
+					t.Fatal(err)
+				}
+				before := sc.PresentCount()
+				*memmap.PtrUint32(0x973A20, 592) = 1
+				c.copyPixBuffer()
+				if sc.PresentCount() != before || memmap.Uint32(0x973A20, 496) != 0 {
+					t.Fatal("software copy ignored its skip flag")
+				}
+			}
+			*memmap.PtrUint32(0x973A20, 592) = 0
+			c.Win.Close()
+			for _, flags := range []int{0, 0x20, 0x40} {
+				nox_video_renderTargetFlags = flags
+				if err := nox_video_setBackBufferCopyFunc_4AD100(); err != nil {
+					t.Fatal(err)
+				}
+				active, rows, before := noxPixBuffer.img, *legacy.VideoModeRowsC, sc.PresentCount()
+				c.copyPixBuffer()
+				wantCount := uint32(0)
+				if flags == 0x20 {
+					wantCount = 1
+				}
+				if sc.PresentCount() != before || noxPixBuffer.img != active || *legacy.VideoModeRowsC != rows || memmap.Uint32(0x973A20, 496) != wantCount {
+					t.Fatal("retired renderer changed buffers or original mode-specific counter")
+				}
+			}
+		}
+		nox_free_pixbuffers_486110()
+		nox_free_pixbuffers_486110()
+		if frees != [4]int{1, 1, 1, 1} || c.r.PixBuffer() != nil || *legacy.VideoModeRowsC != nil {
+			t.Fatalf("resized/swapped native buffers were not freed exactly once: %v", frees)
+		}
+	}
+	if notifications != 0 {
+		t.Fatal("failed startup or buffer swaps sent resize notifications")
+	}
+	t.Logf("HEADLESS VIDEO: %d exact native frames after image/row/source swaps; %d row tables above 4 GiB; resize ownership, software skip and retired-renderer failure verified", frames, highRows)
 }
 
 func verifyHeadlessPersistentGUIFonts(t *testing.T, c *Client, sc *headless.Seat) {

@@ -69,8 +69,7 @@ func (c *Client) clientDraw() bool {
 }
 
 func (c *Client) copyPixBuffer() {
-	c.Win.CopyBuffer(noxPixBuffer.img)
-	*memmap.PtrUint32(0x973A20, 496)++
+	copyVideoBackBuffer(c.Win.TryCopyBuffer)
 }
 
 func (c *Client) resetRenderer(sz image.Point, init bool) error {

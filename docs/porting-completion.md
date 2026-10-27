@@ -55,6 +55,41 @@ completion requirements.
 
 ## Current findings
 
+### Native Go defense multiplier adapters
+
+The durability and equipped-item Defend adapters now preserve the original
+ArmorMultiplierEffect and DurabilityMultiplierEffect startup arithmetic.
+The latter subtracts its coefficient from one, then separately adds one;
+both PC53 steps, the multiplication and the binary32 store round toward zero.
+The adapters use shared typed Go scalar functions and retain their existing
+callback identity, pointer and integer-context contracts. Host FP mode is
+unchanged. The corresponding C leaf bodies already preserve this arithmetic.
+
+Unchanged original 16-byte and 28-byte leaves are reexecuted for all 64 frozen
+startup contexts plus nearest controls, with no substituted services. Every
+nonoutput byte, return pointer, stack and control word is checked; the existing
+256-row fixture remains byte-identical. Its 32 finite inputs per effect cover
+decimal, signed, subnormal, overflow and small-coefficient boundaries.
+
+Before the fix, 36 of 128 native Go adapter cases disagree with the original.
+Both the C-owned durability route and the exported equipped-item C loop now
+match all inputs while preserving object bytes and value canaries. Four further
+registered C DefaultDamage cases visit slots two and three and reach the real
+HP setter: original context words3/1 become1, giving HP200->199 for both effects.
+Sound registration and final transport are fixture boundaries; damage and HP
+callbacks are real. Complete macOS ARM64 root/server/legacy packages pass
+233,289 terminal events with sixteen skips, retaining the earlier results and
+adding 134 passing events including parents. The affected root/server/legacy
+tests also pass 1,861 events with highres, cgocheck2 and checkptr=2 together.
+
+An independent full-runtime audit of Sword, MorningStar, WarHammer, WoodenStaff,
+unarmed CLAW/CRUSH and SIMPLE Fist already matches all 840 original contexts.
+Initialized attacks enter the existing common native switch before older
+partial-runtime helpers. That audit and its exact probe inputs are preserved
+separately; it does not establish a new ordinary-melee gameplay bug.
+Broader native callbacks, campaign repeatability and final feature audits remain
+open.
+
 ### Original startup arithmetic in the non-item damage switch
 
 The shared non-item PlayerDamage switch and the separate caster IMPACT tail

@@ -29,11 +29,11 @@ func itemDurabilityApplyDefendNative4E1560(
 	}
 	fnc := effect.Defend76.Fnc
 	if fnc == C.sub_4E0370 {
-		*value *= effect.Defend76.Valf
+		*value = server.ModifierArmorMultiplier4E0370(*value, effect.Defend76.Valf)
 		return true
 	}
 	if fnc == C.sub_4E0380 {
-		*value *= 2.0 - effect.Defend76.Valf
+		*value = server.ModifierDurabilityMultiplier4E0380(*value, effect.Defend76.Valf)
 		return true
 	}
 	if fnc == C.nullsub_40 || fnc == C.nullsub_41 || fnc == C.nullsub_42 {

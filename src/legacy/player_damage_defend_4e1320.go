@@ -74,10 +74,10 @@ func playerDamageApplyLateDefendNative4E1320(
 	fns := playerDamageLateDefendFunctionsNative4E1320()
 	switch fnc {
 	case fns.armorMultiplier:
-		value := math.Float32frombits(uint32(damage)) * effect.Defend76.Valf
+		value := server.ModifierArmorMultiplier4E0370(math.Float32frombits(uint32(damage)), effect.Defend76.Valf)
 		return int32(math.Float32bits(value))
 	case fns.durabilityMultiplier:
-		value := math.Float32frombits(uint32(damage)) * (2.0 - effect.Defend76.Valf)
+		value := server.ModifierDurabilityMultiplier4E0380(math.Float32frombits(uint32(damage)), effect.Defend76.Valf)
 		return int32(math.Float32bits(value))
 	case fns.resilience, fns.breaking, fns.punctureProne:
 		return damage

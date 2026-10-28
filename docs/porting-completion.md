@@ -129,6 +129,71 @@ forwarders, one constant leaf and31 remaining lexical C candidates. This is
 an inventory, not execution coverage or a measured completion percentage.
 Overall100% remains open.
 
+Source `b7bf385` is pushed to `port/go1.26-multiarch`. Its single clean
+ARM64 Go1.26.9 executable is65,623,426 bytes with SHA256
+`05d255a75278ef7d7e12f38c534161637a3f5d76ee427d66a94d76cd9f8c9533`
+and `vcs.modified=false`. The unchanged original pressure-plate/Bookcase6/
+earned Chain Lightning replay passes in38.656 seconds. Exact (1591,4734)
+endpoint, disabled original plate, active mover, original Urchin HP0/DEAD,
+player HP20/MP72/poison0 and a real manual Save are independently observed.
+Actual menu Load and another manual Save pass in17.676 seconds. The first
+reload incorrectly reuses an older run's fixed MP42 contract; it fails only
+that assertion with72, matching this new Save's pre-load72. Its failure stays
+retained. The second manifest fixes expected MP72 from the authoritative
+motion Save before execution, keeps the original YAML unchanged, and reruns
+from that passing Save. No save bytes or runtime source are patched. All raw
+player log records, API snapshot hashes and saved-player hashes are checked.
+The completed opening, actual lightning beam/77 XP and restored scene frames
+are directly viewed. Reported runtime number2195 is still not established as
+stock extent1974/script1000194601; the pressure-plate route is established.
+
+The unchanged synthetic host Blink replay passes in36.468 seconds on the
+same binary. Native duration/player/wake addresses are all above4GiB;
+origin (3116,2166) becomes (2813,3233), and the live wake destination, origin,
+expiry and target position pass the existing in-game assertions. This is
+host regression coverage, not new earned-campaign Blink credit. Requested
+poison-macro warnings remain absent; the unrelated duplicate SDL linker
+warning remains. Evidence includes
+`current-product-bookcase-chain-and-reload-qualified-v1.json` and
+`current-product-host-blink-qualified-v1.json` in `blink-native-entry-port`.
+
+A separate external test overlay preserves the clean worktree and all
+existing inputs while checking the next Swap callbacks on sourceb7bf385.
+Both actual public C create530CA0 and update530D30 fault on guarded C-owned
+native DEAD-target records above4GiB; ordinary native Go dispatch rejects
+both with1 and leaves the timer unchanged. These are two genuine direct-entry
+defects within the31 candidates, leaving29 other lexical candidates not yet
+executed. Full original Swap fidelity and its native entry port remain next
+work; general normal-cast failure is not inferred. The before fixture and
+raw logs are sealed in `next-swap-native-entry-defects-qualified-v1.json`.
+
+Windows386/amd64 run40757545056 passes native build, help and all three
+uncached root/server/legacy suites. Artifacts12846243410/12848290179 match
+GitHub ZIP digests, PE machines332/34404, clean sourceb7bf385 and Go1.26.9
+build information independently. Complete original CRLF job logs are retained;
+per-test inclusion follows the nonverbose uncached full package pass.
+Linuxamd64 run40757604031 passes all58 expected packages (36 pass,22 skip),
+with269468 test passes and7 skips. Raw JSON explicitly passes all75 new Blink
+terminals. Its separate default-link damage check passes133041 across three
+packages. Artifact12847818624 matches its ZIP digest, ELF machine62, clean
+source revision and product/build metadata independently. Raw JSON, stderr
+and original job logs contain none of the five reported poison-macro warnings.
+All three native jobs/artifacts are closed in
+`all-native-workflows-qualified-v1.json`. Documentation-only followups reuse
+the same executable and do not redispatch. Headless qualification does not
+establish Linux campaign or Windows-peer gameplay.
+
+Next-candidate preparation also seals the whole unchanged original Swap
+create135-byte root and17-byte converter over34 contexts per startup/nearest
+profile. Four callback mutations execute only in the original producer; the
+read-only native Go overlay compares30 pure-service controls with correct
+Swap115 metadata. Twenty-one pass, and nine delay mismatches exactly match
+the original nearest control. Native guards, nonoutputs and balance indices
+remain intact. The initial producer's unused generic Spell4 metadata is
+retained; corrected V2 alone supplies the authoritative reference. This is
+before evidence for the next port, not a completed Swap port or full update
+comparison. Evidence is `next-swap-original-create-before-qualified-v1.json`.
+
 ### Native Tag callbacks, duration conversion and cached player data
 
 The exposed Tag create `530160`, update `530250` and destroy `530270`
@@ -252,9 +317,9 @@ inputs unchanged while qualifying the next Blink entries on source334d563.
 Actual native Go dispatch returns0 and schedules0xf1; the public C create
 returns0 but leaves Frame68 at0x87654321 and changes unexpected native bytes.
 For a native DEAD target, ordinary dispatch returns1 while the actual C
-update faults. Both use C-owned frames above4GiB. These two defects remain
-unported, with their before fixture and logs preserved. The inventory now
-has46 intercepted duration callbacks: nine direct Go exports, three native
+update faults. Both use C-owned frames above4GiB. This records the pre-port state; the newer Blink section above closes both
+entries. Their before fixture and logs remain preserved. The inventory at
+this Tag checkpoint had46 intercepted duration callbacks: nine direct Go exports, three native
 C forwarding wrappers, one constant leaf, and33 remaining C candidates.
 Two of these33 have executed Blink defects; the other31 remain lexical
 candidates. No completion percentage or universal normal-cast failure is

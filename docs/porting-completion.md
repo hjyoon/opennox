@@ -55,6 +55,80 @@ completion requirements.
 
 ## Current findings
 
+### Native Arachnaphobia, Break, Open and BreakAndRemove updates
+
+Four C entries at 53DA60/53DB30/53DBB0/53DC30 now take typed native objects
+and share original-derived Go bodies. All four isolated old C probes fail
+with objects above 4 GiB: Arachnaphobia wrongly enters creation and faults;
+the three status callers miss the expected transition and keep status 2
+and deadline 11. Their flags diagnostic `0x44454144` is hexadecimal text
+`DEAD` from the Flags string formatter, not evidence of numeric corruption. Corrected calls preserve complete C-owned frames
+and canaries. The old PE32 bodies remain unchanged under `#if 0`.
+Break/Open are void update callbacks; their decompiler EAX residue is not a
+consumed pointer output. Registrations, layouts and callback identities stay.
+Expire and Chakram were already retired and receive no new port credit.
+
+Arachnaphobia reads the shared DWORD SmallSpider index, performs/stores a
+lookup only when zero, and passes the signed index independently of pointer
+width. It loads the live owner and position after allocation. Scheduling
+reads the frame after random generation; the final age test reads it again
+and retains unsigned three-FPS wrap/strict boundaries. The actual registered
+Go path now shares the native cache. Its existing public name-based API and
+nil preflight remain. A separate public-adapter test changes the clock inside
+random generation and verifies the original post-call deadline/lifetime.
+
+Break/Open retain bit priority 2, 4, 8; BreakAndRemove dispatches on exact
+full status words. Real status helpers retain their synchronization work.
+Clock/FPS reads follow both status services. Deadline and flag stores retain
+the original ordering; Open does not add flag 0x40. Terminal removal occurs
+before optional public deletion or required raw-entry deletion. Tests compose
+the actual C entries with real native status helpers and an updatable list,
+and check all dirty status words, strict equality and removal-before-delete.
+A C getter independently verifies the same native DWORD cache, including the
+0xffffffff-to-signed-index path; the registered Go path shares that cache.
+
+All 531 bytes of the four complete unchanged original callers execute in
+759 contexts without faults or arithmetic/conversion substitutions. Go and
+actual C each match every resulting state and ordered service snapshot.
+The actual startup x87 control word is retained; these callers only copy
+point words and perform integer operations. Four additional nil-source
+contexts match their original faults and visible prefix/state. Declared
+lookup/allocation/create/random/status/remove/delete bodies and prepared
+reentrant changes are scoped services; full original world composition and
+live campaign effects are separate. The self-contained producer regenerates
+both fixtures and the execution proof byte for byte.
+
+All 3,780 existing tests, fixtures, E2E inputs and goldens retain their hashes;
+there are zero old expectation corrections. One ordinary root/server/legacy
+run passes 262,703 events with 16 skips in 421.728 seconds, retaining all old
+terminal identities/results/multiplicities and adding 1,541 PASS events.
+Focused highres/cgocheck2/checkptr2 and direct-dispatch checks pass 1,577
+in 174.141 seconds. Parent/subtest counts are not completion coverage.
+No passing source checks are repeated for documentation changes. One clean
+product and one unchanged short ordinary-input replay follow the source
+checks; repeated E2E uses the existing campaign runner and saved inputs.
+
+The clean `a00b38d` Go 1.26.9 Darwin/ARM64 product builds once in 13.055
+seconds with unmodified VCS metadata: 65,523,362 bytes, SHA-256
+`ef3824a6378ac7ff7567e3a1755b930b2a01efda3918af4a351f50a0bc3fc593`.
+The unchanged Wizard3 stat-audit replay passes on its first launch in
+53.824 seconds. Both observations retain HP33/MP49, maxima32/98,
+poison0 and exact level3 Wizard stat inputs. Six parameterless GETs, natural
+exit0 and a newly written living manual Save qualify; source Save, assets,
+configuration and binary retain their hashes. The final frame is directly
+viewed and shows the living Wizard, HUD and Korean save-complete message.
+There are zero unported/fatal log hits. This is general Load/stat/Save
+regression evidence, with no live Arachnaphobia/state-update, whole-chapter
+or overall 100% credit. Existing campaign scripts and assertions are reused.
+
+The preceding ToxicCloud source 0f32638 now has three terminal successful
+native jobs: Windows AMD64 122700731995, Windows 386 122700732472 and Linux
+AMD64 122700874092. Their decoded logs, ZIPs and clean Go 1.26.9 PE/ELF products
+are retained and independently checked. Linux recounts 258,586 PASS, seven
+SKIP, all 56 expected packages and three default-link damage package checks.
+No prior workflow is restarted. Remaining nine-cell feature audits and
+UI/audio/peer/stability evidence still prevent an overall 100% claim.
+
 ### Native ToxicCloud roots and target callbacks
 
 The four remaining 53D850/53D8C0/53D960/53D9D0 C entries now take typed native

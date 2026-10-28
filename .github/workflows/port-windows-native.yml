@@ -13,7 +13,7 @@ on:
       # These inputs do not change the Windows server build or native tests.
       - '!scripts/e2e/campaign/**'
       - '!scripts/run-campaign-e2e.py'
-      - '!scripts/tests/test_campaign_e2e.py'
+      - '!scripts/tests/test_campaign*.py'
       - src/**
       - toolchain/go-version.txt
 

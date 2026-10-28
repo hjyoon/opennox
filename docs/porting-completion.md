@@ -97,6 +97,14 @@ no changes. The clean ARM64 product is `592bf04`, SHA-256
 `677805af41faebe347dd3f8ac3a0c7a2507075f520dcfcbdd12b6dc1bd8ce0a9`.
 Later changes affect tests, input/verifier scripts and documentation only.
 
+The fast campaign CI previously selected only `test_campaign_e2e.py`, so its
+successful job ran58 tests and omitted Swap/stat-input modules. It now
+discovers all `test_campaign*.py` files with the same75-test command qualified
+locally. Both push/PR path filters include these modules. The Windows path
+filter likewise excludes campaign-only test edits, keeping input-verifier
+changes in the fast workflow. Updating the native workflow configuration may
+start its own gate once; this does not require restarting the existing runs.
+
 The preceding observation revision `3b187db` now also has successful Windows
 386/AMD64 run40628634081 and Linux AMD64 server run40628717857. All three
 artifact ZIPs, decoded logs and native headers/build metadata are retained

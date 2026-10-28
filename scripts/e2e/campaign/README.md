@@ -103,6 +103,12 @@ strict pointer checks on the changed paths, build one clean normal product,
 and replay the relevant saved segments. Record native platform CI separately;
 an observation timeout does not require restarting an existing CI job.
 
+The fast input-validation workflow discovers every `test_campaign*.py` file,
+including Swap and stat-input negative controls. Campaign-only test changes
+run that workflow without rebuilding the Windows server. This CI job checks
+scenario inputs and outcome-verifier behavior; actual game replay still uses
+the prebuilt product, earned Save and owned assets shown above.
+
 Replay all four segments consecutively with one command and the same prebuilt
 executable:
 

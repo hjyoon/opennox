@@ -74,9 +74,16 @@ func (st *e2eMonsterQuickbarTracker) step(sample e2eMonsterQuickbarSample, avail
 		events = append(events, &seat.KeyboardEvent{Key: st.key, Pressed: false})
 		st.pressed = false
 	}
-	if unusable || st.reads >= 600 {
+	if st.reads >= 600 || sample.target.playerHP == 0 || unusable && !st.started {
 		st.finished = true
 		return events, true
+	}
+	if unusable {
+		// A queued key may still be chanting or awaiting its duration tick.
+		// Losing the original aim must not let later menu/input actions run
+		// before the requested native observation window has elapsed.
+		st.finished = sample.frame-st.castFrame >= st.ticks
+		return events, st.finished
 	}
 	events = append(events, &seat.MouseMoveEvent{Pos: sample.target.point, Relative: false})
 	close := math.Hypot(float64(sample.mouse.X)-float64(sample.target.point.X), float64(sample.mouse.Y)-float64(sample.target.point.Y)) <= 8
@@ -168,6 +175,8 @@ func (sc *e2eScenario) CastAtNearestMonsterInput(typeID string, offset image.Poi
 	var last e2eMonsterQuickbarSample
 	var positionFrame uint32
 	positionRead := false
+	var swapFrame uint32
+	swapRead := false
 	sc.addWhen(0, name+" actual mouse and quickbar tracking", 1200, func() bool {
 		sample, available := e2eReadMonsterQuickbarSample(typeID, offset.Add(e2eMonsterQuickbarProbe(tracker.probe)), &selection)
 		last = sample
@@ -178,6 +187,10 @@ func (sc *e2eScenario) CastAtNearestMonsterInput(typeID string, offset image.Poi
 		if sample.hasPositions && (!positionRead || sample.frame != positionFrame) {
 			positionRead, positionFrame = true, sample.frame
 			e2eLogMonsterQuickbarPosition(sample, selection.identity, key, tracker.castFrame, tracker.started)
+		}
+		if tracker.started && sample.playerScriptID != 0 && (!swapRead || sample.frame != swapFrame) {
+			swapRead, swapFrame = true, sample.frame
+			e2eObserveMonsterQuickbarSwapTarget(sample.frame, tracker.castFrame, sample.playerScriptID, selection.identity, key)
 		}
 		e2eQueueInput(events...)
 		return done

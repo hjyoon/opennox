@@ -86,6 +86,7 @@ func e2eWatchMonsterQuickbarPositions(typeID string, identity e2eMonsterInputIde
 		sample, found := e2eReadMonsterQuickbarPosition(typeID, identity)
 		if watch.observe(sample, found) {
 			e2eLogMonsterQuickbarPosition(sample, identity, key, castFrame, true)
+			e2eObserveMonsterQuickbarSwapTarget(sample.frame, castFrame, sample.playerScriptID, identity, key)
 		}
 	})
 }

@@ -198,6 +198,7 @@ func TestMonsterQuickbarInputBoundsReadsAndRetainsNoLiveReferences(t *testing.T)
 	check(reflect.TypeOf(st))
 	check(reflect.TypeOf(sample))
 	check(reflect.TypeOf(e2eMonsterQuickbarPositionWatch{}))
+	check(reflect.TypeOf(e2eMonsterQuickbarSwapTarget{}))
 }
 
 func TestMonsterQuickbarInputRuntimeCallsOnlyReadersAndOriginalInput(t *testing.T) {
@@ -212,7 +213,7 @@ func TestMonsterQuickbarInputRuntimeCallsOnlyReadersAndOriginalInput(t *testing.
 		"observe", "Frame", "GetMousePos", "Nox_xxx_clientGetSpriteAtCursor_476F90", "UpdateDataPlayer",
 		"e2eMonsterQuickbarConfig", "e2eError", "addWhen", "e2eReadMonsterQuickbarSample", "Add",
 		"e2eMonsterQuickbarProbe", "step", "e2eQueueInput", "Printf",
-		"e2eLogMonsterQuickbarPosition", "e2eWatchMonsterQuickbarPositions"} {
+		"e2eLogMonsterQuickbarPosition", "e2eWatchMonsterQuickbarPositions", "e2eObserveMonsterQuickbarSwapTarget"} {
 		allowed[name] = true
 	}
 	ast.Inspect(file, func(node ast.Node) bool {
@@ -309,7 +310,7 @@ func TestMonsterQuickbarPositionRuntimeCallsOnlyReaders(t *testing.T) {
 	allowed := map[string]bool{}
 	for _, name := range []string{"liveFrame", "Frame", "HostUnit", "Flags", "HasAny", "First", "Next", "Class", "Has",
 		"GetUnitNetCode", "int", "ByInd", "ID", "TickRate", "TickHook", "observe", "Printf",
-		"e2eReadMonsterQuickbarPosition", "e2eLogMonsterQuickbarPosition"} {
+		"e2eReadMonsterQuickbarPosition", "e2eLogMonsterQuickbarPosition", "e2eObserveMonsterQuickbarSwapTarget"} {
 		allowed[name] = true
 	}
 	ast.Inspect(file, func(node ast.Node) bool {

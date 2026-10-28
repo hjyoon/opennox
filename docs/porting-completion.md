@@ -55,6 +55,104 @@ completion requirements.
 
 ## Current findings
 
+### Native Sentry list, scan and ray transmission
+
+All six active 510E50/510E60/510FD0/511020/511100/511250 C entries now
+share the existing server's native-width Sentry list. Four object/context
+entries use typed native pointers; reset/send are the two list-control
+entries. Two old healthy C probes SIGSEGV, while unlink leaves the native
+marker set and packet creation reads the wrong object words. Corrected C
+calls preserve complete native object/data/player/context/ray/health frames
+and canaries. Original C bodies remain unchanged under `#if 0`; the fixed
+update record remains 12 bytes. The context's two pointers are transient
+native data, not a new serialized record. Unlink returns the actual object,
+and packet creation retains the network service's full integer result.
+Update's decompiler EAX residue is not a result consumed by its void registry
+contract. Existing registration identities and the object-free membership
+guard remain unchanged. These isolated C defects are not reported as observed
+stock-campaign crashes; the normal updater was already registered through Go.
+
+The shared state machine retains list insertion/removal, disabled-angle reset,
+trace-live ray writes, entry-record caching and live angle-word reloads after
+trace. Rectangle branches retain unordered comparisons, and the sender caches
+its original viewport while reloading each next link after packet delivery.
+Scan retains lazy Quest lookup, live target position/radius/context reads,
+cached source before parent lookup, and parent/damage/audio order. Radius
+testing uses retained PC53/ToZero differences and an ordered greater-than
+comparison, preventing the old NaN-radius hit. Original packet conversion
+uses ToZero spills; its earlier nearest-spill expectation was incorrect.
+Production code reproduces these arithmetic boundaries locally without
+changing host FP control state.
+
+The complete original callers, scan callback, coordinate helper and selected
+composed projection calls execute all 1,411 bytes across 630 contexts, each
+also run with nearest rounding as a separate counterfactual. Untouched
+Unicorn execution remains separately sealed with zero arithmetic/conversion
+substitutions. It differs from an independent x87 implementation for four
+large-angle/boundary/infinity contexts. Intel specifies the finite open
+range and invalid-operation behavior for these transcendental instructions;
+this supports retaining the processor semantics rather than reproducing
+those emulator artifacts. [Intel instruction reference](https://cdrdv2-public.intel.com/812383/253666-sdm-vol-2a.pdf).
+
+A separate isolated Rosetta x86_64 producer records 1,080 actual instruction
+results for 270 angles in both control modes. The independently profiled
+composition explicitly replaces ST0 and C2 after 1,400 FSIN/FCOS instructions;
+it is not claimed as untouched-emulator or physical-x86 evidence. Raw and
+profiled inputs remain identical, with the four differing contexts asserted
+by a separate test. Portable 66-bit pi reduction handles large finite angles,
+with explicit out-of-range and infinity paths. Go and actual C each match
+all 630 profiled states, ordered service snapshots and meaningful returns.
+Ten untouched pointer contexts match nine required faults and one safe gate.
+The unmodified oracle, independent instruction profile and profiled
+composition each regenerate byte for byte. Native x86 CI also receives an
+isolated instruction-vs-port endpoint test; it is skipped on ARM64 and remains
+pending for this source until those actual x86 jobs finish. General native
+hardware transcendental bit-exhaustion, signaling-NaN and full original-world
+composition are not inferred from the translated profile or declared services.
+
+All 3,807 other previous tests, fixtures, E2E inputs and goldens remain
+unchanged. One existing packet test changes only its two incorrect expected
+values: 95.6 maps to 95, and 110.6 to 110. Complete untouched 511250/419A30
+execution with those exact inputs independently proves both corrections;
+the initial old-test failure and raw emulator/profile discrepancies remain
+preserved. All previous terminal identities/results/multiplicities remain.
+One full normal root/server/legacy run passes in 293.646 seconds with
+268,750 PASS and 17 SKIP. Focused highres/cgocheck2/checkptr2 and dispatch
+checks pass in parallel in 109.762 seconds with 1,368 PASS and one SKIP.
+The additions are 1,292 PASS and one x87-provider SKIP. An external qualifier's
+initial addition count included that SKIP; the raw report is retained and
+the corrected count requires no game/test rerun. Counts include parents and
+subtests and do not measure feature completion.
+
+The clean `2e071ac` Go 1.26.9 Darwin/ARM64 product builds once in 12.596
+seconds with unmodified VCS metadata: 65,547,394 bytes, SHA-256
+`d9db7ad07ef21e60f870fba1735090d640fed2882d14ece95356843d5efdd5e9`.
+The unchanged six-mode Sentry Host script passes on its first launch in
+138.054 seconds under the ordinary clock. World/player/NPC owner and
+Player/NPC/Troll target combinations each receive one actual 500-damage hit,
+the corresponding client delta of -500 and 32 rendered beam pixels from a
+zero baseline. Public disable then leaves HP unchanged, zero beam pixels
+and an empty ray queue after 30 frames. Original carry/armor markers remain
+correct. Two of the six live frames are directly viewed, showing the bright
+beam and its actual targets. The stock creation/placement, durable 20000-HP
+targets and waiting AI are declared fixtures; damage, packets and pixels are
+not injected. This verifies the default Go engine path, with no live raw-C,
+campaign-placement, possession-input, audible-output or chapter credit.
+Source assets, script, observer and binary retain their hashes. No forced
+termination, game failure or unrelated unported branch appears.
+
+The exact stock/runtime thing inventory has six Sentry types, but no direct
+Sentry instances are found across the 18 required chapter 1-3 maps; static
+absence does not classify every dynamic spawn. The eight following textual
+init candidates in GAME3_3.c are already retired bodies with typed Go exports,
+so they receive no new port credit. Remaining reachable damage/death callback
+branches require further classification alongside the nine-cell feature
+audits and UI/audio/peer/stability work. All three prior `e38a126` Windows
+AMD64/386 and Linux AMD64 jobs succeed; retained native products and logs
+are independently qualified. Linux recounts 264,882 PASS, seven SKIP,
+all 56 expected packages and three default-link damage checks. No prior
+workflow is restarted. Overall 100% remains unproven.
+
 ### Native Spark, ProjectileTrail and Push update entries
 
 The 53ADC0/53AEC0/53B030 C entries now accept native object pointers and

@@ -55,6 +55,110 @@ completion requirements.
 
 ## Current findings
 
+### Native Toggle, Trigger and Switch update entries
+
+The remaining 53B060/53B1B0/53B320 C entries now accept native object pointers
+and share original-derived Go state machines. Three old healthy C calls with
+object/data addresses above 4 GiB each SIGSEGV. Corrected calls preserve native
+object/data/callback frames and canaries. Original C bodies remain unchanged
+under `#if 0`; the original char return bits are retained. The existing
+registrations and normal root Go binding table stay unchanged, so these
+isolated C boundary failures are not claimed as observed stock-game crashes.
+Elevator and ElevatorShaft were already typed forwarders and receive no new
+port credit. Shared wire/template update records remain exactly 60 bytes.
+
+Toggle and Trigger retain the cached update record, low-byte state changes,
+live request/one-shot bits after callbacks and original request consumption.
+Toggle returns the flags byte before final request consumption; Trigger
+returns it afterward. Animation/audio/script order, live script-block
+addresses and wide transient caller identities are preserved. Toggle reads
+frame/FPS after the script; Trigger captures its type-dependent delay before
+callbacks. Original script callers push three arguments: block, caller and
+trigger. The port's fourth event-code parameter remains separate metadata
+and is checked against each state-machine branch, not invented as an
+original stack argument. The PE32 transient caller slot remains untouched;
+existing native sidecar services supply wide identities.
+
+Trigger's two original shared DWORD type caches are now used by both its C
+adapter and root classification. A zero Trigger cache refreshes both entries,
+storing Trigger before looking up PressurePlate. TypeInd is zero-extended
+and compared with full DWORD indices; high cache bits are not truncated.
+A cache hit avoids lookup, and immediate types avoid the FPS read. Native
+cache getters, real animation synchronization, a script callback with a caller
+above 4 GiB and the fixed Field4 sentinel are separately checked.
+
+Switch clears NoCollide before calling the native collision queue and returns
+the helper's byte, independently of resulting flags. Its disabled path keeps
+the first-update sync gate and reloads flags after synchronization. The public
+Go API retains its existing optional queue, nil preflight and post-service
+flags result. Actual native queue composition checks an immobile-class
+rejection returning 2 and a generic active collidable insertion returning 1,
+with both distinct from the resulting flags byte.
+
+All 750 bytes of the complete unchanged original callers execute across 1,152
+prepared contexts without faults or arithmetic/conversion substitutions.
+Go and actual C each match every state, ordered service snapshot and return
+byte. Twelve additional pointer contexts match ten required faults, two safe
+Switch gates and their visible prefixes/state. Full C-owned object, update
+and callback frames/canaries remain correct, including the fixed wire slot.
+The self-contained producer regenerates fixtures and execution proof byte
+for byte. Original startup x87 mode is retained; these callers use integer
+operations only. Lookup/animation/audio/script/sync/queue bodies are declared
+services; full native original-game/sidecar/world composition is separate.
+
+All 3,794 previous tests, fixtures, E2E inputs and goldens remain unchanged;
+zero old expectations are corrected. Ordinary root/server checks pass once,
+and the full legacy package passes after fixing a new test's boolean use of
+uint32 Contains. The preserved build failure changes no production code.
+Only legacy is retried; root/server results are reused. Accepted package
+results total 266,462 PASS and 16 SKIP, preserving every old terminal identity,
+result and multiplicity with 2,338 added PASS events. Focused highres/
+cgocheck2/checkptr2, dispatch and root binding results total 2,395 PASS.
+Counts include parents/subtests and do not measure feature completion.
+The new queue fixture also distinguishes the real immobile filter from
+active collidable insertion. Initial failures and input refinements remain
+recorded; existing tests and their assertions stay intact.
+
+Stock thing data connects ToggleUpdate to 28 switches/levers, TriggerUpdate
+to 14 types including PressurePlate and ChainPull5, and SwitchUpdate to Spike.
+These callbacks have 554 static instances across the 18 required stock maps.
+The affected regression uses the unchanged original steel-crate/pressure-
+plate route plus its existing unpressed control, with one shared clean ARM64
+product and one immutable earned seed. Geometric bounds remain bounded
+witnesses, independently of the actual passed/blocked gate traversal.
+
+The clean `382cbeb` Go 1.26.9 Darwin/ARM64 product builds once in 12.907
+seconds with unmodified VCS metadata: 65,527,186 bytes, SHA-256
+`3a6c55cfd90ff750e56c903eaab65af2f7754fb0c4d01fc9a9e6e8c2c060bb75`.
+The unchanged canonical positive crate/plate replay passes on its first
+launch in 51.202 seconds. The matching unpressed control exits2 in
+35.994 seconds at the expected original 600-tick gate-endpoint timeout;
+its raw result remains failed and ineligible. Neither run is forcibly
+terminated. Both use the same binary and immutable earned seed. The positive
+route holds the original plate with a stable crate while the player leaves,
+passes the original opening and saves alive at HP20/MP78, maxima20/78 and
+poison0. The negative crate stays at its original unpressed position and
+movement to the same gate endpoint is blocked. The following Obelisk-room
+goals in the positive route are additional movement after that shared gate;
+the qualifier compares the matching gate segment and preserves its initial
+incorrect tail-comparison failure without replaying either case.
+
+Ten read-only world/script/wall samples supply30 parameterless GETs. Source
+saves, assets, config and binary retain their hashes. The final frame is
+directly viewed: living Wizard, four glowing Obelisks, full HUD and Korean
+save-complete text. Mana was already full before this room; no Obelisk
+recovery effect is inferred. Geometric bounds are witnesses, not a collision
+shape oracle. These related root-Go scene checks do not establish live raw-C
+execution, complete coverage of all three callback families, a new chapter
+completion or overall 100%.
+
+The previous 3f86180 source's Windows AMD64/386 and Linux AMD64 jobs all
+succeed. Decoded logs, ZIPs and clean Go1.26.9 PE/ELF products are retained
+and independently qualified. Linux recounts 261,548 PASS, seven SKIP, all 56
+expected packages and three passing default-link damage checks. No prior
+workflow is restarted. Nine-cell feature audits and UI/audio/peer/stability
+remain open; overall 100% completion is not claimed.
+
 ### Native TrapDoor and UndeadKiller update entries
 
 The 53DE80 and 53E190 C entries now accept typed native objects and share

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "name": "Wizard2 earned Swap Load, original spider combat and recovery",
+  "seed_contract": "Passing wizard2-swap-escape manual Save, with earned Swap115 in F, Chain Lightning43 in A and Lesser Heal41 in D. Both original SmallAlbinoSpiders remain alive; no failed or edited save is eligible.",
+  "coverage": "Actual menu Load, native restored-state observation, ordinary earned spell inputs against both original spiders, Lesser Heal recovery and a healthy manual Save. This does not certify an idle combat-free landing or complete chapter.",
+  "cases": [
+    {
+      "name": "wizard2-earned-swap-reload",
+      "scenario": "wizard2-swap-escape-recovery.yaml",
+      "expected_maps": ["wiz02b"],
+      "manual_save": "SAVE0001/Player.plr",
+      "require_poison_free": true,
+      "timeout_seconds": 100,
+      "expected_health": 20,
+      "expected_maximum_health": 20,
+      "expected_maximum_mana": 78,
+      "minimum_mana": 1,
+      "required_defeated_script_ids": [1000136506, 1000138581],
+      "require_monster_health_zero": true,
+      "required_checkpoints": ["earned Swap restored and original spiders cleared", "original manual Save"]
+    }
+  ]
+}

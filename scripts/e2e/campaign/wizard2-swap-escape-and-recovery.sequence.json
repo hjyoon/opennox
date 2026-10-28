@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "name": "Wizard2 earned Swap escape, Load and original encounter recovery",
+  "seed_contract": "Original earned Swap-book checkpoint from wizard2-swap-escape.json; the runner passes only the unchanged healthy Save from a successful stage to the next.",
+  "coverage": "Original earned Swap exchange followed by actual menu Load, original spider defeats, earned Lesser Heal and a healthy manual Save. Original input timing, target selection and Swap tolerance are retained.",
+  "stages": [
+    {"name": "escape", "suite": "wizard2-swap-escape.json"},
+    {"name": "recover", "suite": "wizard2-swap-escape-recovery.json"}
+  ]
+}

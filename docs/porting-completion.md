@@ -128,6 +128,94 @@ duration inventory now has13 native Go exports, three native C forwarders,
 one constant leaf and29 remaining lexical C candidates. This inventory is
 not execution coverage or a completion percentage. Overall100% remains open.
 
+### Current Swap product, earned replays and remaining input observation
+
+Core Swap source86fa7ec, continuous-motion checker cacfcb6 and passive
+observer3e59c4e are pushed to `port/go1.26-multiarch`. The clean Go1.26.9
+darwin/arm64 product is65,624,226 bytes, source3e59c4e, SHA256
+`18fcd729207578f64c15507a18eb1b6547634e0d0d687d849859dbe4e1b9821b`.
+The observer source leaves all15 core Swap files unchanged. Its full
+root/server/legacy suite passes272221 with18 skips in118.564 seconds;
+focused highres/cgocheck2/checkptr2 passes2362 with one x86-only skip in20.733
+seconds. Both explicitly pass179 new terminals, including five observer
+tests. All89 campaign Python tests pass.
+
+The first core-product earned replay exchanges positions correctly but
+ordinary subsequent movement reaches12.614 pixels from the exchange point.
+The checker now verifies every native frame of the subsequent trajectory,
+preserving the original12-pixel bound per step, original identities, actual
+input binding and final distance from the latest trace. Four new rejection/
+acceptance tests cover missing frames, unobserved jumps and continuous motion.
+The original failed report stays failed. A second core replay has no observed
+reciprocal pair; its cause remains unproven and its Save is not credited.
+
+The observer retains only copied identities and positions. After input
+tracking ends, a read-only world tick hook observes at most two native
+seconds, stopping on expiry, world change or missing/replaced identities.
+It adds no mouse/key events, targeting, casts, movement or object mutations.
+The original published Swap suite, input timing, allowed target IDs and
+12-pixel tolerance are unchanged.
+
+| Current ordinary-clock ARM64 evidence | Seconds | Independently checked result |
+| --- | ---: | --- |
+| Earned Swap V3 / V4 | 75.692 / 75.853 | Exact reciprocal exchange627→628 / 637→638 with living original spiders1000136506 /1000138581; HP20 MP78 poison0 manual Saves |
+| V3 menu Load, original combat and recovery | 19.936 | Exact saved landing and HP20 MP78 poison0 restored at frame1; earned A43 defeats both original spiders at native HP0/DEAD, D41 heals and manual Save has HP20 MP47 poison0 |
+| Recovered Save menu Load and Save | 17.648 | Exact landing, HP20 MP47 poison0, F115 and both original spider deaths retained |
+| Original plate/bookcase and Chain Lightning / menu reload | 39.014 / 17.890 | Bookcase6A extent1974/script1000194601 reaches1591,4734; plate off, mover on, original Urchin HP0/DEAD; HP20 MP42 poison0 retained |
+| Synthetic host Swap | 34.692 | Existing native high-pointer duration, original movement-aware position checks and duration unlink pass; no earned-campaign credit |
+
+All read-only GET snapshot hashes and raw player observations are rechecked
+against the saved reports; earned Save lineage and executable hashes match.
+Actual escape, combat/recovery, save-complete and restored bookcase/Swap
+frames are inspected. The runtime number2195 remains unproven as stock
+extent1974; the user-confirmed pressure-plate route is covered. Evidence is
+under `swap-position-observer`, especially
+`current-product-campaign-qualified-v1.json` and its visual supplement.
+
+Fresh idle-only Swap reloads restore the exact original HP20 and location,
+then lose6HP by frame64 while original spiders approach; one also becomes
+poisoned. An immediate-menu attempt runs during the load fade and does not
+write a new manual Save. The first combat manifest accidentally points to
+the old idle-only YAML and executes no combat; the corrected manifest alone
+earns the combat/recovery result above. These failures, the initial sandbox
+launch failures, inputs, products and saves are all retained. Only verified
+regenerable compiler-cache archives are removed for disk space:49 older
+archives/5,020,761,952 bytes before the core build, then30 previous-build
+archives/3,308,836,094 bytes before native artifact retrieval.
+
+The published `wizard2-swap-escape-recovery.json` and matching YAML reproduce
+the ordinary recovery route; a fresh independent run of the published case
+passes in19.824 seconds. The two-stage
+`wizard2-swap-escape-and-recovery.sequence.json` is a retained reproducer,
+not a completed stable chain. Its first fresh replay fails at escape in73.766
+seconds: F is queued at585, target availability ends active tracking at589,
+and the manual Save is made at606. Passive observation then sees a player
+jump639→640 toward the other original spider's earlier position, while the
+pinned target continues moving. That other reciprocal position is not
+observed, and the saved point predates the jump. The unchanged pair/mana
+gates reject this result and stop the sequence before recovery consumes it.
+Actual in-flight target observation and the post-input wait remain next
+work; neither successful V3/V4 replay proves a stable full sequence.
+
+All core86 native jobs/artifacts are independently closed in
+`swap-native-entry-port/all-native-workflows-qualified-v1.json` and never
+redispatched. Observer-source Windows run40771128326 also passes both
+uncached full package jobs123108295520/123108295812. Artifacts12853221841/
+12852174126 match GitHub ZIP digests, PE machines and clean source3e59c4e;
+raw CRLF logs contain none of the five poison-macro warnings. Per-test
+inclusion follows nonverbose package success. Linux source3e59c4e run
+40771320330/job123108983353 passes269647 tests with7 skips across all58
+expected packages (36 pass,22 skip), explicitly including all179 new
+terminals in raw JSON. Its separate default-link damage run passes133041
+across three packages. Artifact12854097319 matches its GitHub ZIP digest,
+ELF machine62, clean source3e59c4e and product SHA256
+`685cd4ba8355771483c7a354a3d85c9e5c6f440acb1f6f19975b71bd9531b3b6`.
+Raw JSON, stderr and original job logs have none of the five poison-macro
+warnings. All three observer-source jobs/artifacts are closed in
+`swap-position-observer/all-native-workflows-qualified-v1.json`; no duplicate
+dispatch is issued for documentation or replay-only changes. Overall100%
+remains open.
+
 ### Native Blink entries, live callback loads and TeleportWake creation
 
 The exposed Blink create `530310` and update `530380` still used PE32
@@ -236,8 +324,9 @@ Both actual public C create530CA0 and update530D30 fault on guarded C-owned
 native DEAD-target records above4GiB; ordinary native Go dispatch rejects
 both with1 and leaves the timer unchanged. These are two genuine direct-entry
 defects within the31 candidates, leaving29 other lexical candidates not yet
-executed. Full original Swap fidelity and its native entry port remain next
-work; general normal-cast failure is not inferred. The before fixture and
+executed. At this historical Blink checkpoint, full original Swap fidelity
+and its native entry port remained next work; the current Swap qualification
+above supersedes that state. General normal-cast failure is not inferred. The before fixture and
 raw logs are sealed in `next-swap-native-entry-defects-qualified-v1.json`.
 
 Windows386/amd64 run40757545056 passes native build, help and all three
@@ -264,8 +353,9 @@ Swap115 metadata. Twenty-one pass, and nine delay mismatches exactly match
 the original nearest control. Native guards, nonoutputs and balance indices
 remain intact. The initial producer's unused generic Spell4 metadata is
 retained; corrected V2 alone supplies the authoritative reference. This is
-before evidence for the next port, not a completed Swap port or full update
-comparison. Evidence is `next-swap-original-create-before-qualified-v1.json`.
+historical before evidence for the then-next port, not a completed Swap port
+or full update comparison. The current Swap section supersedes that state.
+Evidence is `next-swap-original-create-before-qualified-v1.json`.
 
 ### Native Tag callbacks, duration conversion and cached player data
 

@@ -3137,6 +3137,7 @@ int sub_54A750(int a1) {
 }
 
 //----- (0054A7D0) --------------------------------------------------------
+#if 0
 int sub_54A7D0(int a1) {
 	int v1; // eax
 
@@ -3189,6 +3190,14 @@ int sub_54A950(int a1) {
 	}
 	return 1;
 }
+#else
+extern int nox_monster_die_callback_native(int kind, nox_object_t* unit);
+int sub_54A7D0(nox_object_t* unit) { return nox_monster_die_callback_native(1, unit); }
+int sub_54A850(nox_object_t* unit) { return nox_monster_die_callback_native(2, unit); }
+int sub_54A890(nox_object_t* unit) { return nox_monster_die_callback_native(3, unit); }
+int sub_54A900(nox_object_t* unit) { return nox_monster_die_callback_native(4, unit); }
+int sub_54A950(nox_object_t* unit) { return nox_monster_die_callback_native(5, unit); }
+#endif
 
 //----- (0054A990) --------------------------------------------------------
 extern double sub_54A990_go(float2* center, float radius, nox_object_t* box, float2* normal);

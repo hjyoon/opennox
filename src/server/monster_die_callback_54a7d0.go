@@ -28,6 +28,26 @@ type MonsterDieCallbackRuntime54A7D0 struct {
 	DropItem  func(*Object, MonsterDieDrop54A390)
 }
 
+// MonsterDieCallbackRawRuntime54A7D0 binds the two services used by the five
+// original callers. DropItem owns the whole 0054A390 helper, including its
+// cooperative-mode check; a selected drop reaches it even with a nil unit.
+type MonsterDieCallbackRawRuntime54A7D0 struct {
+	RandomInt func(minimum, maximum int) int
+	DropItem  func(*Object, MonsterDieDrop54A390)
+}
+
+// MonsterDieCallbackRaw54A7D0 preserves the C caller contract. The unit is
+// forwarded without inspection, and each registered callback returns one,
+// including no-drop rolls. The public Native entry below retains its existing
+// validation and partial-runtime behavior.
+func MonsterDieCallbackRaw54A7D0(unit *Object, kind MonsterDieCallbackKind54A7D0, runtime MonsterDieCallbackRawRuntime54A7D0) int32 {
+	drop, selected := monsterDieDropForRoll54A7D0(kind, runtime.RandomInt(0, 100))
+	if selected {
+		runtime.DropItem(unit, drop)
+	}
+	return 1
+}
+
 func monsterDieDropForRoll54A7D0(kind MonsterDieCallbackKind54A7D0, roll int) (MonsterDieDrop54A390, bool) {
 	switch kind {
 	case MonsterDieCallbackSwordsman54A7D0:

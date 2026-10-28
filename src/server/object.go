@@ -1355,7 +1355,7 @@ func (obj *Object) EnchantPower(v EnchantID) int { // nox_xxx_buffGetPower_4FF57
 }
 
 func (obj *Object) Aggression() float32 {
-	if obj.Class().Has(object.ClassMonster) {
+	if !obj.Class().Has(object.ClassMonster) {
 		return 0
 	}
 	ud := obj.UpdateDataMonster()
@@ -1370,7 +1370,7 @@ func (obj *Object) SetAggression(v float32) {
 }
 
 func (obj *Object) RetreatLevel() float32 {
-	if obj.Class().Has(object.ClassMonster) {
+	if !obj.Class().Has(object.ClassMonster) {
 		return 0
 	}
 	ud := obj.UpdateDataMonster()
@@ -1385,7 +1385,7 @@ func (obj *Object) SetRetreatLevel(v float32) {
 }
 
 func (obj *Object) RegroupLevel() float32 {
-	if obj.Class().Has(object.ClassMonster) {
+	if !obj.Class().Has(object.ClassMonster) {
 		return 0
 	}
 	ud := obj.UpdateDataMonster()

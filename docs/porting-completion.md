@@ -55,6 +55,50 @@ completion requirements.
 
 ## Current findings
 
+### Native script AI parameters and combat observation
+
+The script-facing `Aggression`, `RetreatLevel` and `RegroupLevel` getters
+had their monster class gates inverted. Setters stored the requested values,
+but monster reads returned zero; non-monster reads could dereference a missing
+monster update record. All three getters now read their existing native
+fields for monsters and return zero for other classes. Field selection,
+setters and serialized records remain unchanged. Known callers include the
+Go object facade and Lua properties. This establishes script access behavior;
+the general AI recognition/idle report remains a separate verification scope.
+
+Fifteen native script-wrapper cases cover both monster class combinations
+and three non-monster classes. C-owned objects/update records are above4GiB
+on64-bit hosts and reads preserve every native byte. The unchanged methods
+fail all15 cases before correction: six wrong zero values and nine recovered
+non-monster nil-data panics. The first fixture attempt omitted explicit class
+initialization because `alloc.New` uses its argument as a type, so those initial
+logs are retained as invalid setup; only the corrected fixture's before/after
+run supplies defect evidence.
+
+The new read-only `/debug/nox/objects/combat` observer copies native buff bits,
+anti-magic activity/remaining frames/power, and available monster status and
+AI parameters on the server loop. It does not change the existing object
+response. Tests verify native fields and immutable snapshots, canceled
+requests, missing/different update-data unions and ignored flag-change query
+parameters. Together these add18 passing terminal tests. Full normal
+root/server/legacy passes271763 with18 skips in214.666 seconds; focused
+highres/cgocheck2/checkptr2 passes1832 with one x86-only skip in204.421 seconds.
+
+Read-only stock inventory finds three original UrchinShaman candidates in
+War03c. The original Mayor-earned v519 Save owns WarCry5. On the previously
+qualified E611 binary, ordinary town roads and the original exit naturally
+return to War03c and produce a living manual Save in43.435 seconds. Current
+native observations confirm ShamanBuddy2 extent9816/script1000347545 at
+(4907.4272,3972.2659), HP40/40; the other two original Shamans retain HP0/DEAD.
+Player HP49 and both original earned abilities survive. An earlier38.455-second
+attempt reaches the map but lacks a changed manual Save; it is retained and
+ineligible for continuation. Ordinary map-fade readiness waits repair the
+input sequence without weakening any outcome check. The new Save is an
+additional feature branch. Actual hostile WarCry effect/expiry, original
+crypt traversal on the new product, and native artifact qualification remain
+open. Details are under `warrior-warcry-hostile-feature-audit`. Overall100%
+remains open.
+
 ### Original object velocity integration
 
 The active `5118A0` C implementation already used native object pointers,

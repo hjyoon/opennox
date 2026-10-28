@@ -1,10 +1,6 @@
 package server
 
 import (
-	"encoding/binary"
-	"math"
-
-	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 
@@ -29,29 +25,15 @@ type sentryGlobeUpdateDeps510E60 struct {
 }
 
 func (st *sentryGlobeState510E60) insert(source *Object) {
-	source.Field125 = nil
-	source.InvNextItem = st.head
-	if st.head != nil {
-		st.head.Field125 = source
-	}
-	st.head = source
-	source.ObjFlags |= object.FlagMarked
+	sentryGlobeInsertRaw510E60(source, st.listRuntime510E60())
 }
 
 func (st *sentryGlobeState510E60) remove(source *Object) {
-	if source.ObjFlags.Has(object.FlagMarked) {
-		prev := source.Field125
-		next := source.InvNextItem
-		if prev != nil {
-			prev.InvNextItem = next
-		} else {
-			st.head = next
-		}
-		if next != nil {
-			next.Field125 = prev
-		}
-	}
-	source.ObjFlags &^= object.FlagMarked
+	SentryGlobeUnlinkRaw510FD0(source, st.listRuntime510E60())
+}
+
+func (st *sentryGlobeState510E60) listRuntime510E60() SentryGlobeListRuntime510E60 {
+	return SentryGlobeListRuntime510E60{Head: func() *Object { return st.head }, SetHead: func(o *Object) { st.head = o }}
 }
 
 // update restores GAME.EXE 00510E60 and its scan callback 00511020 without
@@ -61,61 +43,86 @@ func (st *sentryGlobeState510E60) update(source *Object, deps sentryGlobeUpdateD
 	if source == nil {
 		return
 	}
-	data := source.UpdateDataSentry()
-	if !source.ObjFlags.Has(object.FlagMarked) {
-		st.insert(source)
-	}
-	if source.ObjFlags.Has(object.FlagDestroyed) {
-		st.remove(source)
-	}
-	if !source.ObjFlags.Has(object.FlagEnabled) {
-		data.Field0 = data.Field4
-		return
-	}
-
-	start := source.PosVec
-	angle := math.Float32frombits(data.Field0)
-	end := types.Ptf(
-		float32(math.Cos(float64(angle))*float64(sentryGlobeRange510E60)+float64(start.X)),
-		float32(math.Sin(float64(angle))*float64(sentryGlobeRange510E60)+float64(start.Y)),
-	)
-	if hit, clear := deps.traceRay(start, end); !clear {
-		end = hit
-	}
-	source.Pos39 = end
-	data.Field0 = math.Float32bits(angle + math.Float32frombits(data.Field8))
-
-	rect := types.RectFromPointsf(start, end)
-	deps.eachInRect(rect, func(candidate *Object) bool {
-		sentryGlobeHitCandidate511020(source, candidate, start, end, deps)
-		return true
-	})
+	h := sentryGlobeDepsRuntime510E60(deps)
+	h.List = st.listRuntime510E60()
+	SentryGlobeUpdateRaw510E60(source, h)
 }
 
 func sentryGlobeHitCandidate511020(source, candidate *Object, start, end types.Pointf, deps sentryGlobeUpdateDeps510E60) {
-	if candidate == nil || candidate.ObjFlags.HasAny(object.FlagBelow|object.FlagNoCollide) {
+	if candidate == nil {
 		return
 	}
-	if candidate.ObjFlags.Has(object.FlagShort) &&
-		(!deps.questMode || !candidate.ObjClass.Has(object.ClassMonster) || candidate.ObjFlags.Has(object.FlagDead)) {
-		return
+	ray := types.Rectf{Min: start, Max: end}
+	SentryGlobeHitRaw511020(candidate, &SentryGlobeRayContext511020{Source: source, Ray: &ray}, sentryGlobeDepsRuntime510E60(deps))
+}
+
+func sentryGlobeProject511020(ray *types.Rectf, point, out *types.Pointf) int32 {
+	value, ok := PointOnTheLine(ray.Min, ray.Max, *point)
+	*out = value
+	if ok {
+		return 1
 	}
-	if candidate.HealthData == nil {
-		return
+	return 0
+}
+
+func sentryGlobeDepsRuntime510E60(deps sentryGlobeUpdateDeps510E60) SentryGlobeRawRuntime510E60 {
+	h := SentryGlobeRawRuntime510E60{
+		TraceRay: func(ray *types.Rectf, hit *types.Pointf, _ uint32) int32 {
+			value, clear := deps.traceRay(ray.Min, ray.Max)
+			*hit = value
+			if clear {
+				return 1
+			}
+			return 0
+		},
+		GameFlags: func(uint32) uint32 {
+			if deps.questMode {
+				return 1
+			}
+			return 0
+		},
+		PointOnLine: sentryGlobeProject511020, FindParent: (*Object).FindOwnerChainPlayer,
+		Damage: deps.damage, Audio: func(_ uint32, target *Object) { deps.audio(target) },
 	}
-	point, ok := PointOnTheLine(start, end, candidate.PosVec)
-	if !ok {
-		return
+	h.EachInRect = func(rect *types.Rectf, context *SentryGlobeRayContext511020) {
+		deps.eachInRect(*rect, func(candidate *Object) bool { SentryGlobeHitRaw511020(candidate, context, h); return true })
 	}
-	delta := candidate.PosVec.Sub(point)
-	distanceSquared := float64(delta.X)*float64(delta.X) + float64(delta.Y)*float64(delta.Y)
-	radius := float64(candidate.Shape.Circle.R)
-	if radius*radius <= distanceSquared {
-		return
+	return h
+}
+
+// SentryGlobeRuntime510E60 binds all native entries to the same server list.
+func (s *Server) SentryGlobeRuntime510E60() SentryGlobeRawRuntime510E60 {
+	h := SentryGlobeRawRuntime510E60{
+		List: s.sentryGlobe510E60.listRuntime510E60(),
+		TraceRay: func(ray *types.Rectf, hit *types.Pointf, flags uint32) int32 {
+			if s.MapTraceRayAt(ray.Min, ray.Max, hit, nil, MapTraceFlags(flags)) {
+				return 1
+			}
+			return 0
+		},
+		GameFlags: func(mask uint32) uint32 {
+			if noxflags.HasGame(noxflags.GameFlag(mask)) {
+				return mask
+			}
+			return 0
+		},
+		PointOnLine: sentryGlobeProject511020, FindParent: (*Object).FindOwnerChainPlayer,
+		Damage: func(target, parent, source *Object, damage int, typ object.DamageType) {
+			target.CallDamage(parent, source, damage, typ)
+		},
+		Audio:  func(id uint32, target *Object) { s.Audio.EventObj(sound.ID(id), target, 0, 0) },
+		Player: func(index int32) *Player { return s.Players.ByInd(ntype.PlayerInd(index)) },
+		Packet: func(index, kind int32, packet []byte) int32 {
+			if s.NetList.AddToMsgListCli(ntype.PlayerInd(index), netlist.Kind(kind), packet) {
+				return 1
+			}
+			return 0
+		},
 	}
-	parent := source.FindOwnerChainPlayer()
-	deps.damage(candidate, parent, source, 500, object.DamageZapRay)
-	deps.audio(candidate)
+	h.EachInRect = func(rect *types.Rectf, context *SentryGlobeRayContext511020) {
+		s.Map.EachObjInRect(*rect, func(candidate *Object) bool { SentryGlobeHitRaw511020(candidate, context, h); return true })
+	}
+	return h
 }
 
 // SentryGlobeUpdate510E60 binds the SentryGlobe update to native-width Object
@@ -124,39 +131,17 @@ func (s *Server) SentryGlobeUpdate510E60(source *Object) {
 	if s == nil {
 		return
 	}
-	s.sentryGlobe510E60.update(source, sentryGlobeUpdateDeps510E60{
-		traceRay: func(start, end types.Pointf) (types.Pointf, bool) {
-			var hit types.Pointf
-			clear := s.MapTraceRayAt(start, end, &hit, nil, 5)
-			return hit, clear
-		},
-		eachInRect: s.Map.EachObjInRect,
-		questMode:  noxflags.HasGame(noxflags.GameModeQuest),
-		damage: func(target, parent, source *Object, damage int, damageType object.DamageType) {
-			target.CallDamage(parent, source, damage, damageType)
-		},
-		audio: func(target *Object) {
-			s.Audio.EventObj(sound.SoundSentryRayHit, target, 0, 0)
-		},
-	})
+	if source != nil {
+		SentryGlobeUpdateRaw510E60(source, s.SentryGlobeRuntime510E60())
+	}
 }
 
 func sentryGlobeRound419A30(value float32) uint32 {
-	if value < 0 {
-		return 0
-	}
-	value += float32(8388608)
-	return math.Float32bits(value) & 0x7fffff
+	return sentryGlobeRoundRaw419A30(value)
 }
 
 func sentryGlobeRayPacket511250(source *Object) [9]byte {
-	var packet [9]byte
-	packet[0] = byte(netmsg.MSG_FX_SENTRY_RAY)
-	binary.LittleEndian.PutUint16(packet[1:3], uint16(sentryGlobeRound419A30(source.PosVec.X)))
-	binary.LittleEndian.PutUint16(packet[3:5], uint16(sentryGlobeRound419A30(source.PosVec.Y)))
-	binary.LittleEndian.PutUint16(packet[5:7], uint16(sentryGlobeRound419A30(source.Pos39.X)))
-	binary.LittleEndian.PutUint16(packet[7:9], uint16(sentryGlobeRound419A30(source.Pos39.Y)))
-	return packet
+	return sentryGlobePacketBytes511250(source)
 }
 
 // SentryGlobeSendToPlayer511100 restores GAME.EXE 00511100/00511250 using
@@ -169,31 +154,15 @@ func (s *Server) SentryGlobeSendToPlayer511100(index int) {
 	if player == nil {
 		return
 	}
-	halfWidth := float32(player.Field10)
-	halfHeight := float32(player.Field12)
-	viewport := types.Rectf{
-		Min: types.Ptf(player.Pos3632Vec.X-halfWidth, player.Pos3632Vec.Y-halfHeight),
-		Max: types.Ptf(player.Pos3632Vec.X+halfWidth, player.Pos3632Vec.Y+halfHeight),
-	}
-	for source := s.sentryGlobe510E60.head; source != nil; source = source.InvNextItem {
-		if !source.ObjFlags.Has(object.FlagEnabled) {
-			data := source.UpdateDataSentry()
-			data.Field0 = data.Field4
-			continue
-		}
-		beam := types.RectFromPointsf(source.PosVec, source.Pos39)
-		if viewport.Min.X < beam.Max.X && viewport.Max.X > beam.Min.X &&
-			viewport.Min.Y < beam.Max.Y && viewport.Max.Y > beam.Min.Y {
-			packet := sentryGlobeRayPacket511250(source)
-			s.NetList.AddToMsgListCli(ntype.PlayerInd(index), netlist.Kind1, packet[:])
-		}
-	}
+	h := s.SentryGlobeRuntime510E60()
+	h.Player = func(int32) *Player { return player }
+	SentryGlobeSendRaw511100(int32(index), h)
 }
 
 // SentryGlobeReset510E50 preserves the original reset boundary: map teardown
 // drops the list head while object teardown owns the individual links.
 func (s *Server) SentryGlobeReset510E50() {
 	if s != nil {
-		s.sentryGlobe510E60.head = nil
+		SentryGlobeResetRaw510E50(s.sentryGlobe510E60.listRuntime510E60())
 	}
 }

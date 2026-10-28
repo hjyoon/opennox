@@ -2917,6 +2917,15 @@ void sub_510E20(int a1) {
 }
 
 //----- (00510E50) --------------------------------------------------------
+extern nox_object_t* nox_sentry_cluster_native(int kind,nox_object_t* source,nox_sentry_ray_context* context,int index);
+extern int nox_sentry_packet_native(int index,nox_object_t* source);
+void sub_510E50() { nox_sentry_cluster_native(3, 0, 0, 0); }
+void nox_xxx_updateSentryGlobe_510E60(nox_object_t* source) { nox_sentry_cluster_native(0, source, 0, 0); }
+nox_object_t* nox_xxx_sentryUpdateList_510FD0(nox_object_t* source) { return nox_sentry_cluster_native(1, source, 0, 0); }
+void nox_xxx_sentry_511020(nox_object_t* candidate,nox_sentry_ray_context* context) { nox_sentry_cluster_native(2, candidate, context, 0); }
+void sub_511100(int index) { nox_sentry_cluster_native(4, 0, 0, index); }
+int sub_511250(int index,nox_object_t* source) { return nox_sentry_packet_native(index, source); }
+#if 0 // Original PE32 bodies retained; all active entries share the native list.
 void sub_510E50() { dword_5d4594_2386564 = 0; }
 
 //----- (00510E60) --------------------------------------------------------
@@ -3104,6 +3113,7 @@ int sub_511250(int a1, float* a2) {
 	*(uint16_t*)&v7[7] = sub_419A30(a2[40]);
 	return nox_netlist_addToMsgListCli_40EBC0(a1, 1, v7, 9);
 }
+#endif
 
 //----- (00511660) --------------------------------------------------------
 #if 0

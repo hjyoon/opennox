@@ -128,7 +128,9 @@ func TestSentryGlobeSendToPlayer511100PacketAndDisabledReset(t *testing.T) {
 	if len(packet) != 9 || packet[0] != byte(netmsg.MSG_FX_SENTRY_RAY) {
 		t.Fatalf("packet = %v, want 9-byte sentry ray", packet)
 	}
-	for offset, want := range map[int]uint16{1: 90, 3: 96, 5: 111, 7: 105} {
+	// Complete original511250/419A30 execution with these same coordinates
+	// yields ToZero95/110, rather than the old nearest-spill96/111 values.
+	for offset, want := range map[int]uint16{1: 90, 3: 95, 5: 110, 7: 105} {
 		if got := binary.LittleEndian.Uint16(packet[offset : offset+2]); got != want {
 			t.Fatalf("packet coordinate at %d = %d, want %d", offset, got, want)
 		}

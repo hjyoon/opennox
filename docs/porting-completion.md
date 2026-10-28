@@ -96,12 +96,31 @@ in201.180 seconds. All3835 existing test, golden and E2E input files retain
 their original bytes. A prior link attempt ran out of disk space; only
 regenerable older compiler-cache data was pruned before its successful retry.
 
+Source `e611a10` is committed and pushed to `port/go1.26-multiarch`. One
+clean ARM64 Go1.26.9 build takes12.076 seconds with `vcs.modified=false`,
+SHA256 `ccbb6f548a7bf1e844334a0da3b90fc2b0efaf3940207c684b16a86094e4df1d`.
+The five reported poison-macro warnings are absent. On that same binary the
+unchanged earned pressure-plate Bookcase6 case passes in39.391 seconds,
+ending exactly at (1591,4734). Actual menu Load and another manual Save pass
+in17.889 seconds; all three snapshots retain that exact endpoint, disabled
+plate and original east Urchin HP0/DEAD. Independent native player parsing
+reads Wiz02c, HP20/20, MP42/78, poison0 and the three original earned spells.
+The new related feature Save does not replace the furthest campaign lineage.
+
+The unchanged two-variant powder Host E2E also passes naturally in130.393
+seconds on this binary: player11 then12, monster/NPC15 each, original fuses,
+client HP, outside control, real flames and queued audio. Its synthetic
+placement/durability remain declared and give no campaign or audible-output
+credit. The bookcase and both powder frames are directly viewed.
+Windows386/amd64 run40711176534 and Linuxamd64 run40711324391 are still
+pending independent native artifact/log qualification, including the real
+x86 FLD probe; older closed runs are not redispatched.
+
 The reproducible producer, input-only prefix cases and emulator patch are
 under `src/server/testdata/objects_velocity_original_5118a0.md`. Detailed
-proofs are in `object-velocity-native-port`. Clean product, unchanged bookcase
-and powder E2Es, actual Save/Load and native CI qualification follow these
-local checks. Overall100% remains open; this adds no chapter or percentage
-credit.
+proofs are in `object-velocity-native-port`, including
+`local-velocity-bookcase-and-powder-qualified-v1.json`. Overall100% remains
+open; this adds no chapter or percentage credit.
 
 ### Wiz02c pressure plate bookcase movement
 

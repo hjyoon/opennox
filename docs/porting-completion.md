@@ -55,6 +55,91 @@ completion requirements.
 
 ## Current findings
 
+### Native TrapDoor and UndeadKiller update entries
+
+The 53DE80 and 53E190 C entries now accept typed native objects and share
+original-derived Go bodies with the existing public/runtime paths. Two old
+healthy C probes with native object and collision-record addresses above
+4 GiB each SIGSEGV. Their corrected waiting/live calls preserve complete
+C-owned object/data frames and canaries. Original C bodies remain unchanged
+under `#if 0`; TrapDoor's decompiler EAX residue is not a pointer output of
+the void update callback. No layout or callback identity changes.
+
+The initial registration alone is insufficient to classify the live game
+path: server construction already binds TrapDoorUpdate to its public Go
+method. That binding, its root wrapper and binding tests remain unchanged.
+This corrects the preceding checkpoint's next-work assumption that TrapDoor
+normally ran through C. The C boundary failures are isolated native probes,
+not reproduced stock campaign crashes. UndeadKiller's existing dynamic Go
+registration now shares its raw body, including lazy clock access.
+
+TrapDoor caches its native 28-byte collision record at entry. Enabled status
+uses low-byte bit-2 priority over bit 4, inclusive deadlines, and original
+idle activation clearing. The opening branch does not dereference the cached
+record and remains safe with a nil record; other reached record accesses
+retain their original faults. Disabled rescheduling calls real on/off,
+unset and set services, then reads FPS and the live deadline from the cached
+record before wrapping five-FPS addition and sound874. Reentrant collision
+pointer replacement does not redirect the deadline store. Public nil
+preflights and optional audio behavior remain. Separate actual C tests use
+real native synchronization helpers and verify both on/off and status dirty
+words, final status/deadline and the record-free opening branch.
+
+UndeadKiller requires its collision record while allowing a nil spell pointer.
+The low cancellation bit precedes the clock and unsigned age threshold70.
+Both actual C and registered Go cancellation paths skip clock access and
+retain deletion identity. The existing public constant-frame API retains
+its previous missing-record age behavior and every old expectation.
+
+All 242 bytes of the complete unchanged original callers execute across
+696 prepared contexts without faults or arithmetic/conversion substitutions.
+Corrected Go and actual C each match all states and ordered service snapshots.
+Ten additional pointer contexts match six original faults and four safe
+gates, their visible prefixes and state. C comparisons preserve entire
+native object, collision and duration-spell frames, including pointer widths
+and canaries. The actual startup x87 control word is retained; these callers
+perform integer operations only. A self-contained producer regenerates both
+fixtures and the execution proof byte for byte. On/off/status/audio/delete
+bodies are declared world services; full native original-game composition
+is separate from the prepared caller comparison.
+
+All 3,787 prior tests, fixtures, E2E inputs and goldens remain unchanged, with
+zero old expectation corrections. One ordinary root/server/legacy run passes
+264,124 events and 16 skips in 417.224 seconds. All old terminal identities,
+results and multiplicities remain, with 1,421 added PASS events. Focused
+highres/cgocheck2/checkptr2, dispatch and root binding checks pass 1,479 in
+330.429 seconds. Counts include parents/subtests and are not feature coverage.
+Documentation reuses these passing source checks.
+
+Stock thing data connects TrapDoorUpdate to Pit, ForestPit and
+PitCrumblingFloor; 65 such instances occur across the 18 required maps,
+including the original Wiz02c PitCrumblingFloor. No UndeadKiller is statically
+placed in those maps; dynamic creation is not excluded. Existing ordinary
+Wizard2 Necromancer-pit inputs and their earned healthy eastern-spiders Save
+are retained for the affected replay, with source assets and saves read only.
+
+The clean `3f86180` Go1.26.9 Darwin/ARM64 product builds once in 12.455
+seconds with unmodified VCS metadata: 65,524,930 bytes, SHA-256
+`5f2edc9a2f359a061ca22f4cf2a90490e19439e253b4dffec9e6a4ffc9795b86`.
+The unchanged canonical Wizard2 Necromancer-pit replay passes on its first
+launch in 56.085 seconds. Original dialogue and scripted NecroTemp death,
+PitCrumblingFloor disabled-to-enabled transition and a living manual Save
+are verified. Four native player observations retain HP26/MP88, maxima26/88
+and poison0. Five read-only world/script/wall samples supply fifteen
+parameterless GETs; source Save, assets, configuration and binary retain
+their hashes. Exit0 is natural, with zero unported/fatal log hits. The final
+frame is directly viewed: living Wizard, opened original pit, full HUD and
+Korean save-complete text. This exercises the related scene under the existing
+Go binding, with raw C boundaries covered separately by prepared calls.
+No live UndeadKiller, new whole-chapter or overall100% credit is inferred.
+
+The preceding a00b38d source's Windows AMD64, Windows386 and Linux AMD64 jobs
+all succeed. Decoded logs, ZIPs and clean Go1.26.9 PE/ELF products are retained
+and independently checked. Linux recounts 260,127 PASS, seven SKIP, all56
+expected packages and three passing default-link damage package checks.
+No prior workflow is restarted. Nine-cell feature audits, UI/audio/peer and
+stability evidence remain open; overall100% completion is not claimed.
+
 ### Native Arachnaphobia, Break, Open and BreakAndRemove updates
 
 Four C entries at 53DA60/53DB30/53DBB0/53DC30 now take typed native objects

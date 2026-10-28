@@ -112,15 +112,26 @@ seconds on this binary: player11 then12, monster/NPC15 each, original fuses,
 client HP, outside control, real flames and queued audio. Its synthetic
 placement/durability remain declared and give no campaign or audible-output
 credit. The bookcase and both powder frames are directly viewed.
-Windows386/amd64 run40711176534 and Linuxamd64 run40711324391 are still
-pending independent native artifact/log qualification, including the real
-x86 FLD probe; older closed runs are not redispatched.
+Windows386 and Windowsamd64 run40711176534 both pass product build,
+verification/help and all three full package suites. Artifacts12826772268
+and12826023655 independently match their ZIP digests, PE architectures,
+Go1.26.9 clean source revision and raw successful logs. The actual-FLD test
+runs on both native x86 targets; it confirms the emulator load calibration.
+Linuxamd64 run40711324391 passes269171 tests with7 skips across all57
+expected packages (36 pass,21 skip), including explicit raw JSON PASS for
+the actual-FLD test and both426-context comparisons. Its default-link
+damage check passes133041 tests across all three required packages.
+Artifact12827951302 matches its ZIP digest, ELF machine, clean source build
+information and independently recounted raw JSON. All five reported
+poison-macro warnings are absent from the native logs. These three jobs are
+closed and independently qualified; none remains pending or is redispatched.
 
 The reproducible producer, input-only prefix cases and emulator patch are
 under `src/server/testdata/objects_velocity_original_5118a0.md`. Detailed
 proofs are in `object-velocity-native-port`, including
-`local-velocity-bookcase-and-powder-qualified-v1.json`. Overall100% remains
-open; this adds no chapter or percentage credit.
+`local-velocity-bookcase-and-powder-qualified-v1.json` and
+`all-native-workflows-qualified-v1.json`. Overall100% remains open; this
+adds no chapter or percentage credit.
 
 ### Wiz02c pressure plate bookcase movement
 

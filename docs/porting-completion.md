@@ -114,11 +114,57 @@ retain their original bytes. The full legacy rerun passes93234 with3 skips;
 together with the unchanged passing root/server suites, the normal result
 is271883 passes and18 skips. Raw initial failures remain preserved.
 
+Source `0dcb1d9` is pushed to `port/go1.26-multiarch`. Its single clean
+ARM64 Go1.26.9 product has SHA256
+`54e45ff3d5e6a699b38babf8faf1d81a4ee810026e55ebd18394dd59b7ae4fd7`,
+65,622,002 bytes and `vcs.modified=false`. The unchanged original Wiz02c
+pressure-plate/Bookcase6/Chain Lightning replay passes in38.856 seconds.
+Native snapshots show the bookcase slide from (1554,4746) to exactly
+(1591,4734), the plate disable, mover activation, living original Urchin
+HP8 before the earned Chain Lightning beam and HP0/DEAD afterward. Player
+mana falls from78 to71 at the defeat, and actual earned Heal later restores
+HP20 with MP42 and poison0 before manual Save. A fresh actual menu Load
+and another manual Save pass in17.527 seconds, retaining this endpoint and
+all three original object states in every reload sample. The movement,
+beam/XP and restored-scene frames are directly viewed. The first reload
+attempt overlaps the preceding port range and stops in setup before game
+launch; it is retained separately and contributes no gameplay evidence.
+Reported runtime object2195 has not been established as stock Bookcase6A
+extent1974/script1000194601; the pressure-plate route is what is verified.
+
 Local evidence is under `chain-lightning-native-entry-port`, including
-`local-chain-native-and-original-qualified-v1.json` and
-`original-lifecycle-proof-v1.json`. New product, campaign replay and native
-platform qualification are still pending for this source change. Overall100%
-remains open.
+`local-chain-native-and-original-qualified-v1.json`,
+`original-lifecycle-proof-v1.json` and
+`current-product-bookcase-chain-and-reload-qualified-v1.json`.
+
+Windows386/amd64 run40736092102 passes native server build, help and all
+three uncached root/server/legacy suites. Artifacts12837124883/12837388805
+independently match their ZIP digests, PE architectures, clean source revision
+and Go1.26.9 build information; complete original CRLF job logs are retained.
+Windows output is nonverbose: individual test execution follows full package
+inclusion and success, rather than per-test JSON. Linuxamd64 run40736136205
+passes269309 terminals with7 skips across all58 expected packages (36 pass,
+22 skip). Independently recounted raw JSON includes PASS for all120 newly
+added terminals, including both56-context lifecycle suites, three subprocess
+entries, real wand/ray composition and the retired-header negative controls.
+The additional no-test internal fixture package accounts for the58th package.
+The default-link damage regression passes133041 terminals in three packages.
+Artifact12838552848 independently matches its ZIP digest, ELF machine62,
+source revision, product hash and clean build information. Its complete raw
+JSON, stderr and job log also contain none of the five reported poison-macro
+warnings. ARM64 and both Windows logs are clean of these warnings as well;
+the unrelated duplicate SDL linker diagnostic remains on ARM64. These three
+native jobs and their independent artifact checks are closed in
+`all-native-workflows-qualified-v1.json`. Documentation-only changes reuse
+the same executable and do not redispatch qualification. No actual Linux
+campaign or Windows-peer gameplay is inferred from these headless gates.
+
+Overall100% remains open. A separate read-only inventory records46
+intercepted duration callbacks: six direct Go exports, three inspected
+native C forwarding wrappers, one inspected constant leaf, and36 remaining
+C entries for ABI review and executed direct-call reproduction. This is a
+source inventory, not reachable-defect or percentage coverage. The original
+Tag create/update/destroy entries are the next inspected PE32 candidates.
 
 ### Native script AI parameters and combat observation
 

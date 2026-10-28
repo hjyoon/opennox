@@ -71,8 +71,11 @@ serialized records retain their contracts. No map or saved-game asset changes.
 
 The user's number2195 is not equated to extent1974: the supplied stock map
 and earned runtime identify2195 as `CaveRocksPebbles`, and the sampled client
-drawables do not resolve it to the affected bookcase. The confirmed plate
-failure and the general axis-aligned fix are independently established.
+drawables do not resolve it to the affected bookcase. Movable objects use a
+runtime netcode; this replay's bookcase has netcode610, so2195 could refer to
+another runtime lineage, but that correspondence is not established. The
+confirmed plate failure and the general axis-aligned fix are independently
+established.
 
 Eight native C-owned controller trajectories cover the stock three-waypoint
 path and its axis orientations; fourteen boundary cases cover arrival,
@@ -122,14 +125,28 @@ expected values and both native Windows products remain preserved.
 
 The public C signature now forwards both incoming radius DWORDs through an
 integer-only Go export. The test probe also avoids quieting them before entry;
-on i386 it reproduces raw argument pushes while preserving stack alignment.
+on i386 a compiler-owned C call and a tail jump forward the raw argument words.
 No floating-point control state or oracle expectations change. The actual
 native C-root257-context comparison passes locally. Separately compiled exact
 C shim/probe bodies execute324 i386 machine-code cases with raw radius words,
 stack and callee-saved registers preserved. That check replaces the Go export
 with an integer capture service and is not Windows/MinGW or actual cgo proof.
-The new-source Windows/386, Windows/amd64 and Linux/amd64 jobs remain tracked
-until terminal results and artifacts are qualified.
+An initial manual-stack probe passes the isolated integer-capture check but
+causes execute access violations through actual Windows/386 cgo in both root
+and legacy tests at `d43de4d`. Its failed logs and product are preserved.
+Test-only correction `a693c06` uses the compiler-owned frame and tail jump;
+the new324-case local check retains its declared capture-service limitation.
+Actual Windows/386 and Windows/amd64 native product/build/help and all three
+package suites now pass at `a693c06`, including the unchanged257 C-root
+contexts. Both artifacts, PE architectures, clean Go1.26.9 build information
+and raw success logs are independently qualified. Linux/amd64 at `d43de4d`
+passes268311 tests with7 skips across all57 expected packages and all three
+default-link damage packages; its ELF artifact and raw JSON are qualified.
+Go bodies and complete non-i386 preamble bodies are unchanged by `a693c06`
+apart from a single leading empty line in preprocessed output, verified for
+ARM64 Darwin and AMD64 Windows/Linux. The clean ARM64 binary and its full,
+strict, campaign and powder evidence are reused without another rebuild or
+Linux dispatch. No native workflow from this batch remains pending.
 
 The unchanged two-variant powder Host E2E also passes on the same new ARM64
 binary in130.809 seconds with natural exit0: player11 then12, monster/NPC15

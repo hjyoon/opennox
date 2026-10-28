@@ -440,24 +440,47 @@ def required_swap_pairs(samples, log, requirements):
         final = [o.get('pos') for o in samples[-1] if o.get('script_id') == player_id] if samples else []
         final_point = ([final[0].get('x'), final[0].get('y')]
                        if len(final) == 1 and isinstance(final[0], dict) else None)
-        rows = [v for v in traces if v['player_script_id'] == player_id and v['script_id'] in alive_ids
-                and v['key'] == requirement['key'] and v['key_queued']]
+        rows = [v for v in traces if v['player_script_id'] == player_id]
         exchange = None
-        for before, after in zip(rows, rows[1:]):
+        motion = None
+        for index, (before, after) in enumerate(zip(rows, rows[1:])):
             identity = lambda v: (v['wire'], v['extent'], v['script_id'], v['key'])
             tolerance = requirement['tolerance']
             if ((after['frame'] - before['frame']) & 0xffffffff == 1
                     and before['cast_frame'] == after['cast_frame'] and identity(before) == identity(after)
+                    and before['script_id'] in alive_ids and before['key'] == requirement['key']
+                    and before['key_queued'] and after['key_queued']
                     and identity(after) in actual_inputs
                     and math.dist(before['player'], after['player']) >= requirement['minimum_distance']
                     and math.dist(before['player'], after['target']) <= tolerance
                     and math.dist(before['target'], after['player']) <= tolerance
-                    and point(final_point) and math.dist(final_point, after['player']) <= tolerance):
+                    and point(final_point)):
+                # Swap preserves ordinary movement. Bind the final position to
+                # the whole observed trajectory, rather than requiring all
+                # subsequent physics to stay within one frame's tolerance.
+                tail = rows[index + 1:]
+                if any(identity(row) != identity(after) or row['cast_frame'] != after['cast_frame']
+                       or not row['key_queued'] for row in tail):
+                    continue
+                steps = list(zip(tail, tail[1:]))
+                if any((right['frame'] - left['frame']) & 0xffffffff != 1 for left, right in steps):
+                    continue
+                player_step = max((math.dist(left['player'], right['player']) for left, right in steps), default=0)
+                target_step = max((math.dist(left['target'], right['target']) for left, right in steps), default=0)
+                if (player_step > tolerance or target_step > tolerance
+                        or math.dist(final_point, tail[-1]['player']) > tolerance
+                        or math.dist(final_point, before['player']) < requirement['minimum_distance']
+                        or math.dist(final_point, after['player']) > math.dist(final_point, before['player'])):
+                    continue
                 exchange = {'before': before, 'after': after}
+                motion = {'samples': len(tail), 'last': tail[-1],
+                          'maximum_player_frame_step': player_step, 'maximum_target_frame_step': target_step,
+                          'final_distance_from_last_trace': math.dist(final_point, tail[-1]['player']),
+                          'final_distance_from_exchange': math.dist(final_point, after['player'])}
                 break
         selected_id = exchange['after']['script_id'] if exchange else None
         pairs.append(dict(requirement, initial_alive_target_script_ids=sorted(alive_ids), selected_target_script_id=selected_id, initial_player_position=initial_point,
-                          initial_player_matches=bool(starts_inside), position_exchange=exchange,
+                          initial_player_matches=bool(starts_inside), position_exchange=exchange, post_swap_motion=motion,
                           final_player_position=final_point, passed=bool(len(alive_ids) == len(target_ids) and starts_inside and exchange and not malformed)))
     return {'pairs': pairs, 'malformed_position_observation': malformed,
             'passed': bool(pairs) and all(p['passed'] for p in pairs)}

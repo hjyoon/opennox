@@ -38,6 +38,55 @@ class NativeSwapEvidenceTests(unittest.TestCase):
         self.assertTrue(result['passed'])
         self.assertEqual(result['pairs'][0]['position_exchange']['after']['frame'], 101)
 
+    def moving_tail(self):
+        rows = copy.deepcopy(self.rows)
+        for frame in range(102, 105):
+            rows.append(dict(rows[-1], frame=frame,
+                             player=[rows[-1]['player'][0] + 3, rows[-1]['player'][1]],
+                             target=[rows[-1]['target'][0] + 2, rows[-1]['target'][1] + 1]))
+        samples = copy.deepcopy(self.samples)
+        samples[-1][0]['pos'] = dict(zip(('x', 'y'), rows[-1]['player']))
+        return rows, samples
+
+    def test_contiguous_post_swap_movement_can_accumulate_more_than_exchange_tolerance(self):
+        # Reduced from the real 627->628 exchange followed by seventeen
+        # ordinary physics frames: total drift12.61, per-frame steps<4.68.
+        rows, samples = self.moving_tail()
+        result = self.check(rows, samples)
+        self.assertTrue(result['passed'])
+        motion = result['pairs'][0]['post_swap_motion']
+        self.assertEqual(motion['maximum_player_frame_step'], 3)
+        self.assertGreater(motion['final_distance_from_exchange'], self.required[0]['tolerance'])
+        self.assertEqual(motion['final_distance_from_last_trace'], 0)
+
+    def test_unobserved_drift_and_post_swap_teleport_cannot_pass(self):
+        rows, samples = self.moving_tail()
+        self.assertFalse(self.check(rows[:2], samples)['passed'])
+        for unit in ('player', 'target'):
+            changed = copy.deepcopy(rows)
+            changed[-1][unit][0] += 20
+            final = copy.deepcopy(samples)
+            if unit == 'player':
+                final[-1][0]['pos'] = dict(zip(('x', 'y'), changed[-1]['player']))
+            with self.subTest(unit=unit):
+                self.assertFalse(self.check(changed, final)['passed'])
+
+    def test_post_swap_trace_gap_or_changed_input_identity_cannot_pass(self):
+        for change in ({'frame': 106}, {'cast_frame': 99}, {'script_id': 3}, {'extent': 18},
+                       {'wire': 20}, {'key': 32}, {'key_queued': False}):
+            rows, samples = self.moving_tail()
+            rows[-1].update(change)
+            with self.subTest(change=change):
+                self.assertFalse(self.check(rows, samples)['passed'])
+
+    def test_continuous_return_to_start_does_not_count_as_escape(self):
+        rows = copy.deepcopy(self.rows)
+        for frame, x in enumerate(range(39, -1, -3), start=102):
+            rows.append(dict(rows[-1], frame=frame, player=[x, 22]))
+        samples = copy.deepcopy(self.samples)
+        samples[-1][0]['pos'] = dict(zip(('x', 'y'), rows[-1]['player']))
+        self.assertFalse(self.check(rows, samples)['passed'])
+
     def test_no_exchange_or_only_one_moving_object_cannot_pass(self):
         for player, target in (([0, 0], [39, 21]), ([42, 22], [39, 21]), ([5, 2], [0, 0])):
             rows = copy.deepcopy(self.rows)

@@ -55,6 +55,84 @@ completion requirements.
 
 ## Current findings
 
+### Native Spark, ProjectileTrail and Push update entries
+
+The 53ADC0/53AEC0/53B030 C entries now accept native object pointers and
+share original-derived Go bodies with their existing Go registrations.
+All three old healthy C calls SIGSEGV with C-owned object/update pointers
+above 4 GiB; corrected calls preserve complete native frames and canaries.
+Original C bodies remain unchanged under `#if 0`. Spark and Push retain
+their fixed 16-byte and 12-byte records. The old registrations already
+dispatched through Go, and the unchanged stock thing inventory contains no
+direct assignments to these three update names. These boundary failures
+are not reported as observed stock-campaign crashes or as runtime coverage.
+
+Spark retains signed lifetime expiry, DWORD decrement, kind-dependent damping
+and lazy deletion. Push reads Force before Radius and passes the actual
+position pointer through its native radial service. The old registered
+legacy Push adapter already preserved that alias; differences measured
+through the public value-parameter API do not establish a live-game alias
+bug. The public Go preflights and value callback remain compatible.
+
+ProjectileTrail now retains signed direction indexing, original PC53/ToZero
+arithmetic and each binary32 spill. Cached steps remain separate from the
+live previous-position reads between spark pairs. Original FISTP conversion
+and subsequent integer-to-float spills precede the four ordered wide random
+returns for each spark. The native service uses the original logic RNG
+precision instead of early float32 conversion through FloatClamp. The C
+entry returns the actual eighth factory pointer, including nil. Host FP
+state and shared precision helpers remain unchanged. The earlier public
+void API's factory return was not independently observable in its comparison.
+
+All 463 bytes of the three complete original callers and existing original
+FISTP helper execute across 487 prepared contexts. Each context also runs
+with nearest rounding as a separate counterfactual: 212 final states and
+431 service traces differ from actual startup mode. Go and actual C each
+match every actual-mode state, ordered service snapshot and final pointer.
+Six additional pointer contexts match five required faults and one safe
+Trail call with an unused nil update record. The self-contained producer
+regenerates fixtures and execution proof byte for byte. Native and public
+direction backends match all 512 original table words, and the actual native
+RNG adapter matches 8,192 original-precision results with stream/order checks.
+Out-of-range directions in prepared comparisons use declared original words;
+general native blob coverage, signaling-NaN behavior and full original-world
+composition are not inferred from these callers' declared services.
+
+All 3,801 previous tests, fixtures, E2E inputs and goldens remain unchanged;
+zero old expectations are corrected. One complete normal root/server/legacy
+run passes in 290.681 seconds: 267,458 PASS and 16 SKIP, retaining every old
+terminal identity, result and multiplicity with 996 added PASS events.
+Focused highres/cgocheck2/checkptr2 and dispatch checks pass in parallel in
+118.799 seconds with 1,033 PASS. Counts include parents/subtests and do not
+measure feature completion. The initial new comparison-test compile failure
+(an unused local identity helper) is retained separately from accepted checks.
+
+The clean `e38a126` Go 1.26.9 Darwin/ARM64 product builds once in 11.665
+seconds with unmodified VCS metadata: 65,527,762 bytes, SHA-256
+`9e1cbc3d0e9734fd70020ad4102d657bc101d8ae8e20a988ade715e834e3e5ef`.
+The existing Wizard3 stat-audit E2E and qualified combat-cleared earned Save
+are reused unchanged. One first-launch replay passes in 54.756 seconds,
+using actual Solo Load and manual Save with HP33/MP49, maxima32/98 and
+poison0. Historical current HP33 remains preserved independently of the
+original-derived maximum32. Two read-only samples supply six parameterless
+GETs; source saves, assets, config and binary retain their hashes. The final
+frame is directly viewed: living Wizard in the cleared cellar, intact HUD
+and Korean save-complete text. This is Load/Save smoke evidence, with no
+new spell-effect, three-callback runtime or chapter-completion credit.
+An external seed-preflight helper-name error is preserved; it launched no
+game and required no change to inputs, production code or the passing replay.
+
+The previous `382cbeb` source's Windows AMD64/386 and Linux AMD64 jobs all
+succeed. Decoded logs, ZIPs and clean Go1.26.9 PE/ELF products are retained
+and independently qualified. Linux recounts 263,886 PASS, seven SKIP, all 56
+expected packages and three passing default-link damage checks. No prior
+workflow is restarted. The preprocessed registered-update inventory now has
+native object parameters throughout GAME4_3.c; this is one translation-unit
+inventory, not overall port completion. The next active signature candidate
+is GAME4_1.c SentryGlobe510E60, whose existing Go registration and six stock
+types still require original/body/dispatch analysis. Nine-cell feature audits
+and UI/audio/peer/stability remain open; overall 100% is not claimed.
+
 ### Native Toggle, Trigger and Switch update entries
 
 The remaining 53B060/53B1B0/53B320 C entries now accept native object pointers

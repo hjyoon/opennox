@@ -112,6 +112,19 @@ a regression smoke check; it cannot certify a live SteamPipe force effect.
 Product and replay results are recorded after execution. No gameplay setter
 or artificial campaign spawn is used to manufacture that coverage.
 
+The clean `4b2b3d2` ARM64 product builds once in12.091s with Go1.26.9 and
+unmodified VCS metadata:65,445,890 bytes, SHA-256
+`352a3198b7249d29af50f348f4304dc916580e6b4c8cbafdb1d86fe7be95fda1`.
+The unchanged Wizard3 stat-audit suite passes on its first launch in53.655s.
+Both native observations retain level3 Wizard, HP33/MP49, maxima32/98,
+poison0 and the exact stat words; the living manual Save changes to its
+recorded new hash. Six parameterless GETs, source Save/assets/config and the
+binary hashes qualify. The final frame shows the living Wizard, HUD and
+Korean save-complete message. There are no unported/fatal log hits. This is
+the bounded regression smoke check described above, with no SteamPipe or
+whole-chapter credit. The new source revision's native CI is tracked
+separately without restarting earlier completed runs.
+
 The five native jobs pending at the previous checkpoint now all succeed.
 Both ab3c4b7 Windows products, its Linux AMD64 server, and both e90d252
 Windows products/logs are retained and qualified. Linux independently

@@ -6798,6 +6798,9 @@ int nox_xxx_updateFlag_53DDF0(nox_object_t* flag) {
 #endif
 
 //----- (0053DE80) --------------------------------------------------------
+extern void nox_trapdoor_update_native_53de80(nox_object_t* source);
+void nox_xxx_updateTrapDoor_53DE80(nox_object_t* source) { nox_trapdoor_update_native_53de80(source); }
+#if 0 // Original PE32 body retained as provenance; typed native entry above.
 int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1) {
 	int v1;      // edi
 	int* result; // eax
@@ -6831,6 +6834,7 @@ int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0053DF40) --------------------------------------------------------
 #if 0 // Restored by game_ball_lifecycle_417f50_export.go; retained as ABI32 provenance.
@@ -6914,6 +6918,9 @@ void nox_xxx_updateGameBall_53DF40(int a3) {
 #endif
 
 //----- (0053E190) --------------------------------------------------------
+extern void nox_undead_killer_update_native_53e190(nox_object_t* source);
+void nox_xxx_updateUndeadKiller_53E190(nox_object_t* source) { nox_undead_killer_update_native_53e190(source); }
+#if 0 // Original PE32 body retained as provenance; typed native entry above.
 void nox_xxx_updateUndeadKiller_53E190(int a1) {
 	int v1; // eax
 
@@ -6924,6 +6931,8 @@ void nox_xxx_updateUndeadKiller_53E190(int a1) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
+
 
 #if 0
 // Oracle provenance only: this ABI32 transcription is superseded by the

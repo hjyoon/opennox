@@ -1,7 +1,5 @@
 package server
 
-import "github.com/opennox/libs/object"
-
 type TrapDoorUpdateRuntime53DE80 struct {
 	AudioEvent func(uint32, *Object)
 }
@@ -12,30 +10,14 @@ func (s *Server) TrapDoorUpdate53DE80(unit *Object, runtime TrapDoorUpdateRuntim
 	if unit == nil || unit.CollideData == nil {
 		return
 	}
-	data := (*TrapDoorCollideData)(unit.CollideData)
-	if unit.ObjFlags.Has(object.FlagEnabled) {
-		switch {
-		case uint8(unit.Field5)&0x2 != 0:
-			unit.UnsetXStatus(0x2)
-			unit.SetXStatus(0x8)
-		case uint8(unit.Field5)&0x4 != 0:
-			if s.Frame() >= data.NextFrame {
-				unit.UnsetXStatus(0x4)
-				unit.SetXStatus(0x8)
+	TrapDoorUpdateRaw53DE80(unit, TrapDoorUpdateRawRuntime53DE80{
+		Frame: s.Frame, FPS: s.TickRate,
+		SetOnOff:     (*Object).SetOnOff,
+		UnsetXStatus: (*Object).UnsetXStatus, SetXStatus: (*Object).SetXStatus,
+		AudioEvent: func(id uint32, o *Object) {
+			if runtime.AudioEvent != nil {
+				runtime.AudioEvent(id, o)
 			}
-		default:
-			data.Activated = 0
-		}
-		return
-	}
-	if data.NextFrame == 0 || s.Frame() < data.NextFrame {
-		return
-	}
-	unit.SetOnOff(true)
-	unit.UnsetXStatus(0x2)
-	unit.SetXStatus(0x4)
-	data.NextFrame += 5 * s.TickRate()
-	if runtime.AudioEvent != nil {
-		runtime.AudioEvent(874, unit)
-	}
+		},
+	})
 }

@@ -265,11 +265,16 @@ func nox_xxx_gameSetWallsDamage_4E25A0(v_cgo int32) {
 
 //export nox_xxx_mapDamageUnitsAround_4E25B0
 func nox_xxx_mapDamageUnitsAround_4E25B0(a1 *C.float, a2, a3 C.float, a4_cgo, a5_cgo int32, a6, a7 *nox_object_t) {
-	a4 := int(a4_cgo)
-	a5 := int(a5_cgo)
-	cpos := unsafe.Slice(a1, 2)
-	pos := types.Pointf{X: float32(cpos[0]), Y: float32(cpos[1])}
-	GetServer().Nox_xxx_mapDamageUnitsAround(pos, float32(a2), float32(a3), int(a4), object.DamageType(a5), asObjectS(a6), ToObjS(a7), GetDoDamageWalls())
+	outer := GetServer()
+	center := (*types.Pointf)(unsafe.Pointer(a1))
+	if native, ok := outer.(interface {
+		MapDamageUnitsAroundNative4E25B0(*types.Pointf, float32, float32, int32, object.DamageType, *server.Object, *server.Object)
+	}); ok {
+		native.MapDamageUnitsAroundNative4E25B0(center, float32(a2), float32(a3), a4_cgo, object.DamageType(a5_cgo), asObjectS(a6), asObjectS(a7))
+		return
+	}
+	// Existing value-only service implementations retain their interface.
+	outer.Nox_xxx_mapDamageUnitsAround(*center, float32(a2), float32(a3), int(a4_cgo), object.DamageType(a5_cgo), asObjectS(a6), ToObjS(a7), GetDoDamageWalls())
 }
 
 //export nox_game_addStateCode_43BDD0

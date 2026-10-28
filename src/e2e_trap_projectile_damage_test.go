@@ -43,7 +43,9 @@ func TestE2ETrapProjectileArmorExpectation(t *testing.T) {
 		want      int32
 		remainder float32
 	}{
-		{object.DamageImpale, true, 5, -.1}, {object.DamageCrush, true, 7, .15},
+		// The original shared full-armor prefix truncates4.9 to4, retaining
+		// positive carry. Nearest0x23f reproduces the old5/negative carry.
+		{object.DamageImpale, true, 4, .9}, {object.DamageCrush, true, 7, .15},
 		{object.DamageFlame, true, 9, .4}, {object.DamagePoison, true, 9, .4},
 		{object.DamageImpale, false, 9, .4}, {object.DamageCrush, false, 9, .4},
 	} {

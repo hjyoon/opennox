@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"image"
-	"math"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -1406,47 +1405,8 @@ func nox_xxx_gameSetWallsDamage_4E25A0(v int) {
 }
 
 func (s *Server) Nox_xxx_mapDamageUnitsAround(pos types.Pointf, r1, r2 float32, dmg int, dtyp object.DamageType, who *server.Object, a7 server.Obj, damageWalls bool) {
-	rr := r1
-	if r1 < r2 {
-		rr = r2
-	}
-	rect := types.Rectf{
-		Min: pos.Sub(types.Ptf(rr, rr)),
-		Max: pos.Add(types.Ptf(rr, rr)),
-	}
-	s.Map.EachObjInRect(rect, func(it *server.Object) bool {
-		u := it
-		if u == who && !damageWalls {
-			return true
-		}
-		if u == server.ToObject(a7) {
-			return true
-		}
-		pos2 := u.Pos()
-		dx := pos2.X - pos.X
-		dy := pos2.Y - pos.Y
-		dist := float32(math.Sqrt(float64(dy*dy + dx*dx)))
-		if dist > rr {
-			return true
-		}
-		if !s.MapTraceRay(pos, pos2, server.MapTraceFlag1) {
-			return true
-		}
-		rdmg := float32(dmg)
-		if dist >= r2 {
-			rdmg *= 1.0 - (dist-r2)/(rr-r2)
-		}
-		asObjectS(u).CallDamage(who, nil, int(rdmg), dtyp)
-		return true
-	})
-	wrect := image.Rect(
-		int(rect.Min.X)/common.GridStep,
-		int(rect.Min.Y)/common.GridStep,
-		int(rect.Max.X)/common.GridStep,
-		int(rect.Max.Y)/common.GridStep,
-	)
-	s.Nox_xxx_mapDamageToWalls_534FC0(wrect, pos, r1, dmg, dtyp, who)
-	doDamageWalls = true
+	doDamageWalls = damageWalls
+	s.MapDamageUnitsAroundNative4E25B0(&pos, r1, r2, int32(dmg), dtyp, who, server.ToObject(a7))
 }
 
 func sub_473840() {

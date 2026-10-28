@@ -3,6 +3,7 @@ package opennox
 import (
 	"fmt"
 	"math"
+	"math/big"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -40,9 +41,35 @@ func e2ePowderBarrelRadialDamage(distance float32) int32 {
 func e2ePowderBarrelUnitDamage(raw int32, armored, immune bool, armor, carry float32) (int32, uint32) {
 	damage, remainder := raw, math.Float32bits(carry)
 	if armored {
-		accumulated := float32((1-float64(armor))*float64(raw)) + carry
-		damage = int32(math.RoundToEven(float64(accumulated)))
-		remainder = math.Float32bits(accumulated - float32(damage))
+		// Independent finite-scalar reference for the original armor/carry
+		// prefix. The seeded instruction fixture proves PC53/ToZero, both
+		// binary32 spills and FISTP; production damage helpers are not used.
+		wide := func(a, b float64, op byte) float64 {
+			x := new(big.Float).SetPrec(53).SetMode(big.ToZero).SetFloat64(a)
+			y := new(big.Float).SetPrec(53).SetMode(big.ToZero).SetFloat64(b)
+			switch op {
+			case '*':
+				x.Mul(x, y)
+			case '-':
+				x.Sub(x, y)
+			default:
+				x.Add(x, y)
+			}
+			v, _ := x.Float64()
+			return v
+		}
+		spill := func(v float64) float32 {
+			x, _ := new(big.Float).SetPrec(24).SetMode(big.ToZero).SetFloat64(v).Float32()
+			return x
+		}
+		amount := spill(wide(wide(1, float64(armor), '-'), float64(raw), '*'))
+		accumulated := spill(wide(float64(amount), float64(carry), '+'))
+		if accumulated >= -0x1p31 && accumulated < 0x1p31 {
+			damage = int32(math.Trunc(float64(accumulated)))
+		} else {
+			damage = math.MinInt32
+		}
+		remainder = math.Float32bits(spill(wide(float64(accumulated), float64(damage), '-')))
 		if raw > 0 && damage == 0 {
 			damage = 1
 		}

@@ -88,8 +88,10 @@ func TestE2EPowderBarrelDamageContracts(t *testing.T) {
 		remainder       float32
 	}{
 		{15, false, false, 0, 0, 15, 0}, {15, false, true, 0, 0, 7, 0},
-		{15, true, false, .5, .25, 8, -.25}, {15, true, true, .5, .25, 4, -.25},
-		{9, true, false, .5, .25, 5, -.25}, {9, true, false, .5, -.25, 4, .25},
+		// Original301-byte armor/carry prefix under startup0xe3f; the old
+		// 8/4/5 and negative carries are reproduced only by nearest0x23f.
+		{15, true, false, .5, .25, 7, .75}, {15, true, true, .5, .25, 3, .75},
+		{9, true, false, .5, .25, 4, .75}, {9, true, false, .5, -.25, 4, .25},
 		{1, true, false, 1, 0, 1, 0},
 	} {
 		damage, carry := e2ePowderBarrelUnitDamage(tc.raw, tc.armored, tc.immune, tc.armor, tc.carry)

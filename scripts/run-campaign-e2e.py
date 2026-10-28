@@ -39,7 +39,7 @@ CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_pois
                'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
                'required_defeated_script_ids', 'require_monster_health_zero', 'required_enable_transitions',
                'required_position_transitions', 'required_plate_holds', 'required_map_pickups',
-               'required_swap_pairs'}
+               'required_swap_pairs', 'required_warcry_effect'}
 STAT_INPUT_WORDS = {'base_bits32', 'maximum_bits32', 'warrior_bits32', 'multipliers_bits32'}
 
 
@@ -64,6 +64,19 @@ def validate_suite_fields(suite):
             raise ValueError('unknown campaign case fields: ' + ', '.join(sorted(unknown)))
         if 'expected_stat_inputs' in case:
             validate_stat_inputs(case['expected_stat_inputs'])
+        if 'required_warcry_effect' in case:
+            effect = case['required_warcry_effect']
+            phases = ('before_checkpoint', 'active_checkpoint', 'expired_checkpoint')
+            if (not isinstance(effect, dict)
+                    or set(effect) != {'script_id', 'power', 'duration_frames', *phases}
+                    or type(effect['script_id']) is not int or not 0 < effect['script_id'] < 1 << 31
+                    or type(effect['power']) is not int or not 0 < effect['power'] <= 255
+                    or type(effect['duration_frames']) is not int or not 0 < effect['duration_frames'] <= 65535
+                    or any(not isinstance(effect[k], str) or not effect[k] for k in phases)
+                    or len({effect[k] for k in phases}) != 3
+                    or any(effect[k] not in case.get('required_checkpoints', []) for k in phases)
+                    or not isinstance(case.get('expected_maps'), list) or len(case['expected_maps']) != 1):
+                raise ValueError('required_warcry_effect needs one map, an original identity, native power/duration and three distinct required checkpoints')
         if 'require_monster_health_zero' in case:
             identities = case.get('required_defeated_script_ids')
             if (type(case['require_monster_health_zero']) is not bool or not isinstance(identities, list) or not identities
@@ -179,6 +192,61 @@ def check_ports(port):
     finally:
         for sock in sockets:
             sock.close()
+
+
+def required_warcry_effect(samples, required):
+    """Require a living original caster's native off/on/expired buff cycle."""
+    result = {'script_id': required['script_id'], 'phases': [], 'errors': [], 'passed': False}
+    for phase in ('before', 'active', 'expired'):
+        matches = [(i, sample) for i, sample in enumerate(samples)
+                   if sample.get('checkpoint') == required[phase + '_checkpoint']]
+        if len(matches) != 1:
+            result['errors'].append(phase + ': missing or repeated checkpoint')
+            continue
+        index, sample = matches[0]
+        try:
+            combat = sample['combat']
+            frame = combat['frame']
+            status = [o for o in combat['objects'] if o.get('script_id') == required['script_id']]
+            objects = [o for o in sample['objects'] if o.get('script_id') == required['script_id']]
+            if len(status) != 1 or len(objects) != 1:
+                raise ValueError('missing or ambiguous original identity')
+            obj, state = objects[0], status[0]
+            health, monster, anti = obj['health']['current'], state['monster'], state['anti_magic']
+            buffs, flags = state['buffs'], monster['status_flags']
+            if (type(frame) is not int or not 0 <= frame < 1 << 32
+                    or type(buffs) is not int or not 0 <= buffs < 1 << 32
+                    or type(flags) is not int or not 0 <= flags < 1 << 32
+                    or type(state['ind']) is not int or state['ind'] < 0
+                    or type(obj['ind']) is not int or state['ind'] != obj['ind']
+                    or 'MONSTER' not in (obj.get('class') or []) or obj.get('enabled') is not True
+                    or any(flag in (obj.get('flags') or []) for flag in ('DEAD', 'DESTROYED'))
+                    or type(health) is not int or not 0 < health <= 65535
+                    or monster['can_cast_spells'] is not True or not flags & 0x20
+                    or type(anti['active']) is not bool
+                    or type(anti['frames']) is not int or not 0 <= anti['frames'] <= 65535
+                    or type(anti['power']) is not int or not 0 <= anti['power'] <= 255
+                    or anti['active'] != bool(buffs & (1 << 29))):
+                raise ValueError('invalid native caster or buff state')
+            if phase == 'active':
+                if not anti['active'] or not 0 < anti['frames'] <= required['duration_frames'] or anti['power'] != required['power']:
+                    raise ValueError('expected native silence is absent')
+            elif anti['active']:
+                raise ValueError('expected inactive native silence')
+            result['phases'].append({'phase': phase, 'sample_index': index, 'frame': frame,
+                                     'health': health, 'anti_magic': dict(anti)})
+        except (KeyError, TypeError, ValueError, AttributeError) as error:
+            result['errors'].append(phase + ': ' + str(error))
+    if not result['errors']:
+        before, active, expired = result['phases']
+        to_active = (active['frame'] - before['frame']) & 0xffffffff
+        to_expired = (expired['frame'] - active['frame']) & 0xffffffff
+        if (not before['sample_index'] < active['sample_index'] < expired['sample_index']
+                or not 0 < to_active < 1 << 31
+                or not active['anti_magic']['frames'] <= to_expired < 1 << 31):
+            result['errors'].append('phase order or natural remaining duration is not established')
+    result['passed'] = not result['errors']
+    return result
 
 
 def created_monster_history(samples, type_id):
@@ -700,6 +768,9 @@ def run_case(args, binary, suite_dir, case, port):
               'port': port, 'clock': 'ordinary', 'command': command, 'snapshots': [],
               'player_observations': [], 'observed_maps': [], 'forced_termination': False}
     http = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+    routes = dict(ROUTES)
+    if case.get('required_warcry_effect'):
+        routes = {'combat': '/debug/nox/objects/combat', **routes}
     captures = queue.Queue()
     checkpoints = []
     errors = []
@@ -712,7 +783,7 @@ def run_case(args, binary, suite_dir, case, port):
                     return
                 number = len(report['snapshots'])
                 sample = {'after_line': line.strip(), 'routes': {}}
-                for label, route in ROUTES.items():
+                for label, route in routes.items():
                     row = {'method': 'GET', 'route': route, 'observation_only': True}
                     try:
                         with http.open(f'http://127.0.0.1:{port + 1}{route}', timeout=3) as response:
@@ -839,6 +910,19 @@ def run_case(args, binary, suite_dir, case, port):
         outcomes_ok = outcomes_ok and native_health['passed']
         if not native_health['passed']:
             failures.append({'check': 'require_monster_health_zero', **native_health})
+    if case.get('required_warcry_effect'):
+        phases = []
+        if snapshots_ok:
+            for sample in report['snapshots']:
+                checkpoint = re.search(r'QUEST MAP AUDIT FRAME: name="([^"]+)"', sample['after_line'])
+                phases.append({'checkpoint': checkpoint[1] if checkpoint else None,
+                               'combat': json.loads(Path(sample['routes']['combat']['path']).read_text()),
+                               'objects': json.loads(Path(sample['routes']['objects']['path']).read_text())})
+        effect = required_warcry_effect(phases, case['required_warcry_effect'])
+        report['required_original_warcry_effect'] = effect
+        outcomes_ok = outcomes_ok and effect['passed']
+        if not effect['passed']:
+            failures.append({'check': 'required_warcry_effect', 'errors': effect['errors']})
     if case.get('required_map_pickups'):
         log_path = case_dir / 'game.log'
         pickups = required_map_pickups(samples if snapshots_ok else [],

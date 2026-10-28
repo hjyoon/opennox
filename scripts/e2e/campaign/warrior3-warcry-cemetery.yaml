@@ -1,0 +1,53 @@
+# Original earned Save; ordinary menu, roads and exit. No state injection.
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "original earned Warrior3 WarCry menu Load"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "War03b"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint earned WarCry town Load"}
+  - {"action": "run-to-world", "x": 1770, "y": 3202, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 1887, "y": 3145, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 2021, "y": 3280, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 2173, "y": 3266, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 2219, "y": 3266, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 2304, "y": 3156, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 2307, "y": 3080, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 2363, "y": 3086, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 2917, "y": 2610, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 3542, "y": 2438, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 3649, "y": 2348, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 3794, "y": 2194, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 4209, "y": 1802, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 4339, "y": 1779, "name": "ordinary original Ix road return to crypt exit"}
+  - {"action": "run-to-world", "x": 4490, "y": 1900, "name": "ordinary original northeast Ix road"}
+  - {"action": "walk-to-world", "x": 4590, "y": 1940, "name": "ordinary original northeast exit approach"}
+  - {"action": "walk", "ang": 0.75, "dt": 45, "name": "ordinary original exit strip crossing"}
+  - {"action": "wait-map", "map": "War03c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 90, "name": "ordinary map fade and input readiness before original Save menu"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint earned WarCry natural crypt return"}
+  - {"action": "observe-player-target"}
+  - {"action": "wait", "dt": 35, "name": "ordinary settled world before Escape Save menu"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "ordinary manual Save"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

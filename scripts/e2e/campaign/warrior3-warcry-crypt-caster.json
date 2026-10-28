@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "name": "Warrior3 original crypt traversal and earned WarCry silence/expiry",
+  "seed_contract": "Unchanged living original War03c cemetery Save from the original Mayor-earned WarCry5 lineage; original ShamanBuddy2 script1000347545 remains alive40/40 and other two shamans dead. Start at original cemetery entry with HP49. No injected position, health, flags, spells or AI state.",
+  "coverage": "Original passenger descent, crypt roads and physical pit fall continue in one ordinary-clock process. Actual earned S input must produce native original caster anti-magic off/on/expiry, power5, buff-bit agreement and sufficient elapsed frames, followed by a living manual Save. The target starts with aggression0 and the original script later raises it to0.83; active enemy spell interruption, range/vision controls and arena exit remain unverified. Intermediate attacked Save/Load attempts remain archived failures.",
+  "cases": [
+    {
+      "name": "warrior3-warcry-crypt-caster",
+      "scenario": "warrior3-warcry-crypt-caster.yaml",
+      "expected_maps": [
+        "war03c"
+      ],
+      "manual_save": "SAVE0001/Player.plr",
+      "require_poison_free": true,
+      "minimum_health": 1,
+      "expected_mana": 0,
+      "timeout_seconds": 240,
+      "required_checkpoints": [
+        "earned WarCry cemetery Load",
+        "original paired crypt landing",
+        "original pre-pit safe approach",
+        "campaign checkpoint original living caster before WarCry",
+        "campaign checkpoint original caster after actual WarCry S",
+        "campaign checkpoint original caster natural silence expiry",
+        "original manual Save"
+      ],
+      "required_warcry_effect": {
+        "script_id": 1000347545,
+        "power": 5,
+        "duration_frames": 120,
+        "before_checkpoint": "campaign checkpoint original living caster before WarCry",
+        "active_checkpoint": "campaign checkpoint original caster after actual WarCry S",
+        "expired_checkpoint": "campaign checkpoint original caster natural silence expiry"
+      }
+    }
+  ]
+}

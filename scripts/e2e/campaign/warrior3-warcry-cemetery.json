@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "Warrior3 earned WarCry natural return to original crypt",
+  "seed_contract": "Original Mayor reward lineage v519, HP49, MP0, owned WarCry5 and original ShamanBuddy2 still present in archived War03c.",
+  "coverage": "Ordinary roads and original map exit, fresh current native HP observations and living manual Save. No hostile WarCry effect credit.",
+  "cases": [
+    {
+      "name": "warrior3-warcry-cemetery",
+      "scenario": "warrior3-warcry-cemetery.yaml",
+      "expected_maps": [
+        "war03b",
+        "war03c"
+      ],
+      "manual_save": "SAVE0001/Player.plr",
+      "require_poison_free": true,
+      "expected_health": 49,
+      "expected_mana": 0,
+      "timeout_seconds": 240,
+      "required_checkpoints": [
+        "earned WarCry town Load",
+        "earned WarCry natural crypt return",
+        "original manual Save"
+      ]
+    }
+  ]
+}

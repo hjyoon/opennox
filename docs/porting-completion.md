@@ -28,7 +28,7 @@ or a process exit does not prove a complete chapter.
 
 | Class | Chapter 1 evidence | Chapter 2 evidence | Chapter 3 evidence |
 | --- | --- | --- | --- |
-| Warrior | Current fresh-original War01a lineage completes the required Orchard/cave route: all eight original Bats and MasterUrchin have native HP0/DEAD, protected Kristine/Jennifer remain alive, original Urchin guide/LeatherArmbands/Meat recovery and living Save/Load are verified. Original Gearhart 500-XP reward/SponsorshipLetter and QuarterMaster 1000-XP reward/EnteredGauntlet1, consumed letter and scripted InvisibleExitArea naturally reach War02a, with independent normal/HD chapter 2 briefings and a fresh HD Load/Save (912–951, retaining original fresh-start parents); optional War01a features and final cell audit remain open | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; original earned WarCry use, reuse rejection after its active duration, and normal/HD Save/Load proved; War03d classification, optional areas and hostile WarCry effects remain open |
+| Warrior | Current fresh-original War01a lineage completes the required Orchard/cave route: all eight original Bats and MasterUrchin have native HP0/DEAD, protected Kristine/Jennifer remain alive, original Urchin guide/LeatherArmbands/Meat recovery and living Save/Load are verified. Original Gearhart 500-XP reward/SponsorshipLetter and QuarterMaster 1000-XP reward/EnteredGauntlet1, consumed letter and scripted InvisibleExitArea naturally reach War02a, with independent normal/HD chapter 2 briefings and a fresh HD Load/Save (912–951, retaining original fresh-start parents); optional War01a features and final cell audit remain open | Original Gauntlet4, Berserker reward, silver-key gates, Gearhart switches, sewer exit, rescue award and chapter 3 title proved; natural War03a AUTOSAVE Load and manual Save pass in normal/HD | Original War03a/Ix/crypt main route, Scepter, Ruby-key door, Kalen, GoldKey gates, both lifts, Mayor delivery and living Save/Load proved; original Captain ending reaches the chapter 4 briefing in normal virtual and HD ordinary time; original earned WarCry use, reuse rejection after its active duration, and normal/HD Save/Load proved; Original living-caster silence and natural expiry are verified by an earned normal replay; War03d classification, optional areas and active enemy spell interruption remain open |
 | Conjurer | Fresh earned Con01a cave, lift, key/doors, fire, combat and original exit-switch/passenger-lift route naturally reach Con02a; living normal/HD chapter-boundary Save/Load and movement proved (cases 669–732); optional features and final cell audit remain open | Current earned Con02a lineage completes the original Necromancer event, Aldwyn lesson, Charm/pet use, green/cave passenger lifts, Mayor banishment/reward and mine objective; original EndMission naturally enters Con03a with living normal/HD Save/Load proved (730–772); optional features and final cell audit remain open | Current earned chain returns all six miners and verifies original AllFound/XP, persisted BeatMine1, five protected miners alive in the archived mine and retained charmed Imp; original Foreman 500-gold reward, Captain quest/two stories and original chapter 3 ending reach the chapter 4 briefing in normal/HD ordinary time (891–911); no chapter 4 inputs; optional outdoor features and final cell audit remain open |
 | Wizard | Current fresh-original Wiz01a NewGame lineage completes the required Horvath route: eight original Staff kills, earned SapphireKey and cage unlock, WoundedApprentice scene, original Robe, LesserHeal41 and the named Chain Lightning book, Cavelator return, Horvath 500-XP reward/Lab unlock, Obelisk and original teleporter naturally reach Wiz02a. Independent normal/HD chapter 2 introductions and a fresh HD manual Load/Save preserve living HP20/MP34, earned items/spells/XP and protected archived story NPCs (952–1059; wizard1-current-earned-chapter2-boundary-v2.json). The separate earned MagicMissile50 tutorial branch is retained independently; optional features and the final cell audit remain open | Current earned Wiz02a Load/manual Save, natural Tower entry, receptionist/Horvath, ChainPull5/Zaris, archive lift and theft scene proved; actual Chain Lightning, obelisk refill, Lesser Heal, Swap, Shield and Fireball learning/Load/use proved; original library stairs naturally enter Wiz02c in normal/HD with living Save/Load and recovery; original Necromancer pit and BookOfOblivion, upper combat, Bat guide, original wand and living Save/Load proved; original cave return, shortcut plate, ArchivistBook4/AmuletOfClarity/+300XP and HD completed-dialog Load proved; original Rogue combat, crate-held Push learning, normal/HD Push use and wand recharge proved; new clean normal/HD Load, Morgan guard defeat, actual Heal, original surrender, living lift escort, Warden arrest/reward and native cell lock with living Save/Load proved; original chair-opened MorganSecret earns 150 XP and original crate-held PoisonRobe is picked up with PoisonProtect1 retained through normal/HD living Save/Load; original Horvath delivery earns 1000 XP and a level-up, consumes book/amulet and naturally reaches Wiz03a with living Save/Load in normal/HD | Earned original Wiz03a arrival, actual briefing dismissal and Horvath Amulet quest introduction proved; original plate/bookcases, both shafts, secret door, Brenneth explanation and opened tunnel proved in normal/HD; current product equips the original PoisonRobe and retains PoisonProtect1 through living normal/HD Save/Load; original Pull learning, actual Pull object movement, Archer defeat/XP and fresh HD recovery/Lesser Heal with living Save/Load proved; original water-barrel fire reduction, surviving fire traversal and Wasp guide learning/actual HD creature page with living Save/Load proved; original RedPotion recovery, Primitive mana/wand recharge and fresh HD full-resource Load/Save proved; original southern Wolves and western cave naturally reach Wiz03b with living normal/HD manual Save/Load; five original B Swordsmen are defeated with native map/XP checks and living Save; natural A resource-return/B reentry retain the first three deaths and recharged wand, followed by two further guard kills; actual B Lightning against Wasps, Primitive refill, retained CurePotion consumption and normal/HD full-resource Save/Load with refuge return proved; original Stravas paired lift/cellar, earned Magic Missile level 2 and original WizardHelm automatic equipment with full-resource normal/HD Save/Load proved; actual upgraded Magic Missile defeats the original lift-carried bandit and three southern Archers with native health/death/XP checks, forest recovery and full-resource normal/HD Save/Load; remaining house Swordsman defeat, original Mystic trade and three potion purchases, gold debit and full-resource normal/HD Save/Load proved; two original northern Archers defeated by actual Fireballs with purchased-potion consumption, original resource recovery and full-resource normal/HD Save/Load; original green paired lift passenger descent and lower Swordsman defeat with native death checks and living normal/HD Save/Load; three southern Wolves defeated with earned spells and actual FlareWand attacks, native charge consumption, original MineCrystal recharge and full-resource normal/HD recovery proved; original SilverKey room guards defeated, chest key acquired by actual pickup, and full-resource normal/HD key Save/Load proved; original SilverKey door use, Gilgore story/hostile transition and native north-door unlock proved; actual earned Chain Lightning injury, fresh HD Heal and living normal/HD combat Save/Load proved; original Gilgore Fireball defeat with independently read native HP0/DEAD, XP reward and living normal/HD Save/Load proved; original Amulet chest/pickup, exact 100 XP reward, RedPotion use and living normal/HD Amulet Save/Load proved; a separate resource branch naturally enters Wiz03c through the original southern exit with living normal Save and fresh HD full-resource crystal/Heal Save/Load; original natural C-to-B return and all three remaining LeadRogue Fireball defeats are verified in one living normal Save, with native HP0/DEAD retained by fresh HD C full-resource recovery; the same qualified lineage then defeats Archer208, acquires the Amulet and naturally returns to C in HD, enabling the original quest FloorPit with full-resource living Save; original C northern/eastern and Push-book passages, sixteen native-confirmed spider defeats, earned Push level 2, original BluePotion/Heal recovery and living normal/HD Save/Load with an actual HD Push cast are proved; original northern C crystal recovery, four Bats and Scorpion defeat, natural FloorPit/Grotto return to A in HD and fresh normal SapphireKey guardian defeat are proved; qualified original SapphireKey pickup/recovery, A Amulet QuestSwitch reactivation of CellarElevator, actual Sapphire gate unlock/key consumption/passage and full-resource normal/HD Save/Load are proved; original Cellar/White passenger return, 1000 XP trigger, Horvath final delivery and Amulet consumption, owned living A Save/Load and natural chapter ending boundary are verified in normal/HD; required A/B/C progression verified; unchanged stock journal-prefix no-op reproduced in original functions; no chapter 4 gameplay credited |
 
@@ -94,10 +94,72 @@ Player HP49 and both original earned abilities survive. An earlier38.455-second
 attempt reaches the map but lacks a changed manual Save; it is retained and
 ineligible for continuation. Ordinary map-fade readiness waits repair the
 input sequence without weakening any outcome check. The new Save is an
-additional feature branch. Actual hostile WarCry effect/expiry, original
-crypt traversal on the new product, and native artifact qualification remain
-open. Details are under `warrior-warcry-hostile-feature-audit`. Overall100%
-remains open.
+additional feature branch. Original caster silence/expiry, crypt traversal
+and the continuous earned feature replay are audited below.
+
+Source `81bd9d5` is pushed to `port/go1.26-multiarch`. Its clean ARM64
+Go1.26.9 product has SHA256
+`e76ebb529db9409a393e2e18500f6d87c087814c117eee1338e833958b84ebbb`,
+65,621,266 bytes and `vcs.modified=false`. The unchanged pressure-plate
+Bookcase6 replay passes in38.530 seconds on this product; actual menu Load
+and another manual Save pass in17.831 seconds. All three reload samples
+retain the exact (1591,4734) endpoint, disabled plate and east Urchin HP0/DEAD.
+The completed slide and reload frames are directly viewed; the initial Load
+frame still precedes the map fade and is not visual movement evidence.
+
+Windows386/amd64 run40722350292 passes native product build, help and the
+three uncached package suites. Artifacts12831168299/12831482876 independently
+match their ZIP digests, PE architectures, source revision and clean build
+information; original CRLF job logs are retained. Linuxamd64 run40722434919
+passes269189 tests with7 skips across all57 expected packages (36 pass,
+21 skip), including explicit JSON PASS for all18 added native terminals.
+Its default-link damage suite passes133041 tests across three packages.
+Artifact12832052384 independently matches its ZIP digest, ELF machine,
+source/build information and recounted raw JSON. All five reported macro
+warnings are absent from the ARM64/Windows/Linux build evidence. These three
+native jobs are closed; replay/documentation changes reuse this executable
+and do not redispatch them. All3594 existing Go test/testdata files retain
+their original bytes.
+
+The standalone original-caster branch follows the physical crumbling pit,
+presses the earned S key and observes native anti-magic activity/power5 and
+natural expiry on the living original ShamanBuddy2. Its ordinary manual
+Save completes in30.376 seconds; independent player parsing reads HP9/49,
+MP0, poison0 and both earned level5 abilities. The target starts with
+aggression0; its original script later raises aggression to0.83. These
+observations do not establish active enemy spell interruption. Earlier
+arena-departure inputs collide with original props and are retained as failed
+continuations. A separate three-stage
+town/crypt/caster attempt also exposes insufficient health when saving and
+reloading under the original Urchins' attacks; those failed results remain
+unqualified.
+
+The committed ordinary-input sequence now joins the original crypt roads,
+physical pit and earned S input in one process after the living cemetery
+Save/Load. Its two stages pass in43.189 and84.871 seconds on the same
+ARM64 product. The first exact passing stage is reused through checked
+executable, scenario, asset and Save manifests; failed stages are never reused.
+The three native caster samples show inactive at frame1783, active/power5
+with94 frames remaining at1827, and inactive at2001. All three retain
+native HP40 and CAN_CAST_SPELLS. The player ends at HP10/49, MP0, poison0
+with both earned level5 abilities preserved by independent manual-save
+parsing. This is an additional feature branch, not a replacement campaign
+lineage or qualification of the attacked intermediate Save/Load path.
+
+The runner's opt-in `required_warcry_effect` check requires unique original
+identities in both native routes, a living enabled caster, matching buff
+bit/activity, the declared power/timer bounds, ordered observations and
+enough native frames for expiry. Missing health, duplicate identities,
+dead/non-caster records, wrong power, stale activity and premature expiry
+fail the case. Its added tests and existing campaign tests all pass (85).
+Other campaigns keep their existing three snapshot routes. The sequence is
+`scripts/e2e/campaign/sequences/warrior3-warcry.json`; run it with the original
+Mayor-earned War03b Save and one prebuilt client executable through
+`scripts/run-campaign-e2e.py --sequence`. Informational coverage wording was
+corrected after native observations showed the original0-to0.83 aggression
+transition; executed cases, input scripts and outcome requirements are
+unchanged. Details and closed native proofs are under
+`warrior-warcry-hostile-feature-audit`. Overall100% remains open.
 
 ### Original object velocity integration
 

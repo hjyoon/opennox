@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "name": "Warrior3 earned WarCry original caster silence and expiry",
+  "seed_contract": "Original Mayor-earned War03b manual Save: HP49/49 MP0, WarCry5 and BerserkerCharge5; original completed Scepter/Kalen storyline with original ShamanBuddy2 script1000347545 still alive40/40 and other two shamans dead. Start from the preserved earned Save, never synthesized map or ability state.",
+  "coverage": "Two consecutive ordinary-input stages reuse one prebuilt executable: original Mayor-to-cemetery return and living Save/Load, then original crypt passenger lift/roads/pit and actual S input with independently checked native silence and natural expiry, ending in another living manual Save. The attacked intermediate pre-pit Save/Load path remains unqualified and is not a sequence stage. Active spell interruption, range/vision controls and arena exit remain open.",
+  "stages": [
+    {
+      "name": "cemetery",
+      "suite": "../warrior3-warcry-cemetery.json"
+    },
+    {
+      "name": "crypt-caster",
+      "suite": "../warrior3-warcry-crypt-caster.json"
+    }
+  ]
+}

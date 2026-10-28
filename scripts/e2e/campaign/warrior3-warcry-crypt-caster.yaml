@@ -1,0 +1,89 @@
+# Original earned lineage and original waypoint roads. Stops before physical pit transport.
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 60}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 30}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "ordinary original earned WarCry crypt-return Save Load"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "War03c"}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint earned WarCry cemetery Load"}
+  - {"action": "wait", "dt": 90}
+  - {"action": "run-to-world", "x": 1288, "y": 4286, "name": "ordinary original mausoleum road"}
+  - {"action": "run-to-world", "x": 1495, "y": 4462, "name": "ordinary original mausoleum road"}
+  - {"action": "run-to-world", "x": 1756, "y": 4737, "name": "ordinary original mausoleum road"}
+  - {"action": "run-to-world", "x": 1947, "y": 4914, "name": "ordinary original mausoleum road"}
+  - {"action": "run-to-world", "x": 2133, "y": 5097, "name": "ordinary original mausoleum road"}
+  - {"action": "run-to-world", "x": 2185, "y": 5145, "name": "ordinary original mausoleum road"}
+  - {"action": "run-to-world", "x": 2250, "y": 5245, "name": "ordinary original mausoleum road"}
+  - {"action": "run-to-world", "x": 2280, "y": 5250, "name": "ordinary original mausoleum road"}
+  - {"action": "walk-to-world", "x": 2334.5, "y": 5301.5, "name": "ordinary cave shaft center boarding input"}
+  - {"action": "wait", "dt": 40, "name": "ordinary shaft passenger descent before departure"}
+  - {"action": "observe-player-target", "name": "read original shaft arrival before immediate departure"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original paired crypt landing"}
+  - {"action": "run-to-world", "x": 2300, "y": 3061, "name": "ordinary original crypt waypoint558"}
+  - {"action": "run-to-world", "x": 2657, "y": 2904, "name": "ordinary original crypt waypoint559"}
+  - {"action": "run-to-world", "x": 2823, "y": 2835, "name": "ordinary original crypt waypoint560"}
+  - {"action": "run-to-world", "x": 3049, "y": 2842, "name": "ordinary original crypt waypoint561"}
+  - {"action": "run-to-world", "x": 3190, "y": 2935, "name": "ordinary original crypt waypoint562"}
+  - {"action": "run-to-world", "x": 3339, "y": 3124, "name": "ordinary original crypt waypoint563"}
+  - {"action": "run-to-world", "x": 3461, "y": 3044, "name": "ordinary original crypt waypoint564"}
+  - {"action": "run-to-world", "x": 3723, "y": 2837, "name": "ordinary original crypt waypoint565"}
+  - {"action": "run-to-world", "x": 3730, "y": 2688, "name": "ordinary original crypt waypoint566"}
+  - {"action": "run-to-world", "x": 3615, "y": 2556, "name": "ordinary original crypt waypoint572"}
+  - {"action": "run-to-world", "x": 3330, "y": 2346, "name": "ordinary original crypt waypoint415"}
+  - {"action": "run-to-world", "x": 3103, "y": 2265, "name": "ordinary original crypt waypoint418"}
+  - {"action": "run-to-world", "x": 2853, "y": 1953, "name": "ordinary original crypt waypoint420"}
+  - {"action": "run-to-world", "x": 3044, "y": 1738, "name": "ordinary original crypt waypoint421"}
+  - {"action": "run-to-world", "x": 3154, "y": 1617, "name": "ordinary original crypt waypoint419"}
+  - {"action": "run-to-world", "x": 3608, "y": 2065, "name": "ordinary original crypt waypoint416"}
+  - {"action": "run-to-world", "x": 3804, "y": 2397, "name": "ordinary original crypt waypoint417"}
+  - {"action": "run-to-world", "x": 3989, "y": 2162, "name": "ordinary original crypt waypoint392"}
+  - {"action": "run-to-world", "x": 4104, "y": 2070, "name": "ordinary original crypt waypoint393"}
+  - {"action": "run-to-world", "x": 4505, "y": 1674, "name": "ordinary original crypt waypoint394"}
+  - {"action": "run-to-world", "x": 4415, "y": 1426, "name": "ordinary original crypt waypoint397"}
+  - {"action": "run-to-world", "x": 4666, "y": 1113, "name": "ordinary original crypt waypoint398"}
+  - {"action": "run-to-world", "x": 4659, "y": 1001, "name": "ordinary original crypt waypoint534"}
+  - {"action": "run-to-world", "x": 4426, "y": 874, "name": "ordinary original crypt waypoint399"}
+  - {"action": "run-to-world", "x": 4150, "y": 1081, "name": "ordinary original crypt waypoint400"}
+  - {"action": "run-to-world", "x": 3932, "y": 1311, "name": "ordinary original crypt waypoint401"}
+  - {"action": "run-to-world", "x": 3644, "y": 1598, "name": "ordinary original crypt waypoint402"}
+  - {"action": "run-to-world", "x": 3530, "y": 1495, "name": "ordinary original crypt waypoint403"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original pre-pit safe approach"}
+  - {"action": "walk-to-world", "x": 3475, "y": 1430, "name": "ordinary original crumbling floor near approach"}
+  - {"action": "walk", "ang": 1.75, "dt": 35, "name": "ordinary bounded northwest step on original crumbling floor"}
+  - {"action": "wait", "dt": 30, "name": "ordinary original physical pit fall"}
+  - {"action": "observe-player-target", "name": "read original arena landing before earned WarCry"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original living caster before WarCry"}
+  - {"action": "wait", "dt": 15, "name": "ordinary before-cast snapshot readiness"}
+  - {"action": "raw", "dt": 2, "ev": {"type": "key", "key": 31, "pressed": true}, "name": "ordinary original earned WarCry S press"}
+  - {"action": "raw", "dt": 2, "ev": {"type": "key", "key": 31, "pressed": false}, "name": "ordinary original earned WarCry S release"}
+  - {"action": "wait", "dt": 25, "name": "ordinary short observation of original silence effect"}
+  - {"action": "observe-player-target", "name": "read Warrior during original caster silence"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original caster after actual WarCry S"}
+  - {"action": "run-to-world", "x": 4749, "y": 4059, "name": "ordinary return to original pit landing observation position"}
+  - {"action": "wait", "dt": 160, "name": "ordinary original anti magic duration expiry"}
+  - {"action": "observe-player-target", "name": "read living Warrior after natural silence expiry"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original caster natural silence expiry"}
+  - {"action": "observe-player-target"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "ordinary manual Save"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original manual Save"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

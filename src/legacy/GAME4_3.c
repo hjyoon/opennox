@@ -5807,66 +5807,9 @@ void sub_53BD10(nox_object_t* candidate, nox_object_t* missile) {
 }
 
 //----- (0053BDA0) --------------------------------------------------------
-int nox_xxx_updateMagicMissile_53BDA0(int a1) {
-	int* v1;    // edi
-	int v2;     // ecx
-	int v3;     // eax
-	int v4;     // eax
-	int v5;     // eax
-	int v6;     // edi
-	short v7;   // cx
-	short v8;   // ax
-	int result; // eax
-	double v10; // st7
-
-	v1 = *(int**)(a1 + 748);
-	v2 = *v1;
-	if ((*(uint8_t*)(*v1 + 16) & 0x20) || (gameFrame() - *(uint32_t*)(a1 + 128) > (unsigned int)(3 * gameFPS()))) {
-		return (*(int (**)(int, uint32_t, uint32_t))(a1 + 696))(a1, 0, 0);
-	}
-	v3 = v1[1];
-	if (v3) {
-		v4 = *(uint32_t*)(v3 + 16);
-		if (((v4 & 0x20) != 0) || ((v4 & 0x8000) != 0)) {
-			v1[1] = 0;
-		}
-	}
-	if (!v1[1] && !((unsigned char)gameFrame() & 7)) {
-		v5 = nox_xxx_spellFlySearchTarget_540610(0, a1, 32, 600.0, 0, v2);
-		v1[1] = v5;
-		if (v5 == *(uint32_t*)(a1 + 508)) {
-			v1[1] = 0;
-		}
-	}
-	v6 = v1[1];
-	if (v6) {
-		v7 = *(uint16_t*)(a1 + 126);
-		if ((*(float*)(v6 + 60) - *(float*)(a1 + 60)) * *getMemFloatPtr(0x587000, 194136 + 8 * v7) -
-				(*(float*)(v6 + 56) - *(float*)(a1 + 56)) * *getMemFloatPtr(0x587000, 194140 + 8 * v7) >=
-			0.0) {
-			*(uint16_t*)(a1 + 126) = v7 + 42;
-			if ((short)(v7 + 42) >= 256) {
-				do {
-					*(uint16_t*)(a1 + 126) -= 256;
-				} while (*(uint16_t*)(a1 + 126) >= 256);
-			}
-		} else {
-			v8 = v7 - 42;
-			*(uint16_t*)(a1 + 126) = v7 - 42;
-			if ((short)(v7 - 42) < 0) {
-				do {
-					v8 += 256;
-				} while (v8 < 0);
-				*(uint16_t*)(a1 + 126) = v8;
-			}
-		}
-	}
-	result = 8 * *(short*)(a1 + 126);
-	*(float*)(a1 + 88) = *getMemFloatPtr(0x587000, 194136 + result) * *(float*)(a1 + 544);
-	v10 = *getMemFloatPtr(0x587000, 194140 + result) * *(float*)(a1 + 544);
-	*(uint32_t*)(a1 + 112) = 1061997773;
-	*(float*)(a1 + 92) = v10;
-	return result;
+extern int nox_magic_missile_update_native_53BDA0(nox_object_t* missile);
+int nox_xxx_updateMagicMissile_53BDA0(nox_object_t* missile) {
+ return nox_magic_missile_update_native_53BDA0(missile);
 }
 
 // GAME.EXE 0053BEF0..0053C15B is retained as PE32 provenance. Live symbols

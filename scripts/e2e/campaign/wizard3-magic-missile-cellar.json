@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "name": "Wizard3 earned upgraded MagicMissile against the original cellar Swordsman",
+  "seed_contract": "Earned Wiz03b manual Save from wizard3-original-b-cellar-bandit-lift-return-v516-normal: living Wizard HP33/MP99, naturally learned MagicMissile50 level2 in A and LesserHeal41 in S, original Swordsman01 script1000451500 alive at the cellar lift. The original v517 input route earned its death; no Wizard1 tutorial lineage is merged.",
+  "coverage": "Original Solo Load, earned MagicMissile50 binding, ordinary A inputs across the natural lift cycle, original Swordsman01 alive-to-DEAD with native HP0, Lesser Heal and living manual Save. No other story route or whole chapter is certified.",
+  "cases": [
+    {
+      "name": "wizard3-magic-missile-cellar",
+      "scenario": "wizard3-magic-missile-cellar.yaml",
+      "expected_maps": [
+        "wiz03b"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 240,
+      "expected_maximum_health": 33,
+      "expected_maximum_mana": 99,
+      "expected_health": 33,
+      "minimum_mana": 40,
+      "required_checkpoints": [
+        "actual fresh-process Wiz03b Wizard Load",
+        "original cellar bandit lift return combat",
+        "actual menu saved natural Wiz03b Wizard"
+      ],
+      "required_defeated_script_ids": [
+        1000451500
+      ]
+    }
+  ]
+}

@@ -32,6 +32,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-upper-urchins.json` | Healthy book-recovery save, HP26/MP88 | Original Urchins2363/2364, retained book, HP26/poison0 manual Save; the qualified run ends at MP2 and needs normal recovery before further spell-heavy combat |
 | `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Southern floor bypass, original BluePotion1940 automatic +50 mana and Meat1939/1938 pickups; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
 | `wizard2-swap-escape.json` | Earned Wiz02b Swap-book save, HP20/MP78, F=Swap115, player at2822.5457,2758.513 | One ordinary F cast at the original moving SmallAlbinoSpider; reciprocal native position exchange in one frame, full resources and living manual Save |
+| `wizard3-magic-missile-cellar.json` | Earned Wiz03b lift-return save, HP33/MP99, learned MagicMissile50 level2 in A and LesserHeal41 in S | Ordinary A inputs across the original lift cycle; Swordsman01 script1000451500 alive-to-DEAD with native HP0, Heal and living manual Save at HP33/MP at least40 |
 
 For a short Load, movement, pickup and manual Save regression, use
 `wizard2-upper-mana-recovery.json` with its earned upper-Urchins checkpoint:
@@ -49,6 +50,13 @@ This segment has taken about 30 seconds on the ARM64 validation machine. It
 checks the listed outcomes automatically and preserves evidence on failure.
 It does not exercise every enemy, an obelisk interaction or an entire chapter.
 Use the suite that exercises the changed behavior for gameplay coverage.
+
+The Wizard3 MagicMissile case uses the separate earned lift-return checkpoint
+from `wizard3-original-b-cellar-bandit-lift-return-v516-normal`. It preserves
+the original35 ordinary aiming/key attempts and waits from the earlier combat
+route, adding read-only A50/S41 binding and initial-player checks. The original
+Swordsman must be alive in the first observation and dead with native HP0
+afterward. A healthy process exit without that effect fails the case.
 
 The Swap case uses its own earlier earned checkpoint, before the barred-room
 escape. Run it with `--suite scripts/e2e/campaign/wizard2-swap-escape.json`

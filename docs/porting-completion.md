@@ -55,6 +55,51 @@ completion requirements.
 
 ## Current findings
 
+### Native MagicMissile entry and steering arithmetic
+
+The remaining 53BDA0 C entry now accepts a full native object pointer and
+forwards to Go. An isolated actual C call above4 GiB crashes before the
+change and passes afterward. It also checks the real indirect C collision
+arguments and its defined DWORD return. Registered Go updates retain their
+existing collision dispatcher, nil-object/update/owner preflights and native
+missile record layouts.
+
+The body retains its cached update and owner, destroyed-owner short circuit,
+live search-frame byte and owner exclusion after search. Steering keeps wide
+coordinate differences and PC53/ToZero operations, including unordered
+comparison behavior, signed-WORD direction loops and force spills. Full raw
+direction indices reach the original address rather than being masked to a
+byte. The native runtime reads the existing direction memory; all512 static
+Go float words and the2,048 embedded table bytes already match the original
+and remain unchanged. Shared precision helpers remain unchanged.
+
+Complete unchanged original execution seals322 code bytes,2,052 table/constant
+bytes and20 additional raw-direction words, including PE virtual zero-fill.
+There are1,009 conditions and2,018 executions across actual startup and a
+separate nearest-rounding control. The old Go body differs on692 leaves and
+passes317 controls. Both corrected Go and actual C paths match all1,009
+startup conditions with full native frames and canaries checked. Search
+mutations cover retained update/owner pointers and live position, speed,
+direction, frame and flags. Seven original raw contexts establish five faults
+and two safe controls. Target-search and collision bodies remain declared
+world boundaries; extreme raw-direction native initialization and signaling
+NaN parity are not inferred from prepared unit memory.
+
+The final normal root/server/legacy run passes253,104 with16 skips in204.006s.
+Every previous terminal identity, result and multiplicity remains, with2,030
+new passing events. Every previous test source, input, assertion, fixture and
+golden remains unchanged. Focused highres/cgocheck2/checkptr2 passes4,913 in
+104.442s. Counts include parent tests and subtests and do not measure feature
+coverage. Before-probe crashes/mismatches and scenario/PE-reader preparation
+failures remain preserved in `magic-missile-native-port`.
+
+The committed Wizard3 cellar replay reuses the earned original lift-return
+Save and ordinary input route. It requires the restored A50 binding, original
+Swordsman01 script1000451500 alive-to-DEAD with native HP0, Lesser Heal and
+a living manual Save. Its outcome is recorded after executing the new clean
+product; neither the prepared scenario nor unit checks certify a chapter.
+Overall100% remains unproven.
+
 ### Native AntiSpell callbacks and map coordinates
 
 The remaining AntiSpell C entries at 53BB00 and 53BD10 now accept full native
@@ -126,8 +171,11 @@ replays establish neither a live AntiSpell encounter nor a whole chapter.
 
 Native `d5cb288` Windows run40621760704 passes386 andAMD64. Both ZIPs, native
 PE headers, clean toolchain/VCS metadata and root/server/legacy package logs
-qualify. Linux AMD64 server run40621839602 remains active and is retained;
-its completion and product qualification remain pending.
+qualify. Linux AMD64 server run40621839602 also passes. Its retained ZIP/log,
+native ELF header and clean VCS/toolchain metadata qualify; independent raw
+JSON recounts248498 PASS,7 SKIP and all56 expected packages. All three
+default-link damage package checks pass. Both Windows products and Linux
+are fully qualified for that source revision.
 
 ### Native spell-flight entry and lifetime/homing arithmetic
 

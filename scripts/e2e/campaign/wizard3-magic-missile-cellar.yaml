@@ -1,0 +1,107 @@
+# Earned Wiz03b MagicMissile level2; ordinary inputs and read-only observations.
+steps:
+  - {"action": "slow", "dur": "1ms"}
+  - {"action": "click", "dt": 30, "x": 320, "y": 240}
+  - {"action": "wait", "dt": 600}
+  - {"action": "interact", "x": 448, "y": 168}
+  - {"action": "wait", "dt": 500}
+  - {"action": "select-manual-campaign-save", "slot": 1, "name": "actual original menu selects naturally earned Wiz03b Wizard save"}
+  - {"action": "click", "x": 512, "y": 608}
+  - {"action": "wait-map", "map": "Wiz03b"}
+  - {"action": "wait-player-reloaded", "name": "observe fresh-process living Wiz03b Wizard"}
+  - {"action": "wait", "dt": 1}
+  - {"action": "assert-quickbar-spell", "slot": 0, "spell": 50}
+  - {"action": "assert-quickbar-spell", "slot": 1, "spell": 41}
+  - {"action": "observe-player-target", "name": "read earned Wiz03b MagicMissile2 before original lift combat"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint actual fresh-process Wiz03b Wizard Load"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 1"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 2"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 3"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 4"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 5"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 6"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 7"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 8"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 9"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 10"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 11"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 12"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 13"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 14"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 15"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 16"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 17"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 18"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 19"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 20"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 21"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 22"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 23"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 24"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 25"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 26"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 27"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 28"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 29"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 30"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 31"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 32"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 33"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 34"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "cast-at-nearest-monster-input", "item": "Swordsman", "slot": 1, "count": 12, "name": "actual upgraded MagicMissile observation across original lift cycle 35"}
+  - {"action": "wait", "dt": 8}
+  - {"action": "raw", "dt": 2, "ev": {"type": "key", "key": 31, "pressed": true}, "name": "actual Lesser Heal after original cellar combat"}
+  - {"action": "raw", "dt": 2, "ev": {"type": "key", "key": 31, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "observe-player-target", "name": "read actual original cellar bandit lift return and upgraded MagicMissile combat"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original cellar bandit lift return combat"}
+  - {"action": "raw", "ev": {"type": "key", "key": 1, "pressed": true}, "name": "actual Escape opens original Wizard third chapter menu"}
+  - {"action": "raw", "dt": 1, "ev": {"type": "key", "key": 1, "pressed": false}}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click", "x": 511, "y": 216, "name": "original Save Load menu in naturally entered Wiz03b Wizard"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "interact", "x": 365, "y": 127, "name": "actual row selection of owned SAVE0001 for Wiz03b Wizard save"}
+  - {"action": "wait", "dt": 10}
+  - {"action": "click", "x": 375, "y": 379, "name": "original Wiz03b Wizard Save button"}
+  - {"action": "wait", "dt": 30}
+  - {"action": "click-dialog-yes", "name": "original Yes overwrites only the owned cloned slot with Wiz03b Wizard"}
+  - {"action": "wait", "dt": 10}
+  - {"action": "wait-player-reloaded"}
+  - {"action": "observe-player-target", "name": "read native player HP poison after original menu Save and10postSave ticks"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint actual menu saved natural Wiz03b Wizard"}
+  - {"action": "wait", "dt": 60}
+  - {"action": "quit", "dt": 1}

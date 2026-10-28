@@ -55,6 +55,72 @@ completion requirements.
 
 ## Current findings
 
+### Wide-search macro diagnostics during builds
+
+The reported `wcschr`, `wcspbrk`, `wcsrchr`, `wcsstr` and `wmemchr`
+macro-poison warnings are fixed in `ccf1a62`. `nox_wchar.h` removes existing
+macro forms before its established native-wchar poison rule. Darwin C headers
+already poison these identifiers under `-fshort-wchar`, so that SDK case
+must bypass even `#undef`. The initial unconditional version failed the
+actual cgo build in 1.54 seconds; its logs remain preserved, and it was
+corrected before push. No poison rule or warning is disabled, and Windows
+macro behavior is unchanged.
+
+All 26 C17/C2x compiler cases pass, including 20 expected forbidden-API
+rejections and both ordinary and short-wchar paths. Actual short-wchar full
+native-C preprocessing is byte-identical to the prior source. The clean
+Go 1.26.9 ARM64 build passes in 81.977 seconds with zero reported macro-poison
+diagnostics; unrelated existing warnings remain. Both Windows AMD64/386
+native products, help checks and root/server/legacy package tests succeed,
+with decoded logs and independently verified ZIP/PE/build metadata retained.
+The CPP-equivalent header fix reuses the completed gameplay checks without
+another full Linux or E2E run. Detailed evidence is preserved under
+`wchar-poison-macro-warning-fix` in the validation workspace.
+
+### Native monster DIE_FUNCTION entries
+
+The five Swordsman, UrchinShaman, Archer, Ogre and OgreWarlord C entries at
+54A7D0/54A850/54A890/54A900/54A950 now accept `nox_object_t*` and use the
+existing Go drop decision table. Original C bodies remain unchanged under
+`#if 0`. The raw caller forwards the selected object pointer, preserves
+random-before-drop order and returns integer one for every roll. Existing
+Go registration, public nil/dependency preflights and partial-runtime
+contracts remain unchanged. The standalone old C bodies truncate a healthy
+native allocation above 4 GiB in all five cases. That explicitly narrowed
+old-parameter experiment is source/ABI evidence, not an observed campaign
+crash or a failure in the already ported registered Go path.
+
+Complete unchanged GAME.EXE callers execute all 411 bytes across 550 contexts
+with no arithmetic or conversion substitutions. The original fixture and
+instruction proof each regenerate byte for byte. Tests cover every 0–100
+roll, signed extremes, both selection boundaries, nil forwarding and ordered
+service writes. Go and actual typed C each match all 550 return/argument/
+service/state records; complete native frames and canaries remain correct.
+C static assertions check all five native signatures. The whole 54A390
+drop helper is a declared service: original-world allocation, modifiers,
+audio and integrated malformed-unit faults are not inferred from this
+caller proof.
+
+All 3,820 previous tests, fixtures, E2E inputs and goldens remain unchanged,
+and every previous terminal identity/result/multiplicity is retained. One
+full normal root/server/legacy run passes in 196.298 seconds with 269,852
+PASS and 17 SKIP. Focused highres/cgocheck2/checkptr2 passes in parallel in
+110.207 seconds with 1,155 PASS. The additions are 1,102 PASS; parent/subtest
+counts do not measure feature completion.
+
+The clean `ea52c8b` Go 1.26.9 Darwin/ARM64 product builds once in 12.425
+seconds with unmodified VCS metadata: 65,564,514 bytes, SHA-256
+`0449aeea3932d4522537a4c503b4ffecfdd8e2c8b7feca0af1837b49a03ab682`.
+The unchanged Wizard3 stat/Load/manual-Save case passes on its first launch
+in 54.503 seconds with natural exit, HP33/MP49, original maxima32/98 and
+poison0. Two native observations retain the same copied stat inputs. The
+final frame is directly viewed and shows the living Wizard, HUD, quickbar
+and Korean save-complete text. Source saves/assets/configuration/binary are
+unchanged. This generic cleared-cellar branch earns no combat, live raw-C
+callback, chapter or furthest-storyline credit. Detailed evidence is under
+`monster-die-native-port` in the preserved validation workspace. The new
+source's native CI is tracked separately; overall 100% remains unproven.
+
 ### Native Sentry list, scan and ray transmission
 
 All six active 510E50/510E60/510FD0/511020/511100/511250 C entries now
@@ -104,9 +170,9 @@ with explicit out-of-range and infinity paths. Go and actual C each match
 all 630 profiled states, ordered service snapshots and meaningful returns.
 Ten untouched pointer contexts match nine required faults and one safe gate.
 The unmodified oracle, independent instruction profile and profiled
-composition each regenerate byte for byte. Native x86 CI also receives an
-isolated instruction-vs-port endpoint test; it is skipped on ARM64 and remains
-pending for this source until those actual x86 jobs finish. General native
+composition each regenerate byte for byte. The actual Linux AMD64 runner
+passes the isolated x87 instruction-vs-port endpoint test, confirmed in raw
+test JSON; the ARM64 run skips that provider. General native
 hardware transcendental bit-exhaustion, signaling-NaN and full original-world
 composition are not inferred from the translated profile or declared services.
 
@@ -151,7 +217,13 @@ audits and UI/audio/peer/stability work. All three prior `e38a126` Windows
 AMD64/386 and Linux AMD64 jobs succeed; retained native products and logs
 are independently qualified. Linux recounts 264,882 PASS, seven SKIP,
 all 56 expected packages and three default-link damage checks. No prior
-workflow is restarted. Overall 100% remains unproven.
+workflow is restarted. The subsequent `2e071ac` Windows AMD64/386 and Linux
+AMD64 Sentry jobs also all succeed. Retained native products and logs are
+qualified; Linux independently recounts 266,175 PASS, seven SKIP, all 56
+expected packages and three default-link damage checks, including the actual
+x87 endpoint PASS noted above. These closed workflows are preserved under
+`wchar-poison-macro-warning-fix/Sentry-all-native-qualified-v1.json` in the
+validation workspace. Overall 100% remains unproven.
 
 ### Native Spark, ProjectileTrail and Push update entries
 

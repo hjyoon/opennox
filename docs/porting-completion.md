@@ -138,9 +138,56 @@ The serial complete legacy normal recheck passes93241 with3 skips in59.172
 seconds. Together with unchanged passing root/server, normal is271967 passes
 and18 skips. Strict legacy passes772 with one x86-only skip in80.973 seconds;
 combined highres/cgocheck2/checkptr2 is2064 passes and one skip. The independent
-recount is `local-tag-native-and-original-qualified-v1.json`. New clean
-product, campaign and native platform qualification are pending for this
-source. Evidence is under `tag-native-entry-port`. Overall100% remains open.
+recount is `local-tag-native-and-original-qualified-v1.json`.
+
+Source `334d563` is pushed to `port/go1.26-multiarch`. Its single clean
+ARM64 Go1.26.9 product has SHA256
+`ae95f60504e784a5f7bd94b516c3d2ab111224b23c586c5492c81650cc036c49`,
+65,622,370 bytes and `vcs.modified=false`. The unchanged original pressure
+plate/Bookcase6/earned Chain Lightning replay passes in38.899 seconds;
+actual menu Load and another manual Save pass in17.695 seconds. Independent
+native snapshots retain the exact (1591,4734) endpoint, disabled plate,
+active mover and original Urchin HP0/DEAD. All reload samples preserve these
+states, and player HP20/MP42/poison0 remain after Save. Movement, actual beam
+and77-XP, and restored-scene frames are directly viewed. This is a regression
+of the identified pressure-plate route, not new earned Tag gameplay or proof
+that the reported runtime number2195 equals stock extent1974/script1000194601.
+
+Windows386/amd64 run40747704947 passes native build, help and all three
+uncached root/server/legacy suites. Artifacts12841884324/12842243272 match
+their ZIP digests, PE architectures, clean source revision and Go1.26.9 build
+information independently. Complete original CRLF job logs are retained;
+Windows per-test inclusion follows the nonverbose full package pass.
+Linuxamd64 run40747805782 also passes all58 expected packages (36 pass,
+22 skip), with269393 test passes and7 skips. Independently recounted raw
+JSON explicitly passes all84 new Tag terminals:77 in the76-context original
+suite, six public-entry terminals and one actual C composition parent.
+Its separate default-link damage check passes133041 across three packages.
+Artifact12844725216 matches the ZIP digest, ELF machine62, clean source
+revision, product hash and Go1.26.9 build information independently. The
+raw JSON, both stderr logs and original job log are scanned for all five
+reported poison-macro warnings; none appear. Current ARM64/Windows evidence
+is also clean of those warnings. ARM64 retains the unrelated duplicate SDL
+linker diagnostic. These three native jobs and all artifact checks are closed
+in `all-native-workflows-qualified-v1.json`; documentation-only followups
+reuse the same executable and do not redispatch. Headless qualification does
+not establish actual Linux campaign or Windows-peer gameplay.
+
+A separate read-only test overlay leaves the worktree and all existing
+inputs unchanged while qualifying the next Blink entries on source334d563.
+Actual native Go dispatch returns0 and schedules0xf1; the public C create
+returns0 but leaves Frame68 at0x87654321 and changes unexpected native bytes.
+For a native DEAD target, ordinary dispatch returns1 while the actual C
+update faults. Both use C-owned frames above4GiB. These two defects remain
+unported, with their before fixture and logs preserved. The inventory now
+has46 intercepted duration callbacks: nine direct Go exports, three native
+C forwarding wrappers, one constant leaf, and33 remaining C candidates.
+Two of these33 have executed Blink defects; the other31 remain lexical
+candidates. No completion percentage or universal normal-cast failure is
+inferred. Evidence is under `tag-native-entry-port`, including
+`original-tag-seals-qualified-v1.json`,
+`current-product-bookcase-chain-and-reload-qualified-v1.json` and
+`next-blink-native-entry-defects-qualified-v1.json`. Overall100% remains open.
 
 ### Native Chain Lightning callback entries and original lifecycle
 

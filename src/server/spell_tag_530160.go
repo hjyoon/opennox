@@ -15,21 +15,21 @@ const (
 )
 
 type spellTagHooks530160[Record, Object comparable] struct {
-	loadCaster      func(Record) Object
-	loadTarget      func(Record) Object
-	loadClass       func(Object) byte
-	loadFlags       func(Object) uint32
-	loadPlayerIndex func(Object) int32
-	loadLevel       func(Record) uint32
-	loadFrame       func() uint32
-	storeFrame      func(Record, uint32)
-	loadBalance     func(string) float64
-	floatToInt      func(float32) int32
-	mark            func(int32, Object, uint32)
-	unmark          func(int32, Object, uint32)
-	unitCode        func(Object) uint16
-	objectType      func(Object) uint16
-	send            func(int32, [7]byte)
+	loadCaster         func(Record) Object
+	loadTarget         func(Record) Object
+	loadClass          func(Object) byte
+	loadFlags          func(Object) uint32
+	capturePlayerIndex func(Object) func() int32
+	loadLevel          func(Record) uint32
+	loadFrame          func() uint32
+	storeFrame         func(Record, uint32)
+	loadBalance        func(string) float64
+	floatToInt         func(float32) int32
+	mark               func(int32, Object, uint32)
+	unmark             func(int32, Object, uint32)
+	unitCode           func(Object) uint16
+	objectType         func(Object) uint16
+	send               func(int32, [7]byte)
 }
 
 func spellTagPacket530160(code, objectType uint16, action byte) [7]byte {
@@ -50,18 +50,19 @@ func spellTagCreate530160[Record, Object comparable](record Record, h spellTagHo
 	if caster == nilObject || h.loadFlags(caster)&spellTagInvalidFlags530160 != 0 || h.loadClass(caster)&spellTagPlayerClass530160 == 0 {
 		return 1
 	}
+	playerIndex := h.capturePlayerIndex(caster)
 	target := h.loadTarget(record)
 	if target == nilObject || h.loadFlags(target)&spellTagInvalidFlags530160 != 0 {
 		return 1
 	}
 
-	duration := h.floatToInt(float32(h.loadBalance(spellTagDurationBalance530160)))
+	duration := h.floatToInt(shapeBoxSpill428270(h.loadBalance(spellTagDurationBalance530160)))
 	level := h.loadLevel(record)
 	h.storeFrame(record, h.loadFrame()+level*uint32(duration))
-	h.mark(h.loadPlayerIndex(caster), h.loadTarget(record), 1)
+	h.mark(playerIndex(), h.loadTarget(record), 1)
 	code := h.unitCode(h.loadTarget(record))
 	objectType := h.objectType(h.loadTarget(record))
-	h.send(h.loadPlayerIndex(caster), spellTagPacket530160(code, objectType, 1))
+	h.send(playerIndex(), spellTagPacket530160(code, objectType, 1))
 	return 0
 }
 
@@ -73,16 +74,17 @@ func spellTagDestroy530270[Record, Object comparable](record Record, h spellTagH
 	if caster == nilObject || h.loadClass(caster)&spellTagPlayerClass530160 == 0 {
 		return
 	}
+	playerIndex := h.capturePlayerIndex(caster)
 	target := h.loadTarget(record)
 	if target == nilObject {
 		return
 	}
 	if h.loadClass(target)&spellTagPlayerClass530160 == 0 {
-		h.unmark(h.loadPlayerIndex(caster), target, 1)
+		h.unmark(playerIndex(), target, 1)
 	}
 	code := h.unitCode(h.loadTarget(record))
 	objectType := h.objectType(h.loadTarget(record))
-	h.send(h.loadPlayerIndex(caster), spellTagPacket530160(code, objectType, 2))
+	h.send(playerIndex(), spellTagPacket530160(code, objectType, 2))
 }
 
 func spellTagServerHooks530160(s *Server) spellTagHooks530160[*DurSpell, *Object] {
@@ -91,14 +93,17 @@ func spellTagServerHooks530160(s *Server) spellTagHooks530160[*DurSpell, *Object
 		loadTarget: func(record *DurSpell) *Object { return record.Target48 },
 		loadClass:  func(obj *Object) byte { return byte(obj.ObjClass) },
 		loadFlags:  func(obj *Object) uint32 { return uint32(obj.ObjFlags) },
-		loadPlayerIndex: func(obj *Object) int32 {
-			return int32(byte(obj.ControllingPlayer().PlayerInd))
+		capturePlayerIndex: func(obj *Object) func() int32 {
+			// Cache update data before callbacks, then reload its Player pointer
+			// and byte index at each minimap or packet call, as GAME.EXE does.
+			update := obj.UpdateDataPlayer()
+			return func() int32 { return int32(update.Player.PlayerInd) }
 		},
 		loadLevel:   func(record *DurSpell) uint32 { return record.Level },
 		loadFrame:   s.Frame,
 		storeFrame:  func(record *DurSpell, frame uint32) { record.Frame68 = frame },
 		loadBalance: s.Balance.Float,
-		floatToInt:  playerUnitInitFloatToInt4EFE80,
+		floatToInt:  playerReadValuesRound4EEDC0,
 		mark: func(index int32, obj *Object, flags uint32) {
 			s.Players.Nox_xxx_netMarkMinimapObject_417190(ntype.PlayerInd(index), obj, flags)
 		},

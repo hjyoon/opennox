@@ -22,13 +22,15 @@ type tagTestRecord530160 struct {
 
 func tagTestHooks530160(events *[]string, packet *[7]byte) spellTagHooks530160[*tagTestRecord530160, *tagTestObject530160] {
 	return spellTagHooks530160[*tagTestRecord530160, *tagTestObject530160]{
-		loadCaster:      func(r *tagTestRecord530160) *tagTestObject530160 { return r.caster },
-		loadTarget:      func(r *tagTestRecord530160) *tagTestObject530160 { return r.target },
-		loadClass:       func(o *tagTestObject530160) byte { return o.class },
-		loadFlags:       func(o *tagTestObject530160) uint32 { return o.flags },
-		loadPlayerIndex: func(o *tagTestObject530160) int32 { return o.index },
-		loadLevel:       func(r *tagTestRecord530160) uint32 { return r.level },
-		loadFrame:       func() uint32 { return 0xfffffff0 },
+		loadCaster: func(r *tagTestRecord530160) *tagTestObject530160 { return r.caster },
+		loadTarget: func(r *tagTestRecord530160) *tagTestObject530160 { return r.target },
+		loadClass:  func(o *tagTestObject530160) byte { return o.class },
+		loadFlags:  func(o *tagTestObject530160) uint32 { return o.flags },
+		capturePlayerIndex: func(o *tagTestObject530160) func() int32 {
+			return func() int32 { return o.index }
+		},
+		loadLevel: func(r *tagTestRecord530160) uint32 { return r.level },
+		loadFrame: func() uint32 { return 0xfffffff0 },
 		storeFrame: func(r *tagTestRecord530160, frame uint32) {
 			*events = append(*events, "store-frame")
 			r.frame = frame

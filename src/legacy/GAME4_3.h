@@ -10,9 +10,7 @@
 #include "unit_order_533900.h"
 
 #include "spell_chain_lightning_52f820.h"
-int nox_xxx_spellTagCreature_530160(uint32_t* a1);
-unsigned int sub_530250(int a1);
-int sub_530270(int a1);
+#include "spell_tag_native_530160.h"
 int nox_xxx_spellBlink2_530310(uint32_t* a1);
 int nox_xxx_spellBlink1_530380(int* a1);
 uint32_t* nox_xxx_spellTeleportCreateWake_530560(int a1, int* a2, uint32_t* a3);

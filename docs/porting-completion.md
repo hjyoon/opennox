@@ -55,6 +55,93 @@ completion requirements.
 
 ## Current findings
 
+### Native Tag callbacks, duration conversion and cached player data
+
+The exposed Tag create `530160`, update `530250` and destroy `530270`
+C entries still used PE32 arguments or duration/object offsets. Five actual
+subprocess calls through these three unchanged entries fault with guarded
+C-owned native frames above4GiB. The corrected fixture uses the actual
+Tag spell116; an earlier fixture's unused spell54 metadata is retained,
+with the corrected second run supplying authoritative before evidence.
+Normal duration dispatch already intercepted these callbacks in Go, so the
+public-entry fault is not evidence that every ordinary Tag cast crashed.
+
+All three C entries now accept opaque native pointers and call the same
+existing native Go roots as ordinary duration dispatch. Their88-line
+obsolete C implementations are removed. C11 type assertions check all three
+public signatures. Destroy now declares the duration callback's actual void
+contract: current callers discard its incidental PE32 return register, which
+can contain an old pointer or the last service's return value. No native
+pointer is transported in that register. Side effects and packets are
+compared; no equality of that discarded return register is claimed.
+
+Executing the original roots also exposes differences in the existing Go
+binding. Create rounded the balance double to binary32 and converted it to
+an integer using nearest-even, while original startup PC53/ToZero directs
+both the binary32 spill and FISTP toward zero. It now uses the existing
+proved directed-spill and signed-dword conversion helpers. Create/destroy
+also now cache the native player update-data pointer before service calls,
+then reload its Player pointer and byte index at each minimap/packet call.
+Replacing the object's UpdateData pointer during a callback must not change
+this cached identity; changing the Player pointer inside that data must
+still be observed. Target, level and frame reads retain their original order.
+No serialized or wire-layout change.
+
+The complete unchanged original create/update/destroy roots contain411
+bytes, and their actual `419A70` converter contains17 more. All428 bytes
+execute independently across76 contexts at startup control word0x0e3f and
+across the same76-input nearest control at0x023f. There are19 declared
+callback mutation kinds and23 mutation executions per profile. Balance's
+external return uses a scratch FLD/RET thunk; every original spill and
+conversion instruction remains unchanged. Mark/unmark, unit-code lookup
+and final packet send are the other declared services. Callee-saved
+registers, return stack, floating control word/TOP and nonoutput heap/global
+canaries are checked. Independent PE mapping verifies every recorded byte.
+Original GAME.EXE SHA256 remains
+`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`;
+the committed startup fixture SHA256 is
+`7f2f014b42fce6da250c70fe5d61ac7a15cce8e5af0d2f65cd942b9d880a3bff`.
+The original null-caster create faults before its null check; that invalid
+input is excluded from the reference fixture, and the existing Go rejection
+remains. These are complete roots under declared services, not transitive
+callee, branch-percentage or full-campaign equivalence.
+
+The unchanged Go root/binding file fails17 native reference leaves before
+correction:12 rounding results exactly match the original nearest control,
+and five cached-data identity results differ in both original profiles.
+The other59 reference controls pass. Long Go JSON output initially confuses
+the qualification parser before it writes any runtime source; the resulting
+misnamed after-v1 is retained as a duplicate unchanged-source before run.
+Only corrected after-v2 supplies after evidence: all76 original contexts and
+18 existing Tag terminals pass (95 including the new parent). One old test
+fixture binding adapts to the private index-reader hook signature; every
+existing test body, input and assertion remains byte-identical.
+
+The same public-entry fixture now passes all five subprocess leaves plus
+its parent. A separate actual C composition uses the real balance reader,
+native player array, minimap ring and unit-code helper, observing only final
+packet transport. Directed conversion of1.999999999999 and level19 wrap
+frame0xfffffff0 to3. New monster marks are released, player-target marks
+remain, and an unrelated existing marker survives Tag destruction. All six
+original seven-byte create/destroy packets, recipient and transport flags
+are checked, along with native canaries and record immutability. Its three
+child phases pass, contributing one top-level test terminal; together with
+the public entry fixture, the legacy focus passes seven terminals.
+
+The first parallel full/strict checks exhaust temporary disk space only in
+legacy:245 normal MonsterTail terminals fail TempDir creation, and strict
+legacy compilation cannot create importcfg/vet files. All failure logs are
+retained as environment failures; root/server pass in both profiles.
+Additional old regenerable compiler-cache files are removed while original
+saves, assets, golden fixtures, products and verification records remain.
+The serial complete legacy normal recheck passes93241 with3 skips in59.172
+seconds. Together with unchanged passing root/server, normal is271967 passes
+and18 skips. Strict legacy passes772 with one x86-only skip in80.973 seconds;
+combined highres/cgocheck2/checkptr2 is2064 passes and one skip. The independent
+recount is `local-tag-native-and-original-qualified-v1.json`. New clean
+product, campaign and native platform qualification are pending for this
+source. Evidence is under `tag-native-entry-port`. Overall100% remains open.
+
 ### Native Chain Lightning callback entries and original lifecycle
 
 The public C create `52F820`, update `52F8A0` and destroy `530100`

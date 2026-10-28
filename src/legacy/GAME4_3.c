@@ -5591,6 +5591,9 @@ void nox_xxx_updatePush_53B030(int a1) {
 }
 
 //----- (0053B060) --------------------------------------------------------
+extern unsigned char nox_toggle_trigger_switch_native(int kind,nox_object_t* unit);
+char nox_xxx_updateToggle_53B060(nox_object_t* unit) { return (char)nox_toggle_trigger_switch_native(0, unit); }
+#if 0 // Original PE32 body retained as provenance; typed native entry above.
 char nox_xxx_updateToggle_53B060(uint32_t* a1) {
 	unsigned int* v1; // esi
 	unsigned int v2;  // eax
@@ -5641,8 +5644,11 @@ LABEL_18:
 	*v1 = v2 & 0xFFFFFFFE | 8;
 	return v2;
 }
+#endif
 
 //----- (0053B1B0) --------------------------------------------------------
+char nox_xxx_updateTrigger_53B1B0(nox_object_t* unit) { return (char)nox_toggle_trigger_switch_native(1, unit); }
+#if 0 // Original PE32 body retained as provenance; typed native entry above.
 char nox_xxx_updateTrigger_53B1B0(int a1) {
 	int* v1; // esi
 	int v2;  // eax
@@ -5696,6 +5702,7 @@ char nox_xxx_updateTrigger_53B1B0(int a1) {
 	}
 	return v4;
 }
+#endif
 
 //----- (0053B300) --------------------------------------------------------
 char sub_53B300(nox_object_t* obj) {
@@ -5710,6 +5717,8 @@ char sub_53B300(nox_object_t* obj) {
 }
 
 //----- (0053B320) --------------------------------------------------------
+char nox_xxx_updateSwitch_53B320(nox_object_t* unit) { return (char)nox_toggle_trigger_switch_native(2, unit); }
+#if 0 // Original PE32 body retained as provenance; typed native entry above.
 char nox_xxx_updateSwitch_53B320(uint32_t* a1) {
 	int v1; // eax
 
@@ -5734,6 +5743,7 @@ char nox_xxx_updateSwitch_53B320(uint32_t* a1) {
 	}
 	return v1;
 }
+#endif
 
 //----- (0053B380) --------------------------------------------------------
 extern char nox_xxx_updateElevatorShaft_53B380_go(nox_object_t* unit);

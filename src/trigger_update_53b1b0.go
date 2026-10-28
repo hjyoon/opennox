@@ -2,16 +2,14 @@ package opennox
 
 import (
 	"github.com/opennox/opennox/v1/common/sound"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
 
 func (s *Server) updateTriggerNative53B1B0(unit *server.Object) {
 	s.TriggerUpdate53B1B0(unit, server.TriggerUpdateRuntime53B1B0{
 		ImmediateType: func(obj *server.Object) bool {
-			trigger := s.Types.ByID("Trigger")
-			plate := s.Types.ByID("PressurePlate")
-			return trigger != nil && obj.TypeInd == uint16(trigger.Ind()) ||
-				plate != nil && obj.TypeInd == uint16(plate.Ind())
+			return legacy.TriggerImmediateTypeNative53B1B0(obj, func(name string) uint32 { return uint32(s.Types.IndByID(name)) })
 		},
 		CollideTarget: func(obj *server.Object) *server.Object {
 			return obj.TriggerCollideTarget()

@@ -1,9 +1,5 @@
 package server
 
-import (
-	"github.com/opennox/libs/object"
-)
-
 type SwitchUpdateRuntime53B320 struct {
 	QueueCollision func(*Object)
 }
@@ -14,18 +10,14 @@ func (s *Server) SwitchUpdate53B320(unit *Object, runtime SwitchUpdateRuntime53B
 	if unit == nil {
 		return 0
 	}
-	if unit.ObjFlags.Has(object.FlagEnabled) {
-		queue := unit.Collide != nil && unit.ObjFlags.Has(object.FlagNoCollide)
-		unit.ObjFlags &^= object.FlagNoCollide
-		if queue && runtime.QueueCollision != nil {
-			runtime.QueueCollision(unit)
-		}
-	} else {
-		if unit.Field33 == 0 {
-			unit.NeedSync()
-			unit.Field33 = 1
-		}
-		unit.ObjFlags |= object.FlagNoCollide
-	}
-	return uint8(unit.ObjFlags)
+	return SwitchUpdateRaw53B320(unit, SwitchUpdateRawRuntime53B320{
+		NeedSync: (*Object).NeedSync,
+		QueueCollision: func(o *Object) uint8 {
+			if runtime.QueueCollision != nil {
+				runtime.QueueCollision(o)
+			}
+			// Preserve this public API's existing post-service flags result.
+			return uint8(o.ObjFlags)
+		},
+	})
 }

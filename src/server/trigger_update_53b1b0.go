@@ -1,9 +1,5 @@
 package server
 
-import (
-	"github.com/opennox/libs/object"
-)
-
 // TriggerUpdateRuntime53B1B0 supplies the engine services that surround the
 // fixed-width TriggerUpdateData state machine. Keeping them explicit makes the
 // original callback order independently testable without C pointers.
@@ -21,43 +17,12 @@ type TriggerUpdateRuntime53B1B0 struct {
 // independently of Frame134 (the damage timestamp at PE32 object+536).
 func (s *Server) TriggerUpdate53B1B0(unit *Object, runtime TriggerUpdateRuntime53B1B0) uint8 {
 	update := unit.UpdateDataTrigger()
-	delay := s.TickRate()
-	if runtime.ImmediateType(unit) {
-		delay = 0
-	}
-	if unit.ObjFlags.Has(object.FlagEnabled) {
-		if update.Flags&0x8 == 0 {
-			update.State = 0
-			unit.Field34 = s.Frame()
-			unit.MarkAnimFrame(0)
-		}
-		if update.State != 0 {
-			if update.State == 1 && s.Frame() > unit.Field34 && update.Flags&0x1 == 0 {
-				runtime.AudioEvent(update.SoundDeactivate, unit)
-				unit.MarkAnimFrame(0)
-				runtime.ScriptCallback(&update.ScriptDeactivate, nil, unit, NoxEventTriggerDeactivated)
-				if update.Flags&0x2 != 0 {
-					update.State = 5
-				} else {
-					update.State = 0
-				}
-			}
-		} else if update.Flags&0x1 != 0 {
-			runtime.AudioEvent(update.SoundActivate, unit)
-			unit.MarkAnimFrame(1)
-			runtime.ScriptCallback(&update.ScriptActivate, runtime.CollideTarget(unit), unit, NoxEventTriggerActivated)
-			update.State = 1
-			unit.Field34 = delay + s.Frame()
-		}
-		flags := update.Flags
-		if flags&0x1 != 0 {
-			flags |= 0x4
-		} else {
-			flags &^= 0x4
-		}
-		update.Flags = flags&^0x1 | 0x8
-	} else {
-		update.Flags &^= 0x9
-	}
-	return uint8(update.Flags)
+	return triggerUpdateState53B1B0(unit, update, TriggerUpdateRawRuntime53B1B0{
+		ImmediateType: runtime.ImmediateType,
+		ToggleTriggerRawRuntime53B060: ToggleTriggerRawRuntime53B060{
+			Frame: s.Frame, FPS: s.TickRate, MarkAnimFrame: (*Object).MarkAnimFrame,
+			CollideTarget: func(o *Object, _ *TriggerUpdateData) *Object { return runtime.CollideTarget(o) },
+			AudioEvent:    runtime.AudioEvent, ScriptCallback: runtime.ScriptCallback,
+		},
+	})
 }

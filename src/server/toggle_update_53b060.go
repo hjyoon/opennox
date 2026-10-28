@@ -1,7 +1,5 @@
 package server
 
-import "github.com/opennox/libs/object"
-
 type ToggleUpdateRuntime53B060 struct {
 	CollideTarget  func(*Object) *Object
 	AudioEvent     func(uint32, *Object)
@@ -13,47 +11,9 @@ type ToggleUpdateRuntime53B060 struct {
 // belongs to Field34 (PE32 object+136), not the separate damage timestamp.
 func (s *Server) ToggleUpdate53B060(unit *Object, runtime ToggleUpdateRuntime53B060) uint8 {
 	update := unit.UpdateDataToggle()
-	if !unit.ObjFlags.Has(object.FlagEnabled) {
-		update.Flags &^= 0x9
-		return uint8(update.Flags)
-	}
-	if update.Flags&0x8 == 0 {
-		update.State = 0
-		unit.Field34 = s.Frame()
-		unit.MarkAnimFrame(0)
-	}
-	switch update.State {
-	case 0:
-		if s.Frame() > unit.Field34 && update.Flags&0x1 != 0 {
-			runtime.AudioEvent(update.SoundActivate, unit)
-			unit.MarkAnimFrame(1)
-			runtime.ScriptCallback(&update.ScriptActivate, runtime.CollideTarget(unit), unit, NoxEventToggleXXX)
-			update.State = 3
-			unit.Field34 = s.Frame() + s.TickRate()
-		}
-	case 1:
-		if s.Frame() > unit.Field34 && update.Flags&0x1 != 0 {
-			runtime.AudioEvent(update.SoundDeactivate, unit)
-			unit.MarkAnimFrame(0)
-			runtime.ScriptCallback(&update.ScriptDeactivate, nil, unit, NoxEventToggleYYY)
-			if update.Flags&0x2 != 0 {
-				update.State = 5
-			} else {
-				update.State = 0
-			}
-			unit.Field34 = s.Frame() + s.TickRate()
-		}
-	case 3:
-		if s.Frame() > unit.Field34 && update.Flags&0x1 == 0 {
-			update.State = 1
-		}
-	}
-	flags := update.Flags
-	if flags&0x1 != 0 {
-		flags |= 0x4
-	} else {
-		flags &^= 0x4
-	}
-	update.Flags = flags&^0x1 | 0x8
-	return uint8(flags)
+	return toggleUpdateState53B060(unit, update, unit.ObjFlags, ToggleTriggerRawRuntime53B060{
+		Frame: s.Frame, FPS: s.TickRate, MarkAnimFrame: (*Object).MarkAnimFrame,
+		CollideTarget: func(o *Object, _ *TriggerUpdateData) *Object { return runtime.CollideTarget(o) },
+		AudioEvent:    runtime.AudioEvent, ScriptCallback: runtime.ScriptCallback,
+	})
 }

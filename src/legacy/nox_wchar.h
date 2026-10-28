@@ -8,6 +8,16 @@
 #include "static_assert.h"
 
 #ifndef _WIN32
+// Some system headers expose these searches as macros. Remove those forms
+// before poisoning the native-width wchar APIs, keeping the ban intact.
+// Darwin's C headers already poison them with -fshort-wchar, including undef.
+#if !defined(__APPLE__) || defined(__cplusplus) || !defined(__WCHAR_MAX__) || __WCHAR_MAX__ > 0xffffU
+#undef wcschr
+#undef wcspbrk
+#undef wcsrchr
+#undef wcsstr
+#undef wmemchr
+#endif
 // GCC wchar_t size is different than the one on Windows, so we must poison all the functions that expect invalid size.
 #pragma GCC poison fgetwln fgetws fputwc fputws fwprintf fwscanf mbrtowc mbsnrtowcs mbsrtowcs putwc putwchar swprintf  \
 	swscanf vfwprintf vfwscanf vswprintf vswscanf vwprintf vwscanf wcrtomb wcscat wcschr wcscmp wcscoll wcscpy wcscspn \

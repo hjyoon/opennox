@@ -55,6 +55,52 @@ completion requirements.
 
 ## Current findings
 
+### Native AntiSpell callbacks and map coordinates
+
+The remaining AntiSpell C entries at 53BB00 and 53BD10 now accept full native
+object pointers and forward to Go. Before correction, both actual C calls
+crash with objects above 4 GiB. The same isolated child inputs now pass.
+The registered Go guard and native missile update layouts remain unchanged.
+The raw entries retain the original required-pointer reads and early returns.
+
+The native server owns the shared selected-target pointer and binary32 best
+distance. Original search timing, owner checks, reentrant selection, cached
+update data, hit/deletion loads, force arithmetic and RNG spill boundaries
+are retained. Missile-circle enumeration borrows the live origin, reloads
+list links after callbacks and preserves the original unordered comparisons.
+Shared precision helpers, owner-chain and RNG bodies remain unchanged.
+
+Complete unchanged original root/candidate, owner, RNG, circle, coordinate and
+conversion bodies seal 1,287 code bytes and 16,408 table/constant bytes.
+The corpus has 776 conditions and 1,552 original executions across actual
+PC53/ToZero startup and a separate nearest-rounding control. The corrected
+actual C entries match all 776 startup conditions; the Go root matches all
+634 root conditions, with complete native frames and canaries checked.
+Before correction, 601 valid Go conditions differ and 27 controls pass.
+Six initially unprepared native-grid conditions are excluded from that
+before-port comparison. Their initial failures remain preserved; corrected
+registration preparation retains the exact oracle inputs and assertions.
+Nine original raw-pointer contexts establish five faults and four safe
+early returns. No signaling-NaN or live AntiSpell encounter is credited.
+
+The shared map-coordinate conversion now follows the original binary32
+inverse-cell multiplication and PC53/ToZero spill. Before correction it
+differs on 184 of 451 original inputs. Original map registration, bounds and
+node insertion additionally execute together for the unchanged historical
+large-circle test input: position170/170 and radius50. Actual startup
+registers cells(1,1),(2,1),(1,2),(2,2); nearest rounding reproduces the former
+expectation. Only two expected cells change in that test. Its input, name,
+part-count, unlinking and empty-bucket assertions remain. Every other prior
+test source, fixture and golden remains unchanged.
+
+One full normal root/server/legacy run and the affected server-only retry
+yield 251,074 PASS and 16 SKIP terminal events. All previous result identities
+and multiplicities remain, with 1,879 added passing events. The initial full
+run's sole failure is the independently corrected historical cell expectation.
+The passing root/legacy results are reused. Counts include parent tests and
+subtests and do not measure feature coverage. Raw evidence is retained in
+`anti-spell-native-port`; overall100% remains unproven.
+
 ### Native spell-flight entry and lifetime/homing arithmetic
 
 The remaining 53B940 C entry now accepts a native object pointer and forwards
@@ -135,9 +181,11 @@ Native `539b304` qualification passes Windows 386/AMD64 run40612787651 and
 Linux AMD64 server run40612803463. All three ZIPs/logs, native product headers
 and clean VCS/toolchain metadata qualify. Linux's raw JSON recounts246619 PASS,
 7 SKIP and all56 expected packages, with default-link damage controls passing.
-The later observation product `87091e0` has its own Windows run40614048258 and
-Linux run40614086768 still in progress. The final verifier-only change leaves
-its compiled Go/C sources unchanged; existing CI runs are retained.
+The later observation product `87091e0` also passes Windows run40614048258
+and Linux run40614086768. All three products, logs, native headers and clean
+toolchain/VCS metadata qualify. Linux retains246619 PASS,7 SKIP, all56 packages
+and the three default-link damage package checks. The final verifier-only
+change leaves its compiled Go/C sources unchanged; existing CI is reused.
 
 ### Native plant/zombie predicates, get-up and resurrection entries
 

@@ -119,6 +119,7 @@ type Server struct {
 	dangerousUnitTypes547120 dangerousUnitTypeCache547120
 	decay                    decayState511660
 	healthLinks              healthLinksState4EE390
+	antiSpellTarget53BD10    AntiSpellTargetState53BD10
 	tradeNative              serverTradeNativeState
 	NoxScriptVM              NoxScriptVM
 	VMs                      ScriptVMs

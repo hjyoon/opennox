@@ -5795,93 +5795,15 @@ void nox_xxx_spellFlyUpdate_53B940(nox_object_t* missile) {
 }
 
 //----- (0053BB00) --------------------------------------------------------
-void nox_xxx_updateAntiSpellProj_53BB00(int a1) {
-	int v1;          // ecx
-	int v2;          // esi
-	int v3;          // edi
-	unsigned int v4; // eax
-	int v5;          // edx
-	int v6;          // eax
-	double v7;       // st7
-	double v8;       // st6
-	double v9;       // st5
-	long double v10; // st7
-	long double v11; // st7
-	float v12;       // [esp+0h] [ebp-30h]
-	float v13;       // [esp+4h] [ebp-2Ch]
-	int v14;         // [esp+Ch] [ebp-24h]
-	float v15;       // [esp+10h] [ebp-20h]
-	float v16;       // [esp+14h] [ebp-1Ch]
-	float v17;       // [esp+2Ch] [ebp-4h]
-	int v18;         // [esp+34h] [ebp+4h]
-
-	v1 = gameFrame();
-	v2 = a1;
-	v3 = *(uint32_t*)(a1 + 748);
-	v4 = gameFPS();
-	if (gameFrame() - *(uint32_t*)(a1 + 128) <= (unsigned int)(5 * gameFPS())) {
-		v5 = *(uint32_t*)(v3 + 4);
-		if (v5 && *(uint8_t*)(v5 + 16) & 0x20) {
-			*(uint32_t*)(v3 + 4) = 0;
-			v1 = gameFrame();
-			v4 = gameFPS();
-		}
-		if (!*(uint32_t*)(v3 + 4) && v1 - *(uint32_t*)(a1 + 136) > v4 >> 2) {
-			*getMemU32Ptr(0x5D4594, 2488668) = 0;
-			*getMemU32Ptr(0x5D4594, 2488672) = 1287568416;
-			nox_xxx_getMissilesInCircle_518170(a1 + 56, 600.0, sub_53BD10, a1);
-			*(uint32_t*)(v3 + 4) = *getMemU32Ptr(0x5D4594, 2488668);
-			*(uint32_t*)(a1 + 136) = gameFrame();
-		}
-		v6 = *(uint32_t*)(v3 + 4);
-		if (v6) {
-			v7 = *(float*)(v6 + 56) - *(float*)(a1 + 56);
-			v8 = *(float*)(v6 + 60) - *(float*)(a1 + 60);
-			v9 = v7;
-			v10 = sqrt(v8 * v8 + v7 * v7) + 0.1;
-			*(float*)(a1 + 88) = v9 * *(float*)(a1 + 544) / v10;
-			*(float*)(a1 + 92) = v8 * *(float*)(a1 + 544) / v10;
-			if (v10 < 10.0) {
-				nox_xxx_aud_501960(20, a1, 0, 0);
-				nox_xxx_delayedDeleteObject_4E5CC0(a1);
-				nox_xxx_delayedDeleteObject_4E5CC0(*(uint32_t*)(v3 + 4));
-			}
-		} else {
-			v11 = sqrt(*(float*)(a1 + 80) * *(float*)(a1 + 80) + *(float*)(a1 + 84) * *(float*)(a1 + 84)) + 0.1;
-			*(float*)(a1 + 88) = *(float*)(a1 + 544) * *(float*)(a1 + 80) / v11;
-			*(float*)(a1 + 92) = *(float*)(a1 + 544) * *(float*)(a1 + 84) / v11;
-		}
-		v17 = *(float*)(a1 + 56);
-		v18 = *(int*)(a1 + 60);
-		v16 = nox_common_randomFloat_416030(-2.0, 2.0);
-		v15 = nox_common_randomFloat_416030(-2.0, 2.0);
-		v14 = nox_common_randomInt_415FA0(15, 30);
-		v13 = nox_common_randomFloat_416030(-4.0, 4.0) + *(float*)&v18;
-		v12 = nox_common_randomFloat_416030(-4.0, 4.0) + v17;
-		nox_xxx_createSpark_54FD80(v12, v13, 3, v14, v15, v16, 0.0, v2);
-	} else {
-		nox_xxx_delayedDeleteObject_4E5CC0(a1);
-	}
+extern void nox_anti_spell_update_native_53BB00(nox_object_t* missile);
+void nox_xxx_updateAntiSpellProj_53BB00(nox_object_t* missile) {
+ nox_anti_spell_update_native_53BB00(missile);
 }
 
 //----- (0053BD10) --------------------------------------------------------
-void sub_53BD10(int a1, int a2) {
-	double v2; // st7
-	double v3; // st6
-	double v4; // st5
-
-	if (!(*(uint8_t*)(a1 + 16) & 0x20) && (!(*(uint8_t*)(a1 + 8) & 1) || *(uint8_t*)(a1 + 12) & 2) && a2 != a1 &&
-		(!*(uint32_t*)(a2 + 508) || !nox_xxx_unitHasThatParent_4EC4F0(a1, *(uint32_t*)(a2 + 508)))) {
-		if (nox_xxx_unitCanInteractWith_5370E0(a2, a1, 0)) {
-			v2 = *(float*)(a2 + 56) - *(float*)(a1 + 56);
-			v3 = *(float*)(a2 + 60) - *(float*)(a1 + 60);
-			v4 = v3 * v3 + v2 * v2;
-			if (v4 < *getMemFloatPtr(0x5D4594, 2488672)) {
-				*getMemFloatPtr(0x5D4594, 2488672) = v4;
-				*getMemU32Ptr(0x5D4594, 2488668) = a1;
-			}
-		}
-	}
+extern void nox_anti_spell_candidate_native_53BD10(nox_object_t* candidate, nox_object_t* missile);
+void sub_53BD10(nox_object_t* candidate, nox_object_t* missile) {
+ nox_anti_spell_candidate_native_53BD10(candidate, missile);
 }
 
 //----- (0053BDA0) --------------------------------------------------------

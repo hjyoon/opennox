@@ -63,7 +63,8 @@ func TestMapIndexLargeObjectParts(t *testing.T) {
 	if state == nil || state.Cur != uint32(len(state.Parts)) {
 		t.Fatalf("part count = %v, want %d", state, len(state.Parts))
 	}
-	want := []image.Point{{X: 1, Y: 1}, {X: 2, Y: 1}, {X: 3, Y: 1}, {X: 1, Y: 2}}
+	// Original 00517640 under the game's PC53/ToZero startup mode.
+	want := []image.Point{{X: 1, Y: 1}, {X: 2, Y: 1}, {X: 1, Y: 2}, {X: 2, Y: 2}}
 	for i, p := range want {
 		if got := image.Pt(int(state.Parts[i].X), int(state.Parts[i].Y)); got != p {
 			t.Fatalf("part %d = %v, want %v", i, got, p)

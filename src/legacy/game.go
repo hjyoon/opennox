@@ -221,8 +221,10 @@ func sub_518740(a1 *C.float2, a2 uint8) *nox_waypoint_t {
 
 //export nox_xxx_getMissilesInCircle_518170
 func nox_xxx_getMissilesInCircle_518170(pos *C.float2, r float32, fnc unsafe.Pointer, a4 *nox_object_t) {
-	p := *(*types.Pointf)(unsafe.Pointer(pos))
-	GetServer().S().Map.EachMissileInCircle(p, r, func(it *server.Object) bool {
+	if fnc == nil {
+		return
+	}
+	GetServer().S().Map.EachMissileInCirclePtr518170((*types.Pointf)(unsafe.Pointer(pos)), r, func(it *server.Object) bool {
 		ccall.CallVoidPtr2(fnc, it.CObj(), unsafe.Pointer(a4))
 		return true
 	})

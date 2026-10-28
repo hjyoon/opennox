@@ -414,41 +414,7 @@ func (s *serverMap) EachMissileInRect(rect types.Rectf, fnc func(it *Object) boo
 }
 
 func (s *serverMap) EachMissileInCircle(pos types.Pointf, r float32, fnc func(it *Object) bool) {
-	if fnc == nil {
-		return
-	}
-	sx := RoundCoord(pos.X - r)
-	sy := RoundCoord(pos.Y - r)
-	ex := RoundCoord(pos.X + r)
-	ey := RoundCoord(pos.Y + r)
-	if sx < 0 {
-		sx = 0
-	}
-	if ex >= s.indexSize {
-		ex = s.indexSize - 1
-	}
-	if sy < 0 {
-		sy = 0
-	}
-	if ey >= s.indexSize {
-		ey = s.indexSize - 1
-	}
-	r2 := r * r
-	for y := sy; y <= ey; y++ {
-		for x := sx; x <= ex; x++ {
-			for it := s.bucketByPos[x][y].List; it != nil; it = it.Next {
-				obj := it.Object
-				if obj.Class().Has(object.ClassMissile) {
-					dp := pos.Sub(obj.Pos())
-					if dp.X*dp.X+dp.Y*dp.Y <= r2 {
-						if !fnc(obj) {
-							return
-						}
-					}
-				}
-			}
-		}
-	}
+	s.EachMissileInCirclePtr518170(&pos, r, fnc)
 }
 
 func (s *serverMap) EachObjAndMissileInRect(rect types.Rectf, fnc func(it *Object) bool) {

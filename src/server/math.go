@@ -13,11 +13,7 @@ func RoundDir(v int) Dir16 { // nox_xxx_math_roundDir, nox_xxx_math_roundDirI16
 
 // RoundCoord rounds float coordinate in range [0, N) to be used as a map key.
 func RoundCoord(v float32) int {
-	if float64(v) < 0.0 {
-		return int(int32(v))
-	}
-	v = float32(float64(v)/85 + 8.388608e+06)
-	return int(int32(math.Float32bits(v) & 0x7FFFFF))
+	return mapIndexCoord5175E0(v)
 }
 
 func fabs(v float32) float32 {

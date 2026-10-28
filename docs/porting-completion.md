@@ -114,10 +114,22 @@ checks pass 1,981 events in 139.587 seconds. Parent/subtest counts do not
 measure feature coverage. Passing source checks are reused for documentation.
 
 Original thing data names MeteorShower and Meteor for these callbacks.
-Static placement, dynamic creation and live campaign use are distinguished
-in the retained inventory; the short unchanged Wizard3 Load/stat/manual-Save
-replay supplies general regression evidence only. No artificial campaign
-spawn, complete-chapter or overall 100% credit follows from this port.
+Neither is statically placed in the 18 required stock maps; runtime creation
+is not excluded. The unchanged short Wizard3 Load/stat/manual-Save replay
+supplies general regression evidence only. No artificial campaign spawn,
+live Meteor effect, complete-chapter or overall 100% credit follows.
+
+The clean `cf4d4a6` Go 1.26.9 Darwin/ARM64 product builds once in 12.689
+seconds with unmodified VCS metadata: 65,486,146 bytes, SHA-256
+`88fdb467a390a6ad89574d6c038ed9db73c2b7db81f25607197cfc84b9abe383`.
+The unchanged Wizard3 stat-audit suite passes on its first launch in 54.020
+seconds. Both observations retain HP33/MP49, maxima32/98, poison0 and exact
+level3 Wizard stat inputs. The owned living manual Save changes to its new
+recorded hash; six parameterless GETs and source Save/assets/config/binary
+checks qualify. The final frame shows the living Wizard, HUD and Korean
+save-complete message. There are no unported/fatal log hits. Native CI for
+this source revision is tracked separately, with no rebuild or second Linux
+dispatch for this documentation-only result update.
 
 The preceding lifetime/effect revision's Windows 386, Windows AMD64 and
 Linux AMD64 jobs all complete successfully. Their logs, artifact ZIPs and

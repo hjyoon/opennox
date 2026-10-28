@@ -33,6 +33,7 @@ The subsequent segments have their own seed contracts:
 | `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Southern floor bypass, original BluePotion1940 automatic +50 mana and Meat1939/1938 pickups; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
 | `wizard2-swap-escape.json` | Earned Wiz02b Swap-book save, HP20/MP78, F=Swap115, player at2822.5457,2758.513 | One ordinary F cast at the original moving SmallAlbinoSpider; reciprocal native position exchange in one frame, full resources and living manual Save |
 | `wizard3-magic-missile-cellar.json` | Earned Wiz03b lift-return save, HP33/MP99, learned MagicMissile50 level2 in A and LesserHeal41 in S | Ordinary A inputs across the original lift cycle; Swordsman01 script1000451500 alive-to-DEAD with native HP0, Heal and living manual Save at HP33/MP at least40 |
+| `wizard3-player-stat-audit.json` | Earned combat-cleared Wiz03b MagicMissile-cellar manual Save, HP33/MP49, maxima32/98, original Swordsman defeated | Load, exact copied level/class/stat words, maxima32/98 and living manual Save; no movement, casting or new combat objective |
 
 For a short Load, movement, pickup and manual Save regression, use
 `wizard2-upper-mana-recovery.json` with its earned upper-Urchins checkpoint:
@@ -58,9 +59,20 @@ route, adding read-only A50/S41 binding and initial-player checks. The original
 Swordsman must be alive with positive native HP in the first observation and
 end with DEAD and native HP0. This case enables `require_monster_health_zero`;
 missing health, flags alone or a healthy process exit cannot pass it. Current
-HP33 from the historical Save is retained; the observed maxima are32/98,
-whose exact original-input audit remains open. The scenario waits600 ordinary
+HP33 from the historical Save is retained; the maxima32/98 match complete
+unchanged original execution with the observed level3 Wizard inputs and its
+actual PC53/ToZero startup mode. The scenario waits600 ordinary
 frames after combat to recover while retaining MP at least40 before Save.
+
+For an observation-only stat regression, use `wizard3-player-stat-audit.json`
+with the MagicMissile case's successful combat-cleared Save. Its 28 steps
+have passed in about54 seconds using the same prebuilt executable. It pins
+the actual class, level and four binary32 stat arrays, as well as the maxima
+and living manual Save; a missing observation cannot pass. The earlier
+lift-return Save still has a living nearby enemy and is reserved for combat.
+Keep its failed stat-only replay as evidence rather than reusing it as the
+safe observation source. The original-input fixture independently reproduces
+the maxima; the historical current HP33 is not changed by this test.
 
 The Swap case uses its own earlier earned checkpoint, before the barred-room
 escape. Run it with `--suite scripts/e2e/campaign/wizard2-swap-escape.json`

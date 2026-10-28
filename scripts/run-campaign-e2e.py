@@ -34,12 +34,23 @@ ROUTES = {'objects': '/debug/nox/objects', 'script': '/debug/nox/script/legacy',
 SUITE_FIELDS = {'version', 'name', 'coverage', 'seed_contract', 'cases'}
 CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_poison_free',
                'timeout_seconds', 'required_checkpoints', 'expected_health', 'expected_mana',
-               'expected_maximum_health', 'expected_maximum_mana',
+               'expected_maximum_health', 'expected_maximum_mana', 'expected_stat_inputs',
                'minimum_health', 'minimum_mana',
                'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
                'required_defeated_script_ids', 'require_monster_health_zero', 'required_enable_transitions',
                'required_position_transitions', 'required_plate_holds', 'required_map_pickups',
                'required_swap_pairs'}
+STAT_INPUT_WORDS = {'base_bits32', 'maximum_bits32', 'warrior_bits32', 'multipliers_bits32'}
+
+
+def validate_stat_inputs(value):
+    if (not isinstance(value, dict) or set(value) != STAT_INPUT_WORDS | {'class', 'level'}
+            or type(value.get('class')) is not int or not 0 <= value['class'] <= 2
+            or type(value.get('level')) is not int or not 0 <= value['level'] <= 255
+            or any(not isinstance(value[key], list) or len(value[key]) != 4
+                   or any(type(word) is not int or not 0 <= word < 1 << 32 for word in value[key])
+                   for key in STAT_INPUT_WORDS)):
+        raise ValueError('expected_stat_inputs requires class, level and four exact uint32 stat-word arrays')
 
 
 def validate_suite_fields(suite):
@@ -51,6 +62,8 @@ def validate_suite_fields(suite):
         unknown = set(case) - CASE_FIELDS
         if unknown:
             raise ValueError('unknown campaign case fields: ' + ', '.join(sorted(unknown)))
+        if 'expected_stat_inputs' in case:
+            validate_stat_inputs(case['expected_stat_inputs'])
         if 'require_monster_health_zero' in case:
             identities = case.get('required_defeated_script_ids')
             if (type(case['require_monster_health_zero']) is not bool or not isinstance(identities, list) or not identities
@@ -431,6 +444,19 @@ def player_value_failures(player, case):
     failures.extend({'check': key, 'minimum': case[key], 'actual': value}
                     for key, value in minimums.items()
                     if key in case and not (type(value) is int and value >= case[key]))
+    if 'expected_stat_inputs' in case:
+        actual = player.get('stat_inputs')
+        matches = False
+        if (isinstance(actual, dict) and actual.get('present') is True
+                and type(actual.get('game_flags')) is int and 0 <= actual['game_flags'] < 1 << 32):
+            selected = {key: actual.get(key) for key in STAT_INPUT_WORDS | {'class', 'level'}}
+            try:
+                validate_stat_inputs(selected)
+                matches = selected == case['expected_stat_inputs']
+            except ValueError:
+                pass
+        if not matches:
+            failures.append({'check': 'expected_stat_inputs', 'expected': case['expected_stat_inputs'], 'actual': actual})
     return failures
 
 

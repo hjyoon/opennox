@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "Wizard3 same-input maximum-stat audit",
-  "seed_contract": "Original Wiz03b lift-return Save from v516: saved level3 Wizard, current and saved maxima HP33/MP99, XP11674.122 and naturally earned spells. Current product recomputes maxima32/98; capture the actual class, level, mode, base/max stat words and multipliers for original GAME.EXE comparison.",
+  "seed_contract": "Earned Wiz03b MagicMissile-cellar manual Save after the original Swordsman was defeated through ordinary A inputs: level3 Wizard, current HP33/MP49, maxima32/98 and naturally earned spells. Capture the actual class, level, mode, base/max stat words and multipliers for original GAME.EXE comparison. Use the combat-cleared checkpoint so this observation-only case does not idle next to a living enemy.",
   "coverage": "Original Solo Load, copied scalar stat inputs and living manual Save only; no movement, casting, setters, enemy objective or whole-chapter credit.",
   "cases": [
     {
@@ -16,11 +16,39 @@
       "expected_health": 33,
       "expected_maximum_health": 32,
       "expected_maximum_mana": 98,
-      "minimum_mana": 98,
+      "minimum_mana": 49,
       "required_checkpoints": [
         "Wizard3 loaded stat inputs",
         "Wizard3 stat audit manual Save"
-      ]
+      ],
+      "expected_stat_inputs": {
+        "class": 1,
+        "level": 3,
+        "base_bits32": [
+          1101004800,
+          1117519872,
+          1183237120,
+          1101004800
+        ],
+        "maximum_bits32": [
+          1117126656,
+          1126825984,
+          1183877120,
+          1108082688
+        ],
+        "warrior_bits32": [
+          1125515264,
+          0,
+          1185157120,
+          1123680256
+        ],
+        "multipliers_bits32": [
+          1065353216,
+          1065353216,
+          1065353216,
+          1065353216
+        ]
+      }
     }
   ]
 }

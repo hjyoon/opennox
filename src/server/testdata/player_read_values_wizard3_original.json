@@ -1,0 +1,380 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "startup_fpcw": 3647,
+  "input_order": [
+    "health",
+    "mana",
+    "speed",
+    "strength"
+  ],
+  "inputs": {
+    "present": true,
+    "level": 3,
+    "class": 1,
+    "game_flags": 268831235,
+    "base_bits32": [
+      1101004800,
+      1117519872,
+      1183237120,
+      1101004800
+    ],
+    "maximum_bits32": [
+      1117126656,
+      1126825984,
+      1183877120,
+      1108082688
+    ],
+    "warrior_bits32": [
+      1125515264,
+      0,
+      1185157120,
+      1123680256
+    ],
+    "multipliers_bits32": [
+      1065353216,
+      1065353216,
+      1065353216,
+      1065353216
+    ]
+  },
+  "regions": [
+    {
+      "name": "complete-player-stats",
+      "address": "0x4eedc0",
+      "size": 892,
+      "sha256": "6940925f1a498b5e1f212271e28d7b805daef839a3b79aa947f86b840c9d6fd1"
+    },
+    {
+      "name": "base-getter",
+      "address": "0x57b350",
+      "size": 6,
+      "sha256": "a739d01a36b00ee3307109b3c655539279ac718be426ec27927f5da78bc8ec0d"
+    },
+    {
+      "name": "class-getter",
+      "address": "0x57b360",
+      "size": 13,
+      "sha256": "790e2830f3cc2c416f892363fa442aa1943b8a1aaf457bb24d42b67a79fe4d37"
+    },
+    {
+      "name": "FISTP-signed-DWORD",
+      "address": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186"
+    },
+    {
+      "name": "qword-truncation",
+      "address": "0x566dcc",
+      "size": 39,
+      "sha256": "d0a2aca68648a0ae9d5cbfae1b276d4a64d4f797fc0c60f28b64096cdfa3148c"
+    }
+  ],
+  "constants": [
+    {
+      "address": "0x583c48",
+      "size": 4,
+      "bytes": "398ee33d",
+      "sha256": "4fdaa8b2d80c616918d3322d61756a3e9dad90d5f3d9809df1e0f2ec913b5deb"
+    },
+    {
+      "address": "0x58350c",
+      "size": 4,
+      "bytes": "0000003f",
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57"
+    },
+    {
+      "address": "0x583c4c",
+      "size": 4,
+      "bytes": "17b7d138",
+      "sha256": "0f2f3591427956b004ca17393783192e0f81858c06bb5496aa2cea004f1ee863"
+    },
+    {
+      "address": "0x583a80",
+      "size": 4,
+      "bytes": "0000a041",
+      "sha256": "8502957747a29907927566be940a9b39fee0a15dd471ba428eb9eedd15aa80e7"
+    },
+    {
+      "address": "0x583518",
+      "size": 4,
+      "bytes": "00002041",
+      "sha256": "80c8a717ccd70c8809eb78e6a9591c003e11c721fe0ccaf62fd592abda1a5593"
+    },
+    {
+      "address": "0x583c44",
+      "size": 4,
+      "bytes": "00409c44",
+      "sha256": "94748c90604f24cf93a9c74571f656ce776f87a788a425583c83df3ce472318b"
+    },
+    {
+      "address": "0x583c40",
+      "size": 4,
+      "bytes": "00803b44",
+      "sha256": "1d77e51c3092b797b15b02104368537eea7b222148a4d2ba2d2d578491c50ac5"
+    },
+    {
+      "address": "0x583c38",
+      "size": 8,
+      "bytes": "000000000000f83f",
+      "sha256": "e163f8cb0f7067a7fc78ca859a77f849aea3214f38fb75b884e4a16be725c905"
+    }
+  ],
+  "cases": [
+    {
+      "level": 1,
+      "result": {
+        "health": 20,
+        "maximum_health": 20,
+        "mana": 78,
+        "maximum_mana": 78,
+        "strength": 20,
+        "speed": 17250,
+        "speed_base_bits32": 1071434956,
+        "mass_bits32": 1095971635,
+        "capacity": 1424,
+        "carry": 1424,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        20,
+        17250,
+        78,
+        20
+      ]
+    },
+    {
+      "level": 2,
+      "result": {
+        "health": 26,
+        "maximum_health": 26,
+        "mana": 88,
+        "maximum_mana": 88,
+        "strength": 22,
+        "speed": 17389,
+        "speed_base_bits32": 1071551464,
+        "mass_bits32": 1096307179,
+        "capacity": 1454,
+        "carry": 1454,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        22,
+        17389,
+        88,
+        26
+      ]
+    },
+    {
+      "level": 3,
+      "result": {
+        "health": 32,
+        "maximum_health": 32,
+        "mana": 98,
+        "maximum_mana": 98,
+        "strength": 23,
+        "speed": 17528,
+        "speed_base_bits32": 1071667973,
+        "mass_bits32": 1096474951,
+        "capacity": 1469,
+        "carry": 1469,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        23,
+        17528,
+        98,
+        32
+      ]
+    },
+    {
+      "level": 4,
+      "result": {
+        "health": 38,
+        "maximum_health": 38,
+        "mana": 109,
+        "maximum_mana": 109,
+        "strength": 25,
+        "speed": 17667,
+        "speed_base_bits32": 1071784481,
+        "mass_bits32": 1096810495,
+        "capacity": 1499,
+        "carry": 1499,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        25,
+        17667,
+        109,
+        38
+      ]
+    },
+    {
+      "level": 5,
+      "result": {
+        "health": 44,
+        "maximum_health": 44,
+        "mana": 119,
+        "maximum_mana": 119,
+        "strength": 27,
+        "speed": 17806,
+        "speed_base_bits32": 1071900990,
+        "mass_bits32": 1097146040,
+        "capacity": 1529,
+        "carry": 1529,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        27,
+        17806,
+        119,
+        44
+      ]
+    },
+    {
+      "level": 6,
+      "result": {
+        "health": 51,
+        "maximum_health": 51,
+        "mana": 129,
+        "maximum_mana": 129,
+        "strength": 28,
+        "speed": 17944,
+        "speed_base_bits32": 1072017498,
+        "mass_bits32": 1097313812,
+        "capacity": 1544,
+        "carry": 1544,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        28,
+        17944,
+        129,
+        51
+      ]
+    },
+    {
+      "level": 7,
+      "result": {
+        "health": 57,
+        "maximum_health": 57,
+        "mana": 139,
+        "maximum_mana": 139,
+        "strength": 30,
+        "speed": 18083,
+        "speed_base_bits32": 1072134007,
+        "mass_bits32": 1097649356,
+        "capacity": 1574,
+        "carry": 1574,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        30,
+        18083,
+        139,
+        57
+      ]
+    },
+    {
+      "level": 8,
+      "result": {
+        "health": 63,
+        "maximum_health": 63,
+        "mana": 150,
+        "maximum_mana": 150,
+        "strength": 32,
+        "speed": 18222,
+        "speed_base_bits32": 1072250515,
+        "mass_bits32": 1097984901,
+        "capacity": 1604,
+        "carry": 1604,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        32,
+        18222,
+        150,
+        63
+      ]
+    },
+    {
+      "level": 9,
+      "result": {
+        "health": 69,
+        "maximum_health": 69,
+        "mana": 160,
+        "maximum_mana": 160,
+        "strength": 33,
+        "speed": 18361,
+        "speed_base_bits32": 1072367023,
+        "mass_bits32": 1098152673,
+        "capacity": 1619,
+        "carry": 1619,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        33,
+        18361,
+        160,
+        69
+      ]
+    },
+    {
+      "level": 10,
+      "result": {
+        "health": 75,
+        "maximum_health": 75,
+        "mana": 170,
+        "maximum_mana": 170,
+        "strength": 35,
+        "speed": 18500,
+        "speed_base_bits32": 1072483532,
+        "mass_bits32": 1098488217,
+        "capacity": 1649,
+        "carry": 1649,
+        "overweight": 0,
+        "initialized": 1,
+        "return_bits32": 4275878553
+      },
+      "protection_values": [
+        35,
+        18500,
+        170,
+        75
+      ]
+    }
+  ],
+  "scope": "Exact captured level3 Wizard inputs and ten declared Wizard level controls. Token/name/HP services declared; no full loader or live original-game claim. Nearest is counterfactual, not the game mode.",
+  "nearest_counterfactual_level3": {
+    "health": 33,
+    "maximum_health": 33,
+    "mana": 99,
+    "maximum_mana": 99,
+    "strength": 24,
+    "speed": 17528,
+    "speed_base_bits32": 1071667973,
+    "mass_bits32": 1096642724,
+    "capacity": 1485,
+    "carry": 1485,
+    "overweight": 0,
+    "initialized": 1,
+    "return_bits32": 4275878553
+  }
+}

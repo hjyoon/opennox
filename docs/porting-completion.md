@@ -55,6 +55,57 @@ completion requirements.
 
 ## Current findings
 
+### Wizard3 maximum-stat audit and bounded E2E reuse
+
+The same-input audit of the historical HP33/MP99 Save is now complete for
+the computed maxima. A read-only player observation copies the actual level,
+class, game flags and binary32 base/maximum/Warrior/multiplier words. Both the
+older lift-return Save and the later earned combat-cleared Save report a
+level 3 Wizard with identical stat words. No gameplay arithmetic, native
+layout or Save reader changes are required.
+
+Complete unchanged GAME.EXE 004EEDC0, both stat getters and the actual integer
+conversions execute with the captured inputs. Actual startup PC53/ToZero
+produces maximum HP32/MP98. A separate PC53/nearest counterfactual produces
+33/99; it is not the gameplay oracle. Ten declared Wizard level controls in
+each mode give 20 complete original executions without faults, retaining all
+nonoutput frame bytes and input-table canaries. The new native regression
+matches all original output fields at the ten actual-mode levels, including
+speed/mass bits, capacity, protection order and return value. The precise old
+revision that wrote the historical maxima is not inferred from this match.
+The existing loader preserves saved current values separately from recomputed
+maxima; this audit does not add a current-resource clamp.
+
+The new `wizard3-player-stat-audit` replay uses the already earned
+combat-cleared cellar Save. Its 28 ordinary menu/read-only steps pass in
+53.682s with HP33/MP49, maxima32/98 and a living manual Save. It requires
+exact copied stat inputs as well as the resource outcomes. Missing snapshots,
+changed words, wrong class/level and malformed numeric types cannot pass.
+The stricter verifier was applied offline to the unchanged passing replay:
+all 28 steps, both observations, the binary, native sources and saved file
+were checked again without another game launch. This adds no new combat or
+whole-chapter credit. The first hostile-seed/menu-timing failure remains
+preserved; the safe source is the earlier independently qualified combat Save.
+
+Only the affected normal root package was rerun: 39,119 PASS and15 SKIP.
+Observer checks pass10 normally and with highres/cgocheck2/checkptr2; focused
+stat checks pass26 in each mode. Python campaign checks pass75, retaining all
+67 earlier methods. A transient disk/toolchain interruption before test
+execution remains preserved; only the interrupted focused checks were retried.
+The toolchain released its temporary space and lossless log compression made
+no changes. The clean ARM64 product is `592bf04`, SHA-256
+`677805af41faebe347dd3f8ac3a0c7a2507075f520dcfcbdd12b6dc1bd8ce0a9`.
+Later changes affect tests, input/verifier scripts and documentation only.
+
+The preceding observation revision `3b187db` now also has successful Windows
+386/AMD64 run40628634081 and Linux AMD64 server run40628717857. All three
+artifact ZIPs, decoded logs and native headers/build metadata are retained
+and qualified. Linux independently recounts250529 PASS and7 SKIP across all56
+expected packages, plus three passing default-link damage package checks.
+Evidence is retained under `player-max-stats-native-audit`. The nine-cell
+feature audits and remaining UI/audio/peer/stability requirements stay open;
+no overall100% claim follows from this bounded audit.
+
 ### Native MagicMissile entry and steering arithmetic
 
 The remaining 53BDA0 C entry now accepts a full native object pointer and
@@ -103,8 +154,8 @@ Overall100% remains unproven.
 The first new combat replay defeats the original Swordsman and writes a living
 manual Save, but correctly fails its resource expectations. The historical
 Save retains current HP33/MP99; this product computes maxima32/98, and combat
-ends at MP27. Exact original-input qualification of those changed maxima
-remains open; the MagicMissile port does not change class-stat code. The first
+ends at MP27. The later same-input audit above qualifies maxima32/98 against
+the original; the MagicMissile port does not change class-stat code. The first
 report and Save are preserved. The scenario retains HP33 and MP at least40,
 uses the observed maxima, and adds600 ordinary recovery frames before Save.
 
@@ -131,15 +182,16 @@ retains current HP33, computed maximum HP32 and maximum MP98. All nine
 parameterless GET observations, source Save/assets/config/binary hashes and
 the saved player hash qualify. The final frame is inspected: living Wizard,
 original corpse, HUD and Korean save-complete message are visible. The
-historical maximum-stat discrepancy remains open, and no complete chapter
-or100% porting claim follows from this bounded replay.
+historical maximum-stat discrepancy is resolved for the current computation
+by the same-input audit above; no complete chapter or100% porting claim
+follows from this bounded replay.
 
 Native `b107a65` passes Windows386/AMD64 run40626607040 and Linux AMD64
 server run40626663839. All three retained products/logs qualify with native
 headers and clean Go1.26.9/VCS metadata. Linux recounts250528 PASS,7 SKIP,
 all56 packages and the three default-link damage package checks. The later
-observation product has its own Windows run40628634081 and Linux
-run40628717857 still active; those existing runs are retained.
+observation product also passes Windows run40628634081 and Linux
+run40628717857; their qualified artifacts and existing logs are retained.
 
 ### Native AntiSpell callbacks and map coordinates
 

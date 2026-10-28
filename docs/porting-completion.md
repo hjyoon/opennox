@@ -108,6 +108,18 @@ in the 18 required stock maps; this does not exclude runtime creation.
 The unchanged short Wizard3 Load/stat/manual-Save replay remains a general
 regression check and cannot certify live use of these effects or a chapter.
 
+The clean `5e7967e` Go 1.26.9 Darwin/ARM64 product builds once in 12.682
+seconds with unmodified VCS metadata: 65,466,178 bytes, SHA-256
+`3d8ce6d51bbdb3bf9397263b72d38676356e35aa3558c7606d81c8739aac1999`.
+The unchanged Wizard3 stat-audit suite passes on its first launch in 57.206
+seconds. Both observations retain HP33/MP49, maxima32/98, poison0 and the
+exact level3 Wizard stat inputs. A new living manual Save, six parameterless
+GETs and the unchanged source Save/assets/config/binary qualify. The final
+frame shows the living Wizard, HUD and Korean save-complete message.
+There are no unported/fatal log hits. Native jobs for this source revision
+are tracked separately; this documentation update does not rebuild products
+or dispatch another Linux run.
+
 The preceding Blow revision's Windows 386/AMD64 and Linux AMD64 native jobs
 all finish successfully. Their logs, ZIPs and native products are retained
 and qualified. Linux independently recounts 253,140 PASS and seven SKIP events

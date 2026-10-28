@@ -122,37 +122,57 @@ func moverUpdate54F740[O, D, W comparable](source O, hooks moverUpdateHooks54F74
 		}
 
 		velocityX := hooks.loadVelocityX(source)
+		checkArrival := false
 		if moverUpdateNonzero54F740(velocityX) {
 			velocityY := hooks.loadVelocityY(source)
 			if moverUpdateNonzero54F740(velocityY) {
+				checkArrival = true
+			} else if velocityY == 0 && !math.IsInf(float64(velocityX), 0) {
 				current := hooks.loadWaypoint(data, 3)
-				dx := experienceAdd53TowardZero(float64(hooks.loadWaypointX(current)), -float64(hooks.loadPosX(source)))
-				dy := experienceAdd53TowardZero(float64(hooks.loadWaypointY(current)), -float64(hooks.loadPosY(source)))
-				yProduct := experienceMul53TowardZero(dy, float64(hooks.loadVelocityY(source)))
-				xProduct := experienceMul53TowardZero(dx, float64(hooks.loadVelocityX(source)))
-				dot := experienceAdd53TowardZero(yProduct, xProduct)
-				if dot <= 0 || math.IsNaN(dot) {
-					count := hooks.waypointPointCnt(current)
-					switch count {
-					case 0:
-						hooks.storeState(data, 3)
-						hooks.move(target, hooks.loadWaypointPos(current))
-					case 1:
-						hooks.storeWaypoint(data, 5, current)
-						hooks.storeWaypoint(data, 3, hooks.waypointPoint(current, 0))
-					default:
-						var index int
-						for {
-							index = hooks.randomInt(0, int(hooks.waypointPointCnt(current))-1)
-							current = hooks.loadWaypoint(data, 3)
-							previous := hooks.loadWaypoint(data, 5)
-							if hooks.waypointPoint(current, index) != previous {
-								break
-							}
+				y := hooks.loadPosY(source)
+				checkArrival = !math.IsInf(float64(y), 0) && hooks.loadWaypointY(current) == y
+			}
+		} else if velocityX == 0 {
+			velocityY := hooks.loadVelocityY(source)
+			if moverUpdateNonzero54F740(velocityY) && !math.IsInf(float64(velocityY), 0) {
+				current := hooks.loadWaypoint(data, 3)
+				x := hooks.loadPosX(source)
+				checkArrival = !math.IsInf(float64(x), 0) && hooks.loadWaypointX(current) == x
+			}
+		}
+		// GAME.EXE requires both velocity components to be nonzero. That
+		// strands an exactly horizontal or vertical leg: Wiz02c's Bookcase6
+		// starts at (1554,4746) and its first waypoint is (1554,4747).
+		// Also check arrival when the stationary axis already matches the
+		// waypoint, retaining the original rule for every other trajectory.
+		if checkArrival {
+			current := hooks.loadWaypoint(data, 3)
+			dx := experienceAdd53TowardZero(float64(hooks.loadWaypointX(current)), -float64(hooks.loadPosX(source)))
+			dy := experienceAdd53TowardZero(float64(hooks.loadWaypointY(current)), -float64(hooks.loadPosY(source)))
+			yProduct := experienceMul53TowardZero(dy, float64(hooks.loadVelocityY(source)))
+			xProduct := experienceMul53TowardZero(dx, float64(hooks.loadVelocityX(source)))
+			dot := experienceAdd53TowardZero(yProduct, xProduct)
+			if dot <= 0 || math.IsNaN(dot) {
+				count := hooks.waypointPointCnt(current)
+				switch count {
+				case 0:
+					hooks.storeState(data, 3)
+					hooks.move(target, hooks.loadWaypointPos(current))
+				case 1:
+					hooks.storeWaypoint(data, 5, current)
+					hooks.storeWaypoint(data, 3, hooks.waypointPoint(current, 0))
+				default:
+					var index int
+					for {
+						index = hooks.randomInt(0, int(hooks.waypointPointCnt(current))-1)
+						current = hooks.loadWaypoint(data, 3)
+						previous := hooks.loadWaypoint(data, 5)
+						if hooks.waypointPoint(current, index) != previous {
+							break
 						}
-						hooks.storeWaypoint(data, 5, current)
-						hooks.storeWaypoint(data, 3, hooks.waypointPoint(current, index))
 					}
+					hooks.storeWaypoint(data, 5, current)
+					hooks.storeWaypoint(data, 3, hooks.waypointPoint(current, index))
 				}
 			}
 		}

@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "name": "Wizard2 original pressure plate and complete Bookcase6 slide",
+  "seed_contract": "Earned northern recovery Save HP20 MP78 poison0; A43 D41 F115, original northern Spiders dead.",
+  "coverage": "Ordinary plate activation, original Bookcase6 slide through waypoints137/138 to139, player clearance, original east Urchin defeat and healthy manual Save. Does not certify the full cave.",
+  "cases": [
+    {
+      "name": "wizard2-bookcase6",
+      "scenario": "wizard2-cave-bookcase6.yaml",
+      "expected_maps": [
+        "wiz02c"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 160,
+      "required_checkpoints": [
+        "original Bookcase6 switch activation only",
+        "original central east road living arrival",
+        "original manual Save",
+        "original Bookcase6 complete slide"
+      ],
+      "required_defeated_script_ids": [
+        1000194073
+      ],
+      "required_enable_transitions": [
+        {
+          "script_id": 1000194579,
+          "before": true,
+          "after": false
+        },
+        {
+          "script_id": 1000194585,
+          "before": false,
+          "after": true
+        }
+      ],
+      "required_position_transitions": [
+        {
+          "script_id": 1000194601,
+          "before": {
+            "x": 1554,
+            "y": 4746
+          },
+          "after": {
+            "x": 1591,
+            "y": 4734
+          },
+          "tolerance": 1
+        }
+      ]
+    }
+  ]
+}

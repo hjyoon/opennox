@@ -102,6 +102,8 @@ type Server interface {
 	SpellSwapUpdate530D30(record *server.DurSpell) int32
 	SpellBlinkCreate530310(record *server.DurSpell) int32
 	SpellBlinkUpdate530380(record *server.DurSpell) int32
+	SpellTeleportToTargetCreate530A30(record *server.DurSpell) int32
+	SpellTeleportToTargetUpdate530B70(record *server.DurSpell) int32
 	SpellTeleportCreateWake530560(target *server.Object, origin, destination *types.Pointf)
 	SpellChainLightningCreate52F820(record *server.DurSpell) int32
 	SpellChainLightningUpdate52F8A0(record *server.DurSpell) int32

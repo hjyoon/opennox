@@ -322,21 +322,24 @@ func (sp *spellsDuration) teleportToTargetRuntime530A30() server.SpellTeleportTo
 		CoopMode: func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
 		Frame:    sp.s.Frame,
 		TickRate: world.TickRate,
-		TeleportDelay: func(levelIndex uint32) float32 {
-			return float32(sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex))))
+		TeleportDelay: func(levelIndex uint32) float64 {
+			return sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex)))
 		},
 		TileBlocksTeleport: legacy.MapTileBlocksTeleport411A90,
 		TraceRay9:          world.MapTraceRay9,
-		SendUnseenTarget: func(target *server.Object) {
-			message := world.Strings().GetStringInFile("UnseenTarget", "C:\\NoxPost\\src\\Server\\Magic\\Spell\\ExecDur.c")
+		LookupUnseenTarget: func() string {
+			return world.Strings().GetStringInFile("UnseenTarget", "C:\\NoxPost\\src\\Server\\Magic\\Spell\\ExecDur.c")
+		},
+		SendUnseenTarget: func(target *server.Object, message string) {
 			legacy.Nox_xxx_netSendLineMessage_4D9EB0(target, message)
 		},
-		InformNoLOS: func(caster *server.Object) {
-			if caster.UpdateData == nil || caster.UpdateDataPlayer().Player == nil {
+		InformNoLOS: func(data *server.PlayerUpdateData) {
+			if data.Player == nil {
 				return
 			}
-			world.NetInformTextMsg(caster.UpdateDataPlayer().Player.PlayerIndex(), 0, 2)
+			world.NetInformTextMsg(data.Player.PlayerIndex(), 0, 2)
 		},
+		Wake:      sp.s.SpellTeleportCreateWake530560,
 		NewObject: world.NewObjectByTypeID,
 		CreateAt: func(object, owner *server.Object, point types.Pointf) {
 			sp.s.CreateObjectAt(object, owner, point)

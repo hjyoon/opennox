@@ -15,11 +15,13 @@ type SpellTeleportToTargetRuntime530A30 struct {
 	CoopMode           func() bool
 	Frame              func() uint32
 	TickRate           func() uint32
-	TeleportDelay      func(uint32) float32
+	TeleportDelay      func(uint32) float64
 	TileBlocksTeleport func(*types.Pointf) bool
 	TraceRay9          func(types.Pointf, types.Pointf) bool
-	SendUnseenTarget   func(*Object)
-	InformNoLOS        func(*Object)
+	LookupUnseenTarget func() string
+	SendUnseenTarget   func(*Object, string)
+	InformNoLOS        func(*PlayerUpdateData)
+	Wake               func(*Object, *types.Pointf, *types.Pointf)
 	NewObject          func(string) *Object
 	CreateAt           func(*Object, *Object, types.Pointf)
 	SendPointFX        func(netmsg.Op, types.Pointf)
@@ -39,20 +41,27 @@ func SpellTeleportToTargetCreate530A30(record *DurSpell, rt SpellTeleportToTarge
 	if caster == nil || target == nil {
 		return 1
 	}
+	var playerData *PlayerUpdateData
+	if caster.ObjClass.Has(object.ClassPlayer) && caster.UpdateData != nil {
+		playerData = caster.UpdateDataPlayer()
+	}
 	if rt.TileBlocksTeleport(&record.Pos2) {
-		rt.SendUnseenTarget(target)
-		rt.Audio(sound.ID(231), target, 0, 0)
+		message := rt.LookupUnseenTarget()
+		rt.SendUnseenTarget(record.Target48, message)
+		rt.Audio(sound.ID(231), record.Target48, 0, 0)
 		return 1
 	}
-	if !rt.TraceRay9(target.PosVec, record.Pos2) {
-		if caster.ObjClass.Has(object.ClassPlayer) {
-			rt.InformNoLOS(caster)
+	// ExecDur.c caches the original player's update data before the tile
+	// service, but reloads the target, destination, and caster for the ray.
+	if record.Caster16 != nil && !rt.TraceRay9(record.Target48.PosVec, record.Pos2) {
+		if playerData != nil {
+			rt.InformNoLOS(playerData)
 		}
 		return 1
 	}
 	if rt.CoopMode() {
 		delay := rt.TeleportDelay(record.Level - 1)
-		record.Frame68 = rt.Frame() + uint32(spellDurationRoundNearestEven(delay))
+		record.Frame68 = rt.Frame() + uint32(playerReadValuesRound4EEDC0(shapeBoxSpill428270(delay)))
 	} else {
 		record.Frame68 = rt.Frame() + 1
 	}
@@ -77,23 +86,30 @@ func SpellTeleportToTargetUpdate530B70(record *DurSpell, rt SpellTeleportToTarge
 		rt.Audio(sound.ID(231), target, 0, 0)
 		return 1
 	}
-	origin := target.PosVec
-	rt.SendPointFX(netmsg.MSG_FX_TELEPORT, origin)
-	castSound := rt.CastSound(spell.ID(record.Spell))
-	rt.Audio(castSound, target, 0, 0)
-	wake := rt.NewObject("TeleportWake")
-	if wake != nil && wake.CollideData != nil {
-		(*TeleportWakeCollideData)(wake.CollideData).Destination = record.Pos2
-		rt.CreateAt(wake, target, origin)
-		wake.Field34 = rt.Frame() + rt.TickRate()
+	rt.SendPointFX(netmsg.MSG_FX_TELEPORT, record.Target48.PosVec)
+	// Each original sound lookup receives the current spell. Its audio
+	// target and network arguments are already fixed on the caller's stack.
+	play := func(unit *Object, kind int, code uint32) {
+		castSound := rt.CastSound(spell.ID(record.Spell))
+		rt.Audio(castSound, unit, kind, code)
 	}
-	rt.Teleport(target, record.Pos2)
+	play(record.Target48, 0, 0)
+	target = record.Target48
+	if rt.Wake != nil {
+		rt.Wake(target, &target.PosVec, &record.Pos2)
+	} else {
+		SpellTeleportCreateWake530560(target, &target.PosVec, &record.Pos2, SpellBlinkRuntime530310{
+			NewObject: rt.NewObject, CreateAt: rt.CreateAt, Frame: rt.Frame, TickRate: rt.TickRate,
+		})
+	}
+	rt.Teleport(record.Target48, record.Pos2)
+	target = record.Target48
 	if !target.HasEnchant(ENCHANT_INVISIBLE) {
 		rt.SendPointFX(netmsg.MSG_FX_TELEPORT, target.PosVec)
-		rt.Audio(castSound, target, 0, 0)
+		play(record.Target48, 0, 0)
 	} else if target.ObjClass.Has(object.ClassPlayer) {
-		rt.Audio(castSound, target, 2, target.NetCode)
+		play(target, 2, target.NetCode)
 	}
-	rt.Attribution(caster, target)
+	rt.Attribution(record.Caster16, record.Target48)
 	return 1
 }

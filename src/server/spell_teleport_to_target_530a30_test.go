@@ -15,7 +15,8 @@ import (
 )
 
 func TestSpellTeleportToTargetCreate530A30(t *testing.T) {
-	caster := &Object{ObjClass: object.ClassPlayer, PosVec: types.Ptf(10, 20)}
+	playerData := &PlayerUpdateData{Player: &Player{PlayerInd: 7}}
+	caster := &Object{ObjClass: object.ClassPlayer, PosVec: types.Ptf(10, 20), UpdateData: unsafe.Pointer(playerData)}
 	target := &Object{PosVec: types.Ptf(30, 40)}
 	for _, tc := range []struct {
 		name      string
@@ -29,7 +30,7 @@ func TestSpellTeleportToTargetCreate530A30(t *testing.T) {
 		{"blocked tile", true, true, false, 1, 0, []string{"tile", "unseen", "audio"}},
 		{"blocked ray", false, false, false, 1, 0, []string{"tile", "ray", "inform"}},
 		{"arena", false, true, false, 0, 101, []string{"tile", "ray", "coop", "frame"}},
-		{"coop round to even", false, true, true, 0, 102, []string{"tile", "ray", "coop", "delay", "frame"}},
+		{"coop startup truncation", false, true, true, 0, 102, []string{"tile", "ray", "coop", "delay", "frame"}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var calls []string
@@ -49,10 +50,11 @@ func TestSpellTeleportToTargetCreate530A30(t *testing.T) {
 					}
 					return tc.clear
 				},
-				SendUnseenTarget: func(obj *Object) {
+				LookupUnseenTarget: func() string { return "UnseenTarget" },
+				SendUnseenTarget: func(obj *Object, message string) {
 					calls = append(calls, "unseen")
-					if obj != target {
-						t.Fatal("unseen recipient is not target")
+					if obj != target || message != "UnseenTarget" {
+						t.Fatal("unseen recipient/message")
 					}
 				},
 				Audio: func(id sound.ID, obj *Object, kind int, code uint32) {
@@ -61,14 +63,14 @@ func TestSpellTeleportToTargetCreate530A30(t *testing.T) {
 						t.Fatalf("audio = %d %p %d %d", id, obj, kind, code)
 					}
 				},
-				InformNoLOS: func(obj *Object) {
+				InformNoLOS: func(data *PlayerUpdateData) {
 					calls = append(calls, "inform")
-					if obj != caster {
-						t.Fatal("LOS recipient is not caster")
+					if data != playerData {
+						t.Fatal("LOS recipient is not original player data")
 					}
 				},
 				CoopMode: func() bool { calls = append(calls, "coop"); return tc.coop },
-				TeleportDelay: func(level uint32) float32 {
+				TeleportDelay: func(level uint32) float64 {
 					calls = append(calls, "delay")
 					if level != 1 {
 						t.Fatalf("delay level = %d", level)
@@ -149,9 +151,9 @@ func TestSpellTeleportToTargetUpdate530B70Effects(t *testing.T) {
 		player    bool
 		wantCalls []string
 	}{
-		{"visible", false, false, []string{"fx", "cast sound", "audio 0", "new wake", "create wake", "teleport", "fx", "audio 0", "attribution"}},
+		{"visible", false, false, []string{"fx", "cast sound", "audio 0", "new wake", "create wake", "teleport", "fx", "cast sound", "audio 0", "attribution"}},
 		{"invisible monster", true, false, []string{"fx", "cast sound", "audio 0", "new wake", "create wake", "teleport", "attribution"}},
-		{"invisible player", true, true, []string{"fx", "cast sound", "audio 0", "new wake", "create wake", "teleport", "audio 2", "attribution"}},
+		{"invisible player", true, true, []string{"fx", "cast sound", "audio 0", "new wake", "create wake", "teleport", "cast sound", "audio 2", "attribution"}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			caster := &Object{}

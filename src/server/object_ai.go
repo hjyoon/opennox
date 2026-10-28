@@ -91,7 +91,7 @@ func (obj *Object) MonsterPushActionImpl(act ai.ActionType, file string, line in
 	if cur := ud.AIStackHead(); cur == nil {
 		ud.AIStackInd = -1
 	} else {
-		if ud.AIStackHead().Type() == ai.ACTION_DEAD && act != ai.ACTION_DYING {
+		if ai.ActionType(ud.AIStack[0].Action) == ai.ACTION_DEAD && act != ai.ACTION_DYING {
 			return nil
 		}
 		if curAct := cur.Type(); curAct == ai.ACTION_IDLE && ud.AIStackInd == 0 {

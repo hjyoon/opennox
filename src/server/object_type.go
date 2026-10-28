@@ -72,6 +72,13 @@ type serverObjTypes struct {
 		deathBall     int
 		flag          int
 
+		// GAME.EXE 00534A10/00534A40 own independent DWORD caches. The
+		// Zombie slot alone gates initialization of both zombie identities.
+		// General ZombieID/VileZombieID lookups must not warm this pair.
+		unitIsPlant534A10      uint32
+		unitIsZombie534A40     uint32
+		unitIsVileZombie534A40 uint32
+
 		// GAME.EXE 004EF6F0 owns a separate fixed-width Glyph cache at
 		// 0x7533A0; do not merge it with the general GlyphID cache above.
 		playerRespawnGlyph uint32

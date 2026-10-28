@@ -224,7 +224,7 @@ func TestMonsterRaiseZombie534AB0PreflightsStackCapacity(t *testing.T) {
 	update.AIStack[len(update.AIStack)-1].Action = uint32(ai.ACTION_DEAD)
 	before := *update
 	var reason string
-	if s.MonsterRaiseZombie534AB0(unit, MonsterRaiseZombieRuntime534AB0{
+	if !s.MonsterRaiseZombie534AB0(unit, MonsterRaiseZombieRuntime534AB0{
 		IsZombie:       func(*Object) bool { return true },
 		AudioEvent:     func(uint32, *Object) {},
 		SetHealthToMax: func(*Object) {},
@@ -232,10 +232,16 @@ func TestMonsterRaiseZombie534AB0PreflightsStackCapacity(t *testing.T) {
 			reason = got
 		},
 	}) {
-		t.Fatal("full zombie action stack was accepted")
+		t.Fatal("original full-stack raise was not handled")
 	}
-	if reason != "zombie raise action capacity" || *update != before {
-		t.Fatalf("capacity result = %q, mutated=%v", reason, *update != before)
+	// Keep this historical test identity. The complete original run with the
+	// same type0, class2, zero flags/frame, stack and IsZombie=true records
+	// a successful condition push, a failed GET_UP push and later effects.
+	want := before
+	want.AIStack[len(want.AIStack)-1].Action = uint32(ai.DEPENDENCY_UNINTERRUPTABLE)
+	want.AIStack[len(want.AIStack)-1].Field5 = 0
+	if reason != "" || *update != want || !s.AI.StackChanged {
+		t.Fatalf("original capacity result = %q, stack=%d/%v", reason, update.AIStackInd, update.GetAIStack())
 	}
 }
 

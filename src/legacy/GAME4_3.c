@@ -2979,59 +2979,20 @@ void nox_xxx_monsterMimicCheckMorph_534950(nox_object_t* a1p) {
 }
 
 //----- (00534A10) --------------------------------------------------------
-int nox_xxx_unitIsPlant_534A10(int a1) {
-	int v1; // eax
-
-	v1 = *getMemU32Ptr(0x5D4594, 2488528);
-	if (!*getMemU32Ptr(0x5D4594, 2488528)) {
-		v1 = nox_xxx_getNameId_4E3AA0("CarnivorousPlant");
-		*getMemU32Ptr(0x5D4594, 2488528) = v1;
-	}
-	return *(unsigned short*)(a1 + 4) == v1;
-}
+extern int nox_unit_is_plant_native_534A10(nox_object_t*);
+int nox_xxx_unitIsPlant_534A10(nox_object_t* unit) { return nox_unit_is_plant_native_534A10(unit); }
 
 //----- (00534A40) --------------------------------------------------------
-int nox_xxx_unitIsZombie_534A40(int a1) {
-	int v1; // eax
-
-	if (!*getMemU32Ptr(0x5D4594, 2488532)) {
-		*getMemU32Ptr(0x5D4594, 2488532) = nox_xxx_getNameId_4E3AA0("Zombie");
-		*getMemU32Ptr(0x5D4594, 2488536) = nox_xxx_getNameId_4E3AA0("VileZombie");
-	}
-	v1 = *(unsigned short*)(a1 + 4);
-	return (unsigned short)v1 == *getMemU32Ptr(0x5D4594, 2488532) || v1 == *getMemU32Ptr(0x5D4594, 2488536);
-}
+extern int nox_unit_is_zombie_native_534A40(nox_object_t*);
+int nox_xxx_unitIsZombie_534A40(nox_object_t* unit) { return nox_unit_is_zombie_native_534A40(unit); }
 
 //----- (00534A90) --------------------------------------------------------
-char nox_xxx_mobActionGetUp_534A90(int a1) {
-	char result; // al
-
-	result = a1;
-	if (*(uint8_t*)(*(uint32_t*)(a1 + 748) + 483)) {
-		result = nox_xxx_monsterPopAction_50A160(a1);
-	}
-	return result;
-}
+extern char nox_mob_get_up_native_534A90(nox_object_t*);
+char nox_xxx_mobActionGetUp_534A90(nox_object_t* unit) { return nox_mob_get_up_native_534A90(unit); }
 
 //----- (00534AB0) --------------------------------------------------------
-unsigned int nox_xxx_mobRaiseZombie_534AB0(int a1) {
-	unsigned int result; // eax
-
-	result = nox_xxx_unitIsZombie_534A40(a1);
-	if (result) {
-		result = nox_xxx_mobActionGet_50A020(a1);
-		if (result == 31) {
-			nox_xxx_monsterPopAction_50A160(a1);
-			nox_xxx_monsterPushAction_50A260(a1, 61);
-			nox_xxx_monsterPushAction_50A260(a1, 35);
-			nox_xxx_aud_501960(469, a1, 0, 0);
-			nox_xxx_unitHPsetOnMax_4EE6F0((nox_object_t*)(uintptr_t)(uint32_t)a1);
-			result = *(uint32_t*)(a1 + 16) & 0xFFFF7FA7;
-			*(uint32_t*)(a1 + 16) = result;
-		}
-	}
-	return result;
-}
+extern uint32_t nox_mob_raise_zombie_native_534AB0(nox_object_t*);
+unsigned int nox_xxx_mobRaiseZombie_534AB0(nox_object_t* unit) { return nox_mob_raise_zombie_native_534AB0(unit); }
 
 //----- (005361B0) --------------------------------------------------------
 int sub_5361B0(char* a1, void* a2) {
@@ -9427,7 +9388,7 @@ void nox_xxx_zombieBurnDeleteCheck_544CA0(uint32_t* a1) {
 	int v1; // edi
 
 	v1 = a1[187];
-	if (nox_xxx_unitIsZombie_534A40((int)a1)) {
+	if (nox_xxx_unitIsZombie_534A40(a1)) {
 		if (*(uint32_t*)(v1 + 1440) & 0x80000) {
 			nox_xxx_zombieBurnDelete_544CE0(a1);
 		}
@@ -9490,7 +9451,7 @@ char nox_xxx_mobActionDead1_544D80(uint32_t* a1) {
 	if (v2) {
 		v2(a1);
 	}
-	if (nox_xxx_unitIsZombie_534A40((int)a1)) {
+	if (nox_xxx_unitIsZombie_534A40(a1)) {
 		v8 = nox_xxx_gamedataGetFloatTable_419D70("ZombieDeadDuration", 0);
 		v3 = nox_float2int(v8);
 		v9 = nox_xxx_gamedataGetFloatTable_419D70("ZombieDeadDuration", 1);
@@ -9500,7 +9461,7 @@ char nox_xxx_mobActionDead1_544D80(uint32_t* a1) {
 		LOBYTE(v5) = v5 | 0x10;
 		a1[4] = v5;
 	} else {
-		v6 = !nox_xxx_unitIsZombie_534A40((int)a1);
+		v6 = !nox_xxx_unitIsZombie_534A40(a1);
 		v5 = a1[4];
 		if (v6) {
 			LOBYTE(v5) = v5 | 0x18;

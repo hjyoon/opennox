@@ -507,7 +507,7 @@ int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1) {
 	nox_xxx_monsterClearActionStack_50A3A0((int)a1);
 	nox_xxx_monsterPushAction_50A260((int)a1, 31);
 	nox_xxx_monsterPushAction_50A260((int)a1, 30);
-	result = nox_xxx_unitIsZombie_534A40((int)a1);
+	result = nox_xxx_unitIsZombie_534A40(a1);
 	if (!result) {
 		v4 = a1[4];
 		LOBYTE(v4) = v4 & 0x7F;
@@ -1375,7 +1375,7 @@ void sub_50DFB0(float* a1, int a2) {
 	float4 v5; // [esp+4h] [ebp-10h]
 
 	if ((uint8_t)a1[2] & 2 && !((uint32_t)a1[4] & 0x20) &&
-		(((uint32_t)a1[4] & 0x8000) != 0x8000 || nox_xxx_unitIsZombie_534A40((int)a1))) {
+		(((uint32_t)a1[4] & 0x8000) != 0x8000 || nox_xxx_unitIsZombie_534A40(a1))) {
 		v2 = *(float*)(a2 + 56);
 		v3 = a1[14];
 		v5.field_4 = *(float*)(a2 + 60);

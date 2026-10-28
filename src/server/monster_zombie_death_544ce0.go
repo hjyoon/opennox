@@ -91,25 +91,20 @@ func (s *Server) MonsterRaiseZombie534AB0(unit *Object, runtime MonsterRaiseZomb
 	if update.AIStackInd < 0 || int(update.AIStackInd) >= len(update.AIStack) {
 		return monsterRaiseZombieUnsupported534AB0(runtime, "zombie action stack", unit)
 	}
-	if !runtime.IsZombie(unit) || update.AIStackHead().Type() != ai.ACTION_DEAD {
+	if !runtime.IsZombie(unit) {
+		return true
+	}
+	update = unit.UpdateDataMonster()
+	if update.AIStackHead().Type() != ai.ACTION_DEAD {
 		return true
 	}
 	if unit.Server() == nil || runtime.AudioEvent == nil || runtime.SetHealthToMax == nil {
 		return monsterRaiseZombieUnsupported534AB0(runtime, "zombie raise effects", unit)
 	}
-	base := int(update.AIStackInd) - 1
-	for base >= 0 && update.AIStack[base].Type().IsCondition() {
-		base--
-	}
-	if base > len(update.AIStack)-3 {
-		return monsterRaiseZombieUnsupported534AB0(runtime, "zombie raise action capacity", unit)
-	}
-
+	// Original 00534AB0 calls both pushes and continues after either failure.
 	unit.MonsterPopAction()
-	if unit.MonsterPushAction(ai.DEPENDENCY_UNINTERRUPTABLE) == nil ||
-		unit.MonsterPushAction(ai.ACTION_GET_UP) == nil {
-		return monsterRaiseZombieUnsupported534AB0(runtime, "zombie raise action push", unit)
-	}
+	unit.MonsterPushAction(ai.DEPENDENCY_UNINTERRUPTABLE)
+	unit.MonsterPushAction(ai.ACTION_GET_UP)
 	runtime.AudioEvent(469, unit)
 	runtime.SetHealthToMax(unit)
 	unit.ObjFlags &^= object.FlagAllowOverlap | object.FlagShort | object.FlagNoCollide | object.FlagDead

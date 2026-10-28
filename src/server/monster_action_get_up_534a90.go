@@ -10,9 +10,7 @@ func monsterActionGetUp534A90(unit *Object, pop func() int) bool {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) || pop == nil {
 		return false
 	}
-	if unit.UpdateDataMonster().Field120_3 != 0 {
-		pop()
-	}
+	MonsterActionGetUpRaw534A90(unit, func(*Object) uint32 { return uint32(pop()) })
 	return true
 }
 

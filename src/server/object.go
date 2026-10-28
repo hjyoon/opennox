@@ -1567,7 +1567,7 @@ func (s *Server) IsPlant(obj *Object) bool {
 	if obj == nil {
 		return false
 	}
-	return int(obj.TypeInd) == s.Types.CarnivorousPlantID()
+	return UnitIsPlant534A10(obj, s.TypePredicateRuntime534A10()) != 0
 }
 
 func (s *Server) IsMimic(obj *Object) bool {
@@ -1589,7 +1589,7 @@ func (s *Server) IsZombie(obj *Object) bool { // nox_xxx_unitIsZombie_534A40
 	if obj == nil {
 		return false
 	}
-	return int(obj.TypeInd) == s.Types.ZombieID() || int(obj.TypeInd) == s.Types.VileZombieID()
+	return UnitIsZombie534A40(obj, s.TypePredicateRuntime534A10()) != 0
 }
 
 func (obj *Object) IsEnemyTo(obj2 *Object) bool { // nox_xxx_unitIsEnemyTo_5330C0

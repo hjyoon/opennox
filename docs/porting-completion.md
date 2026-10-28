@@ -55,6 +55,59 @@ completion requirements.
 
 ## Current findings
 
+### Native plant/zombie predicates, get-up and resurrection entries
+
+The remaining C entries at 534A10, 534A40, 534A90 and 534AB0 now accept native
+object pointers and forward to Go. Pointer-bearing C callers retain the full
+address. Before the change, all four actual C calls crash in isolated children
+when given C-owned objects above 4 GiB; the same inputs now pass. Explicit
+child success markers distinguish executed probes from empty test selections.
+
+Predicate caches remain independent DWORDs owned by the native server. The
+Zombie cache alone gates initialization of both Zombie and VileZombie, with
+original lookup order and live cache/type reads. General type-ID helpers cannot
+warm this pair. Plant retains its local lookup result. Lookup results keep all
+32 bits when compared with the object's type WORD. Main Go IsPlant/IsZombie
+calls share the same exact bodies and cache owner. Raw get-up reads native update
+data without adding a class gate and retains the original pointer/pop AL byte;
+the action dispatcher keeps its existing handled/not-handled interface.
+
+Resurrection retains the predicate/current-action result and always attempts
+both original pushes before audio, health-to-max and the final live flag mask.
+The Go action path no longer rejects the full-stack case before any effects.
+The common push guard reads the original base-slot DEAD action. One historical
+capacity test keeps its name and exact inputs; complete original execution
+proves a condition push, a failed GET_UP push, later audio/health effects and
+StackChanged. Its expectation now checks that original partial result rather
+than unchanged state. Other existing test expectations remain unchanged.
+
+Four complete original entries seal 245 code bytes with 35 name-string bytes.
+There are 375 conditions covering cache states, full result words, type/cache
+changes at named lookup calls, animation bytes, raw action/pop values, ignored
+push results and late effect mutations. Actual C entries compare whole C-owned
+object, native update and cache frames plus canaries. Type lookup and AI/audio/
+health providers are explicit boundaries for this corpus.
+
+A separate composition executes actual original current-action, pop, push,
+reset and signed condition bodies, sealing 866 code bytes. Its 69 conditions
+cover stack positions, preceding conditions, base-slot DEAD, frame values and
+both get-up/raise paths. All earlier 68 rows remain unchanged when adding the
+exact historical capacity input with its declared IsZombie=true provider.
+The native comparison uses actual Go stack operations and complete C-owned
+records, checking state at audio/health delivery and the final stack/reset
+fields. Debug-name/print sinks, audio and health delivery remain declared world
+services. Initial stack mismatches and the raw-view fixture failure are retained.
+Evidence is preserved in `zombie-entry-native-port`; overall 100% remains unproved.
+
+Final normal evidence contains 247,826 PASS and 16 SKIP, with all prior terminal
+results and multiplicities retained and 452 added passing events. Root and
+legacy passes are reused after a server-only retry for the monitored-creature
+fixture's two cache bindings; its inputs and assertions stay unchanged.
+Focused highres `cgocheck2` plus `checkptr=2` passes all 559 selected events in
+102.168 seconds. Their identities and multiplicities match the same selection
+from normal results. Common object/update layouts, callback registrations,
+AI argument storage and published campaign runner/scenarios remain unchanged.
+
 ### Native pending-collision queue and activation entries
 
 All seven original pending-collision entry points now forward to Go on every
@@ -130,10 +183,13 @@ remain unchanged. The final frame shows the living Wizard and save-complete
 notification. This is a Load, movement, pickup and Save regression; its retained
 Urchin deaths belong to the earlier earned combat product.
 
-Native qualification for `1e0f6fc` is running separately: Windows 386/AMD64
-run `40603633394` and Linux AMD64 server run `40603646667`. Existing runs and
-job handles are retained while in progress. The preceding `43d5b45` products
-and all three native jobs are fully qualified in their preserved record.
+Native qualification for `1e0f6fc` is complete: Windows 386/AMD64 run
+`40603633394` passes all root/server/legacy packages; Linux AMD64 server run
+`40603646667` independently recounts 244,798 PASS and seven SKIP across all
+56 expected packages, plus the three-package default-link damage checks.
+All products, native architecture headers, clean VCS/build metadata, raw
+reports, logs and artifact digests are preserved and qualified. The preceding
+`43d5b45` products and all three native jobs retain their qualified record.
 
 ### Native radial-push callback, arithmetic and live origins
 

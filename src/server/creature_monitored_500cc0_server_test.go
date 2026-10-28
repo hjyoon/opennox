@@ -115,8 +115,8 @@ func TestCreatureIsMonitoredNative500CC0ExactFaultAndDeadGates(t *testing.T) {
 
 func TestNoxCreatureIsMonitored500CC0UsesServerZombiePredicate(t *testing.T) {
 	s := creatureMonitoredTestServer500CC0(t)
-	s.Types.fast.zombie = 0x1234
-	s.Types.fast.zombieVile = 0x1235
+	s.Types.fast.unitIsZombie534A40 = 0x1234
+	s.Types.fast.unitIsVileZombie534A40 = 0x1235
 	owner := new(Object)
 	update := &MonsterUpdateData{StatusFlags: object.MonStatusSummoned}
 	unit := &Object{

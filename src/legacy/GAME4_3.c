@@ -5512,6 +5512,9 @@ LABEL_24:
 }
 
 //----- (0053ADC0) --------------------------------------------------------
+extern nox_object_t* nox_spark_trail_push_native(int kind, nox_object_t* source);
+void nox_xxx_updateSpark_53ADC0(nox_object_t* source) { nox_spark_trail_push_native(0, source); }
+#if 0 // Original PE32 body retained as provenance; typed native entry above.
 void nox_xxx_updateSpark_53ADC0(int a1) {
 	int v1; // eax
 	int v2; // ecx
@@ -5529,8 +5532,11 @@ void nox_xxx_updateSpark_53ADC0(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (0053AEC0) --------------------------------------------------------
+nox_object_t* nox_xxx_updateProjTrail_53AEC0(nox_object_t* source) { return nox_spark_trail_push_native(1, source); }
+#if 0 // Original PE32 body retained as provenance; typed native entry above.
 float* nox_xxx_updateProjTrail_53AEC0(int a1) {
 	float* v1;     // esi
 	int v2;        // eax
@@ -5583,12 +5589,16 @@ float* nox_xxx_updateProjTrail_53AEC0(int a1) {
 	} while (v3 < 4);
 	return result;
 }
+#endif
 
 //----- (0053B030) --------------------------------------------------------
+void nox_xxx_updatePush_53B030(nox_object_t* source) { nox_spark_trail_push_native(2, source); }
+#if 0 // Original PE32 body retained as provenance; typed native entry above.
 void nox_xxx_updatePush_53B030(int a1) {
 	nox_xxx_mapPushUnitsAround_52E040(a1 + 56, **(float**)(a1 + 748), 0, *(float*)(*(uint32_t*)(a1 + 748) + 8), 0, 0,
 									  0);
 }
+#endif
 
 //----- (0053B060) --------------------------------------------------------
 extern unsigned char nox_toggle_trigger_switch_native(int kind,nox_object_t* unit);

@@ -35,7 +35,8 @@ func PushUpdate53B030(source *Object, runtime PushUpdateRuntime53B030) bool {
 	if source == nil || source.UpdateData == nil || runtime.PushUnits == nil {
 		return false
 	}
-	update := (*PushUpdateData53B030)(source.UpdateData)
-	runtime.PushUnits(source.PosVec, update.Radius, 0, update.Force)
+	PushUpdateRaw53B030(source, func(p *types.Pointf, outer, inner, force float32) {
+		runtime.PushUnits(*p, outer, inner, force)
+	})
 	return true
 }

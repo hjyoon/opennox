@@ -181,9 +181,9 @@ int nox_xxx_sendMsgOblivionPickup_53A9C0(nox_object_t* owner, nox_object_t* item
 void sub_53AAB0(nox_object_t* item);
 int nox_xxx_dropWeapon_53AB10(nox_object_t* owner, nox_object_t* item, float2* point);
 char nox_xxx_updateDoor_53AC50(nox_object_t* door);
-void nox_xxx_updateSpark_53ADC0(int a1);
-float* nox_xxx_updateProjTrail_53AEC0(int a1);
-void nox_xxx_updatePush_53B030(int a1);
+void nox_xxx_updateSpark_53ADC0(nox_object_t* source);
+nox_object_t* nox_xxx_updateProjTrail_53AEC0(nox_object_t* source);
+void nox_xxx_updatePush_53B030(nox_object_t* source);
 char nox_xxx_updateToggle_53B060(nox_object_t* unit);
 char nox_xxx_updateTrigger_53B1B0(nox_object_t* unit);
 char sub_53B300(nox_object_t* obj);

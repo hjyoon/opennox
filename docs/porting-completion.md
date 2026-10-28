@@ -55,6 +55,80 @@ completion requirements.
 
 ## Current findings
 
+### Native Blink entries, live callback loads and TeleportWake creation
+
+The exposed Blink create `530310` and update `530380` still used PE32
+record offsets and pointer words despite ordinary duration dispatch already
+intercepting them in Go. Guarded C-owned direct calls above4GiB reproduce
+two defects: create leaves Frame68 at0x87654321 and writes unexpected native
+bytes, while update faults for a native DEAD target. Both now forward to the
+same native Go runtime as ordinary dispatch. The reached `530560` wake helper
+also accepts native pointers; its incidental old return register is excluded
+because every known caller discards it. Three C11 signature assertions cover
+the public ABI. Remaining intercepted teleport C roots retain their original
+low-word assumptions; casting their helper argument does not port those roots.
+
+Original execution also exposes defects in the existing Go Blink bodies.
+Startup control word0x0e3f requires a directed binary64-to-binary32 spill and
+signed-dword FISTP truncation, preserving binary64 balance input until that
+spill. Update reloads the current duration target across destination selection,
+allocation, effects, sounds and teleport. Each sound lookup is repeated while
+its already-pushed target tuple remains fixed. Final attribution reads the
+current Caster16, not Obj12. Wake creation restores the real type cache at
+0x833c00, reads the original live point addresses after allocation, writes
+its native collision destination in order and reads lifetime after CreateAt.
+Serialized and network layouts are unchanged.
+
+The unchanged original create/update/wake roots contain110/470/111 bytes;
+the actual converter adds17. All708 original bytes execute across69 contexts
+(19 create,39 update,11 direct helper) independently at startup0x0e3f and
+nearest control0x023f. Both profiles preserve callee-saved registers, return
+stack, FP control word/TOP and nonoutput heap/global canaries. Twenty-six
+service mutation kinds execute30 times per profile. Mode/buff reads are pure;
+map choices, allocation/placement, effects, sound/audio, teleport and attribution
+are declared external services. A scratch FLD/RET supplies only the balance
+callee return; original spills, conversion and control flow remain unchanged.
+Independent PE mapping verifies every recorded instruction byte against the
+original GAME.EXE SHA256
+`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`.
+The committed startup fixture SHA256 is
+`bdbc6b139d10f6e2d21a658c068805d1a2acb8043ee19d3facfc8b610dad53d3`.
+This proves complete roots under declared services, not transitive callees,
+branch-percentage or full-campaign equivalence. Invalid nil collision data
+retains the existing defensive Go return and is excluded from original inputs.
+
+Before runtime changes, the same reference fixture against byte-identical
+HEAD Go bodies passes17 root controls and fails41: nine conversion results
+match the original nearest control,30 update results differ, and two second
+sound mutations are unreachable because the second lookup is missing.
+After correction all69 original contexts and ten existing Blink terminals
+pass (81 including both reference parents). The old delay fixture adapts its
+return width to binary64, its2.5 case is relabeled startup truncation without
+changing its expectation, and its visible owner fixture initializes Caster16
+as well as Obj12. The new different-source and nil-caster rows independently
+verify the corrected attribution choice. Existing replay inputs are unchanged.
+
+The two original direct C controls pass with their parent. Another actual
+public C helper composition uses the production type reader, native allocator,
+cache and CreateObjectAt with isolated synthetic definitions. Cold-cache and
+warm-cache calls, aliased input points, native owner/pending links, untouched
+input canaries and uint32 lifetime wrap to14 all pass. Its parent contributes
+one terminal, for75 new terminals total. The first composition attempt has a
+wrong memmap import path and fails before compilation; it is retained as an
+invalid setup, with the corrected second attempt supplying evidence.
+
+The sequential complete root/server/legacy normal suite passes272042 with18
+skips in191.318 seconds. The focused highres/cgocheck2/checkptr2 suite passes
+2149 with one x86-only skip in194.950 seconds. Independent raw JSON recounts
+all75 new terminals in both profiles and verifies unchanged runtime inputs.
+No reported poison-macro warning appears. Reference and local evidence is
+under `blink-native-entry-port`, including `original-blink-seals-qualified-v1.json`
+and `local-blink-native-and-original-qualified-v1.json`. The duration inventory
+now contains46 intercepted entries:11 native Go exports, three native C
+forwarders, one constant leaf and31 remaining lexical C candidates. This is
+an inventory, not execution coverage or a measured completion percentage.
+Overall100% remains open.
+
 ### Native Tag callbacks, duration conversion and cached player data
 
 The exposed Tag create `530160`, update `530250` and destroy `530270`

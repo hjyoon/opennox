@@ -98,6 +98,9 @@ type Server interface {
 	SpellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int32) int32
 	Nox_xxx_spellAccept4FD400(spellID spell.ID, a2, obj3, obj4 *server.Object, sa *server.SpellAcceptArg, lvl int) bool
 	SpellDurationCreate4FEBA0(spellID int32, second, third, fourth *server.Object, arg *server.SpellAcceptArg, level int32, create, update, destroy unsafe.Pointer, duration int32) int32
+	SpellBlinkCreate530310(record *server.DurSpell) int32
+	SpellBlinkUpdate530380(record *server.DurSpell) int32
+	SpellTeleportCreateWake530560(target *server.Object, origin, destination *types.Pointf)
 	SpellChainLightningCreate52F820(record *server.DurSpell) int32
 	SpellChainLightningUpdate52F8A0(record *server.DurSpell) int32
 	SpellChainLightningDestroy530100(record *server.DurSpell) uint8

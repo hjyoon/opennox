@@ -117,7 +117,7 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 		return legacy.SpellShieldUpdateNative52F650(record)
 	}
 	if callback == legacy.Get_nox_xxx_spellBlink1_530380() {
-		return server.SpellBlinkUpdate530380(record, sp.blinkRuntime530310())
+		return sp.s.SpellBlinkUpdate530380(record)
 	}
 	if callback == legacy.Get_sub_530D30() {
 		return server.SpellSwapUpdate530D30(record, sp.swapRuntime530CA0())
@@ -206,7 +206,7 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 		return legacy.SpellShieldCreateNative52F5A0(record)
 	}
 	if callback == legacy.Get_nox_xxx_spellBlink2_530310() {
-		return server.SpellBlinkCreate530310(record, sp.blinkRuntime530310())
+		return sp.s.SpellBlinkCreate530310(record)
 	}
 	if callback == legacy.Get_sub_530CA0() {
 		return server.SpellSwapCreate530CA0(record, sp.swapRuntime530CA0())
@@ -265,13 +265,16 @@ func (sp *spellsDuration) blinkRuntime530310() server.SpellBlinkRuntime530310 {
 		CoopMode:  func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
 		Frame:     sp.s.Frame,
 		TickRate:  world.TickRate,
-		TeleportDelay: func(levelIndex uint32) float32 {
-			return float32(sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex))))
+		TeleportDelay: func(levelIndex uint32) float64 {
+			return sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex)))
 		},
 		Waypoint:        world.Nox_xxx_waypoint_579F00,
 		PlayerStart:     sp.s.nox_xxx_mapFindPlayerStart_4F7AB0,
 		RandomReachable: world.RandomReachablePointAround,
 		NewObject:       world.NewObjectByTypeID,
+		WakeType:        memmap.PtrUint32(0x5D4594, 2487916),
+		LookupType:      func(name string) uint32 { return uint32(world.Types.IndByID(name)) },
+		NewTypedObject:  func(kind uint32) *server.Object { return world.NewObjectByTypeInd(int(int32(kind))) },
 		CreateAt: func(object, owner *server.Object, point types.Pointf) {
 			sp.s.CreateObjectAt(object, owner, point)
 		},

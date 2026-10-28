@@ -25,7 +25,7 @@ func TestSpellBlinkCreate530310Modes(t *testing.T) {
 	}{
 		{"quest glyph", true, true, 1, 1, 77, []string{"quest"}},
 		{"arena", false, false, 0, 0, 101, []string{"quest", "coop", "frame"}},
-		{"coop round-to-even", false, true, 0, 0, 102, []string{"quest", "coop", "delay", "frame"}},
+		{"coop startup truncation", false, true, 0, 0, 102, []string{"quest", "coop", "delay", "frame"}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var calls []string
@@ -33,7 +33,7 @@ func TestSpellBlinkCreate530310Modes(t *testing.T) {
 			runtime := SpellBlinkRuntime530310{
 				QuestMode: func() bool { calls = append(calls, "quest"); return tc.quest },
 				CoopMode:  func() bool { calls = append(calls, "coop"); return tc.coop },
-				TeleportDelay: func(level uint32) float32 {
+				TeleportDelay: func(level uint32) float64 {
 					calls = append(calls, "delay")
 					if level != 2 {
 						t.Fatalf("level index = %d", level)
@@ -88,7 +88,7 @@ func TestSpellBlinkUpdate530380VisibleAndNativePointers(t *testing.T) {
 	origin, destination := types.Ptf(123.5, -456.25), types.Ptf(789.5, 234.25)
 	target := &Object{ObjClass: object.ClassPlayer, PosVec: origin, NetCode: 0xdeadbeef}
 	owner := &Object{ObjClass: object.ClassPlayer}
-	record := &DurSpell{Spell: uint32(spell.SPELL_BLINK), Obj12: owner, Target48: target, Frame68: 101}
+	record := &DurSpell{Spell: uint32(spell.SPELL_BLINK), Obj12: owner, Caster16: owner, Target48: target, Frame68: 101}
 	wakeData := &TeleportWakeCollideData{}
 	wake := &Object{CollideData: unsafe.Pointer(wakeData)}
 	var events []string

@@ -68,120 +68,7 @@ extern uint32_t dword_5d4594_2650652;
 extern obj_5D4594_2650668_t** ptr_5D4594_2650668;
 extern unsigned int gameex_flags;
 
-//----- (00530310) --------------------------------------------------------
-int nox_xxx_spellBlink2_530310(uint32_t* a1) {
-	int result; // eax
-	float v2;   // [esp+0h] [ebp-8h]
-
-	if (!nox_common_gameFlags_check_40A5C0(4096) || (result = 1, a1[5] != 1)) {
-		if (nox_common_gameFlags_check_40A5C0(2048)) {
-			v2 = nox_xxx_gamedataGetFloatTable_419D70("TeleportDelay", a1[2] - 1);
-			a1[17] = gameFrame() + nox_float2int(v2);
-			result = 0;
-		} else {
-			result = 0;
-			a1[17] = gameFrame() + 1;
-		}
-	}
-	return result;
-}
-
-//----- (00530380) --------------------------------------------------------
 int nox_xxx_waypoint_579F00(float2* a1, nox_object_t* a2);
-int nox_xxx_spellBlink1_530380(int* a1) {
-	int v1;     // eax
-	int v3;     // eax
-	float2* v4; // ecx
-	int v5;     // eax
-	bool v6;    // zf
-	int v7;     // eax
-	int v8;     // eax
-	int v9;     // [esp-Ch] [ebp-18h]
-	int v10;    // [esp-Ch] [ebp-18h]
-	int v11;    // [esp-8h] [ebp-14h]
-	int v12;    // [esp-4h] [ebp-10h]
-	float2 v13; // [esp+4h] [ebp-8h]
-
-	v1 = a1[12];
-	if (!v1) {
-		return 1;
-	}
-	if (*(uint32_t*)(v1 + 16) & 0x8020) {
-		return 1;
-	}
-	if (a1[17] - 1 != gameFrame()) {
-		return 0;
-	}
-	if (nox_xxx_testUnitBuffs_4FF350(v1, 14)) {
-		nox_xxx_aud_501960(231, a1[12], 0, 0);
-		return 1;
-	}
-	if (nox_common_gameFlags_check_40A5C0(4096) && (v3 = a1[12], *(uint8_t*)(v3 + 8) & 4)) {
-		v4 = *(float2**)(*(uint32_t*)(v3 + 748) + 308);
-		if (v4) {
-			sub_4ED970(60.0, v4 + 7, &v13);
-		} else {
-			nox_xxx_mapFindPlayerStart_4F7AB0(&v13, a1[12]);
-		}
-	} else if (!nox_xxx_waypoint_579F00(&v13, a1[12])) {
-		nox_xxx_mapFindPlayerStart_4F7AB0(&v13, a1[12]);
-	}
-	nox_xxx_spellTeleportCreateWake_530560(a1[12], (int*)(a1[12] + 56), &v13);
-	nox_xxx_netSendPointFx_522FF0(137, (float2*)(a1[12] + 56));
-	v9 = a1[12];
-	v5 = nox_xxx_spellGetAud44_424800(a1[1], 0);
-	nox_xxx_aud_501960(v5, v9, 0, 0);
-	if (!nox_xxx_testUnitBuffs_4FF350(a1[12], 0)) {
-		nox_xxx_netSendPointFx_522FF0(137, (float2*)(a1[12] + 56));
-		nox_xxx_netSendPointFx_522FF0(137, &v13);
-	}
-	nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a1[12], &v13);
-	v6 = !nox_xxx_testUnitBuffs_4FF350(a1[12], 0);
-	v7 = a1[12];
-	if (v6) {
-		nox_xxx_netSendPointFx_522FF0(137, (float2*)(v7 + 56));
-		v12 = 0;
-		v11 = 0;
-		v10 = a1[12];
-	} else {
-		if (!(*(uint8_t*)(v7 + 8) & 4)) {
-			sub_4E7540((nox_object_t*)(uintptr_t)a1[4], (nox_object_t*)(uintptr_t)a1[12]);
-			return 1;
-		}
-		v12 = *(uint32_t*)(v7 + 36);
-		v11 = 2;
-		v10 = a1[12];
-	}
-	v8 = nox_xxx_spellGetAud44_424800(a1[1], 0);
-	nox_xxx_aud_501960(v8, v10, v11, v12);
-	sub_4E7540((nox_object_t*)(uintptr_t)a1[4], (nox_object_t*)(uintptr_t)a1[12]);
-	return 1;
-}
-
-//----- (00530560) --------------------------------------------------------
-uint32_t* nox_xxx_spellTeleportCreateWake_530560(int a1, int* a2, uint32_t* a3) {
-	int v3;           // eax
-	uint32_t* result; // eax
-	uint32_t* v5;     // esi
-	uint32_t* v6;     // eax
-
-	v3 = *getMemU32Ptr(0x5D4594, 2487916);
-	if (!*getMemU32Ptr(0x5D4594, 2487916)) {
-		v3 = nox_xxx_getNameId_4E3AA0("TeleportWake");
-		*getMemU32Ptr(0x5D4594, 2487916) = v3;
-	}
-	result = nox_xxx_newObjectWithTypeInd_4E3450(v3);
-	v5 = result;
-	if (result) {
-		v6 = (uint32_t*)result[175];
-		*v6 = *a3;
-		v6[1] = a3[1];
-		nox_xxx_createAt_4DAA50((int)v5, a1, *(float*)a2, *((float*)a2 + 1));
-		result = (uint32_t*)(gameFrame() + gameFPS());
-		v5[34] = gameFrame() + gameFPS();
-	}
-	return result;
-}
 
 //----- (005305D0) --------------------------------------------------------
 int sub_5305D0(uint32_t* a1) {
@@ -253,7 +140,7 @@ int sub_530650(int* a1) {
 		}
 		v8 = a1[12];
 		v18 = *(float2*)(v8 + 56);
-		nox_xxx_spellTeleportCreateWake_530560(v8, (int*)(v8 + 56), (uint32_t*)(v7 + 56));
+		nox_xxx_spellTeleportCreateWake_530560((void*)(uintptr_t)(uint32_t)v8, (int*)(v8 + 56), (uint32_t*)(v7 + 56));
 		v14 = a1[12];
 		v9 = nox_xxx_spellGetAud44_424800(a1[1], 1);
 		nox_xxx_aud_501960(v9, v14, 0, 0);
@@ -365,7 +252,7 @@ int sub_530880(int* a1) {
 		do {
 			v10 = nox_common_randomInt_415FA0(0, 3);
 		} while (!*(uint32_t*)(v5 + 4 * v10 + 116));
-		nox_xxx_spellTeleportCreateWake_530560(a1[12], (int*)(a1[12] + 56),
+		nox_xxx_spellTeleportCreateWake_530560((void*)(uintptr_t)(uint32_t)a1[12], (int*)(a1[12] + 56),
 											   (uint32_t*)(*(uint32_t*)(v5 + 4 * v10 + 116) + 56));
 		nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a1[12],
 									 (float2*)(uintptr_t)(*(uint32_t*)(v5 + 4 * v10 + 116) + 56));
@@ -419,7 +306,7 @@ int nox_xxx_castTTT_530B70(int* a1) {
 	v7 = a1[12];
 	v4 = nox_xxx_spellGetAud44_424800(a1[1], 0);
 	nox_xxx_aud_501960(v4, v7, 0, 0);
-	nox_xxx_spellTeleportCreateWake_530560(a1[12], (int*)(a1[12] + 56), a1 + 13);
+	nox_xxx_spellTeleportCreateWake_530560((void*)(uintptr_t)(uint32_t)a1[12], (int*)(a1[12] + 56), a1 + 13);
 	nox_xxx_teleportToMB_4E7190((nox_object_t*)(uintptr_t)a1[12], (float2*)(a1 + 13));
 	if (nox_xxx_testUnitBuffs_4FF350(a1[12], 0)) {
 		v6 = a1[12];

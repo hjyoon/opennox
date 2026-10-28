@@ -55,6 +55,90 @@ completion requirements.
 
 ## Current findings
 
+### Wiz02c pressure plate bookcase movement
+
+The reported pressure plate symptom is reproduced on the unchanged stock
+`Wiz02C:Bookcase6A` (extent1974, script1000194601). Its original position is
+(1554,4746); waypoints137/138/139 are (1554,4747), (1566,4759), (1591,4734).
+The first leg is exactly vertical. The mover required both velocity components
+to be nonzero before testing arrival, so it oscillated around waypoint137
+without following the remaining path. GAME.EXE has this same condition;
+this is an intentional bug fix, not a claim of original equivalence for the
+newly repaired trajectories. Arrival now also works for finite motion when
+the stationary coordinate already equals the waypoint. Other trajectories,
+stationary/NaN handling, directed arithmetic, native pointer sidecars and
+serialized records retain their contracts. No map or saved-game asset changes.
+
+The user's number2195 is not equated to extent1974: the supplied stock map
+and earned runtime identify2195 as `CaveRocksPebbles`, and the sampled client
+drawables do not resolve it to the affected bookcase. The confirmed plate
+failure and the general axis-aligned fix are independently established.
+
+Eight native C-owned controller trajectories cover the stock three-waypoint
+path and its axis orientations; fourteen boundary cases cover arrival,
+overshoot, approach, misalignment, zero, NaN and infinity. All24 new terminal
+tests pass, with the existing117 original mover contexts unchanged and passing.
+The controller fixture declares position integration; actual campaign physics
+and rendering are exercised separately. One complete normal root/server/legacy
+run passes270886 tests with17 skips in298.341 seconds. Focused highres,
+cgocheck2/checkptr2 passes955 tests in219.770 seconds. Existing test and original
+fixture bytes remain unchanged.
+
+The clean old binary naturally exits after38.478 seconds with a healthy Save
+but fails the required endpoint: the bookcase keeps X1554 and oscillates near
+Y4747. On the new binary the same frozen inputs reach the exact endpoint, but
+the newly opened road changes the original Urchin's approach/flee route and
+the old combat inputs fail to finish it. That39.111-second failure is retained.
+Two additional ordinary earned Chain Lightning inputs before leaving the road
+retain every outcome requirement. The complete campaign case passes naturally
+in38.639 seconds: original plate disable, mover enable, complete bookcase slide,
+original east Urchin defeat and living manual Save. Independent native parsing
+reads Wiz02c, HP20/20, MP42/78, poison0 and the three original earned spells.
+
+Ordinary menu Load and another manual Save pass in17.891 seconds. Independent
+checks require the exact endpoint, disabled plate and original Urchin HP0/DEAD
+in all three snapshots. An initial reload audit incorrectly expressed constant
+state as a transition, which the existing validator correctly rejects; its
+failure is retained. The corrected audit uses strict constancy checks without
+changing or weakening transition validation. The related Save is additional
+feature evidence and does not replace the furthest campaign lineage. The
+current slide frame is directly viewed. Overall100% remains open.
+
+Source fixes `930355c` and `d43de4d` are pushed to `port/go1.26-multiarch`.
+The one clean Go1.26.9 ARM64 build takes14.145 seconds, SHA256
+`ed1bcb9923cd76d1949b79c3ea634359b9db9ba8ec36d4611b8dbff109c3b64c`,
+with `vcs.modified=false` and none of the five reported poison-macro warnings.
+Detailed inputs, failures, snapshots and proofs are under
+`wiz02c-movable-bookcase-2195`.
+
+### Radial damage C radius representation on Windows/386
+
+Native CI for `8d76520` closes with Windows/amd64 success and Linux/amd64
+success:268287 PASS/7 SKIP across all57 expected packages, plus the three
+default-link damage packages. Windows/386 builds/verifies its product but
+fails two unchanged original C-root comparisons: generated cgo float argument
+copies quiet the signaling-NaN radius `0x7f812345`. The failed job, original
+expected values and both native Windows products remain preserved.
+
+The public C signature now forwards both incoming radius DWORDs through an
+integer-only Go export. The test probe also avoids quieting them before entry;
+on i386 it reproduces raw argument pushes while preserving stack alignment.
+No floating-point control state or oracle expectations change. The actual
+native C-root257-context comparison passes locally. Separately compiled exact
+C shim/probe bodies execute324 i386 machine-code cases with raw radius words,
+stack and callee-saved registers preserved. That check replaces the Go export
+with an integer capture service and is not Windows/MinGW or actual cgo proof.
+The new-source Windows/386, Windows/amd64 and Linux/amd64 jobs remain tracked
+until terminal results and artifacts are qualified.
+
+The unchanged two-variant powder Host E2E also passes on the same new ARM64
+binary in130.809 seconds with natural exit0: player11 then12, monster/NPC15
+each, natural fuses, client HP, untouched outside control, real flames and
+queued explosion audio. Both final frames are directly viewed. Synthetic
+durability/placement are declared; this supplies no campaign completion,
+UI baseline or audible-fidelity credit. All source assets and binary hashes
+remain unchanged. The prior radial proof below retains its original scope.
+
 ### Original radial damage and the native center pointer
 
 The 4E25B0 root and 4E2700 target callback now retain the original directed
@@ -127,8 +211,8 @@ injected. The tall synthetic-HP HUD is not a UI baseline, queued/mock audio
 is not audible fidelity, and no campaign/chapter completion is credited.
 Enumerated source assets, scenario and binary retain their hashes. Detailed
 proofs and all earlier failures are under `map-radial-damage-native-port`.
-New-source native CI is tracked separately. The next explicit user report is
-Wiz02c's movable bookcase, reported object number2195; overall100% remains open.
+Native results and the later pressure plate bookcase correction are recorded
+above; overall100% remains open.
 
 ### Wide-search macro diagnostics during builds
 

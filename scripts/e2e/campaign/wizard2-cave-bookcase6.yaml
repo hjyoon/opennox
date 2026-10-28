@@ -39,6 +39,10 @@ steps:
   - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 1, "count": 20, "name": "ordinary earned A43 original east road Urchin response2"}
   - {"action": "observe-player-target", "name": "read original east road Urchin response2"}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original east road Urchin response2"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 0, "count": 12, "name": "ordinary earned A43 finishes fleeing original Urchin before leaving opened Bookcase6 road 1"}
+  - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 0, "count": 12, "name": "ordinary earned A43 finishes fleeing original Urchin before leaving opened Bookcase6 road 2"}
+  - {"action": "observe-player-target", "name": "read fleeing original Urchin after earned A43"}
+  - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original fleeing Urchin after opened Bookcase6"}
   - {"action": "run-to-world", "x": 1816, "y": 4798, "name": "ordinary original connected central east road2"}
   - {"action": "cast-at-nearest-monster-input", "item": "Urchin", "slot": 1, "count": 20, "name": "ordinary earned A43 original east road Urchin response3"}
   - {"action": "observe-player-target", "name": "read original east road Urchin response3"}

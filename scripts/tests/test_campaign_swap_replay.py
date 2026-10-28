@@ -12,10 +12,11 @@ spec.loader.exec_module(runner)
 
 class NativeSwapEvidenceTests(unittest.TestCase):
     def setUp(self):
-        self.required = [{'player_script_id': 1, 'target_script_id': 2, 'key': 33,
+        self.required = [{'player_script_id': 1, 'target_script_ids': [2, 3], 'key': 33,
                           'player_start': [0, 0], 'minimum_distance': 25, 'tolerance': 4}]
         self.samples = [[{'script_id': 1, 'pos': {'x': 0, 'y': 0}},
-                         {'script_id': 2, 'flags': ['ENABLED'], 'pos': {'x': 60, 'y': 30}}],
+                         {'script_id': 2, 'flags': ['ENABLED'], 'pos': {'x': 60, 'y': 30}},
+                         {'script_id': 3, 'flags': ['ENABLED'], 'pos': {'x': -60, 'y': 30}}],
                         [{'script_id': 1, 'pos': {'x': 42, 'y': 22}}]]
         self.rows = [dict(frame=100, cast_frame=98, player_script_id=1, script_id=2,
                           extent=17, wire=19, key=33, key_queued=True, player=[0, 0], target=[40, 20]),
@@ -87,11 +88,21 @@ class NativeSwapEvidenceTests(unittest.TestCase):
         self.assertTrue(self.check(rows)['passed'])
 
     def test_invalid_suite_constraints_fail_before_launch(self):
-        for change in ({'key': 32}, {'player_script_id': 2}, {'target_script_id': True},
+        for change in ({'key': 32}, {'player_script_id': 2}, {'target_script_ids': [True]}, {'target_script_ids': [2, 2]}, {'target_script_ids': []},
                        {'minimum_distance': 8}, {'tolerance': -1}, {'player_start': [math.nan, 0]}):
             pair = dict(self.required[0], **change)
             with self.subTest(change=change), self.assertRaises(ValueError):
                 runner.validate_suite_fields({'cases': [{'required_swap_pairs': [pair]}]})
+
+    def test_actual_key_may_select_either_declared_original_target(self):
+        samples = copy.deepcopy(self.samples)
+        rows = [dict(row, script_id=3, wire=20, extent=18) for row in self.rows]
+        actual = self.input.replace('wire=0x13', 'wire=0x14').replace('extent=17', 'extent=18').replace('script_id=2', 'script_id=3')
+        result = self.check(rows, samples, actual)
+        self.assertTrue(result['passed'])
+        self.assertEqual(result['pairs'][0]['selected_target_script_id'], 3)
+        rows[1]['script_id'] = 2
+        self.assertFalse(self.check(rows, samples, actual)['passed'])
 
 
 if __name__ == '__main__':

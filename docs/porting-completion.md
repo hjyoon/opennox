@@ -107,9 +107,37 @@ survives a frame. Input decisions and gameplay remain unchanged. The observer
 change passes all39117 root events with15 skips in55.945s and all9 selected
 highres/cgocheck2/checkptr2 controls in109.368s. All earlier Go test sources and
 root result identities/multiplicities remain unchanged. The campaign verifier's
-58 Python checks include reciprocal-exchange negative controls. Passing server/
-legacy results are reused with byte-identical sources. The additional replay
-result is recorded after completion. Overall100% remains unproven.
+58 initial Python checks include reciprocal-exchange negative controls. Passing
+server/legacy results are reused with byte-identical sources.
+
+The observation product at `87091e0` builds cleanly in12.525s: SHA-256
+`acbe934b2aa05597e942a536ac620cdbee03155112bd39498852652c73c1a34a`,
+65408194 bytes. Its first Swap trace proves an exact reciprocal exchange at
+frames656/657 with original spider1000138581; the initial verifier still rejects
+it because it assumed spider1000136506. That second failed report is preserved.
+The ordinary nearest-target input can select either of these two original live
+spiders. Both must initially be alive, the actual queued F input must identify
+the selected one, and the same native identity must perform the exchange.
+Wrong or changing identities still reject the case. Final Python tests pass59.
+
+The same executable and unchanged input route then pass the corrected replay
+in75.444s without another build. Original spider1000136506 and the player
+exchange positions at frames646/647. Final HP20/20 MP78/78, poison0 and living
+manual Save pass, as do all12 parameterless GET observations. Source Save,
+assets, config and binary hashes remain unchanged. Final frames from both
+recovery and Swap are inspected: living Wizard/HUD and save-complete messages
+are visible, with the Swap-cast notification in the Swap frame. These are
+bounded feature replays, with no earlier story route or whole chapter credited.
+All raw failures, products and Saves remain in `spell-flight-native-port`.
+Overall100% remains unproven.
+
+Native `539b304` qualification passes Windows 386/AMD64 run40612787651 and
+Linux AMD64 server run40612803463. All three ZIPs/logs, native product headers
+and clean VCS/toolchain metadata qualify. Linux's raw JSON recounts246619 PASS,
+7 SKIP and all56 expected packages, with default-link damage controls passing.
+The later observation product `87091e0` has its own Windows run40614048258 and
+Linux run40614086768 still in progress. The final verifier-only change leaves
+its compiled Go/C sources unchanged; existing CI runs are retained.
 
 ### Native plant/zombie predicates, get-up and resurrection entries
 

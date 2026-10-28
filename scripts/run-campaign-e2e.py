@@ -56,9 +56,12 @@ def validate_suite_fields(suite):
             if not isinstance(pairs, list) or not pairs:
                 raise ValueError('required_swap_pairs must be a nonempty list')
             for pair in pairs:
-                if (not isinstance(pair, dict) or set(pair) != {'player_script_id', 'target_script_id', 'key', 'tolerance', 'minimum_distance', 'player_start'}
-                        or any(type(pair[k]) is not int or not 0 < pair[k] < 1 << 31 for k in ('player_script_id', 'target_script_id'))
-                        or pair['player_script_id'] == pair['target_script_id'] or type(pair['key']) is not int or pair['key'] != 33
+                if (not isinstance(pair, dict) or set(pair) != {'player_script_id', 'target_script_ids', 'key', 'tolerance', 'minimum_distance', 'player_start'}
+                        or type(pair['player_script_id']) is not int or not 0 < pair['player_script_id'] < 1 << 31
+                        or not isinstance(pair['target_script_ids'], list) or not pair['target_script_ids']
+                        or any(type(v) is not int or not 0 < v < 1 << 31 or v == pair['player_script_id'] for v in pair['target_script_ids'])
+                        or len(set(pair['target_script_ids'])) != len(pair['target_script_ids'])
+                        or type(pair['key']) is not int or pair['key'] != 33
                         or not isinstance(pair['player_start'], list) or len(pair['player_start']) != 2
                         or any(type(v) not in (int, float) or not math.isfinite(v) for v in pair['player_start'])
                         or any(type(pair[k]) not in (int, float) or not math.isfinite(pair[k]) for k in ('tolerance', 'minimum_distance'))
@@ -311,9 +314,12 @@ def required_swap_pairs(samples, log, requirements):
                          r'MONSTER QUICKBAR ACTUAL INPUT: type="[A-Za-z0-9_]+" wire=(0x[0-9a-f]+) extent=(\d+) script_id=(\d+) key=(\d+) key_queued=true\b', log)}
     pairs = []
     for requirement in requirements:
-        player_id, target_id = requirement['player_script_id'], requirement['target_script_id']
-        initial = [o for o in samples[0] if o.get('script_id') == target_id] if samples else []
-        alive = (len(initial) == 1 and not {'DEAD', 'DESTROYED'} & set(initial[0].get('flags') or []))
+        player_id, target_ids = requirement['player_script_id'], requirement['target_script_ids']
+        alive_ids = set()
+        for target_id in target_ids:
+            initial = [o for o in samples[0] if o.get('script_id') == target_id] if samples else []
+            if len(initial) == 1 and not {'DEAD', 'DESTROYED'} & set(initial[0].get('flags') or []):
+                alive_ids.add(target_id)
         initial_player = [o.get('pos') for o in samples[0] if o.get('script_id') == player_id] if samples else []
         initial_point = ([initial_player[0].get('x'), initial_player[0].get('y')]
                          if len(initial_player) == 1 and isinstance(initial_player[0], dict) else None)
@@ -321,7 +327,7 @@ def required_swap_pairs(samples, log, requirements):
         final = [o.get('pos') for o in samples[-1] if o.get('script_id') == player_id] if samples else []
         final_point = ([final[0].get('x'), final[0].get('y')]
                        if len(final) == 1 and isinstance(final[0], dict) else None)
-        rows = [v for v in traces if v['player_script_id'] == player_id and v['script_id'] == target_id
+        rows = [v for v in traces if v['player_script_id'] == player_id and v['script_id'] in alive_ids
                 and v['key'] == requirement['key'] and v['key_queued']]
         exchange = None
         for before, after in zip(rows, rows[1:]):
@@ -336,9 +342,10 @@ def required_swap_pairs(samples, log, requirements):
                     and point(final_point) and math.dist(final_point, after['player']) <= tolerance):
                 exchange = {'before': before, 'after': after}
                 break
-        pairs.append(dict(requirement, initial_target_alive=bool(alive), initial_player_position=initial_point,
+        selected_id = exchange['after']['script_id'] if exchange else None
+        pairs.append(dict(requirement, initial_alive_target_script_ids=sorted(alive_ids), selected_target_script_id=selected_id, initial_player_position=initial_point,
                           initial_player_matches=bool(starts_inside), position_exchange=exchange,
-                          final_player_position=final_point, passed=bool(alive and starts_inside and exchange and not malformed)))
+                          final_player_position=final_point, passed=bool(len(alive_ids) == len(target_ids) and starts_inside and exchange and not malformed)))
     return {'pairs': pairs, 'malformed_position_observation': malformed,
             'passed': bool(pairs) and all(p['passed'] for p in pairs)}
 

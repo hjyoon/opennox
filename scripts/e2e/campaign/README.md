@@ -56,10 +56,16 @@ and that Save. Its native position requirement rejects an uneventful cast or
 a Save that already starts outside the room. The quickbar input observer copies
 both original positions once per frame; the verifier requires the pinned pair
 to exchange positions between adjacent frames after the actual F key input.
-The moving spider has no fixed landing coordinate. Ordinary movement, a change
+Both original eligible spiders,1000136506 and1000138581, must initially be alive.
+The verifier uses the one selected by the actual key input and keeps that
+identity throughout the exchange. A moving spider has no fixed landing
+coordinate. Ordinary movement, a change
 in just one object, missing frames or a different target cannot pass. The route
 has no movement input after Load. This case does not
 certify Magic Missile, later cave combat or the entire chapter.
+
+The normal Swap replay has passed in about75 seconds with HP20/MP78 and a
+manual Save. A verifier or input-route change reuses the same executable.
 
 An input-route edit uses the existing executable and the affected suite.
 For a native gameplay port, run the final normal package checks once, focus

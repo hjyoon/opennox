@@ -55,6 +55,84 @@ completion requirements.
 
 ## Current findings
 
+### Queued quickbar input completion and actual Swap target observation
+
+Source157edbf corrects the retained chained-replay failure without changing
+the native Swap core or the published campaign inputs/checker. Once a key
+is queued, a temporary loss of the nominated target or its death no longer
+ends the requested native observation window. The held key is released once;
+unavailable targets receive no further aiming, and player death/read bounds
+still stop the action. Two unchanged tests fail before and pass after this
+correction, reproducing the premature589 completion versus645 deadline.
+
+A separate read-only diagnostic copies the actual pending Swap115 record,
+caster, target, native ID, creation/trigger frames and positions. It retains
+no native pointers, changes no targeting or game state, and bounds traversal
+and observation time. A guarded C-owned record/object/health fixture above4GiB
+verifies live values and complete byte/canary preservation. Wrong caster or
+spell, stale/future/retired targets and expired windows are rejected. Thirteen
+new terminals pass, with192 current Swap/observer terminals explicitly passing
+both full normal and focused highres/cgocheck2/checkptr2 profiles. Normal
+root/server/legacy passes272234 with18 skips in110.724 seconds; strict passes
+2375 with one x86-only skip in21.349 seconds.
+
+The clean Go1.26.9 darwin/arm64 product is65,640,962 bytes, SHA256
+`52e6c9c9ac566f7dca21fd56082f6995128ec785a7056568beeb802eafb5fa28`.
+Two fresh original earned escapes pass in75.704/75.810 seconds with HP20
+MP78 poison0 manual Saves. Actual Swap duration1 targets the same original
+spider as the queued F input. Creation/trigger frames604/628 and603/627 bind
+the reciprocal observations628→629 and627→628. Cross-position distances are
+0/0 and0/1.359 pixels, within the unchanged12-pixel gate; subsequent motion
+and final positions also pass. Input now ends at645, with manual Save662
+after the exchange. Native duration observations independently confirm both
+pairs. The original two-stage published sequence passes once in97.109 seconds,
+including actual Load, both original spider HP0/DEAD, earned Chain Lightning
+and Lesser Heal, then a living HP20 MP47 poison0 Save (recovery20.757 seconds).
+
+This is not stable full-sequence completion. The second escape passes but
+its recovery leaves one original spider alive. Northern/western approach
+experiments have mixed results, including an unexpired poison failure;
+return-and-wait experiments end in PlayerDeath. All input versions, failed
+reports, saves and raw logs are retained. The experimental YAML/suite edits
+are restored to the original published versions; no resource/death checks
+are weakened. Recovery routing, target availability and environmental combat
+still need actual evidence. The queued-input and actual-duration observation
+gap is resolved separately from these remaining gameplay issues.
+
+The same product passes the unchanged original Bookcase6 plate/waypoint/
+Chain Lightning route in39.728 seconds and actual menu Load/Save in17.634.
+Extent1974/script1000194601 remains exactly at1591,4734, with the original
+plate off, mover on and east Urchin HP0/DEAD. The fresh reload contract is
+captured before execution as HP20 MP43 poison0. Native GET hashes, raw player
+observations and Save lineage are independently rechecked. Actual Swap,
+combat/recovery, bookcase opening and restored-scene frames are inspected.
+Runtime2195 remains unproven as the same stock extent. Evidence resides in
+`swap-input-target-observation/current-product-campaign-qualified-v1.json`.
+
+Windows run40777392457 jobs123130105974/123130106490 pass both uncached full
+root/server/legacy suites; artifacts12855452940/12855044456 match ZIP digests,
+PE machines, clean source157edbf and Go build metadata. Per-test inclusion
+follows nonverbose package success. Linux run40777454428/job123130321009 passes
+269660 tests with7 skips across all58 expected packages (36 pass,22 skip),
+explicitly including all192 current terminals. Its separate default-link
+damage run passes133041 across three packages. Artifact12856312250 matches
+its ZIP digest, ELF machine62 and product SHA256
+`b636f71862949f39c8f2e54909a8e167ca1e187b7f67518b8d95da7baa7f1ba6`.
+All three native jobs/artifacts are closed; original CRLF logs and raw Linux
+JSON/stderr contain none of the five requested poison-macro warnings.
+Documentation and read-only overlays do not redispatch these jobs.
+
+The next external native-entry overlay reproduces a TeleportToTarget update
+`530B70` defect on a valid guarded C-owned DEAD target above4GiB: normal Go
+returns1 with an unchanged timer, while the actual C callback faults at
+0x41380010. This equals float32 bits11.5 from the native Pos.X slot plus16,
+read as the PE32 target's flags address. The raw C stack has callback/PC
+addresses rather than a symbol name; the sealed getter/call fixture identifies
+the callback. Only update executes. Full original-root fidelity and native
+entry porting remain next work. This is one reproduced defect within29 lexical
+candidates, leaving28 other candidates unexecuted; no percentage or ordinary
+campaign crash is inferred. Overall100% remains open.
+
 ### Native Swap entries, live duration links and player bounds
 
 The exposed Swap create `530CA0` and update `530D30` still used a truncated
@@ -194,8 +272,10 @@ jump639→640 toward the other original spider's earlier position, while the
 pinned target continues moving. That other reciprocal position is not
 observed, and the saved point predates the jump. The unchanged pair/mana
 gates reject this result and stop the sequence before recovery consumes it.
-Actual in-flight target observation and the post-input wait remain next
-work; neither successful V3/V4 replay proves a stable full sequence.
+At this historical observer checkpoint, actual in-flight target observation
+and the post-input wait remained next work; source157edbf above supersedes
+that gap. Neither those successful V3/V4 replays nor one newer full pass
+prove stable recovery across every landing.
 
 All core86 native jobs/artifacts are independently closed in
 `swap-native-entry-port/all-native-workflows-qualified-v1.json` and never

@@ -55,6 +55,92 @@ completion requirements.
 
 ## Current findings
 
+### Native TeleportToTarget entries and original callback order
+
+Source `5fe22e0` ports the public TeleportToTarget (126) create `530A30` and update
+`530B70` callbacks to opaque native duration pointers. The previously reproduced
+C update fault at 0x41380010 is fixed; both C entry points now share ordinary
+Go duration dispatch's production runtime. The two obsolete PE32 C roots are
+removed and two C11 signature assertions check the ABI. Serialized records
+and network layouts are unchanged.
+
+The existing Go bodies also needed original-order corrections. The balance
+value stays binary64 until the directed binary32 spill and signed FISTP
+conversion. Creation caches the initial player's update data; tile/string/message
+handling and ray arguments use the original live duration references. Updating
+reloads target/caster links after FX, sound/audio, wake and teleport services.
+Each audio target/code is fixed before its own sound lookup; a visible or
+invisible-player destination performs its second lookup. Wake creation uses
+the already ported production helper with live origin/destination addresses.
+
+The unchanged original create/update roots contain 317/296 bytes; the actual
+ray shim adds 20 and FISTP converter 17, 650 total. Every instruction byte executes
+across 102 contexts per profile (50 create, 52 update), independently at startup
+0x0e3f and nearest control 0x023f. Fifty-seven mutation kinds execute 64 times;
+registers, stack, FP control/TOP and nonoutput heap/global canaries are checked.
+The original fixture, producer and native comparator are sealed before the
+engine changes and remain byte-identical afterward. Before: 46 passing and 56
+failing leaf contexts. After: 102 passing contexts, 103 terminals with the parent.
+Nine conversion contexts distinguish the two FP profiles. Game services are
+declared; this does not claim transitive wake/collision or full campaign
+original-executable equivalence.
+
+Two native public-entry probe terminals and one C composition test bring the
+new total to 106. The composition calls both actual C entries using production
+floor/ray services, allocator, wake cache, movement and spatial index on an
+isolated blank map with a synthetic wake definition. Native owned records,
+objects and collision links are above 4GiB on 64-bit targets, with byte/canary
+checks. Full root/server/legacy passes 272340 with 18 skips in 202.047 seconds;
+focused highres/cgocheck2/checkptr2 passes 2498 with one x86-only skip in 213.486
+seconds. All 106 new terminals pass in both profiles. An initial Go binding
+build failure is retained separately; its bool-returning message sender was
+wrapped to match the void runtime service before these checks.
+
+The clean Go 1.26.9 darwin/arm64 product is 65,641,634 bytes, SHA256
+`d3932f40ca2a416c6763f7c23f1c14d9c8b0a365054a5fe6cfc0be5631769d8b`.
+The unchanged host fixture completes TeleportToTarget movement and its native
+wake, followed by Pop and ToMark through ordinary dispatch; independent C
+entry coverage is the composition above. Current earned plate/Bookcase6
+movement passes in 39.577 seconds and actual menu reload in 17.675 seconds. Stock
+extent 1974/script 1000194601 remains exactly (1591,4734); plate 1000194579 is off,
+mover 1000194585 on and original Urchin 1000194073 HP 0/DEAD. HP 20, MP 74, poison 0
+is captured before reload and preserved. Runtime 2195 is not established as
+the same stock extent. Current screenshots are directly viewed supplements.
+
+The published earned Swap escape passes in 75.830 seconds with HP 20, MP 78, poison 0.
+Actual native duration observations bind the same input target to the 643→644
+exchange, with cross-position distances 0/4.1445 within the unchanged 12-pixel
+gate. Its subsequent recovery fails: HP 14, poison 1 and original spider
+1000136506 alive. The failed report/Save are retained and ineligible as seeds;
+no stable full-sequence or full chapter claim follows from the passing escape.
+Published campaign inputs and the checker are unchanged.
+
+Windows run 40787382179 jobs 123163853918/123163854304 pass both uncached full
+root/server/legacy suites. Artifacts 12861150413/12859774219 match GitHub ZIP
+digests, PE machines and clean source 5fe22e0 build metadata. Windows per-test
+inclusion follows nonverbose package success. Linux run 40787471519/job
+123164159336 passes 269766 with 7 skips across all 58 expected packages
+(36 pass,22 skip), explicitly including all 106 new terminals. Default-link
+damage separately passes 133041 across three packages. Artifact 12860399701
+matches its GitHub ZIP digest, ELF machine 62 and product SHA256
+`84d4d90bba0ac9abdd2c2b4d0e61a065b08b1b9a7d87b671d37895407b7a8635`.
+All three jobs/artifacts are closed in `all-native-workflows-qualified-v1.json`.
+Raw job logs and Linux JSON/stderr contain none of the five requested poison
+macro warnings. Documentation/replay-only changes do not redispatch these jobs.
+
+A current read-only inventory has 46 intercepted slots: 15 exported Go entries,
+three inspected native C forwarding wrappers, one constant leaf and 27 lexical
+PE32 candidates. External overlays now reproduce both Pop entries: creation
+faults at the truncated duration+68, update at the truncated object+16. Valid
+living-source ToMark creation faults at 8, and its wrong-frame update returns 1
+instead of ordinary Go 0. These four reproduced candidates leave 23 others
+unexecuted; counts are not coverage percentages. Their unchanged original
+bodies are disassembled/sealed for the next port, without execution-equivalence
+or fixes claimed. Evidence is under `teleport-target-native-entry-port`,
+especially `local-target-native-qualified-v1.json`,
+`current-product-campaign-qualified-v1.json`, and
+`remaining-duration-entry-inventory-v3.json`. Overall 100% remains open.
+
 ### Queued quickbar input completion and actual Swap target observation
 
 Source157edbf corrects the retained chained-replay failure without changing
@@ -122,16 +208,16 @@ All three native jobs/artifacts are closed; original CRLF logs and raw Linux
 JSON/stderr contain none of the five requested poison-macro warnings.
 Documentation and read-only overlays do not redispatch these jobs.
 
-The next external native-entry overlay reproduces a TeleportToTarget update
+The retained before-port external overlay reproduces a TeleportToTarget update
 `530B70` defect on a valid guarded C-owned DEAD target above4GiB: normal Go
 returns1 with an unchanged timer, while the actual C callback faults at
 0x41380010. This equals float32 bits11.5 from the native Pos.X slot plus16,
 read as the PE32 target's flags address. The raw C stack has callback/PC
 addresses rather than a symbol name; the sealed getter/call fixture identifies
-the callback. Only update executes. Full original-root fidelity and native
-entry porting remain next work. This is one reproduced defect within29 lexical
-candidates, leaving28 other candidates unexecuted; no percentage or ordinary
-campaign crash is inferred. Overall100% remains open.
+the callback. Only update executes in that before probe. Source5fe22e0 above now
+qualifies both original roots and native entries. The29 lexical candidates
+and28 others unexecuted describe that earlier checkpoint, not current coverage;
+no percentage or ordinary campaign crash is inferred. Overall100% remains open.
 
 ### Native Swap entries, live duration links and player bounds
 

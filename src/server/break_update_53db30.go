@@ -8,22 +8,7 @@ func (s *Server) BreakUpdate53DB30(source *Object) {
 	if source == nil {
 		return
 	}
-	switch {
-	case source.Field5&0x2 != 0:
-		if uint32(source.ObjFlags)&0x8000 != 0 {
-			source.UnsetXStatus(0x2)
-			source.SetXStatus(0x4)
-			source.ObjFlags |= 0x40
-			source.Field34 = s.Frame() + breakUpdateDelaySeconds53DB30*s.TickRate()
-		}
-	case source.Field5&0x4 != 0:
-		if s.Frame() > source.Field34 {
-			source.UnsetXStatus(0x4)
-			source.SetXStatus(0x8)
-		}
-	case source.Field5&0x8 != 0:
-		s.Objs.RemoveFromUpdatable(source)
-	}
+	BreakUpdateRaw53DB30(source, s.stateUpdateRuntime53DB30())
 }
 
 // BreakAndRemoveUpdateRuntime53DC30 supplies the deletion service used after
@@ -39,23 +24,11 @@ func (s *Server) BreakAndRemoveUpdate53DC30(source *Object, runtime BreakAndRemo
 	if source == nil {
 		return
 	}
-	switch source.Field5 {
-	case 0x2:
-		if uint32(source.ObjFlags)&0x8000 != 0 {
-			source.UnsetXStatus(0x2)
-			source.SetXStatus(0x4)
-			source.ObjFlags |= 0x40
-			source.Field34 = s.Frame() + breakUpdateDelaySeconds53DB30*s.TickRate()
-		}
-	case 0x4:
-		if s.Frame() > source.Field34 {
-			source.UnsetXStatus(0x4)
-			source.SetXStatus(0x8)
-		}
-	case 0x8:
-		s.Objs.RemoveFromUpdatable(source)
+	h := s.stateUpdateRuntime53DB30()
+	h.DelayedDelete = func(o *Object) {
 		if runtime.DelayedDelete != nil {
-			runtime.DelayedDelete(source)
+			runtime.DelayedDelete(o)
 		}
 	}
+	BreakAndRemoveUpdateRaw53DC30(source, h)
 }

@@ -24,18 +24,12 @@ type arachnaphobiaUpdateDeps53DA60 struct {
 }
 
 func arachnaphobiaUpdateNative53DA60(source *Object, deps arachnaphobiaUpdateDeps53DA60) {
-	ageFrame := deps.frame()
-	if source.Field34 < deps.frame() {
-		spider := deps.newObjectByTypeID("SmallSpider")
-		if spider != nil {
-			deps.createAt(spider, source.ObjOwner, source.PosVec)
-		}
-		source.Field34 = deps.frame() + uint32(deps.randomInt(1, 5))
-		ageFrame = deps.frame()
-	}
-	if ageFrame-source.Field32 > arachnaphobiaLifetimeSeconds53DA60*deps.fps() {
-		deps.delayedDelete(source)
-	}
+	ArachnaphobiaUpdateRaw53DA60(source, ArachnaphobiaRawRuntime53DA60{
+		Frame: deps.frame, FPS: deps.fps,
+		LoadTypeIndex:      func() uint32 { return 1 },
+		NewObjectByTypeInd: func(int32) *Object { return deps.newObjectByTypeID("SmallSpider") },
+		CreateAt:           deps.createAt, RandomInt: deps.randomInt, DelayedDelete: deps.delayedDelete,
+	})
 }
 
 // ArachnaphobiaUpdate53DA60 restores GAME.EXE 0053DA60 without reading the

@@ -6585,6 +6585,9 @@ void nox_xxx_toxicCloudPoison_53D9D0(int a1, int a2) {
 #endif
 
 //----- (0053DA60) --------------------------------------------------------
+extern void nox_state_update_native(int kind, nox_object_t* source);
+void nox_xxx_updateArachnaphobia_53DA60(nox_object_t* source) { nox_state_update_native(0, source); }
+#if 0 // Original PE32 body retained as provenance; native entry above.
 void nox_xxx_updateArachnaphobia_53DA60(int* a1) {
 	int v1;       // eax
 	int v2;       // eax
@@ -6608,6 +6611,7 @@ void nox_xxx_updateArachnaphobia_53DA60(int* a1) {
 		nox_xxx_delayedDeleteObject_4E5CC0((int)a1);
 	}
 }
+#endif
 
 //----- (0053DB00) --------------------------------------------------------
 #if 0 // ABI32 provenance: production registration uses the typed Go callback.
@@ -6619,6 +6623,8 @@ void nox_xxx_updateExpire_53DB00(int a1) {
 #endif
 
 //----- (0053DB30) --------------------------------------------------------
+void nox_xxx_updateBreak_53DB30(nox_object_t* source) { nox_state_update_native(1, source); }
+#if 0 // Original PE32 body retained as provenance; native entry above.
 int* nox_xxx_updateBreak_53DB30(uint32_t* a1) {
 	int* result; // eax
 
@@ -6644,8 +6650,11 @@ int* nox_xxx_updateBreak_53DB30(uint32_t* a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0053DBB0) --------------------------------------------------------
+void nox_xxx_updateOpen_53DBB0(nox_object_t* source) { nox_state_update_native(2, source); }
+#if 0 // Original PE32 body retained as provenance; native entry above.
 int* nox_xxx_updateOpen_53DBB0(uint32_t* a1) {
 	int* result; // eax
 
@@ -6669,8 +6678,11 @@ int* nox_xxx_updateOpen_53DBB0(uint32_t* a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0053DC30) --------------------------------------------------------
+void nox_xxx_updateBreakAndRemove_53DC30(nox_object_t* source) { nox_state_update_native(3, source); }
+#if 0 // Original PE32 body retained as provenance; native entry above.
 void nox_xxx_updateBreakAndRemove_53DC30(uint32_t* a1) {
 	int v1; // eax
 	int v2; // eax
@@ -6699,6 +6711,7 @@ void nox_xxx_updateBreakAndRemove_53DC30(uint32_t* a1) {
 		break;
 	}
 }
+#endif
 
 //----- (0053DCC0) --------------------------------------------------------
 #if 0 // Restored by chakram_update_53dcc0_export.go; retained as ABI32 provenance.

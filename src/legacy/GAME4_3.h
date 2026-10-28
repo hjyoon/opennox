@@ -222,11 +222,11 @@ void nox_xxx_updateToxicCloud_53D850(nox_object_t* cloud);
 void sub_53D8C0(nox_object_t* target, nox_object_t* cloud);
 void nox_xxx_updateSmallToxicCloud_53D960(nox_object_t* cloud);
 void nox_xxx_toxicCloudPoison_53D9D0(nox_object_t* target, nox_object_t* cloud);
-void nox_xxx_updateArachnaphobia_53DA60(int* a1);
+void nox_xxx_updateArachnaphobia_53DA60(nox_object_t* source);
 void nox_xxx_updateExpire_53DB00(int a1);
-int* nox_xxx_updateBreak_53DB30(uint32_t* a1);
-int* nox_xxx_updateOpen_53DBB0(uint32_t* a1);
-void nox_xxx_updateBreakAndRemove_53DC30(uint32_t* a1);
+void nox_xxx_updateBreak_53DB30(nox_object_t* source);
+void nox_xxx_updateOpen_53DBB0(nox_object_t* source);
+void nox_xxx_updateBreakAndRemove_53DC30(nox_object_t* source);
 // GAME.EXE 0053DCC0 is declared by chakram_update_53dcc0.h.
 int nox_xxx_updateFlag_53DDF0(nox_object_t* flag);
 int* nox_xxx_updateTrapDoor_53DE80(uint32_t* a1);

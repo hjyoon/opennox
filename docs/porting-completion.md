@@ -113,6 +113,17 @@ Neither effect is statically placed in the 18 required stock maps; runtime
 creation remains possible. The unchanged short Wizard3 Load/stat/manual-Save
 replay is a general regression check and supplies no live-cloud coverage.
 
+The clean `0f32638` Go 1.26.9 Darwin/ARM64 product builds once in 11.956
+seconds with unmodified VCS metadata: 65,488,306 bytes, SHA-256
+`db0af31ecfb2e3eefe16a8be61baae6e1f3ce814ff0c1cfc045467a7d96c6960`.
+The unchanged Wizard3 stat-audit replay passes on its first launch in 53.791
+seconds. Both observations retain HP33/MP49, maxima32/98, poison0 and exact
+level3 Wizard stat inputs. The living manual Save has its recorded new hash;
+six parameterless GETs and source Save/assets/config/binary checks qualify.
+The final frame shows the living Wizard, HUD and Korean save-complete message.
+There are no unported/fatal log hits. Source-revision native CI is tracked
+separately; this documentation update triggers no rebuild or Linux redispatch.
+
 The preceding Meteor revision's Windows 386, Windows AMD64 and Linux AMD64
 jobs all succeed. Logs, ZIPs and native products are retained and qualified.
 Linux independently recounts 256,656 PASS, seven SKIP and all 56 expected

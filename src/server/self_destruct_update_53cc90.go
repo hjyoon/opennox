@@ -13,7 +13,5 @@ func (s *Server) SelfDestructUpdate53CC90(source *Object, runtime SelfDestructUp
 	if source == nil || runtime.DelayedDelete == nil {
 		return
 	}
-	if s.Frame()-source.Field32 > 2 {
-		runtime.DelayedDelete(source)
-	}
+	LifetimeEffectUpdateRaw53CC90(LifetimeEffectSelfDestruct53CC90, source, LifetimeEffectRuntime53CC90{Frame: s.Frame, DelayedDelete: runtime.DelayedDelete})
 }

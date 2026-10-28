@@ -33,35 +33,11 @@ type telekinesisUpdateDeps53D330 struct {
 }
 
 func telekinesisUpdateNative53D330(source *Object, deps telekinesisUpdateDeps53D330) {
-	owner := source.ObjOwner
-	if owner == nil || owner.UpdateData == nil {
-		deps.delayedDelete(source)
-		return
-	}
-	update := (*PlayerUpdateData)(owner.UpdateData)
-	if uint32(owner.ObjFlags)&telekinesisOwnerStopFlags53D330 != 0 ||
-		deps.frame()-source.Field32 > telekinesisMaximumLifetimeSecs53D330*deps.fps() {
-		snd := deps.spellOffSound(spell.SPELL_TELEKINESIS)
-		deps.audioEvent(snd, owner)
-		deps.delayedDelete(source)
-		// GAME.EXE reloads ObjOwner after delayed deletion instead of reusing
-		// the owner cached at entry.
-		deps.buffOff(source.ObjOwner, ENCHANT_TELEKINESIS)
-		return
-	}
-
-	player := update.Player
-	if player == nil {
-		deps.delayedDelete(source)
-		return
-	}
-	point := types.Ptf(
-		float32(int32(player.CursorVec.X)),
-		float32(int32(player.CursorVec.Y)),
-	)
-	if deps.traceRay(owner.PosVec, point, telekinesisTraceFlags53D330) {
-		deps.move(source, point)
-	}
+	lifetimeTelekinesis53D330(source, LifetimeEffectRuntime53CC90{
+		Frame: deps.frame, FPS: deps.fps, SpellSound: func(id spell.ID, _ int) sound.ID { return deps.spellOffSound(id) }, Audio: deps.audioEvent, DelayedDelete: deps.delayedDelete, BuffOff: deps.buffOff,
+		TraceRay: func(r *types.Rectf, f MapTraceFlags) bool { return deps.traceRay(r.Min, r.Max, f) },
+		Move:     func(o *Object, p *types.Pointf) { deps.move(o, *p) },
+	}, true)
 }
 
 func (s *Server) telekinesisUpdateDeps53D330(runtime TelekinesisUpdateRuntime53D330) telekinesisUpdateDeps53D330 {

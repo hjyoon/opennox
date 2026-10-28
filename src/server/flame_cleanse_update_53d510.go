@@ -22,18 +22,9 @@ func flameCleanseEqual53D510(a, b float32) bool {
 // frame reads bracket the trace callback; age and deadline comparisons are
 // unsigned DWORD operations. None of the native Object pointers are narrowed.
 func flameCleanseUpdate53D510(obj *Object, h flameCleanseUpdateDeps53D510) {
-	if h.frame() >= obj.Field34 {
-		h.delayedDelete(obj)
-		return
-	}
-	from, to := obj.Pos39, obj.PosVec
-	if !h.traceRay(from, to, MapTraceFlags(65)) {
-		h.delayedDelete(obj)
-		return
-	}
-	if h.frame()-obj.Field32 > 3 && flameCleanseEqual53D510(obj.PrevPos.X, obj.PosVec.X) && flameCleanseEqual53D510(obj.PrevPos.Y, obj.PosVec.Y) {
-		h.delayedDelete(obj)
-	}
+	LifetimeEffectUpdateRaw53CC90(LifetimeEffectFlameCleanse53D510, obj, LifetimeEffectRuntime53CC90{
+		Frame: h.frame, DelayedDelete: h.delayedDelete, TraceRay: func(r *types.Rectf, f MapTraceFlags) bool { return h.traceRay(r.Min, r.Max, f) },
+	})
 }
 
 type FlameCleanseUpdateRuntime53D510 struct {

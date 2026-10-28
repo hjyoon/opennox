@@ -28,27 +28,12 @@ type deathBallFragmentUpdateNativeDeps53D220 struct {
 }
 
 func deathBallFragmentUpdateNative53D220(source *Object, deps deathBallFragmentUpdateNativeDeps53D220) {
-	age := deps.frame() - source.Field32
-
-	// GAME.EXE stores the frame delta in a 32-bit int for this first branch.
-	// A creation frame in the future therefore does not apply nearby damage.
-	if int32(age) > deathBallFragmentDamageDelay53D220 {
-		deps.damageUnitsAround(
-			source.PosVec,
-			deathBallFragmentOuterRadius53D220,
-			deathBallFragmentInnerRadius53D220,
-			deathBallFragmentDamage53D220,
-			object.DamageCrush,
-			source,
-			nil,
-		)
-	}
-
-	// gameFPS returns uint32, so the original second comparison promotes the
-	// same delta back to unsigned. Keep both the strict boundary and wraparound.
-	if age > deathBallFragmentLifetime53D220*deps.fps() {
-		deps.delayedDelete(source)
-	}
+	LifetimeEffectUpdateRaw53CC90(LifetimeEffectDeathBallFragment53D220, source, LifetimeEffectRuntime53CC90{
+		Frame: deps.frame, FPS: deps.fps, DelayedDelete: deps.delayedDelete,
+		DamageAround: func(p *types.Pointf, a, b float32, d int, typ object.DamageType, o *Object, x Obj) {
+			deps.damageUnitsAround(*p, a, b, d, typ, o, x)
+		},
+	})
 }
 
 // DeathBallFragmentUpdate53D220 restores GAME.EXE 0053D220 without narrowing

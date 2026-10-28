@@ -18,22 +18,8 @@ type MoonglowUpdateRuntime53D270 struct {
 //
 //go:noinline
 func MoonglowUpdate53D270(visual *Object, runtime MoonglowUpdateRuntime53D270) {
-	owner := visual.ObjOwner
-	if owner == nil {
-		runtime.DelayedDelete(visual)
-		return
-	}
-	if uint8(owner.ObjClass)&4 == 0 {
-		return
-	}
-	if uint8(owner.ObjFlags)&0x20 != 0 || runtime.Frame()-visual.Field32 > 300*runtime.FPS() {
-		runtime.DelayedDelete(visual)
-		runtime.BuffOff(owner, ENCHANT_MOONGLOW)
-		return
-	}
-	player := owner.ControllingPlayer()
-	point := types.Pointf{X: float32(int32(player.CursorVec.X)), Y: float32(int32(player.CursorVec.Y))}
-	if runtime.ValidPosition(point) {
-		runtime.Move(visual, point)
-	}
+	LifetimeEffectUpdateRaw53CC90(LifetimeEffectMoonglow53D270, visual, LifetimeEffectRuntime53CC90{
+		Frame: runtime.Frame, FPS: runtime.FPS, ValidPosition: runtime.ValidPosition, DelayedDelete: runtime.DelayedDelete, BuffOff: runtime.BuffOff,
+		Move: func(o *Object, p *types.Pointf) { runtime.Move(o, *p) },
+	})
 }

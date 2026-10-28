@@ -6194,11 +6194,18 @@ void nox_xxx_waterBarrel_53CC30(float* a1, int a2) {
 #endif
 
 //----- (0053CC90) --------------------------------------------------------
+extern void nox_lifetime_effect_update_native(int kind, nox_object_t* source);
+void nox_xxx_updateSelfDestruct_53CC90(nox_object_t* source) {
+	nox_lifetime_effect_update_native(0, source);
+}
+
+#if 0 // ABI32 provenance; active entry uses a typed native pointer.
 void nox_xxx_updateSelfDestruct_53CC90(int a1) {
 	if ((unsigned int)(gameFrame() - *(uint32_t*)(a1 + 128)) > 2) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (0053CCB0) --------------------------------------------------------
 extern void nox_xxx_updateBlackPowderBurn_53CCB0_go(nox_object_t* source);
@@ -6207,6 +6214,11 @@ void nox_xxx_updateBlackPowderBurn_53CCB0(nox_object_t* source) {
 }
 
 //----- (0053D220) --------------------------------------------------------
+void nox_xxx_updateDeathBallFragment_53D220(nox_object_t* source) {
+	nox_lifetime_effect_update_native(1, source);
+}
+
+#if 0 // ABI32 provenance; active entry uses a typed native pointer.
 void nox_xxx_updateDeathBallFragment_53D220(int a1) {
 	int v1; // esi
 
@@ -6218,8 +6230,14 @@ void nox_xxx_updateDeathBallFragment_53D220(int a1) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (0053D270) --------------------------------------------------------
+void nox_xxx_updateMoonglow_53D270(nox_object_t* source) {
+	nox_lifetime_effect_update_native(2, source);
+}
+
+#if 0 // ABI32 provenance; active entry uses a typed native pointer.
 void nox_xxx_updateMoonglow_53D270(int a1) {
 	int v1;    // eax
 	int v2;    // ecx
@@ -6246,8 +6264,14 @@ void nox_xxx_updateMoonglow_53D270(int a1) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (0053D330) --------------------------------------------------------
+void nox_xxx_updateTelekinesis_53D330(nox_object_t* source) {
+	nox_lifetime_effect_update_native(3, source);
+}
+
+#if 0 // ABI32 provenance; active entry uses a typed native pointer.
 void nox_xxx_updateTelekinesis_53D330(int a1) {
 	int v1;    // eax
 	int v2;    // ecx
@@ -6275,8 +6299,14 @@ void nox_xxx_updateTelekinesis_53D330(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (0053D400) --------------------------------------------------------
+void nox_xxx_updateFist_53D400(nox_object_t* source) {
+	nox_lifetime_effect_update_native(4, source);
+}
+
+#if 0 // ABI32 provenance; active entry uses a typed native pointer.
 void nox_xxx_updateFist_53D400(int a1) {
 	double v1; // st7
 	double v2; // st7
@@ -6308,8 +6338,14 @@ void nox_xxx_updateFist_53D400(int a1) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (0053D510) --------------------------------------------------------
+void nox_xxx_updateFlameCleanse_53D510(nox_object_t* source) {
+	nox_lifetime_effect_update_native(5, source);
+}
+
+#if 0 // ABI32 provenance; active entry uses a typed native pointer.
 void nox_xxx_updateFlameCleanse_53D510(int a1) {
 	float v1;  // ecx
 	float v2;  // eax
@@ -6324,6 +6360,7 @@ void nox_xxx_updateFlameCleanse_53D510(int a1) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	}
 }
+#endif
 
 //----- (0053D5A0) --------------------------------------------------------
 void nox_xxx_updateMeteorShower_53D5A0(float* a2) {

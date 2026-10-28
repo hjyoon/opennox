@@ -1,8 +1,8 @@
 package server
 
 import (
-	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
+	"github.com/opennox/opennox/v1/common/sound"
 )
 
 const (
@@ -35,36 +35,10 @@ type fistUpdateDeps53D400 struct {
 }
 
 func fistUpdateNative53D400(source *Object, deps fistUpdateDeps53D400) {
-	if source.ZVal <= 0 && int32(source.ObjFlags) >= 0 {
-		deps.audioEvent(fistImpactAudio53D400, source)
-		deps.makeScorch(source.PosVec, fistImpactScorch53D400)
-
-		first := types.Ptf(
-			source.PosVec.X+source.Shape.Circle.R,
-			source.PosVec.Y,
-		)
-		source.ObjFlags |= object.FlagMarked
-		deps.sendPointFX(fistImpactPointFX53D400, first)
-
-		second := types.Ptf(
-			source.PosVec.X-source.Shape.Circle.R,
-			source.PosVec.Y,
-		)
-		deps.sendPointFX(fistImpactPointFX53D400, second)
-
-		third := types.Ptf(
-			source.PosVec.X,
-			source.PosVec.Y+source.Shape.Circle.R,
-		)
-		deps.sendPointFX(fistImpactPointFX53D400, third)
-		deps.earthquake(source.PosVec, fistImpactEarthquake53D400)
-	}
-	if source.ZVal >= fistDeleteHeight53D400 && int32(source.ObjFlags) < 0 {
-		deps.delayedDelete(source)
-	}
-	if deps.frame()-source.Field32 > fistMaximumLifetimeSecs53D400*deps.fps() {
-		deps.delayedDelete(source)
-	}
+	LifetimeEffectUpdateRaw53CC90(LifetimeEffectFist53D400, source, LifetimeEffectRuntime53CC90{
+		Frame: deps.frame, FPS: deps.fps, Audio: func(id sound.ID, o *Object) { deps.audioEvent(uint32(id), o) }, DelayedDelete: deps.delayedDelete,
+		Scorch: func(p *types.Pointf, k int) { deps.makeScorch(*p, k) }, PointFX: func(id uint8, p *types.Pointf) { deps.sendPointFX(id, *p) }, Earthquake: func(p *types.Pointf, n int) { deps.earthquake(*p, n) },
+	})
 }
 
 // FistUpdate53D400 restores GAME.EXE 0053D400 without reading a native-width

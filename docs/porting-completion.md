@@ -55,6 +55,66 @@ completion requirements.
 
 ## Current findings
 
+### Native lifetime and effect updates
+
+The six remaining raw C entries for SelfDestruct53CC90,
+DeathBallFragment53D220, Moonglow53D270, Telekinesis53D330, Fist53D400 and
+FlameCleanse53D510 now take native object pointers and share the Go bodies
+with their existing registered callbacks. All six actual C calls with objects
+above 4 GiB fault before the port and pass afterward. The direct dispatcher,
+public guarded preflights, object layouts and shared precision helpers remain.
+
+Complete unchanged original bodies total 897 code bytes. The self-contained
+oracle executes 853 contexts in both actual startup PC53/ToZero and a nearest
+counterfactual, without faults or arithmetic substitutions. The former Go
+bodies differ in 14 final states and 125 service traces, with 728 complete
+controls. Both corrected Go and actual C entries match all 853 actual-mode
+states and traces; the latter also verify complete C-owned native frames and
+canaries. Recreating both original proofs and the committed fixture produces
+identical bytes. Fifteen separate original pointer contexts establish eleven
+required faults and four safe early returns. Full world services, native
+execution of the original game and signaling-NaN fidelity are outside this
+prepared comparison.
+
+The corrections retain signed fragment expiry, PC53/ToZero signed cursor
+conversion, cached update data, live owner reload after deletion, Fist's
+unordered impact comparison and live effect-point spills, and FlameCleanse's
+two frame observations and unordered equality. Exactly one old expected
+value changes: the existing fragment case with frame 10, creation 20 and FPS 30
+must remain alive. The unchanged original's signed JLE at 0053D25C proves
+this; its old unsigned-expiry expectation was incorrect. Its inputs, test
+identity and assertion bodies stay intact. All other 3,755 existing test,
+fixture and E2E files retain their hashes. Other C address sections and the
+original blob data remain byte-identical.
+
+Initial unused-import/test-field build failures and the diagnostic report
+filename collision are preserved. The collision affects report creation in
+the second package; all 853 actual C comparisons already pass in that run.
+Final ordinary and strict checks omit that diagnostic output option.
+
+One final ordinary root/server/legacy run passes 257,447 events with 16 skips
+in 374.055 seconds. Every previous terminal identity, result and multiplicity
+is retained, with 1,731 new PASS events. Only native address suffixes in the
+two established fault-test roots are normalized for that comparison.
+Focused highres/cgocheck2/checkptr2 and direct-dispatch checks pass 2,123
+events in 272.551 seconds. These parent/subtest counts are not feature or
+completion coverage. Unchanged source checks and replay inputs are reused.
+
+Original thing data assigns these callbacks to three breaking-container
+effects, DeathBallFragment, Moonglow, TelekinesisHand and three Fist sizes.
+FlameCleanse's update is assigned dynamically by the existing CleansingFlame
+spell implementation. None of the nine named effects is statically placed
+in the 18 required stock maps; this does not exclude runtime creation.
+The unchanged short Wizard3 Load/stat/manual-Save replay remains a general
+regression check and cannot certify live use of these effects or a chapter.
+
+The preceding Blow revision's Windows 386/AMD64 and Linux AMD64 native jobs
+all finish successfully. Their logs, ZIPs and native products are retained
+and qualified. Linux independently recounts 253,140 PASS and seven SKIP events
+across all 56 expected packages, with three additional passing default-link
+damage package checks. No earlier workflow is restarted. The nine-cell,
+UI/audio/peer/stability completion requirements remain open.
+
 ### Native Blow update and candidate callbacks
 
 The remaining 53C160/53C240 C entries now take typed native object pointers

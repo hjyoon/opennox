@@ -56,7 +56,9 @@ func TestDeathBallFragmentUpdateNative53D220BoundariesAndMixedSignedness(t *test
 		{name: "damage starts strictly after ten", frame: 111, creationFrame: 100, fps: 30, damage: true},
 		{name: "lifetime exact boundary", frame: 160, creationFrame: 100, fps: 30, damage: true},
 		{name: "lifetime expires strictly after boundary", frame: 161, creationFrame: 100, fps: 30, damage: true, deleted: true},
-		{name: "future creation is signed for damage and unsigned for expiry", frame: 10, creationFrame: 20, fps: 30, deleted: true},
+		// Keep the historical case identity and inputs. Complete unchanged
+		// 0053D220 execution proves JLE at0053D25C uses signed expiry too.
+		{name: "future creation is signed for damage and unsigned for expiry", frame: 10, creationFrame: 20, fps: 30, deleted: false},
 	}
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {

@@ -91,7 +91,7 @@ large-circle test input: position170/170 and radius50. Actual startup
 registers cells(1,1),(2,1),(1,2),(2,2); nearest rounding reproduces the former
 expectation. Only two expected cells change in that test. Its input, name,
 part-count, unlinking and empty-bucket assertions remain. Every other prior
-test source, fixture and golden remains unchanged.
+unit-test source, fixture and golden remains unchanged.
 
 One full normal root/server/legacy run and the affected server-only retry
 yield 251,074 PASS and 16 SKIP terminal events. All previous result identities
@@ -100,6 +100,34 @@ run's sole failure is the independently corrected historical cell expectation.
 The passing root/legacy results are reused. Counts include parent tests and
 subtests and do not measure feature coverage. Raw evidence is retained in
 `anti-spell-native-port`; overall100% remains unproven.
+
+Focused highres/cgocheck2/checkptr2 passes all3,860 selected terminal events
+in664.613s including compilation. One clean normal ARM64 product at
+`d5cb288` builds in117.412s, with SHA-256
+`a1afcb635703bfba16268662f7d413db0496ea5d8821c92d28939183b25ac3c9`,
+65426498 bytes and clean Go1.26.9/VCS metadata. Its unchanged recovery E2E
+passes in30.236s with HP26/MP56, all three original pickups and living manual
+Save; all18 parameterless GET observations qualify.
+
+The first Swap E2E correctly rejects a healthy Save with no position exchange.
+The final frame displays the game's clear-LOS refusal: the moving original
+spider leaves visibility before the delayed spell resolves. That failed
+report, frames and Save remain intact. Only the scenario's pre-cast wait
+changes from20 frames to1. The single ordinary F input,60 tracking frames,
+two eligible original identities and reciprocal-exchange assertions remain.
+The same executable then passes the affected Swap case in75.711s, with no
+rebuild or repeated recovery run. Original spider1000136506 and the player
+exchange positions at frames637/638; final HP20/MP78 and living manual Save
+pass. All12 parameterless GET observations qualify. Both final frames are
+inspected, showing living Wizard/HUD and save-complete messages; the Swap
+frame also shows the successful spell and escape from the barred room.
+Source Saves, assets, config and binary hashes remain preserved. These bounded
+replays establish neither a live AntiSpell encounter nor a whole chapter.
+
+Native `d5cb288` Windows run40621760704 passes386 andAMD64. Both ZIPs, native
+PE headers, clean toolchain/VCS metadata and root/server/legacy package logs
+qualify. Linux AMD64 server run40621839602 remains active and is retained;
+its completion and product qualification remain pending.
 
 ### Native spell-flight entry and lifetime/homing arithmetic
 

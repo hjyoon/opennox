@@ -13,7 +13,8 @@ steps:
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint earned Swap source"}
   - {"action": "observe-player-target", "name": "read earned HP20 MP78 before Swap"}
   - {"action": "assert-quickbar-spell", "slot": 3, "spell": 115}
-  - {"action": "wait", "dt": 20}
+  # Start while the moving original spider is still in the clear LOS window.
+  - {"action": "wait", "dt": 1}
   - {"action": "capture-quest-map-audit-frame", "name": "campaign checkpoint original living spider before Swap"}
   - {"action": "cast-at-nearest-monster-input", "dt": 10, "item": "SmallAlbinoSpider", "slot": 4, "count": 60, "name": "ordinary F casts earned Swap115 at original living SmallAlbinoSpider"}
   - {"action": "observe-player-target", "name": "read native actual Swap result"}

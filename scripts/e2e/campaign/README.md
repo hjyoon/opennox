@@ -33,8 +33,8 @@ The subsequent segments have their own seed contracts:
 | `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Southern floor bypass, original BluePotion1940 automatic +50 mana and Meat1939/1938 pickups; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
 | `wizard2-swap-escape.json` | Earned Wiz02b Swap-book save, HP20/MP78, F=Swap115, player at2822.5457,2758.513 | One ordinary F cast at the original moving SmallAlbinoSpider; reciprocal native position exchange in one frame, full resources and living manual Save |
 
-For a short Load, movement, pickup and manual Save regression, use that last
-suite with its earned upper-Urchins checkpoint:
+For a short Load, movement, pickup and manual Save regression, use
+`wizard2-upper-mana-recovery.json` with its earned upper-Urchins checkpoint:
 
 ```sh
 python3 scripts/run-campaign-e2e.py \
@@ -66,6 +66,12 @@ certify Magic Missile, later cave combat or the entire chapter.
 
 The normal Swap replay has passed in about75 seconds with HP20/MP78 and a
 manual Save. A verifier or input-route change reuses the same executable.
+Swap checks line of sight after its spell delay. For this earned checkpoint,
+the scenario begins aiming one frame after the quickbar check so the moving
+spider is still visible when the spell resolves. A retained earlier run with
+a20-frame wait receives the game's clear-LOS refusal and fails the position
+exchange check. The timing adjustment keeps one F cast and the same effect
+assertions; only this suite needs another run with the existing executable.
 
 An input-route edit uses the existing executable and the affected suite.
 For a native gameplay port, run the final normal package checks once, focus

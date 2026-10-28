@@ -55,6 +55,43 @@ completion requirements.
 
 ## Current findings
 
+### Native spell-flight entry and lifetime/homing arithmetic
+
+The remaining 53B940 C entry now accepts a native object pointer and forwards
+to Go on every architecture. Before the change, an actual C-owned object above
+4 GiB crashes through the old integer argument. The same child input now passes
+with an explicit success marker. The registered Go dispatch guard and the
+28-byte/40-byte native update layouts remain unchanged. The raw C entry keeps
+its original required-pointer faults; original nil-object/nil-update execution
+faults at addresses748 and4, respectively.
+
+Complete original spell-flight, signed-float conversion and double-to-float
+bodies seal 471 code bytes, 46 name-string bytes and the eight-byte widened
+binary32 epsilon. There are 681 conditions and 1,362 original executions under
+the actual startup control word and a separate nearest-rounding control.
+The actual startup mode uses PC53/ToZero. Lifetime spills and FISTP conversion,
+the retained wide Y difference, the binary32 distance denominator and both
+force stores now follow those original boundaries without changing host FP
+state. Shared precision helpers remain unchanged.
+
+The former Go body differs in 265 conditions, with 416 passing controls. The
+corrected Go body and actual C entry each match all 681 original startup
+conditions. Tests compare complete native object/update frames and canaries,
+including owner/target/source aliases, destroyed/dead flags, frame wraparound,
+search timing, lifetime edges, quiet nonfinite values and mutations at declared
+balance, flag/search, point-FX and expiry services. Target-search and collision
+bodies remain explicit boundaries for this corpus. No signaling-NaN or complete
+live campaign-path claim follows from these unit results.
+
+The final normal root/server/legacy run passes249195 with16 skips in199.631s.
+All earlier test sources, inputs, assertions, result identities and
+multiplicities remain unchanged; 1369 new passing terminal events are added.
+The initial constant-assertion preparation error, pre-port C crash and numeric
+mismatch logs are retained. Focused highres/cgocheck2/checkptr2 passes1604 in
+103.335s, including creation/casting, collision and shared-force controls.
+One clean product replay is recorded below after completion. Overall100%
+remains unproven.
+
 ### Native plant/zombie predicates, get-up and resurrection entries
 
 The remaining C entries at 534A10, 534A40, 534A90 and 534AB0 now accept native
@@ -118,10 +155,12 @@ binary hashes remain unchanged. The final frame shows the living Wizard and
 save-complete notification. This replay covers Load, movement, pickup and Save;
 its two retained Urchin deaths belong to the earlier earned combat product.
 
-Native qualification for `413a00f` is running separately: Windows 386/AMD64
-run `40610120766` and Linux AMD64 server run `40610127260`. Existing runs and
-job handles are retained while in progress. The preceding `1e0f6fc` products
-and all three native jobs are fully qualified in their preserved record.
+Native qualification for `413a00f` passes separately: Windows 386/AMD64 run
+`40610120766` and Linux AMD64 server run `40610127260`. All three product ZIPs,
+job logs, native machine headers and clean Go/VCS build metadata qualify.
+Linux's raw JSON independently recounts245250 PASS/7 SKIP across all56 expected
+packages, and the default-link damage controls pass. The preceding `1e0f6fc`
+products and all three native jobs remain fully qualified in their own record.
 
 ### Native pending-collision queue and activation entries
 

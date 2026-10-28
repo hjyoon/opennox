@@ -194,7 +194,7 @@ void nox_xxx_elevatorAud_53B490(nox_object_t* unit, int upward);
 void nox_xxx_updateElevator_53B5D0(nox_object_t* unit);
 void nox_xxx_elevatorFn_53B750(nox_object_t* candidate, nox_object_t* elevator);
 void nox_xxx_updatePhantomPlayer_53B860(nox_object_t* source);
-void nox_xxx_spellFlyUpdate_53B940(int a1);
+void nox_xxx_spellFlyUpdate_53B940(nox_object_t* a1);
 void nox_xxx_updateAntiSpellProj_53BB00(int a1);
 void sub_53BD10(int a1, int a2);
 int nox_xxx_updateMagicMissile_53BDA0(int a1);

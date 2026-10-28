@@ -5789,82 +5789,9 @@ void nox_xxx_updateLifetime_53B8F0(int unit) {
 #endif
 
 //----- (0053B940) --------------------------------------------------------
-void sub_4E71F0(nox_object_t* a1);
-void nox_xxx_spellFlyUpdate_53B940(int a1) {
-	int v1;     // edi
-	int* v2;    // esi
-	double v3;  // st7
-	int v4;     // eax
-	int v5;     // eax
-	int v6;     // eax
-	int v7;     // eax
-	int v8;     // eax
-	int v9;     // esi
-	double v10; // st7
-	double v11; // st7
-	double v12; // st6
-	double v13; // st7
-	double v14; // st6
-	float v15;  // [esp+4h] [ebp-10h]
-	int v16;    // [esp+4h] [ebp-10h]
-	float v17;  // [esp+10h] [ebp-4h]
-	float v18;  // [esp+18h] [ebp+4h]
-
-	v1 = a1;
-	v2 = *(int**)(a1 + 748);
-	if (v2[1]) {
-		v3 = nox_xxx_gamedataGetFloat_419D40("TargetedSpellLifetime");
-	} else {
-		v3 = nox_xxx_gamedataGetFloat_419D40("UnTargetedSpellLifetime");
-	}
-	v15 = v3;
-	if (gameFrame() - *(uint32_t*)(a1 + 128) <= (unsigned int)nox_float2int(v15)) {
-		if (*v2 && *(uint8_t*)(*v2 + 16) & 0x20) {
-			*v2 = 0;
-		}
-		v4 = v2[2];
-		if (v4 && *(uint8_t*)(v4 + 16) & 0x20) {
-			v2[2] = 0;
-		}
-		v5 = v2[1];
-		if (v5) {
-			v6 = *(uint32_t*)(v5 + 16);
-			if (v6 & 0x20 || (v6 & 0x8000) != 0) {
-				v2[1] = 0;
-			}
-		}
-		if (!v2[1]) {
-			v7 = *(uint32_t*)(a1 + 136);
-			if ((unsigned int)(gameFrame() - v7) > (int)gameFPS() >> 2 || v7 == *(uint32_t*)(a1 + 128)) {
-				v16 = *v2;
-				v8 = nox_xxx_spellFlags_424A70(v2[3]);
-				v2[1] = nox_xxx_spellFlySearchTarget_540610(0, a1, v8, 600.0, 0, v16);
-				*(uint32_t*)(a1 + 136) = gameFrame();
-			}
-		}
-		v9 = v2[1];
-		if (v9) {
-			v18 = *(float*)(v9 + 56) - *(float*)(a1 + 56);
-			v10 = *(float*)(v9 + 60) - *(float*)(v1 + 60);
-			v17 = v10;
-			v11 = nox_double2float(sqrt(v10 * v17 + v18 * v18) + *(double*)&qword_581450_10176);
-			v12 = v18 * *(float*)(v1 + 544);
-			*(uint32_t*)(v1 + 112) = 1063675494;
-			*(float*)(v1 + 88) = v12 / v11;
-			*(float*)(v1 + 92) = v17 * *(float*)(v1 + 544) / v11;
-		} else {
-			v13 = nox_double2float(
-				sqrt(*(float*)(a1 + 80) * *(float*)(a1 + 80) + *(float*)(a1 + 84) * *(float*)(a1 + 84)) +
-				*(double*)&qword_581450_10176);
-			v14 = *(float*)(a1 + 544) * *(float*)(a1 + 80);
-			*(uint32_t*)(a1 + 112) = 1063675494;
-			*(float*)(a1 + 88) = v14 / v13;
-			*(float*)(a1 + 92) = *(float*)(a1 + 544) * *(float*)(a1 + 84) / v13;
-		}
-	} else {
-		nox_xxx_netSendPointFx_522FF0(150, (float2*)(a1 + 56));
-		sub_4E71F0(a1);
-	}
+extern void nox_spell_fly_update_native_53B940(nox_object_t* missile);
+void nox_xxx_spellFlyUpdate_53B940(nox_object_t* missile) {
+ nox_spell_fly_update_native_53B940(missile);
 }
 
 //----- (0053BB00) --------------------------------------------------------

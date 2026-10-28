@@ -24,19 +24,28 @@ func SpellProjectileUpdate53B940(missile *Object, runtime SpellProjectileUpdateR
 	if missile == nil || missile.UpdateData == nil {
 		return
 	}
-	update := missile.UpdateDataSpellProjectile()
+	spellProjectileUpdate53B940(missile, missile.UpdateDataSpellProjectile(), runtime)
+}
+
+// SpellProjectileUpdateRaw53B940 retains the original C entry's required
+// object/update pointers. The registered Go dispatcher keeps its nil guard.
+func SpellProjectileUpdateRaw53B940(missile *Object, runtime SpellProjectileUpdateRuntime53B940) {
+	spellProjectileUpdate53B940(missile, (*SpellProjectileUpdateData)(missile.UpdateData), runtime)
+}
+
+func spellProjectileUpdate53B940(missile *Object, update *SpellProjectileUpdateData, runtime SpellProjectileUpdateRuntime53B940) {
 	lifetimeKey := "UnTargetedSpellLifetime"
 	if update.Target != nil {
 		lifetimeKey = "TargetedSpellLifetime"
 	}
-	lifetime := float32(runtime.Lifetime(lifetimeKey))
-	// nox_float2int uses x87 FISTP with round-to-nearest-even. An invalid
-	// conversion yields INT32_MIN, which the original comparison casts to u32.
+	// GAME.EXE spills the balance double to binary32, then FISTP uses the
+	// gameplay PC53/ToZero control word. Do not alter the host FP environment.
+	lifetime := experienceSpill32TowardZero(runtime.Lifetime(lifetimeKey))
 	var lifetimeFrames int32
 	if math.IsNaN(float64(lifetime)) || lifetime >= 2147483648 || lifetime < -2147483648 {
 		lifetimeFrames = math.MinInt32
 	} else {
-		lifetimeFrames = int32(math.RoundToEven(float64(lifetime)))
+		lifetimeFrames = int32(lifetime)
 	}
 	frame := runtime.Frame()
 	if frame-missile.Field32 > uint32(lifetimeFrames) {
@@ -59,16 +68,23 @@ func SpellProjectileUpdate53B940(missile *Object, runtime SpellProjectileUpdateR
 		missile.Field34 = runtime.Frame()
 	}
 
-	var delta types.Pointf
+	var dx, dy float32
+	var square float64
 	if update.Target != nil {
-		delta = update.Target.PosVec.Sub(missile.PosVec)
+		dx = experienceSpill32TowardZero(objectForceSub53_52DF80(float64(update.Target.PosVec.X), objectForceMemory32_52DF80(missile.PosVec.X)))
+		dyWide := objectForceSub53_52DF80(float64(update.Target.PosVec.Y), objectForceMemory32_52DF80(missile.PosVec.Y))
+		dy = experienceSpill32TowardZero(dyWide)
+		// FST at 0053BA52 retains the unspilled Y difference for FMUL;
+		// X and the second Y operand have already been spilled to binary32.
+		square = objectForceAdd53_52DF80(objectForceMul53_52DF80(dyWide, float64(dy)), objectForceMul53_52DF80(float64(dx), float64(dx)))
 	} else {
-		delta = missile.VelVec
+		dx, dy = missile.VelVec.X, missile.VelVec.Y
+		square = objectForceAdd53_52DF80(objectForceMul53_52DF80(float64(dy), float64(dy)), objectForceMul53_52DF80(float64(dx), float64(dx)))
 	}
-	distance := math.Hypot(float64(delta.X), float64(delta.Y)) + 0.10000000149011612
+	// The qword at 00583C10 is widened binary32 0.1. The complete sum is
+	// passed through the actual double-to-float helper before both divisions.
+	distance := experienceSpill32TowardZero(objectForceAdd53_52DF80(monsterMoveForceSqrtChop53_50D50C(square), 0.10000000149011612))
 	missile.Float28 = math.Float32frombits(1063675494)
-	missile.ForceVec = types.Ptf(
-		float32(float64(delta.X)*float64(missile.SpeedCur)/distance),
-		float32(float64(delta.Y)*float64(missile.SpeedCur)/distance),
-	)
+	missile.ForceVec.X = experienceSpill32TowardZero(objectForceDiv53_52DF80(objectForceMul53_52DF80(float64(dx), objectForceMemory32_52DF80(missile.SpeedCur)), float64(distance)))
+	missile.ForceVec.Y = experienceSpill32TowardZero(objectForceDiv53_52DF80(objectForceMul53_52DF80(float64(dy), objectForceMemory32_52DF80(missile.SpeedCur)), float64(distance)))
 }

@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "name": "Wizard2 earned Swap escape through the barred room",
+  "seed_contract": "Earned Wiz02b Swap-book manual Save, Wizard HP20/MP78 at2822.5457,2758.513, learned Swap115 in quickbar F. Original SmallAlbinoSpider1000136506 is alive outside the barred room. The current earned source is the normal Swap-book separated-input checkpoint.",
+  "coverage": "Original Solo Load, restored earned Swap115, one ordinary F cast at an original moving spider, native player position change across the barred room and a living manual Save. No later story objective or complete chapter is certified.",
+  "cases": [
+    {
+      "name": "wizard2-swap-escape",
+      "scenario": "wizard2-swap-escape.yaml",
+      "expected_maps": ["wiz02b"],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 150,
+      "expected_maximum_health": 20,
+      "expected_maximum_mana": 78,
+      "minimum_health": 20,
+      "minimum_mana": 78,
+      "required_checkpoints": ["earned Swap source", "actual Swap escape", "Swap escape manual Save"],
+      "required_position_transitions": [
+        {
+          "script_id": 1000000001,
+          "before": {"x": 2822.5457, "y": 2758.513},
+          "after": {"x": 2837.709, "y": 2670.5703},
+          "tolerance": 24
+        }
+      ]
+    }
+  ]
+}

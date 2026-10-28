@@ -31,6 +31,7 @@ The subsequent segments have their own seed contracts:
 | `video-book-save-load-smoke.json` | Healthy book-recovery save, HP26/MP88 | Fresh Load, retained book and spell bindings, original road99 movement and full-resource manual Save; no new enemy objective |
 | `wizard2-upper-urchins.json` | Healthy book-recovery save, HP26/MP88 | Original Urchins2363/2364, retained book, HP26/poison0 manual Save; the qualified run ends at MP2 and needs normal recovery before further spell-heavy combat |
 | `wizard2-upper-mana-recovery.json` | Upper-Urchins save, HP26/MP2, book1 | Southern floor bypass, original BluePotion1940 automatic +50 mana and Meat1939/1938 pickups; retained book, poison0 and manual Save with HP at least20 and MP at least52 |
+| `wizard2-swap-escape.json` | Earned Wiz02b Swap-book save, HP20/MP78, F=Swap115, player at2822.5457,2758.513 | One ordinary F cast at the original moving SmallAlbinoSpider; player position across the barred room, full resources and living manual Save |
 
 For a short Load, movement, pickup and manual Save regression, use that last
 suite with its earned upper-Urchins checkpoint:
@@ -48,6 +49,13 @@ This segment has taken about 30 seconds on the ARM64 validation machine. It
 checks the listed outcomes automatically and preserves evidence on failure.
 It does not exercise every enemy, an obelisk interaction or an entire chapter.
 Use the suite that exercises the changed behavior for gameplay coverage.
+
+The Swap case uses its own earlier earned checkpoint, before the barred-room
+escape. Run it with `--suite scripts/e2e/campaign/wizard2-swap-escape.json`
+and that Save. Its native position requirement rejects an uneventful cast or
+a Save that already starts outside the room. The route has no movement input
+after Load; the spell must produce the position change. This case does not
+certify Magic Missile, later cave combat or the entire chapter.
 
 An input-route edit uses the existing executable and the affected suite.
 For a native gameplay port, run the final normal package checks once, focus

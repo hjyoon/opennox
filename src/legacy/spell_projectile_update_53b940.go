@@ -1,5 +1,10 @@
 package legacy
 
+/*
+#include "defs.h"
+*/
+import "C"
+
 import (
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/spell"
@@ -7,12 +12,9 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-func spellProjectileUpdateCall53B940(missile *server.Object) {
-	if missile == nil || missile.UpdateData == nil {
-		return
-	}
+var spellProjectileUpdateRuntime53B940 = func() server.SpellProjectileUpdateRuntime53B940 {
 	world := GetServer().S()
-	server.SpellProjectileUpdate53B940(missile, server.SpellProjectileUpdateRuntime53B940{
+	return server.SpellProjectileUpdateRuntime53B940{
 		Frame:    world.Frame,
 		TickRate: world.TickRate,
 		Lifetime: world.Balance.Float,
@@ -24,5 +26,17 @@ func spellProjectileUpdateCall53B940(missile *server.Object) {
 			world.Nox_xxx_netSendPointFx_522FF0(netmsg.Op(150), pos)
 		},
 		Expire: Sub_4E71F0,
-	})
+	}
+}
+
+func spellProjectileUpdateCall53B940(missile *server.Object) {
+	if missile == nil || missile.UpdateData == nil {
+		return
+	}
+	server.SpellProjectileUpdate53B940(missile, spellProjectileUpdateRuntime53B940())
+}
+
+//export nox_spell_fly_update_native_53B940
+func nox_spell_fly_update_native_53B940(missile *nox_object_t) {
+	server.SpellProjectileUpdateRaw53B940(asObjectS(missile), spellProjectileUpdateRuntime53B940())
 }

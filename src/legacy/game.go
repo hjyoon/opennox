@@ -58,6 +58,7 @@ import "C"
 import (
 	"context"
 	"image"
+	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -263,8 +264,9 @@ func nox_xxx_gameSetWallsDamage_4E25A0(v_cgo int32) {
 	Nox_xxx_gameSetWallsDamage_4E25A0(v)
 }
 
-//export nox_xxx_mapDamageUnitsAround_4E25B0
-func nox_xxx_mapDamageUnitsAround_4E25B0(a1 *C.float, a2, a3 C.float, a4_cgo, a5_cgo int32, a6, a7 *nox_object_t) {
+//export nox_xxx_mapDamageUnitsAroundBits_4E25B0
+func nox_xxx_mapDamageUnitsAroundBits_4E25B0(a1 *C.float, outerBits, innerBits C.uint32_t, a4_cgo, a5_cgo int32, a6, a7 *nox_object_t) {
+	a2, a3 := math.Float32frombits(uint32(outerBits)), math.Float32frombits(uint32(innerBits))
 	outer := GetServer()
 	center := (*types.Pointf)(unsafe.Pointer(a1))
 	if native, ok := outer.(interface {

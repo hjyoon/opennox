@@ -6463,6 +6463,13 @@ void nox_xxx_meteorExplode_53D6E0(int a6) {
 #endif
 
 //----- (0053D850) --------------------------------------------------------
+extern void nox_toxic_cloud_root_native(int small, nox_object_t* cloud);
+extern void nox_toxic_cloud_target_native(int small, nox_object_t* target, nox_object_t* cloud);
+void nox_xxx_updateToxicCloud_53D850(nox_object_t* cloud) {
+	nox_toxic_cloud_root_native(0, cloud);
+}
+
+#if 0 // ABI32 provenance; active entry uses typed native pointers.
 void nox_xxx_updateToxicCloud_53D850(int a1) {
 	uint32_t* v1; // esi
 
@@ -6479,7 +6486,14 @@ void nox_xxx_updateToxicCloud_53D850(int a1) {
 	}
 }
 
+#endif
+
 //----- (0053D8C0) --------------------------------------------------------
+void sub_53D8C0(nox_object_t* target, nox_object_t* cloud) {
+	nox_toxic_cloud_target_native(0, target, cloud);
+}
+
+#if 0 // ABI32 provenance; active entry uses typed native pointers.
 void sub_53D8C0(int a1, int a2) {
 	float v2;  // edx
 	float v3;  // eax
@@ -6509,7 +6523,14 @@ void sub_53D8C0(int a1, int a2) {
 	}
 }
 
+#endif
+
 //----- (0053D960) --------------------------------------------------------
+void nox_xxx_updateSmallToxicCloud_53D960(nox_object_t* cloud) {
+	nox_toxic_cloud_root_native(1, cloud);
+}
+
+#if 0 // ABI32 provenance; active entry uses typed native pointers.
 void nox_xxx_updateSmallToxicCloud_53D960(int a1) {
 	uint32_t* v1; // esi
 
@@ -6526,7 +6547,14 @@ void nox_xxx_updateSmallToxicCloud_53D960(int a1) {
 	}
 }
 
+#endif
+
 //----- (0053D9D0) --------------------------------------------------------
+void nox_xxx_toxicCloudPoison_53D9D0(nox_object_t* target, nox_object_t* cloud) {
+	nox_toxic_cloud_target_native(1, target, cloud);
+}
+
+#if 0 // ABI32 provenance; active entry uses typed native pointers.
 void nox_xxx_toxicCloudPoison_53D9D0(int a1, int a2) {
 	float v2;  // edx
 	float v3;  // eax
@@ -6553,6 +6581,8 @@ void nox_xxx_toxicCloudPoison_53D9D0(int a1, int a2) {
 		}
 	}
 }
+
+#endif
 
 //----- (0053DA60) --------------------------------------------------------
 void nox_xxx_updateArachnaphobia_53DA60(int* a1) {

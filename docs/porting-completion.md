@@ -55,6 +55,70 @@ completion requirements.
 
 ## Current findings
 
+### Native ToxicCloud roots and target callbacks
+
+The four remaining 53D850/53D8C0/53D960/53D9D0 C entries now take typed native
+cloud and target pointers. Each isolated pre-port C call with an object above
+4 GiB faults before the port. The new entries share the Go root/target bodies
+with the existing registered updates. Public nil preflights and guarded
+damage dispatch remain intact; raw entries retain their required callback.
+Only these four C address sections and their declarations change.
+
+Roots pass the live cloud-position pointer to enumeration, retain the entry
+duration-record pointer through every callback, and read the clock after the
+delay random call. DWORD deadlines and wrapping decrement preserve the
+original zero/overflow boundaries. Targets retain the low-byte class gate,
+full-DWORD trace/enemy tests, normal-cloud random damage and small-cloud zero
+damage. Each damage-function pointer is read after owner lookup. Damage's
+return value does not suppress the second owner lookup, enemy test or poison.
+The raw native damage adapter preserves a missing indirect-call fault; the
+existing public registry's nil guard is unchanged.
+
+All 507 bytes of the four complete unchanged original bodies execute across
+952 prepared contexts. Circle cases execute their original target callbacks
+as well as the original root. There are no faults or arithmetic/conversion
+substitutions. These bodies copy point words and perform integer operations;
+their actual startup control word is retained without a redundant rounding
+counterfactual. Former Go operations already match 950 complete controls.
+The two raw-adapter differences are center-pointer alias writes, which the
+old value-based service shape cannot expose. Corrected Go and actual C each
+match all 952 original states and service traces. C checks also preserve
+entire native object/data/callback frames, canaries and the center alias.
+Sixteen separate pointer contexts match twelve required faults, four safe
+gates and their fault-visible service prefixes and state. The self-contained
+producer regenerates both fixtures and proofs byte for byte.
+
+A further actual C-root/native-registry test makes two damage calls with
+objects above 4 GiB. The first handler replaces the owner and damage function;
+the second uses both live replacements. Both handlers return false while
+the caller still performs four owner reads and two poison calls. A delay
+callback changes the clock before the final deadline store. The default raw
+nil-callback fault is independently checked. No existing test input, expected
+value, assertion, fixture, E2E file or golden changes: all 3,773 retain their
+baseline hashes. Layouts, production registration, blob data, shared helpers
+and the old TestMain remain. The new C-test qualifier build failure is kept;
+the corrected C comparison is included in the single full normal run.
+
+One ordinary root/server/legacy run passes 261,162 events with 16 skips in
+287.042 seconds. All previous terminal identities, results and multiplicities
+remain, with 1,930 added PASS events; only high address suffixes in the two
+established fault-test roots are normalized. Focused highres/cgocheck2/
+checkptr2 and direct-dispatch checks pass 2,382 in 116.869 seconds. These
+parent/subtest counts are not feature or completion coverage. Original-world
+enumeration, tracing, damage and poison bodies are declared services here;
+their full composition and live campaign effects are separate requirements.
+
+Original thing data assigns these roots to ToxicCloud and SmallToxicCloud.
+Neither effect is statically placed in the 18 required stock maps; runtime
+creation remains possible. The unchanged short Wizard3 Load/stat/manual-Save
+replay is a general regression check and supplies no live-cloud coverage.
+
+The preceding Meteor revision's Windows 386, Windows AMD64 and Linux AMD64
+jobs all succeed. Logs, ZIPs and native products are retained and qualified.
+Linux independently recounts 256,656 PASS, seven SKIP and all 56 expected
+packages, plus three passing default-link damage package checks. No earlier
+workflow is restarted. Nine-cell/UI/audio/peer/stability completion remains.
+
 ### Native Meteor shower and impact updates
 
 The remaining 53D5A0 shower and 53D6E0 impact C entries now take native

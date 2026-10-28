@@ -1,6 +1,8 @@
 package server
 
 import (
+	"unsafe"
+
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
 )
@@ -34,52 +36,36 @@ type toxicCloudUpdateDeps53D850 struct {
 	delayedDelete   func(*Object)
 }
 
-func toxicCloudAffectTarget53D8C0(
-	target, cloud *Object,
-	randomDamage bool,
-	deps toxicCloudUpdateDeps53D850,
-) {
-	if uint8(target.ObjClass)&0x6 == 0 {
-		return
-	}
-	if !deps.traceRay(cloud.PosVec, target.PosVec, MapTraceFlags(5)) {
-		return
-	}
-	damage := int32(0)
-	if randomDamage {
-		damage = int32(deps.randomInt(toxicCloudDamageMinimum53D8C0, toxicCloudDamageMaximum53D8C0))
-	}
-	owner := deps.findOwnerPlayer(cloud)
-	deps.damage(target, owner, cloud, damage, object.DamagePoison)
-	owner = deps.findOwnerPlayer(cloud)
-	if deps.isEnemy(owner, target) {
-		deps.activatePoison(target, 1, 1)
+func toxicCloudNativeRuntime53D850(deps toxicCloudUpdateDeps53D850) ToxicCloudRawRuntime53D850 {
+	return ToxicCloudRawRuntime53D850{
+		Frame: deps.frame, RandomInt: deps.randomInt,
+		EachInCircle: func(p *types.Pointf, r float32, visit func(*Object)) {
+			deps.eachInCircle(*p, r, func(o *Object) bool { visit(o); return true })
+		},
+		TraceRay: func(r *types.Rectf, flags MapTraceFlags) int32 {
+			if deps.traceRay(r.Min, r.Max, flags) {
+				return 1
+			}
+			return 0
+		},
+		FindOwnerPlayer: deps.findOwnerPlayer,
+		Damage:          func(_ unsafe.Pointer, t, s, w *Object, d int32, typ object.DamageType) { deps.damage(t, s, w, d, typ) },
+		IsEnemy: func(a, b *Object) int32 {
+			if deps.isEnemy(a, b) {
+				return 1
+			}
+			return 0
+		},
+		ActivatePoison: deps.activatePoison, DelayedDelete: deps.delayedDelete,
 	}
 }
 
-func toxicCloudUpdateNative53D850(
-	cloud *Object,
-	radius float32,
-	randomDamage bool,
-	deps toxicCloudUpdateDeps53D850,
-) {
-	frame := deps.frame()
-	nextEffectFrame := cloud.Field34
-	data := (*ToxicCloudUpdateData)(cloud.UpdateData)
-	if nextEffectFrame < frame {
-		deps.eachInCircle(cloud.PosVec, radius, func(target *Object) bool {
-			toxicCloudAffectTarget53D8C0(target, cloud, randomDamage, deps)
-			return true
-		})
-		delay := deps.randomInt(toxicCloudDelayMinimum53D850, toxicCloudDelayMaximum53D850)
-		cloud.Field34 = deps.frame() + uint32(delay)
-	}
-	if data.Duration != 0 {
-		data.Duration--
-	}
-	if data.Duration == 0 {
-		deps.delayedDelete(cloud)
-	}
+func toxicCloudAffectTarget53D8C0(target, cloud *Object, randomDamage bool, deps toxicCloudUpdateDeps53D850) {
+	ToxicCloudAffectTargetRaw53D8C0(target, cloud, !randomDamage, toxicCloudNativeRuntime53D850(deps))
+}
+
+func toxicCloudUpdateNative53D850(cloud *Object, radius float32, randomDamage bool, deps toxicCloudUpdateDeps53D850) {
+	toxicCloudUpdateRaw53D850(cloud, radius, !randomDamage, toxicCloudNativeRuntime53D850(deps))
 }
 
 func (s *Server) toxicCloudUpdateDeps53D850(runtime ToxicCloudUpdateRuntime53D850) toxicCloudUpdateDeps53D850 {

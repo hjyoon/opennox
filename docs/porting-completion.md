@@ -55,6 +55,81 @@ completion requirements.
 
 ## Current findings
 
+### Original radial damage and the native center pointer
+
+The 4E25B0 root and 4E2700 target callback now retain the original directed
+rectangle/distance/falloff operations, extended outer-distance comparison,
+binary32 spill, signed-DWORD wall-grid conversion and qword-low damage
+conversion. Radius selection preserves unordered comparisons. The C bridge
+passes the live center pointer into the actual engine; the existing Go value
+API retains its value contract. Target callbacks reload the shared source-hit
+flag and live context after trace/damage services. Wall damage receives the
+original unswapped radius, ordered grid bounds and live center at its call
+boundary, then the shared flag resets. The native context is transient and
+changes no serialized object/map/save record. Wall-scan internals remain an
+existing declared service, including their separate value adapter.
+
+Complete unchanged original root/target/setter/conversion code executes all
+602 bytes across 497 contexts, each also run under separate nearest control,
+with zero arithmetic/conversion substitutions. Go matches all 497 contexts;
+actual C-root calls match all 257 root contexts. Ten required faults and
+complete native object/center/context frames and canaries are retained.
+Every synthetic enumerator now gets a unique code address, and all 994
+executions verify their actual original callback prefixes. An initial reused
+stub exposed stale Unicorn translation and false missing/extra enumeration;
+its wrong receipts and failed comparisons remain archived. Production code
+was not changed to reproduce those harness artifacts. Corrected actual,
+nearest and instruction receipts each regenerate byte for byte. These
+callers declare enumeration, trace, object damage and walls as services and
+do not establish full original-world composition.
+
+Twelve additional checks run the actual native map index, ray test, damage
+registry, typed C capture and empty-wall engine path through both Go APIs and
+the C export. An unchanged archived old Go body, with only its method name
+distinguished, reproduces five mismatches through that same native setup:
+near-inner-boundary damage96 instead of original95, and a copied C center
+hitting a second target after the source moved. The new path matches the
+original. The capture is explicitly registered as a known native callback;
+unknown PE32 damage functions remain rejected.
+
+The existing powder Host E2E also exposed a stale verifier on the **old**
+`ea52c8b` binary: actual player damage11 was incorrectly expected as12.
+A separate seeded original armor/carry prefix executes 301 bytes across
+240 scalar contexts in both control modes, with no arithmetic replacement.
+This is a seeded prefix, not a full damage-entry proof. It independently
+supports the observer's PC53/ToZero spills/conversion and four corrected
+expectation tuples (eight scalar values) in two old tests; nearest control
+reproduces the old expectations. All other 3,822 old tests, fixtures, E2E
+inputs and goldens remain unchanged. All previous terminal identities,
+results and multiplicities remain. The verifier uses independent finite
+`math/big` arithmetic, never production damage helpers or injected HP.
+
+Latest validated components contain 270,862 normal PASS/17 SKIP and 1,023
+focused highres/cgocheck2/checkptr2 PASS. These combine the one frozen
+root/server/legacy normal run (222.038 seconds) and parallel strict run
+(222.866 seconds) with only root-package refreshes for the later observer
+correction (56.123/18.504 seconds). Whole server/legacy suites are not
+repeated for that verifier-only correction. There are 1,010 new PASS;
+parent/subtest counts do not measure feature completion.
+
+The clean `8d76520` Go 1.26.9 Darwin/ARM64 product builds once in 13.271
+seconds with unmodified VCS metadata: 65,583,234 bytes, SHA-256
+`3da36d5e633812cc754df6d79d9ebd4519dca2d5adf25055c245231bc62785cb`.
+The unchanged two-variant powder Host script passes on its first new-product
+launch in 130.693 seconds with ordinary time and natural exit. Actual
+player/monster/NPC hits are 11/15/15, then 12/15/15; client HP/HUD updates,
+untouched outside-radius HP2000, natural five/four-tick fuses, one queued
+explosion sound each and four real flames each are verified. Separate
+original-prefix receipts confirm the observed player's retained carry and
+11-then-12 sequence. Both frames are directly viewed. Synthetic placement,
+durable HP and waiting AI are declared; damage, packets and pixels are not
+injected. The tall synthetic-HP HUD is not a UI baseline, queued/mock audio
+is not audible fidelity, and no campaign/chapter completion is credited.
+Enumerated source assets, scenario and binary retain their hashes. Detailed
+proofs and all earlier failures are under `map-radial-damage-native-port`.
+New-source native CI is tracked separately. The next explicit user report is
+Wiz02c's movable bookcase, reported object number2195; overall100% remains open.
+
 ### Wide-search macro diagnostics during builds
 
 The reported `wcschr`, `wcspbrk`, `wcsrchr`, `wcsstr` and `wmemchr`
@@ -118,8 +193,13 @@ final frame is directly viewed and shows the living Wizard, HUD, quickbar
 and Korean save-complete text. Source saves/assets/configuration/binary are
 unchanged. This generic cleared-cellar branch earns no combat, live raw-C
 callback, chapter or furthest-storyline credit. Detailed evidence is under
-`monster-die-native-port` in the preserved validation workspace. The new
-source's native CI is tracked separately; overall 100% remains unproven.
+`monster-die-native-port` in the preserved validation workspace. All three
+`ea52c8b` Windows AMD64/386 and Linux AMD64 jobs subsequently succeed.
+Retained products/logs are independently qualified; Linux recounts 267,277
+PASS, seven SKIP, all 56 expected packages and three default-link damage
+checks. Raw JSON passes all 550 new Go and all 550 new actual-C caller leaves.
+Those closed workflows are preserved under the subsequent radial validation
+workspace's `prior-native-workflows-qualified-v1.json`. Overall100% remains open.
 
 ### Native Sentry list, scan and ray transmission
 

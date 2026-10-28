@@ -108,6 +108,21 @@ Focused highres `cgocheck2` plus `checkptr=2` passes all 559 selected events in
 from normal results. Common object/update layouts, callback registrations,
 AI argument storage and published campaign runner/scenarios remain unchanged.
 
+The clean normal ARM64 GUI product at `413a00f` builds in 12.245 seconds:
+SHA-256 `e70fd23a342fb4fb8fdfd2d84cce946970883e1d0ff5805fdea3e798bd5de35b`,
+65,407,538 bytes, Go 1.26.9 and `vcs.modified=false`. The unchanged input-only
+recovery suite passes in 30.240 seconds with living HP26/26, MP56/88, poison0,
+a retained book, all three original resource pickups and a manual Save.
+All 18 parameterless GET observations qualify, and source Save/data/config/
+binary hashes remain unchanged. The final frame shows the living Wizard and
+save-complete notification. This replay covers Load, movement, pickup and Save;
+its two retained Urchin deaths belong to the earlier earned combat product.
+
+Native qualification for `413a00f` is running separately: Windows 386/AMD64
+run `40610120766` and Linux AMD64 server run `40610127260`. Existing runs and
+job handles are retained while in progress. The preceding `1e0f6fc` products
+and all three native jobs are fully qualified in their preserved record.
+
 ### Native pending-collision queue and activation entries
 
 All seven original pending-collision entry points now forward to Go on every

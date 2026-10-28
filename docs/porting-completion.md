@@ -55,6 +55,77 @@ completion requirements.
 
 ## Current findings
 
+### Native Meteor shower and impact updates
+
+The remaining 53D5A0 shower and 53D6E0 impact C entries now take native
+object pointers and forward to the same Go bodies used by the registered
+callbacks. The original shower entry reads a waiting native object's fields
+at ABI32 offsets and wrongly reaches random generation; the impact entry
+truncates the native pointer and faults. Both isolated calls now retain their
+waiting/airborne behavior and every native frame byte. Public nil preflights,
+callback identities, direct dispatch, layouts and shared precision helpers
+remain unchanged. Only these two C address sections and their declarations
+change.
+
+The shower caches its original damage-record pointer before random services,
+keeps PC53/ToZero square/product/spill boundaries and all 512 original vector
+words, and uses only the trace result's low byte. CreateAt retains the
+pre-trace destination independently of writes to the trace rectangle. The
+next deadline reads the live clock after the delay random call. Registered
+radius generation now uses the already original-validated 416030 logic-stream
+helper rather than generic FloatClamp.
+
+Impact accepts the original unordered height comparison, caches the record
+pointer without prematurely copying damage, and retains live source-position
+pointers through world effects. Unit damage and later wall damage reload the
+cached record's value separately. Four explicit binary32 bounds precede the
+actual-mode integer conversions. The raw signed rectangle retains its Min/Max
+order; its value adapter avoids the older C export's rectangle normalization.
+World-service bodies remain outside this prepared comparison.
+
+Complete unchanged shower, impact and 419A70 conversion routines total 704
+code bytes. The oracle executes 884 contexts in actual startup PC53/ToZero
+and a separate nearest counterfactual: 1,768 executions without faults or
+arithmetic/conversion substitutions. Former Go output differs in 518 contexts
+and service traces in 560, retaining 324 complete controls. Corrected Go and
+actual C entries each match all 884 actual-mode states and traces. The C
+comparison additionally verifies entire C-owned object/data frames, canaries
+and live position aliases. Ten original pointer contexts establish six
+required faults and four safe controls. Native table checks use unchanged
+production bytes, restore the previous table afterward and retain TestMain.
+The self-contained generator reproduces both fixtures and proofs byte for
+byte. Full original-game execution, complete world services and signaling
+NaNs are not inferred from these prepared checks.
+
+One existing test file has three original-derived expectation corrections.
+The unchanged NaN source now requires the measured audio/scorch/quake/
+allocation/parent prefix followed by its nil-record fault. Original FISTP
+with the unchanged 1.5 and -1.5 inputs yields 1 and -1 in the actual startup
+mode. Historical test identities and input values remain. All other old
+tests, fixtures, E2E inputs, blob data and golden files retain their hashes;
+the initial failures remain recorded.
+
+One final ordinary root/server/legacy pass records 259,232 PASS events and
+16 skips in 359.586 seconds. All previous terminal identities, results and
+multiplicities remain, with 1,785 added PASS events. Only high native-address
+suffixes in the two established fault-test roots are normalized. Focused
+highres/cgocheck2/checkptr2, original radius-generator and direct-dispatch
+checks pass 1,981 events in 139.587 seconds. Parent/subtest counts do not
+measure feature coverage. Passing source checks are reused for documentation.
+
+Original thing data names MeteorShower and Meteor for these callbacks.
+Static placement, dynamic creation and live campaign use are distinguished
+in the retained inventory; the short unchanged Wizard3 Load/stat/manual-Save
+replay supplies general regression evidence only. No artificial campaign
+spawn, complete-chapter or overall 100% credit follows from this port.
+
+The preceding lifetime/effect revision's Windows 386, Windows AMD64 and
+Linux AMD64 jobs all complete successfully. Their logs, artifact ZIPs and
+native products are retained and qualified. Linux independently recounts
+254,871 PASS and seven SKIP events across all 56 expected packages, plus
+three passing default-link damage package checks. Existing workflows are
+not restarted. The nine-cell/UI/audio/peer/stability requirements remain.
+
 ### Native lifetime and effect updates
 
 The six remaining raw C entries for SelfDestruct53CC90,

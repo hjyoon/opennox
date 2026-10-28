@@ -254,6 +254,62 @@ func TestMeteorUpdateNative53D6E0AirborneAndNaNDoNothing(t *testing.T) {
 		delayedDelete:     func(*Object) { t.Fatal("airborne meteor was deleted") },
 	}
 	for _, height := range []float32{1, float32(math.NaN())} {
+		if math.IsNaN(float64(height)) {
+			// Retain the historical test identity and input. Complete original
+			// execution proves C0|C3 accepts NaN, then the nil damage record
+			// faults only after audio/scorch/quake/allocation/parent services.
+			source := &Object{ZVal: height}
+			var events []string
+			var recovered any
+			func() {
+				defer func() { recovered = recover() }()
+				meteorUpdateNative53D6E0(source, meteorUpdateDeps53D6E0{
+					audioEvent: func(id uint32, got *Object) {
+						if id != 87 || got != source {
+							t.Fatal("NaN impact audio arguments")
+						}
+						events = append(events, "audio")
+					},
+					makeScorch: func(p types.Pointf, k int) {
+						if p != (types.Pointf{}) || k != 2 {
+							t.Fatal("NaN scorch arguments")
+						}
+						events = append(events, "scorch")
+					},
+					earthquake: func(p types.Pointf, k int) {
+						if p != (types.Pointf{}) || k != 10 {
+							t.Fatal("NaN quake arguments")
+						}
+						events = append(events, "quake")
+					},
+					newObjectByTypeID: func(name string) *Object {
+						if name != "MeteorExplode" {
+							t.Fatal("NaN allocation type")
+						}
+						events = append(events, "new")
+						return nil
+					},
+					findParentChainPlayer: func(got *Object) *Object {
+						if got != source {
+							t.Fatal("NaN parent source")
+						}
+						events = append(events, "parent")
+						return nil
+					},
+					damageSource: func() bool { t.Fatal("nil record reached damage flag"); return false },
+					damageUnitsAround: func(types.Pointf, float32, float32, int, object.DamageType, *Object, Obj, bool) {
+						t.Fatal("nil record reached unit damage")
+					},
+				})
+			}()
+			if _, ok := recovered.(interface{ RuntimeError() }); !ok {
+				t.Fatalf("NaN nil-record fault = %v", recovered)
+			}
+			if got := fmt.Sprint(events); got != "[audio scorch quake new parent]" {
+				t.Fatalf("NaN original fault prefix = %s", got)
+			}
+			continue
+		}
 		meteorUpdateNative53D6E0(&Object{ZVal: height}, runtime)
 	}
 }
@@ -264,8 +320,10 @@ func TestMeteorFloatToInt53D6E0(t *testing.T) {
 		want  int32
 	}{
 		{0.5, 0},
-		{1.5, 2},
-		{-1.5, -2},
+		// Actual original startup FISTP uses ToZero, as measured with these
+		// exact unchanged inputs; the former nearest-mode results were wrong.
+		{1.5, 1},
+		{-1.5, -1},
 		{float32(math.NaN()), math.MinInt32},
 		{float32(math.Inf(1)), math.MinInt32},
 		{float32(math.Inf(-1)), math.MinInt32},

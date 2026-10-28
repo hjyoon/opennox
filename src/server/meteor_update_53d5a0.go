@@ -2,7 +2,6 @@ package server
 
 import (
 	"image"
-	"math"
 	"unsafe"
 
 	"github.com/opennox/libs/object"
@@ -70,33 +69,23 @@ type meteorShowerUpdateDeps53D5A0 struct {
 }
 
 func meteorShowerUpdateNative53D5A0(source *Object, deps meteorShowerUpdateDeps53D5A0) {
-	if deps.frame()-source.Field32 >= meteorShowerLifetimeSeconds53D5A0*deps.fps() {
-		deps.delayedDelete(source)
-		return
-	}
-	if source.Field34 > deps.frame() {
-		return
-	}
-
-	direction := byte(deps.randomInt(0, 255))
-	radius := deps.randomFloat(meteorShowerRadiusMinimum53D5A0, meteorShowerRadiusMaximum53D5A0)
-	radius *= radius
-	cosine, sine := SinCosDir(direction)
-	destination := types.Ptf(
-		float32(float64(source.PosVec.X)+radius*float64(cosine)),
-		float32(float64(source.PosVec.Y)+radius*float64(sine)),
-	)
-	if deps.traceRay(source.PosVec, destination) {
-		meteor := deps.newObjectByTypeID(meteorShowerProjectileTypeID53D5A0)
-		if meteor != nil {
-			meteor.UpdateDataMeteor().Damage = source.UpdateDataMeteor().Damage
-			deps.createAt(meteor, source, destination)
-			meteor.Field5 |= meteorFallingXStatus53D5A0
-			deps.raise(meteor, meteorSpawnHeight53D5A0)
-			meteor.Field27 = meteorSpawnVelocity53D5A0
-		}
-	}
-	source.Field34 = deps.frame() + uint32(deps.randomInt(meteorShowerDelayMinimum53D5A0, meteorShowerDelayMaximum53D5A0))
+	MeteorShowerUpdateRaw53D5A0(source, MeteorShowerRawRuntime53D5A0{
+		Frame: deps.frame, FPS: deps.fps, RandomInt: deps.randomInt, RandomFloat: deps.randomFloat,
+		DirectionFloat: func(index int32) float32 {
+			cosine, sine := SinCosDir(byte(index >> 1))
+			if index&1 == 0 {
+				return cosine
+			}
+			return sine
+		},
+		TraceRay: func(r *types.Rectf, _ *Object) int32 {
+			if deps.traceRay(r.Min, r.Max) {
+				return 1
+			}
+			return 0
+		},
+		NewObjectByTypeID: deps.newObjectByTypeID, CreateAt: deps.createAt, Raise: deps.raise, DelayedDelete: deps.delayedDelete,
+	})
 }
 
 // MeteorShowerUpdate53D5A0 restores GAME.EXE 0053D5A0 without passing the
@@ -147,53 +136,21 @@ type meteorUpdateDeps53D6E0 struct {
 }
 
 func meteorFloatToInt53D6E0(value float32) int32 {
-	if math.IsNaN(float64(value)) || value >= 2147483648 || value < -2147483648 {
-		return math.MinInt32
-	}
-	return int32(math.RoundToEven(float64(value)))
+	return netFXTruncateSignedDWORD419A70(value)
 }
 
 func meteorUpdateNative53D6E0(source *Object, deps meteorUpdateDeps53D6E0) {
-	// The original x87 comparison does not enter the impact path for NaN.
-	if !(source.ZVal <= 0) {
-		return
-	}
-
-	damage := int(source.UpdateDataMeteor().Damage)
-	position := source.PosVec
-	deps.audioEvent(meteorImpactAudio53D6E0, source)
-	deps.makeScorch(position, meteorImpactScorch53D6E0)
-	deps.earthquake(position, meteorImpactEarthquake53D6E0)
-	if explosion := deps.newObjectByTypeID(meteorImpactExplosionTypeID53D6E0); explosion != nil {
-		deps.createAt(explosion, nil, position)
-	}
-
-	player := deps.findParentChainPlayer(source)
-	deps.damageUnitsAround(
-		position,
-		meteorImpactOuterRadius53D6E0,
-		meteorImpactInnerRadius53D6E0,
-		damage,
-		meteorImpactDamageType53D6E0,
-		player,
-		nil,
-		deps.damageSource(),
-	)
-	rect := image.Rect(
-		int(meteorFloatToInt53D6E0(position.X-meteorImpactOuterRadius53D6E0)/meteorImpactWallGridStep53D6E0),
-		int(meteorFloatToInt53D6E0(position.Y-meteorImpactOuterRadius53D6E0)/meteorImpactWallGridStep53D6E0),
-		int(meteorFloatToInt53D6E0(position.X+meteorImpactOuterRadius53D6E0)/meteorImpactWallGridStep53D6E0),
-		int(meteorFloatToInt53D6E0(position.Y+meteorImpactOuterRadius53D6E0)/meteorImpactWallGridStep53D6E0),
-	)
-	deps.damageWalls(
-		rect,
-		position,
-		meteorImpactOuterRadius53D6E0,
-		damage,
-		meteorImpactDamageType53D6E0,
-		source,
-	)
-	deps.delayedDelete(source)
+	MeteorUpdateRaw53D6E0(source, MeteorRawRuntime53D6E0{
+		AudioEvent: deps.audioEvent, MakeScorch: func(p *types.Pointf, k int) { deps.makeScorch(*p, k) }, Earthquake: func(p *types.Pointf, k int) { deps.earthquake(*p, k) },
+		NewObjectByTypeID: deps.newObjectByTypeID, CreateAt: deps.createAt, FindParentChainPlayer: deps.findParentChainPlayer,
+		DamageUnitsAround: func(p *types.Pointf, a, b float32, d int, typ object.DamageType, o *Object, x Obj) {
+			deps.damageUnitsAround(*p, a, b, d, typ, o, x, deps.damageSource())
+		},
+		DamageWalls: func(r image.Rectangle, p *types.Pointf, a float32, d int, typ object.DamageType, o *Object) {
+			deps.damageWalls(r, *p, a, d, typ, o)
+		},
+		DelayedDelete: deps.delayedDelete,
+	})
 }
 
 // MeteorUpdate53D6E0 restores GAME.EXE 0053D6E0 without reading the native

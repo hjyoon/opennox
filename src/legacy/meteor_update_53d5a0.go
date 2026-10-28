@@ -16,7 +16,7 @@ func meteorShowerUpdateNative53D5A0(source *server.Object) {
 	world.MeteorShowerUpdate53D5A0(source, server.MeteorShowerUpdateRuntime53D5A0{
 		RandomInt: world.Rand.Logic.IntClamp,
 		RandomFloat: func(minimum, maximum float64) float64 {
-			return world.Rand.Logic.FloatClamp(minimum, maximum)
+			return world.RandomFloat416030(float32(minimum), float32(maximum))
 		},
 		TraceRay:          world.MapTraceRay9,
 		NewObjectByTypeID: world.NewObjectByTypeID,

@@ -6363,6 +6363,12 @@ void nox_xxx_updateFlameCleanse_53D510(int a1) {
 #endif
 
 //----- (0053D5A0) --------------------------------------------------------
+extern void nox_meteor_update_native(int kind, nox_object_t* source);
+void nox_xxx_updateMeteorShower_53D5A0(nox_object_t* source) {
+	nox_meteor_update_native(0, source);
+}
+
+#if 0 // ABI32 provenance; active entry uses a typed native pointer.
 void nox_xxx_updateMeteorShower_53D5A0(float* a2) {
 	uint32_t* v1; // ebx
 	int v2;       // edi
@@ -6410,7 +6416,14 @@ void nox_xxx_updateMeteorShower_53D5A0(float* a2) {
 	}
 }
 
+#endif
+
 //----- (0053D6E0) --------------------------------------------------------
+void nox_xxx_meteorExplode_53D6E0(nox_object_t* source) {
+	nox_meteor_update_native(1, source);
+}
+
+#if 0 // ABI32 provenance; active entry uses a typed native pointer.
 void nox_xxx_meteorExplode_53D6E0(int a6) {
 	int* v1;      // ebx
 	float* v2;    // edi
@@ -6446,6 +6459,8 @@ void nox_xxx_meteorExplode_53D6E0(int a6) {
 		nox_xxx_delayedDeleteObject_4E5CC0(a6);
 	}
 }
+
+#endif
 
 //----- (0053D850) --------------------------------------------------------
 void nox_xxx_updateToxicCloud_53D850(int a1) {

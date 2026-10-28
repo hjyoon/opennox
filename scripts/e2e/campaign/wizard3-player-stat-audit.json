@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "Wizard3 same-input maximum-stat audit",
+  "seed_contract": "Original Wiz03b lift-return Save from v516: saved level3 Wizard, current and saved maxima HP33/MP99, XP11674.122 and naturally earned spells. Current product recomputes maxima32/98; capture the actual class, level, mode, base/max stat words and multipliers for original GAME.EXE comparison.",
+  "coverage": "Original Solo Load, copied scalar stat inputs and living manual Save only; no movement, casting, setters, enemy objective or whole-chapter credit.",
+  "cases": [
+    {
+      "name": "wizard3-player-stat-audit",
+      "scenario": "wizard3-player-stat-audit.yaml",
+      "expected_maps": [
+        "wiz03b"
+      ],
+      "require_poison_free": true,
+      "manual_save": "SAVE0001/Player.plr",
+      "timeout_seconds": 150,
+      "expected_health": 33,
+      "expected_maximum_health": 32,
+      "expected_maximum_mana": 98,
+      "minimum_mana": 98,
+      "required_checkpoints": [
+        "Wizard3 loaded stat inputs",
+        "Wizard3 stat audit manual Save"
+      ]
+    }
+  ]
+}

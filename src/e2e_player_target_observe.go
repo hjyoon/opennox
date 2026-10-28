@@ -4,10 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"image"
+	"math"
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/spell"
 	"github.com/opennox/libs/types"
+	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -40,6 +42,21 @@ type e2eCharmTargetObservation struct {
 	Target  e2eTargetObjectObservation `json:"target"`
 }
 
+type e2ePlayerStatInputs struct {
+	Present     bool      `json:"present"`
+	Level       uint8     `json:"level"`
+	Class       uint8     `json:"class"`
+	GameFlags   uint32    `json:"game_flags"`
+	Base        [4]uint32 `json:"base_bits32"`
+	Maximum     [4]uint32 `json:"maximum_bits32"`
+	Warrior     [4]uint32 `json:"warrior_bits32"`
+	Multipliers [4]uint32 `json:"multipliers_bits32"`
+}
+
+func e2eClassStatWords(s server.ClassStats) [4]uint32 {
+	return [4]uint32{math.Float32bits(s.Health), math.Float32bits(s.Mana), math.Float32bits(s.Speed), math.Float32bits(s.Strength)}
+}
+
 type e2ePlayerTargetObservation struct {
 	Frame                 uint32                       `json:"frame"`
 	Mouse                 image.Point                  `json:"mouse"`
@@ -53,6 +70,7 @@ type e2ePlayerTargetObservation struct {
 	State                 uint32                       `json:"state"`
 	Mana                  uint16                       `json:"mana"`
 	MaximumMana           uint16                       `json:"maximum_mana"`
+	StatInputs            e2ePlayerStatInputs          `json:"stat_inputs"`
 	Poison                byte                         `json:"poison"`
 	Stamina               byte                         `json:"stamina"`
 	EquippedWeapon        e2eTargetObjectObservation   `json:"equipped_weapon"`
@@ -80,7 +98,7 @@ func e2eReadTargetObject(obj *server.Object) e2eTargetObjectObservation {
 	return out
 }
 
-func e2eReadPlayerTarget(frame uint32, player *server.Object, durations *server.DurSpell) (e2ePlayerTargetObservation, error) {
+func e2eReadPlayerTarget(frame uint32, player *server.Object, durations *server.DurSpell, worlds ...*server.Server) (e2ePlayerTargetObservation, error) {
 	if player == nil || !player.Class().Has(object.ClassPlayer) || player.UpdateData == nil {
 		return e2ePlayerTargetObservation{}, fmt.Errorf("player-target observation requires an original player update record")
 	}
@@ -93,6 +111,13 @@ func e2eReadPlayerTarget(frame uint32, player *server.Object, durations *server.
 	if pl := ud.Player; pl != nil {
 		out.ServerGuidePresent, out.ServerGuideLevels = true, pl.BeastScrollLvl
 		out.CharmLevel = pl.SpellLvl[spell.SPELL_CHARM]
+		if len(worlds) == 1 && worlds[0] != nil {
+			world := worlds[0]
+			class := pl.Info().PlayerClass()
+			out.StatInputs = e2ePlayerStatInputs{Present: true, Level: pl.Level, Class: uint8(class), GameFlags: uint32(noxflags.GetGame()),
+				Base: e2eClassStatWords(*world.Players.BaseStats()), Maximum: e2eClassStatWords(*world.Players.ClassStats(class)),
+				Warrior: e2eClassStatWords(world.Players.Stats.Warrior), Multipliers: e2eClassStatWords(*world.Players.ClassStatsMult(class))}
+		}
 	}
 	// A damaged or cyclic list must not hang the game loop. Extra records are
 	// reported as truncated; this observer never unlinks or repairs the list.
@@ -124,7 +149,7 @@ func (sc *e2eScenario) ObservePlayerTarget(name string) {
 			e2eError(fmt.Errorf("player-target observation requires a current server and client"))
 			return
 		}
-		out, err := e2eReadPlayerTarget(noxServer.Frame(), noxServer.Players.HostUnit(), noxServer.S().Spells.Dur.List)
+		out, err := e2eReadPlayerTarget(noxServer.Frame(), noxServer.Players.HostUnit(), noxServer.S().Spells.Dur.List, noxServer.S())
 		if err != nil {
 			e2eError(err)
 			return

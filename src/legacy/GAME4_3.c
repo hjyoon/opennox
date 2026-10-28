@@ -5939,6 +5939,17 @@ void sub_53C140(nox_object_t* unit, void* destination) {
 #endif
 
 //----- (0053C160) --------------------------------------------------------
+extern void nox_blow_update_native_53C160(nox_object_t* source);
+void nox_xxx_updateBlow_53C160(nox_object_t* source) {
+	nox_blow_update_native_53C160(source);
+}
+
+extern void nox_blow_candidate_native_53C240(nox_object_t* candidate, nox_object_t* source);
+void sub_53C240(nox_object_t* candidate, nox_object_t* source) {
+	nox_blow_candidate_native_53C240(candidate, source);
+}
+
+#if 0 // ABI32 provenance: active entries use native pointers and Go arithmetic.
 void nox_xxx_updateBlow_53C160(int a3) {
 	double v1; // st7
 	float v2;  // eax
@@ -6106,6 +6117,8 @@ void sub_53C240(float* a1, int arg4) {
 		}
 	}
 }
+
+#endif
 
 //----- (0053C520) --------------------------------------------------------
 extern int nox_xxx_rechargeItem_53C520_go(nox_object_t* item, int amount);

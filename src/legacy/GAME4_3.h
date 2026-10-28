@@ -199,8 +199,8 @@ void nox_xxx_updateAntiSpellProj_53BB00(nox_object_t* a1);
 void sub_53BD10(nox_object_t* a1, nox_object_t* a2);
 int nox_xxx_updateMagicMissile_53BDA0(nox_object_t* a1);
 // GAME.EXE 0053BEF0..0053C15B is declared by pentagram_collide_4eab20.h.
-void nox_xxx_updateBlow_53C160(int a3);
-void sub_53C240(float* a1, int arg4);
+void nox_xxx_updateBlow_53C160(nox_object_t* source);
+void sub_53C240(nox_object_t* candidate, nox_object_t* source);
 int nox_xxx_rechargeItem_53C520(nox_object_t* item, int amount);
 intptr_t nox_xxx_updateObelisk_53C580(nox_object_t* obelisk);
 int nox_xxx_getRechargeRate_53C940(nox_object_t* item);

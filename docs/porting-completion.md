@@ -55,6 +55,71 @@ completion requirements.
 
 ## Current findings
 
+### Native Blow update and candidate callbacks
+
+The remaining 53C160/53C240 C entries now take typed native object pointers
+and forward to Go. Both isolated actual C calls crash with objects above
+4 GiB before the correction and pass afterward. The registered Go update
+keeps its callback identity, direct dispatcher and existing nil preflights.
+Object layouts, shared precision helpers, original blob data and every old
+test/fixture/golden remain unchanged.
+
+The complete body now retains PC53/ToZero rectangle spills, the unspilled
+Y distance term, unordered comparison behavior and signed zero. Each eligible
+candidate reloads the indexed direction. After interaction, force uses the
+retained distance, live mass and separate signed-WORD vector reads around
+the X store. Reentrant changes at scan/interaction boundaries preserve the
+original state and read order. The original diagonal bounds are retained,
+including their empty finite interval. The public guarded Go adapter and
+the raw required-pointer entries keep their separate contracts.
+
+Complete unchanged root/candidate routines, indexed-direction and mass
+getters seal1,020 code bytes. The actual startup and a PC53/nearest
+counterfactual execute2,584 prepared conditions without faults. Existing
+Go root output differs in158 of873 conditions (266 scalar words), with846
+trace differences and27 complete controls. The corrected Go and actual C
+entries each match all1,292 actual-startup conditions, including full native
+C frames/canaries and reentrant service traces. Eight separate original
+pointer contexts establish four required faults and four safe controls.
+The committed self-contained oracle regenerates the identical fixture.
+World enumeration/interaction bodies, signaling NaNs and adjacent raw-table
+native initialization remain outside this prepared comparison's claims.
+
+The standalone legacy test package does not load the application's integer
+direction table. Its initial zero-table failure is preserved. The new test
+loads only the required integer/float/threshold regions from the unchanged
+production blob, first checking every byte against the original, and restores
+the previous native bytes afterward. The old TestMain and all old test
+assertions remain untouched. All512 float words and256 classified directions
+pass. Prepared table memory is not a claim about a full game startup.
+
+One final normal root/server/legacy run passes255,716 with16 skips in290.293s.
+All previous full-run terminal identities/results/multiplicities remain;
+only native address suffixes in the two established fault-test roots are
+normalized. There are2,612 added PASS events since that earlier full run:
+13 from the intervening observer/stat work and2,599 from this port.
+Focused highres/cgocheck2/checkptr2 and direct-dispatch checks pass2,635 in
+151.778s. Parent/subtest counts do not measure feature coverage. Missing
+pinned-module/cache preparation failures are preserved. After the old
+temporary Go cache disappeared, the build uses a workspace-owned cache.
+Passing source checks are reused rather than repeated for script/doc edits.
+
+Original thing data assigns BlowUpdate only to SteamPipe1 through SteamPipe4.
+The ObjectTOC and every ObjectData record in all18 required stock maps have
+no SteamPipe instances. This does not exclude dynamic creation or custom
+maps. The next clean product's short Wizard3 Load/stat/manual-Save replay is
+a regression smoke check; it cannot certify a live SteamPipe force effect.
+Product and replay results are recorded after execution. No gameplay setter
+or artificial campaign spawn is used to manufacture that coverage.
+
+The five native jobs pending at the previous checkpoint now all succeed.
+Both ab3c4b7 Windows products, its Linux AMD64 server, and both e90d252
+Windows products/logs are retained and qualified. Linux independently
+recounts250541 PASS,7 SKIP and all56 expected packages, plus three passing
+default-link damage package checks. Evidence is retained under
+`blow-update-native-port`; all nine-cell/UI/audio/peer/stability completion
+requirements remain open.
+
 ### Wizard3 maximum-stat audit and bounded E2E reuse
 
 The same-input audit of the historical HP33/MP99 Save is now complete for

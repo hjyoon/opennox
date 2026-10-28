@@ -197,6 +197,7 @@ func TestMonsterQuickbarInputBoundsReadsAndRetainsNoLiveReferences(t *testing.T)
 	}
 	check(reflect.TypeOf(st))
 	check(reflect.TypeOf(sample))
+	check(reflect.TypeOf(e2eMonsterQuickbarPositionWatch{}))
 }
 
 func TestMonsterQuickbarInputRuntimeCallsOnlyReadersAndOriginalInput(t *testing.T) {
@@ -210,7 +211,8 @@ func TestMonsterQuickbarInputRuntimeCallsOnlyReadersAndOriginalInput(t *testing.
 		"First", "Next", "ByInd", "ID", "GetUnitNetCode", "e2eReadMonsterInputTarget", "CanInteract", "IsEnemyTo",
 		"observe", "Frame", "GetMousePos", "Nox_xxx_clientGetSpriteAtCursor_476F90", "UpdateDataPlayer",
 		"e2eMonsterQuickbarConfig", "e2eError", "addWhen", "e2eReadMonsterQuickbarSample", "Add",
-		"e2eMonsterQuickbarProbe", "step", "e2eQueueInput", "Printf"} {
+		"e2eMonsterQuickbarProbe", "step", "e2eQueueInput", "Printf",
+		"e2eLogMonsterQuickbarPosition", "e2eWatchMonsterQuickbarPositions"} {
 		allowed[name] = true
 	}
 	ast.Inspect(file, func(node ast.Node) bool {
@@ -230,6 +232,97 @@ func TestMonsterQuickbarInputRuntimeCallsOnlyReadersAndOriginalInput(t *testing.
 			if typ, ok := literal.Type.(*ast.SelectorExpr); ok && typ.X.(*ast.Ident).Name == "seat" &&
 				typ.Sel.Name != "MouseMoveEvent" && typ.Sel.Name != "KeyboardEvent" {
 				t.Errorf("input helper queues an unexpected native event: %s", typ.Sel.Name)
+			}
+		}
+		return true
+	})
+}
+
+func TestMonsterQuickbarPositionWatchAfterInput(t *testing.T) {
+	w := e2eMonsterQuickbarPositionWatch{start: 645, last: 645, limit: 60, playerScriptID: 7}
+	sample := e2eMonsterQuickbarSample{frame: 646, playerScriptID: 7, hasPositions: true}
+	if !w.observe(sample, true) || w.observe(sample, true) {
+		t.Fatal("observe a new native frame once after the input action finishes")
+	}
+	sample.frame = 662
+	if !w.observe(sample, true) {
+		t.Fatal("late cast/save frames must remain observable without input")
+	}
+}
+
+func TestMonsterQuickbarPositionWatchStopsAtDeadline(t *testing.T) {
+	w := e2eMonsterQuickbarPositionWatch{start: 645, last: 645, limit: 60, playerScriptID: 7}
+	sample := e2eMonsterQuickbarSample{frame: 705, playerScriptID: 7, hasPositions: true}
+	if !w.observe(sample, true) {
+		t.Fatal("last bounded frame")
+	}
+	sample.frame++
+	if w.observe(sample, true) || !w.stopped {
+		t.Fatal("observer must stop after its native-frame budget")
+	}
+	sample.frame = 650
+	if w.observe(sample, true) {
+		t.Fatal("an expired observer cannot restart on another map/frame")
+	}
+}
+
+func TestMonsterQuickbarPositionWatchRejectsMissingOrReplacedPair(t *testing.T) {
+	for _, mode := range []string{"missing", "positions", "player"} {
+		w := e2eMonsterQuickbarPositionWatch{start: 645, last: 645, limit: 60, playerScriptID: 7}
+		sample := e2eMonsterQuickbarSample{frame: 646, playerScriptID: 7, hasPositions: true}
+		found := true
+		switch mode {
+		case "missing":
+			found = false
+		case "positions":
+			sample.hasPositions = false
+		case "player":
+			sample.playerScriptID = 8
+		}
+		if w.observe(sample, found) || !w.stopped {
+			t.Fatalf("%s must end observation instead of retaining/replacing a native reference", mode)
+		}
+	}
+}
+
+func TestMonsterQuickbarPositionWatchHandlesPauseAndFrameWrap(t *testing.T) {
+	w := e2eMonsterQuickbarPositionWatch{start: math.MaxUint32 - 1, last: math.MaxUint32 - 1, limit: 4, playerScriptID: 7}
+	sample := e2eMonsterQuickbarSample{frame: math.MaxUint32 - 1, playerScriptID: 7, hasPositions: true}
+	if w.observe(sample, true) || w.stopped {
+		t.Fatal("a paused native frame must neither duplicate nor end observation")
+	}
+	sample.frame = 0
+	if !w.observe(sample, true) {
+		t.Fatal("unsigned native-frame wrap")
+	}
+	sample.frame = 3
+	if w.observe(sample, true) || !w.stopped {
+		t.Fatal("budget still applies across wrap")
+	}
+}
+
+func TestMonsterQuickbarPositionRuntimeCallsOnlyReaders(t *testing.T) {
+	file, err := parser.ParseFile(token.NewFileSet(), "e2e_monster_quickbar_position.go", nil, 0)
+	if err != nil {
+		t.Fatal(err)
+	}
+	allowed := map[string]bool{}
+	for _, name := range []string{"liveFrame", "Frame", "HostUnit", "Flags", "HasAny", "First", "Next", "Class", "Has",
+		"GetUnitNetCode", "int", "ByInd", "ID", "TickRate", "TickHook", "observe", "Printf",
+		"e2eReadMonsterQuickbarPosition", "e2eLogMonsterQuickbarPosition"} {
+		allowed[name] = true
+	}
+	ast.Inspect(file, func(node ast.Node) bool {
+		if call, ok := node.(*ast.CallExpr); ok {
+			name := ""
+			switch fn := call.Fun.(type) {
+			case *ast.Ident:
+				name = fn.Name
+			case *ast.SelectorExpr:
+				name = fn.Sel.Name
+			}
+			if !allowed[name] {
+				t.Errorf("passive position observer invokes unreviewed operation %q", name)
 			}
 		}
 		return true

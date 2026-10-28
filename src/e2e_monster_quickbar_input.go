@@ -177,9 +177,7 @@ func (sc *e2eScenario) CastAtNearestMonsterInput(typeID string, offset image.Poi
 		// input timing, target selection, movement, health or spell state.
 		if sample.hasPositions && (!positionRead || sample.frame != positionFrame) {
 			positionRead, positionFrame = true, sample.frame
-			e2eLog.Printf("MONSTER QUICKBAR POSITION: {\"frame\":%d,\"cast_frame\":%d,\"player_script_id\":%d,\"script_id\":%d,\"extent\":%d,\"wire\":%d,\"key\":%d,\"key_queued\":%t,\"player\":[%g,%g],\"target\":[%g,%g]}",
-				sample.frame, tracker.castFrame, sample.playerScriptID, selection.identity.scriptID, selection.identity.extent, selection.identity.wire,
-				key, tracker.started, sample.playerPosition[0], sample.playerPosition[1], sample.targetPosition[0], sample.targetPosition[1])
+			e2eLogMonsterQuickbarPosition(sample, selection.identity, key, tracker.castFrame, tracker.started)
 		}
 		e2eQueueInput(events...)
 		return done
@@ -188,5 +186,8 @@ func (sc *e2eScenario) CastAtNearestMonsterInput(typeID string, offset image.Poi
 			typeID, selection.identity.wire, selection.identity.extent, selection.identity.scriptID, key,
 			tracker.started, last.target.point, last.target.distance, last.target.hovered, last.competing,
 			last.target.dead, last.target.absent, last.target.playerHP, tracker.reads, last.frame)
+		if tracker.started && last.hasPositions {
+			e2eWatchMonsterQuickbarPositions(typeID, selection.identity, last.playerScriptID, key, tracker.castFrame, last.frame)
+		}
 	})
 }

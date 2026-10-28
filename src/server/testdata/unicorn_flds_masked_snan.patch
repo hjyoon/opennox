@@ -1,0 +1,18 @@
+diff --git a/qemu/target/i386/fpu_helper.c b/qemu/target/i386/fpu_helper.c
+index b3f5370..9695403 100644
+--- a/qemu/target/i386/fpu_helper.c
++++ b/qemu/target/i386/fpu_helper.c
+@@ -194,6 +194,13 @@ void helper_flds_ST0(CPUX86State *env, uint32_t val)
+     new_fpstt = (env->fpstt - 1) & 7;
+     u.i = val;
+     env->fpregs[new_fpstt].d = float32_to_floatx80(u.f, &env->fp_status);
++    /* FLD m32fp raises #IA and quiets SNaN when masked. Keep FT0
++     * conversion unchanged: arithmetic memory operands retain SNaN. */
++    if (float32_is_signaling_nan(u.f, &env->fp_status)) {
++        env->fpregs[new_fpstt].d = floatx80_silence_nan(
++            env->fpregs[new_fpstt].d, &env->fp_status);
++        fpu_set_exception(env, FPUS_IE);
++    }
+     env->fpstt = new_fpstt;
+     env->fptags[new_fpstt] = 0; /* validate stack entry */
+ }

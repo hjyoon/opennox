@@ -55,6 +55,54 @@ completion requirements.
 
 ## Current findings
 
+### Original object velocity integration
+
+The active `5118A0` C implementation already used native object pointers,
+but its host float arithmetic differed from GAME.EXE. An ordinary native
+case produces X velocity `0x3facb72c` instead of `0x3facb72b`. The unchanged
+C body was executed with C-owned native object/health/cache frames and
+declared external services. Its captured results differ in358 of424 contexts
+against the calibrated original reference;66 control contexts match. All
+nonoutput/canary checks pass. The failed comparisons and raw native outputs
+are retained, distinct from actual engine composition tests.
+
+The full original root `005118A0..00511B57` is695 bytes. All695 bytes execute
+independently at startup PC53/ToZero and nearest rounding in426 contexts
+per mode. Registers, return stack, adjacent globals and nonoutput heap bytes
+are checked; no original instructions, arithmetic or conversions are replaced.
+Unicorn2.1.4 has a separate `FLD m32fp` signaling-NaN defect: it leaves the
+loaded NaN signaling. Intel's masked-invalid rule and an independent Rosetta
+x86-64 probe establish quieting at that load. A documented emulator-only
+patch corrects ST0 loading while preserving arithmetic memory operands.
+Four of the prior424 results change;420 remain unchanged. The producer
+rejects an uncalibrated engine. Old fixtures and failures remain archived.
+Rosetta is not native x86 hardware proof; a dedicated actual-FLD test is
+added for native Windows/Linux CI and skips ARM64.
+
+The new Go root preserves directed53-bit intermediate arithmetic, the
+different X/Y spills and NaN operand order, two-pass enumeration, all ten
+original cache names including duplicates, and live trace/tile arguments.
+The public C float ABI forwards raw step bits through an integer Go export,
+including on Windows/386. The cache remains exactly ten DWORDs beside the
+script cache. No serialized object or saved-game layout changes.
+
+Both Go and the public native C entry match all426 original contexts and
+complete native frames. Four additional native engine compositions exercise
+moving/frozen objects through the actual queue, collision preparation,
+springs, map trace, synchronization, collider and map index. Full normal
+root/server/legacy passes271745 tests with18 skips in115.650 seconds.
+Focused highres/cgocheck2/checkptr2 passes1814 tests with one x86-only skip
+in201.180 seconds. All3835 existing test, golden and E2E input files retain
+their original bytes. A prior link attempt ran out of disk space; only
+regenerable older compiler-cache data was pruned before its successful retry.
+
+The reproducible producer, input-only prefix cases and emulator patch are
+under `src/server/testdata/objects_velocity_original_5118a0.md`. Detailed
+proofs are in `object-velocity-native-port`. Clean product, unchanged bookcase
+and powder E2Es, actual Save/Load and native CI qualification follow these
+local checks. Overall100% remains open; this adds no chapter or percentage
+credit.
+
 ### Wiz02c pressure plate bookcase movement
 
 The reported pressure plate symptom is reproduced on the unchanged stock

@@ -89,8 +89,27 @@ multiplicities remain unchanged; 1369 new passing terminal events are added.
 The initial constant-assertion preparation error, pre-port C crash and numeric
 mismatch logs are retained. Focused highres/cgocheck2/checkptr2 passes1604 in
 103.335s, including creation/casting, collision and shared-force controls.
-One clean product replay is recorded below after completion. Overall100%
-remains unproven.
+The clean `539b304` ARM64 product builds in12.881s, with SHA-256
+`349584b2fef4c97f2fa0e56297e70a4c1be93555200d8e3af081fa8d9cac165a`,
+65408114 bytes and clean Go1.26.9 metadata. The unchanged recovery replay
+passes in30.089s, HP26/26 MP56/88 poison0, all three original pickups, retained
+book and living manual Save; all18 parameterless GET observations qualify.
+
+The first new Swap replay preserves living HP20/MP78 and a manual Save, but
+correctly fails its fixed historical HD landing-coordinate requirement. The
+original moving spider is already at a different position before the F input;
+the failure is retained. The replay now requires a reciprocal position exchange
+between adjacent native frames for the original pair after the actual F input,
+with the initial room position and final saved position checked independently.
+This replaces the inappropriate fixed destination with a direct effect check.
+Quickbar observations copy scalar positions and identities; no native pointer
+survives a frame. Input decisions and gameplay remain unchanged. The observer
+change passes all39117 root events with15 skips in55.945s and all9 selected
+highres/cgocheck2/checkptr2 controls in109.368s. All earlier Go test sources and
+root result identities/multiplicities remain unchanged. The campaign verifier's
+58 Python checks include reciprocal-exchange negative controls. Passing server/
+legacy results are reused with byte-identical sources. The additional replay
+result is recorded after completion. Overall100% remains unproven.
 
 ### Native plant/zombie predicates, get-up and resurrection entries
 

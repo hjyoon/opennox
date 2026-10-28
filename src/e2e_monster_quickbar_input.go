@@ -12,10 +12,14 @@ import (
 )
 
 type e2eMonsterQuickbarSample struct {
-	target    e2eNamedMonsterInputTarget
-	frame     uint32
-	mouse     image.Point
-	competing bool
+	target         e2eNamedMonsterInputTarget
+	frame          uint32
+	mouse          image.Point
+	competing      bool
+	playerScriptID int32
+	playerPosition [2]float32
+	targetPosition [2]float32
+	hasPositions   bool
 }
 
 // Only copied input state survives a frame. The existing selection also pins
@@ -107,6 +111,7 @@ func e2eReadMonsterQuickbarSample(typeID string, offset image.Point, selection *
 		return e2eMonsterQuickbarSample{}, false
 	}
 	var candidates []e2eNearestMonsterInputCandidate
+	positions := map[e2eMonsterInputIdentity][2]float32{}
 	for npc := noxServer.Objs.First(); npc != nil; npc = npc.Next() {
 		if !npc.Class().Has(object.ClassMonster) || npc.HealthData == nil || npc.UpdateData == nil {
 			continue
@@ -127,9 +132,13 @@ func e2eReadMonsterQuickbarSample(typeID string, offset image.Point, selection *
 			identity: e2eMonsterInputIdentity{wire: uint16(code), extent: npc.Extent, scriptID: npc.ScriptIDVal},
 			typeID:   typeID, target: target, hostile: noxServer.IsEnemyTo(unit, npc), available: available,
 		})
+		positions[e2eMonsterInputIdentity{wire: uint16(code), extent: npc.Extent, scriptID: npc.ScriptIDVal}] = [2]float32{npc.PosVec.X, npc.PosVec.Y}
 	}
 	target, available := selection.observe(typeID, candidates)
 	sample := e2eMonsterQuickbarSample{target: target, frame: noxServer.Frame(), mouse: noxClient.Inp.GetMousePos()}
+	sample.playerScriptID = unit.ScriptIDVal
+	sample.playerPosition = [2]float32{unit.PosVec.X, unit.PosVec.Y}
+	sample.targetPosition, sample.hasPositions = positions[selection.identity]
 	sample.target.playerHP = unit.HealthData.Cur
 	if !available || target.dead || target.absent {
 		return sample, available
@@ -157,10 +166,21 @@ func (sc *e2eScenario) CastAtNearestMonsterInput(typeID string, offset image.Poi
 	tracker := e2eMonsterQuickbarTracker{key: key, ticks: ticks}
 	var selection e2eNearestMonsterInputSelection
 	var last e2eMonsterQuickbarSample
+	var positionFrame uint32
+	positionRead := false
 	sc.addWhen(0, name+" actual mouse and quickbar tracking", 1200, func() bool {
 		sample, available := e2eReadMonsterQuickbarSample(typeID, offset.Add(e2eMonsterQuickbarProbe(tracker.probe)), &selection)
 		last = sample
 		events, done := tracker.step(sample, available)
+		// Copy the pinned pair's native positions once per frame. This observes
+		// the effect chosen by the game without retaining pointers or changing
+		// input timing, target selection, movement, health or spell state.
+		if sample.hasPositions && (!positionRead || sample.frame != positionFrame) {
+			positionRead, positionFrame = true, sample.frame
+			e2eLog.Printf("MONSTER QUICKBAR POSITION: {\"frame\":%d,\"cast_frame\":%d,\"player_script_id\":%d,\"script_id\":%d,\"extent\":%d,\"wire\":%d,\"key\":%d,\"key_queued\":%t,\"player\":[%g,%g],\"target\":[%g,%g]}",
+				sample.frame, tracker.castFrame, sample.playerScriptID, selection.identity.scriptID, selection.identity.extent, selection.identity.wire,
+				key, tracker.started, sample.playerPosition[0], sample.playerPosition[1], sample.targetPosition[0], sample.targetPosition[1])
+		}
 		e2eQueueInput(events...)
 		return done
 	}, func() {

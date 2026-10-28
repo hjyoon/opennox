@@ -16,12 +16,14 @@
       "minimum_health": 20,
       "minimum_mana": 78,
       "required_checkpoints": ["earned Swap source", "actual Swap escape", "Swap escape manual Save"],
-      "required_position_transitions": [
+      "required_swap_pairs": [
         {
-          "script_id": 1000000001,
-          "before": {"x": 2822.5457, "y": 2758.513},
-          "after": {"x": 2837.709, "y": 2670.5703},
-          "tolerance": 24
+          "player_script_id": 1000000001,
+          "target_script_id": 1000136506,
+          "key": 33,
+          "player_start": [2822.5457, 2758.513],
+          "minimum_distance": 25,
+          "tolerance": 12
         }
       ]
     }

@@ -38,7 +38,8 @@ CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_pois
                'minimum_health', 'minimum_mana',
                'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
                'required_defeated_script_ids', 'required_enable_transitions',
-               'required_position_transitions', 'required_plate_holds', 'required_map_pickups'}
+               'required_position_transitions', 'required_plate_holds', 'required_map_pickups',
+               'required_swap_pairs'}
 
 
 def validate_suite_fields(suite):
@@ -50,6 +51,19 @@ def validate_suite_fields(suite):
         unknown = set(case) - CASE_FIELDS
         if unknown:
             raise ValueError('unknown campaign case fields: ' + ', '.join(sorted(unknown)))
+        if 'required_swap_pairs' in case:
+            pairs = case['required_swap_pairs']
+            if not isinstance(pairs, list) or not pairs:
+                raise ValueError('required_swap_pairs must be a nonempty list')
+            for pair in pairs:
+                if (not isinstance(pair, dict) or set(pair) != {'player_script_id', 'target_script_id', 'key', 'tolerance', 'minimum_distance', 'player_start'}
+                        or any(type(pair[k]) is not int or not 0 < pair[k] < 1 << 31 for k in ('player_script_id', 'target_script_id'))
+                        or pair['player_script_id'] == pair['target_script_id'] or type(pair['key']) is not int or pair['key'] != 33
+                        or not isinstance(pair['player_start'], list) or len(pair['player_start']) != 2
+                        or any(type(v) not in (int, float) or not math.isfinite(v) for v in pair['player_start'])
+                        or any(type(pair[k]) not in (int, float) or not math.isfinite(pair[k]) for k in ('tolerance', 'minimum_distance'))
+                        or pair['tolerance'] < 0 or pair['minimum_distance'] <= 2 * pair['tolerance']):
+                    raise ValueError('required_swap_pairs needs distinct original identities, F key33 and separated finite position bounds')
         if 'required_map_pickups' in case:
             pickups = case['required_map_pickups']
             if not isinstance(pickups, list) or not pickups:
@@ -266,6 +280,67 @@ def required_position_transitions(samples, requirements):
         transitions.append(dict(required, initial_position=initial, final_position=final, passed=passed))
     return {'transitions': transitions,
             'passed': bool(transitions) and all(row['passed'] for row in transitions)}
+
+
+def required_swap_pairs(samples, log, requirements):
+    # One native frame must exchange both original positions after the actual
+    # F input. Moving targets have no fixed world-space landing coordinate.
+    def point(value):
+        return (isinstance(value, list) and len(value) == 2
+                and all(type(v) in (int, float) and math.isfinite(v) for v in value))
+
+    traces = []
+    malformed = False
+    for line in log.splitlines():
+        if 'MONSTER QUICKBAR POSITION: ' not in line:
+            continue
+        try:
+            row = json.loads(line.split('MONSTER QUICKBAR POSITION: ', 1)[1])
+            valid = (isinstance(row, dict) and point(row.get('player')) and point(row.get('target'))
+                     and all(type(row.get(k)) is int and 0 <= row[k] <= 0xffffffff
+                             for k in ('frame', 'cast_frame', 'player_script_id', 'script_id', 'extent', 'wire', 'key'))
+                     and type(row.get('key_queued')) is bool)
+        except (ValueError, TypeError):
+            valid = False
+        if valid:
+            traces.append(row)
+        else:
+            malformed = True
+    actual_inputs = {(int(wire, 16), int(extent), int(ident), int(key))
+                     for wire, extent, ident, key in re.findall(
+                         r'MONSTER QUICKBAR ACTUAL INPUT: type="[A-Za-z0-9_]+" wire=(0x[0-9a-f]+) extent=(\d+) script_id=(\d+) key=(\d+) key_queued=true\b', log)}
+    pairs = []
+    for requirement in requirements:
+        player_id, target_id = requirement['player_script_id'], requirement['target_script_id']
+        initial = [o for o in samples[0] if o.get('script_id') == target_id] if samples else []
+        alive = (len(initial) == 1 and not {'DEAD', 'DESTROYED'} & set(initial[0].get('flags') or []))
+        initial_player = [o.get('pos') for o in samples[0] if o.get('script_id') == player_id] if samples else []
+        initial_point = ([initial_player[0].get('x'), initial_player[0].get('y')]
+                         if len(initial_player) == 1 and isinstance(initial_player[0], dict) else None)
+        starts_inside = point(initial_point) and math.dist(initial_point, requirement['player_start']) <= requirement['tolerance']
+        final = [o.get('pos') for o in samples[-1] if o.get('script_id') == player_id] if samples else []
+        final_point = ([final[0].get('x'), final[0].get('y')]
+                       if len(final) == 1 and isinstance(final[0], dict) else None)
+        rows = [v for v in traces if v['player_script_id'] == player_id and v['script_id'] == target_id
+                and v['key'] == requirement['key'] and v['key_queued']]
+        exchange = None
+        for before, after in zip(rows, rows[1:]):
+            identity = lambda v: (v['wire'], v['extent'], v['script_id'], v['key'])
+            tolerance = requirement['tolerance']
+            if ((after['frame'] - before['frame']) & 0xffffffff == 1
+                    and before['cast_frame'] == after['cast_frame'] and identity(before) == identity(after)
+                    and identity(after) in actual_inputs
+                    and math.dist(before['player'], after['player']) >= requirement['minimum_distance']
+                    and math.dist(before['player'], after['target']) <= tolerance
+                    and math.dist(before['target'], after['player']) <= tolerance
+                    and point(final_point) and math.dist(final_point, after['player']) <= tolerance):
+                exchange = {'before': before, 'after': after}
+                break
+        pairs.append(dict(requirement, initial_target_alive=bool(alive), initial_player_position=initial_point,
+                          initial_player_matches=bool(starts_inside), position_exchange=exchange,
+                          final_player_position=final_point, passed=bool(alive and starts_inside and exchange and not malformed)))
+    return {'pairs': pairs, 'malformed_position_observation': malformed,
+            'passed': bool(pairs) and all(p['passed'] for p in pairs)}
 
 
 def required_plate_holds(samples, requirements):
@@ -675,7 +750,7 @@ def run_case(args, binary, suite_dir, case, port):
         outcomes_ok = outcomes_ok and any(p['player']['health'] < p['player']['maximum_health'] for p in report['player_observations'])
     if (case.get('created_type') or case.get('required_defeated_script_ids')
             or case.get('required_enable_transitions') or case.get('required_position_transitions')
-            or case.get('required_plate_holds') or case.get('required_map_pickups')) and snapshots_ok:
+            or case.get('required_plate_holds') or case.get('required_map_pickups') or case.get('required_swap_pairs')) and snapshots_ok:
         samples = [json.loads(Path(sample['routes']['objects']['path']).read_text())
                    for sample in report['snapshots']]
     if case.get('created_type') and snapshots_ok:
@@ -714,6 +789,14 @@ def run_case(args, binary, suite_dir, case, port):
         transitions = required_position_transitions(samples, case['required_position_transitions'])
         report['required_original_position_transitions'] = transitions
         outcomes_ok = outcomes_ok and transitions['passed']
+    if case.get('required_swap_pairs'):
+        swaps = required_swap_pairs(samples if snapshots_ok else [],
+                                    (case_dir / 'game.log').read_text(errors='replace'), case['required_swap_pairs'])
+        report['required_original_swap_pairs'] = swaps
+        outcomes_ok = outcomes_ok and swaps['passed']
+        if not swaps['passed']:
+            failures.append({'check': 'required_swap_pairs', 'pairs': swaps['pairs'],
+                             'malformed_position_observation': swaps['malformed_position_observation']})
     if case.get('required_plate_holds') and snapshots_ok:
         holds = required_plate_holds(samples, case['required_plate_holds'])
         report['required_original_plate_holds'] = holds

@@ -9,10 +9,7 @@
 #include "player_respawn_4f7ef0.h"
 #include "unit_order_533900.h"
 
-int nox_xxx_onFrameLightning_52F8A0(float a1);
-void nox_xxx_lightningCanAttackCheck_52FF10(int a1, int a2);
-void nox_xxx_lightningSpellTrapEffect_530020(int a1, int a2);
-char sub_530100(uint32_t* a1);
+#include "spell_chain_lightning_52f820.h"
 int nox_xxx_spellTagCreature_530160(uint32_t* a1);
 unsigned int sub_530250(int a1);
 int sub_530270(int a1);

@@ -29,13 +29,7 @@ func TestToxicCloudCastRetiredCEntry52DB60(t *testing.T) {
 	if !found || fmt.Sprintf("%x", sha256.Sum256([]byte(strings.TrimSpace(body)))) != "ce1f2a0717c4e5543cf05b8dff6130ac543279b0b5de4997081f08138aed171e" {
 		t.Fatal("retained original ToxicCloud C body changed")
 	}
-	header, err := os.ReadFile("GAME4_2.h")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if fmt.Sprintf("%x", sha256.Sum256(header)) != "cd8cbe415360dd60fe7d8b78a488cb12c0df3f602dd4b2e423f020fd3b841949" {
-		t.Fatal("original C declarations changed while retiring ToxicCloud")
-	}
+	assertRetiredSpellHeaderPrototypes(t)
 	entry, err := os.ReadFile("spells.go")
 	if err != nil {
 		t.Fatal(err)

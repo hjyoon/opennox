@@ -55,6 +55,71 @@ completion requirements.
 
 ## Current findings
 
+### Native Chain Lightning callback entries and original lifecycle
+
+The public C create `52F820`, update `52F8A0` and destroy `530100`
+callbacks still used PE32 argument/layout assumptions. Create truncated its
+pointer to `int`; update declared the pointer as `float`; destroy used native
+pointer width but original fixed offsets. All three actual entries fault in
+separate subprocesses with guarded C-owned records above4GiB. Ordinary
+campaign dispatch had already intercepted these callbacks in Go, so this
+finding does not establish that every campaign Chain Lightning cast crashed.
+
+The three public entries now accept opaque native duration pointers and
+forward to the same real Go runtime as the duration dispatcher. Native wand
+sidecars, ray allocation/freeing and networking remain shared. The obsolete
+C roots and their unreferenced PE32 closest-target/trap helpers are removed;
+the existing Go implementations supply these operations. No serialized
+record layout changes. Destroy preserves the original low-byte wand-flag
+return while releasing both ray generations and its native sidecar.
+
+Original create execution also exposes two defects in the existing Go root:
+reusing a duration can retain an earlier wand sidecar, and cancellation can
+change the caster after Go has cached it. Create now resets the sidecar with
+the original wand slot, then rereads the caster after cancellation. The
+unchanged Go create body fails seven original-reference leaves before these
+corrections, while49 leaves pass. The compile-only first fixture attempt is
+retained separately and supplies no behavioral evidence.
+
+The unchanged original GAME.EXE SHA256 is
+`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`.
+All122 bytes of `0052F820..0052F89A` and94 bytes of
+`00530100..0053015E` execute across56 original contexts, including13
+callback mutation scenarios. Only cancellation, point FX and ray-free
+services are declared models. Original instructions remain unchanged;
+registers, stack, nonoutput heap bytes and adjacent canaries are checked.
+The committed fixture SHA256 is
+`3f9ab0ea7ae228acf06dd3fc169091cff0bf8388ad6ea1a68e78ec5282d3f7b8`.
+This closes these lifecycle roots under the declared services; it does not
+establish full update arithmetic or transitive-callee equivalence.
+
+The same56 contexts pass through both the Go root and the typed actual C
+entries using guarded native frames. A separate composition test uses the
+actual server runtime, equipped wand and real duration allocator: C create
+captures the native wand, the original guarded update preserves charges,
+and C destroy returns all four rays from two generations to the allocator,
+clears mode flags and releases the sidecar. The unchanged public-entry
+fixture that previously faulted passes after the port. Focused checks pass128
+terminals across root/server/legacy; highres with cgocheck2/checkptr2 passes1960
+with one x86-only skip.
+
+The initial full check passes root/server but rejects seven legacy tests
+because they hash the entire shared `GAME4_2.h`, including the unrelated
+Chain Lightning declaration. Four existing test files now check their exact
+seven original Mark/Lock/ToxicCloud declarations instead. Their original
+retired-body hashes, boundaries and selector guards are unchanged. New
+negative controls reject changed, missing, duplicate and commented-out
+declarations. All other existing tests, golden fixtures and campaign inputs
+retain their original bytes. The full legacy rerun passes93234 with3 skips;
+together with the unchanged passing root/server suites, the normal result
+is271883 passes and18 skips. Raw initial failures remain preserved.
+
+Local evidence is under `chain-lightning-native-entry-port`, including
+`local-chain-native-and-original-qualified-v1.json` and
+`original-lifecycle-proof-v1.json`. New product, campaign replay and native
+platform qualification are still pending for this source change. Overall100%
+remains open.
+
 ### Native script AI parameters and combat observation
 
 The script-facing `Aggression`, `RetreatLevel` and `RegroupLevel` getters

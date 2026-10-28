@@ -91,7 +91,7 @@ func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *ser
 		return
 	}
 	if callback == legacy.Get_sub_530100() {
-		server.SpellChainLightningDestroy530100(record, sp.chainLightningRuntime52F820())
+		sp.s.SpellChainLightningDestroy530100(record)
 		return
 	}
 	if callback == legacy.Get_sub_5319E0() {
@@ -183,7 +183,7 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 		return server.SpellManaBombUpdate5310C0(record, sp.manaBombRuntime530F90())
 	}
 	if callback == legacy.Get_nox_xxx_onFrameLightning_52F8A0() {
-		return server.SpellChainLightningUpdate52F8A0(record, sp.chainLightningRuntime52F820())
+		return sp.s.SpellChainLightningUpdate52F8A0(record)
 	}
 	if callback == legacy.Get_nox_xxx_spellEnergyBoltTick_52E850() {
 		return server.SpellEnergyBoltUpdate52E850(record, sp.energyBoltRuntime52E820())
@@ -246,7 +246,7 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 		return server.SpellManaBombCreate530F90(record, sp.manaBombRuntime530F90())
 	}
 	if callback == legacy.Get_nox_xxx_onStartLightning_52F820() {
-		return server.SpellChainLightningCreate52F820(record, sp.chainLightningRuntime52F820())
+		return sp.s.SpellChainLightningCreate52F820(record)
 	}
 	if callback == legacy.Get_nox_xxx_spellEnergyBoltStop_52E820() {
 		return server.SpellEnergyBoltCreate52E820(record, sp.energyBoltRuntime52E820())

@@ -11543,31 +11543,3 @@ void nox_xxx_unitShieldReduceDamage_52F710(int a1, int* a2, int a3, int a4) {
 		}
 	}
 }
-
-//----- (0052F820) --------------------------------------------------------
-int nox_xxx_onStartLightning_52F820(int a1) {
-	int v1; // eax
-	int v2; // eax
-
-	*(uint32_t*)(a1 + 72) = 0;
-	*(uint32_t*)(a1 + 76) = 0;
-	if (*(uint32_t*)(a1 + 16)) {
-		nox_xxx_spellCancelDurSpell_4FEB10(24, *(uint32_t*)(a1 + 16));
-	}
-	if (!*(uint32_t*)(a1 + 20)) {
-		v1 = *(uint32_t*)(a1 + 16);
-		if (*(uint8_t*)(v1 + 8) & 4) {
-			v2 = *(uint32_t*)(*(uint32_t*)(v1 + 748) + 104);
-			if (v2) {
-				if (*(uint32_t*)(v2 + 12) & 0x40000 && *(uint8_t*)(*(uint32_t*)(v2 + 736) + 96) & 4) {
-					*(uint32_t*)(a1 + 72) = v2;
-				}
-			}
-		}
-	}
-	if (*(uint32_t*)(a1 + 72)) {
-		*(uint8_t*)(a1 + 88) |= 2u;
-	}
-	nox_xxx_netSendPointFx_522FF0(129, (float2*)(a1 + 28));
-	return 0;
-}

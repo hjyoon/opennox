@@ -44,11 +44,16 @@ func (s *Server) EachChainLightningObject52F8A0(pos types.Pointf, radius float32
 // wand is stored in a sidecar: Field72 was only a PE32 pointer slot.
 func SpellChainLightningCreate52F820(record *DurSpell, rt SpellChainLightningRuntime52F820) int32 {
 	record.Field72 = 0
+	// Reset the native counterpart of the original wand slot as well. A
+	// reused duration must not retain a wand from its previous activation.
+	rt.StoreWeapon(record, nil)
 	record.Field76 = 0
 	caster := record.Caster16
 	if caster != nil {
 		rt.CancelSpell(24, caster) // Lightning and Chain Lightning are exclusive.
 	}
+	// GAME.EXE reloads source+16 after cancellation can run destroy hooks.
+	caster = record.Caster16
 	if record.Flag20 == 0 && caster != nil && uint8(caster.ObjClass)&4 != 0 {
 		if update := caster.UpdateDataPlayer(); update != nil {
 			if wand := update.EquippedWeapon; wand != nil && uint32(wand.ObjSubClass)&0x40000 != 0 {
@@ -73,17 +78,20 @@ func chainLightningFreeList530100(head *DurSpell, rt SpellChainLightningRuntime5
 
 // SpellChainLightningDestroy530100 frees both ray generations and releases
 // the wand mode. A pointer to the wand never passes through Field72.
-func SpellChainLightningDestroy530100(record *DurSpell, rt SpellChainLightningRuntime52F820) {
+func SpellChainLightningDestroy530100(record *DurSpell, rt SpellChainLightningRuntime52F820) uint8 {
 	chainLightningFreeList530100(record.Sub108, rt)
 	record.Sub108 = nil
 	chainLightningFreeList530100(record.Sub104, rt)
 	record.Sub104 = nil
+	var result uint8
 	if wand := rt.LoadWeapon(record); wand != nil {
 		if data := wand.UseData.AsWand(); data != nil {
 			data.Flags &^= 4
+			result = uint8(data.Flags)
 		}
 	}
 	rt.StoreWeapon(record, nil)
+	return result
 }
 
 func chainLightningClosest52FF10(center types.Pointf, radius float32, source, owner *Object, selected []*Object, rt SpellChainLightningRuntime52F820) *Object {

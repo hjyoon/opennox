@@ -331,6 +331,6 @@ int sub_52F650(void* a1);
 int sub_52F670(void* a1);
 void nox_xxx_unitShield_52F690(int a1, int a2);
 void nox_xxx_unitShieldReduceDamage_52F710(int a1, int* a2, int a3, int a4);
-int nox_xxx_onStartLightning_52F820(int a1);
+#include "spell_chain_lightning_52f820.h"
 
 #endif // NOX_PORT_GAME4_2

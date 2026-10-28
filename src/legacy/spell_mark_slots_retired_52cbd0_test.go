@@ -29,13 +29,7 @@ func TestMarkSlotCastRetiredCEntry52CBD0(t *testing.T) {
 	if !found || fmt.Sprintf("%x", sha256.Sum256([]byte(strings.TrimSpace(body)))) != "82918b55e1db6a05b30993d8a76e693b67dc79aa45a5497ce23d4b827edfe487" {
 		t.Fatal("retained original Mark 1..4 C body changed")
 	}
-	header, err := os.ReadFile("GAME4_2.h")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if fmt.Sprintf("%x", sha256.Sum256(header)) != "cd8cbe415360dd60fe7d8b78a488cb12c0df3f602dd4b2e423f020fd3b841949" {
-		t.Fatal("original C declarations changed while retiring Mark slots")
-	}
+	assertRetiredSpellHeaderPrototypes(t)
 	entry, err := os.ReadFile("spells.go")
 	if err != nil {
 		t.Fatal(err)

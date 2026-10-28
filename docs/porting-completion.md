@@ -121,6 +121,26 @@ negative-control/contract tests. This observation change requires its own
 clean product for the affected replay; the earlier full gameplay checks are
 retained.
 
+The observation product at `3b187db` builds cleanly in12.888s: SHA-256
+`975e903bbb62fd4ca0cd73952c2c3fb3a32422a567aea69f438e0b2cdcac0c6b`,
+65427618 bytes. The affected combat E2E passes in85.376s. Original
+Swordsman01 script1000451500/extent646 goes from HP30/30 to HP0/30 and DEAD.
+Three actual A inputs are observed among the35 ordinary aiming attempts.
+After600 normal recovery frames MP rises42 to49; the living manual Save
+retains current HP33, computed maximum HP32 and maximum MP98. All nine
+parameterless GET observations, source Save/assets/config/binary hashes and
+the saved player hash qualify. The final frame is inspected: living Wizard,
+original corpse, HUD and Korean save-complete message are visible. The
+historical maximum-stat discrepancy remains open, and no complete chapter
+or100% porting claim follows from this bounded replay.
+
+Native `b107a65` passes Windows386/AMD64 run40626607040 and Linux AMD64
+server run40626663839. All three retained products/logs qualify with native
+headers and clean Go1.26.9/VCS metadata. Linux recounts250528 PASS,7 SKIP,
+all56 packages and the three default-link damage package checks. The later
+observation product has its own Windows run40628634081 and Linux
+run40628717857 still active; those existing runs are retained.
+
 ### Native AntiSpell callbacks and map coordinates
 
 The remaining AntiSpell C entries at 53BB00 and 53BD10 now accept full native

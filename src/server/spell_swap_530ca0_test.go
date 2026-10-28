@@ -42,13 +42,13 @@ func TestSpellSwapCreate530CA0Delay(t *testing.T) {
 	for _, tc := range []struct {
 		name      string
 		coop      bool
-		delay     float32
+		delay     float64
 		wantFrame uint32
 		wantCalls []string
 	}{
 		{"arena", false, 2.5, 101, []string{"coop", "frame"}},
-		{"coop ties to even", true, 2.5, 102, []string{"coop", "delay", "frame"}},
-		{"coop rounds up", true, 3.5, 104, []string{"coop", "delay", "frame"}},
+		{"coop startup truncation", true, 2.5, 102, []string{"coop", "delay", "frame"}},
+		{"coop fractional truncation", true, 3.5, 103, []string{"coop", "delay", "frame"}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var calls []string
@@ -56,7 +56,7 @@ func TestSpellSwapCreate530CA0Delay(t *testing.T) {
 			rt := SpellSwapRuntime530CA0{
 				CoopMode: func() bool { calls = append(calls, "coop"); return tc.coop },
 				Frame:    func() uint32 { calls = append(calls, "frame"); return 100 },
-				TeleportDelay: func(level uint32) float32 {
+				TeleportDelay: func(level uint32) float64 {
 					calls = append(calls, "delay")
 					if level != 2 {
 						t.Fatalf("level index = %d, want 2", level)

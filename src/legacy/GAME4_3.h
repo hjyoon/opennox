@@ -17,8 +17,7 @@ int sub_530650(int* a1);
 int nox_xxx_castTele_530820(int a1);
 int sub_530880(int* a1);
 int nox_xxx_castTTT_530B70(int* a1);
-int sub_530CA0(int a1);
-int sub_530D30(int* a1);
+#include "spell_swap_native_530ca0.h"
 int nox_xxx_manaBomb_530F90(uint32_t* a1);
 int nox_xxx_manaBombBoom_5310C0(int* a1);
 int sub_531290(int a1);

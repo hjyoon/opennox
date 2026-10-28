@@ -14,7 +14,7 @@ import (
 type SpellSwapRuntime530CA0 struct {
 	CoopMode      func() bool
 	Frame         func() uint32
-	TeleportDelay func(uint32) float32
+	TeleportDelay func(uint32) float64
 	CanInteract   func(*Object, *Object) bool
 	InformNoLOS   func(*Object)
 	SendPointFX   func(netmsg.Op, types.Pointf)
@@ -35,7 +35,7 @@ func SpellSwapCreate530CA0(record *DurSpell, rt SpellSwapRuntime530CA0) int32 {
 	}
 	if rt.CoopMode() {
 		delay := rt.TeleportDelay(record.Level - 1)
-		record.Frame68 = rt.Frame() + uint32(spellDurationRoundNearestEven(delay))
+		record.Frame68 = rt.Frame() + uint32(playerReadValuesRound4EEDC0(shapeBoxSpill428270(delay)))
 	} else {
 		record.Frame68 = rt.Frame() + 1
 	}
@@ -44,7 +44,8 @@ func SpellSwapCreate530CA0(record *DurSpell, rt SpellSwapRuntime530CA0) int32 {
 
 // spellSwapTargetInPlayerBounds530D30 is the inclusive player rectangle test
 // used after the ordinary interaction/LOS check. The source stores each
-// computed bound as float32 before testing the target's position.
+// computed bound as float32 before testing the target's position. Both the
+// arithmetic and spill use startup 53-bit precision toward zero.
 func spellSwapTargetInPlayerBounds530D30(caster, target *Object) bool {
 	if !caster.ObjClass.Has(object.ClassPlayer) {
 		return true
@@ -59,14 +60,16 @@ func spellSwapTargetInPlayerBounds530D30(caster, target *Object) bool {
 	halfX := float64(data.Player.Field10)
 	halfY := float64(data.Player.Field12)
 	x, y := float64(caster.PosVec.X), float64(caster.PosVec.Y)
-	minX, minY := float32(x-halfX), float32(y-halfY)
-	maxX, maxY := float32(x+halfX), float32(y+halfY)
+	minX := shapeBoxSpill428270(shapeBoxAdd53_428270(x, -halfX))
+	minY := shapeBoxSpill428270(shapeBoxAdd53_428270(y, -halfY))
+	maxX := shapeBoxSpill428270(shapeBoxAdd53_428270(x, halfX))
+	maxY := shapeBoxSpill428270(shapeBoxAdd53_428270(y, halfY))
 	pos := target.PosVec
 	return pos.X >= minX && pos.X <= maxX && pos.Y >= minY && pos.Y <= maxY
 }
 
-// SpellSwapUpdate530D30 follows GAME.EXE 00530D30. Both teleport destinations
-// are captured before moving either object, so the two locations are swapped.
+// SpellSwapUpdate530D30 follows GAME.EXE 00530D30. The target's old position
+// is saved before the first teleport; duration links stay live across services.
 //
 //go:noinline
 func SpellSwapUpdate530D30(record *DurSpell, rt SpellSwapRuntime530CA0) int32 {
@@ -80,24 +83,30 @@ func SpellSwapUpdate530D30(record *DurSpell, rt SpellSwapRuntime530CA0) int32 {
 		return 0
 	}
 	if target.HasEnchant(ENCHANT_ANCHORED) || caster.HasEnchant(ENCHANT_ANCHORED) {
-		rt.Audio(sound.ID(231), target, 0, 0)
-		rt.Audio(sound.ID(231), caster, 0, 0)
+		rt.Audio(sound.ID(231), record.Target48, 0, 0)
+		rt.Audio(sound.ID(231), record.Caster16, 0, 0)
 		return 1
 	}
 	if record.Flag20 == 0 &&
-		(!rt.CanInteract(caster, target) || !spellSwapTargetInPlayerBounds530D30(caster, target)) {
-		rt.InformNoLOS(caster)
+		(!rt.CanInteract(record.Caster16, record.Target48) || !spellSwapTargetInPlayerBounds530D30(record.Caster16, record.Target48)) {
+		rt.InformNoLOS(record.Caster16)
 		return 1
 	}
-	casterPos, targetPos := caster.PosVec, target.PosVec
-	rt.Teleport(target, casterPos)
-	rt.Teleport(caster, targetPos)
-	if !target.HasEnchant(ENCHANT_INVISIBLE) && !caster.HasEnchant(ENCHANT_INVISIBLE) {
-		rt.SendPointFX(netmsg.MSG_FX_TELEPORT, caster.PosVec)
-		rt.SendPointFX(netmsg.MSG_FX_TELEPORT, target.PosVec)
+	target = record.Target48
+	targetPos := target.PosVec
+	rt.Teleport(target, record.Caster16.PosVec)
+	rt.Teleport(record.Caster16, targetPos)
+	if !record.Target48.HasEnchant(ENCHANT_INVISIBLE) && !record.Caster16.HasEnchant(ENCHANT_INVISIBLE) {
+		rt.SendPointFX(netmsg.MSG_FX_TELEPORT, record.Caster16.PosVec)
+		rt.SendPointFX(netmsg.MSG_FX_TELEPORT, record.Target48.PosVec)
 	}
-	rt.Audio(rt.CastSound(spell.ID(record.Spell)), target, 0, 0)
-	rt.Audio(rt.CastSound(spell.ID(record.Spell)), caster, 0, 0)
-	rt.Attribution(caster, target)
+	// Each audio target is pushed before its corresponding sound lookup.
+	play := func(unit *Object) {
+		id := rt.CastSound(spell.ID(record.Spell))
+		rt.Audio(id, unit, 0, 0)
+	}
+	play(record.Target48)
+	play(record.Caster16)
+	rt.Attribution(record.Caster16, record.Target48)
 	return 1
 }

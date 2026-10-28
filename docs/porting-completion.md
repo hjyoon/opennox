@@ -55,6 +55,79 @@ completion requirements.
 
 ## Current findings
 
+### Native Swap entries, live duration links and player bounds
+
+The exposed Swap create `530CA0` and update `530D30` still used a truncated
+integer pointer or PE32 duration/object offsets. Two actual C entry calls
+fault on valid guarded C-owned native DEAD-target records above4GiB while
+ordinary Go dispatch returns1 with an unchanged timer. The before overlay
+is retained under `blink-native-entry-port`; source060a2ac has the same src
+tree as that sourceb7bf385. Both public entries now accept opaque native
+pointers and share the real Go runtime used by normal duration dispatch.
+Two C11 signature assertions verify the ABI. No serialized or wire layout
+changes, and the obsolete two C roots are removed.
+
+The existing Go bodies independently disagree with the original. Delay now
+retains binary64 balance input until the original directed binary32 spill
+and signed-dword FISTP conversion. Player bounds use startup53-bit arithmetic
+and binary32 spills toward zero, including small offsets at large positions;
+Go nearest rounding can change acceptance at a boundary. After LOS, teleport,
+FX, sound/audio and anchored audio, the duration's target/caster links are
+reloaded in their original order. The target's original position stays saved
+for the second teleport. Each audio target is fixed before its sound lookup;
+final attribution uses the current Caster16 and Target48.
+
+The whole unchanged original create/update roots contain135/605 bytes;
+the reached converter adds17 and rectangle comparison adds66,823 total.
+Every byte executes across169 contexts (34 create,135 update) independently
+at startup0x0e3f and nearest control0x023f. Thirty-seven callback mutation
+kinds execute39 times per profile. Mode/buff reads are pure; balance return,
+LOS, message, teleport, point FX, sound/audio and attribution are declared
+services. Only a scratch FLD/RET supplies the balance return; original
+arithmetic, spills, comparisons and control flow are never replaced.
+Callee-saved registers, return stack, FP control word/TOP and nonoutput heap/
+global canaries are checked. Independent PE mapping verifies all823 bytes
+against original GAME.EXE SHA256
+`0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a`.
+The committed startup fixture SHA256 is
+`8a77180e550b8f02b0883e60b60ccc64ee691b40d7d9daf13fdc122dab992ac9`.
+These are whole roots under declared services, not transitive-callee,
+branch-percentage or full-campaign equivalence. Invalid nil player/update
+shapes keep existing defensive Go rejection and are excluded from the oracle.
+
+Against unchanged before Go bodies and bindings, the exact same fixture
+passes122 controls and fails47 leaves: nine delay and18 player-boundary
+results match the original nearest control;20 target/caster reload results
+differ in both profiles. All mutations are reached, with no setup failure.
+After correction all169 original contexts and25 existing Swap terminals
+pass (195 including the reference parent). The old delay fixture adapts its
+return width to binary64 and names startup truncation; its existing3.5 input
+now correctly expects103 instead of104, as the original execution establishes.
+The other old inputs/expectations stay unchanged. Full same-fixture before/
+after and independent seals are under `swap-native-entry-port` in
+`original-swap-seals-qualified-v1.json`.
+
+Both direct public C controls now pass with their parent. A separate actual
+C composition uses production duration bindings, allocator, movement gates,
+coordinate updates and spatial index. Create schedules frame143 from142;
+update exchanges (100,200)/(300,400) in all three position vectors, with both
+objects partitioned and all native record/canary bytes preserved. It uses
+synthetic simple bodies in co-op glyph mode; it does not claim earned campaign
+or sound-packet coverage. Its parent contributes one terminal, for174 new
+terminals total. Source and existing replay inputs are unchanged during the
+verification runs.
+
+The sequential full root/server/legacy normal suite passes272216 with18
+skips in187.554 seconds. Focused highres/cgocheck2/checkptr2 passes2348 with
+one x86-only skip in192.031 seconds. Both profiles explicitly pass all174 new
+terminals on unchanged runtime inputs. All requested poison-macro warnings
+are absent. Only49 old regular regenerable compiler-cache archives, totaling
+5,020,761,952 bytes, are removed before these builds; original saves/assets,
+goldens, executable products, failures and raw logs are retained. The46-entry
+duration inventory now has13 native Go exports, three native C forwarders,
+one constant leaf and29 remaining lexical C candidates. This inventory is
+not execution coverage or a completion percentage. Overall100% remains open.
+
 ### Native Blink entries, live callback loads and TeleportWake creation
 
 The exposed Blink create `530310` and update `530380` still used PE32

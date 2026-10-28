@@ -120,7 +120,7 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 		return sp.s.SpellBlinkUpdate530380(record)
 	}
 	if callback == legacy.Get_sub_530D30() {
-		return server.SpellSwapUpdate530D30(record, sp.swapRuntime530CA0())
+		return sp.s.SpellSwapUpdate530D30(record)
 	}
 	if callback == legacy.Get_nox_xxx_castTTT_530B70() {
 		return server.SpellTeleportToTargetUpdate530B70(record, sp.teleportToTargetRuntime530A30())
@@ -209,7 +209,7 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 		return sp.s.SpellBlinkCreate530310(record)
 	}
 	if callback == legacy.Get_sub_530CA0() {
-		return server.SpellSwapCreate530CA0(record, sp.swapRuntime530CA0())
+		return sp.s.SpellSwapCreate530CA0(record)
 	}
 	if callback == legacy.Get_sub_530A30_spell_execdur() {
 		return server.SpellTeleportToTargetCreate530A30(record, sp.teleportToTargetRuntime530A30())
@@ -295,8 +295,8 @@ func (sp *spellsDuration) swapRuntime530CA0() server.SpellSwapRuntime530CA0 {
 	return server.SpellSwapRuntime530CA0{
 		CoopMode: func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
 		Frame:    sp.s.Frame,
-		TeleportDelay: func(levelIndex uint32) float32 {
-			return float32(sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex))))
+		TeleportDelay: func(levelIndex uint32) float64 {
+			return sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex)))
 		},
 		CanInteract: func(caster, target *server.Object) bool {
 			return world.CanInteract(caster, target, 0)

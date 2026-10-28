@@ -4,17 +4,24 @@ package legacy
 #include "defs.h"
 #include "GAME3_3.h"
 #include <string.h>
-static void nox_radial_damage_probe(float2* center,uint32_t outer_bits,uint32_t inner_bits,int damage,int typ,nox_object_t* source,nox_object_t* excluded) {
- void (*call)(float*,float,float,int,int,nox_object_t*,nox_object_t*)=nox_xxx_mapDamageUnitsAround_4E25B0;
 #if defined(__i386__) && defined(__GNUC__)
- // Reproduce GAME.EXE's raw DWORD pushes. MinGW's float copies, including
- // the cgo probe's own argument marshalling, otherwise quiet the input
- // before the production C entry can see it.
- struct {float2* center;uint32_t outer,inner;int damage,typ;nox_object_t *source,*excluded;void* call;uintptr_t stack;} frame =
-  {center,outer_bits,inner_bits,damage,typ,source,excluded,(void*)call,0};
- __asm__ volatile("movl %%esp,32(%0)\n\tandl $-16,%%esp\n\tsubl $4,%%esp\n\tpushl 24(%0)\n\tpushl 20(%0)\n\tpushl 16(%0)\n\tpushl 12(%0)\n\tpushl 8(%0)\n\tpushl 4(%0)\n\tpushl 0(%0)\n\tcall *28(%0)\n\tmovl 32(%0),%%esp"
-  : : "r"(&frame) : "eax","ecx","edx","memory","cc");
+#define NOX_RADIAL_LABEL_INNER(x) #x
+#define NOX_RADIAL_LABEL(x) NOX_RADIAL_LABEL_INNER(x)
+// Integer arguments have the same DWORD stack representation as float on
+// i386. Let the C compiler own the complete call frame, then tail-jump to
+// the real float entry without an x87 load or an extra return frame.
+extern void nox_radial_damage_raw_probe(float2*,uint32_t,uint32_t,int,int,nox_object_t*,nox_object_t*);
+__asm__(".text\n.globl " NOX_RADIAL_LABEL(__USER_LABEL_PREFIX__) "nox_radial_damage_raw_probe\n"
+ NOX_RADIAL_LABEL(__USER_LABEL_PREFIX__) "nox_radial_damage_raw_probe:\n"
+ "jmp " NOX_RADIAL_LABEL(__USER_LABEL_PREFIX__) "nox_xxx_mapDamageUnitsAround_4E25B0\n");
+#undef NOX_RADIAL_LABEL
+#undef NOX_RADIAL_LABEL_INNER
+#endif
+static void nox_radial_damage_probe(float2* center,uint32_t outer_bits,uint32_t inner_bits,int damage,int typ,nox_object_t* source,nox_object_t* excluded) {
+#if defined(__i386__) && defined(__GNUC__)
+ nox_radial_damage_raw_probe(center,outer_bits,inner_bits,damage,typ,source,excluded);
 #else
+ void (*call)(float*,float,float,int,int,nox_object_t*,nox_object_t*)=nox_xxx_mapDamageUnitsAround_4E25B0;
  float outer,inner;memcpy(&outer,&outer_bits,4);memcpy(&inner,&inner_bits,4);
  call((float*)center,outer,inner,damage,typ,source,excluded);
 #endif

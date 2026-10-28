@@ -55,8 +55,12 @@ The Wizard3 MagicMissile case uses the separate earned lift-return checkpoint
 from `wizard3-original-b-cellar-bandit-lift-return-v516-normal`. It preserves
 the original35 ordinary aiming/key attempts and waits from the earlier combat
 route, adding read-only A50/S41 binding and initial-player checks. The original
-Swordsman must be alive in the first observation and dead with native HP0
-afterward. A healthy process exit without that effect fails the case.
+Swordsman must be alive with positive native HP in the first observation and
+end with DEAD and native HP0. This case enables `require_monster_health_zero`;
+missing health, flags alone or a healthy process exit cannot pass it. Current
+HP33 from the historical Save is retained; the observed maxima are32/98,
+whose exact original-input audit remains open. The scenario waits600 ordinary
+frames after combat to recover while retaining MP at least40 before Save.
 
 The Swap case uses its own earlier earned checkpoint, before the barred-room
 escape. Run it with `--suite scripts/e2e/campaign/wizard2-swap-escape.json`

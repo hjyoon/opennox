@@ -675,5 +675,55 @@ class RequiredPlateHoldsTests(unittest.TestCase):
                 self.assertFalse(runner.required_plate_holds(samples, self.requirements)['passed'])
 
 
+class RequiredNativeMonsterHealthTests(unittest.TestCase):
+    def setUp(self):
+        self.alive = {'script_id': 7, 'class': ['MONSTER'], 'flags': ['ACTIVE'],
+                      'health': {'current': 17, 'maximum': 23}}
+        self.dead = dict(self.alive, flags=['DEAD'], health={'current': 0, 'maximum': 23})
+
+    def test_same_original_identity_positive_to_explicit_zero_and_dead(self):
+        result = runner.required_monster_health_zero([[self.alive], [self.dead]], [7])
+        self.assertTrue(result['passed'])
+        self.assertEqual(result['initial_alive_health_script_ids'], [7])
+        self.assertEqual(result['final_dead_zero_health_script_ids'], [7])
+
+    def test_dead_flag_with_positive_or_absent_health_is_insufficient(self):
+        for health in ({'current': 1, 'maximum': 23}, None, {}, {'current': 0}):
+            with self.subTest(health=health):
+                self.assertFalse(runner.required_monster_health_zero(
+                    [[self.alive], [dict(self.dead, health=health)]], [7])['passed'])
+
+    def test_zero_health_without_dead_flag_is_insufficient(self):
+        zero = dict(self.dead, flags=['ACTIVE'])
+        self.assertFalse(runner.required_monster_health_zero([[self.alive], [zero]], [7])['passed'])
+
+    def test_wrong_identity_or_absent_final_object_cannot_pass(self):
+        for last in ([], [dict(self.dead, script_id=8)]):
+            self.assertFalse(runner.required_monster_health_zero([[self.alive], last], [7])['passed'])
+
+    def test_already_dead_or_missing_initial_health_cannot_pass(self):
+        for first in (self.dead, dict(self.alive, health=None), dict(self.alive, health={'current': 0, 'maximum': 23})):
+            self.assertFalse(runner.required_monster_health_zero([[first], [self.dead]], [7])['passed'])
+
+    def test_malformed_native_words_are_rejected(self):
+        for health in ({'current': False, 'maximum': 23}, {'current': 0.0, 'maximum': 23},
+                       {'current': -1, 'maximum': 23}, {'current': 65536, 'maximum': 23},
+                       {'current': 0, 'maximum': 0}, {'current': 0, 'maximum': True}):
+            with self.subTest(health=health):
+                self.assertFalse(runner.required_monster_health_zero(
+                    [[self.alive], [dict(self.dead, health=health)]], [7])['passed'])
+
+    def test_every_required_identity_needs_its_own_health_transition(self):
+        self.assertFalse(runner.required_monster_health_zero([[self.alive], [self.dead]], [7, 8])['passed'])
+        self.assertFalse(runner.required_monster_health_zero([[self.alive], [self.dead]], [])['passed'])
+
+    def test_requirement_is_validated_before_launch(self):
+        runner.validate_suite_fields({'cases': [{'required_defeated_script_ids': [7], 'require_monster_health_zero': True}]})
+        for value, identities in ((1, [7]), (True, []), (True, None), (True, '7'), (True, [True])):
+            with self.subTest(value=value, identities=identities), self.assertRaises(ValueError):
+                runner.validate_suite_fields({'cases': [{'required_defeated_script_ids': identities,
+                                                        'require_monster_health_zero': value}]})
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -37,7 +37,7 @@ CASE_FIELDS = {'name', 'scenario', 'expected_maps', 'manual_save', 'require_pois
                'expected_maximum_health', 'expected_maximum_mana',
                'minimum_health', 'minimum_mana',
                'expect_damage', 'created_type', 'minimum_created', 'minimum_dead_created',
-               'required_defeated_script_ids', 'required_enable_transitions',
+               'required_defeated_script_ids', 'require_monster_health_zero', 'required_enable_transitions',
                'required_position_transitions', 'required_plate_holds', 'required_map_pickups',
                'required_swap_pairs'}
 
@@ -51,6 +51,11 @@ def validate_suite_fields(suite):
         unknown = set(case) - CASE_FIELDS
         if unknown:
             raise ValueError('unknown campaign case fields: ' + ', '.join(sorted(unknown)))
+        if 'require_monster_health_zero' in case:
+            identities = case.get('required_defeated_script_ids')
+            if (type(case['require_monster_health_zero']) is not bool or not isinstance(identities, list) or not identities
+                    or any(type(v) is not int or not 0 < v < 1 << 31 for v in identities)):
+                raise ValueError('require_monster_health_zero needs a boolean and required original monster identities')
         if 'required_swap_pairs' in case:
             pairs = case['required_swap_pairs']
             if not isinstance(pairs, list) or not pairs:
@@ -208,6 +213,33 @@ def required_monster_deaths(samples, required_ids):
             'observed_dead_script_ids': sorted(observed_dead),
             'last_observed_dead_script_ids': sorted(dead),
             'passed': bool(required) and required <= dead}
+
+
+def required_monster_health_zero(samples, required_ids):
+    required = set(required_ids)
+
+    def health(obj):
+        value = obj.get('health')
+        if not isinstance(value, dict):
+            return None
+        current, maximum = value.get('current'), value.get('maximum')
+        if (type(current) is not int or type(maximum) is not int
+                or not 0 <= current <= 0xffff or not 0 < maximum <= 0xffff):
+            return None
+        return current
+
+    first, last = (samples[0], samples[-1]) if samples else ([], [])
+    alive = {obj.get('script_id') for obj in first
+             if isinstance(obj.get('class'), list) and isinstance(obj.get('flags'), list)
+             and 'MONSTER' in obj['class']
+             and not {'DEAD', 'DESTROYED'} & set(obj.get('flags') or [])
+             and health(obj) is not None and health(obj) > 0} & required
+    dead = {obj.get('script_id') for obj in last
+            if isinstance(obj.get('class'), list) and isinstance(obj.get('flags'), list)
+            and 'MONSTER' in obj['class']
+            and 'DEAD' in (obj.get('flags') or []) and health(obj) == 0} & alive
+    return {'required_script_ids': sorted(required), 'initial_alive_health_script_ids': sorted(alive),
+            'final_dead_zero_health_script_ids': sorted(dead), 'passed': bool(required) and required <= dead}
 
 
 def required_map_pickups(samples, log, requirements, *, actual_maps, expected_maps):
@@ -775,6 +807,12 @@ def run_case(args, binary, suite_dir, case, port):
                                                - set(history['last_observed_dead_script_ids'])),
                              'initial_alive': history['initial_alive_script_ids'],
                              'observed_dead': history['last_observed_dead_script_ids']})
+    if case.get('require_monster_health_zero'):
+        native_health = required_monster_health_zero(samples if snapshots_ok else [], case['required_defeated_script_ids'])
+        report['required_native_monster_health'] = native_health
+        outcomes_ok = outcomes_ok and native_health['passed']
+        if not native_health['passed']:
+            failures.append({'check': 'require_monster_health_zero', **native_health})
     if case.get('required_map_pickups'):
         log_path = case_dir / 'game.log'
         pickups = required_map_pickups(samples if snapshots_ok else [],

@@ -100,6 +100,27 @@ a living manual Save. Its outcome is recorded after executing the new clean
 product; neither the prepared scenario nor unit checks certify a chapter.
 Overall100% remains unproven.
 
+The first new combat replay defeats the original Swordsman and writes a living
+manual Save, but correctly fails its resource expectations. The historical
+Save retains current HP33/MP99; this product computes maxima32/98, and combat
+ends at MP27. Exact original-input qualification of those changed maxima
+remains open; the MagicMissile port does not change class-stat code. The first
+report and Save are preserved. The scenario retains HP33 and MP at least40,
+uses the observed maxima, and adds600 ordinary recovery frames before Save.
+
+The parameterless object observation now copies native current/maximum HP
+into a Go-owned JSON record. No native health pointer survives serialization.
+An actual C-owned object/health test above4 GiB verifies positive HP, explicit
+zero HP, missing health and read-only behavior through the real HTTP route.
+All23 API checks pass normally and with highres/cgocheck2/checkptr2. The object
+layout and all gameplay methods remain byte-identical. A new opt-in campaign
+gate requires the same original monster to begin with positive HP and end
+with both DEAD and native HP0; flags or absent HP cannot satisfy it. Python
+campaign tests pass67, retaining all earlier test methods and adding eight
+negative-control/contract tests. This observation change requires its own
+clean product for the affected replay; the earlier full gameplay checks are
+retained.
+
 ### Native AntiSpell callbacks and map coordinates
 
 The remaining AntiSpell C entries at 53BB00 and 53BD10 now accept full native

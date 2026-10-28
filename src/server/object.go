@@ -2061,6 +2061,18 @@ func (obj *Object) AllMask140() {
 	}
 }
 
+type debugObjectHealth struct {
+	Current uint16 `json:"current"`
+	Maximum uint16 `json:"maximum"`
+}
+
+func (obj *Object) debugHealth() *debugObjectHealth {
+	if obj.HealthData == nil {
+		return nil
+	}
+	return &debugObjectHealth{Current: obj.HealthData.Cur, Maximum: obj.HealthData.Max}
+}
+
 type debugObject struct {
 	Ind          int                 `json:"ind"`
 	ID           string              `json:"id,omitempty"`
@@ -2080,6 +2092,7 @@ type debugObject struct {
 	Vel          types.Pointf        `json:"vel,omitempty"`
 	Force        types.Pointf        `json:"force,omitempty"`
 	Mass         float32             `json:"mass,omitempty"`
+	Health       *debugObjectHealth  `json:"health,omitempty"`
 	Team         *debugTeamInfo      `json:"team,omitempty"`
 	Inventory    []*debugObject      `json:"inventory,omitempty"`
 	Equipment    []*debugObject      `json:"equipment,omitempty"`
@@ -2121,6 +2134,7 @@ func (obj *Object) dump() *debugObject {
 		Vel:          obj.Vel(),
 		Force:        obj.Force(),
 		Mass:         obj.Mass,
+		Health:       obj.debugHealth(),
 		Team:         obj.Team().dump(),
 		Inventory:    inv,
 		Equipment:    euip,

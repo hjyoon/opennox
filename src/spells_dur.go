@@ -26,6 +26,7 @@ type spellsDuration struct {
 	plasmaWeapons         map[*server.DurSpell]*server.Object
 	plasmaSelection       server.SpellPlasmaSelection531920
 	energyBoltSelection   server.SpellEnergyBoltSelection52EC60
+	drainManaSelection    server.SpellDrainManaSelection52E610
 	durationRayTargets    map[*server.DurSpell]*server.Object
 	// A projectile may collide and disappear before the next E2E poll.
 	forceOfNatureLaunches uint64
@@ -44,6 +45,7 @@ func (sp *spellsDuration) Free() {
 	sp.plasmaWeapons = nil
 	sp.plasmaSelection = server.SpellPlasmaSelection531920{}
 	sp.energyBoltSelection = server.SpellEnergyBoltSelection52EC60{}
+	sp.drainManaSelection = server.SpellDrainManaSelection52E610{}
 	sp.durationRayTargets = nil
 	sp.forceOfNatureLaunches = 0
 }
@@ -680,14 +682,20 @@ func (sp *spellsDuration) energyBoltRuntime52E820() server.SpellEnergyBoltRuntim
 func (sp *spellsDuration) drainManaRuntime52E210() server.SpellDrainManaRuntime52E210 {
 	world := sp.s.S()
 	return server.SpellDrainManaRuntime52E210{
-		Frame:    sp.s.Frame,
-		TickRate: world.TickRate,
+		Frame:     sp.s.Frame,
+		TickRate:  world.TickRate,
+		Balance64: sp.s.Balance.Float,
 		Balance: func(key string) float32 {
 			return float32(sp.s.Balance.Float(key))
 		},
 		BalanceLevel: func(key string, level uint32) float32 {
 			return float32(sp.s.Balance.FloatInd(key, int(int32(level))))
 		},
+		BalanceLevel64: func(key string, level uint32) float64 {
+			return sp.s.Balance.FloatInd(key, int(int32(level)))
+		},
+		Selection:       &sp.drainManaSelection,
+		RoundTowardZero: true,
 		ObjectsInCircle: world.EachChainLightningObject52F8A0,
 		IsEnemy:         world.IsEnemyTo,
 		SameTeam:        server.UnitsHaveSameTeam4EC520,
@@ -701,6 +709,9 @@ func (sp *spellsDuration) drainManaRuntime52E210() server.SpellDrainManaRuntime5
 		},
 		AddMana: func(caster *server.Object, amount int16) {
 			legacy.Nox_xxx_playerManaAdd_4EEB80(caster, int(amount))
+		},
+		AddMana32: func(caster *server.Object, amount int32) {
+			legacy.Nox_xxx_playerManaAddFull4EEB80(caster, amount)
 		},
 		SubMana: func(target *server.Object, amount int32) {
 			legacy.Nox_xxx_playerManaSub_4EEBF0(target, int(amount))

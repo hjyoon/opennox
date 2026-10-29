@@ -41,3 +41,10 @@ func playerManaAddCall4EEB80(obj *server.Object, amount int32) uint16 {
 func Nox_xxx_playerManaAdd_4EEB80(obj *server.Object, amount int) uint16 {
 	return playerManaAddCall4EEB80(obj, int32(int16(amount)))
 }
+
+// Nox_xxx_playerManaAddFull4EEB80 preserves the original DWORD argument slot
+// for ported callers such as Drain Mana. The historical short API above keeps
+// its conversion; the native mana core owns word wrapping and protection.
+func Nox_xxx_playerManaAddFull4EEB80(obj *server.Object, amount int32) uint16 {
+	return playerManaAddCall4EEB80(obj, amount)
+}

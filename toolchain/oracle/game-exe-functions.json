@@ -17598,6 +17598,13 @@
       "purpose": "the exact decoded direct rel32 call at 0052DF6E targeting buff application at 004FF380"
     },
     {
+      "name": "original_complete_drain_mana_update_52e210",
+      "address": "0x0052E210",
+      "size": 561,
+      "sha256": "7d2ffb3a85bd5397b0c01a7612b92bc307a00bd1babb151c01c9053a0bdcf04f",
+      "purpose": "Complete original Drain Mana duration update: glyph and sustained paths, movement/recent/full-mana guards, fixed-context native selection, binary64 coefficient plus captured carry, actual conversion, live ray/transfer/audio links. Executed before native public C ABI port under both original PC53 profiles and declared services."
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_52E232",
       "address": "0x0052E232",
       "size": 5,
@@ -17654,6 +17661,13 @@
       "purpose": "the exact decoded direct rel32 call that stops DrainMana's prior ray before starting a ray to a changed target"
     },
     {
+      "name": "original_complete_drain_mana_transfer_52e450",
+      "address": "0x0052E450",
+      "size": 434,
+      "sha256": "0420a16e62991432f0fc7e3dfb44c5ee8b6b069f46c98e08b63a6ec70c281c0f",
+      "purpose": "Complete original Drain Mana transfer: cached update pointers, signed Obelisk debit and repeated live Quest checks, actual team/sync helpers, Monster and Player amount rules, native DWORD credit argument, Quest class scaling and conversion. Declared mana effects are bounded services, not transitive full-game equivalence."
+    },
+    {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52E466",
       "address": "0x0052E466",
       "size": 5,
@@ -17680,6 +17694,27 @@
       "size": 5,
       "sha256": "0c7f8e245c119fa60d7f3f06e184674f74285f68c83c8013b264fe0174c6ca88",
       "purpose": "the exact decoded direct rel32 call from a mana effect that adds its computed integer amount"
+    },
+    {
+      "name": "original_complete_drain_mana_select_52e610",
+      "address": "0x0052E610",
+      "size": 80,
+      "sha256": "0c1858b12012126135fd49c819d0fa5cdd3fc1318efe39147c20a46beaa01114",
+      "purpose": "Complete original Drain Mana selector: initialize native-mapped selected/center/nearest scratch before binary64 balance lookup; enumerate the live point with a fixed caster context and return live selected scratch."
+    },
+    {
+      "name": "original_complete_drain_mana_candidate_52e660",
+      "address": "0x0052E660",
+      "size": 342,
+      "sha256": "a68d01e62592b058a17a1fbc1b6978f7ffafe1843f757dff77c8eb96867104a2",
+      "purpose": "Complete original Drain Mana candidate: actual has-mana helper, self/dead/class/enemy/same-team/player flags and cached update pointers; PC53 weighted score, pre-trace binary32 spill, unordered comparison and live scratch around trace."
+    },
+    {
+      "name": "original_complete_drain_mana_has_mana_52e7c0",
+      "address": "0x0052E7C0",
+      "size": 89,
+      "sha256": "70ad976abd31db386bbd5b7e9b6078e53ebe2bc88788676041ce013fe48a9b19",
+      "purpose": "Complete original Drain Mana has-mana helper: signed Obelisk mana, Monster status and actual original Player old-mana helper with original class priority."
     },
     {
       "name": "nox_xxx_unitGetOldMana_4EEC80_call_52E803",

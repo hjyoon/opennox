@@ -13,14 +13,15 @@ type SpellTeleportPopRuntime530820 struct {
 	CoopMode      func() bool
 	Frame         func() uint32
 	TickRate      func() uint32
-	TeleportDelay func(uint32) float32
+	TeleportDelay func(uint32) float64
 	RandomIndex   func() int
 	NewObject     func(string) *Object
 	CreateAt      func(*Object, *Object, types.Pointf)
+	Wake          func(*Object, *types.Pointf, *types.Pointf)
 	SendPointFX   func(netmsg.Op, types.Pointf)
 	CastSound     func(spell.ID) sound.ID
 	Audio         func(sound.ID, *Object, int, uint32)
-	Teleport      func(*Object, types.Pointf)
+	Teleport      func(*Object, *types.Pointf)
 	DelayedDelete func(*Object)
 	Attribution   func(*Object, *Object)
 }
@@ -29,7 +30,7 @@ type SpellTeleportPopRuntime530820 struct {
 func SpellTeleportPopCreate530820(record *DurSpell, rt SpellTeleportPopRuntime530820) int32 {
 	if rt.CoopMode() {
 		delay := rt.TeleportDelay(record.Level - 1)
-		record.Frame68 = rt.Frame() + uint32(spellDurationRoundNearestEven(delay))
+		record.Frame68 = rt.Frame() + uint32(playerReadValuesRound4EEDC0(shapeBoxSpill428270(delay)))
 	} else {
 		record.Frame68 = rt.Frame() + 1
 	}
@@ -55,6 +56,7 @@ func SpellTeleportPopUpdate530880(record *DurSpell, rt SpellTeleportPopRuntime53
 		rt.Audio(sound.ID(231), target, 0, 0)
 		return 1
 	}
+	caster = record.Caster16
 	if caster.ObjClass.Has(object.ClassPlayer) {
 		if caster.UpdateData == nil {
 			return 1
@@ -67,6 +69,9 @@ func SpellTeleportPopUpdate530880(record *DurSpell, rt SpellTeleportPopRuntime53
 		if !available {
 			return 1
 		}
+		// The original saves the departure position before random selection;
+		// the wake still receives the current target's live position address.
+		origin := record.Target48.PosVec
 		index := rt.RandomIndex()
 		for index >= 0 && index < len(data.Field29) && data.Field29[index] == nil {
 			index = rt.RandomIndex()
@@ -75,20 +80,24 @@ func SpellTeleportPopUpdate530880(record *DurSpell, rt SpellTeleportPopRuntime53
 			return 1
 		}
 		marker := data.Field29[index]
-		origin := target.PosVec
-		wake := rt.NewObject("TeleportWake")
-		if wake != nil && wake.CollideData != nil {
-			(*TeleportWakeCollideData)(wake.CollideData).Destination = marker.PosVec
-			rt.CreateAt(wake, target, origin)
-			wake.Field34 = rt.Frame() + rt.TickRate()
+		target = record.Target48
+		if rt.Wake != nil {
+			rt.Wake(target, &target.PosVec, &marker.PosVec)
+		} else {
+			SpellTeleportCreateWake530560(target, &target.PosVec, &marker.PosVec, SpellBlinkRuntime530310{
+				NewObject: rt.NewObject, CreateAt: rt.CreateAt, Frame: rt.Frame, TickRate: rt.TickRate,
+			})
 		}
 		// GAME.EXE reloads the live marker position after creating the wake.
-		rt.Teleport(target, data.Field29[index].PosVec)
-		if !target.HasEnchant(ENCHANT_INVISIBLE) {
+		rt.Teleport(record.Target48, &data.Field29[index].PosVec)
+		if !record.Target48.HasEnchant(ENCHANT_INVISIBLE) {
 			rt.SendPointFX(netmsg.MSG_FX_TELEPORT, origin)
-			rt.SendPointFX(netmsg.MSG_FX_TELEPORT, target.PosVec)
+			rt.SendPointFX(netmsg.MSG_FX_TELEPORT, record.Target48.PosVec)
 		}
-		rt.Audio(rt.CastSound(spell.ID(record.Spell)), target, 0, 0)
+		// The audio target is fixed before the spell sound lookup.
+		target = record.Target48
+		castSound := rt.CastSound(spell.ID(record.Spell))
+		rt.Audio(castSound, target, 0, 0)
 		shift := uint(index * 8)
 		charge := byte(data.Field39 >> shift)
 		charge--
@@ -99,6 +108,6 @@ func SpellTeleportPopUpdate530880(record *DurSpell, rt SpellTeleportPopRuntime53
 			data.Field29[index] = nil
 		}
 	}
-	rt.Attribution(caster, target)
+	rt.Attribution(record.Caster16, record.Target48)
 	return 1
 }

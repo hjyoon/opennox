@@ -49,7 +49,7 @@ func TestSpellTeleportToMarkCreate5305D0(t *testing.T) {
 			rt := SpellTeleportToMarkRuntime5305D0{
 				CoopMode: func() bool { return tc.coop },
 				Frame:    func() uint32 { return 100 },
-				TeleportDelay: func(level uint32) float32 {
+				TeleportDelay: func(level uint32) float64 {
 					if level != 2 {
 						t.Fatalf("delay level = %d", level)
 					}
@@ -110,7 +110,9 @@ func TestSpellTeleportToMarkUpdate530650Visible(t *testing.T) {
 				t.Fatalf("audio = %d/%p/%d/%d", id, obj, kind, code)
 			}
 		},
-		Teleport: func(obj *Object, pos types.Pointf) {
+		Teleport: func(obj *Object, point *types.Pointf) {
+			pos := *point
+
 			events = append(events, "teleport")
 			if obj != player || pos != marker.PosVec {
 				t.Fatalf("teleport = %p/%v", obj, pos)
@@ -180,7 +182,10 @@ func TestSpellTeleportToMarkUpdate530650OtherInvisible(t *testing.T) {
 				t.Fatalf("audio = %d/%p/%d/%d", id, obj, kind, code)
 			}
 		},
-		Teleport: func(obj *Object, pos types.Pointf) { obj.PosVec = pos },
+		Teleport: func(obj *Object, point *types.Pointf) {
+			pos := *point
+			obj.PosVec = pos
+		},
 		Attribution: func(from, to *Object) {
 			attributionCount++
 			if from != source || to != target {

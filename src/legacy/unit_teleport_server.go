@@ -16,6 +16,19 @@ func TeleportToMB4E7190(obj *server.Object, pos types.Pointf) {
 	})
 }
 
+// TeleportToMBPoint4E7190 retains the original point address until every
+// movement gate has passed, as the C entry does for its float2 argument.
+func TeleportToMBPoint4E7190(obj *server.Object, pos *types.Pointf) {
+	teleportToMBObject4E7190(obj, func(obj *server.Object) {
+		// The original unitMove entry also rejects immobile objects before
+		// dereferencing its point, even when the co-op gate admitted them.
+		if obj.ObjClass.Has(object.ClassImmobile) {
+			return
+		}
+		Nox_xxx_unitMove_4E7010(obj, *pos)
+	})
+}
+
 // teleportToMBObject4E7190 binds the independently tested gate contract to
 // the native-width object and game-flag state used by the production path.
 func teleportToMBObject4E7190(obj *server.Object, move func(*server.Object)) {

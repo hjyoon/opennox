@@ -25,7 +25,7 @@ func TestSpellTeleportPopCreate530820(t *testing.T) {
 		rt := SpellTeleportPopRuntime530820{
 			CoopMode: func() bool { return tc.coop },
 			Frame:    func() uint32 { return 100 },
-			TeleportDelay: func(level uint32) float32 {
+			TeleportDelay: func(level uint32) float64 {
 				if level != 2 {
 					t.Fatalf("delay level = %d", level)
 				}
@@ -121,7 +121,9 @@ func TestSpellTeleportPopUpdate530880MarkerSelectionAndCharge(t *testing.T) {
 						t.Fatalf("wake = %p %p %v, destination %v", obj, owner, pos, wakeData.Destination)
 					}
 				},
-				Teleport: func(obj *Object, pos types.Pointf) {
+				Teleport: func(obj *Object, point *types.Pointf) {
+					pos := *point
+
 					events = append(events, "teleport")
 					if obj != target || pos != marker.PosVec {
 						t.Fatalf("teleport = %p %v", obj, pos)

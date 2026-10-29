@@ -12,10 +12,7 @@
 #include "spell_chain_lightning_52f820.h"
 #include "spell_tag_native_530160.h"
 #include "spell_blink_native_530310.h"
-int sub_5305D0(uint32_t* a1);
-int sub_530650(int* a1);
-int nox_xxx_castTele_530820(int a1);
-int sub_530880(int* a1);
+#include "spell_teleport_markers_native_5305d0.h"
 #include "spell_teleport_target_native_530a30.h"
 #include "spell_swap_native_530ca0.h"
 int nox_xxx_manaBomb_530F90(uint32_t* a1);

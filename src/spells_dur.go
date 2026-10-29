@@ -362,14 +362,15 @@ func (sp *spellsDuration) teleportPopRuntime530820() server.SpellTeleportPopRunt
 		CoopMode: func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
 		Frame:    sp.s.Frame,
 		TickRate: world.TickRate,
-		TeleportDelay: func(levelIndex uint32) float32 {
-			return float32(sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex))))
+		TeleportDelay: func(levelIndex uint32) float64 {
+			return sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex)))
 		},
 		RandomIndex: func() int { return world.Rand.Logic.IntClamp(0, 3) },
 		NewObject:   world.NewObjectByTypeID,
 		CreateAt: func(object, owner *server.Object, point types.Pointf) {
 			sp.s.CreateObjectAt(object, owner, point)
 		},
+		Wake:        sp.s.SpellTeleportCreateWake530560,
 		SendPointFX: world.Nox_xxx_netSendPointFx_522FF0,
 		CastSound: func(id spell.ID) sound.ID {
 			return world.Spells.DefByInd(id).GetCastSound()
@@ -377,7 +378,7 @@ func (sp *spellsDuration) teleportPopRuntime530820() server.SpellTeleportPopRunt
 		Audio: func(id sound.ID, obj *server.Object, kind int, code uint32) {
 			sp.s.Audio.EventObj(id, obj, kind, code)
 		},
-		Teleport:      legacy.TeleportToMB4E7190,
+		Teleport:      legacy.TeleportToMBPoint4E7190,
 		DelayedDelete: sp.s.DelayedDelete,
 		Attribution:   legacy.Sub_4E7540,
 	}
@@ -389,13 +390,14 @@ func (sp *spellsDuration) teleportToMarkRuntime5305D0() server.SpellTeleportToMa
 		CoopMode: func() bool { return noxflags.HasGame(noxflags.GameModeCoop) },
 		Frame:    sp.s.Frame,
 		TickRate: world.TickRate,
-		TeleportDelay: func(levelIndex uint32) float32 {
-			return float32(sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex))))
+		TeleportDelay: func(levelIndex uint32) float64 {
+			return sp.s.Balance.FloatInd("TeleportDelay", int(int32(levelIndex)))
 		},
 		NewObject: world.NewObjectByTypeID,
 		CreateAt: func(object, owner *server.Object, point types.Pointf) {
 			sp.s.CreateObjectAt(object, owner, point)
 		},
+		Wake:        sp.s.SpellTeleportCreateWake530560,
 		SendPointFX: world.Nox_xxx_netSendPointFx_522FF0,
 		OnSound: func(id spell.ID) sound.ID {
 			return world.Spells.DefByInd(id).GetOnSound()
@@ -403,7 +405,7 @@ func (sp *spellsDuration) teleportToMarkRuntime5305D0() server.SpellTeleportToMa
 		Audio: func(id sound.ID, obj *server.Object, kind int, code uint32) {
 			sp.s.Audio.EventObj(id, obj, kind, code)
 		},
-		Teleport:      legacy.TeleportToMB4E7190,
+		Teleport:      legacy.TeleportToMBPoint4E7190,
 		DelayedDelete: sp.s.DelayedDelete,
 		Attribution:   legacy.Sub_4E7540,
 	}

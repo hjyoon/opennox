@@ -1,0 +1,121 @@
+name: Porting Windows GC diagnostic
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_revision:
+        description: Exact source revision to reproduce without changing tests
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  diagnostic:
+    name: Windows/amd64 swept-mark diagnostic
+    runs-on: windows-2025
+    timeout-minutes: 45
+    env:
+      GOOS: windows
+      GOARCH: amd64
+      CGO_ENABLED: '1'
+      CGO_CFLAGS_ALLOW: '-f.*'
+      CGO_CFLAGS: '-O2 -g -fno-peephole2'
+      SOURCE_REVISION: ${{ inputs.source_revision }}
+      REPORT_DIR: ${{ github.workspace }}/build/windows-gc-diagnostic
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_revision }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: src/go.mod
+          cache: false
+      - uses: msys2/setup-msys2@v2
+        id: msys2
+        with:
+          msystem: MINGW64
+          update: true
+          install: mingw-w64-x86_64-gcc
+      - name: Preserve and repair only the zombie-object report
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $mingwBin = Join-Path '${{ steps.msys2.outputs.msys2-location }}' 'mingw64/bin'
+          "CC=$(Join-Path $mingwBin 'gcc.exe')" >> $env:GITHUB_ENV
+          "CXX=$(Join-Path $mingwBin 'g++.exe')" >> $env:GITHUB_ENV
+          $mingwBin >> $env:GITHUB_PATH
+          New-Item -ItemType Directory -Force $env:REPORT_DIR | Out-Null
+          $revision = (& git rev-parse HEAD).Trim()
+          if ($LASTEXITCODE -ne 0 -or $revision -ne $env:SOURCE_REVISION) { throw 'Source mismatch' }
+          if (& git status --porcelain) { throw 'Source checkout must be clean' }
+          $goroot = (& go env GOROOT).Trim()
+          if ($LASTEXITCODE -ne 0) { throw 'Missing Go toolchain' }
+          $path = Join-Path $goroot 'src/runtime/mgcsweep.go'
+          $text = [System.IO.File]::ReadAllText($path)
+          Copy-Item $path (Join-Path $env:REPORT_DIR 'mgcsweep-before.go.txt')
+          $start = $text.IndexOf('func (s *mspan) reportZombies() {')
+          if ($start -lt 0) { throw 'Unknown zombie report' }
+          $prefix = $text.Substring(0, $start)
+          $tail = $text.Substring($start)
+          $needle = "`tmbits := s.markBitsForBase()"
+          if (($tail.Split($needle).Count - 1) -ne 1) { throw 'Unexpected report implementation' }
+          # The sweeper has already drained inline marks into gcmarkBits.
+          # Read those same bits for diagnostics. Marking/sweeping are unchanged.
+          $patched = $prefix + $tail.Replace($needle, "`tmbits := markBits{&s.gcmarkBits.x, 1, 0}")
+          [System.IO.File]::WriteAllText($path, $patched, [System.Text.UTF8Encoding]::new($false))
+          Copy-Item $path (Join-Path $env:REPORT_DIR 'mgcsweep-after.go.txt')
+          $profile = @{
+            source_revision = $revision
+            diagnostic_only = $true
+            collector_unchanged = $true
+            report_fix = 'https://github.com/golang/go/issues/80799'
+            GOEXPERIMENT = (& go env GOEXPERIMENT).Trim()
+            go_version = (& go version).Trim()
+            before_sha256 = (Get-FileHash (Join-Path $env:REPORT_DIR 'mgcsweep-before.go.txt') -Algorithm SHA256).Hash.ToLower()
+            after_sha256 = (Get-FileHash $path -Algorithm SHA256).Hash.ToLower()
+          }
+          if ($profile.GOEXPERIMENT -ne '') { throw 'Retain the default collector' }
+          $profile | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $env:REPORT_DIR 'diagnostic-profile.json')
+          $profile | ConvertTo-Json
+      - name: Reproduce unchanged full native suites with exact JSON streams
+        working-directory: src
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $env:GOTOOLCHAIN = 'local'
+          $env:GOEXPERIMENT = ''
+          $p = [System.Diagnostics.Process]::new()
+          $p.StartInfo.FileName = (Get-Command go).Source
+          $p.StartInfo.UseShellExecute = $false
+          $p.StartInfo.RedirectStandardOutput = $true
+          $p.StartInfo.RedirectStandardError = $true
+          foreach ($arg in @('test','-tags=server','-json','-count=1','-timeout=20m','.','./server','./legacy')) {
+            $p.StartInfo.ArgumentList.Add($arg)
+          }
+          $out = [System.IO.File]::Open((Join-Path $env:REPORT_DIR 'test.jsonl'), [System.IO.FileMode]::CreateNew)
+          $err = [System.IO.File]::Open((Join-Path $env:REPORT_DIR 'test.stderr.log'), [System.IO.FileMode]::CreateNew)
+          try {
+            if (-not $p.Start()) { throw 'Test process failed to start' }
+            $copyOut = $p.StandardOutput.BaseStream.CopyToAsync($out)
+            $copyErr = $p.StandardError.BaseStream.CopyToAsync($err)
+            $p.WaitForExit()
+            [System.Threading.Tasks.Task]::WaitAll(@($copyOut, $copyErr))
+            $code = $p.ExitCode
+          } finally {
+            $out.Dispose()
+            $err.Dispose()
+            $p.Dispose()
+          }
+          $code | Set-Content (Join-Path $env:REPORT_DIR 'test.exit')
+          Get-FileHash (Join-Path $env:REPORT_DIR 'test.jsonl') -Algorithm SHA256
+          exit $code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-gc-diagnostic-${{ inputs.source_revision }}-${{ github.run_attempt }}
+          path: build/windows-gc-diagnostic/
+          if-no-files-found: error
+          retention-days: 7

@@ -55,6 +55,12 @@ func e2eAIBlinkWake(target *server.Object) *server.Object {
 	return nil
 }
 
+func e2eAIBlinkWakeValid(origin types.Pointf, wake *server.Object, destinations map[types.Pointf]bool, castFrame, tickRate uint32) bool {
+	return wake != nil && wake.CollideData != nil && wake.PosVec == origin &&
+		destinations[(*server.TeleportWakeCollideData)(wake.CollideData).Destination] &&
+		wake.Field34 == castFrame+tickRate
+}
+
 type e2eAIBlinkFixture struct {
 	mode                             string
 	combat                           e2eAIFirstAttackFixture
@@ -65,7 +71,8 @@ type e2eAIBlinkFixture struct {
 	castFrame, deadline, wakeExpiry  uint32
 	lastLog                          uint32
 	castSound                        sound.ID
-	soundCount                       int
+	soundCount, wakeSoundCount       int
+	destinations                     map[types.Pointf]bool
 	durationSeen, castSeen, wakeSeen bool
 	active, teleported, completed    bool
 	origin, destination              types.Pointf
@@ -89,6 +96,19 @@ func (f *e2eAIBlinkFixture) configure() {
 	f.armedFrame, f.oldDeadline = noxServer.Frame(), f.update.Field371
 	if f.oldDeadline > f.armedFrame || f.update.CurrentEnemy != host {
 		e2eError(fmt.Errorf("MainAI Blink needs a naturally acquired enemy and an initially ready slot"))
+		return
+	}
+	// Ordinary Blink chooses an active 0x80 waypoint without a minimum
+	// distance. Freeze that set before enabling the ability; a nearby waypoint
+	// remains valid, and an arbitrary distant point must not pass the observer.
+	f.destinations = make(map[types.Pointf]bool)
+	for wp := noxServer.WPs.First(); wp != nil; wp = wp.Next() {
+		if wp.HasFlag2Mask(0x80) && wp.Flags&1 != 0 {
+			f.destinations[wp.PosVec] = true
+		}
+	}
+	if len(f.destinations) == 0 {
+		e2eError(fmt.Errorf("MainAI Blink fixture requires active Blink waypoints"))
 		return
 	}
 	// This is a configurable Blink-capable stock body, not a claim that stock
@@ -124,6 +144,17 @@ func (f *e2eAIBlinkFixture) observeSound(id sound.ID, _ int, owner *server.Objec
 			e2eLog.Printf("AI MAIN BLINK DURATION: mode=%s record=%p power=%d caster=target trigger-frame=%d origin=%v", f.mode, record, record.Level, f.castFrame, f.origin)
 		}
 	}
+	if f.durationSeen {
+		f.observeWake()
+		if f.wakeSeen {
+			f.wakeSoundCount++
+			// Blink's second wake-associated sound follows Teleport. Observe
+			// exact arrival there, before ordinary AI movement in the next tick.
+			if f.wakeSoundCount >= 2 && owner.PosVec == f.destination {
+				f.teleported = true
+			}
+		}
+	}
 }
 
 func (f *e2eAIBlinkFixture) tick() {
@@ -146,20 +177,20 @@ func (f *e2eAIBlinkFixture) tick() {
 			return
 		}
 	}
-	if wake := e2eAIBlinkWake(target); wake != nil && !f.wakeSeen {
+	f.observeWake()
+}
+
+func (f *e2eAIBlinkFixture) observeWake() {
+	if wake := e2eAIBlinkWake(f.combat.enemy); wake != nil && !f.wakeSeen {
 		if unsafe.Sizeof(uintptr(0)) == 8 && (uintptr(unsafe.Pointer(wake)) <= math.MaxUint32 || uintptr(wake.CollideData) <= math.MaxUint32) {
 			e2eError(fmt.Errorf("MainAI Blink wake/collision data is not native-width"))
 			return
 		}
 		f.wakeSeen, f.destination, f.wakeExpiry = true, (*server.TeleportWakeCollideData)(wake.CollideData).Destination, wake.Field34
-		if !f.durationSeen || wake.PosVec != f.origin || f.destination.Sub(f.origin).Len() < 64 ||
-			f.wakeExpiry != f.castFrame+noxServer.TickRate() {
+		if !f.durationSeen || !e2eAIBlinkWakeValid(f.origin, wake, f.destinations, f.castFrame, noxServer.TickRate()) {
 			e2eError(fmt.Errorf("MainAI Blink wake has wrong origin/destination/lifetime: %s origin=%v/%v destination=%v expires=%d cast=%d", f.mode, f.origin, wake.PosVec, f.destination, f.wakeExpiry, f.castFrame))
 			return
 		}
-	}
-	if f.wakeSeen && target.PosVec.Sub(f.destination).Len() <= 16 && target.PosVec.Sub(f.origin).Len() >= 64 {
-		f.teleported = true
 	}
 }
 
@@ -168,7 +199,7 @@ func (f *e2eAIBlinkFixture) observe() bool {
 		f.lastLog = noxServer.Frame()
 		e2eLog.Printf("AI MAIN BLINK TICK: mode=%s elapsed=%d deadline=%d seen=%t/%t/%t teleport=%t sound=%d current=%p action=%v recent=%t pos=%v", f.mode, noxServer.Frame()-f.armedFrame, f.update.Field371, f.castSeen, f.durationSeen, f.wakeSeen, f.teleported, f.soundCount, f.update.CurrentEnemy, f.update.AIStackHead().Type(), noxServer.S().MonsterMoveAttemptRecent534810(f.combat.enemy), f.combat.enemy.PosVec)
 	}
-	if !f.castSeen || !f.durationSeen || !f.wakeSeen || !f.teleported || f.soundCount < 2 {
+	if !f.castSeen || !f.durationSeen || !f.wakeSeen || !f.teleported || f.soundCount < 2 || f.wakeSoundCount < 2 {
 		return false
 	}
 	for record := noxServer.Spells.Dur.List; record != nil; record = record.Next {
@@ -186,7 +217,7 @@ func (f *e2eAIBlinkFixture) observe() bool {
 		return true
 	}
 	f.completed, f.active = true, false
-	e2eLog.Printf("AI MAIN BLINK PASS: mode=%s first-attack=natural native-object/update/duration/wake=true immediate=true cast-frame=%d deadline=%d origin=%v destination=%v actual=%v sounds=%d duration=removed path=%s", f.mode, f.castFrame, f.deadline, f.origin, f.destination, f.combat.enemy.PosVec, f.soundCount, path)
+	e2eLog.Printf("AI MAIN BLINK PASS: mode=%s first-attack=natural native-object/update/duration/wake=true immediate=true cast-frame=%d deadline=%d origin=%v destination=%v actual=%v sounds=%d duration=removed path=%s wake-sounds=%d distance=%g destination=eligible-waypoint arrival=second-wake-sound", f.mode, f.castFrame, f.deadline, f.origin, f.destination, f.combat.enemy.PosVec, f.soundCount, path, f.wakeSoundCount, f.destination.Sub(f.origin).Len())
 	return true
 }
 

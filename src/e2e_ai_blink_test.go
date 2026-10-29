@@ -4,12 +4,46 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"unsafe"
 
 	"github.com/opennox/libs/spell"
+	"github.com/opennox/libs/types"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 	"gopkg.in/yaml.v2"
 )
+
+func TestE2EAIBlinkWakeAcceptsRecordedNearbyWaypoint(t *testing.T) {
+	// The original six-mode scenario reaches this waypoint in both the prior
+	// Mana Bomb product and the facing port. The former 64-unit assumption
+	// rejects it despite the stock selector having no distance restriction.
+	origin, nearby := types.Ptf(3206.4067, 2320.236), types.Ptf(3204, 2320)
+	far := types.Ptf(4158, 2811)
+	for _, tc := range []struct {
+		name        string
+		origin, dst types.Pointf
+		expires     uint32
+		want        bool
+	}{
+		{"recorded-nearby", origin, nearby, 851, true},
+		{"same-position", nearby, nearby, 851, true},
+		{"unlisted-distant-point", origin, far, 851, false},
+		{"wrong-wake-origin", far, nearby, 851, false},
+		{"wrong-wake-lifetime", origin, nearby, 850, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			data := &server.TeleportWakeCollideData{Destination: tc.dst}
+			wake := &server.Object{PosVec: tc.origin, Field34: tc.expires, CollideData: unsafe.Pointer(data)}
+			wantOrigin := origin
+			if tc.name == "same-position" {
+				wantOrigin = nearby
+			}
+			if got := e2eAIBlinkWakeValid(wantOrigin, wake, map[types.Pointf]bool{nearby: true}, 821, 30); got != tc.want {
+				t.Fatalf("recorded Blink waypoint accepted=%t want=%t", got, tc.want)
+			}
+		})
+	}
+}
 
 func TestE2EAIBlinkSchedule(t *testing.T) {
 	for _, kind := range []string{"Troll", "Urchin", "NPC"} {

@@ -476,6 +476,16 @@ func (sp *spellsDuration) moonglowRuntime531A00() server.SpellMoonglowRuntime531
 func (sp *spellsDuration) manaBombRuntime530F90() server.SpellManaBombRuntime530F90 {
 	world := sp.s.S()
 	return server.SpellManaBombRuntime530F90{
+		LoadTypeID: func() uint32 {
+			return *memmap.PtrUint32(0x5D4594, 2487920)
+		},
+		StoreTypeID: func(id uint32) {
+			*memmap.PtrUint32(0x5D4594, 2487920) = id
+		},
+		NameID: func(name string) uint32 { return uint32(world.Types.IndByID(name)) },
+		AllocateCharge: func(id uint32) *server.Object {
+			return world.NewObjectByTypeInd(int(int32(id)))
+		},
 		Frame:    sp.s.Frame,
 		TickRate: world.TickRate,
 		Balance: func(key string) float32 {
@@ -484,7 +494,6 @@ func (sp *spellsDuration) manaBombRuntime530F90() server.SpellManaBombRuntime530
 		BalanceLevel: func(key string, level uint32) float32 {
 			return float32(sp.s.Balance.FloatInd(key, int(int32(level))))
 		},
-		NewObject: world.NewObjectByTypeID,
 		CreateAt: func(charge, owner *server.Object, point types.Pointf) {
 			sp.s.CreateObjectAt(charge, owner, point)
 		},
@@ -506,8 +515,11 @@ func (sp *spellsDuration) manaBombRuntime530F90() server.SpellManaBombRuntime530
 			legacy.Nox_xxx_buffApplyTo_4FF380(caster, buff, int(duration), int(power))
 		},
 		BuffOff: legacy.Nox_xxx_spellBuffOff_4FF5B0,
+		BeginDamage: func() {
+			nox_xxx_gameSetWallsDamage_4E25A0(1)
+		},
 		DamageAround: func(pos types.Pointf, outer, inner float32, damage int, caster *server.Object) {
-			sp.s.Nox_xxx_mapDamageUnitsAround(pos, outer, inner, damage, object.DamageType(15), caster, nil, true)
+			sp.s.MapDamageUnitsAroundNative4E25B0(&pos, outer, inner, int32(damage), object.DamageType(15), caster, nil)
 		},
 		Earthquake: world.Nox_xxx_earthquakeSend_4D9110,
 		PointFX:    world.Nox_xxx_netSendPointFx_522FF0,

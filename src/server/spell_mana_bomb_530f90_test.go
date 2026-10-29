@@ -27,7 +27,7 @@ func TestSpellManaBombCreate530F90PlayerStateAndNativeCharge(t *testing.T) {
 			if key != "ManaBombInitPower" || level != 2 {
 				t.Fatalf("balance level = %s/%d", key, level)
 			}
-			return 10.5 // x87 round-to-even
+			return 10.5 // original startup FISTP truncates toward zero
 		},
 		TickRate: func() uint32 { return 60 },
 		ApplyBuff: func(got *Object, buff EnchantID, duration int16, power int8) {
@@ -136,7 +136,7 @@ func TestSpellManaBombUpdate5310C0PlayerChargeAndExplosion(t *testing.T) {
 			}
 		},
 		DamageAround: func(pos types.Pointf, outer, inner float32, damage int, got *Object) {
-			if pos != caster.PosVec || outer != 60 || inner != 20 || damage != 18 || got != caster {
+			if pos != caster.PosVec || outer != 60 || inner != 20 || damage != 16 || got != caster {
 				t.Fatalf("damage = %v/%v/%v/%d/%p", pos, outer, inner, damage, got)
 			}
 			events = append(events, "damage")
@@ -167,12 +167,12 @@ func TestSpellManaBombUpdate5310C0PlayerChargeAndExplosion(t *testing.T) {
 			events = append(events, "audio")
 		},
 	}
-	if got := SpellManaBombUpdate5310C0(record, runtime); got != 0 || record.Field72 != 14 || stored != charge {
+	if got := SpellManaBombUpdate5310C0(record, runtime); got != 0 || record.Field72 != 13 || stored != charge {
 		t.Fatalf("charging = %d/%d/%p", got, record.Field72, stored)
 	}
 	update.ManaCur = 14
 	frame++
-	if got := SpellManaBombUpdate5310C0(record, runtime); got != 0 || record.Field72 != 18 || stored != nil {
+	if got := SpellManaBombUpdate5310C0(record, runtime); got != 0 || record.Field72 != 16 || stored != nil {
 		t.Fatalf("charge removed = %d/%d/%p", got, record.Field72, stored)
 	}
 	update.ManaCur = 0

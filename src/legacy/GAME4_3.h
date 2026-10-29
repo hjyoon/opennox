@@ -18,9 +18,7 @@
 #include "spell_moonglow_native_531a00.h"
 #include "spell_turn_undead_native_531310.h"
 #include "spell_oval_shield_native_531490.h"
-int nox_xxx_manaBomb_530F90(uint32_t* a1);
-int nox_xxx_manaBombBoom_5310C0(int* a1);
-int sub_531290(int a1);
+#include "spell_mana_bomb_native_530f90.h"
 int nox_xxx_spellTurnUndeadUpdate_531410();
 #include "spell_plasma_native_531580.h"
 int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(int a1, int a2);

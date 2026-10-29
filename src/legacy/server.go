@@ -128,6 +128,9 @@ type Server interface {
 	SpellForceOfNatureCreate52EF30(record *server.DurSpell) int32
 	SpellForceOfNatureUpdate52EFD0(record *server.DurSpell) int32
 	SpellForceOfNatureDestroy52F1D0(record *server.DurSpell)
+	SpellManaBombCreate530F90(record *server.DurSpell) int32
+	SpellManaBombUpdate5310C0(record *server.DurSpell) int32
+	SpellManaBombDestroy531290(record *server.DurSpell)
 	SpellTeleportCreateWake530560(target *server.Object, origin, destination *types.Pointf)
 	SpellChainLightningCreate52F820(record *server.DurSpell) int32
 	SpellChainLightningUpdate52F8A0(record *server.DurSpell) int32

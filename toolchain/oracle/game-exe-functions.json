@@ -22776,6 +22776,34 @@
       "size": 68,
       "sha256": "c7d11f20f1dd2e24f4bcc24918fd818f0e7b789d7346e35d3921477281ddc838",
       "purpose": "Complete executed original ForceOfNature root:925 contexts under startup and nearest profiles,1850 root runs,193 profile differences; all727 root instruction bytes, original buff helper34/35 reachable bytes, register/stack/FPCW/TOP/heap canaries verified. Six allocation/CreateAt/delete/ray/player-state/audio service bodies declared. Original raw destructor EAX/dead charge slot retained but excluded from native semantic comparison because duration manager discards them. Stock directions0-255, shape/finite/nonfinite/callback controls; no complete world-service/earned-gameplay claim."
+    },
+    {
+      "name": "original_complete_mana_bomb_create_530f90",
+      "address": "0x00530F90",
+      "size": 303,
+      "sha256": "81b1a9316e2bde21f85f05efe5435a539b2c9a882ffc7a6e396c489bf871690a",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "original_complete_mana_bomb_update_5310c0",
+      "address": "0x005310C0",
+      "size": 454,
+      "sha256": "6c410793981c8a21cecca5448c30f4fc18109d2a67a9cdf2287f5620bf506ef5",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "original_complete_mana_bomb_destroy_531290",
+      "address": "0x00531290",
+      "size": 116,
+      "sha256": "c9e613a92e49c66974b2ceff744f4c8a3545b62391ab59ac25f656b67c7d13c2",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "original_complete_mana_bomb_walls_damage_setter_4e25a0",
+      "address": "0x004E25A0",
+      "size": 10,
+      "sha256": "6ebd8ed71236bf1c7824a9010b6d0f0298f8741f6db9888b6aee3ce1ecbe8102",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
     }
   ],
   "data": [
@@ -27482,6 +27510,55 @@
       "size": 10,
       "sha256": "26c00211176c690593ca11e4d7ccd3e0f4bc4e8efa26e40196d120cc850a9d72",
       "purpose": "Complete executed original ForceOfNature root:925 contexts under startup and nearest profiles,1850 root runs,193 profile differences; all727 root instruction bytes, original buff helper34/35 reachable bytes, register/stack/FPCW/TOP/heap canaries verified. Six allocation/CreateAt/delete/ray/player-state/audio service bodies declared. Original raw destructor EAX/dead charge slot retained but excluded from native semantic comparison because duration manager discards them. Stock directions0-255, shape/finite/nonfinite/callback controls; no complete world-service/earned-gameplay claim."
+    },
+    {
+      "name": "mana_bomb_ManaBombCharge_530f90",
+      "address": "0x005C6BD0",
+      "size": 15,
+      "sha256": "56c096920472e4737b4360851a1424626b8ec83cb1b8d15f748467b3542d1e44",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "mana_bomb_ManaBombInitPower_530f90",
+      "address": "0x005C6BE0",
+      "size": 18,
+      "sha256": "15d74d0fa4c2830361bbe26b9b401e7d0de45538766062c2c770dc1decd8bbfe",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "mana_bomb_ManaBombGlyphDuration_530f90",
+      "address": "0x005C6BF4",
+      "size": 22,
+      "sha256": "a565c859860d8c29b407fc758e2d6b96800889400f3b135a547dba1fc58115bd",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "mana_bomb_ManaBombInRadius_530f90",
+      "address": "0x005C6C0C",
+      "size": 17,
+      "sha256": "02397ee0137c0f4684c56f57df6609ee1064d0adaa0c9fb4a6df61e5a8c819e6",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "mana_bomb_ManaBombOutRadius_530f90",
+      "address": "0x005C6C20",
+      "size": 18,
+      "sha256": "1005272a66a5c7dbfd714933316e02307d1ab7e185b2cb53a67fd95fce9e4999",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "mana_bomb_ManaBombShakeMag_530f90",
+      "address": "0x005C6C34",
+      "size": 17,
+      "sha256": "ed5c0c6761278a77546f7d6ea3b559b80c1eaff96624988ff0a8fbcff8a20898",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "mana_bomb_ManaBombDeltaPower_530f90",
+      "address": "0x005C6C48",
+      "size": 19,
+      "sha256": "6a54909ead4b5ad8f3a234a7f0bf5441b0ffc7c19e7144c65dc3905b0fe83b22",
+      "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
     }
   ],
   "allow_overlapping_ranges": true

@@ -55,6 +55,87 @@ completion requirements.
 
 ## Current findings
 
+### Native Force of Nature entries and complete original comparison
+
+Source `5da9d6e` ports public `52EF30`/`52EFD0`/`52F1D0` to opaque native
+duration pointers. Their former scalar-int C arguments truncate C-owned
+records; all three original native probes crash after their ordinary Go
+controls complete. The same frozen probes now pass above4GiB. Create/update/
+destroy share the ordinary duration runtime and native charge sidecar. The
+three old C bodies retire164 lines; every other `GAME4_2.c` byte is preserved.
+
+Before engine changes, independent execution seals925 inputs under startup
+`0x0e3f` and nearest `0x023f`:1850 root runs,193 profile-sensitive results,
+and all149/510/68 root instruction bytes (727 total). Original buff-helper
+34/35 reachable bytes execute. Six allocation/creation/deletion/ray/state/audio
+bodies remain declared; register/stack/FPCW/TOP/heap canaries pass. Raw
+destructor EAX and dead-record charge remain in the reference but are explicitly
+excluded from native semantic comparison, because the duration manager
+discards them. The native sidecar is compared on live create/update paths.
+Producer, both goldens, comparator and before-probe bytes remain sealed.
+
+The before Go comparison passes727 leaves and differs on198;187 of these equal
+the original nearest-control result. The implementation caches creation
+position before allocation, reloads frame/deadline/caster links after callbacks,
+chooses height on unordered box comparison, and retains startup PC53/chop
+distance/product/sum and final coordinate/velocity spills through existing
+local arithmetic helpers. It changes no host FP state. All925 frozen original
+cases and ten prior server terminals now pass. Initial producer canaries omitted
+the destructor's legitimate wand-flag write; that source/failure is retained
+and only the output list is corrected from instruction52F20F. The initial new
+comparator's allocator type-constraint compilation failure is also retained;
+the body and expectations remain unchanged.
+
+Four actual public C production compositions make14 calls through the real
+type factory, creation/ownership, ray, charge sidecar, deletion list and parsed
+AUD event. Circle launch, glyph1/raw and early cancellation check original
+position/velocity/direction bits, full native duration canaries and cleanup.
+The empty-world ray's independently observed boolean selects the declared
+original ray context before invoking C; it is not whole-world ray equivalence.
+All3944 previous test/fixture/scenario inputs remain unchanged.
+
+Normal macOS checks pass279294 tests/20 skips in133.807 seconds. Highres
+`cgocheck2`/`checkptr=2`, including actual OpenAL null, pass10584/seven skips in
+235.509 seconds; both include all935 new terminals. Oracle verification passes
+3253 code/672 data ranges, preserving every earlier entry and appending only
+the three roots and three constants/strings. Its first new-address spelling
+failure and manifest are retained. The clean Go1.26.9 ARM64 product is65716450
+bytes, SHA256
+`b2005bb7cb14c93ec5be0c370dad074db27f579d95e499170bade908c6668890`.
+
+Unchanged hosted Force of Nature passes33.462 seconds, with charge creation,
+retirement, one DeathBall and destruction at frames549/555/561/563; all native
+record/caster/charge pointers exceed4GiB while Field76 stays `0x3fdccccc`.
+Shared spells pass32.995 seconds. Original Bookcase6 and first actual menu
+Load/Save pass39.209/17.651 seconds. The whole successful Save is sealed before
+the first reload, preserving HP20/MP73/poison0, endpoint/plate/mover and Urchin
+HP0/DEAD. MP73 is the pre-reload observation, not a revised expectation after
+loading. Real ordinary-clock CoreAudio passes346.982 seconds with all54 Amb
+types, natural host ambience, continuous/random-delay buffers and range/delete
+cleanup. These controlled host runs claim no earned Force of Nature campaign
+or subjective hearing-fidelity equivalence.
+
+[Windows run40945681452](https://github.com/hjyoon/opennox/actions/runs/40945681452)
+passes clean native amd64/386 server products, help and full uncached root/
+server/legacy tests. [Linux run40945753015](https://github.com/hjyoon/opennox/actions/runs/40945753015)
+passes all58 expected packages (36 pass/22 skip),276720 tests/seven skips,
+all935 new terminals and133041 default-link damage tests. All three job logs,
+GitHub-digest archives, architectures and clean Go metadata are qualified;
+all jobs are closed. All five requested poison-macro warnings are absent.
+Unchanged client audio retains its independent normal/strict Linux device
+qualification at `97f2663`; these server jobs claim no client device test.
+Personal4649 files, all Save/failure records and eight earlier ARM64 products
+remain intact. Prior recorded7.3GB reproducible-cache cleanup excludes them.
+
+The46 intercepted duration slots now contain39 Go exports, three inspected
+native C forwarders, one constant leaf and three lexical Mana Bomb candidates.
+All three Mana Bomb entries have separately retained native C crashes; their
+independent original comparison remains the next pre-port gate. This bounded inventory supplies
+no global completion denominator. Overall100%, the prior first Bookcase combat
+failure/cause and replay variability, broader audits and the old unexplained
+Windows GC failure remain open; later passes do not establish their repair.
+
+
 ### Native Channel Life entry and original effect composition
 
 Source `4331505` replaces public `52F460`'s scalar-float argument with an

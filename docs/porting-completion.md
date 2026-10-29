@@ -55,6 +55,74 @@ completion requirements.
 
 ## Current findings
 
+### Native Channel Life entry and original effect composition
+
+Source `4331505` replaces public `52F460`'s scalar-float argument with an
+opaque native duration pointer. Its old C body faults at `0xa0a0a3a` on a
+C-owned record whose ordinary native nil-target control returns1. The same
+frozen probe now passes above4GiB. Both entry paths share the existing Go
+algorithm, balance lookup, mana addition and HP deduction;58 obsolete C lines
+are removed and every other `GAME4_2.c` byte is unchanged.
+
+Before engine changes, the unchanged original producer reexecutes322 contexts,
+1288 FP-control runs and3088 original calls. Its entire proof and fixture are
+byte-identical to the earlier independent reference. All318 root instruction
+bytes execute; the17-byte converter and original getter/buff/position/mana/HP
+helpers execute unchanged. Dictionary lookup, AddMana and ClearDamage bodies
+remain declared boundaries. Producer, golden, comparator and Go algorithm
+bytes are unchanged, as are all3942 previous test/fixture/scenario inputs.
+
+Twenty native public C compositions use frozen original arithmetic/effect
+amounts through real balance loading, mana addition, HP setter, damage clearing
+and inert-token protection. Four sixteen-tick sequences and sixteen controls
+make80 actual calls, including glyph20, missing lookup, class combinations and
+early exits, with intact duration canaries. The same effects first pass through
+the ordinary dispatcher before this port. These synthetic actors and bounded
+effects establish no whole-world or earned campaign equivalence.
+
+Normal macOS checks pass278359 tests/20 skips in134.702 seconds. Highres
+`cgocheck2`/`checkptr=2`, including actual OpenAL null, pass9639/seven skips in
+214.596 seconds. Both include all23 new terminals. Oracle verification passes
+3250 code/669 data ranges with the entire manifest unchanged. The clean
+Go1.26.9 ARM64 product is65715730 bytes, SHA256
+`e9ebd7ef49d6fd3b42446e7df69d31a2a2188e1d33cdd946ddbfe580008ccb4a`.
+Hosted Channel Life passes32.940 seconds with HP75→65 and mana0→5 over ten
+frames; shared spells pass33.268 seconds. Ordinary-clock real CoreAudio
+passes345.623 seconds with all54 Amb types, natural host ambience,
+continuous/random-delay playback and range/delete cleanup. No subjective
+hearing-fidelity credit is claimed.
+
+The first unchanged Bookcase replay exits normally but fails its required
+Urchin death check: the wounded original enemy flees alive. Its entire failed
+result, Save and product clone remain preserved and excluded from continuation.
+Fresh current-product and preceding-product runs from the identical original
+qualified seed pass unchanged checks. The successful current Save is sealed
+before its first actual menu reload; Bookcase and reload pass39.224/17.605
+seconds, retaining HP20/MP43/poison0, bookcase endpoint/plate/mover and Urchin
+HP0/DEAD. The precise first-failure cause and combat replay variability remain
+open; these passes do not prove a deterministic replay or repair of that cause.
+
+[Windows run40937995190](https://github.com/hjyoon/opennox/actions/runs/40937995190)
+passes clean amd64/386 server products, help and uncached full three-package
+tests. [Linux run40938012636](https://github.com/hjyoon/opennox/actions/runs/40938012636)
+passes all58 expected packages (36 pass/22 skip),275785 tests/seven skips,
+all23 new terminals and133041 default-link damage tests. All three job logs,
+GitHub-digest archives, product architectures and clean Go metadata are
+qualified; all jobs are closed. All five requested poison-macro warnings are
+absent. Unchanged client audio retains the independent Linux normal/strict
+device qualification at `97f2663`; these server jobs claim no client device
+test. Personal4649 files, all Save/failure records and seven earlier ARM64
+products remain intact. The preceding recorded7.3GB reproducible-cache cleanup
+excludes every asset, Save, record, failure, fixture and product.
+
+The46 intercepted duration slots now contain36 Go exports, three inspected
+native C forwarders, one constant leaf and six lexical C candidates. All three
+next Force of Nature C entries have separately retained native-pointer faults;
+their original comparison is prepared before any engine change. This slot
+inventory supplies no global denominator. Overall100%, broader campaign/
+engineering audits and the earlier unexplained Windows GC failure remain open.
+
+
 ### Native Greater Heal create and update entries
 
 Source `2c64ca2` ports public `52F220`/`52F2E0` to opaque native duration

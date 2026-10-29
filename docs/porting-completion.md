@@ -55,6 +55,63 @@ completion requirements.
 
 ## Current findings
 
+### ADPCM index147 panic from recycled sample inputs
+
+Source `97f2663` fixes a sample-lifetime failure exposed by continuous ambience
+prefilling both AIL input buffers. Reinitializing a stolen voice reset its
+cursor and readiness count but retained the previous sound's input slots.
+After a mono-to-stereo change, the new sound's first buffer completed and
+the old mono payload became a stereo right-channel header. A frozen actual
+OpenAL regression reproduces the reported `index out of range [147] with
+length 89`: byte6 `0x93` is valid mono compressed data, then becomes index147
+under the wrong layout. Both source blocks are valid in their declared format.
+The same before suite also preserves replay of a completed input (`[:2048]`
+with capacity1024) and the wrong refill slot after a single-input drain.
+
+`Sample.Init` now discards both software inputs, `EOB` releases an exhausted
+slot before announcing readiness, and `BufferReady` returns the current slot
+when both inputs are free. The ADPCM decoder and step tables remain byte-for-
+byte unchanged; no index clamp or panic recovery masks the stale-data defect.
+The same frozen mono/stereo combinations, two-input drain and refill suite
+passes all seven terminals after the change. The user's machine-specific
+bank hashes have not been supplied; exact reproduction here uses valid data
+and does not presume those installations have identical assets.
+
+macOS root/server/legacy checks pass276907 tests with20 skips in331.566 seconds.
+The full native AIL suite passes340 with six skips. High-resolution
+`cgocheck2`/`checkptr=2` checks, including actual OpenAL null playback, pass7418
+with seven skips in236.231 seconds. The unchanged whole-stock-bank test plays
+all1780 samples at original rates through sixteen real sources in144.312
+seconds: all44663 blocks are queued and consumed. All headers in the local bank's
+44663 ADPCM blocks are in range. All3929 existing test/fixture/
+scenario inputs remain unchanged, as do the personal installation's4649 files
+and all earlier clean ARM64 products. No eligible scratch files remain.
+
+The clean ARM64 product is65698370 bytes, SHA256
+`2f10ab5a4f5f674826f255d320cfb4b5f83f5d9b3daeb565090aada3385a5a56`.
+An ordinary-clock CoreAudio run passes in347.539 seconds, validating all54
+stock Amb definitions, continuous brook/random-delay bird source buffers,
+natural host ambience, range stop and deletion. Unchanged hosted spell
+regressions pass in32.792 seconds; original Bookcase6 and actual menu Load/Save
+pass in39.134/17.633 seconds. The whole successful Save is frozen before its
+first reload and retains HP20/MP43/poison0, the original bookcase endpoint,
+plate/mover state and Urchin HP0/DEAD. No failed Save becomes a seed.
+
+[Linux client audio run40915406545](https://github.com/hjyoon/opennox/actions/runs/40915406545)
+passes normal and strict profiles, each265 tests/six skips, all seven new
+sample-lifetime terminals and all165 Amb terminals on real OpenAL null.
+The new scoped workflow builds a clean native ELF64 amd64 **client** and
+exercises these paths without the server tag or E2E audio mock. Both raw JSON
+streams, job logs and GitHub-digest-verified archives are preserved.
+[Windows run40915406483](https://github.com/hjyoon/opennox/actions/runs/40915406483)
+qualifies the existing amd64/386 server products and full uncached three-
+package suites; it supplies no Windows audio-device evidence. All four jobs
+are closed after artifact/architecture/clean-Go-metadata and raw-log checks.
+None of the five requested poison-macro warnings occurs. The earlier
+unexplained Lightning Windows GC failure remains retained. Overall porting
+is still incomplete; Firewalk and the remaining nine-cell audits continue.
+
+
 ### Native positional ambience for the54 stock Amb emitters
 
 Source `45659c6` restores the silent `Amb…` environment emitters. The previous

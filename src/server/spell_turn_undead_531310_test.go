@@ -23,20 +23,23 @@ func TestSpellTurnUndeadCreate531310NativePointersAndProjectiles(t *testing.T) {
 		{"glyph anchor without caster", 1, nil, anchor.PosVec},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
+			var createType uint32
 			record := &DurSpell{Level: 2, Caster16: tc.caster, Flag20: tc.flag, Obj24: anchor,
 				Pos: types.Pointf{X: math.Float32frombits(0x3fdccccc)}}
 			var objects []*Object
 			var events []string
 			runtime := SpellTurnUndeadRuntime531310{
-				KillPoints: func(index uint32) float32 {
+				CreateType: &createType,
+				TypeInd:    func(string) int { return 19 },
+				KillPoints: func(index uint32) float64 {
 					if index != 1 {
 						t.Errorf("kill-point index = %d, want 1", index)
 					}
-					return 2.5 // FISTP rounds ties to even.
+					return 2.5 // Original startup FISTP truncates toward zero.
 				},
-				NewObject: func(id string) *Object {
-					if id != "UndeadKiller" {
-						t.Errorf("object type = %q", id)
+				NewObject: func(id uint32) *Object {
+					if id != 19 {
+						t.Errorf("object type = %d", id)
 					}
 					data := &UndeadKillerCollideData{}
 					obj := &Object{CollideData: unsafe.Pointer(data), Float28: 7}
@@ -90,15 +93,18 @@ func TestSpellTurnUndeadCreate531310MissingObjectsAndSource(t *testing.T) {
 		{"missing projectile type", 0, &Object{PosVec: types.Pointf{X: 5}}, 0},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
+			var createType uint32
 			record := &DurSpell{Level: tc.level, Caster16: tc.caster}
 			var indices []uint32
 			var newCount, fxCount int
 			runtime := SpellTurnUndeadRuntime531310{
-				KillPoints: func(index uint32) float32 {
+				CreateType: &createType,
+				TypeInd:    func(string) int { return 0 },
+				KillPoints: func(index uint32) float64 {
 					indices = append(indices, index)
 					return 9
 				},
-				NewObject:   func(string) *Object { newCount++; return nil },
+				NewObject:   func(uint32) *Object { newCount++; return nil },
 				SendPointFX: func(netmsg.Op, types.Pointf) { fxCount++ },
 			}
 			if got := SpellTurnUndeadCreate531310(record, runtime); got != tc.want {
@@ -137,7 +143,9 @@ func TestSpellTurnUndeadDestroy531420MatchesSpellAndType(t *testing.T) {
 	wrongSpell.ObjNext = missingData
 	missingData.ObjNext = matchingB
 	var deleted []*Object
+	var destroyType uint32
 	SpellTurnUndeadDestroy531420(record, SpellTurnUndeadRuntime531310{
+		DestroyType: &destroyType,
 		TypeInd: func(id string) int {
 			if id != "UndeadKiller" {
 				t.Errorf("type ID = %q", id)
@@ -147,10 +155,23 @@ func TestSpellTurnUndeadDestroy531420MatchesSpellAndType(t *testing.T) {
 		FirstObject: func() *Object { return matchingA },
 		DelayedDelete: func(obj *Object) {
 			deleted = append(deleted, obj)
-			obj.ObjNext = nil // The traversal must cache Next before deleting.
+			obj.ObjNext = nil // Original traversal reads Next after deletion.
 		},
 	})
+	if len(deleted) != 1 || deleted[0] != matchingA {
+		t.Fatalf("deleted = %v, want first matching killer before its link is cleared", deleted)
+	}
+	// Retain the native defensive nil-collision policy separately from the
+	// valid original-root fixtures, where a matching type always has data.
+	matchingA.ObjNext = wrongType
+	deleted = nil
+	SpellTurnUndeadDestroy531420(record, SpellTurnUndeadRuntime531310{
+		DestroyType:   &destroyType,
+		TypeInd:       func(string) int { t.Fatal("warm type cache must not resolve again"); return 0 },
+		FirstObject:   func() *Object { return matchingA },
+		DelayedDelete: func(obj *Object) { deleted = append(deleted, obj) },
+	})
 	if len(deleted) != 2 || deleted[0] != matchingA || deleted[1] != matchingB {
-		t.Fatalf("deleted = %v, want both matching killers", deleted)
+		t.Fatalf("stable links and native nil-data policy deleted = %v", deleted)
 	}
 }

@@ -9,8 +9,10 @@ import (
 // Turn Undead duration callbacks. Object and spell identities remain native
 // pointers; only the kill-point budget has the original signed dword width.
 type SpellTurnUndeadRuntime531310 struct {
-	KillPoints    func(uint32) float32
-	NewObject     func(string) *Object
+	KillPoints    func(uint32) float64
+	CreateType    *uint32
+	DestroyType   *uint32
+	NewObject     func(uint32) *Object
 	CreateAt      func(*Object, *Object, types.Pointf)
 	SendPointFX   func(netmsg.Op, types.Pointf)
 	FirstObject   func() *Object
@@ -23,7 +25,10 @@ type SpellTurnUndeadRuntime531310 struct {
 //
 //go:noinline
 func SpellTurnUndeadCreate531310(record *DurSpell, runtime SpellTurnUndeadRuntime531310) int32 {
-	record.Field72 = spellDurationRoundNearestEven(runtime.KillPoints(record.Level - 1))
+	record.Field72 = playerReadValuesRound4EEDC0(shapeBoxSpill428270(runtime.KillPoints(record.Level - 1)))
+	if *runtime.CreateType == 0 {
+		*runtime.CreateType = uint32(runtime.TypeInd("UndeadKiller"))
+	}
 	source := record.Caster16
 	if record.Flag20 != 0 {
 		source = record.Obj24
@@ -35,7 +40,7 @@ func SpellTurnUndeadCreate531310(record *DurSpell, runtime SpellTurnUndeadRuntim
 	}
 	position := source.PosVec
 	for direction := 0; direction < 256; direction += 6 {
-		killer := runtime.NewObject("UndeadKiller")
+		killer := runtime.NewObject(*runtime.CreateType)
 		if killer == nil {
 			continue
 		}
@@ -61,13 +66,14 @@ func SpellTurnUndeadUpdate531410(*DurSpell) int32 { return 0 }
 //
 //go:noinline
 func SpellTurnUndeadDestroy531420(record *DurSpell, runtime SpellTurnUndeadRuntime531310) {
-	typeInd := uint16(runtime.TypeInd("UndeadKiller"))
+	if *runtime.DestroyType == 0 {
+		*runtime.DestroyType = uint32(runtime.TypeInd("UndeadKiller"))
+	}
 	for obj := runtime.FirstObject(); obj != nil; {
-		next := obj.ObjNext
-		if obj.TypeInd == typeInd && obj.CollideData != nil &&
+		if uint32(obj.TypeInd) == *runtime.DestroyType && obj.CollideData != nil &&
 			(*UndeadKillerCollideData)(obj.CollideData).Spell == record {
 			runtime.DelayedDelete(obj)
 		}
-		obj = next
+		obj = obj.ObjNext
 	}
 }

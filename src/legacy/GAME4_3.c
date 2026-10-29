@@ -220,69 +220,8 @@ int sub_531290(int a1) {
 	return result;
 }
 
-//----- (00531310) --------------------------------------------------------
-int nox_xxx_spellTurnUndeadCreate_531310(uint32_t* a1) {
-	int v1;       // ecx
-	int v2;       // edi
-	uint32_t* v3; // eax
-	uint32_t* v4; // esi
-	int v5;       // eax
-	double v6;    // st7
-	float v8;     // [esp+0h] [ebp-18h]
-	float2 v9;    // [esp+10h] [ebp-8h]
-
-	v8 = nox_xxx_gamedataGetFloatTable_419D70("TurnUndeadKillPoints", a1[2] - 1);
-	a1[18] = nox_float2int(v8);
-	if (!*getMemU32Ptr(0x5D4594, 2487924)) {
-		*getMemU32Ptr(0x5D4594, 2487924) = nox_xxx_getNameId_4E3AA0("UndeadKiller");
-	}
-	if (a1[5]) {
-		v1 = a1[6];
-	} else {
-		v1 = a1[4];
-	}
-	v2 = 0;
-	v9 = *(float2*)(v1 + 56);
-	do {
-		v3 = nox_xxx_newObjectWithTypeInd_4E3450(*getMemIntPtr(0x5D4594, 2487924));
-		v4 = v3;
-		if (v3) {
-			*(uint32_t*)v3[175] = a1;
-			nox_xxx_createAt_4DAA50((int)v3, a1[4], v9.field_0, v9.field_4);
-			*((uint16_t*)v4 + 63) = v2;
-			v5 = 8 * (short)v2;
-			*((uint16_t*)v4 + 62) = v2;
-			*((float*)v4 + 20) = *getMemFloatPtr(0x587000, 194136 + v5) * 4.0;
-			v6 = *getMemFloatPtr(0x587000, 194140 + v5) * 4.0;
-			v4[28] = 0;
-			*((float*)v4 + 21) = v6;
-		}
-		v2 += 6;
-	} while (v2 < 256);
-	nox_xxx_netSendPointFx_522FF0(160, &v9);
-	return 0;
-}
-
 //----- (00531410) --------------------------------------------------------
 int nox_xxx_spellTurnUndeadUpdate_531410() { return 0; }
-
-//----- (00531420) --------------------------------------------------------
-int nox_xxx_spellTurnUndeadDelete_531420(int a1) {
-	int result; // eax
-	int i;      // esi
-
-	if (!*getMemU32Ptr(0x5D4594, 2487928)) {
-		*getMemU32Ptr(0x5D4594, 2487928) = nox_xxx_getNameId_4E3AA0("UndeadKiller");
-	}
-	result = nox_server_getFirstObject_4DA790();
-	for (i = result; result; i = result) {
-		if (*(unsigned short*)(i + 4) == *getMemU32Ptr(0x5D4594, 2487928) && **(uint32_t**)(i + 700) == a1) {
-			nox_xxx_delayedDeleteObject_4E5CC0(i);
-		}
-		result = nox_server_getNextObject_4DA7A0(i);
-	}
-	return result;
-}
 
 //----- (00531490) --------------------------------------------------------
 int sub_531490(uint32_t* a1) {

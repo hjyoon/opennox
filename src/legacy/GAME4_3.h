@@ -16,12 +16,11 @@
 #include "spell_teleport_target_native_530a30.h"
 #include "spell_swap_native_530ca0.h"
 #include "spell_moonglow_native_531a00.h"
+#include "spell_turn_undead_native_531310.h"
 int nox_xxx_manaBomb_530F90(uint32_t* a1);
 int nox_xxx_manaBombBoom_5310C0(int* a1);
 int sub_531290(int a1);
-int nox_xxx_spellTurnUndeadCreate_531310(uint32_t* a1);
 int nox_xxx_spellTurnUndeadUpdate_531410();
-int nox_xxx_spellTurnUndeadDelete_531420(int a1);
 int sub_531490(uint32_t* a1);
 int sub_5314F0(int a1);
 int sub_531560(int a1);

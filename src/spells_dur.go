@@ -414,10 +414,14 @@ func (sp *spellsDuration) teleportToMarkRuntime5305D0() server.SpellTeleportToMa
 func (sp *spellsDuration) turnUndeadRuntime531310() server.SpellTurnUndeadRuntime531310 {
 	world := sp.s.S()
 	return server.SpellTurnUndeadRuntime531310{
-		KillPoints: func(levelIndex uint32) float32 {
-			return float32(sp.s.Balance.FloatInd("TurnUndeadKillPoints", int(int32(levelIndex))))
+		KillPoints: func(levelIndex uint32) float64 {
+			return sp.s.Balance.FloatInd("TurnUndeadKillPoints", int(int32(levelIndex)))
 		},
-		NewObject: world.NewObjectByTypeID,
+		CreateType:  memmap.PtrUint32(0x5D4594, 2487924),
+		DestroyType: memmap.PtrUint32(0x5D4594, 2487928),
+		NewObject: func(kind uint32) *server.Object {
+			return world.NewObjectByTypeInd(int(int32(kind)))
+		},
 		CreateAt: func(object, owner *server.Object, point types.Pointf) {
 			sp.s.CreateObjectAt(object, owner, point)
 		},

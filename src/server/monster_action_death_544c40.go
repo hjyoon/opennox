@@ -69,13 +69,7 @@ func (s *Server) MonsterActionDyingStart544C40(unit *Object, runtime MonsterActi
 
 // MonsterActionDyingUpdate544D60 restores GAME.EXE 00544D60.
 func (s *Server) MonsterActionDyingUpdate544D60(unit *Object) bool {
-	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) {
-		return false
-	}
-	if unit.UpdateDataMonster().Field120_3 != 0 {
-		unit.MonsterPopAction()
-	}
-	return true
+	return monsterActionBlockTerminal5320E0(unit, unit.MonsterPopAction)
 }
 
 // MonsterActionDyingEnd544CA0 restores GAME.EXE 00544CA0. The ordinary

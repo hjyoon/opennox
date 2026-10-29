@@ -369,28 +369,6 @@ char nox_xxx_monsterShieldBlockStart_532070(int a1) {
 	return v2;
 }
 
-//----- (005320E0) --------------------------------------------------------
-char nox_xxx_monsterShieldBlockStop_5320E0(int a1) {
-	char result; // al
-
-	result = a1;
-	if (*(uint8_t*)(*(uint32_t*)(a1 + 748) + 483)) {
-		result = nox_xxx_monsterPopAction_50A160(a1);
-	}
-	return result;
-}
-
-//----- (00532110) --------------------------------------------------------
-char sub_532110(int a1) {
-	char result; // al
-
-	result = a1;
-	if (*(uint8_t*)(*(uint32_t*)(a1 + 748) + 483)) {
-		result = nox_xxx_monsterPopAction_50A160(a1);
-	}
-	return result;
-}
-
 //----- (00532130) --------------------------------------------------------
 int* nox_xxx_mobActionMelee1_532130(int a1) {
 	int v1;      // edi
@@ -7772,17 +7750,6 @@ void nox_xxx_zombieBurnDelete_544CE0(uint32_t* a1) {
 	nox_xxx_soloMonsterKillReward_4EE500_obj_health((nox_object_t*)a1);
 	nox_xxx_sMakeScorch_537AF0(a1 + 14, 1);
 	nox_xxx_delayedDeleteObject_4E5CC0((int)a1);
-}
-
-//----- (00544D60) --------------------------------------------------------
-char sub_544D60(int a1) {
-	char result; // al
-
-	result = a1;
-	if (*(uint8_t*)(*(uint32_t*)(a1 + 748) + 483)) {
-		result = nox_xxx_monsterPopAction_50A160(a1);
-	}
-	return result;
 }
 
 //----- (00544D80) --------------------------------------------------------

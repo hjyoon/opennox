@@ -66,10 +66,25 @@ func monsterActionBlockTerminal5320E0(unit *Object, pop func() int) bool {
 	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) || pop == nil {
 		return false
 	}
-	if unit.UpdateDataMonster().Field120_3 != 0 {
-		pop()
-	}
+	monsterActionTerminal5320E0(unit, pop)
 	return true
+}
+
+// The three terminal callbacks return the unit's low byte while waiting and
+// PopAction's low byte after completion. Ordinary dispatch discards that char,
+// but public C callers retain the original ABI. No pointer used for a read is
+// narrowed to the original PE32 width.
+func monsterActionTerminal5320E0(unit *Object, pop func() int) uint8 {
+	if unit.UpdateDataMonster().Field120_3 != 0 {
+		return uint8(pop())
+	}
+	return uint8(uintptr(unit.CObj()))
+}
+
+// MonsterActionTerminal5320E0 implements the identical original shield-finish,
+// weapon-block and dying-update roots through their native object records.
+func MonsterActionTerminal5320E0(unit *Object) uint8 {
+	return monsterActionTerminal5320E0(unit, unit.MonsterPopAction)
 }
 
 // MonsterActionBlockFinish5320E0 restores GAME.EXE 005320E0.

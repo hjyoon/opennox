@@ -55,6 +55,94 @@ completion requirements.
 
 ## Current findings
 
+### Native positional ambience for the54 stock Amb emitters
+
+Source `45659c6` restores the silent `Amb…` environment emitters. The previous
+64-bit `45A9B0` path calculated distance volume and pan, discarded both and
+cleared the old channel fields. It had no native playback owner, and its
+PE32 definition lookup was separate from the native AUD/AVNT loader. A frozen
+regression reproduces zero submitted buffers through the actual C entry on
+a real OpenAL null device before the change; the same fixture passes afterward.
+
+The C entry now forwards native drawable pointers to the shared audio runtime.
+Go sidecars own positional channels outside C-owned Drawable memory. Movement
+updates gain/pan without restarting buffers; compatible continuous samples
+prefill the second AIL buffer. Stock sample selection, repeat flags and random
+delays are applied. Background channels use the existing sixteen-voice FX pool
+and per-sound event limits. A displaced channel cannot stop a sample that now
+belongs to a gameplay effect or another emitter. Range/disable checks, drawable
+unlink/deletion, definition reload, mute and driver close release ownership.
+The retired PE32 handle reader also no longer treats the shared particle field
+as an audio-channel record. This retires61 C lines and12 Go lines. All other
+`GAME2.c` bytes, apart from the new header include, are identical.
+
+The original positional root has387 bytes, with378 executed across169 startup
+PC53 contexts; nine defensive volume-clamp bytes remain unobserved. Actual
+40-byte handle validation,30-byte handle storage and39-byte CRT conversion
+execute completely. Coordinates, integer wrapping, FSQRT and truncation run
+as original machine code under declared definition/viewport/channel services.
+The native geometry comparator checks162 observable setter contexts plus its
+parent; opaque early lookup/allocation returns are covered separately by the
+actual C playback fixture. Original producer/golden/comparator and that before/
+after C fixture remain byte-identical. This is bounded root evidence, not
+complete Miles scheduler or subjective speaker-fidelity equivalence.
+
+macOS full root/server/legacy checks pass276907 tests with20 skips in199.378
+seconds. High-resolution `cgocheck2`/`checkptr=2`, including real OpenAL null
+playback, pass7250 with five skips in182.949 seconds. The latter runs all165
+new ambience terminals, actual C movement/repeat/range/unlink, and gameplay
+stealing, same-sound replacement, stale-owner deletion, reload, mute and close
+checks. All3923 pre-existing test/fixture/scenario inputs remain unchanged.
+Oracle verification covers3248 code and669 data ranges.
+
+The clean ARM64 product is65698370 bytes, SHA256
+`416b7ea66a497c3980f9247b0201caef4e28f6decc5ac1270ace2e99c14edb61`.
+Its ordinary-clock **CoreAudio** run passes in346.912 seconds with actual
+OpenAL sources and queued/consumed buffers. All54 stock `Amb` types have valid
+definitions and playable bank references. Controlled original `AmbBrook1`
+and `AmbBird1` drawables verify continuous brook and unchanged random-delay
+bird playback, then range stop and ordinary drawable deletion. Before those
+controlled emitters are created, five ambient sample starts are logged from
+the original host map, including wind and spirits. This is native product
+audio evidence with headless rendering; no earned campaign credit or human
+hearing assessment is claimed. The first300-second run ended during startup
+menus after real-time movies and before the ambience phase. Its complete
+failure remains preserved; the same product/environment/scenario passes when
+only the execution limit is increased to600 seconds.
+
+The unchanged hosted Chain Lightning/Lightning/Drain Mana regression passes
+in34.171 seconds. Original Bookcase6 progression and actual menu Load/Save
+pass in38.905/17.345 seconds. The passing Save's complete manifest and current
+HP20/MP43/poison0 are frozen before its first reload and retained exactly.
+Original bookcase endpoint, plate/mover states and Urchin HP0/DEAD are checked
+independently. Earlier MP73/74/44 records remain historical and unchanged;
+no failed Save is reused as a continuation seed.
+
+[Windows run40895453610](https://github.com/hjyoon/opennox/actions/runs/40895453610)
+passes native amd64 and386 clean server products, help and full uncached
+root/server/legacy checks. [Linux run40895468478](https://github.com/hjyoon/opennox/actions/runs/40895468478)
+passes all58 expected packages,36 pass/22 skip,274333 test passes/seven skips,
+all163 new geometry terminals and133041 default-link damage passes. Client
+OpenAL playback tests are exercised on macOS; server-only native CI does not
+claim a Windows/Linux audio-device test. All three artifacts match GitHub
+digests and have verified architecture/clean Go metadata. Qualified logs have
+none of the five requested poison-macro warnings. All jobs are closed. The
+earlier Lightning Windowsamd64 GC failure remains preserved and unexplained.
+
+Proofs, raw logs, products, the startup timeout and Save outputs are under
+`ambient-native-audio-port/`. The personal4649-file/503207370-byte installation,
+all previous products and all3923 existing validation inputs are unchanged.
+The final scratch inventory has no eligible inactive files; evidence and hot
+caches are retained. Overall100% remains unproved. The next read-only Firewalk
+probe reproduces a public C record-layout fault at`0x42c80010` while native
+nil-target dispatch returns1. Its complete483-byte original root executes
+under both FP profiles across81 preparation contexts each, with one differing
+result and no original faults. Final reference expansion/comparator sealing
+and engine changes remain pending. The46-slot duration inventory remains
+32 Go/three C forwarders/one constant/ten lexical candidates; Firewalk is one
+reproduced candidate and nine remain unexecuted. This is not a completion
+denominator.
+
 ### Native Drain Mana entry and original transfer semantics
 
 Source `c2aae7c` replaces Drain Mana update `52E210`'s float argument with

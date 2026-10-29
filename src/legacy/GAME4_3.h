@@ -31,7 +31,7 @@ char nox_xxx_mobActionFight_531EC0(int a1);
 int sub_532040(int a1, int a2);
 char nox_xxx_monsterShieldBlockStart_532070(int a1);
 char nox_xxx_monsterShieldBlockStop_5320E0(int a1);
-char nox_ai_action_pop_532100(int a1);
+#include "monster_facing_native_545210.h"
 char sub_532110(int a1);
 int* nox_xxx_mobActionMelee1_532130(int a1);
 void sub_532390(int a1, int a2);

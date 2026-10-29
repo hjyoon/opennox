@@ -22804,6 +22804,55 @@
       "size": 10,
       "sha256": "6ebd8ed71236bf1c7824a9010b6d0f0298f8741f6db9888b6aee3ce1ecbe8102",
       "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_facing_location_545210",
+      "address": "0x00545210",
+      "size": 38,
+      "sha256": "3cf85382732b1f30b9768e1d26726895fb77809ba0d634df7ad51dde3afa9b0b",
+      "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_facing_point_helper_545240",
+      "address": "0x00545240",
+      "size": 192,
+      "sha256": "4c7cf3a199dfb2a589b6aaabc6213f0be135d2b207722febb333825c954585b8",
+      "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_facing_object_545300",
+      "address": "0x00545300",
+      "size": 57,
+      "sha256": "0dbe2de899e6c6f76df222e99796c722038d509100dc57732ba6adba569f1352",
+      "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_facing_angle_545340",
+      "address": "0x00545340",
+      "size": 156,
+      "sha256": "b910bff18a2b903dec97ecd3f81a3fded28d4ae4a087aa983b2433fa59679ee3",
+      "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_facing_set_angle_5453e0",
+      "address": "0x005453E0",
+      "size": 90,
+      "sha256": "22442c9964fb742bcbf5d7c722802c4165dc37759d4b45150ac90b235419252b",
+      "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_facing_pop_532100",
+      "address": "0x00532100",
+      "size": 12,
+      "sha256": "ff09694ae89869888fac8d77a868256b805b031c25e15aac74939d6405c49328",
+      "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_facing_facing_helper_534120",
+      "address": "0x00534120",
+      "size": 57,
+      "sha256": "bc106ea5002bdf0fd27a909670a0b48008a9002bfddb5f6a26a6108e8d7475f2",
+      "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
     }
   ],
   "data": [
@@ -27559,6 +27608,13 @@
       "size": 19,
       "sha256": "6a54909ead4b5ad8f3a234a7f0bf5441b0ffc7c19e7144c65dc3905b0fe83b22",
       "purpose": "Complete original Mana Bomb roots:1969 contexts per startup PC53/chop and nearest profile,3938 root runs,1607 profile-sensitive results. All873 root bytes plus17-byte FISTP converter and complete scalar/indexed/isPlayer/walls helpers execute; current-mana executes26/39 player-reachable bytes. Twelve declared lookup/type/allocation/create/buff/delete/damage/quake/FX/audio/mana world-service bodies. Destructor EAX retained but discarded by duration manager. Stock-range FPS/durations and levels1-6; invalid nil-caster non-glyph create excluded. No transitive world-service or earned campaign equivalence claim."
+    },
+    {
+      "name": "original_monster_facing_epsilon_545240",
+      "address": "0x00583B28",
+      "size": 4,
+      "sha256": "0835a5c87ba00a93f8d84fb3bdf20866024a13fc710fc1225e3d67073543bba0",
+      "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
     }
   ],
   "allow_overlapping_ranges": true

@@ -380,9 +380,6 @@ char nox_xxx_monsterShieldBlockStop_5320E0(int a1) {
 	return result;
 }
 
-//----- (00532100) --------------------------------------------------------
-char nox_ai_action_pop_532100(int a1) { return nox_xxx_monsterPopAction_50A160(a1); }
-
 //----- (00532110) --------------------------------------------------------
 char sub_532110(int a1) {
 	char result; // al

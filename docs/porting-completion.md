@@ -55,6 +55,112 @@ completion requirements.
 
 ## Current findings
 
+### Native monster-facing entries and Blink observer correction
+
+Source `72f6282` ports public facing/location `545210`, object `545300`,
+angle `545340`, set-angle `5453E0` and cancel `532100` to native object
+pointers, preserving their char ABI and existing ordinary dispatcher.
+All five former C paths crash on C-owned records above 4 GiB after their
+ordinary Go controls complete; the same frozen probes now pass. Four facing
+roots and their private point helper retire 101 C lines, and the cancel thunk
+retires three more. Every other `GAME5.c` and `GAME4_3.c` byte is preserved.
+The old C facing predicate `534120` remains for its three other callers.
+
+Before engine changes, all 602 original root/helper instruction bytes execute
+1,352 inputs under each of startup `0x0e3f` and nearest `0x023f`: 2,704 runs,
+six observable profile differences and 297 internal-vector differences.
+The stock direction table, zero and threshold constants remain sealed; only
+PopAction's body is declared. Register/stack/FPCW/TOP/heap canaries pass.
+Four cancel-thunk raw-return controls remain in the reference but outside the
+numerical comparison; native cancel forwarding is checked separately.
+Internal normalized-vector scratch stays recorded without treating it as a
+public output. An initial producer syntax error is corrected before original
+execution. Two NaN struct-canary false failures are corrected to byte
+comparison before engine edits; both initial failures and all reference bytes
+remain preserved. Neither correction changes numerical expected values.
+
+The corrected before comparison passes 1,327 leaves and differs on 21; three
+mismatches equal the original nearest-control result. The port restores
+startup PC53/chop operations, the original binary32 spills and epsilon,
+retained cross-product quotient versus spilled dot-product quotient, and
+unordered negative-turn behavior without changing host FP state. All 1,348
+frozen algorithm contexts now pass. Fifteen actual public C compositions
+make 15 calls through production native object pools, registered action
+addresses and real PopAction/reset, checking whole object/update/target
+records and canaries. Started End callbacks remain outside this composition.
+All 3,954 preexisting inputs and the five added reference/probe inputs remain
+unchanged by the facing implementation. Oracle verification passes 3,264
+code and 680 data ranges, retaining every previous manifest entry.
+
+The first unchanged hosted Blink scenario stops at NPC/ascending because its
+observer requires a 64-unit displacement. Both the facing product and the
+previous Mana Bomb product produce the identical origin
+`{3206.4067 2320.236}`, active waypoint `{3204 2320}`, cast frame 821 and
+wake expiry 851. The stock selector has no minimum-distance criterion.
+Observer-only source `867f905` freezes eligible active waypoints before
+enabling the ability, checks wake origin/lifetime and set membership, and
+observes exact arrival at the second wake-associated sound before later AI
+movement. It accepts the recorded nearby waypoint while rejecting an
+unlisted distant point, a wrong origin and a wrong lifetime. It does not
+alter selected destinations or gameplay/audio code. One existing test is
+extended with its previous body preserved; the other 3,958 existing inputs
+and all 13 facing source seals remain unchanged.
+
+Current normal macOS checks pass 282,652 tests/20 skips in 132.441 seconds.
+Highres `cgocheck2`/`checkptr=2`, including real OpenAL null, pass 13,981/seven
+skips in 45.635 seconds. Both include all 1,371 facing terminals and all 33
+Blink observer terminals, including the six new regression terminals. The
+clean Go 1.26.9 ARM64 product from `867f905` is 65,718,450 bytes, SHA256
+`4a59527371138e40ce871f29f7d590d3c1484950049767b21feace866daa626d`.
+The earlier facing product and every failed output remain preserved.
+
+The unchanged six-mode hosted scenario passes in 37.193 seconds: Troll,
+Urchin and configurable hostile NPC on both diagonal slopes naturally
+acquire an enemy and cause first damage before any incoming hit, then
+autonomously perform MainAI Blink, cooldown, duration, wake, arrival and
+cleanup. The separate unchanged first-attack scenario passes all 16 clear/
+off-ray-box contexts in 43.029 seconds. Placement/hostility/equipment/HP and
+later Blink ability properties are controlled inputs; no selected enemy,
+action, path, cast or recent-move-timer reset is injected. Stock definitions
+do not gain Blink from this fixture, and no general distant-AI or earned
+campaign credit follows.
+
+Shared hosted spells pass in 32.812 seconds. Original Bookcase6 and the
+first actual menu Load/Save pass in 38.722/17.439 seconds. The entire passing
+Save and observed HP20/MP43/poison0 contract are sealed before that first
+reload; native endpoint/plate/mover and Urchin HP0/DEAD persist. Completed
+and reloaded scenes are viewed; camera differences remain without a
+screenshot-golden claim. Real ordinary-clock CoreAudio passes in 349.146
+seconds with all 54 Amb types, natural host ambience, continuous/random-delay
+playback and range/delete cleanup: 1,905 sample buffers queued, 1,875 processed
+and three music streams. No subjective audible-fidelity claim follows.
+
+[Windows run40966098698](https://github.com/hjyoon/opennox/actions/runs/40966098698)
+passes clean amd64/386 server products, help and full uncached root/server/
+legacy suites. [Linux run40966131810](https://github.com/hjyoon/opennox/actions/runs/40966131810)
+passes all 58 packages (36 pass/22 skip), 280,078 tests/seven skips, all 1,371
+facing and six new observer terminals, plus 133,041 default-link damage tests.
+All jobs, decoded raw logs, GitHub-digest archives, architectures and clean
+source metadata are qualified and closed. The preceding facing-only native
+runs 40964083670/40964169557 are also preserved and closed. All five requested
+poison-macro warnings are absent. Unchanged ADPCM/Amb inputs retain the
+independent normal/strict Linux client-device qualification at `97f2663`;
+these server workflows claim no new client-device run.
+
+Original 4,649 files/503,207,370 bytes, every Save/failure/reference record
+and 11 earlier clean ARM64 products are preserved. Known stage scratch is
+empty, and the earlier 7.3 GB reproducible-cache cleanup stays recorded.
+Next, shield-finish `5320E0`, weapon-block `532110` and dying-update `544D60`
+have three separately reproduced C pointer-truncation faults after valid
+ordinary controls. All 84 original instruction bytes execute 1,350 inputs
+per FP profile with no profile differences; 1,350 shared native terminal
+component comparisons pass. Their existing 96-byte manifest envelopes retain
+12 unexecuted padding bytes. Public C implementation remains pending at this
+checkpoint. These bounded results supply no overall completion denominator.
+Overall 100%, nine-cell optional/final audits, broader reachable layouts,
+War03d/hostile WarCry/AI/Swap/UI/network/stability evidence and the older
+unexplained Windows-GC/Bookcase failures remain open.
+
 ### Native Mana Bomb entries and complete original comparison
 
 Source `7eb5613` ports public create `530F90`, update `5310C0` and destroy

@@ -6,10 +6,20 @@ import (
 	"github.com/opennox/libs/types"
 )
 
-// SpellFirewalkRuntime52ED40 supplies the flame effect still owned by the
-// outer game runtime. The duration record and target never cross into PE32 C.
+// SpellFirewalkRuntime52ED40 supplies explicit world-service boundaries.
+// The standalone API retains nearest rounding; production selects startup
+// PC53/chop. SpawnFlame retains the earlier standalone callout API.
 type SpellFirewalkRuntime52ED40 struct {
-	SpawnFlame func(kind int, position types.Pointf)
+	SpawnFlame      func(kind int, position types.Pointf)
+	LoadTypeID      func(int) uint32
+	StoreTypeID     func(int, uint32)
+	LookupType      func(string) uint32
+	NewObject       func(uint32) *Object
+	CreateAt        func(*Object, types.Pointf)
+	Audio           func(types.Pointf)
+	Decay           func(*Object, uint32)
+	TickRate        func() uint32
+	RoundTowardZero bool
 }
 
 // SpellFirewalkUpdate52ED40 binds the duration callback to native Go fields.
@@ -47,8 +57,17 @@ func (s *Server) SpellFirewalkUpdate52ED40(record *DurSpell, runtime SpellFirewa
 			record.Field80 = math.Float32bits(position.X)
 			record.Field84 = math.Float32bits(position.Y)
 		},
-		loadLevel:  func(record *DurSpell) uint32 { return record.Level },
-		randomInt:  func(min, max int) int { return s.Rand.Logic.IntClamp(min, max) },
-		spawnFlame: runtime.SpawnFlame,
+		loadLevel:       func(record *DurSpell) uint32 { return record.Level },
+		randomInt:       func(min, max int) int { return s.Rand.Logic.IntClamp(min, max) },
+		spawnFlame:      runtime.SpawnFlame,
+		loadTypeID:      runtime.LoadTypeID,
+		storeTypeID:     runtime.StoreTypeID,
+		nameID:          runtime.LookupType,
+		allocateFlame:   runtime.NewObject,
+		createFlame:     runtime.CreateAt,
+		audioFlame:      runtime.Audio,
+		decayFlame:      runtime.Decay,
+		tickRate:        runtime.TickRate,
+		roundTowardZero: runtime.RoundTowardZero,
 	})
 }

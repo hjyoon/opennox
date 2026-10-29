@@ -55,6 +55,164 @@ completion requirements.
 
 ## Current findings
 
+### Native Lightning duration entries and original dual rounding profiles
+
+Source `08961d0` ports Lightning/EnergyBolt create `52E820` and update `52E850`
+to opaque native duration pointers. The two public C fault controls now pass
+on the same C-owned records above 4 GiB. Two C11 signature assertions cover
+the exports. Removing the obsolete create/update/candidate block deletes 212
+C lines; every byte outside that block in `GAME4_2.c` is identical. Ordinary
+dispatch and public C exports share the production runtime.
+
+The unchanged original create/update/candidate bodies are 44/1032/194 bytes,
+totaling 1270, plus the actual 17-byte `419A70` converter. The earlier linear
+inspection's 1285-byte count included 14 alignment NOPs and a separate RET at
+`52ED30`; CFG inspection excludes those 15 bytes. Every instruction byte of
+the corrected roots/candidate/converter executes under each original PC53
+startup `0x0e3f` and nearest `0x023f` context. Each profile has 622 identical
+inputs: 22 create, 600 update, 514 candidate calls and 1460 converter calls.
+There are 533 profile-sensitive results and 355 mutation kinds/381 executions
+per profile. Actual original buff/recent-damage/old-mana helpers also execute
+595/38/436 times, covering 34/35, 42/42 and 39/39 bytes; the unused nil-unit
+buff return is explicitly outside this root coverage. Registers, stack,
+control word/TOP, nonoutput heap and tracked global canaries pass with no
+original faults. Balance/table, circle, facing, surface distance, enemy/LOS,
+ray/FX, virtual damage, state/audio/cast sound and mana debit are declared
+services. This is whole-root evidence under those services, not transitive
+full-game equivalence.
+
+Producer, both goldens and comparator were sealed before engine changes and
+remain byte-identical in the repository. The frozen comparator reproduces
+74 pass/548 fail startup leaves and 201 pass/421 fail nearest leaves before
+the port; all 622 leaves per profile pass afterward. Only the pre-port
+baseline projects unavailable native scratch observations and their derived
+FX-owner label; coordinates, selection and service behavior still compare.
+After the port, selected/mode/center/nearest and all owner observations compare
+directly. Existing standalone tests retain their original nearest inputs and
+expected values. The runtime now represents the original rounding context
+explicitly: the standalone API defaults to nearest, while production selects
+startup toward zero. Both profiles execute the same core against original
+references. Production balance scalars/tables stay binary64 through directed
+PC53 arithmetic, binary32 spills and signed-DWORD conversion. Retained and
+cursor selection use original surface distance and unordered comparisons;
+enumeration preserves fixed caster context and live shared scratch. Carry
+capture, callback reloads, ray replacement, glyph audio/FX ownership, recent
+damage, state, audio, expiry and post-debit mana termination follow the original.
+
+There are 1259 new terminals: 1247 reference events, three direct-entry events
+and nine composition events. Eight actual C composition contexts cover
+sustained damage/mana exhaustion, ray replacement, cursor acquisition, surface
+distance retention, no-target stop, recent-damage cancellation, monster
+movement and nil-caster glyph selection. Synthetic C-owned units use gameplay
+flag1. Production scalar/table loading, facing/distance/LOS/spatial index,
+registered DefaultDamage/UnitSetHP, attribution/Injured state, player state,
+audio, mana and important-ray sending execute. Sustained hits debit HP
+200→199→197→196 and mana 3→2→1→0; startup carry is .75/.25/.75 and expiry 141
+at frame 140. Glyph damage is 3 for balance 3.5. A read-only observer delegates
+actual C ray allocation and checks exact seven-byte start/stop payloads and
+send results. Native record/object/update/player/health canaries and links
+pass. No peer is opened; common duration-owner cleanup is independently
+checked in the product E2E.
+
+Complete ordinary root/server/legacy passes 275056 with 18 skips in 222.866
+seconds. Focused highres/cgocheck2/checkptr2 passes 5358 with one x86-only skip
+in 233.008 seconds. Both scopes contain every new terminal. All 3907 previous
+tests, fixtures and E2E inputs remain unchanged. Three new complete original
+ranges preserve every previous manifest record and relative order; direct
+oracle verification passes 3240 code and 669 data ranges. The first original
+producer attempt rejects seven impossible glyph table-callback mutations;
+its draft and failure remain, and no engine change preceded the corrected
+reference seal. A later clean-worktree guard rejects Python's generated
+qualification bytecode; that cache is preserved outside the worktree and
+future private qualifier imports disable bytecode writes.
+
+The clean Go 1.26.9 darwin/arm64 product is 65,662,546 bytes, SHA256
+`1ca54af95907e55f3bcec1e7b66449b3957ac16f0ce6d017bb827ae39797193d`.
+The unchanged hosted Chain Lightning/Lightning/Drain Mana scenario passes in
+38.065 seconds. Lightning's rendered stem covers 7/7 bins with 109 pixels,
+stock target HP falls 74→72 over frames 554→557, and cancellation removes the
+duration/ray sidecar by frame 559. Shared duration-ray, Chain Lightning and
+Drain Mana checks also pass. The fixture injects a duration through the
+ordinary API and arranges Spider position, cursor/facing and mana refill;
+this is production update/render/cancel evidence, not an earned campaign
+Lightning cast. Headless rendering, virtual time and mock audio remain
+explicit limits. No screenshot-golden comparison is credited.
+
+Current-product original Bookcase6 movement passes in 38.802 seconds and
+actual menu Load/Save in 17.570. The original initial 15-file Save matches the
+previous qualified seed. The newly passing Save's HP20/MP74/poison0 and whole
+manifest are frozen before its first reload, which preserves those exact
+resources. Earlier batch MP44 and all prior Save/expectations remain intact.
+Read-only native snapshots again identify stock extent 1974/script 1000194601
+at (1591,4734), plate off, mover on and original Urchin 1000194073 HP0/DEAD.
+Directly viewed slide/reload and Save frames supplement those state checks;
+they are not goldens. Runtime 2195 identity remains unproved. No current-product
+Swap replay is claimed; retained failed recovery Saves remain excluded as
+seeds. Personal installation 4649 files/503207370 bytes, original assets,
+prior products and all failures/Save outputs remain preserved. No compiler
+cache is pruned in this batch.
+
+Windows [run 40855312767](https://github.com/hjyoon/opennox/actions/runs/40855312767)
+finally passes the default native gate: original 386 execution job
+123384683442 and unchanged-source amd64 retry job 123393718457 both complete
+full uncached root/server/legacy tests and native product help. The 386 result
+is carried forward in attempt2, not reexecuted. Artifacts12890310092 and
+12890433000 match GitHub ZIP digests, PE machines and clean `08961d0` metadata.
+Windows output is nonverbose, so per-test inclusion follows full-package
+success. Linux [run 40855326012](https://github.com/hjyoon/opennox/actions/runs/40855326012),
+job 123384733035 passes 272482 with seven skips across all 58 expected packages
+(36 pass,22 skip), including all 1259 new terminals. Default-link damage passes
+133041 across three packages. Artifact 12890641351 verifies the GitHub ZIP
+digest, ELF machine 62 and clean source; its 63,811,312-byte product SHA256 is
+`5af3aa1c8e9d47609c6d2b26cd12d76017e84a5a28ce1505393f82e72ca27c04`.
+Exact test/default-damage JSON remains in the retained ZIP with SHA256, byte
+counts and CRC checks.
+
+The first amd64 attempt, job 123384683723, fails in root/legacy with Go GC's
+`found pointer to free object`; server also fails without an explanatory
+message in the nonverbose log. Raw logs and failed-job artifact 12888199882
+remain preserved. Its clean product is byte-identical to the successful
+retry product. A separate [diagnostic run 40857396221](https://github.com/hjyoon/opennox/actions/runs/40857396221),
+job 123391694584, keeps the same source/tests/default collector and changes
+only reportZombies' diagnostic bit reader, addressing the report gap tracked
+in [Go issue 80799](https://github.com/golang/go/issues/80799). The exact
+one-line source difference is verified. It passes 270502 with 11 skips,
+including all 1259 new events; artifact 12890048201 and original JSON are
+retained. macOS's additional GOGC10/GOMAXPROCS4 full suite passes 275056/18 in
+133.861 seconds. Neither diagnostic reproduces the failure. No test expected
+value or collector is disabled. These passing reruns do not establish the
+first GC failure's cause; it remains a stability follow-up. All native jobs
+are now closed. Five requested poison-macro warnings are absent from all
+qualified native logs, including the retained failed attempt; other warnings
+remain visible. Successful gates are not redispatched for documentation or
+read-only overlays.
+
+The 46 intercepted slots now contain 31 native Go entries, three inspected
+native C forwarders, one pointer-free constant leaf and 11 lexical PE32
+candidates. A separate read-only overlay reproduces the next Drain Mana
+update `52E210` float-argument ABI crash on a high-address C-owned record after
+the ordinary nil-caster control returns1. CFG inspection identifies complete
+update/transfer/select/candidate/has-mana bodies of 561/434/80/342/89 bytes,
+total 1506. All five bodies and the 17-byte converter execute in 44 identical
+preparation inputs under each startup/nearest profile, with five differing
+results; helper coverage remains measured separately. Callback-mutation and
+precision expansion, independent comparator/final reference sealing and the
+next engine port remain pending. The initial expanded observer's local-name
+collision and its failure are retained; the corrected probe changes that name
+only. Ten other candidates are unexecuted. This inventory is
+not a completion denominator. Reachable callbacks/layouts beyond these slots,
+nine-cell optional-feature/final audits, War03d classification, hostile
+WarCry interruption/radius/vision, distant-AI behavior, retained Swap recovery,
+UI/audio/peer/stability coverage and the unexplained Windows GC failure remain
+open. Overall 100% is not claimed.
+
+Private evidence: `energy-bolt-native-entry-port/` contains original seals,
+before/after/composition raw logs, `local-energy-bolt-native-qualified-v1.json`,
+`runtime-source-product-qualified-v1.json`,
+`current-product-campaign-qualified-v1.json`, `preservation-qualified-v1.json`
+and `all-native-workflows-qualified-v1.json`.
+
+
 ### Native Plasma duration entry points and original selection precision
 
 Source `01e23ab` ports Plasma create `531580`, update `531600` and destroy

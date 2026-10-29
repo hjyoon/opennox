@@ -223,63 +223,6 @@ int sub_531290(int a1) {
 //----- (00531410) --------------------------------------------------------
 int nox_xxx_spellTurnUndeadUpdate_531410() { return 0; }
 
-//----- (00531490) --------------------------------------------------------
-int sub_531490(uint32_t* a1) {
-	int v1;     // eax
-	int v2;     // edi
-	int result; // eax
-
-	v1 = a1[12];
-	v2 = 20 * a1[2] * gameFPS();
-	if (!v1) {
-		return 1;
-	}
-	if (!(*(uint8_t*)(v1 + 8) & 4)) {
-		return 1;
-	}
-	sub_4FF310((nox_object_t*)(uintptr_t)a1[12]);
-	nox_xxx_buffApplyTo_4FF380(
-		(nox_object_t*)(uintptr_t)(uint32_t)a1[12], 27, v2, a1[2]);
-	result = 0;
-	a1[17] = v2 + gameFrame();
-	return result;
-}
-
-//----- (005314F0) --------------------------------------------------------
-int sub_5314F0(int a1) {
-	int v1;     // eax
-	int result; // eax
-	int v3;     // eax
-
-	v1 = *(uint32_t*)(a1 + 48);
-	if (!v1) {
-		return 1;
-	}
-	if (nox_xxx_testUnitBuffs_4FF350(v1, 8)) {
-		return 1;
-	}
-	v3 = *(uint32_t*)(a1 + 48);
-	if (v3 && *(uint8_t*)(v3 + 8) & 2 &&
-		sub_4FEA70((nox_object_t*)(uintptr_t)(uint32_t)v3, (float2*)(a1 + 28))) {
-		result = 1;
-	} else {
-		result = (*(uint32_t*)(*(uint32_t*)(a1 + 48) + 16) & 0x8020) != 0;
-	}
-	return result;
-}
-
-//----- (00531560) --------------------------------------------------------
-int sub_531560(int a1) {
-	int result; // eax
-
-	result = *(uint32_t*)(a1 + 48);
-	if (result) {
-		result = nox_xxx_spellBuffOff_4FF5B0(
-			(nox_object_t*)(uintptr_t)(uint32_t)result, 27);
-	}
-	return result;
-}
-
 //----- (00531580) --------------------------------------------------------
 int nox_xxx_plasmaSmth_531580(int a1) {
 	int v1; // eax

@@ -17,13 +17,11 @@
 #include "spell_swap_native_530ca0.h"
 #include "spell_moonglow_native_531a00.h"
 #include "spell_turn_undead_native_531310.h"
+#include "spell_oval_shield_native_531490.h"
 int nox_xxx_manaBomb_530F90(uint32_t* a1);
 int nox_xxx_manaBombBoom_5310C0(int* a1);
 int sub_531290(int a1);
 int nox_xxx_spellTurnUndeadUpdate_531410();
-int sub_531490(uint32_t* a1);
-int sub_5314F0(int a1);
-int sub_531560(int a1);
 int nox_xxx_plasmaSmth_531580(int a1);
 int nox_xxx_plasmaShot_531600(int a1);
 void sub_531920(int a1, int a2);

@@ -55,6 +55,123 @@ completion requirements.
 
 ## Current findings
 
+### Native Turn Undead entries, type caches and live deletion traversal
+
+Source `6b1c28d` ports public Turn Undead create `531310` and destroy `531420`
+to opaque native duration pointers through the ordinary dispatch production
+runtime. Both previously faulting C entry controls now pass. Two C11 assertions
+check the signatures and the obsolete 61-line C roots are removed. The
+pointer-free update `531410` remains a constant C leaf. Destroy uses void,
+matching inspected duration consumers; its unused original EAX is excluded.
+
+Creation keeps balance as binary64 until the original directed binary32 spill
+and signed FISTP conversion. It fills the original create type cache after the
+budget write, reloads that cache for each of 43 allocation attempts and uses
+typed allocation. Destruction compares each native object's type against the
+live full 32-bit destroy cache and reads the next object after delayed deletion,
+matching callbacks that alter the list. The pre-existing nil-source and
+matching nil-collision-data guards remain defensive native policies outside
+the valid original-reference inputs.
+
+The unchanged 244/97-byte roots and actual 17-byte converter total 358 bytes.
+All instruction bytes execute in 125 contexts (99 create,26 destroy) per profile,
+independently at startup 0x0e3f and nearest 0x023f. There are 86 mutation kinds
+and 88 mutation executions per profile, without original faults. Registers,
+stack, FP control/TOP and nonoutput heap/global canaries pass. The actual
+2048-byte original direction table is sealed; the roots read 344 table bytes
+and the four-byte 4.0 multiplier. Identical profile inputs yield nine diagnostic
+result differences; the native comparator pins startup. Declared services do
+not establish transitive projectile-collision or full-campaign equivalence.
+
+The reference producer, comparator and golden are sealed before engine edits
+and unchanged afterward. The before run of source fb07982 has one passing
+and 124 failing leaf contexts (99 create,25 destroy); 19 differ in end state
+after excluding cache and resolution-count differences. The 124 protocol
+mismatches are not 124 distinct gameplay defects. The first report reader
+could not parse test2json-split long lines; after engine edits, qualification
+reassembles the unchanged raw before Output chunks and verifies exact before
+source snapshots against Git. No reference or adapter was changed to obtain
+the after result. All 125 original contexts now pass.
+
+There are 137 new passing terminals: 126 original-reference terminals, three
+public C regression terminals and eight C composition terminals. The latter
+execute seven real production C contexts: caster, anchor and glyph without
+caster, each with cold/warm caches, plus allocation failure. Actual binary64
+balance parsing (3.9 to budget3), type caches, typed allocation, native collision
+links, create-at/ownership, pending-to-active map-index insertion and exact
+43-projectile delayed deletion execute. Other-type/same-record and
+same-type/other-record decoys survive. Record and object canaries pass and native
+links exceed 4 GiB on 64-bit targets. Synthetic type definitions and blank map
+support composition; the stock host fixture independently proves 43 projectiles
+survive updates then retire after cancellation at frames 549/552/555. Its
+duration is injected and does not prove an earned spell cast. Mock audio and
+intentional discovery-denial warnings remain in the logs.
+
+Complete ordinary root/server/legacy passes 272991 with 18 skips in 129.699
+seconds. Focused highres/cgocheck2/checkptr2 passes 3233 with one x86-only skip
+in 231.373 seconds. All 137 new terminals pass in both final scopes. Exact
+ordinary JSON remains in lossless gzip with verified decoded and archive hashes.
+The clean Go 1.26.9 darwin/arm64 product is 65,643,730 bytes, SHA256
+`469a10c3ec199a2f24ec2aa1c09f610046fdf5acfdcb600d19c17d0bc2ddd1f9`.
+
+Earned plate/Bookcase6 movement passes in 38.966 seconds and actual menu
+Load/Save in 18.082, using the same whole original seed as the preceding batch.
+Stock extent 1974/script 1000194601 stays at (1591,4734), plate 1000194579 off,
+mover 1000194585 on and original Urchin 1000194073 HP0/DEAD. This run's
+HP20/MP43/poison0 contract and whole passing Save manifest are frozen before
+the first reload and preserved exactly. Published scenarios and runner/checker
+are unchanged. Two executable-only APFS clones have separate inodes and
+identical product bytes. Slide/reload frames are directly viewed supplements.
+Reported runtime 2195 is not established as stock extent 1974. Prior failed
+post-Swap recovery and prior failed stale-fixture reload evidence remain
+retained; this batch does not replay or reclassify Swap recovery.
+
+Windows run 40811259398 jobs 123241854150 (amd64)/123241854395 (386) both pass
+uncached full root/server/legacy and native help. Artifacts 12870977063 and
+12869969447 match GitHub ZIP digests, PE machines and clean source 6b1c28d build
+metadata. Windows output is nonverbose; individual inclusion follows full
+package success. Linux run 40811321665/job 123242055297 passes 270417 with seven
+skips across all 58 expected packages (36 pass,22 skip), explicitly including
+all 137 new terminals. Default-link damage separately passes 133041 across
+three packages. Artifact 12871720359 matches its GitHub ZIP digest, ELF machine
+62 and clean source metadata; its 63,801,304-byte product SHA256 is
+`91e8faac6d8b8bc1aea4d00f0f77666ac021b93f53058e32d052a8fbc2bcbb05`.
+Exact Linux JSON streams remain inside the verified ZIP with streamed decoded
+SHA256, byte counts and CRC checks. All three jobs/artifacts are closed in
+`all-native-workflows-qualified-v1.json`. Native raw job logs and Linux
+JSON/stderr contain none of the five requested poison macro warnings. No CI is
+redispatched for documentation or read-only overlays.
+
+The current 46 intercepted slots contain 23 exported Go entries, three inspected
+native C forwarders, one pointer-free constant leaf and 19 lexical PE32
+candidates. External read-only overlays reproduce three further Oval Shield
+public-entry faults: create misreads native Pos.X as a PE32 target, and
+update/destroy truncate the record before the record+48 target load. Ordinary
+native controls complete. The first create probe omitted the FPS server binding
+and failed in that fixture setup; it is retained and excluded from the runtime
+defect count. Corrected v2 supplies that binding and reproduces the C object-class
+read fault at +8. These three entries remain unfixed; 16 other lexical candidates
+are unexecuted. Their 211 original bytes are separately prepared in 197 contexts
+under both FP profiles with 43 mutations, all bytes executed and zero profile
+result differences. The sealed native generic comparator passes all 197 original
+contexts (198 terminals including its parent) against unchanged 6b1c28d, via a
+read-only overlay. Public native C entry fixes and their production composition
+remain pending. Counts are not completion percentages.
+
+Evidence is under `turn-undead-native-entry-port`, especially
+`local-turn-undead-native-qualified-v1.json`,
+`original-turn-undead-before-qualified-v1.json`,
+`current-product-campaign-qualified-v1.json`,
+`all-native-workflows-qualified-v1.json`,
+`oval-shield-next-entry-before-qualified-v1.json` and
+`remaining-duration-entry-inventory-v2.json`. Prepared next-reference evidence
+is `oval-shield-native-entry-port/original-oval-shield-reference-preparation-v2-qualified.json`.
+Overall 100% remains open, including the broader reachable callback/layout
+audit, nine-cell optional-feature audits, War03d reachability, active hostile
+WarCry interruption, far-detection AI behavior, UI/audio, peers and sustained
+stability. Compiler-cache-only pruning is recorded separately; original assets,
+all saves, fixtures, failures, raw logs and compiled products remain preserved.
+
 ### Native Moonglow duration entries and original conversions
 
 Source `776948c` ports Moonglow create `531A00` and destroy `531AF0` to opaque
@@ -138,19 +255,20 @@ in `all-native-workflows-qualified-v1.json`. Native raw job logs and Linux
 JSON/stderr contain none of the five requested poison macro warnings. No CI is
 redispatched for documentation or read-only overlays.
 
-The current 46-slot inventory has 21 exported Go entries, three inspected native
-C forwarders, one pointer-free constant leaf and 21 lexical PE32 candidates.
-External overlays reproduce two further Turn Undead faults:creation reads the
-truncated source+56 instead of completing ordinary Go's return0/budget0;
-destruction reads a truncated active object's type+4 after ordinary Go safely
-retains that unrelated object. These two entries remain unfixed; 19 other
-candidates are unexecuted. Their 244/97-byte original roots are inspected/sealed,
-with no original execution equivalence claimed. Counts are not coverage
-percentages. Evidence is under `moonglow-native-entry-port`, especially
+At source 776948c, the 46-slot inventory had 21 exported Go entries, three
+inspected native C forwarders, one pointer-free constant leaf and 21 lexical
+PE32 candidates. Its external overlays reproduced two further Turn Undead
+faults: creation truncated the source+56 position link, while destruction
+truncated an active object's type+4 load. The ordinary Go controls completed.
+Those two entries were pending at that checkpoint and are resolved by the
+current Turn Undead section above; the earlier inspection-only status and
+19 unexecuted candidates are historical. Its evidence remains under
+`moonglow-native-entry-port`, including
 `local-moonglow-native-qualified-v1.json`,
 `current-product-campaign-qualified-v1.json`,
 `turn-undead-next-entry-before-qualified-v1.json` and
-`remaining-duration-entry-inventory-v2.json`. Overall 100% remains open.
+`remaining-duration-entry-inventory-v2.json`. Counts are not percentages and
+overall 100% remains open.
 
 ### Native Teleport Pop and ToMark entries
 

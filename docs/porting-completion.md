@@ -55,6 +55,97 @@ completion requirements.
 
 ## Current findings
 
+### Native Mana Bomb entries and complete original comparison
+
+Source `7eb5613` ports public create `530F90`, update `5310C0` and destroy
+`531290` from PE32/scalar arguments to opaque native duration pointers.
+All three earlier C paths crash on their C-owned records above4GiB after
+the ordinary native controls complete. The same frozen probes now pass.
+The ordinary dispatcher retains its own runtime instance; the exported C
+entries share the same algorithm and production runtime. The150 obsolete C
+lines are removed and every other `GAME4_3.c` byte is preserved.
+
+Before engine edits, complete original create303/update454/destroy116 bytes
+and the17-byte FISTP converter execute1969 inputs under startup `0x0e3f`
+and nearest `0x023f`:3938 root runs,1607 profile-sensitive results and all
+890 root/converter instruction bytes. Original scalar/indexed getters,
+isPlayer and the walls setter execute completely. Current-mana executes its
+26 player-reachable bytes;13 nonplayer/nil-path bytes remain unobserved here.
+Twelve world-service bodies are declared, including dictionary lookup,
+allocation, creation, buff, damage, FX and mana effects. Stock-range FPS/buff
+durations and levels1–6 bound the inputs; original nil-caster/non-glyph
+creation is undefined and excluded. Destructor EAX is retained but excluded
+because the duration manager discards it. Producer, both goldens, comparator
+and before-probe bytes are sealed before changes and remain unchanged.
+
+The unchanged Go algorithm passes337 original leaves and differs on1632;
+511 mismatches equal the original nearest-control result. The implementation
+restores startup toward-zero conversion without changing host FP state,
+initializes the type cache before lookup, clears the native charge even when
+allocation fails, and reloads caster/FPS between buff callbacks. It preserves
+power caching across later lookups, the early walls flag, inner-before-outer
+lookup order, and live caster/level/mass reads after effects. All1969 frozen
+original contexts now pass. One old test's comment and three expected powers/
+damage values are corrected for +3.5→3; its original source is retained.
+All3948 other previous test/fixture/scenario inputs remain unchanged.
+
+Six actual public C compositions make16 calls through production type-cache/
+factory, CreateObjectAt, sidecar, buff/mana/inert-token protection, native map/
+ray/C-damage, parsed AUD and deletion-list paths. Glyph charging/explosion,
+zero-mana player glyph, ordinary player charging and early cancellation
+compare frozen original stage inputs/outputs and full native record canaries.
+The inner-radius target captures damage rather than changing HP. Quake/FX
+execute without connected clients; no packet-delivery or original whole-world
+replay claim follows. The first integrated run catches a dispatcher-owner
+regression introduced during this port; its failure is retained and restoring
+the dispatcher instance fixes it without changing the existing test.
+
+Normal macOS checks pass281275 tests/20 skips in119.099 seconds. Highres
+`cgocheck2`/`checkptr=2`, including real OpenAL null, pass12571/seven skips in
+233.275 seconds. Both include all1981 new terminals. Oracle verification
+passes3257 code/679 data ranges, retaining all prior entries and appending
+only the three roots, walls setter and seven original name/key strings. The
+clean Go1.26.9 ARM64 product is65717586 bytes, SHA256
+`ac958b1d801497f7e926352867a26d76e65cdefa72530e5f8367dc9c46ffc090`.
+
+The unchanged hosted Mana Bomb scenario passes32.850 seconds: frames549/552/
+554, power10→13, preserved opaque Field76 `0x3fdccccc`, charge/buff cleanup
+and caster mass restoration. Shared spells pass32.745 seconds. Original
+Bookcase6 and first actual menu Load/Save pass38.772/17.614 seconds. The whole
+passing Save and HP20/MP43/poison0 contract are sealed before the first reload;
+native endpoint/plate/mover and Urchin HP0/DEAD persist. Completed/reloaded
+scenes are viewed; camera differences are retained without a screenshot-golden
+claim. Real ordinary-clock CoreAudio passes347.157 seconds with all54 Amb
+types, natural host ambience, continuous/random-delay buffers and range/delete
+cleanup:2205 sample buffers queued,2170 processed and three music streams.
+Controlled host API injection, headless rendering and mock audio outside the
+CoreAudio run provide no earned Mana Bomb campaign or subjective sound-fidelity
+credit.
+
+[Windows run40954684555](https://github.com/hjyoon/opennox/actions/runs/40954684555)
+passes clean amd64/386 server products, help and full uncached root/server/
+legacy tests. [Linux run40954739112](https://github.com/hjyoon/opennox/actions/runs/40954739112)
+passes all58 expected packages (36 pass/22 skip),278701 tests/seven skips,
+all1981 new terminals and133041 default-link damage tests. All three jobs,
+decoded raw logs, GitHub-digest archives, architectures and clean source
+metadata are qualified and closed. All five requested poison-macro warnings
+are absent. Unchanged client audio retains its independent normal/strict
+Linux device qualification at `97f2663`; these server jobs claim no current
+client-device run. Original4649 files/503207370 bytes, all Save/failure
+records and nine prior ARM64 products are preserved. Known disposable stage
+scratch is empty; the earlier7.3GB reproducible-cache cleanup stays recorded.
+
+The46 intercepted duration slots now classify as42 Go exports, three inspected
+native C forwarders and one constant leaf. This supplies no global completion
+denominator. Next, five retained public C facing/cancel entries have separately
+reproduced crashes while ordinary native controls pass. Their602 original
+bytes execute1352 contexts per FP profile, with six observable and297 internal
+helper profile differences; their independent Go comparator and engine port
+remain pending. Overall100%, nine-cell optional/final audits, broader reachable
+layouts, War03d/hostile WarCry/AI/Swap/UI/network/stability evidence and the two
+older unexplained Windows-GC/Bookcase failures remain open. Later passes do
+not establish those failures' causes.
+
 ### Native Force of Nature entries and complete original comparison
 
 Source `5da9d6e` ports public `52EF30`/`52EFD0`/`52F1D0` to opaque native

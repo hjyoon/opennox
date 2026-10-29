@@ -15,6 +15,7 @@
 #include "spell_teleport_markers_native_5305d0.h"
 #include "spell_teleport_target_native_530a30.h"
 #include "spell_swap_native_530ca0.h"
+#include "spell_moonglow_native_531a00.h"
 int nox_xxx_manaBomb_530F90(uint32_t* a1);
 int nox_xxx_manaBombBoom_5310C0(int* a1);
 int sub_531290(int a1);
@@ -28,8 +29,6 @@ int nox_xxx_plasmaSmth_531580(int a1);
 int nox_xxx_plasmaShot_531600(int a1);
 void sub_531920(int a1, int a2);
 int sub_5319E0(int a1);
-int nox_xxx_spellCreateMoonglow_531A00(uint32_t* a1);
-int sub_531AF0(int a1);
 int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(int a1, int a2);
 int* sub_531C10(int a1, int a2);
 int* nox_xxx_monsterAction_531C60(int a1, int a2);

@@ -557,69 +557,6 @@ int sub_5319E0(int a1) {
 	return result;
 }
 
-//----- (00531A00) --------------------------------------------------------
-int nox_xxx_spellCreateMoonglow_531A00(uint32_t* a1) {
-	short v1;     // di
-	int v2;       // eax
-	uint32_t* v3; // eax
-	int v4;       // ecx
-	int v5;       // edx
-	float v7;     // [esp+0h] [ebp-14h]
-	float v8;     // [esp+Ch] [ebp-8h]
-	float v9;     // [esp+10h] [ebp-4h]
-
-	v7 = nox_xxx_gamedataGetFloat_419D40("MoonglowEnchantmentDuration");
-	v1 = nox_float2int(v7);
-	v2 = a1[12];
-	if (!v2 || *(uint32_t*)(v2 + 16) & 0x8020) {
-		return 1;
-	}
-	if ((*(uint8_t*)(v2 + 8) & 4) != 4) {
-		nox_xxx_buffApplyTo_4FF380(
-			(nox_object_t*)(uintptr_t)(uint32_t)v2, 15, v1, a1[2]);
-		return 1;
-	}
-	v3 = nox_xxx_newObjectByTypeID_4E3810("Moonglow");
-	a1[18] = v3;
-	if (!v3) {
-		return 1;
-	}
-	v4 = a1[12];
-	v5 = *(uint32_t*)(*(uint32_t*)(v4 + 748) + 276);
-	if (*(uint8_t*)(v5 + 3680) & 0x10) {
-		v8 = (double)*(int*)(v5 + 2284);
-		v9 = (double)*(int*)(v5 + 2288);
-	} else {
-		v8 = 2944.0;
-		v9 = 2944.0;
-	}
-	nox_xxx_createAt_4DAA50((int)v3, v4, v8, v9);
-	nox_xxx_buffApplyTo_4FF380(
-		(nox_object_t*)(uintptr_t)(uint32_t)a1[12], 1, v1, a1[2]);
-	return 0;
-}
-
-//----- (00531AF0) --------------------------------------------------------
-int sub_531AF0(int a1) {
-	int result; // eax
-
-	result = *(uint32_t*)(a1 + 48);
-	if (result) {
-		if ((*(uint8_t*)(result + 8) & 4) == 4) {
-			if (*(uint32_t*)(a1 + 72)) {
-				nox_xxx_delayedDeleteObject_4E5CC0(*(uint32_t*)(a1 + 72));
-			}
-			*(uint32_t*)(a1 + 72) = 0;
-			result = nox_xxx_spellBuffOff_4FF5B0(
-				(nox_object_t*)(uintptr_t)*(uint32_t*)(a1 + 48), 1);
-		} else {
-			result = nox_xxx_spellBuffOff_4FF5B0(
-				(nox_object_t*)(uintptr_t)(uint32_t)result, 15);
-		}
-	}
-	return result;
-}
-
 //----- (00531B40) --------------------------------------------------------
 int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(int a1, int a2) {
 	int v2;         // ebx

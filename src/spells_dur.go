@@ -466,8 +466,8 @@ func (sp *spellsDuration) forceOfNatureRuntime52EF30() server.SpellForceOfNature
 
 func (sp *spellsDuration) moonglowRuntime531A00() server.SpellMoonglowRuntime531A00 {
 	return server.SpellMoonglowRuntime531A00{
-		EnchantmentDuration: func() float32 {
-			return float32(sp.s.Balance.Float("MoonglowEnchantmentDuration"))
+		EnchantmentDuration: func() float64 {
+			return sp.s.Balance.Float("MoonglowEnchantmentDuration")
 		},
 		NewObject: sp.s.S().NewObjectByTypeID,
 		CreateAt: func(visual, target *server.Object, point types.Pointf) {

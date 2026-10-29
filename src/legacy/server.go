@@ -108,6 +108,8 @@ type Server interface {
 	SpellTeleportPopUpdate530880(record *server.DurSpell) int32
 	SpellTeleportToMarkCreate5305D0(record *server.DurSpell) int32
 	SpellTeleportToMarkUpdate530650(record *server.DurSpell) int32
+	SpellMoonglowCreate531A00(record *server.DurSpell) int32
+	SpellMoonglowDestroy531AF0(record *server.DurSpell)
 	SpellTeleportCreateWake530560(target *server.Object, origin, destination *types.Pointf)
 	SpellChainLightningCreate52F820(record *server.DurSpell) int32
 	SpellChainLightningUpdate52F8A0(record *server.DurSpell) int32

@@ -15,7 +15,7 @@ func TestSpellMoonglowCreate531A00RejectsMissingOrDestroyedTarget(t *testing.T) 
 		calls := 0
 		record := &DurSpell{Target48: target}
 		runtime := SpellMoonglowRuntime531A00{
-			EnchantmentDuration: func() float32 { calls++; return 60 },
+			EnchantmentDuration: func() float64 { calls++; return 60 },
 		}
 		if got := SpellMoonglowCreate531A00(record, runtime); got != 1 {
 			t.Fatalf("target %p: create = %d, want 1", target, got)
@@ -31,7 +31,7 @@ func TestSpellMoonglowCreate531A00NonPlayerAppliesLight(t *testing.T) {
 	record := &DurSpell{Target48: target, Level: 0x102, Field72: 0x55aa}
 	calls := 0
 	runtime := SpellMoonglowRuntime531A00{
-		EnchantmentDuration: func() float32 { return 60.9 },
+		EnchantmentDuration: func() float64 { return 60.9 },
 		ApplyBuff: func(got *Object, buff EnchantID, duration int16, power int8) {
 			calls++
 			if got != target || buff != ENCHANT_LIGHT || duration != 60 || power != 2 {
@@ -68,7 +68,7 @@ func TestSpellMoonglowCreateAndDestroy531A00PlayerVisual(t *testing.T) {
 			var stored *Object
 			var events []string
 			runtime := SpellMoonglowRuntime531A00{
-				EnchantmentDuration: func() float32 { events = append(events, "duration"); return 70.9 },
+				EnchantmentDuration: func() float64 { events = append(events, "duration"); return 70.9 },
 				NewObject: func(id string) *Object {
 					events = append(events, "new")
 					if id != "Moonglow" {
@@ -132,7 +132,7 @@ func TestSpellMoonglowCreate531A00MissingVisualAndDestroyOtherTargets(t *testing
 	record := &DurSpell{Target48: target}
 	storeCalls := 0
 	runtime := SpellMoonglowRuntime531A00{
-		EnchantmentDuration: func() float32 { return 60 },
+		EnchantmentDuration: func() float64 { return 60 },
 		NewObject:           func(string) *Object { return nil },
 		StoreVisual: func(*DurSpell, *Object) {
 			storeCalls++

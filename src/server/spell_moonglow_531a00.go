@@ -6,7 +6,7 @@ import "github.com/opennox/libs/types"
 // Visual objects are kept outside DurSpell.Field72: that PE32 dword cannot
 // hold an object pointer on a 64-bit host.
 type SpellMoonglowRuntime531A00 struct {
-	EnchantmentDuration func() float32
+	EnchantmentDuration func() float64
 	NewObject           func(string) *Object
 	CreateAt            func(*Object, *Object, types.Pointf)
 	ApplyBuff           func(*Object, EnchantID, int16, int8)
@@ -22,7 +22,7 @@ type SpellMoonglowRuntime531A00 struct {
 //
 //go:noinline
 func SpellMoonglowCreate531A00(record *DurSpell, runtime SpellMoonglowRuntime531A00) int32 {
-	duration := int16(int32(runtime.EnchantmentDuration()))
+	duration := int16(playerReadValuesRound4EEDC0(shapeBoxSpill428270(runtime.EnchantmentDuration())))
 	target := record.Target48
 	if target == nil || uint32(target.ObjFlags)&0x8020 != 0 {
 		return 1
@@ -36,14 +36,15 @@ func SpellMoonglowCreate531A00(record *DurSpell, runtime SpellMoonglowRuntime531
 	if visual == nil {
 		return 1
 	}
+	target = record.Target48
 	player := target.ControllingPlayer()
 	point := types.Pointf{X: 2944, Y: 2944}
 	if player.Field3680&0x10 != 0 {
-		point.X = float32(int32(player.CursorVec.X))
-		point.Y = float32(int32(player.CursorVec.Y))
+		point.X = shapeBoxSpill428270(float64(int32(player.CursorVec.X)))
+		point.Y = shapeBoxSpill428270(float64(int32(player.CursorVec.Y)))
 	}
 	runtime.CreateAt(visual, target, point)
-	runtime.ApplyBuff(target, ENCHANT_MOONGLOW, duration, int8(record.Level))
+	runtime.ApplyBuff(record.Target48, ENCHANT_MOONGLOW, duration, int8(record.Level))
 	return 0
 }
 
@@ -64,5 +65,5 @@ func SpellMoonglowDestroy531AF0(record *DurSpell, runtime SpellMoonglowRuntime53
 		runtime.DelayedDelete(visual)
 	}
 	runtime.StoreVisual(record, nil)
-	runtime.BuffOff(target, ENCHANT_MOONGLOW)
+	runtime.BuffOff(record.Target48, ENCHANT_MOONGLOW)
 }

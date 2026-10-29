@@ -55,6 +55,99 @@ completion requirements.
 
 ## Current findings
 
+### Native Drain Mana entry and original transfer semantics
+
+Source `c2aae7c` replaces Drain Mana update `52E210`'s float argument with
+an opaque native duration pointer. The same C-owned record above 4 GiB that
+previously faulted now passes through the public C entry and ordinary runtime.
+A C11 signature assertion covers the entry. The obsolete update, transfer,
+selection, candidate and mana-presence block removes 302 C lines; all bytes
+outside that block in `GAME4_2.c` are identical.
+
+The five unchanged original bodies contain 561/434/80/342/89 bytes, totaling
+1506, plus the actual 17-byte `419A70` converter. Every instruction byte of
+those roots and the converter executes under both original PC53 startup
+`0x0e3f` and nearest `0x023f` profiles. Each profile runs the same 835 inputs;
+567 produce profile-sensitive observations. Actual buff, recent-damage,
+old/max-mana, team-presence/comparison and synchronization helpers execute
+with measured coverage. Registers, stack, control word/TOP, nonoutput heap
+and tracked global canaries pass with no original faults. Binary64 balance,
+enumeration, world predicates, Quest, ray/audio and bounded mana services
+are declared boundaries; this is whole-root evidence under those services,
+not transitive full-game equivalence or a replacement for native mana tests.
+
+Producer, goldens and comparator were sealed before engine changes. The
+complete baseline observes every leaf once, including four isolated real Go
+panics: startup 164 pass/671 fail and nearest 317 pass/518 fail. All 835 leaves
+per profile pass afterward without changing those reference bytes. The
+baseline alone projects unavailable selection scratch. The original dying
+record's numeric no-target ray link is distinguished from native private
+sidecar ownership; native no-target cleanup is asserted separately. Existing
+standalone tests retain nearest rounding, while production explicitly uses
+startup rounding. A retained first implementation failure exposed FSUB NaN
+sign propagation and was corrected in production arithmetic.
+
+The port preserves binary64 balance/table inputs, directed PC53 arithmetic,
+binary32 spills, signed conversion, weighted selection, unordered comparisons,
+cached update records and live callback reloads. Transfer preserves signed
+obelisk debit, live Quest decisions, team gating, monster supply, player mana
+ordering and class scaling. A dedicated adapter retains the whole DWORD mana
+credit argument; the existing native mana core still owns uint16 wrapping,
+clamping and protection. A 65536-credit composition explicitly verifies that
+word wrapping is retained. The historical short-argument API is unchanged.
+
+There are 1688 new test terminals: 1673 reference, two direct-entry and 13
+composition events. Twelve actual C composition contexts cover ordinary and
+Quest obelisks, player exhaustion, monster supply, opposing/matched teams,
+no-target stop, recent damage, moved monster, nil-player glyph, full-DWORD
+credit and binary64 balance precision. Native spatial/enemy/team/trace,
+mana/protection, sync/audio and ray packet allocation are used. The packet
+observer delegates to the production sender; synthetic units and controlled
+balance remain explicit fixture inputs. A first packet fixture incorrectly
+expected a dynamic netcode for an immobile object; its failure and source
+remain preserved. Original static extent encoding is now checked.
+
+macOS Go1.26.9 full root/server/legacy checks pass 276744 tests with 18 skips
+in 219.074 seconds. High-resolution `cgocheck2`/`checkptr=2` checks pass 7050
+with one skip in 226.180 seconds. All 3917 pre-existing test, fixture and E2E
+inputs remain byte-identical. Oracle verification covers 3245 code and 669
+data ranges. The clean ARM64 product is 65663426 bytes, SHA256
+`b69465df5dd137cb4cd3f1d77d294c848f744a1232b39404d13fd0f9f4737866`.
+
+The unchanged hosted Chain Lightning/Lightning/Drain Mana scenario passes
+in 34.106 seconds, including normal dispatcher and common duration cleanup.
+It uses injected controlled durations, headless rendering, virtual time and
+mock audio; it is not earned campaign casting evidence. Original Bookcase6
+progression passes in 39.722 seconds, followed by an actual menu Load/Save
+in 17.673 seconds. The current passing Save's whole manifest and HP20/MP73/
+poison0 were frozen before the first reload. Original extent1974/script
+1000194601 remains at1591,4734 with plate off, mover on and original Urchin
+1000194073 at HP0/DEAD. The first reload fixture incorrectly required a new
+alive-to-dead transition from an already-dead Save; all raw failure results
+are retained. The corrected reload uses the same sealed passing seed and
+independently verifies HP0/DEAD persistence and exact resources. No failed
+Save is reused. Earlier Saves, products and failures remain preserved.
+
+[Windows run40889498925](https://github.com/hjyoon/opennox/actions/runs/40889498925)
+passes both native amd64 and386 jobs, including clean products, help and full
+uncached package tests. [Linux run40889516729](https://github.com/hjyoon/opennox/actions/runs/40889516729)
+passes all58 expected packages: 36 pass/22 skip, 274170 test passes/seven skips,
+all1688 new terminals and133041 default-link damage passes. All three ordinary
+artifacts match GitHub SHA256 digests; architecture, clean Go metadata and
+raw logs are verified. The five requested poison-macro warnings remain absent.
+All jobs are closed. The earlier Lightning Windowsamd64 GC failure remains
+unexplained and preserved; this successful batch does not establish its cause.
+
+Proofs and exact logs are under the verification root's
+`drain-mana-native-entry-port/`, including original/reference, local/native,
+product and Save/Load qualifications. Cleanup removed only 34177 bytes of
+inactive regenerable scratch/bytecode; no build-cache entries older than24h
+were eligible. Assets, Save, failures, fixtures, records and products remain.
+The duration inventory now has46 intercepted slots: 32 Go entries, three
+inspected native C forwarders, one constant leaf and ten unexecuted lexical
+candidates. This inventory is not a completion denominator. Overall100% and
+the remaining campaign, UI/audio, peer and stability audits remain open.
+
 ### Native Lightning duration entries and original dual rounding profiles
 
 Source `08961d0` ports Lightning/EnergyBolt create `52E820` and update `52E850`

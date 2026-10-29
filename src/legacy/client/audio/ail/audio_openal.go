@@ -173,6 +173,9 @@ func (s *audioSample) EOS() {
 
 func (s *audioSample) EOB() {
 	s.bmu.Lock()
+	// Release this input before announcing it as ready. Otherwise a later
+	// work iteration can decode it again after its cursor reached the end.
+	s.buffers[s.current] = audioSampleBuf{}
 	s.ready++
 	if s.current == 0 {
 		s.current = 1
@@ -531,6 +534,9 @@ func (h Sample) Init() {
 	defer s.d.mu.Unlock()
 
 	s.bmu.Lock()
+	// A recycled voice may change mono/stereo format and block size. Neither
+	// input slot from the old sound belongs to this new playback generation.
+	s.buffers = [2]audioSampleBuf{}
 	s.current = 0
 	s.ready = 2
 	s.bmu.Unlock()
@@ -638,7 +644,7 @@ func (h Sample) BufferReady() int {
 	}
 	if s.ready == 2 {
 		s.ready--
-		return 0
+		return int(s.current)
 	}
 	s.ready--
 	if s.current == 0 {

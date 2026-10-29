@@ -1,0 +1,120 @@
+name: Porting Linux native client audio
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - port/go1.26-multiarch
+    paths:
+      - .github/workflows/port-linux-native-audio.yml
+      - src/legacy/client/audio/**
+      - src/audio_*.go
+      - src/ambient_*.go
+
+permissions:
+  contents: read
+
+jobs:
+  audio:
+    name: Linux/amd64 audio ${{ matrix.profile }}
+    if: github.ref == 'refs/heads/port/go1.26-multiarch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [normal, strict]
+    env:
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: '1'
+      CC: gcc
+      CXX: g++
+      CGO_CFLAGS_ALLOW: '-f.*'
+      CGO_CFLAGS: '-O2 -g -fno-peephole2'
+      GOMAXPROCS: '2'
+      GOFLAGS: '-p=1'
+      GOEXPERIMENT: ${{ matrix.profile == 'strict' && 'cgocheck2' || '' }}
+      NOX_TEST_OPENAL: 'true'
+      NOX_TEST_NATIVE_FX: 'true'
+      ALSOFT_DRIVERS: 'null'
+      SDL_VIDEODRIVER: dummy
+      SDL_AUDIODRIVER: dummy
+      NOX_XWIS: 'false'
+      NOX_NET_NAT: 'false'
+      AUDIO_PROFILE: ${{ matrix.profile }}
+      AUDIO_REPORT: ${{ github.workspace }}/build/linux-native-audio-${{ matrix.profile }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: src/go.mod
+          cache: false
+      - name: Install native audio libraries
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc g++ pkg-config libsdl2-dev libopenal-dev
+      - name: Record native toolchain and source
+        working-directory: src
+        run: |
+          test "$(uname -m)" = x86_64
+          mkdir -p "$AUDIO_REPORT"
+          git rev-parse HEAD > "$AUDIO_REPORT/source-revision.txt"
+          ../scripts/go.sh version > "$AUDIO_REPORT/go-version.txt"
+          gcc --version > "$AUDIO_REPORT/cc-version.txt"
+          pkg-config --modversion sdl2 openal > "$AUDIO_REPORT/native-libraries.txt"
+          printf '%s\n' "$AUDIO_PROFILE" > "$AUDIO_REPORT/profile.txt"
+      - name: Build clean native client product
+        if: matrix.profile == 'normal'
+        working-directory: src
+        run: |
+          ../scripts/go.sh run ./internal/noxbuild -o="$AUDIO_REPORT" -os=linux -arch=amd64 -cc=gcc -cxx=g++ opennox
+          ../scripts/go.sh run ./internal/noxbuild -verify "$AUDIO_REPORT/opennox" > "$AUDIO_REPORT/product-verification.txt"
+          ../scripts/go.sh version -m "$AUDIO_REPORT/opennox" > "$AUDIO_REPORT/product-build-info.txt"
+          sha256sum "$AUDIO_REPORT/opennox" > "$AUDIO_REPORT/product.sha256"
+          "$AUDIO_REPORT/opennox" -h > "$AUDIO_REPORT/product-help.txt" 2>&1
+      - name: Exercise real OpenAL client and sample lifecycle
+        working-directory: src
+        run: |
+          set -euo pipefail
+          ulimit -c 0
+          unset NOX_E2E NOX_E2E_RECORD NOX_E2E_AUDIO MALLOC_MMAP_THRESHOLD_
+          args=()
+          if [[ "$AUDIO_PROFILE" == strict ]]; then
+            args=(-tags=highres -gcflags=all=-d=checkptr=2)
+          fi
+          set +e
+          ../scripts/go.sh test "${args[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=10m -run '^Test(NativeAudio|NativeAmbient|ParseNative|LegacyClientPlaySound|OpenAL|Audio|ADPCM|PCM|MP3|E2EAudio)' . ./legacy/client/audio/ail > "$AUDIO_REPORT/test.jsonl" 2> "$AUDIO_REPORT/test.stderr.log"
+          status=$?
+          set -e
+          echo "$status" > "$AUDIO_REPORT/test.exit"
+          python3 - "$AUDIO_REPORT" <<'PY'
+          import collections, json, pathlib, sys
+          root = pathlib.Path(sys.argv[1])
+          counts, packages, lifecycle = collections.Counter(), {}, {}
+          for line in (root/'test.jsonl').open():
+              e = json.loads(line)
+              if e.get('Action') not in ('pass', 'skip', 'fail'):
+                  continue
+              name = e.get('Test')
+              if name:
+                  counts[e['Action']] += 1
+                  if name.startswith(('TestOpenALSampleReuseDoesNotDecodePreviousFormat', 'TestOpenALSampleCompletesOnlySubmittedBuffers', 'TestOpenALSampleReadySlotAfterDrain')):
+                      lifecycle[name] = e['Action']
+              else:
+                  packages[e['Package']] = e['Action']
+          summary = dict(exit_code=int((root/'test.exit').read_text()), test_actions=dict(counts), package_actions=packages, sample_lifecycle=lifecycle)
+          (root/'summary.json').write_text(json.dumps(summary, indent=2)+'\n')
+          print(json.dumps(summary, indent=2))
+          assert len(lifecycle) == 7 and set(lifecycle.values()) == {'pass'}
+          assert len(packages) == 2 and set(packages.values()) == {'pass'}
+          PY
+          exit "$status"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: linux-native-client-audio-${{ matrix.profile }}-${{ github.sha }}
+          path: build/linux-native-audio-${{ matrix.profile }}/
+          retention-days: 7

@@ -61,7 +61,7 @@ jobs:
           $prefix = $text.Substring(0, $start)
           $tail = $text.Substring($start)
           $needle = "`tmbits := s.markBitsForBase()"
-          if (($tail.Split($needle).Count - 1) -ne 1) { throw 'Unexpected report implementation' }
+          if ([regex]::Matches($tail, [regex]::Escape($needle)).Count -ne 1) { throw 'Unexpected report implementation' }
           # The sweeper has already drained inline marks into gcmarkBits.
           # Read those same bits for diagnostics. Marking/sweeping are unchanged.
           $patched = $prefix + $tail.Replace($needle, "`tmbits := markBits{&s.gcmarkBits.x, 1, 0}")

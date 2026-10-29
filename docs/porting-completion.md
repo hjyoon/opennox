@@ -55,6 +55,126 @@ completion requirements.
 
 ## Current findings
 
+### Native Teleport Pop and ToMark entries
+
+Source `4129d97` ports the four public Pop `530820`/`530880` and ToMark
+`5305D0`/`530650` callbacks to opaque native duration pointers. The four direct
+C failures reproduced in the preceding checkpoint now pass through the same
+production runtime as ordinary Go duration dispatch. Four C11 signature
+assertions check the ABI; the four obsolete C roots are removed. Serialized
+records and network layouts are unchanged.
+
+The existing Go bodies also needed corrections against the original executable.
+Delay stays binary64 until the original directed binary32 spill and signed
+FISTP conversion. Departure position is captured before random selection;
+wake and teleport receive live position addresses. Callbacks reload the current
+target, caster and selected marker at the original service boundaries. Each
+audio tuple is fixed before its sound lookup. ToMark source/caster guards use
+Destroyed 0x20, while its initial target guard also includes Dead 0x8000; a
+non-nil destroyed marker is not rejected by an extra native guard. Expiry and
+final deletion use the current slot. The live-point movement adapter preserves
+anchored, no-update, nonunit and immobile gates before reading the destination,
+including an immobile object admitted by co-op mode.
+
+The unchanged four original roots plus the actual 17-byte FISTP converter total
+1098 bytes. All instruction bytes execute across 324 contexts per FP profile:
+Pop create/update 24/121 and canonical ToMark create/update 33/146. Startup
+0x0e3f and nearest 0x023f run independently with identical inputs. The converter
+is entered 44 times; 116 mutation kinds execute 204 times per profile. Register,
+stack, FP control/TOP and nonoutput heap/global canaries pass without original
+faults. The V2 fixture, producer and Go comparator were sealed before fixes and
+remain byte-identical. Exact source `3575d79` before: 245 passing and 79 failing
+leaf contexts (9/25/9/36 by the four roots); after: all 324 pass. Services,
+including wake, are declared; no transitive collision or full-campaign original
+execution equivalence is claimed.
+
+The earlier V1 Go adapter incorrectly translated original raw 0x20 to Go Dead
+0x8000. Its before/after comparisons are explicitly superseded. V2 corrects
+the adapter, names the mutation Destroyed and adds four marker controls; both
+the exact old-source comparison and fixed comparison use this same sealed V2
+reference. V1 original execution and raw comparisons remain preserved.
+The native comparator pins the startup 0x0e3f profile; the separately executed
+nearest-profile original trace is diagnostic evidence.
+Existing OtherToMark IDs 117–120 remain a separately tested native correction;
+the original canonical slot equivalence applies to IDs 122–125 and Pop.
+
+There are 361 new terminals: 325 original-reference terminals, 25 public C
+composition terminals, six public-entry probe terminals and five live-point
+gate terminals. The C composition executes 24 contexts: Pop four slots and
+both Mark families' four IDs, each with one/two charges. It uses the production
+random service, allocator, wake cache, movement/spatial index and delayed
+deletion, with complete record/source/update-data canaries and native links
+above 4GiB on 64-bit targets. Its map and wake definition are synthetic; earned
+campaign evidence is separate.
+
+Final ordinary root/server/legacy coverage passes 272701 with 18 skips. This
+is the union of root/server passing in 221.422 seconds and unchanged final-source
+legacy passing separately in 59.740 seconds: disk exhaustion prevented only
+the legacy link in the first command. Focused highres/cgocheck2/checkptr2 passes
+2882 with one x86-only skip in 196.215 seconds. All 361 new terminals pass in
+both final scopes. An earlier strict build also exhausted disk before tests;
+all failed setup logs remain. Only regenerable compiler archives were pruned.
+Ordinary JSON capture is lossless gzip with verified decoded byte hashes;
+previous raw logs, assets, fixtures, saves and published binaries remain intact.
+
+The clean Go 1.26.9 darwin/arm64 product is 65,642,610 bytes, SHA256
+`c41f596adaa3a198a85b21295bd09918c655ae2687c617790caed50132d742f0`.
+The unchanged ordinary host fixture completes TeleportToTarget, Pop and ToMark.
+Earned plate/Bookcase6 movement passes in 39.154 seconds; actual menu Load/Save
+passes in 17.681 seconds. The complete original seed manifest matches the prior
+batch. Stock extent 1974/script 1000194601 remains exactly (1591,4734), plate
+1000194579 off, mover 1000194585 on and original Urchin 1000194073 HP0/DEAD.
+HP20/MP43/poison0 is captured before reload and preserved. Runtime 2195 is not
+established as this stock extent. Current frames were directly viewed; the
+initial Load frame is black, so only later rendered frames supplement native
+state evidence. An external APFS clone wrapper changes only executable copying;
+independent inodes and identical bytes are verified, and the repository runner,
+published inputs and checker are unchanged.
+
+A fresh unchanged earned Swap sequence on this product passes escape in 74.544
+seconds with HP20/MP78/poison0. Native duration observations bind the same input
+target to the 637→638 exchange, with cross-position distances 0/0.4047 within
+the unchanged 12-pixel gate. Actual menu reload and recovery finish in 24.634
+seconds with HP20/MP78/poison0, but original spider 1000138581 remains alive;
+1000136506 is HP0/DEAD. The complete sequence fails its unchanged two-monster
+objective. Although its healthy-save gate is true, the sequence continuation
+function independently rejects the objective-failed Save. It is retained and
+not used as a seed. The preceding HP14/poison1 failure is also retained. These
+different landing outcomes leave stable recovery open; no input/checker change
+or full-sequence pass is claimed.
+
+Windows run 40796773252 jobs 123195031356/123195031584 both pass uncached full
+root/server/legacy suites and native product help. Artifacts 12864034152 and
+12863794840 match GitHub ZIP digests, PE machines and clean source 4129d97 build
+metadata. Windows per-test inclusion follows nonverbose full-package success.
+Linux run 40796936920/job 123195567661 passes 270127 with seven skips across all
+58 expected packages (36 pass,22 skip), explicitly including all 361 new
+terminals. Default-link damage separately passes 133041 across three packages.
+Artifact 12865481086 matches its GitHub ZIP digest, ELF machine62 and clean
+source metadata; its 63,795,768-byte product SHA256 is
+`0f753da4ac24947be2224db2d58c137d64ff26d2a7a60522961ee36dc618ceda`.
+Both original Linux JSON streams are retained inside the verified ZIP and
+qualified by streaming their exact bytes, CRC, SHA256 and terminal events;
+they are not duplicated as uncompressed files. All three jobs/artifacts are
+closed in `all-native-workflows-qualified-v1.json`. Raw native job logs and
+Linux JSON/stderr contain none of the five requested poison macro warnings.
+No documentation or read-only overlay change redispatches CI.
+
+The current 46-slot inventory has 19 exported Go entries, three inspected native
+C forwarders, one constant leaf and 23 remaining lexical PE32 candidates.
+Read-only overlays now reproduce two further Moonglow failures: a valid dead
+target's create guard faults at 0x41380010 instead of returning 1, and destruction
+of a living Monster faults at truncated duration+48 after ordinary Go dispatch
+completes. These two entries remain unfixed; 21 other candidates are unexecuted.
+Their original roots are inspected/sealed (226/75 bytes), without execution
+equivalence claimed. Counts are not coverage percentages. Evidence is under
+`teleport-marker-native-entry-port`, especially
+`local-marker-native-qualified-v1.json`,
+`current-product-campaign-qualified-v1.json`,
+`current-earned-Swap-qualified-v1.json`,
+`moonglow-next-entry-before-qualified-v1.json` and
+`remaining-duration-entry-inventory-v2.json`. Overall 100% remains open.
+
 ### Native TeleportToTarget entries and original callback order
 
 Source `5fe22e0` ports the public TeleportToTarget (126) create `530A30` and update
@@ -128,15 +248,16 @@ All three jobs/artifacts are closed in `all-native-workflows-qualified-v1.json`.
 Raw job logs and Linux JSON/stderr contain none of the five requested poison
 macro warnings. Documentation/replay-only changes do not redispatch these jobs.
 
-A current read-only inventory has 46 intercepted slots: 15 exported Go entries,
+The preceding checkpoint's read-only inventory had 46 intercepted slots: 15 exported Go entries,
 three inspected native C forwarding wrappers, one constant leaf and 27 lexical
 PE32 candidates. External overlays now reproduce both Pop entries: creation
 faults at the truncated duration+68, update at the truncated object+16. Valid
 living-source ToMark creation faults at 8, and its wrong-frame update returns 1
 instead of ordinary Go 0. These four reproduced candidates leave 23 others
-unexecuted; counts are not coverage percentages. Their unchanged original
-bodies are disassembled/sealed for the next port, without execution-equivalence
-or fixes claimed. Evidence is under `teleport-target-native-entry-port`,
+unexecuted; counts are not coverage percentages. Those four Pop/ToMark entries
+are now resolved by the native port above. Their original bodies were
+disassembled/sealed before that port. Historical evidence is under
+`teleport-target-native-entry-port`,
 especially `local-target-native-qualified-v1.json`,
 `current-product-campaign-qualified-v1.json`, and
 `remaining-duration-entry-inventory-v3.json`. Overall 100% remains open.

@@ -55,6 +55,76 @@ completion requirements.
 
 ## Current findings
 
+### Native Firewalk entry and complete original tick comparison
+
+Source `4034e85` ports the public `52ED40` Firewalk update to an opaque native
+duration pointer. Its former `float*` C body read PE32 record offsets: native
+position X bits `0x42c80000` became a false target and faulted at `0x42c80010`.
+The identical frozen C-owned record/canary probe now passes above4GiB. The
+ordinary duration dispatcher and public C export share the same native runtime.
+This removes87 C lines; all other `GAME4_2.c` bytes remain identical.
+
+Before engine changes, the complete483-byte original root executes in520
+identical inputs per startup PC53/chop and nearest PC53 profile. All instruction
+bytes execute, all register/stack/FPCW/TOP/heap/global canaries pass, and14
+contexts distinguish the profiles. Name lookup, RNG, allocation, creation,
+audio and decay remain declared world services. Producer, goldens and an
+independent comparator are sealed before the port. The unchanged old callback
+body, with only unused hook declarations added for test compilation, passes
+164/fails356 startup inputs and passes178/fails342 nearest inputs. Its old
+monolithic spawn adapter adds no original cache or movement behavior.
+
+The same comparator passes all1040 leaves after the port. The runtime restores
+living-target type-cache lookup before first-tick initialization, signed level
+tests, ordered distance/nonzero gates, explicit binary32 midpoint-delta spills,
+and original cached versus live record reloads across services. Production
+selects startup PC53/chop; the standalone rounding default remains nearest.
+Actual audio precedes each live FPS read and wrapped DWORD `25*FPS` delay.
+Masked invalid subtraction retains x87's negative indefinite NaN. The first
+candidate's eight infinite-coordinate differences are retained; reference
+bytes and expected values remain unchanged.
+
+Fifteen real public C compositions use native type lookup, object creation,
+parsed AUD positional events and decay lists. They cover first/wrapped frames,
+two flames, failed allocation, signed levels, unordered distance, FPS wrapping
+and audio callbacks that change FPS/target/previous/anchor. Original call
+arguments determine expected positions and deadlines; full native duration
+canaries remain intact. The first new composition test incorrectly equated
+the creation-pending flag with the separate decay-exclusion bit. Its source
+and failures are retained. Only that new test is corrected from the actual
+flag definitions; engine and sealed original inputs stay unchanged.
+
+macOS normal checks pass277968 tests/20 skips in229.978 seconds; highres
+`cgocheck2`/`checkptr=2`, including actual OpenAL null, pass8483/seven skips in
+249.582 seconds. All1061 new terminals run in both profiles. All3930 previous
+test/fixture/scenario inputs are unchanged. Oracle verification now covers3249
+code and669 data ranges; every earlier manifest entry is preserved.
+
+The clean ARM64 product is65715618 bytes, SHA256
+`d085fc9c359e2a292718bbf41425e8e529151d3e2caac712b89446802dce29de`.
+Unchanged hosted Firewalk first-tick/cancel and shared-spell scenarios pass
+32.749/32.753 seconds. Original Bookcase6 and actual menu Load/Save pass
+39.222/17.572 seconds, preserving the whole successful Save sealed before its
+first reload, HP20/MP43/poison0, bookcase endpoint, plate/mover state and Urchin
+HP0/DEAD. Ordinary-clock CoreAudio passes347.840 seconds with all54 Amb types,
+real continuous/random-delay buffers, natural host ambience and range/delete
+cleanup. These are controlled host regressions; no earned Firewalk campaign
+or subjective hearing-fidelity credit is claimed.
+
+[Windows run40921686761](https://github.com/hjyoon/opennox/actions/runs/40921686761)
+passes clean native amd64/386 server products, help and full uncached three-
+package tests. [Linux run40921751462](https://github.com/hjyoon/opennox/actions/runs/40921751462)
+passes all58 expected packages (36 pass/22 skip),275394 tests/seven skips, all
+1061 new terminals and133041 default-link damage tests. All three archives,
+raw logs, clean Go metadata and architectures are qualified; all jobs are
+closed. None of the five requested poison-macro warnings occurs. The unchanged
+audio implementation retains the independently qualified Linux client normal/
+strict device evidence at `97f2663`; these new server jobs claim no client
+audio-device test. Personal assets, all Save/failure records and five earlier
+ARM64 products are preserved. No eligible scratch remains. The old unexplained
+Windows GC failure and the incomplete overall-porting status remain open.
+
+
 ### ADPCM index147 panic from recycled sample inputs
 
 Source `97f2663` fixes a sample-lifetime failure exposed by continuous ambience

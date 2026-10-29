@@ -316,9 +316,7 @@ int sub_52E450(int a1, int a2, int a3);
 int sub_52E610(int* a1, int a2);
 void sub_52E660(int a1, int a2);
 int sub_52E7C0(int a1);
-int nox_xxx_spellEnergyBoltStop_52E820(int a1);
-int nox_xxx_spellEnergyBoltTick_52E850(float a1);
-void nox_xxx_spellEnergyBoltSetTarget_52EC60(int a1, int a2);
+#include "spell_energy_bolt_native_52e820.h"
 int nox_xxx_firewalkTick_52ED40(float* a1);
 int sub_52EF30(int a1);
 int sub_52EFD0(int a1);

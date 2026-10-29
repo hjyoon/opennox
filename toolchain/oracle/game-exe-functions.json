@@ -17689,11 +17689,25 @@
       "purpose": "the exact decoded direct rel32 call instruction targeting the current-mana getter at 004EEC80"
     },
     {
+      "name": "original_complete_energy_bolt_create_52e820",
+      "address": "0x0052E820",
+      "size": 44,
+      "sha256": "9380de9c8f11325a0e42a1b1fc014e4bf6e3bb282db215dbe9d4ee2d166fb31f",
+      "purpose": "Complete original Lightning create: cancel Chain Lightning for the live caster and emit the duration point FX. Whole root executed under declared services before native public entry port."
+    },
+    {
       "name": "nox_xxx_spellCancelDurSpell_4FEB10_call_52E82F",
       "address": "0x0052E82F",
       "size": 5,
       "sha256": "2b72bc01ea22c7988cc91f8e14a00df0e2d6b32727b11eb5d9fc7b99888739bf",
       "purpose": "the exact decoded direct rel32 call from EnergyBolt stop that cancels spell 43 for the non-null stored caster before emitting point effect 130"
+    },
+    {
+      "name": "original_complete_energy_bolt_update_52e850",
+      "address": "0x0052E850",
+      "size": 1032,
+      "sha256": "737f18e4501f1a64ea771df9f53a7f557290b748658c7d1acf12e73c95992a22",
+      "purpose": "Complete original Lightning update: buff/movement/recent-damage guards; retained surface-distance and cursor/candidate selection; glyph strike; startup PC53 directed binary32 spills and actual419A70 conversion; live callback reloads, damage carry, ray lifecycle, state/audio/expiry and mana termination. Both original PC53 profiles executed under declared services; not transitive full-game equivalence."
     },
     {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_52E87B",
@@ -17743,6 +17757,13 @@
       "size": 5,
       "sha256": "f721073996b045e53eba7dc29a5be325ca48e637f67d68344c6a6c3a78934713",
       "purpose": "the exact decoded direct rel32 call that stops Lightning's prior ray before starting a ray to a changed target"
+    },
+    {
+      "name": "original_complete_energy_bolt_candidate_52ec60",
+      "address": "0x0052EC60",
+      "size": 194,
+      "sha256": "b92d0bf396297136935c94c3b163634a725c949ff6ec7c646dab2415764f87c6",
+      "purpose": "Complete original Lightning candidate: class/dead/self/subclass/enemy/facing/LOS gates; fixed callback caster; live glyph mode, center, nearest and selected scratch; PC53 squared distance and unordered acceptance. Alignment padding and separate52ED30 RET excluded by original CFG."
     },
     {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_52EFE2",

@@ -118,6 +118,8 @@ type Server interface {
 	SpellPlasmaCreate531580(record *server.DurSpell) int32
 	SpellPlasmaUpdate531600(record *server.DurSpell) int32
 	SpellPlasmaDestroy5319E0(record *server.DurSpell)
+	SpellEnergyBoltCreate52E820(record *server.DurSpell) int32
+	SpellEnergyBoltUpdate52E850(record *server.DurSpell) int32
 	SpellTeleportCreateWake530560(target *server.Object, origin, destination *types.Pointf)
 	SpellChainLightningCreate52F820(record *server.DurSpell) int32
 	SpellChainLightningUpdate52F8A0(record *server.DurSpell) int32

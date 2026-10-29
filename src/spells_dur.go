@@ -25,6 +25,7 @@ type spellsDuration struct {
 	chainLightningWeapons map[*server.DurSpell]*server.Object
 	plasmaWeapons         map[*server.DurSpell]*server.Object
 	plasmaSelection       server.SpellPlasmaSelection531920
+	energyBoltSelection   server.SpellEnergyBoltSelection52EC60
 	durationRayTargets    map[*server.DurSpell]*server.Object
 	// A projectile may collide and disappear before the next E2E poll.
 	forceOfNatureLaunches uint64
@@ -42,6 +43,7 @@ func (sp *spellsDuration) Free() {
 	sp.chainLightningWeapons = nil
 	sp.plasmaWeapons = nil
 	sp.plasmaSelection = server.SpellPlasmaSelection531920{}
+	sp.energyBoltSelection = server.SpellEnergyBoltSelection52EC60{}
 	sp.durationRayTargets = nil
 	sp.forceOfNatureLaunches = 0
 }
@@ -612,14 +614,21 @@ func (sp *spellsDuration) chainLightningRuntime52F820() server.SpellChainLightni
 func (sp *spellsDuration) energyBoltRuntime52E820() server.SpellEnergyBoltRuntime52E820 {
 	world := sp.s.S()
 	return server.SpellEnergyBoltRuntime52E820{
-		Frame:    sp.s.Frame,
-		TickRate: world.TickRate,
+		Frame:     sp.s.Frame,
+		TickRate:  world.TickRate,
+		Balance64: sp.s.Balance.Float,
 		Balance: func(key string) float32 {
 			return float32(sp.s.Balance.Float(key))
 		},
 		BalanceLevel: func(key string, level uint32) float32 {
 			return float32(sp.s.Balance.FloatInd(key, int(int32(level))))
 		},
+		BalanceLevel64: func(key string, level uint32) float64 {
+			return sp.s.Balance.FloatInd(key, int(int32(level)))
+		},
+		RoundTowardZero: true,
+		Selection:       &sp.energyBoltSelection,
+		Distance:        server.ObjectDistance4E6C00,
 		ObjectsInCircle: world.EachChainLightningObject52F8A0,
 		CanInteract: func(source, target *server.Object) bool {
 			return world.CanInteract(source, target, 0)

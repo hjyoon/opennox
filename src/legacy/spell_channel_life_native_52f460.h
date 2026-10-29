@@ -1,0 +1,6 @@
+#ifndef NOX_SPELL_CHANNEL_LIFE_NATIVE_52F460_H
+#define NOX_SPELL_CHANNEL_LIFE_NATIVE_52F460_H
+
+int sub_52F460(void* record);
+
+#endif

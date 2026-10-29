@@ -318,7 +318,7 @@ int sub_52EF30(int a1);
 int sub_52EFD0(int a1);
 int sub_52F1D0(int a1);
 #include "spell_greater_heal_native_52f220.h"
-int sub_52F460(float a1);
+#include "spell_channel_life_native_52f460.h"
 int nox_xxx_castShield1_52F5A0(void* a1);
 int sub_52F650(void* a1);
 int sub_52F670(void* a1);

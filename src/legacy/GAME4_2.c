@@ -10687,64 +10687,6 @@ int sub_52F1D0(int a1) {
 	return result;
 }
 
-//----- (0052F460) --------------------------------------------------------
-int sub_52F460(float a1) {
-	float v1;   // esi
-	int v2;     // eax
-	int result; // eax
-	int v4;     // eax
-	int v5;     // eax
-	short v6;   // di
-	short v7;   // ax
-	float v8;   // [esp+10h] [ebp+4h]
-	float v9;   // [esp+10h] [ebp+4h]
-
-	v1 = a1;
-	v2 = *(uint32_t*)(LODWORD(a1) + 48);
-	if (!v2) {
-		return 1;
-	}
-	if (*(uint32_t*)(v2 + 16) & 0x8020) {
-		return 1;
-	}
-	if (*(uint32_t*)(LODWORD(a1) + 20)) {
-		nox_xxx_playerManaAdd_4EEB80(v2, 20);
-		nox_xxx_unitDamageClear_4EE5E0(*(uint32_t*)(LODWORD(a1) + 48), 20);
-		result = 1;
-	} else {
-		v4 = *(uint32_t*)(LODWORD(a1) + 16);
-		if (v4 && nox_xxx_testUnitBuffs_4FF350(v4, 8)) {
-			result = 1;
-		} else {
-			v5 = *(uint32_t*)(LODWORD(a1) + 48);
-			if (*(uint8_t*)(v5 + 8) & 2 &&
-				sub_4FEA70((nox_object_t*)(uintptr_t)(uint32_t)v5, (float2*)(LODWORD(a1) + 28))) {
-				result = 1;
-			} else {
-				v6 = nox_xxx_playerGetMaxMana_4EECB0(*(uint32_t*)(LODWORD(a1) + 48));
-				if (v6 == nox_xxx_unitGetOldMana_4EEC80(*(uint32_t*)(LODWORD(a1) + 48))) {
-					result = 1;
-				} else if ((unsigned short)nox_xxx_unitGetHP_4EE780(*(uint32_t*)(LODWORD(a1) + 16)) > 1u) {
-					if (nox_xxx_unitGetHP_4EE780(*(uint32_t*)(LODWORD(a1) + 16))) {
-						v8 = *(float*)(LODWORD(a1) + 72);
-						v9 = nox_xxx_gamedataGetFloatTable_419D70("ChannelLifeCoeff",
-																  *(uint32_t*)(LODWORD(v1) + 8) - 1) +
-							 v8;
-						*(float*)(LODWORD(v1) + 72) = v9 - (double)nox_float2int(v9);
-						v7 = nox_float2int(v9);
-						nox_xxx_playerManaAdd_4EEB80(*(uint32_t*)(LODWORD(v1) + 48), v7);
-						nox_xxx_unitDamageClear_4EE5E0(*(uint32_t*)(LODWORD(v1) + 16), 1);
-					}
-					result = 0;
-				} else {
-					result = 1;
-				}
-			}
-		}
-	}
-	return result;
-}
-
 extern int nox_xxx_castShield1_native_52F5A0(void* spell);
 extern int sub_52F650_native(void* spell);
 extern int sub_52F670_native(void* spell);

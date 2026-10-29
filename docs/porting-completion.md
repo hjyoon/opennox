@@ -55,6 +55,76 @@ completion requirements.
 
 ## Current findings
 
+### Native Greater Heal create and update entries
+
+Source `2c64ca2` ports public `52F220`/`52F2E0` to opaque native duration
+pointers and shares their runtime with the ordinary dispatcher. The old
+scalar-float update ABI faults at `0xa0a0a3a` on a C-owned native record whose
+ordinary nil-target control returns1. The old create body returns1 without
+healing a real spatial glyph target: native Obj12=nil hides native mode1 from
+its PE32 reads. Both frozen probes now pass; actual public C glyph search and
+HP effects heal6→26. The two old C bodies retire116 lines; all other
+`GAME4_2.c` bytes are preserved.
+
+The new complete original create body is190 bytes. Before engine changes,
+its producer,346 contexts, startup/nearest goldens and Go comparator were
+sealed. Both profiles execute all190 instruction bytes with identical results,
+six declared world services and intact register/stack/FPCW/TOP/heap canaries.
+The original caches self before flags lookup and reloads search caster after
+it. Six callback-mutation cases exposed the old Go mismatch. A separate original
+instruction/read-order trace also corrects seven expected event arrays in one
+old test; its previous bytes and failed full checks remain preserved. All HP,
+target, return and argument expectations and the other3935 old inputs remain
+unchanged. All346 frozen create comparisons now pass.
+
+The pre-existing392-context/1568-FP-run/3368-call complete update reference,
+its17-byte conversion helper and the update algorithm body remain unchanged.
+Seventeen new native C update compositions make62 actual calls using those
+frozen arithmetic/effect amounts, production visibility, HP setter, mana debit
+and inert-token protection. Three sixteen-tick sequences, class controls and
+early gates preserve full duration canaries. These synthetic actor/empty-map
+checks complement the independent original services; they do not establish
+whole-world service equivalence.
+
+macOS normal checks pass278336 tests/20 skips in334.517 seconds; highres
+`cgocheck2`/`checkptr=2`, including actual OpenAL null, pass9274/seven skips in
+259.566 seconds. Both include all368 new terminals. Oracle verification passes
+3250 code/669 data ranges, appending only the create range and preserving every
+earlier entry. The clean Go1.26.9 ARM64 product is65715714 bytes, SHA256
+`357e37fb016689431826ad58ff4dc964489b368c7a3d3ba9cde3302287d775ef`.
+
+Unchanged hosted Greater Heal and shared-spell scenarios pass32.508/32.611
+seconds. The heal record stays above4GiB while HP60→61 and mana150→147 across
+three frames. Original Bookcase6 and actual menu Load/Save pass38.841/18.238
+seconds with the whole successful Save sealed before its first reload,
+HP20/MP43/poison0, original endpoint/plate/mover and Urchin HP0/DEAD. Real
+ordinary-clock CoreAudio passes349.952 seconds with all54 Amb types, natural
+host ambience, continuous/random-delay buffers and range/delete cleanup.
+These are controlled hosted regressions; no earned Greater Heal campaign or
+subjective hearing-fidelity credit is claimed.
+
+[Windows run40933510816](https://github.com/hjyoon/opennox/actions/runs/40933510816)
+passes clean native amd64/386 server products, help and full uncached three-
+package tests. [Linux run40933528696](https://github.com/hjyoon/opennox/actions/runs/40933528696)
+passes all58 expected packages (36 pass/22 skip),275762 tests/seven skips,
+all368 new terminals and133041 default-link damage tests. All three job logs,
+GitHub-digest archives, product architectures and clean Go metadata are
+qualified; all jobs are closed. None of the five requested poison-macro
+warnings occurs. Audio source is unchanged from the separately qualified
+Linux client normal/strict run at `97f2663`; these server jobs claim no client
+device test. Personal4649 files, all Save/failure records and six earlier
+ARM64 products remain intact. A recorded cleanup removes14824 unused,
+reproducible Go-cache files (7303093072 bytes) while no game/compiler runs;
+all assets, Save, failure results, fixtures, records and products are excluded.
+
+The46 intercepted duration slots now contain35 Go exports, three inspected
+native C forwarders, one constant leaf and seven lexical C candidates. One
+of those, Channel Life, has a separately retained native C crash and unchanged
+322-context original reexecution ready for the next port. This bounded slot
+inventory supplies no global completion denominator. Overall100% and the
+previous unexplained Windows GC failure remain open.
+
+
 ### Native Firewalk entry and complete original tick comparison
 
 Source `4034e85` ports the public `52ED40` Firewalk update to an opaque native

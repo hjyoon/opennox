@@ -115,6 +115,9 @@ type Server interface {
 	SpellOvalShieldCreate531490(record *server.DurSpell) int32
 	SpellOvalShieldUpdate5314F0(record *server.DurSpell) int32
 	SpellOvalShieldDestroy531560(record *server.DurSpell)
+	SpellPlasmaCreate531580(record *server.DurSpell) int32
+	SpellPlasmaUpdate531600(record *server.DurSpell) int32
+	SpellPlasmaDestroy5319E0(record *server.DurSpell)
 	SpellTeleportCreateWake530560(target *server.Object, origin, destination *types.Pointf)
 	SpellChainLightningCreate52F820(record *server.DurSpell) int32
 	SpellChainLightningUpdate52F8A0(record *server.DurSpell) int32

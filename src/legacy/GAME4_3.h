@@ -22,10 +22,7 @@ int nox_xxx_manaBomb_530F90(uint32_t* a1);
 int nox_xxx_manaBombBoom_5310C0(int* a1);
 int sub_531290(int a1);
 int nox_xxx_spellTurnUndeadUpdate_531410();
-int nox_xxx_plasmaSmth_531580(int a1);
-int nox_xxx_plasmaShot_531600(int a1);
-void sub_531920(int a1, int a2);
-int sub_5319E0(int a1);
+#include "spell_plasma_native_531580.h"
 int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(int a1, int a2);
 int* sub_531C10(int a1, int a2);
 int* nox_xxx_monsterAction_531C60(int a1, int a2);

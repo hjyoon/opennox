@@ -24,6 +24,7 @@ type spellsDuration struct {
 	manaBombCharges       map[*server.DurSpell]*server.Object
 	chainLightningWeapons map[*server.DurSpell]*server.Object
 	plasmaWeapons         map[*server.DurSpell]*server.Object
+	plasmaSelection       server.SpellPlasmaSelection531920
 	durationRayTargets    map[*server.DurSpell]*server.Object
 	// A projectile may collide and disappear before the next E2E poll.
 	forceOfNatureLaunches uint64
@@ -40,6 +41,7 @@ func (sp *spellsDuration) Free() {
 	sp.manaBombCharges = nil
 	sp.chainLightningWeapons = nil
 	sp.plasmaWeapons = nil
+	sp.plasmaSelection = server.SpellPlasmaSelection531920{}
 	sp.durationRayTargets = nil
 	sp.forceOfNatureLaunches = 0
 }

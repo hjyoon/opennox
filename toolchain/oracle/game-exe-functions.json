@@ -18361,6 +18361,20 @@
       "purpose": "the exact nine NOP bytes before the Plasma duration callback"
     },
     {
+      "name": "original_complete_plasma_create_531580",
+      "address": "0x00531580",
+      "size": 114,
+      "sha256": "972b7471c6078a478749366acb35e5b02f5cb8731b6ffd3dcdc472a5c4f3aeac",
+      "purpose": "Complete original Plasma create: reset weapon/grace/target before FX, reload live caster/equipment, test plasma subclass and active wand byte, preserve unrelated flags. Whole root executed under declared services before native public entry port."
+    },
+    {
+      "name": "original_complete_plasma_update_531600",
+      "address": "0x00531600",
+      "size": 785,
+      "sha256": "25fc995741c3e06640426b96c7426447357cf335fdb39f8fc5bacf3e7e812c50",
+      "purpose": "Complete original Plasma update: cache lookup and live reloads; retained/cursor/candidate target selection including unordered distance; grace wrap; ray lifecycle; binary64 balance directed binary32 spill and actual419A70 conversion; damage/state/audio/expiry and native-mapped wand charges. Declared services; not transitive full-game equivalence."
+    },
+    {
       "name": "sub_4FEA70_call_531654",
       "address": "0x00531654",
       "size": 5,
@@ -18387,6 +18401,20 @@
       "size": 5,
       "sha256": "7ab0004c3e83b41ba4f35f9ba06f532a1d90449a1fcd42c56e6659f078dc51a6",
       "purpose": "the exact decoded direct rel32 call that stops Plasma's prior ray before starting a ray to a changed target"
+    },
+    {
+      "name": "original_complete_plasma_candidate_531920",
+      "address": "0x00531920",
+      "size": 181,
+      "sha256": "b875a62ed2a58e809b8b5d83aa2c7045575c8e34654dad18665c0bce8dfd1094",
+      "purpose": "Complete original Plasma candidate: class/dead/self/subclass/enemy gates, original facing AND1 OR12, LOS, startup PC53/chop squared distance, live binary32 nearest spill and native-mapped selected scratch. Original callback context stays fixed across enumeration."
+    },
+    {
+      "name": "original_complete_plasma_destroy_5319E0",
+      "address": "0x005319E0",
+      "size": 22,
+      "sha256": "9b28b23b2c6be66535efe390342d11ccb682e25189a6d8b8a7de0298b35062d0",
+      "purpose": "Complete original Plasma destroy: clear only active wand flag4 and retain dying record weapon link. Native owner subsequently drops private sidecar as separately checked lifetime adaptation; unused EAX excluded by void consumers."
     },
     {
       "name": "nox_xxx_buffApplyTo_4FF380_call_531AB7",

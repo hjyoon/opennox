@@ -14,6 +14,10 @@ type SpellPlasmaRuntime531580 struct {
 	LookupType                  func(string) uint32
 	Frame, TickRate             func() uint32
 	Balance                     func(string) float32
+	// Production balance values stay binary64 until the original FSTP spill.
+	// Balance remains available for callers already supplying binary32 values.
+	Balance64                   func(string) float64
+	Selection                   *SpellPlasmaSelection531920
 	ObjectsInCircle             func(types.Pointf, float32, func(*Object) bool)
 	IsEnemy, CanInteract        func(*Object, *Object) bool
 	Facing                      func(*Object, *Object) int
@@ -28,6 +32,14 @@ type SpellPlasmaRuntime531580 struct {
 	ReportCharges               func(*PlayerUpdateData, *Object, uint8, uint8)
 	LoadWeapon, LoadRayTarget   func(*DurSpell) *Object
 	StoreWeapon, StoreRayTarget func(*DurSpell, *Object)
+}
+
+// SpellPlasmaSelection531920 replaces the original selected-object DWORD and
+// nearest-distance scratch. Keep the pointer native-width and the distance
+// live across enumeration and its callbacks, just as in 005316EE/005319B0.
+type SpellPlasmaSelection531920 struct {
+	Target  *Object
+	Nearest float32
 }
 
 // SpellPlasmaCreate531580 restores GAME.EXE 00531580 without reading native
@@ -63,9 +75,18 @@ func plasmaBalanceInt531600(value float32) int32 {
 	return int32(value)
 }
 
+func plasmaBalanceRuntime531600(key string, rt SpellPlasmaRuntime531580) int32 {
+	if rt.Balance64 != nil {
+		return plasmaBalanceInt531600(float32(monsterMoveToRunSpill544440(rt.Balance64(key))))
+	}
+	return plasmaBalanceInt531600(rt.Balance(key))
+}
+
 func plasmaClosest531920(caster *Object, rt SpellPlasmaRuntime531580) *Object {
-	nearest := float32(160000) // Original 481C4000 DWORD, 400 squared.
-	var best *Object
+	if rt.Selection == nil {
+		rt.Selection = new(SpellPlasmaSelection531920)
+	}
+	rt.Selection.Nearest = 160000 // Original 481C4000 DWORD, 400 squared.
 	rt.ObjectsInCircle(caster.PosVec, 400, func(target *Object) bool {
 		class := uint32(target.ObjClass)
 		if class&0x20006 == 0 || uint32(target.ObjFlags)&0x8020 != 0 || target == caster ||
@@ -83,18 +104,21 @@ func plasmaClosest531920(caster *Object, rt SpellPlasmaRuntime531580) *Object {
 		square := monsterMoveToRunAddChop53_544434(monsterMoveToRunSquareChop53_544434(dy), monsterMoveToRunSquareChop53_544434(dx))
 		// FCOM tests C0 only: less or unordered selects. Compare the live
 		// binary64 register with the previous binary32 spill, before spilling.
-		if !(square >= float64(nearest)) {
-			nearest = float32(monsterMoveToRunSpill544440(square))
-			best = target
+		if !(square >= float64(rt.Selection.Nearest)) {
+			rt.Selection.Nearest = float32(monsterMoveToRunSpill544440(square))
+			rt.Selection.Target = target
 		}
 		return true
 	})
-	return best
+	return rt.Selection.Target
 }
 
 // SpellPlasmaUpdate531600 restores the retained-target grace period, ray
 // changes, damage and per-hit wand-charge consumption of GAME.EXE 00531600.
 func SpellPlasmaUpdate531600(record *DurSpell, rt SpellPlasmaRuntime531580) int32 {
+	if rt.Selection == nil {
+		rt.Selection = new(SpellPlasmaSelection531920)
+	}
 	if *rt.HecubahType == 0 {
 		*rt.HecubahType = rt.LookupType("Hecubah")
 		*rt.HecubahOrbType = rt.LookupType("HecubahWithOrb")
@@ -124,19 +148,22 @@ func SpellPlasmaUpdate531600(record *DurSpell, rt SpellPlasmaRuntime531580) int3
 	}
 	if record.Target48 == nil {
 		caster = record.Caster16
-		var selected *Object
+		var cursor *Object
 		// +288 is CursorObj only in PlayerUpdateData; the monster DWORD at
 		// the same PE32 offset is not a pointer in the native monster record.
 		if uint8(caster.ObjClass)&4 != 0 {
-			cursor := caster.UpdateDataPlayer().CursorObj
-			if cursor != nil && rt.IsEnemy(caster, cursor) && rt.Distance(caster, cursor) <= 400 {
-				selected = cursor
-			}
+			cursor = caster.UpdateDataPlayer().CursorObj
 		}
-		if selected == nil {
-			selected = plasmaClosest531920(record.Caster16, rt)
+		rt.Selection.Target = nil
+		// FCOMP tests C0|C3: unordered accepts the cursor, too. The enemy
+		// callback precedes the live caster reload for the distance call.
+		if cursor != nil && rt.IsEnemy(caster, cursor) && !(rt.Distance(record.Caster16, cursor) > 400) {
+			rt.Selection.Target = cursor
 		}
-		record.Target48 = selected
+		if rt.Selection.Target == nil {
+			plasmaClosest531920(record.Caster16, rt)
+		}
+		record.Target48 = rt.Selection.Target
 		record.Field76 = 0
 	}
 	if grace := uint32(record.Field76); grace != 0 {
@@ -164,7 +191,7 @@ func SpellPlasmaUpdate531600(record *DurSpell, rt SpellPlasmaRuntime531580) int3
 	if typ := uint32(record.Target48.TypeInd); typ == *rt.HecubahType || typ == *rt.HecubahOrbType {
 		key = "PlasmaDamageHecubah"
 	}
-	damage := plasmaBalanceInt531600(rt.Balance(key))
+	damage := plasmaBalanceRuntime531600(key, rt)
 	rt.Damage(record.Target48, record.Caster16, damage)
 	if uint32(record.Target48.ObjFlags)&0x8020 != 0 {
 		rt.PointFX(131, record.Target48.PosVec)
@@ -176,7 +203,7 @@ func SpellPlasmaUpdate531600(record *DurSpell, rt SpellPlasmaRuntime531580) int3
 		rt.Audio(98, record.Target48)
 	}
 	if uint32(record.Field76) == 0 {
-		searchTime := plasmaBalanceInt531600(rt.Balance("PlasmaSearchTime"))
+		searchTime := plasmaBalanceRuntime531600("PlasmaSearchTime", rt)
 		record.Frame68 = rt.Frame() + uint32(searchTime)
 	}
 	if wand := rt.LoadWeapon(record); wand != nil {

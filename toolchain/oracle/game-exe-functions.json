@@ -22720,6 +22720,27 @@
       "size": 74,
       "sha256": "044c256f50adfbb2f621ee95999f69c762e8ffbebdcdfaed7f447a7861cf2c89",
       "purpose": "Independent full-body original startup/nearest/down/up control comparison for shared lifetime or signed coordinate conversion, retaining prior historical controls and callback inputs."
+    },
+    {
+      "name": "original_ambient_position_45a9b0",
+      "address": "0x0045A9B0",
+      "size": 387,
+      "sha256": "7911717896f55b185f14d105e2a576c071998b0458fee6358203775006f9f0bf",
+      "purpose": "Executed original positional ambient root or handle helper under declared definition/viewport/channel services. 169 startup-PC53 contexts; position covers378/387bytes (nine defensive volume-clamp bytes unobserved), handle/store/conversion complete. No full Miles scheduler or transitive audio equivalence claim."
+    },
+    {
+      "name": "original_ambient_handle_45a9b0",
+      "address": "0x00452EB0",
+      "size": 40,
+      "sha256": "85266157c5021804270463a0948acf2b04cf7bfdab461542e66f57f6e5b64de8",
+      "purpose": "Executed original positional ambient root or handle helper under declared definition/viewport/channel services. 169 startup-PC53 contexts; position covers378/387bytes (nine defensive volume-clamp bytes unobserved), handle/store/conversion complete. No full Miles scheduler or transitive audio equivalence claim."
+    },
+    {
+      "name": "original_ambient_store_45a9b0",
+      "address": "0x00452E90",
+      "size": 30,
+      "sha256": "274311e18092e67d91282ef1088232a7598c5066ad84d17eea3ef9514c5d7536",
+      "purpose": "Executed original positional ambient root or handle helper under declared definition/viewport/channel services. 169 startup-PC53 contexts; position covers378/387bytes (nine defensive volume-clamp bytes unobserved), handle/store/conversion complete. No full Miles scheduler or transitive audio equivalence claim."
     }
   ],
   "data": [

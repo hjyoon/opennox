@@ -1,4 +1,5 @@
 #include <math.h>
+#include "audio_ambient_native_45a9b0.h"
 #include <stdio.h>
 #include <time.h>
 
@@ -3926,67 +3927,7 @@ nox_drawable* nox_xxx_spriteSetActiveMB_45A990_drawable(nox_drawable* dr) {
 
 //----- (0045A9B0) --------------------------------------------------------
 void sub_45A9B0(nox_drawable* source, nox_drawable* listener) {
-	if (!source || !listener) {
-		return;
-	}
-	char* sound_def = nox_xxx_draw_452270(source->field_123);
-	nox_draw_viewport_t* vp = nox_draw_getViewport_437250();
-	if (!sound_def || !vp) {
-		return;
-	}
-
-	int volume = 0;
-	int pan = 0;
-	if ((source->flags30 & 0x1000000u) != 0 && (source->flags70 & 0xCu) == 0) {
-		const int dx = (int)(listener->pos.x - source->pos.x);
-		const int dy = (int)(listener->pos.y - source->pos.y);
-		const int max_distance = *(uint32_t*)(sound_def + 64);
-		if (dx < max_distance && dy < max_distance && max_distance > 0) {
-			const int distance = (int)sqrt((double)dx * dx + (double)dy * dy + 1.0);
-			if (distance < max_distance) {
-				volume = 100 * (max_distance - distance) / max_distance;
-				if (volume < 0) {
-					volume = 0;
-				} else if (volume > 100) {
-					volume = 100;
-				}
-				if (nox_win_width >= 2) {
-					pan = (int)(50 * (source->pos.x - vp->field_6 - vp->x1) / (nox_win_width / 2));
-				}
-			}
-		}
-	}
-
-#if UINTPTR_MAX == UINT32_MAX
-	// The original audio-channel record embeds 32-bit pointers. Keep the
-	// exact channel lifecycle on 32-bit builds; 64-bit builds use the native
-	// OpenAL effects path and must never reinterpret this legacy record.
-	int* handle = (int*)&source->field_124;
-	uint32_t* channel = (uint32_t*)sub_452EB0(handle);
-	if (volume != 0) {
-		if (channel) {
-			sub_452FE0((int)(intptr_t)channel, pan);
-			sub_452F50((int)(intptr_t)channel, volume);
-		} else {
-			channel = nox_xxx_draw_452300((uint32_t*)sound_def);
-			if (channel) {
-				sub_452EE0((int)(intptr_t)channel, volume);
-				sub_452F80((int)(intptr_t)channel, pan);
-				sub_452E90(handle, (int)(intptr_t)channel);
-			}
-		}
-	} else if (channel) {
-		sub_4523D0(channel);
-	}
-#else
-	(void)volume;
-	(void)pan;
-	// A stale legacy channel cannot be valid after widening Drawable. Native
-	// 64-bit positional loop ownership will be attached here independently.
-	source->field_124 = NULL;
-	source->field_125 = 0;
-	source->field_126 = 0;
-#endif
+	nox_client_updateAmbient_native_45A9B0(source, listener);
 }
 
 //----- (0045AB80) --------------------------------------------------------

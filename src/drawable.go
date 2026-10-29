@@ -258,6 +258,7 @@ func (c *Client) Nox_xxx_spriteDeleteStatic_45A4E0_drawable(dr *client.Drawable)
 }
 
 func (c *Client) sub_459F70(dr *client.Drawable) {
+	nativeAudioFX.stopDrawableLoop(dr)
 	if v2 := dr.Field_106; v2 != nil {
 		v2.Field_107 = dr.Field_107
 	} else if dr.Field_107 == nil && c.Objs.List8 != dr {
@@ -270,18 +271,6 @@ func (c *Client) sub_459F70(dr *client.Drawable) {
 	}
 	dr.Field_106 = nil
 	dr.Field_107 = nil
-	if p := sub_452EB0(&dr.Field_124, &dr.Field_125, &dr.Field_126); p != nil {
-		legacy.Sub_4523D0(p)
-	}
-}
-
-func sub_452EB0(a0 *unsafe.Pointer, a1, a2 *uint32) unsafe.Pointer {
-	p := *a0
-	if *a0 != nil && (*a2 != *(*uint32)(unsafe.Add(p, 36)) || *a1 != *(*uint32)(unsafe.Add(p, 280))) {
-		p = nil
-		*a0 = nil
-	}
-	return p
 }
 
 func (c *Client) sub_49BA70() {
@@ -319,6 +308,7 @@ func (c *Client) nox_xxx_clientDeleteSprite_476F10_drawable(dr *client.Drawable)
 }
 
 func (c *Client) Nox_xxx_spriteDelete_45A4B0(dr *client.Drawable) int {
+	nativeAudioFX.stopDrawableLoop(dr)
 	c.sub_495B00(dr)
 	c.Objs.Alloc.FreeObjectFirst(dr)
 	c.Objs.Count--

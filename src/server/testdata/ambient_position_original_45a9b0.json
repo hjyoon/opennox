@@ -1,0 +1,5687 @@
+{
+  "control_word": 3647,
+  "cases": [
+    {
+      "input": {
+        "name": "default",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            50
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0--2147483648",
+        "source": [
+          -2147483648,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0--65536",
+        "source": [
+          -65536,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-0--46341",
+        "source": [
+          -46341,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-0--600",
+        "source": [
+          -600,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-0--599",
+        "source": [
+          -599,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-0--320",
+        "source": [
+          -320,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            46
+          ],
+          [
+            "initial-pan",
+            -50
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0--1",
+        "source": [
+          -1,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-0",
+        "source": [
+          0,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-1",
+        "source": [
+          1,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-320",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            46
+          ],
+          [
+            "initial-pan",
+            50
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-599",
+        "source": [
+          599,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-600",
+        "source": [
+          600,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-601",
+        "source": [
+          601,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-46341",
+        "source": [
+          46341,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            100
+          ],
+          [
+            "initial-pan",
+            7240
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-65536",
+        "source": [
+          65536,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            10240
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-0-2147483647",
+        "source": [
+          2147483647,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-0--601",
+        "source": [
+          0,
+          -601
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-0--600",
+        "source": [
+          0,
+          -600
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-0--599",
+        "source": [
+          0,
+          -599
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-0--1",
+        "source": [
+          0,
+          -1
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-0-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-0-1",
+        "source": [
+          0,
+          1
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-0-599",
+        "source": [
+          0,
+          599
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-0-600",
+        "source": [
+          0,
+          600
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-0-601",
+        "source": [
+          0,
+          601
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-1--2147483648",
+        "source": [
+          -2147483648,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            0
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1--65536",
+        "source": [
+          -65536,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1--46341",
+        "source": [
+          -46341,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1--600",
+        "source": [
+          -600,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1--599",
+        "source": [
+          -599,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1--320",
+        "source": [
+          -320,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            -50
+          ],
+          [
+            "volume",
+            46
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1--1",
+        "source": [
+          -1,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            0
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-0",
+        "source": [
+          0,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            0
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-1",
+        "source": [
+          1,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            0
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-320",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            50
+          ],
+          [
+            "volume",
+            46
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-599",
+        "source": [
+          599,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-600",
+        "source": [
+          600,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-601",
+        "source": [
+          601,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-46341",
+        "source": [
+          46341,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            7240
+          ],
+          [
+            "volume",
+            100
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-65536",
+        "source": [
+          65536,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            10240
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-1-2147483647",
+        "source": [
+          2147483647,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            0
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1--601",
+        "source": [
+          0,
+          -601
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1--600",
+        "source": [
+          0,
+          -600
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1--599",
+        "source": [
+          0,
+          -599
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1--1",
+        "source": [
+          0,
+          -1
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            0
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            0
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1-1",
+        "source": [
+          0,
+          1
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            0
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1-599",
+        "source": [
+          0,
+          599
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1-600",
+        "source": [
+          0,
+          600
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-1-601",
+        "source": [
+          0,
+          601
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2--2147483648",
+        "source": [
+          -2147483648,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2--65536",
+        "source": [
+          -65536,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-2--46341",
+        "source": [
+          -46341,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-2--600",
+        "source": [
+          -600,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-2--599",
+        "source": [
+          -599,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-2--320",
+        "source": [
+          -320,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            46
+          ],
+          [
+            "initial-pan",
+            -50
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2--1",
+        "source": [
+          -1,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-0",
+        "source": [
+          0,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-1",
+        "source": [
+          1,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-320",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            46
+          ],
+          [
+            "initial-pan",
+            50
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-599",
+        "source": [
+          599,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-600",
+        "source": [
+          600,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-601",
+        "source": [
+          601,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-46341",
+        "source": [
+          46341,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            100
+          ],
+          [
+            "initial-pan",
+            7240
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-65536",
+        "source": [
+          65536,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            10240
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "x-2-2147483647",
+        "source": [
+          2147483647,
+          200
+        ],
+        "listener": [
+          0,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-2--601",
+        "source": [
+          0,
+          -601
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-2--600",
+        "source": [
+          0,
+          -600
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-2--599",
+        "source": [
+          0,
+          -599
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-2--1",
+        "source": [
+          0,
+          -1
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-2-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-2-1",
+        "source": [
+          0,
+          1
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "y-2-599",
+        "source": [
+          0,
+          599
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-2-600",
+        "source": [
+          0,
+          600
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "y-2-601",
+        "source": [
+          0,
+          601
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius--1-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": -1,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius--1-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": -1,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius--1-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": -1,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius--1-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": -1,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-0-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 0,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-0-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 0,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-0-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 0,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-0-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 0,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-1-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-1-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-1-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-1-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-2-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 2,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            50
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-2-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 2,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-2-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 2,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-2-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 2,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-5-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 5,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            80
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-5-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 5,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-5-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 5,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-5-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 5,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-599-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 599,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-599-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 599,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-599-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 599,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            98
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-599-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 599,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-600-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-600-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-600-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            98
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-600-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-601-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 601,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-601-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 601,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-601-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 601,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            98
+          ],
+          [
+            "initial-pan",
+            0
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "radius-601-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 601,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-2147483647-(0, 0)",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 2147483647,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-2147483647-(3, 4)",
+        "source": [
+          3,
+          4
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 2147483647,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-2147483647-(5, 5)",
+        "source": [
+          5,
+          5
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 2147483647,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "radius-2147483647-(598, 0)",
+        "source": [
+          598,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 2147483647,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "flags-0",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 0,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags-1",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 1,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags-16777215",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777215,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags-16777216",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            50
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags-285212672",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 285212672,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            50
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags-4294967295",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 4294967295,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            50
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags70-0",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            50
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags70-1",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 1,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            50
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags70-2",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 2,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            50
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags70-4",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 4,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags70-8",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 8,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags70-12",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 12,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags70-16",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 16,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "pan",
+            50
+          ],
+          [
+            "volume",
+            99
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "flags70-4294967295",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 4294967295,
+        "handle": 1,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "stop"
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-2--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 2,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -17300
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-2-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 2,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            -1300
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-2-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 2,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            14700
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-2-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 2,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            30650
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-3--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 3,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -17300
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-3-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 3,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            -1300
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-3-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 3,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            14700
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-3-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 3,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            30650
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-5--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 5,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -8650
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-5-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 5,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            -650
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-5-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 5,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            7350
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-5-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 5,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            15325
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-640--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 640,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -54
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-640-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 640,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            -4
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-640-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 640,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            45
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-640-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 640,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            95
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-641--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 641,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -54
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-641-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 641,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            -4
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-641-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 641,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            45
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-641-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 641,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            95
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-1024--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 1024,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -33
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-1024-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 1024,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            -2
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-1024-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 1024,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            28
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-1024-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 1024,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            59
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-1920--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 1920,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -18
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-1920-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 1920,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            -1
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-1920-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 1920,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            15
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan-1920-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": 1920,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            31
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan--2--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": -2,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            17300
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan--2-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": -2,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            1300
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan--2-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": -2,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -14700
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan--2-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": -2,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            -30650
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan--3--320",
+        "source": [
+          -320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": -3,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            17300
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan--3-0",
+        "source": [
+          0,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": -3,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            99
+          ],
+          [
+            "initial-pan",
+            1300
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan--3-320",
+        "source": [
+          320,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": -3,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            68
+          ],
+          [
+            "initial-pan",
+            -14700
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "pan--3-639",
+        "source": [
+          639,
+          0
+        ],
+        "listener": [
+          0,
+          0
+        ],
+        "radius": 1000,
+        "width": -3,
+        "screen_x": -11,
+        "world_x": 37,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ],
+          [
+            "initial-volume",
+            36
+          ],
+          [
+            "initial-pan",
+            -30650
+          ]
+        ],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "no-definition-0",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": false,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "no-viewport-0",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": false,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": false
+      }
+    },
+    {
+      "input": {
+        "name": "no-definition-1",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": false,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "no-viewport-1",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 1,
+        "definition": true,
+        "viewport": false,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "no-definition-2",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": false,
+        "viewport": true,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "no-viewport-2",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 2,
+        "definition": true,
+        "viewport": false,
+        "create": true
+      },
+      "result": {
+        "events": [],
+        "handle": true
+      }
+    },
+    {
+      "input": {
+        "name": "create-failed",
+        "source": [
+          320,
+          200
+        ],
+        "listener": [
+          320,
+          200
+        ],
+        "radius": 600,
+        "width": 640,
+        "screen_x": 0,
+        "world_x": 0,
+        "flags": 16777216,
+        "flags70": 0,
+        "handle": 0,
+        "definition": true,
+        "viewport": true,
+        "create": false
+      },
+      "result": {
+        "events": [
+          [
+            "create"
+          ]
+        ],
+        "handle": false
+      }
+    }
+  ]
+}

@@ -99,6 +99,7 @@ func startAudioServices() int {
 		if len(nativeAudioFX.voices) != 0 {
 			fx := (*timer.TimerGroup)(legacy.Get_dword_587000_127004())
 			fx.Update()
+			nativeAudioFX.serviceAmbientLoopsLocked()
 			enabled := legacy.Sub_453070() != 0
 			for _, voice := range nativeAudioFX.voices {
 				eventVolume, ok := voice.UserData().(uint32)

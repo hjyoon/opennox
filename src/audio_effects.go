@@ -12,6 +12,7 @@ import (
 	"github.com/opennox/libs/ifs"
 	"github.com/opennox/libs/log"
 
+	"github.com/opennox/opennox/v1/client"
 	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/internal/binfile"
 	"github.com/opennox/opennox/v1/legacy/client/audio/ail"
@@ -162,6 +163,7 @@ type nativeAudioEffectsState struct {
 	defs     [nativeSoundDefCount]nativeSoundDef
 	voices   []ail.Sample
 	events   []*nativeAudioEffectEvent
+	ambient  map[*client.Drawable]*nativeAmbientLoop
 	next     int
 	sequence uint32
 }
@@ -200,6 +202,8 @@ func (s *nativeAudioEffectsState) close() {
 	voices := s.voices
 	s.voices = nil
 	s.bank = nil
+	s.events = nil
+	s.ambient = nil
 	s.next = 0
 	s.mu.Unlock()
 	for _, h := range voices {
@@ -214,6 +218,9 @@ func (s *nativeAudioEffectsState) resetDefs() {
 }
 
 func (s *nativeAudioEffectsState) resetDefsLocked() {
+	for source := range s.ambient {
+		s.stopAmbientOwnerLocked(source)
+	}
 	for i := range s.defs {
 		s.defs[i] = defaultNativeSoundDef()
 	}

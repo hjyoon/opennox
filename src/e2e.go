@@ -9636,6 +9636,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-gameplay-audio":
 			sc.Wait(dt, "")
 			sc.CheckGameplayAudio(l.Mode, l.Text, l.Name)
+		case "check-ambient-audio":
+			sc.Wait(dt, "")
+			sc.CheckAmbientAudio(l.Mode, l.Name)
 		case "interact":
 			if dt != 0 {
 				sc.Wait(dt, "")

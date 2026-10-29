@@ -55,6 +55,94 @@ completion requirements.
 
 ## Current findings
 
+### Native terminal AI callbacks and original char returns
+
+Source `946c7bd` ports public shield-finish `5320E0`, weapon-block `532110`
+and dying-update `544D60` from scalar-int arguments to opaque native object
+pointers. Their old C entries truncate C-owned unit addresses before reading
+the PE32 update offset. Ordinary native controls complete before all three
+C calls crash. Both frozen before harnesses and all three entries pass after
+the port. The shared Go terminal helper retains the ordinary guarded bool
+APIs and returns the unit's low byte while waiting or PopAction's low byte
+after completion. Only that ABI return narrows; pointers used for reads keep
+their native width. Three `_Generic` assertions check the C signatures.
+
+Before engine edits, all 84 original instruction bytes (28 per root) execute
+1,350 inputs under each of startup `0x0e3f` and nearest `0x023f`: 2,700 runs
+with no profile differences. PopAction is the only declared body; its entry
+unit/state and controlled raw return remain recorded, including ready-byte
+and update-link mutations. Register/stack/FPCW/TOP/heap canaries pass. Raw
+original EAX is retained separately from the public char result. The 1,350
+shared terminal component comparisons pass before and after the port; this
+handled-bool API compares state/calls/canaries and excludes char returns.
+Producer, both references, comparator and native composition source remain
+unchanged. The existing three 32-byte manifest envelopes retain their
+12 unexecuted padding bytes; no duplicate oracle entries are added.
+
+The frozen public C composition makes 135 calls: three roots, native unit
+low bytes 0/16/128, ready bytes 0/1/127/128/255 and stack indices 0/1/2.
+Every public char result matches its frozen original context. Twenty-seven
+waiting cases avoid PopAction; 108 completed cases execute its real native
+body and reset, retaining return values -1/0/1 before char conversion.
+Ordinary production dispatch, AI.StackChanged and entire object/update/
+canary records agree. Started End callbacks and an independent equivalence
+claim for PopAction's body remain outside this composition. Separate frozen
+initial probes also pass unchanged. The port removes 33 obsolete C lines,
+preserves every other `GAME4_3.c` byte and leaves production action registration
+unchanged. All 3,959 previous inputs remain unchanged; four new reference/
+test inputs are added. Existing block/death behavior tests also pass.
+
+Normal macOS checks pass 284,007 tests/20 skips in 246.324 seconds. Highres
+`cgocheck2`/`checkptr=2`, including real OpenAL null, pass 15,359/seven skips
+in 262.059 seconds. Both include all 1,355 new terminals and the 135 actual
+C contexts; strict additionally selects 23 existing block/death terminals.
+Oracle verification passes the unchanged 3,264 code/680 data ranges.
+The clean Go 1.26.9 ARM64 product is 65,735,218 bytes, SHA256
+`f66cd199d7a22e387a347a54beb4f4c27df0160eae4aed9e572fb8caba48e98f`.
+
+Unchanged hosted MainAI Blink and first-attack scenarios pass all six/16
+contexts in 37.417/43.239 seconds. Shared spells pass in 32.743 seconds.
+Original Bookcase6 and first actual menu Load/Save pass in 38.917/17.638
+seconds, preserving HP20/MP43/poison0, native endpoint/plate/mover and Urchin
+HP0/DEAD. The entire passing Save and resource contract are sealed before
+the first reload. Checkpoint images are inspected and retain their save
+confirmation modal/frame timing; persisted files and actual reload checks
+establish saving, without a screenshot-golden claim. Real ordinary-clock
+CoreAudio passes in 347.403 seconds with all 54 Amb types, natural ambience,
+continuous/random-delay playback and range/delete cleanup: 1,709 sample
+buffers queued, 1,687 processed and three music streams. These controlled
+hosted fixtures supply no earned campaign, general-AI or subjective audible-
+fidelity certificate.
+
+[Windows run40971809637](https://github.com/hjyoon/opennox/actions/runs/40971809637)
+passes clean amd64/386 server products, help and full uncached root/server/
+legacy suites. [Linux run40972085942](https://github.com/hjyoon/opennox/actions/runs/40972085942)
+passes all 58 packages (36 pass/22 skip), 281,433 tests/seven skips, all 1,355
+new terminals, the six retained Blink observer regression terminals and
+133,041 default-link damage tests. All jobs, decoded raw logs, GitHub-digest
+archives, architectures and source metadata are qualified and closed. All
+five requested poison-macro warnings are absent. Unchanged ADPCM/Amb source
+retains the independent normal/strict Linux client-device qualification at
+`97f2663`; these server workflows claim no new client-device run.
+
+Original 4,649 files/503,207,370 bytes, every Save/failure/reference record
+and 12 earlier ARM64 products are preserved. After local game/compiler exit,
+102 preinventoried old Go data-cache members reclaim 13,361,595,728 bytes;
+inode/size/mtime checks pass and no asset, Save, record, module or product is
+removed. Current product hashes remain unchanged and disk headroom recovers
+to 17 GiB. The preceding 7.3 GB cache cleanup stays separately recorded.
+
+The registered AI table now contains six native Go exports and seven retained
+C bodies among its 13 distinct nonnil C symbols. The two newly ported block
+entries are outside that table. This lexical inventory supplies no global
+reachability denominator. Separately, public block-start `532070` still
+reproduces a native C pointer-truncation crash after an ordinary control using
+the actual missile/shield probe; its 102-byte body and ten padding bytes are
+disassembled, with independent execution/comparison and implementation next.
+Overall 100%, nine-cell optional/final audits, broader layouts and gameplay/
+UI/network/stability evidence, and the older unexplained Windows-GC/Bookcase
+failures remain open.
+
 ### Native monster-facing entries and Blink observer correction
 
 Source `72f6282` ports public facing/location `545210`, object `545300`,

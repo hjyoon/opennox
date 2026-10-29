@@ -22755,6 +22755,27 @@
       "size": 190,
       "sha256": "e4fea0658a704442a192be951d759e8c2f285f6e6781e2f34cc5c9f70f4fcd75",
       "purpose": "Whole original GreaterHeal create executed in346 identical startupPC53/chop and nearestPC53 contexts with full instruction/ABI/canary coverage. Flags/search/adjust/enemy/ray/message are declared services; argument caching, caster/self reloads, target stores and branching execute. Existing complete-update392-context reference and seven helpers are preserved; no transitive world-service/visibility equivalence claim."
+    },
+    {
+      "name": "original_complete_force_of_nature_create_52ef30",
+      "address": "0x0052EF30",
+      "size": 149,
+      "sha256": "5c8609cfe461fba5d39d424eb5334ae69bd3b525883b768da46736ce8e63e6bc",
+      "purpose": "Complete executed original ForceOfNature root:925 contexts under startup and nearest profiles,1850 root runs,193 profile differences; all727 root instruction bytes, original buff helper34/35 reachable bytes, register/stack/FPCW/TOP/heap canaries verified. Six allocation/CreateAt/delete/ray/player-state/audio service bodies declared. Original raw destructor EAX/dead charge slot retained but excluded from native semantic comparison because duration manager discards them. Stock directions0-255, shape/finite/nonfinite/callback controls; no complete world-service/earned-gameplay claim."
+    },
+    {
+      "name": "original_complete_force_of_nature_update_52efd0",
+      "address": "0x0052EFD0",
+      "size": 510,
+      "sha256": "c7942ca28f5ed4dd40f717abd31c8dbbb73c6fd2bed96099aabb67a126c3f63b",
+      "purpose": "Complete executed original ForceOfNature root:925 contexts under startup and nearest profiles,1850 root runs,193 profile differences; all727 root instruction bytes, original buff helper34/35 reachable bytes, register/stack/FPCW/TOP/heap canaries verified. Six allocation/CreateAt/delete/ray/player-state/audio service bodies declared. Original raw destructor EAX/dead charge slot retained but excluded from native semantic comparison because duration manager discards them. Stock directions0-255, shape/finite/nonfinite/callback controls; no complete world-service/earned-gameplay claim."
+    },
+    {
+      "name": "original_complete_force_of_nature_destroy_52f1d0",
+      "address": "0x0052F1D0",
+      "size": 68,
+      "sha256": "c7d11f20f1dd2e24f4bcc24918fd818f0e7b789d7346e35d3921477281ddc838",
+      "purpose": "Complete executed original ForceOfNature root:925 contexts under startup and nearest profiles,1850 root runs,193 profile differences; all727 root instruction bytes, original buff helper34/35 reachable bytes, register/stack/FPCW/TOP/heap canaries verified. Six allocation/CreateAt/delete/ray/player-state/audio service bodies declared. Original raw destructor EAX/dead charge slot retained but excluded from native semantic comparison because duration manager discards them. Stock directions0-255, shape/finite/nonfinite/callback controls; no complete world-service/earned-gameplay claim."
     }
   ],
   "data": [
@@ -27440,6 +27461,27 @@
       "size": 4,
       "sha256": "5059b35a51a066cc88e72daa9017c4e126068c6368cd3b9f45b4d8d5cc94b3e5",
       "purpose": "Read-onlyexactoriginalPEdata; unchangednativeblobatbase587000/off201108. Onlynewunit-testfixtureexplicitlyinitializesthisfourbyteinput; normalgameInitDataalreadyusesit."
+    },
+    {
+      "name": "force_of_nature_distance_default_24_52ef30",
+      "address": "0x00583D2C",
+      "size": 4,
+      "sha256": "e4d11efbb477a76acb589cc3c6d78f8067d35f26293029ec6dc2bda8df62bff4",
+      "purpose": "Complete executed original ForceOfNature root:925 contexts under startup and nearest profiles,1850 root runs,193 profile differences; all727 root instruction bytes, original buff helper34/35 reachable bytes, register/stack/FPCW/TOP/heap canaries verified. Six allocation/CreateAt/delete/ray/player-state/audio service bodies declared. Original raw destructor EAX/dead charge slot retained but excluded from native semantic comparison because duration manager discards them. Stock directions0-255, shape/finite/nonfinite/callback controls; no complete world-service/earned-gameplay claim."
+    },
+    {
+      "name": "force_of_nature_charge_name_52ef30",
+      "address": "0x005C69F4",
+      "size": 20,
+      "sha256": "7e3172f5fab9cd00680f89164f85c978d0af2c64c511fff55746e2ea6ac17edf",
+      "purpose": "Complete executed original ForceOfNature root:925 contexts under startup and nearest profiles,1850 root runs,193 profile differences; all727 root instruction bytes, original buff helper34/35 reachable bytes, register/stack/FPCW/TOP/heap canaries verified. Six allocation/CreateAt/delete/ray/player-state/audio service bodies declared. Original raw destructor EAX/dead charge slot retained but excluded from native semantic comparison because duration manager discards them. Stock directions0-255, shape/finite/nonfinite/callback controls; no complete world-service/earned-gameplay claim."
+    },
+    {
+      "name": "force_of_nature_ball_name_52ef30",
+      "address": "0x005C6A08",
+      "size": 10,
+      "sha256": "26c00211176c690593ca11e4d7ccd3e0f4bc4e8efa26e40196d120cc850a9d72",
+      "purpose": "Complete executed original ForceOfNature root:925 contexts under startup and nearest profiles,1850 root runs,193 profile differences; all727 root instruction bytes, original buff helper34/35 reachable bytes, register/stack/FPCW/TOP/heap canaries verified. Six allocation/CreateAt/delete/ray/player-state/audio service bodies declared. Original raw destructor EAX/dead charge slot retained but excluded from native semantic comparison because duration manager discards them. Stock directions0-255, shape/finite/nonfinite/callback controls; no complete world-service/earned-gameplay claim."
     }
   ],
   "allow_overlapping_ranges": true

@@ -89,7 +89,7 @@ func (sp *spellsDuration) callDestroy4FEDA0(callback unsafe.Pointer, record *ser
 		return
 	}
 	if callback == legacy.Get_sub_52F1D0() {
-		server.SpellForceOfNatureDestroy52F1D0(record, sp.forceOfNatureRuntime52EF30())
+		sp.s.SpellForceOfNatureDestroy52F1D0(record)
 		return
 	}
 	if callback == legacy.Get_sub_531290() {
@@ -156,7 +156,7 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 		return sp.s.SpellGreaterHealUpdate52F2E0(record)
 	}
 	if callback == legacy.Get_sub_52EFD0() {
-		return server.SpellForceOfNatureUpdate52EFD0(record, sp.forceOfNatureRuntime52EF30())
+		return sp.s.SpellForceOfNatureUpdate52EFD0(record)
 	}
 	if callback == legacy.Get_nox_xxx_manaBombBoom_5310C0() {
 		return server.SpellManaBombUpdate5310C0(record, sp.manaBombRuntime530F90())
@@ -206,7 +206,7 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 		return sp.s.SpellGreaterHealCreate52F220(record)
 	}
 	if callback == legacy.Get_sub_52EF30() {
-		return server.SpellForceOfNatureCreate52EF30(record, sp.forceOfNatureRuntime52EF30())
+		return sp.s.SpellForceOfNatureCreate52EF30(record)
 	}
 	if callback == legacy.Get_nox_xxx_spellTagCreature_530160() {
 		return sp.s.S().SpellTagCreate530160(record)

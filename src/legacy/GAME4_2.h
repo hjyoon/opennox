@@ -314,9 +314,7 @@ unsigned int nox_xxx_isObjectMovable_52E020(int a1);
 #include "spell_drain_mana_native_52e210.h"
 #include "spell_energy_bolt_native_52e820.h"
 #include "spell_firewalk_native_52ed40.h"
-int sub_52EF30(int a1);
-int sub_52EFD0(int a1);
-int sub_52F1D0(int a1);
+#include "spell_force_of_nature_native_52ef30.h"
 #include "spell_greater_heal_native_52f220.h"
 #include "spell_channel_life_native_52f460.h"
 int nox_xxx_castShield1_52F5A0(void* a1);

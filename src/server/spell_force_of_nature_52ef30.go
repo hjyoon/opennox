@@ -40,25 +40,27 @@ func SpellForceOfNatureCreate52EF30(record *DurSpell, runtime SpellForceOfNature
 		}
 	}
 	record.Field72 = int32(uint32(record.Field72)&0xffff0000 | uint32(source.Direction1))
+	position := source.PosVec
 	if charge := runtime.NewObject("ForceOfNatureCharge"); charge != nil {
-		runtime.CreateAt(charge, nil, source.PosVec)
+		runtime.CreateAt(charge, nil, position)
 		runtime.StoreCharge(record, charge)
 	}
 	return 0
 }
 
-func forceOfNatureLaunchDistance52EFD0(caster *Object) float32 {
+func forceOfNatureLaunchDistance52EFD0(caster *Object) float64 {
 	switch caster.Shape.Kind {
 	case ShapeKindCenter:
 		return 4
 	case ShapeKindCircle:
-		return caster.Shape.Circle.R + 4
+		return objectForceAdd53_52DF80(float64(caster.Shape.Circle.R), 4)
 	case ShapeKindBox:
 		width, height := caster.Shape.Box.W, caster.Shape.Box.H
-		if width < height {
+		// FCOMP's unordered/equal/less branch selects height as well.
+		if !(width > height) {
 			width = height
 		}
-		return width + 4
+		return objectForceAdd53_52DF80(float64(width), 4)
 	default:
 		return 24
 	}
@@ -74,49 +76,58 @@ func SpellForceOfNatureUpdate52EFD0(record *DurSpell, runtime SpellForceOfNature
 	if caster != nil && caster.UnitBuffTest4FF350(8) != 0 {
 		return 1
 	}
-	frame := runtime.CurrentFrame()
-	if record.Frame68-7 == frame {
+	if record.Frame68-7 == runtime.CurrentFrame() {
 		if charge := runtime.LoadCharge(record); charge != nil {
 			runtime.DelayedDelete(charge)
 			runtime.StoreCharge(record, nil)
 		}
 	}
-	if record.Frame68-1 == frame {
+	// DelayedDelete may change the deadline, frame or caster link.
+	if record.Frame68-1 == runtime.CurrentFrame() {
 		ball := runtime.NewObject("DeathBall")
 		if ball != nil {
 			var source types.Pointf
 			var direction Dir16
-			var distance float32
+			var distance float64
 			if record.Flag20 != 0 {
 				source = record.Pos
 				direction = Dir16(uint16(record.Field72))
 			} else {
+				caster := record.Caster16
 				source = caster.PosVec
 				direction = caster.Direction1
 				distance = forceOfNatureLaunchDistance52EFD0(caster)
 			}
 			vector := direction.Vec()
+			// The distance stays in PC53 through both products and sums.
+			// Only the final coordinates spill to binary32 in startup chop.
 			position := types.Pointf{
-				X: source.X + vector.X*distance,
-				Y: source.Y + vector.Y*distance,
+				X: experienceSpill32TowardZero(objectForceAdd53_52DF80(objectForceMul53_52DF80(float64(vector.X), distance), objectForceMemory32_52DF80(source.X))),
+				Y: experienceSpill32TowardZero(objectForceAdd53_52DF80(objectForceMul53_52DF80(float64(vector.Y), distance), objectForceMemory32_52DF80(source.Y))),
 			}
 			if !runtime.TraceRay(source, position, MapTraceFlag1|MapTraceFlag3) {
 				position = source
 			}
-			runtime.CreateAt(ball, caster, position)
+			runtime.CreateAt(ball, record.Caster16, position)
 			if record.Flag20 == 1 {
 				ball.VelVec = types.Pointf{}
 			} else {
-				ball.VelVec = types.Pointf{X: vector.X * ball.SpeedCur, Y: vector.Y * ball.SpeedCur}
+				ball.VelVec = types.Pointf{
+					X: experienceSpill32TowardZero(objectForceMul53_52DF80(float64(vector.X), objectForceMemory32_52DF80(ball.SpeedCur))),
+					Y: experienceSpill32TowardZero(objectForceMul53_52DF80(float64(vector.Y), objectForceMemory32_52DF80(ball.SpeedCur))),
+				}
 			}
 			ball.Direction1 = direction
 			ball.Direction2 = direction
-			runtime.EventObj(caster)
+			runtime.EventObj(record.Caster16)
 		}
 		return 1
 	}
-	if record.Flag20 == 0 && caster != nil && uint8(caster.ObjClass)&4 != 0 {
-		runtime.SetPlayerState(caster, PlayerState(10))
+	if record.Flag20 == 0 {
+		caster := record.Caster16
+		if caster != nil && uint8(caster.ObjClass)&4 != 0 {
+			runtime.SetPlayerState(caster, PlayerState(10))
+		}
 	}
 	return 0
 }

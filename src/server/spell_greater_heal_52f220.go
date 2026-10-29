@@ -21,8 +21,8 @@ type greaterHealCreateHooks52F220[Record, Object comparable] struct {
 // the duration ray. Record fields are never decoded as PE32 dwords.
 func spellGreaterHealCreate52F220[Record, Object comparable](record Record, h greaterHealCreateHooks52F220[Record, Object]) int32 {
 	var nilObject Object
-	mode := h.loadMode(record)
 	caster := h.loadCaster(record)
+	mode := h.loadMode(record)
 	if caster == nilObject && mode == 0 {
 		return 1
 	}
@@ -35,9 +35,11 @@ func spellGreaterHealCreate52F220[Record, Object comparable](record Record, h gr
 		return 1
 	}
 
-	caster = h.loadCaster(record)
 	flags := h.spellFlags(h.loadSpell(record))
-	target := h.searchTarget(h.loadAim(record), caster, flags, 400, 1, caster)
+	// Self was pushed before flags lookup, while the search caster is read
+	// afterward. A flags callback may change the live caster link.
+	searchCaster := h.loadCaster(record)
+	target := h.searchTarget(h.loadAim(record), searchCaster, flags, 400, 1, caster)
 	h.storeTarget(record, target)
 	if target == nilObject {
 		h.noTarget(h.loadCaster(record))

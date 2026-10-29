@@ -163,14 +163,7 @@ func (sp *spellsDuration) callUpdate4FEEF0(callback unsafe.Pointer, record *serv
 		return sp.s.SpellFirewalkUpdate52ED40(record)
 	}
 	if callback == legacy.Get_sub_52F2E0() {
-		return sp.s.S().SpellGreaterHealUpdate52F2E0(record, server.SpellGreaterHealRuntime52F2E0{
-			AdjustHP: func(target *server.Object, amount int32) {
-				legacy.Nox_xxx_unitAdjustHP_4EE460(target, int(amount))
-			},
-			ManaSub: func(caster *server.Object, amount int32) {
-				legacy.Nox_xxx_playerManaSub_4EEBF0(caster, int(amount))
-			},
-		})
+		return sp.s.SpellGreaterHealUpdate52F2E0(record)
 	}
 	if callback == legacy.Get_sub_52EFD0() {
 		return server.SpellForceOfNatureUpdate52EFD0(record, sp.forceOfNatureRuntime52EF30())
@@ -220,11 +213,7 @@ func (sp *spellsDuration) callCreate4FEBA0(callback unsafe.Pointer, record *serv
 		return server.SpellTurnUndeadCreate531310(record, sp.turnUndeadRuntime531310())
 	}
 	if callback == legacy.Get_sub_52F220() {
-		return sp.s.S().SpellGreaterHealCreate52F220(record, server.SpellGreaterHealRuntime52F220{
-			AdjustHP: func(target *server.Object, amount int32) {
-				legacy.Nox_xxx_unitAdjustHP_4EE460(target, int(amount))
-			},
-		})
+		return sp.s.SpellGreaterHealCreate52F220(record)
 	}
 	if callback == legacy.Get_sub_52EF30() {
 		return server.SpellForceOfNatureCreate52EF30(record, sp.forceOfNatureRuntime52EF30())

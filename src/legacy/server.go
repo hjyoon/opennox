@@ -122,6 +122,8 @@ type Server interface {
 	SpellEnergyBoltUpdate52E850(record *server.DurSpell) int32
 	SpellDrainManaUpdate52E210(record *server.DurSpell) int32
 	SpellFirewalkUpdate52ED40(record *server.DurSpell) int32
+	SpellGreaterHealCreate52F220(record *server.DurSpell) int32
+	SpellGreaterHealUpdate52F2E0(record *server.DurSpell) int32
 	SpellTeleportCreateWake530560(target *server.Object, origin, destination *types.Pointf)
 	SpellChainLightningCreate52F820(record *server.DurSpell) int32
 	SpellChainLightningUpdate52F8A0(record *server.DurSpell) int32

@@ -22748,6 +22748,13 @@
       "size": 483,
       "sha256": "fed8d34c8df6bf290c406fdcd95afbaba61b626ad1ff91ef2b98a340639e839d",
       "purpose": "Whole original Firewalk duration update executed in520 identical contexts per startupPC53/chop and nearestPC53 profile, with14 profile-sensitive results and full instruction/ABI/canary coverage. Declared name/RNG/allocate/create/audio/decay services; no transitive world-service equivalence claim."
+    },
+    {
+      "name": "original_greater_heal_create_52f220",
+      "address": "0x0052F220",
+      "size": 190,
+      "sha256": "e4fea0658a704442a192be951d759e8c2f285f6e6781e2f34cc5c9f70f4fcd75",
+      "purpose": "Whole original GreaterHeal create executed in346 identical startupPC53/chop and nearestPC53 contexts with full instruction/ABI/canary coverage. Flags/search/adjust/enemy/ray/message are declared services; argument caching, caster/self reloads, target stores and branching execute. Existing complete-update392-context reference and seven helpers are preserved; no transitive world-service/visibility equivalence claim."
     }
   ],
   "data": [

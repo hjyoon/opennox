@@ -65,13 +65,13 @@ func TestGreaterHealCreate52F220Paths(t *testing.T) {
 		state  uint64
 		events []string
 	}{
-		{"no caster or mode", 0, 0, 0, 1, 0, []string{"mode", "caster"}},
-		{"glyph heals", 1, 0, 0x200000456, 1, 0, []string{"mode", "caster", "spell", "flags", "aim", "search", "heal"}},
-		{"glyph no target", 1, 0, 0, 1, 0, []string{"mode", "caster", "spell", "flags", "aim", "search"}},
-		{"mode with caster heals", 1, 0x100000123, 0x200000456, 1, 0, []string{"mode", "caster", "spell", "flags", "aim", "search", "heal"}},
-		{"ordinary friendly", 0, 0x100000123, 0x300000456, 0, 0x300000456, []string{"mode", "caster", "caster", "spell", "flags", "aim", "search", "store", "caster", "enemy", "ray"}},
-		{"ordinary enemy", 0, 0x100000123, 0x200000456, 1, 0x200000456, []string{"mode", "caster", "caster", "spell", "flags", "aim", "search", "store", "caster", "enemy"}},
-		{"ordinary no target", 0, 0x100000123, 0, 1, 0, []string{"mode", "caster", "caster", "spell", "flags", "aim", "search", "store", "caster", "no-target"}},
+		{"no caster or mode", 0, 0, 0, 1, 0, []string{"caster", "mode"}},
+		{"glyph heals", 1, 0, 0x200000456, 1, 0, []string{"caster", "mode", "spell", "flags", "aim", "search", "heal"}},
+		{"glyph no target", 1, 0, 0, 1, 0, []string{"caster", "mode", "spell", "flags", "aim", "search"}},
+		{"mode with caster heals", 1, 0x100000123, 0x200000456, 1, 0, []string{"caster", "mode", "spell", "flags", "aim", "search", "heal"}},
+		{"ordinary friendly", 0, 0x100000123, 0x300000456, 0, 0x300000456, []string{"caster", "mode", "spell", "flags", "caster", "aim", "search", "store", "caster", "enemy", "ray"}},
+		{"ordinary enemy", 0, 0x100000123, 0x200000456, 1, 0x200000456, []string{"caster", "mode", "spell", "flags", "caster", "aim", "search", "store", "caster", "enemy"}},
+		{"ordinary no target", 0, 0x100000123, 0, 1, 0, []string{"caster", "mode", "spell", "flags", "caster", "aim", "search", "store", "caster", "no-target"}},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			var events []string

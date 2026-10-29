@@ -55,6 +55,142 @@ completion requirements.
 
 ## Current findings
 
+### Native Plasma duration entry points and original selection precision
+
+Source `01e23ab` ports Plasma create `531580`, update `531600` and destroy
+`5319E0` to opaque native duration pointers. The three public C faults now pass
+on records above 4 GiB. Three C11 signature assertions cover these exports;
+216 obsolete C lines, including the selector with no other C callers, are
+removed. All other bytes of `GAME4_3.c` remain identical. Ordinary dispatch
+and public C exports use the same production runtime. Destroy's unused EAX
+is excluded by the inspected void consumers.
+
+The unchanged original create/update/candidate/destroy roots total 1102 bytes
+(114/785/181/22); the actual `419A70` converter adds 17 bytes. Every instruction
+byte executes in 581 contexts: 40 create, 531 update, 10 destroy, including
+216 candidate and 980 converter calls, under each of startup `0x0e3f` and
+nearest `0x023f`. The same inputs produce 502 profile-sensitive results;
+nearest observations are diagnostic controls, not native default expectations.
+There are 342 mutation kinds/executions per profile. Callee-saved registers,
+stack, FP control/TOP, nonoutput heap and tracked global canaries pass without
+original faults. Declared type, balance, spatial, visibility, effect, damage,
+state, audio and reporting services bound this whole-root equivalence claim;
+it is not transitive full-game equivalence.
+
+The producer, startup/nearest goldens and comparator were sealed before engine
+changes and remain byte-identical. The startup comparator reproduces 16 leaf
+mismatches before this port: nine directed balance conversions, one unordered
+cursor distance, one live caster reload and five live nearest-scratch cases.
+The other 565 pass. All 581 pass afterward, including direct selected/nearest
+scratch observations. Only the pre-port baseline lacks those native scratch
+fields; its unavailable scratch observations are explicitly projected out,
+while selection and service behavior still compare. No expected value changes.
+
+Production balance values now remain binary64 until the original directed
+binary32 spill and signed-DWORD FISTP. Cursor acquisition accepts unordered
+surface distance and reloads the caster after enemy testing. Native-width
+selected-object and binary32 nearest-distance scratch remain live through
+callbacks; enumeration retains its original fixed caster context. The original
+nonplayer +288 DWORD is admitted only when zero; native Monster.Field72 is
+not a pointer and is never read as Player.CursorObj. This does not establish a
+complete nonplayer Plasma damage/state path. Original destruction retains the
+weapon link in its dying record; dropping the native private weapon sidecar
+is separately asserted as duration lifetime cleanup.
+
+There are 596 new terminals: 582 original-reference events, four direct-entry
+regression events and ten composition events. Nine actual C composition
+contexts cover retained player and Hecubah hits, ray replacement, cursor
+acquisition, grace expiry, no target, moved monster cancellation, the cancel
+flag and missing equipped weapon. Synthetic C-owned units use gameplay flag1;
+production binary64 balance loading, facing, surface distance, LOS, registered
+DefaultDamage/UnitSetHP, player state, audio, C charge reporting and destruction
+execute. Real hit sequences debit HP and charges through exhaustion; the
+1.99999999 balance produces damage 1 and expiry 141 at frame 140. A read-only ray
+packet observer delegates to the production C important sender and checks
+successful allocation plus exact seven-byte start/stop payloads. Charge-report
+payloads are not independently observed, and no peer connection is opened.
+Native record/update/player/wand/health canaries and links are checked.
+
+Complete ordinary root/server/legacy passes 273797 with 18 skips in 150.715
+seconds. Focused highres/cgocheck2/checkptr2 passes 4095 with one x86-only skip
+in 434.708 seconds. Both final scopes explicitly contain all 596 new events.
+All 3902 pre-existing tests, fixtures and E2E files remain byte-identical.
+The first reference setup cannot fetch a missing module with GOPROXY=off;
+its failed setup remains. The first composition fixture fails to compile its
+unconstrained allocation generic. Its next version omits the wall grid and
+gameplay admission flag, exposing fixture panics and unchanged target HP;
+those failures and fixture snapshots remain. Initial manifest sorting would
+reorder historical records; an assertion prevents the write. Four original
+ranges are then inserted without changing any previous record or relative
+order. The oracle verifies 3237 code and 669 data ranges.
+
+The clean Go 1.26.9 darwin/arm64 product is 65,644,946 bytes, SHA256
+`f2b685382455b62255c4ceb7dad05a4f12a5733b00a33d2c2801064cac66a6c9`.
+The unchanged hosted stock OblivionOrb scenario passes in 40.244 seconds:
+actual pickup/autoequip and mouse attacks acquire a target, release continues
+striking, movement cancels, another attack exhausts all 250 charges, and
+natural stop leaves no ray/weapon sidecars or later damage. The stock item is
+granted and enemy HP 5000 arranged before attack. This is real-input production
+dispatch evidence, not an earned campaign cast; public C composition separately
+verifies the C exports. Its three missing PNG expected files are automatically
+created by the unchanged recorder. All three are preserved outside the source tree; no
+screenshot-golden comparison is credited. Headless rendering, virtual game
+time and mock audio remain explicit limits.
+
+Original earned Bookcase6 movement passes in 40.651 seconds; actual menu
+Load/Save passes in 17.683. The whole initial 15-file Save matches the earlier
+qualified seed. The current passing Save's HP20/MP44/poison0 and whole manifest
+are frozen before its first reload, which preserves those exact values.
+A preparatory stale MP43 assumption is rejected before reload and recorded;
+the previous batch's Save/expectations remain unchanged. Native stock extent
+1974/script 1000194601 stays at (1591,4734), with plate off, mover on and original
+Urchin 1000194073 HP0/DEAD. Directly viewed slide/reload frames supplement state
+checks; they are not screenshot-golden comparisons. Runtime 2195 remains
+unidentified, and previous Swap recovery failures remain retained without a
+new Swap replay. Original assets, all Save outputs, prior products and failed
+results remain preserved; no compiler-cache pruning is needed this batch.
+
+Windows [run 40846347647](https://github.com/hjyoon/opennox/actions/runs/40846347647)
+jobs 123354664011 (amd64) and 123354663636 (386) both pass uncached full
+root/server/legacy and native help. Artifacts 12885408414 and 12886310456 match
+GitHub ZIP digests, PE machines and clean 01e23ab metadata. Windows output is
+nonverbose; individual test inclusion follows full-package success. Linux
+[run 40846400000](https://github.com/hjyoon/opennox/actions/runs/40846400000),
+job 123354839612 passes 271223 with seven skips across all 58 expected packages
+(36 pass, 22 skip), explicitly including all 596 new events. Default-link damage
+separately passes 133041 across three packages. Artifact 12885214861 matches
+the GitHub ZIP digest, ELF machine 62 and clean source metadata. Its
+63,802,024-byte product SHA256 is
+`846fc5acb59db2e2d1661819401ed350bd5773440aa05e29cb380bb37d973a90`.
+Exact Linux test/default-damage JSON remains in the preserved ZIP with decoded
+SHA256, byte counts and CRC checks. All three jobs/artifacts are closed in
+`all-native-workflows-qualified-v1.json`; native logs contain none of the five
+requested poison macro warnings. Documentation and read-only overlays do not
+redispatch these successful CI runs.
+
+The 46 intercepted slots now contain 29 native Go entries, three inspected
+native C forwarders, one pointer-free constant leaf and 13 lexical PE32
+candidates. Separate overlays reproduce two next Lightning/EnergyBolt public
+faults: create `52E820` truncates record+16, and update `52E850` still declares
+a float argument incompatible with the native duration pointer call. Ordinary
+nil-caster controls return 0/1 on the same C-owned records. Original complete
+create/update/candidate regions are inspected as 44/1032/209 bytes, totaling
+1285; their execution, golden/comparator preparation and engine fixes remain
+pending. Eleven other candidates are unexecuted. These counts are not a
+completion denominator. Nine-cell optional-feature/final audits, reachable
+callback/layout coverage, War03d reachability, actual hostile WarCry
+interruption, distant-recognition AI, UI/audio, peers and sustained stability
+remain open; overall 100% is not established.
+
+Evidence is under `plasma-native-entry-port`, especially
+`original-plasma-reference-preparation-v1-qualified.json`,
+`reference-seals-before-v1.json`, `local-plasma-native-qualified-v1.json`,
+`runtime-source-product-qualified-v1.json`,
+`current-product-campaign-qualified-v2.json`,
+`all-native-workflows-qualified-v1.json`,
+`preservation-qualified-v1.json` and `remaining-duration-entry-inventory-v2.json`.
+The next fault and original inspection are under `energy-bolt-native-entry-port`.
+
 ### Native Oval Shield duration entry points
 
 Source `b40fbd5` ports Oval Shield create `531490`, update `5314F0` and destroy

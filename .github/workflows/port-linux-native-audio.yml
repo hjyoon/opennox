@@ -86,7 +86,7 @@ jobs:
             args=(-tags=highres -gcflags=all=-d=checkptr=2)
           fi
           set +e
-          ../scripts/go.sh test "${args[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=10m -run '^Test(NativeAudio|NativeAmbient|ParseNative|LegacyClientPlaySound|OpenAL|Audio|ADPCM|PCM|MP3|E2EAudio)' . ./legacy/client/audio/ail > "$AUDIO_REPORT/test.jsonl" 2> "$AUDIO_REPORT/test.stderr.log"
+          ../scripts/go.sh test "${args[@]}" -buildmode=pie '-exec=/usr/bin/env MALLOC_MMAP_THRESHOLD_=0' -json -count=1 -timeout=10m -run '^Test(NativeAudio|NativeNetworkAudio|NativeAmbient|ParseNative|LegacyClientPlaySound|OpenAL|Audio|ADPCM|PCM|MP3|E2EAudio)' . ./legacy/client/audio/ail > "$AUDIO_REPORT/test.jsonl" 2> "$AUDIO_REPORT/test.stderr.log"
           status=$?
           set -e
           echo "$status" > "$AUDIO_REPORT/test.exit"

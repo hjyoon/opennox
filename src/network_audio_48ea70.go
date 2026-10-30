@@ -41,6 +41,7 @@ func (c *Client) handleAudioEventPacketNative48EA70(op netmsg.Op, data []byte) i
 		connected: nox_client_isConnected,
 		play: func(id sound.ID, volume, pan int) bool {
 			played := nativeAudioFX.playPanned(id, volume, pan)
+			e2eObserveShopAudioPacket(op, id, volume, pan, played)
 			if audioEffectsDebug {
 				audioEffectsLog.Printf("network %s sound=%s volume=%d pan=%d submitted=%t", op, id, volume, pan, played)
 			}

@@ -55,6 +55,66 @@ completion requirements.
 
 ## Current findings
 
+### Original empty-stack monster block readiness
+
+Source `55e06cc` connects the shared player-damage block predicate to the
+native `534340` implementation. Eight call sites in six files, including
+melee, greatsword, missile, caster, cloud and monster impact paths, now
+retain the original empty-stack behavior. The original reads `Field132`
+when the signed AI stack head is -1. The previous Go helper rejects all
+such inputs, differing in seven of the 342 original contexts. All 342 now
+match the unchanged, independently executed 72-byte original reference.
+The two original FPU-profile records and their inputs/expected returns are
+retained; the comparator is frozen before the engine change.
+
+The old invalid-stack rejection test supplies a zero prefix, which the
+original treats as IDLE. Its fixture now explicitly sets the unsupported
+action `0xffffffff`; all expected values and assertions remain unchanged.
+All 4,034 other existing inputs remain byte-identical. C sources, headers,
+the oracle and the global typed monster-data invariant are unchanged.
+The duplicated Go action switch is removed.
+
+Normal checks pass **344,656/43 skips**; strict highres, cgocheck2,
+checkptr2 and real OpenAL/null checks pass **198,377/eight skips**. Strict
+selection now includes the full PlayerDamage family. Every previous normal
+terminal case and multiplicity is retained, adding 343 original-reference
+events. Source applied to the worktree is byte-identical to the validated
+overlay; installed-file checks pass another 344 events. The first full
+normal run passes root tests but cannot build the other three packages
+because the disk is full. Its exact output is retained. Clearing only the
+regenerable Go build cache frees about 26 GiB, and the same sources,
+reference and assertions pass. No assets, Saves, evidence or products are
+deleted.
+
+The clean Go 1.26.9 ARM64 product has SHA-256
+`a50d1da9344c43b87da5a59a8d4e7c9f9f1bd0e7e781d68f7419204eaa10462a`.
+Help, six Blink modes, sixteen natural first-attack modes, shared
+Lightning/EnergyBolt/DrainMana and original Bookcase6 progression pass.
+The passing Save contract is frozen before the first fresh-process menu
+Load and manual Save: **HP20/MP43/poison0**. All four inspected PNGs are
+preserved. The final two show the stock overwrite-save confirmation;
+completed Save is established independently by disk snapshots and the
+fresh actual-menu reload. The preceding two show a living Wizard and
+intact HUD. No post-save-complete screenshot, pixel golden, complete
+visibility equivalence or cross-revision MP43/MP73 equivalence is claimed.
+
+Native Windows amd64/386 run **41129019441** passes build, help and all
+three root/server/legacy packages. Linux amd64 run **41129088807** passes
+**341,818/seven skips across 58 packages** and **133,384** default-link
+damage events. Both Linux raw streams contain all 342 original Go cases.
+Prior actual C predicate coverage remains present. All three jobs are
+terminal; ZIP digests, PE/ELF architecture, clean source revision and raw
+logs are verified. The five requested poison-macro warnings remain absent.
+
+ROOT/monster-block-readiness-raw-caller-port retains
+`local-block-readiness-qualified-v1.json`,
+`native-ci-v1/all-native-block-readiness-qualified-v1.json` and
+`all-gates-and-preservation-qualified-v1.json`; product proofs are in
+ROOT/monster-block-readiness-product-e2e-v1. Personal 4,649 files,
+32 ARM64 products, 26 native products and earlier failures remain intact.
+Other unported callbacks and the final nine class/chapter audits remain
+open. **Overall porting is not 100%; chapter 4+ remains excluded.**
+
 ### Native monster state predicates
 
 Source `5398603` ports six public monster-state entries for hold position,

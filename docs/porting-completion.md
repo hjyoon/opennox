@@ -55,6 +55,95 @@ completion requirements.
 
 ## Current findings
 
+### Native dead-update and cleanup entry points
+
+Source `6f94c70` ports public `544EC0` and `544F70` to native object
+pointers. The cleanup returns its full native update address. Both original
+PE32 C entries fault in the frozen initial probes and all 21 compositions,
+after the corresponding ordinary native controls complete. The same frozen
+tests pass after the port, including five direct cleanup pointer results.
+
+Before engine edits, all 163 DeadUpdate and 117 Cleanup instruction bytes
+execute 694 contexts under each of startup `0x0e3f` and nearest `0x023f`:
+1,388 runs with no profile differences. The original cleanup executes inside
+DeadUpdate and separately. Counted prefixes 0–16, signed negative waypoint
+counts, unsigned frame subtraction/wrap, fire/stay/enemy gates, cached entry
+versus live replacement update/definition and callback mutations are checked.
+IsZombie, RemoveUpdatable, SparkExplosion, BurnDelete, RaiseZombie and
+DelayedDelete bodies are declared services. Ordered states and arguments,
+raw EAX and cleanup pointer identity remain recorded; register/stack/FPCW/
+TOP/heap canaries pass. The handled-bool component excludes EAX; separate
+actual C compositions compare the native pointer result. DeadUpdate's 13
+NOPs remain unexecuted. Cleanup's existing 176-byte envelope contains its
+117 instruction bytes, a separate 39-byte `544FF0` entry and 20 NOPs;
+the latter entry and padding are not executed or credited as cleanup.
+
+Existing Go matches 692 contexts but panics in two valid original cases:
+IsZombie or RemoveUpdatable changes class after initial admission, then
+the cleanup's `UpdateDataMonster()` rechecks class and panics. Original
+`544F70` reloads the update link without reading class. The native cast now
+preserves that ordering, and all 694 component cases pass. The original
+and comparator inputs stay unchanged. A first producer syntax failure and
+the initial comparator run that stopped at the first panic are retained;
+the final pre-port harness only adds per-leaf panic recovery to observe
+all 694 inputs, preserving its existing assertions and every reference byte.
+
+The 21 actual C compositions cover cleanup prefixes, ordinary retain/delete
+and Zombie/VileZombie strict-time, wait, fire, raise, stay-dead, no-enemy and
+unsigned-wrap paths. They execute real removal/cleanup and Spark/Burn/
+Raise/Pop/Push/HP bodies, checking original decisions and complete native
+unit/update/definition/missile/health records, waypoint pointees and AI state
+against ordinary controls. The fixture has no peers/owner/scorch type and
+observes DelayedDelete as an external boundary; it does not claim FX wire
+delivery or real deletion queues. Two initial C probes also pass.
+
+The source removes 64 obsolete C body lines and one separating blank line,
+preserving every other `GAME4_3.c` byte, registration and manifest. All 3,978
+prior test/fixture/scenario inputs remain byte-identical; five new inputs
+are added. All 720 new terminals and 65 retained death-update terminals pass
+in the targeted 785-pass check. Normal macOS checks pass 286,015 terminals/
+20 skips in 304.799 seconds. Highres `cgocheck2`/`checkptr=2`,
+including real OpenAL null, pass 17,924/seven skips in
+337.911 seconds. Oracle verification passes the unchanged
+3,264 code/680 data ranges. The clean Go 1.26.9 ARM64 product has
+65,736,434 bytes, SHA256
+`65260ffe06d7b308eea54010089dac1abec467e79e1e9660c5245d0f13580808`.
+
+Current-product Blink 6, first-attack 16, shared spell damage/rendering/cancel
+and original Bookcase6 plus actual-menu Load/Save pass. The whole passing
+Save/HP20/MP43/poison0 is sealed before the first reload, retaining the
+completed plate/mover and original HP0/DEAD Urchin. Save images are inspected; the reload checkpoint still shows overwrite
+confirmation. Persisted files and completed fresh Load/Save establish
+completion, without a pixel-golden claim. Real ordinary-clock CoreAudio passes the unchanged
+54-Amb scenario in 341.286 seconds, with
+1,479 sample buffers queued/
+1,455 processed and
+3 music streams. No reported ADPCM 147/89 panic
+recurs. Audio remains byte-identical to `97f2663`, including its independent
+Linux client proof; subjective audible fidelity remains open.
+
+Windows amd64/386 and Linux amd64 native server workflows close for this
+exact source with preserved raw logs and digest-verified product archives.
+Linux passes 283,441 terminals/seven skips across 58 expected packages,
+including 720 new terminals and six retained Blink regressions; default-link
+damage passes 133,041 terminals. All five requested wchar poison-macro
+warnings remain absent. Exact IDs/hashes/timings are retained in
+`monster-dead-update-native-entry-port/all-native-workflows-qualified-v1.json`.
+Personal assets remain 4,649 files/503,207,370 bytes and all 16 prior ARM64
+products retain their hashes. Five inventoried reproducible cache files
+(865,376,838 logical bytes) from the pre-port builds are
+removed with no active compiler and inode/size/mtime guards. Original
+assets, every Save, failed logs/partial runtimes, references and products
+are preserved; the module cache is excluded. The earlier empty cleanup
+inventory/result is retained separately.
+
+The registered AI table has nine native Go exports and four retained C
+bodies among 13 nonnil C symbols; the cleanup root is outside that table.
+Other compatibility roots, broader AI/UI/audio/peer/network/stability and
+final nine-cell campaign audits remain open. Prior Windows GC and
+ChannelLife Bookcase/replay-variability findings remain unresolved and
+preserved. Overall porting is not 100%; chapter 4 and later remain excluded.
+
 ### Native dead-start callback and original startup duration conversion
 
 Source `3bd8099` ports public `544D80` to an opaque native object pointer

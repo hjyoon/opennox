@@ -115,21 +115,43 @@ type MonsterActionDeadRuntime544D80 struct {
 type MonsterReleasedSoulRuntime544E60 struct {
 	NewObjectByTypeID func(string) *Object
 	CreateObjectAt    func(*Object, *Object, types.Pointf)
+	// A bound TypeIndex selects the original lazy DWORD cache and indexed
+	// allocator. Nil retains the name-based API used by partial runtimes.
+	TypeIndex            *uint32
+	TypeIndexByID        func(string) uint32
+	NewObjectByTypeIndex func(uint32) *Object
 }
 
 // MonsterCreateReleasedSoul544E60 restores GAME.EXE 00544E60. Allocation
 // failure is an original, successfully handled outcome.
 func MonsterCreateReleasedSoul544E60(unit *Object, runtime MonsterReleasedSoulRuntime544E60) bool {
-	if unit == nil || runtime.NewObjectByTypeID == nil || runtime.CreateObjectAt == nil {
+	if unit == nil || runtime.CreateObjectAt == nil {
 		return false
 	}
-	soul := runtime.NewObjectByTypeID("ReleasedSoul")
+	var soul *Object
+	if runtime.TypeIndex != nil {
+		if runtime.TypeIndexByID == nil || runtime.NewObjectByTypeIndex == nil {
+			return false
+		}
+		index := *runtime.TypeIndex
+		if index == 0 {
+			index = runtime.TypeIndexByID("ReleasedSoul")
+			*runtime.TypeIndex = index
+		}
+		soul = runtime.NewObjectByTypeIndex(index)
+	} else {
+		if runtime.NewObjectByTypeID == nil {
+			return false
+		}
+		soul = runtime.NewObjectByTypeID("ReleasedSoul")
+	}
 	if soul == nil {
 		return true
 	}
 	runtime.CreateObjectAt(soul, nil, unit.PosVec)
-	soul.Direction2 = unit.Direction1
-	soul.Direction1 = unit.Direction1
+	direction := unit.Direction1
+	soul.Direction2 = direction
+	soul.Direction1 = direction
 	return true
 }
 

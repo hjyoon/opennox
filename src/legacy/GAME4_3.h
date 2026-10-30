@@ -292,9 +292,8 @@ void sub_544B20(int a1, int a2);
 char nox_xxx_mobActionPickupObject_544B90(int a1);
 #include "monster_dying_start_native_544c40.h"
 #include "monster_dying_end_native_544ca0.h"
-void nox_xxx_zombieBurnDelete_544CE0(uint32_t* a1);
+#include "monster_death_services_native_544ce0.h"
 #include "monster_dead_start_native_544d80.h"
-void nox_xxx_createReleasedSoul_544E60(int a1);
 #include "monster_dead_update_native_544ec0.h"
 
 #endif // NOX_PORT_GAME4_3

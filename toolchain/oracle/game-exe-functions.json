@@ -22853,6 +22853,20 @@
       "size": 57,
       "sha256": "bc106ea5002bdf0fd27a909670a0b48008a9002bfddb5f6a26a6108e8d7475f2",
       "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_burn_delete_544ce0",
+      "address": "0x00544CE0",
+      "size": 113,
+      "sha256": "6b0e9e1df6a9c259f74ee29372c438bea71a0baca5da0b03e9d958f04dbebeb6",
+      "purpose": "Complete unmodified BurnDelete113 and ReleasedSoul84 instruction bytes execute467contexts/profile,731calls/profile,1462calls across startupPC53/chop and nearest with no profile differences. Ordered services/live owner-update Player reload, unsigned class/subclass masks, original lazy DWORD type-index cache, repeat calls, allocation failure/aliases and raw position/direction words checked. Shield, minimap, reward, scorch, delete, lookup, indexed allocation and world creation are declared services. Public void rawEAX retained outside handled-bool API. Burn root contains the already sealed five-byte reward call at544D36; overlap is intentional. Fifteen/twelve trailing NOPs excluded. No transitive world/audio/network/campaign equivalence claim."
+    },
+    {
+      "name": "original_complete_monster_released_soul_544e60",
+      "address": "0x00544E60",
+      "size": 84,
+      "sha256": "3a9764b2ec124b2f6840234a02376b45cd63eef812ad10432b9073b1a23d019e",
+      "purpose": "Complete unmodified BurnDelete113 and ReleasedSoul84 instruction bytes execute467contexts/profile,731calls/profile,1462calls across startupPC53/chop and nearest with no profile differences. Ordered services/live owner-update Player reload, unsigned class/subclass masks, original lazy DWORD type-index cache, repeat calls, allocation failure/aliases and raw position/direction words checked. Shield, minimap, reward, scorch, delete, lookup, indexed allocation and world creation are declared services. Public void rawEAX retained outside handled-bool API. Burn root contains the already sealed five-byte reward call at544D36; overlap is intentional. Fifteen/twelve trailing NOPs excluded. No transitive world/audio/network/campaign equivalence claim."
     }
   ],
   "data": [
@@ -27615,6 +27629,13 @@
       "size": 4,
       "sha256": "0835a5c87ba00a93f8d84fb3bdf20866024a13fc710fc1225e3d67073543bba0",
       "purpose": "Complete original facing/cancel roots and point/dot helpers:1352contexts/profile,2704runs under startupPC53/chop and nearest. All602instructionbytes execute;6observable and297internal-helper profile differences. One PopAction50A160 body declared. RawEAX/internal vector scratch retained;1348 numerical/action contexts compare complete observable outputs,4non-numerical cancel-thunk return controls remain in reference and native forwarding is covered separately by actual C/dispatcher composition. Stock direction1/angle indices0-255, Direction2/SetAngle word wrapping, finite/nonfinite inputs. No full PopAction/End callback/campaign/general AI-idle equivalence claim."
+    },
+    {
+      "name": "original_monster_ReleasedSoul_name_544e60",
+      "address": "0x005CC460",
+      "size": 13,
+      "sha256": "6cf0d2fc44af20003da6d770b55cf61809a8959142a5cc94cc05b0a8458412a0",
+      "purpose": "NUL-terminated ReleasedSoul name read by the declared original type-index lookup. Cache DWORD at00834204 is in the PE .data virtual zero tail, not file-backed and deliberately not a manifest data hash. Original virtual cache init/read/write and repeat calls execute in the producer."
     }
   ],
   "allow_overlapping_ranges": true

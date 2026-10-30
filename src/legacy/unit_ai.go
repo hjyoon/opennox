@@ -409,18 +409,30 @@ func monsterDieDropSound54A390(item *server.Object) sound.ID {
 	return id
 }
 
+func monsterReleasedSoulRuntime544E60() server.MonsterReleasedSoulRuntime544E60 {
+	srv := GetServer()
+	s := srv.S()
+	return server.MonsterReleasedSoulRuntime544E60{
+		TypeIndex: memmap.PtrUint32(0x5D4594, 2489456),
+		TypeIndexByID: func(id string) uint32 {
+			return uint32(s.Types.IndByID(id))
+		},
+		NewObjectByTypeIndex: func(index uint32) *server.Object {
+			return s.NewObjectByTypeInd(int(int32(index)))
+		},
+		CreateObjectAt: func(obj, owner *server.Object, position types.Pointf) {
+			srv.CreateObjectAt(obj, owner, position)
+		},
+	}
+}
+
 func monsterActionDeadRuntime544D80() server.MonsterActionDeadRuntime544D80 {
 	srv := GetServer()
 	s := srv.S()
 	return server.MonsterActionDeadRuntime544D80{
 		IsZombie: s.IsZombie,
 		CreateReleasedSoul: func(unit *server.Object) {
-			server.MonsterCreateReleasedSoul544E60(unit, server.MonsterReleasedSoulRuntime544E60{
-				NewObjectByTypeID: s.NewObjectByTypeID,
-				CreateObjectAt: func(obj, owner *server.Object, position types.Pointf) {
-					srv.CreateObjectAt(obj, owner, position)
-				},
-			})
+			server.MonsterCreateReleasedSoul544E60(unit, monsterReleasedSoulRuntime544E60())
 		},
 		CanDeadFunc: func(fnc unsafe.Pointer) bool {
 			_, ok := monsterDeadCallbackKind549D80(fnc)

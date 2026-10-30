@@ -101,23 +101,30 @@ func monsterFightPush531C10(hooks monsterActionFightHooks531EC0, action ai.Actio
 	return item
 }
 
-func monsterFightSchedulePursuit531C10(target *Object, hooks monsterActionFightHooks531EC0) {
+func monsterFightSchedulePursuit531C10(target *Object, hooks monsterActionFightHooks531EC0) uintptr {
 	monsterFightPush531C10(hooks, ai.DEPENDENCY_NO_NEW_ENEMY, target)
 	monsterFightPush531C10(hooks, ai.DEPENDENCY_ALIVE, target)
 	item := hooks.push(ai.ACTION_MOVE_TO)
 	if item != nil {
 		item.SetArgs(target.PosVec, target)
 	}
+	return uintptr(unsafe.Pointer(item))
 }
 
-func monsterFightScheduleMelee531C60(unit, target *Object, hooks monsterActionFightHooks531EC0) {
-	update := unit.UpdateDataMonster()
+func monsterFightScheduleMelee531C60(unit, target *Object, hooks monsterActionFightHooks531EC0) uintptr {
+	// The entry caches this record before PushAction can cancel an action.
+	// Admission belongs to PushAction; these original leaf reads are ungated.
+	update := (*MonsterUpdateData)(unit.UpdateData)
 	monsterFightPush531C10(hooks, ai.DEPENDENCY_NO_NEW_ENEMY, target)
 	monsterFightPush531C10(hooks, ai.DEPENDENCY_ALIVE, target)
-	if monsterFightCanShoot534280(unit, update) {
+	if monsterFightCanShoot534280(unit, (*MonsterUpdateData)(unit.UpdateData)) {
 		item := hooks.push(ai.DEPENDENCY_OBJECT_CLOSER_THAN)
 		if item != nil && update.MonsterDef != nil {
-			item.SetArgs(update.MonsterDef.MissileAttackRange212*0.60000002, uint32(0), target)
+			// FMUL of two binary32 operands is exact at precision 53. The
+			// subsequent FSTPS uses gameplay's round-toward-zero mode.
+			rangeValue := float32(monsterMoveToRunSpill544440(float64(update.MonsterDef.MissileAttackRange212) * float64(float32(0.60000002))))
+			item.SetArgs(rangeValue)
+			item.Args[2] = uintptr(unsafe.Pointer(target))
 		}
 	}
 	monsterFightPush531C10(hooks, ai.DEPENDENCY_CAN_SEE, target)
@@ -125,7 +132,8 @@ func monsterFightScheduleMelee531C60(unit, target *Object, hooks monsterActionFi
 	monsterFightPush531C10(hooks, ai.ACTION_FACE_OBJECT, target)
 	item := hooks.push(ai.DEPENDENCY_OBJECT_FARTHER_THAN)
 	if item != nil && update.MonsterDef != nil {
-		item.SetArgs(update.MonsterDef.MeleeAttackRange112, uint32(0), target)
+		item.SetArgs(update.MonsterDef.MeleeAttackRange112)
+		item.Args[2] = uintptr(unsafe.Pointer(target))
 	}
 	if unit.SubClass().Has(object.SubClass(object.MonsterNPC)) {
 		hooks.push(ai.DEPENDENCY_WAIT_FOR_STAMINA)
@@ -135,14 +143,15 @@ func monsterFightScheduleMelee531C60(unit, target *Object, hooks monsterActionFi
 	if item != nil {
 		item.SetArgs(target.PosVec, target)
 	}
+	return uintptr(unsafe.Pointer(item))
 }
 
 func monsterFightHoldPosition534710(unit *Object) bool {
 	return MonsterHoldPosition534710(unit)
 }
 
-func monsterFightScheduleMissile531D50(unit, target *Object, hooks monsterActionFightHooks531EC0) {
-	update := unit.UpdateDataMonster()
+func monsterFightScheduleMissile531D50(unit, target *Object, hooks monsterActionFightHooks531EC0) uintptr {
+	update := (*MonsterUpdateData)(unit.UpdateData)
 	monsterFightPush531C10(hooks, ai.DEPENDENCY_NO_NEW_ENEMY, target)
 	monsterFightPush531C10(hooks, ai.DEPENDENCY_CAN_SEE, target)
 	item := hooks.push(ai.ACTION_MISSILE_ATTACK)
@@ -151,41 +160,46 @@ func monsterFightScheduleMissile531D50(unit, target *Object, hooks monsterAction
 	}
 	monsterFightPush531C10(hooks, ai.ACTION_FACE_OBJECT, target)
 	if monsterFightHoldPosition534710(unit) {
-		return
+		return 1
 	}
 	monsterFightPush531C10(hooks, ai.DEPENDENCY_BLOCKED_LINE_OF_FIRE, target)
 	item = hooks.push(ai.DEPENDENCY_OBJECT_FARTHER_THAN)
 	if item != nil && update.MonsterDef != nil {
-		item.SetArgs(update.MonsterDef.MissileAttackRange212, uint32(0), target)
+		item.SetArgs(update.MonsterDef.MissileAttackRange212)
+		item.Args[2] = uintptr(unsafe.Pointer(target))
 	}
 	hooks.push(ai.DEPENDENCY_OR)
 	item = hooks.push(ai.ACTION_MOVE_TO)
 	if item != nil {
 		item.SetArgs(target.PosVec, target)
 	}
+	return uintptr(unsafe.Pointer(item))
 }
 
-func monsterFightSelectAttack531B40(unit, target *Object, hooks monsterActionFightHooks531EC0) {
-	update := unit.UpdateDataMonster()
+func monsterFightSelectAttack531B40(unit, target *Object, hooks monsterActionFightHooks531EC0) uintptr {
+	update := (*MonsterUpdateData)(unit.UpdateData)
 	if !unit.HasEnchant(ENCHANT_ANTI_MAGIC) && hooks.castRelated(unit, target) {
-		return
+		return 1
 	}
-	if monsterFightCanShoot534280(unit, update) {
-		if monsterFightCanMelee534220(unit, update) &&
-			hooks.distance(unit, target) < float64(update.MonsterDef.MissileAttackRange212*0.5) {
-			monsterFightScheduleMelee531C60(unit, target, hooks)
-			return
+	// Predicates reload the live record after the spell callback, whereas
+	// the range comparison still uses the entry's cached definition.
+	live := (*MonsterUpdateData)(unit.UpdateData)
+	if monsterFightCanShoot534280(unit, live) {
+		if monsterFightCanMelee534220(unit, live) &&
+			!(hooks.distance(unit, target) >= float64(update.MonsterDef.MissileAttackRange212)*0.5) {
+			// Original FCOM tests C0, including unordered. The half range
+			// remains in the x87 register without a binary32 spill.
+			return monsterFightScheduleMelee531C60(unit, target, hooks)
 		}
-		monsterFightScheduleMissile531D50(unit, target, hooks)
-		return
+		return monsterFightScheduleMissile531D50(unit, target, hooks)
 	}
-	if monsterFightCanMelee534220(unit, update) {
-		monsterFightScheduleMelee531C60(unit, target, hooks)
-		return
+	if monsterFightCanMelee534220(unit, live) {
+		return monsterFightScheduleMelee531C60(unit, target, hooks)
 	}
-	if !update.StatusFlags.Has(object.MonStatusCanCastSpells) {
-		monsterFightSchedulePursuit531C10(target, hooks)
+	if !live.StatusFlags.Has(object.MonStatusCanCastSpells) {
+		return monsterFightSchedulePursuit531C10(target, hooks)
 	}
+	return 1
 }
 
 func monsterFightKillable528190(target *Object) bool {

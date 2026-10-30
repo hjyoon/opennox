@@ -74,172 +74,24 @@ int nox_xxx_waypoint_579F00(float2* a1, nox_object_t* a2);
 int nox_xxx_spellTurnUndeadUpdate_531410() { return 0; }
 
 //----- (00531B40) --------------------------------------------------------
-int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(int a1, int a2) {
-	int v2;         // ebx
-	int* result;    // eax
-	int v4;         // eax
-	long double v5; // st7
-	int v6;         // [esp-8h] [ebp-14h]
-	int v7;         // [esp-4h] [ebp-10h]
-
-	v2 = *(uint32_t*)(a1 + 748);
-	if (nox_xxx_testUnitBuffs_4FF350(a1, 29) || (result = (int*)nox_xxx_mobCastRelated2_540D90(a1, a2)) == 0) {
-		if (nox_xxx_monsterCanShoot_534280(a1)) {
-			v4 = nox_xxx_monsterCanMelee_534220(a1);
-			v7 = a2;
-			v6 = a1;
-			if (v4 && (v5 = nox_xxx_calcDistance_4E6C00((nox_object_t*)(uintptr_t)a1,
-												 (nox_object_t*)(uintptr_t)a2), v7 = a2, v6 = a1,
-					   v5 < *(float*)(*(uint32_t*)(v2 + 484) + 212) * 0.5)) {
-				result = nox_xxx_monsterAction_531C60(a1, a2);
-			} else {
-				result = sub_531D50(v6, v7);
-			}
-		} else if (nox_xxx_monsterCanMelee_534220(a1)) {
-			result = nox_xxx_monsterAction_531C60(a1, a2);
-		} else {
-			result = (int*)nox_xxx_monsterCanCast_534300(a1);
-			if (!result) {
-				result = sub_531C10(a1, a2);
-			}
-		}
-	}
-	return result;
+extern uintptr_t nox_monster_fight_scheduler_native_531B40(nox_object_t*, nox_object_t*, unsigned int);
+int* nox_xxx_TODOsomeCallingMeleeAttack_531B40(nox_object_t* unit, nox_object_t* target) {
+	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531B40);
 }
 
 //----- (00531C10) --------------------------------------------------------
-int* sub_531C10(int a1, int a2) {
-	int* v2;     // eax
-	int* v3;     // eax
-	int* result; // eax
-
-	v2 = nox_xxx_monsterPushAction_50A260(a1, 60);
-	if (v2) {
-		v2[1] = a2;
-	}
-	v3 = nox_xxx_monsterPushAction_50A260(a1, 42);
-	if (v3) {
-		v3[1] = a2;
-	}
-	result = nox_xxx_monsterPushAction_50A260(a1, 7);
-	if (result) {
-		result[1] = *(uint32_t*)(a2 + 56);
-		result[2] = *(uint32_t*)(a2 + 60);
-		result[3] = a2;
-	}
-	return result;
+int* sub_531C10(nox_object_t* unit, nox_object_t* target) {
+	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531C10);
 }
 
 //----- (00531C60) --------------------------------------------------------
-int* nox_xxx_monsterAction_531C60(int a1, int a2) {
-	int v2;      // ebx
-	int* v3;     // eax
-	int* v4;     // eax
-	int* v5;     // eax
-	double v6;   // st7
-	int* v7;     // eax
-	int* v8;     // eax
-	int* v9;     // eax
-	int v10;     // ecx
-	int* result; // eax
-
-	v2 = *(uint32_t*)(a1 + 748);
-	v3 = nox_xxx_monsterPushAction_50A260(a1, 60);
-	if (v3) {
-		v3[1] = a2;
-	}
-	v4 = nox_xxx_monsterPushAction_50A260(a1, 42);
-	if (v4) {
-		v4[1] = a2;
-	}
-	if (nox_xxx_monsterCanShoot_534280(a1)) {
-		v5 = nox_xxx_monsterPushAction_50A260(a1, 50);
-		if (v5) {
-			v6 = *(float*)(*(uint32_t*)(v2 + 484) + 212) * 0.60000002;
-			v5[3] = a2;
-			*((float*)v5 + 1) = v6;
-		}
-	}
-	v7 = nox_xxx_monsterPushAction_50A260(a1, 45);
-	if (v7) {
-		v7[1] = a2;
-	}
-	nox_xxx_monsterPushAction_50A260(a1, 16);
-	v8 = nox_xxx_monsterPushAction_50A260(a1, 26);
-	if (v8) {
-		v8[1] = a2;
-	}
-	v9 = nox_xxx_monsterPushAction_50A260(a1, 49);
-	if (v9) {
-		v10 = *(uint32_t*)(*(uint32_t*)(v2 + 484) + 112);
-		v9[3] = a2;
-		v9[1] = v10;
-	}
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		nox_xxx_monsterPushAction_50A260(a1, 65);
-		nox_xxx_monsterPushAction_50A260(a1, 40);
-	}
-	result = nox_xxx_monsterPushAction_50A260(a1, 7);
-	if (result) {
-		result[1] = *(uint32_t*)(a2 + 56);
-		result[2] = *(uint32_t*)(a2 + 60);
-		result[3] = a2;
-	}
-	return result;
+int* nox_xxx_monsterAction_531C60(nox_object_t* unit, nox_object_t* target) {
+	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531C60);
 }
 
 //----- (00531D50) --------------------------------------------------------
-int* sub_531D50(int a1, int a2) {
-	int v2;      // ebx
-	int* v3;     // eax
-	int* v4;     // eax
-	int* v5;     // eax
-	int* v6;     // eax
-	int* result; // eax
-	int* v8;     // eax
-	int* v9;     // eax
-	int v10;     // edx
-
-	v2 = *(uint32_t*)(a1 + 748);
-	v3 = nox_xxx_monsterPushAction_50A260(a1, 60);
-	if (v3) {
-		v3[1] = a2;
-	}
-	v4 = nox_xxx_monsterPushAction_50A260(a1, 45);
-	if (v4) {
-		v4[1] = a2;
-	}
-	v5 = nox_xxx_monsterPushAction_50A260(a1, 17);
-	if (v5) {
-		v5[1] = *(uint32_t*)(a2 + 56);
-		v5[2] = *(uint32_t*)(a2 + 60);
-		v5[3] = a2;
-	}
-	v6 = nox_xxx_monsterPushAction_50A260(a1, 26);
-	if (v6) {
-		v6[1] = a2;
-	}
-	result = (int*)sub_534710(a1);
-	if (!result) {
-		v8 = nox_xxx_monsterPushAction_50A260(a1, 47);
-		if (v8) {
-			v8[1] = a2;
-		}
-		v9 = nox_xxx_monsterPushAction_50A260(a1, 49);
-		if (v9) {
-			v10 = *(uint32_t*)(*(uint32_t*)(v2 + 484) + 212);
-			v9[3] = a2;
-			v9[1] = v10;
-		}
-		nox_xxx_monsterPushAction_50A260(a1, 40);
-		result = nox_xxx_monsterPushAction_50A260(a1, 7);
-		if (result) {
-			result[1] = *(uint32_t*)(a2 + 56);
-			result[2] = *(uint32_t*)(a2 + 60);
-			result[3] = a2;
-		}
-	}
-	return result;
+int* sub_531D50(nox_object_t* unit, nox_object_t* target) {
+	return (int*)(uintptr_t)nox_monster_fight_scheduler_native_531B40(unit, target, 0x531D50);
 }
 
 //----- (00531E20) --------------------------------------------------------
@@ -267,7 +119,8 @@ char nox_xxx_mobActionFight_531EC0(int a1) {
 			if (nox_xxx_testUnitBuffs_4FF350(a1, 29) ||
 				(v3 = (int*)nox_xxx_monsterBuffSelf_540B90(a1)) == 0 &&
 					(v3 = (int*)nox_xxx_monsterCastOffensive_540F20(a1, *(uint32_t*)(v1 + 1196))) == 0) {
-				LOBYTE(v3) = (unsigned int)nox_xxx_TODOsomeCallingMeleeAttack_531B40(a1, *(uint32_t*)(v1 + 1196));
+				LOBYTE(v3) = (uintptr_t)nox_xxx_TODOsomeCallingMeleeAttack_531B40(
+					(nox_object_t*)(uintptr_t)a1, (nox_object_t*)(uintptr_t)*(uint32_t*)(v1 + 1196));
 			}
 			return (char)v3;
 		}

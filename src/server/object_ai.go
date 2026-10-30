@@ -80,6 +80,10 @@ func (obj *Object) MonsterPushAction(act ai.ActionType, args ...any) *AIStackIte
 }
 
 func (obj *Object) MonsterPushActionImpl(act ai.ActionType, file string, line int) *AIStackItem {
+	return obj.monsterPushActionWithCancel50A260(act, file, line, nil)
+}
+
+func (obj *Object) monsterPushActionWithCancel50A260(act ai.ActionType, file string, line int, cancelAction func(ai.ActionType) func(*Object)) *AIStackItem {
 	if !obj.Class().Has(object.ClassMonster) {
 		return nil
 	}
@@ -97,7 +101,11 @@ func (obj *Object) MonsterPushActionImpl(act ai.ActionType, file string, line in
 		if curAct := cur.Type(); curAct == ai.ACTION_IDLE && ud.AIStackInd == 0 {
 			ud.AIStackInd = -1
 		} else if !curAct.IsCondition() && cur.Field5 != 0 {
-			if a := GetAIAction(curAct); a != nil {
+			if cancelAction != nil {
+				if cancel := cancelAction(curAct); cancel != nil {
+					cancel(obj)
+				}
+			} else if a := GetAIAction(curAct); a != nil {
 				a.Cancel(obj)
 			}
 		}

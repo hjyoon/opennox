@@ -1,0 +1,138 @@
+{
+  "status": "passed",
+  "contexts": 4138,
+  "control_word": "0xe3f",
+  "development_prefix": false,
+  "code_intervals": [
+    {
+      "address": "0x531b40",
+      "size": 208,
+      "sha256": "161f3de18ac18f2134b75c0a960a069a1665936797be8101aa0deaeab350a1b7"
+    },
+    {
+      "address": "0x531c10",
+      "size": 80,
+      "sha256": "af3ac06f1d005727b1d2d03050160c7e89ad02141ab9dd498a27a65849e48f29"
+    },
+    {
+      "address": "0x531c60",
+      "size": 240,
+      "sha256": "6b875d2e4459870c48ee8ca632bb0a7eb9de8b7669b0249e638a1391358c3b7d"
+    },
+    {
+      "address": "0x531d50",
+      "size": 208,
+      "sha256": "c17494292f3a26c9d8bfe3604cd88cbc256ae9238bc57a57a6870ee523d1fbeb"
+    },
+    {
+      "address": "0x4e6c00",
+      "size": 212,
+      "sha256": "c8be0e36e84bb4acb755b84dd4fbe7cef13e8125956c96879da38e129d81d152"
+    },
+    {
+      "address": "0x4ff350",
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414"
+    },
+    {
+      "address": "0x534220",
+      "size": 83,
+      "sha256": "684a91db522e1e427da51c81a7abbca67c9cb6fa3ea8df64b8a9c3737931d790"
+    },
+    {
+      "address": "0x534280",
+      "size": 58,
+      "sha256": "91ae9633335ad97874d2f12b7107c691b574499b642a3988c131baf90912ee34"
+    },
+    {
+      "address": "0x534300",
+      "size": 23,
+      "sha256": "3b3ab2a38d2ea6d223cf1480cc9788867abee383d55ea0178d815e05e566819c"
+    },
+    {
+      "address": "0x534710",
+      "size": 52,
+      "sha256": "e8174abd235ecdceca5eff292f5f2da53efcb5d61940f4e40f3388b11c56cb77"
+    },
+    {
+      "address": "0x50a260",
+      "size": 251,
+      "sha256": "57094128eed5b5381ff87acf1036254f807a481fd2f3448cf95d57a7fea1ed05"
+    },
+    {
+      "address": "0x50a010",
+      "size": 13,
+      "sha256": "5e7895861e04953e8f21298113487664397c08d71433c99115c45d625a4b58cd"
+    },
+    {
+      "address": "0x50a110",
+      "size": 76,
+      "sha256": "e934deff9da1ef3f864c9b0d1311caf34bbca6fa55fce6b967d8b2717741ebc2"
+    },
+    {
+      "address": "0x4e39d0",
+      "size": 23,
+      "sha256": "b6f634a3af4f165da9d371d08c1bce748b6827e04a438c664f24f44c1c60b336"
+    }
+  ],
+  "loaded_original_bytes": 1562,
+  "executed_unique_instruction_bytes": 1543,
+  "instruction_addresses_not_executed": [
+    "0x4ff358",
+    "0x531c02",
+    "0x531c03",
+    "0x531c04",
+    "0x531c05",
+    "0x531c06",
+    "0x531c07",
+    "0x531c08",
+    "0x531c09",
+    "0x531c0a",
+    "0x531c0b",
+    "0x531c0c",
+    "0x531c0d",
+    "0x531c0e",
+    "0x531c0f",
+    "0x531c5f",
+    "0x531d4e",
+    "0x531d4f",
+    "0x531e1f"
+  ],
+  "original_entry_calls": {
+    "0x531b40": 1134,
+    "0x4ff350": 1134,
+    "0x534280": 2417,
+    "0x534220": 1113,
+    "0x534300": 1129,
+    "0x4e6c00": 961,
+    "0x531d50": 1955,
+    "0x50a260": 27718,
+    "0x50a110": 13309,
+    "0x4e39d0": 13309,
+    "0x50a010": 12102,
+    "0x534710": 1955,
+    "0x531c10": 952,
+    "0x531c60": 1206
+  },
+  "per_root": {
+    "0x531b40": 1134,
+    "0x531c10": 940,
+    "0x531c60": 1032,
+    "0x531d50": 1032
+  },
+  "declared_services": {
+    "23000500": "declared cancel callback, presence in initialized original action-table input; original push dispatch/cached state/reset still execute",
+    "540D90": "related spell selection returns declared canonical bool; optional declared live UpdateData/old-range mutation",
+    "5341A0": "diagnostic print sink; no gameplay writes"
+  },
+  "push_reset_buff_distance_predicate_name_getter_originals_execute": true,
+  "no_FP_predicate_push_success_or_stack_change_result_substitution": true,
+  "heap_stack_code_nonvolatile_and_FPU_guards_passed": true,
+  "fixture_sha256": "f71aaff515e525c97765bf6c93dbd3d3fcb57475dbcabffd41aab39d38ad93b7",
+  "raw_fixture_sha256": "2b9c430957744c8e70b5df14daff0971d55cd72eaca15797fcf717883bef60b5",
+  "raw_fixture_bytes": 39954732,
+  "original_unchanged": true,
+  "base_contexts": 3510,
+  "cancel_callbacks": 215,
+  "overall_porting_100_percent": false
+}

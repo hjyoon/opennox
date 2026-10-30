@@ -56,12 +56,7 @@ func defaultDamageFriendlyException4E1470(weapon *Object) bool {
 // The original permits idle/wait/guard, face actions and an existing weapon
 // block; attacking, casting and shield-block actions do not qualify.
 func playerDamageMonsterBlockReady534340(target *Object) bool {
-	switch target.MonsterActionGet50A020() {
-	case ai.ACTION_IDLE, ai.ACTION_WAIT, ai.ACTION_GUARD, ai.ACTION_WEAPON_BLOCK,
-		ai.ACTION_FACE_LOCATION, ai.ACTION_FACE_OBJECT, ai.ACTION_FACE_ANGLE:
-		return true
-	}
-	return false
+	return MonsterHasInterruptibleAction534340(target)
 }
 
 type playerDamageMeleeBlock4E17B0 struct {

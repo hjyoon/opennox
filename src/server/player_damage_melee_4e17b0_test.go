@@ -369,6 +369,8 @@ func TestPlayerDamageMonsterBlockReady534340(t *testing.T) {
 		}
 	}
 	ud.AIStackInd = -1
+	// The original reads Field132 for head -1; supply an invalid action.
+	ud.Field132 = ^uint32(0)
 	if playerDamageMonsterBlockReady534340(target) {
 		t.Fatal("invalid AI stack can block")
 	}

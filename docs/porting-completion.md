@@ -55,6 +55,65 @@ completion requirements.
 
 ## Current findings
 
+### Native monster state predicates
+
+Source `5398603` ports six public monster-state entries for hold position,
+status bit 9, injury, poison, recent movement and Mimic identification.
+Before the change, all six actual C entries crash with valid C-owned
+records above 4 GiB. The existing Go hold helper also differs from the
+original in three empty-stack cases. Both final local profiles match
+**16,440 actual C contexts/16,740 calls** and 2,075 Go hold cases. The
+Mimic checks include 2,200 controls through the real native name-to-ID bridge.
+
+The complete original roots and actual 28-byte name-ID callee execute
+**244 instruction bytes**, with 16,440 contexts in each of two FPU
+profiles. Results agree between profiles. The sole declared service
+boundary returns PE32 dictionary records or nil; the original callee loads
+and zero-extends the type WORD itself. No predicate return, time or cache
+result is substituted. The base 6,831 inputs and outputs remain unchanged;
+9,609 class-only shadow inputs are frozen before the raw-data correction.
+The first native implementation panics on the typed monster getter's
+class invariant. The corrected leaf helpers read the original raw update
+data; the global typed getter remains unchanged. Both first targeted and
+strict failures are retained.
+
+Normal checks pass **344,313/43 skips**; highres, cgocheck2, checkptr2 and
+real OpenAL/null checks pass **76,959/eight skips**. All 4,028 earlier
+inputs remain byte-identical. Five retired C bodies remove 34 lines/858
+bytes; the retained Mimic C body changes only its typed pointer formal and
+native type WORD field. All other C bytes remain unchanged. The oracle
+verifies **3,301 code/688 data ranges**, retaining prior records. These
+counts do not measure overall completion.
+
+The clean Go 1.26.9 ARM64 product has SHA-256
+`be9446dcaececd874cb5cbdcdd710fbb43b9710e3dc9fcacb6809dd243dbbb38`.
+Help, six Blink modes, sixteen natural first-attack modes, shared
+Lightning/EnergyBolt/DrainMana and original Bookcase6 progression pass.
+A fresh process uses the actual menu to load and manually save the passing
+lineage at **HP20/MP73/poison0**. Its expected mana is frozen before the
+first reload; the prior MP43 lineage remains separate. Both final images
+are actually viewed. Their visibility extent differs, retaining the
+broader visibility/replay finding without a pixel-golden claim. Failed
+Saves are not continued.
+
+Native Windows amd64/386 run **41124382515** passes build, help and all
+three root/server/legacy packages. Linux amd64 run **41124438337** passes
+**341,475/seven skips across 58 packages**, including all 16,440 new C
+contexts and 2,075 Go hold cases. Its default-link damage gate passes
+**133,041**. All three jobs are terminal. Published ZIP digests, PE/ELF
+architectures, clean source revision and exact raw logs are verified; the
+raw JSON streams remain intact in their digest-verified ZIP. The five
+requested poison-macro warnings remain absent.
+
+ROOT/monster-state-predicates-native-entry-port retains
+`local-state-predicates-qualified-v2.json`,
+`native-ci-v1/all-native-state-qualified-v1.json` and
+`all-gates-and-preservation-qualified-v1.json`. All 4,649 personal files,
+31 ARM64 products, 23 native products and earlier failures remain intact.
+Eight compiled calls in six retained PE32 parent functions remain outside
+this leaf batch. Other callbacks and the final nine class/chapter audits
+remain open. **Overall porting is not 100%; chapter 4+ is excluded.**
+
 ### Native monster combat predicates
 
 Source `def75e0` replaces thirteen PE32 combat-predicate C bodies with native

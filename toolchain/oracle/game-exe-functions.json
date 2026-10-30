@@ -23007,6 +23007,62 @@
       "size": 88,
       "sha256": "dc247287f5fcfc410fdd5036252bc8427dad16399662d3c1258d62bacc6a9180",
       "purpose": "Unchanged arrival selector and removal call up to the common synchronization merge. Frozen original results distinguish wood, metal gate, wooden gate, heavy wooden door and stone door sounds across class distractions, subtype precedence, material and phase. Register/stack/FPCW/TOP/heap canaries stay intact; original code is unmodified."
+    },
+    {
+      "name": "original_combat_predicate_flying_subclass_bit_534020",
+      "address": "0x00534020",
+      "size": 14,
+      "sha256": "5e9af8b22fec2c804dfe8f2876c4bcd71744c61d825ddf5083c22d08b365dea6",
+      "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
+    },
+    {
+      "name": "original_combat_predicate_melee_eligibility_534220",
+      "address": "0x00534220",
+      "size": 83,
+      "sha256": "684a91db522e1e427da51c81a7abbca67c9cb6fa3ea8df64b8a9c3737931d790",
+      "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
+    },
+    {
+      "name": "original_combat_predicate_ranged_eligibility_534280",
+      "address": "0x00534280",
+      "size": 58,
+      "sha256": "91ae9633335ad97874d2f12b7107c691b574499b642a3988c131baf90912ee34",
+      "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
+    },
+    {
+      "name": "original_combat_predicate_shield_eligibility_5342C0",
+      "address": "0x005342C0",
+      "size": 49,
+      "sha256": "e8f94a1fdf0f1b8c52514b0a1db32ea26f576e3a30ad9e43b9cbbf6ab56dabea",
+      "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
+    },
+    {
+      "name": "original_combat_predicate_caster_status_534300",
+      "address": "0x00534300",
+      "size": 23,
+      "sha256": "3b3ab2a38d2ea6d223cf1480cc9788867abee383d55ea0178d815e05e566819c",
+      "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
+    },
+    {
+      "name": "original_combat_predicate_movement_speed_534320",
+      "address": "0x00534320",
+      "size": 32,
+      "sha256": "491cefa17724297619fb564c75286a0e87a6589965e725f231ac56f749c92391",
+      "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
+    },
+    {
+      "name": "original_combat_predicate_low_aggression_534400",
+      "address": "0x00534400",
+      "size": 57,
+      "sha256": "d7410f055711371d61deea725456c1b33f1242d2a324bcbe972c6da245e4aa2a",
+      "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
+    },
+    {
+      "name": "original_combat_predicate_melee_range_as_double_534470",
+      "address": "0x00534470",
+      "size": 20,
+      "sha256": "d300cac309459429773283935c5ec28f306e649f02fd63fc6931be92706e87a3",
+      "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
     }
   ],
   "data": [
@@ -27811,6 +27867,13 @@
       "size": 4,
       "sha256": "c0e336a5f371ef22cd534e094269f2c1a9635cd080b71ffa671086832d3b60b7",
       "purpose": "Exact binary32 operand used by the fully executed original Guard/aggression helper reference. Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_combat_predicate_operand_583A9C",
+      "address": "0x00583A9C",
+      "size": 4,
+      "sha256": "0d66bd808e9247acb560fe33efaa62ad6f11ee6f85cc4f61bd17673263de04ee",
+      "purpose": "Exact binary32 speed threshold for fully executed original movement predicate534320; retained in both FPU-profile pure-predicate reference, including unordered inputs. Original source bytes are unchanged."
     }
   ],
   "allow_overlapping_ranges": true

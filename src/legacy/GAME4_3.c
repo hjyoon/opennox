@@ -995,17 +995,13 @@ void sub_533EB0(nox_object_t* missile, void* unit_ptr) {
 }
 
 //----- (00534020) --------------------------------------------------------
-int sub_534020(int a1) { return (*(uint32_t*)(a1 + 12) >> 10) & 1; }
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534030) --------------------------------------------------------
 // Native-width implementation: server/monster_move_audio_534030.go.
 
 //----- (00534120) --------------------------------------------------------
-int sub_534120(int a1, float2* a2) {
-	return *getMemFloatPtr(0x587000, 194140 + 8 * *(short*)(a1 + 124)) * a2->field_4 +
-			   *getMemFloatPtr(0x587000, 194136 + 8 * *(short*)(a1 + 124)) * a2->field_0 >
-		   0.89999998;
-}
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (005341A0) --------------------------------------------------------
 void nox_ai_debug_print(char* str);
@@ -1026,91 +1022,37 @@ int sub_5341D0(int a1) {
 }
 
 //----- (00534220) --------------------------------------------------------
-int nox_xxx_monsterCanMelee_534220(int a1) {
-	int v1;     // edi
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (nox_xxx_monsterCanCast_534300(a1)) {
-		return 0;
-	}
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		return !nox_xxx_monsterCanShoot_534280(a1);
-	}
-	if (*(float*)(*(uint32_t*)(v1 + 484) + 112) <= 0.0) {
-		return 0;
-	} else {
-		return 1;
-	}
-}
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534280) --------------------------------------------------------
-int nox_xxx_monsterCanShoot_534280(int a1) {
-	int v1;     // ecx
-	int result; // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		result = (*(uint32_t*)(v1 + 2056) & 0x47F00FE) != 0;
-	} else {
-		result = *(uint8_t*)(*(uint32_t*)(v1 + 484) + 148) != 0;
-	}
-	return result;
-}
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (005342C0) --------------------------------------------------------
-int nox_xxx_monsterHasShield_5342C0(int a1) {
-	int v1;     // ecx
-	int result; // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		result = (*(uint32_t*)(v1 + 2060) & 0x3000000) != 0;
-	} else {
-		result = (*(uint32_t*)(v1 + 1440) >> 2) & 1;
-	}
-	return result;
-}
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534300) --------------------------------------------------------
-int nox_xxx_monsterCanCast_534300(nox_object_t* a1) { return (*(uint32_t*)(*(uint32_t*)((int)a1 + 748) + 1440) >> 5) & 1; }
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534320) --------------------------------------------------------
-int nox_xxx_monsterIsMoveing_534320(int a1) { return *(float*)(a1 + 548) >= 0.0099999998; }
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534340) --------------------------------------------------------
-int sub_534340(int a1) {
-	int v1; // eax
-
-	v1 = *(uint32_t*)(*(uint32_t*)(a1 + 748) + 24 * (*(char*)(*(uint32_t*)(a1 + 748) + 544) + 23));
-	return !v1 || v1 == 1 || v1 == 4 || v1 == 25 || v1 == 26 || v1 == 27 || v1 == 23;
-}
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534390) --------------------------------------------------------
-int nox_xxx_monsterCanAttackAtWill_534390(nox_object_t* a1) {
-	return *(float*)(*(uint32_t*)((int)a1 + 748) + 1304) > 0.66000003;
-}
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (005343C0) --------------------------------------------------------
-int sub_5343C0(int a1) {
-	int v1; // ecx
-
-	v1 = *(uint32_t*)(a1 + 748);
-	return *(float*)(v1 + 1304) < 0.66000003 && *(float*)(v1 + 1304) > 0.33000001;
-}
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534400) --------------------------------------------------------
-int sub_534400(int a1) {
-	int v1; // ecx
-
-	v1 = *(uint32_t*)(a1 + 748);
-	return *(float*)(v1 + 1304) < 0.33000001 && *(float*)(v1 + 1304) > 0.079999998;
-}
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534440) --------------------------------------------------------
-int sub_534440(int a1) { return *(float*)(*(uint32_t*)(a1 + 748) + 1304) < 0.079999998; }
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (00534470) --------------------------------------------------------
-double sub_534470(int a1) { return *(float*)(*(uint32_t*)(*(uint32_t*)(a1 + 748) + 484) + 112); }
+// Native-width implementation: server/monster_combat_predicates_534020.go.
 
 //----- (005345B0) --------------------------------------------------------
 char* sub_5345B0(int a1) {

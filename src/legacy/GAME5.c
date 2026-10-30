@@ -170,10 +170,7 @@ int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1) {
 }
 
 //----- (005456B0) --------------------------------------------------------
-int sub_5456B0(int a1) { return sub_534750(a1); }
-
-//----- (005456C0) --------------------------------------------------------
-int sub_5456C0(int a1) { return sub_534780(a1); }
+// 5456B0/5456C0 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (005456D0) --------------------------------------------------------
 void sub_5456D0(int a1) {
@@ -552,10 +549,7 @@ int sub_545DA0(int a1) {
 // Oracle provenance only: ACTION_ESCORT start/end name resolution and update
 // are implemented with native-width pointers in
 // server/monster_action_escort_546430.go.
-int sub_546410(int a1) { return sub_534780(a1); }
-
-//----- (00546420) --------------------------------------------------------
-int sub_546420(int a1) { return sub_534780(a1); }
+// 546410/546420 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (00546430) --------------------------------------------------------
 char nox_xxx_mobActionEscort_546430(int* a1) {

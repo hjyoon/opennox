@@ -22944,6 +22944,55 @@
       "size": 31,
       "sha256": "b02c0d48bfadb52b060e919976066bd5fff57f51a4c215e56e6057e0162c763e",
       "purpose": "Complete unchanged MoveAudio534030 and animation4F9F90/sound424300 getters execute292 instruction bytes in5876 primary contexts per startup0xe3f and nearest0x23f profile,11752 total; all results identical across profiles. Only AudioEvent501960 is declared. Inputs, ordered audio arguments/state, raw EAX/AL and caller argument word retained, register/stack/FPCW/TOP/whole heap canaries intact. Ancillary nil getter1 and malformed DIV diagnostics3/profile are separate from primary native comparator. Executed original seven return tails35 and complete16byte AI EAX overwrite70 establish void consumer, not whole movement/MainAI. Separate10/1/1NOP tails excluded; shared sound getter seal reused; frame and animation table values are runtime inputs."
+    },
+    {
+      "name": "original_fight_run_state_run_start_534750",
+      "address": "0x00534750",
+      "size": 33,
+      "sha256": "1a4df8b9b0d515d360e6e5cf295b573922525147834808220f95592c22f73c8b",
+      "purpose": "Complete unchanged run-start body; live update DWORD status and NeverRun policy. Thirteen fight/run entries plus actual sound/frame-copy helpers execute347 instruction bytes in5618 contexts/profile,11236 total, identical startup0xe3f/nearest0x23f results. Audio/script/sight declared services; script has three original stack arguments, extra Go event13 checked separately. Raw EAX/AL, ordered effects/write history and register/stack/FPCW/TOP/heap canaries retained. NOP tails excluded."
+    },
+    {
+      "name": "original_fight_run_state_run_end_534780",
+      "address": "0x00534780",
+      "size": 31,
+      "sha256": "7007d48bc1748b2124e128b3fbf634cde15373eed9f665ec87f75ce9be233750",
+      "purpose": "Complete unchanged run-end body; AlwaysRun preserves Running, other status bits and raw DWORD return. Executed in the sealed thirteen-entry fight/run original comparison."
+    },
+    {
+      "name": "original_fight_run_state_flee_start_544740",
+      "address": "0x00544740",
+      "size": 12,
+      "sha256": "d6f2e25d8a43e688771096fc0ee7c42da9b0a2e95b2f10b26951e4b0ed305406",
+      "purpose": "Complete unchanged FLEE start wrapper, original unit argument and DWORD status return; actual shared run-start helper executes in all comparison rows."
+    },
+    {
+      "name": "original_fight_run_state_flee_end_544750",
+      "address": "0x00544750",
+      "size": 12,
+      "sha256": "dea7aaf1f59d05989b435b833fe6cc4c03d836ad7b1296c75e187763a75bb664",
+      "purpose": "Complete unchanged FLEE end wrapper, original unit argument and DWORD status return; actual shared run-end helper executes in all comparison rows."
+    },
+    {
+      "name": "original_fight_run_state_retreat_master_start_5456B0",
+      "address": "0x005456B0",
+      "size": 12,
+      "sha256": "17e03f0bbf010122b1a7eeb43d6cdbb1d943c2c04696dd7de8811a916a8dd617",
+      "purpose": "Complete unchanged RETREAT_TO_MASTER start wrapper; actual shared run-start helper and raw DWORD status execute in the sealed fight/run comparison."
+    },
+    {
+      "name": "original_fight_run_state_retreat_master_end_5456C0",
+      "address": "0x005456C0",
+      "size": 12,
+      "sha256": "6df70e7ea4502919ceee7459826afa95563d41fcd60d6a0fdd8df38a0a74a923",
+      "purpose": "Complete unchanged RETREAT_TO_MASTER end wrapper; actual shared run-end helper and raw DWORD status execute in the sealed fight/run comparison."
+    },
+    {
+      "name": "original_fight_run_state_frame_copy_5281E0",
+      "address": "0x005281E0",
+      "size": 11,
+      "sha256": "b7c9557d522776898bffa76be3eeb71673a424d5bc47507ad3463e47118f4fcb",
+      "purpose": "Complete unchanged frame-copy body executes its actual global read/write during FightStart; read-only entry observation records ordering. No patched instructions or substituted frame-copy service."
     }
   ],
   "data": [

@@ -19,12 +19,14 @@ type MonsterActionFightStartRuntime531E20 struct {
 	UpdateSight      func(*Object)
 }
 
-func monsterActionFightStart531E20(unit *Object, runtime MonsterActionFightStartRuntime531E20) {
-	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) {
-		return
+func monsterActionFightStart531E20(unit *Object, runtime MonsterActionFightStartRuntime531E20) uint32 {
+	if unit == nil || unit.UpdateData == nil {
+		return 0
 	}
-	update := unit.UpdateDataMonster()
-	if runtime.AudioEvent != nil && update.SoundSet122 != nil {
+	// The entry caches its update before the class-gated sound getter. The
+	// remaining script/status work has no monster-class guard in GAME.EXE.
+	update := (*MonsterUpdateData)(unit.UpdateData)
+	if runtime.AudioEvent != nil && unit.ObjClass.Has(object.ClassMonster) && update.SoundSet122 != nil {
 		runtime.AudioEvent(*(*uint32)(unsafe.Add(update.SoundSet122, 5*4)), unit)
 	}
 	if runtime.ScriptCallback != nil {
@@ -37,31 +39,29 @@ func monsterActionFightStart531E20(unit *Object, runtime MonsterActionFightStart
 	if runtime.UpdateSight != nil {
 		runtime.UpdateSight(unit)
 	}
-	if !update.StatusFlags.Has(object.MonStatusNeverRun) {
-		update.StatusFlags |= object.MonStatusRunning
-	}
+	// Audio, script and sight can replace UpdateData. The original calls
+	// 534750 here, reloading the live record for its run flag and return.
+	return monsterActionRunStart534750(unit)
 }
 
 // MonsterActionFightStart531E20 restores GAME.EXE 00531E20 without loading
 // Object.UpdateData through the original 32-bit offset-748 pointer slot.
-func (s *Server) MonsterActionFightStart531E20(unit *Object, runtime MonsterActionFightStartRuntime531E20) {
-	monsterActionFightStart531E20(unit, runtime)
+func (s *Server) MonsterActionFightStart531E20(unit *Object, runtime MonsterActionFightStartRuntime531E20) uint32 {
+	return monsterActionFightStart531E20(unit, runtime)
 }
 
-func monsterActionFightEnd531E90(unit *Object) {
-	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) {
-		return
+func monsterActionFightEnd531E90(unit *Object) uint32 {
+	if unit == nil || unit.UpdateData == nil {
+		return 0
 	}
-	update := unit.UpdateDataMonster()
+	update := (*MonsterUpdateData)(unit.UpdateData)
 	update.StatusFlags &^= object.MonStatusAlert
-	if !update.StatusFlags.Has(object.MonStatusAlwaysRun) {
-		update.StatusFlags &^= object.MonStatusRunning
-	}
+	return monsterActionRunEnd534780(unit)
 }
 
 // MonsterActionFightEnd531E90 restores GAME.EXE 00531E90.
-func (s *Server) MonsterActionFightEnd531E90(unit *Object) {
-	monsterActionFightEnd531E90(unit)
+func (s *Server) MonsterActionFightEnd531E90(unit *Object) uint32 {
+	return monsterActionFightEnd531E90(unit)
 }
 
 type monsterActionFightHooks531EC0 struct {

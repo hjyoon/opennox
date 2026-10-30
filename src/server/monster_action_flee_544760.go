@@ -9,24 +9,34 @@ import (
 
 // MonsterActionRunStart534750 and MonsterActionRunEnd534780 restore the two
 // status-bit helpers used by FLEE and return-to-home actions.
-func (s *Server) MonsterActionRunStart534750(unit *Object) {
+func monsterActionRunStart534750(unit *Object) uint32 {
 	if unit == nil || unit.UpdateData == nil {
-		return
+		return 0
 	}
-	update := unit.UpdateDataMonster()
+	update := (*MonsterUpdateData)(unit.UpdateData)
 	if !update.StatusFlags.Has(object.MonStatusNeverRun) {
 		update.StatusFlags |= object.MonStatusRunning
 	}
+	return uint32(update.StatusFlags)
 }
 
-func (s *Server) MonsterActionRunEnd534780(unit *Object) {
+func monsterActionRunEnd534780(unit *Object) uint32 {
 	if unit == nil || unit.UpdateData == nil {
-		return
+		return 0
 	}
-	update := unit.UpdateDataMonster()
+	update := (*MonsterUpdateData)(unit.UpdateData)
 	if !update.StatusFlags.Has(object.MonStatusAlwaysRun) {
 		update.StatusFlags &^= object.MonStatusRunning
 	}
+	return uint32(update.StatusFlags)
+}
+
+func (s *Server) MonsterActionRunStart534750(unit *Object) uint32 {
+	return monsterActionRunStart534750(unit)
+}
+
+func (s *Server) MonsterActionRunEnd534780(unit *Object) uint32 {
+	return monsterActionRunEnd534780(unit)
 }
 
 type monsterActionFleeHooks544760 struct {

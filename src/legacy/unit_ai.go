@@ -92,21 +92,25 @@ func (a cgoAIAction) Type() ai.ActionType {
 	return a.typ
 }
 
+func monsterFightStartRuntime531E20() server.MonsterActionFightStartRuntime531E20 {
+	return server.MonsterActionFightStartRuntime531E20{
+		AudioEvent: func(id uint32, unit *server.Object) {
+			C.nox_xxx_aud_501960(C.int(id), asObjectC(unit), 0, 0)
+		},
+		ScriptCallback: func(block *server.ScriptCallback, caller, trigger *server.Object, event server.ScriptEventType) {
+			GetServer().NoxScriptC().ScriptCallback(block, caller, trigger, event)
+		},
+		CopyFrameCounter: func() {
+			*memmap.PtrUint32(0x5D4594, 2487684) = GetServer().S().Frame()
+		},
+		UpdateSight: Nox_xxx_unitUpdateSightMB_5281F0,
+	}
+}
+
 func (a cgoAIAction) Start(u *server.Object) {
 	switch a.typ {
 	case ai.ACTION_FIGHT:
-		GetServer().S().MonsterActionFightStart531E20(u, server.MonsterActionFightStartRuntime531E20{
-			AudioEvent: func(id uint32, unit *server.Object) {
-				C.nox_xxx_aud_501960(C.int(id), asObjectC(unit), 0, 0)
-			},
-			ScriptCallback: func(block *server.ScriptCallback, caller, trigger *server.Object, event server.ScriptEventType) {
-				GetServer().NoxScriptC().ScriptCallback(block, caller, trigger, event)
-			},
-			CopyFrameCounter: func() {
-				*memmap.PtrUint32(0x5D4594, 2487684) = GetServer().S().Frame()
-			},
-			UpdateSight: Nox_xxx_unitUpdateSightMB_5281F0,
-		})
+		GetServer().S().MonsterActionFightStart531E20(u, monsterFightStartRuntime531E20())
 		return
 	case ai.ACTION_MELEE_ATTACK:
 		GetServer().S().MonsterActionMeleeStart532130(u, monsterActionMeleeRuntime532130())

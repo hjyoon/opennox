@@ -23,8 +23,7 @@ int nox_xxx_monsterCanResumeAttack_545520(int a1);
 int sub_545580(int a1);
 int nox_xxx_monsterCanCast2_5455B0(int a1);
 int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1);
-int sub_5456B0(int a1);
-int sub_5456C0(int a1);
+#include "monster_fight_run_state_native_531e20.h"
 void sub_5456D0(int a1);
 long long sub_545790(int a1);
 int sub_5457C0(int a1);

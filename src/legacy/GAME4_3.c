@@ -243,36 +243,7 @@ int* sub_531D50(int a1, int a2) {
 }
 
 //----- (00531E20) --------------------------------------------------------
-int nox_xxx_mobActionFightStart_531E20(uint32_t a1) {
-	int* v1; // edi
-	int v2;  // eax
-	int v3;  // eax
-
-	v1 = *(int**)(a1 + 748);
-	v2 = nox_xxx_monsterGetSoundSet_424300(a1);
-	if (v2) {
-		nox_xxx_aud_501960(*(uint32_t*)(v2 + 20), a1, 0, 0);
-	}
-	nox_xxx_scriptCallByEventBlock_502490(v1 + 310, v1[299], a1, 13);
-	v3 = v1[360];
-	BYTE1(v3) |= 1u;
-	v1[360] = v3;
-	nox_xxx_frameCounterSetCopy_5281E0();
-	nox_xxx_unitUpdateSightMB_5281F0(a1);
-	return sub_534750(a1);
-}
-
-//----- (00531E90) --------------------------------------------------------
-int sub_531E90(int a1) {
-	int v1; // eax
-	int v2; // edx
-
-	v1 = *(uint32_t*)(a1 + 748);
-	v2 = *(uint32_t*)(v1 + 1440);
-	BYTE1(v2) &= 0xFEu;
-	*(uint32_t*)(v1 + 1440) = v2;
-	return sub_534780(a1);
-}
+// 531E20/531E90 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (00531EC0) --------------------------------------------------------
 char nox_xxx_mobActionFight_531EC0(int a1) {
@@ -1229,32 +1200,7 @@ int sub_534710(int a1) {
 }
 
 //----- (00534750) --------------------------------------------------------
-int sub_534750(int a1) {
-	int v1;     // ecx
-	int result; // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	result = *(uint32_t*)(v1 + 1440);
-	if (!(result & 0x10000)) {
-		BYTE1(result) |= 0x40u;
-		*(uint32_t*)(v1 + 1440) = result;
-	}
-	return result;
-}
-
-//----- (00534780) --------------------------------------------------------
-int sub_534780(int a1) {
-	int v1;     // ecx
-	int result; // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	result = *(uint32_t*)(v1 + 1440);
-	if ((result & 0x8000) == 0) {
-		BYTE1(result) &= 0xBFu;
-		*(uint32_t*)(v1 + 1440) = result;
-	}
-	return result;
-}
+// 534750/534780 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (005347A0) --------------------------------------------------------
 int sub_5347A0(nox_object_t* a1) { return (*(uint32_t*)(*(uint32_t*)((int)a1 + 748) + 1440) >> 9) & 1; }
@@ -7431,10 +7377,7 @@ void nox_xxx_mobActionDodge_544640(int a1) {
 #endif
 
 //----- (00544740) --------------------------------------------------------
-int sub_544740(int a1) { return sub_534750(a1); }
-
-//----- (00544750) --------------------------------------------------------
-int sub_544750(int a1) { return sub_534780(a1); }
+// 544740/544750 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (00544760) --------------------------------------------------------
 int nox_xxx_generateRetreatPath_50CA00(void* a1, int a2, nox_object_t* a3, float2* a4);
@@ -7503,13 +7446,7 @@ char nox_xxx_mobActionFlee_544760(int a1) {
 #endif
 
 //----- (00544920) --------------------------------------------------------
-int nox_xxx_mobActionReturnToHome_544920(int a1) { return sub_534750(a1); }
-
-//----- (00544930) --------------------------------------------------------
-int sub_544930(int a1) { return sub_534780(a1); }
-
-//----- (00544940) --------------------------------------------------------
-int sub_544940(int a1) { return sub_534780(a1); }
+// 544920/544930/544940 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (00544950) --------------------------------------------------------
 #if 0

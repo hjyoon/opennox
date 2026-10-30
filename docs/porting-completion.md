@@ -55,6 +55,68 @@ completion requirements.
 
 ## Current findings
 
+### Native monster combat predicates
+
+Source `def75e0` replaces thirteen PE32 combat-predicate C bodies with native
+object-pointer entries. Flying, facing, melee/ranged eligibility, shield,
+casting, movement, current action, aggression and melee range retain the
+original DWORD or double return ABI. Before the change, all thirteen public
+C entries crash with valid C-owned object/update/definition records above
+4 GiB. Both final macOS profiles match all **11,835 actual C contexts**,
+including the existing production Go-to-C caster bridge, without input or
+guard writes.
+
+The unchanged original roots and real internal callees execute all **598
+instruction bytes**, 11,835 contexts per FPU profile, 23,670 total, without
+modeled services. The first comparison leaves two signaling-NaN range
+differences. Independent native x86 run **41108651935** executes the complete
+20-byte original range root on i386 and its original FLD instruction on
+x86_64; all 119 inputs in both profiles agree. Unicorn incorrectly retains
+the signaling bit for those two inputs. The corrected reference takes all
+119 range returns from native original execution. Every input is unchanged;
+both first references and the failed comparison remain preserved. The
+engine is restored before resealing and then reapplied byte-identically;
+no engine NaN manipulation forces a match. The native harness separately
+accounts for reserved x87 control-word bit 6.
+
+Normal checks pass **325,796 tests/43 skips**; highres, cgocheck2, checkptr2
+and real OpenAL/null checks pass **58,441/eight skips**. All 4,022 earlier
+inputs remain byte-identical. Only the thirteen C bodies, 71 lines/2,275
+bytes, are retired; every other C byte is unchanged. Eight missing code
+seals and one data seal verify at **3,294 code/687 data ranges**. These
+counts do not measure overall porting coverage.
+
+The clean Go 1.26.9 ARM64 GUI product, SHA-256
+`785b910800d6d320d611fb8e774a070c17210ded3ba3a83d0c1b5c3b13dd39a5`,
+passes help, six Blink modes, sixteen natural first-attack modes, shared
+Lightning/EnergyBolt/DrainMana and original Bookcase6 progression. A fresh
+process loads and manually saves the passing original lineage with
+**HP20/MP43/poison0**. Read-only snapshots verify the original bookcase
+endpoint, plate/mover and Urchin HP0/DEAD before reload. Both final frames
+are actually viewed; their different visibility extent supplies no pixel
+golden or complete visibility equivalence claim. The initial E2E exits 71
+before game entry because nested sandbox initialization is denied; a fresh
+stage uses the same inputs and explicit loopback-only sandbox and passes.
+The failed records and both original Save parents remain intact.
+
+Native Windows amd64/386 build, help and root/server/legacy gates pass in
+run **41111696529**. Linux amd64 run **41111817409** passes **322,958/seven
+skips across 58 packages**, including all 11,835 new actual C cases; the
+default-link damage gate passes 133,041. All three jobs are terminal.
+Published ZIP digests, product architectures, clean source revision and
+exact raw logs are verified. The five requested poison-macro diagnostics
+remain absent. Earlier audio gates remain independently closed.
+
+ROOT/monster-combat-predicates-native-entry-port retains
+`local-monster-combat-predicates-qualified-v3.json`,
+`native-ci-v1/all-native-predicates-qualified-v1.json` and
+`all-gates-and-preservation-qualified-v1.json`. Personal 4,649 files,
+30 ARM64 products, 20 native products and prior failures remain intact.
+Twenty-three compiled calls in twelve retained PE32 parent functions are
+outside this leaf-entry batch; the old MainAI fallback remains 32-bit only.
+Other callbacks and the final nine class/chapter audits remain open.
+**Overall porting is not 100%; chapter 4+ remains outside campaign scope.**
+
 ### Door materials and shop playback
 
 Audio-qualified source `b78c8a9` includes door fix `b7d0fd4` and opt-in

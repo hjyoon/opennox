@@ -55,6 +55,112 @@ completion requirements.
 
 ## Current findings
 
+### Native Retreat update entry point
+
+Source `896f5f2` replaces public `545440`'s PE32 integer object argument
+with a native object pointer and retires its **37-line** C body. The
+original root contains **218 machine-code bytes**. The existing ordinary Go algorithm and full production services
+remain byte-identical: they already match the complete original comparison.
+Shared helper C signatures remain unchanged while other unported C callers
+still pass integer object arguments; this checkpoint does not claim those
+helper entry points or caller chains are ported.
+
+Before engine edits, unmodified Retreat, health ratio, retreat predicate,
+anti-magic caster predicate, Buff, Edibles and GameFlags bodies execute all
+**634 instruction bytes** in 1,465 contexts per FPU profile: **2,930** total
+under startup `0x0e3f` and nearest `0x023f`. Both profiles produce identical
+results. Four intended nil-live-enemy faults per profile preserve the
+completed TIME/action prefix. One ancillary nil-Buff call covers its early
+return. Related-spell selection, RNG, food search and Push/Pop are declared
+services; Buff and GameFlags execute unchanged. Tick/frame instruction
+observations preserve the original single FPS load, wrapped signed DWORD
+bounds and post-RNG frame reload. Register/stack/FPCW/TOP/heap canaries,
+ordered service states and whole native records match. The original write
+history independently reconstructs pointer, DWORD and BYTE stores and
+untouched native argument bits, including food aliases and reused slots.
+
+The stock root has no rel32 calls and only its action-table update reference,
+index 6 at `5BFF2C`. Ten executed contexts of the unchanged 16-byte
+`50A7B5..50A7C4` indirect-call/overwrite/pop/compare sequence establish its
+**void update ABI**: callback EAX/AL is overwritten before observation.
+Original raw EAX/AL remains in the references. This is not whole MainAI
+execution. The separate 6/13/8/5/13/11/14 NOP tails remain unexecuted.
+
+Before the port, all **13** actual C paths SIGSEGV after their ordinary Go
+controls complete. After the port, all pass: one recovered-health real pop
+and twelve TIME/FLEE or empty-food compositions at zero through five free
+stack slots. They use actual RNG/frame/FPS, spatial food search and native
+push/capacity services, and compare complete unit/update/health/enemy
+records. The same frozen original producer, fixture, comparator and C tests
+are retained. An initial generic allocation constraint compilation failure
+is preserved; the preparation fix changes only `T any` to `T comparable`,
+with original inputs, expected values and assertions unchanged.
+
+All **4,000** prior test/fixture/scenario inputs stay byte-identical. Five
+new inputs add **1,480 terminal events**, including parents and subtests;
+these counts are not feature or function coverage. Five complete executed
+ranges are added, retaining every old seal and data record: the oracle now
+verifies **3,271 code/681 data ranges**. The root's existing `545476` Buff
+callsite overlap is intentional; no duplicate Buff/GameFlags/float-one
+data seal is added.
+
+| macOS ARM64 validation | PASS events | SKIP events | Failed packages |
+| --- | ---: | ---: | ---: |
+| Full root/server/legacy | 291,964 | 20 | 0 |
+| Focused highres, cgocheck2, checkptr 2, OpenAL null | 24,754 | 7 | 0 |
+
+The clean Go 1.26.9 ARM64 product builds in 18.495 seconds, passes `-h`,
+retains `vcs.modified=false` and restores the original worktree `.git` file.
+Product Blink, first-attack and shared Lightning/EnergyBolt/DrainMana
+regressions pass. The original Bookcase endpoint, disabled plate, enabled
+mover and Urchin HP0/DEAD are independently qualified **before** continuation;
+the whole current passing first Save is frozen before fresh menu reload.
+Reload retains HP20/MP43/poison0. Both manual-Save
+PNGs are actually viewed. No failed Save is continued and no prior batch's
+different mana result replaces this current frozen Save contract.
+
+Core audio passes 348.341 seconds in ordinary time, all 54 stock
+ambient definitions, 2,313 queued/
+2,279 processed sample buffers and three music
+streams. The ADPCM 147/89 panic does not recur. Audio source remains unchanged
+since `97f2663`; prior independent Linux client audio evidence remains
+distinct from current Linux server CI. These observations do not establish
+audible-output fidelity or sustained-session completion.
+
+[Windows native CI](https://github.com/hjyoon/opennox/actions/runs/41042797751)
+passes both amd64 and 386 clean products, verification/help and full uncached
+root/server/legacy tests; its nonverbose output does not enumerate test
+identities.
+[Linux native CI](https://github.com/hjyoon/opennox/actions/runs/41042885680)
+passes all 58 expected packages (36 pass/22 skip), **289,390 PASS/7 SKIP**,
+all 1,480 new terms, six retained Blink observer terms and the separate
+133,041-event default-link damage gate. All artifact ZIPs match GitHub
+digests; exact Linux JSON remains inside the preserved ZIP. The five
+requested poison-macro warning classes remain absent across local gates,
+builds and all native job logs.
+
+| Preserved current product | Bytes | SHA-256 |
+| --- | ---: | --- |
+| macOS ARM64 | 65738754 | `302d838f623db7062bea1b70e1a9a51d89c9be12c14194d4e844ff4186aecb29` |
+| Windows amd64 | 94280300 | `2b83b7a25ec6cea5d96c1bf722e381c14eb011ab7794b6d15173941130b4ad39` |
+| Windows 386 | 89156221 | `751a2c54b9a402206d39df7bf23247e8c21052f41fe8b7e5a2409415d53f5779` |
+| Linux amd64 server | 63893944 | `e303a3753c263a13928cc43b2fd93310ff110c79ebbabb907454f5ed749120ad` |
+
+Evidence is under `monster-retreat-native-entry-port`, including
+`all-before-qualified-v1.json`, `original-Retreat-update-ABI-executed-v1.json`,
+`local-monster-retreat-native-qualified-v1.json`, product/campaign/Core/native
+certificates and `preservation-qualified-v1.json`. All 4,649 personal files
+(503,207,370 bytes), twenty-one ARM64 products and all original assets,
+Saves, references, failed/partial outputs and products remain preserved.
+Cleanup removes the obsolete 37 C lines and one reproducible 27,592-byte
+syntax-check Python cache. The prior Windows GC and ChannelLife Bookcase
+variability findings remain unexplained.
+
+Within the thirteen tracked native AI rows, Guard `546010` still retains
+its old C update. Other unported callbacks, shared helpers and the final
+nine-cell class/chapter 1–3 feature/UI/audio/network/stability audits remain.
+**Overall porting is not 100%**; chapter 4+ remains outside scope.
+
 ### Native RandomWalk, direction and Confused entry points
 
 Source `31dd133` ports public `545020`, `545090` and `545140` to

@@ -492,7 +492,9 @@ func (obj *Object) Nox_xxx_monsterCanAttackAtWill_534390() bool {
 }
 
 func (obj *Object) Sub_534440() bool {
-	return obj.UpdateDataMonster().Aggression < 0.079999998
+	// 00534458 tests x87 C0 alone, including unordered aggression.
+	value := obj.UpdateDataMonster().Aggression
+	return !(value >= 0.079999998)
 }
 
 // Nox_xxx_setNPCColor_4E4A90 applies the state-changing part of the original

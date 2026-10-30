@@ -27,7 +27,7 @@ func TestMonsterActionGuard546010LocationArgumentSlots(t *testing.T) {
 			}
 			before := condition
 			var records []guardActionRecord546010
-			hooks := guardTestHooks546010(702, &records)
+			hooks, _ := guardTestHooks546010(702, &records)
 			hooks.push = func(action ai.ActionType, args ...any) *AIStackItem {
 				records = append(records, guardActionRecord546010{typeID: action})
 				if action != ai.DEPENDENCY_LOCATION_CLOSER_THAN {

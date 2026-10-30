@@ -52,7 +52,7 @@ func init() {
 		Start, Update, End, Cancel unsafe.Pointer
 	}{
 		ai.ACTION_ESCORT:            {},
-		ai.ACTION_GUARD:             {Update: C.nox_xxx_mobActionGuard_546010},
+		ai.ACTION_GUARD:             {}, // Native Go update; the public C bridge remains available.
 		ai.ACTION_HUNT:              {},
 		ai.ACTION_RETREAT:           {},
 		ai.ACTION_MOVE_TO:           {},

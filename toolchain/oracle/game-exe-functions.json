@@ -22902,6 +22902,34 @@
       "size": 197,
       "sha256": "557ebf05c154ba5251c3466225a6fe997dab0dc407f4de049a6179178a26c891",
       "purpose": "Complete unchanged original body executed with the634-byte coupled Retreat path in1465 contexts/profile,2930 total at startupPC53/ToZero and nearest. Four intended nil-live-enemy faults/profile preserve the completed prefix; one ancillary nil-Buff case covers its early RET. Ordered services, original store histories, native records and canaries match ordinary Go. Related selector,Push/Pop,RNG and food search are declared boundaries; Buff/GameFlags execute unchanged. Public native port in this batch is the218-byte void Retreat root only; shared helper C entry ABIs remain outside scope. Root intentionally overlaps existing545476 buff-call seal."
+    },
+    {
+      "name": "original_complete_monster_guard_546010",
+      "address": "0x00546010",
+      "size": 1019,
+      "sha256": "ace84be1b3c8fbb7081ae04fe3c7953961e10a1b60c58a78af41e5194d5ad5ad",
+      "purpose": "Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_complete_monster_guard_aggression_534390",
+      "address": "0x00534390",
+      "size": 38,
+      "sha256": "55003a566488539430c6a4a989574ead105cce21dd2ae379d807f062b7f9bb3a",
+      "purpose": "Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_complete_monster_guard_moderate_5343C0",
+      "address": "0x005343C0",
+      "size": 57,
+      "sha256": "f2cc05dc1fe9c7257e7a4f53e867b365342d613459d9433b490de5e8fa3ce523",
+      "purpose": "Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_complete_monster_guard_recent_sound_545DA0",
+      "address": "0x00545DA0",
+      "size": 179,
+      "sha256": "e3fd18c41de3496aa5698d6b05f86221244dc9824f2f9b206262313a51f10e91",
+      "purpose": "Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
     }
   ],
   "data": [
@@ -27671,6 +27699,41 @@
       "size": 13,
       "sha256": "6cf0d2fc44af20003da6d770b55cf61809a8959142a5cc94cc05b0a8458412a0",
       "purpose": "NUL-terminated ReleasedSoul name read by the declared original type-index lookup. Cache DWORD at00834204 is in the PE .data virtual zero tail, not file-backed and deliberately not a manifest data hash. Original virtual cache init/read/write and repeat calls execute in the producer."
+    },
+    {
+      "name": "original_guard_operand_583D44",
+      "address": "0x00583D44",
+      "size": 4,
+      "sha256": "54b8624e51f1aa0fda6b743df43f23f9cf63d629247855cfcdf905c3a8ef366d",
+      "purpose": "Exact binary32 operand used by the fully executed original Guard/aggression helper reference. Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_guard_operand_583D48",
+      "address": "0x00583D48",
+      "size": 4,
+      "sha256": "25a0a209b857e5a5b864805f0aa0bd98392cf1040bccfa00d083e63607b51958",
+      "purpose": "Exact binary32 operand used by the fully executed original Guard/aggression helper reference. Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_guard_operand_583D4C",
+      "address": "0x00583D4C",
+      "size": 4,
+      "sha256": "ba928cb768da7604c05d4529325bee0501d04e04d7fc900464d889a65d99433a",
+      "purpose": "Exact binary32 operand used by the fully executed original Guard/aggression helper reference. Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_guard_operand_583D84",
+      "address": "0x00583D84",
+      "size": 4,
+      "sha256": "5af2169fc7e6a3268ca6146f2ba18f312fde17563e7dff42572633d9b0b92c7c",
+      "purpose": "Exact binary32 operand used by the fully executed original Guard/aggression helper reference. Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_guard_operand_5839B8",
+      "address": "0x005839B8",
+      "size": 4,
+      "sha256": "c0e336a5f371ef22cd534e094269f2c1a9635cd080b71ffa671086832d3b60b7",
+      "purpose": "Exact binary32 operand used by the fully executed original Guard/aggression helper reference. Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
     }
   ],
   "allow_overlapping_ranges": true

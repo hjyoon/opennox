@@ -5,11 +5,12 @@ import (
 
 	"github.com/opennox/libs/object"
 	"github.com/opennox/libs/types"
-
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
 type monsterActionGuardHooks546010 struct {
+	Nearest          bool
+	ObserveFacing    func(types.Pointf)
 	frame            func() uint32
 	tickRate         func() uint32
 	noticeThreat     func() int
@@ -22,35 +23,38 @@ type monsterActionGuardHooks546010 struct {
 	push             func(ai.ActionType, ...any) *AIStackItem
 }
 
-func monsterGuardFacing546010(unit *Object, direction types.Pointf) bool {
-	forward := unit.Direction1.Vec()
-	return float64(forward.X)*float64(direction.X)+float64(forward.Y)*float64(direction.Y) > 0.89999998
-}
-
-func monsterGuardFacingObject546010(unit, target *Object) bool {
-	delta := target.PosVec.Sub(unit.PosVec)
-	distance := math.Sqrt(float64(delta.X*delta.X+delta.Y*delta.Y)) + 0.001
-	return monsterGuardFacing546010(unit, types.Ptf(float32(float64(delta.X)/distance), float32(float64(delta.Y)/distance)))
+func monsterGuardFacing546010(unit *Object, direction types.Pointf, nearest bool) bool {
+	index := int32(int16(unit.Direction1)) * 2
+	y := monsterGuardMul546010(float64(monsterConfusedDirectionFloat545140(index+1)), objectForceMemory32_52DF80(direction.Y), nearest)
+	x := monsterGuardMul546010(float64(monsterConfusedDirectionFloat545140(index)), objectForceMemory32_52DF80(direction.X), nearest)
+	return monsterGuardAdd546010(y, x, nearest) > float64(math.Float32frombits(0x3f666666))
 }
 
 func monsterGuardRecentSound546010(unit *Object, hooks monsterActionGuardHooks546010) bool {
 	update := unit.UpdateDataMonster()
-	frame := hooks.frame()
-	if update.Field97 == 0 || frame-update.Field101 >= 3*hooks.tickRate() {
+	if update.Field97 == 0 {
+		return false
+	}
+	if hooks.frame()-update.Field101 >= 3*hooks.tickRate() {
 		return false
 	}
 	hooks.push(ai.DEPENDENCY_NO_INTERESTING_SOUND)
 	hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
-	hooks.push(ai.ACTION_WAIT, frame+uint32(hooks.random(int(hooks.tickRate()), 2*int(hooks.tickRate()))))
-	hooks.push(ai.ACTION_FACE_LOCATION, types.Ptf(update.Field99X, update.Field99Y))
+	if item := hooks.push(ai.ACTION_WAIT); item != nil {
+		fps := hooks.tickRate()
+		delay := hooks.random(int(int32(fps)), int(int32(fps*2)))
+		item.Args[0] = uintptr(hooks.frame() + uint32(delay))
+	}
+	if item := hooks.push(ai.ACTION_FACE_LOCATION); item != nil {
+		item.Args[0] = uintptr(math.Float32bits(update.Field99X))
+		item.Args[1] = uintptr(math.Float32bits(update.Field99Y))
+	}
 	update.Field97 = 0
 	return true
 }
 
-// monsterActionGuard546010 restores GAME.EXE 00546010 without interpreting a
-// native-width Object, MonsterUpdateData, or AI stack pointer through PE32 C
-// offsets. The hook boundary records the engine calls made by the original
-// routine while keeping its branch and push ordering independently testable.
+// monsterActionGuard546010 retains the entry update/head addresses, then
+// reloads live data after each accepted Push in the original store order.
 func monsterActionGuard546010(unit *Object, hooks monsterActionGuardHooks546010) {
 	if unit == nil || unit.UpdateData == nil || !unit.ObjClass.Has(object.ClassMonster) {
 		return
@@ -63,100 +67,123 @@ func monsterActionGuard546010(unit *Object, hooks monsterActionGuardHooks546010)
 	if head.Type() != ai.ACTION_GUARD {
 		return
 	}
-
-	if unit.Sub_534440() || hooks.noticeThreat() == 0 {
-		if enemy := update.CurrentEnemy; enemy != nil {
-			if unit.Nox_xxx_monsterCanAttackAtWill_534390() {
-				hooks.push(ai.ACTION_FIGHT, enemy.PosVec, hooks.frame())
-				return
-			}
-			if unit.Sub_5343C0() {
-				guardPos := head.ArgPos(0)
-				delta := guardPos.Sub(enemy.PosVec)
-				if float64(update.SightRange)*float64(update.SightRange) > float64(delta.X*delta.X+delta.Y*delta.Y) {
-					if hooks.isPlant() {
-						hooks.push(ai.DEPENDENCY_ENEMY_CLOSER_THAN, update.SightRange*1.05)
-					} else {
-						hooks.push(ai.DEPENDENCY_UNDER_ATTACK, uint32(0))
-						if item := hooks.push(ai.DEPENDENCY_LOCATION_CLOSER_THAN); item != nil {
-							// 0054613B..00546156 leaves Args1 untouched; the
-							// location dependency reads X/Y from Args2/Args3.
-							item.Args[0] = uintptr(math.Float32bits(update.SightRange * 1.5))
-							item.Args[2] = uintptr(head.ArgU32(0))
-							item.Args[3] = uintptr(head.ArgU32(1))
-						}
-						hooks.push(ai.DEPENDENCY_OR)
-					}
-					hooks.push(ai.ACTION_FIGHT, enemy.PosVec, hooks.frame())
-				}
-			}
+	if !unit.Sub_534440() && hooks.noticeThreat() != 0 {
+		return
+	}
+	fight := func() {
+		if item := hooks.push(ai.ACTION_FIGHT); item != nil {
+			enemy := update.CurrentEnemy
+			item.Args[0] = uintptr(math.Float32bits(enemy.PosVec.X))
+			item.Args[1] = uintptr(math.Float32bits(enemy.PosVec.Y))
+			item.Args[2] = uintptr(hooks.frame())
 		}
-
-		mimic := hooks.isMimic()
-		if !mimic && hooks.lookAtDamager() {
-			return
-		}
+	}
+	if update.CurrentEnemy != nil {
 		if unit.Nox_xxx_monsterCanAttackAtWill_534390() {
-			if hooks.interestingSound() != 0 {
-				return
-			}
-		} else if !mimic && monsterGuardRecentSound546010(unit, hooks) {
+			fight()
 			return
 		}
-
-		if (byte(hooks.frame())+byte(unit.NetCode))&0xf == 0 {
-			guardPos := head.ArgPos(0)
-			delta := guardPos.Sub(unit.PosVec)
-			if float64(delta.X*delta.X+delta.Y*delta.Y) > 64.0 {
-				if unit.Nox_xxx_monsterCanAttackAtWill_534390() {
-					hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
-					hooks.push(ai.DEPENDENCY_NO_INTERESTING_SOUND)
-				}
-				hooks.push(ai.DEPENDENCY_NOT_UNDER_ATTACK)
-				hooks.push(ai.ACTION_MOVE_TO, guardPos, 0)
-				return
-			}
-
-			if mimic {
-				direction := byte(head.ArgU32(2))
-				cosine, sine := SinCosDir(direction)
-				if !monsterGuardFacing546010(unit, types.Ptf(cosine, sine)) {
-					hooks.push(ai.ACTION_FACE_ANGLE, uint32(direction))
-				}
-			} else if update.Field282_1 != 0 {
-				target := update.CurrentEnemy
-				if target == nil {
-					count := int(update.Field282_1)
-					if count > len(update.SeenEnemies) {
-						count = len(update.SeenEnemies)
+		if unit.Sub_5343C0() {
+			enemy := update.CurrentEnemy
+			x := monsterGuardSub546010(float64(head.ArgF32(0)), objectForceMemory32_52DF80(enemy.PosVec.X), hooks.Nearest)
+			y := monsterGuardSub546010(float64(head.ArgF32(1)), objectForceMemory32_52DF80(enemy.PosVec.Y), hooks.Nearest)
+			sight := float64(update.SightRange)
+			if monsterGuardMul546010(sight, sight, hooks.Nearest) > monsterGuardSquare546010(x, y, hooks.Nearest) {
+				if hooks.isPlant() {
+					if item := hooks.push(ai.DEPENDENCY_ENEMY_CLOSER_THAN); item != nil {
+						item.Args[0] = uintptr(math.Float32bits(monsterGuardSpill546010(monsterGuardMul546010(float64(update.SightRange), float64(math.Float32frombits(0x3f866666)), hooks.Nearest), hooks.Nearest)))
 					}
-					for i := 0; i < count; i++ {
-						target = update.SeenEnemies[i]
-						if target != nil && target.ObjFlags.Has(object.FlagEnabled) {
-							break
-						}
+				} else {
+					if item := hooks.push(ai.DEPENDENCY_UNDER_ATTACK); item != nil {
+						item.Args[0] = 0
 					}
+					if item := hooks.push(ai.DEPENDENCY_LOCATION_CLOSER_THAN); item != nil {
+						item.Args[0] = uintptr(math.Float32bits(monsterGuardSpill546010(monsterGuardMul546010(float64(update.SightRange), 1.5, hooks.Nearest), hooks.Nearest)))
+						item.Args[2] = uintptr(head.ArgU32(0))
+						item.Args[3] = uintptr(head.ArgU32(1))
+					}
+					hooks.push(ai.DEPENDENCY_OR)
 				}
-				if target != nil && !monsterGuardFacingObject546010(unit, target) {
-					hooks.push(ai.ACTION_FACE_OBJECT, target)
-				}
-			} else {
-				direction := byte(head.ArgU32(2))
-				cosine, sine := SinCosDir(direction)
-				if !monsterGuardFacing546010(unit, types.Ptf(cosine, sine)) {
-					hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
-					hooks.push(ai.ACTION_FACE_ANGLE, uint32(direction))
-				}
+				fight()
 			}
 		}
-
-		if mimic || hooks.frame()-update.Field137 <= hooks.tickRate()/2 || unit.PosVec == unit.PrevPos {
-			if !unit.HasEnchant(ENCHANT_ANTI_MAGIC) {
-				hooks.healSomeone()
+	}
+	if !hooks.isMimic() && hooks.lookAtDamager() {
+		return
+	}
+	if unit.Nox_xxx_monsterCanAttackAtWill_534390() {
+		if hooks.interestingSound() != 0 {
+			return
+		}
+	} else if !hooks.isMimic() && monsterGuardRecentSound546010(unit, hooks) {
+		return
+	}
+	facing := func(direction types.Pointf) bool {
+		if hooks.ObserveFacing != nil {
+			hooks.ObserveFacing(direction)
+		}
+		return monsterGuardFacing546010(unit, direction, hooks.Nearest)
+	}
+	if (hooks.frame()+unit.NetCode)&15 == 0 {
+		x := monsterGuardSub546010(float64(head.ArgF32(0)), objectForceMemory32_52DF80(unit.PosVec.X), hooks.Nearest)
+		y := monsterGuardSub546010(float64(head.ArgF32(1)), objectForceMemory32_52DF80(unit.PosVec.Y), hooks.Nearest)
+		if monsterGuardSquare546010(x, y, hooks.Nearest) > 64 {
+			if unit.Nox_xxx_monsterCanAttackAtWill_534390() {
+				hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
+				hooks.push(ai.DEPENDENCY_NO_INTERESTING_SOUND)
+			}
+			hooks.push(ai.DEPENDENCY_NOT_UNDER_ATTACK)
+			if item := hooks.push(ai.ACTION_MOVE_TO); item != nil {
+				item.Args[0] = uintptr(head.ArgU32(0))
+				y := head.ArgU32(1)
+				item.Args[2] = 0
+				item.Args[1] = uintptr(y)
+			}
+			return
+		}
+		if hooks.isMimic() {
+			direction := head.ArgU32(2)
+			if !facing(monsterGuardDirection546010(direction)) {
+				if item := hooks.push(ai.ACTION_FACE_ANGLE); item != nil {
+					item.Args[0] = uintptr(direction)
+				}
+			}
+		} else if update.Field282_1 != 0 {
+			target := update.CurrentEnemy
+			if target == nil {
+				// If no player qualifies, the original retains the first seen
+				// object. ClassPlayer is the BYTE+8 bit, independent of flags.
+				target = update.SeenEnemies[0]
+				for i := 0; i < int(update.Field282_1) && i < len(update.SeenEnemies); i++ {
+					if update.SeenEnemies[i].ObjClass.Has(object.ClassPlayer) {
+						target = update.SeenEnemies[i]
+						break
+					}
+				}
+			}
+			if !facing(monsterGuardTargetDirection546010(unit, target, hooks.Nearest)) {
+				if item := hooks.push(ai.ACTION_FACE_OBJECT); item != nil {
+					item.Args[0] = uintptr(target.CObj())
+				}
 			}
 		} else {
-			hooks.push(ai.ACTION_FACE_LOCATION, unit.PrevPos)
+			direction := head.ArgU32(2)
+			if !facing(monsterGuardDirection546010(direction)) {
+				hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
+				if item := hooks.push(ai.ACTION_FACE_ANGLE); item != nil {
+					item.Args[0] = uintptr(direction)
+				}
+			}
 		}
+	}
+	if hooks.isMimic() || hooks.frame()-update.Field137 <= hooks.tickRate()/2 ||
+		monsterGuardUnorderedEqual546010(unit.PosVec.X, unit.PrevPos.X) && monsterGuardUnorderedEqual546010(unit.PosVec.Y, unit.PrevPos.Y) {
+		if !unit.HasEnchant(ENCHANT_ANTI_MAGIC) {
+			hooks.healSomeone()
+		}
+	} else if item := hooks.push(ai.ACTION_FACE_LOCATION); item != nil {
+		item.Args[0] = uintptr(math.Float32bits(unit.PrevPos.X))
+		item.Args[1] = uintptr(math.Float32bits(unit.PrevPos.Y))
 	}
 }
 

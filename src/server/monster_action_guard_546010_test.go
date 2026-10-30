@@ -32,8 +32,9 @@ func guardTestObject546010(t *testing.T) *Object {
 	return unit
 }
 
-func guardTestHooks546010(frame uint32, records *[]guardActionRecord546010) monsterActionGuardHooks546010 {
-	return monsterActionGuardHooks546010{
+func guardTestHooks546010(frame uint32, records *[]guardActionRecord546010) (monsterActionGuardHooks546010, func()) {
+	var items []*AIStackItem
+	hooks := monsterActionGuardHooks546010{
 		frame:            func() uint32 { return frame },
 		tickRate:         func() uint32 { return 30 },
 		noticeThreat:     func() int { return 0 },
@@ -45,15 +46,34 @@ func guardTestHooks546010(frame uint32, records *[]guardActionRecord546010) mons
 		healSomeone:      func() int { return 0 },
 		push: func(action ai.ActionType, args ...any) *AIStackItem {
 			*records = append(*records, guardActionRecord546010{typeID: action, args: fmt.Sprint(args)})
-			return &AIStackItem{}
+			item := &AIStackItem{Action: uint32(action)}
+			item.SetArgs(args...)
+			items = append(items, item)
+			return item
 		},
+	}
+	// The original accepts Push before writing live payloads. Observe those
+	// returned records after the action, retaining the existing expectations.
+	return hooks, func() {
+		for i, item := range items {
+			var args []any
+			switch item.Type() {
+			case ai.ACTION_WAIT:
+				args = []any{item.ArgU32(0)}
+			case ai.ACTION_FIGHT, ai.ACTION_MOVE_TO:
+				args = []any{item.ArgPos(0), item.ArgU32(2)}
+			case ai.ACTION_FACE_LOCATION:
+				args = []any{item.ArgPos(0)}
+			}
+			(*records)[i].args = fmt.Sprint(args)
+		}
 	}
 }
 
 func TestMonsterActionGuard546010War01AShopkeeper(t *testing.T) {
 	unit := guardTestObject546010(t)
 	var records []guardActionRecord546010
-	hooks := guardTestHooks546010(1, &records)
+	hooks, recordArgs := guardTestHooks546010(1, &records)
 	healCalls := 0
 	hooks.healSomeone = func() int {
 		healCalls++
@@ -63,6 +83,7 @@ func TestMonsterActionGuard546010War01AShopkeeper(t *testing.T) {
 	beforeUnit := *unit
 	beforeUpdate := *unit.UpdateDataMonster()
 	monsterActionGuard546010(unit, hooks)
+	recordArgs()
 	if len(records) != 0 {
 		t.Fatalf("shopkeeper pushed actions: %+v", records)
 	}
@@ -82,8 +103,9 @@ func TestMonsterActionGuard546010RecentSoundOrder(t *testing.T) {
 	update.Field99X = 12.5
 	update.Field99Y = -8.25
 	var records []guardActionRecord546010
-	hooks := guardTestHooks546010(21, &records)
+	hooks, recordArgs := guardTestHooks546010(21, &records)
 	monsterActionGuard546010(unit, hooks)
+	recordArgs()
 
 	want := []guardActionRecord546010{
 		{ai.DEPENDENCY_NO_INTERESTING_SOUND, "[]"},
@@ -105,8 +127,9 @@ func TestMonsterActionGuard546010AggressiveEnemyReturnsAfterFight(t *testing.T) 
 	enemy := &Object{PosVec: types.Ptf(100, 200)}
 	unit.UpdateDataMonster().CurrentEnemy = enemy
 	var records []guardActionRecord546010
-	hooks := guardTestHooks546010(44, &records)
+	hooks, recordArgs := guardTestHooks546010(44, &records)
 	monsterActionGuard546010(unit, hooks)
+	recordArgs()
 
 	want := []guardActionRecord546010{{ai.ACTION_FIGHT, "[{100 200} 44]"}}
 	if fmt.Sprint(records) != fmt.Sprint(want) {
@@ -119,8 +142,9 @@ func TestMonsterActionGuard546010ReturnsToGuardPoint(t *testing.T) {
 	unit.NetCode = 0
 	unit.PosVec = types.Ptf(3900, 1400)
 	var records []guardActionRecord546010
-	hooks := guardTestHooks546010(16, &records)
+	hooks, recordArgs := guardTestHooks546010(16, &records)
 	monsterActionGuard546010(unit, hooks)
+	recordArgs()
 
 	want := []guardActionRecord546010{
 		{ai.DEPENDENCY_NOT_UNDER_ATTACK, "[]"},

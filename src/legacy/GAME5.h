@@ -35,7 +35,7 @@ int nox_xxx_monsterRoamDeadEnd_545BB0(int a1, int a2);
 int sub_545C60(int a1, int a2, unsigned char a3);
 int sub_545DA0(int a1);
 int sub_545E60(nox_object_t* a1);
-int* nox_xxx_mobActionGuard_546010(int a1);
+#include "monster_guard_native_546010.h"
 int nox_xxx_monsterLookAtDamager_5466B0(int a1);
 int sub_5466F0(nox_object_t* a1);
 void nox_xxx_mobAction_5469B0(nox_object_t* a1);

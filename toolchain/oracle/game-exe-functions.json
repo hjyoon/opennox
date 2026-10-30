@@ -23063,6 +23063,55 @@
       "size": 20,
       "sha256": "d300cac309459429773283935c5ec28f306e649f02fd63fc6931be92706e87a3",
       "purpose": "Complete unchanged pure-predicate body executed within thirteen-root 598-instruction-byte reference:11835contexts per startupPC53-ToZero and nearest profile,23670total; results identical across profiles. Actual internal caster4150/ranged1245 calls per profile; no modeled services. Includes masks, ordered/unordered threshold boundaries, signed head-1 prefixField132, every direction and rawF64 return. Heap/stack/nonvolatile registers/FPCW/TOP/code/data guards pass. Actual high-address publicC before:13crashes after passing ordinaryGo control."
+    },
+    {
+      "name": "original_monster_state_predicates_native_534710",
+      "address": "0x00534710",
+      "size": 52,
+      "sha256": "e8174abd235ecdceca5eff292f5f2da53efcb5d61940f4e40f3388b11c56cb77",
+      "purpose": "Complete unchanged hold-position-or-current-guard: 6831 state contexts/profile,7131 actual primary calls/profile,244instruction bytes with actual4E3AA0 WORD-ID helper. Only dictionary4E3830 is declared; frame/FPS arithmetic and cache publication execute. Two FPU profiles identical; no full dictionary or overall100% claim."
+    },
+    {
+      "name": "original_monster_state_predicates_native_5347A0",
+      "address": "0x005347A0",
+      "size": 23,
+      "sha256": "4076ee1f657c9d78969a7097461985d2ded83b32241244e02fa0e9e95b548d4b",
+      "purpose": "Complete unchanged status-bit9: 6831 state contexts/profile,7131 actual primary calls/profile,244instruction bytes with actual4E3AA0 WORD-ID helper. Only dictionary4E3830 is declared; frame/FPS arithmetic and cache publication execute. Two FPU profiles identical; no full dictionary or overall100% claim."
+    },
+    {
+      "name": "original_monster_state_predicates_native_5347C0",
+      "address": "0x005347C0",
+      "size": 37,
+      "sha256": "1ac1a09eb42dad6dd574bc660845d7370ab9eb3c45e8ab38924545b38c52b9ab",
+      "purpose": "Complete unchanged injured-health: 6831 state contexts/profile,7131 actual primary calls/profile,244instruction bytes with actual4E3AA0 WORD-ID helper. Only dictionary4E3830 is declared; frame/FPS arithmetic and cache publication execute. Two FPU profiles identical; no full dictionary or overall100% claim."
+    },
+    {
+      "name": "original_monster_state_predicates_native_5347F0",
+      "address": "0x005347F0",
+      "size": 18,
+      "sha256": "751b4430d1ce293bbe835189680fe73f29fcf608ee9f170ce3775ee8101d1e4a",
+      "purpose": "Complete unchanged nonzero-poison-byte: 6831 state contexts/profile,7131 actual primary calls/profile,244instruction bytes with actual4E3AA0 WORD-ID helper. Only dictionary4E3830 is declared; frame/FPS arithmetic and cache publication execute. Two FPU profiles identical; no full dictionary or overall100% claim."
+    },
+    {
+      "name": "original_monster_state_predicates_native_534810",
+      "address": "0x00534810",
+      "size": 39,
+      "sha256": "c9701a8254606770342923a7fee672e0c0cfd9ec7f899bb3a48d700d91a08cbb",
+      "purpose": "Complete unchanged recent-move-attempt-unsigned-frame: 6831 state contexts/profile,7131 actual primary calls/profile,244instruction bytes with actual4E3AA0 WORD-ID helper. Only dictionary4E3830 is declared; frame/FPS arithmetic and cache publication execute. Two FPU profiles identical; no full dictionary or overall100% claim."
+    },
+    {
+      "name": "original_monster_state_predicates_native_534840",
+      "address": "0x00534840",
+      "size": 47,
+      "sha256": "781c33a7a7b5f71c4f9c0588f0548b451f35df903fa7970c4bc1674579933efe",
+      "purpose": "Complete unchanged mimic-type-cache-and-lookup: 6831 state contexts/profile,7131 actual primary calls/profile,244instruction bytes with actual4E3AA0 WORD-ID helper. Only dictionary4E3830 is declared; frame/FPS arithmetic and cache publication execute. Two FPU profiles identical; no full dictionary or overall100% claim."
+    },
+    {
+      "name": "original_monster_state_predicates_native_4E3AA0",
+      "address": "0x004E3AA0",
+      "size": 28,
+      "sha256": "067886c750843f5c0465dc976786eeac8f0332e4ffd9179393d8077adde01faf",
+      "purpose": "Complete unchanged actual-name-ID-WORD-load-helper: 6831 state contexts/profile,7131 actual primary calls/profile,244instruction bytes with actual4E3AA0 WORD-ID helper. Only dictionary4E3830 is declared; frame/FPS arithmetic and cache publication execute. Two FPU profiles identical; no full dictionary or overall100% claim."
     }
   ],
   "data": [
@@ -27874,6 +27923,13 @@
       "size": 4,
       "sha256": "0d66bd808e9247acb560fe33efaa62ad6f11ee6f85cc4f61bd17673263de04ee",
       "purpose": "Exact binary32 speed threshold for fully executed original movement predicate534320; retained in both FPU-profile pure-predicate reference, including unordered inputs. Original source bytes are unchanged."
+    },
+    {
+      "name": "original_monster_state_Mimic_name_534840",
+      "address": "0x005C76D8",
+      "size": 6,
+      "sha256": "b999e7482a52eaa0da2171017a33431f61ab1f6c5c3785ebd37997d379460549",
+      "purpose": "Unchanged original Mimic NUL literal passed by534840 to actual4E3AA0; dictionary4E3830 is the sole declared boundary."
     }
   ],
   "allow_overlapping_ranges": true

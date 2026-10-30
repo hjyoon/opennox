@@ -1128,54 +1128,25 @@ int nox_xxx_actionByName_534670(const char* a1) {
 }
 
 //----- (00534710) --------------------------------------------------------
-int sub_534710(int a1) {
-	int v1;     // ecx
-	int result; // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (*(uint8_t*)(v1 + 1440) & 0x40) {
-		result = 1;
-	} else {
-		result = *(uint32_t*)(v1 + 24 * (*(char*)(v1 + 544) + 23)) == 4;
-	}
-	return result;
-}
+// Native-width implementation: server/monster_state_predicates_534710.go.
 
 //----- (00534750) --------------------------------------------------------
 // 534750/534780 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (005347A0) --------------------------------------------------------
-int sub_5347A0(nox_object_t* a1) { return (*(uint32_t*)(*(uint32_t*)((int)a1 + 748) + 1440) >> 9) & 1; }
+// Native-width implementation: server/monster_state_predicates_534710.go.
 
 //----- (005347C0) --------------------------------------------------------
-int sub_5347C0(int a1) {
-	unsigned short* v1; // eax
-	unsigned short v2;  // cx
-	int result;         // eax
-
-	v1 = *(unsigned short**)(a1 + 556);
-	result = 0;
-	if (v1) {
-		v2 = v1[2];
-		if (*v1 < v2) {
-			if (v2) {
-				result = 1;
-			}
-		}
-	}
-	return result;
-}
+// Native-width implementation: server/monster_state_predicates_534710.go.
 
 //----- (005347F0) --------------------------------------------------------
-int nox_xxx_isNotPoisoned_5347F0(int a1) { return *(uint8_t*)(a1 + 540) != 0; }
+// Native-width implementation: server/monster_state_predicates_534710.go.
 
 //----- (00534810) --------------------------------------------------------
-int nox_xxx_mobGetMoveAttemptTime_534810(nox_object_t* a1) {
-	return gameFrame() - *(uint32_t*)(*(uint32_t*)((int)a1 + 748) + 508) < (unsigned int)(3 * gameFPS());
-}
+// Native-width implementation: server/monster_state_predicates_534710.go.
 
 //----- (00534840) --------------------------------------------------------
-int nox_xxx_unitIsMimic_534840(int a1) {
+int nox_xxx_unitIsMimic_534840(nox_object_t* a1) {
 	int v1; // eax
 
 	v1 = *getMemU32Ptr(0x5D4594, 2488524);
@@ -1183,7 +1154,7 @@ int nox_xxx_unitIsMimic_534840(int a1) {
 		v1 = nox_xxx_getNameId_4E3AA0("Mimic");
 		*getMemU32Ptr(0x5D4594, 2488524) = v1;
 	}
-	return *(unsigned short*)(a1 + 4) == v1;
+	return a1->typ_ind == v1;
 }
 
 //----- (00534950) --------------------------------------------------------

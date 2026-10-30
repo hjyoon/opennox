@@ -138,8 +138,7 @@ func monsterFightScheduleMelee531C60(unit, target *Object, hooks monsterActionFi
 }
 
 func monsterFightHoldPosition534710(unit *Object) bool {
-	update := unit.UpdateDataMonster()
-	return update.StatusFlags.Has(object.MonStatusHoldYourGround) || update.AIStackHead().Type() == ai.ACTION_GUARD
+	return MonsterHoldPosition534710(unit)
 }
 
 func monsterFightScheduleMissile531D50(unit, target *Object, hooks monsterActionFightHooks531EC0) {

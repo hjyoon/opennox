@@ -501,11 +501,13 @@ func (s *nativeAudioEffectsState) takeVoiceLocked() ail.Sample {
 		if s.voices[ind].Status() != 4 {
 			s.next = (ind + 1) % len(s.voices)
 			e2eObserveShopAudioVoiceReuseLocked(s, s.voices[ind])
+			e2eObserveDoorAudioVoiceReuseLocked(s, s.voices[ind])
 			return s.voices[ind]
 		}
 	}
 	voice := s.voices[s.next]
 	s.next = (s.next + 1) % len(s.voices)
 	e2eObserveShopAudioVoiceReuseLocked(s, voice)
+	e2eObserveDoorAudioVoiceReuseLocked(s, voice)
 	return voice
 }

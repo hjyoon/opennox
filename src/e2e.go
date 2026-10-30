@@ -9648,6 +9648,9 @@ func (sc *e2eScenario) Load(path string) {
 		case "assert-peer-player-gold":
 			sc.Wait(dt, "")
 			sc.AssertPeerPlayerGold(l.Gold, l.Name)
+		case "check-door-audio":
+			sc.Wait(dt, "")
+			sc.CheckDoorAudio(l.Name)
 		case "interact":
 			if dt != 0 {
 				sc.Wait(dt, "")

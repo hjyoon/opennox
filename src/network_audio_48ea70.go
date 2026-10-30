@@ -42,6 +42,7 @@ func (c *Client) handleAudioEventPacketNative48EA70(op netmsg.Op, data []byte) i
 		play: func(id sound.ID, volume, pan int) bool {
 			played := nativeAudioFX.playPanned(id, volume, pan)
 			e2eObserveShopAudioPacket(op, id, volume, pan, played)
+			e2eObserveDoorAudioPacket(op, id, volume, played)
 			if audioEffectsDebug {
 				audioEffectsLog.Printf("network %s sound=%s volume=%d pan=%d submitted=%t", op, id, volume, pan, played)
 			}

@@ -8374,12 +8374,12 @@ func (sc *e2eScenario) AssertServerInventoryItemCount(typeID string, want int, n
 
 func (sc *e2eScenario) AssertClientInventoryItemCount(typeID string, want int, name string) {
 	sc.add(0, name, func() {
-		typ := noxServer.Types.ByID(typeID)
+		typ := noxClient.Things.TypeByID(typeID)
 		if typ == nil {
 			e2eError(fmt.Errorf("unknown client inventory type %q", typeID))
 			return
 		}
-		found, got, _, _ := legacy.Nox_client_inventoryItemState(uint32(typ.Ind()))
+		found, got, _, _ := legacy.Nox_client_inventoryItemState(uint32(typ.Index()))
 		if got != uint32(want) || found != (want != 0) {
 			e2eError(fmt.Errorf("client inventory %q = found:%t count:%d, want found:%t count:%d", typeID, found, got, want != 0, want))
 			return
@@ -8390,12 +8390,12 @@ func (sc *e2eScenario) AssertClientInventoryItemCount(typeID string, want int, n
 
 func (sc *e2eScenario) ClickInventoryItem(typeID, name string) {
 	sc.add(0, name, func() {
-		typ := noxServer.Types.ByID(typeID)
+		typ := noxClient.Things.TypeByID(typeID)
 		if typ == nil {
 			e2eError(fmt.Errorf("unknown client inventory type %q", typeID))
 			return
 		}
-		found, column, row, netCode := legacy.Nox_client_inventoryItemLocation(uint32(typ.Ind()))
+		found, column, row, netCode := legacy.Nox_client_inventoryItemLocation(uint32(typ.Index()))
 		if !found {
 			e2eError(fmt.Errorf("client inventory item %q has no visible cell", typeID))
 			return
@@ -9642,6 +9642,12 @@ func (sc *e2eScenario) Load(path string) {
 		case "check-shop-audio":
 			sc.Wait(dt, "")
 			sc.CheckShopAudio(l.Mode, l.Count, l.Name)
+		case "open-peer-shop":
+			sc.Wait(dt, "")
+			sc.OpenPeerShop(l.Item, l.Name)
+		case "assert-peer-player-gold":
+			sc.Wait(dt, "")
+			sc.AssertPeerPlayerGold(l.Gold, l.Name)
 		case "interact":
 			if dt != 0 {
 				sc.Wait(dt, "")

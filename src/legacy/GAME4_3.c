@@ -1046,50 +1046,7 @@ void sub_533EB0(nox_object_t* missile, void* unit_ptr) {
 int sub_534020(int a1) { return (*(uint32_t*)(a1 + 12) >> 10) & 1; }
 
 //----- (00534030) --------------------------------------------------------
-char nox_xxx_monsterMoveAudio_534030(int a1) {
-	int v1;          // ebx
-	char v2;         // al
-	int v3;          // esi
-	unsigned int v4; // ecx
-	unsigned int v5; // edi
-	unsigned int v6; // eax
-	int v7;          // ecx
-	unsigned int v9; // [esp+Ch] [ebp-8h]
-	int v10;         // [esp+10h] [ebp-4h]
-
-	v1 = a1;
-	v2 = *(uint8_t*)(a1 + 12);
-	v3 = *(uint32_t*)(a1 + 748);
-	v10 = *(uint32_t*)(a1 + 748);
-	if (v2 & 0x30) {
-		nox_xxx_animPlayerGetFrameRange_4F9F90(4, &v9, &a1);
-		v4 = *(uint32_t*)(v1 + 36) + gameFrame();
-		v5 = v4 / (a1 + 1) % v9;
-		v6 = (v4 - 1) / (a1 + 1) / v9;
-		if (v5 != (v4 - 1) / (a1 + 1) % v9) {
-			v6 = *(uint32_t*)(v10 + 484);
-			if (v5 == *(uint32_t*)(v6 + 100) || v5 == *(uint32_t*)(v6 + 104)) {
-				v6 = nox_xxx_monsterGetSoundSet_424300(v1);
-				if (v6) {
-					nox_xxx_aud_501960(*(uint32_t*)(v6 + 72), v1, 0, 0);
-				}
-			}
-		}
-	} else {
-		v6 = *(uint32_t*)(v3 + 484);
-		v7 = *(unsigned char*)(v3 + 481);
-		if (v7 == *(uint32_t*)(v6 + 100) || v7 == *(uint32_t*)(v6 + 104)) {
-			LOBYTE(v6) = *(uint8_t*)(v3 + 482);
-			if (!(uint8_t)v6) {
-				v6 = nox_xxx_monsterGetSoundSet_424300(a1);
-				if (v6) {
-					nox_xxx_aud_501960(*(uint32_t*)(v6 + 72), v1, 0, 0);
-				}
-			}
-		}
-	}
-	return v6;
-}
+// Native-width implementation: server/monster_move_audio_534030.go.
 
 //----- (00534120) --------------------------------------------------------
 int sub_534120(int a1, float2* a2) {

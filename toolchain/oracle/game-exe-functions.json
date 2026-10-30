@@ -22930,6 +22930,20 @@
       "size": 179,
       "sha256": "e3fd18c41de3496aa5698d6b05f86221244dc9824f2f9b206262313a51f10e91",
       "purpose": "Complete unchanged Guard546010 plus facing534120/aggression534390,5343C0,534440/recent-sound545DA0/Buff4FF350:5713contexts per startupPC53-ToZero and nearest profile,11426total,1423executed instruction bytes/profile and803result differences. Ordered declared services, read-only frame/FPS and facing-vector observations, original write history, whole native records and register/stack/FPCW/TOP/heap canaries. Two intentional nil-live-enemy faults/profile retain completed effects; nil-Buff ancillary call covers early RET. Notice/LookDamager/InterestingSound/type predicates/heal/RNG/Push are declared services. RawEAX/AL retained; separate16byte original dispatcher proves void update. Padding5/7/10/7/10/13/13NOPs not executed. Shared PE32 helper public signatures remain unported."
+    },
+    {
+      "name": "original_complete_monster_move_audio_534030",
+      "address": "0x00534030",
+      "size": 230,
+      "sha256": "8b94051a292c7389eca1b34fda833661dec6c74be23fa3360c70b4473030e838",
+      "purpose": "Complete unchanged MoveAudio534030 and animation4F9F90/sound424300 getters execute292 instruction bytes in5876 primary contexts per startup0xe3f and nearest0x23f profile,11752 total; all results identical across profiles. Only AudioEvent501960 is declared. Inputs, ordered audio arguments/state, raw EAX/AL and caller argument word retained, register/stack/FPCW/TOP/whole heap canaries intact. Ancillary nil getter1 and malformed DIV diagnostics3/profile are separate from primary native comparator. Executed original seven return tails35 and complete16byte AI EAX overwrite70 establish void consumer, not whole movement/MainAI. Separate10/1/1NOP tails excluded; shared sound getter seal reused; frame and animation table values are runtime inputs."
+    },
+    {
+      "name": "original_complete_move_audio_animation_getter_4F9F90",
+      "address": "0x004F9F90",
+      "size": 31,
+      "sha256": "b02c0d48bfadb52b060e919976066bd5fff57f51a4c215e56e6057e0162c763e",
+      "purpose": "Complete unchanged MoveAudio534030 and animation4F9F90/sound424300 getters execute292 instruction bytes in5876 primary contexts per startup0xe3f and nearest0x23f profile,11752 total; all results identical across profiles. Only AudioEvent501960 is declared. Inputs, ordered audio arguments/state, raw EAX/AL and caller argument word retained, register/stack/FPCW/TOP/whole heap canaries intact. Ancillary nil getter1 and malformed DIV diagnostics3/profile are separate from primary native comparator. Executed original seven return tails35 and complete16byte AI EAX overwrite70 establish void consumer, not whole movement/MainAI. Separate10/1/1NOP tails excluded; shared sound getter seal reused; frame and animation table values are runtime inputs."
     }
   ],
   "data": [

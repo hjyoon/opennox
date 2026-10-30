@@ -8,7 +8,6 @@ import (
 	"github.com/opennox/libs/types"
 
 	"github.com/opennox/opennox/v1/common/memmap"
-	"github.com/opennox/opennox/v1/common/sound"
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
@@ -324,29 +323,6 @@ func monsterCreatureActuallyMove50D3B0(unit *Object, trace func(types.Pointf, ty
 	unit.ForceVec.X = float32(monsterMoveToRunSpill544440(monsterMoveForceDivChop53_50D581(monsterMoveForceMulChop53_50D4FE(speed, dx), distance)))
 	unit.ForceVec.Y = float32(monsterMoveToRunSpill544440(monsterMoveForceDivChop53_50D581(monsterMoveForceMulChop53_50D4FE(speed, dy), distance)))
 	return false
-}
-
-func (s *Server) monsterMoveAudio534030(unit *Object) {
-	update := unit.UpdateDataMonster()
-	def := update.MonsterDef
-	if def == nil || update.SoundSet122 == nil {
-		return
-	}
-	play := false
-	if uint32(unit.ObjSubClass)&0x30 != 0 {
-		frames, delay := s.PlayerAnimFrames(4)
-		if frames > 0 {
-			cur := (int(unit.NetCode) + int(s.Frame())) / (delay + 1) % frames
-			prev := (int(unit.NetCode) + int(s.Frame()) - 1) / (delay + 1) % frames
-			play = cur != prev && (uint32(cur) == def.MoveSndFrameA100 || uint32(cur) == def.MoveSndFrameB104)
-		}
-	} else {
-		play = (uint32(update.Field120_1) == def.MoveSndFrameA100 || uint32(update.Field120_1) == def.MoveSndFrameB104) && update.Field120_2 == 0
-	}
-	if play {
-		id := sound.ID(*(*uint32)(unsafe.Add(update.SoundSet122, 72)))
-		s.Audio.EventObj(id, unit, 0, 0)
-	}
 }
 
 // MonsterActionRoam5457E0 binds the native-width restoration of GAME.EXE

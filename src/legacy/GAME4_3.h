@@ -51,7 +51,7 @@ unsigned char* nox_xxx_unitNPCActionToAnim_533D00(int a1);
 int nox_xxx_monsterTestBlockShield_533E70(nox_object_t* a1);
 void sub_533EB0(nox_object_t* missile, void* unit);
 int sub_534020(int a1);
-char nox_xxx_monsterMoveAudio_534030(int a1);
+#include "monster_move_audio_native_534030.h"
 int sub_534120(int a1, float2* a2);
 void nox_ai_debug_printf_5341A0(char* a1, ...);
 int sub_5341D0(int a1);

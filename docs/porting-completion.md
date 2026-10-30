@@ -55,6 +55,122 @@ completion requirements.
 
 ## Current findings
 
+### Native RandomWalk, direction and Confused entry points
+
+Source `31dd133` ports public `545020`, `545090` and `545140` to
+native object pointers and retires their 81-line PE32 C range. The ordinary
+Go movement now preserves startup PC53/ToZero multiply/add and binary32
+stores, x87 negative-indefinite/NaN selection, the cached entry update
+pointer and live reloads after callbacks. Confused preserves signed-WORD
+direction indexing, X/Arg2/Y store order and the untouched fourth argument.
+Its nested walk still executes after a first-RNG class/update mutation.
+
+Before engine edits, the original unmodified 101/171/199-byte bodies execute
+under startup `0x0e3f` and nearest `0x023f`: 2,651 RandomWalk/helper and 727
+Confused contexts per profile, **6,756 contexts total**, with real nested
+RandomWalk/helper execution in the Confused walk branch. Ordered service
+states, raw float bits, whole native records and register/stack/FPCW/TOP/heap
+canaries are checked. RNG, tile, movement audio, capability and PushAction
+bodies remain declared services in that numerical comparison. The separate
+11/5/9 NOP tails remain unexecuted. The existing manifest already covers all
+471 instruction bytes and both direction tables; it stays at **3,266 code
+and 681 data ranges**, with no old record or hash changed. Direction `-1`
+reads the preceding indexed table's final DWORD pair, bits `0x10` and `0`;
+it does not wrap to float direction 255.
+
+The original AI update sequence `50A7B5..50A7C4` immediately overwrites
+callback EAX before testing its independent stack-changed global. Original
+call/reference inspection and 20 executed callback-register/stack-change
+contexts establish **void update / int direction / void update**. Root's
+only direct caller is Confused's tail forwarding path, also an update-table
+callback. Both original raw EAX and AL remain in the references; neither is
+replaced by the Go handled bool. This is a complete 16-byte dispatcher
+sequence certificate, not a whole MainAI execution certificate.
+
+Before the fix, RandomWalk has 2,188 startup and 16 nearest mismatches;
+Confused has 291 and 12. Both profiles now match every frozen row. All three
+initial public C paths SIGSEGV before the port, after their ordinary Go
+controls complete. They now pass, together with **64** original-derived
+Confused C compositions using real logic RNG, melee/shoot checks, native
+stack pushes/capacity failure, scalar zero extension and retained native
+argument bits: **67 actual C contexts**. Whole unit/update/definition/missile
+records are compared against ordinary dispatch. The original numerical
+RNG 49/50 boundaries remain exact; the real C composition selects natural
+second draws in the same branch because the 4,096-entry stock RNG table has
+no consecutive 14/49 or 14/50 pair. That initial harness failure is retained.
+The first post-port standalone-server run also retains its missing legacy
+blob failure before the preceding original data pair was restored.
+
+There are **3,449 new terminal test events**, including parents/subtests;
+these totals do not measure feature or function coverage. Of 3,992 prior
+test/fixture/scenario inputs, 3,990 stay byte-identical. The other two files
+only bind four hook settings for historical numerical checks to nearest mode;
+their names, inputs, assertions and expected values remain. All original
+producers, fixtures, comparators and the initial public C test stay frozen.
+
+| macOS ARM64 validation | PASS events | SKIP events | Failed packages |
+| --- | ---: | ---: | ---: |
+| Full root/server/legacy | 290,484 | 20 | 0 |
+| Focused highres, cgocheck2, checkptr 2, OpenAL null | 22,960 | 7 | 0 |
+
+The clean Go 1.26.9 ARM64 product builds in 27.487 seconds, passes `-h`,
+retains `vcs.modified=false` and restores the original worktree `.git` file.
+Product E2E passes six autonomous Blink cases (45.132 s), sixteen natural
+first attacks (56.198 s) and the unchanged shared Lightning/EnergyBolt/
+DrainMana scenario (41.777 s). The original Bookcase run and fresh menu
+reload pass in 44.052/22.263 s. Before reloading, independent native checks
+require the original book endpoint, disabled plate, enabled mover and
+Urchin HP0/DEAD; the entire passing first Save is then frozen. Reload retains
+HP20/MP73/poison0. Both manual-Save PNGs were actually viewed and show Save
+completion. Prior batches' different MP43/73 first Saves are not substituted
+for this current frozen contract, and no failed Save is continued.
+
+The ordinary-clock Core audio run passes **348.144 seconds**, all 54 stock
+ambient definitions, 1,702 queued/1,669 processed sample buffers and three
+music streams. No ADPCM 147/89 panic recurs. Audio source remains unchanged
+since `97f2663`; the previously archived independent Linux client audio gate
+remains the client-specific Linux evidence. Current Linux server CI does
+not substitute for that client gate. Queue/processing observations do not
+claim audible-output fidelity or sustained-session completion.
+
+[Windows native CI](https://github.com/hjyoon/opennox/actions/runs/41032500682)
+passes both amd64 and 386 clean server builds, verification/help and full
+uncached root/server/legacy tests. Its nonverbose output does not enumerate
+individual test identities.
+[Linux native CI](https://github.com/hjyoon/opennox/actions/runs/41032649662)
+passes all 58 expected packages (36 pass/22 skip), **287,910 PASS/7 SKIP**
+events, all 3,449 new terms and the six retained Blink observer terms. Its
+separate default-link damage gate passes 133,041 events. Native products
+retain Go 1.26.9, cgo and clean source `31dd133` metadata. All three
+artifact ZIPs match GitHub digests; exact Linux JSON remains inside the
+preserved ZIP rather than a second uncompressed copy. The five requested
+poison-macro warning classes remain absent across local builds/gates and
+all native job logs.
+
+| Preserved current product | Bytes | SHA-256 |
+| --- | ---: | --- |
+| macOS ARM64 | 65738418 | `a9616cb4091a9bf06a1ae3269fd2a31badeeb63732c593637a1c3bbc713b4678` |
+| Windows amd64 | 94279653 | `f1d01412af4af39495c8d70171385b5db2029f3591fea4a98c89d346925f4e6c` |
+| Linux amd64 server | 63893704 | `ec9e3a7f1ac363dfd94853bf2b5615bba5f23e5143c3d7d4cd426ee42fdbbeff` |
+| Windows 386 | 89155243 | `50b970364110e00a49be8761adf1d69d7ba4e76383ba57f63352bdac4c87a673` |
+
+Evidence is under `monster-random-walk-native-entry-port`, including
+`before-capture-v2.json`, `original-update-ABI-executed-v1.json`,
+`local-monster-random-walk-native-qualified-v1.json`, the current product,
+campaign/Core/native artifact certificates and `preservation-qualified-v2.json`.
+All 4,649 personal installation files (503,207,370 bytes), twenty ARM64
+products, all original assets/Saves/references and every failed/partial
+result remain preserved. Cleanup removes the retired 81 C lines and one
+reproducible 91,064-byte Python import cache; source/module inputs and
+protected artifacts are retained. The prior Windows GC failure and prior
+ChannelLife Bookcase variability remain unexplained findings.
+
+This checkpoint leaves two of the thirteen tracked AI table rows with
+legacy C updates (`545440` Retreat and `546010` Guard); movement-audio C
+helper `534030` also remains unported. The current product checks are
+bounded regressions, not fresh completion audits of all nine class/chapter
+cells. **Overall porting is not 100%**; chapter 4+ remains outside scope.
+
 ### Native burn deletion and ReleasedSoul entry points
 
 Source `065e006` ports public `544CE0` and `544E60` to

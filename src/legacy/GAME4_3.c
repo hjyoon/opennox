@@ -349,26 +349,6 @@ int sub_532040(int a1, int a2) {
 	return result;
 }
 
-//----- (00532070) --------------------------------------------------------
-char nox_xxx_monsterShieldBlockStart_532070(int a1) {
-	int v1;          // edi
-	unsigned int v2; // eax
-
-	v1 = *(uint32_t*)(a1 + 748) + 24 * (*(char*)(*(uint32_t*)(a1 + 748) + 544) + 23);
-	if (nox_xxx_monsterTestBlockShield_533E70(a1)) {
-		*(uint32_t*)(v1 + 4) = gameFrame() + (gameFPS() >> 1);
-	}
-	v2 = *(uint32_t*)(v1 + 4);
-	if (gameFrame() > v2) {
-		nox_xxx_monsterPopAction_50A160(a1);
-		LOBYTE(v2) = *(uint8_t*)(a1 + 12);
-		if (!(v2 & 0x10)) {
-			LOBYTE(v2) = (unsigned int)nox_xxx_monsterPushAction_50A260(a1, 22);
-		}
-	}
-	return v2;
-}
-
 //----- (00532130) --------------------------------------------------------
 int* nox_xxx_mobActionMelee1_532130(int a1) {
 	int v1;      // edi

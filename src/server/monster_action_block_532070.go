@@ -1,6 +1,8 @@
 package server
 
 import (
+	"unsafe"
+
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/common/unit/ai"
@@ -35,6 +37,11 @@ func monsterActionBlockAttack532070(unit *Object, hooks monsterActionBlockHooks5
 		return false
 	}
 	head := &update.AIStack[index]
+	monsterActionBlockAttackRaw532070(unit, head, hooks)
+	return true
+}
+
+func monsterActionBlockAttackRaw532070(unit *Object, head *AIStackItem, hooks monsterActionBlockHooks532070) uint8 {
 	if hooks.testShield(unit) != 0 {
 		halfRate := hooks.tickRate() >> 1
 		head.Args[0] = uintptr(hooks.frame() + halfRate)
@@ -43,23 +50,38 @@ func monsterActionBlockAttack532070(unit *Object, hooks monsterActionBlockHooks5
 	deadline := head.ArgU32(0)
 	if frame > deadline {
 		hooks.pop()
-		if !unit.ObjSubClass.AsMonster().Has(object.MonsterNPC) {
-			hooks.push(ai.ACTION_BLOCK_FINISH)
+		subclass := unit.ObjSubClass
+		if !subclass.AsMonster().Has(object.MonsterNPC) {
+			return uint8(uintptr(unsafe.Pointer(hooks.push(ai.ACTION_BLOCK_FINISH))))
 		}
+		return uint8(subclass)
 	}
-	return true
+	return uint8(deadline)
 }
 
 // MonsterActionBlockAttack532070 binds the restored shield-block action to
 // the live frame clock and native-width action stack.
 func (s *Server) MonsterActionBlockAttack532070(unit *Object, runtime MonsterActionBlockRuntime532070) bool {
-	return monsterActionBlockAttack532070(unit, monsterActionBlockHooks532070{
+	return monsterActionBlockAttack532070(unit, s.monsterActionBlockHooks532070(unit, runtime))
+}
+
+// MonsterActionBlockAttackRaw532070 preserves the original public char return
+// for valid native action records: deadline, live subclass, or push pointer low
+// byte. The ordinary handled-bool API keeps its existing preflight guards.
+func (s *Server) MonsterActionBlockAttackRaw532070(unit *Object, runtime MonsterActionBlockRuntime532070) uint8 {
+	update := unit.UpdateDataMonster()
+	head := &update.AIStack[int(update.AIStackInd)]
+	return monsterActionBlockAttackRaw532070(unit, head, s.monsterActionBlockHooks532070(unit, runtime))
+}
+
+func (s *Server) monsterActionBlockHooks532070(unit *Object, runtime MonsterActionBlockRuntime532070) monsterActionBlockHooks532070 {
+	return monsterActionBlockHooks532070{
 		frame:      s.Frame,
 		tickRate:   s.TickRate,
 		testShield: runtime.TestShield,
 		pop:        unit.MonsterPopAction,
 		push:       unit.MonsterPushAction,
-	})
+	}
 }
 
 func monsterActionBlockTerminal5320E0(unit *Object, pop func() int) bool {

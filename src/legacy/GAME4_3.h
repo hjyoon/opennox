@@ -29,7 +29,7 @@ int nox_xxx_mobActionFightStart_531E20(uint32_t a1);
 int sub_531E90(int a1);
 char nox_xxx_mobActionFight_531EC0(int a1);
 int sub_532040(int a1, int a2);
-char nox_xxx_monsterShieldBlockStart_532070(int a1);
+#include "monster_block_start_native_532070.h"
 #include "monster_terminal_native_5320e0.h"
 #include "monster_facing_native_545210.h"
 int* nox_xxx_mobActionMelee1_532130(int a1);

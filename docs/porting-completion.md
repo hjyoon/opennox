@@ -55,6 +55,130 @@ completion requirements.
 
 ## Current findings
 
+### Native Guard update entry point and original AI effects
+
+Source `dd14626` replaces public `546010`'s PE32 integer object argument
+with a native pointer and the original caller's **void update ABI**. It
+retires **180 C source lines** (5,282 source bytes); the original root has
+**1,019 machine-code bytes**. All other `GAME5.c` bytes are preserved.
+Guard closes the last old C update among the thirteen tracked AI rows;
+other callbacks and shared C helper/caller chains remain unported.
+
+Before engine edits, unchanged Guard, facing, three aggression predicates,
+recent sound and Buff bodies execute all **1,423 instruction bytes** in
+**5,713 recorded contexts per profile**: **11,426** under startup
+`0x0e3f` and nearest `0x023f`. The profiles have **803 result differences**.
+Two intentional nil-live-enemy faults per profile preserve completed action
+effects; one ancillary nil-Buff context covers its early return. Ordered
+services, raw facing vectors, per-field write history, whole native records
+and register/stack/FPCW/TOP/heap canaries are retained and compared.
+NoticeThreat, LookAtDamager, InterestingSound, type predicates, heal, RNG
+and Push bodies are declared services. Frame/FPS and facing observations
+execute without replacing the original computations. Separate
+5/7/10/7/10/13/13 NOP tails remain unexecuted.
+
+The ordinary Go implementation now preserves cached entry update/head
+addresses, accepted-Push/live-reload/store ordering, repeated Mimic calls,
+the seen-list ClassPlayer test and first-object fallback, signed-WORD unit
+direction, wrapped DWORD angle addressing and payloads, and original PC53
+operations/binary32 stores. Recent sound consumes RNG only after accepted
+WAIT, loads FPS once for its signed bounds and reloads frame after RNG.
+The shared Go passive predicate and Guard position comparisons retain
+original unordered branches. Shared public C helper signatures remain
+unchanged; this does not claim their other C callers are ported.
+
+Before the fix, final-state mismatches number **1,287 startup/1,018 nearest**.
+The larger 5,311 failing contexts per profile also include the old missing
+read-only facing observation and service-order differences. Both profiles
+now match every frozen row. The first post-edit run exposes 160 high-angle
+address-wrap faults; those outputs are preserved before the DWORD LEA fix.
+The original producer and compressed fixture stay frozen. A subsequent
+Windows/386 compiler failure in the comparator is preserved and fixed by
+one explicit `uint32(i)` cast; every reference value and assertion remains.
+The ARM64 comparator passes all 5,714 terms after that cast.
+`7bb843a` contains only this test portability
+change over the runtime. Windows CI uses that test revision; macOS and Linux
+products retain the unchanged runtime source above. No runtime build input
+or scenario changes, and the Linux run is not redispatched for the cast.
+The deterministic 478,212-byte gzip fixture preserves every original value;
+earlier uncompressed outputs and preparation producers are retained.
+
+All **49 actual C paths** previously SIGSEGV after their ordinary controls.
+They now pass: one shopkeeper path and 48 fight/plant/moderate/return/Mimic/
+seen-player/previous-location/recent-sound compositions at zero through five
+free stack slots. Actual native type predicates, RNG, frame/FPS and stack
+services run, with whole unit/update/health/target records compared.
+The initial composition setup's missing type map is retained; its fix adds
+only registry initialization before the final C-before baseline. Original
+actions, payloads and assertions remain unchanged. Ten executed contexts
+of original `50A7B5..50A7C4` prove callback EAX/AL is overwritten; this is not
+whole MainAI execution. A preliminary ABI metadata label and facing extent
+inspection are corrected in separate retained versions before sealing.
+
+Of **4,005 prior inputs**, **4,003** stay byte-identical. Two historical
+Guard harness files observe final returned Push records; all their test
+names, inputs, assertions and expected values remain, checked mechanically.
+Five new inputs add **5,764 terminal test events**, including parents and
+subtests; these counts do not measure feature or function coverage.
+Four executed code ranges and five exact float operands are appended,
+retaining all old records: **3,275 code/686 data ranges**. Existing facing,
+passive, Buff, direction and shared operand seals are reused.
+
+| macOS ARM64 validation | PASS events | SKIP events | Failed packages |
+| --- | ---: | ---: | ---: |
+| Full root/server/legacy | 297,728 | 20 | 0 |
+| Focused highres, cgocheck2, checkptr 2, OpenAL null | 30,525 | 7 | 0 |
+
+The clean Go 1.26.9 ARM64 product builds in
+138.089 seconds, passes `-h`,
+retains `vcs.modified=false` and restores the original worktree `.git` file.
+Product Blink (six modes), natural first attacks (sixteen modes) and shared
+Lightning/EnergyBolt/DrainMana regressions pass. The original Bookcase
+endpoint, disabled plate, enabled mover and Urchin HP0/DEAD are qualified
+before the whole passing first Save is frozen and freshly loaded from the
+menu. Reload retains HP20/MP43/poison0. Both manual-Save PNGs are actually
+viewed; no failed Save is continued and no earlier batch's different mana
+result substitutes for this current frozen contract.
+
+Real CoreAudio passes **496.434 seconds** in ordinary time, all
+54 stock Amb definitions, 2,758 queued/
+2,727 processed sample buffers and 4 music
+streams. The ADPCM 147/89 panic does not recur. Audio source stays unchanged
+since `97f2663`, with prior independent Linux client audio evidence distinct
+from current server CI. These checks do not establish subjective audible
+fidelity or sustained-session completion.
+
+[Windows native CI](https://github.com/hjyoon/opennox/actions/runs/41052095363)
+passes amd64/386 clean products, verification/help and full uncached
+root/server/legacy suites. Nonverbose Windows output does not independently
+enumerate individual test identities.
+[Linux native CI](https://github.com/hjyoon/opennox/actions/runs/41049960141)
+passes all 58 expected packages (36 pass/22 skip), **295,154 PASS/7 SKIP**,
+all 5,764 new terms, six retained Blink terms and the separate 133,041-event
+default-link damage gate. All artifact ZIPs match GitHub digests and retain
+exact test JSON. The five requested poison-macro warning classes remain
+absent across local gates, builds and native job logs.
+
+| Preserved current product | Bytes | SHA-256 |
+| --- | ---: | --- |
+| macOS ARM64 | 65755746 | `c31f4340ccb704607f424d4048f24911f2af7cb5b6af5b0809c6e93faba02369` |
+| Windows amd64 | 94284140 | `9e3f97d78f77c38f37497c3f32503d2625676ada3e75156f5486d63be91bafec` |
+| Windows 386 | 89163467 | `899acfd472fbc92bef5f0906077017c3045d39da0d022daae3732cfe180409ca` |
+| Linux amd64 server | 63890008 | `acabc7b4be2cf881b4d9470a4d940c425b610651857d4ded554a7b0370e74bcf` |
+
+Evidence is under `monster-guard-native-entry-port`, including the sealed
+original/C-before records, local, product/campaign/Core/native certificates
+and `preservation-qualified-v2.json`. All 4,649 personal installation files
+(503,207,370 bytes), twenty-two ARM64 products, original assets/Saves and
+failed/partial results and products remain preserved. Cleanup removes the
+obsolete 180 C lines. Prior Windows GC and ChannelLife Bookcase variability
+findings remain unexplained.
+
+Next, `534030` movement audio retains its old C entry; other reachable
+callbacks/shared layouts and final nine-cell class/chapter 1–3
+feature/UI/audio/network/stability audits remain. **Overall porting is not
+100%**; chapter 4+ stays outside scope.
+
 ### Native Retreat update entry point
 
 Source `896f5f2` replaces public `545440`'s PE32 integer object argument

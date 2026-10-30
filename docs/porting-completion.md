@@ -55,6 +55,103 @@ completion requirements.
 
 ## Current findings
 
+### Native dying-end callback and cached update admission
+
+Source `a93f740` ports public `544CA0` from a PE32 word-pointer body to
+an opaque native object pointer. The old C root reads its update through
+unit word 187, then reads the cached status at PE32 offset 1440. Initial
+ordinary native controls complete for all three types; non-zombie C returns,
+while Zombie and VileZombie C paths crash. The six frozen compositions
+complete all ordinary controls, including both real native burn bodies;
+two non-zombie C cases return and four zombie wait/fire cases crash.
+The same frozen probes and compositions all pass after the port.
+
+Before engine edits, every one of the original 49 instruction bytes executes
+133 contexts under each of startup `0x0e3f` and nearest `0x023f`: 266 runs
+with no profile differences. IsZombie534A40 and BurnDelete544CE0 are the
+only declared service bodies. Query zero/nonzero words, fire-bit boundaries,
+cached entry update, live status after query, callback mutations and both
+service call identities/order remain recorded. Raw original EAX is retained
+for audit; the public ABI is void and compares no return register. Register/
+stack/FPCW/TOP/heap canaries pass. The existing 64-byte manifest envelope
+retains 15 unexecuted NOPs; no oracle range is added or changed.
+
+All 133 original component comparisons pass before and after the port.
+Separate frozen public C compositions cover ordinary/Zombie/VileZombie
+with and without fire. Real C IsZombie uses warmed type records; the two
+burning zombie C cases execute the existing native BurnDelete body to an
+observed external DelayedDelete boundary. Unit identity and entire native
+unit/update/missile records agree with the ordinary control and original
+burn/no-burn decision. This fixture has no owner, disabled coop rewards and
+an unavailable scorch type; actual deletion queues, XP and scorch spawning
+are outside its service-body claim. Original references, producer,
+component comparator and both C harnesses remain byte-identical.
+
+The typed C export delegates to the unchanged guarded Go dying-end method
+and fully bound production runtime. Its cached entry update and live status
+load already match all 133 reference contexts. A C `_Generic` assertion
+checks the void/native-object signature. The port removes 12 obsolete C
+lines and preserves every other `GAME4_3.c` byte, the ordinary Go algorithm,
+AI registration and manifest. All 3,968 previous test/fixture/scenario
+inputs remain unchanged; five new reference/test inputs are added.
+
+Normal macOS checks pass 284,647 terminals/20 skips in
+247.414 seconds. Highres `cgocheck2`/`checkptr=2`, including
+real OpenAL null, pass 16,491/seven skips in 265.257 seconds.
+Both include all 145 new terminals and six actual C compositions. Strict
+also selects 427 existing zombie-entry and live-death callback terminals.
+Oracle verification passes the unchanged 3,264 code/680 data ranges.
+
+The clean Go 1.26.9 ARM64 product is 65,735,890 bytes, SHA256
+`2c41f1333d9e621f5b66f82866fa4590531767ac449e96807c511e0526a53dae`. Current-product Blink 6, first-attack 16 and shared
+spell regression suites pass. Original Wiz02c Bookcase6 completes, its
+whole passing Save/HP20/MP43/poison0 is sealed before the first actual-menu
+reload, and that reload retains the plate/mover completion and original
+Urchin's native HP0/DEAD. Captured Save images are inspected separately;
+no pixel-golden equivalence or new nine-cell campaign completion is claimed.
+
+Real macOS CoreAudio passes the unchanged 54-type Amb stock scenario in
+342.263 ordinary-clock seconds: 2195
+sample buffers queued, 2152 processed and
+3 music streams. Natural ambient starts,
+controlled continuous/random playback, delay/distance/stop/delete and the
+full polling period pass without the reported ADPCM index147/89 panic.
+Subjective audible fidelity remains open. Audio inputs remain byte-identical
+to `97f2663`; its independent Linux client audio proof is retained.
+
+Windows amd64/386 and Linux amd64 native server workflows are closed and
+qualified for this exact source. Preserved raw logs, GitHub-digest-verified
+archives, executable formats, clean revisions and native help are checked.
+Linux passes 282,073 terminals/seven skips across all 58 expected packages,
+including 145 new terminals and six retained Blink regressions. Default-link
+damage passes 133,041 terminals. All five requested wchar poison-macro
+warnings remain absent. Exact run/job/artifact names, IDs, hashes and times
+are recorded in `monster-dying-end-native-entry-port/all-native-workflows-qualified-v1.json`.
+
+The 4,649 personal files/503,207,370 bytes and 14 prior clean ARM64 products
+remain unchanged. Every original Save, failed result, reference, log and
+product is retained. This batch also removes 30 inventoried reproducible
+Go cache files (4,286,089,906 bytes), checks their inode/size/mtime before
+deletion and rechecks all 15 current/prior ARM64 product hashes afterwards.
+Earlier Go-cache-only cleanup remains linked. The registered table now has seven native Go exports and six
+retained C bodies among 13 distinct nonnil C symbols. Other compatibility
+entries are outside this lexical inventory, which is no global denominator.
+
+The next 544D80 original root and actual 17-byte converter now execute all
+218 instruction bytes in 612 contexts per profile: 1,224 runs. 294 inputs
+differ only in the RandomInt bounds. Unchanged Go matches all 612 nearest
+contexts but only 318 startup contexts, with 294 startup mismatches. Original
+startup 7.9/12.9 produces 7/12 while nearest produces 8/13. Both references,
+the comparator and exact failing outputs are sealed before engine edits.
+Three ordinary non-zombie controls also complete before actual C layout
+faults for initial flag low bytes 0/128/255. Full native C composition and
+the correction remain pending; no DeadStart source change is credited here.
+The earlier
+Windows GC failure and initial ChannelLife Bookcase/replay variability
+remain unresolved and preserved. Broader AI, UI/audio fidelity, peer/network,
+sustained stability and final campaign audits remain open. Overall porting
+is not 100%; chapter 4 and later remain excluded.
+
 ### Native shield-block start callback and live stack results
 
 Source `15aa10b` ports public `532070` to an opaque native object pointer.

@@ -7680,26 +7680,6 @@ char nox_xxx_mobActionPickupObject_544B90(int a1) {
 	return nox_xxx_monsterPopAction_50A160(a1);
 }
 
-//----- (00544C40) --------------------------------------------------------
-int nox_xxx_mobGenericDeath_544C40(int a1) {
-	int v1;              // edi
-	int v2;              // eax
-	int result = 0;      // eax
-	int (*result2)(int); // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	v2 = nox_xxx_monsterGetSoundSet_424300(a1);
-	if (v2) {
-		nox_xxx_aud_501960(*(uint32_t*)(v2 + 60), a1, 0, 0);
-	}
-	nox_xxx_scriptCallByEventBlock_502490((int*)(v1 + 1264), 0, a1, 7);
-	result2 = *(int (**)(int))(*(uint32_t*)(v1 + 484) + 228);
-	if (result2) {
-		result = result2(a1);
-	}
-	return result;
-}
-
 //----- (00544CE0) --------------------------------------------------------
 void nox_xxx_zombieBurnDelete_544CE0(uint32_t* a1) {
 	int v1; // eax

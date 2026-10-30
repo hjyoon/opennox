@@ -4504,22 +4504,6 @@ int nox_xxx_parseSoundSetBin_424170(char* a1) {
 	return 1;
 }
 
-//----- (00424300) --------------------------------------------------------
-void* nox_xxx_monsterGetSoundSet_424300(nox_object_t* a1p) {
-	int a1 = a1p;
-	int result; // eax
-
-	result = a1;
-	if (a1) {
-		if (*(uint8_t*)(a1 + 8) & 2) {
-			result = *(uint32_t*)(*(uint32_t*)(a1 + 748) + 488);
-		} else {
-			result = 0;
-		}
-	}
-	return result;
-}
-
 //----- (00424320) --------------------------------------------------------
 int nox_xxx_setNPCVoiceSet_424320(int a1, int a2) {
 	int result; // eax

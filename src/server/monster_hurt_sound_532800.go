@@ -22,14 +22,21 @@ func monsterHurtSound532800(unit *Object, hooks monsterHurtSoundHooks532800) {
 		return
 	}
 	update := unit.UpdateDataMonster()
-	frame := hooks.frame()
-	if frame < update.Field133 {
+	if hooks.frame() < update.Field133 {
 		return
 	}
-	tickRate := int(hooks.tickRate())
-	update.Field133 = frame + uint32(hooks.random(2*tickRate, 4*tickRate))
-	if update.SoundSet122 != nil {
-		id := sound.ID(*(*uint32)(unsafe.Add(update.SoundSet122, 2*4)))
+	// Original LEA bounds wrap as DWORDs before the signed C RNG call.
+	tickRate := hooks.tickRate()
+	delay := hooks.random(int(int32(2*tickRate)), int(int32(4*tickRate)))
+	// Keep the entry update cached, then reload frame and the class-gated
+	// sound set after RNG, which may replace the live update record.
+	update.Field133 = hooks.frame() + uint32(delay)
+	if uint8(unit.ObjClass)&uint8(object.ClassMonster) == 0 {
+		return
+	}
+	soundSet := (*MonsterUpdateData)(unit.UpdateData).SoundSet122
+	if soundSet != nil {
+		id := sound.ID(*(*uint32)(unsafe.Add(soundSet, 2*4)))
 		hooks.play(id, unit)
 	}
 }

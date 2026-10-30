@@ -636,26 +636,7 @@ char nox_xxx_mobActionMissileAtt_532610(int a1) {
 }
 
 //----- (00532800) --------------------------------------------------------
-char nox_xxx_monsterPlayHurtSound_532800(nox_object_t* a1p) {
-	int a1 = a1p;
-	int v1; // eax
-	int v2; // edi
-
-	LOBYTE(v1) = *(uint8_t*)(a1 + 8);
-	v2 = *(uint32_t*)(a1 + 748);
-	if (v1 & 2) {
-		LOBYTE(v1) = (unsigned char)gameFrame();
-		if (gameFrame() >= *(int*)(v2 + 532)) {
-			*(uint32_t*)(v2 + 532) =
-				gameFrame() + nox_common_randomInt_415FA0(2 * gameFPS(), 4 * gameFPS());
-			v1 = nox_xxx_monsterGetSoundSet_424300(a1);
-			if (v1) {
-				nox_xxx_aud_501960(*(uint32_t*)(v1 + 8), a1, 0, 0);
-			}
-		}
-	}
-	return v1;
-}
+// Native-width implementation: server/monster_hurt_sound_532800.go.
 
 //----- (00532880) --------------------------------------------------------
 int sub_532880(int a1) {

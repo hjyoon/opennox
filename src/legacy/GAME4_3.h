@@ -37,7 +37,7 @@ void sub_532390(int a1, int a2);
 char nox_xxx_mobActionMeleeAtt_532440(int a1);
 uint32_t* sub_532540(int a1);
 char nox_xxx_mobActionMissileAtt_532610(int a1);
-char nox_xxx_monsterPlayHurtSound_532800(nox_object_t* a1);
+#include "monster_hurt_sound_native_532800.h"
 int sub_532880(int a1);
 void sub_532930(int a1, unsigned short a2, unsigned short a3);
 int nox_xxx_soundDefaultDamageSound_532E20(nox_object_t* a1, nox_object_t* a2);

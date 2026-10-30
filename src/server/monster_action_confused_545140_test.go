@@ -28,6 +28,7 @@ func confusedTestObject545140(t *testing.T) *Object {
 func confusedHooks545140(t *testing.T) monsterActionConfusedHooks545140 {
 	t.Helper()
 	return monsterActionConfusedHooks545140{
+		Nearest: true, // Preserve the historical nearest-mode coordinate checks.
 		random: func(int, int) int {
 			t.Fatal("unexpected RNG call")
 			return 0
@@ -193,6 +194,7 @@ func TestMonsterActionConfused545140UsesRandomWalkBody(t *testing.T) {
 	hooks.random = func(int, int) int { return 15 }
 	hooks.randomWalk = func(got *Object) bool {
 		return monsterActionRandomWalkMove545020(got, monsterActionRandomWalkHooks545020{
+			Nearest: true, // Startup ToZero is covered by the sealed original fixture.
 			random: func(min, max int) int {
 				if min != -20 || max != 20 {
 					t.Fatalf("walk RNG bounds = %d..%d", min, max)

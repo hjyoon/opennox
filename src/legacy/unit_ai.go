@@ -72,7 +72,7 @@ func init() {
 		ai.ACTION_FACE_OBJECT:       {Update: C.sub_545300, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_FACE_ANGLE:        {Update: C.sub_545340, Cancel: C.nox_ai_action_pop_532100},
 		ai.ACTION_SET_ANGLE:         {Update: C.sub_5453E0, Cancel: C.nox_ai_action_pop_532100},
-		ai.ACTION_RANDOM_WALK:       {Update: C.nox_xxx_mobActionRandomWalk_545020},
+		ai.ACTION_RANDOM_WALK:       {},
 		ai.ACTION_DYING:             {Start: C.nox_xxx_mobGenericDeath_544C40, Update: C.sub_544D60, End: C.nox_xxx_zombieBurnDeleteCheck_544CA0},
 		ai.ACTION_DEAD:              {Start: C.nox_xxx_mobActionDead1_544D80, Update: C.nox_xxx_mobActionDead2_544EC0},
 		ai.ACTION_GET_UP:            {},

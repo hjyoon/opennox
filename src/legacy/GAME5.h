@@ -16,9 +16,7 @@ typedef struct {
 _Static_assert(sizeof(struct313272) == 24, "wrong circle wall definition size");
 extern struct313272 table_313272[11];
 
-char nox_xxx_mobActionRandomWalk_545020(int a1);
-int sub_545090(int a1);
-char nox_xxx_mobActionConfuse_545140(int a1);
+#include "monster_random_walk_native_545020.h"
 #include "monster_facing_native_545210.h"
 char nox_xxx_mobActionRetreat_545440(int a1);
 int nox_xxx_monsterCanResumeAttack_545520(int a1);

@@ -38,6 +38,7 @@ func TestMonsterActionRandomWalk545020WrapsAndAvoidsLava(t *testing.T) {
 	var probe types.Pointf
 	moveAudioCalls := 0
 	if !monsterActionRandomWalk545020(unit, monsterActionRandomWalkHooks545020{
+		Nearest: true, // Preserve this historical test's nearest-mode expectations.
 		random: func(min, max int) int {
 			if min != -20 || max != 20 {
 				t.Fatalf("random bounds = %d..%d", min, max)
@@ -83,7 +84,8 @@ func TestMonsterActionRandomWalk545020RunningAndFlying(t *testing.T) {
 	unit.UpdateDataMonster().StatusFlags = object.MonStatusRunning
 	tileCalls := 0
 	if !monsterActionRandomWalk545020(unit, monsterActionRandomWalkHooks545020{
-		random: func(int, int) int { return -20 },
+		Nearest: true, // Startup ToZero is covered by the sealed original fixture.
+		random:  func(int, int) int { return -20 },
 		tileAt: func(types.Pointf) int {
 			tileCalls++
 			return 6

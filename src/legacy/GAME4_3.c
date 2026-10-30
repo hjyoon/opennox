@@ -3723,16 +3723,16 @@ char nox_xxx_updateDoor_53AC50(nox_object_t* door) {
 	int v3 = update->target_direction;
 	if (v2 == v3) {
 		if (update->current_direction != v3) {
-			uint32_t object_class = door->obj_class;
-			if (object_class & 4) {
+			uint32_t subclass = door->obj_subclass;
+			if (subclass & 4) {
 				if (door->material & 8) {
 					nox_xxx_aud_501960(245, door, 0, 0);
 				} else {
 					nox_xxx_aud_501960(241, door, 0, 0);
 				}
-			} else if (object_class & 1) {
+			} else if (subclass & 1) {
 				nox_xxx_aud_501960(247, door, 0, 0);
-			} else if (object_class & 0x1000) {
+			} else if (subclass & 0x1000) {
 				nox_xxx_aud_501960(1014, door, 0, 0);
 			} else {
 				nox_xxx_aud_501960(237, door, 0, 0);
@@ -3744,16 +3744,16 @@ char nox_xxx_updateDoor_53AC50(nox_object_t* door) {
 		}
 	}
 	if (update->current_direction == v3) {
-		uint32_t object_class = door->obj_class;
-		if (object_class & 4) {
+		uint32_t subclass = door->obj_subclass;
+		if (subclass & 4) {
 			if (door->material & 8) {
 				nox_xxx_aud_501960(246, door, 0, 0);
 			} else {
 				nox_xxx_aud_501960(243, door, 0, 0);
 			}
-		} else if (object_class & 1) {
+		} else if (subclass & 1) {
 			nox_xxx_aud_501960(248, door, 0, 0);
-		} else if (object_class & 0x1000) {
+		} else if (subclass & 0x1000) {
 			nox_xxx_aud_501960(1015, door, 0, 0);
 		} else {
 			nox_xxx_aud_501960(239, door, 0, 0);

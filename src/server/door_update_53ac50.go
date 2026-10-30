@@ -61,9 +61,10 @@ func (s *Server) DoorUpdate53AC50(door *Object, runtime DoorUpdateRuntime53AC50)
 }
 
 func doorUpdateSound53AC50(door *Object, reachedTarget bool) uint32 {
-	class := uint32(door.ObjClass)
+	// GAME.EXE selects door sounds from ObjSubClass at offset 0x0c.
+	subclass := uint32(door.ObjSubClass)
 	switch {
-	case class&4 != 0:
+	case subclass&4 != 0:
 		if door.Material&8 != 0 {
 			if reachedTarget {
 				return 246
@@ -74,12 +75,12 @@ func doorUpdateSound53AC50(door *Object, reachedTarget bool) uint32 {
 			return 243
 		}
 		return 241
-	case class&1 != 0:
+	case subclass&1 != 0:
 		if reachedTarget {
 			return 248
 		}
 		return 247
-	case class&0x1000 != 0:
+	case subclass&0x1000 != 0:
 		if reachedTarget {
 			return 1015
 		}

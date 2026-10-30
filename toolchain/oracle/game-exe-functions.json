@@ -22993,6 +22993,20 @@
       "size": 11,
       "sha256": "b7c9557d522776898bffa76be3eeb71673a424d5bc47507ad3463e47118f4fcb",
       "purpose": "Complete unchanged frame-copy body executes its actual global read/write during FightStart; read-only entry observation records ordering. No patched instructions or substituted frame-copy service."
+    },
+    {
+      "name": "original_door_sound_departure_selector_53AC6F",
+      "address": "0x0053AC6F",
+      "size": 122,
+      "sha256": "85f9a46badc076da4feed5052cdbdc2523a3364f14b649f5e8a53ffbd67f3a7e",
+      "purpose": "Unchanged departure sound selector reads Object subtype at0x0c, material at0x18. Both original selector blocks execute210 instruction bytes in384 cases/profile,768 startup0xe3f/nearest0x23f total with identical results. AudioEvent and update-list removal are declared services. Whole door motion/collision and actual audio output are outside this selector proof."
+    },
+    {
+      "name": "original_door_sound_arrival_selector_53ACF2",
+      "address": "0x0053ACF2",
+      "size": 88,
+      "sha256": "dc247287f5fcfc410fdd5036252bc8427dad16399662d3c1258d62bacc6a9180",
+      "purpose": "Unchanged arrival selector and removal call up to the common synchronization merge. Frozen original results distinguish wood, metal gate, wooden gate, heavy wooden door and stone door sounds across class distractions, subtype precedence, material and phase. Register/stack/FPCW/TOP/heap canaries stay intact; original code is unmodified."
     }
   ],
   "data": [

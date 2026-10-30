@@ -10,7 +10,7 @@ import (
 func TestDoorUpdate53AC50SoundsAndStatus(t *testing.T) {
 	s := new(Server)
 	departingData := &DoorUpdateData{TargetDirection: 3, SyncedDirection: 3, CurrentDirection: 4}
-	departing := &Object{ObjClass: 4, Material: 8, UpdateData: unsafe.Pointer(departingData)}
+	departing := &Object{ObjClass: object.ClassDoor, ObjSubClass: 4, Material: 8, UpdateData: unsafe.Pointer(departingData)}
 	var gotSound uint32
 	s.DoorUpdate53AC50(departing, DoorUpdateRuntime53AC50{AudioEvent: func(id uint32, got *Object) {
 		if got != departing {
@@ -24,7 +24,7 @@ func TestDoorUpdate53AC50SoundsAndStatus(t *testing.T) {
 	}
 
 	arrivingData := &DoorUpdateData{TargetDirection: 4, SyncedDirection: 3, CurrentDirection: 4}
-	arriving := &Object{ObjClass: 1, UpdateData: unsafe.Pointer(arrivingData)}
+	arriving := &Object{ObjClass: object.ClassDoor, ObjSubClass: 1, UpdateData: unsafe.Pointer(arrivingData)}
 	s.Objs.AddToUpdatable(arriving)
 	s.DoorUpdate53AC50(arriving, DoorUpdateRuntime53AC50{AudioEvent: func(id uint32, _ *Object) { gotSound = id }})
 	if gotSound != 248 || arrivingData.SyncedDirection != 4 || arriving.IsUpdatable != 0 {
@@ -40,7 +40,7 @@ func TestDoorUpdate53AC50SoundsAndStatus(t *testing.T) {
 
 func TestDoorUpdate53AC50SoundClasses(t *testing.T) {
 	tests := []struct {
-		class    object.Class
+		subclass object.SubClass
 		material uint16
 		depart   uint32
 		arrive   uint32
@@ -52,12 +52,12 @@ func TestDoorUpdate53AC50SoundClasses(t *testing.T) {
 		{0, 0, 237, 239},
 	}
 	for _, tc := range tests {
-		door := &Object{ObjClass: tc.class, Material: tc.material}
+		door := &Object{ObjClass: object.ClassDoor, ObjSubClass: tc.subclass, Material: tc.material}
 		if got := doorUpdateSound53AC50(door, false); got != tc.depart {
-			t.Errorf("class %#x departing sound = %d, want %d", tc.class, got, tc.depart)
+			t.Errorf("subclass %#x departing sound = %d, want %d", tc.subclass, got, tc.depart)
 		}
 		if got := doorUpdateSound53AC50(door, true); got != tc.arrive {
-			t.Errorf("class %#x arriving sound = %d, want %d", tc.class, got, tc.arrive)
+			t.Errorf("subclass %#x arriving sound = %d, want %d", tc.subclass, got, tc.arrive)
 		}
 	}
 }

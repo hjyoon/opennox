@@ -55,6 +55,95 @@ completion requirements.
 
 ## Current findings
 
+### Native shield-block start callback and live stack results
+
+Source `15aa10b` ports public `532070` to an opaque native object pointer.
+The old scalar-int C entry truncates the C-owned unit before reading its
+PE32 update offset. The frozen ordinary control completes; the public C
+probe crashes. Seven additional native missile/shield/Pop/Push compositions
+also complete their ordinary controls before the old public entry crashes.
+All frozen probes and compositions pass unchanged after the port.
+
+Before engine edits, the complete 102-byte original root executes 485
+contexts under each of startup `0x0e3f` and nearest `0x023f`: 970 runs with
+no profile differences. Shield query, PopAction and PushAction are the only
+declared service bodies. Original frame/FPS loads, cached entry stack head,
+unsigned deadline comparison, live subclass after Pop and char results all
+execute unchanged. Register/stack/FPCW/TOP/heap/global canaries pass. The
+initial 453 contexts and expected results are preserved; 32 native wrap/push
+address aliases are appended before engine edits and comparison. Both
+versions and their exact producer outputs remain available. The existing
+112-byte manifest envelope retains ten unexecuted NOPs; no oracle entries
+are added.
+
+The 485 original component comparisons pass before and after the port.
+This existing handled-bool API compares state, call order and complete
+native records; its API return excludes the original char register.
+Separate frozen public C compositions compare each char result directly
+against the original fixture: wait, deadline refresh, NPC/monster expiry,
+failed push and NPC/monster unsigned wrap. They execute real native missile
+lookup/shield geometry and real Pop/Push/rejection, checking the full
+unit/update/missile records and AI.StackChanged. Native push-pointer char
+bytes are selected from the presealed alias inputs. Started End callbacks
+and independent service-body equivalence are outside this composition.
+Only the ABI return narrows; pointers used for reads remain native-width.
+A C `_Generic` assertion checks the signature. Ordinary guarded bool APIs
+retain their preflight checks and share the result-producing core.
+
+The change removes 20 obsolete C lines and preserves every other
+`GAME4_3.c` byte, production AI registration and the existing manifest.
+All 3,963 previous test/fixture/scenario inputs remain unchanged; five new
+reference/test inputs are added. All 495 new test terminals pass. Normal
+macOS checks pass 284,502 terminals/20 skips in 256.621 seconds. Highres
+`cgocheck2`/`checkptr=2`, including real OpenAL null, pass 15,919/seven skips
+in 276.331 seconds; this also selects 65 existing MainAI block/registry
+terminals in addition to the previous strict selection. Oracle verification
+passes the unchanged 3,264 code/680 data ranges.
+
+The clean Go 1.26.9 ARM64 product is 65,735,730 bytes, SHA256
+`415546e4e0762df532baeb0b4452cd9c6e75385181453641e5176bd8e82ce12a`. Current-product Blink six modes, first-attack sixteen
+modes and shared duration rays/Chain Lightning/Energy Bolt/Drain Mana pass.
+Original Wiz02c Bookcase6 completes and its whole passing Save, HP20/MP43/
+poison0, is frozen before the first actual-menu reload; that reload retains
+the completed plate/mover and original dead Urchin. Both Save checkpoint
+images are inspected; the initial capture still shows the overwrite dialog,
+while the fresh reload shows Save completion. Persisted Save hashes and
+fresh Load establish completion, without a pixel-golden claim.
+
+Ordinary-clock macOS CoreAudio passes the unchanged stock ambient scenario,
+including all 54 Amb catalog types, natural ambient starts, controlled
+continuous/random emitters, delay/distance/stop/delete and the full music/
+sample polling period. Counts and timing remain in the qualified CoreAudio
+record; subjective audible fidelity is not claimed. The ADPCM slot-reuse
+and Amb source files remain byte-identical to `97f2663`; the independent
+native Linux client audio proof from that source remains valid for those
+unchanged inputs. The new strict and product runs also show no recurrence
+of the reported ADPCM index147/89 panic.
+
+Windows amd64/386 and Linux amd64 native server workflows are closed and
+qualified for this exact runtime source, including preserved raw job logs,
+GitHub-digest-verified archives, clean product revisions and native help.
+Linux passes 281,928 terminals/seven skips across all 58 expected packages,
+including 495 new terminals and six retained Blink observer regressions;
+default-link damage passes 133,041 terminals. All five requested wchar
+poison-macro warnings remain absent from local and native CI logs.
+The exact IDs, architecture mapping, hashes and timings are recorded in
+`monster-block-start-native-entry-port/all-native-workflows-qualified-v1.json`.
+
+Personal installation files remain unchanged: 4,649 files/503,207,370
+bytes. Thirteen prior clean ARM64 products and all original Save, failed
+outputs, references and verification records are preserved. The previous
+13,361,595,728-byte cleanup removed only inventoried reproducible Go cache;
+this batch retires C duplication and preserves all evidence. The registered
+AI table still has seven retained C bodies among its thirteen nonnil C
+symbols; this lexical inventory excludes other compatibility roots and
+provides no global completion denominator. The next `544CA0` C layout
+faults and original comparison preparation are recorded separately.
+The earlier unexplained Windows GC failure and initial ChannelLife
+Bookcase/replay variability remain unresolved and retained. Broader AI,
+UI/audio fidelity, peer/network and sustained stability evidence remain
+open. Overall porting is not 100%; chapter 4 and later remain excluded.
+
 ### Native terminal AI callbacks and original char returns
 
 Source `946c7bd` ports public shield-finish `5320E0`, weapon-block `532110`

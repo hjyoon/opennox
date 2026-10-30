@@ -92,43 +92,6 @@ struct313272 table_313272[11] = {
 	{f0:0x1, f4:0, f8:11.5, f12:0x1, f16:0, f20:11.5},
 };
 
-//----- (00545440) --------------------------------------------------------
-char nox_xxx_mobActionRetreat_545440(int a1) {
-	int v1;  // ebx
-	int* v2; // eax
-	int* v3; // edi
-	int v4;  // ecx
-	int v5;  // ecx
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (sub_545580(a1)) {
-		if (*(uint32_t*)(v1 + 1196)) {
-			if (nox_xxx_testUnitBuffs_4FF350(a1, 29) || (v2 = (int*)nox_xxx_mobCastRelated_541050(a1)) == 0) {
-				v3 = nox_xxx_monsterPushAction_50A260(a1, 41);
-				if (v3) {
-					v3[1] = gameFrame() + nox_common_randomInt_415FA0(4 * gameFPS(), 6 * gameFPS());
-				}
-				v2 = nox_xxx_monsterPushAction_50A260(a1, 24);
-				if (v2) {
-					v4 = *(uint32_t*)(v1 + 1196);
-					v2[1] = *(uint32_t*)(v4 + 56);
-					v5 = *(uint32_t*)(v4 + 60);
-					v2[3] = 0;
-					v2[2] = v5;
-				}
-			}
-		} else {
-			v2 = (int*)nox_xxx_monsterCanResumeAttack_545520(a1);
-			if (!v2) {
-				LOBYTE(v2) = (unsigned int)nox_xxx_mobRetreatCheckEdibles_5455E0(a1);
-			}
-		}
-	} else {
-		LOBYTE(v2) = nox_xxx_monsterPopAction_50A160(a1);
-	}
-	return (char)v2;
-}
-
 //----- (00545520) --------------------------------------------------------
 int nox_xxx_monsterCanResumeAttack_545520(int a1) {
 	unsigned short* v1; // ecx

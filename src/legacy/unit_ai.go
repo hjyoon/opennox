@@ -54,7 +54,7 @@ func init() {
 		ai.ACTION_ESCORT:            {},
 		ai.ACTION_GUARD:             {Update: C.nox_xxx_mobActionGuard_546010},
 		ai.ACTION_HUNT:              {},
-		ai.ACTION_RETREAT:           {Update: C.nox_xxx_mobActionRetreat_545440},
+		ai.ACTION_RETREAT:           {},
 		ai.ACTION_MOVE_TO:           {},
 		ai.ACTION_FAR_MOVE_TO:       {},
 		ai.ACTION_DODGE:             {},

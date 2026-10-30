@@ -22867,6 +22867,41 @@
       "size": 84,
       "sha256": "3a9764b2ec124b2f6840234a02376b45cd63eef812ad10432b9073b1a23d019e",
       "purpose": "Complete unmodified BurnDelete113 and ReleasedSoul84 instruction bytes execute467contexts/profile,731calls/profile,1462calls across startupPC53/chop and nearest with no profile differences. Ordered services/live owner-update Player reload, unsigned class/subclass masks, original lazy DWORD type-index cache, repeat calls, allocation failure/aliases and raw position/direction words checked. Shield, minimap, reward, scorch, delete, lookup, indexed allocation and world creation are declared services. Public void rawEAX retained outside handled-bool API. Burn root contains the already sealed five-byte reward call at544D36; overlap is intentional. Fifteen/twelve trailing NOPs excluded. No transitive world/audio/network/campaign equivalence claim."
+    },
+    {
+      "name": "original_complete_retreat_native_root_545440",
+      "address": "0x00545440",
+      "size": 218,
+      "sha256": "1d03c9a818b21e4841a85d4220c110a4323d7b803412794978e9f7ef11f10d34",
+      "purpose": "Complete unchanged original body executed with the634-byte coupled Retreat path in1465 contexts/profile,2930 total at startupPC53/ToZero and nearest. Four intended nil-live-enemy faults/profile preserve the completed prefix; one ancillary nil-Buff case covers its early RET. Ordered services, original store histories, native records and canaries match ordinary Go. Related selector,Push/Pop,RNG and food search are declared boundaries; Buff/GameFlags execute unchanged. Public native port in this batch is the218-byte void Retreat root only; shared helper C entry ABIs remain outside scope. Root intentionally overlaps existing545476 buff-call seal."
+    },
+    {
+      "name": "original_complete_retreat_health_comparison_545440",
+      "address": "0x00545520",
+      "size": 83,
+      "sha256": "6cc337c7f13999b636fe895c36c63404666a54fa76d59b634ef15ad34345d0ae",
+      "purpose": "Complete unchanged original body executed with the634-byte coupled Retreat path in1465 contexts/profile,2930 total at startupPC53/ToZero and nearest. Four intended nil-live-enemy faults/profile preserve the completed prefix; one ancillary nil-Buff case covers its early RET. Ordered services, original store histories, native records and canaries match ordinary Go. Related selector,Push/Pop,RNG and food search are declared boundaries; Buff/GameFlags execute unchanged. Public native port in this batch is the218-byte void Retreat root only; shared helper C entry ABIs remain outside scope. Root intentionally overlaps existing545476 buff-call seal."
+    },
+    {
+      "name": "original_complete_retreat_predicate_545440",
+      "address": "0x00545580",
+      "size": 40,
+      "sha256": "ad7ebd63419e7cc90fb8a73b6323ec0c344c958d1216beb40123a63a4720d3a1",
+      "purpose": "Complete unchanged original body executed with the634-byte coupled Retreat path in1465 contexts/profile,2930 total at startupPC53/ToZero and nearest. Four intended nil-live-enemy faults/profile preserve the completed prefix; one ancillary nil-Buff case covers its early RET. Ordered services, original store histories, native records and canaries match ordinary Go. Related selector,Push/Pop,RNG and food search are declared boundaries; Buff/GameFlags execute unchanged. Public native port in this batch is the218-byte void Retreat root only; shared helper C entry ABIs remain outside scope. Root intentionally overlaps existing545476 buff-call seal."
+    },
+    {
+      "name": "original_complete_retreat_antimagic_caster_predicate_545440",
+      "address": "0x005455B0",
+      "size": 43,
+      "sha256": "31ffeb61998335969a7a25fce3a7c308a59695bf83cf027b209f73b1d6135b93",
+      "purpose": "Complete unchanged original body executed with the634-byte coupled Retreat path in1465 contexts/profile,2930 total at startupPC53/ToZero and nearest. Four intended nil-live-enemy faults/profile preserve the completed prefix; one ancillary nil-Buff case covers its early RET. Ordered services, original store histories, native records and canaries match ordinary Go. Related selector,Push/Pop,RNG and food search are declared boundaries; Buff/GameFlags execute unchanged. Public native port in this batch is the218-byte void Retreat root only; shared helper C entry ABIs remain outside scope. Root intentionally overlaps existing545476 buff-call seal."
+    },
+    {
+      "name": "original_complete_retreat_edibles_actions_545440",
+      "address": "0x005455E0",
+      "size": 197,
+      "sha256": "557ebf05c154ba5251c3466225a6fe997dab0dc407f4de049a6179178a26c891",
+      "purpose": "Complete unchanged original body executed with the634-byte coupled Retreat path in1465 contexts/profile,2930 total at startupPC53/ToZero and nearest. Four intended nil-live-enemy faults/profile preserve the completed prefix; one ancillary nil-Buff case covers its early RET. Ordered services, original store histories, native records and canaries match ordinary Go. Related selector,Push/Pop,RNG and food search are declared boundaries; Buff/GameFlags execute unchanged. Public native port in this batch is the218-byte void Retreat root only; shared helper C entry ABIs remain outside scope. Root intentionally overlaps existing545476 buff-call seal."
     }
   ],
   "data": [

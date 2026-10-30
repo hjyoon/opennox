@@ -2,12 +2,15 @@ package server
 
 import "github.com/opennox/opennox/v1/common/unit/ai"
 
-// MonsterFightSchedulerRuntime531B40 supplies the two indirect engine services.
-// Nil services use the ordinary spell and registered action implementations.
+// MonsterFightSchedulerRuntime531B40 supplies the indirect engine services.
+// RelatedSpell overrides selection; otherwise CanSummon binds its limit check.
+// A missing limit service rejects summons while allowing other related spells.
+// A nil CancelAction uses the ordinary registered action implementations.
 // Push admission, stack writes, reset and distance always run in production code.
 type MonsterFightSchedulerRuntime531B40 struct {
 	RelatedSpell func(*Object, *Object) bool
 	CancelAction func(ai.ActionType) func(*Object)
+	CanSummon    func(*Object, int) bool
 }
 
 // MonsterFightScheduler531B40 implements the four public scheduler entries.
@@ -19,8 +22,12 @@ func (s *Server) MonsterFightScheduler531B40(entry uint32, unit, target *Object,
 	}
 	related := runtime.RelatedSpell
 	if related == nil {
+		canSummon := runtime.CanSummon
+		if canSummon == nil {
+			canSummon = func(*Object, int) bool { return false }
+		}
 		related = func(unit, target *Object) bool {
-			return monsterFightCastRelated540D90(unit, target, s.monsterFightSpellHooks540B90(nil))
+			return monsterFightCastRelated540D90(unit, target, s.monsterFightSpellHooks540B90(canSummon))
 		}
 	}
 	hooks := monsterActionFightHooks531EC0{

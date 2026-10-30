@@ -265,7 +265,7 @@ func (w *guardOriginalWorld546010) mutate(c guardOriginalInput546010, stage stri
 	}
 	if is("head-args") {
 		for i, item := range w.items[2:] {
-			item.Args = [4]uintptr{uintptr(0x42c80001 + i), uintptr(0xc1a00001 - i), 64, 0x6b000004}
+			item.Args = [4]uintptr{uintptr(0x42c80001 + i), uintptr(0xc1a00001 - uint32(i)), 64, 0x6b000004}
 		}
 	}
 	if is("item-args") {

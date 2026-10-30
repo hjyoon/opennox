@@ -55,6 +55,110 @@ completion requirements.
 
 ## Current findings
 
+### Native movement-audio entry and unsigned frame timing
+
+Source `460d795` ports public `534030` to a native object pointer and the
+original caller's **void ABI**. The ordinary Go body now preserves unsigned
+DWORD addition, decrement, division and remainder, including NetCode/frame
+wrap and animation counts/durations above signed-INT range. It loads frame
+once, reads the entry update without imposing a class check, and performs
+the original class-gated live sound lookup after selecting a footstep.
+**44 C source lines/1,217 bytes** are retired; all other `GAME4_3.c` bytes
+remain unchanged. Existing Go movement callers use the same corrected body.
+
+Before engine edits, the unchanged **230-byte root and two 31-byte getters**
+execute all **292 instruction bytes** in **5,876 contexts per profile**:
+**11,752** under startup `0x0e3f` and nearest `0x023f`, with identical results.
+Only AudioEvent `501960` is declared. Actual animation/sound getters execute;
+ordered audio arguments/state, raw EAX/AL, overwritten caller argument,
+register/stack/FPCW/TOP and whole-heap canaries are retained. One ancillary
+nil getter and three malformed-DIV diagnostics per profile stay separate.
+NOP tails of 10/1/1 bytes are excluded. Nil-record/definition and zero-divisor
+safety returns are outside the primary equivalence domain; no matching of
+the malformed original faults is claimed.
+
+Seven original call/return tails forward five raw EAX values in 35 contexts;
+the complete original AI overwrite discards them in another 70 contexts.
+These **105 executed witnesses** support the void consumer without claiming
+whole movement or MainAI execution. The first reference producer's reused
+CPU exception state is retained; the final producer uses fresh CPUs only
+for separate malformed-DIV diagnostics, preserving every primary input.
+
+Go-before has **2,056 class-guard panics and 542 event differences**, after
+all 5,876 native input states are independently checked against the original.
+Earlier unrecovered-panic and cross-reference-allocation harness outputs
+remain preserved. Both final profiles now match every frozen row. The
+comparator changes only by gofmt after its final before seal; producer and
+compressed original values remain frozen.
+
+All **ten actual C paths** previously SIGSEGV after passing ordinary controls.
+They now pass, including both step frames, non-step, animation latch and nil
+sound at two native definition/sound addresses. Actual AVNT parsing, audio
+allocation, owner/position/kind/code and whole native records are checked.
+The initial positive controls' missing explicit MonsterDef initialization
+is preserved; assigning the same intended values establishes the final
+C-before baseline without changing expected events or assertions.
+
+All **4,010 prior inputs** stay byte-identical. Four new inputs supply
+**5,888 terminal test terms**, including parents; there are 4,014 inputs.
+Two code ranges are appended, preserving all old records and reusing the
+sound-getter and caller seals: **3,277 code/686 data ranges**. Frame and
+animation-table values are runtime inputs. Counts do not measure global
+function, feature or branch completion.
+
+macOS normal passes **303,616 PASS/20 SKIP** in 260.138 seconds; highres
+strict, cgocheck2, checkptr2 and real OpenAL/null checks pass **36,413 PASS/
+7 SKIP** in 283.958 seconds. The separate nearest comparator passes all
+5,877 terms; the original-range verifier passes. The clean ARM64 GUI product
+builds in 112.526 seconds with Go 1.26.9 and passes help.
+
+Product Blink (six modes), natural first attacks (sixteen modes) and shared
+Lightning/EnergyBolt/DrainMana pass. Original Bookcase endpoint, plate/mover
+and Urchin HP0/DEAD are checked before freezing the whole passing first
+Save. Fresh actual-menu Load retains HP20/MP43/poison0; both exact final
+Save PNGs are actually viewed. No failed Save is continued.
+
+Real CoreAudio passes **348.724 seconds** in ordinary time: all **54 Amb**
+definitions, **2,128 queued/2,094 processed sample buffers** and **three music
+streams**, including continuous/random-delay emitters and owner cleanup.
+The ADPCM 147/89 panic does not recur. Audio inputs remain unchanged since
+`97f2663`; earlier independent Linux client-audio evidence remains distinct
+from current server CI. Subjective audible fidelity and sustained-session
+completion remain open.
+
+[Windows native CI](https://github.com/hjyoon/opennox/actions/runs/41061635671)
+passes amd64/386 clean products, verification/help and full uncached
+root/server/legacy suites; nonverbose output does not enumerate each test.
+[Linux native CI](https://github.com/hjyoon/opennox/actions/runs/41061706027)
+passes all 58 packages (36 pass/22 skip), **301,042 PASS/7 SKIP**, all 5,888
+new terms, six retained Blink terms and the separate **133,041-event**
+default-link damage gate. All products use the same runtime/test source.
+All ZIPs match GitHub digests, preserve exact test JSON and pass product
+architecture/VCS/hash checks. All five poison-macro warning classes remain
+absent in local gates, build and native logs.
+
+| Preserved current product | Bytes | SHA-256 |
+| --- | ---: | --- |
+| macOS ARM64 | 65756162 | `17f04b0ebe563d54f42780507293da41c16b4313fe26bd7904b373ec157ffe1c` |
+| Windows amd64 | 94288208 | `957caab8292dfd73090a11092c2a1635a36fb960851892e01220095b52a35ff1` |
+| Windows 386 | 89165817 | `413146220b5494436944aff23887be709fda194a0a92a934958f987ef47437ee` |
+| Linux amd64 server | 63894720 | `81b3d9c56b6b7fd41a0ecf8ba6a745ad040720090aeb61779b86004721c65ab0` |
+
+Evidence is under `monster-move-audio-native-entry-port`, including original/
+C-before seals, local/product/campaign/Core/native certificates and
+`preservation-qualified-v1.json`. All 4,649 personal installation files
+(503,207,370 bytes), twenty-three ARM64 products, earlier native products,
+original assets/Saves and failed/partial results remain preserved. Cleanup
+removes the obsolete C body. Prior Windows GC and ChannelLife Bookcase
+variability findings remain unexplained.
+
+Next, `532800` hurt sound has read-only original execution in 4,000 contexts
+per profile and 90 original consumer witnesses. Its comparator preparation,
+actual C-before baseline and implementation are not yet complete. Other
+callbacks/shared layouts and final nine-cell class/chapter 1–3 feature/UI/
+audio/network/stability audits remain. **Overall porting is not 100%**;
+chapter 4+ stays outside scope.
+
 ### Native Guard update entry point and original AI effects
 
 Source `dd14626` replaces public `546010`'s PE32 integer object argument
@@ -174,7 +278,7 @@ failed/partial results and products remain preserved. Cleanup removes the
 obsolete 180 C lines. Prior Windows GC and ChannelLife Bookcase variability
 findings remain unexplained.
 
-Next, `534030` movement audio retains its old C entry; other reachable
+The previously pending `534030` entry is qualified above. Other reachable
 callbacks/shared layouts and final nine-cell class/chapter 1–3
 feature/UI/audio/network/stability audits remain. **Overall porting is not
 100%**; chapter 4+ stays outside scope.

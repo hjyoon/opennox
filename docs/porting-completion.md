@@ -55,6 +55,84 @@ completion requirements.
 
 ## Current findings
 
+### Native public fight schedulers and ordinary spell services
+
+Runtime `ea9c9e72` ports public `531B40`, `531C10`, `531C60` and `531D50`
+to native object pointers. Their return remains a stack pointer, zero or
+integer 1; Go retains it as `uintptr`. The existing Go helpers now preserve
+untouched stack arguments, cached versus live update reads, unordered
+comparisons, the unspilled half-range threshold and startup ToZero spills.
+The ordinary Push/reset body is shared with the declared cancel service.
+Only four C bodies, their four parameter declarations and one explicit
+typed adaptation in the retained PE32 parent change. Other C parent layouts
+and the global typed monster-data invariant remain outside this change.
+
+Both original FPU profiles execute **4,138 inputs** each, retaining all
+3,510 earlier rows unchanged. Eighteen outputs differ between profiles,
+all in the melee scheduler. Production follows startup `0x0e3f`; nearest
+`0x023f` remains a separate control. Original Push/reset, buff, distance,
+predicates and name lookup execute without substituted numeric or push
+results. Each profile makes 27,718 original push calls and 215 declared
+cancel callbacks. It executes 1,543 of 1,562 loaded original bytes; the
+remainder is eighteen root padding bytes and one buff-null return byte
+unreachable from these non-null roots.
+
+Before changes, four actual C calls crash after pointer truncation and
+2,238 Go inputs differ. Frozen Go and public-C comparators now match all
+4,138 original outputs, guarded records and unused arguments; C checks the
+native return and Go checks every push attempt. Another 3,504 original
+contexts pass through ordinary C bindings without a service provider.
+The related selection and specified cancel effects are declared boundaries;
+this does not certify every spell or registered action body.
+
+An additional ordinary-service audit finds that initial source `e728c7ad`
+passes a nil summon-limit service, causing related selection to reject even
+non-summon spells. A regression frozen before the correction proves that
+no production cast is queued. The final C binding forwards native unit and
+guide index to the existing `500D70` service. Standalone callers without
+admission can still select non-summon spells. Eight additional events check
+the real production cast, admission decisions and native service forwarding.
+Initial products and results are retained and excluded from the final
+runtime certificate.
+
+Normal checks pass **356,447/43 skips**; strict highres, cgocheck2,
+checkptr2 and real OpenAL/null checks pass **210,187/eight skips**.
+Every previous case and multiplicity is retained, adding 11,791 scheduler
+events; strict also selects nineteen existing MonsterFight spell events.
+All 4,036 previous inputs and assertions remain byte-identical. Code-oracle
+verification retains 3,301 code and 688 data ranges unchanged. Event counts
+do not measure feature coverage.
+
+The clean ARM64 product passes six Blink modes, sixteen natural first-attack
+modes, Lightning/EnergyBolt/DrainMana, and original Bookcase progression with
+fresh actual-menu Load/Save. HP20/MP43/poison0 and original endpoint/plate/
+mover/Urchin death are qualified before reload. Four new PNGs are actually
+viewed: final frames show overwrite confirmation; disk and fresh-menu Load
+separately establish Save completion. Windows amd64 and 386 products and
+their three-package tests pass with clean Go 1.26.9 metadata. The five
+requested poison-macro diagnostics are absent.
+
+Linux amd64 passes **353,609/seven skips** across all 58 expected packages
+(36 pass, 22 skip). The separate default-link PlayerDamage checks pass
+another 133,384 events. All three final native jobs complete successfully.
+Both raw Linux JSON streams remain exact inside the verified ZIP and are
+streamed for hashes and required original-case counts. All preceding P/Q/R
+case counts and all 11,791 scheduler events are retained.
+
+The final preservation audit verifies all 4,649 personal installation files
+(503,207,370 bytes), all 4,036 prior inputs, all 66 retained products
+(34 ARM64 and 32 native products), original references, failure records,
+Saves and captures. Initial and corrected products and all eight newly
+viewed PNGs remain; no original asset or evidence cleanup occurs.
+
+The next `532040` callback has an unchanged two-profile original reference
+with 10,800 inputs each and a qualified native C pointer-truncation crash.
+Its native comparator is frozen and allocation controls pass; no product
+implementation is changed yet. The final nine campaign-cell audits and
+broader UI/audio/network/stability requirements remain open. Overall
+porting 100% is not achieved.
+
+
 ### Original empty-stack monster block readiness
 
 Source `55e06cc` connects the shared player-damage block predicate to the

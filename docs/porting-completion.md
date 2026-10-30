@@ -55,6 +55,80 @@ completion requirements.
 
 ## Current findings
 
+### Door materials and shop playback
+
+Audio-qualified source `b78c8a9` includes door fix `b7d0fd4` and opt-in
+product observers. Both the Go selector and active public C `53AC50` body
+read object class at offset 8 instead of the original subclass at offset 12.
+The unchanged original selector blocks execute 210 instruction bytes across
+384 contexts in each of two FPU profiles. Before the fix, Go differs in
+256/384 contexts and actual C differs in 8/10 material/direction controls;
+all 384 Go contexts and ten actual C controls now match. The old door test
+fixture now supplies ClassDoor plus the intended subclass; every expected
+sound assertion is retained.
+
+| Family | Actual stock fixture type | Original open/close IDs | Observed stock samples |
+| --- | --- | --- | --- |
+| Wood | WoodenDoor | 237 / 239 | odow1opb / odow1clb |
+| Metal gate | JailDoor | 241 / 243 | squeak3 / gatecls1 |
+| Wooden gate | OgreCageDoor | 245 / 246 | odoogopa / odoogcla |
+| Heavy wood | ThickWoodenDoor | 247 / 248 | odow1opc / odow2clb |
+| Stone | AncientRuinDoor | 1014 / 1015 | odostopb / odostclb |
+
+The clean ARM64 product `76024d83c6f75ef7ad1e3b004250c5af6f4fbd7e79921fa3e063648c69140cf1`
+passes the ten controlled stock sound phases through the registered update,
+server A6 packet, native client decoder, mixer and real Core audio backend.
+All owned voices have positive submission gain, input EOS and complete
+remaining hardware-buffer drain. Stock type/subclass/material fields stay
+unchanged. This fixture covers sound phases; full door motion remains an
+independent behavior. Its ordinary-clock run exits 0 after 350.212 seconds.
+
+Actual GUI potion buying and selling also pass in all three requested
+paths: fresh Con01/Coop, multiplayer host and an independent remote client.
+Each uses original InventoryPickup 307/A7, stock `otrapclk` (2048 bytes,
+22050 Hz), gain 0.68503934 and all four hardware buffers processed. Gold
+100→60→100 and potion inventory 0→1→0 are verified. The remote player has
+index 0 and actual netcode 505, with no local host unit; independent server
+snapshots and executed script observations agree with the client UI.
+Original buy/sell/bulk-sell call sites confirm sound 307, kind 2 and player
+NetCode. Current playback needs no speculative shop ID, NetCode or ADPCM
+decoder change. The controlled merchant, funds and position supply no
+additional earned campaign progression.
+
+The initial remote pair fails before trade because its input prefix omits
+stock chat-help/MOTD dismissal and normal Action participation. Its
+observer/NO_COLLIDE state and all failed inputs/results are retained. A
+fresh pair uses the existing validated participation sequence, retaining
+the cursor bound and trade/audio assertions, and passes in 548.689 seconds.
+The client exits naturally with code 0. The controller stops its held GUI
+host fixture with SIGTERM after the completed checks; this is not a natural
+host-exit or long-session stability gate.
+
+Local normal/strict audio checks each pass 266 tests with seven skips.
+Final door/network checks each pass 397 tests with one skip; the server
+door check passes 396. The Linux audio CI selector now explicitly includes
+NativeNetworkAudio, which its former NativeAudio alternative omitted.
+Both native Linux audio profiles pass 266/seven skips, including actual
+network playback and all seven sample-lifecycle cases. On the same clean
+source, native Linux server passes 311122/seven skips across all 58 packages,
+including all 396 new door cases; default-link damage passes 133041.
+Windows amd64/386 build/help/root/server/legacy gates also pass. Runs
+41095433739, 41095433689 and 41095433474 and all five jobs are terminal.
+The five requested poison-macro diagnostics remain absent; unrelated
+`nox_wcschr` const-discard diagnostics remain recorded.
+
+Records under ROOT/door-and-shop-audio-native include
+`audio-products-all-three-modes-and-doors-qualified-v2.json`,
+`final-native-b78-ci-v1/all-final-native-qualified-v1.json` and
+`audio-preservation-qualified-v1.json`. Original 4649 personal files
+(503207370 bytes), 29 ARM64 products, 17 native products and 87 earlier
+failure records remain byte-identical. Of 4018 earlier test/fixture inputs,
+4017 are unchanged and the one door setup correction is explicit above.
+Nineteen diagnostic PNGs move intact from temporary storage into ROOT;
+the door scene and remote purchased/sold frames were actually viewed.
+Subjective speaker fidelity and the nine final class/chapter audits remain
+open. **Overall porting is not 100%**; chapter 4+ remains outside scope.
+
 ### Native fight/run-state entries and callback update replacement
 
 Source `8c6fc3c` ports thirteen fight, run, flee, return-to-home,

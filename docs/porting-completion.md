@@ -55,6 +55,103 @@ completion requirements.
 
 ## Current findings
 
+### Native dying-start and monster sound-set getter
+
+Source `fdef018` ports public `544C40` and `424300` to native object
+links. The getter's header was already pointer typed, while its C body still
+narrowed both the input and sound-set result through int. The dying-start
+entry also accepted a PE32 int. Initial native probes fault in both paths.
+Among 65 compositions, the nil getter already passes; the other 64 C paths
+fault after their controls complete. All 67 actual C contexts pass after
+the port, retaining the full native sound pointer and the public root int.
+
+Before engine edits, all 85 dying-start and 31 real getter instruction bytes
+execute 499 contexts per startup `0x0e3f` and nearest `0x023f`: 998 runs with
+no profile differences. The 450 root cases execute the actual getter;
+49 standalone getter cases cover nil, class-byte masks, both native update
+identities and nil/two sound identities. Audio, ScriptCallback and selected
+DIE_FUNCTION bodies are declared services. The root's 11 NOPs and adjacent
+`424320`/`424350` entries remain unexecuted. Register/stack/FPCW/TOP/heap
+canaries, ordered arguments/states and raw EAX are retained. The existing
+handled-bool Go component compares all 450 root cases before and after;
+its contract excludes EAX. Actual C compositions separately check public
+integer and pointer results. The original three script-call arguments and
+the native adapter's existing event7 metadata are distinguished.
+
+The old 550-row original fixture executes all five stock DIE_FUNCTION
+callers and records return 1 in every row, including no-drop cases. Its
+producer, fixture and assertions stay unchanged. The new C root delegates
+to the unchanged guarded Go algorithm and full production runtime, recording
+0 when no callback runs and 1 after an admitted stock callback. It does not
+substitute the component's handled bool for that public integer. Arbitrary
+synthetic callback return words remain in the original audit; they are not
+claimed as results of the five stock bodies.
+
+The 65 actual C compositions cover all 49 getter cases, 12 stock callback/
+sound cases and four cached/live script mutations: update replacement,
+definition replacement, callback removal and class change. They execute
+real stock C return probes, real logic RNG and production Audio.EventObj,
+checking complete native unit/two-update/three-definition/sound/missile
+records and canaries against the original and ordinary controls. Audio is
+queued on the isolated server; ScriptCallback is an observed boundary with
+the existing event7 extension. Peers and cooperative drops are absent;
+this does not claim VM execution, audible output or world item spawning.
+Two initial C probes also pass. The targeted check passes 1,071 terminals:
+520 new and 551 retained stock die-callback terminals.
+
+The source removes 20 dying-start and 16 getter C lines, preserving every
+other byte of both C files, the already typed getter header, ordinary Go
+algorithm/production runtime, AI registration and manifest. All 3,983 prior
+test/fixture/scenario inputs remain byte-identical; five new inputs are
+added. Preparation/wrong-input-path failures and both harness build failures
+are retained. The corrected pre-port harness aliases its embedded NoxScript
+interface to preserve the promoted NoxScript() method, and removes an unused
+import/dummy reference; expected values and original references do not change.
+Final component and C sources are sealed before engine edits and remain
+unchanged through the port.
+
+Normal macOS checks pass 286,535 terminals/20 skips in
+474.836 seconds. Highres `cgocheck2`/`checkptr=2`, including
+real OpenAL null, pass 18,995/seven skips in 516.610 seconds.
+Oracle verification passes the unchanged 3,264 code/680 data ranges; both
+original roots already have sealed ranges. The clean Go 1.26.9 ARM64 product
+has 65,736,770 bytes, SHA256
+`5d2a4bf2043b2233c3c569a6b05f645c6710cfadca32f8bc77898a61aa977fff`.
+
+Current-product Blink 6, first-attack 16, shared spell damage/rendering/cancel
+and original Bookcase6 plus actual-menu Load/Save pass. The entire passing
+Save/HP20/MP73/poison0 is sealed before its first reload, retaining the
+completed plate/mover and original HP0/DEAD Urchin. Save images are inspected;
+persisted files and the completed fresh Load/Save establish completion,
+without a pixel-golden claim. Real ordinary-clock CoreAudio passes the
+unchanged 54-Amb scenario in 346.371 seconds:
+2,278 sample buffers queued/
+2,242 processed, with
+3 music streams. The reported ADPCM 147/89 panic
+does not recur. Audio sources remain unchanged from `97f2663`, including
+its independent Linux client proof; subjective audible fidelity remains open.
+
+Windows amd64/386 and Linux amd64 native server workflows close for this
+exact source with preserved raw logs and digest-verified archives, executable
+formats/revisions and native help. Linux passes 283,961 terminals/seven skips
+across 58 expected packages, including 520 new and six retained Blink terms;
+default-link damage passes 133,041 terminals. All five requested wchar
+poison-macro warnings remain absent. IDs, hashes and timings are retained in
+`monster-dying-start-native-entry-port/all-native-workflows-qualified-v1.json`.
+Personal assets remain 4,649 files/503,207,370 bytes, and all 17 prior ARM64
+products retain their hashes. Prior guarded cache-only cleanup stays linked;
+no additional cache deletion occurs in this batch. Original assets, every
+Save, all failures/partial runtimes, references and products are preserved.
+
+The registered AI table now has ten native Go exports and three retained C
+bodies among 13 nonnil C symbols; the getter is outside that table. Next
+`544CE0`/`544E60` preparation has no source edits or porting credit. Their
+whole roots need new exact sealed ranges; Soul's lazy cached type ID and
+lookup/allocation order must be compared before porting. Broader AI, UI/audio
+fidelity, peer/network, sustained stability and final nine-cell audits remain
+open. Prior Windows GC and ChannelLife Bookcase/replay findings remain
+unresolved and preserved. Overall porting is not 100%; chapter 4+ is excluded.
+
 ### Native dead-update and cleanup entry points
 
 Source `6f94c70` ports public `544EC0` and `544F70` to native object

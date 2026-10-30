@@ -55,6 +55,107 @@ completion requirements.
 
 ## Current findings
 
+### Native dead-start callback and original startup duration conversion
+
+Source `3bd8099` ports public `544D80` to an opaque native object pointer
+and restores startup signed-DWORD conversion of zombie duration bounds.
+The old C entry reads update/definition links through PE32 slots and crashes
+on native records. Ordinary Go uses nearest conversion, giving bounds 8/13
+for 7.9/12.9 where original startup produces 7/12. Twelve frozen native C
+compositions reproduce the layout fault; six zombie ordinary controls also
+show a one-frame duration difference with the same RNG index. Both faults
+are corrected under the unchanged references and C harnesses.
+
+Before engine edits, all 218 root instruction bytes and the actual 17-byte
+419A70 converter execute 630 contexts per startup `0x0e3f` and nearest
+`0x023f` profile: 1,260 runs. 312 inputs differ only in RandomInt bounds.
+The first 612 inputs/results remain unchanged when 18 native RNG return
+aliases are appended before the port; both producer/reference versions and
+all raw outputs are retained. Six root NOPs remain unexecuted in the
+existing 224-byte envelope. Soul creation, selected dead callback, IsZombie,
+binary32 balance return and RNG bodies are declared services. Register/
+stack/FPCW/TOP/heap canaries pass. Original raw EAX, public char and RNG
+debug source metadata remain recorded; the handled-bool component compares
+state/calls/canaries and excludes char/debug metadata from its API contract.
+
+Unchanged Go matches all 612 nearest inputs but 318 startup inputs; 294
+startup mismatches match the exact original profile-difference leaf set.
+All 18 added aliases likewise match nearest and fail startup before the
+change. The fixed default uses the existing signed-DWORD startup chop
+helper; the common nearest and chop helpers remain unchanged. The old
+38-row fixture is byte-identical to its original producer output, whose
+explicit control word is `0x037f` (nearest). Two historical tests now name
+and bind that control explicitly. Removing only those bindings/comments/
+name changes and running gofmt restores both old sources byte-for-byte;
+all existing assertions and expected values are preserved.
+
+All 630 startup contexts pass after the correction. Twelve actual C cases
+cover ordinary/soul-allocation-failure/Zombie/VileZombie with initial flag
+low bytes 0/128/255, real balance loading, real logic RNG and IsZombie.
+Both ordinary and public C paths now agree with frozen original flags,
+char results, duration, RNG index and complete unit/update/definition/
+missile records. Actual dead callbacks are nil in these C compositions;
+selected callback identities and live mutations are checked independently
+by the original component. Soul spawning beyond allocation failure is not
+claimed. Three initial C pointer probes and 40 retained nearest-control
+terminals also pass. The combined after check passes 688 terminals.
+
+The change retires 47 C lines, preserving all other `GAME4_3.c` bytes,
+production registration and manifest. Of 3,973 prior inputs, 3,971 remain
+byte-identical; only the two documented nearest-control test sources change.
+Five new reference/test inputs are added. All 648 new terminals pass.
+Normal macOS checks pass 285,295 terminals/20 skips in 473.063
+seconds. Highres `cgocheck2`/`checkptr=2`, including real OpenAL null, pass
+17,139/seven skips in 544.723 seconds. Oracle verification
+passes the unchanged 3,264 code/680 data ranges. The clean Go 1.26.9 ARM64
+product is 65,736,178 bytes, SHA256
+`640efa38cabb027ef296d6c1072174e011a3d9b06f8149c51c6b9ae96a5d17ae`.
+
+Current-product Blink 6, first-attack 16, shared spell rendering/damage/cancel
+and original Bookcase6 with actual-menu Load/Save pass. The whole passing
+Save/HP20/MP43/poison0 is sealed before its first reload, which retains the
+completed plate/mover and original native HP0/DEAD Urchin. Both Save frames
+are inspected; the initial frame shows completion and the reload checkpoint
+still shows overwrite confirmation. Persisted files and the completed
+fresh Load/Save checks establish completion; no pixel-golden claim is made.
+The first shared-spell attempt fails during asset copying with ENOSPC,
+before product launch. Its logs and partial runtime are retained; a fresh
+V2 attempt passes with the same product/scenario. Campaign qualification
+explicitly selects V2. Twenty-four inventoried reproducible Go-cache files
+(3,268,560,194 logical bytes) are removed under inode/size/mtime guards;
+all 16 current/prior ARM64 products retain their hashes. Assets, every Save,
+failed outputs, references, products and module cache are excluded.
+
+Real ordinary-clock CoreAudio passes the unchanged 54-Amb scenario in
+350.343 seconds: 2712 sample buffers
+queued/2668 processed and
+3 music streams. Natural and controlled ambient
+playback, delay/distance/stop/delete and the full polling period pass without
+the reported ADPCM 147/89 panic. Subjective audible fidelity remains open.
+Audio source stays byte-identical to `97f2663`; its independent Linux client
+audio proof is retained. Personal assets remain 4,649 files/503,207,370 bytes.
+
+Windows amd64/386 and Linux amd64 native server workflows are closed and
+qualified for this exact source, with preserved raw logs and digest-verified
+archives, clean executable revisions/formats and native help. Linux passes
+282,721 terminals/seven skips across 58 expected packages, including 648 new
+terminals and six retained Blink regressions. Default-link damage passes
+133,041 terminals. All five requested wchar poison-macro warnings remain
+absent. Exact IDs, hashes and timings are in
+`monster-dead-start-native-entry-port/all-native-workflows-qualified-v1.json`.
+
+The registered AI table has eight native Go exports and five retained C
+bodies among 13 nonnil C symbols; other compatibility roots are outside this
+lexical inventory. Next 544EC0/544F70 baseline and disassembly preparation
+remain separate. Cleanup 544F70 has 117 instruction bytes; its existing
+176-byte envelope also contains the separate 39-byte 544FF0 entry and 20 NOPs,
+which must not all be labelled cleanup padding or executed cleanup code.
+No next-source change is credited here. Earlier Windows GC and ChannelLife
+Bookcase/replay-variability findings remain unresolved and retained. Broader
+AI, UI/audio fidelity, peer/network, sustained stability and final campaign
+audits remain open. Overall porting is not 100%; chapter 4 and later remain
+excluded.
+
 ### Native dying-end callback and cached update admission
 
 Source `a93f740` ports public `544CA0` from a PE32 word-pointer body to

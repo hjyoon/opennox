@@ -295,7 +295,6 @@ int nox_xxx_mobGenericDeath_544C40(int a1);
 void nox_xxx_zombieBurnDelete_544CE0(uint32_t* a1);
 #include "monster_dead_start_native_544d80.h"
 void nox_xxx_createReleasedSoul_544E60(int a1);
-int sub_544F70(int a1);
-void nox_xxx_mobActionDead2_544EC0(int a1);
+#include "monster_dead_update_native_544ec0.h"
 
 #endif // NOX_PORT_GAME4_3

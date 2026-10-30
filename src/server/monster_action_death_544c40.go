@@ -262,7 +262,9 @@ func monsterDeadCleanup544F70(unit *Object, runtime MonsterActionDeadRuntime544D
 	if unit.UpdateData == nil {
 		return monsterActionDeadUnsupported544D80(runtime, "missing live monster dead update", unit)
 	}
-	update := unit.UpdateDataMonster()
+	// Admission happened before the callbacks in ACTION_DEAD. The original
+	// reloads this link without rechecking class, which a callback may change.
+	update := (*MonsterUpdateData)(unit.UpdateData)
 	waypoints := int32(update.Field74)
 	update.Field523_2 = 0
 	if waypoints > int32(len(update.Waypoints)) {
@@ -283,4 +285,13 @@ func monsterDeadCleanup544F70(unit *Object, runtime MonsterActionDeadRuntime544D
 	update.Field282_1 = 0
 	update.CurrentEnemy = nil
 	return true
+}
+
+// MonsterDeadCleanupNative544F70 exposes the original cleanup pointer result
+// without narrowing the update address to the PE32 return word.
+func MonsterDeadCleanupNative544F70(unit *Object, runtime MonsterActionDeadRuntime544D80) unsafe.Pointer {
+	if unit == nil || !monsterDeadCleanup544F70(unit, runtime) {
+		return nil
+	}
+	return unit.UpdateData
 }

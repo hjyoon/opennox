@@ -55,6 +55,94 @@ completion requirements.
 
 ## Current findings
 
+### Native fight/run-state entries and callback update replacement
+
+Source `8c6fc3c` ports thirteen fight, run, flee, return-to-home,
+retreat-to-master and Escort start/end/cancel C entries to native object
+pointers. Their original signed 32-bit status returns retain every DWORD
+bit. FightStart keeps its entry script block and alert write cached, then
+reloads the live update after sight for RunStart and its return. The raw
+run helpers and fight status work preserve the original shadow-class cases;
+only the original sound getter applies its monster-class gate.
+
+Before engine edits, thirteen unchanged roots and the actual sound getter
+and frame-copy helper execute all **347 instruction bytes** in **5,618
+contexts per profile**, **11,236 total** under startup `0x0e3f` and nearest
+`0x023f`, with identical results. Ordered effects, raw EAX/AL, original
+status/frame-copy writes and register/stack/FPCW/TOP/heap canaries are
+retained. Audio, script and sight are declared service boundaries. The
+original script call has **three stack arguments**; the Go adapter's extra
+event 13 is checked separately. Whole script VM execution is not claimed.
+All absolute references are exact AI-table slots; the shared helpers'
+active caller chain is closed. The retained MoveTo C calls are disabled.
+
+Go-before has **2,002 failing contexts**: overlapping findings include
+1,408 panics, 128 ordered-event differences and 946 final-state differences.
+All initial native states match. Fifty-two ordinary C-path controls pass;
+the original public entries then produce **44 SIGSEGVs**, while eight
+Escort end/cancel cases lack linked symbols. Final Go comparisons match
+all frozen rows in both profiles, and all **52 actual C paths** pass,
+including signed returns and a script-boundary update replacement. Real
+audio allocation, owner/position/kind/code, frame copy and sight execute;
+the script body remains a declared service.
+
+Two C-test preparation mistakes are retained: an embedded interface name
+collision, then an omitted audio-phase reset before the FightStart control.
+Only those four controls/C paths need the corrected second preparation.
+The final reference, comparator and C test stay frozen before engine edits.
+An initial local qualifier expected a nonexistent generic `passed` key;
+its correction checks the original profile's explicit equality/count/hash
+schema. No engine, original value or assertion changes for that correction.
+
+All **4,018 previous inputs** remain byte-identical. Four inputs add **5,672
+terms**, giving 4,022 inputs. Targeted checks pass 5,676 terms. **61 C-body
+lines/1,612 bytes** are retired; every other C byte stays unchanged. Seven
+missing original code seals add 123 bytes, covering all selected 347 bytes;
+all previous records remain unchanged at **3,284 code/686 data ranges**.
+These counts do not measure global porting coverage.
+
+macOS normal passes **313,300 PASS/20 SKIP** in 234.976 seconds; highres,
+cgocheck2, checkptr2 and real OpenAL/null checks pass **46,118 PASS/7 SKIP**
+in 273.030 seconds. Nearest passes 5,619 terms; original range verification
+passes. The clean Go 1.26.9 ARM64 GUI product builds and passes help.
+Product Blink (six modes), natural first attacks (sixteen modes), shared
+Lightning/EnergyBolt/DrainMana, original Bookcase progress and fresh actual
+menu Load/Save pass. The original endpoint, plate/mover and Urchin HP0/DEAD
+are qualified before freezing the passing Save. This product's observed
+reload contract is **HP20/MP43/poison0**; both exact final PNGs are viewed.
+
+Real CoreAudio passes **345.129 seconds**, all **54 Amb** definitions,
+**1,863 queued/1,823 processed sample buffers**, three music streams and
+emitter cleanup. The ADPCM 147/89 panic does not recur. This remains bounded
+software/backend evidence; subjective audible fidelity and sustained
+session completion remain open.
+
+[Windows amd64/386 CI](https://github.com/hjyoon/opennox/actions/runs/41081120860)
+passes clean products, help and full uncached root/server/legacy suites.
+[Linux amd64 server CI](https://github.com/hjyoon/opennox/actions/runs/41081177301)
+passes all 58 packages (36 pass/22 skip), **310,726 PASS/7 SKIP**, all 5,672
+new terms, six retained Blink terms and **133,041 default-link damage
+terms**. All three native products match archive digests, architecture and
+clean VCS source. Exact large test JSON remains in the preserved ZIPs; the
+five poison-macro warning classes remain absent.
+
+| Preserved product | Bytes | SHA-256 |
+| --- | ---: | --- |
+| macOS ARM64 | 65758002 | `7f1205e90330d5e6d998ba21d49715e4fef5c5ce238ca2f1bce293cc74e5ad16` |
+| Windows amd64 | 94315988 | `d21b497bb8fec5a188bb49096277d6a1947d97201de218ffd9479b48797244f0` |
+| Windows 386 | 89188429 | `1736a1891a47866bfff383a2a7faac9540c1c06c5524528883588463c5064e80` |
+| Linux amd64 server | 63908408 | `27486fc9a8b029860538bca90362373612cd251d34e64cc623ee20da0651959a` |
+
+Evidence is under `monster-fight-run-state-native-entry-port`. Preservation
+checks retain all 4,649 personal files (503,207,370 bytes), twenty-five ARM64
+products, prior native products, original assets/Saves and failed/partial
+records. No failed Save is continued. Next are the reported door-type
+open/close sound selection and shop buy/sell effects, including single
+campaign, multiplayer host and independent client checks. Broader reachable
+callbacks/layouts and the final nine-cell chapter 1–3 feature/UI/audio/
+network/stability audits remain. **Overall porting is not 100%**;
+chapter 4+ stays outside scope.
+
 ### Native hurt-sound entry and live scheduling effects
 
 Source `c61e634` removes public `532800`'s internal native-pointer-to-INT
@@ -151,13 +239,10 @@ twenty-four ARM64 products, previous native products, original assets/Saves
 and failed/partial results remain preserved. Prior Windows GC and
 ChannelLife Bookcase variability findings remain unexplained.
 
-Next, read-only inspection identifies thirteen fight/run-state start/end/
-cancel entries and two helpers, totalling 347 instruction bytes. Full
-original execution/comparison and native C-before checks are pending;
-shared helpers must be considered with their active callers. Other native
-callbacks/layouts and final nine-cell class/chapter 1–3 feature/UI/audio/
-network/stability audits remain. **Overall porting is not 100%**;
-chapter 4+ stays outside scope.
+This checkpoint's subsequent thirteen-entry fight/run-state batch is
+qualified above. Other native callbacks/layouts and final nine-cell
+class/chapter 1–3 feature/UI/audio/network/stability audits remain.
+**Overall porting is not 100%**; chapter 4+ stays outside scope.
 
 ### Native movement-audio entry and unsigned frame timing
 

@@ -1,0 +1,56 @@
+name: Original x87 native reference
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - port/go1.26-multiarch
+    paths:
+      - .github/workflows/port-x87-original.yml
+      - toolchain/oracle/native-x87-range.c
+
+permissions:
+  contents: read
+
+jobs:
+  original:
+    name: Native x86/${{ matrix.bits }} original range
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        bits: [32, 64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install native compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc-multilib
+      - name: Execute unchanged original instructions
+        env:
+          X87_BITS: ${{ matrix.bits }}
+        run: |
+          set -euo pipefail
+          report="build/native-x87-$X87_BITS"
+          mkdir -p "$report"
+          test "$(uname -m)" = x86_64
+          git rev-parse HEAD > "$report/source-revision.txt"
+          uname -a > "$report/host.txt"
+          lscpu > "$report/cpu.txt"
+          gcc --version > "$report/compiler.txt"
+          sha256sum toolchain/oracle/native-x87-range.c > "$report/source.sha256"
+          gcc "-m$X87_BITS" -std=c11 -D_GNU_SOURCE -Wall -Wextra -Werror -O0 -fno-omit-frame-pointer toolchain/oracle/native-x87-range.c -o "$report/native-x87-range"
+          file "$report/native-x87-range" > "$report/executable-format.txt"
+          "$report/native-x87-range" > "$report/original-results.jsonl" 2> "$report/original.stderr.txt"
+          sha256sum "$report/native-x87-range" "$report/original-results.jsonl" > "$report/results.sha256"
+          test "$(wc -l < "$report/original-results.jsonl")" = 239
+          cat "$report/executable-format.txt"
+          head -1 "$report/original-results.jsonl"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-x87-native-${{ matrix.bits }}
+          path: build/native-x87-${{ matrix.bits }}/
+          if-no-files-found: error
+          retention-days: 1

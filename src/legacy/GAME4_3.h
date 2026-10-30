@@ -291,7 +291,7 @@ int sub_544AE0(int a1, float a2);
 void sub_544B20(int a1, int a2);
 char nox_xxx_mobActionPickupObject_544B90(int a1);
 int nox_xxx_mobGenericDeath_544C40(int a1);
-void nox_xxx_zombieBurnDeleteCheck_544CA0(uint32_t* a1);
+#include "monster_dying_end_native_544ca0.h"
 void nox_xxx_zombieBurnDelete_544CE0(uint32_t* a1);
 char nox_xxx_mobActionDead1_544D80(uint32_t* a1);
 void nox_xxx_createReleasedSoul_544E60(int a1);

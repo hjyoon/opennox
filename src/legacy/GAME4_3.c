@@ -7700,18 +7700,6 @@ int nox_xxx_mobGenericDeath_544C40(int a1) {
 	return result;
 }
 
-//----- (00544CA0) --------------------------------------------------------
-void nox_xxx_zombieBurnDeleteCheck_544CA0(uint32_t* a1) {
-	int v1; // edi
-
-	v1 = a1[187];
-	if (nox_xxx_unitIsZombie_534A40(a1)) {
-		if (*(uint32_t*)(v1 + 1440) & 0x80000) {
-			nox_xxx_zombieBurnDelete_544CE0(a1);
-		}
-	}
-}
-
 //----- (00544CE0) --------------------------------------------------------
 void nox_xxx_zombieBurnDelete_544CE0(uint32_t* a1) {
 	int v1; // eax

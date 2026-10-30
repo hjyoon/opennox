@@ -1,0 +1,6330 @@
+{
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "control_word": 3647,
+  "rows": [
+    {
+      "input": {
+        "zombie": 0,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-0"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 0,
+        "flags": 1,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-1"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 0,
+        "flags": 524287,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-2"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524287,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524287,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 0,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-3"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 0,
+        "flags": 524289,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-4"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524289,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 0,
+        "flags": 4294967295,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-5"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 0,
+        "flags": 1048576,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-6"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1048576,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1048576,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 0,
+        "flags": 2147483647,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-7"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            2147483647,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-8"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 1,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-9"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524287,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-10"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524287,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524287,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-11"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524289,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-12"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524289,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 4294967295,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-13"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 1048576,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-14"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1048576,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1048576,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 2147483647,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-15"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            2147483647,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 2,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-16"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2
+    },
+    {
+      "input": {
+        "zombie": 2,
+        "flags": 1,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-17"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2
+    },
+    {
+      "input": {
+        "zombie": 2,
+        "flags": 524287,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-18"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524287,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524287,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2
+    },
+    {
+      "input": {
+        "zombie": 2,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-19"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 2,
+        "flags": 524289,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-20"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524289,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 2,
+        "flags": 4294967295,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-21"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 2,
+        "flags": 1048576,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-22"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1048576,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1048576,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2
+    },
+    {
+      "input": {
+        "zombie": 2,
+        "flags": 2147483647,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-23"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            2147483647,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 127,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-24"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 127
+    },
+    {
+      "input": {
+        "zombie": 127,
+        "flags": 1,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-25"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 127
+    },
+    {
+      "input": {
+        "zombie": 127,
+        "flags": 524287,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-26"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524287,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524287,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 127
+    },
+    {
+      "input": {
+        "zombie": 127,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-27"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 127,
+        "flags": 524289,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-28"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524289,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 127,
+        "flags": 4294967295,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-29"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 127,
+        "flags": 1048576,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-30"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1048576,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1048576,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 127
+    },
+    {
+      "input": {
+        "zombie": 127,
+        "flags": 2147483647,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-31"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            2147483647,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 128,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-32"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 128
+    },
+    {
+      "input": {
+        "zombie": 128,
+        "flags": 1,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-33"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 128
+    },
+    {
+      "input": {
+        "zombie": 128,
+        "flags": 524287,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-34"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524287,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524287,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 128
+    },
+    {
+      "input": {
+        "zombie": 128,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-35"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 128,
+        "flags": 524289,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-36"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524289,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 128,
+        "flags": 4294967295,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-37"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 128,
+        "flags": 1048576,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-38"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1048576,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1048576,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 128
+    },
+    {
+      "input": {
+        "zombie": 128,
+        "flags": 2147483647,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-39"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            2147483647,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 2147483648,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-40"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2147483648
+    },
+    {
+      "input": {
+        "zombie": 2147483648,
+        "flags": 1,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-41"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2147483648
+    },
+    {
+      "input": {
+        "zombie": 2147483648,
+        "flags": 524287,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-42"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524287,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524287,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2147483648
+    },
+    {
+      "input": {
+        "zombie": 2147483648,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-43"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 2147483648,
+        "flags": 524289,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-44"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524289,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 2147483648,
+        "flags": 4294967295,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-45"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 2147483648,
+        "flags": 1048576,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-46"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1048576,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1048576,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2147483648
+    },
+    {
+      "input": {
+        "zombie": 2147483648,
+        "flags": 2147483647,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-47"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            2147483647,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 4294967295,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-48"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 4294967295
+    },
+    {
+      "input": {
+        "zombie": 4294967295,
+        "flags": 1,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-49"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 4294967295
+    },
+    {
+      "input": {
+        "zombie": 4294967295,
+        "flags": 524287,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-50"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524287,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524287,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 4294967295
+    },
+    {
+      "input": {
+        "zombie": 4294967295,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-51"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 4294967295,
+        "flags": 524289,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-52"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524289,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524289,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 4294967295,
+        "flags": 4294967295,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-53"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 4294967295,
+        "flags": 1048576,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-54"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                1048576,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            1048576,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 4294967295
+    },
+    {
+      "input": {
+        "zombie": 4294967295,
+        "flags": 2147483647,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "predicate-flags-55"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                2147483647,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            2147483647,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "update",
+          "flags": 0
+        },
+        "name": "mutation-56"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "update",
+          "flags": 524288
+        },
+        "name": "mutation-57"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "update",
+          "flags": 4294967295
+        },
+        "name": "mutation-58"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "update",
+          "flags": 0
+        },
+        "name": "mutation-59"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 1,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "update",
+          "flags": 524288
+        },
+        "name": "mutation-60"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 1,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "update",
+          "flags": 4294967295
+        },
+        "name": "mutation-61"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 1,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "primary",
+          "flags": 0
+        },
+        "name": "mutation-62"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "primary",
+          "flags": 524288
+        },
+        "name": "mutation-63"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "primary",
+          "flags": 4294967295
+        },
+        "name": "mutation-64"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "primary",
+          "flags": 0
+        },
+        "name": "mutation-65"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "primary",
+          "flags": 524288
+        },
+        "name": "mutation-66"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "primary",
+          "flags": 4294967295
+        },
+        "name": "mutation-67"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                4294967295,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "alternate",
+          "flags": 0
+        },
+        "name": "mutation-68"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "alternate",
+          "flags": 524288
+        },
+        "name": "mutation-69"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            524288
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "alternate",
+          "flags": 4294967295
+        },
+        "name": "mutation-70"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            4294967295
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "alternate",
+          "flags": 0
+        },
+        "name": "mutation-71"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "alternate",
+          "flags": 524288
+        },
+        "name": "mutation-72"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                524288
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            524288
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "alternate",
+          "flags": 4294967295
+        },
+        "name": "mutation-73"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                4294967295
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            4294967295
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "class",
+          "flags": 0
+        },
+        "name": "mutation-74"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "class",
+          "flags": 524288
+        },
+        "name": "mutation-75"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "class",
+          "flags": 4294967295
+        },
+        "name": "mutation-76"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "class",
+          "flags": 0
+        },
+        "name": "mutation-77"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 4194304,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "class",
+          "flags": 524288
+        },
+        "name": "mutation-78"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 4194304,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "class",
+          "flags": 4294967295
+        },
+        "name": "mutation-79"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 4194304,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "subclass",
+          "flags": 0
+        },
+        "name": "mutation-80"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "subclass",
+          "flags": 524288
+        },
+        "name": "mutation-81"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "subclass",
+          "flags": 4294967295
+        },
+        "name": "mutation-82"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "subclass",
+          "flags": 0
+        },
+        "name": "mutation-83"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 4275878552,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "subclass",
+          "flags": 524288
+        },
+        "name": "mutation-84"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 4275878552,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "subclass",
+          "flags": 4294967295
+        },
+        "name": "mutation-85"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 4275878552,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "all",
+          "flags": 0
+        },
+        "name": "mutation-86"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "all",
+          "flags": 524288
+        },
+        "name": "mutation-87"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 1,
+              "cls": 4194304,
+              "subclass": 4275878552,
+              "flags": [
+                524288,
+                524288
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            524288
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "all",
+          "flags": 4294967295
+        },
+        "name": "mutation-88"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 1,
+              "cls": 4194304,
+              "subclass": 4275878552,
+              "flags": [
+                4294967295,
+                4294967295
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            4294967295,
+            4294967295
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "all",
+          "flags": 0
+        },
+        "name": "mutation-89"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "all",
+          "flags": 524288
+        },
+        "name": "mutation-90"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 1,
+              "cls": 4194304,
+              "subclass": 4275878552,
+              "flags": [
+                524288,
+                524288
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            524288
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "zombie",
+          "action": "all",
+          "flags": 4294967295
+        },
+        "name": "mutation-91"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 1,
+              "cls": 4194304,
+              "subclass": 4275878552,
+              "flags": [
+                4294967295,
+                4294967295
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            4294967295,
+            4294967295
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "update",
+          "flags": 0
+        },
+        "name": "mutation-92"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "update",
+          "flags": 524288
+        },
+        "name": "mutation-93"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "update",
+          "flags": 4294967295
+        },
+        "name": "mutation-94"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "update",
+          "flags": 0
+        },
+        "name": "mutation-95"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "update",
+          "flags": 524288
+        },
+        "name": "mutation-96"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "update",
+          "flags": 4294967295
+        },
+        "name": "mutation-97"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "primary",
+          "flags": 0
+        },
+        "name": "mutation-98"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "primary",
+          "flags": 524288
+        },
+        "name": "mutation-99"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "primary",
+          "flags": 4294967295
+        },
+        "name": "mutation-100"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "primary",
+          "flags": 0
+        },
+        "name": "mutation-101"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "primary",
+          "flags": 524288
+        },
+        "name": "mutation-102"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "primary",
+          "flags": 4294967295
+        },
+        "name": "mutation-103"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            4294967295,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "alternate",
+          "flags": 0
+        },
+        "name": "mutation-104"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "alternate",
+          "flags": 524288
+        },
+        "name": "mutation-105"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "alternate",
+          "flags": 4294967295
+        },
+        "name": "mutation-106"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "alternate",
+          "flags": 0
+        },
+        "name": "mutation-107"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "alternate",
+          "flags": 524288
+        },
+        "name": "mutation-108"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            524288
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "alternate",
+          "flags": 4294967295
+        },
+        "name": "mutation-109"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            4294967295
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "class",
+          "flags": 0
+        },
+        "name": "mutation-110"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "class",
+          "flags": 524288
+        },
+        "name": "mutation-111"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "class",
+          "flags": 4294967295
+        },
+        "name": "mutation-112"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "class",
+          "flags": 0
+        },
+        "name": "mutation-113"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "class",
+          "flags": 524288
+        },
+        "name": "mutation-114"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "class",
+          "flags": 4294967295
+        },
+        "name": "mutation-115"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 4194304,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "subclass",
+          "flags": 0
+        },
+        "name": "mutation-116"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "subclass",
+          "flags": 524288
+        },
+        "name": "mutation-117"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "subclass",
+          "flags": 4294967295
+        },
+        "name": "mutation-118"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "subclass",
+          "flags": 0
+        },
+        "name": "mutation-119"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "subclass",
+          "flags": 524288
+        },
+        "name": "mutation-120"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "subclass",
+          "flags": 4294967295
+        },
+        "name": "mutation-121"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "all",
+          "flags": 0
+        },
+        "name": "mutation-122"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "all",
+          "flags": 524288
+        },
+        "name": "mutation-123"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 0,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "all",
+          "flags": 4294967295
+        },
+        "name": "mutation-124"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                0,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "all",
+          "flags": 0
+        },
+        "name": "mutation-125"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            0,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "all",
+          "flags": 524288
+        },
+        "name": "mutation-126"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            524288,
+            524288
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2271560481,
+        "mutation": {
+          "stage": "burn",
+          "action": "all",
+          "flags": 4294967295
+        },
+        "name": "mutation-127"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 1,
+          "cls": 4194304,
+          "subclass": 4275878552,
+          "flags": [
+            4294967295,
+            4294967295
+          ]
+        }
+      },
+      "raw_original_eax": 2271560481
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 0,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "void-return-audit-128"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 0
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 1,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "void-return-audit-129"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 1
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2147483647,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "void-return-audit-130"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2147483647
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 2147483648,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "void-return-audit-131"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 2147483648
+    },
+    {
+      "input": {
+        "zombie": 1,
+        "flags": 524288,
+        "alternate_flags": 0,
+        "burn_return": 4294967295,
+        "mutation": {
+          "stage": "",
+          "action": "",
+          "flags": 0
+        },
+        "name": "void-return-audit-132"
+      },
+      "result": {
+        "events": [
+          {
+            "kind": "zombie",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          },
+          {
+            "kind": "burn",
+            "unit": 0,
+            "state": {
+              "update": 0,
+              "cls": 2,
+              "subclass": 165,
+              "flags": [
+                524288,
+                0
+              ]
+            }
+          }
+        ],
+        "state": {
+          "update": 0,
+          "cls": 2,
+          "subclass": 165,
+          "flags": [
+            524288,
+            0
+          ]
+        }
+      },
+      "raw_original_eax": 4294967295
+    }
+  ]
+}

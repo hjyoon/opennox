@@ -21,7 +21,7 @@ func monsterZombieTestServer544CE0(t *testing.T) *Server {
 	return s
 }
 
-func TestMonsterActionDeadStart544D80ZombieDuration(t *testing.T) {
+func TestMonsterActionDeadStart544D80ZombieDurationNearestControl(t *testing.T) {
 	unit := monsterActionTestObject50A910(t)
 	update := unit.UpdateDataMonster()
 	deadFunc := unsafe.Pointer(new(byte))
@@ -32,8 +32,10 @@ func TestMonsterActionDeadStart544D80ZombieDuration(t *testing.T) {
 	unit.Pos24 = types.Ptf(5, 6)
 	var events []string
 	runtime := MonsterActionDeadRuntime544D80{
-		IsZombie:    func(got *Object) bool { return got == unit },
-		CanDeadFunc: func(got unsafe.Pointer) bool { return got == deadFunc },
+		// Retain this historical nearest-control expectation explicitly.
+		ConvertDuration: playerCollideRound4E8460,
+		IsZombie:        func(got *Object) bool { return got == unit },
+		CanDeadFunc:     func(got unsafe.Pointer) bool { return got == deadFunc },
 		DeadFunc: func(got unsafe.Pointer, obj *Object) {
 			if got != deadFunc || obj != unit || unit.VelVec != (types.Pointf{}) ||
 				unit.ForceVec != (types.Pointf{}) || unit.Pos24 != (types.Pointf{}) {

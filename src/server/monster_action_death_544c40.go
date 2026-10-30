@@ -97,13 +97,16 @@ type MonsterActionDeadRuntime544D80 struct {
 	CanDeadFunc        func(unsafe.Pointer) bool
 	DeadFunc           func(unsafe.Pointer, *Object)
 	ZombieDeadDuration func(int) float32
-	RandomInt          func(int, int) int
-	SparkExplosion     func(types.Pointf, byte)
-	ZombieBurnDelete   func(*Object)
-	RaiseZombie        func(*Object)
-	RemoveUpdatable    func(*Object)
-	DelayedDelete      func(*Object)
-	Unsupported        func(string, *Object)
+	// ConvertDuration selects an explicit original FPU control profile.
+	// Nil uses the production startup signed-DWORD chop conversion.
+	ConvertDuration  func(float32) int32
+	RandomInt        func(int, int) int
+	SparkExplosion   func(types.Pointf, byte)
+	ZombieBurnDelete func(*Object)
+	RaiseZombie      func(*Object)
+	RemoveUpdatable  func(*Object)
+	DelayedDelete    func(*Object)
+	Unsupported      func(string, *Object)
 }
 
 // MonsterReleasedSoulRuntime544E60 contains the object operations used by
@@ -183,8 +186,12 @@ func (s *Server) MonsterActionDeadStart544D80(unit *Object, runtime MonsterActio
 		if runtime.ZombieDeadDuration == nil || runtime.RandomInt == nil {
 			return monsterActionDeadUnsupported544D80(runtime, "live zombie dead duration", unit)
 		}
-		minimum := int(playerCollideRound4E8460(runtime.ZombieDeadDuration(0)))
-		maximum := int(playerCollideRound4E8460(runtime.ZombieDeadDuration(1)))
+		convert := runtime.ConvertDuration
+		if convert == nil {
+			convert = netFXTruncateSignedDWORD419A70
+		}
+		minimum := int(convert(runtime.ZombieDeadDuration(0)))
+		maximum := int(convert(runtime.ZombieDeadDuration(1)))
 		update.Field123 = uint32(runtime.RandomInt(minimum, maximum))
 		unit.ObjFlags |= object.FlagShort
 	} else {

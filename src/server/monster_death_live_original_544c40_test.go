@@ -17,7 +17,7 @@ import (
 // The original keeps its entry update pointer, then reloads its definition and
 // function at use. Native event7 is the existing OpenNox adapter extension;
 // the original script call has only block/caller/trigger arguments.
-func TestMonsterDeathLiveOriginal544C40(t *testing.T) {
+func TestMonsterDeathLiveOriginalNearestControl544C40(t *testing.T) {
 	raw, err := os.ReadFile("testdata/monster_death_live_544c40.json")
 	if err != nil {
 		t.Fatal(err)
@@ -183,6 +183,8 @@ func TestMonsterDeathLiveOriginal544C40(t *testing.T) {
 				})
 			} else {
 				handled = new(Server).MonsterActionDeadStart544D80(unit, MonsterActionDeadRuntime544D80{
+					// The unchanged 38-row producer explicitly uses FPCW 0x037f.
+					ConvertDuration: playerCollideRound4E8460,
 					CreateReleasedSoul: func(got *Object) {
 						if got != unit {
 							t.Fatal("soul identity")

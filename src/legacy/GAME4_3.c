@@ -7720,53 +7720,6 @@ void nox_xxx_zombieBurnDelete_544CE0(uint32_t* a1) {
 	nox_xxx_delayedDeleteObject_4E5CC0((int)a1);
 }
 
-//----- (00544D80) --------------------------------------------------------
-char nox_xxx_mobActionDead1_544D80(uint32_t* a1) {
-	int v1;                // ebx
-	void (*v2)(uint32_t*); // eax
-	int v3;                // edi
-	int v4;                // eax
-	int v5;                // eax
-	bool v6;               // zf
-	float v8;              // [esp+0h] [ebp-10h]
-	float v9;              // [esp+0h] [ebp-10h]
-
-	v1 = a1[187];
-	if (a1[131] == 14 && a1[3] & 0x10000) {
-		nox_xxx_createReleasedSoul_544E60((int)a1);
-	}
-	a1[21] = 0;
-	a1[20] = 0;
-	a1[23] = 0;
-	a1[22] = 0;
-	a1[25] = 0;
-	a1[24] = 0;
-	v2 = *(void (**)(uint32_t*))(*(uint32_t*)(v1 + 484) + 232);
-	if (v2) {
-		v2(a1);
-	}
-	if (nox_xxx_unitIsZombie_534A40(a1)) {
-		v8 = nox_xxx_gamedataGetFloatTable_419D70("ZombieDeadDuration", 0);
-		v3 = nox_float2int(v8);
-		v9 = nox_xxx_gamedataGetFloatTable_419D70("ZombieDeadDuration", 1);
-		v4 = nox_float2int(v9);
-		*(uint32_t*)(v1 + 492) = nox_common_randomInt_415FA0(v3, v4);
-		v5 = a1[4];
-		LOBYTE(v5) = v5 | 0x10;
-		a1[4] = v5;
-	} else {
-		v6 = !nox_xxx_unitIsZombie_534A40(a1);
-		v5 = a1[4];
-		if (v6) {
-			LOBYTE(v5) = v5 | 0x18;
-		} else {
-			LOBYTE(v5) = v5 | 0x10;
-		}
-		a1[4] = v5;
-	}
-	return v5;
-}
-
 //----- (00544E60) --------------------------------------------------------
 void nox_xxx_createReleasedSoul_544E60(int a1) {
 	int v1;       // eax

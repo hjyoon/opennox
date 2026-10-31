@@ -16184,6 +16184,13 @@
       "purpose": "the sole decoded direct rel32 call from remote-player network update to the audio event update routine"
     },
     {
+      "name": "nox_xxx_netSendObjects2Plr_519410",
+      "address": "0x00519410",
+      "size": 590,
+      "sha256": "26e7eeddc206c1a029fff0f989e2acc358d0cbe1dfd5518e6337ac74527baeb9",
+      "purpose": "Complete590-byte object visibility/update dispatcher; unchanged-original5918contexts/5930calls perFPU and4separatefaults. NativecachedUpdate/reloadedPlayer, byte/publication separation, callbackmutations, senderprecedence and livepostcallmasks. All13child bodies remain declared service boundaries."
+    },
+    {
       "name": "sub_51A1F0",
       "address": "0x0051A1F0",
       "size": 755,

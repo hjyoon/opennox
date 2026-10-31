@@ -71,6 +71,7 @@ var (
 type Server interface {
 	S() *server.Server
 	NetUpdateObjectSpecialNative527E50(recipient, unit *server.Object) bool
+	ObjectDispatchRuntimeNative519410() server.ObjectDispatchNativeRuntime519410
 	SetUpdateFunc2(fnc func() bool)
 	ServerPort() int
 	ServStartCountdown(dt int, text strman.ID)
@@ -242,8 +243,8 @@ func Nox_xxx_netReportUnitHeight_4D9020(a1 ntype.PlayerInd, a2 *server.Object) {
 func Sub_511100(a1 int) {
 	GetServer().S().SentryGlobeSendToPlayer511100(a1)
 }
-func Nox_xxx_netSendObjects2Plr_519410(a1 *server.Object, a2 *server.Object) {
-	C.nox_xxx_netSendObjects2Plr_519410(asObjectC(a1), asObjectC(a2))
+func Nox_xxx_netSendObjects2Plr_519410(a1 *server.Object, a2 *server.Object) byte {
+	return byte(C.nox_xxx_netSendObjects2Plr_519410(asObjectC(a1), asObjectC(a2)))
 }
 func Sub_4D6770(a1 ntype.PlayerInd) {
 	sendQuestStats4D6770(a1)

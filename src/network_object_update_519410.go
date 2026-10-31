@@ -8,10 +8,8 @@ import (
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
 
-	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
-	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -566,63 +564,21 @@ func (s *Server) netSendObjects2PlayerNative519410(recipient, obj *server.Object
 	if ind < 0 || ind >= 32 {
 		return false
 	}
-	bit := uint32(1) << ind
-	if obj != recipient && obj.Field35&bit != 0 {
-		s.netFriendAddRemoveNative4D97A0(ind, obj, obj.Field36&bit != 0)
-		obj.Field35 &^= bit
-	}
-	if obj.Field38&bit == 0 && !obj.Class().Has(object.ClassMissile) {
-		return false
-	}
-	if obj.Flags().Has(object.FlagOwnerVisible) && !obj.HasOwner(recipient) && !noxflags.HasGame(noxflags.GameModeCoopTeam) {
-		return false
-	}
-	visible := obj.Class().HasAny(object.ClassClientPersist|object.ClassImmobile) ||
-		playerMapTracksObjectNative519410(pl, obj) ||
-		s.MapTraceRayAt(pl.Pos3632Vec, obj.PosVec, nil, nil, 69)
-	if !visible {
-		if obj.Field37&bit != 0 {
-			if obj.Class().HasAny(object.ClassMonster | object.ClassPlayer) {
-				s.Nox_xxx_netObjectOutOfSight_528A60(int(ind), obj)
-			} else {
-				s.Nox_xxx_netObjectInShadows_528A90(int(ind), obj)
-			}
-			obj.Field37 &^= bit
-			obj.Field38 |= bit
+	runtime := s.ObjectDispatchRuntimeNative519410()
+	// Retain this convenience adapter's registry and nil/type selection policy.
+	// The public entry separately binds the raw sprite/cache contract.
+	runtime.Sprite = func(_ *server.Object, index int32, unit *server.Object) uint32 {
+		if s.netSpriteUpdateNative518AE0(ntype.PlayerInd(index), unit) {
+			return 1
 		}
-		return false
+		return 0
 	}
-	if obj.Field37&bit != 0 && byte(obj.Field5)&0x20 != 0 {
-		return false
-	}
-	if obj.Field37&bit == 0 && obj.Field140[ind]&0x0fff != 0 {
-		obj.Field140[ind] |= (obj.Field140[ind] & 0x0fff) << 16
-	}
-
-	var sent bool
-	switch {
-	case obj.Class().Has(object.ClassImmobile):
-		sent = s.netSpriteUpdateNative518AE0(ind, obj)
-	case obj.Class().Has(object.ClassComplex) && obj.Class().Has(object.ClassMonster):
-		sent = legacy.NetSendComplexObject518960(int32(ind), obj, 1) != 0
-	case obj.Class().Has(object.ClassComplex) && obj.Class().Has(object.ClassPlayer):
-		sent = s.netPlayerObjectSendNative518C30(recipient, obj, true)
-	case obj.Class().Has(object.ClassComplex):
-		packet := s.phantomObjectPacketNative5187E0(obj)
-		sent = nox_netlist_addToMsgListSrv(ind, packet[:])
-	case obj.Class().Has(object.ClassSimple):
-		if obj.Class().Has(object.ClassMonsterGenerator) {
-			s.reportUnitHealthDeltaNative4D8760(int(ind), obj)
+	runtime.Tracks = func(_ int32, unit *server.Object) uint32 {
+		if playerMapTracksObjectNative519410(pl, unit) {
+			return 1
 		}
-		packet := s.simpleObjectPacketNative5188A0(obj)
-		sent = nox_netlist_addToMsgListSrv(ind, packet[:])
-	default:
-		obj.Field38 = 0
+		return 0
 	}
-	s.netUpdateObjectSpecialNative527E50(recipient, obj)
-	if sent {
-		obj.Field37 |= bit
-		obj.Field38 &^= bit
-	}
+	_, sent := server.ObjectDispatchNative519410(recipient, obj, runtime)
 	return sent
 }

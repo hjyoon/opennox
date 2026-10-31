@@ -107,7 +107,11 @@ jobs:
           $p.StartInfo.UseShellExecute = $false
           $p.StartInfo.RedirectStandardOutput = $true
           $p.StartInfo.RedirectStandardError = $true
-          $testArguments = @('test','-work','-tags=server','-json','-count=1','-timeout=20m')
+          # -work alone still omits Go test debug information. A named output
+          # directory keeps the exact executed binaries with their symbols.
+          $testOutput = Join-Path $env:RUNNER_TEMP 'opennox-diagnostic-test-binaries'
+          New-Item -ItemType Directory -Force $testOutput | Out-Null
+          $testArguments = @('test','-work',"-o=$testOutput",'-tags=server','-json','-count=1','-timeout=20m')
           if ($env:DIAGNOSTIC_PROFILE -eq 'checkptr') { $testArguments += '-gcflags=all=-d=checkptr=2' }
           if ($env:DIAGNOSTIC_PROFILE -eq 'race') { $testArguments += '-race' }
           $testArguments += @('.','./server','./legacy')
@@ -136,7 +140,7 @@ jobs:
           $collector = Join-Path $env:REPORT_DIR 'preserve-go-test-binaries.py'
           & git show '${{ github.sha }}:scripts/preserve-go-test-binaries.py' | Set-Content -Encoding utf8 $collector
           if ($LASTEXITCODE -ne 0) { throw 'Missing diagnostic binary collector' }
-          & python $collector $env:REPORT_DIR
+          & python $collector $env:REPORT_DIR $testOutput
           if ($LASTEXITCODE -ne 0) { throw 'Exact test executable preservation failed' }
           Get-FileHash (Join-Path $env:REPORT_DIR 'test.jsonl') -Algorithm SHA256
           exit $code

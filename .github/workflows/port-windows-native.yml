@@ -32,7 +32,7 @@ jobs:
           - arch: '386'
             cflags: '-O2 -g'
           - arch: amd64
-            cflags: '-O2 -g -fno-peephole2'
+            cflags: '-O2 -g'
     env:
       GOOS: windows
       CGO_ENABLED: '1'
@@ -49,21 +49,12 @@ jobs:
           go-version-file: src/go.mod
           cache: false
 
-      - uses: msys2/setup-msys2@v2
-        if: matrix.arch == 'amd64'
-        id: msys2
-        with:
-          msystem: UCRT64
-          update: true
-          install: mingw-w64-ucrt-x86_64-gcc
-
-      - name: Install maintained UCRT compiler for Windows/386
-        if: matrix.arch == '386'
+      - name: Install maintained UCRT compilers
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          # MSYS2 has no supported replacement for its deprecated MINGW32
-          # environment. LLVM-MinGW's native x64 toolchain also targets i686.
+          # One pinned native Windows toolchain targets both architectures.
+          # Its compiler setup does not start or upgrade an MSYS2 subsystem.
           $name = 'llvm-mingw-20261020-ucrt-x86_64'
           $archive = Join-Path $env:RUNNER_TEMP "$name.zip"
           Invoke-WebRequest "https://github.com/mstorsjo/llvm-mingw/releases/download/20261020/$name.zip" -OutFile $archive
@@ -77,16 +68,15 @@ jobs:
         shell: pwsh
         run: |
           if ($env:TARGET_ARCH -eq '386') {
-            $mingwBin = $env:LLVM_MINGW_BIN
-            $env:CC = Join-Path $mingwBin 'i686-w64-mingw32-clang.exe'
-            $env:CXX = Join-Path $mingwBin 'i686-w64-mingw32-clang++.exe'
+            $compilerTarget = 'i686'
           } else {
-            $mingwBin = Join-Path (Join-Path '${{ steps.msys2.outputs.msys2-location }}' 'ucrt64') 'bin'
-            $env:CC = Join-Path $mingwBin 'gcc.exe'
-            $env:CXX = Join-Path $mingwBin 'g++.exe'
+            $compilerTarget = 'x86_64'
           }
+          $mingwBin = $env:LLVM_MINGW_BIN
+          $env:CC = Join-Path $mingwBin "$compilerTarget-w64-mingw32-clang.exe"
+          $env:CXX = Join-Path $mingwBin "$compilerTarget-w64-mingw32-clang++.exe"
           if (-not (Test-Path $env:CC)) { throw "Missing compiler: $env:CC" }
-          # cgo starts GCC frontends in child processes; they need MinGW DLLs on PATH.
+          # cgo compiler/linker child processes need the toolchain DLLs on PATH.
           $env:PATH = "$mingwBin;$env:PATH"
           $mingwBin >> $env:GITHUB_PATH
           "CC=$env:CC" >> $env:GITHUB_ENV
@@ -150,7 +140,11 @@ jobs:
           $p.StartInfo.UseShellExecute = $false
           $p.StartInfo.RedirectStandardOutput = $true
           $p.StartInfo.RedirectStandardError = $true
-          foreach ($arg in @('test','-tags=server','-json','-count=1','-timeout=20m','.','./server','./legacy')) {
+          # Keep symbols and the actual failed/passing test executables, so
+          # an intermittent memory failure remains inspectable after CI exits.
+          $testOutput = Join-Path $env:RUNNER_TEMP "opennox-native-test-binaries-$env:TARGET_ARCH"
+          New-Item -ItemType Directory -Force $testOutput | Out-Null
+          foreach ($arg in @('test','-work',"-o=$testOutput",'-tags=server','-json','-count=1','-timeout=20m','.','./server','./legacy')) {
             $p.StartInfo.ArgumentList.Add($arg)
           }
           $out = [System.IO.File]::Open((Join-Path $report 'test.jsonl'), [System.IO.FileMode]::CreateNew)
@@ -168,8 +162,11 @@ jobs:
             $p.Dispose()
           }
           $code | Set-Content -Encoding utf8 (Join-Path $report 'test.exit')
+          python ../scripts/preserve-go-test-binaries.py $report $testOutput
+          $preservationCode = $LASTEXITCODE
           python ../scripts/summarize-go-test.py $report
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if ($preservationCode -ne 0) { exit $preservationCode }
           exit $code
 
       - uses: actions/upload-artifact@v7.0.2

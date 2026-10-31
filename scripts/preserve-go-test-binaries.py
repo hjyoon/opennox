@@ -7,7 +7,7 @@ import shutil
 import sys
 
 
-def preserve(report):
+def preserve(report, executed_directory=None):
     work_paths = set()
     sources = []
     for line in (report / "test.stderr.log").read_text(encoding="utf-8-sig").splitlines():
@@ -32,7 +32,8 @@ def preserve(report):
     destination = report / "test-binaries"
     destination.mkdir()
     binaries = []
-    for binary in sorted(work.rglob("*.test.exe")):
+    source = executed_directory if executed_directory is not None else work
+    for binary in sorted(source.rglob("*.test.exe")):
         target = destination / binary.name
         if target.exists():
             raise ValueError(f"Duplicate test executable name: {binary.name}")
@@ -41,7 +42,7 @@ def preserve(report):
             digest = hashlib.file_digest(stream, "sha256").hexdigest()
         binaries.append(dict(name=binary.name, bytes=target.stat().st_size, sha256=digest))
     with (report / "test-work-directory.json").open("x", encoding="utf-8") as stream:
-        json.dump(dict(path=str(work), sources=sources), stream, indent=2)
+        json.dump(dict(path=str(work), sources=sources, executable_source=str(source)), stream, indent=2)
         stream.write("\n")
     with (report / "test-binaries.json").open("x", encoding="utf-8") as stream:
         json.dump(binaries, stream, indent=2)
@@ -52,4 +53,4 @@ def preserve(report):
 
 
 if __name__ == "__main__":
-    preserve(Path(sys.argv[1]))
+    preserve(Path(sys.argv[1]), Path(sys.argv[2]) if len(sys.argv) > 2 else None)

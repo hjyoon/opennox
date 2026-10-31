@@ -55,6 +55,54 @@ completion requirements.
 
 ## Current findings
 
+### Native object-update dispatcher
+
+Public `519410` now shares a native Go visibility/update core with the
+ordinary sender. The original C body is retained under `#if 0`; its two
+pointer-to-int conversions and PE32 update/player reads are no longer
+executed. A native getter control followed by the actual old public C call
+reproduced SIGSEGV. The public ABI remains
+`char(nox_object_t*, nox_object_t*)`.
+
+The shared core retains the cached update and reloaded Player link, original
+target-destroyed check, friend-call-before-clear order, ray scalar bits copied
+before callbacks, sender precedence, fresh-state priming and live publication
+masks. Its public return byte is independent of the ordinary sent boolean:
+the reference contains 48 successful sends with byte zero and 4,483 calls
+without a send whose byte is nonzero. The ordinary adapter retains its
+recipient/nil/index guards and guarded sprite registry policy. The default
+children use existing native production services; the remaining PE32 C
+player/simple/phantom sender bodies are not reentered by this root.
+
+Unchanged-original execution covers **5,918 contexts / 5,930 calls** per
+FPU profile and all **590 root bytes**, with identical observations between
+0x0e3f and 0x023f. Thirteen child bodies remain declared boundaries. Four
+separate original nil faults remain faults. Actual C-to-Go and direct Go
+comparisons each pass within an **11,846-event** union, normally and with
+actual cgocheck2/checkptr level 2, comparing byte returns, ordered child
+arguments, callback mutations and complete native allocation/neighbor guards.
+Ten representative valid indices include bit 31; this does not exhaust all
+32 indices. The independently frozen original fixture is unchanged.
+
+Seventeen ordinary profiles exercise the actual C entry, public Go entry
+and convenience adapter through production bindings and real local queues:
+**69** events, plus one existing elevator control. The lower network
+publication boundary is controlled. The first new integration draft's
+network-code expectations were corrected after additional unchanged-original
+`578AC0` execution in seven classes and both FPU profiles; existing goldens,
+inputs and assertions were unchanged. The first comparator allocation
+constraint error and new oracle digest/order mistakes are also retained.
+
+Normal passes **619,777 / 43 skips** in four packages, retaining every
+previous terminal identity and multiplicity and adding **11,915** passes.
+Highres actual cgocheck2/checkptr2 passes **480,429 / 8 skips** in four
+packages, also retaining every previous terminal identity/multiplicity. All 4,177 previous test/fixture inputs
+remain byte-identical; the current inventory has 4,181 entries. The oracle
+verifies **3,330 code / 691 data ranges** and all 21 verifier tests pass,
+retaining every prior record and its relative order. ROOT/object-update-dispatch-native-entry-port
+records the bounded evidence. Fresh product/E2E and native CI remain pending;
+the Windows memory issue and overall porting remain open.
+
 ### Native fixed-object sprite entry
 
 Public `518AE0` now uses a shared native Go sender. The old C body reads
@@ -193,8 +241,8 @@ passes all three suites (**601,763 / 11 skips**); neither passing run resolves
 the earlier intermittent GC failures.
 
 Reviewed Node24 checkout and artifact actions remove their dependency
-deprecation warnings. MSYS2 now reports deprecated MINGW32/MINGW64
-environments in the historical logs. The Windows gate now uses UCRT64 GCC for amd64 and
+deprecation warnings. Historical MSYS2 logs report deprecated MINGW32/MINGW64
+environments. At `1df3707`, the Windows gate uses UCRT64 GCC for amd64 and
 the official digest-pinned LLVM-MinGW UCRT i686 compiler for 386, retaining
 both architectures and the complete suites. Exact test JSON and compiler
 profiles are now archived so a later GC failure retains its active tests
@@ -250,6 +298,27 @@ Run `41246202360` diagnoses unchanged `1df3707` source with checkptr plus
 cgocheck2, gccheckmark, and race instrumentation. Its workflow revision is
 `ec484f5`; it preserves the actual native test executables for inspection.
 These diagnostic profiles do not replace the failed ordinary native gate.
+
+The three profiles subsequently finish: gccheckmark passes **601,763 / 11
+skips**; checkptr/cgocheck2 fails in all three packages with distinct
+allocator/logger/test-matcher corruption symptoms; race has extensive
+below-4-GiB input prerequisite failures and no reported data race, so it
+does not supply a valid passing native-pointer run. Exact outputs remain
+preserved. The first collector missed `WORK` inside Go 1.26 JSON build-output
+and retained zero executables. Its correction is committed at `3c728c3`.
+Report-only run `41247419921` passes **601,763 / 11 skips** and retains the
+three actual test executables, but Go's default test build omits their debug
+symbols. This passing run does not resolve earlier failures.
+
+The next ordinary Windows gate and diagnostic workflow request a named
+test-output directory, retaining symbols without changing test selection,
+CGO flags or collector behavior. A local three-package Go 1.26 Windows
+crosscompile verifies all three executable copies and GC-root symbols;
+this fixture substitutes execution and supplies no native Windows test
+result. The following native CI still needs to validate the collection. Its ordinary
+gate also uses the same digest-pinned LLVM-MinGW UCRT package for both
+architectures, removing the MSYS2 core-update warning from compiler setup.
+The historical GCC diagnostics remain separate and do not establish a GC fix.
 
 ROOT/all-build-warning-cleanup-20261101 records the zero-warning results,
 documented 4,177-input inventory, preserved failures and current diagnostic

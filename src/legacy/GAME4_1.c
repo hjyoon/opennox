@@ -4465,6 +4465,7 @@ int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1p, nox_object_t* a2p, int a3
 }
 
 //----- (00519410) --------------------------------------------------------
+#if 0 // Native Go entry: object_update_dispatch_native_519410.go.
 char nox_xxx_netSendObjects2Plr_519410(nox_object_t* a1p, nox_object_t* a2p) {
 	int a1 = a1p;
 	int a2 = a2p;
@@ -4552,6 +4553,7 @@ char nox_xxx_netSendObjects2Plr_519410(nox_object_t* a1p, nox_object_t* a2p) {
 	}
 	return v4;
 }
+#endif
 
 //----- (00519710) --------------------------------------------------------
 int sub_519710(void* a1) {

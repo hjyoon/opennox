@@ -159,19 +159,7 @@ char nox_xxx_mobActionFight_531EC0(int a1) {
 }
 
 //----- (00532040) --------------------------------------------------------
-int sub_532040(int a1, int a2) {
-	int result; // eax
-	int v3;     // ecx
-
-	result = a1;
-	if (*(uint32_t*)(a1 + 36) == *(uint32_t*)(a2 + 1200)) {
-		v3 = *(uint32_t*)(a1 + 16);
-		if ((v3 & 0x8000) != 0) {
-			*getMemU32Ptr(0x5D4594, 2487944) = 1;
-		}
-	}
-	return result;
-}
+// Native-width implementation: monster_fight_dead_target_native_532040_export.go.
 
 //----- (00532130) --------------------------------------------------------
 int* nox_xxx_mobActionMelee1_532130(int a1) {

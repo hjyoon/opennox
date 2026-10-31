@@ -27,7 +27,7 @@ int* nox_xxx_monsterAction_531C60(nox_object_t* unit, nox_object_t* target);
 int* sub_531D50(nox_object_t* unit, nox_object_t* target);
 #include "monster_fight_run_state_native_531e20.h"
 char nox_xxx_mobActionFight_531EC0(int a1);
-int sub_532040(int a1, int a2);
+uintptr_t sub_532040(nox_object_t* candidate, void* context);
 #include "monster_block_start_native_532070.h"
 #include "monster_terminal_native_5320e0.h"
 #include "monster_facing_native_545210.h"

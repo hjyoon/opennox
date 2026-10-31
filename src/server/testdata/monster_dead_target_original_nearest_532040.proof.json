@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "contexts": 10800,
+  "control_word": "0x23f",
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "entry": "0x532040",
+  "extent": 48,
+  "executed_original_bytes": 42,
+  "padding_bytes_not_executed": 6,
+  "code_sha256": "73bc67defadf3daee1a979ef5343bf73b8170bec5b0808f2e8d113a46795a80b",
+  "global_address": "0x833c1c",
+  "no_service_or_result_substitution": true,
+  "full_heap_stack_global_guards_code_nonvolatile_and_FPU_preserved": true,
+  "distinct_explicit_context_and_object_update_link": true,
+  "fixture_sha256": "2bf18e4f124eec1ec874e8fa9fb82f596aa4d1db322add9e0c536871a4e77d45",
+  "raw_fixture_sha256": "7e0847b3da278b5d1ac9b914234ec9a7d78e932675ec995316fff4d626abca90",
+  "raw_fixture_bytes": 3376372,
+  "original_unchanged": true,
+  "overall_porting_100_percent": false
+}

@@ -291,7 +291,7 @@ func (s *Server) MonsterActionFight531EC0(unit *Object, runtime MonsterActionFig
 		findDeadTarget: func(pos types.Pointf, netCode uint32) bool {
 			found := false
 			s.Map.EachObjInCircle(pos, 30, func(candidate *Object) bool {
-				if candidate.NetCode == netCode && candidate.ObjFlags.Has(object.FlagDead) {
+				if monsterFightDeadTargetMatch532040(candidate, candidate.NetCode, netCode) {
 					found = true
 					return false
 				}

@@ -18550,6 +18550,13 @@
       "purpose": "the complete original ACTION_FIGHT update interval used to validate the native-width ordinary melee-target and pursuit admissions"
     },
     {
+      "name": "nox_xxx_monsterFightDeadTarget_532040",
+      "address": "0x00532040",
+      "size": 48,
+      "sha256": "73bc67defadf3daee1a979ef5343bf73b8170bec5b0808f2e8d113a46795a80b",
+      "purpose": "The complete original dead-target observer interval, including six trailing NOP bytes: compare candidate NetCode to the explicit cached monster context, test DEAD, conditionally set the sticky global DWORD833C1C, and return the candidate pointer."
+    },
+    {
       "name": "nox_xxx_monsterShieldBlockStart_532070",
       "address": "0x00532070",
       "size": 112,

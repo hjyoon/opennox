@@ -31,7 +31,11 @@ func (obj *Object) NPCWeaponForMeleeUpdate532130(data *MonsterUpdateData) *Objec
 	if data == nil {
 		return nil
 	}
-	if unsafe.Sizeof(uintptr(0)) == 4 {
+	// Unregistered Go objects can carry equipped inventory before an original
+	// pointer has been published. Preserve that compatibility path on 32-bit
+	// too; registered owners and every nonzero PE32 reference use the word.
+	if unsafe.Sizeof(uintptr(0)) == 4 &&
+		(data.Field516 != 0 || obj == nil || obj.serverHandle != 0) {
 		word := data.Field516
 		return *(**Object)(unsafe.Pointer(&word))
 	}

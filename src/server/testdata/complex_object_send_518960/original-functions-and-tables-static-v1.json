@@ -1,0 +1,2475 @@
+{
+  "status": "static_only",
+  "utc": "2026-10-31T07:48:53.922839+00:00",
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "root": "0x518960",
+  "root_body_bytes": 378,
+  "root_padding_bytes_excluded": 6,
+  "functions": [
+    {
+      "name": "animation-selector",
+      "entry": "0x533790",
+      "size": 281,
+      "sha256": "3e93764fa756e8f9cc14772fd81a61d3c3d7fbad7eee5ed303c2f3dcc773bfcb",
+      "instructions": [
+        {
+          "address": "0x533790",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x533791",
+          "bytes": "8b5c2408",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "0x533795",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0x533796",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "0x533797",
+          "bytes": "8bbbec020000",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [ebx + 0x2ec]"
+        },
+        {
+          "address": "0x53379d",
+          "bytes": "8a8720020000",
+          "mnemonic": "mov",
+          "operands": "al, byte ptr [edi + 0x220]"
+        },
+        {
+          "address": "0x5337a3",
+          "bytes": "3cff",
+          "mnemonic": "cmp",
+          "operands": "al, 0xff"
+        },
+        {
+          "address": "0x5337a5",
+          "bytes": "0f8487000000",
+          "mnemonic": "je",
+          "operands": "0x533832"
+        },
+        {
+          "address": "0x5337ab",
+          "bytes": "0fbec0",
+          "mnemonic": "movsx",
+          "operands": "eax, al"
+        },
+        {
+          "address": "0x5337ae",
+          "bytes": "83c017",
+          "mnemonic": "add",
+          "operands": "eax, 0x17"
+        },
+        {
+          "address": "0x5337b1",
+          "bytes": "8d0440",
+          "mnemonic": "lea",
+          "operands": "eax, [eax + eax*2]"
+        },
+        {
+          "address": "0x5337b4",
+          "bytes": "8b04c7",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + eax*8]"
+        },
+        {
+          "address": "0x5337b7",
+          "bytes": "83c0f9",
+          "mnemonic": "add",
+          "operands": "eax, -7"
+        },
+        {
+          "address": "0x5337ba",
+          "bytes": "83f81e",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x1e"
+        },
+        {
+          "address": "0x5337bd",
+          "bytes": "7773",
+          "mnemonic": "ja",
+          "operands": "0x533832"
+        },
+        {
+          "address": "0x5337bf",
+          "bytes": "33c9",
+          "mnemonic": "xor",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "0x5337c1",
+          "bytes": "8a88e0385300",
+          "mnemonic": "mov",
+          "operands": "cl, byte ptr [eax + 0x5338e0]"
+        },
+        {
+          "address": "0x5337c7",
+          "bytes": "ff248dac385300",
+          "mnemonic": "jmp",
+          "operands": "dword ptr [ecx*4 + 0x5338ac]"
+        },
+        {
+          "address": "0x5337ce",
+          "bytes": "8bb7a0050000",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [edi + 0x5a0]"
+        },
+        {
+          "address": "0x5337d4",
+          "bytes": "81e600400000",
+          "mnemonic": "and",
+          "operands": "esi, 0x4000"
+        },
+        {
+          "address": "0x5337da",
+          "bytes": "81ce00000300",
+          "mnemonic": "or",
+          "operands": "esi, 0x30000"
+        },
+        {
+          "address": "0x5337e0",
+          "bytes": "c1ee0e",
+          "mnemonic": "shr",
+          "operands": "esi, 0xe"
+        },
+        {
+          "address": "0x5337e3",
+          "bytes": "eb52",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x5337e5",
+          "bytes": "be0c000000",
+          "mnemonic": "mov",
+          "operands": "esi, 0xc"
+        },
+        {
+          "address": "0x5337ea",
+          "bytes": "eb4b",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x5337ec",
+          "bytes": "be0d000000",
+          "mnemonic": "mov",
+          "operands": "esi, 0xd"
+        },
+        {
+          "address": "0x5337f1",
+          "bytes": "eb44",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x5337f3",
+          "bytes": "be01000000",
+          "mnemonic": "mov",
+          "operands": "esi, 1"
+        },
+        {
+          "address": "0x5337f8",
+          "bytes": "eb3d",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x5337fa",
+          "bytes": "be07000000",
+          "mnemonic": "mov",
+          "operands": "esi, 7"
+        },
+        {
+          "address": "0x5337ff",
+          "bytes": "eb36",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x533801",
+          "bytes": "be03000000",
+          "mnemonic": "mov",
+          "operands": "esi, 3"
+        },
+        {
+          "address": "0x533806",
+          "bytes": "eb2f",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x533808",
+          "bytes": "be05000000",
+          "mnemonic": "mov",
+          "operands": "esi, 5"
+        },
+        {
+          "address": "0x53380d",
+          "bytes": "eb28",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x53380f",
+          "bytes": "be06000000",
+          "mnemonic": "mov",
+          "operands": "esi, 6"
+        },
+        {
+          "address": "0x533814",
+          "bytes": "eb21",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x533816",
+          "bytes": "be09000000",
+          "mnemonic": "mov",
+          "operands": "esi, 9"
+        },
+        {
+          "address": "0x53381b",
+          "bytes": "eb1a",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x53381d",
+          "bytes": "be0a000000",
+          "mnemonic": "mov",
+          "operands": "esi, 0xa"
+        },
+        {
+          "address": "0x533822",
+          "bytes": "eb13",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x533824",
+          "bytes": "be0f000000",
+          "mnemonic": "mov",
+          "operands": "esi, 0xf"
+        },
+        {
+          "address": "0x533829",
+          "bytes": "eb0c",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x53382b",
+          "bytes": "be0e000000",
+          "mnemonic": "mov",
+          "operands": "esi, 0xe"
+        },
+        {
+          "address": "0x533830",
+          "bytes": "eb05",
+          "mnemonic": "jmp",
+          "operands": "0x533837"
+        },
+        {
+          "address": "0x533832",
+          "bytes": "be08000000",
+          "mnemonic": "mov",
+          "operands": "esi, 8"
+        },
+        {
+          "address": "0x533837",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x533838",
+          "bytes": "e803100000",
+          "mnemonic": "call",
+          "operands": "0x534840"
+        },
+        {
+          "address": "0x53383d",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0x533840",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x533842",
+          "bytes": "7417",
+          "mnemonic": "je",
+          "operands": "0x53385b"
+        },
+        {
+          "address": "0x533844",
+          "bytes": "83fe08",
+          "mnemonic": "cmp",
+          "operands": "esi, 8"
+        },
+        {
+          "address": "0x533847",
+          "bytes": "7512",
+          "mnemonic": "jne",
+          "operands": "0x53385b"
+        },
+        {
+          "address": "0x533849",
+          "bytes": "f787a005000000000400",
+          "mnemonic": "test",
+          "operands": "dword ptr [edi + 0x5a0], 0x40000"
+        },
+        {
+          "address": "0x533853",
+          "bytes": "744e",
+          "mnemonic": "je",
+          "operands": "0x5338a3"
+        },
+        {
+          "address": "0x533855",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "0x533856",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0x533857",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x533859",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x53385a",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x53385b",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x53385c",
+          "bytes": "e8af110000",
+          "mnemonic": "call",
+          "operands": "0x534a10"
+        },
+        {
+          "address": "0x533861",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0x533864",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x533866",
+          "bytes": "7418",
+          "mnemonic": "je",
+          "operands": "0x533880"
+        },
+        {
+          "address": "0x533868",
+          "bytes": "83fe08",
+          "mnemonic": "cmp",
+          "operands": "esi, 8"
+        },
+        {
+          "address": "0x53386b",
+          "bytes": "7513",
+          "mnemonic": "jne",
+          "operands": "0x533880"
+        },
+        {
+          "address": "0x53386d",
+          "bytes": "8b87ac040000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 0x4ac]"
+        },
+        {
+          "address": "0x533873",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x533875",
+          "bytes": "752c",
+          "mnemonic": "jne",
+          "operands": "0x5338a3"
+        },
+        {
+          "address": "0x533877",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "0x533878",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0x533879",
+          "bytes": "b80e000000",
+          "mnemonic": "mov",
+          "operands": "eax, 0xe"
+        },
+        {
+          "address": "0x53387e",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x53387f",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x533880",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x533881",
+          "bytes": "e8ba110000",
+          "mnemonic": "call",
+          "operands": "0x534a40"
+        },
+        {
+          "address": "0x533886",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0x533889",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x53388b",
+          "bytes": "7416",
+          "mnemonic": "je",
+          "operands": "0x5338a3"
+        },
+        {
+          "address": "0x53388d",
+          "bytes": "83fe09",
+          "mnemonic": "cmp",
+          "operands": "esi, 9"
+        },
+        {
+          "address": "0x533890",
+          "bytes": "7511",
+          "mnemonic": "jne",
+          "operands": "0x5338a3"
+        },
+        {
+          "address": "0x533892",
+          "bytes": "f787a005000000000800",
+          "mnemonic": "test",
+          "operands": "dword ptr [edi + 0x5a0], 0x80000"
+        },
+        {
+          "address": "0x53389c",
+          "bytes": "b80f000000",
+          "mnemonic": "mov",
+          "operands": "eax, 0xf"
+        },
+        {
+          "address": "0x5338a1",
+          "bytes": "7502",
+          "mnemonic": "jne",
+          "operands": "0x5338a5"
+        },
+        {
+          "address": "0x5338a3",
+          "bytes": "8bc6",
+          "mnemonic": "mov",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "0x5338a5",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "0x5338a6",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0x5338a7",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x5338a8",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "mimic",
+      "entry": "0x534840",
+      "size": 47,
+      "sha256": "781c33a7a7b5f71c4f9c0588f0548b451f35df903fa7970c4bc1674579933efe",
+      "instructions": [
+        {
+          "address": "0x534840",
+          "bytes": "a1603e8300",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0x833e60]"
+        },
+        {
+          "address": "0x534845",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x534847",
+          "bytes": "7512",
+          "mnemonic": "jne",
+          "operands": "0x53485b"
+        },
+        {
+          "address": "0x534849",
+          "bytes": "68d8765c00",
+          "mnemonic": "push",
+          "operands": "0x5c76d8"
+        },
+        {
+          "address": "0x53484e",
+          "bytes": "e84df2faff",
+          "mnemonic": "call",
+          "operands": "0x4e3aa0"
+        },
+        {
+          "address": "0x534853",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0x534856",
+          "bytes": "a3603e8300",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x833e60], eax"
+        },
+        {
+          "address": "0x53485b",
+          "bytes": "8b542404",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0x53485f",
+          "bytes": "33c9",
+          "mnemonic": "xor",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "0x534861",
+          "bytes": "668b4a04",
+          "mnemonic": "mov",
+          "operands": "cx, word ptr [edx + 4]"
+        },
+        {
+          "address": "0x534865",
+          "bytes": "33d2",
+          "mnemonic": "xor",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "0x534867",
+          "bytes": "3bc8",
+          "mnemonic": "cmp",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0x534869",
+          "bytes": "0f94c2",
+          "mnemonic": "sete",
+          "operands": "dl"
+        },
+        {
+          "address": "0x53486c",
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": "0x53486e",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "plant",
+      "entry": "0x534a10",
+      "size": 47,
+      "sha256": "ae016b1e21f4a9c7f83f6c97b8122e044be2701cbf528e8028fd6763e696caf5",
+      "instructions": [
+        {
+          "address": "0x534a10",
+          "bytes": "a1643e8300",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0x833e64]"
+        },
+        {
+          "address": "0x534a15",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x534a17",
+          "bytes": "7512",
+          "mnemonic": "jne",
+          "operands": "0x534a2b"
+        },
+        {
+          "address": "0x534a19",
+          "bytes": "68e0765c00",
+          "mnemonic": "push",
+          "operands": "0x5c76e0"
+        },
+        {
+          "address": "0x534a1e",
+          "bytes": "e87df0faff",
+          "mnemonic": "call",
+          "operands": "0x4e3aa0"
+        },
+        {
+          "address": "0x534a23",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0x534a26",
+          "bytes": "a3643e8300",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x833e64], eax"
+        },
+        {
+          "address": "0x534a2b",
+          "bytes": "8b542404",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0x534a2f",
+          "bytes": "33c9",
+          "mnemonic": "xor",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "0x534a31",
+          "bytes": "668b4a04",
+          "mnemonic": "mov",
+          "operands": "cx, word ptr [edx + 4]"
+        },
+        {
+          "address": "0x534a35",
+          "bytes": "33d2",
+          "mnemonic": "xor",
+          "operands": "edx, edx"
+        },
+        {
+          "address": "0x534a37",
+          "bytes": "3bc8",
+          "mnemonic": "cmp",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0x534a39",
+          "bytes": "0f94c2",
+          "mnemonic": "sete",
+          "operands": "dl"
+        },
+        {
+          "address": "0x534a3c",
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": "0x534a3e",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "zombie",
+      "entry": "0x534a40",
+      "size": 79,
+      "sha256": "7e5c1b2253b655f45c75ddb76810674024dcf09bb2fd0094418a17bb900683a3",
+      "instructions": [
+        {
+          "address": "0x534a40",
+          "bytes": "a1683e8300",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0x833e68]"
+        },
+        {
+          "address": "0x534a45",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x534a47",
+          "bytes": "7521",
+          "mnemonic": "jne",
+          "operands": "0x534a6a"
+        },
+        {
+          "address": "0x534a49",
+          "bytes": "68f4765c00",
+          "mnemonic": "push",
+          "operands": "0x5c76f4"
+        },
+        {
+          "address": "0x534a4e",
+          "bytes": "e84df0faff",
+          "mnemonic": "call",
+          "operands": "0x4e3aa0"
+        },
+        {
+          "address": "0x534a53",
+          "bytes": "68fc765c00",
+          "mnemonic": "push",
+          "operands": "0x5c76fc"
+        },
+        {
+          "address": "0x534a58",
+          "bytes": "a3683e8300",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x833e68], eax"
+        },
+        {
+          "address": "0x534a5d",
+          "bytes": "e83ef0faff",
+          "mnemonic": "call",
+          "operands": "0x4e3aa0"
+        },
+        {
+          "address": "0x534a62",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0x534a65",
+          "bytes": "a36c3e8300",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x833e6c], eax"
+        },
+        {
+          "address": "0x534a6a",
+          "bytes": "8b4c2404",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0x534a6e",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x534a70",
+          "bytes": "668b4104",
+          "mnemonic": "mov",
+          "operands": "ax, word ptr [ecx + 4]"
+        },
+        {
+          "address": "0x534a74",
+          "bytes": "8b0d683e8300",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0x833e68]"
+        },
+        {
+          "address": "0x534a7a",
+          "bytes": "3bc1",
+          "mnemonic": "cmp",
+          "operands": "eax, ecx"
+        },
+        {
+          "address": "0x534a7c",
+          "bytes": "740b",
+          "mnemonic": "je",
+          "operands": "0x534a89"
+        },
+        {
+          "address": "0x534a7e",
+          "bytes": "3b056c3e8300",
+          "mnemonic": "cmp",
+          "operands": "eax, dword ptr [0x833e6c]"
+        },
+        {
+          "address": "0x534a84",
+          "bytes": "7403",
+          "mnemonic": "je",
+          "operands": "0x534a89"
+        },
+        {
+          "address": "0x534a86",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x534a88",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x534a89",
+          "bytes": "b801000000",
+          "mnemonic": "mov",
+          "operands": "eax, 1"
+        },
+        {
+          "address": "0x534a8e",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "actual-word-name-ID",
+      "entry": "0x4e3aa0",
+      "size": 28,
+      "sha256": "067886c750843f5c0465dc976786eeac8f0332e4ffd9179393d8077adde01faf",
+      "instructions": [
+        {
+          "address": "0x4e3aa0",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0x4e3aa4",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0x4e3aa5",
+          "bytes": "e886fdffff",
+          "mnemonic": "call",
+          "operands": "0x4e3830"
+        },
+        {
+          "address": "0x4e3aaa",
+          "bytes": "83c404",
+          "mnemonic": "add",
+          "operands": "esp, 4"
+        },
+        {
+          "address": "0x4e3aad",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x4e3aaf",
+          "bytes": "7408",
+          "mnemonic": "je",
+          "operands": "0x4e3ab9"
+        },
+        {
+          "address": "0x4e3ab1",
+          "bytes": "33c9",
+          "mnemonic": "xor",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "0x4e3ab3",
+          "bytes": "668b08",
+          "mnemonic": "mov",
+          "operands": "cx, word ptr [eax]"
+        },
+        {
+          "address": "0x4e3ab6",
+          "bytes": "8bc1",
+          "mnemonic": "mov",
+          "operands": "eax, ecx"
+        },
+        {
+          "address": "0x4e3ab8",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x4e3ab9",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x4e3abb",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "PlayerAnimationFrames4F9F90",
+      "entry": "0x4f9f90",
+      "size": 31,
+      "sha256": "b02c0d48bfadb52b060e919976066bd5fff57f51a4c215e56e6057e0162c763e",
+      "instructions": [
+        {
+          "address": "0x4f9f90",
+          "bytes": "8b442404",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0x4f9f94",
+          "bytes": "8b542408",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 8]"
+        },
+        {
+          "address": "0x4f9f98",
+          "bytes": "8b0cc530347500",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [eax*8 + 0x753430]"
+        },
+        {
+          "address": "0x4f9f9f",
+          "bytes": "890a",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx], ecx"
+        },
+        {
+          "address": "0x4f9fa1",
+          "bytes": "8b4c240c",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "0x4f9fa5",
+          "bytes": "8b04c534347500",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [eax*8 + 0x753434]"
+        },
+        {
+          "address": "0x4f9fac",
+          "bytes": "8901",
+          "mnemonic": "mov",
+          "operands": "dword ptr [ecx], eax"
+        },
+        {
+          "address": "0x4f9fae",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "send-complex-object",
+      "entry": "0x518960",
+      "size": 378,
+      "sha256": "9b9d0a74e09564570e8ec42ba48b7f3f174f2dd8e382783aff31d26d1f68ace4",
+      "instructions": [
+        {
+          "address": "0x518960",
+          "bytes": "8b44240c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "0x518964",
+          "bytes": "83ec14",
+          "mnemonic": "sub",
+          "operands": "esp, 0x14"
+        },
+        {
+          "address": "0x518967",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x518969",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x51896a",
+          "bytes": "8b5c241c",
+          "mnemonic": "mov",
+          "operands": "ebx, dword ptr [esp + 0x1c]"
+        },
+        {
+          "address": "0x51896e",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0x51896f",
+          "bytes": "8b742424",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esp + 0x24]"
+        },
+        {
+          "address": "0x518973",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "0x518974",
+          "bytes": "7454",
+          "mnemonic": "je",
+          "operands": "0x5189ca"
+        },
+        {
+          "address": "0x518976",
+          "bytes": "8b862c020000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x22c]"
+        },
+        {
+          "address": "0x51897c",
+          "bytes": "85c0",
+          "mnemonic": "test",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x51897e",
+          "bytes": "744a",
+          "mnemonic": "je",
+          "operands": "0x5189ca"
+        },
+        {
+          "address": "0x518980",
+          "bytes": "8b0d04ea8400",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [0x84ea04]"
+        },
+        {
+          "address": "0x518986",
+          "bytes": "8b9618020000",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi + 0x218]"
+        },
+        {
+          "address": "0x51898c",
+          "bytes": "8bbeec020000",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esi + 0x2ec]"
+        },
+        {
+          "address": "0x518992",
+          "bytes": "2bca",
+          "mnemonic": "sub",
+          "operands": "ecx, edx"
+        },
+        {
+          "address": "0x518994",
+          "bytes": "83f902",
+          "mnemonic": "cmp",
+          "operands": "ecx, 2"
+        },
+        {
+          "address": "0x518997",
+          "bytes": "7631",
+          "mnemonic": "jbe",
+          "operands": "0x5189ca"
+        },
+        {
+          "address": "0x518999",
+          "bytes": "668b00",
+          "mnemonic": "mov",
+          "operands": "ax, word ptr [eax]"
+        },
+        {
+          "address": "0x51899c",
+          "bytes": "668b8c5f9c010000",
+          "mnemonic": "mov",
+          "operands": "cx, word ptr [edi + ebx*2 + 0x19c]"
+        },
+        {
+          "address": "0x5189a4",
+          "bytes": "663bc1",
+          "mnemonic": "cmp",
+          "operands": "ax, cx"
+        },
+        {
+          "address": "0x5189a7",
+          "bytes": "7421",
+          "mnemonic": "je",
+          "operands": "0x5189ca"
+        },
+        {
+          "address": "0x5189a9",
+          "bytes": "8b5624",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esi + 0x24]"
+        },
+        {
+          "address": "0x5189ac",
+          "bytes": "2bc1",
+          "mnemonic": "sub",
+          "operands": "eax, ecx"
+        },
+        {
+          "address": "0x5189ae",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0x5189af",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "0x5189b0",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x5189b1",
+          "bytes": "e8aafdfbff",
+          "mnemonic": "call",
+          "operands": "0x4d8760"
+        },
+        {
+          "address": "0x5189b6",
+          "bytes": "8b862c020000",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x22c]"
+        },
+        {
+          "address": "0x5189bc",
+          "bytes": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "0x5189bf",
+          "bytes": "668b08",
+          "mnemonic": "mov",
+          "operands": "cx, word ptr [eax]"
+        },
+        {
+          "address": "0x5189c2",
+          "bytes": "66898c5f9c010000",
+          "mnemonic": "mov",
+          "operands": "word ptr [edi + ebx*2 + 0x19c], cx"
+        },
+        {
+          "address": "0x5189ca",
+          "bytes": "668b5604",
+          "mnemonic": "mov",
+          "operands": "dx, word ptr [esi + 4]"
+        },
+        {
+          "address": "0x5189ce",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0x5189cf",
+          "bytes": "c644241830",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x18], 0x30"
+        },
+        {
+          "address": "0x5189d4",
+          "bytes": "668954241b",
+          "mnemonic": "mov",
+          "operands": "word ptr [esp + 0x1b], dx"
+        },
+        {
+          "address": "0x5189d9",
+          "bytes": "e8e2000600",
+          "mnemonic": "call",
+          "operands": "0x578ac0"
+        },
+        {
+          "address": "0x5189de",
+          "bytes": "6689442419",
+          "mnemonic": "mov",
+          "operands": "word ptr [esp + 0x19], ax"
+        },
+        {
+          "address": "0x5189e3",
+          "bytes": "8b4638",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esi + 0x38]"
+        },
+        {
+          "address": "0x5189e6",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0x5189e7",
+          "bytes": "e88410f0ff",
+          "mnemonic": "call",
+          "operands": "0x419a70"
+        },
+        {
+          "address": "0x5189ec",
+          "bytes": "8b4e3c",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x3c]"
+        },
+        {
+          "address": "0x5189ef",
+          "bytes": "6689442421",
+          "mnemonic": "mov",
+          "operands": "word ptr [esp + 0x21], ax"
+        },
+        {
+          "address": "0x5189f4",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "0x5189f5",
+          "bytes": "e87610f0ff",
+          "mnemonic": "call",
+          "operands": "0x419a70"
+        },
+        {
+          "address": "0x5189fa",
+          "bytes": "8bbeec020000",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [esi + 0x2ec]"
+        },
+        {
+          "address": "0x518a00",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0x518a01",
+          "bytes": "668944242b",
+          "mnemonic": "mov",
+          "operands": "word ptr [esp + 0x2b], ax"
+        },
+        {
+          "address": "0x518a06",
+          "bytes": "e885ad0100",
+          "mnemonic": "call",
+          "operands": "0x533790"
+        },
+        {
+          "address": "0x518a0b",
+          "bytes": "8844242d",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x2d], al"
+        },
+        {
+          "address": "0x518a0f",
+          "bytes": "8a460c",
+          "mnemonic": "mov",
+          "operands": "al, byte ptr [esi + 0xc]"
+        },
+        {
+          "address": "0x518a12",
+          "bytes": "8a97e1010000",
+          "mnemonic": "mov",
+          "operands": "dl, byte ptr [edi + 0x1e1]"
+        },
+        {
+          "address": "0x518a18",
+          "bytes": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": "0x518a1b",
+          "bytes": "a810",
+          "mnemonic": "test",
+          "operands": "al, 0x10"
+        },
+        {
+          "address": "0x518a1d",
+          "bytes": "8854241e",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x1e], dl"
+        },
+        {
+          "address": "0x518a21",
+          "bytes": "7458",
+          "mnemonic": "je",
+          "operands": "0x518a7b"
+        },
+        {
+          "address": "0x518a23",
+          "bytes": "8a872e080000",
+          "mnemonic": "mov",
+          "operands": "al, byte ptr [edi + 0x82e]"
+        },
+        {
+          "address": "0x518a29",
+          "bytes": "84c0",
+          "mnemonic": "test",
+          "operands": "al, al"
+        },
+        {
+          "address": "0x518a2b",
+          "bytes": "744e",
+          "mnemonic": "je",
+          "operands": "0x518a7b"
+        },
+        {
+          "address": "0x518a2d",
+          "bytes": "68af000000",
+          "mnemonic": "push",
+          "operands": "0xaf"
+        },
+        {
+          "address": "0x518a32",
+          "bytes": "68943d5c00",
+          "mnemonic": "push",
+          "operands": "0x5c3d94"
+        },
+        {
+          "address": "0x518a37",
+          "bytes": "6a0a",
+          "mnemonic": "push",
+          "operands": "0xa"
+        },
+        {
+          "address": "0x518a39",
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "0x518a3b",
+          "bytes": "e860d5efff",
+          "mnemonic": "call",
+          "operands": "0x415fa0"
+        },
+        {
+          "address": "0x518a40",
+          "bytes": "83c410",
+          "mnemonic": "add",
+          "operands": "esp, 0x10"
+        },
+        {
+          "address": "0x518a43",
+          "bytes": "83f808",
+          "mnemonic": "cmp",
+          "operands": "eax, 8"
+        },
+        {
+          "address": "0x518a46",
+          "bytes": "7c33",
+          "mnemonic": "jl",
+          "operands": "0x518a7b"
+        },
+        {
+          "address": "0x518a48",
+          "bytes": "8d442424",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0x24]"
+        },
+        {
+          "address": "0x518a4c",
+          "bytes": "8d4c242c",
+          "mnemonic": "lea",
+          "operands": "ecx, [esp + 0x2c]"
+        },
+        {
+          "address": "0x518a50",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0x518a51",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "0x518a52",
+          "bytes": "6a32",
+          "mnemonic": "push",
+          "operands": "0x32"
+        },
+        {
+          "address": "0x518a54",
+          "bytes": "c64424290e",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x29], 0xe"
+        },
+        {
+          "address": "0x518a59",
+          "bytes": "e83215feff",
+          "mnemonic": "call",
+          "operands": "0x4f9f90"
+        },
+        {
+          "address": "0x518a5e",
+          "bytes": "8b542438",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0x38]"
+        },
+        {
+          "address": "0x518a62",
+          "bytes": "68ba000000",
+          "mnemonic": "push",
+          "operands": "0xba"
+        },
+        {
+          "address": "0x518a67",
+          "bytes": "68c03d5c00",
+          "mnemonic": "push",
+          "operands": "0x5c3dc0"
+        },
+        {
+          "address": "0x518a6c",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "0x518a6d",
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "0x518a6f",
+          "bytes": "e82cd5efff",
+          "mnemonic": "call",
+          "operands": "0x415fa0"
+        },
+        {
+          "address": "0x518a74",
+          "bytes": "83c41c",
+          "mnemonic": "add",
+          "operands": "esp, 0x1c"
+        },
+        {
+          "address": "0x518a77",
+          "bytes": "8844241e",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x1e], al"
+        },
+        {
+          "address": "0x518a7b",
+          "bytes": "0fbf4e7c",
+          "mnemonic": "movsx",
+          "operands": "ecx, word ptr [esi + 0x7c]"
+        },
+        {
+          "address": "0x518a7f",
+          "bytes": "8d44240c",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0xc]"
+        },
+        {
+          "address": "0x518a83",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0x518a84",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "0x518a85",
+          "bytes": "e89613ffff",
+          "mnemonic": "call",
+          "operands": "0x509e20"
+        },
+        {
+          "address": "0x518a8a",
+          "bytes": "8a442418",
+          "mnemonic": "mov",
+          "operands": "al, byte ptr [esp + 0x18]"
+        },
+        {
+          "address": "0x518a8e",
+          "bytes": "b203",
+          "mnemonic": "mov",
+          "operands": "dl, 3"
+        },
+        {
+          "address": "0x518a90",
+          "bytes": "f6ea",
+          "mnemonic": "imul",
+          "operands": "dl"
+        },
+        {
+          "address": "0x518a92",
+          "bytes": "8a4c2414",
+          "mnemonic": "mov",
+          "operands": "cl, byte ptr [esp + 0x14]"
+        },
+        {
+          "address": "0x518a96",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0x518a99",
+          "bytes": "02c1",
+          "mnemonic": "add",
+          "operands": "al, cl"
+        },
+        {
+          "address": "0x518a9b",
+          "bytes": "0404",
+          "mnemonic": "add",
+          "operands": "al, 4"
+        },
+        {
+          "address": "0x518a9d",
+          "bytes": "8844242c",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x2c], al"
+        },
+        {
+          "address": "0x518aa1",
+          "bytes": "3ac2",
+          "mnemonic": "cmp",
+          "operands": "al, dl"
+        },
+        {
+          "address": "0x518aa3",
+          "bytes": "8b44242c",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x2c]"
+        },
+        {
+          "address": "0x518aa7",
+          "bytes": "7608",
+          "mnemonic": "jbe",
+          "operands": "0x518ab1"
+        },
+        {
+          "address": "0x518aa9",
+          "bytes": "25ff000000",
+          "mnemonic": "and",
+          "operands": "eax, 0xff"
+        },
+        {
+          "address": "0x518aae",
+          "bytes": "48",
+          "mnemonic": "dec",
+          "operands": "eax"
+        },
+        {
+          "address": "0x518aaf",
+          "bytes": "eb05",
+          "mnemonic": "jmp",
+          "operands": "0x518ab6"
+        },
+        {
+          "address": "0x518ab1",
+          "bytes": "25ff000000",
+          "mnemonic": "and",
+          "operands": "eax, 0xff"
+        },
+        {
+          "address": "0x518ab6",
+          "bytes": "8a4c241d",
+          "mnemonic": "mov",
+          "operands": "cl, byte ptr [esp + 0x1d]"
+        },
+        {
+          "address": "0x518aba",
+          "bytes": "6a0b",
+          "mnemonic": "push",
+          "operands": "0xb"
+        },
+        {
+          "address": "0x518abc",
+          "bytes": "c0e004",
+          "mnemonic": "shl",
+          "operands": "al, 4"
+        },
+        {
+          "address": "0x518abf",
+          "bytes": "0ac8",
+          "mnemonic": "or",
+          "operands": "cl, al"
+        },
+        {
+          "address": "0x518ac1",
+          "bytes": "8d442418",
+          "mnemonic": "lea",
+          "operands": "eax, [esp + 0x18]"
+        },
+        {
+          "address": "0x518ac5",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0x518ac6",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x518ac7",
+          "bytes": "884c2429",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x29], cl"
+        },
+        {
+          "address": "0x518acb",
+          "bytes": "e87064efff",
+          "mnemonic": "call",
+          "operands": "0x40ef40"
+        },
+        {
+          "address": "0x518ad0",
+          "bytes": "83c40c",
+          "mnemonic": "add",
+          "operands": "esp, 0xc"
+        },
+        {
+          "address": "0x518ad3",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "0x518ad4",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0x518ad5",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x518ad6",
+          "bytes": "83c414",
+          "mnemonic": "add",
+          "operands": "esp, 0x14"
+        },
+        {
+          "address": "0x518ad9",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "unit-network-code",
+      "entry": "0x578ac0",
+      "size": 58,
+      "sha256": "fd7566c86cbeb05314c42c16594321bfd19ccabe7607cc012971621b1c94e4b1",
+      "instructions": [
+        {
+          "address": "0x578ac0",
+          "bytes": "8b4c2404",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esp + 4]"
+        },
+        {
+          "address": "0x578ac4",
+          "bytes": "85c9",
+          "mnemonic": "test",
+          "operands": "ecx, ecx"
+        },
+        {
+          "address": "0x578ac6",
+          "bytes": "7503",
+          "mnemonic": "jne",
+          "operands": "0x578acb"
+        },
+        {
+          "address": "0x578ac8",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x578aca",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x578acb",
+          "bytes": "8b5124",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx + 0x24]"
+        },
+        {
+          "address": "0x578ace",
+          "bytes": "81fa00800000",
+          "mnemonic": "cmp",
+          "operands": "edx, 0x8000"
+        },
+        {
+          "address": "0x578ad4",
+          "bytes": "7203",
+          "mnemonic": "jb",
+          "operands": "0x578ad9"
+        },
+        {
+          "address": "0x578ad6",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x578ad8",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x578ad9",
+          "bytes": "8b4128",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ecx + 0x28]"
+        },
+        {
+          "address": "0x578adc",
+          "bytes": "3d00800000",
+          "mnemonic": "cmp",
+          "operands": "eax, 0x8000"
+        },
+        {
+          "address": "0x578ae1",
+          "bytes": "7203",
+          "mnemonic": "jb",
+          "operands": "0x578ae6"
+        },
+        {
+          "address": "0x578ae3",
+          "bytes": "33c0",
+          "mnemonic": "xor",
+          "operands": "eax, eax"
+        },
+        {
+          "address": "0x578ae5",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x578ae6",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0x578ae7",
+          "bytes": "8b7108",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [ecx + 8]"
+        },
+        {
+          "address": "0x578aea",
+          "bytes": "f7c600004020",
+          "mnemonic": "test",
+          "operands": "esi, 0x20400000"
+        },
+        {
+          "address": "0x578af0",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0x578af1",
+          "bytes": "7404",
+          "mnemonic": "je",
+          "operands": "0x578af7"
+        },
+        {
+          "address": "0x578af3",
+          "bytes": "80cc80",
+          "mnemonic": "or",
+          "operands": "ah, 0x80"
+        },
+        {
+          "address": "0x578af6",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x578af7",
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": "0x578af9",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "original-logic-RNG",
+      "entry": "0x415fa0",
+      "size": 67,
+      "sha256": "980160ad95ee2695d9a2b0840c318f0ee870d028506a639f92b18799bb275fa7",
+      "instructions": [
+        {
+          "address": "0x415fa0",
+          "bytes": "8b442408",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 8]"
+        },
+        {
+          "address": "0x415fa4",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0x415fa5",
+          "bytes": "8b742408",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esp + 8]"
+        },
+        {
+          "address": "0x415fa9",
+          "bytes": "8bc8",
+          "mnemonic": "mov",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0x415fab",
+          "bytes": "57",
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "address": "0x415fac",
+          "bytes": "8b3dd0ef6200",
+          "mnemonic": "mov",
+          "operands": "edi, dword ptr [0x62efd0]"
+        },
+        {
+          "address": "0x415fb2",
+          "bytes": "2bce",
+          "mnemonic": "sub",
+          "operands": "ecx, esi"
+        },
+        {
+          "address": "0x415fb4",
+          "bytes": "8bd7",
+          "mnemonic": "mov",
+          "operands": "edx, edi"
+        },
+        {
+          "address": "0x415fb6",
+          "bytes": "41",
+          "mnemonic": "inc",
+          "operands": "ecx"
+        },
+        {
+          "address": "0x415fb7",
+          "bytes": "7427",
+          "mnemonic": "je",
+          "operands": "0x415fe0"
+        },
+        {
+          "address": "0x415fb9",
+          "bytes": "47",
+          "mnemonic": "inc",
+          "operands": "edi"
+        },
+        {
+          "address": "0x415fba",
+          "bytes": "81ff00100000",
+          "mnemonic": "cmp",
+          "operands": "edi, 0x1000"
+        },
+        {
+          "address": "0x415fc0",
+          "bytes": "893dd0ef6200",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x62efd0], edi"
+        },
+        {
+          "address": "0x415fc6",
+          "bytes": "7c0a",
+          "mnemonic": "jl",
+          "operands": "0x415fd2"
+        },
+        {
+          "address": "0x415fc8",
+          "bytes": "c705d0ef620000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [0x62efd0], 0"
+        },
+        {
+          "address": "0x415fd2",
+          "bytes": "8b049504045900",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx*4 + 0x590404]"
+        },
+        {
+          "address": "0x415fd9",
+          "bytes": "99",
+          "mnemonic": "cdq",
+          "operands": ""
+        },
+        {
+          "address": "0x415fda",
+          "bytes": "f7f9",
+          "mnemonic": "idiv",
+          "operands": "ecx"
+        },
+        {
+          "address": "0x415fdc",
+          "bytes": "8bc2",
+          "mnemonic": "mov",
+          "operands": "eax, edx"
+        },
+        {
+          "address": "0x415fde",
+          "bytes": "03c6",
+          "mnemonic": "add",
+          "operands": "eax, esi"
+        },
+        {
+          "address": "0x415fe0",
+          "bytes": "5f",
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "address": "0x415fe1",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0x415fe2",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "original-float-to-int",
+      "entry": "0x419a70",
+      "size": 17,
+      "sha256": "10e536e2a987ea0fe14c91f007b2d5361cd87d4f0ca4cf5385fc82e53913d186",
+      "instructions": [
+        {
+          "address": "0x419a70",
+          "bytes": "55",
+          "mnemonic": "push",
+          "operands": "ebp"
+        },
+        {
+          "address": "0x419a71",
+          "bytes": "8bec",
+          "mnemonic": "mov",
+          "operands": "ebp, esp"
+        },
+        {
+          "address": "0x419a73",
+          "bytes": "51",
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "address": "0x419a74",
+          "bytes": "d94508",
+          "mnemonic": "fld",
+          "operands": "dword ptr [ebp + 8]"
+        },
+        {
+          "address": "0x419a77",
+          "bytes": "db5dfc",
+          "mnemonic": "fistp",
+          "operands": "dword ptr [ebp - 4]"
+        },
+        {
+          "address": "0x419a7a",
+          "bytes": "8b45fc",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [ebp - 4]"
+        },
+        {
+          "address": "0x419a7d",
+          "bytes": "8be5",
+          "mnemonic": "mov",
+          "operands": "esp, ebp"
+        },
+        {
+          "address": "0x419a7f",
+          "bytes": "5d",
+          "mnemonic": "pop",
+          "operands": "ebp"
+        },
+        {
+          "address": "0x419a80",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "health-delta-report",
+      "entry": "0x4d8760",
+      "size": 61,
+      "sha256": "a5a50eb316e3adc9c927e1cec21e24509b62ec4e623f3d30a1adc9ab2995c94c",
+      "instructions": [
+        {
+          "address": "0x4d8760",
+          "bytes": "668b44240c",
+          "mnemonic": "mov",
+          "operands": "ax, word ptr [esp + 0xc]"
+        },
+        {
+          "address": "0x4d8765",
+          "bytes": "83ec08",
+          "mnemonic": "sub",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0x4d8768",
+          "bytes": "6685c0",
+          "mnemonic": "test",
+          "operands": "ax, ax"
+        },
+        {
+          "address": "0x4d876b",
+          "bytes": "7d2c",
+          "mnemonic": "jge",
+          "operands": "0x4d8799"
+        },
+        {
+          "address": "0x4d876d",
+          "bytes": "668b4c2410",
+          "mnemonic": "mov",
+          "operands": "cx, word ptr [esp + 0x10]"
+        },
+        {
+          "address": "0x4d8772",
+          "bytes": "6a01",
+          "mnemonic": "push",
+          "operands": "1"
+        },
+        {
+          "address": "0x4d8774",
+          "bytes": "6689442407",
+          "mnemonic": "mov",
+          "operands": "word ptr [esp + 7], ax"
+        },
+        {
+          "address": "0x4d8779",
+          "bytes": "8b442410",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [esp + 0x10]"
+        },
+        {
+          "address": "0x4d877d",
+          "bytes": "6a00",
+          "mnemonic": "push",
+          "operands": "0"
+        },
+        {
+          "address": "0x4d877f",
+          "bytes": "8d542408",
+          "mnemonic": "lea",
+          "operands": "edx, [esp + 8]"
+        },
+        {
+          "address": "0x4d8783",
+          "bytes": "6a05",
+          "mnemonic": "push",
+          "operands": "5"
+        },
+        {
+          "address": "0x4d8785",
+          "bytes": "52",
+          "mnemonic": "push",
+          "operands": "edx"
+        },
+        {
+          "address": "0x4d8786",
+          "bytes": "50",
+          "mnemonic": "push",
+          "operands": "eax"
+        },
+        {
+          "address": "0x4d8787",
+          "bytes": "c644241442",
+          "mnemonic": "mov",
+          "operands": "byte ptr [esp + 0x14], 0x42"
+        },
+        {
+          "address": "0x4d878c",
+          "bytes": "66894c2415",
+          "mnemonic": "mov",
+          "operands": "word ptr [esp + 0x15], cx"
+        },
+        {
+          "address": "0x4d8791",
+          "bytes": "e88acc0000",
+          "mnemonic": "call",
+          "operands": "0x4e5420"
+        },
+        {
+          "address": "0x4d8796",
+          "bytes": "83c414",
+          "mnemonic": "add",
+          "operands": "esp, 0x14"
+        },
+        {
+          "address": "0x4d8799",
+          "bytes": "83c408",
+          "mnemonic": "add",
+          "operands": "esp, 8"
+        },
+        {
+          "address": "0x4d879c",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    },
+    {
+      "name": "indexed-direction",
+      "entry": "0x509e20",
+      "size": 98,
+      "sha256": "d7d6094d59283b4f25b3b9d4d427960ebaace98b4fd22501b6d01be2e290ec84",
+      "instructions": [
+        {
+          "address": "0x509e20",
+          "bytes": "a1ccf25b00",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0x5bf2cc]"
+        },
+        {
+          "address": "0x509e25",
+          "bytes": "56",
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "address": "0x509e26",
+          "bytes": "8b742408",
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [esp + 8]"
+        },
+        {
+          "address": "0x509e2a",
+          "bytes": "8b0cf5585e5b00",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi*8 + 0x5b5e58]"
+        },
+        {
+          "address": "0x509e31",
+          "bytes": "3bc8",
+          "mnemonic": "cmp",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0x509e33",
+          "bytes": "7e0c",
+          "mnemonic": "jle",
+          "operands": "0x509e41"
+        },
+        {
+          "address": "0x509e35",
+          "bytes": "8b54240c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "0x509e39",
+          "bytes": "c70201000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx], 1"
+        },
+        {
+          "address": "0x509e3f",
+          "bytes": "eb12",
+          "mnemonic": "jmp",
+          "operands": "0x509e53"
+        },
+        {
+          "address": "0x509e41",
+          "bytes": "8b54240c",
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [esp + 0xc]"
+        },
+        {
+          "address": "0x509e45",
+          "bytes": "53",
+          "mnemonic": "push",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x509e46",
+          "bytes": "f7d8",
+          "mnemonic": "neg",
+          "operands": "eax"
+        },
+        {
+          "address": "0x509e48",
+          "bytes": "33db",
+          "mnemonic": "xor",
+          "operands": "ebx, ebx"
+        },
+        {
+          "address": "0x509e4a",
+          "bytes": "3bc8",
+          "mnemonic": "cmp",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0x509e4c",
+          "bytes": "0f9dc3",
+          "mnemonic": "setge",
+          "operands": "bl"
+        },
+        {
+          "address": "0x509e4f",
+          "bytes": "4b",
+          "mnemonic": "dec",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x509e50",
+          "bytes": "891a",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx], ebx"
+        },
+        {
+          "address": "0x509e52",
+          "bytes": "5b",
+          "mnemonic": "pop",
+          "operands": "ebx"
+        },
+        {
+          "address": "0x509e53",
+          "bytes": "8b0cf55c5e5b00",
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi*8 + 0x5b5e5c]"
+        },
+        {
+          "address": "0x509e5a",
+          "bytes": "a1ccf25b00",
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [0x5bf2cc]"
+        },
+        {
+          "address": "0x509e5f",
+          "bytes": "3bc8",
+          "mnemonic": "cmp",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0x509e61",
+          "bytes": "5e",
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "address": "0x509e62",
+          "bytes": "7e08",
+          "mnemonic": "jle",
+          "operands": "0x509e6c"
+        },
+        {
+          "address": "0x509e64",
+          "bytes": "c7420401000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx + 4], 1"
+        },
+        {
+          "address": "0x509e6b",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x509e6c",
+          "bytes": "f7d8",
+          "mnemonic": "neg",
+          "operands": "eax"
+        },
+        {
+          "address": "0x509e6e",
+          "bytes": "3bc8",
+          "mnemonic": "cmp",
+          "operands": "ecx, eax"
+        },
+        {
+          "address": "0x509e70",
+          "bytes": "7d08",
+          "mnemonic": "jge",
+          "operands": "0x509e7a"
+        },
+        {
+          "address": "0x509e72",
+          "bytes": "c74204ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx + 4], 0xffffffff"
+        },
+        {
+          "address": "0x509e79",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        },
+        {
+          "address": "0x509e7a",
+          "bytes": "c7420400000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [edx + 4], 0"
+        },
+        {
+          "address": "0x509e81",
+          "bytes": "c3",
+          "mnemonic": "ret",
+          "operands": ""
+        }
+      ]
+    }
+  ],
+  "data": [
+    {
+      "name": "native-root-jump-targets",
+      "address": "0x5338ac",
+      "size": 52,
+      "bytes": "ce375300e5375300f337530001385300fa375300083853000f385300ec375300163853001d3853002b3853002438530032385300",
+      "sha256": "fad2b272bded7d15534e7ea3fa78ffc461e310d4279d332155095c3437772d5c"
+    },
+    {
+      "name": "native-root-action-index",
+      "address": "0x5338e0",
+      "size": 31,
+      "bytes": "000001000c0c000c0c0203040404050605070c0c0c0c0008090c0a0b0a0000",
+      "sha256": "c2eac6fc5bd14d4c8bb5a132284f6e83bdd6fa4e76dfffc02383337ed8a7dee3"
+    },
+    {
+      "name": "logic-RNG-table",
+      "address": "0x590404",
+      "size": 16384,
+      "sha256": "7dfccdce34d74e348fae4181630a4c41a20a560432658ba2526969bb7000605f",
+      "bytes": "047300005a0e0000813c0000cc2d0000856a0000f12d0000c74700001514000000440000dc630000f90f0000303f0000e13100004b450000624b0000396b00006a06000017790000a71f0000071600002a3d00008c090000a31d0000d04300003f200000f8060000041f00009b6200004b050000f5460000a261000069780000375e0000754c0000a37c000022080000aa190000922400004f0b000041590000480f000013440000b42900003f0e0000ab730000be310000f91e0000c0350000221000006009000083510000804200002c3a00009d230000c9600000fc150000b2460000786e0000f7000000e009000008750000a14200004674000033240000a20d000082410000163e0000446200009630000008080000d06b000054460000d50f0000314200007e0f000000140000291100005a6b00002748000075670000ee13000046470000ec7300005213000090560000ed5f0000e36700005b710000c83700000b140000b7490000e4110000954f000064020000fc660000f8750000fd1b0000d75d0000532600004c400000813d000029760000426e0000e6080000617f00008f010000d01d00008d3f000094270000f9720000e3720000ef480000854a0000216900005a7a0000954200008f1e000056020000ea65000087190000370b000009210000b9630000be5f00002c700000146d0000bc5300004e0c0000ff5f0000ce1d0000d176000050120000a24a0000cf5800009b730000917a0000a253000084310000214d0000fc6b0000245000007115000026270000c74e0000a1280000493100004674000060760000611a0000b01a0000d5690000167e0000b9140000ca4a00007755000088440000042e00008b3500007f300000ce310000626c0000be090000090d000069340000335e0000d2650000d6380000eb200000523e0000670d0000ea31000065600000112000009c6b0000e748000095190000f95e0000176e0000270d0000cc4000003e4e0000d10400009c5e0000a13a000004640000a752000069410000587d0000545c0000a05a00003c4f00000f5d0000dd0f0000ff35000072620000ae6e00006a7a0000081f0000e85600008c2d0000272d0000935c0000a27c0000e24f000093280000525a00001e180000f0750000445a0000e1790000760c0000f11f00005e3a000092680000380b0000c0160000d1440000f60500000666000046330000564a00002b270000ec5d0000ab30000027550000e9420000840c000038750000811d00004b520000cc4200000e7e0000da4900005d720000c279000089590000e276000069120000c4300000715c00003c430000013b0000aa550000e67d0000f95a0000cc390000a11200000a060000d93e0000113e0000c61d00006c7b0000404300000532000086660000377b0000fa020000d45c0000b83c00001f680000ae41000071190000774d0000071c0000247a00001e2e0000c11100007208000036140000ba100000d10a0000b0710000977e0000ce2300003c680000c53000004728000056380000ce73000018280000d21500004f600000225f0000e05600004c0e0000055e0000034f00004e3700000c1c0000193c0000864000007a5300002b5d0000545a0000e32300000f3d0000bb5f00002f7b000017490000b7530000c70500001e1e00003c7a0000440600000f2d0000a0320000a35f0000a37a00008016000008700000b70900008148000075490000085e0000913c0000ba320000b06e0000025a00005a590000860b0000165f00000f25000064010000632f00002e620000cb460000084f0000c042000058580000e75000003d4000006e1e0000cd4c00006c4f0000fd2e0000c71600005a2b0000d0710000587300009b090000dc150000ba380000540b0000df5e00007a150000953400008c64000014680000a5230000d620000084230000784a0000d14600000e680000cd040000ef5f0000f03e0000af5c0000dc330000b03a0000b37d00009e320000ab330000b0370000806600007c0500000d350000ce4b000031120000b4770000d2760000c377000092120000443600009f0b0000c70e0000997100004c6d00008a210000043c0000636800005979000078270000bc720000f30900006e610000366c000039350000a95d0000d66500005a130000785e000084250000ac2f0000d87b0000945a0000174c0000276d000063740000f47900004d360000a666000089590000344b0000dc7400007f5800008d790000d42700008a110000871d0000035a0000a35f000022740000617600002e3b0000e92e0000351b0000877900001a750000576b0000912400001a780000780a0000af13000083610000696300003c0d0000332e0000cc720000437f0000f8300000cf21000064280000fd6c0000f626000006760000f1200000425b0000182000009c250000056500009d66000070100000087000001b7a0000c87600009f100000985500004f290000b2240000ee780000622a0000e0750000527500002e120000ef6b0000687f00002e75000050780000a5450000d54b0000aa000000c30a0000f86f00002f350000114500009006000050560000087700006546000038260000b92f0000c2170000e6750000496300004d7600008429000064250000c235000061690000f91e0000466300002c6d000072060000ce2f0000560b0000747f0000cd240000ea080000521800008b690000022000006c44000033020000bc7d0000063d0000666500003a350000d03b00002b3600005b530000c06d0000e30e0000c019000078110000bb040000050d000087670000952d00000f79000090140000db180000eb2200009b4100004c6300009e7f0000932c0000fe33000044030000e4270000c34300002d0c00006529000061280000c7450000b6600000dc610000930d0000c17d0000d10f00002d260000ae4b0000200e00002b710000143900004c630000e1750000725800001c640000d1240000882d0000a0340000007300009f3e0000dd17000009580000c5080000ff0100006742000023350000932a0000ca0a0000aa310000171c0000571c0000db350000203500000b4500001b6b000035120000f87e00002d33000020410000f3380000907b00007f3c0000c05f0000f3370000b424000065420000075b0000417b0000944c0000f06600000b73000045610000871c0000e84a00000f270000ad650000824300009b2000005b5e0000180f000056100000681f0000d9420000870b0000ad7300000a2400006f29000084270000c2250000a609000020240000100c0000e46b000093070000e21900004e6f0000a8390000eb1f00003d000000f0230000f1290000d56a0000a812000065330000a10b0000904a0000a3230000bf6e00001c7e00004054000093630000662200008159000079790000623900007f580000a75e00008c3e0000d308000019560000d96a000094090000a60200001d3f0000522b00003e5600006f5a0000f40c0000770c00005c5a0000367e0000f6430000d760000029670000cf2b000096130000e37b00005a130000f87f00004e4d00006c3c0000e9790000345b00004b5e0000e1420000a01900006a380000d9370000464f0000682100003c5100008c520000f40200004f350000292c000034380000130200005b780000617000007e400000d7300000116700006b1b00006a6c00007d080000c34e000079740000710c0000044000009d6d000087590000721d0000ac4400006e0700003642000060080000303e0000377b00006a140000ad300000c21a000076250000a4260000757d0000cb5e00002f1b0000210c00006b4900005f340000bf090000b0060000846500008276000060470000543a0000651a00001d3400007b6000009d7e00008d540000be660000b12d0000c76900004267000013590000a83e00008f7100003d1200002479000095250000d93d000015360000531200008e6f0000030900006b630000152b00008d550000072a0000db3000006e02000043720000532400009e0300002e690000a308000068590000ff360000ed7200002927000034380000834e0000c73a0000ee33000030060000d71e0000d83700006d2d0000391e000079190000765d0000132c00003041000027270000310300008870000050540000083d00008c500000c00a0000522900009b18000078280000c0650000422c0000634e000094500000314400001f1300004f17000027500000a6790000356b0000eb080000d9420000ad6c00003b20000049240000341b0000972d00002c590000ad670000df100000072e0000e6460000fb4e0000943600003d65000083400000e16e0000e6730000206d00007b490000c4160000b55e00000d640000765d00006c2500006c300000621f0000f21d00006e7c000001530000c87a0000993d00005d3e0000aa4100004450000060450000af43000060390000fd6400005f0f00007172000015750000cb56000073130000ab640000b4710000845600009561000091090000dd750000053b0000f96500006e2d00005d59000002390000e6520000501400006f4800008e4b0000584c000074130000b47e0000691900005731000070550000f43500000d630000151f0000233500009244000077450000ca0900005c5b0000d1270000b65d0000500700004d0b0000c9750000341900007e270000ae49000027730000c73e000044760000b14a0000a7480000777c00008b030000a9520000531400000d060000ca0c000078750000795200006010000068240000bd6000006d5a00005f350000d5720000bb1c0000036b0000dd0c0000666d000008700000cb02000020060000f51e0000fa5100000b000000284e0000345e0000d11700007d440000bf4e0000d50d0000a4480000cd580000451200005c4200000d440000d14b000038180000bf690000932700008649000085660000c3500000dc1e0000ce25000092630000152200008f0a0000ec560000084500002b3b00000a2a0000bb1b0000611f0000d8720000c9330000b149000035620000b22d000091080000977e0000444d0000245c0000606d000006320000422a0000523e000014780000a162000066570000b0090000dd1a0000145b0000b16e0000604c0000647a0000cf4a0000ff150000502a0000b87a0000832e0000cf4300000f500000fd2e000059440000d104000074370000d3170000f5070000340e0000ed190000875c00002d720000ae280000a82c0000fc6a0000897800004840000064020000582a00007a080000ef240000142f00006e2c00005b7a0000ba47000038090000ee09000029380000fc000000fb2400004e55000001140000092b00000d650000775000005d0a0000c91d00003e3d0000305100000d6c0000fe560000df0200004b000000f82b0000555b0000d9660000915f0000904c00002e1c00008a7500006f420000162900002b6e0000633800005d250000931600007a5c0000425500001210000092180000e364000090470000696e00009e250000906800001a0f0000110c00007e370000a05d0000b0700000f71e0000332300006a0d000080240000750c0000ae740000916b0000300e000037550000514a0000cc510000bd5a0000f15300002c6c0000722c000016200000c33a0000f41a0000c8630000775a0000677b0000c35200000b0e00008763000020060000927d00003c360000303f0000620b000076510000ae430000425a0000422c00009d560000504e0000c71600009c45000008510000bb6b00002442000006420000060a0000fa400000f4500000781e0000743500001d650000a47c0000b70d0000b66e00007c600000ce1e00008666000073090000cc540000576600008c48000014320000e31900004742000004240000fc1900004b5b00006b1e000027100000852b000088020000ac4d0000591c0000bd010000297a00002e3e000015080000e51f000091150000285300009a0d0000a52400008329000086000000532b0000117500006f21000040040000071800005c1b00007e1d000078590000c54d00005e5500005f650000564100008d570000c70e0000cf3b0000a37d0000be4d000021430000eb5e000028190000432d00008703000035410000c55900007d750000271c00006847000050380000f038000079150000fc160000337a0000ad0c00003c0d000077410000c448000081020000352300007a58000063620000e2190000a775000087360000554100009553000091690000930800006354000020540000aa3a00004f64000032250000f44000001d0f0000367700006108000056440000040b0000571a00006533000011640000a61f0000e056000024540000dd160000711200006e270000520600008e440000b6770000160200008f420000fc1c0000271d0000337700003d230000b671000010200000ed700000231b0000657e0000582b00008e5f0000c3790000024c000037190000855e00007b590000b71a0000b5740000361e00005e530000967e0000e6160000871e0000d0140000fc1a0000e75b00002b060000e3320000c3280000972b0000ac220000755700002b330000155200003b5d00000524000086370000fe6300003730000059660000a5130000632a00007f690000d27a0000056f00008c520000784500008a780000b90a0000705d0000dd2e00003303000017240000ef0a0000492f0000af5e000022560000d53c0000865c00006f200000bb2500008f0d0000934e00008c1a000086240000ab160000776a0000a65c00009d56000011230000c80d000080660000f746000003490000fa6600005868000097760000d627000069060000072d0000741200006e45000024740000dd0900002c1c00007b4700007f5600003a700000677100007504000057750000ec7c00000c5e000058280000232600004c210000262500001f690000c06c000017420000952c000002070000f95c00000d6800007437000070140000d80800004c5e00004e5b0000cb410000ae070000695a0000001c0000e7280000e4610000530a00006c5a000040540000806d0000e8230000e2010000fd7d000077670000555200004f200000a8420000b55500002e1d000023550000ab430000ed7d000051250000044300008a750000207d00007a53000034700000e2150000ef4b0000a6540000c341000025050000a13b000029000000747d000012000000f43700008e030000707e0000f7740000a459000032700000ad080000a6700000bc1500009f0600001c670000395f00009f150000aa5b000095400000851c0000d50300004b330000834f00005f100000975900003f2d00004f68000091520000197900005f1f00008d7a00009a1200009a200000be390000e9780000293f00002c02000086500000cf53000058290000430c00008f670000dd720000a91f0000002f0000c45b00000a590000c13c00003b2a000036460000935f0000e665000053300000fd740000a93300003a350000b5690000d3150000dc020000b54b00002d2500006e6e000045020000e4460000ef400000a13e0000763c0000635600006418000031280000235200001b2d0000b6020000783800008d1900003c4a00001a2e0000bc6f0000b2480000f9550000e06300004d62000036160000070e00003c010000604f00000f7d0000d37d0000d2300000ae490000f30e0000857e000003310000cc4d000083010000b93a0000fa3200004962000034620000f8310000751e0000891d0000021d0000f877000053460000642d0000d3410000982b0000e25900007e3c0000ab3400009a610000e61e000064510000953400001e7f0000694000006c0300004d650000e23f0000463e000049210000ae4700003b6400007349000070250000de4c0000d2420000111900002e1400003b7000001f3a000035040000861f000004040000a73d0000746c0000cc2c0000c81c0000f57a000031450000021800008f4700005a520000a6430000f6500000c9760000641f0000b3030000172e0000fa5100001f0d0000692d00001b110000235400000e7200005667000053390000f0640000e76f00008e210000c95f0000a3580000125300007e0500001f790000c3020000e06d00007016000027390000834700008b6b0000dd4e000041340000f4570000f256000076460000783a0000ea04000011510000f12c00005c480000b054000042330000942500009d2900006b47000035190000824f00006c2900004e760000b00e0000c8060000916c000083790000075d0000272a00004c510000d54000005b3400009f710000ed7000001d4b0000922c0000c0210000321f0000726800001a5a0000b027000064030000107300005d720000fb69000030270000042b0000023c00001e5a0000461700009d200000ea460000d1120000b371000093590000e5270000180f0000ff7d0000f41c00003834000008460000062b0000d2110000d07800005a370000970e0000ae1c000042690000b1340000ce420000a32700008a020000ab730000323d000052410000805d0000a93400008d7b0000913e0000196d00005f0a00008f220000d34a0000636400001a0e0000216a0000551300003e000000d40c00008a7300000e790000db300000f97800004465000054750000f65e0000f72c00009c6800004e1d0000d3480000884a00000c6500001d700000fa320000bf42000059150000c95b0000b2680000d45200006b520000ed2400003e480000af010000ef2f0000231d0000d9560000366a0000ae4600002d54000073180000565e0000ab480000e82f00002a270000d32e0000ff3a0000f116000087460000d023000075710000141a00007d6e00001e720000e527000079480000220a000044390000515500008d1a00002a66000052560000c1140000b11f0000280b000066170000de3f0000a55a0000857f0000fb1b000051170000b37800003c2d0000f56d0000d91400009b4f00005b6700006d1f00002e430000424e0000394b00003c79000099370000194c00007879000049060000500900004e630000b96200009307000093620000b541000022240000fd1c000087070000751c0000912f0000dd2e0000d56e0000723200009d3b000043640000024800007e09000051370000093200008d0b00003f520000a73d00009f4e0000ca700000de1e0000c6440000931600008165000075580000fb040000e32d000045630000351f000079530000026a0000963e00005a010000d16c0000ac500000b64b0000d03400002f6b00006a3700004b750000a23f00005a640000e44f0000ba200000273b00006a6b0000ea2c00003e7c0000eb1d000046720000410c0000ca1200005e380000e44600002d710000a44100003f50000040280000c35b0000bd6b0000c6060000192f0000eb280000d3060000947500006e06000037670000455e00005b2e0000bc2f0000672c0000b92700004d090000f44e0000b837000070450000466e00003e3a0000f16c000064520000b8040000704900002b740000275400005a7600004d210000630a00007a2e0000903000007e760000c14e0000b03400009950000050040000a5180000c17400007a26000033330000772200002d180000ae7a0000ee2a00002b150000967600008a020000a34c0000974000001c360000722f000087500000740c000078150000be4400005d030000366e0000d73b00006a600000b75f00008c6f00007c2a00007f620000ec7e0000b5110000142c0000455f0000d81d000089190000d85d0000260800005631000042100000652e0000603700007e4600000f0500005b6e0000720a00009f2a0000575b0000b74e000044370000fb160000cd310000f168000014080000455c0000382e0000d52c0000252a0000db490000003a000022500000263b0000c44c0000777b0000e41b00006341000068020000ed17000091330000ad7a0000113b0000720a0000e63100000a2e000025280000691b00007f3700001d6c000020320000d144000039470000546a000054320000530f0000480c0000d3640000600c00000b340000176600002433000072630000170f0000e25500009b7b00003c670000e02e0000152a00008a310000b77400002b0c0000640300002a4a00009a060000de360000a70f00004454000099310000930300007b160000a25e00005e280000de0500009933000039590000480300005e630000f45a0000135d0000e6470000864b000095020000fe060000326c000029200000370e0000f75000008d510000c71a0000a1580000541600007e730000997a0000c7760000b32e00002a4600005e070000a0100000a54b000093000000e4740000c66b00001b050000914e000055730000cf0300008c40000090260000477800006d4c0000ec5e00000f3f0000810c0000487900004d5d0000d45f00008e2a00009667000051540000ef0a0000047a00008005000057020000763900009173000035530000614c0000fa270000ca390000ca590000c7610000cb6e0000b4320000d83300009d6e0000f06100000e2e0000d4030000e5080000e5740000642400002c74000075440000121e0000d55a0000271d0000a7190000107600009f770000796c0000c20a00009b0e00006f530000a96a00002b340000553d00006b130000237a00004b33000040560000fb5700001c6c00003f100000f91100005b0c00002a07000043160000b51b0000e22200009f5b0000dc460000fd0200000f4a0000a9010000c7530000290d0000586600002a1d0000a44b00009e220000b35c00005843000062650000c7530000e1790000141e00006a160000d43100007d0200000c6900008b5f000035770000c83700008f240000a87c0000d53b0000315d0000331a00002363000017310000a70a0000290f0000083b0000912100009f5700005b400000f93e00008b300000e42a00004a040000de2e000036150000223b0000aa2e000049410000ac4d0000300c0000ba110000aa3f0000ab050000207500006539000036390000112d0000097b00001a3c000098780000177a00008f0c00006c3d0000562800004d530000376a0000697e000002520000595d00006c470000ba170000252400006f280000507000007f390000eb2a00008f39000044000000e70c00008e670000826b000036750000931300008372000092630000ad2b0000a8200000671400000c160000960f0000b6470000a801000076160000cc0d00004c5d0000f3240000912f00006912000057650000612400000d7f0000cf1f00003f0b0000610d00000f110000744a0000c07f0000635300006337000071250000885800004a0d000081180000ca6b0000954d00008f1d0000413200007b7200004d700000343100005e4c0000472f00005a38000070410000ac160000406000004c02000014040000196f000015200000ec5b0000be760000650b00001e730000613a0000c5700000a10200002919000005760000e067000069720000023000000528000094530000e13b0000c4720000ba450000645b000070140000e2210000cb150000b63b00003f660000f45f0000ff5a0000870d0000703c0000430f0000e3500000ce5c00001e370000137c00001f560000b139000019430000b35f0000986000006b3000005e1100004508000047170000f8530000580a00004e310000d42d000085470000d9380000fc580000fa5d00009a720000d76800003b1e00009a1a0000054c0000e7750000767300009c58000086670000790500002d320000890900003c320000d92800003b5b0000e9230000d2090000e1220000e50f00005e550000691a00007f4d0000a20f00007d3a0000442f0000ea5a0000ac4600006f38000035620000a36e00004b3900004c540000cb5500002e4a0000dc57000033240000386600008d090000a407000029360000047d0000812b0000576c0000b70800007473000080610000663e000042710000b82f0000756300000c3a0000280c0000d76800003a430000177300009f1200005b3d0000d67b0000771900004e320000bc08000076380000887a0000a94200008d2300002c0f00001f4b00000d740000687a00006b2b0000560600009f5400009b2700003e240000176d0000e44600008f7b00004c7a00006b72000020460000fc1f00008c7900008020000070140000cf410000c87a00007c420000a62e0000d66d0000d3400000045f0000e8210000310c0000896d00008a4f0000071f0000792600008b4a00005b000000a0670000ad640000b861000064250000f5700000e16c00006a210000c76f000089580000a511000075080000221000007d060000367b0000e015000099110000ad1900006737000061780000a95900008a7900004d5c00009a390000ac580000b6290000ad290000166100002c370000613b000026550000024b0000e80b0000667800001f6d0000ab2e0000a6660000242400006e7e0000bb100000be3b00001d6e0000cd680000331d0000637c000051720000fd0d000028250000b067000058630000b84700003d3c000077600000423a000058500000e4310000c85300002f080000480a000054620000437c0000ad4500002e520000481b00001e0e0000d43b0000d54700007e100000f517000023630000dc390000eb1b0000552400001954000020200000be4500000668000093250000ea5000001b5000001c090000e8540000d95c000094420000bc4a0000c61300008e3d000067310000af290000cb170000194300007a3c0000a8350000e3470000276c0000170200005533000064630000e71400006701000028530000eb7e0000c1280000b0280000e2080000f4720000b64200004e0b0000e44f00003b18000095680000737b000035680000d66d0000e34c00009e030000525800000f05000088430000dc7b0000b93f0000034f000039550000c136000034460000fb270000a91d000025020000e63300008d3c00006f6000009f770000177e000073240000b6000000c3580000bf540000264f0000a64700001b730000d47c0000421e000096250000e64700005303000099490000ee590000937300001015000014690000dd2d0000fb1000003e0700004e400000c02d000062140000be5c0000ef2700004d0d00002c5a000028540000c8300000832200005f6500009a4a0000b35c000052230000dc090000437f000028090000091200005d7e0000ad030000a0670000840400002d120000ce640000aa1f000011320000aa020000ce580000ce760000277400007c2c0000977d0000251a0000c5250000931400001e740000b4650000ab0d0000e2040000736400008d4500003c3f0000dd38000089360000a40c00002e1e0000b3550000c60b0000725d0000f77000004b2a00004a4500004b000000f72d000001730000ff22000080430000666f00001d1d00006547000034410000fc390000174600001a2c0000ff260000620200008d7200002c530000445b00005b1d0000003900001f410000521c0000b2060000525c0000bd0b00003d750000e22a000000120000a00900007b240000881f00001f700000806e00003e50000089760000183f00003d6000009324000003180000232b0000ab5000003f370000f44e00008411000021280000544d0000ac74000088650000c00c0000975e0000f46600003e6900008452000091720000fc340000f63500000c60000077330000052f00007b50000029140000bb520000d344000010450000287800006e1b0000d05e00002b070000e04a00005c4e0000001e0000f31000007a300000e6230000a92e00007b7e0000031300009d0f0000be190000bc200000b37f0000a32100000f41000054440000fb0c0000c221000033720000012800005015000049400000313c0000dc5e0000ba520000ab780000f1730000551a00001b270000d501000065130000f2170000401d000052680000765f0000c72e0000a96e0000212e0000b1000000b4380000181a0000520c0000ae7a000061530000dc56000063320000442e0000fa340000da7000005c1f00006e520000ab10000060590000ac700000fc0f0000db460000aa780000c2420000f92b0000285d0000300c00006b7f0000df6c0000257a0000b51d0000ee3500007d260000d5600000105f0000e9580000a4180000e7270000b9760000ea7d0000950c0000af28000013090000cc7a00002a5d0000e86100007b0a0000d87c0000c75500002c4a00001426000097750000fe1300002f4e0000514500007879000004580000bf7600003f040000276c0000d86f00007c720000981e0000a71600002d290000577f000088210000350300001c760000cb6f00003c6e0000dd3a00008b300000de47000030590000d94000005a280000d62d000035720000ac67000054680000bc2a000045410000035c0000d05d00009276000007040000460100002a4f0000534c000020380000017c0000e64c0000af0100003f7e0000f60500009d090000835e0000e7210000fe670000af4400001a700000fb510000a4350000a7330000265400000b5600007f2600006c1600007c370000614c0000532900002d62000093040000ca3c0000e60c00000a2f0000bb7d0000240c0000a45a0000835400001d3f0000ac1c0000f23e0000a16000007664000004270000521b0000e6550000924e0000071800003b1e0000f65b00008b4400004d7f0000b67c0000024f0000bf6c00007d5a0000b8290000f85900009259000055490000432700006c070000e82500007a7600003b4d000044750000615d0000014100000922000026170000532c0000b9720000f1200000a3330000881300003e0f0000340a000020080000bc1b0000bf070000e5180000883f0000d54400008a5f00008b3a0000b3270000e02c00005c0d00007c24000095510000d02a00006b250000f462000027080000f55800002f180000f83d0000154a00003e4b0000f4110000ed0f00002c3200002e6d000021470000f7690000827a00009f4300004639000012220000620600003a0e0000e7400000f3260000fe1e0000b20400000a6800009c350000d44e0000c32b000082610000c24c0000dc070000ed7d0000fa280000de79000076000000f1630000c1170000155c00001673000008390000577a0000c9780000ad2c0000e6560000bb720000fb3d0000d61500007265000072330000674e0000c5220000426a0000575f00005d730000f0550000d8530000261a0000615000007b4100009e7c0000c61500008234000064330000a36100005a2800007b2500007378000013090000063700008b000000df6100007854000081010000144d0000c0790000b33a00005f1a0000f61c000039120000b82500001c180000a9160000611b00000d700000e84a00001c050000f66b0000003e00003503000051090000c0680000ab2e000001350000b5490000c6360000a9200000e3030000403b00003464000095060000d8030000516000000734000047070000cb3a0000471900007e780000cd650000e62e0000df620000412800002b6d00009b0d0000501e00004e1a0000d35b000070370000283f0000a7140000e20a00008e3c0000e47a0000bd190000204d000009160000525600009a200000b6410000ed270000a72c0000d2230000ad1600000d5800005f0c0000273300002b7700008b450000d9050000ff7300006c210000266d0000ae470000863c00008160000047460000d5240000a3350000cc650000c9240000776000009c2f0000373e00008b6b0000935b000088150000375f0000b85b000052000000782b000084070000d10c00002707000064030000956f00007f590000ae710000d7540000dd0500001b4d0000425700005a230000c8320000f95d00005c5f0000a25f00007460000078000000af050000796f00002f420000ca5e0000040400006c480000b517000084410000d57d00003909000026680000e5740000ac490000f73d0000c9700000e636000039740000033b000083430000057a000036590000af3a000015510000d2080000fb6d0000a8290000195b000036560000e01900002b4e0000ba0900008606000056380000e7350000362100004b7d0000c4200000b116000015130000cf7b000023500000ea0d000026670000681c000058100000b06a00003e3800008436000055390000c76e0000b040000078770000ee670000463200008b320000083c00007b4600000116000096570000b576000033430000ba7000000c350000ca2e00004350000006630000182f000025640000b1090000017e00000f680000c6630000f45c0000b12800006f570000195900004f0e00003b7000009b54000003280000f1370000c82e000054110000ae5b0000ce1e000034350000f73f0000153600003b7900007d630000796100004e2c00004c030000e65b0000237700009b5b0000ee7c0000ee3c00000c1400002e430000c36d0000f40d00005b0a0000c04e0000c14a0000a74a00003a300000d07d0000895900002f39000099780000bb330000876d00001d770000a75b0000817c0000cf5a000013690000114b000051520000b33a000033790000f92d0000da2f0000245e000048500000b5200000507b0000ce090000b77500004c74000040160000f157000024020000b1290000151e0000005c0000e3500000bd64000066290000fc630000255c0000ee120000050e00008f730000df2f0000e1410000c87b0000e8540000791f00009161000015780000595b00003c2a00004d6e00002f060000b2330000783a00007b3e0000440800005b5e0000782b00000f70000032250000332f000027420000c83100001d3f00002c6f00007e04000031640000b2460000a37b0000b51b0000534e000038770000807f0000252d00003a6200005b47000012220000ff5500002f4d0000b81a0000a7470000af350000af4f000027000000ee3f00000e3300002d190000cc0800000e7e00004a6800008c230000dc03000082360000956100005a4a0000302b0000bb7e0000901a0000ce1900008c0c0000734a00007666000080110000ac3b0000d3620000092f0000ea56000012190000443300003d360000a21300009239000015080000a5460000557b0000993a0000d11a0000a17e000083350000410f00005e08000045220000fc26000017120000d60c0000082000001e570000a76700002521000031340000cb6c0000cc7d000067560000015700002d7f0000b9330000fe0a0000a161000029360000c576000076550000ca150000a4760000fb5f00001a41000036740000781600005e1e000053380000ca0d000035540000fc390000c3380000803b0000980e0000b97b0000252d000016690000cc770000d8050000e3080000785e0000624000004a69000074010000ee33000012760000b74300007c010000055d00002f1200004d320000a13100003f760000ec7300004b2500002e3300007a410000514200004c6000006a680000217d0000fa71000054330000b766000014020000966a00009c3800006a6e0000585400001b0800001d2300006c0400007e120000ca730000df69000094090000d46f0000e6100000fe5b0000c36b00004f2500003479000081690000bd4c00003305000031450000db2c0000ca3a0000881d0000161c00003d010000115700003d1500008c470000a1310000af050000193000002f470000970c00009a03000065250000c51f0000ce680000397e00005b3500003b62000061660000bf0800004d29000063260000e77800004b0b0000952a00006f75000039060000c1070000401c00002d600000012600006650000079630000003d0000074e00003d0c0000b74a0000a24900003b77000025250000a66b00009b2c000082070000af7b0000d64b000080120000410c0000c17c000026180000ec620000aa110000ec740000ee2a000040490000c92200008c3d0000ef4800001a0d00004d3e0000a51f0000fc40000096760000174c000078080000655a0000473a0000845f0000e96b0000263e0000f42800007b52000090700000d4460000121f000035050000a14100004363000005700000cf4e00007c220000f877000017490000916a000013200000526b000034480000fc6d0000007c0000774800006b42000096130000622d0000ff24000025760000746600007b13000063350000232500008c1a00000a360000243c000039520000b71d0000692f0000bb3f0000cc1e0000892d0000671c0000443300000d040000d17d0000e32d0000e97d0000f2630000ee3b00002d3800000f0d0000f92d0000d87a00001c5c0000435d00009c130000ea530000ef250000e32500009308000071480000e43d00008c130000cc0a0000f52f00009a060000473d00002b6e0000493f000027450000724000000128000054740000f92e0000702f00004e5600009e7200006d790000103f0000b77e00009a1c000031470000be5e000045410000b67500005a0f00006c270000e37a000023190000445a00003e4d000096130000645100002d700000f87f00007a740000991c00009155000028660000806100008829000043310000121f0000e9320000701900005078000060770000812a00008e120000937b0000863c00009c6000006c6f000018330000f75a0000d2040000ec16000031630000093300007a6e0000184900005a770000a9500000e7380000a76c0000ce2e0000be710000656700004e290000e57600005e070000f24c0000cd5a0000340f0000b31d0000bc330000b428000063530000ab5600005e000000f94e0000cc46000063630000da4c00003b630000d93d00005128000056370000d42200001a4100003378000097600000a115000029060000bb1100003e560000911100003e1a0000f74b0000c4640000ee6a0000911a0000821d0000370d00006e5d0000731600006d6a0000b21a0000f97900002b770000eb4400009d1300003825000091090000be0c0000aa020000e17200006c050000651900008b530000c56900008d2e0000025b0000733f0000967c0000a86b00000d1e0000530500007a430000f56e0000bb5d0000d1690000504200008b4c00002c510000083b0000c4470000771a0000571f000002540000153100009f760000b6650000f65b0000a11e0000590e0000b07d0000423d000036650000ca030000ca2c00002710000017480000004d00008e2b000046750000d0470000cf680000372f0000de1b0000ba1100006c05000021620000c36f00004d5c0000cb740000f37600001d2b0000283c0000b80a00008a420000e6470000e23d0000b7400000a4080000210d00008e5000009d3b000051670000db330000104d0000eb0e00001a0d0000e35f000023260000ed590000ee25000049680000250d0000971a0000d02a0000972b0000a91700001a52000043000000d16b0000bb31000049570000710f00002e6e0000f1680000af7200001d460000955a0000365c00006c2000004f290000d6160000565c0000d4130000b9660000ad19000049090000c6580000eb100000777100003f780000cc2e00003b720000b27a00006f2e0000f77900007222000036020000a07c000078650000364b0000354f000074070000fe1300003b470000f450000077080000d37900002a080000466c0000eb130000b63c00004d6f0000cd240000516f000076350000ff040000f01d0000b7440000536f0000d63a00009b2f0000c53e0000144100008d240000ba0a000085590000e85b0000b353000073290000f6730000fd6b000015420000250700004f6e0000e2260000ec760000255c0000136100009d630000c752000033590000d83800008c180000362e0000be1e0000d8420000fc5a00003c370000dc6b0000347600008b3c000072390000074100000c0600003e220000fb3c00009872000040080000617100002b28000005670000033d0000222e0000f64f0000db7c000024430000ec6700001a2300007a5400001b450000840f00000c5c000092790000d66a0000e6120000a465000060280000411c0000dd5a0000875e0000a92a0000986000006506000058670000730800006c660000c07f00009e27000086080000760000005a47000073350000a63c00001f2300005e100000f24b00008d150000cb2e0000140b00005e7c0000aa3a0000e912000001790000134600009c210000bb150000bd6600002d4100006d210000e64c000092270000fa4700008f7d0000b9120000d96e0000204b0000972400003d040000152300008d3c0000bb1e000001540000cc460000233d00000d680000a27d00002913000021790000743200001c26000053200000505f00006f4b0000d43400008b370000f21e00008a21000061710000082b00006a1800009c2500001e320000924f0000aa2c0000c503000070670000e0730000611700002b700000d80f0000b3710000e23f00006f030000b8600000af340000d32c0000f1620000e52f0000fc5200009a060000c9300000f0690000a013000087540000807f0000342100009b7e0000c1600000924500009f010000bf520000f26e0000a40c000041350000567d0000b23100008558000096050000726f0000b42a0000e601000093450000126d0000b3610000da00000073500000f93100001a1e00000c6300003e2900004e080000760f0000c26900001e070000f42c00009c100000950b0000615a0000a71d00009a710000ed5500004d160000dc2c00005e7400003f6a0000a74b00005577000028680000061300000260000086170000b10f0000822c0000c86d0000aa320000193e0000335d00000a190000a53b000091560000145a00000765000098070000cd1a0000983200007e560000461000002774000065600000b46e00002a00000093230000d3160000434b00005464000046040000230e0000a976000007200000254d00007f4600008c350000147e0000f07c0000b67e0000ce5c0000f57b00002b5d0000b45a0000557c0000a82a0000d0470000c2750000976a000051410000b61b0000835c0000e87c00008f3d0000bf0b0000aa2a0000837800009a2d0000c43400007c4800005a0800002100000042260000090400009d430000e5750000c14900002a0200000c110000151100000855000039430000fd720000681e000002330000933700002d080000fd3300006e0f0000cf1f0000474d0000f24100004a710000bb340000346b0000c6100000fd0f00001b530000281e00006f490000474f000020270000690100003a630000e90d0000aa130000dd4b000067130000133300003d5100005b490000801a000092260000c5000000ae1c00007d0b0000b61f00000a2e0000681600009968000004770000f17d00006d2c0000f2310000a1660000780400003b5e0000e3410000796500006f7e0000fa1100002213000032090000f76a000047360000984c0000d41a0000bc400000c0340000032f0000354a0000f23a00004f0100004e400000252c0000107a000037520000ab5000005e6f00004f740000e04c0000763500002a740000e171000063330000ca550000d2320000f2100000d45e0000df640000ca1c00005f0d0000511200002a6600009e64000039480000ce720000325700009a580000f84a00009f2f0000341b00003c3c00007f420000c2270000760400005b4c0000d42d0000f21700006b170000145a00009b3c00006d1d00008c63000078280000571900007f190000f10d0000f6780000601b0000d7410000b169000089720000a41c000086690000ff390000a24f00001d6f0000d64e0000017a0000d57e0000162e0000d07900006f460000432200001d6700008b770000f0440000ca190000c7560000367e000035250000ed03000026350000e5450000d2170000856100000b4e00001c220000df56000025480000fc6000001c280000521c00004e4f0000f4040000ef6d00001a22000058240000dd0b0000352e0000fc0700001b710000ce210000ad5c00002e3b0000600100000424000082770000b53b00000a530000a26b00005b2100007f5b0000047d0000290800002150000040530000ea180000b52500008f1c00000d490000761b0000fd1a00007b7e0000b9240000b1470000085b0000e6010000f34d0000d5280000b0460000c54000001c300000043f0000d81900008d2d0000e91f0000ac4a00006c700000807a0000bd7e0000b56200001d1f0000ba290000c33700006f410000da5b0000fa110000cf7200003e7400000d72000031640000f2180000035a00009a7e0000cc7d0000df060000491c0000986f0000c213000001090000340f0000cd4300005c020000587d00002a240000ec450000c84d0000173700003e5b00008e3f00005b1f0000ff7f0000615f0000f05f0000a94b0000795300004739000072520000472d0000762f00001a450000cb4000005b60000007170000e15600000d3d0000e82a0000bb220000af3900005c4f0000db1d0000bc3a00008b7500006e230000d43a0000a856000023080000c2110000b62a0000305f00002f7c0000a0000000ed500000730d0000a60b0000d35800008247000018640000a4380000290a0000e00f00002e1e000016090000a75b000063040000c32f00002b5100008c030000a6560000463400007a3800000c430000892600009d660000f3650000c9010000057e0000057f0000877e000011250000af3d0000ad12000097620000da1e00000d460000125100001e560000"
+    },
+    {
+      "name": "direction-vector-table",
+      "address": "0x5b5e58",
+      "size": 2048,
+      "sha256": "69f2eae1505c2e27de6bf104de077085994f00e4eb1d4ab3c68bd13916d7b079",
+      "bytes": "100000000000000010000000000000001000000001000000100000000100000010000000020000001000000002000000100000000200000010000000030000001000000003000000100000000400000010000000040000000f000000040000000f000000050000000f000000050000000f000000050000000f000000060000000f000000060000000f000000060000000e000000070000000e000000070000000e000000080000000e000000080000000e000000080000000e000000090000000d000000090000000d000000090000000d0000000a0000000d0000000a0000000c0000000a0000000c0000000a0000000c0000000b0000000c0000000b0000000b0000000b0000000b0000000c0000000b0000000c0000000a0000000c0000000a0000000c0000000a0000000d0000000a0000000d000000090000000d000000090000000d000000090000000e000000080000000e000000080000000e000000080000000e000000070000000e000000070000000e000000060000000f000000060000000f000000060000000f000000050000000f000000050000000f000000050000000f000000040000000f00000004000000100000000400000010000000030000001000000003000000100000000200000010000000020000001000000002000000100000000100000010000000010000001000000000000000100000000000000010000000000000001000000000000000100000000000000010000000ffffffff10000000ffffffff10000000ffffffff10000000feffffff10000000feffffff10000000fdffffff10000000fdffffff10000000fdffffff0f000000fcffffff0f000000fcffffff0f000000fcffffff0f000000fbffffff0f000000fbffffff0f000000fbffffff0f000000faffffff0e000000faffffff0e000000f9ffffff0e000000f9ffffff0e000000f9ffffff0e000000f8ffffff0e000000f8ffffff0d000000f8ffffff0d000000f7ffffff0d000000f7ffffff0d000000f7ffffff0c000000f7ffffff0c000000f6ffffff0c000000f6ffffff0c000000f6ffffff0b000000f5ffffff0b000000f5ffffff0b000000f5ffffff0a000000f5ffffff0a000000f4ffffff0a000000f4ffffff0a000000f4ffffff09000000f4ffffff09000000f3ffffff09000000f3ffffff08000000f3ffffff08000000f3ffffff08000000f3ffffff07000000f3ffffff07000000f2ffffff06000000f2ffffff06000000f2ffffff06000000f2ffffff05000000f2ffffff05000000f2ffffff05000000f2ffffff04000000f1ffffff04000000f1ffffff04000000f1ffffff03000000f1ffffff03000000f1ffffff02000000f1ffffff02000000f1ffffff02000000f1ffffff01000000f1ffffff01000000f1ffffff00000000f1ffffff00000000f1ffffff00000000f1ffffff00000000f1ffffff00000000f1fffffffffffffff1fffffffffffffff1fffffffffffffff1fffffffefffffff1fffffffefffffff1fffffffdfffffff1fffffffdfffffff2fffffffdfffffff2fffffffcfffffff2fffffffcfffffff2fffffffcfffffff2fffffffbfffffff2fffffffbfffffff2fffffffbfffffff3fffffffafffffff3fffffffafffffff3fffffff9fffffff3fffffff9fffffff3fffffff9fffffff3fffffff8fffffff4fffffff8fffffff4fffffff8fffffff4fffffff7fffffff4fffffff7fffffff5fffffff7fffffff5fffffff7fffffff5fffffff6fffffff5fffffff6fffffff6fffffff6fffffff6fffffff5fffffff6fffffff5fffffff7fffffff5fffffff7fffffff5fffffff7fffffff4fffffff7fffffff4fffffff8fffffff4fffffff8fffffff4fffffff8fffffff3fffffff9fffffff3fffffff9fffffff3fffffff9fffffff3fffffffafffffff3fffffffafffffff3fffffffbfffffff2fffffffbfffffff2fffffffbfffffff2fffffffcfffffff2fffffffcfffffff2fffffffcfffffff2fffffffdfffffff2fffffffdfffffff1fffffffdfffffff1fffffffefffffff1fffffffefffffff1fffffffffffffff1fffffffffffffff1fffffffffffffff1ffffff00000000f1ffffff00000000f1ffffff00000000f1ffffff00000000f1ffffff00000000f1ffffff01000000f1ffffff01000000f1ffffff02000000f1ffffff02000000f1ffffff02000000f1ffffff03000000f1ffffff03000000f1ffffff04000000f1ffffff04000000f1ffffff04000000f2ffffff05000000f2ffffff05000000f2ffffff05000000f2ffffff06000000f2ffffff06000000f2ffffff06000000f2ffffff07000000f3ffffff07000000f3ffffff08000000f3ffffff08000000f3ffffff08000000f3ffffff09000000f3ffffff09000000f4ffffff09000000f4ffffff0a000000f4ffffff0a000000f4ffffff0a000000f5ffffff0a000000f5ffffff0b000000f5ffffff0b000000f5ffffff0b000000f6ffffff0c000000f6ffffff0c000000f6ffffff0c000000f7ffffff0c000000f7ffffff0d000000f7ffffff0d000000f7ffffff0d000000f8ffffff0d000000f8ffffff0e000000f8ffffff0e000000f9ffffff0e000000f9ffffff0e000000f9ffffff0e000000faffffff0e000000faffffff0f000000fbffffff0f000000fbffffff0f000000fbffffff0f000000fcffffff0f000000fcffffff0f000000fcffffff0f000000fdffffff10000000fdffffff10000000fdffffff10000000feffffff10000000feffffff10000000ffffffff10000000ffffffff10000000ffffffff100000000000000010000000000000001000000000000000"
+    },
+    {
+      "name": "direction-threshold",
+      "address": "0x5bf2cc",
+      "size": 4,
+      "sha256": "7aa8ca4a02506da9133d8f889678b76f716ce45d02e22fdb7b70a15e56a0eff8",
+      "bytes": "06000000"
+    }
+  ],
+  "static_declared_bytes": 1192,
+  "declared_services_planned": [
+    "dictionary4E3830",
+    "packet-send4E5420",
+    "server-message-list40EF40"
+  ],
+  "dynamic_player_frames": {
+    "address": "0x753430",
+    "bytes": 424
+  },
+  "mutable_globals": {
+    "game_frame": "0x84ea04",
+    "logic_RNG_index": "0x62efd0"
+  },
+  "no_original_execution_or_native_comparison_claim": true,
+  "new_sender_engine_changes": false
+}

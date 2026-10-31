@@ -62,7 +62,7 @@ func (s *Server) GetUnitNetCode(p Obj) int {
 	if obj.NetCode >= 0x8000 {
 		return 0
 	}
-	ext := int(obj.Extent)
+	ext := obj.Extent
 	if ext >= 0x8000 {
 		return 0
 	}
@@ -70,7 +70,7 @@ func (s *Server) GetUnitNetCode(p Obj) int {
 		return int(obj.NetCode)
 	}
 	ext |= 0x8000
-	return ext
+	return int(ext)
 }
 
 func (s *Server) CanSee(obj, targ *Object, flags int) bool {

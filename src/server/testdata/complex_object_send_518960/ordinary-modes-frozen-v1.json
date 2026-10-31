@@ -1,0 +1,108 @@
+{
+  "status": "selected_before_engine",
+  "utc": "2026-10-31T15:51:13.982087+00:00",
+  "source_fixture_sha256": "f80a75388bee334824454bfc763f2819dea1573e822e6de5ddf1b639daf7f174",
+  "modes": [
+    {
+      "name": "east",
+      "row": "00000/all-directions"
+    },
+    {
+      "name": "northeast edge",
+      "row": "00046/all-directions"
+    },
+    {
+      "name": "west edge",
+      "row": "00111/all-directions"
+    },
+    {
+      "name": "direction wrap",
+      "row": "00255/all-directions"
+    },
+    {
+      "name": "fractional coordinates",
+      "row": "00037/all-directions"
+    },
+    {
+      "name": "cached Mimic idle",
+      "row": "02426/warm-selector-matrix"
+    },
+    {
+      "name": "cached Plant idle",
+      "row": "02407/warm-selector-matrix"
+    },
+    {
+      "name": "cached burning Zombie",
+      "row": "03938/warm-selector-matrix"
+    },
+    {
+      "name": "NPC chance below threshold",
+      "row": "08856/actual-RNG-table-and-wrap"
+    },
+    {
+      "name": "NPC random frame",
+      "row": "08855/actual-RNG-table-and-wrap"
+    },
+    {
+      "name": "NPC RNG table wrap",
+      "row": "12950/actual-RNG-table-and-wrap"
+    },
+    {
+      "name": "NPC zero frames",
+      "row": "12957/NPC-frame-output-boundaries"
+    },
+    {
+      "name": "NPC frame255",
+      "row": "13002/NPC-frame-output-boundaries"
+    },
+    {
+      "name": "NPC duration zero",
+      "row": "12987/NPC-frame-output-boundaries"
+    },
+    {
+      "name": "report with nil health",
+      "row": "13669/health-admission"
+    },
+    {
+      "name": "actual health damage report",
+      "row": "13670/health-admission"
+    },
+    {
+      "name": "health healing updates sample",
+      "row": "13287/health-delta-and-frame-wrap"
+    },
+    {
+      "name": "health delta low-word wrap",
+      "row": "13545/health-delta-and-frame-wrap"
+    },
+    {
+      "name": "health age two skips",
+      "row": "13076/health-delta-and-frame-wrap"
+    },
+    {
+      "name": "unsigned frame subtraction wrap",
+      "row": "13379/health-delta-and-frame-wrap"
+    },
+    {
+      "name": "enqueue returns false",
+      "row": "14106/full-network-return-word"
+    },
+    {
+      "name": "invalid coordinates signed DWORD",
+      "row": "14100/actual-FISTP-coordinate-boundaries"
+    },
+    {
+      "name": "alternate network code",
+      "row": "13717/actual-network-code-boundaries"
+    }
+  ],
+  "mode_count": 23,
+  "real_PlayerDraw_index50": "AnimElectricZap",
+  "ordinary_paths": [
+    "actual C default factories",
+    "ordinary Go sender default factories",
+    "pure Go packet method"
+  ],
+  "existing_Go_projection": "same selected original packets and RNG only; excludes health publication/return/provider entry/global C cache",
+  "engine_modified": false
+}

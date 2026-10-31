@@ -23266,6 +23266,27 @@
       "size": 361,
       "sha256": "8a2a44e0f058edb9739ff762268dc20fab13981e5e536cc4b236f69afac7d34a",
       "purpose": "Complete original NPC animation pointer parent361 body bytes executes with existing weapon/frame/selector/predicate/WORD helpers550 body bytes,911 total, in19668 unique contexts and20004 calls per startup0xe3f and nearest0x23f profile; results identical. Only type-record dictionary lookup is declared; runtime weapon/frame tables are explicit memory inputs, no helper or final result substitution. Native return roles, scratch writes, post-selector cached-update table reload, full heap/stack/global/code/nonvolatile/FPU guards observed. Seven root NOP bytes excluded. Native comparator checks actual helper calls, final scratch bytes and native pointer roles/guards; no native store-count observation claimed."
+    },
+    {
+      "name": "nox_xxx_netSendComplexObject_518960",
+      "address": "0x00518960",
+      "size": 378,
+      "sha256": "9b9d0a74e09564570e8ec42ba48b7f3f174f2dd8e382783aff31d26d1f68ace4",
+      "purpose": "Complete378-byte sender body; ordered health report/cache, captured native update, signed-DWORD coordinate conversion, actual selector and NPC RNG/frame and direction packing; excludes6 alignment NOPs."
+    },
+    {
+      "name": "nox_xxx_netGetUnitCodeServ_578AC0",
+      "address": "0x00578AC0",
+      "size": 58,
+      "sha256": "fd7566c86cbeb05314c42c16594321bfd19ccabe7607cc012971621b1c94e4b1",
+      "purpose": "Complete58-byte network-code helper; both code bounds use unsigned DWORDs before class selection and WORD extension; native386 must not cast secondary code to signed int before admission."
+    },
+    {
+      "name": "nox_xxx_netReportHealthDelta_4D8760",
+      "address": "0x004D8760",
+      "size": 61,
+      "sha256": "a5a50eb316e3adc9c927e1cec21e24509b62ec4e623f3d30a1adc9ab2995c94c",
+      "purpose": "Complete61-byte health-delta report helper; signed-short negative delta alone publishes5-byte health packet via declared network service."
     }
   ],
   "data": [

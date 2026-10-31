@@ -1,0 +1,13 @@
+{
+  "status": "frozen_inputs_only",
+  "utc": "2026-10-31T08:10:59.870874+00:00",
+  "contexts": 15004,
+  "calls": 15392,
+  "inherited_selector_inputs_unchanged": true,
+  "independently_declared_network_lookup_mutations": 164,
+  "raw_sha256": "3f56063ba6f781f5754c4d1ac1de63438491ea73d13f971a515cbdcf029821ac",
+  "fixture_sha256": "b7af66c39ffd09de1f23b194ce9ec9aee69e6be307b14ea8700b67bf5c5e4d48",
+  "original_execution_and_output_seal_still_pending": true,
+  "new_sender_engine_modified": false,
+  "overall_porting_100_percent": false
+}

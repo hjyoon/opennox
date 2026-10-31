@@ -10,6 +10,7 @@ import (
 	noxflags "github.com/opennox/opennox/v1/common/flags"
 	"github.com/opennox/opennox/v1/common/ntype"
 	"github.com/opennox/opennox/v1/internal/netlist"
+	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
 
@@ -382,18 +383,7 @@ func (s *Server) monsterAnimationNative533790(obj *server.Object) byte {
 }
 
 func (s *Server) complexObjectPacketNative518960(obj *server.Object) [11]byte {
-	packet := s.phantomObjectPacketNative5187E0(obj)
-	ud := obj.UpdateDataMonster()
-	packet[9] |= s.monsterAnimationNative533790(obj) & 0x0f
-	packet[10] = ud.Field120_1
-	if uint32(obj.SubClass())&0x10 != 0 && ud.Field523_2 != 0 && s.Rand.Logic.IntClamp(0, 10) >= 8 {
-		packet[9] = packet[9]&0xf0 | 14
-		_, count := s.PlayerAnimFrames(50)
-		if count > 0 {
-			packet[10] = byte(s.Rand.Logic.IntClamp(0, count))
-		}
-	}
-	return packet
+	return s.ComplexObjectPacket518960(obj)
 }
 
 func playerMapTracksObjectNative519410(pl *server.Player, obj *server.Object) bool {
@@ -593,9 +583,7 @@ func (s *Server) netSendObjects2PlayerNative519410(recipient, obj *server.Object
 	case obj.Class().Has(object.ClassImmobile):
 		sent = s.netSpriteUpdateNative518AE0(ind, obj)
 	case obj.Class().Has(object.ClassComplex) && obj.Class().Has(object.ClassMonster):
-		s.reportUnitHealthDeltaNative4D8760(int(ind), obj)
-		packet := s.complexObjectPacketNative518960(obj)
-		sent = nox_netlist_addToMsgListSrv(ind, packet[:])
+		sent = legacy.NetSendComplexObject518960(int32(ind), obj, 1) != 0
 	case obj.Class().Has(object.ClassComplex) && obj.Class().Has(object.ClassPlayer):
 		sent = s.netPlayerObjectSendNative518C30(recipient, obj, true)
 	case obj.Class().Has(object.ClassComplex):

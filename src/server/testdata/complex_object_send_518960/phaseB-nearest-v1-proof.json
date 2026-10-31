@@ -1,0 +1,53 @@
+{
+  "status": "executed",
+  "control_word": "0x23f",
+  "contexts": 15004,
+  "root_calls": 15392,
+  "pilot_limit": 0,
+  "producer_sha256": "8a5d5d33818050a68601f757c6c4a8340b2c9f6d1655e49135fd26bc375f8cef",
+  "input_fixture_sha256": "b7af66c39ffd09de1f23b194ce9ec9aee69e6be307b14ea8700b67bf5c5e4d48",
+  "static_dependency_sha256": "2c0ca44c3f42014c325c6ea71a778523c5a62da23e995f69aabb5a11ffd4fc33",
+  "coverage_bytes": {
+    "animation-selector": 281,
+    "mimic": 47,
+    "plant": 47,
+    "zombie": 79,
+    "actual-word-name-ID": 28,
+    "PlayerAnimationFrames4F9F90": 31,
+    "send-complex-object": 289,
+    "unit-network-code": 52,
+    "original-logic-RNG": 57,
+    "original-float-to-int": 17,
+    "health-delta-report": 0,
+    "indexed-direction": 72
+  },
+  "executed_bytes": 1000,
+  "static_declared_bytes_not_execution": 1192,
+  "actual_entries": {
+    "send-complex-object": 15392,
+    "unit-network-code": 15392,
+    "original-float-to-int": 30784,
+    "animation-selector": 15392,
+    "mimic": 15392,
+    "plant": 13640,
+    "zombie": 11907,
+    "indexed-direction": 15392,
+    "actual-word-name-ID": 2062,
+    "original-logic-RNG": 12,
+    "PlayerAnimationFrames4F9F90": 4
+  },
+  "table_bytes_read": {
+    "native-root-jump-targets": 52,
+    "native-root-action-index": 31,
+    "logic-RNG-table": 12,
+    "direction-vector-table": 16,
+    "direction-threshold": 4
+  },
+  "fixture_sha256": "2b9b09c5c0300e114ef6a4d1f3f5dde6dacc99ea57a1a9791bcd00e054121ded",
+  "raw_fixture_sha256": "6f73f8bb077372ad5ba0aad1abb73ed6bbce04a790d818f1d779e80f9a83c6c2",
+  "original_unchanged": true,
+  "all_frozen_inputs_unchanged": true,
+  "actual_WORD_helper_dictionary_predicates_execute": true,
+  "native_before_and_comparators_still_pending": true,
+  "overall_porting_100_percent": false
+}

@@ -4223,6 +4223,7 @@ int nox_xxx_netSendSimpleObj_5188A0(int a1, int a2) {
 }
 
 //----- (00518960) --------------------------------------------------------
+#if 0 // Native Go entry: complex_object_send_native_518960_export.go.
 int nox_xxx_netSendComplexObject_518960(int a1, uint32_t* a2, int a3) {
 	int v3;       // ebx
 	uint32_t* v4; // esi
@@ -4284,6 +4285,8 @@ int nox_xxx_netSendComplexObject_518960(int a1, uint32_t* a2, int a3) {
 	v18[9] |= 16 * v15;
 	return nox_netlist_addToMsgListSrv_40EF40(v3, v18, 11);
 }
+
+#endif
 
 //----- (00518AE0) --------------------------------------------------------
 int nox_xxx_netSpriteUpdate_518AE0(int a1, int a2, uint32_t* a3) {

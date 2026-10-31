@@ -1,0 +1,50 @@
+{
+  "status": "executed",
+  "control_word": "0x23f",
+  "contexts": 14110,
+  "pilot_limit": 0,
+  "producer_sha256": "5cb32861fb7d6d98904976ffcf0a08eae20285b08debbb4afbaf921740fb55ee",
+  "static_dependency_sha256": "2c0ca44c3f42014c325c6ea71a778523c5a62da23e995f69aabb5a11ffd4fc33",
+  "caller_argument_slots4_and12_observed_as_original_scratch": true,
+  "coverage_bytes": {
+    "animation-selector": 281,
+    "mimic": 29,
+    "plant": 29,
+    "zombie": 46,
+    "actual-word-name-ID": 0,
+    "PlayerAnimationFrames4F9F90": 31,
+    "send-complex-object": 378,
+    "unit-network-code": 55,
+    "original-logic-RNG": 67,
+    "original-float-to-int": 17,
+    "health-delta-report": 61,
+    "indexed-direction": 98
+  },
+  "executed_bytes": 1092,
+  "static_declared_bytes_not_execution": 1192,
+  "actual_entries": {
+    "send-complex-object": 14110,
+    "unit-network-code": 14110,
+    "original-float-to-int": 28220,
+    "animation-selector": 14110,
+    "mimic": 14110,
+    "plant": 13050,
+    "zombie": 11990,
+    "indexed-direction": 14110,
+    "original-logic-RNG": 5419,
+    "PlayerAnimationFrames4F9F90": 1206,
+    "health-delta-report": 242
+  },
+  "table_bytes_read": {
+    "native-root-jump-targets": 52,
+    "native-root-action-index": 31,
+    "logic-RNG-table": 16384,
+    "direction-vector-table": 2048,
+    "direction-threshold": 4
+  },
+  "fixture_sha256": "8dc641792fb01f74e29894d54fd984a39569e2e12090c6e15f5c91cb89f5f6e3",
+  "raw_fixture_sha256": "eec00b156c4a5fb519fbfa20a5c1285051fb36f11706df130620f78ca9a50948",
+  "original_unchanged": true,
+  "cold_lookup_mutations_and_native_comparators_still_pending": true,
+  "overall_porting_100_percent": false
+}

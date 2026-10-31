@@ -1,0 +1,330 @@
+{
+  "steps": [
+    {
+      "action": "slow",
+      "dur": "1ms"
+    },
+    {
+      "action": "click",
+      "dt": 30,
+      "x": 320,
+      "y": 240,
+      "name": "skip startup movie"
+    },
+    {
+      "action": "wait",
+      "dt": 600,
+      "name": "wait for main menu"
+    },
+    {
+      "action": "interact",
+      "x": 448,
+      "y": 168,
+      "name": "open solo campaign"
+    },
+    {
+      "action": "wait",
+      "dt": 500,
+      "name": "wait for class selection"
+    },
+    {
+      "action": "click",
+      "x": 512,
+      "y": 208,
+      "name": "select conjurer"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "wait for class details"
+    },
+    {
+      "action": "click",
+      "x": 512,
+      "y": 656,
+      "name": "accept conjurer class"
+    },
+    {
+      "action": "wait",
+      "dt": 700,
+      "name": "wait for color selection"
+    },
+    {
+      "action": "click",
+      "x": 352,
+      "y": 608,
+      "name": "accept conjurer color"
+    },
+    {
+      "action": "wait",
+      "dt": 1000,
+      "name": "wait for chapter one briefing"
+    },
+    {
+      "action": "click",
+      "x": 512,
+      "y": 384,
+      "name": "dismiss conjurer chapter one briefing"
+    },
+    {
+      "action": "wait",
+      "dt": 620,
+      "name": "settle conjurer gameplay"
+    },
+    {
+      "action": "click-npc-dialog-done",
+      "name": "dismiss conjurer opening dialog"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "settle after conjurer opening dialog"
+    },
+    {
+      "action": "switch-map",
+      "map": "Con02a",
+      "name": "switch to Conjurer chapter two"
+    },
+    {
+      "action": "wait-map",
+      "map": "Con02a",
+      "name": "wait for Conjurer chapter two map"
+    },
+    {
+      "action": "click-chapter-briefing",
+      "name": "dismiss Conjurer chapter two briefing"
+    },
+    {
+      "action": "wait-forced-coop-autosave",
+      "name": "finish Conjurer chapter two entry autosave"
+    },
+    {
+      "action": "wait",
+      "dt": 180,
+      "name": "settle Conjurer chapter two objects"
+    },
+    {
+      "action": "assert-map-shopkeeper-field-guide",
+      "item": "Con02a:Mystic",
+      "creature": "Wasp",
+      "count": 6,
+      "name": "verify Mystic Field Guide definition loaded from the map"
+    },
+    {
+      "action": "open-map-shopkeeper",
+      "item": "Con02a:Mystic",
+      "name": "actual map Mystic and normal client trade request"
+    },
+    {
+      "action": "wait",
+      "dt": 120,
+      "name": "receive original map merchant shop"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "count": 8,
+      "name": "real map merchant eight stock items"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 1,
+      "count": 8,
+      "name": "real map merchant client stock"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "FieldGuide",
+      "count": 0,
+      "name": "no preexisting FieldGuide"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 665,
+      "name": "actual real merchant buy button"
+    },
+    {
+      "action": "wait",
+      "dt": 10,
+      "name": "settle merchant buy mode"
+    },
+    {
+      "action": "set-player-gold",
+      "gold": 10000,
+      "name": "explicit diagnostic funding only"
+    },
+    {
+      "action": "wait",
+      "dt": 20,
+      "name": "receive diagnostic gold report"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 10000,
+      "name": "diagnostic starting gold"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 0,
+      "name": "arm actual map merchant sound observer"
+    },
+    {
+      "action": "click-shop-field-guide",
+      "creature": "Wasp",
+      "name": "select original Wasp FieldGuide"
+    },
+    {
+      "action": "wait",
+      "dt": 20,
+      "name": "receive field guide buy dialog"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 1,
+      "max": 1,
+      "price": 100,
+      "name": "known original map purchase price"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "x": -1,
+      "y": 1,
+      "name": "accept real merchant purchase"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 1,
+      "count": 1,
+      "name": "original merchant purchase hardware playback"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process real purchase reports"
+    },
+    {
+      "action": "assert-item-amount-closed",
+      "name": "actual purchase dialog closed"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "FieldGuide",
+      "count": 1,
+      "name": "purchased real Wasp FieldGuide"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 9900,
+      "name": "real purchase debit"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "count": 7,
+      "name": "original merchant stock decremented"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 695,
+      "name": "actual real merchant sell button"
+    },
+    {
+      "action": "wait",
+      "dt": 10,
+      "name": "settle real merchant sell mode"
+    },
+    {
+      "action": "click-inventory-item",
+      "item": "FieldGuide",
+      "name": "quote real purchased FieldGuide sale"
+    },
+    {
+      "action": "wait",
+      "dt": 30,
+      "name": "receive original map merchant sale quote"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 1,
+      "max": 1,
+      "name": "original real merchant sale dialog amount"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "real map merchant field guide sale quote"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "name": "accept real map merchant FieldGuide sale"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 1,
+      "count": 2,
+      "name": "real map merchant sale hardware playback"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process actual map merchant sale"
+    },
+    {
+      "action": "assert-item-amount-closed",
+      "name": "actual sale dialog closed"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "FieldGuide",
+      "count": 0,
+      "name": "actual FieldGuide transferred from inventory"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "count": 7,
+      "name": "sale preserves original seven unsold stock entries"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 3,
+      "count": 7,
+      "name": "actual map client stock after sale"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "real map merchant FieldGuide sale completed"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 752,
+      "name": "exit actual map merchant"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process actual map merchant exit"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": false,
+      "name": "actual map session released"
+    },
+    {
+      "action": "assert-shop",
+      "active": false,
+      "mode": 0,
+      "count": 0,
+      "name": "actual map client shop closed"
+    },
+    {
+      "action": "quit",
+      "dt": 1,
+      "name": "normal actual map diagnostic exit"
+    }
+  ]
+}

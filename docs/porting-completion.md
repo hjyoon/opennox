@@ -55,6 +55,46 @@ completion requirements.
 
 ## Current findings
 
+### Reopened shop sale audio investigation
+
+The current clean `f6f9624` ARM64 product passes five additional ordinary-clock,
+real Core OpenAL diagnostics: single potion sale, a two-item group followed by
+a single sale, an equipped Longsword sale, the actual Con02a Mystic merchant,
+and a normal menu Load of the successful Wizard2 Save followed by trading.
+All eleven observed purchase/sale events have positive source gain and all
+four stock `otrapclk` buffers completely processed. The actual Mystic sells
+the Wasp guide for 100 and buys it back for 33; its final UI shows 9,933 gold.
+The equipped weapon sale credits 750 and removes the weapon from both
+inventories. The copied Wizard Save's fifteen original files remain unchanged.
+
+The active AIL decoder's 4,068 PCM values for the stock sale click match an
+independent FFmpeg decode exactly. An isolated actual AIL/OpenAL Soft wave
+render has nonzero output in both channels, with peak 8,683 at the observed
+0.68503934 source gain. This is an isolated mixer output check; it does not
+establish the user's hardware output. No audio runtime change or resolution
+of the reported silence is claimed. The current independent remote-client
+diagnostic is still running; the installation/version and failing shop/item
+details have been requested without stopping other work.
+
+Four exact executed reproduction inputs are now under `scripts/e2e/`:
+`host-shop-quantity-sale-audio.yaml`,
+`host-shop-equipped-weapon-sale-audio.yaml`,
+`solo-conjurer-real-mystic-sale-audio.yaml`, and
+`loaded-wizard2-shop-sale-audio.yaml`. Run them with
+`scripts/run-headless-gui-e2e.sh DATA SCENARIO OUTPUT`, setting
+`NOX_E2E_BINARY` to the product, `NOX_E2E_AUDIO=openal`,
+`NOX_E2E_CLOCK=ordinary` and `NOX_E2E_OVERRIDE=false`.
+The loaded scenario additionally requires `NOX_E2E_SAVE_SEED` pointing to the
+qualified Wizard2 Save directory. Funds and any fixture merchant/position are
+explicit diagnostic setup and supply no earned campaign progression.
+
+ROOT/shop-sale-audio-reopened-20261101 preserves the five terminal results,
+twenty-six captures, the independent PCM reference and rendered WAV. The
+actual merchant, equipped-weapon and loaded-campaign sale images were viewed.
+`five-current-product-diagnostics-qualified-v1.json` records the bounded
+results and the still-open report; prelaunch and auxiliary setup failures
+remain preserved separately.
+
 ### Native complex-object sender and ordinary network path
 
 Runtime `f6f9624` ports public `518960` to a shared native Go sender.
@@ -124,7 +164,7 @@ All 102 products, original assets/Saves, failure results, peer records and 19 au
 
 The user has reopened missing shop sale audio in actual play. Earlier
 controlled buy/sell captures remain bounded evidence; the current report is
-open and is the next priority after this batch.
+open, with the additional current-product investigation recorded above.
 
 Overall porting remains incomplete. The final nine class/chapter1-3 feature,
 UI, audio, network and stability audits remain open. The next `518AE0` sprite

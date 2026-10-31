@@ -1,0 +1,414 @@
+{
+  "steps": [
+    {
+      "action": "slow",
+      "dur": "5ms"
+    },
+    {
+      "action": "click",
+      "dt": 30,
+      "x": 320,
+      "y": 240,
+      "name": "skip startup movie"
+    },
+    {
+      "action": "wait",
+      "dt": 600,
+      "name": "wait for main menu"
+    },
+    {
+      "action": "click",
+      "x": 448,
+      "y": 264,
+      "name": "open multiplayer"
+    },
+    {
+      "action": "wait",
+      "dt": 700,
+      "name": "wait for native server discovery"
+    },
+    {
+      "action": "click",
+      "x": 184,
+      "y": 104,
+      "name": "host regular game"
+    },
+    {
+      "action": "wait",
+      "dt": 400,
+      "name": "wait for class selection"
+    },
+    {
+      "action": "click",
+      "x": 256,
+      "y": 208,
+      "name": "select warrior"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "wait for class details"
+    },
+    {
+      "action": "click",
+      "x": 512,
+      "y": 656,
+      "name": "accept class"
+    },
+    {
+      "action": "wait",
+      "dt": 700,
+      "name": "wait for color selection"
+    },
+    {
+      "action": "click",
+      "x": 352,
+      "y": 608,
+      "name": "accept color selection"
+    },
+    {
+      "action": "wait",
+      "dt": 400,
+      "name": "wait for host startup"
+    },
+    {
+      "action": "click",
+      "x": 512,
+      "y": 487,
+      "name": "dismiss chat area help"
+    },
+    {
+      "action": "wait",
+      "dt": 30,
+      "name": "settle after help"
+    },
+    {
+      "action": "click",
+      "x": 700,
+      "y": 380,
+      "name": "apply server options"
+    },
+    {
+      "action": "wait",
+      "dt": 120,
+      "name": "settle after server options"
+    },
+    {
+      "action": "open-server-shop-fixture",
+      "item": "RedPotion",
+      "count": 3,
+      "name": "create merchant and send client shop request"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process server shop start and client packet"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "item": "RedPotion",
+      "count": 3,
+      "name": "verify native server shop session"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 1,
+      "count": 3,
+      "name": "verify server-started client shop"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "audio reproduction v2 host game server shop"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 665,
+      "name": "select server shop buy mode"
+    },
+    {
+      "action": "wait",
+      "dt": 10,
+      "name": "settle server shop buy mode"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 2,
+      "count": 3,
+      "name": "verify server shop buy action"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "audio reproduction v2 host game server shop buy mode"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "RedPotion",
+      "count": 0,
+      "name": "verify inventory before purchase"
+    },
+    {
+      "action": "set-player-gold",
+      "gold": 200,
+      "name": "fund actual server purchase"
+    },
+    {
+      "action": "wait",
+      "dt": 20,
+      "name": "receive server gold report"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 200,
+      "name": "verify server and client purchase funds"
+    },
+    {
+      "action": "click",
+      "x": 418,
+      "y": 684,
+      "name": "select three-potion purchase"
+    },
+    {
+      "action": "wait",
+      "dt": 20,
+      "name": "wait for quantity dialog"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 1,
+      "max": 3,
+      "price": 40,
+      "name": "three in stock and affordable"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "x": 141,
+      "y": -35,
+      "name": "actual quantity-up control 1"
+    },
+    {
+      "action": "wait",
+      "dt": 2,
+      "name": "settle actual quantity-up click"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "x": 141,
+      "y": -35,
+      "name": "actual quantity-up control 2"
+    },
+    {
+      "action": "wait",
+      "dt": 2,
+      "name": "settle actual quantity-up click"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 3,
+      "max": 3,
+      "price": 40,
+      "name": "purchase quantity three"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "name": "accept actual three-potion purchase"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process actual group purchase"
+    },
+    {
+      "action": "assert-item-amount-closed",
+      "name": "purchase dialog closed"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "RedPotion",
+      "count": 3,
+      "name": "three purchased native inventory objects"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 80,
+      "name": "three purchase debit"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "item": "RedPotion",
+      "count": 0,
+      "name": "merchant exhausted purchased stock"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 2,
+      "count": 0,
+      "name": "client merchant exhausted stock"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 695,
+      "name": "select actual sell mode"
+    },
+    {
+      "action": "wait",
+      "dt": 10,
+      "name": "settle actual sell mode"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 0,
+      "name": "arm only after completed purchase"
+    },
+    {
+      "action": "click-inventory-item",
+      "item": "RedPotion",
+      "name": "quote grouped potion sale"
+    },
+    {
+      "action": "wait",
+      "dt": 30,
+      "name": "receive grouped sale quote"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 1,
+      "max": 3,
+      "price": 40,
+      "name": "original grouped sale quote"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "x": 141,
+      "y": -35,
+      "name": "actual quantity-up for two-item sale"
+    },
+    {
+      "action": "wait",
+      "dt": 2,
+      "name": "settle sale quantity-up"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 2,
+      "max": 3,
+      "price": 40,
+      "name": "sale quantity two"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "name": "accept grouped two-item sale"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 1,
+      "count": 1,
+      "name": "group sale actual audio and complete hardware drain"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process grouped sale"
+    },
+    {
+      "action": "assert-item-amount-closed",
+      "name": "group sale dialog closed"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "RedPotion",
+      "count": 1,
+      "name": "one original item remains"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 160,
+      "name": "two-item sale gold addition"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "quantity sale completed"
+    },
+    {
+      "action": "click-inventory-item",
+      "item": "RedPotion",
+      "name": "quote last single potion sale"
+    },
+    {
+      "action": "wait",
+      "dt": 30,
+      "name": "receive final single sale quote"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 1,
+      "max": 1,
+      "price": 40,
+      "name": "last single sale quote"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "name": "accept last single potion sale"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 1,
+      "count": 2,
+      "name": "single-after-group sale hardware drain"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process final single sale"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "RedPotion",
+      "count": 0,
+      "name": "all three sale objects removed"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 200,
+      "name": "all three sales restore funds"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "single after quantity sale completed"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 752,
+      "name": "exit actual shop"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process shop exit"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": false,
+      "name": "session released"
+    },
+    {
+      "action": "assert-shop",
+      "active": false,
+      "mode": 0,
+      "count": 0,
+      "name": "client shop closed"
+    },
+    {
+      "action": "quit",
+      "dt": 1,
+      "name": "normal diagnostic exit"
+    }
+  ]
+}

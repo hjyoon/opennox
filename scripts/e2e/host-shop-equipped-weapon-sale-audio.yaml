@@ -1,0 +1,418 @@
+{
+  "steps": [
+    {
+      "action": "slow",
+      "dur": "5ms"
+    },
+    {
+      "action": "click",
+      "dt": 30,
+      "x": 320,
+      "y": 240,
+      "name": "skip startup movie"
+    },
+    {
+      "action": "wait",
+      "dt": 600,
+      "name": "wait for main menu"
+    },
+    {
+      "action": "click",
+      "x": 448,
+      "y": 264,
+      "name": "open multiplayer"
+    },
+    {
+      "action": "wait",
+      "dt": 700,
+      "name": "wait for native server discovery"
+    },
+    {
+      "action": "click",
+      "x": 184,
+      "y": 104,
+      "name": "host regular game"
+    },
+    {
+      "action": "wait",
+      "dt": 400,
+      "name": "wait for class selection"
+    },
+    {
+      "action": "click",
+      "x": 256,
+      "y": 208,
+      "name": "select warrior"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "wait for class details"
+    },
+    {
+      "action": "click",
+      "x": 512,
+      "y": 656,
+      "name": "accept class"
+    },
+    {
+      "action": "wait",
+      "dt": 700,
+      "name": "wait for color selection"
+    },
+    {
+      "action": "click",
+      "x": 352,
+      "y": 608,
+      "name": "accept color selection"
+    },
+    {
+      "action": "wait",
+      "dt": 400,
+      "name": "wait for host startup"
+    },
+    {
+      "action": "click",
+      "x": 512,
+      "y": 487,
+      "name": "dismiss chat area help"
+    },
+    {
+      "action": "wait",
+      "dt": 30,
+      "name": "settle after help"
+    },
+    {
+      "action": "click",
+      "x": 700,
+      "y": 380,
+      "name": "apply server options"
+    },
+    {
+      "action": "wait",
+      "dt": 120,
+      "name": "settle after server options"
+    },
+    {
+      "action": "open-server-shop-fixture",
+      "item": "RedPotion",
+      "count": 3,
+      "name": "create merchant and send client shop request"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process server shop start and client packet"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "item": "RedPotion",
+      "count": 3,
+      "name": "verify native server shop session"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 1,
+      "count": 3,
+      "name": "verify server-started client shop"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "audio reproduction v2 host game server shop"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 665,
+      "name": "select server shop buy mode"
+    },
+    {
+      "action": "wait",
+      "dt": 10,
+      "name": "settle server shop buy mode"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 2,
+      "count": 3,
+      "name": "verify server shop buy action"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "audio reproduction v2 host game server shop buy mode"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "RedPotion",
+      "count": 0,
+      "name": "verify inventory before purchase"
+    },
+    {
+      "action": "set-player-gold",
+      "gold": 100,
+      "name": "fund actual server purchase"
+    },
+    {
+      "action": "wait",
+      "dt": 20,
+      "name": "receive server gold report"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 100,
+      "name": "verify server and client purchase funds"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 0,
+      "name": "arm stock trade audio hardware observer"
+    },
+    {
+      "action": "click",
+      "x": 418,
+      "y": 684,
+      "name": "select server shop potion"
+    },
+    {
+      "action": "wait",
+      "dt": 20,
+      "name": "settle server shop amount dialog"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 1,
+      "max": 2,
+      "name": "verify gold-limited purchase amount"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "x": -1,
+      "y": 1,
+      "name": "accept one server shop potion"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 1,
+      "count": 1,
+      "name": "verify actual purchase audio positive gain and full hardware drain"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process native server purchase"
+    },
+    {
+      "action": "assert-item-amount-closed",
+      "name": "verify purchase amount dialog closed"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "item": "RedPotion",
+      "count": 2,
+      "name": "verify server shop item removal"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 2,
+      "count": 2,
+      "name": "verify client shop item removal"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "RedPotion",
+      "count": 1,
+      "name": "verify purchased server inventory object"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 60,
+      "name": "verify purchase gold subtraction"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "audio reproduction v2 host game server shop purchased"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 695,
+      "name": "select server shop sell mode"
+    },
+    {
+      "action": "wait",
+      "dt": 10,
+      "name": "settle server shop sell mode"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 3,
+      "count": 2,
+      "name": "verify server shop sell action"
+    },
+    {
+      "action": "click-inventory-item",
+      "item": "RedPotion",
+      "name": "quote purchased potion sale"
+    },
+    {
+      "action": "wait",
+      "dt": 30,
+      "name": "receive native server sell quote"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 1,
+      "max": 1,
+      "price": 40,
+      "name": "verify native server sell quote"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "audio reproduction v2 host game server shop sell quote"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "name": "accept purchased potion sale"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 1,
+      "count": 2,
+      "name": "verify actual sale audio positive gain and full hardware drain"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process native server sale"
+    },
+    {
+      "action": "assert-item-amount-closed",
+      "name": "verify sell amount dialog closed"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "RedPotion",
+      "count": 0,
+      "name": "verify sold item left server and client inventory"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 100,
+      "name": "verify native sale gold addition"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "item": "RedPotion",
+      "count": 2,
+      "name": "verify sale preserved server merchant stock"
+    },
+    {
+      "action": "assert-shop",
+      "active": true,
+      "mode": 3,
+      "count": 2,
+      "name": "verify sale preserved client merchant stock"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "audio reproduction v2 host game server shop sold"
+    },
+    {
+      "action": "click-inventory-item",
+      "item": "Longsword",
+      "name": "quote equipped starting longsword sale"
+    },
+    {
+      "action": "wait",
+      "dt": 30,
+      "name": "receive original longsword sale quote"
+    },
+    {
+      "action": "assert-item-amount",
+      "amount": 1,
+      "max": 1,
+      "price": 750,
+      "name": "longsword full-condition quote"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "equipped longsword sale quote"
+    },
+    {
+      "action": "click-item-amount-accept",
+      "name": "accept equipped starting longsword sale"
+    },
+    {
+      "action": "check-shop-audio",
+      "mode": 1,
+      "count": 3,
+      "name": "equipment sale actual sound and complete hardware drain"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process equipped weapon sale and unequip"
+    },
+    {
+      "action": "assert-item-amount-closed",
+      "name": "equipment sale dialog closed"
+    },
+    {
+      "action": "assert-inventory-count",
+      "item": "Longsword",
+      "count": 0,
+      "name": "sold equipped weapon removed"
+    },
+    {
+      "action": "assert-player-gold",
+      "gold": 850,
+      "name": "original full-worth longsword sale credit"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": true,
+      "item": "RedPotion",
+      "count": 2,
+      "name": "weapon sale does not replace merchant stock"
+    },
+    {
+      "action": "capture-quest-map-audit-frame",
+      "name": "equipped longsword sale completed"
+    },
+    {
+      "action": "click",
+      "x": 786,
+      "y": 752,
+      "name": "exit actual equipment-sale shop"
+    },
+    {
+      "action": "wait",
+      "dt": 60,
+      "name": "process shop close"
+    },
+    {
+      "action": "assert-server-shop",
+      "active": false,
+      "name": "equipment-sale session released"
+    },
+    {
+      "action": "assert-shop",
+      "active": false,
+      "mode": 0,
+      "count": 0,
+      "name": "equipment-sale client UI closed"
+    },
+    {
+      "action": "quit",
+      "dt": 1,
+      "name": "normal equipment diagnostic exit"
+    }
+  ]
+}

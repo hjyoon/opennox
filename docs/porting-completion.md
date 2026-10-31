@@ -55,6 +55,82 @@ completion requirements.
 
 ## Current findings
 
+### Native complex-object sender and ordinary network path
+
+Runtime `f6f9624` ports public `518960` to a shared native Go sender.
+The existing `int(int, uint32_t*, int)` C ABI is unchanged; its opaque
+pointer is immediately interpreted as a native Object. The ordinary Go
+sender, production monster-update branch and packet builder use the same
+core. Type/coordinate/helper order, cached update records, health-report
+then sample-store order, signed-DWORD truncation and NPC frame RNG match
+the original. The secondary network-code bound is checked as uint32 before
+conversion to native int, fixing the 386 sign-conversion case in `578AC0`.
+
+The unchanged original executes 14,110 Phase A contexts/calls and 15,004
+Phase B contexts / 15,392 calls per FPU profile. Phase B adds cold WORD-name
+lookups, ordered mutations and repeated calls. Startup and nearest profiles
+agree on integer observations; coordinate packet bytes differ in 13,941 A
+and 15,392 B calls. Native comparisons use the startup packets without
+coordinate masking. The root is 378 bytes, excluding six alignment NOPs.
+Static declared scope is 1,192 bytes; the sum of maximum observed bytes per
+function across phases is 1,189, not a directly instrumented union. The
+network-code helper's three nil-branch bytes are unentered by this nonnil
+parent. Dictionary inputs and network publication are declared boundaries;
+the selector, predicates, WORD helper, RNG, frame, conversion, health-report
+and direction bodies execute.
+
+The old C entry reproduces SIGSEGV after a valid native Go input control.
+Allocation controls pass 29,115 events without calling the sender. The
+bounded old Go packet/RNG projection differs in all 23 selected modes,
+including fractional coordinates and NPC frame ranges; it excludes health
+publication, enqueue return, helper entry and global C caches. Frozen full
+C and direct Go comparators subsequently match 29,114 contexts / 29,502
+calls each, including real native scalar helpers, registry/RNG and guarded
+memory. Actual health packets are created in the native important queue and
+drained for comparison. The protocol preserves a full int32 enqueue result;
+the stock queue returns bool 0/1. Twenty-three ordinary modes each exercise
+C, public Go and the pure Go packet method with actual PlayerDraw index 50
+and default factories. A root-package projection checks the retained packet
+wrapper, and 14,110 original network-code cases check the full helper result.
+
+Initial registry initialization, NaN struct-equality, allocator-handle and
+root-package fixture-path failures are retained. Corrections initialize the
+real fixtures, compare complete memory bytes including NaNs, and resolve the
+installed reference path. Original input rows and expected packets remain unchanged; the fixture
+corrections leave runtime code untouched.
+
+macOS normal passes **594,280 / 43 skips**; highres actual cgocheck2 and
+checkptr level 2 passes **454,855 / 8 skips**, four packages each. All prior
+terminal identities and multiplicities are retained. There are 72,458 new
+test events per scope, plus one existing visual-state test newly included
+in strict. All 4,137 prior inputs/assertions remain byte-identical; adding
+19 test/reference files yields 4,156. The oracle verifies **3,326 code / 691
+data ranges**, preserving all earlier records and their order; its 21 tests
+pass. No new strict exemption is introduced.
+
+The clean ARM64 product is 66,021,266 bytes, SHA-256
+`c042f225ba9752a779a59af96d410d83e7d856e4ded33cf01e2c870397ed12ed`.
+Six Blink, sixteen natural first-attack and the three duration-ray
+regressions pass. Original Bookcase1974 reaches (1591,4734), with its plate
+off, mover on and original Urchin HP0/DEAD, sealed before independent actual
+menu Load/Save. Both runs retain HP20/MP43/poison0. Four current images were
+actually viewed; final images show overwrite confirmations, while saved
+files, logs and fresh Load independently prove completion. The prior failed
+Bookcase Save was preserved and never continued.
+
+Linux amd64 run `41219565057` and Windows amd64/386 run `41219525169` pass native builds, help and tests at the same runtime. Linux records 591,442 passes / 7 skips across 58 packages, plus 133,384 default-link damage events. The complete prior terminal inventories retain identity and multiplicity. Exact job logs and digest-verified ZIP/ELF/PE products are preserved. All five requested poison-macro warnings remain absent.
+
+All 102 products, original assets/Saves, failure results, peer records and 19 audio captures remain intact. After local workers ended, only the task compiler cache was cleaned (3,805,673,319 regenerable bytes); module cache, assets, Saves, logs and products were retained.
+
+The user has reopened missing shop sale audio in actual play. Earlier
+controlled buy/sell captures remain bounded evidence; the current report is
+open and is the next priority after this batch.
+
+Overall porting remains incomplete. The final nine class/chapter1-3 feature,
+UI, audio, network and stability audits remain open. The next `518AE0` sprite
+sender has static discovery only; it has no new implementation or execution
+certificate. Chapter4+ gameplay remains excluded.
+
 ### Native monster animation update and public char ABI
 
 Runtime `d30ff5b` ports public `50A850` from PE32 offsets and a narrowed

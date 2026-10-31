@@ -2,54 +2,28 @@ package server
 
 import (
 	"github.com/opennox/libs/object"
+	"unsafe"
 
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
 func monsterAnimationIndex533790(update *MonsterUpdateData, mimic, plant, zombie bool) int {
-	ind := 8
-	if head := update.AIStackHead(); head != nil {
-		switch head.Type() {
-		case ai.ACTION_MOVE_TO, ai.ACTION_FAR_MOVE_TO, ai.ACTION_ROAM, ai.ACTION_FIND_OBJECT,
-			ai.ACTION_RANDOM_WALK, ai.ACTION_CONFUSED, ai.ACTION_MOVE_TO_HOME:
-			ind = 12
-			if update.StatusFlags.Has(object.MonStatusRunning) {
-				ind = 13
+	// Keep the older private helper's invalid-head containment. The raw
+	// public entry retains the original signed native stack addressing.
+	if update.AIStackInd < -1 || int(update.AIStackInd) >= len(update.AIStack) {
+		update = &MonsterUpdateData{AIStackInd: -1, StatusFlags: update.StatusFlags, CurrentEnemy: update.CurrentEnemy}
+	}
+	predicate := func(value bool) func(*Object) uint32 {
+		return func(*Object) uint32 {
+			if value {
+				return 1
 			}
-		case ai.ACTION_DODGE:
-			ind = 12
-		case ai.ACTION_MELEE_ATTACK:
-			ind = 1
-		case ai.ACTION_MISSILE_ATTACK:
-			ind = 3
-		case ai.ACTION_CAST_SPELL_ON_OBJECT, ai.ACTION_CAST_SPELL_ON_LOCATION, ai.ACTION_CAST_DURATION_SPELL:
-			ind = 7
-		case ai.ACTION_BLOCK_ATTACK, ai.ACTION_WEAPON_BLOCK:
-			ind = 5
-		case ai.ACTION_BLOCK_FINISH:
-			ind = 6
-		case ai.ACTION_FLEE:
-			ind = 13
-		case ai.ACTION_DYING:
-			ind = 9
-		case ai.ACTION_DEAD:
-			ind = 10
-		case ai.ACTION_MORPH_INTO_CHEST, ai.ACTION_GET_UP:
-			ind = 14
-		case ai.ACTION_MORPH_BACK_TO_SELF:
-			ind = 15
+			return 0
 		}
 	}
-	if mimic && ind == 8 && update.StatusFlags.Has(object.MonStatusMorphed) {
-		return 0
-	}
-	if plant && ind == 8 && update.CurrentEnemy == nil {
-		return 14
-	}
-	if zombie && ind == 9 && update.StatusFlags.Has(object.MonStatusOnFire) {
-		return 15
-	}
-	return ind
+	return int(MonsterAnimationNative533790(&Object{UpdateData: unsafe.Pointer(update)}, MonsterAnimationNativeRuntime533790{
+		Mimic: predicate(mimic), Plant: predicate(plant), Zombie: predicate(zombie),
+	}))
 }
 
 func monsterUpdateNonNPCAnim50A850(update *MonsterUpdateData, animInd int) {
@@ -128,7 +102,7 @@ func (s *Server) MonsterUpdateNPCAnim50A850(unit *Object) bool {
 		monsterUpdateAnim50A850(update, &anim)
 		return true
 	}
-	ind := monsterAnimationIndex533790(update, s.IsMimic(unit), s.IsPlant(unit), s.IsZombie(unit))
+	ind := int(s.MonsterAnimationIndex533790(unit))
 	monsterUpdateNonNPCAnim50A850(update, ind)
 	return true
 }

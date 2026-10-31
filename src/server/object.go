@@ -1578,7 +1578,9 @@ func (s *Server) IsMimic(obj *Object) bool {
 	if obj == nil {
 		return false
 	}
-	return int(obj.TypeInd) == s.Types.MimicID()
+	// The original predicate loads the object's WORD after name lookup.
+	index := s.Types.MimicID()
+	return int(obj.TypeInd) == index
 }
 
 func (s *Server) ObjClearOwner(obj *Object) {

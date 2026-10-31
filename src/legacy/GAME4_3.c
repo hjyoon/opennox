@@ -185,93 +185,7 @@ char nox_xxx_mobActionFight_531EC0(int a1) {
 // Native-width implementation: server/monster_projectile_lead_native_533080.go.
 
 //----- (00533790) --------------------------------------------------------
-int nox_xxx_mobActionToAnimation_533790(int a1) {
-	int v1;          // edi
-	char v2;         // al
-	unsigned int v3; // esi
-	int result;      // eax
-
-	v1 = *(uint32_t*)(a1 + 748);
-	v2 = *(uint8_t*)(v1 + 544);
-	if (v2 == -1) {
-		v3 = 8;
-	} else {
-		switch (*(uint32_t*)(v1 + 24 * (v2 + 23))) {
-		case 7:
-		case 8:
-		case 0xA:
-		case 0xD:
-		case 0x1D:
-		case 0x24:
-		case 0x25:
-			v3 = (*(uint32_t*)(v1 + 1440) & 0x4000 | 0x30000u) >> 14;
-			break;
-		case 9:
-			v3 = 12;
-			break;
-		case 0x10:
-			v3 = 1;
-			break;
-		case 0x11:
-			v3 = 3;
-			break;
-		case 0x12:
-		case 0x13:
-		case 0x14:
-			v3 = 7;
-			break;
-		case 0x15:
-		case 0x17:
-			v3 = 5;
-			break;
-		case 0x16:
-			v3 = 6;
-			break;
-		case 0x18:
-			v3 = 13;
-			break;
-		case 0x1E:
-			v3 = 9;
-			break;
-		case 0x1F:
-			v3 = 10;
-			break;
-		case 0x21:
-		case 0x23:
-			v3 = 14;
-			break;
-		case 0x22:
-			v3 = 15;
-			break;
-		default:
-			v3 = 8;
-			break;
-		}
-	}
-	if (nox_xxx_unitIsMimic_534840(a1) && v3 == 8) {
-		if (*(uint32_t*)(v1 + 1440) & 0x40000) {
-			return 0;
-		}
-		return v3;
-	}
-	if (nox_xxx_unitIsPlant_534A10(a1) && v3 == 8) {
-		if (!*(uint32_t*)(v1 + 1196)) {
-			return 14;
-		}
-		return v3;
-	}
-	if (!nox_xxx_unitIsZombie_534A40(a1)) {
-		return v3;
-	}
-	if (v3 != 9) {
-		return v3;
-	}
-	result = 15;
-	if (!(*(uint32_t*)(v1 + 1440) & 0x80000)) {
-		return v3;
-	}
-	return result;
-}
+// Native-width implementation: server/monster_animation_native_533790.go.
 
 //----- (00533900) --------------------------------------------------------
 #if 0 // Ported to native-width Go in unit_order_533900_export.go.
@@ -487,7 +401,7 @@ unsigned char* nox_xxx_unitNPCActionToAnim_533D00(int a1) {
 		*getMemU8Ptr(0x5D4594, 2487974) = v6;
 		result = getMemAt(0x5D4594, 2487964);
 	} else if (*(uint32_t*)(v1 + 476)) {
-		result = (unsigned char*)(*(uint32_t*)(v1 + 476) + 16 * nox_xxx_mobActionToAnimation_533790(a1));
+		result = (unsigned char*)(*(uint32_t*)(v1 + 476) + 16 * nox_xxx_mobActionToAnimation_533790((nox_object_t*)(uintptr_t)(uint32_t)a1));
 	} else {
 		result = 0;
 	}

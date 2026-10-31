@@ -23231,6 +23231,34 @@
       "size": 28,
       "sha256": "067886c750843f5c0465dc976786eeac8f0332e4ffd9179393d8077adde01faf",
       "purpose": "Complete unchanged actual-name-ID-WORD-load-helper: 6831 state contexts/profile,7131 actual primary calls/profile,244instruction bytes with actual4E3AA0 WORD-ID helper. Only dictionary4E3830 is declared; frame/FPS arithmetic and cache publication execute. Two FPU profiles identical; no full dictionary or overall100% claim."
+    },
+    {
+      "name": "original_animation_selector_plant_533790",
+      "address": "0x00534A10",
+      "size": 47,
+      "sha256": "ae016b1e21f4a9c7f83f6c97b8122e044be2701cbf528e8028fd6763e696caf5",
+      "purpose": "Complete unchanged type predicate entered by original animation selector references:14840 unique contexts/15064 root calls per FPU profile. Actual WORD helper and predicates execute; only dictionary lookup declared. No supplied predicate/index/cache result."
+    },
+    {
+      "name": "original_animation_selector_zombie_533790",
+      "address": "0x00534A40",
+      "size": 79,
+      "sha256": "7e5c1b2253b655f45c75ddb76810674024dcf09bb2fd0094418a17bb900683a3",
+      "purpose": "Complete unchanged type predicate entered by original animation selector references:14840 unique contexts/15064 root calls per FPU profile. Actual WORD helper and predicates execute; only dictionary lookup declared. No supplied predicate/index/cache result."
+    },
+    {
+      "name": "original_animation_selector_native_root_jump_targets_533790",
+      "address": "0x005338AC",
+      "size": 52,
+      "sha256": "fad2b272bded7d15534e7ea3fa78ffc461e310d4279d332155095c3437772d5c",
+      "purpose": "Inline read-only jump/index TABLE in the executable .text section; a code-SECTION range, NOT a function or executed instruction range. All83 table bytes actually read and preserved by original14840-input references. Original animation selector jump/index table: all83 table bytes actually read across14840 unique inputs per profile and preserved unchanged."
+    },
+    {
+      "name": "original_animation_selector_native_root_action_index_533790",
+      "address": "0x005338E0",
+      "size": 31,
+      "sha256": "c2eac6fc5bd14d4c8bb5a132284f6e83bdd6fa4e76dfffc02383337ed8a7dee3",
+      "purpose": "Inline read-only jump/index TABLE in the executable .text section; a code-SECTION range, NOT a function or executed instruction range. All83 table bytes actually read and preserved by original14840-input references. Original animation selector jump/index table: all83 table bytes actually read across14840 unique inputs per profile and preserved unchanged."
     }
   ],
   "data": [

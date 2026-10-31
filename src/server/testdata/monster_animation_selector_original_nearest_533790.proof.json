@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "control_word": "0x23f",
+  "contexts": 14840,
+  "root_calls": 15064,
+  "executed_body_bytes": {
+    "animation-selector": 281,
+    "mimic": 47,
+    "plant": 47,
+    "zombie": 79,
+    "actual-word-name-ID": 28
+  },
+  "executed_total_body_bytes": 482,
+  "root_tables_bytes_readonly_and_preserved": 83,
+  "actual_table_bytes_read": {
+    "native-root-jump-targets": 52,
+    "native-root-action-index": 31
+  },
+  "all_inputs_unique_before_freeze": true,
+  "per_context_predicate_entry_trace_observed": true,
+  "actual_function_entries": {
+    "0x533790": 15064,
+    "0x534840": 15064,
+    "0x534a10": 13312,
+    "0x534a40": 11579,
+    "0x4e3aa0": 1816
+  },
+  "declared_dictionary_only": true,
+  "no_predicate_index_or_cache_result_substitution": true,
+  "full_native_role_heap_stack_global_guards_code_tables_nonvolatile_and_FPU_preserved": true,
+  "fixture_sha256": "dad4e5a2d235d43805db5841a1cc1be40a9b0c315c0737fa44b5643163980ff1",
+  "raw_fixture_sha256": "071b565ad6cced9d3955979ae2ccad5a06a6bd71fa17ba679645be36bb9892f5",
+  "raw_fixture_bytes": 15757883,
+  "original_unchanged": true,
+  "overall_porting_100_percent": false
+}

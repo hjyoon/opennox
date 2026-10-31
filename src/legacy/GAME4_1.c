@@ -4262,7 +4262,7 @@ int nox_xxx_netSendComplexObject_518960(int a1, uint32_t* a2, int a3) {
 	v12 = nox_float2int(v11);
 	v13 = v4[187];
 	*(uint16_t*)&v18[7] = v12;
-	v18[9] = nox_xxx_mobActionToAnimation_533790((int)v4);
+	v18[9] = nox_xxx_mobActionToAnimation_533790((nox_object_t*)v4);
 	v14 = *((uint8_t*)v4 + 12);
 	v18[10] = *(uint8_t*)(v13 + 481);
 	if (v14 & 0x10 && *(uint8_t*)(v13 + 2094) && nox_common_randomInt_415FA0(0, 10) >= 8) {

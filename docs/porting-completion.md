@@ -120,7 +120,7 @@ preserves all prior products, personal data, original/failed Saves and raw
 failure evidence. ROOT/object-sprite-update-native-entry-port contains the
 qualified results. Overall porting remains incomplete.
 
-### Build warning cleanup in progress
+### Build warning cleanup and Windows memory failure
 
 The latest request includes every emitted compiler and linker warning. The
 frozen macOS normal/strict and product logs contain 438 unique warnings;
@@ -194,13 +194,67 @@ the earlier intermittent GC failures.
 
 Reviewed Node24 checkout and artifact actions remove their dependency
 deprecation warnings. MSYS2 now reports deprecated MINGW32/MINGW64
-environments. The Windows gate is being moved to UCRT64 GCC for amd64 and
+environments in the historical logs. The Windows gate now uses UCRT64 GCC for amd64 and
 the official digest-pinned LLVM-MinGW UCRT i686 compiler for 386, retaining
 both architectures and the complete suites. Exact test JSON and compiler
 profiles are now archived so a later GC failure retains its active tests
 and output. Test compiler warnings remain visible and fail qualification.
-These toolchain changes still require native validation. The full warning
-task, overall porting and reopened sale-audio report remain incomplete.
+
+Runtime `1df3707` also corrects 22 corresponding signed/unsigned storage
+views and makes two existing long-double-to-double `fabs` conversions
+explicit. The isolated i686 optimized LLVM IR is identical before and
+after the two conversion edits. Three embedded C fixtures now observe
+their existing frame counter and post-entry variant; five Go fixture files
+compare Windows abort status with an independently compiled abort control
+using the same compiler and CRT. Existing expected values, input cases,
+service-prefix comparisons and assertions remain. The first UCRT run's
+24 Clang warnings and fixture failures are preserved with both products.
+
+At this runtime, the four fresh ARM64 products build and pass help with
+**zero compiler/linker warnings**. The default product is 66,040,210 bytes,
+SHA-256 `966c05331c7425d6ca47c019d0eaea57fb2296dada47d57584d311dd4625466f`.
+The same Blink, first-attack, ray, original Bookcase1974 and independent
+menu Load/Save checks pass. Four captures were inspected: the initial Save
+image shows overwrite confirmation; the reload Save image visibly shows
+the in-world completed-save message. Completion also has separate file
+and log evidence. A fresh 375.314-second actual SDL/Core OpenAL Mystic
+trade passes with two positive-gain events and four drained buffers each;
+both preserved trade captures were inspected. This is bounded playback
+evidence and does not resolve the user's sale-audio report.
+
+Normal and focused strict suites retain **607,862 / 43 skips** and
+**468,514 / 8 skips**, with zero build diagnostics and every earlier
+terminal identity and multiplicity. A complete GUI/highres run with actual
+cgocheck2 and checkptr level 2 additionally passes **607,945 / 19 skips**
+in four packages. The complete server/highres strict run passes
+**601,793 / 4 skips** in three packages. Both complete strict runs include
+the tests active in the Windows failure without test exemptions.
+
+Linux run `41243910509` passes all four variants without compiler, linker
+or Node dependency warnings: GUI variants each **609,853 / 54 skips**
+in 61 packages; server variants each **603,743 / 7 skips** in 58 packages.
+Default-link damage retains **133,384** passes. All earlier terminal
+identities and multiplicities are retained. Windows run `41243791267`
+also has zero compiler/linker/test-build warnings in both architectures.
+Its 386 suites pass **582,114 / 93 skips** in three packages.
+
+The same Windows run's **amd64 native gate fails**: the root package
+reports a marked free 8-byte object while
+`TestMainloopFrameLimitGamePauseWithFrozenFrame` is active, and the server
+package panics in callback registration during
+`TestPlayerInputAttackNative4F9C70ReloadsNativeWeaponAndUse`. The active
+test names do not establish where corruption began. Exact JSON, raw logs,
+native compiler profiles and both products are preserved. Neither earlier
+passing Windows runs nor passing macOS strict runs resolve this failure.
+Run `41246202360` diagnoses unchanged `1df3707` source with checkptr plus
+cgocheck2, gccheckmark, and race instrumentation. Its workflow revision is
+`ec484f5`; it preserves the actual native test executables for inspection.
+These diagnostic profiles do not replace the failed ordinary native gate.
+
+ROOT/all-build-warning-cleanup-20261101 records the zero-warning results,
+documented 4,177-input inventory, preserved failures and current diagnostic
+scope. The Windows memory issue, overall porting and reopened sale-audio
+report remain incomplete; no full 100% completion is claimed.
 
 ### Reopened shop sale audio investigation
 

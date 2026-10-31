@@ -55,7 +55,99 @@ completion requirements.
 
 ## Current findings
 
-### Native melee callbacks, cached weapon references and pointer lifetime
+### Native missile callbacks and exact original prediction
+
+Runtime `fdb58abe` ports public missile start `532540`, update `532610`
+and projectile prediction `533080` to native pointers. Their three C
+pointer-truncation crashes are reproduced before implementation, after
+ordinary native Go action controls and guarded allocation controls pass.
+The old C bodies are retired; static C assertions check both native pointer
+returns and the original low-byte update return.
+
+Start and update retain the original cached update record, action-stack
+address, callback order and repeated live reads. They share real push/pop,
+cancellation, completion and the original deterministic RNG with ordinary
+Go actions. Real type allocation and wall tracing remain the default when
+no test provider is installed. Prediction has no server or class dependency;
+its two output stores keep their order when output aliases object fields.
+Scoped precision-53 / ToZero arithmetic preserves original finite results,
+signaling/quiet NaN loads, payload selection, signed indefinite and spills.
+No global FPU policy or complete status-word equivalence is claimed.
+
+The unchanged original roots load 768 bytes and execute all **747 body
+bytes**, leaving 21 padding bytes unexecuted. Both original FPU profiles run
+**4,150 action inputs** and **2,844 prediction inputs**; 829 and 905 outputs
+respectively differ between profiles. Real original prediction, stack,
+RNG, buff and sound lookup helpers execute. Allocation, tracing, publication,
+audio, player attack and registered action callbacks are declared service
+boundaries. These initialized-resource references do not establish every
+transitive resource branch or the original audio function's return value.
+An additional **56 alias inputs per profile** exercise overlapping output
+and signaling-NaN speed without a server lookup or class gate.
+
+Frozen Go and actual C comparators match all **6,994 primary contexts**
+each, plus 56 alias calls each. Three additional modes exercise ordinary
+type allocation and wall tracing through the public Go binding. Initial
+NaN mismatches, a duplicate overlay declaration and fixture initialization
+failures are retained alongside their successful corrections.
+
+One pre-existing trajectory test expected nearest-rounding decimals.
+Independent execution of its unchanged input through the original update
+and prediction, under both FPU profiles, proves the startup ToZero words.
+That test now checks all eight exact original lead/spawn/velocity/trace
+words. Its complete old file and failure are preserved; every byte outside
+the one function and all **4,070 other old inputs and assertions** remain
+unchanged. No expected gameplay input or old case is removed.
+
+Normal macOS testing passes **402,801/43 skips**; strict highres testing
+passes **256,909/eight skips**, with actual `cgocheck2`, checkptr level 2 and
+OpenAL-null. All prior terminal identities and multiplicities remain, with
+**14,109 new terminal events per gate** and 14 existing missile cases newly
+selected by strict testing. These counts measure test events, not features
+or a completion percentage. The unchanged oracle verifier passes 21 tests
+and verifies 3,318 code ranges and 691 data ranges.
+
+The fresh committed ARM64 product passes Blink's six modes, 16 natural
+first-attack modes and the unchanged three-beam hosted regression. A fresh
+original northern checkpoint completes the original Bookcase slide and
+Urchin defeat, followed by independent actual-menu Load/Save with living
+HP20/MP43/poison0. The endpoint, plate/mover state and native Urchin HP0 are
+sealed before the first reload. Four current images are actually viewed.
+The last images show the overwrite confirmation, not save completion;
+completion is independently established by saved files and fresh menu
+Load/Save. The older melee visual wording that described the analogous
+frame as save-complete is superseded by this direct observation. The old
+failed melee Save and incomplete profiles remain preserved and are never
+used as continuation seeds.
+
+Windows amd64 and 386 run `41164132051` passes native build, product
+verification, help and the three package tests. Linux amd64 run
+`41164187316` passes **399,963/seven skips**, all 58 expected packages
+(36 pass, 22 skip), and another **133,384** default-link damage events.
+Every previous native assertion is retained, including the melee,
+dead-target, scheduler and predicate original-execution checks, alongside
+the 14,109 new missile events and five original-execution metadata checks.
+All three jobs are closed, their products and exact logs are retained, and
+the five requested poison-macro diagnostics remain absent.
+
+All **82 products** (38 ARM64, 44 native), personal installation **4,649
+files / 503,207,370 bytes**, original assets, Saves, failures, peer/audio
+captures and original references are rechecked. No additional asset, Save,
+evidence or product cleanup is performed. Large Linux raw JSON remains
+exactly inside digest-verified ZIPs without duplicate expansion. Evidence
+is in `ROOT/monster-missile-native-entry-port` and
+`ROOT/monster-missile-product-e2e-v1`, especially
+`local-missile-native-qualified-v1.json`,
+`native-ci-v1/all-native-missile-qualified-v1.json`,
+`current-product-campaign-qualified-v1.json` and
+`all-gates-and-preservation-qualified-v1.json`.
+
+Other native callbacks and shared caller chains, final audits of all nine
+class/chapter 1–3 cells, subjective audible fidelity and sustained sessions
+remain open. Chapter 4 and later gameplay remain excluded.
+**Overall 100% is not established.**
+
+### Earlier melee checkpoint: cached weapon references and pointer lifetime
 
 Runtime `1d28fab0` ports public `532130`, `532390` and `532440` to
 native object pointers; `ac9ca818` completes the 32-bit compatibility

@@ -36,14 +36,14 @@ jobs:
       - uses: msys2/setup-msys2@v2
         id: msys2
         with:
-          msystem: MINGW64
+          msystem: UCRT64
           update: true
-          install: mingw-w64-x86_64-gcc
+          install: mingw-w64-ucrt-x86_64-gcc
       - name: Preserve and repair only the zombie-object report
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $mingwBin = Join-Path '${{ steps.msys2.outputs.msys2-location }}' 'mingw64/bin'
+          $mingwBin = Join-Path '${{ steps.msys2.outputs.msys2-location }}' 'ucrt64/bin'
           "CC=$(Join-Path $mingwBin 'gcc.exe')" >> $env:GITHUB_ENV
           "CXX=$(Join-Path $mingwBin 'g++.exe')" >> $env:GITHUB_ENV
           $mingwBin >> $env:GITHUB_PATH
@@ -71,6 +71,7 @@ jobs:
             source_revision = $revision
             diagnostic_only = $true
             collector_unchanged = $true
+            native_compiler_environment = 'MSYS2 UCRT64 GCC'
             report_fix = 'https://github.com/golang/go/issues/80799'
             GOEXPERIMENT = (& go env GOEXPERIMENT).Trim()
             go_version = (& go version).Trim()

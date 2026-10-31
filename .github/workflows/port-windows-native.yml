@@ -30,18 +30,14 @@ jobs:
       matrix:
         include:
           - arch: '386'
-            msystem: MINGW32
-            mingw_dir: mingw32
-            gcc_package: mingw-w64-i686-gcc
+            cflags: '-O2 -g'
           - arch: amd64
-            msystem: MINGW64
-            mingw_dir: mingw64
-            gcc_package: mingw-w64-x86_64-gcc
+            cflags: '-O2 -g -fno-peephole2'
     env:
       GOOS: windows
       CGO_ENABLED: '1'
       CGO_CFLAGS_ALLOW: '-f.*'
-      CGO_CFLAGS: '-O2 -g -fno-peephole2'
+      CGO_CFLAGS: ${{ matrix.cflags }}
       TARGET_ARCH: ${{ matrix.arch }}
     steps:
       - uses: actions/checkout@v7.0.1
@@ -54,18 +50,41 @@ jobs:
           cache: false
 
       - uses: msys2/setup-msys2@v2
+        if: matrix.arch == 'amd64'
         id: msys2
         with:
-          msystem: ${{ matrix.msystem }}
+          msystem: UCRT64
           update: true
-          install: ${{ matrix.gcc_package }}
+          install: mingw-w64-ucrt-x86_64-gcc
+
+      - name: Install maintained UCRT compiler for Windows/386
+        if: matrix.arch == '386'
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          # MSYS2 has no supported replacement for its deprecated MINGW32
+          # environment. LLVM-MinGW's native x64 toolchain also targets i686.
+          $name = 'llvm-mingw-20261020-ucrt-x86_64'
+          $archive = Join-Path $env:RUNNER_TEMP "$name.zip"
+          Invoke-WebRequest "https://github.com/mstorsjo/llvm-mingw/releases/download/20261020/$name.zip" -OutFile $archive
+          $expected = 'fd5462b7f5d93b2ff981fcd3f9c7e427e47f3203c64ea91c27bcc444eebd74cd'
+          $actual = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLower()
+          if ($actual -ne $expected) { throw "LLVM-MinGW archive digest mismatch: $actual" }
+          Expand-Archive -LiteralPath $archive -DestinationPath $env:RUNNER_TEMP
+          "LLVM_MINGW_BIN=$(Join-Path (Join-Path $env:RUNNER_TEMP $name) 'bin')" >> $env:GITHUB_ENV
 
       - name: Verify toolchain
         shell: pwsh
         run: |
-          $mingwBin = Join-Path (Join-Path '${{ steps.msys2.outputs.msys2-location }}' '${{ matrix.mingw_dir }}') 'bin'
-          $env:CC = Join-Path $mingwBin 'gcc.exe'
-          $env:CXX = Join-Path $mingwBin 'g++.exe'
+          if ($env:TARGET_ARCH -eq '386') {
+            $mingwBin = $env:LLVM_MINGW_BIN
+            $env:CC = Join-Path $mingwBin 'i686-w64-mingw32-clang.exe'
+            $env:CXX = Join-Path $mingwBin 'i686-w64-mingw32-clang++.exe'
+          } else {
+            $mingwBin = Join-Path (Join-Path '${{ steps.msys2.outputs.msys2-location }}' 'ucrt64') 'bin'
+            $env:CC = Join-Path $mingwBin 'gcc.exe'
+            $env:CXX = Join-Path $mingwBin 'g++.exe'
+          }
           if (-not (Test-Path $env:CC)) { throw "Missing compiler: $env:CC" }
           # cgo starts GCC frontends in child processes; they need MinGW DLLs on PATH.
           $env:PATH = "$mingwBin;$env:PATH"
@@ -78,6 +97,12 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           'int opennox_cgo_probe;' | & $env:CC -x c -fsyntax-only -
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $report = "build/windows-$env:TARGET_ARCH"
+          New-Item -ItemType Directory -Force $report | Out-Null
+          & $env:CC --version | Set-Content -Encoding utf8 (Join-Path $report 'compiler-version.txt')
+          & git rev-parse HEAD | Set-Content -Encoding utf8 (Join-Path $report 'source-revision.txt')
+          @{ GOARCH=$env:TARGET_ARCH; CC=$env:CC; CGO_CFLAGS=$env:CGO_CFLAGS; CRT='ucrt' } |
+            ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $report 'compiler-profile.json')
 
       - name: Probe Windows/386 cgo toolchain
         if: matrix.arch == '386'
@@ -112,13 +137,45 @@ jobs:
         env:
           GOARCH: ${{ matrix.arch }}
         run: |
-          & ..\scripts\go.ps1 test -tags server -count=1 -timeout=20m . ./server ./legacy
+          $ErrorActionPreference = 'Stop'
+          $report = [System.IO.Path]::GetFullPath("../build/windows-$env:TARGET_ARCH")
+          & ..\scripts\go.ps1 list -tags=server . ./server ./legacy > (Join-Path $report 'expected-packages.txt')
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # Keep exact JSON even for intermittent process/GC failures. These
+          # are the same complete suites, with the ordinary collector.
+          $env:GOTOOLCHAIN = 'local'
+          $env:GOEXPERIMENT = ''
+          $p = [System.Diagnostics.Process]::new()
+          $p.StartInfo.FileName = (Get-Command go).Source
+          $p.StartInfo.UseShellExecute = $false
+          $p.StartInfo.RedirectStandardOutput = $true
+          $p.StartInfo.RedirectStandardError = $true
+          foreach ($arg in @('test','-tags=server','-json','-count=1','-timeout=20m','.','./server','./legacy')) {
+            $p.StartInfo.ArgumentList.Add($arg)
+          }
+          $out = [System.IO.File]::Open((Join-Path $report 'test.jsonl'), [System.IO.FileMode]::CreateNew)
+          $err = [System.IO.File]::Open((Join-Path $report 'test.stderr.log'), [System.IO.FileMode]::CreateNew)
+          try {
+            if (-not $p.Start()) { throw 'Test process failed to start' }
+            $copyOut = $p.StandardOutput.BaseStream.CopyToAsync($out)
+            $copyErr = $p.StandardError.BaseStream.CopyToAsync($err)
+            $p.WaitForExit()
+            [System.Threading.Tasks.Task]::WaitAll(@($copyOut, $copyErr))
+            $code = $p.ExitCode
+          } finally {
+            $out.Dispose()
+            $err.Dispose()
+            $p.Dispose()
+          }
+          $code | Set-Content -Encoding utf8 (Join-Path $report 'test.exit')
+          python ../scripts/summarize-go-test.py $report
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          exit $code
 
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: opennox-server-windows-${{ matrix.arch }}
-          path: build/windows-${{ matrix.arch }}/opennox-server.exe
+          path: build/windows-${{ matrix.arch }}/
           if-no-files-found: warn
           retention-days: 1

@@ -184,10 +184,23 @@ Windows still emits `free-nonheap-object` for an inferred parent address of
 minus 40. The embedded child-list header now uses the required-member
 accessor, matching the valid parent contract. This small accessor change
 does not port the remaining parent-record layout; GCC verification is
-pending. The maintained port workflows also use reviewed Node24 checkout
-and artifact actions to address their dependency deprecation warnings.
-Fresh native checks must verify those changes. The full warning task,
-overall porting and reopened sale-audio report remain incomplete.
+complete at `b2c666f`: Windows run `41240316817` passes both architectures
+without compiler or linker warnings. Four fresh ARM64 products and their
+campaign regressions also pass without build warnings. A second actual SDL
+Core Mystic trade passes with two positive-gain events and four drained
+buffers each. The separate report-only Windows GC diagnostic at `24c3c41`
+passes all three suites (**601,763 / 11 skips**); neither passing run resolves
+the earlier intermittent GC failures.
+
+Reviewed Node24 checkout and artifact actions remove their dependency
+deprecation warnings. MSYS2 now reports deprecated MINGW32/MINGW64
+environments. The Windows gate is being moved to UCRT64 GCC for amd64 and
+the official digest-pinned LLVM-MinGW UCRT i686 compiler for 386, retaining
+both architectures and the complete suites. Exact test JSON and compiler
+profiles are now archived so a later GC failure retains its active tests
+and output. Test compiler warnings remain visible and fail qualification.
+These toolchain changes still require native validation. The full warning
+task, overall porting and reopened sale-audio report remain incomplete.
 
 ### Reopened shop sale audio investigation
 

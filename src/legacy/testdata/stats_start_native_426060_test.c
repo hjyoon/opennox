@@ -144,6 +144,7 @@ static void guards_start(void) {
 }
 static void print_hex(const uint8_t* data,uint32_t length) { for (uint32_t i=0;i<length;++i) printf("%02x",data[i]); }
 static void print_start(const char* kind,uint32_t mode,uint32_t choice,uint32_t count,uint32_t names,int last) {
+	assert(variant == choice);
 	guards_start(); cases++;
 	if (json_mode) {
 		printf("{\"kind\":\"%s\",\"flags\":%u,\"variant\":%u,\"teams\":%u,\"mode\":%u,\"players\":%u,\"mask\":%u,\"names\":%u,\"live\":%d,\"result\":%d,\"port\":%u,\"port_value\":%u,\"sequence\":%u,\"clock\":%u,\"start\":%u,\"count\":%u,\"pairs\":%u,\"column_count\":%u,\"online_mask\":%u,\"quest_mask\":%u,\"events\":\"%s\",\"indices\":[%d,%d,%d],\"ip\":\"",

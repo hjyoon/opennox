@@ -2806,7 +2806,7 @@ int nox_mapgenRoomWithinThemeNative_5217A0(uint8_t* a1, uint8_t* a2) {
 		v6 = *(float*)(a2 + 20);
 		v7 = 0;
 		if (v5 > 0) {
-			while (*(float*)(a1 + 64) >= fabs(v6) && *(float*)(a1 + 64) >= fabs(v4)) {
+			while (*(float*)(a1 + 64) >= fabs((double)v6) && *(float*)(a1 + 64) >= fabs((double)v4)) {
 				v6 = v6 + 32.526913;
 				if (++v7 >= v5) {
 					goto LABEL_7;
@@ -7885,7 +7885,7 @@ int nox_xxx_XFerMonster_528DB0(nox_object_t* a1p) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v44, 4u);
 				for (i = 0; i < v44; ++i) {
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v48, 1u);
-					nox_xxx_fileReadWrite_426AC0_file3_fread(v53, (unsigned char)v48);
+					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v53, (unsigned char)v48);
 					v53[(unsigned char)v48] = 0;
 					v23 = nox_xxx_spellNameToN_4243F0(v53);
 					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 4 * v23 + 1488), 4u);
@@ -7912,7 +7912,7 @@ int nox_xxx_XFerMonster_528DB0(nox_object_t* a1p) {
 						v21 = nox_xxx_spellNameByN_424870(v20);
 						LOBYTE(v46) = strlen(v21);
 						nox_xxx_fileReadWrite_426AC0_file3_fread(&v46, 1u);
-						nox_xxx_fileReadWrite_426AC0_file3_fread(v21, (unsigned char)v46);
+						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v21, (unsigned char)v46);
 						nox_xxx_fileReadWrite_426AC0_file3_fread(v47, 4u);
 					}
 					++v20;
@@ -8002,14 +8002,14 @@ int nox_xxx_XFerMonster_528DB0(nox_object_t* a1p) {
 				do {
 					if (nox_crypt_IsReadOnly() == 1) {
 						nox_xxx_fileReadWrite_426AC0_file3_fread(&v44, 1u);
-						nox_xxx_fileReadWrite_426AC0_file3_fread(v53, (unsigned char)v44);
+						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v53, (unsigned char)v44);
 						v53[(unsigned char)v44] = 0;
 						*v24 = nox_xxx_spellNameToN_4243F0(v53);
 					} else {
 						v25 = nox_xxx_spellNameByN_424870(*v24);
 						LOBYTE(v44) = strlen(v25);
 						nox_xxx_fileReadWrite_426AC0_file3_fread(&v44, 1u);
-						nox_xxx_fileReadWrite_426AC0_file3_fread(v25, (unsigned char)v44);
+						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v25, (unsigned char)v44);
 					}
 					++v24;
 					--v46;
@@ -8019,14 +8019,14 @@ int nox_xxx_XFerMonster_528DB0(nox_object_t* a1p) {
 		if ((short)v45 >= 34) {
 			if (nox_crypt_IsReadOnly()) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v44, 1u);
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v53, (unsigned char)v44);
+				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v53, (unsigned char)v44);
 				v53[(unsigned char)v44] = 0;
 				*(uint32_t*)(v1 + 1360) = nox_xxx_actionNByNameMB_5345F0(v53);
 			} else {
 				v26 = sub_5345B0(*(uint32_t*)(v1 + 1360));
 				LOBYTE(v44) = strlen(v26);
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v44, 1u);
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v26, (unsigned char)v44);
+				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v26, (unsigned char)v44);
 			}
 		}
 	}
@@ -8658,7 +8658,7 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 		}
 		while (1) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v11, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v20, (unsigned char)v11);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v20, (unsigned char)v11);
 			v20[(unsigned char)v11] = 0;
 			v6 = nox_xxx_enchantByName_424880(v20);
 			if (v6 == -1) {
@@ -8696,7 +8696,7 @@ int nox_xxx_XFer_ReadMonsterBuffs_52AAB0(uint32_t* a1) {
 			v2 = nox_xxx_getEnchantName_4248F0(v1);
 			LOBYTE(v11) = strlen(v2);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v11, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, (unsigned char)v11);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v2, (unsigned char)v11);
 			LOBYTE(v15) = nox_xxx_buffGetPower_4FF570((nox_object_t*)a1, v1);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v15, 1u);
 			v14 = nox_xxx_unitGetBuffTimer_4FF550((nox_object_t*)a1, v1);
@@ -8901,7 +8901,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 		v17 = 0;
 		LOBYTE(v48) = 0;
 		do {
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v53, 3u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v53, 3u);
 			nox_xxx_setNPCColor_4E4A90(a1p, v48, (const nox_color3_t*)v53);
 			LOBYTE(v48) = ++v17;
 		} while (v17 < 6u);
@@ -8919,7 +8919,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v46, 1u);
 		for (i = 0; i < v46; ++i) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v50, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v56, (unsigned char)v50);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v56, (unsigned char)v50);
 			v56[(unsigned char)v50] = 0;
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v43, 1u);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v43, 1u);
@@ -8963,7 +8963,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v43, 4u);
 				for (j = 0; j < v43; LOBYTE(v48) = j) {
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v49, 1u);
-					nox_xxx_fileReadWrite_426AC0_file3_fread(v56, (unsigned char)v49);
+					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v56, (unsigned char)v49);
 					v56[(unsigned char)v49] = 0;
 					v31 = nox_xxx_spellNameToN_4243F0(v56);
 					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 4 * v31 + 1488), 4u);
@@ -8991,7 +8991,7 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 						v28 = nox_xxx_spellNameByN_424870(v48);
 						LOBYTE(v52) = strlen(v28);
 						nox_xxx_fileReadWrite_426AC0_file3_fread(&v52, 1u);
-						nox_xxx_fileReadWrite_426AC0_file3_fread(v28, (unsigned char)v52);
+						nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v28, (unsigned char)v52);
 						nox_xxx_fileReadWrite_426AC0_file3_fread(v25, 4u);
 					}
 					v25 += 4;
@@ -9082,14 +9082,14 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 			do {
 				if (nox_crypt_IsReadOnly() == 1) {
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v43, 1u);
-					nox_xxx_fileReadWrite_426AC0_file3_fread(v56, (unsigned char)v43);
+					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v56, (unsigned char)v43);
 					v56[(unsigned char)v43] = 0;
 					*v32 = nox_xxx_spellNameToN_4243F0(v56);
 				} else {
 					v33 = nox_xxx_spellNameByN_424870(*v32);
 					LOBYTE(v43) = strlen(v33);
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v43, 1u);
-					nox_xxx_fileReadWrite_426AC0_file3_fread(v33, (unsigned char)v43);
+					nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v33, (unsigned char)v43);
 				}
 				++v32;
 				--v47;
@@ -9098,14 +9098,14 @@ int nox_xxx_XFerNPC_52ADE0(nox_object_t* a1p) {
 		if ((short)v44 >= 35) {
 			if (nox_crypt_IsReadOnly()) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v43, 1u);
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v57, (unsigned char)v43);
+				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v57, (unsigned char)v43);
 				v57[(unsigned char)v43] = 0;
 				*(uint32_t*)(v1 + 1360) = nox_xxx_actionNByNameMB_5345F0(v57);
 			} else {
 				v34 = sub_5345B0(*(uint32_t*)(v1 + 1360));
 				LOBYTE(v43) = strlen(v34);
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v43, 1u);
-				nox_xxx_fileReadWrite_426AC0_file3_fread(v34, (unsigned char)v43);
+				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)v34, (unsigned char)v43);
 			}
 		}
 	}

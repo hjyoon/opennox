@@ -235,6 +235,7 @@ static void packet_case(int mode, uint16_t count, int16_t kill_count, uint32_t s
 	sequence = seq;
 	events[0] = 0; event_size = 0;
 	uint16_t* result = nox_stats_packet_build(&columns, header, mode, kill_count, &length_box->count);
+	assert(variant == choice);
 	guards();
 	assert(ntohs(result[0]) == (uint16_t)length_box->count && result[1] == 0);
 	if (mode == 0) assert(sequence == 0);
@@ -260,6 +261,7 @@ static void flush_case(uint32_t count, uint32_t kills, uint32_t game_flags, uint
 	player_count->count = count; pair_count->count = kills;
 	flags = game_flags;
 	char* result = nox_xxx_net_4263C0();
+	assert(variant == choice);
 	assert((uintptr_t)result == (game_flags & 0x2000 ? !!(game_flags & 0x1000) : 0));
 	guards();
 	if ((flags & 0x2000) && !(flags & 0x1000)) {

@@ -137,7 +137,7 @@ func TestStatsEnd4264D0NativeBody(t *testing.T) {
 			if fault == "transport" {
 				want = syscall.SIGABRT
 			}
-			if !nativeFixtureFaultIs(exit, want) {
+			if !nativeFixtureFaultIs(t, exit, want) {
 				t.Fatalf("want %v: %v %q", want, exit, output)
 			}
 			prefix := "GQTQK" + strings.Repeat("A", 12) + "LUVIII"

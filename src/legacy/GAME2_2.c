@@ -5307,7 +5307,7 @@ int nox_xxx_wndEditDrawNoImage_488160(nox_window* a1p, nox_window_data* a2p) {
 	*((uint32_t*)v23 + 261) = 0;
 	v30 = v3;
 	v26 = v31;
-	nox_client_wndGetPosition_46AA60((uint32_t*)a1, &xLeft, &yTop);
+	nox_client_wndGetPosition_46AA60((uint32_t*)a1, (uint32_t*)&xLeft, (uint32_t*)&yTop);
 	v4 = xLeft;
 	v21 = *(uint32_t*)(a1 + 8);
 	v5 = nox_xxx_guiFontHeightMB_43F320(*(uint32_t*)(a2 + 200));
@@ -5381,7 +5381,7 @@ int nox_xxx_wndEditDrawNoImage_488160(nox_window* a1p, nox_window_data* a2p) {
 			nox_window_setPos_46A9B0(v14, v4 + v22, v29 + v7);
 		}
 		nox_xxx_drawSetTextColor_434390(*(uint32_t*)(a2 + 68));
-		nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), v26, v4 + 5, v7, 0, 0);
+		nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), (wchar2_t*)v26, v4 + 5, v7, 0, 0);
 		v15 = nox_color_rgb_4344A0(192, 0, 192);
 		nox_xxx_drawSetTextColor_434390(v15);
 		nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), v25, v4 + v22 + 5, v7, 0, 0);
@@ -5581,7 +5581,7 @@ int nox_xxx_wndEditDrawWithImage_488870(nox_window* a1p, nox_window_data* a2p) {
 	v22 = *(wchar2_t**)(a1 + 32);
 	*((uint32_t*)v22 + 261) = 0;
 	v18 = v24;
-	nox_client_wndGetPosition_46AA60((uint32_t*)a1, &xLeft, &v21);
+	nox_client_wndGetPosition_46AA60((uint32_t*)a1, (uint32_t*)&xLeft, (uint32_t*)&v21);
 	v3 = *(uint32_t*)(a1 + 8);
 	v4 = nox_xxx_guiFontHeightMB_43F320(*(uint32_t*)(a2 + 200));
 	v5 = *(uint32_t*)(a1 + 12);
@@ -5634,7 +5634,7 @@ int nox_xxx_wndEditDrawWithImage_488870(nox_window* a1p, nox_window_data* a2p) {
 			} while (v19 + v17 + 10 > v3);
 		}
 		nox_xxx_drawSetTextColor_434390(*(uint32_t*)(a2 + 68));
-		nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), v18, xLeft + 5, v6, v3, 0);
+		nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), (wchar2_t*)v18, xLeft + 5, v6, v3, 0);
 		v12 = nox_color_rgb_4344A0(192, 0, 192);
 		nox_xxx_drawSetTextColor_434390(v12);
 		nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), v20, v17 + xLeft + 5, v6, v3, 0);

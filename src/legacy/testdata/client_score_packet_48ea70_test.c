@@ -140,6 +140,7 @@ static int run_lesson(uint32_t score, uint32_t deaths, uint16_t limit) {
 	int announce=connected&&found&&elimination&&(int32_t)deaths >= (int32_t)limit;
 	if (announce && mutation) expected.name_final[0]=0xc0c8;
 	CHECK(production_score_packet(78,packet)==11);
+	CHECK(frame_calls==(uint32_t)(connected && found && !host));
 	CHECK(memcmp(player,&expected,sizeof(expected))==0);
 	CHECK(memcmp(bytes,packet_before,sizeof(bytes))==0 && memcmp(settings+54,&limit,2)==0);
 	CHECK(bad_name==0 && prints==announce && sounds==announce);
@@ -168,6 +169,7 @@ static int run_treasure(uint16_t collected, uint16_t total, uint32_t stamp, int 
 	int announce=connected&&found&&expected.field_2152==expected.field_2156-UINT32_C(1);
 	if (announce&&mutation) expected.name_final[0]=0xc0c8;
 	CHECK(production_score_packet(85,packet)==7);
+	CHECK(frame_calls==(uint32_t)((connected && found && !host) ? 1+update : 0));
 	CHECK(memcmp(player,&expected,sizeof(expected))==0 && memcmp(bytes,before,sizeof(bytes))==0);
 	CHECK(bad_name==0 && prints==announce && sounds==0);
 	int want[16]={1,3}, n=2;

@@ -44,7 +44,7 @@ jobs:
       CGO_CFLAGS: '-O2 -g -fno-peephole2'
       TARGET_ARCH: ${{ matrix.arch }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
 
@@ -115,7 +115,7 @@ jobs:
           & ..\scripts\go.ps1 test -tags server -count=1 -timeout=20m . ./server ./legacy
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: opennox-server-windows-${{ matrix.arch }}

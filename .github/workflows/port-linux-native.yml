@@ -52,7 +52,7 @@ jobs:
       NATIVE_PRODUCT: ${{ matrix.product }}
       NATIVE_REPORT_DIR: ${{ github.workspace }}/build/linux-amd64-${{ matrix.product }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
       - uses: actions/setup-go@v7
@@ -178,7 +178,7 @@ jobs:
           PY
           exit "$status"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: linux-amd64-${{ matrix.product }}-${{ github.sha }}

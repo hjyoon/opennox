@@ -45,7 +45,7 @@ jobs:
       AUDIO_PROFILE: ${{ matrix.profile }}
       AUDIO_REPORT: ${{ github.workspace }}/build/linux-native-audio-${{ matrix.profile }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
       - uses: actions/setup-go@v7
@@ -112,7 +112,7 @@ jobs:
           assert len(packages) == 2 and set(packages.values()) == {'pass'}
           PY
           exit "$status"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: linux-native-client-audio-${{ matrix.profile }}-${{ github.sha }}

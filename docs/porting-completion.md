@@ -160,9 +160,34 @@ One fixture formatter uses its actual 1,024-byte array capacity and rejects
 truncation. All 78 affected checks pass. ROOT/all-build-warning-cleanup-20261101
 records these adaptations and all 4,177 current input hashes.
 
-Fresh products/E2E and native Linux/Windows zero-warning checks remain open.
-The complete warning task, overall porting and the reopened sale-audio
-report are not yet complete.
+At `24c3c41`, all four clean ARM64 products build without compiler or linker
+warnings and pass help. The default product is 66,040,210 bytes, SHA-256
+`d75ddeb2510178d92fbaa3e0984eba763a1743f5edb6147a623314ae4cc0155e`.
+Six Blink, sixteen natural first-attack and three duration-ray profiles pass.
+Original Bookcase1974 and an independent menu Load/Save pass at HP20/MP43,
+poison0; four captures were inspected. The actual SDL seat also passes the
+ordinary-clock Core OpenAL Mystic purchase/sale diagnostic at a 2:1 physical
+to logical window scale. Both events have positive gain and four processed
+buffers. This bounded result does not resolve the user's sale-audio report.
+
+Linux run `41237182409` passes all four products without compiler or linker
+warnings: GUI and highres each **609,853 / 54 skips**, server and server
+highres each **603,743 / 7 skips**. Both server configurations retain every
+earlier terminal identity and multiplicity; default-link damage retains
+**133,384** passes. Windows run `41236965964` builds both native products and
+passes help; 386 passes its suites, while amd64 repeats the previously
+unresolved GC free-object failure. Its root package reports an 8-byte object
+class. The running test and ownership cause are not established. Exact logs,
+all six products and digest-verified artifact ZIPs are retained.
+
+Windows still emits `free-nonheap-object` for an inferred parent address of
+minus 40. The embedded child-list header now uses the required-member
+accessor, matching the valid parent contract. This small accessor change
+does not port the remaining parent-record layout; GCC verification is
+pending. The maintained port workflows also use reviewed Node24 checkout
+and artifact actions to address their dependency deprecation warnings.
+Fresh native checks must verify those changes. The full warning task,
+overall porting and reopened sale-audio report remain incomplete.
 
 ### Reopened shop sale audio investigation
 

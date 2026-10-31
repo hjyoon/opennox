@@ -4987,7 +4987,10 @@ LABEL_6:
 }
 
 //----- (00425BC0) --------------------------------------------------------
-int* sub_425BC0(void* a1) { return nox_common_list_getFirstSafe_425890((nox_list_item_t*)((char*)a1 + 40)); }
+int* sub_425BC0(void* a1) {
+	// A record's embedded children header is a required member, not an optional list pointer.
+	return (int*)nox_common_list_getNext_425940((nox_list_item_t*)((char*)a1 + 40));
+}
 
 //----- (00425BE0) --------------------------------------------------------
 int* sub_425BE0(int* a1) { return nox_common_list_getNextSafe_4258A0(a1); }

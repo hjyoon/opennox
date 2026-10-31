@@ -25,7 +25,7 @@ jobs:
       SOURCE_REVISION: ${{ inputs.source_revision }}
       REPORT_DIR: ${{ github.workspace }}/build/windows-gc-diagnostic
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           ref: ${{ inputs.source_revision }}
           fetch-depth: 0
@@ -112,7 +112,7 @@ jobs:
           $code | Set-Content (Join-Path $env:REPORT_DIR 'test.exit')
           Get-FileHash (Join-Path $env:REPORT_DIR 'test.jsonl') -Algorithm SHA256
           exit $code
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: windows-gc-diagnostic-${{ inputs.source_revision }}-${{ github.run_attempt }}

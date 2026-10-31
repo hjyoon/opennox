@@ -22,7 +22,7 @@ jobs:
       matrix:
         bits: [32, 64]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
       - name: Install native compiler
         run: |
           sudo apt-get update
@@ -47,7 +47,7 @@ jobs:
           test "$(wc -l < "$report/original-results.jsonl")" = 239
           cat "$report/executable-format.txt"
           head -1 "$report/original-results.jsonl"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
           name: original-x87-native-${{ matrix.bits }}

@@ -1,0 +1,215 @@
+{
+  "status": "passed",
+  "contexts": 4150,
+  "full_input_contexts": 4150,
+  "control_word": "0xe3f",
+  "smoke_limit": 0,
+  "input_sha256": "729a08d71065e2a7daa3444fb89ac848868ca4abc282fb64cd214493f88d71a5",
+  "original_GAME_EXE_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_ranges": [
+    {
+      "address": 5449024,
+      "size": 208,
+      "sha256": "2e714d3b8d15d5a62105c2eb5880676cc0bdbd21b8fbade4b329d4288c50c50c"
+    },
+    {
+      "address": 5449232,
+      "size": 496,
+      "sha256": "cbf7aa5e1136e0808c8883ec417635d15cbd13669a0ec5a02d56c3eb96b6193c"
+    },
+    {
+      "address": 5451904,
+      "size": 64,
+      "sha256": "1aa0090f3d9bded2c626084381c21b52dbc357d735a3ea6353e4fa423ef6ca68"
+    },
+    {
+      "address": 5458704,
+      "size": 73,
+      "sha256": "b6121ba199077a638afecd8bbea32c3b962e9ada0123cc88f74c92dde1de94a3"
+    },
+    {
+      "address": 5458784,
+      "size": 47,
+      "sha256": "709a0fab91466b0b4a869ccb99daa2fabe401e610c27c068a208d32ee14f4d72"
+    },
+    {
+      "address": 5458832,
+      "size": 47,
+      "sha256": "c9d15d0ca8669ddfe8c10f525bba732cb74044e1325e1adba4f0c5a7032bc4ae"
+    },
+    {
+      "address": 5162368,
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    },
+    {
+      "address": 4297008,
+      "size": 22,
+      "sha256": "41313a5dafb3324237e5551ace40bfb0699f3249265415874542b797fbad8671"
+    },
+    {
+      "address": 4297040,
+      "size": 43,
+      "sha256": "5f02aebd3ad51a28e9998e8d2164c7668913951c21caa0f34d501ea3bd8ae4d2"
+    },
+    {
+      "address": 4236736,
+      "size": 18,
+      "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b"
+    },
+    {
+      "address": 5284048,
+      "size": 53,
+      "sha256": "31ea7a5980ad6da57a37953dc7abe030a5c9a2e30d5ec05f7f5ef6b7a4cea9f1"
+    },
+    {
+      "address": 5239632,
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414"
+    },
+    {
+      "address": 5456336,
+      "size": 26,
+      "sha256": "929115030ba9af8d1d4856a835fab3bd56dc5489e70e18844fc98fbb635977b3"
+    },
+    {
+      "address": 5240240,
+      "size": 105,
+      "sha256": "73a658cac770ed1b5dc3c2fc1980038a6d3ad088a493a71cbd6bcc921f930c62"
+    },
+    {
+      "address": 4344096,
+      "size": 12,
+      "sha256": "6037d5036213385cefd723f54df6960ce8dc232b9a7c2cc6ec557cba34d3685c"
+    },
+    {
+      "address": 4343808,
+      "size": 22,
+      "sha256": "d3b720a50d8b2fe83fe58806a928dec58c4d6eed34596ab3365390dd6d508394"
+    },
+    {
+      "address": 5284448,
+      "size": 251,
+      "sha256": "57094128eed5b5381ff87acf1036254f807a481fd2f3448cf95d57a7fea1ed05"
+    },
+    {
+      "address": 5284192,
+      "size": 254,
+      "sha256": "ee66ba2252e2ca8c081333746483a1971e93993b0a6e7871b50c6c21139201f3"
+    },
+    {
+      "address": 5284112,
+      "size": 76,
+      "sha256": "e934deff9da1ef3f864c9b0d1311caf34bbca6fa55fce6b967d8b2717741ebc2"
+    },
+    {
+      "address": 5283856,
+      "size": 13,
+      "sha256": "5e7895861e04953e8f21298113487664397c08d71433c99115c45d625a4b58cd"
+    },
+    {
+      "address": 5126608,
+      "size": 23,
+      "sha256": "b6f634a3af4f165da9d371d08c1bce748b6827e04a438c664f24f44c1c60b336"
+    },
+    {
+      "address": 4342528,
+      "size": 31,
+      "sha256": "11676dd3929f946c37a619bdcca10071055d69e4a91851643782069ea685fa7e"
+    },
+    {
+      "address": 4284320,
+      "size": 67,
+      "sha256": "980160ad95ee2695d9a2b0840c318f0ee870d028506a639f92b18799bb275fa7"
+    }
+  ],
+  "per_entry": {
+    "0x532540": 1364,
+    "0x532610": 2786
+  },
+  "per_family": {
+    "actual-cooldown-stack-admission": 896,
+    "range-F32-constant-original-multiply-and-spill": 132,
+    "ready-buff-publication-cached-data-live-sound": 280,
+    "cancel-mutation-during-real-Push": 20,
+    "actual-RNG-table-wrap-and-signed-bounds": 20,
+    "unsigned-frame-and-deadline": 16,
+    "animation-allocation-completion-and-live-audio": 1440,
+    "world-callback-allocate": 26,
+    "world-callback-trace": 26,
+    "world-callback-create": 26,
+    "world-callback-delete": 26,
+    "world-callback-audio": 26,
+    "NPC-player-attack-return-and-real-Pop": 75,
+    "non-firing-original-Pop-end-admission": 280,
+    "end-callback-cached-completion": 13,
+    "actual-prediction-trajectory-direction-spills": 832,
+    "non-firing-class-and-no-head": 16
+  },
+  "original_calls": {
+    "0x532540": 1364,
+    "0x50a260": 2108,
+    "0x50a110": 2353,
+    "0x4e39d0": 2353,
+    "0x50a010": 3564,
+    "0x5341d0": 310,
+    "0x4ff5b0": 620,
+    "0x415fa0": 310,
+    "0x424300": 1344,
+    "0x424920": 336,
+    "0x424800": 336,
+    "0x532610": 2786,
+    "0x533080": 592,
+    "0x50a160": 1458
+  },
+  "declared_service_calls": {
+    "diagnostic": 2353,
+    "cancel": 80,
+    "publish-buffs": 336,
+    "audio": 1402,
+    "allocate": 1034,
+    "trace": 1010,
+    "create": 984,
+    "delete": 26,
+    "player-attack": 75,
+    "end": 53
+  },
+  "original_root_body_bytes": {
+    "0x532540": 197,
+    "0x532610": 486,
+    "0x533080": 64
+  },
+  "executed_bytes_per_range": {
+    "0x532540": 197,
+    "0x532610": 486,
+    "0x533080": 64,
+    "0x534b10": 0,
+    "0x534b60": 0,
+    "0x534b90": 0,
+    "0x4ec580": 0,
+    "0x419130": 0,
+    "0x419150": 0,
+    "0x40a5c0": 0,
+    "0x50a0d0": 0,
+    "0x4ff350": 0,
+    "0x5341d0": 26,
+    "0x4ff5b0": 105,
+    "0x424920": 12,
+    "0x424800": 22,
+    "0x50a260": 251,
+    "0x50a160": 254,
+    "0x50a110": 76,
+    "0x50a010": 13,
+    "0x4e39d0": 23,
+    "0x424300": 30,
+    "0x415fa0": 67
+  },
+  "all_original_code_RNG_table_type_cache_and_callback_registry_bytes_preserved": true,
+  "no_substituted_trajectory_prediction_range_FP_RNG_push_or_pop_result": true,
+  "full_heap_readonly_guards_stack_bounds_global_neighbors_NV_FPCW_and_FPU_TOP_checked": true,
+  "initialized_type_and_sound_resources_are_input": true,
+  "world_service_scope": "World allocation, collision, placement/deletion, publication/audio, attacks and registered action callbacks are declared boundaries. Root math, prediction, stack and RNG execute original instructions. This does not certify full transitive world implementations or the audio service return value.",
+  "fixture_sha256": "93dc8dc054be8d2180a4f169ae33ba1f37229c6fc1cffc85903ae5444b06119b",
+  "raw_fixture_sha256": "c16510f1137cbf3a03b7e3807787c646bcd21f790d76e8084e17fc60f48cb269",
+  "overall_porting_100_percent": false
+}

@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "control": "0xe3f",
+  "contexts": 56,
+  "original_GAME_EXE_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_code_sha256": "1aa0090f3d9bded2c626084381c21b52dbc357d735a3ea6353e4fa423ef6ca68",
+  "original_body_bytes_executed": 64,
+  "padding_bytes": 0,
+  "input_sha256": "fb680353ed50c9cf022ad964b4b96920b7f3691f43cee02b39233f11cd1a8739",
+  "fixture_sha256": "ca2b239be3a4c861d78b3bb3d4b7a1c19aad4058b084840803a18d2233d746de",
+  "fixture_uncompressed_sha256": "d4330d8a72e20b8ac08f50ebabf407416e82714460297717f38a8376791551f4",
+  "all_calls_execute_unchanged_original_code": true,
+  "no_services_or_FP_result_substitution": true,
+  "native_pointer_return_role": "target",
+  "full_heap_except_output_and_stack_and_nonvolatile_guards": true,
+  "FPCW_preserved": true,
+  "original_FPSW_distribution": {
+    "0": 42,
+    "4": 14
+  },
+  "FPSW_scope": "Recorded as original diagnostic evidence; no native status-word equivalence claimed.",
+  "overall_porting_100_percent": false
+}

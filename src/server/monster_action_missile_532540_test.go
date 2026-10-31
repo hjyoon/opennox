@@ -133,18 +133,18 @@ func TestMonsterProjectileLeadAndTrajectory532610(t *testing.T) {
 	unit.Shape.Circle.R = 6
 	target := &Object{PosVec: types.Ptf(148, 104), VelVec: types.Ptf(2, -1)}
 	projectile := &Object{SpeedCur: 12}
+	// Unchanged original532610/533080 execution at the gameplay FPCW0xe3f.
+	// The former approximate values used nearest rounding instead of ToZero.
+	// See testdata/monster_missile_existing_test_original_532610.json.
 	lead := monsterProjectileLead533080(unit, target, projectile.SpeedCur)
-	if math.Abs(float64(lead.X)-156.94427) > 0.00001 || math.Abs(float64(lead.Y)-99.52786) > 0.00001 {
-		t.Fatalf("lead = %v", lead)
+	wantLead := types.Ptf(math.Float32frombits(0x431cf1bb), math.Float32frombits(0x42c70e44))
+	if lead != wantLead {
+		t.Fatalf("lead = %v, want original %v", lead, wantLead)
 	}
 	spawn, velocity, traceTo := monsterMissileTrajectory532610(unit, projectile, lead)
-	direction := unit.Direction1.Vec()
-	wantSpawn := types.Ptf(
-		float32(float64(10)*float64(direction.X)+100),
-		float32(float64(10)*float64(direction.Y)+80),
-	)
-	if spawn != wantSpawn || traceTo != spawn.Add(velocity) {
-		t.Fatalf("spawn/velocity/trace = %v/%v/%v, want spawn %v and trace sum", spawn, velocity, traceTo, wantSpawn)
+	wantSpawn, wantVelocity, wantTraceTo := types.Ptf(math.Float32frombits(0x42d62462), math.Float32frombits(0x42ae2462)), types.Ptf(math.Float32frombits(0x41355100), math.Float32frombits(0x4078b705)), types.Ptf(math.Float32frombits(0x42ecce82), math.Float32frombits(0x42b5ea1a))
+	if spawn != wantSpawn || velocity != wantVelocity || traceTo != wantTraceTo {
+		t.Fatalf("spawn/velocity/trace = %v/%v/%v, want original %v/%v/%v", spawn, velocity, traceTo, wantSpawn, wantVelocity, wantTraceTo)
 	}
 	if velocity.X <= 0 || velocity.Y <= 0 {
 		t.Fatalf("velocity = %v, want positive X/Y", velocity)

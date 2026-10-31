@@ -18690,6 +18690,13 @@
       "purpose": "the ACTION_MISSILE_ATTACK update prefix through the complete MonsterNPC admission branch immediately before its player-attack call"
     },
     {
+      "name": "original_native_missile_532540_complete_532610",
+      "address": "0x00532610",
+      "size": 496,
+      "sha256": "cbf7aa5e1136e0808c8883ec417635d15cbd13669a0ec5a02d56c3eb96b6193c",
+      "purpose": "Unchanged complete original byte interval entered in4150 missile inputs per FPU profile; 486 interval bytes execute. Original stack, RNG, trajectory and prediction run without substituted results. Declared allocation/trace/create/delete/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
       "name": "nox_xxx_playerAttack_538960_call_532627",
       "address": "0x00532627",
       "size": 5,
@@ -18737,6 +18744,13 @@
       "size": 5,
       "sha256": "ae0e36be02b8d10df422203a4a05af3f6fbe29f1ab20e45d8252cc6fcfdb434d",
       "purpose": "the exact decoded direct rel32 call from monster action handling to the script callback dispatcher at 00502490"
+    },
+    {
+      "name": "original_native_missile_532540_complete_533080",
+      "address": "0x00533080",
+      "size": 64,
+      "sha256": "1aa0090f3d9bded2c626084381c21b52dbc357d735a3ea6353e4fa423ef6ca68",
+      "purpose": "Unchanged complete original byte interval entered in4150 missile inputs per FPU profile; 64 interval bytes execute. Original stack, RNG, trajectory and prediction run without substituted results. Declared allocation/trace/create/delete/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
     },
     {
       "name": "original_native_melee_532130_complete_5330C0",

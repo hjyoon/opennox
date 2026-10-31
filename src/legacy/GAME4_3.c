@@ -170,120 +170,10 @@ char nox_xxx_mobActionFight_531EC0(int a1) {
 // Native-width implementation: server/monster_melee_native_532130.go.
 
 //----- (00532540) --------------------------------------------------------
-uint32_t* sub_532540(int a1) {
-	uint32_t* v1;     // edi
-	int* v2;          // eax
-	uint32_t* result; // eax
-
-	v1 = *(uint32_t**)(a1 + 748);
-	if (gameFrame() >= v1[128]) {
-		sub_5341D0(a1);
-		*(uint32_t*)(a1 + 136) = gameFrame();
-		v1[128] = gameFrame() +
-				  nox_common_randomInt_415FA0(*(uint32_t*)(v1[121] + 220), *(uint32_t*)(v1[121] + 224));
-		result = (uint32_t*)nox_xxx_monsterGetSoundSet_424300(a1);
-		if (result) {
-			nox_xxx_aud_501960(result[10], a1, 0, 0);
-		}
-	} else {
-		v2 = nox_xxx_monsterPushAction_50A260(a1, 50);
-		if (v2) {
-			*((float*)v2 + 1) = *(float*)(v1[121] + 212) * 1.2;
-			v2[3] = v1[299];
-		}
-		result = nox_xxx_monsterPushAction_50A260(a1, 1);
-		if (result) {
-			result[1] = v1[128];
-		}
-	}
-	return result;
-}
+// Native-width implementation: server/monster_missile_native_532540.go.
 
 //----- (00532610) --------------------------------------------------------
-char nox_xxx_mobActionMissileAtt_532610(int a1) {
-	int v1;     // esi
-	int v2;     // ebx
-	int v3;     // eax
-	int* v4;    // ebp
-	int v5;     // eax
-	float* v6;  // edi
-	int v7;     // eax
-	float v8;   // eax
-	double v9;  // st7
-	double v10; // st6
-	int v11;    // eax
-	float v12;  // edx
-	short v13;  // ax
-	int v14;    // eax
-	float v16;  // [esp+8h] [ebp-2Ch]
-	float v17;  // [esp+Ch] [ebp-28h]
-	float v18;  // [esp+10h] [ebp-24h]
-	float v19;  // [esp+10h] [ebp-24h]
-	float v20;  // [esp+14h] [ebp-20h]
-	float v21;  // [esp+18h] [ebp-1Ch]
-	float2 v22; // [esp+1Ch] [ebp-18h]
-	float4 v24; // [esp+24h] [ebp-10h]
-	float v25;  // [esp+38h] [ebp+4h]
-
-	v1 = a1;
-	v2 = *(uint32_t*)(a1 + 748);
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		v3 = nox_xxx_playerAttack_538960(a1);
-		if (!v3) {
-			LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(a1);
-		}
-	} else {
-		v4 = (int*)(v2 + 24 * (*(char*)(v2 + 544) + 23));
-		v5 = *(uint32_t*)(v2 + 484);
-		if (*(unsigned char*)(v2 + 481) == *(uint32_t*)(v5 + 216) && !*(uint8_t*)(v2 + 482)) {
-			v6 = (float*)nox_xxx_newObjectByTypeID_4E3810((char*)(v5 + 148));
-			if (v6) {
-				v7 = v4[3];
-				if (v7) {
-					nox_xxx_projAddVelocitySmth_533080(a1, v7, v6[136], (int)&v22);
-				} else {
-					v8 = *(float*)(&v4[2]);
-					v22.field_0 = *(float*)(&v4[1]);
-					v22.field_4 = v8;
-				}
-				v9 = v22.field_0 - *(float*)(a1 + 56);
-				v10 = v22.field_4 - *(float*)(a1 + 60);
-				v18 = v10;
-				v11 = 8 * *(short*)(a1 + 124);
-				v12 = *(float*)(a1 + 60);
-				v24.field_0 = *(float*)(a1 + 56);
-				v24.field_4 = v12;
-				v25 = sqrt(v10 * v18 + v9 * v9) + 0.1;
-				v16 = *(float*)(v1 + 176) + 4.0;
-				v20 = v9 * v6[136] / v25;
-				v21 = v18 * v6[136] / v25;
-				v17 = v16 * *getMemFloatPtr(0x587000, 194136 + v11) + *(float*)(v1 + 56);
-				v19 = v16 * *getMemFloatPtr(0x587000, 194140 + v11) + *(float*)(v1 + 60);
-				v24.field_8 = v17 + v20;
-				v24.field_C = v19 + v21;
-				if (nox_xxx_mapTraceRay_535250(&v24, 0, 0, 5)) {
-					nox_xxx_createAt_4DAA50((int)v6, v1, v17, v19);
-					v6[20] = v20;
-					v6[21] = v21;
-					v13 = *(uint16_t*)(v1 + 124);
-					*((uint16_t*)v6 + 62) = v13;
-					*((uint16_t*)v6 + 63) = v13;
-				} else {
-					nox_xxx_delayedDeleteObject_4E5CC0((int)v6);
-				}
-			}
-			v14 = nox_xxx_monsterGetSoundSet_424300(v1);
-			if (v14) {
-				nox_xxx_aud_501960(*(uint32_t*)(v14 + 44), v1, 0, 0);
-			}
-		}
-		LOBYTE(v3) = *(uint8_t*)(v2 + 483);
-		if ((uint8_t)v3) {
-			LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(v1);
-		}
-	}
-	return v3;
-}
+// Native-width implementation: server/monster_missile_native_532540.go.
 
 //----- (00532800) --------------------------------------------------------
 // Native-width implementation: server/monster_hurt_sound_532800.go.
@@ -300,20 +190,7 @@ int sub_532880(int a1) {
 }
 
 //----- (00533080) --------------------------------------------------------
-int nox_xxx_projAddVelocitySmth_533080(int a1, int a2, float a3, int a4) {
-	int result;     // eax
-	double v5;      // st7
-	double v6;      // st6
-	long double v7; // st7
-
-	result = a2;
-	v5 = *(float*)(a2 + 56) - *(float*)(a1 + 56);
-	v6 = *(float*)(a2 + 60) - *(float*)(a1 + 60);
-	v7 = sqrt(v6 * v6 + v5 * v5) / a3;
-	*(float*)a4 = v7 * *(float*)(a2 + 80) + *(float*)(a2 + 56);
-	*(float*)(a4 + 4) = v7 * *(float*)(a2 + 84) + *(float*)(a2 + 60);
-	return result;
-}
+// Native-width implementation: server/monster_projectile_lead_native_533080.go.
 
 //----- (00533790) --------------------------------------------------------
 int nox_xxx_mobActionToAnimation_533790(int a1) {

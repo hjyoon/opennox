@@ -34,13 +34,13 @@ uintptr_t sub_532040(nox_object_t* candidate, void* context);
 uintptr_t nox_xxx_mobActionMelee1_532130(nox_object_t* unit);
 void sub_532390(nox_object_t* candidate, nox_object_t* unit);
 char nox_xxx_mobActionMeleeAtt_532440(nox_object_t* unit);
-uint32_t* sub_532540(int a1);
-char nox_xxx_mobActionMissileAtt_532610(int a1);
+uintptr_t sub_532540(nox_object_t* unit);
+char nox_xxx_mobActionMissileAtt_532610(nox_object_t* unit);
 #include "monster_hurt_sound_native_532800.h"
 int sub_532880(int a1);
 void sub_532930(int a1, unsigned short a2, unsigned short a3);
 int nox_xxx_soundDefaultDamageSound_532E20(nox_object_t* a1, nox_object_t* a2);
-int nox_xxx_projAddVelocitySmth_533080(int a1, int a2, float a3, int a4);
+uintptr_t nox_xxx_projAddVelocitySmth_533080(nox_object_t* unit, nox_object_t* target, float speed, float2* output);
 int nox_xxx_unitIsEnemyTo_5330C0(nox_object_t* a1, nox_object_t* a2);
 nox_object_t* nox_xxx_enemyAggro_5335D0(nox_object_t* a1, float a2);
 double sub_5336D0(nox_object_t* a1);

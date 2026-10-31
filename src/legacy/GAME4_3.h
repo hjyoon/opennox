@@ -37,7 +37,7 @@ char nox_xxx_mobActionMeleeAtt_532440(nox_object_t* unit);
 uintptr_t sub_532540(nox_object_t* unit);
 char nox_xxx_mobActionMissileAtt_532610(nox_object_t* unit);
 #include "monster_hurt_sound_native_532800.h"
-int sub_532880(int a1);
+uintptr_t sub_532880(nox_object_t* unit);
 void sub_532930(int a1, unsigned short a2, unsigned short a3);
 int nox_xxx_soundDefaultDamageSound_532E20(nox_object_t* a1, nox_object_t* a2);
 uintptr_t nox_xxx_projAddVelocitySmth_533080(nox_object_t* unit, nox_object_t* target, float speed, float2* output);

@@ -1787,10 +1787,7 @@ func PlayerDamageNative4E17B0(
 		runtime.GameBallOnDamage(source, target, effective)
 	}
 	if bite || missileImpact {
-		monsterUpdate := source.UpdateDataMonster()
-		if monsterUpdate.Field130 == 0 {
-			monsterUpdate.Field130 = frame
-		}
+		MonsterHitLatch532880(source, func() uint32 { return frame })
 	}
 	if playerCharge && effective >= 20 && target.Class().Has(object.ClassPlayer) {
 		// DefaultDamage's 004E1136/004E1147 reload class/update/state after

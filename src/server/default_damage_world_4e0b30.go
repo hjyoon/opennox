@@ -1023,12 +1023,9 @@ func DefaultDamageWorld4E0B30(
 		}
 		if monster != nil && monster.Class().Has(object.ClassMonster) &&
 			runtime.IsEnemy != nil && runtime.IsEnemy(target, monster) {
-			update := monster.UpdateDataMonster()
-			if update.Field130 == 0 {
-				// The inlined 00532880 tail reads only for an empty latch,
-				// after IsEnemy and every preceding hit callback has returned.
-				update.Field130 = currentFrame()
-			}
+			// The shared original tail reloads the raw update after IsEnemy
+			// and reads the live clock only when its cached latch is empty.
+			MonsterHitLatch532880(monster, currentFrame)
 		}
 	}
 	if target.HasEnchant(defaultDamageShieldEnchant4E0B30) && typ != object.DamagePoison {

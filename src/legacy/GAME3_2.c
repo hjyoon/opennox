@@ -6723,7 +6723,8 @@ LABEL_87:
 		v38 = *(uint32_t*)(v10 + 508);
 	}
 	if (v38 && nox_xxx_unitIsEnemyTo_5330C0(a1, v38)) {
-		sub_532880(v38);
+		// Retained PE32 int-ABI parent; its native-width migration remains separate.
+		sub_532880((nox_object_t*)(uintptr_t)(uint32_t)v38);
 	}
 LABEL_137:
 	if (nox_xxx_testUnitBuffs_4FF350(a1, 26) && a5 != 5) {

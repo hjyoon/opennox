@@ -179,15 +179,7 @@ char nox_xxx_mobActionFight_531EC0(int a1) {
 // Native-width implementation: server/monster_hurt_sound_532800.go.
 
 //----- (00532880) --------------------------------------------------------
-int sub_532880(int a1) {
-	int result; // eax
-
-	result = *(uint32_t*)(a1 + 748);
-	if (!*(uint32_t*)(result + 520)) {
-		*(uint32_t*)(result + 520) = gameFrame();
-	}
-	return result;
-}
+// Native-width implementation: server/monster_hit_latch_532880.go.
 
 //----- (00533080) --------------------------------------------------------
 // Native-width implementation: server/monster_projectile_lead_native_533080.go.

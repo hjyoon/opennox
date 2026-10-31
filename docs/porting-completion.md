@@ -55,6 +55,82 @@ completion requirements.
 
 ## Current findings
 
+### Native monster animation selector and ordinary sprite updates
+
+Runtime `42e5747` ports public `533790` to a native object argument. The
+selector computes its index before the original Mimic, Plant and Zombie
+predicate calls, preserves their short circuits and retains the entry update
+record across lookup callbacks. Cached Mimic idle paths avoid server lookup.
+Ordinary Go monster sprite updates use the same core. IsMimic reads the type
+WORD after lookup, matching the original when that lookup changes the object.
+Native layouts and guarded typed update getters remain unchanged. The older
+private helper retains its existing invalid-head containment; the raw public
+core retains original signed stack addressing.
+
+Both original FPU profiles execute **14,840 unique contexts / 15,064 calls**
+each and have identical results. Actual selector, predicate and WORD lookup
+bodies execute all **482 bytes**; their inline tables read all **83 bytes**.
+Only dictionary lookup is declared, returning a valid type record or nil and
+applying specified input mutations. Predicate entries, lookup order, cache
+publications, cached update state, returns and full guards are observed.
+The actual C entry first reproduces its native pointer-truncation SIGSEGV
+after ordinary native Go controls pass. Full allocation/registry controls
+pass 14,841 events before engine changes. The existing private Go selection
+projection differs in 3,510 child cases; this is not a certificate for a
+pre-existing public Go wrapper. Frozen C and Go comparators each subsequently
+match all original contexts and calls. Nine ordinary binding modes add nine
+actual C and nine public Go calls, including cached Mimic paths without a
+server, with no predicate/provider replacement in those ordinary cases.
+
+Normal macOS testing passes **438,643 / 43 skips**; strict highres testing
+passes **299,217 / eight skips**, using actual cgocheck2, checkptr level 2
+and OpenAL-null. Every earlier terminal identity and multiplicity remains.
+Each gate adds **29,692 events**; strict additionally selects **127 unchanged
+animation/Mimic events**. All **4,108 earlier inputs and assertions** remain
+byte-identical; ten new inputs bring the inventory to 4,118. Event totals do
+not measure completion. The unchanged oracle verifier passes all 21 tests
+and verifies **3,322 code-section ranges / 691 non-executable data ranges**.
+Two new ranges are complete Plant/Zombie helper bodies and two are inline
+tables in .text, explicitly not additional functions or executed instructions.
+An initial table classification in non-executable data was correctly rejected;
+the invalid manifest and failure remain preserved, with no verifier relaxation.
+
+The fresh committed ARM64 product passes six Blink modes, sixteen natural
+first attacks, the unchanged three-beam regression and the original Bookcase
+route. Before menu reload, original Bookcase1974 endpoint 1591,4734, plate and
+mover state, original Urchin HP0 and living **HP20 / MP43 / poison0** are sealed.
+Independent actual menu Load/Save retains them. Four current PNGs are directly
+viewed. Final images show overwrite confirmation; completion is independently
+proved by saved files, logs and the fresh menu Load/Save. The coordinator runs
+directly and each existing game runner applies its loopback-only sandbox.
+
+Windows amd64/386 run `41171678862` passes build, product verification, help
+and the three package checks. Linux amd64 run `41171685501` passes
+**435,805 / seven skips**, all 58 packages (36 pass, 22 skip), and another
+**133,384** default-link damage events. All earlier native assertions remain,
+with the 29,692 new animation events and three original/binding metadata checks.
+Exact logs, digest-verified ZIPs and PE/ELF products are retained; the five
+requested poison-macro diagnostics remain absent. Large Linux raw JSON stays
+exactly inside the verified ZIP without duplicate expansion.
+
+All **90 products** (40 ARM64, 50 native), personal installation **4,649
+files / 503,207,370 bytes**, originals, Saves, failures and peer/audio captures
+are rechecked. Comparator generic-constraint and registry-initialization
+failures, original producer preparation failures and the initial manifest
+failure remain. No failed Save is continued. No cache cleanup occurs while
+the next local comparator build runs.
+
+Two retained extracted parents, `533D00` and `518960`, still have PE32 layout
+or ABI debt; their explicit root adapters do not port those parent bodies.
+Next-parent `533D00` already has two original profiles with **19,668 contexts /
+20,004 calls** each, **911 executed body bytes** and a separately reproduced
+actual C pointer-truncation crash. Its implementation is unchanged at this
+checkpoint. Evidence is in `ROOT/monster-animation-selector-native-entry-port`,
+`ROOT/monster-animation-product-e2e-v1` and
+`ROOT/monster-npc-animation-native-entry-port`. Overall 100% and the final
+nine chapter 1–3 cell audits remain open; chapter 4+ gameplay is excluded.
+
+
 ### Native successful-hit timestamp and shared damage path
 
 Runtime `531c6513` ports public `532880` to a native object argument and

@@ -55,6 +55,96 @@ completion requirements.
 
 ## Current findings
 
+### Native melee callbacks, cached weapon references and pointer lifetime
+
+Runtime `1d28fab0` ports public `532130`, `532390` and `532440` to
+native object pointers; `ac9ca818` completes the 32-bit compatibility
+correction. Start returns a native action-slot pointer and update preserves
+the original low-byte return. The C bodies and obsolete extracted DWORD
+selection variable are retired. The blocker uses a native pointer side slot
+beside the separate packed float distance. Its low-byte class mask, DEAD
+test, unordered distance admission, strict facing cone and precision-53 /
+ToZero operations follow the original instructions, including retained-Y
+times spilled-Y. The pure blocker does not require a server lookup.
+
+Start and update retain the entry-time update record across callbacks,
+while sound lookup follows the live class and update pointer. Real action
+push/pop, cancellation, completion, deterministic RNG and NPC morph helpers
+are shared with the ordinary Go path. On 64-bit, the NPC weapon reference
+is associated with the exact cached update record without widening the
+PE32 Field516 DWORD. Known nil, ordinary equip/dequip, replaced live records
+and owner-address reuse are covered. Registered 32-bit owners and nonzero
+PE32 words keep their direct pointer reads; unregistered zero-word Go
+objects retain the inventory compatibility path on both word sizes.
+
+The unchanged original roots load 1,040 bytes and execute all **1,009 body
+bytes**; 31 padding bytes remain unexecuted. Each FPU profile executes
+**14,112 blocker inputs** and **3,664 start/update inputs**, with 1,326 and
+302 respective output differences between profiles. Original stack, RNG,
+buff, morph and predicate helpers execute without supplied numeric or
+admission results. World enumeration, publication/audio, player attack and
+registered callbacks are declared service boundaries with initialized
+resource caches. Audio uses a declared void/zero return convention; this
+does not certify the original audio implementation's return value or every
+transitive resource branch. Full status-word equivalence is not claimed.
+
+The frozen controls pass before all three actual C entries reproduce
+pointer-truncation crashes with valid native allocations above 4 GiB.
+After porting, **17,776 actual C contexts** match the original results,
+native pointer returns, cached records, events and guarded neighbors.
+Ordinary C equip/dequip and actual single-owner pool reuse also pass.
+All 4,055 preceding inputs/assertions and the frozen references remain
+byte-identical. The two incomplete early action profiles, their generated
+adapter-cache defect, compilation failures and the partial strict-environment
+run are preserved and excluded from the qualified results.
+
+Final normal checks pass **388,692/43 skips**; strict highres, cgocheck2,
+checkptr2 and real OpenAL/null checks pass **242,786/eight skips**.
+Every preceding case and multiplicity is retained, with 21,444 new events
+per gate and 354 existing NPC/attack cases additionally selected by strict.
+The unchanged verifier passes **3,316 code / 691 data ranges** and 21 tests;
+prior oracle records keep their relative order.
+
+The clean `ac9ca818` ARM64 product passes six Blink modes, sixteen natural
+first-attack modes and hosted Lightning/EnergyBolt/DrainMana regressions.
+Original Bookcase progression and actual-menu Load/Save preserve
+**HP20/MP43/poison0**, endpoint1591,4734, the disabled plate, enabled mover
+and original Urchin HP0/DEAD, sealed before the first reload. Four current
+PNGs are actually viewed and both final frames show the save-complete
+message. The initial attempt's Urchin survived; its failed Save is never
+continued. A fresh original checkpoint retains every original scenario
+step and assertion and adds three ordinary A-key follow-up casts while
+the fleeing target remains in range. Published scenarios remain unchanged.
+
+Windows amd64 and 386 build, product verification, help and all three
+package checks pass in run `41157604105`. The initial 386 Hammer avoidance
+failure and both initial Windows products are retained; the compatibility
+correction passes that unchanged test. Linux amd64 run `41157637913` passes
+**385,854/seven skips**, all 58 expected packages (36 pass, 22 skip), and
+another **133,384** default-link damage events. Raw JSON is retained inside
+the digest-verified ZIPs without duplicate expansion. All three final
+native jobs are closed, their products are retained, and all five requested
+poison-macro diagnostics remain absent.
+
+All **78 products** (37 ARM64, 41 native), personal installation **4,649
+files / 503,207,370 bytes**, original assets, Saves, failures, peer/audio
+captures and prior evidence are rechecked. Clearing only the regenerable
+Go build cache with no local builds/tests running frees 15,853,744,128
+bytes. The private producer's regenerated Python cache is also removed.
+Evidence is in `ROOT/monster-melee-native-entry-port` and
+`ROOT/monster-melee-product-e2e-v2`, including
+`local-melee-native-qualified-v2.json`,
+`native-ci-v2/all-native-melee-qualified-v1.json` and
+`all-gates-and-preservation-qualified-v1.json`.
+
+The next missile roots `532540`, `532610` and prediction `533080` remain
+unported. Their three native C pointer-truncation crashes and frozen
+original references are prepared privately: 4,150 action inputs and 2,844
+prediction inputs per FPU profile, executing all 747 body bytes. Allocation
+controls pass; existing Go differences are retained before implementation.
+The final nine class/chapter feature, UI, audio, networking and stability
+audits remain open. **Overall 100% is not established.**
+
 ### Native dead-target callback and explicit cached context
 
 Runtime `53741fbc` ports public `532040` to native candidate and context

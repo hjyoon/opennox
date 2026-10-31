@@ -16,22 +16,22 @@ char* nox_fs_root();
 bool nox_fs_set_workdir(char* path);
 
 bool nox_fs_mkdir(char* path);
-bool nox_fs_remove(char* path);
-bool nox_fs_copy(char* src, char* dst);
+bool nox_fs_remove(const char* path);
+bool nox_fs_copy(const char* src, const char* dst);
 bool nox_fs_move(char* src, char* dst);
 
 int nox_fs_access(char* filename, int mode);
 
 // nox_fs_open opens the file for reading (in binary mode).
-FILE* nox_fs_open(char* path);
+FILE* nox_fs_open(const char* path);
 // nox_fs_open_text opens the file for reading (in text mode).
-FILE* nox_fs_open_text(char* path);
+FILE* nox_fs_open_text(const char* path);
 // nox_fs_create creates the file for writing (in binary mode).
 FILE* nox_fs_create(char* path);
 // nox_fs_create_text creates or opens the file for writing (in text mode).
 FILE* nox_fs_create_text(char* path);
 // nox_fs_open_rw opens the file for reading and writing (in binary mode).
-FILE* nox_fs_open_rw(char* path);
+FILE* nox_fs_open_rw(const char* path);
 
 int nox_fs_fputs(FILE* f, char* str);
 int nox_fs_fprintf(FILE* f, const char* format, ...);

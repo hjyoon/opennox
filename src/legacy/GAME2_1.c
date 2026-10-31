@@ -821,7 +821,7 @@ char* sub_461EF0(int a1) {
 				for (int maybe_stack_idx = 0; maybe_stack_idx < field140_val; ++maybe_stack_idx) {
 					if (*(p_maybe_stack_items + maybe_stack_idx) == a1) {
 						*getMemU32Ptr(0x5D4594, 1049792) = maybe_stack_idx;
-						const char* result = (char*)getMemAt(0x5D4594, 1049788);
+						char* result = (char*)getMemAt(0x5D4594, 1049788);
 						*getMemU32Ptr(0x5D4594, 1049788) = p_item;
 						return result;
 					}
@@ -911,7 +911,7 @@ int nox_xxx_clientEquip_4623B0(nox_drawable* drawable) {
 	char v3[3]; // [esp+0h] [ebp-4h]
 	v3[0] = 117;
 	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeCli_578B00(drawable);
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v3, 3);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v3, 3);
 }
 
 //----- (004623E0) --------------------------------------------------------
@@ -1007,7 +1007,7 @@ int sub_4625D0(nox_window* win, nox_window_data* draw) {
 	if (dword_5d4594_1049864 == 5) {
 		return 1;
 	}
-	nox_client_wndGetPosition_46AA60(win, &x, &y);
+	nox_client_wndGetPosition_46AA60(win, (unsigned int*)&x, (unsigned int*)&y);
 	nox_window_get_size(win, &width, &height);
 	if (y + height > 0) {
 		nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
@@ -1117,7 +1117,7 @@ int nox_xxx_inventoryDrawAllMB_463430(nox_window* win, nox_window_data* draw) {
 
 	v1 = dword_587000_136184;
 	nox_window_setPos_46A9B0(win->parent, 0, v1);
-	nox_client_wndGetPosition_46AA60(win, &v16, &v16.field_4);
+	nox_client_wndGetPosition_46AA60(win, &v16, (unsigned int*)&v16.field_4);
 	nox_xxx_guiFontHeightMB_43F320(0);
 	v2 = 0;
 	v3 = v16.field_0 + 10;
@@ -1425,7 +1425,7 @@ int nox_xxx_clientDequip_464B70(nox_drawable* drawable) {
 	char v3[3]; // [esp+0h] [ebp-4h]
 	v3[0] = 118;
 	*(uint16_t*)&v3[1] = nox_xxx_netGetUnitCodeCli_578B00(drawable);
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v3, 3);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v3, 3);
 }
 
 //----- (00464BA0) --------------------------------------------------------
@@ -1460,7 +1460,7 @@ int nox_xxx_trade_4657B0(short a1) {
 	v2[0] = -55;
 	v2[1] = 30;
 	*(uint16_t*)&v2[2] = a1;
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v2, 4);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v2, 4);
 }
 
 //----- (004657E0) --------------------------------------------------------
@@ -1499,7 +1499,7 @@ int nox_xxx_clientTrade_465870(short a1) {
 	v2[0] = -55;
 	v2[1] = 28;
 	*(uint16_t*)&v2[2] = a1;
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v2, 4);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v2, 4);
 }
 
 //----- (004658A0) --------------------------------------------------------
@@ -1591,7 +1591,7 @@ int nox_xxx_clientDrop_465BE0(int2* a1) {
 	v2 = a1->field_4;
 	*(uint16_t*)&v3[3] = a1->field_0;
 	*(uint16_t*)&v3[5] = v2;
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v3, 7);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v3, 7);
 }
 
 //----- (00465C30) --------------------------------------------------------
@@ -1656,7 +1656,7 @@ int sub_465D50_draw(nox_window* win) {
 	if (!win || !win->parent) {
 		return 1;
 	}
-	nox_client_wndGetPosition_46AA60(win->parent, &x, &y);
+	nox_client_wndGetPosition_46AA60(win->parent, (unsigned int*)&x, (unsigned int*)&y);
 	nox_drawable* drawable = (nox_drawable*)(uintptr_t)sub_4615C0();
 	if (drawable) {
 		drawable->pos.x = x + 51;
@@ -2721,7 +2721,7 @@ size_t nox_xxx_cmdSayDo_46A4B0(wchar2_t* a1, int a2) {
 			*(uint16_t*)&v8[6] = -1;
 			*(uint16_t*)&v8[4] = -1;
 		}
-		result = nox_netlist_addToMsgListCli_40EBC0(31, 0, v8, v7 * (unsigned char)v8[8] + 11);
+		result = nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v8, v7 * (unsigned char)v8[8] + 11);
 	}
 	return result;
 }
@@ -3820,7 +3820,7 @@ int sub_470F40_draw(nox_window* win, nox_window_data* draw_data) {
 	v18 = 1;
 	(void)draw_data;
 	v3 = &nox_windows_arr_1093036[(intptr_t)win->widget_data];
-	nox_client_wndGetPosition_46AA60(win, &v14, &v16);
+	nox_client_wndGetPosition_46AA60(win, (unsigned int*)&v14, (unsigned int*)&v16);
 
 	int w;
 	int h;
@@ -3899,7 +3899,7 @@ int sub_471250(nox_window* win, nox_window_data* draw_data) {
 	(void)draw_data;
 	v20 = &nox_windows_arr_1093036[(intptr_t)win->widget_data];
 	v1 = v20;
-	nox_client_wndGetPosition_46AA60(win, &v18, &v17);
+	nox_client_wndGetPosition_46AA60(win, (unsigned int*)&v18, (unsigned int*)&v17);
 	v2 = 1;
 	if (v1->field_2 >= 1) {
 		v15 = 1;
@@ -3991,7 +3991,7 @@ int sub_471450(nox_window* win, nox_window_data* draw_data) {
 	nox_itow(nox_windows_arr_1093036[(intptr_t)win->widget_data].field_1, WideCharStr, 10);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 	nox_xxx_drawGetStringSize_43F840(dword_5d4594_1096288, WideCharStr, &v3, 0, 0);
-	nox_client_wndGetPosition_46AA60(win, &v4, &y);
+	nox_client_wndGetPosition_46AA60(win, (unsigned int*)&v4, (unsigned int*)&y);
 	nox_xxx_drawString_43F6E0(dword_5d4594_1096288, WideCharStr, v4 - v3 / 2 + 8, y + 1);
 	return 1;
 }
@@ -4010,7 +4010,7 @@ int nox_xxx_guiBottleSlotDrawFn_471A80(nox_window* win, nox_window_data* draw_da
 
 	(void)draw_data;
 	v1 = (intptr_t)win->widget_data;
-	nox_client_wndGetPosition_46AA60(win, &v8, &y);
+	nox_client_wndGetPosition_46AA60(win, (unsigned int*)&v8, (unsigned int*)&y);
 	v2 = 536 * v1;
 	if (*getMemU16Ptr(0x5D4594, 1090312 + v2)) {
 		drawable = &nox_gui_bottle_drawables[v1];
@@ -5407,7 +5407,7 @@ LABEL_64:
 		v53 = v3[6];
 		v77.field_0 = 23 * v3[5] + 11;
 		v77.field_4 = 23 * v53 + 11;
-		v54 = sub_469920(&v77);
+		v54 = (uint8_t*)(sub_469920(&v77));
 		nox_xxx_getWallDrawOffset_46A3F0(v3[1], v84, v3[2], v73, &v55x, &v55y);
 		v56 = v82 + v55x - 50;
 		v57 = -72 - v55y + v7;
@@ -5482,17 +5482,16 @@ int sub_474B40(nox_drawable* dr) {
 
 //----- (004756E0) --------------------------------------------------------
 int nox_xxx_sprite_4756E0_drawable(nox_drawable* dr) {
-	uint32_t* a1 = dr;
 	int result;           // eax
-	int (*v2)(int*, int); // esi
+	int (*v2)(uint32_t*, nox_drawable*); // esi
 	int v3;               // edx
 	int v4;               // ecx
 
 	result = 0;
-	v2 = (int (*)(int*, int))a1[75];
+	v2 = dr->draw_func;
 	if (v2) {
-		v3 = a1[30];
-		v4 = a1[28];
+		v3 = dr->flags30;
+		v4 = dr->flags28;
 		if (!(v3 & 0x1000) && v3 & 1 && (v2 == nox_thing_static_draw || v2 == nox_thing_static_random_draw) &&
 			!(v4 & 0x80800000) && (v3 & 0x48 || v4 & 0x400000) && !(v3 & 0x800)) {
 			result = 1;
@@ -5503,17 +5502,16 @@ int nox_xxx_sprite_4756E0_drawable(nox_drawable* dr) {
 
 //----- (00475740) --------------------------------------------------------
 int nox_xxx_sprite_475740_drawable(nox_drawable* dr) {
-	uint32_t* a1 = dr;
 	int result;           // eax
-	int (*v2)(int*, int); // edx
+	int (*v2)(uint32_t*, nox_drawable*); // edx
 	int v3;               // ebx
 	int v4;               // ecx
 
 	result = 0;
-	v2 = (int (*)(int*, int))a1[75];
+	v2 = dr->draw_func;
 	if (v2) {
-		v3 = a1[30];
-		v4 = a1[28];
+		v3 = dr->flags30;
+		v4 = dr->flags28;
 		if (!(v3 & 0x1000)) {
 			if (v3 & 1) {
 				result = 1;

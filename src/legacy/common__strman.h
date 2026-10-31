@@ -14,7 +14,7 @@ enum {
 	NOX_LANG_UNK = 9,
 };
 
-wchar2_t* nox_strman_loadString_40F1D0(char* name, char** strOut, char* srcFile, int srcLine);
+wchar2_t* nox_strman_loadString_40F1D0(const char* name, char** strOut, const char* srcFile, int srcLine);
 int nox_strman_get_lang_code();
 
 #endif // NOX_COMMON_STRMAN_H

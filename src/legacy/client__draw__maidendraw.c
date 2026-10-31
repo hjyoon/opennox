@@ -25,7 +25,7 @@ int nox_thing_maiden_draw(uint32_t* a1, nox_drawable* dr) {
 		} while (v12 < 6);
 		return nox_thing_monster_draw(a1, dr);
 	}
-	const nox_object_t* v2 = nox_server_getFirstObject_4DA790();
+	nox_object_t* v2 = nox_server_getFirstObject_4DA790();
 	if (!v2) {
 		return nox_thing_monster_draw(a1, dr);
 	}

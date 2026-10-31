@@ -411,8 +411,8 @@ int nox_xxx_protectData_56F5C0() {
 		v7 = nox_common_randomInt_415FA0((*getMemU16Ptr(0x587000, 311204) >> 1) + 1,
 										 *getMemU16Ptr(0x587000, 311204) - 1);
 		if (v6 != v7) {
-			v14 = sub_56F6F0(v7);
-			v8 = sub_56F6F0(v6);
+			v14 = (int*)(sub_56F6F0(v7));
+			v8 = (int*)(sub_56F6F0(v6));
 			sub_56F720(v8, v14);
 		}
 		++i;

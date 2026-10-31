@@ -26,7 +26,7 @@ nox_object_t* nox_xxx_armorHaveSameSubclass_53E7B0(nox_object_t* a,const nox_obj
 int nox_xxx_playerClassCanUseItem_57B3D0(nox_object_t* a,int8_t b){replace(2);uintptr_t v[]={(uintptr_t)a,(uint8_t)b};event("classUse",v,2,class_return);return class_return;}
 int32_t nox_xxx_playerCheckStrength_4F3180(nox_object_t* a,nox_object_t* b){replace(3);uintptr_t v[]={(uintptr_t)a,(uintptr_t)b};event("strength",v,2,strength_return);return strength_return;}
 int sub_53E430(nox_object_t* a,nox_object_t* b,int c,int d){replace(4);uintptr_t v[]={(uintptr_t)a,(uintptr_t)b,c,d};event("dequip",v,4,0);return 0;}
-int nox_xxx_unitArmorInventoryEquipFlags_415C70(nox_object_t* a){replace(5);uintptr_t v[]={(uintptr_t)a};event("armorFlags",v,1,equip_flags);return equip_flags;}
+int nox_xxx_unitArmorInventoryEquipFlags_415C70(const nox_object_t* a){replace(5);uintptr_t v[]={(uintptr_t)a};event("armorFlags",v,1,equip_flags);return equip_flags;}
 uint32_t* nox_xxx_netReportEquip_4D8540(int a,nox_object_t* b,int c){replace(6);uintptr_t v[]={a,(uintptr_t)b,c};event("report",v,3,0);return NULL;}
 int sub_53E2D0(nox_object_t* a){uintptr_t v[]={(uintptr_t)a};event("special",v,1,special_return);return special_return;}
 int nox_xxx_recalculateArmorVal_53E300(nox_object_t* a){uintptr_t v[]={(uintptr_t)a};event("recalculate",v,1,0);return 0;}

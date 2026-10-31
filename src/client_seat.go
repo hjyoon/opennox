@@ -71,7 +71,7 @@ func (c *Client) initSeat(sz image.Point) error {
 			return
 		}
 		drawable := c.Seat.ScreenSize()
-		logical := sdlLogicalWindowSize(drawable)
+		logical := sdlLogicalWindowSize(sst, drawable)
 		if drawable == lastDrawable && logical == lastLogical {
 			return
 		}

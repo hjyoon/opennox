@@ -62,7 +62,7 @@ int nox_xxx_guiFontHeightMB_43F320(void* font) { assert(!font); return 13; }
 nox_draw_viewport_t* nox_draw_getViewport_437250(void) { return &viewport; }
 void nox_xxx_drawSetTextColor_434390(int color) { assert((uint32_t)color == nox_color_white_2523948); }
 char* nox_server_currentMapGetFilename_409B30(void) { return "War02b"; }
-wchar2_t* nox_strman_loadString_40F1D0(char* key, char** out, char* file, int line) {
+wchar2_t* nox_strman_loadString_40F1D0(const char* key, char** out, const char* file, int line) {
 	assert(!out && !strcmp(file, "C:\\NoxPost\\src\\client\\System\\client.c"));
 	assert(has_local && has_profile);
 	if (line == 1357) {

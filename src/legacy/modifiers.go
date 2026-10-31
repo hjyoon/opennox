@@ -416,7 +416,11 @@ func nox_xxx_modifGetDescById_413330(a1 int32) unsafe.Pointer {
 	return GetServer().S().Modif.Nox_xxx_modifGetDescById413330(int(a1)).C()
 }
 
-//export nox_xxx_modifGetIdByName_413290
+//export nox_xxx_modifGetIdByName_413290_go
+func nox_xxx_modifGetIdByName_413290_go(name *C.char) int32 {
+	return nox_xxx_modifGetIdByName_413290(name)
+}
+
 func nox_xxx_modifGetIdByName_413290(name *C.char) int32 {
 	return int32(GetServer().S().Modif.Nox_xxx_modifGetIdByName413290(GoString(name)))
 }

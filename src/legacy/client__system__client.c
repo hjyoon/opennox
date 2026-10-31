@@ -84,7 +84,7 @@ int sub_436F50() {
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 	v4 = nox_server_currentMapGetFilename_409B30();
 	nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 811120), L"%S", v4);
-	nox_xxx_drawString_43F6E0(0, getMemI16Ptr(0x5D4594, 811120), v2, v3);
+	nox_xxx_drawString_43F6E0(0, (wchar2_t*)(getMemI16Ptr(0x5D4594, 811120)), v2, v3);
 	nox_drawable* local_player = getMemPtr(0x852978, 8);
 	result = local_player != NULL;
 	v6 = v0 + v3;
@@ -93,7 +93,7 @@ int sub_436F50() {
 			nox_playerInfo* player = (nox_playerInfo*)dword_8531A0_2576;
 			nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 811120), L"X:%d\tY:%d",
 						 (int)local_player->pos.x, (int)local_player->pos.y);
-			nox_xxx_drawString_43F6E0(0, getMemI16Ptr(0x5D4594, 811120), v2, v6);
+			nox_xxx_drawString_43F6E0(0, (wchar2_t*)(getMemI16Ptr(0x5D4594, 811120)), v2, v6);
 			v9 = nox_strman_loadString_40F1D0(
 				// The packed PE32 table stores native pointers in side slots.
 				getMemPtr(0x587000, 29456 + 4 * player->info.playerClass), 0,
@@ -101,7 +101,7 @@ int sub_436F50() {
 			v8 = player->field_3684;
 			v7 = nox_strman_loadString_40F1D0("PlayerInfo", 0, "C:\\NoxPost\\src\\client\\System\\client.c", 1355);
 			nox_swprintf((wchar2_t*)getMemAt(0x5D4594, 811120), v7, v8, v9);
-			result = nox_xxx_drawString_43F6E0(0, getMemI16Ptr(0x5D4594, 811120), v2, v0 + v6);
+			result = nox_xxx_drawString_43F6E0(0, (wchar2_t*)(getMemI16Ptr(0x5D4594, 811120)), v2, v0 + v6);
 		}
 	}
 	return result;

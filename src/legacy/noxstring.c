@@ -322,11 +322,11 @@ wchar2_t* nox_wcscat(wchar2_t* dest, const wchar2_t* src) {
 	return ret;
 }
 
-wchar2_t* nox_wcschr(wchar2_t* nox_wcs, wchar2_t wc) {
+wchar2_t* nox_wcschr(const wchar2_t* nox_wcs, wchar2_t wc) {
 	size_t result;
 	for (result = 0; nox_wcs[result]; result++)
 		if (nox_wcs[result] == wc)
-			return &nox_wcs[result];
+			return (wchar2_t*)&nox_wcs[result];
 	return NULL;
 }
 
@@ -457,7 +457,7 @@ long nox_wcstol(const wchar2_t* nptr, wchar2_t** endptr, int base) {
 	result = strtol(tmp, &ptr, base);
 
 	if (endptr)
-		*endptr = &nptr[ptr - tmp];
+		*endptr = (wchar2_t*)&nptr[ptr - tmp];
 
 	free(tmp);
 	return result;

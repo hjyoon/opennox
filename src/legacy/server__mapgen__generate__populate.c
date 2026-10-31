@@ -181,7 +181,7 @@ void nox_mapgenFinishPopulateNative_5228B0(uint8_t* theme) {
 	wchar2_t* v3; // eax
 	float2 player_start;
 
-	nox_xxx_mapGenSetFlags_5235F0(157);
+	nox_xxx_mapGenSetFlags_5235F0((char)0x9D);
 	if (!nox_mapgenMakeExitNative_522A40(theme)) {
 		v1 = nox_strman_loadString_40F1D0("NoExit", 0, "C:\\NoxPost\\src\\Server\\MapGen\\Generate\\populate.c", 848);
 		nox_xxx_printToAll_4D9FD0(0, v1);
@@ -193,7 +193,7 @@ void nox_mapgenFinishPopulateNative_5228B0(uint8_t* theme) {
 	nox_mapgenMaxRoomDistanceNative_5259D0();
 	uint8_t* root = (uint8_t*)nox_mapgenLegacyPtrResolve(dword_5d4594_1550916);
 	for (uint8_t* room = root; room; room = nox_mapgenRoomSortedNextNative_525C90(room)) {
-		nox_xxx_mapGenSetFlags_5235F0(157);
+		nox_xxx_mapGenSetFlags_5235F0((char)0x9D);
 		if (*(uint32_t*)(room + 372) && !(room[52] & 2)) {
 			nox_mapgenPopulateDecorNative_522340(theme, room);
 		}

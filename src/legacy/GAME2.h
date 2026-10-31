@@ -12,7 +12,7 @@ nox_thing* nox_get_thing(int i);
 wchar2_t* nox_get_thing_pretty_name(int i);
 wchar2_t* nox_get_thing_desc(int i);
 int nox_get_thing_pretty_image(int i);
-int nox_xxx_getTTByNameSpriteMB_44CFC0(char* a1);
+int nox_xxx_getTTByNameSpriteMB_44CFC0(const char* a1);
 int sub_44D040(int i);
 int sub_44D060(int a1);
 int sub_44D090(int a1);

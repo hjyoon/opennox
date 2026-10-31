@@ -1007,7 +1007,7 @@ void sub_538510(int a1, int a2) {
 												if (*(uint16_t*)(v8 + 4)) {
 													v9 = *(uint32_t*)(a1 + 16);
 													if ((v9 & 0x8000) == 0 && !(v9 & 0x20)) {
-														nox_xxx_netSendPointFx_522FF0(139, (float2*)(a1 + 56));
+														nox_xxx_netSendPointFx_522FF0((char)0x8B, (float2*)(a1 + 56));
 													}
 												}
 											}
@@ -1257,7 +1257,7 @@ static void nox_xxx_playerAttackDamageCandidate_538960(nox_object_t* target, voi
 		!(target->obj_class & 2) && target->health_data &&
 		*((uint16_t*)((uint8_t*)target->health_data + 4)) &&
 		!(target->obj_flags & 0x8020)) {
-		nox_xxx_netSendPointFx_522FF0(139, (float2*)&target->x);
+		nox_xxx_netSendPointFx_522FF0((char)0x8B, (float2*)&target->x);
 	}
 }
 
@@ -2560,7 +2560,7 @@ int nox_xxx_shootApplyEffects_539F40(int a1, int a2, int a3) {
 	int v4;                             // edi
 	int* v5;                            // esi
 	int v6;                             // eax
-	int (*v7)(int, int, int, int, int); // ecx
+	nox_object_t* (*v7)(void*, nox_object_t*, nox_object_t*, nox_object_t*, nox_object_t*); // ecx
 	int result;                         // eax
 	int v9;                             // [esp+18h] [ebp+8h]
 	int v10;                            // [esp+1Ch] [ebp+Ch]
@@ -2573,10 +2573,10 @@ int nox_xxx_shootApplyEffects_539F40(int a1, int a2, int a3) {
 	do {
 		v6 = *v5;
 		if (*v5) {
-			if (*(char (**)(int, int, int, int))(v6 + 52) == nox_xxx_recoilEffect_4E0640) {
+			if (*(void (**)(void*, nox_object_t*, nox_object_t*, nox_object_t*, void*))(v6 + 52) == nox_xxx_recoilEffect_4E0640) {
 				*(uint32_t*)(v10 + 12) = v6;
 			} else {
-				v7 = *(int (**)(int, int, int, int, int))(v6 + 40);
+				v7 = *(nox_object_t* (**)(void*, nox_object_t*, nox_object_t*, nox_object_t*, nox_object_t*))(v6 + 40);
 				if (v7 == nox_xxx_effectProjectileSpeed_4E09B0) {
 					v7(v6, v4, a1, 0, v3);
 				}
@@ -2729,7 +2729,7 @@ int nox_xxx_NPCEquipWeapon_53A2C0(int a1, nox_object_t* item) {
 	if (!result) {
 		return 0;
 	}
-	while (result != item) {
+	while ((uintptr_t)result != (uintptr_t)item) {
 		result = *(uint32_t*)(result + 496);
 		if (!result) {
 			return result;
@@ -3076,7 +3076,7 @@ char nox_xxx_updateDoor_53AC50(nox_object_t* door) {
 		}
 		nox_xxx_unitRemoveFromUpdatable_4DA920(door);
 	}
-LABEL_24:
+LABEL_24:;
 	int v6 = update->current_direction;
 	if (update->synced_direction != v6) {
 		nox_xxx_unitNeedSync_4E44F0(door);

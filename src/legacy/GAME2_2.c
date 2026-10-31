@@ -573,7 +573,7 @@ void nox_xxx_clientOnCursorHover_477050(nox_drawable* dr, void* data) {
 			return;
 		}
 	}
-LABEL_38:
+LABEL_38:;
 	int top_z = nox_float2int((float)(int16_t)dr->z + (float)dr->pos.y + dr->field_24);
 	if (top_z > *getMemIntPtr(0x5D4594, 1096628)) {
 		*getMemU32Ptr(0x5D4594, 1096628) = top_z;
@@ -919,7 +919,7 @@ int sub_478A70(int2* a1) {
 	int v6;       // [esp+10h] [ebp-4h]
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
-	nox_client_wndGetPosition_46AA60(v1, &v5, &v6);
+	nox_client_wndGetPosition_46AA60(v1, (unsigned int*)&v5, (unsigned int*)&v6);
 	nox_window_get_size(v1, &v4, &v3);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 	nox_client_drawImageAt_47D2C0(dword_5d4594_1098456, a1->field_0, a1->field_4);
@@ -1243,7 +1243,7 @@ int nox_client_tradeXxxSellAccept_4796D0(short a1) {
 	v2[0] = -55;
 	v2[1] = 24;
 	*(uint16_t*)&v2[2] = a1;
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v2, 4);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v2, 4);
 }
 
 //----- (00479700) --------------------------------------------------------
@@ -1254,7 +1254,7 @@ int sub_479700(short a1, char a2) {
 	v3[1] = 25;
 	*(uint16_t*)&v3[2] = a1;
 	v3[4] = a2;
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v3, 5);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v3, 5);
 }
 
 //----- (00479810) --------------------------------------------------------
@@ -1284,7 +1284,7 @@ int sub_479840(short a1) {
 	v2[0] = -55;
 	v2[1] = 26;
 	*(uint16_t*)&v2[2] = a1;
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v2, 4);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v2, 4);
 }
 
 //----- (00479870) --------------------------------------------------------
@@ -1448,7 +1448,7 @@ int sub_479C40(nox_window* a1, nox_window_data* a2) {
 
 	v2 = nox_xxx_bookGet_430B40_get_mouse_prev_seq();
 	if (!sub_44D930() && (v2 & 0x7Fu) < 0x1E && v2 & 8) {
-		nox_client_wndGetPosition_46AA60(a1, &xLeft, &yTop);
+		nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&xLeft, (unsigned int*)&yTop);
 		sub_49CD30(xLeft, yTop, a1->width, a1->height - 2, *getMemIntPtr(0x5D4594, 1107052), 4);
 	}
 	return nox_xxx_wndButtonDrawNoImg_4A81D0(a1, a2);
@@ -1461,7 +1461,7 @@ int sub_479CB0(nox_window* a1, nox_window_data* a2) {
 	int v5; // [esp+8h] [ebp-4h]
 
 	v2 = a2->bg_image;
-	nox_client_wndGetPosition_46AA60(dword_5d4594_1123524, &v4, &v5);
+	nox_client_wndGetPosition_46AA60(dword_5d4594_1123524, (unsigned int*)&v4, (unsigned int*)&v5);
 	nox_client_drawImageAt_47D2C0(v2, nox_win_width - NOX_DEFAULT_WIDTH, nox_win_height - NOX_DEFAULT_HEIGHT);
 	return 1;
 }

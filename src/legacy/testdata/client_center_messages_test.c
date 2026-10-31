@@ -55,7 +55,7 @@ static void* center_mem(uintptr_t base,uintptr_t off) {
 uint32_t gameFrame(void) { return (uint32_t)input[3]; }
 nox_draw_viewport_t* nox_draw_getViewport_437250(void) { emit(1,0,0,0);return &viewport; }
 void nox_xxx_drawSetTextColor_434390(int color) { emit(2,(uint32_t)color,0,0); }
-int nox_xxx_drawGetStringSize_43F840(void* font,wchar2_t* text,int* width,int* height,int wrap) {
+int nox_xxx_drawGetStringSize_43F840(void* font,const wchar2_t* text,int* width,int* height,int wrap) {
 	if (font || !width || height || wrap) fail("original measure arguments");
 	int row=kind(text);emit(3,row,0,0);*width=(int)input[7]+8*row;return 1;
 }

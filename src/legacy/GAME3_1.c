@@ -2113,7 +2113,7 @@ int nox_xxx_func_4C0610() {
 
 	v1[0] = -55;
 	v1[1] = 14;
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v1, 2);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v1, 2);
 }
 
 //----- (004C0630) --------------------------------------------------------
@@ -2202,7 +2202,7 @@ int nox_xxx_clientTrade_0_4C08E0(nox_drawable* drawable) {
 	v2[0] = -55;
 	v2[1] = 16;
 	*(uint16_t*)&v2[2] = nox_xxx_netGetUnitCodeCli_578B00(drawable);
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v2, 4);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v2, 4);
 }
 
 //----- (004C0910) --------------------------------------------------------
@@ -2218,7 +2218,7 @@ nox_gui_trade_slot* sub_4C0910(int2* a1) {
 	int4 v10;     // [esp+1Ch] [ebp-10h]
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3704);
-	nox_client_wndGetPosition_46AA60(v1, &v8, &v9);
+	nox_client_wndGetPosition_46AA60(v1, (unsigned int*)&v8, (unsigned int*)&v9);
 	v2 = 0;
 	v7 = 0;
 	while (2) {
@@ -2269,7 +2269,7 @@ int nox_xxx_clientTrade_4C0CE0() {
 
 	v1[0] = -55;
 	v1[1] = 17;
-	return nox_netlist_addToMsgListCli_40EBC0(31, 0, v1, 2);
+	return nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v1, 2);
 }
 
 //----- (004C0D00) --------------------------------------------------------
@@ -2289,10 +2289,10 @@ static void nox_gui_trade_draw_slots(int remote, int x, int y, int font_height) 
 			}
 			nox_swprintf(text, L"%d", slot->count);
 			nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-			nox_xxx_drawString_43F6E0(0, (short*)text, column * 50 + x + 5, row * 50 + y + 5);
+			nox_xxx_drawString_43F6E0(0, (wchar2_t*)text, column * 50 + x + 5, row * 50 + y + 5);
 			nox_swprintf(text, L"%d", slot->total_cost);
 			nox_xxx_drawSetTextColor_434390(nox_color_yellow_2589772);
-			nox_xxx_drawString_43F6E0(0, (short*)text, column * 50 + x + 5,
+			nox_xxx_drawString_43F6E0(0, (wchar2_t*)text, column * 50 + x + 5,
 				row * 50 + y + 45 - font_height);
 		}
 	}
@@ -2314,7 +2314,7 @@ int sub_4C0D00(nox_window* win, nox_window_data* draw_data) {
 
 	(void)win;
 	(void)draw_data;
-	nox_gui_getWindowOffs_46AA20(dword_5d4594_1320940, &v21, &v22);
+	nox_gui_getWindowOffs_46AA20(dword_5d4594_1320940, (unsigned int*)&v21, (unsigned int*)&v22);
 	nox_window_get_size(dword_5d4594_1320940, &v20, &v19);
 	nox_client_drawImageAt_47D2C0(*getMemIntPtr(0x5D4594, 1320164), v21, v22);
 	v0 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3711);
@@ -2341,11 +2341,11 @@ int sub_4C0D00(nox_window* win, nox_window_data* draw_data) {
 		nox_client_drawImageAt_47D2C0(*getMemIntPtr(0x5D4594, 1320180), v21, v22);
 	}
 	v5 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3704);
-	nox_client_wndGetPosition_46AA60(v5, &v21, &v22);
+	nox_client_wndGetPosition_46AA60(v5, (unsigned int*)&v21, (unsigned int*)&v22);
 	v18 = nox_xxx_guiFontHeightMB_43F320(0);
 	nox_gui_trade_draw_slots(0, v21, v22, v18);
 	v10 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3705);
-	nox_client_wndGetPosition_46AA60(v10, &v21, &v22);
+	nox_client_wndGetPosition_46AA60(v10, (unsigned int*)&v21, (unsigned int*)&v22);
 	nox_gui_trade_draw_slots(1, v21, v22, v18);
 	return 1;
 }
@@ -2394,7 +2394,7 @@ nox_gui_trade_slot* sub_4C11E0(int2* a1) {
 	int4 v10;     // [esp+1Ch] [ebp-10h]
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1320940, 3705);
-	nox_client_wndGetPosition_46AA60(v1, &v8, &v9);
+	nox_client_wndGetPosition_46AA60(v1, (unsigned int*)&v8, (unsigned int*)&v9);
 	v2 = 0;
 	v7 = 0;
 	while (2) {
@@ -2943,10 +2943,10 @@ int sub_4C2A00(int a1, int a2, int a3, int a4, short* a5) {
 	for (int i = 0; i < 4; ++i) {
 		int dx = *getMemIntPtr(0x587000, 184520 + 8 * i);
 		int dy = *getMemIntPtr(0x587000, 184524 + 8 * i);
-		nox_xxx_drawString_43F6E0(0, a5, a1 + dx, a2 + dy);
+		nox_xxx_drawString_43F6E0(0, (wchar2_t*)a5, a1 + dx, a2 + dy);
 	}
 	nox_xxx_drawSetTextColor_434390(a3);
-	return nox_xxx_drawString_43F6E0(0, a5, a1, a2);
+	return nox_xxx_drawString_43F6E0(0, (wchar2_t*)a5, a1, a2);
 }
 
 void nox_client_orderCreature(nox_gui_summon_record* creature, int command) {

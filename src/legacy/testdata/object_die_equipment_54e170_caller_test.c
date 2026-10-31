@@ -69,7 +69,7 @@ size_t nox_wcslen(const wchar2_t* str) {
 	return 2;
 }
 
-wchar2_t* nox_strman_loadString_40F1D0(char* key, char** str_out, char* source, int line) {
+wchar2_t* nox_strman_loadString_40F1D0(const char* key, char** str_out, const char* source, int line) {
 	assert(strcmp(key, expected_key) == 0);
 	assert(str_out == NULL);
 	assert(strcmp(source, "C:\\NoxPost\\src\\Server\\Object\\die\\Die.c") == 0);

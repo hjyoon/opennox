@@ -53,7 +53,7 @@ int nox_common_gameFlags_check_40A5C0(int flag) {
 int nox_common_getEngineFlag(int flag) { (void)flag; trace[trace_count++] = 7; return debug; }
 int nox_xxx_netTestHighBit_578B70(unsigned short code) { if (code != 0x9234) abort(); trace[trace_count++] = 8; return 1; }
 uint32_t gameFrame(void) { trace[trace_count++] = 9; frame_calls++; return frame; }
-wchar2_t* nox_strman_loadString_40F1D0(char* name, char** out, char* file, int line) {
+wchar2_t* nox_strman_loadString_40F1D0(const char* name, char** out, const char* file, int line) {
 	(void)out; (void)file;
 	if (line == 3452 && strcmp(name,"Eliminated") == 0) trace[trace_count++] = 10;
 	else if (line == 3729 && strcmp(name,"SH_NearVictory") == 0) trace[trace_count++] = 11;

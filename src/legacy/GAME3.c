@@ -547,7 +547,7 @@ int nox_xxx_wndListboxProcWithData10_4A2DE0(nox_window* a1p, int a2, uintptr_t a
 	case 6:
 	case 7:
 		v7 = a3 >> 16;
-		nox_client_wndGetPosition_46AA60((uint32_t*)a1, &a2, &a3);
+		nox_client_wndGetPosition_46AA60((uint32_t*)a1, (unsigned int*)&a2, &a3);
 		if (*(uint16_t*)(a1 + 108)) {
 			v8 = nox_xxx_guiFontHeightMB_43F320(*(uint32_t*)(a1 + 236));
 			v9 = a3 + v8 + 1;
@@ -610,7 +610,7 @@ int nox_xxx_wndListboxProcWithData10_4A2DE0(nox_window* a1p, int a2, uintptr_t a
 	case 10:
 	case 11:
 		v16 = a3 >> 16;
-		nox_client_wndGetPosition_46AA60((uint32_t*)a1, &a2, &a3);
+		nox_client_wndGetPosition_46AA60((uint32_t*)a1, (unsigned int*)&a2, &a3);
 		if (*(uint16_t*)(a1 + 108)) {
 			v17 = nox_xxx_guiFontHeightMB_43F320(*(uint32_t*)(a1 + 236));
 			v18 = a3 + v17 + 1;
@@ -682,6 +682,8 @@ short* sub_4A3090(short* a1, int a2) {
 //----- (004A30D0) --------------------------------------------------------
 uintptr_t nox_xxx_wndListboxProcPre_4A30D0(nox_window* win, unsigned int ev, uintptr_t a3, uintptr_t a4) {
 	return nox_xxx_wndListboxProcPre_4A30D0_go(win, (int)ev, a3, a4);
+
+#if 0 // Retained PE32 body; the native Go implementation above owns this entry.
 
 	uint32_t* v9;  // eax
 	uint32_t* v10; // eax
@@ -1112,6 +1114,7 @@ uintptr_t nox_xxx_wndListboxProcPre_4A30D0(nox_window* win, unsigned int ev, uin
 		return 1;
 	}
 	return 0;
+#endif
 }
 
 //----- (004A3A70) --------------------------------------------------------
@@ -1240,7 +1243,7 @@ int nox_xxx_wndListboxDrawNoImage_4A3C50(uint32_t* a1, int a2) {
 	v2 = a1[8];
 	v20 = *(uint32_t*)(a2 + 28);
 	v23 = *(uint32_t*)(a2 + 20);
-	nox_client_wndGetPosition_46AA60(a1, &xLeft, &yTop);
+	nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&xLeft, (unsigned int*)&yTop);
 	v3 = nox_xxx_guiFontHeightMB_43F320(*(uint32_t*)(a2 + 200));
 	v4 = a1[3];
 	v22 = a1[2];
@@ -1333,7 +1336,7 @@ LABEL_13:
 					--v15;
 					nox_xxx_drawGetStringSize_43F840(v17, (unsigned short*)v30, &v29, 0, 0);
 				} while (v29 > v16);
-				nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), v30, xLeft + 5, v21 + 2, v16, v27);
+				nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), (wchar2_t*)v30, xLeft + 5, v21 + 2, v16, v27);
 				v9 = i;
 				v12 = v27;
 			} else {
@@ -1388,7 +1391,7 @@ int nox_xxx_wndListboxDrawWithImage_4A3FC0(uint32_t* a1, int a2) {
 	v3 = a1[8];
 	v28 = *(uint32_t*)(a2 + 28);
 	i = v2;
-	nox_client_wndGetPosition_46AA60(a1, &xLeft, &yTop);
+	nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&xLeft, (unsigned int*)&yTop);
 	v4 = a1[3];
 	v22 = a1[2];
 	if ((a1[1] & 0x2000) == 0x2000) {
@@ -1475,7 +1478,7 @@ int nox_xxx_wndListboxDrawWithImage_4A3FC0(uint32_t* a1, int a2) {
 					--v16;
 					nox_xxx_drawGetStringSize_43F840(v18, (unsigned short*)v30, &v29, 0, 0);
 				} while (v29 > v17);
-				nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), v30, xLeft + 5, v25 + 2, v17, v28);
+				nox_xxx_drawStringWrap_43FAF0(*(uint32_t*)(a2 + 200), (wchar2_t*)v30, xLeft + 5, v25 + 2, v17, v28);
 				v10 = i;
 				v13 = v28;
 			} else {
@@ -2427,7 +2430,7 @@ int nox_xxx_wndRadioButtonDrawNoImg_4A8820(int a1, int a2) {
 	v3 = a1;
 	v12 = *(uint32_t*)(a2 + 28);
 	a2 = *(uint32_t*)(a2 + 20);
-	nox_client_wndGetPosition_46AA60((uint32_t*)a1, &v14, &v15);
+	nox_client_wndGetPosition_46AA60((uint32_t*)a1, (unsigned int*)&v14, (unsigned int*)&v15);
 	if (*(uint8_t*)(v3 + 4) & 8) {
 		if (*(uint8_t*)v2 & 2) {
 			v12 = *(uint32_t*)(v2 + 36);
@@ -2493,7 +2496,7 @@ int nox_xxx_wndRadioButtonDraw_4A8A20(int a1, int a2) {
 	v2 = a2;
 	v3 = *(uint32_t*)(a2 + 32);
 	v4 = *(uint32_t*)(a2 + 24);
-	nox_client_wndGetPosition_46AA60((uint32_t*)a1, &v13, &v14);
+	nox_client_wndGetPosition_46AA60((uint32_t*)a1, (unsigned int*)&v13, (unsigned int*)&v14);
 	if (*(uint8_t*)(a1 + 4) & 8) {
 		if (*(uint8_t*)v2 & 2) {
 			v3 = *(uint32_t*)(v2 + 40);
@@ -3010,11 +3013,11 @@ nox_drawable* sub_4ABDA0(int a1, short a2, short a3, uint32_t* a4) {
 	if (a3 >= 10) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v12, 1u);
 		++*a4;
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v19, (unsigned char)v12);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v19, (unsigned char)v12);
 		*a4 += (unsigned char)v12;
 	}
 	if (a3 >= 20) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v10, 1u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)&v10, 1u);
 		++*a4;
 	}
 	if (a3 >= 30) {
@@ -3272,7 +3275,7 @@ int sub_4AC7B0(int a1) {
 
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v12, 2u);
 	v11 = 2;
-	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v12, &v11);
+	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v12, (uint32_t*)&v11);
 	v2 = v1;
 	if (v1) {
 		v4 = v1->flags28;
@@ -3339,7 +3342,7 @@ int nox_xxx_colorLightClientLoad_4AC980(int a1) {
 
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 2u);
 	v7 = 2;
-	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v8, &v7);
+	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v8, (uint32_t*)&v7);
 	v2 = v1;
 	if (!v1) {
 		nox_xxx_spriteLoadError_4356E0();
@@ -3482,7 +3485,7 @@ int nox_xxx_cliLoadTeamBase_4ACE00(int a1) {
 
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 2u);
 	v6 = 2;
-	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v8, &v6);
+	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v8, (uint32_t*)&v6);
 	v2 = v1;
 	if (v1) {
 		*(uint32_t*)(v1 + 288) = 0;
@@ -3490,7 +3493,7 @@ int nox_xxx_cliLoadTeamBase_4ACE00(int a1) {
 		for (i = 0; i < 16; i += 4) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v7, 1u);
 			++v6;
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v9, (unsigned char)v7);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v9, (unsigned char)v7);
 			v6 += (unsigned char)v7;
 			v9[(unsigned char)v7] = 0;
 			v5 = nox_xxx_modifGetIdByName_413290(v9);
@@ -3520,7 +3523,7 @@ int sub_4ACEF0(int a1) {
 
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v7, 2u);
 	v5 = 2;
-	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v7, &v5);
+	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v7, (uint32_t*)&v5);
 	v2 = v1;
 	if (v1) {
 		v4 = &v1->field_108_1;
@@ -3572,7 +3575,7 @@ int sub_4AD040(int a1) {
 
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v4, 2u);
 	v3 = 2;
-	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v4, &v3);
+	v1 = nox_xxx_spriteLoadFromMap_4AC020(a1, v4, (uint32_t*)&v3);
 	if (v1) {
 		if ((short)v4 >= 61) {
 			LOBYTE(a1) = 0;
@@ -5110,7 +5113,7 @@ uint32_t* sub_4B8E10(uint32_t* a1, char* a2) {
 		} while (v8 < 7);
 		v10 = a1;
 		v11 = 3 * v3;
-		v12 = v7 + 9;
+		v12 = (int*)(v7 + 9);
 		v13 = 4;
 		v14 = (uint32_t**)&a1[2 * v11 + 1];
 		do {

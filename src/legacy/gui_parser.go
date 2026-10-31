@@ -14,7 +14,11 @@ var (
 	Nox_new_window_from_file func(name string, fnc gui.WindowFunc) *gui.Window
 )
 
-//export nox_new_window_from_file
+//export nox_new_window_from_file_go
+func nox_new_window_from_file_go(cname *C.char, fnc unsafe.Pointer) *nox_window {
+	return nox_new_window_from_file(cname, fnc)
+}
+
 func nox_new_window_from_file(cname *C.char, fnc unsafe.Pointer) *nox_window {
 	win := Nox_new_window_from_file(GoString(cname), gui.WrapFuncC(fnc))
 	if win == nil {

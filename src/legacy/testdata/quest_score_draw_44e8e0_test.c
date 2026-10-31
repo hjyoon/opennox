@@ -96,7 +96,7 @@ uint32_t* mem_getU32Ptr(uintptr_t base, uintptr_t off) { return mem_getPtr(base,
 int32_t* mem_getI32Ptr(uintptr_t base, uintptr_t off) { return mem_getPtr(base,off); }
 uint32_t gameFrame(void) { return frame; }
 int nox_float2int(float value) { return (int)value; }
-wchar2_t* nox_strman_loadString_40F1D0(char* key, char** out, char* file, int line) {
+wchar2_t* nox_strman_loadString_40F1D0(const char* key, char** out, const char* file, int line) {
 	if (out || strcmp(file,source_file)) abort();
 	for (int i=0;i<12;i++) if (strcmp(key,keys[i])==0) {
 		if (line!=lines[i]) abort();
@@ -105,7 +105,7 @@ wchar2_t* nox_strman_loadString_40F1D0(char* key, char** out, char* file, int li
 	abort();
 }
 void nox_xxx_drawSetTextColor_434390(int color) { current_color=color; }
-int nox_xxx_drawGetStringSize_43F840(void* font, wchar2_t* text, int* width, int* height, int flags) {
+int nox_xxx_drawGetStringSize_43F840(void* font, const wchar2_t* text, int* width, int* height, int flags) {
 	if (font!=draw_data->font || flags) abort();
 	measure_count++;
 	// A deterministic font metric lets the row test isolate pointer iteration,

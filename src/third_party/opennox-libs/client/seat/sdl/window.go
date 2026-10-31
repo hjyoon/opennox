@@ -98,6 +98,15 @@ func (win *Window) ScreenSize() image.Point {
 	}
 }
 
+// LogicalSize returns the coordinates used by SDL's window and mouse events.
+func (win *Window) LogicalSize() image.Point {
+	if win.win == nil {
+		return image.Point{}
+	}
+	w, h := win.win.GetSize()
+	return image.Pt(int(w), int(h))
+}
+
 func (win *Window) screenPos() image.Point {
 	x, y := win.win.GetPosition()
 	return image.Point{

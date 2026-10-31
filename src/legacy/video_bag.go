@@ -110,7 +110,11 @@ func nox_xxx_readImgMB_42FAA0(known_idx C.int, typ C.char, cname2 *C.char) *nox_
 	return (*nox_video_bag_image_t)(GetClient().R2().GetBag().ImageRef(int(known_idx), byte(typ), GoString(cname2)).C())
 }
 
-//export nox_xxx_gLoadImg_42F970
+//export nox_xxx_gLoadImg_42F970_go
+func nox_xxx_gLoadImg_42F970_go(name *C.char) *nox_video_bag_image_t {
+	return nox_xxx_gLoadImg_42F970(name)
+}
+
 func nox_xxx_gLoadImg_42F970(name *C.char) *nox_video_bag_image_t {
 	return (*nox_video_bag_image_t)(Nox_xxx_gLoadImg(GoString(name)).C())
 }

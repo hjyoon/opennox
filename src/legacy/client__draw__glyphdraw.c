@@ -43,7 +43,7 @@ int nox_thing_glyph_draw(int* a1, nox_drawable* dr) {
 LABEL_10:
 	nox_client_drawEnableAlpha_434560(1);
 	nox_client_drawSetAlpha_434580((unsigned char)alpha);
-	v7 = nox_thing_animate_draw(a1, dr);
+	v7 = nox_thing_animate_draw((uint32_t*)a1, dr);
 	nox_client_drawEnableAlpha_434560(0);
 	nox_xxx_draw_434600(0);
 	return v7;

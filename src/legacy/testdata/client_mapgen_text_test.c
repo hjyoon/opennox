@@ -25,7 +25,7 @@ static void fail(const char* why) {
 	fprintf(stderr,"case=%u event=%u cached=%p: %s\n",cases,event_index,cached_text,why);
 	exit(1);
 }
-static int kind(void* text) {
+static int kind(const void* text) {
 	for (int i=0;i<5;i++) if (texts[i]==text) return i;
 	fail("native cached UTF-16 pointer differs from original semantic text");
 	return -1;
@@ -53,12 +53,12 @@ void nox_xxx_clientPlaySoundSpecial_452D80(int a,int b) { emit(1,a,b,0,0); }
 int sub_430B50(int a,int b,int c,int d) { emit(2,a,b,c,d);return -1; }
 void nox_client_clearScreen_440900(void) { emit(3,0,0,0,0); }
 void nox_client_drawImageAt_47D2C0(nox_video_bag_image_t* image,int x,int y) { emit(4,(uint32_t)(uintptr_t)image,x,y,0); }
-wchar2_t* nox_strman_loadString_40F1D0(char* name,char** extra,char* source,int line) {
+wchar2_t* nox_strman_loadString_40F1D0(const char* name,char** extra,const char* source,int line) {
 	int k=!strcmp(name,"Generating") ? 1 : !strcmp(name,"Assembling") ? 2 : !strcmp(name,"Populating") ? 3 : 0;
 	if (!k || extra || strcmp(source,"C:\\NoxPost\\src\\client\\Gui\\guigen.c")) fail("original localization key/source");
 	emit(5,k,line,0,0);return texts[k];
 }
-int nox_xxx_drawGetStringSize_43F840(void* font,wchar2_t* text,int* width,int* height,int max_width) {
+int nox_xxx_drawGetStringSize_43F840(void* font,const wchar2_t* text,int* width,int* height,int max_width) {
 	if (font || !width || height || max_width) fail("original measure contract");
 	emit(6,kind(text),0,0,0);
 	*width=(int)input[6];

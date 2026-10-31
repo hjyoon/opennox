@@ -75,7 +75,7 @@ void sub_42EDC0();
 nox_video_bag_image_t* nox_xxx_readImgMB_42FAA0(int known_idx, char a2, char* a3);
 void* nox_video_getImagePixdata_42FB30(nox_video_bag_image_t* img);
 nox_things_imageRef_t* nox_xxx_gLoadAnim_42FA20(char* a1);
-nox_video_bag_image_t* nox_xxx_gLoadImg_42F970(char* name);
+nox_video_bag_image_t* nox_xxx_gLoadImg_42F970(const char* name);
 int sub_430AA0(int a1);
 int nox_client_mousePriKey_430AF0();
 int nox_xxx_cursor_430B00();

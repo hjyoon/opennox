@@ -586,12 +586,20 @@ func nox_xxx_playerSetState_4FA020(a1 *nox_object_t, a2_cgo int32) int32 {
 	return int32(bool2int(Nox_xxx_playerSetState_4FA020(asObjectS(a1), server.PlayerState(a2))))
 }
 
-//export nox_xxx_weaponInventoryEquipFlags_415820
+//export nox_xxx_weaponInventoryEquipFlags_415820_go
+func nox_xxx_weaponInventoryEquipFlags_415820_go(obj *nox_object_t) int32 {
+	return nox_xxx_weaponInventoryEquipFlags_415820(obj)
+}
+
 func nox_xxx_weaponInventoryEquipFlags_415820(obj *nox_object_t) int32 {
 	return int32(int(GetServer().S().Weapons.Nox_xxx_weaponInventoryEquipFlags_415820(asObjectS(obj))))
 }
 
-//export nox_xxx_unitArmorInventoryEquipFlags_415C70
+//export nox_xxx_unitArmorInventoryEquipFlags_415C70_go
+func nox_xxx_unitArmorInventoryEquipFlags_415C70_go(obj *nox_object_t) int32 {
+	return nox_xxx_unitArmorInventoryEquipFlags_415C70(obj)
+}
+
 func nox_xxx_unitArmorInventoryEquipFlags_415C70(obj *nox_object_t) int32 {
 	return int32(int(GetServer().S().Armor.Nox_xxx_unitArmorInventoryEquipFlags_415C70(asObjectS(obj))))
 }

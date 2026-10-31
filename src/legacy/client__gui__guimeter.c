@@ -52,8 +52,8 @@ int nox_client_guiHealthManaState(int meter_index, nox_client_gui_health_mana_st
 	out->primary_color = meter->color_1;
 	out->secondary_color = meter->color_2;
 	out->poisoned = dword_5d4594_1096264 != 0;
-	nox_client_wndGetPosition_46AA60(meter->win, &out->meter_x, &out->meter_y);
-	nox_client_wndGetPosition_46AA60(dword_5d4594_1090276, &out->root_x, &out->root_y);
+	nox_client_wndGetPosition_46AA60(meter->win, (unsigned int*)&out->meter_x, (unsigned int*)&out->meter_y);
+	nox_client_wndGetPosition_46AA60(dword_5d4594_1090276, (unsigned int*)&out->root_x, (unsigned int*)&out->root_y);
 	out->poison_tube_ready = nox_gui_health_mana_poison_tube != NULL;
 	return 1;
 }
@@ -288,10 +288,10 @@ int nox_xxx_guiHealthManaTubeDraw_471D10(nox_window* win, nox_window_data* draw_
 	v2 = v18;
 	meter = &nox_windows_arr_1093036[v18];
 	if (!v18 && dword_5d4594_1096264) {
-		nox_client_wndGetPosition_46AA60(dword_5d4594_1090276, &xLeft, &yTop);
+		nox_client_wndGetPosition_46AA60(dword_5d4594_1090276, (unsigned int*)&xLeft, (unsigned int*)&yTop);
 		nox_client_drawImageAt_47D2C0(nox_gui_health_mana_poison_tube, xLeft, yTop);
 	}
-	nox_client_wndGetPosition_46AA60(win, &xLeft, &yTop);
+	nox_client_wndGetPosition_46AA60(win, (unsigned int*)&xLeft, (unsigned int*)&yTop);
 	xLeft += 5;
 	if (get_dword_5d4594_3799468()) {
 		nox_client_drawSetColor_434460(nox_color_black_2650656);

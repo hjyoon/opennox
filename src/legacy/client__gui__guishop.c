@@ -88,7 +88,7 @@ void sub_4788F0(int a1, int a2) {
 		v3[1] = 23;
 		*(uint16_t*)&v3[2] = a1;
 		v3[4] = a2;
-		nox_netlist_addToMsgListCli_40EBC0(31, 0, v3, 5);
+		nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v3, 5);
 	} else {
 		nox_xxx_clientPlaySoundSpecial_452D80(925, 100);
 		v2 = nox_strman_loadString_40F1D0("pickup.c:CarryingTooMuch", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIShop.c",
@@ -107,7 +107,7 @@ wchar2_t* sub_478B10(int2* a1) {
 	int v6;          // [esp+10h] [ebp-4h]
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
-	nox_client_wndGetPosition_46AA60(v1, &v5, &v6);
+	nox_client_wndGetPosition_46AA60(v1, (unsigned int*)&v5, (unsigned int*)&v6);
 	nox_window_get_size(v1, &v4, &v3);
 	nox_client_drawImageAt_47D2C0(dword_5d4594_1098456, a1->field_0, a1->field_4);
 	result = dword_5d4594_1098596;
@@ -130,7 +130,7 @@ wchar2_t* sub_478BC0(int* a1) {
 	int v6;          // [esp+10h] [ebp-4h]
 
 	v1 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1098576, 3806);
-	nox_client_wndGetPosition_46AA60(v1, &v5, &v6);
+	nox_client_wndGetPosition_46AA60(v1, (unsigned int*)&v5, (unsigned int*)&v6);
 	nox_window_get_size(v1, &v4, &v3);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 	nox_client_drawImageAt_47D2C0(dword_5d4594_1098456, *a1, a1[1]);

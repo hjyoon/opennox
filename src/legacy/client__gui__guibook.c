@@ -137,7 +137,7 @@ int nox_xxx_bookDrawList_45BD40(nox_window* a1) {
 	wchar2_t v71[256];       // [esp+2Ch] [ebp-200h]
 	nox_playerInfo* player = (nox_playerInfo*)dword_5d4594_1047516;
 
-	nox_gui_getWindowOffs_46AA20(a1, &v66, &v67);
+	nox_gui_getWindowOffs_46AA20(a1, (unsigned int*)&v66, (unsigned int*)&v67);
 	v1 = v66 - 24;
 	v2 = v67 - 76;
 	v3 = nox_xxx_guiFontHeightMB_43F320(0);
@@ -204,7 +204,7 @@ int nox_xxx_bookDrawList_45BD40(nox_window* a1) {
 					v60 = v6 - v65 / 2;
 					v11 = (short*)nox_xxx_abilityGetName_0_425260(*getMemU32Ptr(0x5D4594, 1046960 + 4 * v8));
 				}
-				nox_xxx_drawString_43F6E0(0, v11, v60, v62);
+				nox_xxx_drawString_43F6E0(0, (wchar2_t*)v11, v60, v62);
 				v7 += dword_5d4594_1046656;
 				if (++v5 >= 2 * *(uint32_t*)WideCharStr) {
 					break;
@@ -451,7 +451,7 @@ int nox_xxx_bookDrawFn_45C7D0(uint32_t* a1) {
 		nox_xxx_bookGet_430B40_get_mouse_prev_seq() - dword_5d4594_1046648 < (unsigned int)(2 * gameFPS())) {
 		return 1;
 	}
-	nox_client_wndGetPosition_46AA60(a1, &v25, &v24);
+	nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&v25, (unsigned int*)&v24);
 	if (dword_5d4594_1046648) {
 		v3 = 50;
 		do {

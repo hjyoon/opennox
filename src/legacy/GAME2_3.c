@@ -1201,7 +1201,7 @@ int sub_48E5C0(uint32_t* a1, int a2, int a3) {
 	v4 = a3 + a1[169];
 	a1a.field_8 = a2 + v3;
 	a1a.field_C = v4;
-	sub_48E000(&a1a, &a2a);
+	sub_48E000(&a1a, (uint32_t*)&a2a);
 	if (!a2a) {
 		return 0;
 	}
@@ -1634,7 +1634,7 @@ int sub_495210(uint8_t* data) {
 			goto LABEL_9;
 		}
 	}
-LABEL_9:
+LABEL_9:;
 	int offset = 24 * v1;
 	*getMemU32Ptr(0x5D4594, 1201428 + offset) = nox_deathmsg_read_u16(data + 2);
 	*getMemU32Ptr(0x5D4594, 1201432 + offset) = nox_deathmsg_read_u16(data + 4);
@@ -1814,14 +1814,14 @@ LABEL_28:
 		if (*a1 == nox_player_netCode_85319C) {
 			nox_xxx_drawSetTextColor_434390(dword_8531A0_2572);
 		}
-		v15 = nox_xxx_drawString_43F6E0(v24, (short*)v29, v14 / 2, v17);
+		v15 = nox_xxx_drawString_43F6E0(v24, (wchar2_t*)v29, v14 / 2, v17);
 	}
 	if (a1[1]) {
 		nox_xxx_drawSetTextColor_434390(*getMemIntPtr(0x5D4594, 2597996));
 		if (a1[1] == nox_player_netCode_85319C) {
 			nox_xxx_drawSetTextColor_434390(dword_8531A0_2572);
 		}
-		v15 = nox_xxx_drawString_43F6E0(v24, (short*)v28, v15, v17);
+		v15 = nox_xxx_drawString_43F6E0(v24, (wchar2_t*)v28, v15, v17);
 	}
 	v18 = v15 + 5;
 	if (v8) {
@@ -1834,7 +1834,7 @@ LABEL_28:
 		if (a1[2] == nox_player_netCode_85319C) {
 			nox_xxx_drawSetTextColor_434390(dword_8531A0_2572);
 		}
-		result = (int*)nox_xxx_drawString_43F6E0(v24, (short*)v30, v20, v17);
+		result = (int*)nox_xxx_drawString_43F6E0(v24, (wchar2_t*)v30, v20, v17);
 	}
 	return result;
 }

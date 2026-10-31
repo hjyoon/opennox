@@ -233,7 +233,7 @@ nox_list_item_t* sub_4A0390(void);
 int sub_4A0410(const char* a1, short a2);
 nox_gui_server_ent_t* sub_4A0490(int a1);
 nox_gui_server_ent_t* sub_4A04C0(int a1);
-nox_window* nox_new_window_from_file(char* cname, void* fnc);
+nox_window* nox_new_window_from_file(const char* cname, void* fnc);
 
 unsigned sub_48C730(unsigned int a1);
 

@@ -50,7 +50,7 @@ char* nox_common_playerInfoGetByID_417040(int code) {
 	return NULL;
 }
 
-wchar2_t* nox_strman_loadString_40F1D0(char* name, char** extra, char* file, int line) {
+wchar2_t* nox_strman_loadString_40F1D0(const char* name, char** extra, const char* file, int line) {
 	(void)extra;
 	(void)file;
 	trace[trace_count++] = -line;

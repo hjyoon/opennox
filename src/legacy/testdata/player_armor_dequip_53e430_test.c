@@ -35,7 +35,7 @@ static int sub_53E3A0(nox_object_t* owner, nox_object_t* item) {
 	return -7;
 }
 
-static int nox_xxx_unitArmorInventoryEquipFlags_415C70(nox_object_t* item) {
+static int nox_xxx_unitArmorInventoryEquipFlags_415C70(const nox_object_t* item) {
 	if (item != expected_item || (item->obj_flags & UINT32_C(0x10000100))) failure = 1;
 	sequence = sequence * 10U + 1U;
 	return UINT32_C(0x2000000);

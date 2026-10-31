@@ -553,7 +553,7 @@ int nox_xxx_map_51E140() {
 	if (nox_xxx_mapWriteSectionsMB_426E20(0)) {
 		nox_xxx_map_5004F0();
 		v2 = 0;
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v2, 1u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)&v2, 1u);
 		result = 1;
 	} else {
 		nox_xxx_cryptClose_4269F0();
@@ -996,7 +996,7 @@ int nox_mapgenReadAlgDataNative_51EBB0(uint8_t* a1, FILE* a2) {
 		if (!nox_strcmpi("END", (const char*)getMemAt(0x5D4594, 2487264))) {
 			return 1;
 		}
-		if (!nox_xxx_mapGenReadLine_51E540(a2, v7)) {
+		if (!nox_xxx_mapGenReadLine_51E540(a2, (uint8_t*)v7)) {
 			break;
 		}
 		if (nox_strcmpi("midHallLength", (const char*)getMemAt(0x5D4594, 2487264))) {
@@ -3776,10 +3776,10 @@ char sub_522CA0(int a1, float* a2) {
 
 //----- (00522D30) --------------------------------------------------------
 float* nox_mapgenConnectRoomLinesNative_522D30(uint8_t* theme) {
-	sub_51D0F0(128);
+	sub_51D0F0((char)0x80);
 	for (uint8_t* room = (uint8_t*)nox_xxx_mapGenGetTopRoom_521710(); room;
 		 room = (uint8_t*)nox_mapgenRoomNextNative_521720(room)) {
-		nox_xxx_mapGenSetFlags_5235F0(156);
+		nox_xxx_mapGenSetFlags_5235F0((char)0x9C);
 		if (*(uint32_t*)room == 1) {
 			for (int direction = 0; direction < 4; ++direction) {
 				int count = room[216 + direction];
@@ -3859,7 +3859,7 @@ unsigned char* nox_mapgenConnectRoomPointsNative_522F40(uint8_t* theme) {
 		if (*(uint32_t*)room != 1) {
 			continue;
 		}
-		nox_xxx_mapGenSetFlags_5235F0(156);
+		nox_xxx_mapGenSetFlags_5235F0((char)0x9C);
 		int count = room[352];
 		if (count > 16) {
 			count = 16;
@@ -4003,7 +4003,7 @@ int nox_xxx_netClientPredictLinear_523530(int a1) {
 	v14[13] = (long long)v11;
 	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
 	for (i = result; result; i = result) {
-		nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(i + 748) + 276) + 2064), 1, v14,
+		nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(i + 748) + 276) + 2064), 1, (unsigned char*)v14,
 										   14);
 		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
 	}
@@ -5771,7 +5771,7 @@ void nox_mapgenComputeRoomDistancesNative_5259F0(uint8_t* room, uint8_t* parent,
 	if (!room) {
 		return;
 	}
-	nox_xxx_mapGenSetFlags_5235F0(156);
+	nox_xxx_mapGenSetFlags_5235F0((char)0x9C);
 	double edge_distance;
 	if (parent) {
 		switch (*(uint32_t*)parent) {
@@ -6695,14 +6695,14 @@ int sub_527380(float* a1) {
 	v3 = (long long)v1;
 	v9 = (long long)v1;
 	if (v2 > 0 && v2 < 255 && (int)v3 > 0 && (int)v3 < 255) {
-		sub_527450(&v8);
+		sub_527450((uint32_t*)&v8);
 		LODWORD(v3) = v9;
 		v2 = v8;
 	}
 	v4 = v2 - 1;
 	v8 = v4;
 	if (v4 > 0 && v4 < 255 && (int)v3 > 0 && (int)v3 < 255) {
-		sub_527450(&v8);
+		sub_527450((uint32_t*)&v8);
 		LODWORD(v3) = v9;
 		v4 = v8;
 	}
@@ -6711,7 +6711,7 @@ int sub_527380(float* a1) {
 	v8 = v5;
 	v9 = v6;
 	if (v5 > 0 && v5 < 255 && v6 > 0 && v6 < 255) {
-		sub_527450(&v8);
+		sub_527450((uint32_t*)&v8);
 	}
 	return 1;
 }
@@ -7677,14 +7677,14 @@ int nox_xxx_monsterCmdSend_528BD0(int unit, int source, const char* command, sho
 	if (source) {
 		if (*(uint8_t*)(source + 8) & 4) { // if source is player / local player ?
 			result = nox_netlist_addToMsgListCli_40EBC0(
-				*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(source + 748) + 276) + 2064), 1, v10,
+				*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(source + 748) + 276) + 2064), 1, (unsigned char*)v10,
 				(unsigned char)v10[8] + 11);
 		}
 	} else {
 		result = nox_xxx_getFirstPlayerUnit_4DA7C0();
 		for (i = result; result; i = result) {
 			nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(i + 748) + 276) + 2064), 1,
-											   v10, (unsigned char)v10[8] + 11);
+											   (unsigned char*)v10, (unsigned char)v10[8] + 11);
 			result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
 		}
 	}
@@ -7701,7 +7701,7 @@ int nox_xxx_destroyEveryChatMB_528D60() {
 	*(uint16_t*)&v2[1] = -8531;
 	result = nox_xxx_getFirstPlayerUnit_4DA7C0();
 	for (i = result; result; i = result) {
-		nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(i + 748) + 276) + 2064), 1, v2,
+		nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(*(uint32_t*)(i + 748) + 276) + 2064), 1, (unsigned char*)v2,
 										   3);
 		result = nox_xxx_getNextPlayerUnit_4DA7F0(i);
 	}
@@ -8323,7 +8323,7 @@ int nox_xxx_XFer_ActionData_529CE0(int a1) {
 	if (nox_common_gameFlags_check_40A5C0(1) && !nox_common_gameFlags_check_40A5C0(0x400000)) {
 		v19 = 1;
 	}
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v19, 1u);
+	nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)&v19, 1u);
 	if (!(v19 || (uint16_t)v21 == 1)) {
 		return 1;
 	}
@@ -8365,7 +8365,7 @@ LABEL_67:
 	strcpy(v24, nox_xxx_getSndName_40AF80(*(uint32_t*)(v1 + 388)));
 	LOBYTE(v20) = strlen(v24);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v20, 1u);
-	nox_xxx_fileReadWrite_426AC0_file3_fread(v24, (unsigned char)v20);
+	nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v24, (unsigned char)v20);
 	v24[(unsigned char)v20] = 0;
 	*(uint32_t*)(v1 + 388) = nox_xxx_utilFindSound_40AF50(v24);
 	nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v1 + 396), 8u);
@@ -8548,7 +8548,7 @@ int sub_52A440(int a1, int a2, int a3) {
 	strcpy(v11, sub_534650(*(uint32_t*)a2));
 	LOBYTE(v10) = strlen(v11);
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v10, 1u);
-	nox_xxx_fileReadWrite_426AC0_file3_fread(v11, (unsigned char)v10);
+	nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v11, (unsigned char)v10);
 	v11[(unsigned char)v10] = 0;
 	v3 = nox_xxx_actionByName_534670(v11);
 	*(uint32_t*)a2 = v3;
@@ -8729,7 +8729,7 @@ size_t nox_xxx_readNPCVoiceSet_52AD10(int a1) {
 
 	if (nox_crypt_IsReadOnly()) {
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 1u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v6, (unsigned char)v5);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v6, (unsigned char)v5);
 		v6[(unsigned char)v5] = 0;
 		v4 = nox_xxx_getDefaultSoundSet_424350(v6);
 		result = nox_xxx_setNPCVoiceSet_424320(a1, (int)v4);
@@ -8739,7 +8739,8 @@ size_t nox_xxx_readNPCVoiceSet_52AD10(int a1) {
 		if (v1) {
 			LOBYTE(v5) = strlen(*v1);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 1u);
-			result = nox_xxx_fileReadWrite_426AC0_file3_fread(*v2, (unsigned char)v5);
+			// Write mode reads the immutable sound-set name into the file.
+			result = nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)*v2, (unsigned char)v5);
 		} else {
 			LOBYTE(v5) = 0;
 			result = nox_xxx_fileReadWrite_426AC0_file3_fread(&v5, 1u);
@@ -9285,7 +9286,7 @@ int sub_52BAF0(int a1) {
 		if (v5 <= 0) {
 			goto LABEL_14;
 		}
-		v6 = v3 + 1;
+		v6 = (int*)(v3 + 1);
 		do {
 			if (*getMemU32Ptr(0x587000, 255608 + 4 * (v4 + 4 * *v3)) == 1) {
 				if (*v6) {

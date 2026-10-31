@@ -32,7 +32,11 @@ func init() {
 
 type nox_thing = C.nox_thing
 
-//export nox_xxx_getTTByNameSpriteMB_44CFC0
+//export nox_xxx_getTTByNameSpriteMB_44CFC0_go
+func nox_xxx_getTTByNameSpriteMB_44CFC0_go(cstr *C.char) int32 {
+	return nox_xxx_getTTByNameSpriteMB_44CFC0(cstr)
+}
+
 func nox_xxx_getTTByNameSpriteMB_44CFC0(cstr *C.char) int32 {
 	id := GoString(cstr)
 	return int32(GetClient().Cli().Things.IndByID(id))

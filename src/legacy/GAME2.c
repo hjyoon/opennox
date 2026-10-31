@@ -2871,7 +2871,7 @@ int sub_455CD0(nox_window* win, nox_window_data* draw) {
 	int v7;           // [esp+8h] [ebp-4h]
 	unsigned char flag_index = win->id - 8811;
 
-	nox_client_wndGetPosition_46AA60(win, &v6, &v7);
+	nox_client_wndGetPosition_46AA60(win, (unsigned int*)&v6, (unsigned int*)&v7);
 	if (getMemByte(0x5D4594, 1045612 + flag_index) == 1) {
 		image = draw->en_image;
 	} else if (getMemByte(0x5D4594, 1045612 + flag_index) == 2) {
@@ -2989,7 +2989,7 @@ int sub_4560D0(nox_window* win, nox_window_data* draw) {
 	int v4; // [esp+4h] [ebp-8h]
 	int v5; // [esp+8h] [ebp-4h]
 
-	nox_client_wndGetPosition_46AA60(win, &v4, &v5);
+	nox_client_wndGetPosition_46AA60(win, (unsigned int*)&v4, (unsigned int*)&v5);
 	if (draw->bg_image) {
 		nox_client_drawImageAt_47D2C0(draw->bg_image, v4, v5);
 	}
@@ -3494,7 +3494,7 @@ int nox_xxx_windowServerOptionsDrawProc_458500(nox_window* a1, int a2) {
 	int v5;       // [esp+Ch] [ebp-4h]
 
 	nox_point mpos = nox_client_getMousePos_4309F0();
-	nox_client_wndGetPosition_46AA60(a1, &xLeft, &v5);
+	nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&xLeft, (unsigned int*)&v5);
 	nox_client_drawRectFilledAlpha_49CF10(xLeft, v5 + 25, (int)a1->width, (int)a1->height - 25);
 	v2 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_1046492, 10120);
 	if (!wndIsShown_nox_xxx_wndIsShown_46ACC0(v2) && !nox_xxx_wndPointInWnd_46AAB0(v2, mpos.x, mpos.y)) {
@@ -4337,7 +4337,7 @@ int nox_xxx_bookListWndProc_45B5F0(nox_window* a1, unsigned int a2, unsigned int
 	}
 	dword_5d4594_1046656 = nox_xxx_guiFontHeightMB_43F320(0) + 2;
 	v5 = 141 / dword_5d4594_1046656 - 1;
-	nox_gui_getWindowOffs_46AA20(a1, &v14, &a3);
+	nox_gui_getWindowOffs_46AA20(a1, (unsigned int*)&v14, &a3);
 	switch (a2) {
 	case 5u:
 		if (nox_client_localPlayerHasFlags30(2)) {
@@ -4603,7 +4603,7 @@ int nox_xxx_bookDrawIconFn_45CB30(uint32_t* a1) {
 	}
 	v2 = v1;
 	if (v1) {
-		nox_client_wndGetPosition_46AA60(a1, &v5, &v4);
+		nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&v5, (unsigned int*)&v4);
 		nox_client_drawImageAt_47D2C0(v2, v5, v4);
 	}
 	return 1;
@@ -5253,7 +5253,7 @@ int nox_xxx_clientSendSpell_45DB20(char* a1, int a2, char a3) {
 			v5 += 4;
 		} while (v4 < 5);
 		v6[21] = a3;
-		result = nox_netlist_addToMsgListCli_40EBC0(31, 0, v6, 22);
+		result = nox_netlist_addToMsgListCli_40EBC0(31, 0, (unsigned char*)v6, 22);
 	}
 	return result;
 }
@@ -5719,7 +5719,7 @@ int sub_45F5D0(nox_window* win, nox_window_data* draw_data) {
 	v2 = (short*)sub_42E8E0(win->field_92 + 28, 1);
 	if (v2) {
 		nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-		nox_xxx_drawString_43F6E0(nox_quickbar_font, v2, x, y);
+		nox_xxx_drawString_43F6E0(nox_quickbar_font, (wchar2_t*)v2, x, y);
 	}
 	return 1;
 }
@@ -6417,7 +6417,7 @@ int sub_460A10(void* a1, int a2, int a3, char a4) {
 			do {
 				if (nox_crypt_IsReadOnly() == 1) {
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&v10, 1u);
-					nox_xxx_fileReadWrite_426AC0_file3_fread(v13, (unsigned char)v10);
+					nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v13, (unsigned char)v10);
 					v13[(unsigned char)v10] = 0;
 					if (a4) {
 						*(uint32_t*)v4 = nox_xxx_spellNameToN_4243F0(v13);
@@ -6436,7 +6436,7 @@ int sub_460A10(void* a1, int a2, int a3, char a4) {
 						v9 = (unsigned char)v10;
 						v6 = nox_xxx_abilityGetName_425250(*(uint32_t*)v4);
 					}
-					nox_xxx_fileReadWrite_426AC0_file3_fread(v6, v9);
+					nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v6, v9);
 				}
 				nox_xxx_fileReadWrite_426AC0_file3_fread((uint8_t*)(v4 + 4), 1u);
 				v4 += 8;

@@ -48,7 +48,7 @@ int nox_sprintf(char* dst, const char* fmt, ...) {
 	formats++;
 	return result;
 }
-nox_video_bag_image_t* nox_xxx_gLoadImg_42F970(char* name) {
+nox_video_bag_image_t* nox_xxx_gLoadImg_42F970(const char* name) {
 	if (calls>=36 || strcmp(name,names[calls]) || formats!=calls+1) fail("original load order/name");
 	uint32_t token=policy==2 || (policy==1 && (calls&1)) ? 0 : tokens[calls];
 	calls++;

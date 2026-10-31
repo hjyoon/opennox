@@ -46,7 +46,7 @@ extern uint32_t nox_color_white_2523948;
 
 typedef struct {
 	const char* name;
-	const wchar2_t* title;
+	wchar2_t* title;
 	unsigned int mode;
 	bool hide;
 } nox_gui_gamemode;

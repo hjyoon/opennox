@@ -23294,6 +23294,20 @@
       "size": 330,
       "sha256": "37e57cafcd10b45888313a563149e8db8a77d0fbb3503a144e2cd41890d17133",
       "purpose": "Complete330-byte raw sprite sender: actual unit code first, ordered preloaded DWORD type caches, exact BYTE state reads, native cached-update shaft link and recipient pointer, important/kind1 publication and special fallback return0; excludes6 alignment NOPs. Three service bodies remain declared boundaries."
+    },
+    {
+      "name": "nox_xxx_sprite_4756E0_drawable",
+      "address": "0x004756E0",
+      "size": 82,
+      "sha256": "d62d285c4b6f5c568e5bd145be5550fd888bbc5113f251cecd4e5afe7cc8e317",
+      "purpose": "Complete draw-kind predicate; independent original1280contexts with actual C native callback/class/flags comparison. Callback bodies are compared only, never called."
+    },
+    {
+      "name": "nox_xxx_sprite_475740_drawable",
+      "address": "0x00475740",
+      "size": 84,
+      "sha256": "44a366dfe0030d6758680858f6acec7c201ec103b9767d2ea7ce33bf26bca23d",
+      "purpose": "Complete draw-kind predicate; independent original1280contexts with actual C native callback/class/flags comparison. Callback bodies are compared only, never called."
     }
   ],
   "data": [

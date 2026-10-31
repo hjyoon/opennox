@@ -122,15 +122,47 @@ qualified results. Overall porting remains incomplete.
 
 ### Build warning cleanup in progress
 
-The latest request includes every emitted build warning. The frozen macOS
-normal/strict and product logs contain 438 unique warnings; Windows logs add
-const-qualification and free/nonheap diagnostics. Exact native logs are
-retained before fixes. OpenAL Soft headers now match the linked library;
-legacy initializers and labels use supported C syntax. Further work covers
-explicit byte/UTF-16 storage views, callback declarations and native callback
-loads, retired unreachable C bodies, const input boundaries and SDL linkage.
-No new warning-suppression option is used. Clean builds and runtime checks
-are still required before claiming this warning task complete.
+The latest request includes every emitted compiler and linker warning. The
+frozen macOS normal/strict and product logs contain 438 unique warnings;
+Windows logs add const-qualification and free/nonheap diagnostics. Exact
+native logs are retained before fixes. OpenAL Soft headers now match the
+linked library. C initializers and labels use supported syntax; byte/UTF-16
+storage views and wire-byte constants are explicit, callback declarations
+match their definitions, and native parent-list address arithmetic retains
+the full pointer. The old listbox C body remains archived under `#if 0`
+after its unconditional delegation to Go. Fourteen public C query/string
+interfaces accept const inputs through private cgo bridges, retaining the
+existing Go implementations and public C symbols.
+
+SDL logical dimensions now come from the owning seat. go-sdl2 alone supplies
+the SDL link flags. Existing native SDL input/resize fixtures allocate a
+complete aligned event union before the same native PushEvent call; their
+47 strict events pass with zero diagnostics. No new warning suppression or
+strict exemption is added.
+
+The drawable predicates `4756E0` and `475740` now read callback/class/flags
+at native offsets 328/124/132, replacing PE32 offsets 300/112/120 on ARM64.
+Independent unchanged-original execution covers 1,280 contexts and all 166
+nonpadding instruction bytes. The actual Go-to-C comparison passes 1,281
+events with high native callback/object pointers and complete allocation
+guards. A preserved historical C-body replay returns `[0,1]` where the
+original and fixed native body return `[1,0]`. Reference execution followed
+partial warning edits; this is not a claim of a pre-edit C-before phase.
+
+macOS normal passes **607,862 / 43 skips**; highres actual cgocheck2/checkptr2
+passes **468,514 / 8 skips**, four packages each. Both complete build/output
+streams have zero warning diagnostics and retain every earlier terminal
+identity/multiplicity. The oracle passes **3,329 code / 691 data ranges** and
+all 21 verifier tests. The first full run's 16 embedded-C compile failures
+remain archived. Fourteen fixture files now match the const input API;
+their input values, expected events and existing assertions are retained.
+One fixture formatter uses its actual 1,024-byte array capacity and rejects
+truncation. All 78 affected checks pass. ROOT/all-build-warning-cleanup-20261101
+records these adaptations and all 4,177 current input hashes.
+
+Fresh products/E2E and native Linux/Windows zero-warning checks remain open.
+The complete warning task, overall porting and the reopened sale-audio
+report are not yet complete.
 
 ### Reopened shop sale audio investigation
 

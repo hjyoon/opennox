@@ -79,17 +79,17 @@ static nox_collision_hit_t* nox_collision_hit_buckets[256];
 static nox_collision_hit_t* nox_collision_hit_head;
 
 struct313272 table_313272[11] = {
-	{f0:0x0, f4:0, f8:0, f12:0x1, f16:0, f20:23},
-	{f0:0x1, f4:0, f8:23, f12:0x0, f16:0, f20:0},
-	{f0:0x1, f4:0, f8:23, f12:0x1, f16:0, f20:23},
-	{f0:0x1, f4:0, f8:11.5, f12:0x1, f16:0, f20:23},
-	{f0:0x1, f4:0, f8:23, f12:0x1, f16:11.5, f20:23},
-	{f0:0x1, f4:11.5, f8:23, f12:0x1, f16:0, f20:23},
-	{f0:0x1, f4:0, f8:23, f12:0x1, f16:0, f20:11.5},
-	{f0:0x1, f4:0, f8:11.5, f12:0x1, f16:11.5, f20:23},
-	{f0:0x1, f4:11.5, f8:23, f12:0x1, f16:11.5, f20:23},
-	{f0:0x1, f4:11.5, f8:23, f12:0x1, f16:0, f20:11.5},
-	{f0:0x1, f4:0, f8:11.5, f12:0x1, f16:0, f20:11.5},
+	{.f0 = 0x0, .f4 = 0, .f8 = 0, .f12 = 0x1, .f16 = 0, .f20 = 23},
+	{.f0 = 0x1, .f4 = 0, .f8 = 23, .f12 = 0x0, .f16 = 0, .f20 = 0},
+	{.f0 = 0x1, .f4 = 0, .f8 = 23, .f12 = 0x1, .f16 = 0, .f20 = 23},
+	{.f0 = 0x1, .f4 = 0, .f8 = 11.5, .f12 = 0x1, .f16 = 0, .f20 = 23},
+	{.f0 = 0x1, .f4 = 0, .f8 = 23, .f12 = 0x1, .f16 = 11.5, .f20 = 23},
+	{.f0 = 0x1, .f4 = 11.5, .f8 = 23, .f12 = 0x1, .f16 = 0, .f20 = 23},
+	{.f0 = 0x1, .f4 = 0, .f8 = 23, .f12 = 0x1, .f16 = 0, .f20 = 11.5},
+	{.f0 = 0x1, .f4 = 0, .f8 = 11.5, .f12 = 0x1, .f16 = 11.5, .f20 = 23},
+	{.f0 = 0x1, .f4 = 11.5, .f8 = 23, .f12 = 0x1, .f16 = 11.5, .f20 = 23},
+	{.f0 = 0x1, .f4 = 11.5, .f8 = 23, .f12 = 0x1, .f16 = 0, .f20 = 11.5},
+	{.f0 = 0x1, .f4 = 0, .f8 = 11.5, .f12 = 0x1, .f16 = 0, .f20 = 11.5},
 };
 
 //----- (00545520) --------------------------------------------------------
@@ -876,7 +876,7 @@ LABEL_8:
 						v9 = (double)*(int*)(v8 + 2284) - *(float*)(v1 + 56);
 						v10 = (double)*(int*)(v8 + 2288) - *(float*)(v1 + 60);
 						if (v10 * v10 + v9 * v9 < 100.0 &&
-							nox_xxx_findObjectAtCursor_54AF40(nox_getHostPlayerUnit()) == v1) {
+							(uintptr_t)nox_xxx_findObjectAtCursor_54AF40(nox_getHostPlayerUnit()) == (uintptr_t)v1) {
 							v11 = *(uint32_t*)(v1 + 60);
 							*(uint32_t*)(v1 + 72) = *(uint32_t*)(v1 + 56);
 							*(uint32_t*)(v1 + 92) = 0;
@@ -2439,7 +2439,7 @@ int sub_549D80(int a1) {
 	v1 = nox_common_gameFlags_check_40A5C0(2048) ? 30 : 96;
 	nox_xxx_mapPushUnitsAround_52E040(a1 + 56, 96.0, 10.0, 100.0, a1, 0, 0);
 	nox_xxx_mapDamageUnitsAround_4E25B0(a1 + 56, 96.0, 10.0, v1, 7, a1, 0);
-	nox_xxx_netSparkExplosionFx_5231B0((float*)(a1 + 56), 128);
+	nox_xxx_netSparkExplosionFx_5231B0((float*)(a1 + 56), (char)0x80);
 	nox_xxx_aud_501960(42, a1, 0, 0);
 	nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	return 1;
@@ -2449,7 +2449,7 @@ int sub_549D80(int a1) {
 int sub_549E00(int a1) {
 	nox_xxx_mapPushUnitsAround_52E040(a1 + 56, 150.0, 10.0, 150.0, a1, 0, 0);
 	nox_xxx_mapDamageUnitsAround_4E25B0(a1 + 56, 150.0, 10.0, 148, 7, a1, 0);
-	nox_xxx_netSparkExplosionFx_5231B0((float*)(a1 + 56), 255);
+	nox_xxx_netSparkExplosionFx_5231B0((float*)(a1 + 56), (char)0xFF);
 	nox_xxx_aud_501960(42, a1, 0, 0);
 	nox_xxx_delayedDeleteObject_4E5CC0(a1);
 	return 1;
@@ -2457,7 +2457,7 @@ int sub_549E00(int a1) {
 
 //----- (00549E70) --------------------------------------------------------
 int sub_549E70(int a1) {
-	nox_xxx_netSendPointFx_522FF0(129, (float2*)(a1 + 56));
+	nox_xxx_netSendPointFx_522FF0((char)0x81, (float2*)(a1 + 56));
 	return 1;
 }
 
@@ -2474,7 +2474,7 @@ int sub_549E90(int a1) {
 	float2 a3;         // [esp+10h] [ebp-8h]
 
 	nox_xxx_aud_501960(494, a1, 0, 0);
-	nox_xxx_netSendPointFx_522FF0(138, (float2*)(a1 + 56));
+	nox_xxx_netSendPointFx_522FF0((char)0x8A, (float2*)(a1 + 56));
 	if (*getMemU32Ptr(0x587000, 287976)) {
 		v1 = (char**)getMemAt(0x587000, 287976);
 		v2 = getMemAt(0x587000, 287976);
@@ -2517,7 +2517,7 @@ int sub_549FA0(int a1) {
 
 	nox_xxx_aud_501960(487, a1, 0, 0);
 	v1 = (float2*)(a1 + 56);
-	nox_xxx_netSendPointFx_522FF0(138, (float2*)(a1 + 56));
+	nox_xxx_netSendPointFx_522FF0((char)0x8A, (float2*)(a1 + 56));
 	if (nox_common_gameFlags_check_40A5C0(2048)) {
 		v11 = nox_common_randomInt_415FA0(20, 30);
 	} else {
@@ -2554,7 +2554,7 @@ int sub_549FA0(int a1) {
 
 //----- (0054A250) --------------------------------------------------------
 int sub_54A250(int a1) {
-	nox_xxx_netSendPointFx_522FF0(129, (float2*)(a1 + 56));
+	nox_xxx_netSendPointFx_522FF0((char)0x81, (float2*)(a1 + 56));
 	return 1;
 }
 
@@ -2662,7 +2662,7 @@ void sub_54A4C0(int a1) {
 
 	nox_xxx_aud_501960(356, a1, 0, 0);
 	v1 = (float2*)(a1 + 56);
-	nox_xxx_netSendPointFx_522FF0(138, (float2*)(a1 + 56));
+	nox_xxx_netSendPointFx_522FF0((char)0x8A, (float2*)(a1 + 56));
 	v2 = (float*)nox_xxx_newObjectByTypeID_4E3810("Skull");
 	if (v2) {
 		sub_4ED970(20.0, v1, &a3);
@@ -2983,7 +2983,7 @@ int sub_54B2D0(uint8_t* prefab, int a2, uint8_t* candidate) {
 	v3 = a1[4 * a2 + 22];
 	switch (a2) {
 	case 0:
-		v4 = a3;
+		v4 = (int*)a3;
 		a2a = 0;
 		v5 = v4[4];
 		v6 = v4[3] - v3;
@@ -3026,7 +3026,7 @@ int sub_54B2D0(uint8_t* prefab, int a2, uint8_t* candidate) {
 		} while (a2b <= v35);
 		return 0;
 	case 1:
-		v11 = a3;
+		v11 = (int*)a3;
 		a2c = 0;
 		v12 = v11[3] - v3;
 		a4.field_0 = v11[1] + v11[3] / 2;
@@ -3074,7 +3074,7 @@ int sub_54B2D0(uint8_t* prefab, int a2, uint8_t* candidate) {
 		}
 		return 1;
 	case 2:
-		v16 = a3;
+		v16 = (int*)a3;
 		a2e = 0;
 		v17 = v16[3];
 		a4.field_0 = v16[1];
@@ -3123,7 +3123,7 @@ int sub_54B2D0(uint8_t* prefab, int a2, uint8_t* candidate) {
 		}
 		return 1;
 	case 3:
-		v23 = a3;
+		v23 = (int*)a3;
 		a2g = 0;
 		v24 = v23[3];
 		v25 = v23[4];
@@ -3139,7 +3139,7 @@ int sub_54B2D0(uint8_t* prefab, int a2, uint8_t* candidate) {
 		return 0;
 	}
 	while (1) {
-		if (sub_54BB20((uintptr_t)v23, (uintptr_t)(uint32_t)a1[37], &a4.field_0, a1 + 32, a1[34])) {
+		if (sub_54BB20((uintptr_t)v23, (uintptr_t)(uint32_t)a1[37], &a4.field_0, (uint32_t*)(a1 + 32), a1[34])) {
 			return 1;
 		}
 		v28 = v23[2];
@@ -4501,7 +4501,7 @@ void nox_xxx_dieMarker_54E460(int a1) {
 		*(uint32_t*)(v2 + 4 * v3 + 116) = 0;
 	}
 LABEL_7:
-	nox_xxx_netSendPointFx_522FF0(138, (float2*)(a1 + 56));
+	nox_xxx_netSendPointFx_522FF0((char)0x8A, (float2*)(a1 + 56));
 	nox_xxx_delayedDeleteObject_4E5CC0(a1);
 }
 
@@ -4522,7 +4522,7 @@ void nox_xxx_dieBoulder_54E4B0(int a1) {
 	v1 = a1;
 	nox_xxx_aud_501960(757, a1, 0, 0);
 	v2 = (float2*)(a1 + 56);
-	nox_xxx_netSendPointFx_522FF0(138, (float2*)(a1 + 56));
+	nox_xxx_netSendPointFx_522FF0((char)0x8A, (float2*)(a1 + 56));
 	v3 = nox_common_randomInt_415FA0(20, 30);
 	v4 = 0;
 	if (v3 <= 0) {
@@ -4574,7 +4574,7 @@ void nox_xxx_dieMonsterGen_54E630(int a1) {
 	sub_4D7520(0);
 	nox_xxx_scriptCallByEventBlock_502490((int*)(v1 + 56), *(uint32_t*)(a1 + 520), a1, 3);
 	nox_xxx_aud_501960(1000, a1, 0, 0);
-	nox_xxx_sendGeneratorBreakFX_523200((float*)(a1 + 56), 200);
+	nox_xxx_sendGeneratorBreakFX_523200((float*)(a1 + 56), (char)0xC8);
 	if (nox_common_gameFlags_check_40A5C0(4096)) {
 		if (*(uint32_t*)(a1 + 520)) {
 			v2 = nox_xxx_findParentChainPlayer_4EC580(*(uint32_t*)(a1 + 520));
@@ -5628,20 +5628,12 @@ int sub_550A10(int a1, float2* a2, float2* a3, float4* a4, float2* a5, float a6)
 char sub_550CB0(float2* a1, float2* a2) {
 	double v2;   // st7
 	char v3 = 0; // fps^1
-	bool v4;     // c0
-	char v5;     // c2
-	bool v6;     // c3
 	char v7;     // ah
 	bool v8;     // c0
 	bool v9;     // c3
 	char result; // al
-	float v11;   // [esp+0h] [ebp-8h]
 
-	v11 = a1->field_0 - a2->field_0;
 	v2 = a1->field_4 - a2->field_4;
-	v4 = v11 < 16.263456;
-	v5 = 0;
-	v6 = v11 == 16.263456;
 	v7 = v3;
 	v8 = v2 < 0.0;
 	v9 = v2 == 0.0;

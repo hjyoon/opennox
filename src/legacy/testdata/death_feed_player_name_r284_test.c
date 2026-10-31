@@ -108,7 +108,7 @@ int nox_draw_imageMeta_47D5C0(nox_video_bag_image_t* image, uint32_t* off_x, uin
 	event(60); require_service(image == expected_image);
 	*off_x=2; *off_y=3; *width=20; *height=14; return 1;
 }
-int nox_xxx_drawGetStringSize_43F840(void* font, wchar2_t* text, int* width, int* height, int max_w) {
+int nox_xxx_drawGetStringSize_43F840(void* font, const wchar2_t* text, int* width, int* height, int max_w) {
 	event(61); require_service(font == font_token && max_w == 0 && measure_count < 3);
 	int i=measure_count++; if (i > 2) return 0;
 	require_service(nox_wcscmp(text,expected_text[i]) == 0);

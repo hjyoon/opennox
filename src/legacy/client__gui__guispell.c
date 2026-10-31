@@ -567,7 +567,7 @@ int sub_45F9B0(nox_window* win, nox_window_data* draw_data) {
 		x += (width - text_width) / 2;
 		nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 		nox_xxx_drawSetColor_4343E0(*getMemIntPtr(0x852978, 4));
-		nox_draw_drawStringHL_43F730(0, (short*)v11, x, y);
+		nox_draw_drawStringHL_43F730(0, (wchar2_t*)v11, x, y);
 	}
 	return 1;
 }
@@ -596,7 +596,7 @@ int nox_xxx_quickbarDraw_45FAC0(nox_window* win, nox_window_data* draw_data) {
 	x += (width - text_width) / 2;
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 	nox_xxx_drawSetColor_4343E0(*getMemIntPtr(0x852978, 4));
-	nox_draw_drawStringHL_43F730(0, (short*)v9, x, y);
+	nox_draw_drawStringHL_43F730(0, (wchar2_t*)v9, x, y);
 	return 1;
 }
 
@@ -640,7 +640,7 @@ int nox_xxx_quickBarDrawFn_45FBD0(nox_window* win, nox_window_data* draw_data) {
 		nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 		wchar2_t* no_icon = nox_strman_loadString_40F1D0(
 			"NoIcon", 0, "C:\\NoxPost\\src\\Client\\Gui\\guispell.c", 1388);
-		nox_xxx_drawString_43F6E0(0, (short*)no_icon, x_left + 6,
+		nox_xxx_drawString_43F6E0(0, (wchar2_t*)no_icon, x_left + 6,
 								 y_top + nox_xxx_guiFontHeightMB_43F320(0) + 2);
 	}
 
@@ -701,7 +701,7 @@ int nox_xxx_quickBarWarriorDraw_45FDE0(nox_window* win, nox_window_data* draw_da
 		nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 		short* no_icon = (short*)nox_strman_loadString_40F1D0(
 			"NoIcon", 0, "C:\\NoxPost\\src\\Client\\Gui\\guispell.c", 1491);
-		nox_xxx_drawString_43F6E0(0, no_icon, x_left + 6,
+		nox_xxx_drawString_43F6E0(0, (wchar2_t*)no_icon, x_left + 6,
 								   nox_xxx_guiFontHeightMB_43F320(0) + y_top + 2);
 	}
 	int mana = nox_xxx_cliGetMana_470DD0();

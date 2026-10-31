@@ -49,7 +49,7 @@ nox_object_t* nox_server_getNextObject_4DA7A0(nox_object_t* object) {
 int nox_xxx_mapGenStep_4D44E0(void) { return 1; }
 char* nox_fs_root(void) { return "/owned"; }
 int nox_fs_access(char* path, int mode) { assert(path && mode == 0); return -1; }
-bool nox_fs_remove(char* path) { assert(path); return true; }
+bool nox_fs_remove(const char* path) { assert(path); return true; }
 bool nox_fs_move(char* source, char* destination) { assert(source && destination); return true; }
 bool nox_fs_mkdir(char* path) { assert(!strcmp(path, "/owned\\Maps\\$probeclassic")); return true; }
 char* nox_xxx_getRandMapName_4D4310(void) { return "probeclassic"; }
@@ -57,7 +57,9 @@ void nox_xxx_mapGenMakeInfo_4D5DB0(void* pointer) { assert(pointer == info); }
 int nox_sprintf(char* target, const char* format, ...) {
 	va_list args;
 	va_start(args, format);
-	int n = vsprintf(target, format, args);
+	// The extracted entry uses three 1024-byte path arrays.
+	int n = vsnprintf(target, 1024, format, args);
+	assert(n >= 0 && n < 1024);
 	va_end(args);
 	return n;
 }

@@ -37,7 +37,11 @@ func nox_fs_normalize(path *C.char) *C.char {
 	return CString(out)
 }
 
-//export nox_fs_remove
+//export nox_fs_remove_go
+func nox_fs_remove_go(path *C.char) C.bool {
+	return nox_fs_remove(path)
+}
+
 func nox_fs_remove(path *C.char) C.bool {
 	return ifs.Remove(GoString(path)) == nil
 }
@@ -52,7 +56,11 @@ func nox_fs_set_workdir(path *C.char) C.bool {
 	return ifs.Chdir(GoString(path)) == nil
 }
 
-//export nox_fs_copy
+//export nox_fs_copy_go
+func nox_fs_copy_go(src, dst *C.char) C.bool {
+	return nox_fs_copy(src, dst)
+}
+
 func nox_fs_copy(src, dst *C.char) C.bool {
 	return ifs.Copy(GoString(src), GoString(dst)) == nil
 }
@@ -208,7 +216,11 @@ func nox_fs_access(path *C.char, mode_cgo int32) int32 {
 	return int32(0)
 }
 
-//export nox_fs_open
+//export nox_fs_open_go
+func nox_fs_open_go(path *C.char) *FILE {
+	return nox_fs_open(path)
+}
+
 func nox_fs_open(path *C.char) *FILE {
 	f, err := ifs.Open(GoString(path))
 	if err != nil {
@@ -217,7 +229,11 @@ func nox_fs_open(path *C.char) *FILE {
 	return NewFileHandle(binfile.NewFile(f))
 }
 
-//export nox_fs_open_text
+//export nox_fs_open_text_go
+func nox_fs_open_text_go(path *C.char) *FILE {
+	return nox_fs_open_text(path)
+}
+
 func nox_fs_open_text(path *C.char) *FILE {
 	f, err := ifs.Open(GoString(path))
 	if err != nil {
@@ -244,7 +260,11 @@ func nox_fs_create_text(path *C.char) *FILE {
 	return NewFileHandle(binfile.NewTextFile(f))
 }
 
-//export nox_fs_open_rw
+//export nox_fs_open_rw_go
+func nox_fs_open_rw_go(path *C.char) *FILE {
+	return nox_fs_open_rw(path)
+}
+
 func nox_fs_open_rw(path *C.char) *FILE {
 	f, err := ifs.OpenFile(GoString(path), os.O_RDWR)
 	if err != nil {

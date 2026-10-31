@@ -630,7 +630,7 @@ int nox_server_mapRWObjectTOC_428B30() {
 		for (i = 0; (unsigned short)i < (unsigned short)v9; ++i) {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v10, 2u);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v12, (unsigned char)v8);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v12, (unsigned char)v8);
 			v12[(unsigned char)v8] = 0;
 			if (!nox_common_gameFlags_check_40A5C0(2) || nox_common_gameFlags_check_40A5C0(1)) {
 				v7 = nox_xxx_getNameId_4E3AA0(v12);
@@ -658,7 +658,7 @@ int nox_server_mapRWObjectTOC_428B30() {
 			v5 = nox_xxx_getUnitNameByThingType_4E3A80(v3);
 			LOBYTE(v8) = strlen(v5);
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v8, 1u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v5, (unsigned char)v8);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v5, (unsigned char)v8);
 		}
 		v3 = ++v2;
 	} while (v2 < (unsigned int)nox_xxx_unitDefGetCount_4E3AC0());
@@ -742,7 +742,7 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(v10 + 4, (unsigned char)v27);
 				v10[(unsigned char)v27 + 4] = 0;
 				if ((short)v26 >= 3 || (nox_xxx_fileReadWrite_426AC0_file3_fread(&v31, 4u),
-										nox_xxx_fileReadWrite_426AC0_file3_fread(v32, 0xCu), v10[104] = v32[0],
+										nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v32, 0xCu), v10[104] = v32[0],
 										v10[105] = v32[4], v10[106] = v32[8], (short)v26 >= 3)) {
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
 					v10[104] = a1;
@@ -833,8 +833,8 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 	nox_xxx_fileReadWrite_426AC0_file3_fread(&v25, 4u);
 	v3 = nox_xxx_polygon_420CA0();
 	for (j = 0; j < v25; ++j) {
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v3, 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v3 + 4, 8u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v3, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v3 + 4), 8u);
 		v3 = nox_xxx_polygon_420CD0(v3);
 	}
 	v25 = 0;
@@ -851,15 +851,15 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 		v7 = nox_xxx_polygonGetDataNative(v6);
 		LOBYTE(v27) = strlen(v6 + 4);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&v27, 1u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 4, (unsigned char)v27);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v6 + 4), (unsigned char)v27);
 		LOBYTE(a1) = v6[104];
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
 		LOBYTE(a1) = v6[105];
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
 		LOBYTE(a1) = v6[106];
 		nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 130, 1u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 128, 2u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v6 + 130), 1u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v6 + 128), 2u);
 		nox_xxx_fileReadWrite_426AC0_file3_fread(nox_xxx_polygonGetVertexIndicesNative(v6),
 			4 * *((unsigned short*)v6 + 64));
 		nox_xxx_xferReadScriptHandler_4F5580(
@@ -871,7 +871,7 @@ int nox_server_mapRWPolygons_428CD0(int a1) {
 		}
 		nox_xxx_xferReadScriptHandler_4F5580(
 			(nox_script_callback_t*)(v6 + 120), v8);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v6 + 132, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v6 + 132), 4u);
 		v6 = sub_4210E0(v6);
 		++v28;
 	} while (v28 < v25);
@@ -897,15 +897,15 @@ int nox_server_mapRWAmbientData_429200() {
 			nox_xxx_fileReadWrite_426AC0_file3_fread(&v3[2], 4u);
 			sub_469B90(v3);
 			if (nox_common_gameFlags_check_40A5C0(2097154)) {
-				sub_4349C0(v3);
+				sub_4349C0((uint32_t*)v3);
 			}
 		}
 		result = 1;
 	} else {
 		v1 = nox_xxx_getAmbientColor_469BB0();
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v1, 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v1 + 4, 4u);
-		nox_xxx_fileReadWrite_426AC0_file3_fread(v1 + 8, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v1, 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v1 + 4), 4u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v1 + 8), 4u);
 		result = 1;
 	}
 	return result;
@@ -971,7 +971,7 @@ void sub_429450(uint8_t* a1, uint32_t* a2) {
 	int2 v3; // [esp+4h] [ebp-8h]
 
 	if (!a2 || (v2 = (unsigned char)a1[6], v3.field_0 = 23 * (unsigned char)a1[5], v3.field_4 = 23 * v2,
-				nox_xxx_wallMath_427F30(&v3, a2))) {
+				nox_xxx_wallMath_427F30(&v3, (int*)a2))) {
 		if (a1[4] & 0x40) {
 			++*getMemU16Ptr(0x5D4594, 741336);
 		}
@@ -985,7 +985,7 @@ void sub_4294B0(uint8_t* a1, uint32_t* a2) {
 	int2 v4; // [esp+4h] [ebp-8h]
 
 	if (!a2 || (v2 = (unsigned char)a1[6], v4.field_0 = 23 * (unsigned char)a1[5], v4.field_4 = 23 * v2,
-				nox_xxx_wallMath_427F30(&v4, a2))) {
+				nox_xxx_wallMath_427F30(&v4, (int*)a2))) {
 		if (a1[4] & 0x40) {
 			v3 = (unsigned char)a1[6];
 			v4.field_0 = (unsigned char)a1[5];
@@ -1060,7 +1060,7 @@ void nox_xxx_wall_4296E0(uint8_t* a1, uint32_t* a2) {
 	int2 v3; // [esp+4h] [ebp-8h]
 
 	if (!a2 || (v2 = (unsigned char)a1[6], v3.field_0 = 23 * (unsigned char)a1[5], v3.field_4 = 23 * v2,
-				nox_xxx_wallMath_427F30(&v3, a2))) {
+				nox_xxx_wallMath_427F30(&v3, (int*)a2))) {
 		if (a1[4] & 8) {
 			++*getMemU16Ptr(0x5D4594, 741340);
 		}
@@ -1074,7 +1074,7 @@ void sub_429740(uint8_t* a1, uint32_t* a2) {
 	int2 v4; // [esp+4h] [ebp-8h]
 
 	if (!a2 || (v2 = (unsigned char)a1[6], v4.field_0 = 23 * (unsigned char)a1[5], v4.field_4 = 23 * v2,
-				nox_xxx_wallMath_427F30(&v4, a2))) {
+				nox_xxx_wallMath_427F30(&v4, (int*)a2))) {
 		if (a1[4] & 8) {
 			v3 = (unsigned char)a1[6];
 			v4.field_0 = (unsigned char)a1[5];
@@ -1172,7 +1172,7 @@ void sub_429A00(uint8_t* a1, uint32_t* a2) {
 	int2 v3; // [esp+4h] [ebp-8h]
 
 	if (!a2 || (v2 = (unsigned char)a1[6], v3.field_0 = 23 * (unsigned char)a1[5], v3.field_4 = 23 * v2,
-				nox_xxx_wallMath_427F30(&v3, a2))) {
+				nox_xxx_wallMath_427F30(&v3, (int*)a2))) {
 		if (a1[4] & 4) {
 			++*getMemU16Ptr(0x5D4594, 741348);
 		}
@@ -1188,7 +1188,7 @@ void sub_429A60(void* a1, uint32_t* a2) {
 	uint8_t* wall = (uint8_t*)a1;
 
 	if (!a2 || (v2 = wall[6], v5.field_0 = 23 * wall[5], v5.field_4 = 23 * v2,
-				nox_xxx_wallMath_427F30(&v5, a2))) {
+				nox_xxx_wallMath_427F30(&v5, (int*)a2))) {
 		if (wall[4] & 4) {
 			v3 = wall[6];
 			v4 = (nox_secret_wall_t*)nox_server_wallData(a1);
@@ -1295,7 +1295,7 @@ int nox_server_mapRWWallMap_429B20(uint32_t* a1) {
 			*getMemU32Ptr(0x5D4594, 741368) = v33.field_4 / 23;
 			v26 = v14;
 		}
-		nox_xxx_fileReadWrite_426AC0_file3_fread(&v22, 1u);
+		nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)&v22, 1u);
 		v15 = v22;
 		if (v22 == -1) {
 			return 1;
@@ -1352,7 +1352,7 @@ int nox_server_mapRWWallMap_429B20(uint32_t* a1) {
 				nox_xxx_fileReadWrite_426AC0_file3_fread(&v24, 1u);
 				*((uint32_t*)v17 + 3) = (unsigned char)v24;
 			}
-			nox_xxx_fileReadWrite_426AC0_file3_fread(&v22, 1u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)&v22, 1u);
 			v15 = v22;
 			if (v22 == -1) {
 				return 1;
@@ -1374,7 +1374,7 @@ int nox_server_mapRWWallMap_429B20(uint32_t* a1) {
 					if (v10) {
 						if (v10[1] != getMemByte(0x5D4594, 741372)) {
 							if (!v2 || (v32.field_0 = 23 * (unsigned char)v10[5],
-										v32.field_4 = 23 * (unsigned char)v10[6], nox_xxx_wallMath_427F30(&v32, v2))) {
+										v32.field_4 = 23 * (unsigned char)v10[6], nox_xxx_wallMath_427F30(&v32, (int*)v2))) {
 								nox_xxx_fileReadWrite_426AC0_file3_fread(v11 + 5, 1u);
 								nox_xxx_fileReadWrite_426AC0_file3_fread(v11 + 6, 1u);
 								if ((int)v11[4] >= 0) {
@@ -1393,7 +1393,7 @@ int nox_server_mapRWWallMap_429B20(uint32_t* a1) {
 								} else {
 									v23 = 100;
 								}
-								nox_xxx_fileReadWrite_426AC0_file3_fread(&v23, 1u);
+								nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)&v23, 1u);
 								if (nox_common_gameFlags_check_40A5C0(0x200000)) {
 									LOBYTE(v24) = 0;
 								} else {
@@ -1415,7 +1415,7 @@ int nox_server_mapRWWallMap_429B20(uint32_t* a1) {
 		} while (v26 <= v6 + v27);
 	}
 	v22 = -1;
-	nox_xxx_fileReadWrite_426AC0_file3_fread(&v22, 1u);
+	nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)&v22, 1u);
 	return 1;
 }
 
@@ -1509,7 +1509,7 @@ int sub_42A150(short a1, uint32_t* a2) {
 					}
 					v32.field_0 = 23 * *(unsigned char*)(v12 + 5);
 					v32.field_4 = 23 * *(unsigned char*)(v12 + 6);
-					if (!nox_xxx_wallMath_427F30(&v32, v3)) {
+					if (!nox_xxx_wallMath_427F30(&v32, (int*)v3)) {
 						v13 = 0;
 						LOBYTE(v27) = -1;
 						goto LABEL_19;
@@ -1535,7 +1535,7 @@ int sub_42A150(short a1, uint32_t* a2) {
 					} else {
 						v26 = 1;
 					}
-					nox_xxx_fileReadWrite_426AC0_file3_fread(&v26, 1u);
+					nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)&v26, 1u);
 					LOBYTE(a1) = v13[12];
 					nox_xxx_fileReadWrite_426AC0_file3_fread(&a1, 1u);
 				}
@@ -3750,7 +3750,7 @@ int sub_438E30(uint32_t* a1, int a2) {
 	int v6;       // [esp+4h] [ebp-4h]
 
 	v1 = a1;
-	nox_client_wndGetPosition_46AA60(a1, &v6, &a1);
+	nox_client_wndGetPosition_46AA60(a1, (unsigned int*)&v6, &a1);
 	v2 = v1[25];
 	if (v1[9] & 6) {
 		nox_client_drawImageAt_47D2C0(v1[19], v6 + v1[24], (int)a1 + v2);
@@ -3765,7 +3765,7 @@ int sub_438E30(uint32_t* a1, int a2) {
 		if (!(*(uint8_t*)(v3 + 4) & 0x10) && *(uint32_t*)(v3 + 44) == 2048) {
 			v4 = *(short***)(v3 + 32);
 			nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-			nox_xxx_drawStringStyle_43F7B0(*(uint32_t*)(v3 + 236), *v4, v6 + *(uint32_t*)(v3 + 16), (int)a1 + *(uint32_t*)(v3 + 20));
+			nox_xxx_drawStringStyle_43F7B0(*(uint32_t*)(v3 + 236), (wchar2_t*)(*v4), v6 + *(uint32_t*)(v3 + 16), (int)a1 + *(uint32_t*)(v3 + 20));
 		}
 		v3 = *(uint32_t*)(v3 + 388);
 	} while (v3);
@@ -4048,7 +4048,7 @@ char* sub_43AA70() {
 		*(uint32_t*)&v10[28] = 0;
 		*(uint32_t*)&v10[224] = NOX_CLIENT_VERS_CODE;
 		*(uint32_t*)&v10[32] = *getMemU32Ptr(0x5D4594, 814916);
-		v10[sub_425550(v1 + 100, &v10[69], 552) + 69] = 0;
+		v10[sub_425550((uint8_t*)(v1 + 100), (uint8_t*)&v10[69], 552) + 69] = 0;
 	}
 	result = nox_xxx_cliGamedataGet_416590(1);
 	v8 = *((uint16_t*)result + 26) & 0xE90F;

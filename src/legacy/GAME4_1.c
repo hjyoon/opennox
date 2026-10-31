@@ -1427,7 +1427,7 @@ int sub_50E030(int a1, uint32_t* a2) {
 			v7 = nox_xxx_newObjectByTypeID_4E3810("Glyph");
 			if (v7) {
 				v8 = v7[173];
-				v9 = v3 + 511;
+				v9 = (int*)(v3 + 511);
 				v10 = (uint32_t*)v7[173];
 				v11 = 3;
 				do {
@@ -2532,7 +2532,7 @@ int nox_xxx_tradeP2PAddOfferMB_50FE20(int a1, int a2) {
 	int v9;     // eax
 	int v10;    // eax
 
-	v2 = sub_50FFE0(*(uint32_t**)(a1 + 32), a2);
+	v2 = (int*)(sub_50FFE0(*(uint32_t**)(a1 + 32), a2));
 	if (v2) {
 		v3 = *(uint32_t*)(a1 + 8);
 	} else {
@@ -3936,7 +3936,7 @@ int nox_xxx_servParseMonsterDef_517170(FILE* a1, const char* a2) {
 	}
 	strcpy((char*)result, a2);
 	while (1) {
-		if (!nox_xxx_readStr_517090(a1, v10) || !nox_strcmpi("END", v10)) {
+		if (!nox_xxx_readStr_517090(a1, (uint8_t*)v10) || !nox_strcmpi("END", v10)) {
 			v3[61] = nox_monsterBin_head_2386924;
 			nox_monsterBin_head_2386924 = v3;
 			return 1;
@@ -3980,50 +3980,50 @@ int nox_xxx_servParseMonsterDef_517170(FILE* a1, const char* a2) {
 		v6 = (char*)v3 + *((uint32_t*)v4 + 2);
 		switch (*((uint32_t*)v4 + 1)) {
 		case 0:
-			nox_xxx_readStr_517090(a1, v10);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
 			*(uint32_t*)v6 = atoi(v10);
 			continue;
 		case 1:
-			nox_xxx_readStr_517090(a1, v10);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
 			*(float*)v6 = atof(v10);
 			continue;
 		case 2:
-			nox_xxx_readStr_517090(a1, v10);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
 			*(uint32_t*)v6 = nox_xxx_utilFindSound_40AF50(v10);
 			continue;
 		case 3:
-			nox_xxx_readStr_517090(a1, v10);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
 			if (nox_xxx_monsterLoadStrikeFn_549040((int)v3, v10)) {
 				continue;
 			}
 			return 0;
 		case 4:
-			nox_xxx_readStr_517090(a1, v10);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
 			if (nox_xxx_monsterLoadDieFn_5490E0((int)v3, v10)) {
 				continue;
 			}
 			return 0;
 		case 5:
-			nox_xxx_readStr_517090(a1, v10);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
 			if (nox_xxx_monsterLoadDeadFn_549180((int)v3, v10)) {
 				continue;
 			}
 			return 0;
 		case 6:
 			v9 = 0;
-			nox_xxx_readStr_517090(a1, v10);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
 			set_bitmask_flags_from_plus_separated_names_423930(
-				v10, &v9, (const char**)getMemAt(0x587000, 247536));
+				v10, (uint32_t*)&v9, (const char**)getMemAt(0x587000, 247536));
 			*(uint16_t*)v6 = v9;
 			continue;
 		case 7:
-			nox_xxx_readStr_517090(a1, v6);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v6);
 			if (!strcmp("NULL", v6)) {
 				*v6 = 0;
 			}
 			continue;
 		case 8:
-			nox_xxx_readStr_517090(a1, v10);
+			nox_xxx_readStr_517090(a1, (uint8_t*)v10);
 			v3[31] = 18;
 			v7 = 0;
 			v8 = getMemAt(0x587000, 247464);
@@ -4183,7 +4183,7 @@ int nox_xxx_netSendPhantomPlrMb_5187E0(int a1, int a2) {
 		v7 = LOBYTE(a2a.field_0) + 3 * LOBYTE(a2a.field_4) + 3;
 	}
 	v10[9] = 16 * v7;
-	return nox_netlist_addToMsgListSrv_40EF40(a1, v10, 11);
+	return nox_netlist_addToMsgListSrv_40EF40(a1, (unsigned char*)v10, 11);
 }
 
 //----- (005188A0) --------------------------------------------------------
@@ -4219,7 +4219,7 @@ int nox_xxx_netSendSimpleObj_5188A0(int a1, int a2) {
 	v8 = *(float*)(a2 + 60);
 	*(uint16_t*)&v10[5] = v7;
 	*(uint16_t*)&v10[7] = nox_float2int(v8);
-	return nox_netlist_addToMsgListSrv_40EF40(a1, v10, 9);
+	return nox_netlist_addToMsgListSrv_40EF40(a1, (unsigned char*)v10, 9);
 }
 
 //----- (00518960) --------------------------------------------------------
@@ -4457,9 +4457,9 @@ int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1p, nox_object_t* a2p, int a3
 	}
 	v22[9] |= 16 * v19;
 	if (a3) {
-		result = nox_netlist_addToMsgListSrv_40EF40(*(unsigned char*)(*(uint32_t*)(v23 + 276) + 2064), v22, 12);
+		result = nox_netlist_addToMsgListSrv_40EF40(*(unsigned char*)(*(uint32_t*)(v23 + 276) + 2064), (unsigned char*)v22, 12);
 	} else {
-		result = nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(v23 + 276) + 2064), 1, v22, 12);
+		result = nox_netlist_addToMsgListCli_40EBC0(*(unsigned char*)(*(uint32_t*)(v23 + 276) + 2064), 1, (unsigned char*)v22, 12);
 	}
 	return result;
 }

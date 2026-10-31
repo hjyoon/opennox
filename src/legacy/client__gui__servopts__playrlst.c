@@ -164,7 +164,7 @@ int sub_4567C0(nox_window* win, int event, nox_window* event_win, uintptr_t even
 			return 0;
 		}
 		nox_team_t* team = sub_418A40(team_name);
-		wchar2_t* new_name = (wchar2_t*)(uintptr_t)sub_449E60(168);
+		wchar2_t* new_name = (wchar2_t*)(uintptr_t)sub_449E60((char)0xA8);
 		if (team && new_name && !sub_4190F0(new_name)) {
 			nox_xxx_teamRenameMB_418CD0(team, new_name);
 		}

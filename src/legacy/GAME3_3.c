@@ -225,7 +225,7 @@ int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a
 	v8 = nox_common_gameFlags_check_40A5C0(2048);
 	v9 = a2;
 	if (v8) {
-		if (nox_xxx_findParentChainPlayer_4EC580(a2) == v5 && *(uint8_t*)(v5 + 8) & 4 && LODWORD(a5) != 15) {
+		if ((uintptr_t)nox_xxx_findParentChainPlayer_4EC580(a2) == (uintptr_t)v5 && *(uint8_t*)(v5 + 8) & 4 && LODWORD(a5) != 15) {
 			return 0;
 		}
 	}
@@ -279,7 +279,7 @@ int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a
 					nox_xxx_changeOwner_52BE40(v9, v5);
 				}
 				if (LODWORD(a5) == 16) {
-					nox_xxx_netSendPointFx_522FF0(132, v16);
+					nox_xxx_netSendPointFx_522FF0((char)0x84, v16);
 				}
 				nox_xxx_aud_501960(122, v5, 0, 0);
 				return 0;
@@ -290,7 +290,7 @@ int nox_server_handler_PlayerDamage_4E17B0(int a1, int a2, int a3, int a4, int a
 															(float2*)(v9 + 56)) &
 				1) {
 				if (LODWORD(a5) == 16) {
-					nox_xxx_netSendPointFx_522FF0(132, v16);
+					nox_xxx_netSendPointFx_522FF0((char)0x84, v16);
 				}
 				nox_xxx_aud_501960(122, v5, 0, 0);
 				return 0;
@@ -824,9 +824,9 @@ int nox_xxx_damageMonsterGen_4E27D0(int a1, int a2, int a3, int a4, int a5) {
 			nox_xxx_utilNormalizeVector_509F20(&a1a);
 			a1a.field_0 = a1a.field_0 * 22.0 + *(float*)(a1 + 56);
 			a1a.field_4 = a1a.field_4 * 22.0 + *(float*)(a1 + 60);
-			sub_523150(240, 26, &a1a.field_0);
+			sub_523150((char)0xF0, 26, &a1a.field_0);
 		} else {
-			sub_523150(240, 26, (float*)(a1 + 56));
+			sub_523150((char)0xF0, 26, (float*)(a1 + 56));
 		}
 		nox_xxx_aud_501960(1001, a1, 0, 0);
 	}

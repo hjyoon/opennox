@@ -178,7 +178,7 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 	nox_swprintf(v57, L"%s - %s", &v55[1], v56);
 	nox_xxx_drawGetStringSize_43F840(draw->font, v57, &v39, &v38, 0);
 	nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
-	nox_xxx_drawString_43F6E0(draw->font, (short*)v57, v2 - v39 / 2, v38 + v3 - 240);
+	nox_xxx_drawString_43F6E0(draw->font, (wchar2_t*)v57, v2 - v39 / 2, v38 + v3 - 240);
 	v40 = *getMemU32Ptr(0x587000, 122968) - *getMemU32Ptr(0x587000, 122964);
 	v36 = (double)v38 * 1.5;
 	v41 = nox_float2int(v36);
@@ -269,7 +269,7 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 	v23 = v49 - v39 / 2 + 320;
 	v24 = v50 + 2 * (150 - v38) + 150 - v38;
 	nox_xxx_drawSetTextColor_434390(nox_color_orange_2614256);
-	nox_xxx_drawString_43F6E0(draw->font, (short*)&v55[1], v23, v24);
+	nox_xxx_drawString_43F6E0(draw->font, (wchar2_t*)&v55[1], v23, v24);
 	if (v47) {
 		v37 = v47;
 		v25 = nox_strman_loadString_40F1D0("GeneralPrint:SecretsFound", 0, "C:\\NoxPost\\src\\client\\Gui\\GUIBrief.c",
@@ -301,7 +301,7 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 	v30 = v22 - v39 / 2 + 320;
 	v31 = v50 + 2 * (225 - v38);
 	nox_xxx_drawSetTextColor_434390(nox_color_orange_2614256);
-	nox_xxx_drawString_43F6E0(draw->font, (short*)v57, v30, v31);
+	nox_xxx_drawString_43F6E0(draw->font, (wchar2_t*)v57, v30, v31);
 	result = gameFrame() / 0x1Eu;
 	if (gameFrame() % 0x1Eu) {
 		if (dword_587000_122956 != 1) {
@@ -321,7 +321,7 @@ int sub_44E8E0(nox_window* win, nox_window_data* draw) {
 	nox_xxx_drawGetStringSize_43F840(draw->font, v34, &v39, 0, 0);
 	v35 = v22 - v39 / 2 + 320;
 	nox_xxx_drawSetTextColor_434390(v33);
-	return nox_xxx_drawString_43F6E0(draw->font, (short*)v34, v35, v50 + 450);
+	return nox_xxx_drawString_43F6E0(draw->font, (wchar2_t*)v34, v35, v50 + 450);
 }
 
 //----- (0044F0F0) --------------------------------------------------------
@@ -349,7 +349,7 @@ int sub_44F0F0(nox_window* win, nox_window_data* draw) {
 	nox_wcscat(v13, L" %d");
 	nox_swprintf(v14, v13, nox_gui_getQuestStage_450B10());
 	nox_xxx_drawGetStringSize_43F840(draw->font, v14, &v10, &v11, 0);
-	nox_xxx_drawString_43F6E0(draw->font, (short*)v14, v2 - v10 / 2, v3 + 2 * (v11 - 80) + v11 - 80);
+	nox_xxx_drawString_43F6E0(draw->font, (wchar2_t*)v14, v2 - v10 / 2, v3 + 2 * (v11 - 80) + v11 - 80);
 	if (getMemPtr(0x5D4594, 832464)) {
 		nox_xxx_drawGetStringSize_43F840(draw->font, getMemPtr(0x5D4594, 832464), &v10, &v11, 0);
 		nox_xxx_drawString_43F6E0(draw->font, getMemPtr(0x5D4594, 832464), v2 - v10 / 2,
@@ -376,7 +376,7 @@ int sub_44F0F0(nox_window* win, nox_window_data* draw) {
 	nox_xxx_drawGetStringSize_43F840(draw->font, v8, &v10, 0, 0);
 	v9 = v6 - v10 / 2 + 320;
 	nox_xxx_drawSetTextColor_434390(v12);
-	return nox_xxx_drawString_43F6E0(draw->font, (short*)v8, v9, v7 + 462);
+	return nox_xxx_drawString_43F6E0(draw->font, (wchar2_t*)v8, v9, v7 + 462);
 }
 
 //----- (0044F300) --------------------------------------------------------

@@ -40,7 +40,7 @@ int sub_4A22A0(int a1, int* a2) {
 	int yTop;           // [esp+8h] [ebp-4h]
 
 	nox_xxx_bookGet_430B40_get_mouse_prev_seq();
-	nox_client_wndGetPosition_46AA60((uint32_t*)a1, &xLeft, &yTop);
+	nox_client_wndGetPosition_46AA60((uint32_t*)a1, (unsigned int*)&xLeft, (unsigned int*)&yTop);
 	if ((signed char)*(uint8_t*)(a1 + 4) >= 0) {
 		if (a2[5] != 0x80000000) {
 			nox_client_drawSetColor_434460(a2[5]);

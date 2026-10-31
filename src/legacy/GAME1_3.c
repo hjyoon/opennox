@@ -565,7 +565,7 @@ int nox_xxx_drawMessageLines_445530() {
 		v8 = getMemAt(0x587000, 107848);
 		v9 = (nox_win_width - v14) / 2;
 		do {
-			nox_xxx_drawString_43F6E0(0, (short*)v6, v9 + *(uint32_t*)v8, v1 + *((uint32_t*)v8 + 1));
+			nox_xxx_drawString_43F6E0(0, (wchar2_t*)v6, v9 + *(uint32_t*)v8, v1 + *((uint32_t*)v8 + 1));
 			v8 += 8;
 		} while (++shadow_count < 4);
 		v10 = v13;
@@ -574,7 +574,7 @@ int nox_xxx_drawMessageLines_445530() {
 		} else {
 			nox_xxx_drawSetTextColor_434390(nox_color_white_2523948);
 		}
-		nox_xxx_drawString_43F6E0(0, (short*)v6, v7 / 2, v1);
+		nox_xxx_drawString_43F6E0(0, (wchar2_t*)v6, v7 / 2, v1);
 		v11 = -4 - nox_xxx_guiFontHeightMB_43F320(0);
 		result = i;
 		v1 += v11;
@@ -752,7 +752,7 @@ char* sub_4466F0(char* a1, uint8_t* a2) {
 	char v4;      // cl
 	char* result; // eax
 
-	v2 = a2;
+	v2 = (char*)a2;
 	v3 = a1;
 	*a2 = 0;
 	if (!*a1) {
@@ -839,17 +839,17 @@ void nox_xxx_motd_4467F0() {
 								v2 = nox_xxx_xferGetBuffer_446520(1);
 								if (v2) {
 									while (1) {
-										v2 = sub_4466F0(v2, v4);
+										v2 = sub_4466F0(v2, (uint8_t*)v4);
 										if (!v2) {
 											break;
 										}
 										if (!v4[0]) {
 											strcpy(v4, " ");
 										}
-										nox_xxx_motdAddSomeTextMB_446730(v4);
+										nox_xxx_motdAddSomeTextMB_446730((uint8_t*)v4);
 									}
 									if (v4[0]) {
-										nox_xxx_motdAddSomeTextMB_446730(v4);
+										nox_xxx_motdAddSomeTextMB_446730((uint8_t*)v4);
 									}
 								}
 								v3 = nox_xxx_wndGetChildByID_46B0C0(dword_5d4594_826028, 4202);

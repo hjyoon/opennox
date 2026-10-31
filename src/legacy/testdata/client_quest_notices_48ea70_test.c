@@ -55,7 +55,7 @@ static wchar2_t* resource(int kind, int id) {
 wchar2_t* nox_xxx_spellTitle_424930(int id) { return resource(0,id); }
 wchar2_t* nox_xxx_guiCreatureGetName_427240(int id) { return resource(1,id); }
 wchar2_t* nox_xxx_abilityGetName_0_425260(int id) { return resource(2,id); }
-wchar2_t* nox_strman_loadString_40F1D0(char* key, char** out, char* file, int line) {
+wchar2_t* nox_strman_loadString_40F1D0(const char* key, char** out, const char* file, int line) {
 	(void)out; (void)file;
 	if (strcmp(key,"NameChange")==0) {
 		if (line!=1470) abort();

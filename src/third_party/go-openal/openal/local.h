@@ -1,7 +1,3 @@
-#ifdef __APPLE__
-#include<OpenAL/al.h>
-#include<OpenAL/alc.h>
-#else
-#include<AL/al.h>
-#include<AL/alc.h>
-#endif
+// Match the OpenAL Soft library selected by pkg-config on every platform.
+#include <AL/al.h>
+#include <AL/alc.h>

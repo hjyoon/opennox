@@ -694,7 +694,7 @@ int sub_41A000(char* a1, nox_savegame_xxx* sv) {
 	v6 >>= 2;
 	memcpy(&sv->path, a1, 4 * v6);
 	v9 = &a1[4 * v6];
-	v8 = &sv->path[4 * v6];
+	v8 = (uint8_t*)&sv->path[4 * v6];
 	LOBYTE(v6) = v7;
 	memcpy(v8, v9, v6 & 3);
 	return 1;
@@ -2254,10 +2254,10 @@ int sub_41C780(int a1) {
 				*((uint32_t*)v2 + 2) = 0;
 				*((uint32_t*)v2 + 3) = 0;
 			}
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 12, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 8, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2, 4u);
-			nox_xxx_fileReadWrite_426AC0_file3_fread(v2 + 4, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v2 + 12), 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v2 + 8), 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)v2, 4u);
+			nox_xxx_fileReadWrite_426AC0_file3_fread((unsigned char*)(v2 + 4), 4u);
 		}
 		if (nox_crypt_IsReadOnly() == 1 && !nox_common_gameFlags_check_40A5C0(0x2000)) {
 			sub_43D9E0(&v6);
@@ -2402,7 +2402,7 @@ int sub_41D670(char* a1) {
 	short v3;    // [esp+2h] [ebp-4Ah]
 	char v4[72]; // [esp+4h] [ebp-48h]
 
-	if (!sub_420230(v4, &v3)) {
+	if (!sub_420230(v4, (uint16_t*)&v3)) {
 		return 0;
 	}
 	v1 = sub_4200E0();
@@ -2433,7 +2433,7 @@ int sub_41D6C0() {
 	memset(v15, 0, sizeof(v15));
 	v11 = 1;
 	v12 = 1;
-	if (!sub_420230(v14, &v9)) {
+	if (!sub_420230(v14, (uint16_t*)&v9)) {
 		return 0;
 	}
 	if ((unsigned int)nox_common_playerInfoCount_416F40() > 25) {
@@ -2713,7 +2713,7 @@ int sub_41F800(const char* a1) {
 	int* v1;    // eax
 	int result; // eax
 
-	v1 = sub_41F790(a1);
+	v1 = (int*)(sub_41F790(a1));
 	if (v1) {
 		result = *v1;
 	} else {
@@ -4485,7 +4485,7 @@ int nox_xxx_parseSoundSetBin_424170(char* a1) {
 	if (!nox_binfile_cryptSet_408D40(v2, 5)) {
 		return 0;
 	}
-	while (nox_xxx_parseString_409470(v2, v6)) {
+	while (nox_xxx_parseString_409470(v2, (uint8_t*)v6)) {
 		v3 = calloc(1u, 0x54u);
 		v3[19] = dword_5d4594_588120;
 		v3[20] = 0;
@@ -4493,7 +4493,7 @@ int nox_xxx_parseSoundSetBin_424170(char* a1) {
 		v4 = (char*)calloc(strlen(v6) + 1, 1);
 		*v3 = v4;
 		strcpy(v4, v6);
-		while (nox_xxx_parseString_409470(v2, v6) && strcmp(v6, "END") && nox_xxx_parseString_409470(v2, v7)) {
+		while (nox_xxx_parseString_409470(v2, (uint8_t*)v6) && strcmp(v6, "END") && nox_xxx_parseString_409470(v2, (uint8_t*)v7)) {
 			v5 = nox_xxx_utilFindSound_40AF50(v7);
 			if (!sub_4240F0((int)v3, v6, v5)) {
 				return 0;
@@ -4776,7 +4776,7 @@ uint32_t* sub_4258C0(uint32_t** a1, int a2) {
 	int v4;           // esi
 
 	result = *a1;
-	if (*a1 == a1) {
+	if ((void*)*a1 == (void*)a1) {
 		return 0;
 	}
 	v3 = a2;
@@ -4786,7 +4786,7 @@ uint32_t* sub_4258C0(uint32_t** a1, int a2) {
 			break;
 		}
 		result = (uint32_t*)*result;
-		if (result == a1) {
+		if ((void*)result == (void*)a1) {
 			return 0;
 		}
 	}
@@ -4875,7 +4875,7 @@ int* sub_4259F0() {
 	if (result) {
 		do {
 			v2 = sub_425A60(v1);
-			v3 = sub_425BC0((int)v1);
+			v3 = sub_425BC0(v1);
 			if (v3) {
 				do {
 					v4 = sub_425BE0(v3);
@@ -4966,7 +4966,7 @@ char* sub_425B60(void* lpMem, int a2) {
 	int* v2;      // esi
 	char* result; // eax
 
-	v2 = sub_425BC0((int)lpMem);
+	v2 = sub_425BC0(lpMem);
 	if (v2) {
 		while (v2[3] != a2) {
 			v2 = sub_425BE0(v2);
@@ -4987,7 +4987,7 @@ LABEL_6:
 }
 
 //----- (00425BC0) --------------------------------------------------------
-int* sub_425BC0(int a1) { return nox_common_list_getFirstSafe_425890((int*)(a1 + 40)); }
+int* sub_425BC0(void* a1) { return nox_common_list_getFirstSafe_425890((nox_list_item_t*)((char*)a1 + 40)); }
 
 //----- (00425BE0) --------------------------------------------------------
 int* sub_425BE0(int* a1) { return nox_common_list_getNextSafe_4258A0(a1); }

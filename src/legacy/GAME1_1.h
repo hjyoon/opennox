@@ -178,7 +178,7 @@ int sub_425AA0(int a1);
 wchar2_t* sub_425AD0(int a1, wchar2_t* a2);
 void sub_425B30(void* a1, int a2);
 char* sub_425B60(void* lpMem, int a2);
-int* sub_425BC0(int a1);
+int* sub_425BC0(void* a1);
 int* sub_425BE0(int* a1);
 int nox_xxx_countObserverPlayers_425BF0();
 char* sub_425CA0(int a1, int a2);

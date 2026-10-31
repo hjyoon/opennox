@@ -64,7 +64,7 @@ int sub_419E60(nox_object_t* unit) {
 	assert(unit == &owner); int result = states[state_index < 2 ? state_index : 1]; state_index++;
 	uintptr_t args[] = {(uintptr_t)unit}; event("state", args, 1, result); return result;
 }
-int nox_xxx_weaponInventoryEquipFlags_415820(nox_object_t* object) {
+int nox_xxx_weaponInventoryEquipFlags_415820(const nox_object_t* object) {
 	assert(object == &item); int result = flags[flags_index < 2 ? flags_index : 1]; flags_index++;
 	uintptr_t args[] = {(uintptr_t)object}; event("equipFlags", args, 1, result); return result;
 }

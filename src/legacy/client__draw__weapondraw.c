@@ -9,13 +9,13 @@
 //----- (004B9690) --------------------------------------------------------
 int nox_thing_weapon_draw(int* a1, nox_drawable* dr) {
 	sub_4B95D0(dr);
-	return nox_thing_static_draw(a1, dr);
+	return nox_thing_static_draw((uint32_t*)a1, dr);
 }
 
 //----- (004B96B0) --------------------------------------------------------
 int nox_thing_weapon_animate_draw(int* a1, nox_drawable* dr) {
 	sub_4B95D0(dr);
-	return nox_thing_animate_draw(a1, dr);
+	return nox_thing_animate_draw((uint32_t*)a1, dr);
 }
 
 // Retain the decoded PE32 shield body for provenance. The active symbol is

@@ -4,7 +4,7 @@
 #include "client__draw__staticdraw.h"
 
 //----- (004BBD30) --------------------------------------------------------
-int nox_thing_slave_draw(int* a1, nox_drawable* dr) {
+int nox_thing_slave_draw(uint32_t* a1, nox_drawable* dr) {
 	nox_static_random_draw_data_t* data = dr->field_76;
 	if (data && data->images && dr->field_77 < data->count) {
 		nox_xxx_drawObject_4C4770_draw(a1, dr, data->images[dr->field_77]);

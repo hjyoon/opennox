@@ -1253,7 +1253,7 @@ nox_playerInfo* nox_xxx_netReportAllLatency_4D3050() {
 			*(uint16_t*)&v3[3] = sub_554240(result->playerInd);
 			for (result = nox_common_playerInfoGetFirst_416EA0(); result;
 				 result = nox_common_playerInfoGetNext_416EE0(result)) {
-				nox_netlist_addToMsgListCli_40EBC0(result->playerInd, 1, v3, 5);
+				nox_netlist_addToMsgListCli_40EBC0(result->playerInd, 1, (unsigned char*)v3, 5);
 			}
 		}
 	}
@@ -1685,13 +1685,13 @@ int nox_xxx_mapGenStep_4D44E0() {
 			if (nox_mapgenMakeRoomsNative_524310(theme)) {
 				for (j = (int*)nox_xxx_mapGenGetTopRoom_521710(); j; j = (int*)nox_mapgenRoomNextNative_521720(j)) {
 					if (nox_xxx_mapGenCheckRoomType_5238F0(j)) {
-						nox_xxx_mapGenSetFlags_5235F0(156);
+						nox_xxx_mapGenSetFlags_5235F0((char)0x9C);
 						nox_mapgenGenerateRoomNative_524E00(theme, (uint8_t*)j);
 					}
 				}
 				for (k = (int*)nox_xxx_mapGenGetTopRoom_521710(); k; k = (int*)nox_mapgenRoomNextNative_521720(k)) {
 					if (!nox_xxx_mapGenCheckRoomType_5238F0(k)) {
-						nox_xxx_mapGenSetFlags_5235F0(156);
+						nox_xxx_mapGenSetFlags_5235F0((char)0x9C);
 						nox_mapgenGenerateRoomNative_524E00(theme, (uint8_t*)k);
 					}
 				}
@@ -1769,7 +1769,7 @@ float* nox_xxx_mapgen_Doors_4D4790() {
 		if (*(uint32_t*)v1 != 1) {
 			goto LABEL_117;
 		}
-		nox_xxx_mapGenSetFlags_5235F0(156);
+		nox_xxx_mapGenSetFlags_5235F0((char)0x9C);
 		v4 = 0;
 		v32 = 0;
 		while (1) {
@@ -2202,7 +2202,7 @@ int sub_4D5350(uint8_t* a1, int a2, int a3, int a4, uint8_t* a5) {
 	if (a2 + 1 >= *getMemIntPtr(0x5D4594, 1549868)) {
 		return 0;
 	}
-	nox_xxx_mapGenSetFlags_5235F0(155);
+	nox_xxx_mapGenSetFlags_5235F0((char)0x9B);
 	if (*(uint32_t*)a1 == 1) {
 		result = nox_xxx_mapGenFillRoom_4D53B0(a1, v5, a3, a4, a5);
 	} else {
@@ -4128,7 +4128,7 @@ int nox_xxx_netReportUnitHeight_4D9020(int a1, nox_object_t* a2p) {
 		v8 = *(float*)(a2 + 116);
 		v15[4] = v7;
 		v15[5] = (long long)v8;
-		result = nox_netlist_addToMsgListCli_40EBC0(a1, 1, v15, 6);
+		result = nox_netlist_addToMsgListCli_40EBC0(a1, 1, (unsigned char*)v15, 6);
 	} else {
 		v14 = (uint32_t*)a2;
 		if (*(float*)(a2 + 104) < 0.0) {
@@ -4155,7 +4155,7 @@ int sub_4D90E0(int a1, char a2) {
 
 	v3[0] = -105;
 	v3[1] = a2;
-	return nox_netlist_addToMsgListCli_40EBC0(a1, 1, v3, 2);
+	return nox_netlist_addToMsgListCli_40EBC0(a1, 1, (unsigned char*)v3, 2);
 }
 
 //----- (004D9110) --------------------------------------------------------
@@ -4675,7 +4675,7 @@ int nox_xxx_netInformTextMsg_4DA0F0(int a1, int a2, int* a3) {
 		v4 = *a3;
 		v5[0] = -87;
 		*(uint32_t*)&v5[2] = v4;
-		result = nox_netlist_addToMsgListCli_40EBC0(a1, 1, v5, 6);
+		result = nox_netlist_addToMsgListCli_40EBC0(a1, 1, (unsigned char*)v5, 6);
 		break;
 	case 17:
 		LOWORD(a2) = 4521;
@@ -4704,7 +4704,7 @@ intptr_t nox_xxx_netInformTextMsg2_4DA180(int a1, uint8_t* a2) {
 		for (nox_object_t* unit = nox_xxx_getFirstPlayerUnit_4DA7C0(); unit;
 			 unit = nox_xxx_getNextPlayerUnit_4DA7F0(unit)) {
 			nox_player_update_data_t* update = unit->data_update;
-			nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, v6, 6);
+			nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, (unsigned char*)v6, 6);
 		}
 		return 0;
 	case 5:
@@ -4745,7 +4745,7 @@ void nox_xxx_netPriMsgToPlayer_4DA2C0(nox_object_t* a1p, const char* a2, char a3
 		v4[1] = 15;
 		strcpy(&v4[3], a2);
 		nox_player_update_data_t* update = a1p->data_update;
-		nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, v4, strlen(a2) + 4);
+		nox_netlist_addToMsgListCli_40EBC0(update->player->playerInd, 1, (unsigned char*)v4, strlen(a2) + 4);
 	}
 }
 
@@ -5802,7 +5802,7 @@ double nox_xxx_checkFireProtect_4DFE40(uint32_t* a1) {
 				v6 = 4;
 				do {
 					v7 = *v5;
-					if (*v5 && *(uint32_t * (**)(int, int))(v7 + 112) == sub_4DFD10) {
+					if (*v5 && *(void (**)(void*, nox_object_t*, const nox_object_t*))(v7 + 112) == sub_4DFD10) {
 						v1 = v1 + *(float*)(v7 + 120);
 					}
 					++v5;
@@ -5818,7 +5818,7 @@ double nox_xxx_checkFireProtect_4DFE40(uint32_t* a1) {
 		v9 = 4;
 		do {
 			v10 = *v8;
-			if (*v8 && *(uint32_t * (**)(int, int))(v10 + 112) == sub_4DFD10) {
+			if (*v8 && *(void (**)(void*, nox_object_t*, const nox_object_t*))(v10 + 112) == sub_4DFD10) {
 				v1 = v1 + *(float*)(v10 + 120);
 			}
 			++v8;
@@ -5870,7 +5870,7 @@ double nox_xxx_checkElectrProtect_4DFF40(uint32_t* a1) {
 				v6 = 4;
 				do {
 					v7 = *v5;
-					if (*v5 && *(uint32_t * (**)(int, int))(v7 + 112) == nox_xxx_buff_4DFD80) {
+					if (*v5 && *(void (**)(void*, nox_object_t*, const nox_object_t*))(v7 + 112) == nox_xxx_buff_4DFD80) {
 						v1 = v1 + *(float*)(v7 + 120);
 					}
 					++v5;
@@ -5886,7 +5886,7 @@ double nox_xxx_checkElectrProtect_4DFF40(uint32_t* a1) {
 		v9 = 4;
 		do {
 			v10 = *v8;
-			if (*v8 && *(uint32_t * (**)(int, int))(v10 + 112) == nox_xxx_buff_4DFD80) {
+			if (*v8 && *(void (**)(void*, nox_object_t*, const nox_object_t*))(v10 + 112) == nox_xxx_buff_4DFD80) {
 				v1 = v1 + *(float*)(v10 + 120);
 			}
 			++v8;
@@ -5938,7 +5938,7 @@ double nox_xxx_getPoisonDmg_4E0040(uint32_t* a1) {
 				v6 = 4;
 				do {
 					v7 = *v5;
-					if (*v5 && *(uint32_t * (**)(int, int))(v7 + 112) == nox_xxx_checkPoisonProtectEnch_4DFDE0) {
+					if (*v5 && *(void (**)(void*, nox_object_t*, const nox_object_t*))(v7 + 112) == nox_xxx_checkPoisonProtectEnch_4DFDE0) {
 						v1 = v1 + *(float*)(v7 + 120);
 					}
 					++v5;
@@ -5954,7 +5954,7 @@ double nox_xxx_getPoisonDmg_4E0040(uint32_t* a1) {
 		v9 = 4;
 		do {
 			v10 = *v8;
-			if (*v8 && *(uint32_t * (**)(int, int))(v10 + 112) == nox_xxx_checkPoisonProtectEnch_4DFDE0) {
+			if (*v8 && *(void (**)(void*, nox_object_t*, const nox_object_t*))(v10 + 112) == nox_xxx_checkPoisonProtectEnch_4DFDE0) {
 				v1 = v1 + *(float*)(v10 + 120);
 			}
 			++v8;
@@ -6254,7 +6254,7 @@ void nox_xxx_lightngEffect_4E06F0(
 			nox_object_call_damage_native(target, owner, weapon,
 				nox_double2int((double)nox_modifier_effect_getPreHitFloat(effect)), 9);
 		}
-		nox_xxx_netSendPointFx_522FF0(129, (float2*)&target->x);
+		nox_xxx_netSendPointFx_522FF0((char)0x81, (float2*)&target->x);
 		nox_xxx_aud_501960(225, target, 0, 0);
 	}
 }
@@ -6350,7 +6350,7 @@ int nox_xxx_itemCheckReadinessEffect_4E0960(int a1) {
 		return 0;
 	}
 	v2 = 2;
-	for (i = v1 + 8; !*(uint32_t*)i || *(int (**)())(*(uint32_t*)i + 40) != nullsub_22; i += 4) {
+	for (i = v1 + 8; !*(uint32_t*)i || *(void (**)())(*(uint32_t*)i + 40) != nullsub_22; i += 4) {
 		if (++v2 >= 4) {
 			return 0;
 		}
@@ -6696,7 +6696,7 @@ LABEL_87:
 		v36 = *(float*)(a1 + 60);
 		v45[2] = v35;
 		v45[3] = nox_float2int(v36);
-		nox_xxx_netSendVampFx_523270(162, (short*)v45, v32);
+		nox_xxx_netSendVampFx_523270((char)0xA2, (short*)v45, v32);
 	}
 	nox_xxx_gameballOnPlayerDamage_4E1230(v10, a1, a4);
 	if (*(uint8_t*)(a1 + 8) & 4) {

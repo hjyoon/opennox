@@ -166,7 +166,11 @@ func nox_getHostPlayerUnit() *nox_object_t {
 	return asObjectC(GetServer().S().Players.HostUnit())
 }
 
-//export nox_xxx_servStartCountdown_40A2A0
+//export nox_xxx_servStartCountdown_40A2A0_go
+func nox_xxx_servStartCountdown_40A2A0_go(a1_cgo int32, a2 *C.char) {
+	nox_xxx_servStartCountdown_40A2A0(a1_cgo, a2)
+}
+
 func nox_xxx_servStartCountdown_40A2A0(a1_cgo int32, a2 *C.char) {
 	a1 := int(a1_cgo)
 	GetServer().ServStartCountdown(a1, strman.ID(GoString(a2)))

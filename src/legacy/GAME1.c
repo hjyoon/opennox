@@ -1430,28 +1430,28 @@ int nox_thing_read_FLOR_414DB0(nox_memfile* f) {
 	unsigned char v15;  // [esp+8h] [ebp+4h]
 
 	v2 = (unsigned char*)(f->cur + 4);
-	f->cur = v2;
+	f->cur = (char*)v2;
 	v3 = &v2[*v2 + 13];
-	f->cur = v3;
+	f->cur = (char*)v3;
 	v4 = (unsigned char*)(f->cur + 1);
 	v14 = *v3;
-	f->cur = v4;
+	f->cur = (char*)v4;
 	v15 = *v4;
-	f->cur = v4 + 1;
+	f->cur = (char*)(v4 + 1);
 	v4 += 3;
 	v5 = v14 * v15;
 	v14 = *(v4 - 2);
-	f->cur = v4;
+	f->cur = (char*)v4;
 	v6 = v5 * v14;
 	if (v6 > 0) {
 		do {
 			v7 = f->cur;
 			v8 = *v7;
 			v9 = (unsigned char*)(v7 + 1);
-			f->cur = v9;
+			f->cur = (char*)v9;
 			if (v8 == -1) {
 				v10 = (unsigned char*)(v9 + 1);
-				f->cur = v10;
+				f->cur = (char*)v10;
 				f->cur += *v10 + 1;
 			}
 			--v6;
@@ -1757,7 +1757,7 @@ int sub_4161E0() {
 	char v14[16];      // [esp+20h] [ebp-24h]
 	int v15[5];        // [esp+30h] [ebp-14h]
 
-	sub_454040(v15);
+	sub_454040((uint32_t*)v15);
 	sub_4536B0(v11);
 	v12 = sub_453710();
 	v0 = nox_common_playerInfoCount_416F40();
@@ -1897,7 +1897,7 @@ void sub_416690() {
 			*(uint16_t*)(v1 + 63) = v2;
 			*(uint16_t*)(v1 + 65) = nox_game_getQuestStage_4E3CC0();
 		}
-		v3[sub_425550(v1, v3, 552)] = 0;
+		v3[sub_425550((uint8_t*)v1, (uint8_t*)v3, 552)] = 0;
 		sub_4164F0();
 	}
 }

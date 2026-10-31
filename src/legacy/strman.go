@@ -23,7 +23,11 @@ func internWStr(s string) *wchar2_t {
 	return (*wchar2_t)(unsafe.Pointer(p))
 }
 
-//export nox_strman_loadString_40F1D0
+//export nox_strman_loadString_40F1D0_go
+func nox_strman_loadString_40F1D0_go(name *C.char, strOut **C.char, srcFile *C.char, srcLine_cgo int32) *wchar2_t {
+	return nox_strman_loadString_40F1D0(name, strOut, srcFile, srcLine_cgo)
+}
+
 func nox_strman_loadString_40F1D0(name *C.char, strOut **C.char, srcFile *C.char, srcLine_cgo int32) *wchar2_t {
 	if strOut != nil {
 		*strOut = nil

@@ -55,6 +55,69 @@ completion requirements.
 
 ## Current findings
 
+### Native dead-target callback and explicit cached context
+
+Runtime `53741fbc` ports public `532040` to native candidate and context
+pointers and a `uintptr_t` return. It reads the candidate NetCode before
+the explicitly supplied context, then tests DEAD only when codes match.
+It writes the full global DWORD to 1 for a match and otherwise preserves
+its previous value, including noncanonical values. The native candidate
+pointer is returned on every path. No class gate, live UpdateData lookup,
+or server lookup is introduced. The existing Go fight loop shares the
+same equality-and-DEAD predicate. The retained PE32 parent remains outside
+this change.
+
+Both original FPU settings execute **10,800 inputs** each with identical
+outputs. The unchanged 48-byte original interval executes all 42 body
+bytes; six padding bytes remain unexecuted. Native allocation controls
+pass before the actual C call reproduces a pointer-truncation crash.
+The comparator is frozen before implementation. All 10,800 actual public-C
+calls now match the original pointer return, sticky global state, explicit
+context and guarded records, with native allocations above 4 GiB on ARM64.
+
+Normal checks pass **367,248/43 skips**; strict highres, cgocheck2,
+checkptr2 and real OpenAL/null checks pass **220,988/eight skips**.
+Every preceding terminal case and multiplicity is retained, adding 10,801
+events. All 4,048 prior inputs and assertions remain byte-identical.
+The oracle adds only the complete 48-byte code interval, retaining every
+prior record and its order: **3,302 code and 688 data ranges** pass, along
+with 21 verifier tests. The global is virtual BSS, so no file-backed data
+record is fabricated and the verifier remains unchanged.
+
+The clean ARM64 product passes all six Blink modes, sixteen natural
+first-attack modes, Lightning/EnergyBolt/DrainMana, and original Bookcase
+progression followed by actual-menu Load/Save. Native HP20/MP44/poison0,
+the original endpoint, plate, mover and Urchin HP0/DEAD are qualified
+before reload. Four new PNGs are actually viewed; the final frames show
+overwrite confirmation, while disk and fresh-menu Load independently
+establish Save completion.
+
+Windows amd64 and 386 native products, help execution and all three
+package checks pass. Linux amd64 passes **364,410/seven skips** across
+58 expected packages (36 pass, 22 skip), and the separate default-link
+PlayerDamage checks pass another 133,384 events. All three native jobs
+complete successfully on the same runtime revision. Exact raw Linux JSON
+streams remain inside their digest-verified ZIP; streamed checks retain
+all earlier predicate, state, block-readiness and scheduler case counts
+and all 10,801 new dead-target events. The five requested poison-macro
+diagnostics are absent.
+
+Preservation checks verify all 4,649 personal installation files
+(503,207,370 bytes), all 4,048 prior inputs, and all 70 retained products
+(35 ARM64 and 35 native). Original references, Saves, failure records,
+prior screenshots and door/shop audio captures remain. No cleanup removes
+assets, evidence or products.
+
+The next melee investigation reproduces three native C pointer-truncation
+crashes at `532130`, `532390` and `532440` after a valid ordinary Go
+control. The service-free `532390` original executes 14,112 inputs per
+FPU setting; 1,326 outputs differ between settings. Its full 161-byte body
+executes within a 176-byte interval. These private before records are
+retained; no melee implementation or completed native comparison is
+claimed. The nine final chapter 1-3 cell audits and broader UI, audio,
+network and stability requirements remain open. Overall porting is not 100%.
+
+
 ### Native public fight schedulers and ordinary spell services
 
 Runtime `ea9c9e72` ports public `531B40`, `531C10`, `531C60` and `531D50`
@@ -125,10 +188,10 @@ The final preservation audit verifies all 4,649 personal installation files
 Saves and captures. Initial and corrected products and all eight newly
 viewed PNGs remain; no original asset or evidence cleanup occurs.
 
-The next `532040` callback has an unchanged two-profile original reference
-with 10,800 inputs each and a qualified native C pointer-truncation crash.
-Its native comparator is frozen and allocation controls pass; no product
-implementation is changed yet. The final nine campaign-cell audits and
+At this scheduler checkpoint, the subsequent `532040` callback had an
+unchanged two-profile reference, a qualified native C pointer-truncation
+crash and a frozen comparator. Its completed port and subsequent product
+verification are recorded above. The final nine campaign-cell audits and
 broader UI/audio/network/stability requirements remain open. Overall
 porting 100% is not achieved.
 

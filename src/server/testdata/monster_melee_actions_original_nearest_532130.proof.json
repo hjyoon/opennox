@@ -1,0 +1,242 @@
+{
+  "status": "passed",
+  "contexts": 3664,
+  "control_word": "0x23f",
+  "smoke_limit": 0,
+  "per_entry": {
+    "0x532130": 2255,
+    "0x532440": 1409
+  },
+  "per_family": {
+    "cooldown-stack-admission": 896,
+    "unsigned-frame-deadline": 48,
+    "ready-stamina-priority": 510,
+    "actual-blocker-and-enemy": 432,
+    "flee-stack-capacity": 72,
+    "original-range-multiply-and-spill": 160,
+    "buff-publication-and-cached-data": 50,
+    "world-service-mutation": 15,
+    "cancel-cached-versus-live-data": 16,
+    "end-cached-versus-live-data": 16,
+    "original-RNG-table-and-wrap": 40,
+    "strike-frame-completion-and-sound": 960,
+    "strike-return-and-live-sound-cached-completion": 96,
+    "actual-Pop-and-end-admission": 280,
+    "end-service-mutation": 5,
+    "NPC-bot-morph-and-player-attack": 48,
+    "NPC-cached-BOT-reload": 2,
+    "Pop-removes-below-head-conditions": 18
+  },
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "ranges": [
+    {
+      "address": 5447984,
+      "size": 608,
+      "sha256": "6723c9371cf6af87afecbbb8c0305855a31d10ddabee3683b896657844ccf463"
+    },
+    {
+      "address": 5448592,
+      "size": 176,
+      "sha256": "30557bd8dc8d0b0af82c46c58092dd560181d620e431ca1b866677c20b393eef"
+    },
+    {
+      "address": 5448768,
+      "size": 256,
+      "sha256": "78754785d94c7cb37a7831051aa198992e156c6882f991b1fb9f203dc716e1fc"
+    },
+    {
+      "address": 5209728,
+      "size": 99,
+      "sha256": "e67160586ba7ef3460acbad297dca25c38961c464a8afa1664a2f00770519d4a"
+    },
+    {
+      "address": 5451968,
+      "size": 672,
+      "sha256": "64890e042692773518b002a99c5954958327e6ccdbb0d07ced2c66af3fa0642b"
+    },
+    {
+      "address": 5458704,
+      "size": 73,
+      "sha256": "b6121ba199077a638afecd8bbea32c3b962e9ada0123cc88f74c92dde1de94a3"
+    },
+    {
+      "address": 5458784,
+      "size": 47,
+      "sha256": "709a0fab91466b0b4a869ccb99daa2fabe401e610c27c068a208d32ee14f4d72"
+    },
+    {
+      "address": 5458832,
+      "size": 47,
+      "sha256": "c9d15d0ca8669ddfe8c10f525bba732cb74044e1325e1adba4f0c5a7032bc4ae"
+    },
+    {
+      "address": 5162368,
+      "size": 38,
+      "sha256": "7e7580cf0eb5c57ba46812b911b2fd4fa3224fc26ee646d777e207b350e91859"
+    },
+    {
+      "address": 4297008,
+      "size": 22,
+      "sha256": "41313a5dafb3324237e5551ace40bfb0699f3249265415874542b797fbad8671"
+    },
+    {
+      "address": 4297040,
+      "size": 43,
+      "sha256": "5f02aebd3ad51a28e9998e8d2164c7668913951c21caa0f34d501ea3bd8ae4d2"
+    },
+    {
+      "address": 4236736,
+      "size": 18,
+      "sha256": "394e130b60db4edebc66ae3fe123caf36aa39fd1be90ea1ffcf49dd94a96914b"
+    },
+    {
+      "address": 5284048,
+      "size": 53,
+      "sha256": "31ea7a5980ad6da57a37953dc7abe030a5c9a2e30d5ec05f7f5ef6b7a4cea9f1"
+    },
+    {
+      "address": 5239632,
+      "size": 35,
+      "sha256": "49894cd04beb646eea5a7151442fe2dfa8482f37576835e9c0f8abc791ce2414"
+    },
+    {
+      "address": 5456336,
+      "size": 26,
+      "sha256": "929115030ba9af8d1d4856a835fab3bd56dc5489e70e18844fc98fbb635977b3"
+    },
+    {
+      "address": 5240240,
+      "size": 105,
+      "sha256": "73a658cac770ed1b5dc3c2fc1980038a6d3ad088a493a71cbd6bcc921f930c62"
+    },
+    {
+      "address": 4344096,
+      "size": 12,
+      "sha256": "6037d5036213385cefd723f54df6960ce8dc232b9a7c2cc6ec557cba34d3685c"
+    },
+    {
+      "address": 4343808,
+      "size": 22,
+      "sha256": "d3b720a50d8b2fe83fe58806a928dec58c4d6eed34596ab3365390dd6d508394"
+    },
+    {
+      "address": 5284448,
+      "size": 251,
+      "sha256": "57094128eed5b5381ff87acf1036254f807a481fd2f3448cf95d57a7fea1ed05"
+    },
+    {
+      "address": 5284192,
+      "size": 254,
+      "sha256": "ee66ba2252e2ca8c081333746483a1971e93993b0a6e7871b50c6c21139201f3"
+    },
+    {
+      "address": 5284112,
+      "size": 76,
+      "sha256": "e934deff9da1ef3f864c9b0d1311caf34bbca6fa55fce6b967d8b2717741ebc2"
+    },
+    {
+      "address": 5283856,
+      "size": 13,
+      "sha256": "5e7895861e04953e8f21298113487664397c08d71433c99115c45d625a4b58cd"
+    },
+    {
+      "address": 5126608,
+      "size": 23,
+      "sha256": "b6f634a3af4f165da9d371d08c1bce748b6827e04a438c664f24f44c1c60b336"
+    },
+    {
+      "address": 4342528,
+      "size": 31,
+      "sha256": "11676dd3929f946c37a619bdcca10071055d69e4a91851643782069ea685fa7e"
+    },
+    {
+      "address": 5221056,
+      "size": 44,
+      "sha256": "d71c55169ec179c2a5ef83de7238e918bb01e67e65224552a57eaa7a10c370e3"
+    },
+    {
+      "address": 5221104,
+      "size": 44,
+      "sha256": "f465287d8887915211ee7696c0f58c8042d119c3e1d66930b895e4774903f76a"
+    },
+    {
+      "address": 4284320,
+      "size": 67,
+      "sha256": "980160ad95ee2695d9a2b0840c318f0ee870d028506a639f92b18799bb275fa7"
+    }
+  ],
+  "original_calls": {
+    "0x532130": 2255,
+    "0x50a260": 2712,
+    "0x50a110": 2609,
+    "0x4e39d0": 3265,
+    "0x50a010": 2723,
+    "0x5341d0": 987,
+    "0x4ff5b0": 1974,
+    "0x415fa0": 1116,
+    "0x424300": 1401,
+    "0x4f7e80": 751,
+    "0x532390": 646,
+    "0x5330c0": 358,
+    "0x534b10": 652,
+    "0x534b90": 326,
+    "0x534b60": 326,
+    "0x4ff350": 556,
+    "0x4ec580": 556,
+    "0x419150": 278,
+    "0x40a5c0": 278,
+    "0x419130": 556,
+    "0x50a160": 1259,
+    "0x424920": 60,
+    "0x424800": 60,
+    "0x532440": 1409,
+    "0x4faac0": 36,
+    "0x4faaf0": 34
+  },
+  "declared_service_calls": {
+    "diagnostic": 3265,
+    "cancel": 81,
+    "world": 1163,
+    "audio": 1373,
+    "end": 65,
+    "publish-buffs": 60,
+    "strike": 414,
+    "player-attack": 59
+  },
+  "executed_original_bytes": 2759,
+  "executed_bytes_per_range": {
+    "0x532130": 600,
+    "0x532390": 161,
+    "0x532440": 248,
+    "0x4f7e80": 99,
+    "0x5330c0": 474,
+    "0x534b10": 34,
+    "0x534b60": 29,
+    "0x534b90": 29,
+    "0x4ec580": 19,
+    "0x419130": 21,
+    "0x419150": 26,
+    "0x40a5c0": 18,
+    "0x50a0d0": 0,
+    "0x4ff350": 34,
+    "0x5341d0": 26,
+    "0x4ff5b0": 105,
+    "0x424920": 12,
+    "0x424800": 22,
+    "0x50a260": 251,
+    "0x50a160": 254,
+    "0x50a110": 76,
+    "0x50a010": 13,
+    "0x4e39d0": 23,
+    "0x424300": 30,
+    "0x4faac0": 44,
+    "0x4faaf0": 44,
+    "0x415fa0": 67
+  },
+  "no_substituted_FP_predicate_RNG_push_or_pop_result": true,
+  "full_heap_readonly_guards_stack_bounds_global_neighbors_code_RNG_caches_registry_NV_and_FPU_control_checked": true,
+  "FPU_TOP_zero_after_every_call": true,
+  "original_unchanged": true,
+  "fixture_sha256": "7fc988ee3c9e82f9a4bb4765284ab15ee5d2823e7a43a11bd61f33bc13990bb1",
+  "raw_fixture_sha256": "4676469c57ddba8127bfcdbf015ea3eaca0d4becb3dd73dd17af6003dc5c183b"
+}

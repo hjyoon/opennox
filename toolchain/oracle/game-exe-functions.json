@@ -182,6 +182,13 @@
       "purpose": "the exact three NOP bytes separating item-enchantment tooltip lookup from the debug assertion stub at 004134C0"
     },
     {
+      "name": "original_native_melee_532130_complete_415FA0",
+      "address": "0x00415FA0",
+      "size": 67,
+      "sha256": "980160ad95ee2695d9a2b0840c318f0ee870d028506a639f92b18799bb275fa7",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 67 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
       "name": "nox_common_randomFloat_416030",
       "address": "0x00416030",
       "size": 81,
@@ -271,6 +278,20 @@
       "size": 15,
       "sha256": "40f0d021fa824f3b40dc646f67479997734d273d9121690b6f042c512df3a838",
       "purpose": "the exact fifteen NOP bytes separating player status reporting at 00417630 from player respawn at 00417680"
+    },
+    {
+      "name": "original_native_melee_532130_complete_419130",
+      "address": "0x00419130",
+      "size": 22,
+      "sha256": "41313a5dafb3324237e5551ace40bfb0699f3249265415874542b797fbad8671",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 21 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
+      "name": "original_native_melee_532130_complete_419150",
+      "address": "0x00419150",
+      "size": 43,
+      "sha256": "5f02aebd3ad51a28e9998e8d2164c7668913951c21caa0f34d501ea3bd8ae4d2",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 26 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
     },
     {
       "name": "nox_xxx_createAtImpl_4191D0",
@@ -831,6 +852,20 @@
       "size": 2471,
       "sha256": "db77e62bd2500ea0d16a69c3ef3ab1db7993996022c6bf1c3a1a4f097e30b2b5",
       "purpose": "version-3 floor codec: fixed128 tile scans, row-major four-DWORD header, flag/count bytes, 16-byte scalar nodes, selected-region parity and original row coordinates"
+    },
+    {
+      "name": "original_native_melee_532130_complete_424800",
+      "address": "0x00424800",
+      "size": 22,
+      "sha256": "d3b720a50d8b2fe83fe58806a928dec58c4d6eed34596ab3365390dd6d508394",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 22 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
+      "name": "original_native_melee_532130_complete_424920",
+      "address": "0x00424920",
+      "size": 12,
+      "sha256": "6037d5036213385cefd723f54df6960ce8dc232b9a7c2cc6ec557cba34d3685c",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 12 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
     },
     {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_424CCE",
@@ -10577,6 +10612,20 @@
       "purpose": "the exact nine NOP bytes after the gold getter before the next routine at 004FA6D0"
     },
     {
+      "name": "original_native_melee_532130_complete_4FAAC0",
+      "address": "0x004FAAC0",
+      "size": 44,
+      "sha256": "d71c55169ec179c2a5ef83de7238e918bb01e67e65224552a57eaa7a10c370e3",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 44 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
+      "name": "original_native_melee_532130_complete_4FAAF0",
+      "address": "0x004FAAF0",
+      "size": 44,
+      "sha256": "f465287d8887915211ee7696c0f58c8042d119c3e1d66930b895e4774903f76a",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 44 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
       "name": "nox_xxx_updatePlayer_4F8100_store_4FAB49",
       "address": "0x004FAB49",
       "size": 10,
@@ -18592,6 +18641,13 @@
       "purpose": "the ACTION_MELEE_ATTACK start prefix through the complete 32-bit weapon-flag load immediately before the stamina lookup call"
     },
     {
+      "name": "original_native_melee_532130_complete_532130",
+      "address": "0x00532130",
+      "size": 608,
+      "sha256": "6723c9371cf6af87afecbbb8c0305855a31d10ddabee3683b896657844ccf463",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 600 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
       "name": "nox_xxx_weaponGetStaminaByType_4F7E80_call_5321A5",
       "address": "0x005321A5",
       "size": 5,
@@ -18604,6 +18660,13 @@
       "size": 486,
       "sha256": "347a75686370e25f652af9e38f5b39e0d4a718bea5c119215c6c7afc981ad550",
       "purpose": "the remainder of ACTION_MELEE_ATTACK start after the stamina lookup, preserving the stamina-byte comparison, animation, sound, and dependency-stack behavior"
+    },
+    {
+      "name": "original_native_melee_532130_complete_532390",
+      "address": "0x00532390",
+      "size": 176,
+      "sha256": "30557bd8dc8d0b0af82c46c58092dd560181d620e431ca1b866677c20b393eef",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 161 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
     },
     {
       "name": "nox_xxx_monsterActionMeleeUpdate_532440",
@@ -18676,6 +18739,13 @@
       "purpose": "the exact decoded direct rel32 call from monster action handling to the script callback dispatcher at 00502490"
     },
     {
+      "name": "original_native_melee_532130_complete_5330C0",
+      "address": "0x005330C0",
+      "size": 672,
+      "sha256": "64890e042692773518b002a99c5954958327e6ccdbb0d07ced2c66af3fa0642b",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 474 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
       "name": "nox_xxx_testUnitBuffs_4FF350_call_533222",
       "address": "0x00533222",
       "size": 5,
@@ -18737,6 +18807,13 @@
       "size": 800,
       "sha256": "9bfb30e24dec8e47594ad9a0f374a741782d8e243fc24e30dc1badd67b3e5275",
       "purpose": "enact banish, observe, idle, guard, escort, and hunt orders with the original eligibility, feedback, sound, and AI-stack mutations"
+    },
+    {
+      "name": "original_native_melee_532130_complete_5341D0",
+      "address": "0x005341D0",
+      "size": 26,
+      "sha256": "929115030ba9af8d1d4856a835fab3bd56dc5489e70e18844fc98fbb635977b3",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 26 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
     },
     {
       "name": "nox_xxx_spellBuffOff_4FF5B0_call_5341D8",
@@ -18814,6 +18891,27 @@
       "size": 5,
       "sha256": "619053238f27563f2b0a78925f50ea3769599d23d6d17b6c8c73a1d076cbaf41",
       "purpose": "the exact decoded direct rel32 call that restores a zombie's HP after its get-up actions and audio are queued"
+    },
+    {
+      "name": "original_native_melee_532130_complete_534B10",
+      "address": "0x00534B10",
+      "size": 73,
+      "sha256": "b6121ba199077a638afecd8bbea32c3b962e9ada0123cc88f74c92dde1de94a3",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 34 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
+      "name": "original_native_melee_532130_complete_534B60",
+      "address": "0x00534B60",
+      "size": 47,
+      "sha256": "709a0fab91466b0b4a869ccb99daa2fabe401e610c27c068a208d32ee14f4d72",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 29 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
+    },
+    {
+      "name": "original_native_melee_532130_complete_534B90",
+      "address": "0x00534B90",
+      "size": 47,
+      "sha256": "c9d15d0ca8669ddfe8c10f525bba732cb74044e1325e1adba4f0c5a7032bc4ae",
+      "purpose": "Unchanged complete original byte interval entered in3664 melee inputs per FPU profile; 29 interval bytes execute. Original stack, RNG, blocker, morph and predicates run without substituted results. Declared world/publication/audio/attack/action services and initialized type caches do not certify all transitive branches or overall port completion."
     },
     {
       "name": "nox_objectPickupAudEventParse_5367B0",
@@ -23179,6 +23277,13 @@
       "purpose": "exact binary32 0.5 velocity scale followed by direction scale 40.743664 and tau 6.2831855 consumed by 004E9770 and 00509ED0; the leading half also scales the selected box extent in 004EE2A0, monster field 332 in 004F0040, and the inclusive zero-through-200 slot RNG result in 004F0B60"
     },
     {
+      "name": "original_native_melee_532130_blocker_forward_dot_limit",
+      "address": "0x0058350C",
+      "size": 4,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "purpose": "Exact file-backed operand read by unchanged original melee/blocker/RNG code. Runtime BSS globals and initialized resource/type caches are not fabricated as file data."
+    },
+    {
       "name": "player_value_init_radius_add",
       "address": "0x00583518",
       "size": 4,
@@ -23422,6 +23527,13 @@
       "size": 4,
       "sha256": "7c2f211ecf1eaa23c82143e71adea9cce19a5d3c3f45323cc0ef6a16b72cfdc0",
       "purpose": "Original binary32 65.05382537841797 operand (0x42821B8F, exact 0x1.04371ep+6f), read by REA-decoded FADD instructions at 00524CA7 and 00524D9B in irregular fill producer 00524B50."
+    },
+    {
+      "name": "original_native_melee_532130_cooldown_range_multiplier",
+      "address": "0x00583D3C",
+      "size": 4,
+      "sha256": "2817a2b3ce848459dce7da01a0c7ca38abecd4441cf8da0a0b4dd8769d66da31",
+      "purpose": "Exact file-backed operand read by unchanged original melee/blocker/RNG code. Runtime BSS globals and initialized resource/type caches are not fabricated as file data."
     },
     {
       "name": "monster_dodge_distance_epsilon",
@@ -25851,6 +25963,13 @@
       "size": 10,
       "sha256": "21b8823aa2fe666873f018f1936111e6e78334bdd065e867efe9df5c0d79df67",
       "purpose": "the exact FistSpeed key whose negated value sets the falling velocity"
+    },
+    {
+      "name": "original_native_melee_532130_query_radius",
+      "address": "0x005C6D0C",
+      "size": 4,
+      "sha256": "0c05e73c2748cbfd2e38c0afaf9cb594f78e14fefa3c24190ebc121d45dbee4f",
+      "purpose": "Exact file-backed operand read by unchanged original melee/blocker/RNG code. Runtime BSS globals and initialized resource/type caches are not fabricated as file data."
     },
     {
       "name": "default_xfer_registration_record",

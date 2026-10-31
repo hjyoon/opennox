@@ -405,7 +405,6 @@ extern nox_window* dword_5d4594_1046944;
 extern uint32_t dword_5d4594_2487584;
 extern uint32_t dword_5d4594_251712;
 extern uint32_t dword_5d4594_531652;
-extern uint32_t dword_5d4594_2487948;
 extern void* nox_alloc_healthChange_1301772;
 extern uint32_t dword_5d4594_1049536;
 extern uint32_t dword_5d4594_1098616;

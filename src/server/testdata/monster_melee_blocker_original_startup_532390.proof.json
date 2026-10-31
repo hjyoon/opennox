@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "contexts": 14112,
+  "per_family": {
+    "directions-and-boundaries": 13056,
+    "class-flags-and-sticky-selection": 176,
+    "nonzero-origins": 448,
+    "nonfinite-and-extreme-x": 216,
+    "nonfinite-and-extreme-y": 216
+  },
+  "control_word": "0xe3f",
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "original_code_sha256": "30557bd8dc8d0b0af82c46c58092dd560181d620e431ca1b866677c20b393eef",
+  "loaded_original_bytes": 176,
+  "executed_original_bytes": 161,
+  "code_table_constants_heap_stack_global_guards_and_nonvolatile_checked": true,
+  "FPU_control_unchanged_status_flags_are_outputs_not_forced": true,
+  "no_service_or_numeric_substitution": true,
+  "fixture_sha256": "bac07bf7a76134589ee1ffd8da09ba9e5fd427971577eb494e4d3badfc11e905",
+  "raw_fixture_sha256": "abefa26f8a40ac0a8a8ee0162071cf1ce4f82d13e8be69b758b098622295b471",
+  "original_unchanged": true
+}

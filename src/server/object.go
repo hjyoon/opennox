@@ -584,6 +584,10 @@ type ObjectExt struct {
 	transporterUpdateData *TransporterUpdateData
 	transporterTarget     *Object
 
+	// The NPC weapon compatibility word stays PE32. Keep a native reference
+	// for each exact update record, including a record cached across callbacks.
+	npcWeaponByUpdate532130 map[*MonsterUpdateData]*Object
+
 	// mover pointers widen the three transient PE32 pointer slots in the
 	// fixed 36-byte MoverUpdate record. The data identity preserves the
 	// entry-time UpdateData cache used by MoverXfer.

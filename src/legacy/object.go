@@ -458,7 +458,7 @@ func npcWeaponDequipNative53A030(owner, item *server.Object) int {
 		C.sub_53A0F0(asObjectC(owner), 1, 1)
 	}
 	if uint32(item.ObjSubClass)&2 == 0 {
-		update.Field516 = 0
+		owner.SetNPCWeaponForMeleeUpdate532130(update, nil)
 	}
 	C.nox_xxx_itemApplyDisengageEffect_4F3030(asObjectC(item), asObjectC(owner))
 	GetServer().S().Spells.Dur.ItemCancelDurSpells4FEB60(owner, item)
@@ -467,8 +467,8 @@ func npcWeaponDequipNative53A030(owner, item *server.Object) int {
 
 // npcWeaponEquipNative53A2C0 restores GAME.EXE 0053A2C0 while keeping every
 // inventory and update-data reference native-width. MonsterUpdateData.Field516
-// remains an ABI32 compatibility word, so the inventory's equipped bit is the
-// authoritative weapon reference on 64-bit targets.
+// remains an ABI32 compatibility word; the native weapon association follows
+// its exact cached update record and survives live-data changes.
 func npcWeaponEquipNative53A2C0(owner, item *server.Object) int {
 	if owner == nil || item == nil || owner.UpdateData == nil ||
 		!owner.Class().Has(object.ClassMonster) ||
@@ -512,11 +512,7 @@ func npcWeaponEquipNative53A2C0(owner, item *server.Object) int {
 	}
 	// Original 0053A390 rereads the subclass after appearance/dequip callbacks.
 	if uint32(item.ObjSubClass)&2 == 0 {
-		if unsafe.Sizeof(uintptr(0)) == 4 {
-			update.Field516 = uint32(uintptr(unsafe.Pointer(item)))
-		} else {
-			update.Field516 = 0
-		}
+		owner.SetNPCWeaponForMeleeUpdate532130(update, item)
 	}
 	Nox_xxx_itemApplyEngageEffect_4F2FF0(item, owner)
 	if objectNPCWeaponEquipFlags(item)&0x7FFE40C != 0 {

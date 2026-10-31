@@ -50,6 +50,10 @@ func (obj *Object) MaybePrintAIStack(event string) {
 func (obj *Object) MonsterActionReset() {
 	s := obj.Server()
 	ud := obj.UpdateDataMonster()
+	monsterActionResetRecord50A110(ud, s.Frame)
+}
+
+func monsterActionResetRecord50A110(ud *MonsterUpdateData, frame func() uint32) {
 	ud.Field2 = 0
 	ud.Field67 = 0
 	ud.Field74 = 0
@@ -57,8 +61,8 @@ func (obj *Object) MonsterActionReset() {
 	ud.Field120_1 = 0
 	ud.Field120_2 = 0
 	ud.Field120_3 = 0
-	ud.Field124 = s.Frame()
-	ud.Field137 = s.Frame()
+	ud.Field124 = frame()
+	ud.Field137 = frame()
 }
 
 func (obj *Object) ClearActionStack() { // aka nox_xxx_monsterClearActionStack_50A3A0
@@ -84,6 +88,10 @@ func (obj *Object) MonsterPushActionImpl(act ai.ActionType, file string, line in
 }
 
 func (obj *Object) monsterPushActionWithCancel50A260(act ai.ActionType, file string, line int, cancelAction func(ai.ActionType) func(*Object)) *AIStackItem {
+	return obj.monsterPushActionWithReset50A260(act, file, line, cancelAction, nil)
+}
+
+func (obj *Object) monsterPushActionWithReset50A260(act ai.ActionType, file string, line int, cancelAction func(ai.ActionType) func(*Object), reset func()) *AIStackItem {
 	if !obj.Class().Has(object.ClassMonster) {
 		return nil
 	}
@@ -115,7 +123,11 @@ func (obj *Object) monsterPushActionWithCancel50A260(act ai.ActionType, file str
 	// Arguments in a reused slot survive until the caller explicitly sets them.
 	ud.AIStack[ud.AIStackInd].Action = uint32(act)
 	ud.AIStack[ud.AIStackInd].Field5 = 0
-	obj.MonsterActionReset()
+	if reset == nil {
+		obj.MonsterActionReset()
+	} else {
+		reset()
+	}
 	if noxflags.HasEngine(noxflags.EngineShowAI) {
 		ai.Log.Printf("%d: PushActionStack( %s(#%d), %s ), result: (%s:%d)\n", s.Frame(), obj, obj.NetCode, act, file, line)
 	}
@@ -126,13 +138,21 @@ func (obj *Object) monsterPushActionWithCancel50A260(act ai.ActionType, file str
 func (obj *Object) MonsterPopAction() int {
 	s := obj.Server()
 	ud := obj.UpdateDataMonster()
+	return obj.monsterPopActionRecord50A160(s, ud, nil, obj.MonsterActionReset)
+}
+
+func (obj *Object) monsterPopActionRecord50A160(s *Server, ud *MonsterUpdateData, endAction func(ai.ActionType) func(*Object), reset func()) int {
 	if noxflags.HasEngine(noxflags.EngineShowAI) {
 		typ := ud.AIStackHead().Type()
 		ai.Log.Printf("%d: PopActionStack( %s(#%d) ) = %s@%d:\n", s.Frame(), obj, obj.NetCode, typ, ud.AIStackInd)
 	}
 	if cur := ud.AIStackHead(); cur != nil {
 		if act := cur.Type(); !act.IsCondition() && cur.Field5 != 0 {
-			if a := GetAIAction(act); a != nil {
+			if endAction != nil {
+				if end := endAction(act); end != nil {
+					end(obj)
+				}
+			} else if a := GetAIAction(act); a != nil {
 				a.End(obj)
 			}
 		}
@@ -147,7 +167,7 @@ func (obj *Object) MonsterPopAction() int {
 			break
 		}
 	}
-	obj.MonsterActionReset()
+	reset()
 	si := ud.AIStackInd
 	if si < 0 {
 		ud.AIStackInd = 0

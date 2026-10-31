@@ -31,9 +31,9 @@ uintptr_t sub_532040(nox_object_t* candidate, void* context);
 #include "monster_block_start_native_532070.h"
 #include "monster_terminal_native_5320e0.h"
 #include "monster_facing_native_545210.h"
-int* nox_xxx_mobActionMelee1_532130(int a1);
-void sub_532390(int a1, int a2);
-char nox_xxx_mobActionMeleeAtt_532440(int a1);
+uintptr_t nox_xxx_mobActionMelee1_532130(nox_object_t* unit);
+void sub_532390(nox_object_t* candidate, nox_object_t* unit);
+char nox_xxx_mobActionMeleeAtt_532440(nox_object_t* unit);
 uint32_t* sub_532540(int a1);
 char nox_xxx_mobActionMissileAtt_532610(int a1);
 #include "monster_hurt_sound_native_532800.h"

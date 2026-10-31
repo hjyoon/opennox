@@ -48,7 +48,6 @@ extern uint32_t dword_5d4594_2488720;
 extern uint32_t dword_5d4594_2487932;
 extern uint32_t nox_xxx_lightningOwner_5d4594_2487900;
 extern uint32_t dword_587000_261388;
-extern uint32_t dword_5d4594_2487948;
 extern uint32_t dword_5d4594_2488608;
 extern uint32_t dword_5d4594_2488652;
 extern uint32_t dword_5d4594_3835348;
@@ -162,174 +161,13 @@ char nox_xxx_mobActionFight_531EC0(int a1) {
 // Native-width implementation: monster_fight_dead_target_native_532040_export.go.
 
 //----- (00532130) --------------------------------------------------------
-int* nox_xxx_mobActionMelee1_532130(int a1) {
-	int v1;      // edi
-	int* v2;     // eax
-	int* result; // eax
-	int v4;      // eax
-	double v5;   // st7
-	int v6;      // eax
-	int v7;      // ecx
-	int v8;      // eax
-	int* v9;     // eax
-	int* v10;    // edi
-	int v11;     // ecx
-	int v12;     // ecx
-	int v13;     // [esp-4h] [ebp-1Ch]
-	float4 v14;  // [esp+8h] [ebp-10h]
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (gameFrame() >= *(int*)(v1 + 512)) {
-		if (*(uint8_t*)(a1 + 12) & 0x10) {
-			v4 = nox_xxx_weaponGetStaminaByType_4F7E80(*(uint32_t*)(v1 + 2056));
-			if (v4 > *(unsigned char*)(v1 + 1128)) {
-				*(uint8_t*)(v1 + 1128) -= v4;
-			} else {
-				*(uint8_t*)(v1 + 1128) = 0;
-			}
-		}
-		v14.field_0 = *(float*)(a1 + 56) - *(float*)&dword_587000_261388;
-		v14.field_4 = *(float*)(a1 + 60) - *(float*)&dword_587000_261388;
-		v14.field_8 = *(float*)&dword_587000_261388 + *(float*)(a1 + 56);
-		v5 = *(float*)&dword_587000_261388 + *(float*)(a1 + 60);
-		dword_5d4594_2487948 = 0;
-		v14.field_C = v5;
-		*getMemFloatPtr(0x5D4594, 2487952) = *(float*)&dword_587000_261388 + 1.0;
-		nox_xxx_getUnitsInRect_517C10(&v14, sub_532390, a1);
-		if (dword_5d4594_2487948 && !nox_xxx_unitIsEnemyTo_5330C0(a1, *(int*)&dword_5d4594_2487948) &&
-			*(uint8_t*)(a1 + 12) & 0x10 && (v6 = *(uint32_t*)(v1 + 2064)) != 0 &&
-			(v7 = *(uint32_t*)(v6 + 12), BYTE1(v7) & 0x40)) {
-			v13 = *(uint32_t*)(a1 + 36);
-			v8 = nox_xxx_getUnitName_4E39D0(a1);
-			nox_ai_debug_printf_5341A0("%d: %s(#%d) Tried to MELEE_ATTACK but friend in the way\n",
-									   gameFrame(), v8, v13);
-			nox_xxx_monsterPopAction_50A160(a1);
-			v9 = nox_xxx_monsterPushAction_50A260(a1, 27);
-			if (v9) {
-				v9[1] = *(short*)(a1 + 124);
-			}
-			v10 = nox_xxx_monsterPushAction_50A260(a1, 41);
-			if (v10) {
-				v10[1] = gameFrame() + nox_common_randomInt_415FA0(gameFPS() >> 2, gameFPS() >> 1);
-			}
-			result = nox_xxx_monsterPushAction_50A260(a1, 24);
-			if (result) {
-				v11 = dword_5d4594_2487948 + 56;
-				result[1] = *(uint32_t*)(dword_5d4594_2487948 + 56);
-				v12 = *(uint32_t*)(v11 + 4);
-				result[3] = 0;
-				result[2] = v12;
-			}
-		} else {
-			sub_5341D0(a1);
-			*(uint32_t*)(a1 + 136) = gameFrame();
-			*(uint32_t*)(v1 + 512) =
-				gameFrame() + nox_common_randomInt_415FA0(*(uint32_t*)(*(uint32_t*)(v1 + 484) + 128),
-																	*(uint32_t*)(*(uint32_t*)(v1 + 484) + 132));
-			result = (int*)nox_xxx_monsterGetSoundSet_424300(a1);
-			if (result) {
-				nox_xxx_aud_501960(result[6], a1, 0, 0);
-			}
-		}
-	} else {
-		v2 = nox_xxx_monsterPushAction_50A260(a1, 50);
-		if (v2) {
-			*((float*)v2 + 1) = *(float*)(*(uint32_t*)(v1 + 484) + 112) * 1.2;
-			v2[3] = *(uint32_t*)(v1 + 1196);
-		}
-		result = nox_xxx_monsterPushAction_50A260(a1, 1);
-		if (result) {
-			result[1] = *(uint32_t*)(v1 + 512);
-		}
-	}
-	return result;
-}
+// Native-width implementation: server/monster_melee_native_532130.go.
 
 //----- (00532390) --------------------------------------------------------
-void sub_532390(int a1, int a2) {
-	int v2;    // ecx
-	int v3;    // eax
-	double v4; // st7
-	double v5; // st6
-	float* v6; // edx
-	double v7; // st7
-	float v8;  // [esp+4h] [ebp-4h]
-	float v9;  // [esp+Ch] [ebp+4h]
-
-	v2 = a1;
-	if (*(uint8_t*)(a1 + 8) & 6) {
-		v3 = *(uint32_t*)(a1 + 16);
-		if ((v3 & 0x8000) == 0) {
-			v4 = *(float*)(a1 + 56) - *(float*)(a2 + 56);
-			v5 = *(float*)(a1 + 60) - *(float*)(a2 + 60);
-			v8 = v5;
-			v9 = sqrt(v5 * v8 + v4 * v4) + 0.000099999997;
-			v7 = v4 / v9;
-			if (v9 < (double)*getMemFloatPtr(0x5D4594, 2487952)) {
-				v6 = getMemFloatPtr(0x587000, 194136 + 8 * *(short*)(a2 + 124));
-				if (v8 / v9 * v6[1] + v7 * *v6 > 0.5) {
-					dword_5d4594_2487948 = v2;
-					*getMemFloatPtr(0x5D4594, 2487952) = v9;
-				}
-			}
-		}
-	}
-}
+// Native-width implementation: server/monster_melee_native_532130.go.
 
 //----- (00532440) --------------------------------------------------------
-char nox_xxx_mobActionMeleeAtt_532440(int a1) {
-	int v1;         // edi
-	int v2;         // ebx
-	int v3;         // eax
-	int v4;         // ecx
-	int (*v5)(int); // eax
-	int v6;         // eax
-	int v7;         // ebx
-	int v8;         // eax
-	int v10;        // [esp-4h] [ebp-10h]
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		if (*(uint32_t*)(v1 + 1440) & 0x20000) {
-			nox_xxx_mobMorphToPlayer_4FAAF0((uint32_t*)a1);
-		}
-		v2 = nox_xxx_playerAttack_538960(a1);
-		v3 = *(uint32_t*)(v1 + 1440);
-		if (v3 & 0x20000) {
-			LOBYTE(v3) = nox_xxx_mobMorphFromPlayer_4FAAC0((uint32_t*)a1);
-		}
-		if (!v2) {
-			LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(a1);
-		}
-	} else {
-		v4 = *(uint32_t*)(v1 + 484);
-		v5 = *(int (**)(int))(v4 + 236);
-		if (v5) {
-			if (*(unsigned char*)(v1 + 481) == *(uint32_t*)(v4 + 108) && !*(uint8_t*)(v1 + 482)) {
-				v7 = v5(a1);
-				v8 = nox_xxx_monsterGetSoundSet_424300(a1);
-				if (v8) {
-					if (v7) {
-						nox_xxx_aud_501960(*(uint32_t*)(v8 + 32), a1, 0, 0);
-					} else {
-						nox_xxx_aud_501960(*(uint32_t*)(v8 + 36), a1, 0, 0);
-					}
-				}
-			}
-			LOBYTE(v3) = *(uint8_t*)(v1 + 483);
-			if ((uint8_t)v3) {
-				LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(a1);
-			}
-		} else {
-			v10 = *(uint32_t*)(a1 + 36);
-			v6 = nox_xxx_getUnitName_4E39D0(a1);
-			nox_ai_debug_printf_5341A0("%d: %s(#%d) Tried to MELEE_ATTACK but cannot\n", gameFrame(), v6,
-									   v10);
-			LOBYTE(v3) = nox_xxx_monsterPopAction_50A160(a1);
-		}
-	}
-	return v3;
-}
+// Native-width implementation: server/monster_melee_native_532130.go.
 
 //----- (00532540) --------------------------------------------------------
 uint32_t* sub_532540(int a1) {

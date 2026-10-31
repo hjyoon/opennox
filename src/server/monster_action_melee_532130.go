@@ -45,111 +45,37 @@ func monsterMeleeFriendlyBlocker532390(unit *Object, eachInRect func(types.Rectf
 	if unit == nil || eachInRect == nil {
 		return nil
 	}
-	radius := monsterMeleeFriendlyRadius532390
-	rect := types.Rectf{
-		Min: unit.PosVec.Sub(types.Ptf(radius, radius)),
-		Max: unit.PosVec.Add(types.Ptf(radius, radius)),
-	}
-	facing := unit.Direction1.Vec()
-	bestDistance := radius + 1
-	var best *Object
-	eachInRect(rect, func(candidate *Object) bool {
-		if candidate == nil || !candidate.Class().HasAny(object.ClassPlayer|object.ClassMonster) ||
-			candidate.Flags().Has(object.FlagDead) {
-			return true
-		}
-		dx := float64(candidate.PosVec.X) - float64(unit.PosVec.X)
-		dy := float64(candidate.PosVec.Y) - float64(unit.PosVec.Y)
-		distance := float32(math.Sqrt(dx*dx+dy*dy) + 0.000099999997)
-		if distance >= bestDistance {
-			return true
-		}
-		dot := dy/float64(distance)*float64(facing.Y) + dx/float64(distance)*float64(facing.X)
-		if dot > 0.5 {
-			bestDistance = distance
-			best = candidate
+	var selected unsafe.Pointer
+	distance := float32(51)
+	state := MonsterMeleeBlockerState532390{Selected: &selected, Distance: &distance}
+	eachInRect(monsterMeleeSearchRect532130(unit), func(candidate *Object) bool {
+		if candidate != nil {
+			MonsterMeleeBlocker532390(candidate, unit, state)
 		}
 		return true
 	})
-	return best
+	return (*Object)(selected)
 }
 
 // monsterActionMeleeStart532130 restores GAME.EXE 00532130, including the
 // NPC stamina and friendly-hammer avoidance path that cannot safely execute
 // through the original PE32 callback on a native-width build.
 func monsterActionMeleeStart532130(unit *Object, hooks monsterActionMeleeStartHooks532130) bool {
-	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) ||
-		hooks.frame == nil || hooks.random == nil || hooks.push == nil {
+	if unit == nil || unit.UpdateData == nil || hooks.frame == nil || hooks.random == nil || hooks.push == nil {
 		return false
 	}
-	update := unit.UpdateDataMonster()
-	def := update.MonsterDef
-	if def == nil {
-		return false
-	}
-	frame := hooks.frame()
-	if frame >= update.Field128 {
-		if unit.MonsterClass().Has(object.MonsterNPC) {
-			if hooks.weaponStamina != nil {
-				cost := hooks.weaponStamina(update.WeaponEquipFlags)
-				if cost > int32(update.Stamina) {
-					update.Stamina = uint8(int32(update.Stamina) - cost)
-				} else {
-					update.Stamina = 0
-				}
-			}
-			blocker := monsterMeleeFriendlyBlocker532390(unit, hooks.eachInRect)
-			weapon := unit.NPCEquippedWeapon538960()
-			if blocker != nil && hooks.isEnemy != nil && !hooks.isEnemy(unit, blocker) &&
-				weapon != nil && weapon.WeaponClass().Has(object.WeaponHammer) {
-				if hooks.pop != nil {
-					hooks.pop()
-				}
-				hooks.push(ai.ACTION_FACE_ANGLE, uint32(unit.Direction1))
-				waitFrame := frame
-				if hooks.frame != nil {
-					waitFrame = hooks.frame()
-				}
-				tickRate := uint32(0)
-				if hooks.tickRate != nil {
-					tickRate = hooks.tickRate()
-				}
-				hooks.push(ai.DEPENDENCY_TIME, waitFrame+uint32(hooks.random(int(tickRate>>2), int(tickRate>>1))))
-				hooks.push(ai.ACTION_FLEE, blocker.PosVec, uint32(0))
-				return true
-			}
-		}
-		if hooks.buffOff != nil {
-			hooks.buffOff(unit, EnchantID(0))
-			hooks.buffOff(unit, EnchantID(23))
-		}
-		unit.Field34 = frame
-		update.Field128 = frame + uint32(hooks.random(int(def.MeleeAttackDelayMin128), int(def.MeleeAttackDelayMax132)))
-		if hooks.audio != nil && update.SoundSet122 != nil {
-			hooks.audio(*(*uint32)(unsafe.Add(update.SoundSet122, 6*4)), unit)
-		}
-		return true
-	}
-	hooks.push(ai.DEPENDENCY_OBJECT_CLOSER_THAN, def.MeleeAttackRange112*1.2, uint32(0), update.CurrentEnemy)
-	hooks.push(ai.ACTION_WAIT, update.Field128)
+	monsterMeleeStartNative532130(unit, MonsterMeleeGlobalState532390(), hooks)
 	return true
 }
 
 // MonsterActionMeleeStart532130 binds the restored attack start to native-width
 // inventory, world-query, allegiance, and action-stack state.
 func (s *Server) MonsterActionMeleeStart532130(unit *Object, runtime MonsterActionMeleeRuntime532130) bool {
-	return monsterActionMeleeStart532130(unit, monsterActionMeleeStartHooks532130{
-		frame:         s.Frame,
-		tickRate:      s.TickRate,
-		random:        s.Rand.Logic.IntClamp,
-		audio:         runtime.AudioEvent,
-		buffOff:       runtime.BuffOff,
-		weaponStamina: WeaponStaminaByType4F7E80,
-		eachInRect:    s.Map.EachObjInRect,
-		isEnemy:       s.IsEnemyTo,
-		pop:           unit.MonsterPopAction,
-		push:          unit.MonsterPushAction,
-	})
+	if unit == nil || unit.UpdateData == nil {
+		return false
+	}
+	_, handled := s.monsterMeleeNative532130(0x532130, unit, MonsterMeleeGlobalState532390(), monsterMeleeRuntimeFromAction532130(runtime))
+	return handled
 }
 
 type monsterActionMeleeUpdateHooks532440 struct {
@@ -164,64 +90,24 @@ type monsterActionMeleeUpdateHooks532440 struct {
 // the typed player-attack boundary, while ordinary monsters reject unsupported
 // strike callback identities before changing state.
 func monsterActionMeleeUpdate532440(unit *Object, hooks monsterActionMeleeUpdateHooks532440) bool {
-	if unit == nil || unit.UpdateData == nil || !unit.Class().Has(object.ClassMonster) || hooks.pop == nil {
+	if unit == nil || unit.UpdateData == nil || hooks.pop == nil {
 		return false
 	}
-	if unit.MonsterClass().Has(object.MonsterNPC) {
-		attack := 0
-		if hooks.playerAttack != nil {
-			attack = hooks.playerAttack(unit)
-		}
-		if attack == 0 {
-			hooks.pop()
-		}
-		return true
-	}
-	update := unit.UpdateDataMonster()
-	def := update.MonsterDef
-	if def == nil {
+	if uint8(unit.ObjSubClass)&16 == 0 && (*MonsterUpdateData)(unit.UpdateData).MonsterDef == nil {
 		return false
 	}
-	strike := def.MeleeStrikeFunc236
-	if strike == nil {
-		hooks.pop()
-		return true
-	}
-	if hooks.canStrike == nil || !hooks.canStrike(strike) || hooks.strike == nil {
-		return false
-	}
-	if uint32(update.Field120_1) == def.MeleeAttackFrame108 && update.Field120_2 == 0 {
-		hit := hooks.strike(unit, strike)
-		// Original 00424300 reloads the live class and UpdateData after strike;
-		// only the animation-completion read below retains the entry update.
-		var soundSet unsafe.Pointer
-		if unit.Class().Has(object.ClassMonster) {
-			soundSet = unit.UpdateDataMonster().SoundSet122
-		}
-		if hooks.audio != nil && soundSet != nil {
-			index := uintptr(9)
-			if hit != 0 {
-				index = 8
-			}
-			hooks.audio(*(*uint32)(unsafe.Add(soundSet, index*4)), unit)
-		}
-	}
-	if update.Field120_3 != 0 {
-		hooks.pop()
-	}
-	return true
+	_, handled := monsterMeleeUpdateNative532440(unit, hooks)
+	return handled
 }
 
 // MonsterActionMeleeUpdate532440 binds the restored attack animation update
 // to a native strike resolver supplied by the legacy compatibility boundary.
 func (s *Server) MonsterActionMeleeUpdate532440(unit *Object, runtime MonsterActionMeleeRuntime532130) bool {
-	return monsterActionMeleeUpdate532440(unit, monsterActionMeleeUpdateHooks532440{
-		audio:        runtime.AudioEvent,
-		pop:          unit.MonsterPopAction,
-		playerAttack: runtime.PlayerAttack,
-		canStrike:    runtime.CanStrike,
-		strike:       runtime.Strike,
-	})
+	if unit == nil || unit.UpdateData == nil {
+		return false
+	}
+	_, handled := s.monsterMeleeNative532130(0x532440, unit, MonsterMeleeGlobalState532390(), monsterMeleeRuntimeFromAction532130(runtime))
+	return handled
 }
 
 // MonsterStrikeDefaultRuntime549380 supplies the two side effects performed

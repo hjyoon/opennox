@@ -46,7 +46,7 @@ nox_object_t* nox_xxx_enemyAggro_5335D0(nox_object_t* a1, float a2);
 double sub_5336D0(nox_object_t* a1);
 int nox_xxx_mobActionToAnimation_533790(nox_object_t* unit);
 void nox_xxx_mobCalcDir_533CC0(int a1, float* a2);
-unsigned char* nox_xxx_unitNPCActionToAnim_533D00(int a1);
+unsigned char* nox_xxx_unitNPCActionToAnim_533D00(nox_object_t* unit);
 int nox_xxx_monsterTestBlockShield_533E70(nox_object_t* a1);
 void sub_533EB0(nox_object_t* missile, void* unit);
 int sub_534020(nox_object_t* a1);

@@ -347,66 +347,7 @@ void nox_xxx_mobCalcDir_533CC0(int a1, float* a2) {
 }
 
 //----- (00533D00) --------------------------------------------------------
-unsigned char* nox_xxx_unitNPCActionToAnim_533D00(int a1) {
-	int v1;                // esi
-	int v2;                // eax
-	int v3;                // eax
-	int v4;                // eax
-	unsigned char* result; // eax
-	int v6;                // [esp+4h] [ebp-4h]
-
-	v1 = *(uint32_t*)(a1 + 748);
-	if (*(uint8_t*)(a1 + 12) & 0x10) {
-		v2 = *(char*)(v1 + 544) + 23;
-		a1 = 0;
-		v6 = 0;
-		v3 = *(uint32_t*)(v1 + 24 * v2);
-		switch (v3) {
-		case 16:
-		case 17:
-			if (*(uint32_t*)(v1 + 2056) & 0xFFFFFFFC) {
-				v4 = sub_4FA280(*(uint32_t*)(v1 + 2056) & 0xFFFFFFFC);
-			} else {
-				v4 = *(unsigned char*)(v1 + 2068);
-			}
-			nox_xxx_animPlayerGetFrameRange_4F9F90(v4, &a1, &v6);
-			break;
-		case 18:
-		case 19:
-		case 20:
-			nox_xxx_animPlayerGetFrameRange_4F9F90(21, &a1, &v6);
-			break;
-		case 30:
-			nox_xxx_animPlayerGetFrameRange_4F9F90(1, &a1, &v6);
-			break;
-		case 31:
-			nox_xxx_animPlayerGetFrameRange_4F9F90(2, &a1, &v6);
-			break;
-		case 21:
-			nox_xxx_animPlayerGetFrameRange_4F9F90(40, &a1, &v6);
-			break;
-		case 23:
-			if (*(uint32_t*)(v1 + 2056) & 0x7FF8000) {
-				nox_xxx_animPlayerGetFrameRange_4F9F90(30, &a1, &v6);
-			} else {
-				nox_xxx_animPlayerGetFrameRange_4F9F90(47, &a1, &v6);
-			}
-			break;
-		}
-		*getMemU32Ptr(0x5D4594, 2487968) = 0;
-		*getMemU32Ptr(0x5D4594, 2487964) = 0;
-		*getMemU32Ptr(0x5D4594, 2487972) = 0;
-		*getMemU32Ptr(0x5D4594, 2487976) = 0;
-		*getMemU8Ptr(0x5D4594, 2487973) = a1;
-		*getMemU8Ptr(0x5D4594, 2487974) = v6;
-		result = getMemAt(0x5D4594, 2487964);
-	} else if (*(uint32_t*)(v1 + 476)) {
-		result = (unsigned char*)(*(uint32_t*)(v1 + 476) + 16 * nox_xxx_mobActionToAnimation_533790((nox_object_t*)(uintptr_t)(uint32_t)a1));
-	} else {
-		result = 0;
-	}
-	return result;
-}
+// Native-width implementation: server/monster_NPC_animation_native_533d00.go.
 
 //----- (00533E70) --------------------------------------------------------
 static nox_object_t* nox_shield_block_missile;

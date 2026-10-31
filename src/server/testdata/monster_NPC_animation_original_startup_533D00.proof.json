@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "control_word": "0xe3f",
+  "contexts": 19668,
+  "root_calls": 20004,
+  "NPC_contexts": 4816,
+  "nonNPC_contexts": 14852,
+  "dynamic_input_table_bytes_read": 100,
+  "root_scratch_write_count": 44352,
+  "executed_body_bytes": {
+    "NPCActionToAnim533D00": 361,
+    "WeaponAnimation4FA280": 37,
+    "PlayerAnimationFrames4F9F90": 31,
+    "animation-selector": 281,
+    "mimic": 47,
+    "plant": 47,
+    "zombie": 79,
+    "actual-word-name-ID": 28
+  },
+  "executed_total_body_bytes": 911,
+  "root_tables_bytes_readonly_and_preserved": 83,
+  "actual_table_bytes_read": {
+    "native-root-jump-targets": 52,
+    "native-root-action-index": 31
+  },
+  "all_inputs_unique_before_freeze": true,
+  "per_context_predicate_entry_trace_observed": true,
+  "actual_function_entries": {
+    "0x533d00": 20004,
+    "0x533790": 10055,
+    "0x534840": 10055,
+    "0x534a10": 8887,
+    "0x534a40": 7731,
+    "0x4e3aa0": 1225,
+    "0x4f9f90": 1120,
+    "0x4fa280": 240
+  },
+  "declared_dictionary_only": true,
+  "no_predicate_index_or_cache_result_substitution": true,
+  "full_native_role_heap_stack_global_guards_code_tables_nonvolatile_and_FPU_preserved": true,
+  "fixture_sha256": "849441cc80e93c8d8b9a904b7cbcd4fe96d046e6ace6e0bd5a195ccbc3eccdab",
+  "raw_fixture_sha256": "992c4c939d8d6f145810ec5daeddffe307e803f97011a13de2ab9183cc40d179",
+  "raw_fixture_bytes": 23395653,
+  "original_unchanged": true,
+  "overall_porting_100_percent": false
+}

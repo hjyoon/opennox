@@ -57,27 +57,21 @@ func monsterUpdateAnim50A850(update *MonsterUpdateData, anim *MonsterAnim) {
 }
 
 func (s *Server) monsterNPCActionAnim533D00(update *MonsterUpdateData) MonsterAnim {
-	var animInd int
-	switch update.AIStackHead().Type() {
-	case ai.ACTION_CAST_SPELL_ON_OBJECT, ai.ACTION_CAST_SPELL_ON_LOCATION, ai.ACTION_CAST_DURATION_SPELL:
-		animInd = 21
-	case ai.ACTION_DYING:
-		animInd = 1
-	case ai.ACTION_DEAD:
-		animInd = 2
-	case ai.ACTION_BLOCK_ATTACK:
-		animInd = 40
-	case ai.ACTION_WEAPON_BLOCK:
-		if update.WeaponEquipFlags&0x7ff8000 != 0 {
-			animInd = 30
-		} else {
-			animInd = 47
-		}
-	default:
+	// Keep the older private helper's empty/invalid-head containment. The
+	// raw public parent keeps original signed native stack addressing.
+	if update.AIStackHead() == nil {
 		return MonsterAnim{}
 	}
-	frames, duration := s.PlayerAnimFrames(animInd)
-	return MonsterAnim{frames: byte(frames), field10: byte(duration)}
+	var scratch MonsterAnim
+	result := MonsterNPCAnimationNative533D00(&Object{ObjSubClass: object.SubClass(object.MonsterNPC), UpdateData: unsafe.Pointer(update)}, MonsterNPCAnimationNativeRuntime533D00{
+		WeaponAnimation: playerWeaponAnimationNative4FA280,
+		Frames: func(index int32) (int32, int32) {
+			frames, duration := s.PlayerAnimFrames(int(index))
+			return int32(frames), int32(duration)
+		},
+		Scratch: func() *MonsterAnim { return &scratch },
+	})
+	return *result
 }
 
 // MonsterUpdateNPCAnim50A850 updates both native monster sprites and

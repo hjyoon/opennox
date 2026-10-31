@@ -23259,6 +23259,13 @@
       "size": 31,
       "sha256": "c2eac6fc5bd14d4c8bb5a132284f6e83bdd6fa4e76dfffc02383337ed8a7dee3",
       "purpose": "Inline read-only jump/index TABLE in the executable .text section; a code-SECTION range, NOT a function or executed instruction range. All83 table bytes actually read and preserved by original14840-input references. Original animation selector jump/index table: all83 table bytes actually read across14840 unique inputs per profile and preserved unchanged."
+    },
+    {
+      "name": "original_complete_NPC_action_animation_533D00",
+      "address": "0x00533D00",
+      "size": 361,
+      "sha256": "8a2a44e0f058edb9739ff762268dc20fab13981e5e536cc4b236f69afac7d34a",
+      "purpose": "Complete original NPC animation pointer parent361 body bytes executes with existing weapon/frame/selector/predicate/WORD helpers550 body bytes,911 total, in19668 unique contexts and20004 calls per startup0xe3f and nearest0x23f profile; results identical. Only type-record dictionary lookup is declared; runtime weapon/frame tables are explicit memory inputs, no helper or final result substitution. Native return roles, scratch writes, post-selector cached-update table reload, full heap/stack/global/code/nonvolatile/FPU guards observed. Seven root NOP bytes excluded. Native comparator checks actual helper calls, final scratch bytes and native pointer roles/guards; no native store-count observation claimed."
     }
   ],
   "data": [

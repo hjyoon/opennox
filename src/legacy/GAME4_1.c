@@ -585,7 +585,7 @@ char nox_xxx_updateNPCAnimData_50A850(nox_object_t* a1p) {
 	}
 	LOBYTE(v2) = v1[483];
 	if (!(uint8_t)v2) {
-		v2 = nox_xxx_unitNPCActionToAnim_533D00(a1);
+		v2 = nox_xxx_unitNPCActionToAnim_533D00((nox_object_t*)(uintptr_t)(uint32_t)a1);
 		if (v2) {
 			v1[480] = v2[9];
 			if (!v2[9]) {

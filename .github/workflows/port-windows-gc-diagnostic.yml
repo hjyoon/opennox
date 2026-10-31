@@ -131,20 +131,13 @@ jobs:
           $code | Set-Content (Join-Path $env:REPORT_DIR 'test.exit')
           # Preserve the actual failed/passing native test executables for
           # symbol, relocation and GC-root inspection after the runner exits.
-          $workMatch = [regex]::Match([System.IO.File]::ReadAllText((Join-Path $env:REPORT_DIR 'test.stderr.log')), '(?m)^WORK=(.+)$')
-          $binaries = @()
-          if ($workMatch.Success) {
-            $work = $workMatch.Groups[1].Value.Trim()
-            $binaryDir = Join-Path $env:REPORT_DIR 'test-binaries'
-            New-Item -ItemType Directory -Force $binaryDir | Out-Null
-            foreach ($binary in Get-ChildItem -LiteralPath $work -Recurse -File -Filter '*.test.exe') {
-              $dest = Join-Path $binaryDir $binary.Name
-              if (Test-Path $dest) { throw "Duplicate test executable name: $dest" }
-              Copy-Item -LiteralPath $binary.FullName -Destination $dest
-              $binaries += @{ name=$binary.Name; bytes=$binary.Length; sha256=(Get-FileHash $dest -Algorithm SHA256).Hash.ToLower() }
-            }
-          }
-          ConvertTo-Json -InputObject $binaries | Set-Content -Encoding utf8 (Join-Path $env:REPORT_DIR 'test-binaries.json')
+          # Use the workflow revision's collector, since checkout above is
+          # deliberately the exact historical source under diagnosis.
+          $collector = Join-Path $env:REPORT_DIR 'preserve-go-test-binaries.py'
+          & git show '${{ github.sha }}:scripts/preserve-go-test-binaries.py' | Set-Content -Encoding utf8 $collector
+          if ($LASTEXITCODE -ne 0) { throw 'Missing diagnostic binary collector' }
+          & python $collector $env:REPORT_DIR
+          if ($LASTEXITCODE -ne 0) { throw 'Exact test executable preservation failed' }
           Get-FileHash (Join-Path $env:REPORT_DIR 'test.jsonl') -Algorithm SHA256
           exit $code
       - uses: actions/upload-artifact@v7.0.2

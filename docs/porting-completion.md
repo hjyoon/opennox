@@ -122,9 +122,31 @@ was declared as `int**`. Its local declaration/cast now uses `uint32_t*`,
 retaining `calloc(1,4)` and identical optimized IR on four target triples.
 Native startup/shutdown already bypass this legacy allocation in Go; no raw
 pointer-lifecycle port credit is claimed. The existing **12,103** strict
-input/dispatcher checks pass after this annotation change. Its fresh native
-warning qualification is pending. The Windows memory issue and overall
-porting remain open.
+input/dispatcher checks pass after this annotation change. At `e68337f`,
+all four clean ARM64 products build and pass help with zero warnings. The
+default product is 66,058,786 bytes, SHA-256
+`e5dd4da61e9e7a0a64d26eb9daffc9ee1c82059a36c3b80058d0c5433eb41395`.
+A fresh independent menu Load/Save passes in 17.612 seconds with the same
+native bookcase/player/enemy state; its inspected final capture shows
+in-world Save completion. The full AI and SDL/Core trade runs above remain
+evidence from `59ba512`, separately from this annotation-only replay.
+
+Final Windows run `41251919806` has zero compiler, linker, test-build or CI
+warning messages in both architectures. Its amd64 suites pass **613,678 /
+11 skips**, all three packages. Its 386 root and legacy packages pass, but
+server execution terminates with `found pointer to free object`: **465,891
+passes / 87 skips** overall, with two unfinished melee test names. Those
+names do not establish where corruption began. All six exact test executables
+retain GC-root symbols; exact JSON, raw logs, products and compiler profiles
+are preserved. These outcomes do not resolve the intermittent memory failures
+in earlier runs. The memory issue and overall porting remain open.
+
+Linux run `41249885382` at `59ba512` passes all four variants with zero
+compiler, linker or CI warnings: GUI variants each **621,768 / 54 skips**
+in 61 packages; server variants each **615,658 / 7 skips** in 58 packages.
+The default-link damage suite retains **133,384** passes. This is separately
+qualified runtime evidence; the final annotation has identical optimized IR
+on four target triples and was not submitted as another Linux runtime run.
 
 ### Native fixed-object sprite entry
 
@@ -338,15 +360,25 @@ test-output directory, retaining symbols without changing test selection,
 CGO flags or collector behavior. A local three-package Go 1.26 Windows
 crosscompile verifies all three executable copies and GC-root symbols;
 this fixture substitutes execution and supplies no native Windows test
-result. The following native CI still needs to validate the collection. Its ordinary
-gate also uses the same digest-pinned LLVM-MinGW UCRT package for both
+result. The subsequent native runs `41249883026` and `41251919806` validate
+all twelve actual executable copies with GC-root symbols. Their ordinary
+gates use the same digest-pinned LLVM-MinGW UCRT package for both
 architectures, removing the MSYS2 core-update warning from compiler setup.
 The historical GCC diagnostics remain separate and do not establish a GC fix.
 
-ROOT/all-build-warning-cleanup-20261101 records the zero-warning results,
-documented 4,177-input inventory, preserved failures and current diagnostic
-scope. The Windows memory issue, overall porting and reopened sale-audio
-report remain incomplete; no full 100% completion is claimed.
+ROOT/all-build-warning-cleanup-20261101/all-build-warnings-zero-qualified-v1.json
+closes the observed build-warning cleanup without new suppression. The final
+preservation audit rehashes **166 standalone engine products**, **61 audio
+captures**, all **4,649 personal files / 503,207,370 bytes**, the original
+executable, all **4,181 current test/fixture inputs**, and the 15 protected
+failed-Save files. The 4,177 inputs preceding the dispatcher port remain
+unchanged by that port. Fifteen retained full test executables from the
+report-only and two latest native runs are checked separately. Failed native
+gates remain failed, with raw records and digest-verified artifacts preserved.
+Only two completed collector-fixture work directories were additionally
+removed after retaining their six PE copies: 67,972,730 apparent bytes;
+physical recovery was not measured. The Windows memory issue, overall porting
+and reopened sale-audio report remain incomplete; no 100% completion is claimed.
 
 ### Reopened shop sale audio investigation
 

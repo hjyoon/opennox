@@ -1,0 +1,40 @@
+{
+  "status": "original_root_and_scalar_helper_executed_with_declared_services",
+  "utc": "2026-10-31T17:52:00.811877+00:00",
+  "control": "0x23f",
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "frozen_input_sha256": "2ed779508e7933f9b132798a9cd654faa2c7849a31e6f1809738765839e4559f",
+  "producer_sha256": "02bed12d01698811917dde31aca4afb108e0b5b893581dc8baa307c80e087ce4",
+  "contexts": 6127,
+  "calls": 6159,
+  "separate_fault_contexts": 7,
+  "entries": {
+    "0x518ae0": 6166,
+    "0x578ac0": 6166
+  },
+  "coverage": [
+    {
+      "name": "sprite-update-root",
+      "entry": "0x518ae0",
+      "static_bytes": 330,
+      "valid_executed_bytes": 330,
+      "including_separate_fault_executed_bytes": 330,
+      "missing_instruction_addresses": []
+    },
+    {
+      "name": "unit-network-code",
+      "entry": "0x578ac0",
+      "static_bytes": 58,
+      "valid_executed_bytes": 55,
+      "including_separate_fault_executed_bytes": 58,
+      "missing_instruction_addresses": []
+    }
+  ],
+  "fixture_sha256": "316cf435c88bf752abdc466efd9c1b201ae3088a5c9113680bb74ae0ff6317b2",
+  "uncompressed_sha256": "b5cc4c06911b6f0e096083c81402e3c6ea645efa6931335de78619cbf1e72205",
+  "declaration": "Only root330 and real unit-code58. Special-reporting527E50 and two publication services are explicit boundaries, not executed child bodies.",
+  "fixture_linked_frame": "value XOR0xa5, distinct from parent update; all byte values exercised",
+  "engine_modified": false,
+  "all_before_engine_complete": false,
+  "overall_porting_100_percent": false
+}

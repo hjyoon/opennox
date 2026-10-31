@@ -70,6 +70,7 @@ var (
 
 type Server interface {
 	S() *server.Server
+	NetUpdateObjectSpecialNative527E50(recipient, unit *server.Object) bool
 	SetUpdateFunc2(fnc func() bool)
 	ServerPort() int
 	ServStartCountdown(dt int, text strman.ID)

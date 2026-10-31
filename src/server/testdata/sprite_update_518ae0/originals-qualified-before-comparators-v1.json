@@ -1,0 +1,102 @@
+{
+  "status": "originals_qualified_before_native_comparator_or_engine_edit",
+  "utc": "2026-10-31T17:53:07.452965+00:00",
+  "contexts_per_profile": 6127,
+  "valid_calls_per_profile": 6159,
+  "separate_fault_contexts_per_profile": 7,
+  "profiles_identical": true,
+  "valid_executed_root_bytes": 330,
+  "valid_executed_helper_bytes": 55,
+  "including_nil_fault_helper_bytes": 58,
+  "declared_scope_bytes": 388,
+  "source_files_unchanged": 11,
+  "all4160_previous_inputs_unchanged": true,
+  "producer_sha256": "02bed12d01698811917dde31aca4afb108e0b5b893581dc8baa307c80e087ce4",
+  "original_output_sha256": "b5cc4c06911b6f0e096083c81402e3c6ea645efa6931335de78619cbf1e72205",
+  "original_frozen_inputs_sha256": "2ed779508e7933f9b132798a9cd654faa2c7849a31e6f1809738765839e4559f",
+  "faults": [
+    {
+      "name": "nil-unit-after-scalar-helper",
+      "fault": [
+        {
+          "access": 19,
+          "address": "0x8",
+          "size": 4,
+          "pc": "0x518aeb"
+        }
+      ]
+    },
+    {
+      "name": "nil-update-obelisk",
+      "fault": [
+        {
+          "access": 19,
+          "address": "0x0",
+          "size": 1,
+          "pc": "0x518b12"
+        }
+      ]
+    },
+    {
+      "name": "nil-update-pentagram",
+      "fault": [
+        {
+          "access": 19,
+          "address": "0x14",
+          "size": 1,
+          "pc": "0x518b45"
+        }
+      ]
+    },
+    {
+      "name": "nil-update-plate",
+      "fault": [
+        {
+          "access": 19,
+          "address": "0x0",
+          "size": 1,
+          "pc": "0x518b84"
+        }
+      ]
+    },
+    {
+      "name": "nil-update-elevator",
+      "fault": [
+        {
+          "access": 19,
+          "address": "0x10",
+          "size": 1,
+          "pc": "0x518b9f"
+        }
+      ]
+    },
+    {
+      "name": "nil-update-door",
+      "fault": [
+        {
+          "access": 19,
+          "address": "0xc",
+          "size": 1,
+          "pc": "0x518bf4"
+        }
+      ]
+    },
+    {
+      "name": "shaft-linked-object-null-update",
+      "fault": [
+        {
+          "access": 19,
+          "address": "0x10",
+          "size": 1,
+          "pc": "0x518bcc"
+        }
+      ]
+    }
+  ],
+  "declared_boundary_scope": "Only root330 and real unit-code58. Special-reporting527E50 and two publication services are explicit boundaries, not executed child bodies.",
+  "engine_modified": false,
+  "native_before_pending": true,
+  "comparators_not_yet_written": true,
+  "all_before_engine_complete": false,
+  "overall_porting_100_percent": false
+}

@@ -1,0 +1,11 @@
+{
+  "status": "original_inputs_frozen_before_execution_comparators_or_engine_changes",
+  "utc": "2026-10-31T17:49:21.376921+00:00",
+  "contexts": 6127,
+  "calls": 6159,
+  "separate_fault_contexts": 7,
+  "fixture_sha256": "2ed779508e7933f9b132798a9cd654faa2c7849a31e6f1809738765839e4559f",
+  "uncompressed_sha256": "8b08404454a365f06acd7358b084e0fe014f2ff891aa12ba3c7ab29217998b48",
+  "engine_modified": false,
+  "overall_porting_100_percent": false
+}

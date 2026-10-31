@@ -128,7 +128,7 @@ int sub_518770();
 int nox_xxx_netSendPhantomPlrMb_5187E0(int a1, int a2);
 int nox_xxx_netSendSimpleObj_5188A0(int a1, int a2);
 int nox_xxx_netSendComplexObject_518960(int a1, uint32_t* a2, int a3);
-int nox_xxx_netSpriteUpdate_518AE0(int a1, int a2, uint32_t* a3);
+int nox_xxx_netSpriteUpdate_518AE0(nox_object_t* recipient, int player, uint32_t* object);
 int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1, nox_object_t* a2, int a3, signed int a4);
 char nox_xxx_netSendObjects2Plr_519410(nox_object_t* a1, nox_object_t* a2);
 int sub_519710(void* a1);

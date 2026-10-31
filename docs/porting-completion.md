@@ -55,6 +55,48 @@ completion requirements.
 
 ## Current findings
 
+### Native fixed-object sprite entry
+
+Public `518AE0` now uses a shared native Go sender. The old C body reads
+UpdateData at PE32 offset 748 instead of the native ARM64 offset 872; actual
+Obelisk, elevator and door entries each reproduce SIGSEGV after successful
+native getter and network-code controls. The receiver's original semantic
+Object pointer also replaces the decompiler's `int` parameter. The C caller
+forwards its original typed pointers; its remaining `519410` body is outside
+this entry's execution certificate.
+
+The shared sender keeps unit-code-before-state order, the three preloaded
+DWORD type caches, exact byte-width state reads, Spike's high flag byte,
+native shaft links tied to the cached update pointer, important/kind1 packet
+selection and the special-reporting fallback's zero return. The existing
+guarded Go state-selector policy is retained in its ordinary adapter; the raw
+public entry retains original zero-cache and alias precedence.
+
+The unchanged original runs **6,127 valid contexts / 6,159 calls** in each of
+two FPU profiles, with identical results. All 330 root bytes and 55 helper
+bytes execute on valid inputs; seven separately recorded pointer faults also
+reach the helper's remaining three nil-branch bytes. Important publication,
+kind1 publication and `527E50` remain declared service boundaries. C and
+direct Go comparisons pass **12,270** test events, checking ordered actual
+scalar calls, full return words, packet bytes and complete native allocation
+and neighbor guards. Ten ordinary modes pass through each default C/Go
+binding, real queues and the native elevator sidecar (**31** events).
+
+macOS normal passes **606,581 / 43 skips**; highres actual cgocheck2 and
+checkptr level 2 passes **467,233 / 8 skips**, four packages each. Every prior
+terminal identity and multiplicity is retained, normalizing only the runtime
+address suffixes of three unchanged test instances. There are 12,301 new
+events in each profile; strict also selects 77 existing related regressions.
+The oracle verifies **3,327 code / 691 data ranges**, retaining every prior
+record and order; all 21 verifier tests pass. No strict exemption is added.
+
+The first missing C declaration header, ordinary fixture registration-type
+and constructor failures, and address-label comparison failure are retained.
+Corrections leave the sealed original results and full C/Go comparators
+unchanged. ROOT/object-sprite-update-native-entry-port records their scope.
+Product E2E, preservation and native platform CI are the remaining batch
+gates; overall porting and the reopened sale-audio report remain incomplete.
+
 ### Reopened shop sale audio investigation
 
 The current clean `f6f9624` ARM64 product passes five additional ordinary-clock,
@@ -72,9 +114,12 @@ independent FFmpeg decode exactly. An isolated actual AIL/OpenAL Soft wave
 render has nonzero output in both channels, with peak 8,683 at the observed
 0.68503934 source gain. This is an isolated mixer output check; it does not
 establish the user's hardware output. No audio runtime change or resolution
-of the reported silence is claimed. The current independent remote-client
-diagnostic is still running; the installation/version and failing shop/item
-details have been requested without stopping other work.
+of the reported silence is claimed. The current independent remote client
+also passes in 549.267 seconds, with both original sound events fully drained,
+gold 100→60→100 and inventory 0→1→0 independently confirmed on the server.
+It has no local host unit and exits 0; the controller stops the held test host
+with SIGTERM after completion, so this is not a natural host-exit stability
+gate. The installation/version and failing shop/item details remain requested.
 
 Four exact executed reproduction inputs are now under `scripts/e2e/`:
 `host-shop-quantity-sale-audio.yaml`,
@@ -89,10 +134,14 @@ qualified Wizard2 Save directory. Funds and any fixture merchant/position are
 explicit diagnostic setup and supply no earned campaign progression.
 
 ROOT/shop-sale-audio-reopened-20261101 preserves the five terminal results,
-twenty-six captures, the independent PCM reference and rendered WAV. The
+twenty-six captures, the independent PCM reference and rendered WAV. Six
+additional remote captures and its terminal server/client records are under
+ROOT/shop-sale-audio-reopened-peer-v1. The
 actual merchant, equipped-weapon and loaded-campaign sale images were viewed.
 `five-current-product-diagnostics-qualified-v1.json` records the bounded
-results and the still-open report; prelaunch and auxiliary setup failures
+results and the still-open report; the independent peer's
+`current-independent-peer-sale-qualified-v1.json` records its additional scope.
+Prelaunch and auxiliary setup failures
 remain preserved separately.
 
 ### Native complex-object sender and ordinary network path

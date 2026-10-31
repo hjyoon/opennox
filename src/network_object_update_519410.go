@@ -3,6 +3,7 @@ package opennox
 import (
 	"encoding/binary"
 	"math"
+	"unsafe"
 
 	"github.com/opennox/libs/noxnet/netmsg"
 	"github.com/opennox/libs/object"
@@ -84,6 +85,10 @@ func (s *Server) netUpdateObjectSpecialNative527E50(recipient, obj *server.Objec
 		reportTeamBase: func() { s.netReportTeamBaseNative4D92D0(ind, obj) },
 		reportNPC:      func() { s.netSendReportNPCNative4D93A0(ind, obj) },
 	})
+}
+
+func (s *Server) NetUpdateObjectSpecialNative527E50(recipient, obj *server.Object) bool {
+	return s.netUpdateObjectSpecialNative527E50(recipient, obj)
 }
 
 func (s *Server) netReportXStatusNative4D8230(ind ntype.PlayerInd, obj *server.Object) {
@@ -513,21 +518,37 @@ func netSpriteUpdateStateNative518AE0(obj *server.Object, hooks netSpriteUpdateH
 }
 
 func (s *Server) netSpriteUpdateNative518AE0(ind ntype.PlayerInd, obj *server.Object) bool {
-	state, ok := netSpriteUpdateStateNative518AE0(obj, netSpriteUpdateHooks518AE0{
+	_, ok := netSpriteUpdateStateNative518AE0(obj, netSpriteUpdateHooks518AE0{
 		typeIndex:    s.Types.IndByID,
 		elevatorLink: (*server.Object).ElevatorLink,
 	})
 	if !ok {
 		return false
 	}
-	var packet [4]byte
-	packet[0] = byte(state.opcode)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(obj)))
-	packet[3] = state.value
-	if state.direct {
-		return s.NetSendPacketXxx1(int(ind), packet[:], nil, 1) != 0
-	}
-	return s.NetList.AddToMsgListCli(ind, netlist.Kind1, packet[:])
+	// Keep this convenience path's nil/type guards and typed registry policy.
+	// The raw public entry separately retains zero-valued PE32 cache semantics.
+	return server.SpriteUpdateNative518AE0(nil, int32(ind), obj, server.SpriteUpdateNativeRuntime518AE0{
+		UnitCode: func(unit *server.Object) uint32 { return uint32(s.GetUnitNetCode(unit)) },
+		ReadType: func(index int) uint32 {
+			id := s.Types.IndByID([3]string{"TeleportPentagram", "PressurePlate", "Spike"}[index])
+			if id == 0 {
+				return 1 << 16
+			}
+			return uint32(id)
+		},
+		ElevatorLink: func(unit *server.Object, data unsafe.Pointer) *server.Object {
+			return unit.ElevatorLinkFor(data)
+		},
+		Important: func(player int32, packet [4]byte, _ int32, reliable int32) int32 {
+			return int32(s.NetSendPacketXxx1(int(player), packet[:], nil, int(reliable)))
+		},
+		Queue: func(player, kind int32, packet [4]byte) int32 {
+			if s.NetList.AddToMsgListCli(ntype.PlayerInd(player), netlist.Kind(kind), packet[:]) {
+				return 1
+			}
+			return 0
+		},
+	}) != 0
 }
 
 // netSendObjects2PlayerNative519410 restores the architecture-independent

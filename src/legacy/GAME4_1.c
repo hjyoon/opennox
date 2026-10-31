@@ -4289,6 +4289,7 @@ int nox_xxx_netSendComplexObject_518960(int a1, uint32_t* a2, int a3) {
 #endif
 
 //----- (00518AE0) --------------------------------------------------------
+#if 0
 int nox_xxx_netSpriteUpdate_518AE0(int a1, int a2, uint32_t* a3) {
 	uint32_t* v3;      // esi
 	short v4;          // ax
@@ -4358,6 +4359,7 @@ int nox_xxx_netSpriteUpdate_518AE0(int a1, int a2, uint32_t* a3) {
 	nox_xxx_netUpdateObjectSpecial_527E50(a1, v3);
 	return 0;
 }
+#endif
 
 //----- (00518C30) --------------------------------------------------------
 int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1p, nox_object_t* a2p, int a3, signed int a4) {
@@ -4515,7 +4517,7 @@ char nox_xxx_netSendObjects2Plr_519410(nox_object_t* a1p, nox_object_t* a2p) {
 					}
 					v11 = *(uint32_t*)(a2 + 8);
 					if (v11 & 0x400000) {
-						v2 = nox_xxx_netSpriteUpdate_518AE0(a1, v5, (uint32_t*)a2);
+						v2 = nox_xxx_netSpriteUpdate_518AE0(a1p, v5, (uint32_t*)a2p);
 					} else if (v11 & 0x200000) {
 						if (v11 & 2) {
 							v2 = nox_xxx_netSendComplexObject_518960(v5, (uint32_t*)a2, 1);

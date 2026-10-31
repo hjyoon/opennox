@@ -23287,6 +23287,13 @@
       "size": 61,
       "sha256": "a5a50eb316e3adc9c927e1cec21e24509b62ec4e623f3d30a1adc9ab2995c94c",
       "purpose": "Complete61-byte health-delta report helper; signed-short negative delta alone publishes5-byte health packet via declared network service."
+    },
+    {
+      "name": "nox_xxx_netSpriteUpdate_518AE0",
+      "address": "0x00518AE0",
+      "size": 330,
+      "sha256": "37e57cafcd10b45888313a563149e8db8a77d0fbb3503a144e2cd41890d17133",
+      "purpose": "Complete330-byte raw sprite sender: actual unit code first, ordered preloaded DWORD type caches, exact BYTE state reads, native cached-update shaft link and recipient pointer, important/kind1 publication and special fallback return0; excludes6 alignment NOPs. Three service bodies remain declared boundaries."
     }
   ],
   "data": [

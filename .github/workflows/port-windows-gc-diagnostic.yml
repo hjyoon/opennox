@@ -7,18 +7,30 @@ on:
         description: Exact source revision to reproduce without changing tests
         type: string
         required: true
+      profiles:
+        description: Diagnostic instrumentation; native production gate is unchanged
+        type: choice
+        options: [checks, report, checkptr, gccheckmark, race]
+        default: checks
 
 permissions:
   contents: read
 
 jobs:
   diagnostic:
-    name: Windows/amd64 swept-mark diagnostic
+    name: Windows/amd64 ${{ matrix.profile }} diagnostic
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: ${{ fromJSON(inputs.profiles == 'checks' && '["checkptr","gccheckmark","race"]' || format('["{0}"]', inputs.profiles)) }}
     runs-on: windows-2025
     timeout-minutes: 45
     env:
       GOOS: windows
       GOARCH: amd64
+      DIAGNOSTIC_PROFILE: ${{ matrix.profile }}
+      GOEXPERIMENT: ${{ matrix.profile == 'checkptr' && 'cgocheck2' || '' }}
+      GODEBUG: ${{ matrix.profile == 'gccheckmark' && 'gccheckmark=1' || '' }}
       CGO_ENABLED: '1'
       CGO_CFLAGS_ALLOW: '-f.*'
       CGO_CFLAGS: '-O2 -g -fno-peephole2'
@@ -67,9 +79,11 @@ jobs:
           $patched = $prefix + $tail.Replace($needle, "`tmbits := markBits{&s.gcmarkBits.x, 1, 0}")
           [System.IO.File]::WriteAllText($path, $patched, [System.Text.UTF8Encoding]::new($false))
           Copy-Item $path (Join-Path $env:REPORT_DIR 'mgcsweep-after.go.txt')
-          $profile = @{
+          $diagnosticRecord = @{
             source_revision = $revision
             diagnostic_only = $true
+            instrumentation_profile = $env:DIAGNOSTIC_PROFILE
+            GODEBUG = $env:GODEBUG
             collector_unchanged = $true
             native_compiler_environment = 'MSYS2 UCRT64 GCC'
             report_fix = 'https://github.com/golang/go/issues/80799'
@@ -78,22 +92,26 @@ jobs:
             before_sha256 = (Get-FileHash (Join-Path $env:REPORT_DIR 'mgcsweep-before.go.txt') -Algorithm SHA256).Hash.ToLower()
             after_sha256 = (Get-FileHash $path -Algorithm SHA256).Hash.ToLower()
           }
-          if ($profile.GOEXPERIMENT -ne '') { throw 'Retain the default collector' }
-          $profile | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $env:REPORT_DIR 'diagnostic-profile.json')
-          $profile | ConvertTo-Json
+          $expectedExperiment = if ($env:DIAGNOSTIC_PROFILE -eq 'checkptr') { 'cgocheck2' } else { '' }
+          if ($diagnosticRecord.GOEXPERIMENT -ne $expectedExperiment) { throw 'Unexpected diagnostic experiment' }
+          $diagnosticRecord | ConvertTo-Json | Set-Content -Encoding utf8 (Join-Path $env:REPORT_DIR 'diagnostic-profile.json')
+          $diagnosticRecord | ConvertTo-Json
       - name: Reproduce unchanged full native suites with exact JSON streams
         working-directory: src
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
           $env:GOTOOLCHAIN = 'local'
-          $env:GOEXPERIMENT = ''
           $p = [System.Diagnostics.Process]::new()
           $p.StartInfo.FileName = (Get-Command go).Source
           $p.StartInfo.UseShellExecute = $false
           $p.StartInfo.RedirectStandardOutput = $true
           $p.StartInfo.RedirectStandardError = $true
-          foreach ($arg in @('test','-tags=server','-json','-count=1','-timeout=20m','.','./server','./legacy')) {
+          $testArguments = @('test','-work','-tags=server','-json','-count=1','-timeout=20m')
+          if ($env:DIAGNOSTIC_PROFILE -eq 'checkptr') { $testArguments += '-gcflags=all=-d=checkptr=2' }
+          if ($env:DIAGNOSTIC_PROFILE -eq 'race') { $testArguments += '-race' }
+          $testArguments += @('.','./server','./legacy')
+          foreach ($arg in $testArguments) {
             $p.StartInfo.ArgumentList.Add($arg)
           }
           $out = [System.IO.File]::Open((Join-Path $env:REPORT_DIR 'test.jsonl'), [System.IO.FileMode]::CreateNew)
@@ -111,12 +129,28 @@ jobs:
             $p.Dispose()
           }
           $code | Set-Content (Join-Path $env:REPORT_DIR 'test.exit')
+          # Preserve the actual failed/passing native test executables for
+          # symbol, relocation and GC-root inspection after the runner exits.
+          $workMatch = [regex]::Match([System.IO.File]::ReadAllText((Join-Path $env:REPORT_DIR 'test.stderr.log')), '(?m)^WORK=(.+)$')
+          $binaries = @()
+          if ($workMatch.Success) {
+            $work = $workMatch.Groups[1].Value.Trim()
+            $binaryDir = Join-Path $env:REPORT_DIR 'test-binaries'
+            New-Item -ItemType Directory -Force $binaryDir | Out-Null
+            foreach ($binary in Get-ChildItem -LiteralPath $work -Recurse -File -Filter '*.test.exe') {
+              $dest = Join-Path $binaryDir $binary.Name
+              if (Test-Path $dest) { throw "Duplicate test executable name: $dest" }
+              Copy-Item -LiteralPath $binary.FullName -Destination $dest
+              $binaries += @{ name=$binary.Name; bytes=$binary.Length; sha256=(Get-FileHash $dest -Algorithm SHA256).Hash.ToLower() }
+            }
+          }
+          ConvertTo-Json -InputObject $binaries | Set-Content -Encoding utf8 (Join-Path $env:REPORT_DIR 'test-binaries.json')
           Get-FileHash (Join-Path $env:REPORT_DIR 'test.jsonl') -Algorithm SHA256
           exit $code
       - uses: actions/upload-artifact@v7.0.2
         if: always()
         with:
-          name: windows-gc-diagnostic-${{ inputs.source_revision }}-${{ github.run_attempt }}
+          name: windows-gc-diagnostic-${{ inputs.source_revision }}-${{ matrix.profile }}-${{ github.run_attempt }}
           path: build/windows-gc-diagnostic/
           if-no-files-found: error
           retention-days: 7

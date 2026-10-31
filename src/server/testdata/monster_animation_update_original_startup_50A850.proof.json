@@ -1,0 +1,51 @@
+{
+  "status": "passed",
+  "original_sha256": "0040e2c0683b4d73a5fb976e400d5087dca680df2b195c9e27f8edbda2d4974a",
+  "control_word": "0xe3f",
+  "contexts": 21896,
+  "root_calls_including_diagnostics": 26164,
+  "diagnostic_contexts": 4,
+  "complete_root_body_bytes": 187,
+  "dependency_bodies_execution_coverage_is_partial_and_measured": true,
+  "NPC_contexts": 5068,
+  "nonNPC_contexts": 16828,
+  "dynamic_input_table_bytes_read": 48,
+  "root_scratch_write_count": 41328,
+  "executed_body_bytes": {
+    "UpdateNPCAnimation50A850": 187,
+    "NPCActionToAnim533D00": 320,
+    "WeaponAnimation4FA280": 0,
+    "PlayerAnimationFrames4F9F90": 31,
+    "animation-selector": 281,
+    "mimic": 47,
+    "plant": 47,
+    "zombie": 79,
+    "actual-word-name-ID": 28
+  },
+  "executed_total_body_bytes": 1020,
+  "root_tables_bytes_readonly_and_preserved": 83,
+  "actual_table_bytes_read": {
+    "native-root-jump-targets": 52,
+    "native-root-action-index": 31
+  },
+  "all_inputs_unique_before_freeze": true,
+  "per_context_predicate_entry_trace_observed": true,
+  "actual_function_entries": {
+    "0x50a850": 26164,
+    "0x533d00": 23583,
+    "0x533790": 13970,
+    "0x534840": 13970,
+    "0x534a10": 11762,
+    "0x534a40": 10606,
+    "0x4e3aa0": 1249,
+    "0x4f9f90": 784
+  },
+  "declared_dictionary_only": true,
+  "no_predicate_index_or_cache_result_substitution": true,
+  "full_native_role_heap_stack_global_guards_code_tables_nonvolatile_and_FPU_preserved": true,
+  "fixture_sha256": "cfc6b738e4886bb2a83046bceb301d9e625780517ede7624845d43c5d6f3ba17",
+  "raw_fixture_sha256": "c39213b43fc5c166037a6c1ad9e55e55377f41d881b2f25475f68f796486e765",
+  "raw_fixture_bytes": 35215585,
+  "original_unchanged": true,
+  "overall_porting_100_percent": false
+}

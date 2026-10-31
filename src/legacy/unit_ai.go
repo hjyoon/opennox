@@ -1127,10 +1127,7 @@ func Nox_xxx_monsterMainAIFn_547210(a1 *server.Object) {
 	C.nox_xxx_monsterMainAIFn_547210(asObjectC(a1))
 }
 func Nox_xxx_updateNPCAnimData_50A850(a1 *server.Object) {
-	if GetServer().S().MonsterUpdateNPCAnim50A850(a1) {
-		return
-	}
-	C.nox_xxx_updateNPCAnimData_50A850(asObjectC(a1))
+	server.MonsterAnimationUpdateNative50A850(a1, monsterAnimationUpdateRuntimeNative50A850())
 }
 func Nox_xxx_monsterPolygonEnter_421FF0(a1 *server.Object) {
 	GetServer().MonsterPolygonEnterNative421FF0(a1)

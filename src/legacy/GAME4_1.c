@@ -566,6 +566,9 @@ int nox_xxx_monsterCallDieFn_50A3D0(uint32_t* a1) {
 #endif
 
 //----- (0050A850) --------------------------------------------------------
+// Ported to MonsterAnimationUpdateNative50A850 with native object/update
+// pointers and the original char ABI. Retain the PE32 body as provenance.
+#if 0
 char nox_xxx_updateNPCAnimData_50A850(nox_object_t* a1p) {
 	int a1 = a1p;
 	uint8_t* v1;       // esi
@@ -614,6 +617,7 @@ char nox_xxx_updateNPCAnimData_50A850(nox_object_t* a1p) {
 	}
 	return (char)v2;
 }
+#endif
 
 //----- (0050A910) --------------------------------------------------------
 // Restored by Server.MonsterActionRefresh50A910 with native Object,

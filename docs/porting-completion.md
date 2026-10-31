@@ -55,6 +55,78 @@ completion requirements.
 
 ## Current findings
 
+### Native monster animation update and public char ABI
+
+Runtime `d30ff5b` ports public `50A850` from PE32 offsets and a narrowed
+object pointer to the shared native Go core. The actual C entry and ordinary
+Go dispatcher use lazy child bindings. Completed animations and NPC attack
+shortcuts avoid server lookup; attack clears completion before its previous
+value is tested. The entry update survives child lookups, byte counter wrap
+and record aliases retain original behavior, and the public C char ABI is
+unchanged. Existing class/nil-guarded convenience APIs and private containment
+policies remain byte-identical.
+
+Both original FPU profiles execute **21,896 valid-pointer contexts / 26,160
+calls** each with identical observations. All **187 root bytes** and **833
+reached dependency bytes** execute: **1,020 total**, excluding root padding.
+The static declared total is 1,098 bytes; it is not execution coverage.
+Actual child, selector, predicates, frame getter and WORD lookup execute;
+only dictionary lookup is declared. Inline tables read 83 bytes and dynamic
+frame inputs 48 bytes. Char returns compare literal AL or the low byte of
+the relocated native child pointer, without treating upper EAX as ABI output.
+
+The pre-port typed C entry reproduces SIGSEGV after a native Go control.
+Allocation/registry controls pass 21,897 events without calling the updater.
+The bounded existing Go memory projection selects 20,520 contexts / 24,224
+calls: 20,344 children pass and 176 differ, mainly in empty-head containment.
+It excludes char, child/provider entry and NPC global scratch. Frozen full
+C and direct Go comparators subsequently match every valid original context
+and call, with full native memory and callback guards. Twenty-one ordinary
+default-binding modes add **42 C / 42 public Go / 42 dispatcher calls** with
+actual PlayerDraw parsing and no provider substitution. Four separate
+original fault contexts per C/Go path retain the actual child return 0x80
+followed by a read fault; the original read address is 0x89. They remain
+separate from valid-pointer cases. No new strict exemption is introduced.
+
+Full macOS normal passes **521,822 / 43 skips**; strict highres with actual
+cgocheck2, checkptr level 2 and OpenAL-null passes **382,396 / eight skips**.
+All four packages pass in each profile. Every prior terminal identity and
+multiplicity remains, with 43,826 new events in each. All 4,127 earlier
+inputs/assertions remain byte-identical; ten new inputs bring the inventory
+to 4,137. The oracle manifest stays byte-identical at **3,323 code ranges /
+691 data ranges**, and its unchanged verifier passes 21 tests. These counts
+do not measure overall completion.
+
+The fresh committed ARM64 product passes six Blink modes, sixteen natural
+first attacks, the unchanged three-beam regression, original Bookcase passage
+and independent actual menu Load/Save. Original book endpoint 1591,4734,
+plate/mover state, Urchin HP0 and living HP20/MP43/poison0 are sealed before
+reload. Four current PNGs are directly viewed; final images show overwrite
+confirmation. Saved files/logs and fresh menu Load/Save prove completion.
+The earlier missing-suite failure and logs remain preserved against their
+original product; the new suite is included before this product starts.
+
+Windows amd64/386 run `41181647461` passes native build, product verification,
+help and three-package tests. Linux amd64 run `41181649682` passes **518,984 /
+seven skips**, all 58 packages (36 pass, 22 skip), plus **133,384** default-link
+damage events. Earlier native validation remains, and complete Linux terminal
+identities/multiplicities are independently compared with the previous ZIP.
+All jobs close; exact logs and digest-verified ZIPs/PE/ELF products remain,
+with all five requested poison warnings absent. Large raw Linux JSON stays
+exactly in the verified ZIP without duplicate expansion.
+
+All **98 products** (42 ARM64, 56 native), personal installation **4,649 files /
+503,207,370 bytes**, original assets, Saves, failures and peer/audio captures
+are rechecked. After local builds/tests/E2E finish, only the task Go build
+cache is cleaned: **2,832,283,136 bytes**. All 95 then-available products keep
+their hashes. Module cache, assets, Saves, logs and products are untouched.
+Preparation/parser failures and their corrected versions remain recorded.
+
+Evidence is in `ROOT/monster-animation-update-native-entry-port` and
+`ROOT/monster-animation-update-product-e2e-v1`. Public C sender `518960` is
+still migration work. Overall 100% and the final nine chapter 1–3 feature,
+UI/audio/network/stability audits remain open; chapter 4+ gameplay is excluded.
+
 ### Native NPC animation records and pointer returns
 
 Runtime `4848aa1` ports public `533D00` to a native object argument and
@@ -139,9 +211,9 @@ and product E2E finish, only the task Go build cache is cleaned:
 **6,014,218,769 bytes**. All 91 then-available products retain their hashes;
 module cache, assets, Saves, evidence and products are untouched.
 
-Upstream C `50A850` still narrows its typed object argument to int and uses
-PE32 offsets; `518960` also remains migration work. The public parent port
-does not close either caller chain. Evidence is in
+At that checkpoint C `50A850` still narrowed its typed object argument and
+used PE32 offsets; the newer updater port above closes that entry. C `518960`
+remains migration work. Evidence for the parent checkpoint is in
 `ROOT/monster-npc-animation-native-entry-port` and
 `ROOT/monster-npc-animation-product-e2e-v1`. Overall 100% and final nine
 chapter 1–3 cell audits remain open; chapter 4+ gameplay is excluded.

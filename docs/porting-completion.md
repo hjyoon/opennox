@@ -55,7 +55,86 @@ completion requirements.
 
 ## Current findings
 
-### Native missile callbacks and exact original prediction
+### Native successful-hit timestamp and shared damage path
+
+Runtime `531c6513` ports public `532880` to a native object argument and
+cached-update pointer return. The raw entry retains the original class-free
+read of the update record, preserves a nonzero timestamp and reads the live
+clock only for an empty latch. Storing frame zero leaves it empty for a later
+call. Ordinary Go DefaultDamage and PlayerDamage share the same function,
+retaining their existing live-clock and captured-clock policies respectively.
+Native layouts and the guarded typed update getters remain unchanged.
+
+The retained extracted C DefaultDamage parent still has an int ABI. Its
+PE32 word is explicitly widened for the typed root declaration. This adapter
+does not port that parent or its upstream C callers to native64; those
+caller chains remain migration work. The ordinary registered Go damage
+dispatch already uses native objects.
+
+Both original FPU profiles execute **3,072 inputs** with no service or
+numeric-result substitution. They execute all **33 body bytes** and produce
+identical integer results; 15 trailing NOP bytes are not credited as executed.
+The original native role, conditional Frame read, DWORD write, both update
+records and full heap/stack/global/code guards are checked. Ordinary native
+Go controls pass before the actual C entry reproduces its pointer-truncation
+SIGSEGV. Frozen Go and public C comparators subsequently match all 3,072
+contexts each, including native cached pointer returns and complete native
+record guards. Three production clock modes add five actual C calls,
+covering live server frames, frame-zero reentry and a nonzero class-zero
+record that must avoid server lookup.
+
+Normal macOS testing passes **408,951/43 skips**; strict highres testing
+passes **269,398/eight skips**, with actual `cgocheck2`, checkptr level 2 and
+OpenAL-null. All prior terminal identities and multiplicities remain.
+Each gate adds **6,150 terminal events**; strict also selects **6,339
+unchanged existing DefaultDamage events** for the shared implementation.
+All **4,099 previous inputs and assertions** remain byte-identical, with
+nine new test/fixture inputs. These are event counts, not a completion
+percentage. The unchanged oracle manifest verifies 3,318 code ranges and
+691 data ranges; all 21 verifier tests pass. The complete original 532880
+body was already sealed, so no range is added for this port.
+
+The fresh committed ARM64 product passes six Blink modes, 16 natural
+first-attack modes, the unchanged three-beam regression and the original
+Bookcase/Urchin route. Before actual-menu reload, its original endpoint,
+plate/mover state, Urchin HP0 and living **HP20/MP44/poison0** are sealed.
+Independent menu Load/Save retains those resources. Four current images
+are actually viewed; the last images show the overwrite confirmation.
+Save completion is independently proved by files, logs and fresh menu
+Load/Save. The initial coordinator mistakenly nested sandbox-exec, which
+failed before game or Save startup. That failure is preserved; a fresh
+Blink label and the unchanged per-runner loopback sandbox pass with the
+same committed product bytes, without a rebuild.
+
+Windows amd64 and 386 run `41166604865` passes build, product verification,
+help and the three package checks. Linux amd64 run `41166623953` passes
+**406,113/seven skips**, all 58 expected packages (36 pass, 22 skip), and
+another **133,384** default-link damage events. Every previous native
+assertion remains, with the 6,150 new hit-latch events and three original /
+ordinary-binding metadata checks. All three jobs are closed. Their exact
+logs, digest-verified ZIPs and PE/ELF products are retained, and the five
+requested poison-macro diagnostics remain absent. Large Linux raw JSON is
+retained exactly inside the verified ZIP without duplicate expansion.
+
+All **86 products** (39 ARM64, 47 native), personal installation **4,649
+files / 503,207,370 bytes**, original assets, Saves, failures and peer/audio
+captures are rechecked. With local builds/tests and product E2E finished,
+only the regenerable task Go build cache is cleaned: **6,944,725,727 bytes**
+are removed. Module cache, assets, Saves, evidence and every product remain.
+Evidence is in `ROOT/monster-hit-latch-native-entry-port` and
+`ROOT/monster-hit-latch-product-e2e-v1`, especially
+`local-hit-latch-native-qualified-v1.json`,
+`native-ci-v1/all-native-hit-latch-qualified-v1.json`,
+`current-product-campaign-qualified-v1.json` and
+`all-gates-and-preservation-qualified-v1.json`.
+
+The next animation selector has private original execution references;
+its port and full runtime comparison remain separate work. Other native
+caller chains, final audits of all nine class/chapter 1–3 cells, subjective
+audible fidelity and sustained sessions remain open. Chapter 4 and later
+gameplay remain excluded. **Overall 100% is not established.**
+
+### Earlier missile checkpoint: exact original prediction
 
 Runtime `fdb58abe` ports public missile start `532540`, update `532610`
 and projectile prediction `533080` to native pointers. Their three C

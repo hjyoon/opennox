@@ -55,6 +55,98 @@ completion requirements.
 
 ## Current findings
 
+### Native NPC animation records and pointer returns
+
+Runtime `4848aa1` ports public `533D00` to a native object argument and
+animation-record pointer return. It retains the entry update across the
+selector callback and reloads that cached update's animation-table pointer
+afterwards. NPC actions call the actual weapon/frame helpers and reuse the
+original fixed scratch record. Ordinary Go bindings share the core; the
+older private helper keeps its empty/invalid-head containment and local
+record-copy behavior. Native layouts and guarded typed getters are unchanged.
+
+Both original FPU profiles execute **19,668 unique contexts / 20,004 calls**
+each, with identical results. The **361-byte parent** and **550 helper bytes**
+execute completely: **911 body bytes**, excluding seven root NOP bytes.
+Actual weapon/frame getters, selector, predicates and WORD-ID helper execute;
+only type-record dictionary lookup is declared. Dynamic weapon/frame tables
+are explicit memory inputs. Inline tables read 83 bytes; dynamic tables read
+100 distinct bytes, without claiming complete table-index coverage.
+The reference observes helper calls, repeated native pointer roles, scratch
+writes and bytes, post-selector table reload, caches and full guards.
+
+The actual C entry reproduces its pointer-truncation SIGSEGV after a native
+Go control passes. Full allocation/real-dictionary controls pass 19,669 events
+without calling the parent or selector. The existing private Go projection
+selects **4,816 NPC contexts / 4,928 calls**, with 4,396 passing and 420 failing
+children; it does not certify a public native parent wrapper. A retained log
+literal 19,668 denotes all reference rows, not that selected subset. Frozen
+C and Go comparators each subsequently match every original context/call.
+Their actual C frame export reads the pinned input table. Fourteen ordinary
+binding modes add **16 C / 16 Go calls**, using real PlayerDraw parsing and
+runtime weapon tables without replacing factories, frame providers or
+predicates. Native scratch bytes and neighbors are compared; an original
+store trace is retained without claiming a native store-count measurement.
+
+Four original lookup-mutation contexts clear the cached table and return
+raw address **0x80**. Initial strict execution rejects Go Add(nil,128).
+Only that numeric nil-base address conversion is isolated in a noinline
+`go:nocheckptr` leaf; ordinary native pointer arithmetic remains instrumented.
+All four original cases and expected addresses stay unchanged. Corrected
+focused normal and strict runs each pass 39,378 events, including 25 unchanged
+animation events. Initial source, strict failure and preparation failures
+remain preserved.
+
+Full macOS normal passes **477,996 / 43 skips**; strict highres passes
+**338,570 / eight skips**, with actual cgocheck2, checkptr level 2 and
+OpenAL-null, subject only to the documented numeric-address leaf above.
+Every earlier terminal identity and multiplicity remains; each gate adds
+**39,353 events**. All **4,118 earlier inputs and assertions** remain
+byte-identical; nine new inputs bring the inventory to 4,127. The standalone
+producer dependency has its own directory, preserving the earlier selector's
+static dependency. The unchanged verifier passes 21 tests and verifies
+**3,323 code-section ranges / 691 non-executable data ranges**; one complete
+361-byte root seal is added, with all older records and order retained.
+These counts do not measure completion.
+
+The fresh committed ARM64 product passes six Blink modes, sixteen natural
+first attacks, the unchanged three-beam regression and original Bookcase route.
+Original Bookcase1974 endpoint 1591,4734, plate/mover state, Urchin HP0 and
+living **HP20 / MP43 / poison0** are sealed before menu reload. Independent
+actual menu Load/Save retains them. Four current PNGs are directly viewed;
+final images show overwrite confirmation. Files, logs and fresh menu Load/Save
+independently prove completion. An omitted suite JSON initially fails before
+game or Save startup. The exact earlier suite is restored and the same product
+bytes pass Bookcase/reload without a rebuild or repeating earlier passes.
+
+Windows amd64/386 run `41174842555` passes build, product verification, help
+and three-package tests. Linux amd64 run `41174851089` passes
+**475,158 / seven skips**, all 58 packages (36 pass, 22 skip), plus **133,384**
+default-link damage events. Every earlier native assertion remains, with the
+39,353 new events and three original/binding metadata checks. All jobs close;
+exact logs, digest-verified ZIPs and PE/ELF products are retained, with the five
+requested poison warnings absent. Large raw Linux JSON remains exactly in
+the verified ZIP without duplicate expansion.
+
+All **94 products** (41 ARM64, 53 native), personal installation **4,649 files /
+503,207,370 bytes**, original assets, Saves, failures and peer/audio captures
+are rechecked. The before catalog initially treated a growing command ledger
+as immutable; its exact original five-line prefix is now verified. A second
+checker referenced the corrected prior manifest instead of its initial
+archived version. Both failed checkers/logs remain, and the corrected checker
+passes without changing inputs or assertions. After all local builds/tests
+and product E2E finish, only the task Go build cache is cleaned:
+**6,014,218,769 bytes**. All 91 then-available products retain their hashes;
+module cache, assets, Saves, evidence and products are untouched.
+
+Upstream C `50A850` still narrows its typed object argument to int and uses
+PE32 offsets; `518960` also remains migration work. The public parent port
+does not close either caller chain. Evidence is in
+`ROOT/monster-npc-animation-native-entry-port` and
+`ROOT/monster-npc-animation-product-e2e-v1`. Overall 100% and final nine
+chapter 1–3 cell audits remain open; chapter 4+ gameplay is excluded.
+
+
 ### Native monster animation selector and ordinary sprite updates
 
 Runtime `42e5747` ports public `533790` to a native object argument. The

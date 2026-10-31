@@ -94,8 +94,43 @@ The first missing C declaration header, ordinary fixture registration-type
 and constructor failures, and address-label comparison failure are retained.
 Corrections leave the sealed original results and full C/Go comparators
 unchanged. ROOT/object-sprite-update-native-entry-port records their scope.
-Product E2E, preservation and native platform CI are the remaining batch
-gates; overall porting and the reopened sale-audio report remain incomplete.
+All batch gates now pass at runtime `cc85eed`. The clean ARM64 product is
+66,023,042 bytes, SHA-256
+`f81612dc823fa23230b26c01558284e81e0a6c41d95d8d1e686e8a474db9967e`.
+Six Blink, sixteen natural first-attack and three duration-ray profiles pass.
+The original Bookcase1974 completes its slide to (1591, 4734), with the plate
+off, mover on and original Urchin HP0/DEAD. An independent original menu
+Load/Save retains living HP20/MP43, poison0. Four captures were inspected;
+the final captures show overwrite confirmation, while completed Save and
+fresh Load are established separately by files and logs.
+
+Linux run `41231470947` passes all 58 packages: **603,743 / 7 skips**, plus
+**133,384** default-link damage events. Every earlier terminal identity and
+multiplicity is retained; the only new Linux events are this entry's 12,301.
+Windows run `41231238681` passes native amd64 and 386 builds, help and all
+three selected package suites. Exact logs, artifact ZIP digests and native
+ELF/PE architecture/build metadata are retained. The prior docs/reproduction
+revision's Windows amd64 GC heap-corruption failure remains an open issue;
+this passing run does not establish its cause or resolution.
+
+The same ARM64 product passes a fresh real-map Mystic buy/sell diagnostic
+with actual Core OpenAL, positive gain and four drained buffers per event.
+This bounded check does not resolve the user's sale-audio report. The batch
+preserves all prior products, personal data, original/failed Saves and raw
+failure evidence. ROOT/object-sprite-update-native-entry-port contains the
+qualified results. Overall porting remains incomplete.
+
+### Build warning cleanup in progress
+
+The latest request includes every emitted build warning. The frozen macOS
+normal/strict and product logs contain 438 unique warnings; Windows logs add
+const-qualification and free/nonheap diagnostics. Exact native logs are
+retained before fixes. OpenAL Soft headers now match the linked library;
+legacy initializers and labels use supported C syntax. Further work covers
+explicit byte/UTF-16 storage views, callback declarations and native callback
+loads, retired unreachable C bodies, const input boundaries and SDL linkage.
+No new warning-suppression option is used. Clean builds and runtime checks
+are still required before claiming this warning task complete.
 
 ### Reopened shop sale audio investigation
 

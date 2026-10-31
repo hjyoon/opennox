@@ -100,8 +100,31 @@ packages, also retaining every previous terminal identity/multiplicity. All 4,17
 remain byte-identical; the current inventory has 4,181 entries. The oracle
 verifies **3,330 code / 691 data ranges** and all 21 verifier tests pass,
 retaining every prior record and its relative order. ROOT/object-update-dispatch-native-entry-port
-records the bounded evidence. Fresh product/E2E and native CI remain pending;
-the Windows memory issue and overall porting remain open.
+records the bounded evidence. At runtime `59ba512`, all four clean ARM64
+products build and pass help without warnings. The default product is
+66,058,786 bytes, SHA-256
+`b521136c403fceca8ede6bba5fb144d59633e3b47efc0fc0d3e968b889646f56`.
+Six Blink, sixteen first-attack and three ray profiles pass. Original
+Bookcase1974 and independent menu Load/Save retain HP20/MP43, poison0,
+the (1591,4734) endpoint, plate off, mover on and original Urchin HP0/DEAD.
+Four captures were inspected; both current Save captures visibly show
+in-world completion. Actual SDL/Core Mystic purchase/sale also passes in
+375.286 seconds with two positive-gain events and four drained buffers each.
+Both trade captures were inspected. The user sale-audio report remains open.
+
+Windows run `41249883026` passes 386 with **594,029 / 93 skips**. Its amd64
+run fails in all three packages with allocator/cleanup corruption symptoms;
+the cause remains unestablished. All six actual test executables are now
+preserved with their GC-root symbols, along with exact JSON, products and
+compiler profiles. LLVM64 also exposes one additional `-Walloc-size`
+diagnostic in the retired PE32 input-helper body: a four-byte DWORD cell
+was declared as `int**`. Its local declaration/cast now uses `uint32_t*`,
+retaining `calloc(1,4)` and identical optimized IR on four target triples.
+Native startup/shutdown already bypass this legacy allocation in Go; no raw
+pointer-lifecycle port credit is claimed. The existing **12,103** strict
+input/dispatcher checks pass after this annotation change. Its fresh native
+warning qualification is pending. The Windows memory issue and overall
+porting remain open.
 
 ### Native fixed-object sprite entry
 

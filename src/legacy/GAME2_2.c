@@ -5655,9 +5655,9 @@ int nox_xxx_wndEditDrawWithImage_488870(nox_window* a1p, nox_window_data* a2p) {
 
 //----- (00488B60) --------------------------------------------------------
 int sub_488B60() {
-	int** v0; // eax
+	uint32_t* v0; // eax
 
-	v0 = (int**)calloc(1, 4u);
+	v0 = (uint32_t*)calloc(1, 4u);
 	if (v0) {
 		dword_5d4594_1193348 = v0;
 		// sub_570142(*(uint32_t***)&dword_5d4594_1193348, 11);

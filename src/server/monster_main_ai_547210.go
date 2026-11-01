@@ -438,23 +438,7 @@ func (s *Server) monsterMainApplyRetreat547210(unit *Object, update *MonsterUpda
 // 005471B0. MonsterPopAction also removes the dependency entries belonging to
 // a popped attack, matching the original action-stack routine it calls.
 func (s *Server) monsterMainPopAttackActions5471B0(unit *Object) {
-	update := unit.UpdateDataMonster()
-	for update.AIStackInd >= 0 {
-		switch update.AIStackHead().Type() {
-		case ai.ACTION_MELEE_ATTACK,
-			ai.ACTION_MISSILE_ATTACK,
-			ai.ACTION_CAST_SPELL_ON_OBJECT,
-			ai.ACTION_CAST_SPELL_ON_LOCATION,
-			ai.ACTION_CAST_DURATION_SPELL,
-			ai.ACTION_FACE_LOCATION,
-			ai.ACTION_FACE_OBJECT,
-			ai.ACTION_FACE_ANGLE,
-			ai.ACTION_SET_ANGLE:
-			unit.MonsterPopAction()
-		default:
-			return
-		}
-	}
+	unit.MonsterPopAttackActionsNative5471B0(func(unit *Object) int { return unit.MonsterPopAction() })
 }
 
 // monsterMainActiveCombatStable547210 covers the ordinary combat state of an

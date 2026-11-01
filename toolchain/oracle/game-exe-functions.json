@@ -23385,6 +23385,13 @@
       "size": 13,
       "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
       "purpose": "Thirteen original NOP alignment bytes before00486670; excluded from body execution coverage."
+    },
+    {
+      "name": "original_complete_monster_pop_attacks_5471b0",
+      "address": "0x005471B0",
+      "size": 65,
+      "sha256": "c9acf09cea0488c5e8ec6fa4508d43350ff734f3026ad8bef6378e0749d490aa",
+      "purpose": "Complete original void attack-action pop root.3270contexts/profile including4rawfaults;all65instructionbytes execute under both startup FPU controls with identical outputs. Pop50A160 alone is a declared world service; no full Pop/End/campaign credit. Signed index-1 timer-prefix alias,all24slots,cached entry MUD across callbacks,ordered service writes and full heap/register/stack/FPU guards."
     }
   ],
   "data": [
@@ -28224,6 +28231,20 @@
       "size": 6,
       "sha256": "b999e7482a52eaa0da2171017a33431f61ab1f6c5c3785ebd37997d379460549",
       "purpose": "Unchanged original Mimic NUL literal passed by534840 to actual4E3AA0; dictionary4E3830 is the sole declared boundary."
+    },
+    {
+      "name": "original_monster_pop_attacks_jump_table_5471f4",
+      "address": "0x005471F4",
+      "size": 8,
+      "sha256": "80119b0e8b8a71a52b29072cd0cc9f7f0a82313564123c522f0b5e879e34dd77",
+      "purpose": "Two actual absolute switch targets used by original5471B0;data bytes are not instruction execution coverage."
+    },
+    {
+      "name": "original_monster_pop_attacks_switch_map_5471fc",
+      "address": "0x005471FC",
+      "size": 13,
+      "sha256": "d1b4c7a7e5f2eca9e3a18e3975a9e5b95b6858d45767eb05c67e0930b29f6ec0",
+      "purpose": "Thirteen-byte actual action16..28 switch map for original5471B0;data only."
     }
   ],
   "allow_overlapping_ranges": true

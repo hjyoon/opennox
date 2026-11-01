@@ -779,6 +779,7 @@ void nox_xxx_mobAction_5469B0(nox_object_t* a1p) {
 #endif
 
 //----- (005471B0) --------------------------------------------------------
+#if 0 // Original provenance; native entry in monster_pop_attacks_native_5471b0_export.go.
 void nox_xxx_monsterPopAttackActions_5471B0(int a1) {
 	int v1; // esi
 	v1 = *(uint32_t*)(a1 + 748);
@@ -800,6 +801,7 @@ void nox_xxx_monsterPopAttackActions_5471B0(int a1) {
 		}
 	}
 }
+#endif
 
 //----- (00547210) --------------------------------------------------------
 nox_object_t* nox_getHostPlayerUnit();

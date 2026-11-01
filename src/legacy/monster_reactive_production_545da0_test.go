@@ -70,7 +70,7 @@ func TestMonsterReactiveProduction545DA0(t *testing.T) {
 	for i := range update.AIStack {
 		update.AIStack[i] = server.AIStackItem{Action: uint32(ai.ACTION_GUARD)}
 		for j := range update.AIStack[i].Args {
-			update.AIStack[i].Args[j] = uintptr(0xa5a50000 + i*16 + j)
+			update.AIStack[i].Args[j] = uintptr(0xa5a50000) + uintptr(i*16+j)
 		}
 	}
 	update.AIStackInd = int8(len(update.AIStack) - 1 - slots)

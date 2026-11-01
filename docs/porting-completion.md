@@ -95,6 +95,16 @@ Detailed evidence remains under
 `ROOT/monster-react-sound-damager-native-entry-port`; reference scope is in
 `server/testdata/monster_reactive_original_545da0.md`.
 
+The first Windows gate for `63d696b` (`41334121065`) passes amd64 but the
+386 legacy tests fail to compile: the new production fixture converted an
+unsigned sentinel to uintptr after an intermediate host-int expression.
+The native 386 compiler independently reproduces the constant-overflows-int
+error. Conversion now precedes addition; the same 128 sentinel words are
+retained on both widths, and the 386 compile probe passes. Runtime engine,
+sealed original consumer and goldens are unchanged by this fixture correction.
+The failed gate has no 386 legacy runtime result and remains failed; fresh
+Windows qualification is pending.
+
 ### Native monster ROAM waypoint entries
 
 Public Record `545B00`, Previous `545B60`, Valid `547EE0`, Next `545C60`

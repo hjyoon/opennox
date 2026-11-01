@@ -16,13 +16,17 @@ on:
         description: Optional retained 386 artifact; replay exact executable and pointer snapshot controls
         type: string
         default: ''
+      macos_native_gate:
+        description: Run full macOS ARM64 product and strict gates instead of Windows diagnostics
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   diagnostic:
-    if: inputs.retained_artifact_id == ''
+    if: ${{ !inputs.macos_native_gate && inputs.retained_artifact_id == '' }}
     name: Windows/amd64 ${{ matrix.profile }} diagnostic
     strategy:
       fail-fast: false
@@ -158,7 +162,7 @@ jobs:
           retention-days: 7
 
   retained:
-    if: inputs.retained_artifact_id != ''
+    if: ${{ !inputs.macos_native_gate && inputs.retained_artifact_id != '' }}
     name: Windows/386 retained executable and snapshot diagnostic
     runs-on: windows-2025
     timeout-minutes: 30
@@ -328,3 +332,66 @@ jobs:
             !build/windows-retained-diagnostic/server.test.exe
           if-no-files-found: error
           retention-days: 7
+
+  macos_native:
+    if: inputs.macos_native_gate
+    name: macOS/ARM64 ${{ matrix.variant }} native gate
+    runs-on: macos-26
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [normal, hd, server, server-hd, strict]
+    env:
+      SOURCE_REVISION: ${{ inputs.source_revision }}
+      GATE_WORKFLOW_REVISION: ${{ github.sha }}
+      GATE_VARIANT: ${{ matrix.variant }}
+      GOTOOLCHAIN: local
+      GOOS: darwin
+      GOARCH: arm64
+      CGO_ENABLED: '1'
+      CGO_CFLAGS: '-O2 -g'
+      CGO_CFLAGS_ALLOW: '-f.*'
+      GOMAXPROCS: '2'
+      GOFLAGS: '-p=1'
+      NOX_E2E_SEAT: headless
+      NOX_XWIS: 'false'
+      NOX_NET_NAT: 'false'
+      HOMEBREW_NO_AUTO_UPDATE: '1'
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ inputs.source_revision }}
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: src/go.mod
+          cache: false
+      - name: Install native dependencies and record SDK
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(uname -m)" = arm64
+          for formula in pkgconf sdl2 openal-soft; do
+            if ! brew list --versions "$formula" >/dev/null 2>&1; then
+              brew install "$formula"
+            fi
+          done
+          echo "PKG_CONFIG_PATH=$(brew --prefix sdl2)/lib/pkgconfig:$(brew --prefix openal-soft)/lib/pkgconfig" >> "$GITHUB_ENV"
+          echo "SDKROOT=$(xcrun --show-sdk-path)" >> "$GITHUB_ENV"
+      - name: Run immutable-source product and test gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -c 0
+          git show "$GATE_WORKFLOW_REVISION:toolchain/run-macos-native-gate.py" > "$RUNNER_TEMP/run-macos-native-gate.py"
+          git show "$GATE_WORKFLOW_REVISION:toolchain/macos-strict-test-pattern.txt" > "$RUNNER_TEMP/macos-strict-test-pattern.txt"
+          export GATE_STRICT_PATTERN="$RUNNER_TEMP/macos-strict-test-pattern.txt"
+          python3 "$RUNNER_TEMP/run-macos-native-gate.py"
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: macos-arm64-${{ matrix.variant }}-${{ inputs.source_revision }}
+          path: build/macos-arm64-${{ matrix.variant }}/
+          if-no-files-found: error
+          retention-days: 90

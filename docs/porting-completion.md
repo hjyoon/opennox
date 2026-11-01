@@ -187,9 +187,21 @@ members bring products to 300 and complete test PEs to 87.
 Exact fixture, native, GC and preservation proofs are under
 `ROOT/windows386-melee-global-snapshot-lifetime`. Static inspection of live
 public reactive-sound/damager helpers `545DA0`/`5466B0` is retained under
-`ROOT/monster-react-sound-damager-native-entry-port`; native C-before and
-fresh original/direct-entry comparisons remain pending. Neither helper is
-credited as newly ported by this inspection.
+`ROOT/monster-react-sound-damager-native-entry-port`. Both actual current C
+entries now SIGSEGV after complete above4GiB native C/Go layout and predicate
+controls pass (three parent events, 109.089s). The unchanged real public C
+symbols and production C-to-Go predicate binding execute; no world-service
+stubs replace them. Fresh independent original/direct-entry comparisons and
+engine fixes remain pending. Neither helper is credited as newly ported.
+
+The existing dispatch workflow adds an optional macOS native gate: four
+product variants and the unchanged strict pattern run on an asserted ARM64
+host, with Go1.26.9, complete existing core-package test output, products and
+exact executed test binaries preserved. It checks compiler/linker warnings,
+native build information and GC symbols. Source and workflow revisions are
+recorded separately; all 4,233 existing inputs remain unchanged. This remote
+path addresses local linker disk pressure. Its first execution is pending,
+and it supplies no physical speaker or local SDL gameplay evidence.
 
 Overall 100%, all nine final chapter1-3 audits, natural bot activation and
 the actual user's sale-silence report remain open; chapter4+ is excluded.

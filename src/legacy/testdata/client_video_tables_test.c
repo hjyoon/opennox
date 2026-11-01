@@ -8,6 +8,9 @@
 #endif
 #include "../defs.h"
 #include "../GAME1_2.h"
+#if defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+#include "native_pages.h"
+#endif
 
 static uint8_t* table;
 static char names[36][32];
@@ -85,6 +88,9 @@ static void* map_near(uintptr_t address) {
 #endif
 #ifdef _WIN32
 	return VirtualAlloc((void*)address,0x80000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+#elif defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+	/* main owns this address range; commit only its data pages. */
+	return native_fixture_commit((void*)address,0x80000) ? NULL : (void*)address;
 #else
 	void* p=mmap((void*)address,0x80000,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANON,-1,0);
 	return p==MAP_FAILED ? NULL : p;
@@ -93,6 +99,8 @@ static void* map_near(uintptr_t address) {
 static void release_map(void* ptr) {
 #ifdef _WIN32
 	VirtualFree(ptr,0,MEM_RELEASE);
+#elif defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+	(void)ptr; /* Release the complete owned reservation after all cases. */
 #else
 	munmap(ptr,0x80000);
 #endif
@@ -105,7 +113,31 @@ int main(int argc, char** argv) {
 	    fread(trig,sizeof(trig),1,stdin)!=1 || fread(&degrees,8,1,stdin)!=1 ||
 	    fread(&radians,8,1,stdin)!=1 || fread(&scale,8,1,stdin)!=1) return 1;
 	memcpy(&qword_581450_9552,&scale,8);
+#if defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+	uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
+	/* ASLR can occupy an absolute hint. Reserve our own region, retaining
+	 * the exact low DWORDs: signed-bit boundary, 4-GiB wrap and ordinary
+	 * high-address control. Never overwrite another mapping with MAP_FIXED. */
+	size_t reserve_size=(size_t)(UINT64_C(8)<<30)+0x100000;
+	void* reservation=native_fixture_reserve(reserve_size);
+	if (!reservation) fail("owned native reservation unavailable");
+	uintptr_t first=(uintptr_t)reservation+0x80000;
+	uintptr_t sign=(first+(UINT64_C(1)<<31)-1)&~((UINT64_C(1)<<31)-1);
+	if (!(sign&(UINT64_C(1)<<31))) sign+=UINT64_C(1)<<31;
+	uintptr_t wrap=(first+(UINT64_C(1)<<32)-1)&~((UINT64_C(1)<<32)-1);
+	bases[0]=sign-0x40000;
+	bases[1]=wrap-0x40000;
+	bases[2]=wrap+0x40000000;
+	for (unsigned i=0;i<3;i++) {
+		if (bases[i]<=UINT32_MAX || bases[i]<(uintptr_t)reservation ||
+		    bases[i]+0x80000>(uintptr_t)reservation+reserve_size) fail("owned native placement outside reservation");
+	}
+	if ((uint32_t)bases[0]!=UINT32_C(0x7ffc0000) ||
+	    (uint32_t)bases[1]!=UINT32_C(0xfffc0000) ||
+	    (uint32_t)bases[2]!=UINT32_C(0x40000000)) fail("original placement low DWORDs changed");
+#else
 	const uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
+#endif
 	const unsigned offsets[]={16,128,144,320,1024};
 	const uint8_t patterns[]={0,0x5a,0xff};
 	unsigned bytes=compass ? 152 : 1280;
@@ -135,6 +167,9 @@ int main(int argc, char** argv) {
 		}
 		release_map(ptr);
 	}
+#if defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+	if (native_fixture_release(reservation,reserve_size)) fail("owned native release failed");
+#endif
 	printf("%s: %u complete native cases; original loop counts, ordered full table, returns, unrelated slots and guards verified\n",argv[1],cases);
 	return 0;
 }

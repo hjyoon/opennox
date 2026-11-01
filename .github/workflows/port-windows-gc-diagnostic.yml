@@ -24,6 +24,11 @@ on:
         description: Compare original C fixture address allocators on macOS ARM64
         type: boolean
         default: false
+      macos_native_profile:
+        description: Full matrix by default; a named profile runs its unchanged full gate
+        type: choice
+        options: [all, normal, hd, server, server-hd, strict]
+        default: all
 
 permissions:
   contents: read
@@ -345,7 +350,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        variant: [normal, hd, server, server-hd, strict]
+        variant: ${{ fromJSON(inputs.macos_native_profile == 'all' && '["normal","hd","server","server-hd","strict"]' || format('["{0}"]', inputs.macos_native_profile)) }}
     env:
       SOURCE_REVISION: ${{ inputs.source_revision }}
       GATE_WORKFLOW_REVISION: ${{ github.sha }}

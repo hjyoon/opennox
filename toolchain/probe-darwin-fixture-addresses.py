@@ -1,6 +1,6 @@
 """Compare actual original-derived C fixtures with two address allocators."""
 from pathlib import Path
-import collections,hashlib,json,os,platform,struct,subprocess
+import collections,hashlib,json,os,platform,re,struct,subprocess
 
 repo=Path.cwd().resolve()
 report=Path(os.environ.get('FIXTURE_REPORT_DIR',repo/'build'/'darwin-fixture-address-probe'))
@@ -69,19 +69,24 @@ int main(void) {
 ''',
 }
 results=[]
-for variant,header in [('before',data/'native_exact_mapping.h'),('reserved',candidate)]:
+for variant,header in [('before',data/'native_exact_mapping.h'),('reserved',candidate),('forced-nonzero',candidate)]:
     folder=report/variant;folder.mkdir();(folder/'native_exact_mapping.h').write_bytes(header.read_bytes())
     for name,code in programs.items():
         if name=='control'and variant=='before':continue
-        if variant=='reserved'and name!='control':
+        if variant!='before'and name!='control':
             # Placement only: preserve all low DWORDs, relative distances,
             # boundary crossings, original inputs and every assertion.
             for address in ['37ffc0000','3fffc0000','440000000','47ffc0000','4fffc0000','540000000']:
                 value='(uintptr_t)0x'+address+'ull'
                 code=code.replace(value,'OPENNOX_NATIVE_TEST_ADDRESS('+value+')')
+            # Move the comparison's native lane with its data. Keep the
+            # signed31 and unsigned32 boundary relations fully asserted.
+            for boundary in ['0x380000000ull','0x400000000ull']:
+                code=code.replace(boundary,'OPENNOX_NATIVE_TEST_ADDRESS('+boundary+')')
         src=folder/(name+'.c');src.write_text(code);binary=folder/name
         args=['clang','-std=c11','-O2','-fshort-wchar','-fsigned-char','-fno-strict-aliasing','-fno-strict-overflow','-Wall','-Wextra','-Werror','-I'+str(folder),'-I'+str(data),'-include',str(data/'native_stdio.h'),str(src),'-o',str(binary)]
         if name=='ability':args.insert(1,'-Wno-unused-function') # Same existing fixture flags.
+        if variant=='forced-nonzero':args.insert(1,'-DOPENNOX_NATIVE_TEST_MIN_LANE=1')
         compile=subprocess.run(args,cwd=legacy,capture_output=True)
         (folder/(name+'-compile.stdout.log')).write_bytes(compile.stdout)
         (folder/(name+'-compile.stderr.log')).write_bytes(compile.stderr)
@@ -94,9 +99,15 @@ for variant,header in [('before',data/'native_exact_mapping.h'),('reserved',cand
                 (folder/(label+'.stdout.log')).write_bytes(run.stdout)
                 (folder/(label+'.stderr.log')).write_bytes(run.stderr)
                 row=dict(variant=variant,fixture=name,mode=mode,repeat=repeat,exit_code=run.returncode,stderr=run.stderr.decode(errors='replace'))
+                if name=='control'and run.returncode==0:
+                    delta=re.search(rb'NATIVE_LAYOUT_PASS delta=0x([0-9a-f]+)',run.stdout)
+                    assert delta
+                    row['native_address_delta']=int(delta[1],16)
+                    assert row['native_address_delta']&0xffffffff==0
+                    if variant=='forced-nonzero':assert row['native_address_delta']>0
                 results.append(row)
                 with(report/'runs.jsonl').open('a')as out:out.write(json.dumps(row)+'\n')
     print(json.dumps(dict(variant=variant,exits=dict(collections.Counter(r['exit_code']for r in results if r['variant']==variant)))),flush=True)
 proof=dict(source=os.environ['SOURCE_REVISION'],workflow=os.environ['GATE_WORKFLOW_REVISION'],native_OS=platform.platform(),native_CPU=platform.machine(),original_cases_and_assertions_unchanged=True,native_placement_translation_preserves_low32_relative_distances_and_4GiB_crossings=True,center_input_sha256=hashlib.sha256(packed).hexdigest(),original_JSON_sha256=hashlib.sha256((data/'center_messages_445450_445530_original.json').read_bytes()).hexdigest(),before_header_sha256=hashlib.sha256((data/'native_exact_mapping.h').read_bytes()).hexdigest(),candidate_header_sha256=hashlib.sha256(candidate.read_bytes()).hexdigest(),runs=results)
 (report/'summary.json').write_text(json.dumps(proof,indent=2)+'\n')
-assert all(r['exit_code']==0 for r in results if r['variant']=='reserved'),[r for r in results if r['variant']=='reserved'and r['exit_code']]
+assert all(r['exit_code']==0 for r in results if r['variant']!='before'),[r for r in results if r['variant']!='before'and r['exit_code']]

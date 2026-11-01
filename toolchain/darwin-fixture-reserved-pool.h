@@ -18,6 +18,9 @@ static struct {
 	{0x47ffc0000ull, NULL, 0, 0}, {0x4fffc0000ull, NULL, 0, 0}, {0x540000000ull, NULL, 0, 0},
 };
 static uintptr_t opennox_native_test_address_delta;
+#ifndef OPENNOX_NATIVE_TEST_MIN_LANE
+#define OPENNOX_NATIVE_TEST_MIN_LANE 0
+#endif
 
 #define OPENNOX_NATIVE_TEST_ADDRESS(address) ((uintptr_t)(address)+opennox_native_test_address_delta)
 
@@ -26,7 +29,7 @@ static uintptr_t opennox_native_test_address_delta;
  * Select one common whole-4-GiB translation, then retain every reservation.
  * VM_FLAGS_FIXED deliberately omits VM_FLAGS_OVERWRITE. */
 __attribute__((constructor)) static void opennox_native_test_reserve_addresses(void) {
-	for (unsigned lane=0;lane<256;lane++) {
+	for (unsigned lane=OPENNOX_NATIVE_TEST_MIN_LANE;lane<256;lane++) {
 		uintptr_t delta=(uintptr_t)lane<<32;
 		int complete=1;
 		for (size_t i=0;i<sizeof(opennox_native_test_reservations)/sizeof(opennox_native_test_reservations[0]);i++) {

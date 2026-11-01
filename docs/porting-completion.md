@@ -94,12 +94,57 @@ executables and failed results remain preserved. One obsolete closed focused
 test compiler archive (177,655,636 bytes) and three completed normal test
 archives (576,801,986 bytes) are evicted with open handles/importcfg protected.
 
-Current-source product, gameplay, SDL/Core merchant and native Linux/Windows
-gates are pending. The server player-reset route recognizes the original bot
-update callback and invokes Create; natural stock bot registration/activation
-is still unproved. Overall 100%, nine final chapter1-3 audits and the user's
-actual sale-silence report remain open; chapter4+ is excluded. Exact proofs
-are retained under `ROOT/player-bot-create-native-entry-port`.
+All four ARM64 products build and pass help with zero compiler/linker
+warnings and clean-source metadata `1522866`. Current products pass
+six Blink conditions (37.636s), sixteen first-attack
+conditions (43.278s), and Chain Lightning
+(32.805s). Original Bookcase1974 movement/combat and menu
+Load/Save pass in 39.078s and
+17.766s, retaining HP20/MP43/poison0 and
+original Urchin HP0/DEAD. The first passing Save is sealed before reload.
+Four selected in-world campaign frames, including both completed-save
+messages, are actually viewed; all fifteen frames remain retained.
+
+Actual SDL/Core stock Mystic purchase/sale passes in
+375.375s. Two positive-gain effects consume all
+four buffers each, and both trade frames are actually viewed. This funded
+diagnostic replay does not establish user speaker fidelity or resolve the
+reported sale-silence.
+
+Windows run `41305902169` passes amd64
+**695,974 / 11 skips** and 386
+**676,244 / 94 skips**. Six exact test executables
+retain GC symbols; the historical intermittent Windows memory-failure cause
+remains open. The 386 variant adds 3,157 passes with no new skips; every old terminal identity and multiplicity
+remains. Other native variants add the same 3,157 lifecycle passes.
+Linux run `41305905129` passes GUI/HD
+**704,064 / 54 skips** each and
+server/serverHD **697,954 / 7 skips**
+each. Default-link damage retains 133,384 passes. Six entire job logs and
+20 raw streams have zero compiler, linker, test-build or
+CI warnings without new suppression.
+
+Cleanup evicts the completed normal, strict and product compiler archives
+recorded in the current batch cache-cleanup proofs, with open handles/importcfg protected.
+Final preservation rehashes all **286 standalone products**, **75 full test
+executables**, **81 audio captures**, 4,649 personal files, original GAME.EXE,
+all 4,229 inputs, protected failed Saves and failed results.
+
+Creation, update and respawn public-entry ports are complete for the
+compared original domain. Natural stock bot registration/activation remains
+unproved. Static server reset and observer checks are not activation evidence.
+Overall 100% and all nine final chapter1-3 audits remain open;
+chapter4+ is excluded. Exact proofs are retained under
+`ROOT/player-bot-create-native-entry-port`.
+
+Read-only preparation for the next waypoint cluster executes all five
+original roots and their actual validity/RNG children: **783 unchanged code
+bytes, 9,220 contexts and seven faults per FPU profile**, with identical
+outputs and every instruction visited. The previous 7,192 contexts and two
+faults remain unchanged. Inputs and original results are sealed under
+`ROOT/monster-roam-waypoint-native-entry-port`; this supplies no new native
+entry completion credit. A native consumer and actual C-before replay remain
+required before changing the public pointer ABI.
 
 ### Native player-bot action state entry
 

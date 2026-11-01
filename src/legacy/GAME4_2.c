@@ -7177,6 +7177,7 @@ short sub_528030(int a1) {
 }
 
 //----- (00528190) --------------------------------------------------------
+#if 0 // Retained PE32 body; public native entry is implemented in Go.
 int nox_xxx_checkIsKillable_528190(nox_object_t* a1p) {
 	int a1 = a1p;
 	uint16_t* v1; // eax
@@ -7200,6 +7201,8 @@ int nox_xxx_checkIsKillable_528190(nox_object_t* a1p) {
 		return 0;
 	}
 }
+
+#endif
 
 //----- (005281D0) --------------------------------------------------------
 int nox_xxx_frameCounterSetCopyToNextFrame_5281D0() {

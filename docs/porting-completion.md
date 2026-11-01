@@ -55,6 +55,52 @@ completion requirements.
 
 ## Current findings
 
+### Native killable-predicate entry
+
+Public `528190` now reads native Object.HealthData and shares one Go predicate
+with the existing guarded sight/FIGHT helpers. The original C body is archived
+under `#if 0`; `int(object*)` and the PE32 one-word ABI remain. Valid native
+Go/typed-C getter controls pass above4GiB before the actual old C entry
+reproduces SIGSEGV in 4.436 seconds. Native health-pointer offset616 replaces
+the original PE32 offset556 and its local int pointer narrowing.
+
+Unchanged original execution covers all **49** instruction bytes in each FPU
+profile, **147** valid contexts and one separate nil-Object fault, without
+external services or instruction/arithmetic substitutions. The two profile
+outputs are identical. Nil health returns0; otherwise Cur!=0 or Max==0
+returns1, including Cur0/Max0. Class is not read. The raw nil-Object fault
+remains distinct from the existing guarded Go helpers' false policy.
+
+Raw C/Go original/fault checks pass **300** events; existing guarded Go and
+its nil policy pass **149**. The focused union retains five earlier controls,
+**454** total, without consumer repair. Full native Object/HealthData records
+and neighbor guards are unchanged; poisoned WORD neighbors catch incorrect
+DWORD reads. Original stack/register/FPCW/TOP observations are diagnostic,
+without native stack or read-count equivalence claims.
+
+The existing oracle already seals the 49-byte body and separate 15-NOP
+alignment range. Only its incorrect human purpose description is corrected
+after actual original execution; every address, size, hash, data range, entry
+order and old expected fixture remains unchanged. Verification retains
+**3,335 code / 691 data ranges** and all **21** verifier tests. No new range
+is counted for this port. All **4,203** preceding inputs are byte-identical;
+the current inventory is **4,206**.
+
+Normal tests pass **649,000 / 43 skips** in 293.826
+seconds. Actual highres/cgocheck2/checkptr2 passes
+**509,657 / 8 skips** in 389.934 seconds. Both preserve all
+earlier terminal identities/multiplicities, add 449 passes and emit zero
+compiler/linker warnings, without warning suppression or strict exemptions.
+Before compilation, 633 owned cold regenerable compiler archives are removed,
+4,081,406,880 logical bytes; current importcfg paths/open handles and all
+products, source, inputs, assets, Saves and failure records remain protected.
+
+Current ARM64 products/E2E/Core and Windows/Linux gates remain pending for
+this runtime. Overall 100% and nine final class/chapter1-3 audits remain open;
+chapter4+ is excluded. User sale-silence and historical Windows memory-cause
+reports remain open. Exact evidence is under
+`ROOT/killable-public-native-entry-port`.
+
 ### Native special-state sender entry
 
 Public `527E50` now reads native Object, PlayerUpdateData and Player fields,

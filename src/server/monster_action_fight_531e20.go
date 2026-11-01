@@ -203,10 +203,10 @@ func monsterFightSelectAttack531B40(unit, target *Object, hooks monsterActionFig
 }
 
 func monsterFightKillable528190(target *Object) bool {
-	if target == nil || target.HealthData == nil {
+	if target == nil {
 		return false
 	}
-	return target.HealthData.Cur != 0 || target.HealthData.Max == 0
+	return ObjectKillableNative528190(target) != 0
 }
 
 // monsterActionFight531EC0 restores the complete pointer-bearing FIGHT loop.

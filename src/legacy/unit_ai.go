@@ -716,10 +716,10 @@ func nox_xxx_unitUpdateMonster_50A5C0(a1 *nox_object_t) {
 }
 
 func monsterSightKillable528190(obj *server.Object) bool {
-	if obj == nil || obj.HealthData == nil {
+	if obj == nil {
 		return false
 	}
-	return obj.HealthData.Cur != 0 || obj.HealthData.Max == 0
+	return server.ObjectKillableNative528190(obj) != 0
 }
 
 func monsterLostSightNative528560(monster *server.Object, index int) bool {

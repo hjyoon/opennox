@@ -17035,7 +17035,7 @@
       "address": "0x00528190",
       "size": 49,
       "sha256": "e862f2b35fe38c43eceff07d9e058e334aff486967f7510274bd91ee4e848eea",
-      "purpose": "accept a sight target when either health word is positive while preserving the null-health and both-zero rejection paths"
+      "purpose": "Complete unchanged49-byte pure root, excluding separately sealed15NOP padding. Non-nil health and (Cur!=0 OR Max==0) returns1; both health words zero returns1, nil health returns0, nil Object faults. Independently frozen147contexts plus1fault perFPUprofile execute all49bytes with zero child/arithmetic/instruction substitutions; both outputs identical. Metadata-only correction of the older inaccurate bothzero-rejection description; address/size/hash and all previous expected fixtures remain unchanged. NativeC/Go and existing guardedGo compare full readonly native records/neighbor guards; native rawstack/register/read-count equivalence is not claimed."
     },
     {
       "name": "nox_xxx_checkIsKillable_528190_padding",

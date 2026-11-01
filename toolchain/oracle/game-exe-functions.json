@@ -23329,6 +23329,20 @@
       "size": 676,
       "sha256": "a664c478d37057175f5ad0e1cbdab7453844004b1e2d7fb5178ba24fb6013611",
       "purpose": "Complete676-byte player sender root; actual419A70 converter17 and4D8760 health61 execute754bytes on valid inputs. Two2075-context/2083-call original FPU-profile executions and9separatefaults each retain ordered children, native-mapped pointer reloads, peer-frame32DWORD writes, flags, exact packets/fullreturn and heap/stack/FPU guards. Production native C converter matches startup0xe3f; alternate0x23f native root explicitly replays observed converter results, not a native alternate-converter equivalence claim. Self/action/RNG/frame/direction/network services remain declared boundaries; health upper-word partial-register residue retained as diagnostic while actual(short,short) ABI semantics are compared."
+    },
+    {
+      "name": "nox_xxx_netSendPhantomPlrMb_5187E0",
+      "address": "0x005187E0",
+      "size": 183,
+      "sha256": "15b6a22e4169913c90035ba5c3b3b660f278d0037e10b03137aea747b60d4901",
+      "purpose": "Complete183-byte Phantom sender excluding9NOP alignment bytes. Original type-before-UnitCode, separate actual419A70 X/Y reads/conversions, live missile/subclass frame, signedWORD direction argument, lowBYTE vector arithmetic and complete network return. Two-profile combined3443contexts/3455calls execute this183+simple177+converter17+health61=438bytes;699Phantom contexts/705calls each. Every combined context differs between profiles. Native startup uses actualCconverter; nearest root comparison explicitly replays observed converter boundary. Original caller argument2 stack-copy byte scratch is diagnostic, not native CGo stack-slot equivalence. UnitCode/direction/publication remain declared services."
+    },
+    {
+      "name": "nox_xxx_netSendSimpleObj_5188A0",
+      "address": "0x005188A0",
+      "size": 177,
+      "sha256": "e01717395ccbfffb9184c472d535c494fad4eb624821f189ec69e305ecd5f363",
+      "purpose": "Complete177-byte simple sender excluding15NOP alignment bytes. Generator class gate caches health link before Frame, then reads damage timestamp and cached generator update; unsigned age>2, actual whole4D8760 signed-short child and post-callback live health reload into cached32WORD sample array; type-before-code and separate actual419A70 conversions; full transport return. Two-profile combined3443contexts/3455calls plus4separatefaults each execute438bodybytes;2744simple contexts/2750calls each. Health upper argument words and original unused health-network return are retained diagnostics/declarations. NativeC/Go compare full guarded records, ordered service inputs and packets; no native write-count/stack equivalence or alternate-native-converter claim."
     }
   ],
   "data": [

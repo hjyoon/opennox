@@ -4150,6 +4150,7 @@ int sub_518770() {
 }
 
 //----- (005187E0) --------------------------------------------------------
+#if 0 // PE32 reference; native Go entry in basic_object_senders_5187e0.go.
 int nox_xxx_netSendPhantomPlrMb_5187E0(int a1, int a2) {
 	short v2;     // ax
 	float v3;     // ecx
@@ -4186,7 +4187,10 @@ int nox_xxx_netSendPhantomPlrMb_5187E0(int a1, int a2) {
 	return nox_netlist_addToMsgListSrv_40EF40(a1, (unsigned char*)v10, 11);
 }
 
+#endif
+
 //----- (005188A0) --------------------------------------------------------
+#if 0 // PE32 reference; native Go entry in basic_object_senders_5187e0.go.
 int nox_xxx_netSendSimpleObj_5188A0(int a1, int a2) {
 	short* v2; // eax
 	int v3;    // ebx
@@ -4221,6 +4225,8 @@ int nox_xxx_netSendSimpleObj_5188A0(int a1, int a2) {
 	*(uint16_t*)&v10[7] = nox_float2int(v8);
 	return nox_netlist_addToMsgListSrv_40EF40(a1, (unsigned char*)v10, 9);
 }
+
+#endif
 
 //----- (00518960) --------------------------------------------------------
 #if 0 // Native Go entry: complex_object_send_native_518960_export.go.

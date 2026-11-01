@@ -44,15 +44,10 @@ func (s *Server) ObjectDispatchRuntimeNative519410() server.ObjectDispatchNative
 			return word(s.netPlayerObjectSendNative518C30(recipient, unit, stream != 0))
 		},
 		Phantom: func(index int32, unit *server.Object) uint32 {
-			packet := s.phantomObjectPacketNative5187E0(unit)
-			return word(nox_netlist_addToMsgListSrv(ntype.PlayerInd(index), packet[:]))
+			return uint32(legacy.NetSendPhantomObject5187E0(index, unit))
 		},
 		Simple: func(index int32, unit *server.Object) uint32 {
-			if uint32(unit.ObjClass)&0x20000 != 0 {
-				s.reportUnitHealthDeltaNative4D8760(int(index), unit)
-			}
-			packet := s.simpleObjectPacketNative5188A0(unit)
-			return word(nox_netlist_addToMsgListSrv(ntype.PlayerInd(index), packet[:]))
+			return uint32(s.netSendSimpleObjectNative5188A0(index, unit))
 		},
 		Special: func(recipient, unit *server.Object) uint32 {
 			return word(s.netUpdateObjectSpecialNative527E50(recipient, unit))

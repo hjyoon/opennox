@@ -55,6 +55,58 @@ completion requirements.
 
 ## Current findings
 
+### Native simple and Phantom object senders
+
+Public `5187E0` and `5188A0` now take native Object pointers and share Go cores
+with the ordinary object dispatcher. Both retain their PE32 two-word ABI;
+the old C bodies are retained under `#if 0`. Valid Go/C getter controls pass
+with records above4GiB, followed by actual pre-port public-entry SIGSEGV in
+both functions. The original signatures carried the Object address in int.
+
+Each original FPU profile executes **3,443 contexts / 3,455 calls**, plus four
+separate faults. All **183 Phantom +177 simple +17 converter +61 health-child
+bytes** execute, 438 total. All 3,443 contexts differ between profiles.
+Startup C/Go comparisons execute the actual native converter and C health
+builder/real important queue. Nearest comparisons explicitly replay observed
+converter results; they do not certify a native alternate converter mode.
+UnitCode, direction and network bodies remain declared services. The health
+network service's unused return is a declared trace input; original upper
+health-argument register words and Phantom argument-stack scratch remain
+diagnostic data without native CGo stack-slot or store-count equivalence claims.
+
+The cores preserve type-before-code, individual X/Y read/conversion order,
+missile frame and signed direction loads, low-byte vector wrapping and full
+transport returns. Simple caches health before Frame, then reads damage time
+and generator update after Frame; post-report health reloads into the cached
+native generator record. The ordinary sender retains its missing-cache/sample
+policy. Native Object, two generator records and two health records, including
+all untouched bytes and neighbors, are compared with the sealed reference.
+
+Four original C/Go comparisons and fault checks pass **13,786 events**, seven
+order/policy checks pass, and **26** actual C/public-Go/ordinary binding events
+check real production factories and netlists. The focused union with 71 prior
+controls passes **13,890** events. All **4,192** previous inputs remain
+byte-identical; the current inventory is **4,198**. Oracle verification passes
+**3,334 code / 691 data ranges**, retaining all old entries and order, and all
+**21** verifier tests. No original expected values were regenerated from native
+execution. The first focused run's empty server selection is retained separately
+from compiler/linker warnings; the complete focused union and full suites select
+the new server order controls.
+
+Local normal tests pass **645,966 / 43 skips** in 155.302 seconds. Actual
+highres/cgocheck2/checkptr2 tests pass **506,623 / 8 skips** in 393.543
+seconds. Both preserve every previous terminal identity and multiplicity, add
+13,819 passes, and emit zero compiler/linker warnings. No warning suppression
+or strict exemption was added. Exact raw JSON streams remain losslessly
+compressed and digest-verified under
+`ROOT/simple-phantom-senders-native-entry-port`.
+
+Current ARM64 products, campaign/menuLoadSave, actual SDL/Core audio and native
+Windows/Linux qualification are pending for this runtime. Overall porting and
+nine final class/chapter1-3 audits remain incomplete; chapter4+ is excluded.
+The user sale-silence report and historical intermittent Windows memory cause
+remain open.
+
 ### Native player-object sender entry
 
 Public `518C30` and the ordinary player sender now use one native Go core.

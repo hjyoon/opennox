@@ -73,6 +73,7 @@ type Server interface {
 	NetUpdateObjectSpecialNative527E50(recipient, unit *server.Object) bool
 	ObjectDispatchRuntimeNative519410() server.ObjectDispatchNativeRuntime519410
 	PlayerObjectSendRuntimeNative518C30() server.PlayerObjectSendRuntime518C30
+	BasicObjectSendRuntimeNative5187E0() server.BasicObjectSendRuntime5187E0
 	SetUpdateFunc2(fnc func() bool)
 	ServerPort() int
 	ServStartCountdown(dt int, text strman.ID)

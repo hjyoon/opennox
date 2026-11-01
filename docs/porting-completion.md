@@ -95,9 +95,48 @@ The failed space-limited text-copy attempt, the uncompressed 540MB control
 copy and all four unreplaced large original logs remain retained. No
 executable is compressed in place; assets, Saves and failed results remain.
 
-Current ARM64 product/E2E/SDL-Core audio and Linux/Windows native gates are
-pending for this runtime. Remaining bot creation/update/respawn entries and
-their stock runtime registration are separate audit work. This public-entry
+All four ARM64 products build and pass help with zero compiler/linker
+warnings and clean-source metadata `d39ddec`. Current products pass six
+Blink conditions (37.610s), sixteen first-attack
+conditions (43.174s), and three Chain Lightning
+conditions (32.664s). Original Bookcase1974 movement/combat
+and actual menu Load/Save pass in 38.928 and
+17.985 seconds, retaining HP20/MP43/poison0
+and original Urchin HP0/DEAD. The first passing Save is sealed before reload.
+All four selected campaign images are actually viewed, including both
+in-world completed-save messages; all fifteen captures remain retained.
+
+Actual SDL/Core stock Mystic purchase/sale passes in
+375.116 seconds. Both positive-gain effects have
+all four hardware buffers consumed. Both trade images are actually viewed:
+33-gold quote, then 9,933 gold and the guide removed. This remains a funded
+diagnostic merchant replay; user sale-silence and physical-speaker fidelity
+are unverified.
+
+Windows run `41290727925` passes amd64 **655,189 /
+11 skips** and 386 **635,540 /
+93 skips**. Six exact test executables retain GC symbols;
+the historical intermittent Windows memory-failure cause remains open.
+Linux run `41290729771` passes GUI/HD **663,279 /
+54 skips** each and server/serverHD
+**657,169 / 7 skips**
+each. Default-link damage retains 133,384 passes. Every native variant
+retains all prior terminal identities and multiplicities and adds 8,716
+passes. Six entire job logs and 20 raw output streams
+have zero compiler, linker, test-build or CI warnings, with no new suppression.
+
+After local gates close, 404 strict compiler archives (1,049,777,656 bytes),
+four completed normal test archives (752,947,496 bytes), and 441 completed
+product compiler archives (926,960,140 bytes) are evicted with open handles
+and importcfg protected. No retained executables, inputs or records are
+deleted. Final preservation rehashes all **262 standalone products**,
+**63 full test executables**, **77 audio captures**, 4,649 personal files,
+original GAME.EXE, all 4,219 inputs, protected failed Saves and failed results.
+The proposed in-place executable compression remains rejected by automatic
+approval review and unexecuted; original product paths stay intact.
+
+Remaining bot creation, update, action state conversion and respawn entries
+and their stock runtime registration are separate audit work. This public-entry
 port does not establish natural bot activation or resolve the user's actual
 sale-silence report. Overall 100% and the nine final chapter1-3 audits remain
 open; chapter4+ is excluded. Exact proofs are retained under

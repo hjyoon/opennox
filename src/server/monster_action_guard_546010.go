@@ -31,26 +31,12 @@ func monsterGuardFacing546010(unit *Object, direction types.Pointf, nearest bool
 }
 
 func monsterGuardRecentSound546010(unit *Object, hooks monsterActionGuardHooks546010) bool {
-	update := unit.UpdateDataMonster()
-	if update.Field97 == 0 {
-		return false
-	}
-	if hooks.frame()-update.Field101 >= 3*hooks.tickRate() {
-		return false
-	}
-	hooks.push(ai.DEPENDENCY_NO_INTERESTING_SOUND)
-	hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
-	if item := hooks.push(ai.ACTION_WAIT); item != nil {
-		fps := hooks.tickRate()
-		delay := hooks.random(int(int32(fps)), int(int32(fps*2)))
-		item.Args[0] = uintptr(hooks.frame() + uint32(delay))
-	}
-	if item := hooks.push(ai.ACTION_FACE_LOCATION); item != nil {
-		item.Args[0] = uintptr(math.Float32bits(update.Field99X))
-		item.Args[1] = uintptr(math.Float32bits(update.Field99Y))
-	}
-	update.Field97 = 0
-	return true
+	// Retain ordinary action admission outside the raw native entry.
+	_ = unit.UpdateDataMonster()
+	return unit.MonsterRecentSound545DA0(MonsterReactiveRuntime545DA0{
+		Frame: hooks.frame, TickRate: hooks.tickRate, Random: hooks.random,
+		Push: func(_ *Object, action ai.ActionType) *AIStackItem { return hooks.push(action) },
+	})
 }
 
 // monsterActionGuard546010 retains the entry update/head addresses, then

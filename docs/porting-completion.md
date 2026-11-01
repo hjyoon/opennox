@@ -55,6 +55,46 @@ completion requirements.
 
 ## Current findings
 
+### Native monster recent-sound and damager-facing entries
+
+Public Sound `545DA0` and LookDamager `5466B0` use typed native Go object
+pointers. Guard recent-sound and ordinary damager-facing behavior share
+their cores while retaining ordinary class admission. Sound keeps its
+entry update pointer, reads coordinates after Push and frame after RNG,
+and preserves DWORD age/FPS/timer wrap. LookDamager reads live coordinates
+after Push and returns success even when the stack is full. Original C
+bodies remain under `#if 0`; the active C caller retains the full pointer.
+
+Both previous public C entries SIGSEGV with valid above4GiB records after
+independent layout and real-predicate controls pass. Before reactive engine
+edits, unchanged original execution and the native consumer are sealed:
+**2,836 contexts including four raw nil faults per FPU control**, identical.
+All **331 instruction bytes** execute, including the actual status predicate
+and RNG children. Only Push is a declared world service; clocks are passive
+observations. Whole heaps, original writes, code/table bytes, ordered effects,
+callee registers, stack and FPU state are checked independently.
+
+Public C and Go focused comparisons pass **5,676 events** normally and with
+highres/cgocheck2/checkptr2, zero warnings. Complete Cmalloc records, padding,
+neighbor guards, pointer projections, actual production prand, callback
+mutations and nil-fault prefixes match the sealed original results. Existing
+inputs and assertions remain unchanged. The manifest retains all old records
+and adds only LookDamager's 62-byte body: **3,340 code / 691 data** ranges;
+all 21 verifier tests pass. Focused compilation omits unrelated test
+registration and receives no full-suite credit. Actual public C production
+composition covers both entries, seeds0/4095 and zero through four available
+stack slots, using real clocks/prand/Push and whole native record checks.
+It and unchanged Guard composition pass **70 events**. Existing original
+Guard/Escort regressions pass **5,732**. The first new composition fixture
+omitted established Push-reset writes from its whole-record expectation;
+that failed attempt remains retained and the sealed original consumer is
+unchanged. Earlier incomplete local builds and an overlay missing the
+unchanged retreat allocation helper remain failures. Fresh products and full
+gates are pending.
+Detailed evidence remains under
+`ROOT/monster-react-sound-damager-native-entry-port`; reference scope is in
+`server/testdata/monster_reactive_original_545da0.md`.
+
 ### Native monster ROAM waypoint entries
 
 Public Record `545B00`, Previous `545B60`, Valid `547EE0`, Next `545C60`
@@ -189,10 +229,10 @@ Exact fixture, native, GC and preservation proofs are under
 public reactive-sound/damager helpers `545DA0`/`5466B0` is retained under
 `ROOT/monster-react-sound-damager-native-entry-port`. Both actual current C
 entries now SIGSEGV after complete above4GiB native C/Go layout and predicate
-controls pass (three parent events, 109.089s). The unchanged real public C
-symbols and production C-to-Go predicate binding execute; no world-service
-stubs replace them. Fresh independent original/direct-entry comparisons and
-engine fixes remain pending. Neither helper is credited as newly ported.
+controls pass (three parent events, 109.089s). The unchanged pre-edit real
+public C symbols and production C-to-Go predicate binding execute; no
+world-service stubs replace them. Subsequent direct-entry comparisons and
+native implementation are described above; complete final gates remain open.
 
 The existing dispatch workflow adds an optional macOS native gate: four
 product variants and the unchanged strict pattern run on an asserted ARM64

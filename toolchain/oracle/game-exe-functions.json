@@ -20608,6 +20608,13 @@
       "purpose": "the exact eleven NOP alignment bytes before interesting-sound handling at 005466F0"
     },
     {
+      "name": "original_complete_monster_look_damager_5466B0",
+      "address": "0x005466B0",
+      "size": 62,
+      "sha256": "7787f70576041ae3de713a4e2956aba16c58c44cfb08bf86a918003d3291e2d0",
+      "purpose": "Whole original reactive Sound545DA0 and Look5466B0:2836 independent contexts including4 raw nil faults per FPU profile, identical. All331 instruction bytes execute including actual23-byte status predicate and67-byte RNG child; only Push declared world service. Passive clock observations, ordered effects, whole guarded heaps, cached/live pointers, callback mutations, full DWORD wrap, raw NaN coordinates, FPU/stack/callee registers preserved. Direct public native C/Go consumer frozen before implementation. No full transitive game or overall100% claim."
+    },
+    {
       "name": "sub_5466F0_interesting_sound",
       "address": "0x005466F0",
       "size": 295,

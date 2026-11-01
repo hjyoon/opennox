@@ -524,6 +524,7 @@ LABEL_27:
 #endif
 
 //----- (00545DA0) --------------------------------------------------------
+#if 0 // Original provenance; typed native entry in monster_reactive_native_545da0_export.go.
 int sub_545DA0(int a1) {
 	uint32_t* v1; // edi
 	int* v2;      // ebx
@@ -547,6 +548,7 @@ int sub_545DA0(int a1) {
 	v1[97] = 0;
 	return 1;
 }
+#endif
 
 //----- (00546410) --------------------------------------------------------
 #if 0
@@ -682,6 +684,7 @@ int nox_xxx_monsterGetObjEscortName_546600(int a1) {
 #endif
 
 //----- (005466B0) --------------------------------------------------------
+#if 0 // Original provenance; typed native entry in monster_reactive_native_545da0_export.go.
 int nox_xxx_monsterLookAtDamager_5466B0(int a1) {
 	int* v1; // eax
 
@@ -695,6 +698,7 @@ int nox_xxx_monsterLookAtDamager_5466B0(int a1) {
 	}
 	return 1;
 }
+#endif
 
 //----- (005466F0) --------------------------------------------------------
 int sub_50B810(nox_object_t* a1, float2* a2);
@@ -724,7 +728,7 @@ int sub_5466F0(nox_object_t* a1p) {
 			v9.field_8 = v4;
 			v9.field_C = v5;
 			if (nox_xxx_mapTraceRay_535250(&v9, 0, 0, 9)) {
-				sub_545DA0((int)a1);
+				sub_545DA0(a1p);
 			} else {
 				nox_xxx_monsterPushAction_50A260((int)a1, 59);
 				nox_xxx_monsterPushAction_50A260((int)a1, 56);

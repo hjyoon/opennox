@@ -32,10 +32,10 @@ void sub_545B00(void* update, nox_waypoint_t* waypoint);
 nox_waypoint_t* sub_545B60(void* update, unsigned char mask);
 int nox_xxx_monsterRoamDeadEnd_545BB0(nox_object_t* unit, nox_waypoint_t* current);
 nox_waypoint_t* sub_545C60(void* update, nox_waypoint_t* current, unsigned char mask);
-int sub_545DA0(int a1);
+int sub_545DA0(nox_object_t* unit);
 int sub_545E60(nox_object_t* a1);
 #include "monster_guard_native_546010.h"
-int nox_xxx_monsterLookAtDamager_5466B0(int a1);
+int nox_xxx_monsterLookAtDamager_5466B0(nox_object_t* unit);
 int sub_5466F0(nox_object_t* a1);
 void nox_xxx_mobAction_5469B0(nox_object_t* a1);
 void nox_xxx_monsterPopAttackActions_5471B0(int a1);

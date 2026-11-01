@@ -181,11 +181,10 @@ func (obj *Object) MonsterIsInjured() bool {
 }
 
 func (obj *Object) MonsterLookAtDamager() bool {
-	if !obj.MonsterIsInjured() {
-		return false
-	}
-	obj.MonsterPushAction(ai.ACTION_FACE_LOCATION, obj.Pos132)
-	return true
+	_ = obj.UpdateDataMonster()
+	return obj.MonsterLookAtDamager5466B0(MonsterReactiveRuntime545DA0{
+		Push: func(unit *Object, action ai.ActionType) *AIStackItem { return unit.MonsterPushAction(action) },
+	})
 }
 
 func (obj *Object) MonsterCancelDurSpell(exp spell.ID) {

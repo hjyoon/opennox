@@ -57,74 +57,119 @@ completion requirements.
 
 ### Native monster idle-sound entry
 
-Public `5469B0` now uses the native Go raw core in `b3f39bd`; the ordinary
-server entry shares it. Original C remains under `#if 0`. The core preserves
-entry-cached MUD, the original signed stack-index -1 timer-prefix alias, all
-24 slots, unordered-distance admission, DWORD-wrapped signed RNG bounds,
-post-RNG frame reload, and the sound getter's current class/MUD reload.
-The root ABI is void; incidental EAX receives no semantic return credit.
+Public `5469B0` now uses the native Go raw entry (`b3f39bd`); its ordinary
+server wrapper shares that core. It preserves the entry MUD, signed index -1
+alias of the original timer prefix, all 24 stack slots, unordered-distance
+admission, DWORD-wrapped signed RNG bounds, post-RNG frame reload and the
+sound-getter's current class/MUD reload. Sound-set timer aliases see the
+new timer value. The root ABI remains void. Original C stays under `#if 0`.
 
-Independent original execution and three native consumer/getter/golden files
-were frozen before engine edits: 353 actual instruction bytes, 5,594 idle-root
-and 76 explicitly ancillary sound-getter contexts per FPU profile, including
-four/15 raw faults. Both profiles produce identical outputs. Only Audio501960
-is declared as a world service. The old public C entry first SIGSEGVs after
-valid above-4GiB layouts, whole initial records and getter controls pass.
-Its exact executable and failure remain preserved.
+Independent original execution was frozen before engine edits: **353 actual
+instruction bytes**, **5,594 idle-root plus 76 ancillary sound-getter contexts**
+per startup FPU profile, including four/15 raw faults respectively. Both
+profiles produce identical outputs. Only Audio501960 is a declared world
+service; actual aggression/action/sound getters and RNG execute. Incidental
+EAX and malformed stack indices outside -1/0..23 receive no equivalence
+credit. The three frozen consumers/getter/golden files remain unchanged.
 
-Normal and strict C/direct-Go comparisons pass 11,344 events per profile.
-Public C production clocks/prand with declared Audio observation pass 151
-per profile. Separate raw/ordinary server composition with real clock/prand,
-Audio.EventObj, registered descriptors, allocation, delayed replay and
-observers plus existing idle tests passes 609 per profile. Original frozen
-references and old assertions remain unchanged. These event totals include
-parents/subtests and are not completion percentages.
+The unchanged public C entry first SIGSEGVs after independent native C/Go
+layouts, whole initial-record guards and existing sound/action getter
+controls pass above 4 GiB. Its exact executable and original failure remain
+preserved. After porting, C plus direct Go comparison passes **11,344** events
+per normal/strict profile. Public C production clock/prand composition passes
+**151** per profile with the declared Audio observer. Separate raw/ordinary
+server composition plus existing idle tests pass **609** per profile using
+real clock/prand, registered sound descriptors, Audio.EventObj, delayed
+replay, native event allocation and observers. The new fixture uses C-owned
+production objects. Its earlier Go-owned-fixture failure and three local
+link/strip disk-capacity failures remain failed and preserved. Local focused
+overlays exclude other test registrations only; the full CI suites do not.
 
-Windows `41353749471` passes amd64 743,352/11 skips and 386 723,622/94 skips,
-retaining all prior terminal identities/multiplicities and adding 12,097
-idle pass events per architecture with no new skips. Fixture-only follow-up
-`41356201295` also passes, with identical terminal inventories. Linux
-`41353755884` passes all four products and all four default-link damage
-profiles: GUI/HD 751,442/54 skips, server/server-HD 745,332/7 skips.
-Mac `41353758370` passes normal 749,451/43, server/server-HD 743,382/4 and
-expanded strict 610,140/8. The complete archived outputs and raw jobs for
-these closed runs contain zero build warnings, without new suppression.
+The same application source passes the current full native gates, including
+the expanded macOS strict selector with MonsterIdleSound, old prefixes, cgocheck2,
+checkptr2/highres and existing native FX/OpenAL checks. All complete CI ZIPs,
+exact executables and non-skipped job logs are retained and API-digest checked.
+Complete JSONL bytes and compiler/linker/build/raw-job logs contain **zero
+build warnings**, without new suppression. Test events include parent tests
+and subtests; these totals are not feature-completion percentages.
 
-That first Mac HD profile fails only the old compass C fixture after 90
-complete cases because its third absolute mmap hint is unavailable. All five
-Mac archives and original failure are API-verified and preserved. Controlled
-occupation reproduces the same case-90 failure. Fixture-only `87d35de`
-reserves owned Darwin pages while preserving identical low DWORDs at the
-signed-bit/4GiB boundaries and high-address control. All 40 candidate runs
-pass with original words, call counts, returns, order and guards unchanged.
-Non-Apple preprocessed fixture tokens and all application sources are
-unchanged; all 4,251 other inputs remain unchanged. The current inventory is
-4,252. The first corrected HD request `41356237718` fails before tests when
-a Go .mod download is reset by the peer; its 2,824-byte archive/raw job remain
-preserved. **Corrected full HD `41356476649` is still running.** The original
-HD failure is not counted as a passing profile.
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 751,442 | 54 | 0 |
+| linux-amd64-opennox-hd | 751,442 | 54 | 0 |
+| linux-amd64-opennox-server | 745,332 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 745,332 | 7 | 0 |
+| macos-arm64-hd | 749,451 | 43 | 0 |
+| macos-arm64-normal | 749,451 | 43 | 0 |
+| macos-arm64-server | 743,382 | 4 | 0 |
+| macos-arm64-server-hd | 743,382 | 4 | 0 |
+| macos-arm64-strict | 610,140 | 8 | 0 |
+| opennox-server-windows-386 | 723,622 | 94 | 0 |
+| opennox-server-windows-amd64 | 743,352 | 11 | 0 |
 
-The clean b3f39bd ARM64 product builds/help-exits with zero warnings. Existing
-host E2E passes Blink6 in 37.358s, first-attack16 in 43.524s, and Lightning
-natural exit in 33.151s. All 28 PNGs are preserved and four were viewed.
-Ordinary-clock SDL/Core actual Mystic trading passes in 375.021s; both stock
-purchase/sale effects have positive gain and all four buffers consumed.
-Both shop PNGs were viewed: quote33, finalgold9,933, FieldGuide removed.
-This is a funded diagnostic; the user's actual sale-silence report and
-physical speaker fidelity remain open.
+The first HD run `41353758370` fails only the existing compass fixture:
+after 90 complete cases, its third absolute mmap hint is unavailable. An
+independent controlled occupation reproduces the same case-90 failure.
+Fixture-only `87d35de` reserves its own macOS pages with identical low DWORDs
+at the signed-bit/4-GiB boundaries and ordinary high-address control. All
+original values, call counts, returns, write order and guards remain; all
+40 candidate executions pass. Non-Apple preprocessed fixture tokens and every
+application source remain unchanged. Four initial Mac profiles remain valid;
+the corrected full HD and automatic Windows follow-up complete separately.
+Their source revisions are recorded in artifact source-revision.txt.
+The corrected HD run is `41356476649`; the Windows follow-up is `41356201295`.
 
-Original assets, all Saves, 15 protected failed-Save files, original GAME.EXE,
-old products/executables, references and failed results remain preserved.
-Closed compiler archives are regenerable and removed; future local builds
-must recreate them. 141 closed text logs are transparently compressed with
-all logical bytes/hashes/paths/mode/owner/mtime/original xattrs preserved,
-recovering 791,502,848 allocated bytes. Complete CI archives and raw jobs are
-retained under `ROOT/native-ci-retention-20261102`; native, product and audio
-proofs are under the three `monster-idle-*` validation directories.
+The first corrected HD request `41356237718` fails before compilation/tests
+because its Go .mod download is reset by the peer; its complete 2,824-byte ZIP
+and raw job are retained. A new request uses the identical `87d35de` source.
+Neither that preparation failure nor the original fixture failure is relabelled.
 
-All nine class/chapter final audits, the older intermittent Windows failure's
-cause and overall 100% remain open. Chapter4+ is excluded. The next `5471B0`
-original reference is prepared privately; it has no native-port credit yet.
+Scope correction for preceding CI notes: the additional default-link damage
+profile runs only for `opennox-server` (133,384 passing events). The other
+three products skip that extra workflow step; all four full native product
+suites pass. Earlier references to four extra default-link damage profiles
+were inaccurate; archive membership and job-step conclusions establish this
+scope for both the preceding and current Linux runs.
+
+Windows retains every prior terminal identity/action/multiplicity and adds
+**12,097 idle-sound pass events per architecture**, with no new skips. The
+older intermittent Windows memory failure's cause remains open; current
+success does not relabel the older failure.
+
+The clean ARM64 product passes help and unchanged host E2E: six Blink modes
+in **37.358s**, 16 first-attack modes in **43.524s**, and Lightning's
+natural exit in **33.151s**. All 28 host PNGs are preserved and four
+representative frames were actually viewed. Ordinary-clock SDL/Core actual
+Con02a Mystic trading passes in **375.021s**: both stock purchase/sale
+clicks have positive gain and all four buffers processed. Both shop PNGs were
+viewed, showing the original 33-gold quote and 9,933 final gold with FieldGuide
+removed. This diagnostic is funded; it supplies no earned campaign or physical
+speaker certificate and does not close the user's sale-silence report.
+
+The initial port leaves all **4,246 previous inputs** unchanged and adds six,
+for **4,252**. Subsequent `87d35de` changes only the Darwin allocation adapter
+in one existing C fixture; all **4,251 other inputs** and every original
+expected value/assertion remain unchanged.
+
+The audit rehashes 298 old standalone products, 81 old full test executables,
+the preceding/current ARM64 products, all 4,649 personal files, the original
+GAME.EXE, 15 protected failed-Save files and 6,811 retained compressed capture
+JSONs. Only closed regenerable compiler archives were removed; all executable
+tools/modules, records, original assets, Saves, inputs, goldens and products
+remain. Additionally, 141 closed text logs are transparently compressed with
+all logical bytes, hashes, paths, mode/owner/mtime and original xattrs intact,
+recovering 791,502,848 allocated bytes. Two byte-identical downloads of the
+failed HD artifact share one retained hardlink; both original paths preserve
+the complete API-verified archive. Future local compilation must rebuild
+those archives. Existing loopback-sandbox runtime discovery denials remain
+in raw E2E logs.
+
+Evidence is under `ROOT/monster-idle-sound-native-entry-port`,
+`ROOT/monster-idle-native-product-e2e-v1`,
+`ROOT/monster-idle-native-product-audio-v1` and
+`ROOT/native-ci-retention-20261102`. The oracle manifest remains **3,340 code /
+691 data ranges**. All nine class/chapter final audits and overall **100%**
+remain open; chapter 4+ is excluded.
 
 ### Native monster interesting-sound entry
 

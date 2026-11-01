@@ -55,6 +55,141 @@ completion requirements.
 
 ## Current findings
 
+### Native monster attack-action pop entry
+
+Public `5471B0` now uses the native Go raw entry (`26a686b`), shared by
+the ordinary MainAI helper. It retains the entry MUD across Pop calls,
+re-reads its signed stack index and action on every iteration, accepts
+exactly actions 16-20/25-28 and ignores the Pop return. Index -1 projects the
+original timer-prefix alias; slots 0-23 retain the widened native stride.
+The ABI remains void. Original C remains under `#if 0`.
+
+Independent original execution was frozen in reference-only `6fcd9d4`
+before engine edits: **3,270 contexts per FPU profile**, including four
+raw faults, **65 executed instruction bytes** and **21 actual switch-data
+bytes**. Both profiles have identical outputs. The 96-byte inspection
+window additionally contains ten alignment bytes, which receive no
+instruction-coverage credit. Only Pop50A160 is a declared world service;
+full End/Pop and general campaign AI equivalence are not claimed.
+
+The frozen C getter dispatches through exactly typed legacy-int/native-pointer
+helpers using C11 `_Generic`, with no incompatible function-pointer cast.
+Before porting, the real public C entry SIGSEGVs only after independent
+C/Go field layouts, whole native initial records and existing typed
+sound/action getter controls pass above 4 GiB. The first preparatory layout
+check compared Go's whole object with the shared C prefix; v2 checks the
+prefix end and both Go-only EXT handles separately. That failure and its
+exact binary remain preserved; original inputs/expected outputs stay fixed.
+
+Local C/direct-Go comparison passes **6,544 events**; separate native
+production-object PopAction/Reset composition passes **453**, including
+inactive End handlers, dependent actions, all slots and index -1. The strict
+local selection passes **6,998**, with cgocheck2/checkptr2/highres. All three
+frozen consumers/getter/golden files remain byte-identical. Local focused
+overlays exclude unrelated test registrations only; the full CI suites do
+not. The full strict selector adds the new family and the existing
+MonsterMainPopAttackActions5471B0 regression, retaining all old prefixes.
+
+All eleven current native configurations pass. All **14 complete CI
+archives**, exact products/test executables and raw non-skipped job logs
+are retained with API-digest verification. Every complete text/JSONL byte
+is warning-scanned and its ZIP CRC checked: compiler, linker, build and
+raw-job warnings are **zero**, without new suppression or skips. Event
+counts include parents/subtests and are not completion percentages.
+
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 758,440 | 54 | 0 |
+| linux-amd64-opennox-hd | 758,440 | 54 | 0 |
+| linux-amd64-opennox-server | 752,330 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 752,330 | 7 | 0 |
+| macos-arm64-hd | 756,449 | 43 | 0 |
+| macos-arm64-normal | 756,449 | 43 | 0 |
+| macos-arm64-server | 750,380 | 4 | 0 |
+| macos-arm64-server-hd | 750,380 | 4 | 0 |
+| macos-arm64-strict | 617,139 | 8 | 0 |
+| opennox-server-windows-386 | 730,620 | 94 | 0 |
+| opennox-server-windows-amd64 | 750,350 | 11 | 0 |
+
+The first Mac matrix `41360055732` passes HD/server/server-HD/strict;
+normal fails only the existing ally-health lookup fixture, at case 3267.
+Its second absolute mmap hint relocates to table 0xa0003ff00, failing the
+address assertion before the second mapping's data cases. Independent,
+non-overwriting occupation of the same second hint reproduces this in all
+four old fixture modes. Fixture-only `6f84ed5` reserves its own Darwin
+pages, preserving exact low DWORDs 7ffc0000/fffc0000/40000000, signed-bit and
+4 GiB table crossings, every original data/lifecycle/padding/guard assertion
+and **9,801 cases per mode**. All **80** candidate executions pass.
+Non-Apple fixture-branch preprocessing tokens remain identical after
+normalizing diagnostic line numbers; all application source is unchanged.
+
+The corrected full normal run is `41362591625`, with automatic Windows
+fixture follow-up `41362469227`. The first retry `41362510646` fails during
+checkout because a short SHA is interpreted as a missing branch/tag; its
+raw job/API records are retained, no tests run and no artifact exists.
+The corrected request uses the full immutable SHA. Neither preparation
+failure nor the first full fixture failure is relabelled. An unsupported
+cross-SDK preprocessing preparation is also retained separately.
+
+Linux run `41360029374` passes all four complete product suites. Its extra
+default-link damage profile runs only for the server, with **133,384 pass
+events**; the other three extra steps are skipped. Windows's initial
+`41360014796` retains every prior terminal identity/action/multiplicity
+and adds **6,998 pass events per architecture**, with no new skips. The
+fixture-only follow-up retains the same complete terminal inventories.
+Current success does not resolve the older intermittent Windows memory
+failure's cause.
+
+The clean ARM64 product passes help and unchanged host E2E: six Blink
+modes in **37.199s**, sixteen first-attack modes in **43.462s**,
+and Lightning's natural exit in **32.766s**. All 28 host captures
+are preserved; four representative frames were actually viewed. The first
+product build exits 1 with empty stdout/stderr and no product; its cause
+remains unproved. Its failed command/records are retained. The second build
+uses the same source/flags and passes; the temporary .git pointer is restored.
+
+Ordinary-clock actual SDL/Core Con02a Mystic purchase/sale passes in
+**375.103s**. Both stock effects have gain 0.6771653 and all four buffers
+processed. Both shop captures were viewed: quote 33, final gold 9933 and
+FieldGuide removed. This funded diagnostic does not establish earned
+campaign progression, physical-speaker fidelity or resolution of the
+user's sale-silence report.
+
+The port adds five inputs to the unchanged 4,252, for **4,257**. The later
+fixture-only change preserves all **4,256 other inputs** and every original
+expected value. Preservation rehashes all 298 old standalone products,
+81 old full test executables, previous/current ARM64 products, 4,649 personal
+files, original GAME.EXE, 15 protected failed-Save files, 6,811 compressed
+capture JSONs and the 1,879 newly compressed logs. Cleanup removes only
+1,154 closed regenerable compiler archives, recovering 1,235,685,376 allocated
+bytes. Transparent compression of 1,879 closed text logs recovers 555,671,552
+allocated bytes while preserving logical bytes/hashes/paths, mode/owner/mtime,
+original xattrs and failure states. Assets, Saves, inputs, goldens, records,
+executable tools/modules and every product remain. Future local compilation
+must recreate the compiler archives. Runtime loopback discovery denials remain
+in the original E2E logs and are separate from build warnings.
+
+Evidence: `ROOT/monster-pop-attack-actions-native-entry-port`,
+`ROOT/monster-pop-attacks-native-product-e2e-v1`,
+`ROOT/monster-pop-attacks-native-product-audio-v1` and
+`ROOT/native-ci-retention-20261102`. All **4,034** oracle manifest ranges
+(**3,341 code / 693 data**) are independently rechecked against original
+GAME.EXE bytes. All nine final class/chapter 1-3 audits, user sale-silence,
+and overall **100%** remain open; chapter 4+ is excluded.
+
+Next candidate `547C50` remains unported. Its independently frozen inputs
+now execute **2,361 root contexts plus four ancillary RNG contexts per FPU
+profile**, including three raw faults. All **550 actual instruction bytes**
+execute (337 root plus actual RNG/attack-pop children); 15 alignment bytes
+receive no instruction credit. The profiles differ in **1,569 root contexts**,
+so the results remain separate. Whole original heap/code/data/stack,
+nonvolatile registers and FPU guards pass. The root reuses exactly its first
+by-value stack argument for distance; the observer permits only the original
+stores at 547CAB/547CBC, preserving every other caller byte. Original producer
+preparation failures remain preserved. Native consumers, actual C-before
+qualification and engine changes are pending; this earns no port credit.
+Evidence is under `ROOT/monster-check-dodgeables-native-entry-port`.
+
 ### Native monster idle-sound entry
 
 Public `5469B0` now uses the native Go raw entry (`b3f39bd`); its ordinary

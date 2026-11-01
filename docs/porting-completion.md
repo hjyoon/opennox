@@ -55,6 +55,47 @@ completion requirements.
 
 ## Current findings
 
+### Native tracked-object refresh entry
+
+Public `519710` now shares its native Go core with the ordinary refresh
+check. The previous C body is retained under `#if 0`. Valid native getter
+controls pass before its actual C entry reproduces SIGSEGV: native update
+last/Player fields are at offsets 328/336, while the old body narrows its
+pointer and reads PE32 offsets 268/276. The ABI remains `int(void*)`.
+
+All **80 unchanged original bytes** execute in **1,975 contexts / 1,999
+calls** per FPU profile, with identical observations. Count service `417270`
+is a declared child boundary. Two separate original nil faults remain faults
+through both C-to-Go and direct Go. The shared core retains the byte index
+cached before Count, post-Count last reload, last-before-frame read order,
+zero/greater-than-60 early returns without a frame read, signed quotient and
+unsigned elapsed comparison. The ordinary adapter retains its nil policy.
+
+The focused union passes **4,001** events: **3,957** raw original comparison
+events, **38** ordinary production/nil-policy events, one frame-access-order
+check and five existing minimap controls. Nine production profiles exercise
+actual circular minimap nodes through C, Go and the ordinary adapter. All
+256 index bytes are separately checked as forwarding under the controlled
+child contract; this is not a claim that all are production player slots.
+Full native update/player allocations and adjacent guards are compared.
+The original input/output and comparators were frozen before engine edits.
+
+Normal passes **623,773 / 43 skips**, retaining every previous terminal
+identity and multiplicity and adding **3,996** passes. Strict highres/native
+cgocheck2/checkptr2 passes **484,430 / 8 skips** in four packages, retaining
+every prior terminal identity and multiplicity and adding 3,996 new events
+and five existing minimap controls. Both profiles have zero compiler/linker
+diagnostics. All **4,181** previous test/fixture inputs remain
+unchanged; the current inventory has **4,186**. The oracle verifies **3,331
+code / 691 data ranges**, preserving every prior record and order; all 21
+verifier tests pass. Seventy-five completed, cold macOS compiler archives
+were removed after exact path/header/metadata and open-file checks:
+2,545,895,828 logical bytes, without deleting products, Saves or evidence.
+ROOT/tracked-object-refresh-native-entry-port retains the original execution,
+native C failure and current validation. Current product/native CI gates
+remain pending; this entry does not close the Windows memory or sale-audio
+reports, nine final campaign audits or overall porting.
+
 ### Native object-update dispatcher
 
 Public `519410` now shares a native Go visibility/update core with the

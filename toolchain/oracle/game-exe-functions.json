@@ -16191,6 +16191,13 @@
       "purpose": "Complete590-byte object visibility/update dispatcher; unchanged-original5918contexts/5930calls perFPU and4separatefaults. NativecachedUpdate/reloadedPlayer, byte/publication separation, callbackmutations, senderprecedence and livepostcallmasks. All13child bodies remain declared service boundaries."
     },
     {
+      "name": "tracked_object_refresh_due_519710",
+      "address": "0x00519710",
+      "size": 80,
+      "sha256": "f7168e841a14f221378b33686bc1b33cb4cfe364c212a45c26429991b0eb3bdc",
+      "purpose": "Whole original tracked-refresh root: cached byte index to declared417270 count boundary, zero and signed count>60 early returns, post-child last reload before direct frame global, signed60/count and unsigned elapsed comparison. Original execution1975contexts1999calls in each of two FPU profiles; no child-body credit."
+    },
+    {
       "name": "sub_51A1F0",
       "address": "0x0051A1F0",
       "size": 755,

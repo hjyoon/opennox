@@ -398,21 +398,18 @@ func playerTrackedObjectCountNative519710(pl *server.Player) int {
 }
 
 func netTrackedObjectRefreshDueNative519710(frame, last uint32, tracked int) bool {
-	if tracked == 0 {
-		return false
-	}
-	return tracked > 60 || frame-last > uint32(60/tracked)
+	return server.TrackedRefreshDue519710(frame, last, tracked)
 }
 
 func (s *Server) netTrackedObjectRefreshDueNative519710(update *server.PlayerUpdateData) bool {
-	if update == nil {
+	if update == nil || update.Player == nil {
 		return false
 	}
-	return netTrackedObjectRefreshDueNative519710(
-		s.Frame(),
-		update.Field67,
-		playerTrackedObjectCountNative519710(update.Player),
-	)
+	player := update.Player
+	return server.TrackedRefreshNative519710(update, server.TrackedRefreshRuntime519710{
+		Count: func(int32) int32 { return int32(playerTrackedObjectCountNative519710(player)) },
+		Frame: s.Frame,
+	}) != 0
 }
 
 func (s *Server) netFriendAddRemoveNative4D97A0(ind ntype.PlayerInd, obj *server.Object, add bool) {

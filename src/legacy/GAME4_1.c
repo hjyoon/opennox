@@ -4556,6 +4556,7 @@ char nox_xxx_netSendObjects2Plr_519410(nox_object_t* a1p, nox_object_t* a2p) {
 #endif
 
 //----- (00519710) --------------------------------------------------------
+#if 0 // PE32 reference; the public entry uses the shared native Go core.
 int sub_519710(void* a1) {
 	int result; // eax
 
@@ -4565,6 +4566,7 @@ int sub_519710(void* a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (0051A500) --------------------------------------------------------
 extern int nox_xxx_questGeneratorType_native_51A500(nox_object_t* object);

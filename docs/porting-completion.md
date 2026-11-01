@@ -89,8 +89,8 @@ Guard/Escort regressions pass **5,732**. The first new composition fixture
 omitted established Push-reset writes from its whole-record expectation;
 that failed attempt remains retained and the sealed original consumer is
 unchanged. Earlier incomplete local builds and an overlay missing the
-unchanged retreat allocation helper remain failures. Fresh products and full
-gates are pending.
+unchanged retreat allocation helper remain failures. Current product and
+full-gate results are recorded below.
 Detailed evidence remains under
 `ROOT/monster-react-sound-damager-native-entry-port`; reference scope is in
 `server/testdata/monster_reactive_original_545da0.md`.
@@ -102,8 +102,9 @@ The native 386 compiler independently reproduces the constant-overflows-int
 error. Conversion now precedes addition; the same 128 sentinel words are
 retained on both widths, and the 386 compile probe passes. Runtime engine,
 sealed original consumer and goldens are unchanged by this fixture correction.
-The failed gate has no 386 legacy runtime result and remains failed; fresh
-Windows qualification is pending.
+The failed gate has no 386 legacy runtime result and remains failed; the
+corrected width-qualified results and later native runtime failure are
+recorded below.
 
 ### Native monster ROAM waypoint entries
 
@@ -287,11 +288,11 @@ UTF16 length implementation; compiling the complete C source locally
 confirms neither scan branches to host `wcslen`.
 
 Intermittent exact-address failures affect four standalone UI fixtures.
-Their Darwin allocator now uses a Mach fixed reservation without overwrite:
+The initial Darwin correction uses a Mach fixed reservation without overwrite:
 occupied ranges fail instead of replacing another mapping. Four hundred
 local reservations, collision refusals, complete canary checks and zeroed
-remaps pass. All original required addresses, oracle values, loops and
-assertions remain. Only the four platform allocation adapters change;
+remaps pass. That attempt retains original required addresses, oracle values,
+loops and assertions. Only the four platform allocation adapters change;
 the other **4,229** prior input files remain byte-identical. Expected
 values and all selected Go tests remain unchanged. Fresh full gates for
 these concat/allocation corrections are pending.
@@ -319,8 +320,26 @@ constants move together; no address assertion is dropped. Observed early
 VM reservations conflict with the old synthetic addresses. The failed fixed
 constructor and first incomplete boundary translation remain retained.
 The verified helper is now in the four actual C fixtures; the duplicate
-candidate header is removed. The corrected ordinary server full gate remains
-pending. All application source stays identical to `9cfc758`.
+candidate header is removed. Corrected ordinary server full gate
+`41341124957` at `778944f` passes **720,162 / 4 skips** on macOS ARM64.
+The complete artifact and raw job are retained with API SHA256 verification.
+Combined with the four
+other full profiles above, every macOS profile has qualified the byte-identical
+application source at `9cfc758`. All application source stays identical to that
+revision; placement adapters, workflows and diagnostics are tracked separately.
+
+The post-fixture Windows gate `41341072480` passes 386 but fails amd64,
+despite unchanged application source and identity address macros on Windows.
+The failed amd64 stream has **509,487 passes / 11 skips**, no failed test
+comparisons, and three interrupted package processes. The root package reports
+an unknown caller PC during a recovered nil-input fault; legacy reports an
+allocation-count runtime fatal; server exits during its existing drop-eligibility
+nil-item fault-order case. Build failures and warnings are absent. Both complete
+artifacts, products, all six exact test PEs and raw jobs are locally retained
+with API SHA256 checks; this run remains failed. The earlier ordinary pass at
+`9cfc758` does not close this new failure. An optional diagnostic now replays all
+three exact failed amd64 executables, focused and complete, with ordinary and
+GC-stress observations. It changes no engine, runtime, existing test or oracle.
 
 That native ARM64 product builds/runs help with zero warnings; six Blink
 modes, sixteen natural first-attack modes and Lightning exit pass. Four game
@@ -329,6 +348,17 @@ SDL/Core ordinary-clock purchase/sale replay passes in **374.057s**: two
 positive-gain effects each process all four buffers. Both sale images are
 preserved and actually viewed (quote33, final gold9933). This does not close
 the actual user's sale-silence report or establish speaker fidelity.
+
+Preservation checks retain all 298 previously inventoried standalone products,
+81 previous complete test executables, 4,649 personal asset files, 15 protected
+failed Save files, the original GAME.EXE and the frozen reactive consumer and
+goldens byte-for-byte. Four platform fixture adapters are the only changed
+files among 4,233 prior inputs; the other 4,229 are identical. Current inventory
+is 4,239. Additional products and exact executables remain in SHA-verified CI
+archives. Closed small log/diagnostic-output compression preserves logical
+bytes, paths, metadata and failure states; obsolete compiler archives are
+removed only after their build/test processes have closed. Original assets,
+Saves, inputs, goldens and executable evidence are excluded from that cleanup.
 
 Overall 100%, all nine final chapter1-3 audits, natural bot activation and
 the actual user's sale-silence report remain open; chapter4+ is excluded.

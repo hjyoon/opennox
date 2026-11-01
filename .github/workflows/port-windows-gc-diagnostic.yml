@@ -13,7 +13,7 @@ on:
         options: [checks, report, checkptr, gccheckmark, race]
         default: checks
       retained_artifact_id:
-        description: Optional retained 386 artifact; replay exact executable and pointer snapshot controls
+        description: Optional retained native artifact; replay exact executables without rebuilding
         type: string
         default: ''
       macos_native_gate:
@@ -172,7 +172,7 @@ jobs:
 
   retained:
     if: ${{ !inputs.macos_native_gate && !inputs.macos_fixture_address_probe && inputs.retained_artifact_id != '' }}
-    name: Windows/386 retained executable and snapshot diagnostic
+    name: Windows retained executable diagnostic
     runs-on: windows-2025
     timeout-minutes: 30
     permissions:
@@ -182,9 +182,16 @@ jobs:
       - uses: actions/checkout@v7.0.1
         with:
           ref: ${{ inputs.source_revision }}
+      - name: Select the pinned retained-executable toolchain
+        id: retained_go
+        shell: pwsh
+        run: |
+          $pin = (Get-Content toolchain/go-version.txt -Raw).Trim()
+          if ($pin -notmatch '^go\d+\.\d+\.\d+$') { throw 'Invalid Go toolchain pin' }
+          "version=$($pin.Substring(2))" >> $env:GITHUB_OUTPUT
       - uses: actions/setup-go@v7
         with:
-          go-version-file: src/go.mod
+          go-version: ${{ steps.retained_go.outputs.version }}
           cache: false
       - name: Replay retained executable and compare pointer snapshot lifetimes
         shell: python
@@ -216,7 +223,14 @@ jobs:
           with request(api + '/actions/artifacts/' + artifact_id) as response:
               artifact = json.load(response)
           assert artifact['workflow_run']['head_sha'] == source
-          assert artifact['name'] == 'opennox-server-windows-386' and not artifact['expired']
+          assert not artifact['expired']
+          if artifact['name'] == 'opennox-server-windows-amd64':
+              runner = report/'replay-windows-retained-amd64.py'
+              runner.write_bytes(subprocess.check_output([
+                  'git', 'show', '${{ github.sha }}:toolchain/replay-windows-retained-amd64.py']))
+              import sys
+              raise SystemExit(subprocess.call([sys.executable, str(runner)]))
+          assert artifact['name'] == 'opennox-server-windows-386'
           (report/'original-artifact.json').write_text(json.dumps(artifact, indent=2))
           archive = report/'retained.zip'
           with request(api + '/actions/artifacts/' + artifact_id + '/zip') as response, archive.open('xb') as output:
@@ -339,6 +353,8 @@ jobs:
             build/windows-retained-diagnostic/
             !build/windows-retained-diagnostic/retained.zip
             !build/windows-retained-diagnostic/server.test.exe
+            !build/windows-retained-diagnostic/legacy.test.exe
+            !build/windows-retained-diagnostic/v1.test.exe
           if-no-files-found: error
           retention-days: 7
 

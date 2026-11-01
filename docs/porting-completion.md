@@ -88,13 +88,50 @@ and five existing minimap controls. Both profiles have zero compiler/linker
 diagnostics. All **4,181** previous test/fixture inputs remain
 unchanged; the current inventory has **4,186**. The oracle verifies **3,331
 code / 691 data ranges**, preserving every prior record and order; all 21
-verifier tests pass. Seventy-five completed, cold macOS compiler archives
-were removed after exact path/header/metadata and open-file checks:
-2,545,895,828 logical bytes, without deleting products, Saves or evidence.
-ROOT/tracked-object-refresh-native-entry-port retains the original execution,
-native C failure and current validation. Current product/native CI gates
-remain pending; this entry does not close the Windows memory or sale-audio
-reports, nine final campaign audits or overall porting.
+verifier tests pass.
+
+At clean runtime `fc7dadd`, all four ARM64 products build and pass help with
+zero warnings. The default product is 66,059,266 bytes, SHA-256
+`7c7da4dff81a1b67d9f16b2714091825928d82d3fcce00bd4d1f10ca1605e524`.
+Six Blink, sixteen first-attack and three ray profiles pass. The original
+Bookcase1974 run passes in 39.063 seconds; independent menu Load/Save passes
+in 17.589 seconds with HP20/MP43, poison0, endpoint (1591,4734), plate off,
+mover on and original Urchin HP0/DEAD. All four final captures were inspected;
+both Save images visibly show in-world completion. The first reload attempt
+stopped before game execution because the new verification directory lacked
+its copied template. That failure is retained; the identical prior template
+and same command then pass, with all assertions, source and Save input intact.
+
+Actual SDL/Core ordinary-time Mystic purchase/sale passes in 374.786 seconds.
+Both stock effects have positive gain and four fully processed buffers each;
+the two inspected captures show a 33-gold quote and final 9,933 gold with the
+guide removed. This diagnostic uses supplied funds and does not establish
+earned campaign progression or resolve the user sale-silence report.
+
+Windows run `41254847850` passes all three packages in both architectures:
+amd64 **617,674 / 11 skips**, 386 **598,025 / 93 skips**. Both retain every
+previous successful terminal identity and multiplicity, adding **3,996**
+passes each; compiler, linker, test-build and CI warning counts are zero.
+The six exact test executables retain GC-root symbols. Historical intermittent
+memory failures remain recorded and their cause remains unestablished.
+
+Linux run `41254857399` passes all four products with zero compiler, linker
+or CI warnings: GUI variants each **625,764 / 54 skips** in 61 packages;
+server variants each **619,654 / 7 skips** in 58 packages. Every previous
+terminal identity and multiplicity is retained, with **3,996** new passes
+per variant. Default-link damage retains **133,384** passes.
+
+ROOT/tracked-object-refresh-native-entry-port records the current completed
+gates and preservation audit: **178 standalone engine products** (81 ARM64,
+97 other native), **63 audio captures**, 21 full test executables checked
+separately, all **4,649 personal files / 503,207,370 bytes**, the original
+executable, all **4,186 current inputs** and 15 protected failed-Save files.
+All failures remain preserved. After local workers completed, exact
+path/header/metadata and open-file checks allowed removal of 158 cold macOS
+compiler archives totaling **4,460,446,508 logical bytes**, without deleting
+products, Saves, assets, inputs or evidence. This entry does not close the
+historical Windows memory or sale-audio reports, nine final campaign audits
+or overall porting.
 
 ### Native object-update dispatcher
 

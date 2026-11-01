@@ -366,6 +366,9 @@ char nox_xxx_mobActionRoam_5457E0(int* a1) {
 #endif
 
 //----- (00545B00) --------------------------------------------------------
+#if 0
+// Original public waypoint entries retained for provenance. Native-width
+// implementations are in server/monster_roam_waypoint_native_545b00.go.
 void sub_545B00(int a1, int a2) {
 	int v3;       // ecx
 	uint32_t* v4; // edx
@@ -518,6 +521,7 @@ LABEL_27:
 	return *(uint32_t*)(a1 + 4 * v11 + 300);
 }
 // 545C60: using guessed type int var_80[32];
+#endif
 
 //----- (00545DA0) --------------------------------------------------------
 int sub_545DA0(int a1) {
@@ -1250,7 +1254,10 @@ int sub_547DB0(int a1, float2* a2) {
 }
 
 //----- (00547EE0) --------------------------------------------------------
+#if 0
+// Native public validity entry: monster_roam_waypoint_native_545b00_export.go.
 int sub_547EE0(int a1, unsigned char a2) { return a1 && *(uint8_t*)(a1 + 480) & 1 && sub_579EE0(a1, a2); }
+#endif
 
 //----- (00547F10) --------------------------------------------------------
 // Oracle provenance only: the waypoint path status and breadth-first graph

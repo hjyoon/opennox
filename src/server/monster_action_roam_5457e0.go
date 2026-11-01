@@ -27,35 +27,15 @@ type monsterActionRoamHooks5457E0 struct {
 }
 
 func monsterWaypointValid547EE0(waypoint *Waypoint, mask byte) bool {
-	return waypoint != nil && waypoint.IsEnabled() && waypoint.HasFlag2Mask(mask)
+	return waypoint.RoamValid547EE0(mask)
 }
 
 func monsterRoamRecordWaypoint545B00(update *MonsterUpdateData, waypoint *Waypoint) {
-	update.Field91++
-	if update.Field91 >= uint32(len(update.Waypoints)) {
-		update.Field91 = 0
-	}
-	index := int(update.Field91)
-	update.Waypoints[index] = waypoint
-	for i := range update.Waypoints {
-		if i != index && update.Waypoints[i] == waypoint {
-			update.Waypoints[i] = nil
-		}
-	}
+	update.RoamRecordWaypoint545B00(waypoint)
 }
 
 func monsterRoamPreviousWaypoint545B60(update *MonsterUpdateData, mask byte) *Waypoint {
-	for distance := 1; distance < len(update.Waypoints); distance++ {
-		index := int(update.Field91) - distance
-		if index < 0 {
-			index += len(update.Waypoints)
-		}
-		waypoint := update.Waypoints[index]
-		if monsterWaypointValid547EE0(waypoint, mask) {
-			return waypoint
-		}
-	}
-	return nil
+	return update.RoamPreviousWaypoint545B60(mask)
 }
 
 func monsterRoamNextWaypoint545C60(update *MonsterUpdateData, current *Waypoint, mask byte, random func(int, int) int) *Waypoint {
@@ -66,40 +46,7 @@ func monsterRoamNextWaypoint545C60(update *MonsterUpdateData, current *Waypoint,
 	if count > len(current.Points) {
 		count = len(current.Points)
 	}
-	choices := make([]*Waypoint, 0, count)
-	for i := 0; i < count; i++ {
-		candidate := current.Points[i].Waypoint
-		if !monsterWaypointValid547EE0(candidate, mask) {
-			continue
-		}
-		seen := false
-		for _, waypoint := range update.Waypoints {
-			if candidate == waypoint {
-				seen = true
-				break
-			}
-		}
-		if !seen {
-			choices = append(choices, candidate)
-		}
-	}
-	if len(choices) != 0 {
-		return choices[random(0, len(choices)-1)]
-	}
-
-	for distance := 0; distance < len(update.Waypoints); distance++ {
-		index := (int(update.Field91) + distance + 1) % len(update.Waypoints)
-		candidate := update.Waypoints[index]
-		if !monsterWaypointValid547EE0(candidate, mask) {
-			continue
-		}
-		for i := 0; i < count; i++ {
-			if current.Points[i].Waypoint == candidate {
-				return candidate
-			}
-		}
-	}
-	return nil
+	return monsterRoamNextWaypointCount545C60(update, current, mask, random, count)
 }
 
 func monsterRoamDeadEnd545BB0(unit *Object, current *Waypoint, mask byte, random func(int, int) int, pop func() int) bool {
@@ -108,14 +55,10 @@ func monsterRoamDeadEnd545BB0(unit *Object, current *Waypoint, mask byte, random
 	if head == nil {
 		return false
 	}
-	update.Field2 = 0
-	if current != nil && current.PointsCnt != 0 {
-		next := monsterRoamNextWaypoint545C60(update, current, mask, random)
-		head.Args[0] = uintptr(unsafe.Pointer(next))
-		if next != nil {
-			monsterRoamRecordWaypoint545B00(update, next)
-			return true
-		}
+	if current == nil {
+		update.Field2 = 0
+	} else if monsterRoamDeadEndWaypoint545BB0(update, head, current, mask, random) {
+		return true
 	}
 	pop()
 	return false

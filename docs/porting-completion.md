@@ -55,6 +55,64 @@ completion requirements.
 
 ## Current findings
 
+### Native monster ROAM waypoint entries
+
+Public Record `545B00`, Previous `545B60`, Valid `547EE0`, Next `545C60`
+and DeadEnd `545BB0` now use typed native Go records. Pointer arguments and
+pointer returns retain their full native width and one-word PE32 ABI. The
+production ROAM helpers share the same history/selection cores. Existing
+action admission guards remain outside the raw entries. Raw DeadEnd loads
+UpdateData directly, preserving the original absence of a class guard.
+Original C bodies remain under `#if 0`.
+
+Before engine edits, five actual public C entries SIGSEGV after complete
+valid above4GiB native MUD/Waypoint/Object controls pass. Unchanged original
+execution covers **693 root / 90 child code bytes**, all instructions,
+**9,220 contexts and seven faults per FPU profile**, identical. Actual
+original RNG executes; its 546 calls retain bounds/results/final indices.
+Native ordinary indices 0 and 4095 also execute production prand; original
+one-past index4096 remains an explicitly hooked diagnostic, not native
+Rand.Reset coverage. Name/debug/pop are declared original world services.
+
+The native consumer and original results are sealed before implementation.
+Actual public C and Go pass **18,461 events**, comparing full native records,
+padding, neighbors, pointers, ordered services, RNG and nil mutation prefixes.
+Signed 32-bit history arithmetic, UINT32_MAX wrap, duplicate choices, counts 0..32
+and all 24 action slots are covered. Malformed out-of-domain array accesses
+receive no equivalence credit. Both original ROAM callers immediately discard
+DeadEnd's reused by-value argument slots; other caller bytes are unchanged.
+
+Normal passes **720,534 / 43 skips**
+in 164.988s; actual highres/cgocheck2/checkptr2 passes
+**581,209 / 8 skips**
+in 139.846s, with the previous native audio test
+environment restored. Every prior terminal identity and multiplicity remains.
+Both profiles emit zero warnings without new suppression or exemptions.
+All 4,229 old inputs remain unchanged; current inventory **4,233**. The
+unchanged 3,339 code/691 data manifest and all 21 verifier tests pass.
+
+The first native attempt's extra class-gate panic and first normal/strict
+link-space failures remain retained. Their expected values are unchanged.
+The incomplete first strict attempt also lacks the prior optional audio
+flags and receives no passing-profile credit.
+
+Eight closed text logs recover 986,267,648 allocated bytes without changing
+logical bytes/SHA/path/mode/owner/mtime or original success/failure states.
+A further 18 closed small logs recover 210,944,000
+allocated bytes with the same guarantees. A byte-identical independent APFS
+clone replaces only the duplicate 540,403,618-byte failed text copy, retaining
+its metadata/xattrs and missing-compression flag; original failure status and
+original source inode/bytes/metadata remain unchanged. Earlier failed
+preparation/control copies are preserved. Closed obsolete/normal/strict
+compiler archive cleanup is journaled; products, executables, assets, Saves,
+inputs, goldens and failed results remain preserved.
+
+Current-source products, gameplay, SDL/Core merchant and native Linux/Windows
+gates are pending. Overall 100%, all nine final chapter1-3 audits, natural bot
+activation and the actual user's sale-silence report remain open; chapter4+
+is excluded. Exact proofs are retained under
+`ROOT/monster-roam-waypoint-native-entry-port`.
+
 ### Native player-bot creation, update and respawn entries
 
 Public `4FA700`, `4FAB20` and `4FAC70` now use typed native Go records,
@@ -137,14 +195,12 @@ Overall 100% and all nine final chapter1-3 audits remain open;
 chapter4+ is excluded. Exact proofs are retained under
 `ROOT/player-bot-create-native-entry-port`.
 
-Read-only preparation for the next waypoint cluster executes all five
-original roots and their actual validity/RNG children: **783 unchanged code
-bytes, 9,220 contexts and seven faults per FPU profile**, with identical
-outputs and every instruction visited. The previous 7,192 contexts and two
-faults remain unchanged. Inputs and original results are sealed under
-`ROOT/monster-roam-waypoint-native-entry-port`; this supplies no new native
-entry completion credit. A native consumer and actual C-before replay remain
-required before changing the public pointer ABI.
+Preparation before the waypoint port above executes all five original
+roots and actual validity/RNG children: **783 unchanged code bytes, 9,220
+contexts and seven faults per FPU profile**, identical with every instruction
+visited. The previous 7,192 contexts and two faults remain unchanged. Inputs,
+original results, the subsequent pre-edit native consumer and actual C-before
+replays are sealed under `ROOT/monster-roam-waypoint-native-entry-port`.
 
 ### Native player-bot action state entry
 

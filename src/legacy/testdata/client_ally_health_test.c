@@ -7,6 +7,9 @@
 #endif
 #include "../defs.h"
 #include "../GAME2_3.h"
+#if defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+#include "native_pages.h"
+#endif
 
 static uint8_t* table;
 static unsigned cases;
@@ -123,6 +126,9 @@ static void* map_near(uintptr_t address) {
 #endif
 #ifdef _WIN32
 	return VirtualAlloc((void*)address,0x80000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+#elif defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+	/* main owns the full reservation; commit only this table's pages. */
+	return native_fixture_commit((void*)address,0x80000) ? NULL : (void*)address;
 #else
 	void* ptr=mmap((void*)address,0x80000,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANON,-1,0);
 	return ptr==MAP_FAILED ? NULL : ptr;
@@ -131,26 +137,55 @@ static void* map_near(uintptr_t address) {
 static void release_map(void* ptr) {
 #ifdef _WIN32
 	VirtualFree(ptr,0,MEM_RELEASE);
+#elif defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+	(void)ptr; /* Release the complete owned reservation after all cases. */
 #else
 	munmap(ptr,0x80000);
 #endif
 }
 int main(int argc, char** argv) {
 	CHECK(argc==2);
+#if defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+	/* ASLR may occupy an absolute hint. Own the range while preserving the
+	 * original low DWORDs and both signed-bit and 4-GiB table crossings. */
+	size_t reserve_size=(size_t)(UINT64_C(8)<<30)+0x100000;
+	void* reservation=native_fixture_reserve(reserve_size); CHECK(reservation);
+	uintptr_t first=(uintptr_t)reservation+0x80000;
+	uintptr_t sign=(first+(UINT64_C(1)<<31)-1)&~((UINT64_C(1)<<31)-1);
+	if (!(sign&(UINT64_C(1)<<31))) sign+=UINT64_C(1)<<31;
+	uintptr_t wrap=(first+(UINT64_C(1)<<32)-1)&~((UINT64_C(1)<<32)-1);
+	uintptr_t bases[]={sign-0x40000,wrap-0x40000,wrap+0x40000000};
+	for (unsigned i=0;i<3;i++) {
+		CHECK(bases[i]>UINT32_MAX && bases[i]>=(uintptr_t)reservation);
+		CHECK(bases[i]+0x80000<=(uintptr_t)reservation+reserve_size);
+	}
+	CHECK((uint32_t)bases[0]==UINT32_C(0x7ffc0000));
+	CHECK((uint32_t)bases[1]==UINT32_C(0xfffc0000));
+	CHECK((uint32_t)bases[2]==UINT32_C(0x40000000));
+#else
 	const uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
+#endif
 	for (unsigned map=0;map<3;map++) {
 		// A hint only: do not overwrite any existing mapping with MAP_FIXED.
 		void* ptr=map_near(bases[map]); CHECK(ptr);
 		table=(uint8_t*)ptr+(map<2 ? 0x40000-256 : 64);
 		if (sizeof(void*)>4) {
 			CHECK((uintptr_t)ptr==bases[map] && (uintptr_t)table>UINT32_MAX);
+#if defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+			if (map==0) CHECK((uintptr_t)table<sign && (uintptr_t)(table+512)>sign);
+			if (map==1) CHECK((uintptr_t)table<wrap && (uintptr_t)(table+512)>wrap);
+#else
 			if (map==0) CHECK((uintptr_t)table<0x380000000ull && (uintptr_t)(table+512)>0x380000000ull);
 			if (map==1) CHECK((uintptr_t)table<0x400000000ull && (uintptr_t)(table+512)>0x400000000ull);
+#endif
 		}
 		for (int hole=0;hole<=32;hole++) for (int status=0;status<3;status++) for (int target=0;target<=32;target++)
 			if (run_case(argv[1],hole,status,target)) return 1;
 		release_map(ptr);
 	}
+#if defined(__APPLE__) && UINTPTR_MAX > UINT32_MAX
+	CHECK(native_fixture_release(reservation,reserve_size)==0);
+#endif
 	printf("%s: %u complete native ally-health cases; 32 slots, full IDs, lifecycle, padding and guards checked\n",argv[1],cases);
 	return 0;
 }

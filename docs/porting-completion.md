@@ -101,11 +101,57 @@ or strict exemption was added. Exact raw JSON streams remain losslessly
 compressed and digest-verified under
 `ROOT/simple-phantom-senders-native-entry-port`.
 
-Current ARM64 products, campaign/menuLoadSave, actual SDL/Core audio and native
-Windows/Linux qualification are pending for this runtime. Overall porting and
-nine final class/chapter1-3 audits remain incomplete; chapter4+ is excluded.
-The user sale-silence report and historical intermittent Windows memory cause
-remain open.
+Runtime `f58d444` passes all four ARM64 product builds and help with zero
+warnings. The current product passes six Blink conditions (37.325 seconds),
+sixteen first-attack conditions (45.776 seconds) and three Chain Lightning
+conditions (32.909 seconds). Original Bookcase1974 movement/combat passes
+in 38.834 seconds; menu Load/Save passes in 17.809 seconds
+with HP20, MP43 and poison0. The successful first Save was frozen before
+the first reload. Four campaign images were actually viewed, including both
+in-world Save-complete messages.
+
+Actual SDL/Core Mystic purchase and sale pass in 374.912 seconds. Two stock
+`otrapclk` effects have positive gain and four buffers queued and processed
+each. Both trade images were viewed: original 33-gold quote and 9,933 final
+gold with the guide removed. This bounded result does not resolve the user's
+reported silence or establish physical speaker output.
+
+Windows run `41268106085` passes amd64 **639,867 / 11 skips**
+and 386 **620,218 / 93 skips** in all three packages each.
+Linux run `41268135360` passes all four variants: both GUI products record
+**647,957 / 54 skips**, and both server products record
+**641,847 / 7 skips**. Default-link damage retains **133,384** passes.
+Every native inventory preserves all prior terminal identities and
+multiplicities and adds 13,819 passes. Complete job/build/test records show
+zero compiler, linker and CI dependency warnings. Six exact Windows test
+executables retain their GC-root symbols; passing runs do not establish the
+historical intermittent memory-failure cause.
+
+Final preservation rehashes **202 standalone engine products** (93 ARM64,
+109 other native), **67 audio captures**, **33 full test executables**, all
+4,649 personal files / 503,207,370 bytes, original GAME.EXE, all 4,198 current
+inputs and 15 protected failed-Save files. The preceding 4,192 inputs remain
+byte-identical. Both pre-port C-entry crashes and all earlier failed records
+remain preserved. Cleanup records 516 removal operations for owned cold
+regenerable compiler archives, 3,331,708,210 logical bytes. Current importcfg
+paths/open handles, products, Saves, source, inputs, assets and validation
+records are protected.
+
+Next `527E50` has a whole 470-byte original reference: 1,252 independently
+declared contexts / 1,272 calls and six separate nil-chain faults. Both FPU
+profiles agree. Native Go/C getter controls pass above4GiB, then its actual
+old public C entry reproduces SIGSEGV. Comparators are sealed before engine
+changes. The first overlay legacy consumer build fails its generic allocation
+constraint; the retained correction changes only any to comparable, preserving
+all original expectations. The complete overlay then passes 2,586 events:
+2,520 raw C/Go original/fault checks, 11 server order/layout checks, 54
+production/policy checks and one unchanged helper control, with zero build
+warnings. The proposed code remains outside the worktree and supplies no
+installed product-port result yet.
+
+Overall porting and nine final class/chapter1-3 audits remain incomplete;
+chapter4+ is excluded. The user sale-silence report and historical intermittent
+Windows memory cause remain open.
 
 ### Native player-object sender entry
 

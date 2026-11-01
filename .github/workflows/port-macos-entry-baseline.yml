@@ -1,0 +1,87 @@
+name: Porting macOS native entry baseline
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_revision:
+        description: Exact unmodified engine source under comparison
+        type: string
+        required: true
+      payload_revision:
+        description: Commit containing the frozen interesting-sound consumer; defaults to workflow revision
+        type: string
+        default: ''
+      profile:
+        description: Baseline expects the old public C fault; normal/strict compare the port with the same frozen original
+        type: choice
+        options: [before, normal, strict]
+        default: before
+
+permissions:
+  contents: read
+
+jobs:
+  native:
+    name: macOS ARM64 interesting-sound ${{ inputs.profile }}
+    runs-on: macos-26
+    timeout-minutes: 40
+    env:
+      SOURCE_REVISION: ${{ inputs.source_revision }}
+      PAYLOAD_REVISION: ${{ inputs.payload_revision || github.sha }}
+      PROBE_WORKFLOW_REVISION: ${{ github.sha }}
+      PROBE_PROFILE: ${{ inputs.profile }}
+      GOTOOLCHAIN: local
+      GOOS: darwin
+      GOARCH: arm64
+      CGO_ENABLED: '1'
+      CGO_CFLAGS: '-O2 -g'
+      CGO_CFLAGS_ALLOW: '-f.*'
+      GOMAXPROCS: '2'
+      GOFLAGS: '-p=1'
+      NOX_E2E_SEAT: headless
+      NOX_XWIS: 'false'
+      NOX_NET_NAT: 'false'
+      HOMEBREW_NO_AUTO_UPDATE: '1'
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ inputs.source_revision }}
+          fetch-depth: 0
+      - name: Select the pinned Go toolchain
+        id: pinned_go
+        shell: bash
+        run: |
+          set -euo pipefail
+          pin=$(tr -d '[:space:]' < toolchain/go-version.txt)
+          [[ "$pin" =~ ^go[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          printf 'version=%s\n' "${pin#go}" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-go@v7
+        with:
+          go-version: ${{ steps.pinned_go.outputs.version }}
+          cache: false
+      - name: Prepare native dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(uname -m)" = arm64
+          for formula in pkgconf sdl2 openal-soft; do
+            if ! brew list --versions "$formula" >/dev/null 2>&1; then
+              brew install "$formula"
+            fi
+          done
+          echo "PKG_CONFIG_PATH=$(brew --prefix sdl2)/lib/pkgconfig:$(brew --prefix openal-soft)/lib/pkgconfig" >> "$GITHUB_ENV"
+          echo "SDKROOT=$(xcrun --show-sdk-path)" >> "$GITHUB_ENV"
+      - name: Execute the frozen public native C comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          ulimit -c 0
+          git show "$PROBE_WORKFLOW_REVISION:toolchain/probe-monster-interesting-native.py" > "$RUNNER_TEMP/probe-monster-interesting-native.py"
+          python3 "$RUNNER_TEMP/probe-monster-interesting-native.py"
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: macos-interesting-${{ inputs.profile }}-${{ inputs.source_revision }}
+          path: build/macos-interesting-${{ inputs.profile }}/
+          if-no-files-found: error
+          retention-days: 90

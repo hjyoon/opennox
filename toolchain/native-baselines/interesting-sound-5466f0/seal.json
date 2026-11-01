@@ -1,0 +1,27 @@
+{
+  "utc": "2026-11-01T20:02:14.148366+00:00",
+  "source": "b749043d4ef4dababf393f76e31ef39cb73c269b",
+  "native_consumer_getter_and_original_frozen_before_engine_edits": true,
+  "original_producer_sha256": "bf3f7ad940ea6aa16397d3e41bb937bf9485a182cf431e7ae09d60d21ba1baec",
+  "frozen_files": [
+    {
+      "payload": "monster_interesting_original_getter_5466f0.go",
+      "target": "src/legacy/monster_interesting_original_getter_5466f0.go",
+      "bytes": 2083,
+      "sha256": "f86eb1cb5cfc494ec720bada5602db9c8b3811c4e0df1f0993a4cd37565fe287"
+    },
+    {
+      "payload": "monster_interesting_original_5466f0_test.go",
+      "target": "src/legacy/monster_interesting_original_5466f0_test.go",
+      "bytes": 15842,
+      "sha256": "7d93e72489ac013d972aab2b3a8a4bc0b87e0ebdcd2a92575fba5bae1cc35ec1"
+    },
+    {
+      "payload": "original-output-e3f-v1.json.gz",
+      "target": "src/server/testdata/monster_interesting_original_5466f0.json.gz",
+      "bytes": 140969,
+      "sha256": "7dc57fa677f9de65736d89bf2f13dd26b11cc86b051e3650e77a18208065199e"
+    }
+  ],
+  "scope": "Actual public C consumer; reference services tile/path/trace/Push declared; native production prand; guards, raw faults, full pointer projections. No separate direct-Go-path comparison credit."
+}

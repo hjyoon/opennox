@@ -1,3 +1,4 @@
+#include "native_exact_mapping.h"
 #include <stdio.h>
 #include <limits.h>
 #ifdef _WIN32
@@ -99,6 +100,8 @@ static void* map_near(uintptr_t address) {
 #endif
 #ifdef _WIN32
 	return VirtualAlloc((void*)address,0x80000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+#elif defined(__APPLE__)
+	return opennox_native_test_exact_mapping(address,0x80000);
 #else
 	void* ptr=mmap((void*)address,0x80000,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANON,-1,0);
 	return ptr==MAP_FAILED ? NULL : ptr;
@@ -107,6 +110,8 @@ static void* map_near(uintptr_t address) {
 static void release_map(void* ptr) {
 #ifdef _WIN32
 	VirtualFree(ptr,0,MEM_RELEASE);
+#elif defined(__APPLE__)
+	opennox_native_test_release_mapping(ptr,0x80000);
 #else
 	munmap(ptr,0x80000);
 #endif
@@ -115,7 +120,7 @@ int main(int argc, char** argv) {
 	CHECK(argc==2);
 	const uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
 	for (unsigned map=0;map<3;map++) {
-		// Hints only; never overwrite another mapping with MAP_FIXED.
+		// Exact Darwin reservation refuses collisions; other hosts retain their original allocation.
 		void* ptr=map_near(bases[map]); CHECK(ptr);
 		table=(uint8_t*)ptr+(map<2 ? 0x40000-72 : 64);
 		if (sizeof(void*)>4) {

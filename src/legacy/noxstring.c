@@ -312,8 +312,8 @@ wchar2_t* nox_wcscat(wchar2_t* dest, const wchar2_t* src) {
 		return ret;
 	}
 
-	while (*dest)
-		dest++;
+	// Share the volatile 16-bit scan; a separate loop can become host wcslen.
+	dest += nox_wcslen(dest);
 
 	while (*src)
 		*dest++ = *src++;

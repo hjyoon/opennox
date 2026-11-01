@@ -265,6 +265,32 @@ fixture allocation failures remain separately recorded pending verification.
 Fresh full gates for this correction are pending. Remote gates supply no
 physical speaker or local SDL gameplay evidence.
 
+The follow-up pinned run `41332828370` at `218529d` passes strict and all
+product builds, with zero warnings, but the four ordinary gates still fail:
+normal/highres **720,514 / 43 skips / 20 failures**, server
+**714,446 / 4 / 19**, server-highres **714,447 / 4 / 18**. All five complete
+artifacts and original failed states are retained. Save/runtime-path tests
+now pass. Exact failed-binary disassembly confirms the corrected length
+function uses 16-bit loads, while the separate destination scan inside
+`nox_wcscat` still calls host `_wcslen`. Concat now shares the volatile
+UTF16 length implementation; compiling the complete C source locally
+confirms neither scan branches to host `wcslen`.
+
+Intermittent exact-address failures affect four standalone UI fixtures.
+Their Darwin allocator now uses a Mach fixed reservation without overwrite:
+occupied ranges fail instead of replacing another mapping. Four hundred
+local reservations, collision refusals, complete canary checks and zeroed
+remaps pass. All original required addresses, oracle values, loops and
+assertions remain. Only the four platform allocation adapters change;
+the other **4,229** prior input files remain byte-identical. Expected
+values and all selected Go tests remain unchanged. Fresh full gates for
+these concat/allocation corrections are pending.
+The existing selected UI/string/palette/ability/secondary/death-message/Quest
+comparisons pass **30** parent/direct-subtest events locally, zero warnings,
+with original packet-registry helpers retained. Child receipts are not
+double-counted. Earlier private overlays missing required player-ID helpers
+remain failed; no original test or expectation is changed to fix the overlay.
+
 Overall 100%, all nine final chapter1-3 audits, natural bot activation and
 the actual user's sale-silence report remain open; chapter4+ is excluded.
 Exact proofs are retained under

@@ -1,3 +1,4 @@
+#include "native_exact_mapping.h"
 #include <stdio.h>
 #include <limits.h>
 #ifdef _WIN32
@@ -45,6 +46,8 @@ static void* map_near(uintptr_t address) {
 #endif
 #ifdef _WIN32
 	return VirtualAlloc((void*)address,0x80000,MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE);
+#elif defined(__APPLE__)
+	return opennox_native_test_exact_mapping(address,0x80000);
 #else
 	void* p=mmap((void*)address,0x80000,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANON,-1,0);
 	return p==MAP_FAILED ? NULL : p;
@@ -53,6 +56,8 @@ static void* map_near(uintptr_t address) {
 static void release_map(void* ptr) {
 #ifdef _WIN32
 	VirtualFree(ptr,0,MEM_RELEASE);
+#elif defined(__APPLE__)
+	opennox_native_test_release_mapping(ptr,0x80000);
 #else
 	munmap(ptr,0x80000);
 #endif

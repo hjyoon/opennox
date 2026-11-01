@@ -487,7 +487,7 @@ int nox_xxx_updatePlayerMonsterBot_4FAB20(uint32_t* a1) {
 			nox_xxx_mobMorphFromPlayer_4FAAC0(a1);
 			nox_xxx_unitUpdateMonster_50A5C0(a1);
 			nox_xxx_mobMorphToPlayer_4FAAF0(a1);
-			v5 = nox_xxx_monsterActionToPlrState_4FABC0((int)a1);
+			v5 = nox_xxx_monsterActionToPlrState_4FABC0((nox_object_t*)a1);
 			v6 = *(uint32_t*)(v1 + 276);
 			*(uint8_t*)(v1 + 88) = v5;
 			*(uint8_t*)(v1 + 236) = *(uint8_t*)(v3 + 481);
@@ -502,6 +502,7 @@ int nox_xxx_updatePlayerMonsterBot_4FAB20(uint32_t* a1) {
 }
 
 //----- (004FABC0) --------------------------------------------------------
+#if 0 // Original PE32 body; public action entry uses native typed Go records.
 char nox_xxx_monsterActionToPlrState_4FABC0(int a1) {
 	int v1;      // ecx
 	char v2;     // al
@@ -553,6 +554,7 @@ char nox_xxx_monsterActionToPlrState_4FABC0(int a1) {
 	}
 	return result;
 }
+#endif
 
 //----- (004FAC70) --------------------------------------------------------
 int nox_xxx_respawnPlayerBot_4FAC70(int a1) {

@@ -55,6 +55,47 @@ completion requirements.
 
 ## Current findings
 
+### Native player-bot action state entry
+
+Public `4FABC0` now passes its full native object pointer to a typed Go
+implementation, retaining the original char return and one-pointer PE32 ABI.
+The previous C body is retained under `#if 0`. Its full 107-byte body and
+65-byte dispatch tables execute unchanged in both original FPU profiles:
+**18,768 independent contexts and three raw faults per profile**, identical.
+The comparison includes all 92 signed indices whose original read lies inside
+the 2,200-byte record, including the empty-stack sentinel. Native pointer slots
+retain their full width. Reads outside the original record remain invalid;
+no arbitrary memory outside a native object receives equivalence credit.
+
+Actual old public C SIGSEGV with valid above4GiB records and HealthData is
+retained. Actual public C and typed Go pass **37,628** comparison, layout,
+pointer-width and fault events. All native records and neighbor guards remain
+unchanged. Normal passes **698,916 / 43 skips**
+in 155.277s; actual highres/cgocheck2/checkptr2 passes
+**559,591 / 8 skips** in 407.348s.
+Every previous terminal identity and multiplicity remains. Both profiles emit
+zero compiler/linker warnings without new suppression or strict exemptions.
+All 4,219 old inputs remain unchanged; current inventory **4,222**. The existing
+3,339 code / 691 data range manifest and all 21 verifier tests pass unchanged.
+
+The first normal run additionally enables audio tests and passes 698,999 /
+19 skips with zero warnings. Its exact-environment accounting comparison
+rejects 24 former skip labels now executing as passes. That full successful
+run and rejected comparison remain retained; unchanged source and expectations
+then pass the previous exact normal environment above.
+
+Six closed failed UTF8 JSON logs retain their full logical bytes, SHA-256,
+original paths, mode/owner/mtime and failed statuses through transparent text
+compression, recovering 1,685,114,880 allocated bytes. All 270 original failure
+events remain. No assets, Saves, products, executables or failed results are
+deleted. The earlier rejected executable compression remains unexecuted.
+
+Current-source product, gameplay, SDL/Core merchant and native Linux/Windows
+gates are pending. Creation, update, respawn and natural bot registration remain
+separate work. User sale-silence, overall 100% and the nine final chapter1-3
+audits remain open; chapter4+ is excluded. Exact proofs are retained under
+`ROOT/player-bot-native-entry-port`.
+
 ### Native player-bot morph entries
 
 Public `4FAAC0` and `4FAAF0` now use native typed Go records. Their existing

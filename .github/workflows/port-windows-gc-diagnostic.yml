@@ -181,7 +181,7 @@ jobs:
           SOURCE_REVISION: ${{ inputs.source_revision }}
           REPORT_DIR: build/windows-retained-diagnostic
         run: |
-          import hashlib, json, os, pathlib, shutil, subprocess, urllib.request, zipfile
+          import hashlib, json, os, pathlib, shutil, subprocess, urllib.parse, urllib.request, zipfile
           report = pathlib.Path(os.environ['REPORT_DIR']).resolve()
           report.mkdir(parents=True)
           source = os.environ['SOURCE_REVISION']
@@ -191,8 +191,15 @@ jobs:
           api = 'https://api.github.com/repos/' + os.environ['GITHUB_REPOSITORY']
           headers = {'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
                      'Accept': 'application/vnd.github+json'}
+          class ArtifactRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, req, fp, code, msg, response_headers, url):
+                  redirected = super().redirect_request(req, fp, code, msg, response_headers, url)
+                  if urllib.parse.urlsplit(req.full_url).netloc != urllib.parse.urlsplit(url).netloc:
+                      redirected.remove_header('Authorization')
+                  return redirected
+          opener = urllib.request.build_opener(ArtifactRedirect())
           def request(url):
-              return urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=120)
+              return opener.open(urllib.request.Request(url, headers=headers), timeout=120)
           with request(api + '/actions/artifacts/' + artifact_id) as response:
               artifact = json.load(response)
           assert artifact['workflow_run']['head_sha'] == source

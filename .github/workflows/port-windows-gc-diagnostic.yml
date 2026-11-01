@@ -224,6 +224,7 @@ jobs:
               with (report/(label+'.stdout.log')).open('xb') as out, (report/(label+'.stderr.log')).open('xb') as err:
                   completed = subprocess.run(args, cwd=cwd, env=env, stdout=out, stderr=err, timeout=1000)
               row = dict(label=label, args=args, exit_code=completed.returncode,
+                         cwd=str(cwd or pathlib.Path.cwd()),
                          GOGC=env.get('GOGC'), GODEBUG=env.get('GODEBUG'))
               results.append(row)
               (report/'results.json').write_text(json.dumps(results, indent=2))
@@ -310,7 +311,8 @@ jobs:
               replay_env = dict(env, GOGC=gc, GODEBUG=debug)
               run(label, ['go','tool','test2json','-t','-p','github.com/opennox/opennox/v1/server',
                           str(executable),'-test.v=test2json','-test.count=1',
-                          '-test.timeout=15m','-test.run='+selection], replay_env)
+                          '-test.timeout=15m','-test.run='+selection], replay_env,
+                  str(pathlib.Path('src/server').resolve()))
           assert hashlib.sha256(executable.read_bytes()).hexdigest() == binary['sha256']
           (report/'scope.json').write_text(json.dumps(dict(
               source=source, exact_retained_executable=binary, artifact_zip_sha256=digest,

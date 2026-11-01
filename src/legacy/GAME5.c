@@ -754,6 +754,7 @@ int sub_5466F0(nox_object_t* a1p) {
 #endif
 
 //----- (005469B0) --------------------------------------------------------
+#if 0 // Original provenance; native entry in monster_idle_sound_native_5469b0_export.go.
 void nox_xxx_mobAction_5469B0(nox_object_t* a1p) {
 	int a1 = a1p;
 	int v1; // edi
@@ -775,6 +776,7 @@ void nox_xxx_mobAction_5469B0(nox_object_t* a1p) {
 		}
 	}
 }
+#endif
 
 //----- (005471B0) --------------------------------------------------------
 void nox_xxx_monsterPopAttackActions_5471B0(int a1) {

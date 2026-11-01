@@ -1,13 +1,9 @@
 package server
 
 import (
-	"math"
-	"unsafe"
-
 	"github.com/opennox/libs/object"
 
 	"github.com/opennox/opennox/v1/common/sound"
-	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
 type monsterIdleSoundHooks5469B0 struct {
@@ -21,26 +17,8 @@ func monsterIdleSound5469B0(unit *Object, hooks monsterIdleSoundHooks5469B0) {
 	if unit == nil || !unit.ObjClass.Has(object.ClassMonster) || unit.UpdateData == nil {
 		return
 	}
-	update := unit.UpdateDataMonster()
-	if unit.Nox_xxx_monsterCanAttackAtWill_534390() ||
-		update.CurrentEnemy != nil ||
-		math.Float32frombits(update.Field131) > 300.0 {
-		return
-	}
-	head := update.AIStackHead()
-	if head == nil || head.Type() != ai.ACTION_IDLE && head.Type() != ai.ACTION_GUARD {
-		return
-	}
-	frame := hooks.frame()
-	if frame < update.Field132 {
-		return
-	}
-	tickRate := int(hooks.tickRate())
-	update.Field132 = frame + uint32(hooks.random(20*tickRate, 60*tickRate))
-	if update.SoundSet122 != nil {
-		id := sound.ID(*(*uint32)(unsafe.Add(update.SoundSet122, 16)))
-		hooks.play(id, unit)
-	}
+	unit.MonsterIdleSoundNative5469B0(hooks.frame, hooks.tickRate, hooks.random,
+		func(id uint32, unit *Object, _, _ uint32) { hooks.play(sound.ID(id), unit) })
 }
 
 // MonsterIdleSound5469B0 keeps the original idle/guard sound schedule while

@@ -97,11 +97,53 @@ products and records protected. Separately, 84 old Windows compiler archives
 strict passes, 404 completed cgocheck2 compiler archives
 (1,049,519,328 bytes) are evicted before ordinary product
 builds. No original assets, Saves, inputs, records or products are deleted.
-Current ARM64 products/E2E/Core and native
-Windows/Linux gates remain pending for this runtime. This bounded legacy
-rate helper does not close the user's sale-silence report. Overall 100% and
-nine final class/chapter1-3 audits remain open; chapter4+ is excluded.
-Exact evidence is under `ROOT/timer-percentage-native-entry-port`.
+Runtime `c5edc19` passes all four ARM64 product builds and help with
+zero warnings. Current product checks pass six Blink conditions
+(37.529 seconds), sixteen first-attack conditions
+(43.308 seconds) and three Chain Lightning conditions
+(32.080 seconds). Original Bookcase1974 movement/combat passes
+in 38.923 seconds; actual menu Load/Save passes in
+17.741 seconds with HP20, MP43 and poison0.
+The passing first Save and whole seed are sealed before the first reload.
+All four campaign images are actually viewed, including both in-world
+completed-save messages.
+
+Actual SDL/Core Mystic purchase/sale passes in 375.218 seconds.
+Two stock effects have positive gain and all four buffers processed each.
+Both trade images are viewed: original 33-gold quote and 9,933 final gold with
+the guide removed. This is bounded playback evidence; the user sale-silence
+report and physical speaker output remain unverified.
+
+After all four product builds finish, 383 regenerable Go
+archive cache files (821,534,052 logical bytes) are removed,
+with no protected deletions. Existing product executable paths stay intact.
+
+Windows run `41283394464` passes amd64 **646,473 / 11 skips**
+and 386 **626,824 / 93 skips**, all three packages each.
+Linux run `41283396829` passes all four variants: both GUI products record
+**654,563 / 54 skips**, both servers **648,453 / 7 skips**.
+Default-link damage retains **133,384** passes. Each native inventory retains
+every earlier terminal identity and multiplicity and adds 1,736 passes.
+All six complete native job logs, full test JSON outputs and stderr streams
+have zero compiler, linker, test-build or CI warnings, without new suppression.
+Six actual Windows test executables retain GC-root symbols; passing runs do
+not establish the historical intermittent memory-failure cause.
+
+Final preservation rehashes **250 standalone products** (117 ARM64 and 133
+other native), **75 audio captures**, **57 full test executables**, all
+4,649 personal files / 503,207,370 bytes, original GAME.EXE, all 4,215 current
+inputs and the 15 protected failed-Save files. Every preceding 4,212 input
+is unchanged. Exact failed C-before and all preceding failures remain retained.
+The proposed in-place foreign executable compression is rejected by automatic
+approval review and is not executed; all 178 original candidate file identities
+and metadata remain. Independent control copies and their failures are retained.
+The 31 transparently compressed older logs are rehashed at their original
+paths; compression changes no logical bytes.
+
+Overall porting and nine final class/chapter1-3 audits remain incomplete;
+chapter4+ is excluded. User sale-silence and historical Windows memory-cause
+reports remain open. Exact evidence is under
+`ROOT/timer-percentage-native-entry-port`.
 
 ### Native unit-height reporter
 

@@ -23364,6 +23364,20 @@
       "size": 1,
       "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
       "purpose": "One original NOP separating height reporting from004D90E0; excluded from body execution coverage."
+    },
+    {
+      "name": "original_complete_timer_percentage_486640",
+      "address": "0x00486640",
+      "size": 35,
+      "sha256": "16ee2a31d94d61e1e2c501d96c492c8485b231d5686bfcc278e0c8fc1d76e3c6",
+      "purpose": "Complete unchanged35-byte pure entry. Both original FPU profiles execute576 independent contexts plus one nil-group fault, covering every body byte without child, instruction or arithmetic substitution. Read DWORD at group+36, take unsigned high16, multiply to low32, reinterpret signed and divide100 towardzero. Native typedGo/actualC/legacyGo compare full32return and complete96-bytegroup/neighbors; native rawstack/register or instruction-count equivalence is not claimed."
+    },
+    {
+      "name": "timer_percentage_486640_alignment",
+      "address": "0x00486663",
+      "size": 13,
+      "sha256": "aff312c80e826834eed3e424180d0b1150cd49ab4454e19d6d9cd884a2178915",
+      "purpose": "Thirteen original NOP alignment bytes before00486670; excluded from body execution coverage."
     }
   ],
   "data": [

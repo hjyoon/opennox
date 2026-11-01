@@ -367,7 +367,7 @@ func sub_4863B0(p unsafe.Pointer) C.int {
 }
 
 func Sub_486640(a1 unsafe.Pointer, a2 int) int {
-	return int(C.sub_486640(a1, C.int(a2)))
+	return int(timer.ScalePercentageNative486640((*timer.TimerGroup)(a1), int32(a2)))
 }
 
 func Get_dword_5d4594_805984() unsafe.Pointer {

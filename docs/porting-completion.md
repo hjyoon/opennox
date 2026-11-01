@@ -55,6 +55,54 @@ completion requirements.
 
 ## Current findings
 
+### Native timer-percentage entry
+
+Public `486640` and the existing Go `Sub_486640` wrapper now share typed
+`timer.ScalePercentageNative486640`. The public `int(void*, int)` signature
+and two PE32 argument words remain; the previous C body is retained under
+`#if 0`. Valid above4GiB Go/typed-C getters pass before the actual old public
+C entry reproduces SIGSEGV in 3.733 seconds. TimerGroup remains 96 bytes and
+its selected Current word remains at offset36.
+
+Original execution covers all **35 instruction bytes**, excluding thirteen
+following alignment NOPs: **576 independent contexts and one separate nil
+fault per FPU profile**, with identical outputs and no child, instruction or
+arithmetic substitutions. The helper takes the logical high16 percentage,
+multiplies in wrapping 32-bit arithmetic, then divides the signed product by
+100 toward zero. This preserves overflow and negative results. The Go wrapper
+also preserves the old C.int input narrowing and signed return extension.
+
+Typed Go, actual public C and the existing Go wrapper pass **1,736** events,
+including three independent nil-fault subprocesses, full 32-bit returns and
+complete 96-byte records with neighbor guards. Consumers and original
+references were frozen before implementation and required no repairs.
+Normal passes **652,572 / 43 skips** in
+283.963 seconds; actual highres/cgocheck2/checkptr2 passes
+**513,229 / 8 skips** in 218.487 seconds.
+The first strict build fails with four disk-space errors; its complete raw
+output and source seals remain retained. The successful strict rerun uses
+the identical source and exact flags. Both successful profiles
+retain every earlier terminal identity and multiplicity, add 1,736 passes,
+and emit zero compiler/linker warnings without new suppression or exemptions.
+Oracle verification passes **3,339 code / 691 data ranges** and all **21**
+verifier tests. Existing entries and order remain unchanged; only this root
+and its alignment range are appended. All **4,212** preceding inputs remain
+byte-identical; the current inventory is **4,215**.
+
+Before compilation, 462 owned cold regenerable compiler archives are removed,
+2,409,759,528 logical bytes, with active references, assets, Saves, source,
+products and records protected. Separately, 84 old Windows compiler archives
+(56,306,130 logical bytes) and 435 completed normal-profile archives
+(1,330,094,986 bytes) are removed with open handles/importcfg protected. After
+strict passes, 404 completed cgocheck2 compiler archives
+(1,049,519,328 bytes) are evicted before ordinary product
+builds. No original assets, Saves, inputs, records or products are deleted.
+Current ARM64 products/E2E/Core and native
+Windows/Linux gates remain pending for this runtime. This bounded legacy
+rate helper does not close the user's sale-silence report. Overall 100% and
+nine final class/chapter1-3 audits remain open; chapter4+ is excluded.
+Exact evidence is under `ROOT/timer-percentage-native-entry-port`.
+
 ### Native unit-height reporter
 
 Public `4D9020` now uses native Object fields and shares a packet builder with

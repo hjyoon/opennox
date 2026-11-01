@@ -4322,10 +4322,13 @@ int nox_xxx_tile_486060() {
 }
 
 //----- (00486640) --------------------------------------------------------
+#if 0 // Retained PE32 body; native pointer/signed arithmetic entry is implemented in Go.
 int sub_486640(void* a1p, int a2) {
 	int a1 = a1p;
 	return a2 * (*(uint32_t*)(a1 + 36) >> 16) / 100;
 }
+
+#endif
 
 //----- (004866D0) --------------------------------------------------------
 int sub_4866D0(uint32_t* a1, int a2) { return *a1 + 36 * a2; }

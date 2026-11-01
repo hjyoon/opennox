@@ -4098,6 +4098,7 @@ void nox_xxx_netReportObjHidden_4D8FD0(int a1, uint32_t* a2) {
 }
 
 //----- (004D9020) --------------------------------------------------------
+#if 0 // Retained PE32 body; public native entry and ordinary packet builder are implemented in Go.
 int nox_xxx_netReportUnitHeight_4D9020(int a1, nox_object_t* a2p) {
 	int a2 = a2p;
 	int v2;        // esi
@@ -4148,6 +4149,8 @@ int nox_xxx_netReportUnitHeight_4D9020(int a1, nox_object_t* a2p) {
 	}
 	return result;
 }
+
+#endif
 
 //----- (004D90E0) --------------------------------------------------------
 int sub_4D90E0(int a1, char a2) {

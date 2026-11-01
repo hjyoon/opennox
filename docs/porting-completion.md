@@ -55,6 +55,62 @@ completion requirements.
 
 ## Current findings
 
+### Native unit-height reporter
+
+Public `4D9020` now uses native Object fields and shares a packet builder with
+the ordinary Go sender. The original C body remains under `#if 0`; public
+`int(int, object*)` and its two PE32 argument words remain unchanged. Valid
+above4GiB Go/typed-C getters pass before the actual old public C entry
+reproduces SIGSEGV in 3.413 seconds. Native Field5/NetCode/Z/velocity/tail
+offsets are 24/40/108/112/120, replacing PE32 20/36/104/108/116.
+
+Unchanged original execution covers the whole **191-byte** root, excluding
+one following NOP, and the actual **39-byte** signed-QWORD converter.
+Each FPU profile executes **370 raw contexts** and **544 production contexts**,
+plus a separate nil-Object fault in each dataset. Profile outputs are identical.
+Raw code/netlist children are declared boundaries; production executes the
+actual code child and retains only the netlist boundary. Its **55 reachable
+bytes** execute; the three-byte nil-only return cannot be reached through a
+valid root, which faults first. No instruction or arithmetic is substituted.
+
+The root retains six-byte ballistic packets with a direct WORD code and three
+separate conversions. Its four-byte path treats unordered height as negative,
+caches the opcode before the code child and reloads height afterward. Both
+paths retain kind1 and the complete transport result. The old ordinary Go
+sender independently reproduces quiet-NaN opcode5e versus original5f; that
+before check compares only the opcode chosen before the code child. The fixed
+production comparisons check complete packets using actual code lookup and
+actual netlist acceptance/full-queue rejection, including nonfinite values.
+
+Raw C/Go groups pass **746** events and actual default-C/ordinary-Go groups
+**1,090**, adding **1,836** passes. Six earlier controls and one allocation
+diagnostic make **1,843** focused passes without consumer repair. Complete
+native Object/neighbor guards, ordered child arguments, live callback state
+and full raw returns are checked. Original register/stack/CW/TOP observations
+remain diagnostics without native instruction-count or stack equivalence.
+Both ordinary modes retain **one allocation per call**, before and after,
+in a normal ARM64 1,000-call comparison; no general FPS or raw-C allocation
+claim is made.
+
+Normal passes **650,836 / 43 skips** in 186.941 seconds.
+Actual highres/cgocheck2/checkptr2 passes
+**511,493 / 8 skips** in 395.061 seconds. Every preceding
+terminal identity/multiplicity remains, adding 1,836 passes each, with zero
+compiler/linker warnings and no new suppression or strict exemptions.
+Oracle verification passes **3,337 code / 691 data ranges** and all **21**
+verifier tests. Only the whole root and its alignment NOP are appended; existing
+code/data entries, order, hashes and all old expected fixtures remain unchanged.
+All **4,206** preceding inputs are byte-identical; current inventory **4,212**.
+Before compilation, 847 owned cold regenerable compiler archives are removed,
+2,814,976,602 logical bytes, with no protected source/asset/Save/product/record
+deletion; active importcfg paths and open handles remain protected.
+
+Current ARM64 products/E2E/Core and Windows/Linux gates remain pending for
+this runtime. Overall 100% and nine final class/chapter1-3 audits remain open;
+chapter4+ is excluded. User sale-silence and historical Windows memory-cause
+reports remain open. Exact evidence is under
+`ROOT/unit-height-native-entry-port`.
+
 ### Native killable-predicate entry
 
 Public `528190` now reads native Object.HealthData and shares one Go predicate

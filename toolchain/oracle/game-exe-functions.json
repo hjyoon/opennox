@@ -23350,6 +23350,20 @@
       "size": 470,
       "sha256": "c7157fcaa70667410fa5633c45a59bad89aaff83e8cb91bdc6168f149531767f",
       "purpose": "Complete470-byte root excluding10NOP alignment bytes. Recipient/update/Player and unsignedBYTE index load precedes nil-unit/index gate; cached index selects one of32native peer flag words. Ordered eight live-bit tests and post-child clears retain child mutations; Enemy nonzero suppresses health but still clears its bit, unhandled admitted bits persist, root returns0or1. Independently frozen1252contexts/1272calls plus6separatefaults perFPUprofile execute every root byte; both profiles identical. Nine report/enemy bodies are declared service boundaries, not executed original child bodies. Full guarded native records and all32peer words compare with original; raw register/stack/store-count and complete child-body equivalence are not claimed."
+    },
+    {
+      "name": "original_complete_object_height_report_4D9020",
+      "address": "0x004D9020",
+      "size": 191,
+      "sha256": "e744b412ef9521c8ee8e171663f0694f7a9d169fa79276aea2d057bebfe3b4bb",
+      "purpose": "Complete unchanged191-byte root, excluding the following NOP. Both FPU profiles execute370 raw contexts and544 additional production contexts, plus one separate nil-Object fault each. Actual39-byte QWORD conversion executes; production also executes55 of58 bytes of the existing unit-code helper, whose nil-only return cannot be reached through a valid root. Raw code/netlist boundaries and production netlist-only boundary are explicit. Preserve unordered-negative opcode, code-child-before-height-reload, direct ballistic WORD code, three independent conversions, fixed packets/kind and full transport return. Native consumers compare ordered children, packets, full returns and complete guarded records; native stack/register/instruction-count equivalence is not claimed."
+    },
+    {
+      "name": "object_height_report_4D9020_alignment",
+      "address": "0x004D90DF",
+      "size": 1,
+      "sha256": "9e076ceaf246b6003d9c2680a2b4cf0bffd069805902b0b5edeebf49039fe4bd",
+      "purpose": "One original NOP separating height reporting from004D90E0; excluded from body execution coverage."
     }
   ],
   "data": [

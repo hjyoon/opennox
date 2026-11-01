@@ -79,33 +79,11 @@ func (s *Server) netReportObjectHiddenNative4D8FD0(ind ntype.PlayerInd, obj *ser
 	s.NetSendPacketXxx0(int(ind), packet[:], nil, 1)
 }
 
-func truncObjectHeight4D9020(v float32) byte {
-	return byte(int64(v))
-}
-
 func (s *Server) netReportUnitHeightNative4D9020(ind ntype.PlayerInd, obj *server.Object) {
-	if byte(obj.Field5)&0x20 != 0 {
-		packet := [6]byte{
-			159,
-			byte(obj.NetCode), byte(obj.NetCode >> 8),
-			truncObjectHeight4D9020(obj.ZVal),
-			truncObjectHeight4D9020(obj.Field27),
-			truncObjectHeight4D9020(math.Float32frombits(obj.Field29)),
-		}
-		s.NetList.AddToMsgListCli(ind, netlist.Kind1, packet[:])
-		return
-	}
-	z := obj.ZVal
-	op := netmsg.MSG_REPORT_Z_PLUS
-	if z < 0 {
-		op = netmsg.MSG_REPORT_Z_MINUS
-		z = -z
-	}
-	var packet [4]byte
-	packet[0] = byte(op)
-	binary.LittleEndian.PutUint16(packet[1:], uint16(s.GetUnitNetCode(obj)))
-	packet[3] = truncObjectHeight4D9020(z)
-	s.NetList.AddToMsgListCli(ind, netlist.Kind1, packet[:])
+	packet, size := server.ObjectHeightPacketNative4D9020(obj, func(unit *server.Object) uint32 {
+		return uint32(s.GetUnitNetCode(unit))
+	})
+	s.NetList.AddToMsgListCli(ind, netlist.Kind1, packet[:size])
 }
 
 func (s *Server) netReportTeamBaseNative4D92D0(ind ntype.PlayerInd, obj *server.Object) {

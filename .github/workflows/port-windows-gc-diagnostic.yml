@@ -20,13 +20,17 @@ on:
         description: Run full macOS ARM64 product and strict gates instead of Windows diagnostics
         type: boolean
         default: false
+      macos_fixture_address_probe:
+        description: Compare original C fixture address allocators on macOS ARM64
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 jobs:
   diagnostic:
-    if: ${{ !inputs.macos_native_gate && inputs.retained_artifact_id == '' }}
+    if: ${{ !inputs.macos_native_gate && !inputs.macos_fixture_address_probe && inputs.retained_artifact_id == '' }}
     name: Windows/amd64 ${{ matrix.profile }} diagnostic
     strategy:
       fail-fast: false
@@ -162,7 +166,7 @@ jobs:
           retention-days: 7
 
   retained:
-    if: ${{ !inputs.macos_native_gate && inputs.retained_artifact_id != '' }}
+    if: ${{ !inputs.macos_native_gate && !inputs.macos_fixture_address_probe && inputs.retained_artifact_id != '' }}
     name: Windows/386 retained executable and snapshot diagnostic
     runs-on: windows-2025
     timeout-minutes: 30
@@ -334,7 +338,7 @@ jobs:
           retention-days: 7
 
   macos_native:
-    if: inputs.macos_native_gate
+    if: inputs.macos_native_gate && !inputs.macos_fixture_address_probe
     name: macOS/ARM64 ${{ matrix.variant }} native gate
     runs-on: macos-26
     timeout-minutes: 60
@@ -401,5 +405,35 @@ jobs:
         with:
           name: macos-arm64-${{ matrix.variant }}-${{ inputs.source_revision }}
           path: build/macos-arm64-${{ matrix.variant }}/
+          if-no-files-found: error
+          retention-days: 90
+
+  macos_fixture_probe:
+    if: inputs.macos_fixture_address_probe
+    name: macOS/ARM64 original fixture address diagnostic
+    runs-on: macos-26
+    timeout-minutes: 15
+    env:
+      SOURCE_REVISION: ${{ inputs.source_revision }}
+      GATE_WORKFLOW_REVISION: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ inputs.source_revision }}
+          fetch-depth: 0
+      - name: Compare immutable original-derived fixtures with reserved addresses
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(uname -m)" = arm64
+          git show "$GATE_WORKFLOW_REVISION:toolchain/probe-darwin-fixture-addresses.py" > "$RUNNER_TEMP/probe-darwin-fixture-addresses.py"
+          git show "$GATE_WORKFLOW_REVISION:toolchain/darwin-fixture-reserved-pool.h" > "$RUNNER_TEMP/darwin-fixture-reserved-pool.h"
+          export FIXTURE_CANDIDATE_HEADER="$RUNNER_TEMP/darwin-fixture-reserved-pool.h"
+          python3 "$RUNNER_TEMP/probe-darwin-fixture-addresses.py"
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: darwin-fixture-address-diagnostic-${{ inputs.source_revision }}
+          path: build/darwin-fixture-address-probe/
           if-no-files-found: error
           retention-days: 90

@@ -293,6 +293,7 @@ int nox_object_getGold_4FA6D0(nox_object_t* a1p) {
 }
 
 //----- (004FA700) --------------------------------------------------------
+#if 0 // Original PE32 body; public Create entry uses native typed Go records.
 int nox_xxx_playerBotCreate_4FA700(nox_object_t* a1p) {
 	int a1 = a1p;
 	int result;       // eax
@@ -434,6 +435,7 @@ int nox_xxx_playerBotCreate_4FA700(nox_object_t* a1p) {
 }
 
 //----- (004FAAC0) --------------------------------------------------------
+#endif
 #if 0 // Original PE32 morph bodies; public entries use native typed Go records.
 char nox_xxx_mobMorphFromPlayer_4FAAC0(uint32_t* a1) {
 	int v1; // eax
@@ -468,6 +470,7 @@ char nox_xxx_mobMorphToPlayer_4FAAF0(uint32_t* a1) {
 #endif
 
 //----- (004FAB20) --------------------------------------------------------
+#if 0 // Original PE32 body; public Update entry uses native typed Go records.
 int nox_xxx_updatePlayerMonsterBot_4FAB20(uint32_t* a1) {
 	int v1;     // edi
 	int result; // eax
@@ -477,7 +480,7 @@ int nox_xxx_updatePlayerMonsterBot_4FAB20(uint32_t* a1) {
 	int v6;     // ecx
 
 	v1 = a1[187];
-	if (*(uint32_t*)(v1 + 292) || (nox_xxx_playerBotCreate_4FA700((int)a1), (result = *(uint32_t*)(v1 + 292)) != 0)) {
+	if (*(uint32_t*)(v1 + 292) || (nox_xxx_playerBotCreate_4FA700((nox_object_t*)a1), (result = *(uint32_t*)(v1 + 292)) != 0)) {
 		result = nox_xxx_respawnPlayerBot_4FAC70((int)a1);
 		if (!result) {
 			v3 = *(uint32_t*)(v1 + 292);
@@ -502,6 +505,7 @@ int nox_xxx_updatePlayerMonsterBot_4FAB20(uint32_t* a1) {
 }
 
 //----- (004FABC0) --------------------------------------------------------
+#endif
 #if 0 // Original PE32 body; public action entry uses native typed Go records.
 char nox_xxx_monsterActionToPlrState_4FABC0(int a1) {
 	int v1;      // ecx
@@ -557,6 +561,7 @@ char nox_xxx_monsterActionToPlrState_4FABC0(int a1) {
 #endif
 
 //----- (004FAC70) --------------------------------------------------------
+#if 0 // Original PE32 body; public Respawn entry uses native typed Go records.
 int nox_xxx_respawnPlayerBot_4FAC70(int a1) {
 	int v1;    // edi
 	char* v2;  // ebx
@@ -568,7 +573,7 @@ int nox_xxx_respawnPlayerBot_4FAC70(int a1) {
 		if (gameFrame() - *(uint32_t*)(v1 + 548) < (unsigned int)(2 * gameFPS())) {
 			return 1;
 		}
-		nox_xxx_playerBotCreate_4FA700(a1);
+		nox_xxx_playerBotCreate_4FA700((nox_object_t*)(uintptr_t)(uint32_t)a1);
 		nox_xxx_playerMakeDefItems_4EF7D0((nox_object_t*)(uintptr_t)(uint32_t)a1, 1, 0);
 		if (!dword_5d4594_2650652 || *(uint32_t*)(v2 + 58)) {
 			nox_xxx_respawnPlayerImpl_53FBC0((float2*)(a1 + 56), *(short*)(a1 + 124));
@@ -585,6 +590,7 @@ int nox_xxx_respawnPlayerBot_4FAC70(int a1) {
 }
 
 //----- (004FAD50) --------------------------------------------------------
+#endif
 int nox_xxx_netSendRewardNotify_4FAD50(nox_object_t* a1, int a2, nox_object_t* a3, char a4) {
 	int result = (int)(uintptr_t)a1; // eax
 	char v6[5]; // [esp+0h] [ebp-8h]

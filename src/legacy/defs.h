@@ -405,7 +405,7 @@ typedef struct nox_player_update_data_t {
 	void* trade_70;
 	nox_object_t* dialog_with;
 	nox_object_t* cursor_obj;
-	uint32_t field_73;
+	void* field_73;
 	void* collision_wall;
 	uint32_t field_75;
 	uint32_t field_76;
@@ -469,6 +469,8 @@ _Static_assert(offsetof(nox_player_update_data_t, cursor_obj) == (sizeof(void*) 
 	"wrong offset of PlayerUpdate CursorObj pointer!");
 _Static_assert(offsetof(nox_player_update_data_t, field_73) == (sizeof(void*) == 4 ? 292 : 368),
 	"wrong offset of PlayerUpdate field 73!");
+_Static_assert(sizeof(((nox_player_update_data_t*)0)->field_73) == sizeof(void*),
+	"wrong native width of PlayerUpdate bot record!");
 _Static_assert(offsetof(nox_player_update_data_t, collision_wall) == (sizeof(void*) == 4 ? 296 : 376),
 	"wrong offset of PlayerUpdate collision wall!");
 _Static_assert(offsetof(nox_player_update_data_t, soul_gate) == (sizeof(void*) == 4 ? 308 : 392),

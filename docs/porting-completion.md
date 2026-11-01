@@ -55,6 +55,52 @@ completion requirements.
 
 ## Current findings
 
+### Native player-bot creation, update and respawn entries
+
+Public `4FA700`, `4FAB20` and `4FAC70` now use typed native Go records,
+sharing the existing morph and action-state cores. Pointer arguments retain
+their native width and original one-word PE32 ABI; returns preserve the full
+original DWORD, including float-coordinate bits from Update. Previous C
+bodies remain under `#if 0`. C PlayerUpdate `field_73` now has pointer width,
+consuming existing ARM64 padding without moving any following field. All
+partial C layout offsets and 320/416-byte sizes remain asserted.
+
+The unchanged original **1,327 root code bytes**, with the actual original
+morph/action/RNG/flag children, supply **1,564 independent contexts and ten
+raw faults per FPU profile**, identical. Actual C-before SIGSEGV with valid
+above4GiB native records and HealthData remains retained. Actual public C and
+typed Go pass **3,157** events, comparing entire native records, padding and
+neighbor guards, ordered services, cached/live replacement links, all class
+bytes, allocation failure, full FPS widths, signed direction, unsigned frame
+wrap and effective int16 buff duration. Nil faults preserve the complete
+original mutation and service prefixes. No expected values are derived from
+the new implementation.
+
+Normal passes **702,073 / 43 skips**
+in 308.921s; actual highres/cgocheck2/checkptr2 passes
+**562,748 / 8 skips** in 405.673s.
+All previous terminal identities and multiplicities remain. Both profiles
+emit zero compiler/linker warnings without new suppression or strict
+exemptions. All 4,222 old inputs remain unchanged; current inventory **4,229**.
+The unchanged 3,339 code / 691 data range manifest and all 21 verifier tests pass.
+
+Fourteen closed successful extracted JSON text logs match their original ZIPs
+and complete successful summaries. Transparent text compression preserves
+full bytes/SHA-256/original paths/mode/owner/mtime and recovers 2,578,333,696
+allocated bytes. The unsuccessful 540MB large-text copy lacks a compressed
+flag and stops before any original replacement; that copy and all preparation
+failures remain retained. Original large logs, assets, Saves, inputs, products,
+executables and failed results remain preserved. One obsolete closed focused
+test compiler archive (177,655,636 bytes) and three completed normal test
+archives (576,801,986 bytes) are evicted with open handles/importcfg protected.
+
+Current-source product, gameplay, SDL/Core merchant and native Linux/Windows
+gates are pending. The server player-reset route recognizes the original bot
+update callback and invokes Create; natural stock bot registration/activation
+is still unproved. Overall 100%, nine final chapter1-3 audits and the user's
+actual sale-silence report remain open; chapter4+ is excluded. Exact proofs
+are retained under `ROOT/player-bot-create-native-entry-port`.
+
 ### Native player-bot action state entry
 
 Public `4FABC0` now passes its full native object pointer to a typed Go

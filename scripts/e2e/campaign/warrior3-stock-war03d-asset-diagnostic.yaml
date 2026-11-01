@@ -1,0 +1,64 @@
+# Explicit diagnostic map switch. No earned route, chapter completion or continuation seed credit.
+steps:
+  - action: slow
+    dur: 5ms
+  - action: click
+    dt: 30
+    x: 320
+    y: 240
+    name: skip startup movie
+  - action: wait
+    dt: 600
+    name: wait for main menu
+  - action: interact
+    x: 448
+    y: 168
+    name: open solo campaign
+  - action: wait
+    dt: 500
+    name: wait for class selection
+  - action: click
+    x: 256
+    y: 208
+    name: select warrior
+  - action: wait
+    dt: 60
+    name: wait for class details
+  - action: click
+    x: 512
+    y: 656
+    name: accept warrior class
+  - action: wait
+    dt: 700
+    name: wait for color selection
+  - action: click
+    x: 352
+    y: 608
+    name: accept warrior color
+  - action: wait
+    dt: 1000
+    name: wait for chapter one briefing
+  - action: click
+    x: 512
+    y: 384
+    name: dismiss chapter one briefing
+  - action: wait
+    dt: 620
+    name: wait for opening dialog
+  - action: click-npc-dialog-done
+    name: dismiss warrior opening dialog
+  - action: wait
+    dt: 60
+    name: settle after warrior opening dialog
+  - {"action": "wait-map", "map": "War01a", "name": "fresh original Warrior start"}
+  - {"action": "observe-player-target", "name": "isolated asset diagnostic fresh Warrior values"}
+  - {"action": "switch-map", "map": "War03d", "name": "forced diagnostic stock War03d load; not earned progression"}
+  - {"action": "wait-map", "map": "War03d", "name": "stock War03d server and client map ready"}
+  - {"action": "wait-forced-coop-autosave", "name": "finish isolated forced-map autosave"}
+  - {"action": "wait", "dt": 60, "name": "settle untouched stock War03d world"}
+  - {"action": "observe-player-target", "name": "stock War03d initial live player and drawable"}
+  - {"action": "capture-quest-map-audit-frame", "name": "stock War03d isolated asset first rendered frame"}
+  - {"action": "wait", "dt": 120, "name": "run unmodified stock War03d objects for additional frames"}
+  - {"action": "observe-player-target", "name": "stock War03d settled live player and drawable"}
+  - {"action": "capture-quest-map-audit-frame", "name": "stock War03d isolated asset settled rendered frame"}
+  - {"action": "quit", "dt": 1}

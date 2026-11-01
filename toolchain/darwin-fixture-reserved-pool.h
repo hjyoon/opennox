@@ -17,16 +17,35 @@ static struct {
 	{0x37ffc0000ull, NULL, 0, 0}, {0x3fffc0000ull, NULL, 0, 0}, {0x440000000ull, NULL, 0, 0},
 	{0x47ffc0000ull, NULL, 0, 0}, {0x4fffc0000ull, NULL, 0, 0}, {0x540000000ull, NULL, 0, 0},
 };
+static uintptr_t opennox_native_test_address_delta;
 
-/* Keep every original fixture address reserved throughout the process.
- * Returning a slot never releases its address to an unrelated allocator.
+#define OPENNOX_NATIVE_TEST_ADDRESS(address) ((uintptr_t)(address)+opennox_native_test_address_delta)
+
+/* Preserve each low DWORD, relative placement and 4-GiB crossing. Newer
+ * Darwin loaders can already own the old synthetic native addresses.
+ * Select one common whole-4-GiB translation, then retain every reservation.
  * VM_FLAGS_FIXED deliberately omits VM_FLAGS_OVERWRITE. */
 __attribute__((constructor)) static void opennox_native_test_reserve_addresses(void) {
-	for (size_t i=0;i<sizeof(opennox_native_test_reservations)/sizeof(opennox_native_test_reservations[0]);i++) {
-		mach_vm_address_t address=opennox_native_test_reservations[i].address;
-		kern_return_t error=mach_vm_allocate(mach_task_self(),&address,0x80000,VM_FLAGS_FIXED);
-		opennox_native_test_reservations[i].error=error;
-		if (error==KERN_SUCCESS) opennox_native_test_reservations[i].memory=(void*)(uintptr_t)address;
+	for (unsigned lane=0;lane<256;lane++) {
+		uintptr_t delta=(uintptr_t)lane<<32;
+		int complete=1;
+		for (size_t i=0;i<sizeof(opennox_native_test_reservations)/sizeof(opennox_native_test_reservations[0]);i++) {
+			mach_vm_address_t address=opennox_native_test_reservations[i].address+delta;
+			kern_return_t error=mach_vm_allocate(mach_task_self(),&address,0x80000,VM_FLAGS_FIXED);
+			opennox_native_test_reservations[i].error=error;
+			if(error!=KERN_SUCCESS){complete=0;break;}
+			opennox_native_test_reservations[i].memory=(void*)(uintptr_t)address;
+		}
+		if(complete){
+			opennox_native_test_address_delta=delta;
+			for(size_t i=0;i<sizeof(opennox_native_test_reservations)/sizeof(opennox_native_test_reservations[0]);i++)opennox_native_test_reservations[i].address+=delta;
+			return;
+		}
+		/* Release only reservations made by this attempt, never another map. */
+		for(size_t i=0;i<sizeof(opennox_native_test_reservations)/sizeof(opennox_native_test_reservations[0]);i++){
+			if(opennox_native_test_reservations[i].memory)mach_vm_deallocate(mach_task_self(),(mach_vm_address_t)(uintptr_t)opennox_native_test_reservations[i].memory,0x80000);
+			opennox_native_test_reservations[i].memory=NULL;
+		}
 	}
 }
 
@@ -62,5 +81,7 @@ static void opennox_native_test_release_mapping(void* address,size_t size) {
 	}
 	mach_vm_deallocate(mach_task_self(),(mach_vm_address_t)(uintptr_t)address,(mach_vm_size_t)size);
 }
+#else
+#define OPENNOX_NATIVE_TEST_ADDRESS(address) ((uintptr_t)(address))
 #endif
 #endif

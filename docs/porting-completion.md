@@ -55,6 +55,76 @@ completion requirements.
 
 ## Current findings
 
+### Native monster interesting-sound entry
+
+Public `5466F0` now uses the native Go raw entry. The ordinary server path
+shares that core while retaining its existing nil/class admission. The core
+keeps the entry MUD, passes its live coordinate pointer to terrain services,
+copies trace coordinates after path, reloads state through actual `545DA0`
+after successful trace, and reads move/safety coordinates after Push. Every
+admitted nonfaulting outer call clears its entry marker and succeeds.
+Original C is retained under `#if 0`. The earlier variadic-hook harness is
+retained verbatim as a test fixture; its unchanged assertions receive no new
+production-equivalence credit.
+
+Before engine edits, independent original execution and both native consumers
+are frozen: **5,511 contexts including eight raw faults per FPU control**,
+byte-identical. All **555 instruction bytes** execute: root295, actual
+subclass predicate14, actual called recent-sound179 and actual RNG67.
+Tile/path/trace/Push are declared world services; no instruction or arithmetic
+is substituted. Original heap writes, code/table bytes, register/stack/FPU
+state and guards are checked. Actual old public C SIGSEGVs after valid
+above4GiB C/Go layout and whole initial-record controls (`41344960077`).
+Its exact binary, complete API-digest-verified artifact and raw job remain.
+
+Public C and direct Go comparisons pass **11,025 events** normally and with
+highres/cgocheck2/checkptr2. Real clocks/RNG/Push/empty native wall tracing
+composition passes **97** in both profiles; tile/path remain declared
+services. All local warnings are zero. Whole native records, padding,
+neighbors, pointer projections and high argument-word sentinels match the
+original. All **4,239** previous inputs remain byte-identical; current input
+inventory **4,246**. Existing manifest ranges suffice; no new range is added.
+The strict selector adds only `MonsterInteresting`, retaining all earlier
+alternatives. The first current macOS matrix uses the old selector; its strict
+result receives no new-entry credit. The separately expanded full strict gate
+`41348352868` passes **598,035 / 8 skips**. Its first attempt `41347203963` failed before compilation
+or tests because the module proxy's IPv6 connection had no route to host; its
+complete failed preparation artifact and raw job remain retained.
+
+At runtime `cd7245b`, current complete gates pass: macOS normal/HD
+**737,354 / 43 skips** each and server/server-HD **731,285 / 4** each;
+Windows amd64 **731,255 / 11** and 386 **711,525 / 94**; Linux GUI/HD
+**739,345 / 54** each and server/server-HD **733,235 / 7** each. All Windows
+prior terminal identities/multiplicities remain, with **11,123** added passing
+interesting-sound events and no new skips. The old Windows intermittent
+failure remains separately retained and is not claimed repaired by this pass.
+All complete CI archives, products, exact test binaries and raw jobs are
+retained with API SHA256 checks. Build/link/test output, complete Linux JSON
+streams and raw jobs emit zero warnings; no new suppression is introduced.
+
+Runtime `cd7245b` builds/runs help with clean-source Go1.26.9 ARM64 metadata
+and zero warnings. Current product Blink six modes, first attack sixteen
+modes and Lightning exit pass; four retained game frames are actually viewed.
+All 28 host capture PNGs are preserved, including the four inspected frames.
+The ordinary-clock SDL/Core merchant replay passes in **375.734s**: purchase
+and sale each submit gain0.6771653 and drain all four buffers. Both retained
+images are actually viewed (sale quote33, final gold9933, FieldGuide removed).
+It is a funded diagnostic, supplying no earned-campaign, physical-speaker or
+actual user sale-silence resolution claim.
+
+Preservation rechecks retain 298 previous standalone products, 81 previous
+full test executables, 4,649 personal assets, 15 protected failed Save files,
+original GAME.EXE and both frozen consumer/getter/golden families. Transparent
+compression of 6,811 closed captured JSON snapshots recovers 4,778,442,752
+allocated bytes with logical bytes/SHA/path/mode/owner/mtime/original xattrs
+and original success/failure states retained. No asset, Save, input, golden
+or executable is changed by this cleanup. The first JSON-prefix preparation
+failure happened before mutation and remains recorded.
+Evidence remains under `ROOT/monster-interesting-sound-native-entry-port`;
+reference scope is in `server/testdata/monster_interesting_original_5466f0.md`.
+Overall 100%, the nine final chapter1-3 audits, actual user sale-silence
+report and the earlier intermittent Windows failure cause remain open.
+
 ### Native monster recent-sound and damager-facing entries
 
 Public Sound `545DA0` and LookDamager `5466B0` use typed native Go object
@@ -94,20 +164,6 @@ full-gate results are recorded below.
 Detailed evidence remains under
 `ROOT/monster-react-sound-damager-native-entry-port`; reference scope is in
 `server/testdata/monster_reactive_original_545da0.md`.
-
-The next entry `5466F0` has an independent original baseline before engine
-changes: **5,511 contexts including eight raw faults per FPU control**, with
-byte-identical results. All **555 instruction bytes** execute: root295,
-actual subclass predicate14, actual called recent-sound179 and actual RNG67.
-Tile/path/trace/Push are declared world services; no instruction or arithmetic
-is substituted. Inputs include all Push masks, repeated embedded records,
-raw coordinate words and service mutations of coordinates, MUD binding and
-clocks. Whole heaps, code/table bytes, register/stack/FPU state and guards are
-checked. The original retains its entry MUD but reloads current MUD through
-the actual recent-sound call after trace. Inputs, producer, both outputs and
-proofs remain under `ROOT/monster-interesting-sound-native-entry-port`.
-The native consumer and actual above4GiB C-before baseline are not yet done;
-the entry is not credited as ported and its engine is unchanged.
 
 The first Windows gate for `63d696b` (`41334121065`) passes amd64 but the
 386 legacy tests fail to compile: the new production fixture converted an

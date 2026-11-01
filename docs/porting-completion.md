@@ -134,7 +134,20 @@ existing GC workflow. It verifies the original archive/source/executable
 digests, replays the exact failed 386 server PE, and compares typed versus
 opaque-byte snapshots using byte-identical production memmap code. No
 engine or collector patch is involved. The suspected fixture cleanup
-pointer lifetime remains a hypothesis until the controls execute.
+pointer lifetime is investigated separately from ordinary gate completion.
+
+The actual Windows/386 memmap control observes finalization, then reproduces
+`found pointer to free object` with the old typed snapshot (exit2, 896-byte
+class). The opaque-byte control restores identical bytes and completes GC
+(exit0). The melee original-comparison fixture now preserves its packed
+32-bit scratch slot only as part of the existing 136-byte snapshot; it
+never promotes that non-owning old word into a Go cleanup-closure root.
+64-bit side-slot ownership and typed restoration remain intact. All 4,900
+production files, original results, input values, comparison rows and
+existing assertions are unchanged. Fresh ordinary native gates remain
+required; the earlier failed gate is preserved as failed. The first
+diagnostic transport failure and wrong-working-directory replay failures
+are retained and receive no engine-failure or passing-gate credit.
 
 Overall 100%, all nine final chapter1-3 audits, natural bot activation and
 the actual user's sale-silence report remain open; chapter4+ is excluded.

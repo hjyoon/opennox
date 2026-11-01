@@ -187,8 +187,17 @@ func meleeNewFixture532130(t *testing.T) *meleeFixture532130 {
 	f.selected = memmap.PtrPtr(0x5d4594, 2487948)
 	f.distance = memmap.PtrFloat32(0x5d4594, 2487952)
 	f.global = unsafe.Slice((*byte)(unsafe.Add(unsafe.Pointer(f.distance), -68)), 136)
-	old, oldGlobal := *f.selected, append([]byte(nil), f.global...)
-	t.Cleanup(func() { copy(f.global, oldGlobal); *f.selected = old })
+	oldGlobal := append([]byte(nil), f.global...)
+	if unsafe.Sizeof(uintptr(0)) == 4 {
+		// The packed PE32 slot is non-owning and may contain a pointer from
+		// an earlier test. Preserve its bits without making that stale value
+		// a Go GC root. The 136-byte snapshot already includes this slot.
+		t.Cleanup(func() { copy(f.global, oldGlobal) })
+	} else {
+		// Native-width side slots own their pointer separately from the blob.
+		old := *f.selected
+		t.Cleanup(func() { copy(f.global, oldGlobal); *f.selected = old })
+	}
 	return f
 }
 func (f *meleeFixture532130) unit() *Object { return &f.objects[0].Value }

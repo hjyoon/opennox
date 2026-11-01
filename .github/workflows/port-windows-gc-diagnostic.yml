@@ -363,9 +363,17 @@ jobs:
         with:
           ref: ${{ inputs.source_revision }}
           fetch-depth: 0
+      - name: Select the repository's pinned Go toolchain
+        id: native_go
+        shell: bash
+        run: |
+          set -euo pipefail
+          native_go_pin=$(tr -d '[:space:]' < toolchain/go-version.txt)
+          [[ "$native_go_pin" =~ ^go[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          printf 'version=%s\n' "${native_go_pin#go}" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-go@v7
         with:
-          go-version-file: src/go.mod
+          go-version: ${{ steps.native_go.outputs.version }}
           cache: false
       - name: Install native dependencies and record SDK
         shell: bash

@@ -352,8 +352,11 @@ wchar2_t* nox_wcscpy(wchar2_t* dest, const wchar2_t* src) {
 }
 
 size_t nox_wcslen(const wchar2_t* nox_wcs) {
+	// Keep the original 16-bit loads. Recent Clang versions can recognize
+	// this loop as the host wcslen, whose wchar_t ABI is 32-bit on macOS.
+	const volatile wchar2_t* units = nox_wcs;
 	size_t result;
-	for (result = 0; nox_wcs[result]; result++)
+	for (result = 0; units[result]; result++)
 		;
 	return result;
 }

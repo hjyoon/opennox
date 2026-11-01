@@ -17,6 +17,9 @@ assert variant in ['normal', 'hd', 'server', 'server-hd', 'strict']
 report = repo / 'build' / ('macos-arm64-' + variant)
 report.mkdir(parents=True)
 env = dict(os.environ, GOTOOLCHAIN='local')
+# The native filesystem returns physical paths. Match the local gate's
+# canonical temporary-directory setup before tests create private Save roots.
+env['TMPDIR'] = str(Path(env.get('TMPDIR', '/private/tmp')).resolve(strict=True))
 for key in ['GOROOT', 'GOTOOLDIR']:
     env.pop(key, None)
 assert platform.system() == 'Darwin' and platform.machine() == 'arm64'
@@ -51,6 +54,7 @@ profile = dict(source=source, workflow_revision=os.environ['GATE_WORKFLOW_REVISI
                variant=variant, native_OS=platform.platform(), CPU=platform.machine(),
                tags=tags, CGO_ENABLED=env['CGO_ENABLED'], CGO_CFLAGS=env['CGO_CFLAGS'],
                SDKROOT=env['SDKROOT'], GOFLAGS=env['GOFLAGS'], GOMAXPROCS=env['GOMAXPROCS'])
+profile['TMPDIR'] = env['TMPDIR']
 if variant == 'strict':
     env.update(GOEXPERIMENT='cgocheck2', NOX_TEST_OPENAL='true',
                NOX_TEST_NATIVE_FX='true', ALSOFT_DRIVERS='null')

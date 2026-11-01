@@ -200,8 +200,30 @@ host, with Go1.26.9, complete existing core-package test output, products and
 exact executed test binaries preserved. It checks compiler/linker warnings,
 native build information and GC symbols. Source and workflow revisions are
 recorded separately; all 4,233 existing inputs remain unchanged. This remote
-path addresses local linker disk pressure. Its first execution is pending,
-and it supplies no physical speaker or local SDL gameplay evidence.
+path addresses local linker disk pressure. The initial preparation failure
+selected Go1.26.0 from the language directive; the gate now reads the pinned
+Go1.26.9 toolchain file. That failed run and all its artifacts remain retained.
+
+The first pinned macOS26/Xcode26.6 execution (`41327463771`, source
+`e33e286`) builds and verifies all four products with zero compiler/linker
+warnings. Strict passes **581,209 / 8 skips**. The four ordinary gates fail
+and remain failed: normal **720,496 / 43 skips / 38 failures**, highres
+**720,494 / 43 / 40**, server **714,432 / 4 / 33**, and server-highres
+**714,433 / 4 / 32**. All five complete artifact ZIPs, including products and
+executed test binaries, are retained and checked against API SHA256 digests.
+
+Inspection of the exact failed ARM64 executable proves that Clang replaced
+the UTF16 `nox_wcslen` loop with a branch to the system `_wcslen` import,
+which uses the incompatible host wchar ABI. Volatile 16-bit loads now retain
+the original code-unit contract without compiler or warning suppression
+flags. Existing tooltip and centered-message original comparisons pass
+**19 events**, zero warnings; local generated ARM64 assembly retains `ldrh`
+and has no host `wcslen` branch. Expected values and assertions are unchanged.
+The native gate also canonicalizes TMPDIR, matching the existing local gate
+and the filesystem's physical Save/runtime paths. Unrelated fixed-address
+fixture allocation failures remain separately recorded pending verification.
+Fresh full gates for this correction are pending. Remote gates supply no
+physical speaker or local SDL gameplay evidence.
 
 Overall 100%, all nine final chapter1-3 audits, natural bot activation and
 the actual user's sale-silence report remain open; chapter4+ is excluded.

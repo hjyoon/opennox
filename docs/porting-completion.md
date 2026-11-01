@@ -143,11 +143,53 @@ class). The opaque-byte control restores identical bytes and completes GC
 32-bit scratch slot only as part of the existing 136-byte snapshot; it
 never promotes that non-owning old word into a Go cleanup-closure root.
 64-bit side-slot ownership and typed restoration remain intact. All 4,900
-production files, original results, input values, comparison rows and
-existing assertions are unchanged. Fresh ordinary native gates remain
-required; the earlier failed gate is preserved as failed. The first
-diagnostic transport failure and wrong-working-directory replay failures
-are retained and receive no engine-failure or passing-gate credit.
+non-test files under `src`, original results, input values, comparison rows
+and existing assertions are unchanged.
+
+At fixture-only source `c29c78a`, ordinary Windows run `41320808625`
+passes amd64 **714,435 / 11 skips** and 386 **694,705 / 94**. Every
+prior successful terminal identity/multiplicity and all 18,461 waypoint
+events remain. Both complete raw job/test/stderr streams have zero
+compiler, linker or CI warnings. Two products and all six complete test PEs
+with GC symbols are preserved inside digest-verified ZIPs.
+
+The exact old retained 386 PE passes an ordinary replay but fails
+`gccheckmark=1` during existing melee case00449 in run `41320619781`.
+The exact corrected PE passes ordinary, GC crosscheck and GC-stress
+replays in run `41322057285`: full server **202,641 / 16 skips**, each
+focused melee replay **3,674 / 0**. These are diagnostic replays; the old
+failed ordinary gate remains preserved as failed. Broader historical
+amd64 memory failures are not claimed fixed.
+
+macOS ARM64 focused checks pass the same **3,674** existing identities in
+normal (9.976s) and actual highres/cgocheck2/checkptr2 (11.341s), with zero
+warnings. A private compilation overlay retains the unchanged original
+comparison, its nine predecessors, helpers and the byte-identical original
+standalone blob initializer. It omits unrelated test registration and
+linker resources, and receives no full-suite credit. The earlier full
+ARM64 runtime checks and four products remain source-identical in all
+non-test files. Both initial full-package disk build/link failures, an
+empty strict build exit, the first focused overlay's omitted-init failure,
+diagnostic transport failure and wrong-directory replays are retained.
+
+Two more closed failed JSON logs recover 127,586,304 allocated bytes with
+unchanged logical bytes/hash/path/mode/owner/mtime and failed states. A
+large-copy compression attempt leaves its original untouched and its failed
+copy uncompressed; that copy is preserved as a byte-identical independent
+APFS clone with flags/mode/owner/mtime/xattrs intact. There is no further
+large-copy compression retry. Closed generated cgo cache text
+(128,502,829 bytes) and an unused closed full-test compiler archive
+(254,837,978 bytes) are removed after identity/handle checks. No source,
+asset, Save, result or executable is deleted. Prior 298 engine products,
+81 complete test PEs and 83 audio captures remain preserved; the new ZIP
+members bring products to 300 and complete test PEs to 87.
+
+Exact fixture, native, GC and preservation proofs are under
+`ROOT/windows386-melee-global-snapshot-lifetime`. Static inspection of live
+public reactive-sound/damager helpers `545DA0`/`5466B0` is retained under
+`ROOT/monster-react-sound-damager-native-entry-port`; native C-before and
+fresh original/direct-entry comparisons remain pending. Neither helper is
+credited as newly ported by this inspection.
 
 Overall 100%, all nine final chapter1-3 audits, natural bot activation and
 the actual user's sale-silence report remain open; chapter4+ is excluded.

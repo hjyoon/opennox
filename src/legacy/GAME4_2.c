@@ -7076,6 +7076,7 @@ int nox_xxx_mapGenFinishSpellbook_527DB0(int a1, char a2) {
 }
 
 //----- (00527E50) --------------------------------------------------------
+#if 0 // Retained PE32 implementation; native public entry is in Go.
 int nox_xxx_netUpdateObjectSpecial_527E50(nox_object_t* a1p, nox_object_t* a2p) {
 	int a1 = a1p;
 	uint32_t* a2 = a2p;
@@ -7125,6 +7126,8 @@ int nox_xxx_netUpdateObjectSpecial_527E50(nox_object_t* a1p, nox_object_t* a2p) 
 	}
 	return 1;
 }
+
+#endif
 
 //----- (00528030) --------------------------------------------------------
 short sub_528030(int a1) {

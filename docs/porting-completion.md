@@ -55,6 +55,65 @@ completion requirements.
 
 ## Current findings
 
+### Native special-state sender entry
+
+Public `527E50` now reads native Object, PlayerUpdateData and Player fields,
+retaining `int(object*, object*)` and the original PE32 two-word ABI. Its old
+C body is archived under `#if 0`. Typed Go/C getter controls pass above4GiB,
+then the actual pre-port C entry reproduces SIGSEGV. Native offsets are
+UpdateData872, Player336, PlayerInd2068 and Field140624 on ARM64, replacing
+the PE32 748/276/2064/560 reads.
+
+The raw entry reads recipient/update/Player and its unsigned index byte before
+the nil-unit/index32 gates. A shared Go consumer preserves all eight live-bit
+tests, cached index and post-callback clears. Enemy nonzero suppresses health
+but still clears the health bit; unhandled admitted bits remain. The ordinary
+sender retains its class/nil policies and shares the same consumer. Its idle
+mask gate precedes closure construction: a bounded 1,000-iteration normal
+ARM64 comparison restores 0 bytes / 0 allocations per call after an observed
+144-byte / nine-allocation draft regression. This supplies no general
+frame-time or raw-public-C allocation claim.
+
+Each original FPU profile executes **1,252 contexts / 1,272 calls**, plus six
+separate faults, covering all **470** root bytes; the following ten NOPs are
+excluded. Both original outputs are identical. Nine report/enemy children
+remain declared service boundaries. Original register/stack/FPCW/TOP and
+write traces are retained diagnostics without native stack or store-count
+equivalence claims. Native C/Go comparisons check ordered child arguments,
+live words at callbacks, all 32 peer words and complete guarded Object, two
+update and two Player records, including the raw recipient's original class0.
+
+Raw C/Go original/fault comparisons pass **2,520** events, server order/layout
+checks **11**, and production binding/policy checks **54**. Four production
+paths reach the actual factory and Go children; lower important transport is
+a declared capture boundary and height uses the real client netlist. The
+focused union includes one unchanged helper control, **2,586** total. The first
+overlay legacy consumer's allocation constraint fails compilation; its retained
+correction changes only any to comparable, preserving every original expected
+value. All **4,198** preceding inputs remain byte-identical, current **4,203**.
+Oracle verification passes **3,335 code / 691 data ranges** and all **21**
+verifier tests, retaining all earlier entries and order.
+
+Post-optimization normal passes **648,551 / 43 skips** in
+276.687 seconds; actual highres/cgocheck2/checkptr2 passes
+**509,208 / 8 skips** in 341.649 seconds. Both preserve all
+earlier terminal identities and multiplicities, add 2,585 passes and emit zero
+compiler/linker warnings, without warning suppression or strict exemptions.
+An earlier strict build fails for lack of disk space; that complete raw result
+remains separate. Transparent APFS compression preserves 31 closed successful
+log paths, bytes, SHA, ownership/mode and mtimes while recovering 7,653,765,120
+allocated bytes. Two uncompressed large-file copy attempts stop before source
+replacement; their failed raw records remain and only verified duplicate
+intermediates are removed. Source, Save, assets, products and fixture bytes
+remain unchanged by storage recovery.
+
+Current four ARM64 products, campaign/menu Load/Save, actual SDL/Core audio and
+native Windows/Linux gates remain pending for this new runtime. Overall 100%
+and nine final class/chapter1-3 audits remain incomplete; chapter4+ is excluded.
+The user sale-silence report and historical intermittent Windows memory cause
+remain open. Exact evidence is under
+`ROOT/object-special-flags-native-entry-port`.
+
 ### Native simple and Phantom object senders
 
 Public `5187E0` and `5188A0` now take native Object pointers and share Go cores
@@ -137,7 +196,7 @@ regenerable compiler archives, 3,331,708,210 logical bytes. Current importcfg
 paths/open handles, products, Saves, source, inputs, assets and validation
 records are protected.
 
-Next `527E50` has a whole 470-byte original reference: 1,252 independently
+At that checkpoint, `527E50` has a whole 470-byte original reference: 1,252 independently
 declared contexts / 1,272 calls and six separate nil-chain faults. Both FPU
 profiles agree. Native Go/C getter controls pass above4GiB, then its actual
 old public C entry reproduces SIGSEGV. Comparators are sealed before engine
@@ -146,8 +205,8 @@ constraint; the retained correction changes only any to comparable, preserving
 all original expectations. The complete overlay then passes 2,586 events:
 2,520 raw C/Go original/fault checks, 11 server order/layout checks, 54
 production/policy checks and one unchanged helper control, with zero build
-warnings. The proposed code remains outside the worktree and supplies no
-installed product-port result yet.
+warnings. At that checkpoint the proposed code remains outside the worktree
+and supplies no installed product-port result yet.
 
 Overall porting and nine final class/chapter1-3 audits remain incomplete;
 chapter4+ is excluded. The user sale-silence report and historical intermittent

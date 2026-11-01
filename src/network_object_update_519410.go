@@ -13,8 +13,6 @@ import (
 	"github.com/opennox/opennox/v1/server"
 )
 
-const objectSpecialMask527E50 = uint32(0x0fff0000)
-
 type objectSpecialHooks527E50 struct {
 	reportAnimation func()
 	reportHealth    func()
@@ -29,32 +27,11 @@ type objectSpecialHooks527E50 struct {
 // consumeObjectSpecialFlags527E50 preserves the ordered tests, callbacks and
 // post-callback bit clears of GAME.EXE 00527E50.
 func consumeObjectSpecialFlags527E50(state *uint32, hooks objectSpecialHooks527E50) bool {
-	if state == nil || *state&objectSpecialMask527E50 == 0 {
-		return false
-	}
-	steps := [...]struct {
-		bit  uint32
-		call func()
-	}{
-		{0x00010000, hooks.reportAnimation},
-		{0x00020000, hooks.reportHealth},
-		{0x00040000, hooks.reportHidden},
-		{0x00080000, hooks.reportXStatus},
-		{0x00400000, hooks.reportHeight},
-		{0x00800000, hooks.reportEnchant},
-		{0x02000000, hooks.reportTeamBase},
-		{0x04000000, hooks.reportNPC},
-	}
-	for _, step := range steps {
-		if *state&step.bit == 0 {
-			continue
-		}
-		if step.call != nil {
-			step.call()
-		}
-		*state &^= step.bit
-	}
-	return true
+	return server.ConsumeObjectSpecialFlagsNative527E50(state, server.ObjectSpecialFlagHooks527E50{
+		Animation: hooks.reportAnimation, Health: hooks.reportHealth, Hidden: hooks.reportHidden,
+		XStatus: hooks.reportXStatus, Height: hooks.reportHeight, Enchant: hooks.reportEnchant,
+		TeamBase: hooks.reportTeamBase, NPC: hooks.reportNPC,
+	})
 }
 
 func (s *Server) netUpdateObjectSpecialNative527E50(recipient, obj *server.Object) bool {
@@ -69,20 +46,11 @@ func (s *Server) netUpdateObjectSpecialNative527E50(recipient, obj *server.Objec
 	if ind < 0 || int(ind) >= len(obj.Field140) {
 		return true
 	}
-	return consumeObjectSpecialFlags527E50(&obj.Field140[ind], objectSpecialHooks527E50{
-		reportAnimation: func() { s.Nox_xxx_netReportAnimFrame_4D81F0(int(ind), obj) },
-		reportHealth: func() {
-			if !s.IsEnemyTo(recipient, obj) {
-				s.CurrentHPReport4D8620(int32(ind), obj)
-			}
-		},
-		reportHidden:   func() { s.netReportObjectHiddenNative4D8FD0(ind, obj) },
-		reportXStatus:  func() { s.netReportXStatusNative4D8230(ind, obj) },
-		reportHeight:   func() { s.netReportUnitHeightNative4D9020(ind, obj) },
-		reportEnchant:  func() { s.netReportEnchant_4D8F90(ind, obj) },
-		reportTeamBase: func() { s.netReportTeamBaseNative4D92D0(ind, obj) },
-		reportNPC:      func() { s.netSendReportNPCNative4D93A0(ind, obj) },
-	})
+	// Construct the report callbacks only when a special report is pending.
+	if obj.Field140[ind]&server.ObjectSpecialMask527E50 == 0 {
+		return false
+	}
+	return server.ObjectSpecialUpdateForIndexNative527E50(byte(ind), recipient, obj, s.ObjectSpecialRuntimeNative527E50()) != 0
 }
 
 func (s *Server) NetUpdateObjectSpecialNative527E50(recipient, obj *server.Object) bool {

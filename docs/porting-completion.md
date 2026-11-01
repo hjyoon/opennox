@@ -90,10 +90,49 @@ compression, recovering 1,685,114,880 allocated bytes. All 270 original failure
 events remain. No assets, Saves, products, executables or failed results are
 deleted. The earlier rejected executable compression remains unexecuted.
 
-Current-source product, gameplay, SDL/Core merchant and native Linux/Windows
-gates are pending. Creation, update, respawn and natural bot registration remain
-separate work. User sale-silence, overall 100% and the nine final chapter1-3
-audits remain open; chapter4+ is excluded. Exact proofs are retained under
+All four ARM64 products build and pass help with zero compiler/linker
+warnings and clean-source metadata `f9f88a6`. Current products pass
+six Blink conditions (37.580s), sixteen first-attack
+conditions (43.585s), and Chain Lightning
+(32.824s). Original Bookcase1974 movement/combat and menu
+Load/Save pass in 38.957s and
+17.853s, retaining HP20/MP43/poison0 and
+original Urchin HP0/DEAD. The first passing Save is sealed before reload.
+Four selected in-world campaign frames, including both completed-save
+messages, are actually viewed; all fifteen frames remain retained. The early
+black Load capture is retained and receives no loaded-world visual credit.
+
+Actual SDL/Core stock Mystic purchase/sale passes in
+375.350s. Two positive-gain effects consume all
+four buffers each, and both trade frames are actually viewed. This funded
+diagnostic replay does not establish user speaker fidelity or resolve the
+reported sale-silence.
+
+Windows run `41299388280` passes amd64
+**692,817 / 11 skips** and 386
+**673,087 / 94 skips**. Six exact test executables
+retain GC symbols; the historical intermittent Windows memory-failure cause
+remains open. The 386 variant adds 37,547 passes and one explicitly scoped
+64-bit pointer-expansion skip; every old terminal identity and multiplicity
+remains. Other native variants add all 37,628 action passes.
+Linux run `41299390385` passes GUI/HD
+**700,907 / 54 skips** each and
+server/serverHD **694,797 / 7 skips**
+each. Default-link damage retains 133,384 passes. Six entire job logs and
+20 raw streams have zero compiler, linker, test-build or
+CI warnings without new suppression.
+
+Cleanup evicts five closed normal test archives (930,360,540 bytes), 404
+closed strict archives (1,049,981,238 bytes), and 426 completed product
+compiler archives (920,277,782 bytes), with open handles/importcfg protected.
+Final preservation rehashes all **274 standalone products**, **69 full test
+executables**, **79 audio captures**, 4,649 personal files, original GAME.EXE,
+all 4,222 inputs, protected failed Saves and failed results.
+
+Creation, update, respawn and natural bot registration remain separate work.
+Their unchanged original execution and C-before crashes are retained for the
+next port. Overall 100% and all nine final chapter1-3 audits remain open;
+chapter4+ is excluded. Exact proofs are retained under
 `ROOT/player-bot-native-entry-port`.
 
 ### Native player-bot morph entries

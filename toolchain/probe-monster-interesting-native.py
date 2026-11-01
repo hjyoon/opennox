@@ -56,8 +56,8 @@ tracked = subprocess.check_output(['git', 'diff', '--name-only', '--', 'src'], t
 assert not tracked, tracked
 empty = report/'unselected-legacy-tests.go'
 empty.write_text('package legacy\n')
-selected = repo/'src/legacy/monster_interesting_original_5466f0_test.go'
-replacements = {str(path): str(empty) for path in (repo/'src/legacy').glob('*_test.go') if path != selected}
+selected = {repo/row['target'] for row in files if row['target'].endswith('_test.go')}
+replacements = {str(path): str(empty) for path in (repo/'src/legacy').glob('*_test.go') if path not in selected}
 overlay = report/'focused-overlay.json'
 overlay.write_text(json.dumps({'Replace': replacements}, indent=2)+'\n')
 (report/'scope.json').write_text(json.dumps(dict(
@@ -68,7 +68,7 @@ overlay.write_text(json.dumps({'Replace': replacements}, indent=2)+'\n')
     GOEXPERIMENT=env['GOEXPERIMENT'], TMPDIR=env['TMPDIR'],
     platform=platform.platform(),
 ), indent=2)+'\n')
-pattern = '^TestMonsterInterestingNative(CBefore|Layout)5466F0$' if profile == 'before' else '^TestMonsterInteresting(Original|NativeLayout)5466F0$'
+pattern = '^TestMonsterInterestingNative(CBefore|Layout)5466F0$' if profile == 'before' else '^TestMonsterInteresting(Original(Go)?|NativeLayout)5466F0$'
 binary = report/'legacy.test'
 command = ['go', 'test', '-work', '-o='+str(binary), '-overlay='+str(overlay),
            '-json', '-count=1', '-timeout=15m', '-run='+pattern]
@@ -117,5 +117,5 @@ if binary.exists():
         path=binary.name, bytes=binary.stat().st_size, sha256=digest), indent=2)+'\n')
 print(json.dumps(summary), flush=True)
 assert result.returncode == 0 and not failures and not build_failures and not warnings and not unfinished
-assert tests['pass'] == (2 if profile == 'before' else 5513), summary
+assert tests['pass'] == (2 if profile == 'before' else 11025), summary
 assert tests['skip'] == 0 and packages == {'github.com/opennox/opennox/v1/legacy': 'pass'}, summary

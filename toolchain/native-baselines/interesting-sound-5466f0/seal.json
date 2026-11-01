@@ -1,5 +1,5 @@
 {
-  "utc": "2026-11-01T20:02:14.148366+00:00",
+  "utc": "2026-11-01T20:05:55.661123+00:00",
   "source": "b749043d4ef4dababf393f76e31ef39cb73c269b",
   "native_consumer_getter_and_original_frozen_before_engine_edits": true,
   "original_producer_sha256": "bf3f7ad940ea6aa16397d3e41bb937bf9485a182cf431e7ae09d60d21ba1baec",
@@ -21,7 +21,16 @@
       "target": "src/server/testdata/monster_interesting_original_5466f0.json.gz",
       "bytes": 140969,
       "sha256": "7dc57fa677f9de65736d89bf2f13dd26b11cc86b051e3650e77a18208065199e"
+    },
+    {
+      "payload": "monster_interesting_original_go_5466f0_test.go",
+      "target": "src/legacy/monster_interesting_original_go_5466f0_test.go",
+      "bytes": 1449,
+      "sha256": "cf3542d213c95aaf9b2c41914f971b63e23efcd0cf90c0f1bd69d944098312e5"
     }
   ],
-  "scope": "Actual public C consumer; reference services tile/path/trace/Push declared; native production prand; guards, raw faults, full pointer projections. No separate direct-Go-path comparison credit."
+  "scope": "Actual public C and independent dynamic-interface direct Go raw entry against same sealed original; no engine implementation yet",
+  "previous_seal_sha256": "e9130fc3f8076145479acd4de8a6b6f9cb9b814ed4f30cbdb65db994f8ec0765",
+  "all_previous_frozen_files_unchanged": true,
+  "additional_direct_Go_consumer_frozen_before_engine_edits": true
 }

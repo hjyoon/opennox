@@ -55,6 +55,77 @@ completion requirements.
 
 ## Current findings
 
+### Native monster idle-sound entry
+
+Public `5469B0` now uses the native Go raw core in `b3f39bd`; the ordinary
+server entry shares it. Original C remains under `#if 0`. The core preserves
+entry-cached MUD, the original signed stack-index -1 timer-prefix alias, all
+24 slots, unordered-distance admission, DWORD-wrapped signed RNG bounds,
+post-RNG frame reload, and the sound getter's current class/MUD reload.
+The root ABI is void; incidental EAX receives no semantic return credit.
+
+Independent original execution and three native consumer/getter/golden files
+were frozen before engine edits: 353 actual instruction bytes, 5,594 idle-root
+and 76 explicitly ancillary sound-getter contexts per FPU profile, including
+four/15 raw faults. Both profiles produce identical outputs. Only Audio501960
+is declared as a world service. The old public C entry first SIGSEGVs after
+valid above-4GiB layouts, whole initial records and getter controls pass.
+Its exact executable and failure remain preserved.
+
+Normal and strict C/direct-Go comparisons pass 11,344 events per profile.
+Public C production clocks/prand with declared Audio observation pass 151
+per profile. Separate raw/ordinary server composition with real clock/prand,
+Audio.EventObj, registered descriptors, allocation, delayed replay and
+observers plus existing idle tests passes 609 per profile. Original frozen
+references and old assertions remain unchanged. These event totals include
+parents/subtests and are not completion percentages.
+
+Windows `41353749471` passes amd64 743,352/11 skips and 386 723,622/94 skips,
+retaining all prior terminal identities/multiplicities and adding 12,097
+idle pass events per architecture with no new skips. Fixture-only follow-up
+`41356201295` also passes, with identical terminal inventories. Linux
+`41353755884` passes all four products and all four default-link damage
+profiles: GUI/HD 751,442/54 skips, server/server-HD 745,332/7 skips.
+Mac `41353758370` passes normal 749,451/43, server/server-HD 743,382/4 and
+expanded strict 610,140/8. The complete archived outputs and raw jobs for
+these closed runs contain zero build warnings, without new suppression.
+
+That first Mac HD profile fails only the old compass C fixture after 90
+complete cases because its third absolute mmap hint is unavailable. All five
+Mac archives and original failure are API-verified and preserved. Controlled
+occupation reproduces the same case-90 failure. Fixture-only `87d35de`
+reserves owned Darwin pages while preserving identical low DWORDs at the
+signed-bit/4GiB boundaries and high-address control. All 40 candidate runs
+pass with original words, call counts, returns, order and guards unchanged.
+Non-Apple preprocessed fixture tokens and all application sources are
+unchanged; all 4,251 other inputs remain unchanged. The current inventory is
+4,252. The first corrected HD request `41356237718` fails before tests when
+a Go .mod download is reset by the peer; its 2,824-byte archive/raw job remain
+preserved. **Corrected full HD `41356476649` is still running.** The original
+HD failure is not counted as a passing profile.
+
+The clean b3f39bd ARM64 product builds/help-exits with zero warnings. Existing
+host E2E passes Blink6 in 37.358s, first-attack16 in 43.524s, and Lightning
+natural exit in 33.151s. All 28 PNGs are preserved and four were viewed.
+Ordinary-clock SDL/Core actual Mystic trading passes in 375.021s; both stock
+purchase/sale effects have positive gain and all four buffers consumed.
+Both shop PNGs were viewed: quote33, finalgold9,933, FieldGuide removed.
+This is a funded diagnostic; the user's actual sale-silence report and
+physical speaker fidelity remain open.
+
+Original assets, all Saves, 15 protected failed-Save files, original GAME.EXE,
+old products/executables, references and failed results remain preserved.
+Closed compiler archives are regenerable and removed; future local builds
+must recreate them. 141 closed text logs are transparently compressed with
+all logical bytes/hashes/paths/mode/owner/mtime/original xattrs preserved,
+recovering 791,502,848 allocated bytes. Complete CI archives and raw jobs are
+retained under `ROOT/native-ci-retention-20261102`; native, product and audio
+proofs are under the three `monster-idle-*` validation directories.
+
+All nine class/chapter final audits, the older intermittent Windows failure's
+cause and overall 100% remain open. Chapter4+ is excluded. The next `5471B0`
+original reference is prepared privately; it has no native-port credit yet.
+
 ### Native monster interesting-sound entry
 
 Public `5466F0` now uses the native Go raw entry. The ordinary server path

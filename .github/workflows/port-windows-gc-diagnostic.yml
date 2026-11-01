@@ -12,12 +12,17 @@ on:
         type: choice
         options: [checks, report, checkptr, gccheckmark, race]
         default: checks
+      retained_artifact_id:
+        description: Optional retained 386 artifact; replay exact executable and pointer snapshot controls
+        type: string
+        default: ''
 
 permissions:
   contents: read
 
 jobs:
   diagnostic:
+    if: inputs.retained_artifact_id == ''
     name: Windows/amd64 ${{ matrix.profile }} diagnostic
     strategy:
       fail-fast: false
@@ -149,5 +154,168 @@ jobs:
         with:
           name: windows-gc-diagnostic-${{ inputs.source_revision }}-${{ matrix.profile }}-${{ github.run_attempt }}
           path: build/windows-gc-diagnostic/
+          if-no-files-found: error
+          retention-days: 7
+
+  retained:
+    if: inputs.retained_artifact_id != ''
+    name: Windows/386 retained executable and snapshot diagnostic
+    runs-on: windows-2025
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ inputs.source_revision }}
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: src/go.mod
+          cache: false
+      - name: Replay retained executable and compare pointer snapshot lifetimes
+        shell: python
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RETAINED_ARTIFACT_ID: ${{ inputs.retained_artifact_id }}
+          SOURCE_REVISION: ${{ inputs.source_revision }}
+          REPORT_DIR: build/windows-retained-diagnostic
+        run: |
+          import hashlib, json, os, pathlib, shutil, subprocess, urllib.request, zipfile
+          report = pathlib.Path(os.environ['REPORT_DIR']).resolve()
+          report.mkdir(parents=True)
+          source = os.environ['SOURCE_REVISION']
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == source
+          artifact_id = os.environ['RETAINED_ARTIFACT_ID']
+          assert artifact_id.isdecimal()
+          api = 'https://api.github.com/repos/' + os.environ['GITHUB_REPOSITORY']
+          headers = {'Authorization': 'Bearer ' + os.environ['GH_TOKEN'],
+                     'Accept': 'application/vnd.github+json'}
+          def request(url):
+              return urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=120)
+          with request(api + '/actions/artifacts/' + artifact_id) as response:
+              artifact = json.load(response)
+          assert artifact['workflow_run']['head_sha'] == source
+          assert artifact['name'] == 'opennox-server-windows-386' and not artifact['expired']
+          (report/'original-artifact.json').write_text(json.dumps(artifact, indent=2))
+          archive = report/'retained.zip'
+          with request(api + '/actions/artifacts/' + artifact_id + '/zip') as response, archive.open('xb') as output:
+              shutil.copyfileobj(response, output)
+          digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+          assert artifact['digest'] == 'sha256:' + digest
+          assert archive.stat().st_size == artifact['size_in_bytes']
+          with zipfile.ZipFile(archive) as bundle:
+              manifest = json.loads(bundle.read('test-binaries.json').decode('utf-8-sig'))
+              binary = next(row for row in manifest if row['name'] == 'server.test.exe')
+              executable = report/'server.test.exe'
+              with bundle.open('test-binaries/server.test.exe') as input, executable.open('xb') as output:
+                  shutil.copyfileobj(input, output)
+          assert hashlib.sha256(executable.read_bytes()).hexdigest() == binary['sha256']
+          assert executable.stat().st_size == binary['bytes']
+          results = []
+          def run(label, args, env, cwd=None):
+              with (report/(label+'.stdout.log')).open('xb') as out, (report/(label+'.stderr.log')).open('xb') as err:
+                  completed = subprocess.run(args, cwd=cwd, env=env, stdout=out, stderr=err, timeout=1000)
+              row = dict(label=label, args=args, exit_code=completed.returncode,
+                         GOGC=env.get('GOGC'), GODEBUG=env.get('GODEBUG'))
+              results.append(row)
+              (report/'results.json').write_text(json.dumps(results, indent=2))
+              print(json.dumps(row), flush=True)
+              return completed.returncode
+          env = dict(os.environ, GOTOOLCHAIN='local', GOARCH='386', CGO_ENABLED='0', GOWORK='off')
+          # The probe imports byte-identical production memmap code. It does
+          # not rebuild or modify the retained native test executable.
+          probe = report/'snapshot-probe'
+          (probe/'memmap').mkdir(parents=True)
+          for name in ['memmap.go', 'checks.go']:
+              shutil.copyfile(pathlib.Path('src/common/memmap')/name, probe/'memmap'/name)
+          (probe/'go.mod').write_text('module snapshotprobe\n\ngo 1.26.9\n')
+          (probe/'main.go').write_text(r'''
+          package main
+          import (
+              "bytes"
+              "fmt"
+              "os"
+              "runtime"
+              "time"
+              "unsafe"
+              "snapshotprobe/memmap"
+          )
+          type payload struct { Data [772]byte }
+          var anchors []*payload
+          var cleanup func()
+          //go:noinline
+          func prepare(slot *unsafe.Pointer, done chan struct{}) {
+              for i:=0;i<128;i++ {
+                  p:=new(payload)
+                  p.Data[0]=byte(i)
+                  if i==64 {
+                      runtime.SetFinalizer(p,func(*payload){close(done)})
+                      *slot=unsafe.Pointer(p)
+                  } else { anchors=append(anchors,p) }
+                  runtime.KeepAlive(p)
+              }
+          }
+          //go:noinline
+          func typedSnapshot(slot *unsafe.Pointer, data []byte) {
+              old, saved:=*slot,append([]byte(nil),data...)
+              cleanup=func(){copy(data,saved);*slot=old}
+          }
+          //go:noinline
+          func byteSnapshot(data []byte) {
+              saved:=append([]byte(nil),data...)
+              cleanup=func(){copy(data,saved)}
+          }
+          func main() {
+              if unsafe.Sizeof(uintptr(0))!=4 {panic("requires native 386")}
+              data:=make([]byte,136)
+              memmap.RegisterBlobData(0x12340000,"snapshot",data)
+              slot:=memmap.PtrPtr(0x12340000,64)
+              done:=make(chan struct{})
+              prepare(slot,done)
+              for i:=0;i<20;i++ {
+                  runtime.GC()
+                  select {case <-done:goto finalized;default:time.Sleep(10*time.Millisecond)}
+              }
+              panic("non-owning raw slot unexpectedly kept object alive")
+          finalized:
+              for i:=0;i<4;i++ {runtime.GC()}
+              expected:=append([]byte(nil),data...)
+              fmt.Printf("finalizer observed; snapshot mode=%s bytes=%x\n",os.Args[1],data)
+              if os.Args[1]=="typed" {typedSnapshot(slot,data)} else {byteSnapshot(data)}
+              for i:=0;i<4;i++ {runtime.GC()}
+              cleanup()
+              if !bytes.Equal(data,expected) {panic("snapshot changed original bytes")}
+              for i:=0;i<4;i++ {runtime.GC()}
+              runtime.KeepAlive(anchors)
+              fmt.Println("snapshot restored identical bytes; GC completed")
+          }
+          ''')
+          probe_exe = probe/'snapshot.exe'
+          assert run('probe-build', ['go','build','-o',str(probe_exe),'.'], env, str(probe)) == 0
+          for mode in ['typed','bytes']:
+              run('probe-'+mode, [str(probe_exe),mode], env)
+          pattern = '^(TestMonsterActionMelee|TestMeleeActionsOriginalGo532130)'
+          for label, selection, gc, debug in [
+              ('retained-full-ordinary', '.', '100', ''),
+              ('retained-melee-gccheckmark', pattern, '100', 'gccheckmark=1'),
+              ('retained-melee-gc-stress', pattern, '10', '')]:
+              replay_env = dict(env, GOGC=gc, GODEBUG=debug)
+              run(label, ['go','tool','test2json','-t','-p','github.com/opennox/opennox/v1/server',
+                          str(executable),'-test.v=test2json','-test.count=1',
+                          '-test.timeout=15m','-test.run='+selection], replay_env)
+          assert hashlib.sha256(executable.read_bytes()).hexdigest() == binary['sha256']
+          (report/'scope.json').write_text(json.dumps(dict(
+              source=source, exact_retained_executable=binary, artifact_zip_sha256=digest,
+              diagnostic_only=True, no_engine_or_runtime_changes=True,
+              original_failed_ordinary_gate_remains_failed=True),indent=2))
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: windows-retained-diagnostic-${{ inputs.retained_artifact_id }}-${{ github.run_attempt }}
+          path: |
+            build/windows-retained-diagnostic/
+            !build/windows-retained-diagnostic/retained.zip
+            !build/windows-retained-diagnostic/server.test.exe
           if-no-files-found: error
           retention-days: 7

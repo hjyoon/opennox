@@ -107,10 +107,38 @@ preparation/control copies are preserved. Closed obsolete/normal/strict
 compiler archive cleanup is journaled; products, executables, assets, Saves,
 inputs, goldens and failed results remain preserved.
 
-Current-source products, gameplay, SDL/Core merchant and native Linux/Windows
-gates are pending. Overall 100%, all nine final chapter1-3 audits, natural bot
-activation and the actual user's sale-silence report remain open; chapter4+
-is excluded. Exact proofs are retained under
+At source `aae597f`, all four macOS ARM64 products build and run help with
+zero compiler/linker warnings. Current-product Blink (six modes), first
+attack (16 modes), Lightning exit, original Bookcase1974 motion/combat and
+actual menu Load/Save pass. The latter retains HP20/MP43/poison0 and the
+qualified original seed. Four in-world frames are actually inspected.
+The ordinary-clock SDL/Core Mystic purchase/sale replay completes in
+375.410s; both positive-gain events drain all four buffers. Two inspected
+frames show the 33-gold sale quote, completed 9933-gold balance and removed
+FieldGuide. This funded diagnostic does not resolve the user's actual
+sale-silence report or establish physical-speaker fidelity.
+
+Linux run `41315024898` passes all four products: GUI/HD each
+722,525 passes / 54 skips; server/server-HD each 716,415 / 7. Every old
+terminal and all 18,461 new waypoint events are retained. Windows run
+`41315022786` passes amd64 (714,435 / 11) but **fails the ordinary 386
+gate** (566,697 / 88): its server process reports `found pointer to free
+object` during existing `TestMeleeActionsOriginalGo532130`. All new waypoint
+events pass on both architectures; that subset does not replace the failed
+full gate. All six exact Windows test executables and GC symbols are
+retained. A separate complete audit of the six native job logs, JSON streams
+and stderr finds zero warnings without relabeling the failed 386 gate.
+
+A retained-executable diagnostic adds an optional artifact input to the
+existing GC workflow. It verifies the original archive/source/executable
+digests, replays the exact failed 386 server PE, and compares typed versus
+opaque-byte snapshots using byte-identical production memmap code. No
+engine or collector patch is involved. The suspected fixture cleanup
+pointer lifetime remains a hypothesis until the controls execute.
+
+Overall 100%, all nine final chapter1-3 audits, natural bot activation and
+the actual user's sale-silence report remain open; chapter4+ is excluded.
+Exact proofs are retained under
 `ROOT/monster-roam-waypoint-native-entry-port`.
 
 ### Native player-bot creation, update and respawn entries

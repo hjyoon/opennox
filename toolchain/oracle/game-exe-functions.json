@@ -23322,6 +23322,13 @@
       "size": 84,
       "sha256": "44a366dfe0030d6758680858f6acec7c201ec103b9767d2ea7ce33bf26bca23d",
       "purpose": "Complete draw-kind predicate; independent original1280contexts with actual C native callback/class/flags comparison. Callback bodies are compared only, never called."
+    },
+    {
+      "name": "nox_xxx_netPlayerObjSend_518C30",
+      "address": "0x00518C30",
+      "size": 676,
+      "sha256": "a664c478d37057175f5ad0e1cbdab7453844004b1e2d7fb5178ba24fb6013611",
+      "purpose": "Complete676-byte player sender root; actual419A70 converter17 and4D8760 health61 execute754bytes on valid inputs. Two2075-context/2083-call original FPU-profile executions and9separatefaults each retain ordered children, native-mapped pointer reloads, peer-frame32DWORD writes, flags, exact packets/fullreturn and heap/stack/FPU guards. Production native C converter matches startup0xe3f; alternate0x23f native root explicitly replays observed converter results, not a native alternate-converter equivalence claim. Self/action/RNG/frame/direction/network services remain declared boundaries; health upper-word partial-register residue retained as diagnostic while actual(short,short) ABI semantics are compared."
     }
   ],
   "data": [

@@ -55,6 +55,54 @@ completion requirements.
 
 ## Current findings
 
+### Native player-object sender entry
+
+Public `518C30` and the ordinary player sender now use one native Go core.
+The public ABI remains `int(object*, object*, int, int)`, with independent
+stream/health flags and the complete transport return word. The old C body
+is retained under `#if 0`. The pre-port native getter control passes with
+records above 4GiB, then the actual public C call reproduces SIGSEGV.
+
+The shared sender retains cached update pointers, callback-time Player and
+health reloads, peer-stamp/frame ordering, animation overrides, unsigned
+expiry division and its separate divide-by-zero fault. Coordinates use the
+actual native startup converter. The named 32-DWORD peer-frame array occupies
+existing padding. Pre-port product DWARF and native tests agree on Player
+size 6160 and existing ARM64 offsets 5540/5880; the original 4-byte pointer
+alignment gap is retained. Existing convenience nil/slot policies remain.
+
+Each original FPU profile executes **2,075 contexts / 2,083 calls**, plus
+nine separate fault cases. All **676 root + 17 converter + 61 health-child
+bytes** execute on valid inputs. The profiles differ in 2,060 contexts.
+Startup C/Go comparisons call the actual native converter and C health
+helper/important queue. Alternate-profile native comparisons explicitly
+replay the original converter boundary; they do not certify a native alternate
+converter mode. Self/action/random/frame/direction/publication services remain
+declared boundaries. The original short-argument health helper ignores upper
+register residue, which remains in the reference as diagnostic data.
+
+Four original C/Go comparisons and eighteen fault checks pass **8,324 test
+events**, four new order/layout checks pass, and **46** production binding
+checks cover C, public Go and ordinary Go, both real netlists, fractional
+coordinates, all peer neighbors and an actual self gold report. All **4,186**
+prior test/fixture inputs remain byte-identical; the current inventory is
+**4,192**. Oracle verification passes **3,332 code / 691 data ranges** and
+all **21** verifier tests. All original references, failed draft-consumer
+results and the failed new alignment-assumption test are retained.
+
+Local normal tests pass **632,147 / 43 skips** in 356.762 seconds. Actual
+highres/cgocheck2/checkptr2 tests pass **492,804 / 8 skips** in 378.796
+seconds. Both retain every prior terminal identity and multiplicity, add
+8,374 passes, and emit zero compiler/linker warnings. No warning suppression
+or strict exemption was added. The exact raw JSON streams are preserved in
+verified lossless gzip files under
+`ROOT/player-object-send-public-native-entry-port`.
+
+Current ARM64 products, campaign/Save/Load, actual SDL/Core audio and native
+Windows/Linux qualification are pending for this runtime. The user-reported
+sale silence, historical intermittent Windows memory issue and nine final
+chapter1-3 audits remain open. Overall porting is not 100%; chapter4+ is excluded.
+
 ### Native tracked-object refresh entry
 
 Public `519710` now shares its native Go core with the ordinary refresh

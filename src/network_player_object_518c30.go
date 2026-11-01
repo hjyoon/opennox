@@ -9,7 +9,6 @@ import (
 
 	"github.com/opennox/opennox/v1/client"
 	noxflags "github.com/opennox/opennox/v1/common/flags"
-	"github.com/opennox/opennox/v1/internal/netlist"
 	"github.com/opennox/opennox/v1/legacy"
 	"github.com/opennox/opennox/v1/server"
 )
@@ -201,15 +200,13 @@ func (s *Server) netPlayerObjectSendNative518C30(recipient, unit *server.Object,
 	if player == nil {
 		return false
 	}
+	runtime := s.PlayerObjectSendRuntimeNative518C30()
+	runtime.GuardedInputs = true
+	var stream, health int32
 	if updateStream {
-		s.reportUnitHealthDeltaNative4D8760(int(player.PlayerIndex()), unit)
+		stream, health = 1, 1
 	}
-	playerReportSelf518CAF(recipient, unit, s.playerReportSelfNative4D9900)
-	packet := s.playerObjectPacketNative518C30(unit)
-	if updateStream {
-		return nox_netlist_addToMsgListSrv(player.PlayerIndex(), packet[:])
-	}
-	return s.NetList.AddToMsgListCli(player.PlayerIndex(), netlist.Kind1, packet[:])
+	return server.PlayerObjectSendNative518C30(recipient, unit, stream, health, runtime) != 0
 }
 
 // Keep the armor/item-enchantment/Quest slices' update pointer cached before callbacks,

@@ -721,7 +721,8 @@ type Player struct {
 	Field3692           uint32
 	SpellLvl            [137]uint32 // 3696
 	BeastScrollLvl      [41]uint32  // 4244
-	_                   [43]uint32
+	_                   [11]uint32
+	PeerUpdateFrames    [32]uint32   `json:"-"` // original4452; recipient cache indexed by the reported player slot
 	Field4580           *MinimapItem // 1145, 4580
 	ProtUnitHPCur       uint32       // 1146, 4584
 	ProtPlayerGold      uint32       // 1147, 4588

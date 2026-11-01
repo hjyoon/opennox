@@ -4362,6 +4362,7 @@ int nox_xxx_netSpriteUpdate_518AE0(int a1, int a2, uint32_t* a3) {
 #endif
 
 //----- (00518C30) --------------------------------------------------------
+#if 0 // PE32 reference; shared native Go entry in player_object_send_native_518c30.go.
 int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1p, nox_object_t* a2p, int a3, signed int a4) {
 	int a1 = a1p;
 	uint32_t* a2 = a2p;
@@ -4463,6 +4464,7 @@ int nox_xxx_netPlayerObjSend_518C30(nox_object_t* a1p, nox_object_t* a2p, int a3
 	}
 	return result;
 }
+#endif
 
 //----- (00519410) --------------------------------------------------------
 #if 0 // Native Go entry: object_update_dispatch_native_519410.go.

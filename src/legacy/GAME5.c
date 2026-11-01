@@ -702,6 +702,7 @@ int nox_xxx_monsterLookAtDamager_5466B0(int a1) {
 
 //----- (005466F0) --------------------------------------------------------
 int sub_50B810(nox_object_t* a1, float2* a2);
+#if 0 // Original provenance; native entry in monster_interesting_native_5466f0_export.go.
 int sub_5466F0(nox_object_t* a1p) {
 	uint32_t* a1 = a1p;
 	int v1;    // ebx
@@ -750,6 +751,7 @@ int sub_5466F0(nox_object_t* a1p) {
 	*(uint32_t*)(v1 + 388) = 0;
 	return 1;
 }
+#endif
 
 //----- (005469B0) --------------------------------------------------------
 void nox_xxx_mobAction_5469B0(nox_object_t* a1p) {

@@ -95,6 +95,20 @@ Detailed evidence remains under
 `ROOT/monster-react-sound-damager-native-entry-port`; reference scope is in
 `server/testdata/monster_reactive_original_545da0.md`.
 
+The next entry `5466F0` has an independent original baseline before engine
+changes: **5,511 contexts including eight raw faults per FPU control**, with
+byte-identical results. All **555 instruction bytes** execute: root295,
+actual subclass predicate14, actual called recent-sound179 and actual RNG67.
+Tile/path/trace/Push are declared world services; no instruction or arithmetic
+is substituted. Inputs include all Push masks, repeated embedded records,
+raw coordinate words and service mutations of coordinates, MUD binding and
+clocks. Whole heaps, code/table bytes, register/stack/FPU state and guards are
+checked. The original retains its entry MUD but reloads current MUD through
+the actual recent-sound call after trace. Inputs, producer, both outputs and
+proofs remain under `ROOT/monster-interesting-sound-native-entry-port`.
+The native consumer and actual above4GiB C-before baseline are not yet done;
+the entry is not credited as ported and its engine is unchanged.
+
 The first Windows gate for `63d696b` (`41334121065`) passes amd64 but the
 386 legacy tests fail to compile: the new production fixture converted an
 unsigned sentinel to uintptr after an intermediate host-int expression.
@@ -340,6 +354,16 @@ with API SHA256 checks; this run remains failed. The earlier ordinary pass at
 `9cfc758` does not close this new failure. An optional diagnostic now replays all
 three exact failed amd64 executables, focused and complete, with ordinary and
 GC-stress observations. It changes no engine, runtime, existing test or oracle.
+
+That exact-executable diagnostic `41343193740` passes all nine replays:
+the complete existing suites pass **720,132 / 11 skips**, focused ordinary
+repetitions pass **54,030**, and focused `GOGC=10,gccheckmark=1` repetitions
+pass **10,806**. Each of the three retained executable hashes is checked
+before and after execution. Complete output and raw job are retained against
+the API artifact digest. This establishes replay results, not a repair of the
+intermittent original failure; its cause remains open. The first diagnostic
+preparation lacked the later workflow script in a shallow historical checkout;
+that failed run remains retained and full-history checkout corrects preparation.
 
 That native ARM64 product builds/runs help with zero warnings; six Blink
 modes, sixteen natural first-attack modes and Lightning exit pass. Four game

@@ -98,10 +98,50 @@ or strict exemption was added. The exact raw JSON streams are preserved in
 verified lossless gzip files under
 `ROOT/player-object-send-public-native-entry-port`.
 
-Current ARM64 products, campaign/Save/Load, actual SDL/Core audio and native
-Windows/Linux qualification are pending for this runtime. The user-reported
-sale silence, historical intermittent Windows memory issue and nine final
-chapter1-3 audits remain open. Overall porting is not 100%; chapter4+ is excluded.
+Runtime `476af22` passes all four ARM64 product builds and help with zero
+warnings. Current product checks pass six Blink conditions (37.371 seconds),
+sixteen first-attack conditions (43.413 seconds) and three Chain Lightning
+conditions (32.938 seconds). Original Bookcase1974 movement and Urchin combat
+pass in 38.872 seconds; menu Load/Save passes in 17.662 seconds with HP20,
+MP73 and poison0. The successful first Save was frozen before the first
+reload. Four campaign images were actually viewed, including both in-world
+Save-complete messages. One sandbox prelaunch failure (exit71, no game or
+Save) is retained separately; the successful retry uses the same product,
+scenario and localhost-only profile.
+
+Actual SDL/Core Mystic purchase and sale pass in 375.314 seconds. Two stock
+`otrapclk` effects have positive gain0.6771653 and four buffers queued and
+processed each. Both trade images were viewed: original 33-gold quote and
+9,933 final gold with the guide removed. This bounded result does not resolve
+the user's reported silence or establish physical speaker output.
+
+Windows run `41262805534` passes amd64 **626,048 / 11 skips**
+and 386 **606,399 / 93 skips** in all three packages each.
+Linux run `41262823951` passes all four variants: both GUI products record
+**634,138 / 54 skips**, and both server products record
+**628,028 / 7 skips**. Default-link damage retains **133,384** passes.
+Each native inventory preserves all previous terminal identities and
+multiplicities, with 8,374 new passes. Exact complete job/build/test records
+show zero compiler, linker and CI dependency warnings. Six exact Windows test
+executables retain their GC-root symbols; passing runs do not establish the
+cause of the historical intermittent memory failures.
+
+Final preservation verifies **190 standalone engine products** (87 ARM64,
+103 other native), **65 audio captures**, **27 full test executables**, all
+4,649 personal files / 503,207,370 bytes, original GAME.EXE, all 4,192 current
+inputs and 15 protected failed-Save files. The preceding 4,186 inputs remain
+byte-identical. Historical failure ZIPs and the five failed local draft/control
+commands plus the sandbox prelaunch failure retain their exact raw records.
+Only owned cold regenerable compiler archives were removed: 992 removal
+operations, 8,283,569,592 logical bytes; products, Saves, source, inputs, assets
+and validation records were excluded.
+
+Next raw simple/Phantom senders `5188A0`/`5187E0` have static whole-function
+ranges and 3,443 independently frozen input contexts / 3,455 calls plus four
+fault cases. Their original execution, golden comparison and C-before work
+are pending; no new native port is credited. The user-reported sale silence,
+historical intermittent Windows memory issue and nine final chapter1-3
+audits remain open. Overall porting is not 100%; chapter4+ is excluded.
 
 ### Native tracked-object refresh entry
 

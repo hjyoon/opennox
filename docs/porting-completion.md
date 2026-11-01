@@ -55,6 +55,54 @@ completion requirements.
 
 ## Current findings
 
+### Native player-bot morph entries
+
+Public `4FAAC0` and `4FAAF0` now use native typed Go records. Their existing
+`char(uint32_t*)` signatures and one-pointer PE32 argument remain; the previous
+C bodies are retained under `#if 0`. The existing guarded Go helpers share
+the same core while retaining their nil behavior. The raw public entries
+preserve the original nil faults, replacement-link read before any stores,
+complete class/subclass words and low-byte return. Nil replacement links are
+valid and still replace the live update pointer.
+
+The actual old C FromPlayer entry reproduces SIGSEGV with above4GiB native
+records before implementation. Unchanged original execution covers both
+complete 44-byte bodies: **4,352 independent contexts and four separate raw
+faults per FPU profile**, identical across both profiles, with no child,
+instruction or arithmetic substitution. The eight following alignment NOPs
+receive no body-coverage credit. Both roots already match the unchanged
+**3,339 code / 691 data range** manifest; all **21** verifier tests pass.
+
+Actual public C and typed Go pass **8,716** original-comparison events,
+including eight fault subprocesses and complete native unit/player/monster
+records with neighbor guards. All 4,216 preceding inputs are unchanged;
+current inventory **4,219**. Normal passes
+**661,288 / 43 skips**
+in 167.183 seconds. Actual highres/cgocheck2/checkptr2
+passes **521,963 / 8 skips**
+in 395.662 seconds. Every previous terminal identity
+and multiplicity remains; strict also selects eighteen existing direct-cast
+tests. Both profiles emit zero compiler/linker warnings, without new
+suppression or exemptions. The first normal run fails its root test build
+for disk space; exact failed output and source seals remain retained. Its
+successful rerun uses identical source, options and expectations.
+
+Cleanup removes 531 owned cold Go1.25 compiler cache archives, 937,521,648
+logical bytes. Ten already closed successful JSON text logs retain their
+original paths, complete logical bytes/SHA-256, mode/owner/mtime through
+transparent APFS compression, recovering 2,861,903,872 allocated bytes.
+The failed space-limited text-copy attempt, the uncompressed 540MB control
+copy and all four unreplaced large original logs remain retained. No
+executable is compressed in place; assets, Saves and failed results remain.
+
+Current ARM64 product/E2E/SDL-Core audio and Linux/Windows native gates are
+pending for this runtime. Remaining bot creation/update/respawn entries and
+their stock runtime registration are separate audit work. This public-entry
+port does not establish natural bot activation or resolve the user's actual
+sale-silence report. Overall 100% and the nine final chapter1-3 audits remain
+open; chapter4+ is excluded. Exact proofs are retained under
+`ROOT/player-bot-morph-native-entry-port`.
+
 ### Stock War03d isolated asset runtime
 
 The unchanged stock War03d asset now loads and renders with the qualified

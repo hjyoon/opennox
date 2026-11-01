@@ -1,10 +1,6 @@
 package server
 
-import (
-	"unsafe"
-
-	"github.com/opennox/libs/object"
-)
+import "github.com/opennox/libs/object"
 
 // MonsterMorphToPlayer4FAAF0 switches the original bot's two update records
 // without narrowing their links to a PE32 DWORD. All other class bits survive.
@@ -12,11 +8,8 @@ func MonsterMorphToPlayer4FAAF0(unit *Object) int8 {
 	if unit == nil {
 		return 0
 	}
-	if unit.ObjClass.Has(object.ClassMonster) && unit.UpdateData != nil {
-		player := (*MonsterUpdateData)(unit.UpdateData).Field545
-		unit.ObjClass = unit.ObjClass&^object.ClassMonster | object.ClassPlayer
-		unit.UpdateData = unsafe.Pointer(player)
-		unit.ObjSubClass = 0
+	if unit.UpdateData != nil {
+		return int8(unit.MorphPlayerBotToPlayer4FAAF0())
 	}
 	return int8(byte(unit.ObjClass))
 }
@@ -27,11 +20,8 @@ func MonsterMorphFromPlayer4FAAC0(unit *Object) int8 {
 	if unit == nil {
 		return 0
 	}
-	if unit.ObjClass.Has(object.ClassPlayer) && unit.UpdateData != nil {
-		monster := (*PlayerUpdateData)(unit.UpdateData).Field73
-		unit.ObjClass = unit.ObjClass&^object.ClassPlayer | object.ClassMonster
-		unit.UpdateData = unsafe.Pointer(monster)
-		unit.ObjSubClass = object.SubClass(16)
+	if unit.UpdateData != nil {
+		return int8(unit.MorphPlayerBotFromPlayer4FAAC0())
 	}
 	return int8(byte(unit.ObjClass))
 }

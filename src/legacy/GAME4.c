@@ -434,6 +434,7 @@ int nox_xxx_playerBotCreate_4FA700(nox_object_t* a1p) {
 }
 
 //----- (004FAAC0) --------------------------------------------------------
+#if 0 // Original PE32 morph bodies; public entries use native typed Go records.
 char nox_xxx_mobMorphFromPlayer_4FAAC0(uint32_t* a1) {
 	int v1; // eax
 	int v2; // edx
@@ -464,6 +465,7 @@ char nox_xxx_mobMorphToPlayer_4FAAF0(uint32_t* a1) {
 	}
 	return v1;
 }
+#endif
 
 //----- (004FAB20) --------------------------------------------------------
 int nox_xxx_updatePlayerMonsterBot_4FAB20(uint32_t* a1) {

@@ -118,15 +118,15 @@ static void release_map(void* ptr) {
 }
 int main(int argc, char** argv) {
 	CHECK(argc==2);
-	const uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
+	const uintptr_t bases[]={OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x37ffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x3fffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x440000000ull)};
 	for (unsigned map=0;map<3;map++) {
 		// Exact Darwin reservation refuses collisions; other hosts retain their original allocation.
 		void* ptr=map_near(bases[map]); CHECK(ptr);
 		table=(uint8_t*)ptr+(map<2 ? 0x40000-72 : 64);
 		if (sizeof(void*)>4) {
 			CHECK((uintptr_t)ptr==bases[map] && (uintptr_t)table>UINT32_MAX);
-			if (map==0) CHECK((uintptr_t)table<0x380000000ull && (uintptr_t)(table+192)>0x380000000ull);
-			if (map==1) CHECK((uintptr_t)table<0x400000000ull && (uintptr_t)(table+192)>0x400000000ull);
+			if (map==0) CHECK((uintptr_t)table<OPENNOX_NATIVE_TEST_ADDRESS(0x380000000ull) && (uintptr_t)(table+192)>OPENNOX_NATIVE_TEST_ADDRESS(0x380000000ull));
+			if (map==1) CHECK((uintptr_t)table<OPENNOX_NATIVE_TEST_ADDRESS(0x400000000ull) && (uintptr_t)(table+192)>OPENNOX_NATIVE_TEST_ADDRESS(0x400000000ull));
 		}
 		unsigned clocks=strcmp(argv[1],"lookup")==0 ? 1 : strcmp(argv[1],"active")==0 ? 3 : 4;
 		for (unsigned layout=0;layout<11;layout++) for (unsigned key=0;key<=6;key++)

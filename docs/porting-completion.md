@@ -301,6 +301,35 @@ with original packet-registry helpers retained. Child receipts are not
 double-counted. Earlier private overlays missing required player-ID helpers
 remain failed; no original test or expectation is changed to fix the overlay.
 
+At runtime source `9cfc758`, Windows amd64/386 pass **720,132 / 11 skips**
+and **700,402 / 94**; Linux GUI/HD pass **728,222 / 54** each and
+server/server-HD **722,112 / 7** each. All builds emit zero warnings.
+macOS normal/HD pass **726,231 / 43** each, strict **586,906 / 8**, and
+server-HD **720,162 / 4**. The ordinary server gate retains two standalone
+fixture placement failures; no production build fails.
+
+Paired native diagnostic `41340445370` reproduces **23/180** old-layout
+failures on the same macOS image. A common whole-4GiB translation, retained
+for the fixture lifetime, passes **210** ordinary and **210** forced-nonzero
+runs. Thirty independent controls per candidate mode retain low DWORDs,
+relative placements, signed31/unsigned32 boundary relations, complete
+canaries, kernel collision refusal and zeroed reuse. Input/oracle values and
+comparison relations remain. The table and its corresponding boundary
+constants move together; no address assertion is dropped. Observed early
+VM reservations conflict with the old synthetic addresses. The failed fixed
+constructor and first incomplete boundary translation remain retained.
+The verified helper is now in the four actual C fixtures; the duplicate
+candidate header is removed. The corrected ordinary server full gate remains
+pending. All application source stays identical to `9cfc758`.
+
+That native ARM64 product builds/runs help with zero warnings; six Blink
+modes, sixteen natural first-attack modes and Lightning exit pass. Four game
+frames are preserved and actually viewed. The unchanged funded stock Mystic
+SDL/Core ordinary-clock purchase/sale replay passes in **374.057s**: two
+positive-gain effects each process all four buffers. Both sale images are
+preserved and actually viewed (quote33, final gold9933). This does not close
+the actual user's sale-silence report or establish speaker fidelity.
+
 Overall 100%, all nine final chapter1-3 audits, natural bot activation and
 the actual user's sale-silence report remain open; chapter4+ is excluded.
 Exact proofs are retained under

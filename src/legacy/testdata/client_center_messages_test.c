@@ -114,8 +114,8 @@ int main(int argc,char** argv) {
 	if (mode<0) return 1;
 	uint32_t count;int32_t offsets[8];
 	if (fread(offsets,sizeof(offsets),1,stdin)!=1 || fread(&count,4,1,stdin)!=1) return 1;
-	const uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
-	const uintptr_t shadow_bases[]={(uintptr_t)0x47ffc0000ull,(uintptr_t)0x4fffc0000ull,(uintptr_t)0x540000000ull};
+	const uintptr_t bases[]={OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x37ffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x3fffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x440000000ull)};
+	const uintptr_t shadow_bases[]={OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x47ffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x4fffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x540000000ull)};
 	const unsigned clear_offsets[]={16,1280,1920,2048,4096},shadow_offsets[]={8,16,24,32,128};
 	for (unsigned row=0;row<count;row++) {
 		if (fread(input,sizeof(input),1,stdin)!=1 || fread(&event_count,4,1,stdin)!=1 || fread(expected,sizeof(expected),1,stdin)!=1 || fread(&returned,4,1,stdin)!=1) return 1;

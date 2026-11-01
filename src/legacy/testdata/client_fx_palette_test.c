@@ -67,7 +67,7 @@ int main(int argc, char** argv) {
 	check_colors=strcmp(argv[1],"colors")==0;
 	if (!check_colors && strcmp(argv[1],"bounds")) return 1;
 	if (fread(expected_calls,sizeof(expected_calls),1,stdin)!=1 || fread(expected_words,sizeof(expected_words),1,stdin)!=1 || fread(&expected_return,sizeof(expected_return),1,stdin)!=1) return 1;
-	const uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
+	const uintptr_t bases[]={OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x37ffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x3fffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x440000000ull)};
 	const unsigned offsets[]={16,272,400,528,784};
 	const uint8_t patterns[]={0,0x5a,0xff};
 	for (unsigned mapping=0;mapping<3;mapping++) {

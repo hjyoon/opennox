@@ -136,7 +136,7 @@ int main(int argc, char** argv) {
 	if (argc!=2) return 1;
 	drawables=malloc(sizeof(expected_drawables)); if (!drawables) return 1;
 	if (sizeof(void*)>4 && (uintptr_t)drawables<=UINT32_MAX) die("native drawables required");
-	const uintptr_t bases[]={(uintptr_t)0x37ffc0000ull,(uintptr_t)0x3fffc0000ull,(uintptr_t)0x440000000ull};
+	const uintptr_t bases[]={OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x37ffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x3fffc0000ull),OPENNOX_NATIVE_TEST_ADDRESS((uintptr_t)0x440000000ull)};
 	for (unsigned map=0;map<3;map++) {
 		// Hints only; never overwrite an existing mapping with MAP_FIXED.
 		void* ptr=map_near(bases[map]); if (!ptr) die("map native grid");

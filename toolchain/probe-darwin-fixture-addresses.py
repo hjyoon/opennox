@@ -78,11 +78,13 @@ for variant,header in [('before',data/'native_exact_mapping.h'),('reserved',cand
             # boundary crossings, original inputs and every assertion.
             for address in ['37ffc0000','3fffc0000','440000000','47ffc0000','4fffc0000','540000000']:
                 value='(uintptr_t)0x'+address+'ull'
-                code=code.replace(value,'OPENNOX_NATIVE_TEST_ADDRESS('+value+')')
+                wrapped='OPENNOX_NATIVE_TEST_ADDRESS('+value+')'
+                if wrapped not in code:code=code.replace(value,wrapped)
             # Move the comparison's native lane with its data. Keep the
             # signed31 and unsigned32 boundary relations fully asserted.
             for boundary in ['0x380000000ull','0x400000000ull']:
-                code=code.replace(boundary,'OPENNOX_NATIVE_TEST_ADDRESS('+boundary+')')
+                wrapped='OPENNOX_NATIVE_TEST_ADDRESS('+boundary+')'
+                if wrapped not in code:code=code.replace(boundary,wrapped)
         src=folder/(name+'.c');src.write_text(code);binary=folder/name
         args=['clang','-std=c11','-O2','-fshort-wchar','-fsigned-char','-fno-strict-aliasing','-fno-strict-overflow','-Wall','-Wextra','-Werror','-I'+str(folder),'-I'+str(data),'-include',str(data/'native_stdio.h'),str(src),'-o',str(binary)]
         if name=='ability':args.insert(1,'-Wno-unused-function') # Same existing fixture flags.

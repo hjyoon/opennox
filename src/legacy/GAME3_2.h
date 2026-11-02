@@ -5,6 +5,7 @@
 #include "unit_adjust_hp_4ee460.h"
 #include "item_defend_effects_4e1320.h"
 #include "item_pre_damage_4e13b0.h"
+#include "map_temp_lists_503f40.h"
 
 int32_t nox_xxx_updDrawDBall_4CDF80(nox_draw_viewport_t* vp, nox_drawable* dr);
 int32_t sub_4CE0A0(nox_draw_viewport_t* vp, nox_drawable* dr);
@@ -266,8 +267,8 @@ void nox_xxx_playerDisconnByPlrID_4DEB00(int a1);
 int nox_xxx_netGameSettings_4DEF00();
 char* sub_4DF020();
 int nox_xxx_wallSendDestroyed_4DF0A0(int a1, int a2);
-int sub_4DF120(void* a1);
-int sub_4DF180(void* a1);
+int sub_4DF120(nox_map_wall_504290* wall);
+int sub_4DF180(nox_map_wall_504290* wall);
 void sub_4DF2E0(int a1);
 int nox_xxx_netSendSimpleObject2_4DF360(int a1, nox_object_t* a2);
 void sub_4DF3C0(nox_playerInfo* pl);

@@ -4445,6 +4445,20 @@
       "purpose": "disconnect one player, clear native-width unit and update-data state, reset the ordered protection handles, then clear the remaining players' per-client state"
     },
     {
+      "name": "original_secret_wall_packet_4DF120",
+      "address": "0x004DF120",
+      "size": 86,
+      "sha256": "10abefc92d94c977026e82b8469c3e4c92faadcdce64882c9764017f92d8a5ec",
+      "purpose": "Complete original secret-wall state broadcast body, independently executed in1188contexts perPC53ToZero/nearest profile including26faultprefixes; both complete outputs byte-identical. Raw native C/Go comparisons retain cached wallWORD, unsigned recipient, live/repeated/aliased unit-update-player traversal, packet mutation, all routing arguments, ignoredSend result, ordered faultprefixes, finalzero and fullheap/caller/nonvolatile/FPU guards. First4DA7C0/Next4DA7F0/Send4E5420 are declared worldservices; no instruction/result substitution. Ten alignment bytes after eachbody excluded."
+    },
+    {
+      "name": "original_secret_wall_packet_4DF180",
+      "address": "0x004DF180",
+      "size": 86,
+      "sha256": "59e3fbe6037b0732fd8860dd6d3e497be7cbf9842dd8db478dc761b1303f9e83",
+      "purpose": "Complete original secret-wall state broadcast body, independently executed in1188contexts perPC53ToZero/nearest profile including26faultprefixes; both complete outputs byte-identical. Raw native C/Go comparisons retain cached wallWORD, unsigned recipient, live/repeated/aliased unit-update-player traversal, packet mutation, all routing arguments, ignoredSend result, ordered faultprefixes, finalzero and fullheap/caller/nonvolatile/FPU guards. First4DA7C0/Next4DA7F0/Send4E5420 are declared worldservices; no instruction/result substitution. Ten alignment bytes after eachbody excluded."
+    },
+    {
       "name": "nox_xxx_netSendSimpleObject2_4DF360",
       "address": "0x004DF360",
       "size": 90,

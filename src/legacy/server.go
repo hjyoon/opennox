@@ -375,10 +375,10 @@ func Sub_57B0A0() {
 	pauseFXFinishCall57B0A0()
 }
 func Sub_4DF120(a1 unsafe.Pointer) {
-	C.sub_4DF120(a1)
+	C.sub_4DF120((*C.nox_map_wall_504290)(a1))
 }
 func Sub_4DF180(a1 unsafe.Pointer) {
-	C.sub_4DF180(a1)
+	C.sub_4DF180((*C.nox_map_wall_504290)(a1))
 }
 func Nox_xxx_netUpdateObjectSpecial_527E50(a1 *server.Object, a2 *server.Object) {
 	C.nox_xxx_netUpdateObjectSpecial_527E50(asObjectC(a1), asObjectC(a2))

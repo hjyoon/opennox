@@ -23406,6 +23406,20 @@
       "size": 192,
       "sha256": "d890fe558b226a7159b9181a45f0aafe0dcc6b7edbf3e07c18d2ded90d4ba7cf",
       "purpose": "Complete untouched192-byte raw retreat-to-master parent executed with actual201-byte health/retreat/cast/buff closure and8constant bytes:942root plus1ancillary context per PC53-ToZero/nearest profile,17rawfaults/profile,2distance-boundary result differences. Only Push50A260/Pop50A160 are declared services. Ordered before/after states, cached MUD/live owner reloads, push refusal/shared slots, original payload write histories, faults, whole heap/caller/image and nonvolatile/CW/TOP guards. Native public-entry getters/consumer/golden frozen before engine changes; actual old C SIGSEGV qualified above4GiB after independent layouts, real ordinary owner/Push composition and typed predicate/buff/sound/action controls. No arithmetic/instruction/result substitution or full service-callee/campaign/overall100 claim."
+    },
+    {
+      "name": "original_complete_ROAM_start_545790",
+      "address": "0x00545790",
+      "size": 43,
+      "sha256": "8935856131ee4c84722f66f35cb2d17ea9ebcf248c65bad7583e046f455daa6c",
+      "purpose": "Complete untouched raw ROAM lifecycle leaf;1321contexts per PC53-ToZero/nearest profile,6rawfaults/profile,both complete outputs identical;no callee services,instruction/result substitutions or constant-data ranges. Original signed-index/store/returned-update-pointer history;whole image/64KiB heap/caller and valid-return nonvolatile/CW/TOP guards. Five getter/consumer/golden/provenance files and two actual C-before SIGSEGV reproductions above4GiB frozen before engine changes. Native pointer/stack-slot projections retain full-word guards; out-of-array projections do not establish named-field alias equivalence or certify malformed game states. No complete ROAM graph,campaign or overall100 claim."
+    },
+    {
+      "name": "original_complete_ROAM_cancel_5457C0",
+      "address": "0x005457C0",
+      "size": 32,
+      "sha256": "5e58e34d04aa27066ba2172b237397a038c814a1a69f29306d9aec24f75f76ff",
+      "purpose": "Complete untouched raw ROAM lifecycle leaf;1321contexts per PC53-ToZero/nearest profile,6rawfaults/profile,both complete outputs identical;no callee services,instruction/result substitutions or constant-data ranges. Original signed-index/store/returned-update-pointer history;whole image/64KiB heap/caller and valid-return nonvolatile/CW/TOP guards. Five getter/consumer/golden/provenance files and two actual C-before SIGSEGV reproductions above4GiB frozen before engine changes. Native pointer/stack-slot projections retain full-word guards; out-of-array projections do not establish named-field alias equivalence or certify malformed game states. No complete ROAM graph,campaign or overall100 claim."
     }
   ],
   "data": [

@@ -24,6 +24,7 @@ func TestMonsterMainDodge547210ActualLegacyBinding(t *testing.T) {
 			definition.StatusFlags92, definition.RunMultiplier96 = object.MonStatusCanDodge, 1
 			update.MonsterDef = definition
 			unit.SpeedCur = 10
+			unit.Shape.Circle.R = 10 // Original547CA2 reads radius176; speed544 remains the real action input.
 			noxflags.SetGame(noxflags.GameModeCoop)
 			want := mode == "incoming"
 			switch mode {

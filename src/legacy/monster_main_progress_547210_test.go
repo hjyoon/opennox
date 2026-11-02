@@ -18,6 +18,7 @@ func TestMonsterMainProgress547210ActualLegacyBinding(t *testing.T) {
 			t.Run(fmt.Sprintf("%s/%s", action, mode), func(t *testing.T) {
 				srv, unit, update, _ := monsterMainBlockLegacyFixture547210(t)
 				unit.SpeedCur = 10
+				unit.Shape.Circle.R = 10 // Original547CA2 reads radius176; speed544 remains the real action input.
 				update.AIStackInd = 1
 				update.AIStack[1].Action = uint32(action)
 				update.Field124 = 1385

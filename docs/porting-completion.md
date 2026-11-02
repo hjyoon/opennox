@@ -55,6 +55,117 @@ completion requirements.
 
 ## Current findings
 
+### Native point/shape and occupancy call closure
+
+Runtime `1c83052` ports public `547DB0`, `54EF00` and `54EF60` to native
+object/point pointers. The ordinary Go predicate and monster-generator
+occupancy dependency share the same cores. Circle subtraction/products retain
+startup PC53 precision; box arithmetic shares restored `57B850`, including
+its unspilled second diagonal and unordered first/fourth gates. The parent
+clears the shared DWORD before reading its point, retains that same point
+through iteration, processes candidates after a hit and returns the final
+DWORD unchanged. The callback checks the original class mask and Field5,
+leaving scratch unchanged for rejected candidates. Original C remains exact
+under `#if 0`; the two other compiled C callers retain full local addresses.
+
+Reference-only `7ad5dcb` freezes eight getter/consumer/golden files before
+engine changes. The original predicate executes **987 contexts per FPU**,
+including three raw faults; both profiles agree. The original parent/callback
+closure executes **1,224 contexts per FPU**: 1,095 direct callbacks and 129
+parent searches, including 14 raw faults. Only UnitIterator517C10 is a declared
+world boundary; actual original callback and geometry instructions execute,
+with 1,217 geometry calls per profile. Ordered scratch stores, callback
+admissions, mutating input points, object/scratch aliases, complete iteration,
+arbitrary post-service DWORDs, faults and whole native memory are compared.
+Startup and nearest differ in **72 rectangle contexts** and remain separate.
+
+Original runs execute all **440 instruction bytes** and read **12 constant-data
+bytes**; eight alignment bytes receive no instruction credit. The manifest adds only the
+missing **302-byte** `547DB0` record. All **4,034 earlier records** retain their
+metadata/order and independently verified original backed bytes/SHA-256.
+The current manifest has **3,342 code / 693 data ranges**.
+
+Before porting, all three actual public C paths SIGSEGV after independent
+C/Go layouts, typed native getter, positive geometry and initial-memory
+controls pass above 4 GiB. The parent uses the actual map index, native
+iterator bridge and ccall callback. Its first fixture omits explicit point
+initialization after `alloc.New`; position and indexed bounds remain centered
+at zero, and the positive enumeration guard stops before the C call. Adding only the
+missing assignment preserves every assertion and qualifies the actual fault.
+Exact failed sources, diagnostics and executed binaries remain preserved.
+The frozen original-versus-old-Go predicate separately fails **nine result
+leaves** (11 failure events including parents). No reference expectation changes.
+
+The new original comparison passes **3,204 events** normally. Actual default
+map composition passes **57**, covering native C parent/callback/predicate,
+ordinary Go search, closed circle edges, strict box edges, a precision boundary,
+unordered radius and original class/Field5 gates. The ordinary generator's
+default dependency passes another **seven**. Strict highres/cgocheck2/checkptr2
+passes all **3,268 new events**, retaining exact executed binaries. The first
+strict command passes but specifies only outputdir; the identical second
+profile uses `-o` to retain binaries. Existing affected generator, projectile,
+AI-path and box checks pass **912 events** both normally and strictly; oracle
+verifier tests pass **21**. All local compiler/linker warnings are zero.
+The first isolated server test lacks its scalar data blob and stops before
+the query; test-only storage now supplies that original DWORD while preserving
+any existing view. Its failed source/binary/logs remain preserved.
+
+All **eleven full native configurations pass** at immutable `1c83052`:
+Windows `41380710752`, macOS `41380819631` and Linux `41380819559`.
+All **11 complete artifact ZIPs** and raw non-skipped job logs are retained
+with API-digest verification. Every text/JSONL output byte is warning-scanned;
+compiler, linker, test-build and raw-job warnings are **zero**, without new
+suppression or skips. Every ZIP member CRC and all **10 native products /
+24 actual full test executables** are checked. Strict contains tests only.
+
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 766,711 | 54 | 0 |
+| linux-amd64-opennox-hd | 766,711 | 54 | 0 |
+| linux-amd64-opennox-server | 760,601 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 760,601 | 7 | 0 |
+| macos-arm64-hd | 764,720 | 43 | 0 |
+| macos-arm64-normal | 764,720 | 43 | 0 |
+| macos-arm64-server | 758,651 | 4 | 0 |
+| macos-arm64-server-hd | 758,651 | 4 | 0 |
+| macos-arm64-strict | 625,989 | 8 | 0 |
+| opennox-server-windows-386 | 738,891 | 94 | 0 |
+| opennox-server-windows-amd64 | 758,621 | 11 | 0 |
+
+Each Windows architecture retains every prior terminal identity/action and
+multiplicity and adds **3,268 pass events**, with no new skips. Strict retains
+every prior terminal and adds 3,268 new passes plus **189 existing checks**
+newly selected by appended MonsterGenerator/ProjectileCollision prefixes:
+68 server and 121 legacy events. Every one matches its actual earlier normal
+terminal inventory; the original selector prefixes and all expected values
+remain. Linux's additional default-link damage selection runs only for the
+server and retains **133,384 passes**. Current success does not resolve the
+older intermittent Windows memory-failure cause.
+
+The clean Go 1.26.9 ARM64 product is **66,198,418 bytes**, SHA-256
+`6f346c182dadbae5212e695a3a203f05589db4d57a0cda987b8eef50115c96ee`.
+Build/help pass without warnings and metadata records clean `1c83052` source.
+Unchanged host E2E passes six Blink modes in **37.397s**, sixteen first-attack
+modes in **43.556s**, and Lightning's natural exit in **33.237s**. All 28
+captures are retained; four representative frames were actually viewed.
+These are controlled headless/virtual/mock-audio lanes, not earned campaign
+or physical-speaker evidence.
+
+All **4,263 prior inputs** remain byte-identical; eleven additions make
+**4,274**. All eight frozen reference files remain exact. Preservation rehashes
+298 older standalone products, 81 older test executables, 4,649 personal files,
+original GAME.EXE, all 15 protected failed-Save files, four recent products,
+current local test binaries and **14,167 transparently compressed JSON records**.
+Closed compiler-cache cleanup removes **331 strict archives / 376,438,784
+allocated bytes**, then **524 archives / 1,038,508,032 bytes** after the product
+build. Cached executable tools/modules, all records, inputs, goldens, products
+and every Save remain. Future local builds must regenerate compiler archives.
+
+Evidence: `ROOT/point-shape-native-entry-port` and
+`ROOT/point-shape-native-product-e2e-v1`. All nine final class/chapter 1-3
+audits, actual user sale-silence, the older intermittent Windows memory-failure
+cause and overall **100%** remain open; chapter 4+ is excluded.
+
 ### Native monster check-dodgeables entry
 
 Public `547C50` now uses a native-pointer C/Go entry (`dabae22`), shared by
@@ -169,22 +280,9 @@ Evidence: `ROOT/monster-check-dodgeables-native-entry-port`,
 older intermittent Windows memory-failure cause, all nine final chapter 1-3
 audits and overall **100%** remain open; chapter 4+ is excluded.
 
-Next `547DB0` remains unported. Its unchanged **302 instruction bytes** and
-**eight data bytes** execute across **987 independent contexts per FPU
-profile**, including three raw faults; two alignment bytes are excluded.
-Both profiles produce byte-identical output. The actual legacy-int public C
-entry SIGSEGVs after independent layouts, typed getter controls, positive
-native geometry and whole initial-memory guards pass above 4 GiB. Its frozen
-original-versus-existing-Go comparison executes all 987 rows and exposes
-**nine result mismatches** (11 failure events including parents), covering
-unspilled circle/box arithmetic and unordered box gates. Every allocation
-and raw-fault guard passes. Exact failed binaries, inputs, getter, comparator
-and goldens are frozen privately before engine changes. Active C callers
-`54EF00`/`54EF60` still narrow the point context and require further original
-execution and native-call validation. The 302 root bytes are absent from the
-current oracle manifest; one candidate record is prepared, without modifying
-the current manifest. No new native-port or campaign credit is claimed.
-Evidence: `ROOT/point-shape-native-entry-port`.
+The subsequent `547DB0` predicate and `54EF00`/`54EF60` caller closure now
+have native implementations and independent original/native composition
+validation; their completed full-gate evidence is recorded above.
 
 ### Native monster attack-action pop entry
 

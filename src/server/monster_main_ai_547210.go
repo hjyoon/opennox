@@ -342,58 +342,34 @@ func (s *Server) monsterMainRandomFloat547210(runtime MonsterMainRuntime547210, 
 // name, it probes up to five random lateral destinations and schedules a
 // one-second DODGE when walls, objects, and lava all permit the move.
 func (s *Server) monsterMainCheckDodgeables547C50(unit *Object, runtime MonsterMainRuntime547210) bool {
-	cos, sin := SinCosDir(byte(unit.Direction1))
-	// GAME.EXE 00547C6D..00547C88 caches the ray's start before either RNG
-	// callback. Each destination still reads the live position afterwards.
-	origin := unit.PosVec
-	for i := 0; i < 5; i++ {
-		// 00547CA2..00547CB5 retains the FMUL at precision 53 and
-		// FSTS spills under gameplay ToZero. The cap compares the
-		// unspilled register, including its original unordered branch.
-		rawDistance := monsterMoveForceMulChop53_50D4FE(s.monsterMainRandomFloat547210(runtime, 2, 3), float64(unit.SpeedCur))
-		distance := float32(monsterMoveToRunSpill544440(rawDistance))
-		if rawDistance > 15 {
-			distance = 15
-		}
-		if s.monsterMainRandomInt547210(runtime, 0, 100) < 50 {
-			distance = -distance
-		}
-		// 00547CE4..00547D01 keeps each FMUL/FADD separate before
-		// the two FSTPS stores. Nearest-even spills or a contracted FMA
-		// can move a probe across a wall/lava boundary and consume
-		// additional RNG attempts. Coordinates remain live after RNG.
-		x := monsterMoveForceMulChop53_50D4FE(float64(distance), float64(-sin))
-		x = monsterMoveToRunAddChop53_544434(x, float64(unit.PosVec.X))
-		y := monsterMoveForceMulChop53_50D4FE(float64(distance), float64(cos))
-		y = monsterMoveToRunAddChop53_544434(y, float64(unit.PosVec.Y))
-		destination := types.Ptf(float32(monsterMoveToRunSpill544440(x)), float32(monsterMoveToRunSpill544440(y)))
-
-		traceRay := runtime.TraceRay
-		if traceRay == nil {
-			traceRay = s.MapTraceRay
-		}
-		traceObstacles := runtime.TraceObstacles
-		if traceObstacles == nil {
-			traceObstacles = s.MapTraceObstacles
-		}
-		if !traceRay(origin, destination, MapTraceFlag1) ||
-			!traceObstacles(unit, origin, destination) || runtime.TileAt(destination) == 6 {
-			continue
-		}
-
-		s.monsterMainPopAttackActions5471B0(unit)
-		if timer := unit.MonsterPushAction(ai.DEPENDENCY_TIME); timer != nil {
-			// A normal push can cancel a live action and advance the clock.
-			timer.Args[0] = uintptr(s.Frame() + s.TickRate())
-		}
-		if dodge := unit.MonsterPushAction(ai.ACTION_DODGE); dodge != nil {
-			dodge.Args[0] = uintptr(math.Float32bits(destination.X))
-			dodge.Args[1] = uintptr(math.Float32bits(destination.Y))
-			dodge.Args[2] = 0
-		}
-		return true
+	trace := runtime.TraceRay
+	if trace == nil {
+		trace = s.MapTraceRay
 	}
-	return false
+	obstacles := runtime.TraceObstacles
+	if obstacles == nil {
+		obstacles = s.MapTraceObstacles
+	}
+	return unit.MonsterCheckDodgeablesNative547C50(
+		func(min, max float32) float64 { return s.monsterMainRandomFloat547210(runtime, min, max) },
+		func(min, max int) int { return s.monsterMainRandomInt547210(runtime, min, max) },
+		func(ray *[4]float32, flags uint32) int {
+			if trace(types.Ptf(ray[0], ray[1]), types.Ptf(ray[2], ray[3]), MapTraceFlags(flags)) {
+				return 1
+			}
+			return 0
+		},
+		func(obj *Object, ray *[4]float32) int {
+			if obstacles(obj, types.Ptf(ray[0], ray[1]), types.Ptf(ray[2], ray[3])) {
+				return 1
+			}
+			return 0
+		},
+		func(point *types.Pointf) int { return runtime.TileAt(*point) },
+		func(obj *Object) int { return obj.MonsterPopAction() },
+		func(obj *Object, action ai.ActionType) *AIStackItem { return obj.MonsterPushAction(action) },
+		s.Frame, s.TickRate,
+	) != 0
 }
 
 // monsterMainRetreat547210 ports the low-aggression, unbuffed portion of the

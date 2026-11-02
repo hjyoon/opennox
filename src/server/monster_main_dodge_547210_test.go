@@ -65,7 +65,8 @@ func TestMonsterMainDodge547210EntryOriginalAdmissions(t *testing.T) {
 				unit.SpeedBase = 0
 			case "zero-current-speed":
 				unit.SpeedCur = 0
-				destination = unit.PosVec
+				// Original547CA2 reads radius176; all2361 original contexts
+				// stay byte-identical when unrelated speed544 becomes zero.
 			case "full-stack":
 				update.AIStackInd = int8(len(update.AIStack) - 1)
 				update.AIStackHead().Action = uint32(ai.ACTION_WAIT)

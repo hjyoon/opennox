@@ -14,6 +14,7 @@ import (
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
+// Historical speed-labelled values below are radius inputs at original object+176.
 // GAME.EXE 00547CA2, 00547CE4..00547D01 retains each FMUL/FADD at
 // precision 53, then FSTS/FSTPS stores binary32 under gameplay ToZero.
 // big.Float and the independent integer spill encoder deliberately share
@@ -70,7 +71,7 @@ func monsterDodgePointEqual547C50(a, b types.Pointf) bool {
 func monsterDodgeAssertNative547C50(t *testing.T, sample float64, speed float32, side int, direction byte, position types.Pointf) {
 	t.Helper()
 	s, unit, update := monsterHealthRetreatNativeFixture547807(t)
-	unit.PosVec, unit.NewPos, unit.SpeedCur, unit.Direction1 = position, position, speed, Dir16(direction)
+	unit.PosVec, unit.NewPos, unit.Shape.Circle.R, unit.Direction1 = position, position, speed, Dir16(direction)
 	want := monsterDodgeDestinationReference547C50(sample, speed, side, direction, position)
 	before := monsterMoveSelectionBytes50D3B0(unsafe.Pointer(unit), unsafe.Sizeof(*unit))
 	healthBefore, base := *unit.HealthData, update.AIStack[0]
@@ -185,7 +186,7 @@ func TestMonsterMainDodgePrecision547C50NativeDefaultRNG(t *testing.T) {
 	const count = 4096
 	for i := 0; i < count; i++ {
 		unit.PosVec, unit.NewPos = types.Ptf(100.00001, -200.00002), types.Ptf(100.00001, -200.00002)
-		unit.SpeedCur, unit.Direction1 = math.Float32frombits(0x3fc00001), Dir16(byte(i))
+		unit.Shape.Circle.R, unit.Direction1 = math.Float32frombits(0x3fc00001), Dir16(byte(i))
 		update.AIStackInd = 0
 		update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_FIGHT)}
 		// 00416030 with bounds 2..3 is exact in binary64: original
@@ -194,7 +195,7 @@ func TestMonsterMainDodgePrecision547C50NativeDefaultRNG(t *testing.T) {
 		word := reference.Int(0, 0x7fff)
 		sample := float64(word)*float64(math.Float32frombits(0x38000100)) + 2
 		side := reference.IntClamp(0, 100)
-		want := monsterDodgeDestinationReference547C50(sample, unit.SpeedCur, side, byte(unit.Direction1), unit.PosVec)
+		want := monsterDodgeDestinationReference547C50(sample, unit.Shape.Circle.R, side, byte(unit.Direction1), unit.PosVec)
 		calls := 0
 		if !s.monsterMainCheckDodgeables547C50(unit, MonsterMainRuntime547210{
 			TraceRay: func(from, to types.Pointf, flags MapTraceFlags) bool {
@@ -220,7 +221,7 @@ func TestMonsterMainDodgePrecision547C50NativeProgressBoundary(t *testing.T) {
 	for _, base := range []ai.ActionType{ai.ACTION_FIGHT, ai.ACTION_RETREAT} {
 		t.Run(base.String(), func(t *testing.T) {
 			s, unit, update := monsterHealthRetreatNativeFixture547807(t)
-			unit.PosVec, unit.NewPos, unit.SpeedCur, unit.Direction1 = types.Ptf(0, 0), types.Ptf(0, 0), 4, 0
+			unit.PosVec, unit.NewPos, unit.Shape.Circle.R, unit.Direction1 = types.Ptf(0, 0), types.Ptf(0, 0), 4, 0
 			*unit.HealthData = HealthData{Cur: 100, Field2: 100, Max: 100}
 			update.AIStack[0] = AIStackItem{Action: uint32(base)}
 			update.AIStackInd = 1

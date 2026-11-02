@@ -40,7 +40,7 @@ int sub_5466F0(nox_object_t* a1);
 void nox_xxx_mobAction_5469B0(nox_object_t* a1);
 void nox_xxx_monsterPopAttackActions_5471B0(nox_object_t* a1);
 void nox_xxx_monsterMainAIFn_547210(nox_object_t* a1);
-int nox_xxx_monsterCheckDodgeables_547C50(int a1);
+int nox_xxx_monsterCheckDodgeables_547C50(nox_object_t* a1);
 int sub_547DB0(int a1, float2* a2);
 int sub_547EE0(nox_waypoint_t* waypoint, unsigned char mask);
 int sub_547F10();

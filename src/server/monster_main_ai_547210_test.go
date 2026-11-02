@@ -1454,7 +1454,7 @@ func TestMonsterMainCheckDodgeables547C50(t *testing.T) {
 	unit.serverHandle = s.handle
 	unit.PosVec = types.Ptf(100, 200)
 	unit.Direction1 = 0
-	unit.SpeedCur = 10
+	unit.Shape.Circle.R = 10
 	update := unit.UpdateDataMonster()
 	update.AIStackInd = 2
 	update.AIStack[0] = AIStackItem{Action: uint32(ai.ACTION_GUARD)}

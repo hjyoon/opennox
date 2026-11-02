@@ -10,11 +10,12 @@ import (
 	"github.com/opennox/opennox/v1/common/unit/ai"
 )
 
+// Original547CA2 reads Shape.Circle.R (+176); historical test labels are retained.
 func monsterMainDodgeServiceFixture547C50(t *testing.T) (*Server, *Object, *MonsterUpdateData, MonsterMainRuntime547210) {
 	t.Helper()
 	s, unit, update := monsterMainHealthRetreatFixture547210(t)
 	unit.PosVec, unit.NewPos = types.Ptf(100, 200), types.Ptf(100, 200)
-	unit.Direction1, unit.SpeedCur = 0, 10
+	unit.Direction1, unit.Shape.Circle.R = 0, 10
 	unit.HealthData.Cur, unit.HealthData.Max = 100, 100
 	update.RetreatLevel = 0
 	return s, unit, update, MonsterMainRuntime547210{
@@ -265,7 +266,7 @@ func TestMonsterMainDodgeService547C50FloatSpillCapAndDirection(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			s, unit, update, runtime := monsterMainDodgeServiceFixture547C50(t)
-			unit.PosVec, unit.SpeedCur = types.Ptf(0, 0), tt.speed
+			unit.PosVec, unit.Shape.Circle.R = types.Ptf(0, 0), tt.speed
 			runtime.RandomFloat = func(_, _ float32) float64 { return tt.random }
 			runtime.RandomInt = func(_, _ int) int { return tt.side }
 			if !s.monsterMainCheckDodgeables547C50(unit, runtime) {

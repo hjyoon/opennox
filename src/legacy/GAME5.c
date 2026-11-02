@@ -1164,6 +1164,7 @@ LABEL_8:
 }
 
 //----- (00547C50) --------------------------------------------------------
+#if 0 // Ported to monster_dodgeables_native_547c50_export.go; original retained.
 int nox_xxx_monsterCheckDodgeables_547C50(int a1) {
 	float* v1;  // esi
 	int v2;     // edi
@@ -1223,6 +1224,7 @@ int nox_xxx_monsterCheckDodgeables_547C50(int a1) {
 	}
 	return 1;
 }
+#endif
 
 //----- (00547DB0) --------------------------------------------------------
 int sub_547DB0(int a1, float2* a2) {

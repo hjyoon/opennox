@@ -422,8 +422,8 @@ void nox_xxx_collideDamage_4E9430(
 // GAME.EXE 004EADF0 is declared by fist_collide_4eadf0.h.
 // GAME.EXE 004EAE30 is declared by teleport_wake_collide_4eae30.h.
 // GAME.EXE 004EAF00 is declared by chakram_collide_4eaf00.h.
-int sub_4EB250(int a1);
-void sub_4EB340(float* a1, int a2);
+nox_object_t* sub_4EB250(nox_object_t* a1);
+void sub_4EB340(nox_object_t* a1, float2* a2);
 void sub_4EB3E0(int a1);
 // GAME.EXE 004EB490 is declared by arrow_collide_4eb490.h.
 // GAME.EXE 004EB6A0 is declared by harpoon_collide_4eb6a0.h.

@@ -11,6 +11,7 @@ type chakramRetargetNativeDeps4EB250 struct {
 // native-width Object and ChakramUpdateData pointers.
 func chakramRetargetNative4EB250(source *Object, deps chakramRetargetNativeDeps4EB250) *Object {
 	return chakramRetarget4EB250(source, chakramRetargetHooks4EB250[*Object, *ChakramUpdateData]{
+		roundTowardZero: true,
 		loadUpdateData: func(obj *Object) *ChakramUpdateData {
 			return (*ChakramUpdateData)(obj.UpdateData)
 		},

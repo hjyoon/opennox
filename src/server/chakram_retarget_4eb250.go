@@ -34,6 +34,9 @@ type chakramRetargetHooks4EB250[O comparable, U any] struct {
 	storeState     func(U, uint8)
 	storeVelocityX func(O, float32)
 	storeVelocityY func(O, float32)
+	// Ordinary gameplay uses the original startup FPU mode. The generic
+	// nearest-profile controls retain their established default contract.
+	roundTowardZero bool
 }
 
 // chakramRetarget4EB250 preserves GAME.EXE 004EB250 and its 004EB340 search
@@ -45,16 +48,17 @@ func chakramRetarget4EB250[O comparable, U any](
 	source O,
 	hooks chakramRetargetHooks4EB250[O, U],
 ) O {
+	f := chakramRetargetArithmetic4EB250{nearest: !hooks.roundTowardZero}
 	update := hooks.loadUpdateData(source)
 	lastHit := hooks.loadLastHit(update)
 	owner := hooks.loadOwner(source)
 	bestDistance := math.Float32frombits(chakramRetargetBestBits4EB250)
 
 	rect := chakramRetargetRect4EB250{
-		MinX: hooks.loadPosX(source) - chakramRetargetRange4EB250,
-		MinY: hooks.loadPosY(source) - chakramRetargetRange4EB250,
-		MaxX: hooks.loadPosX(source) + chakramRetargetRange4EB250,
-		MaxY: hooks.loadPosY(source) + chakramRetargetRange4EB250,
+		MinX: f.spill(f.sub(float64(hooks.loadPosX(source)), float64(chakramRetargetRange4EB250))),
+		MinY: f.spill(f.sub(float64(hooks.loadPosY(source)), float64(chakramRetargetRange4EB250))),
+		MaxX: f.spill(f.add(float64(hooks.loadPosX(source)), float64(chakramRetargetRange4EB250))),
+		MaxY: f.spill(f.add(float64(hooks.loadPosY(source)), float64(chakramRetargetRange4EB250))),
 	}
 	var best O
 	hooks.eachInRect(rect, func(candidate O) {
@@ -73,13 +77,13 @@ func chakramRetarget4EB250[O comparable, U any](
 		if !hooks.mapCheck(candidate, source) {
 			return
 		}
-		dx := float64(hooks.loadPosX(source)) - float64(hooks.loadPosX(candidate))
-		dy := float64(hooks.loadPosY(source)) - float64(hooks.loadPosY(candidate))
-		distance := dy*dy + dx*dx
+		dx := f.sub(float64(hooks.loadPosX(source)), float64(hooks.loadPosX(candidate)))
+		dy := f.sub(float64(hooks.loadPosY(source)), float64(hooks.loadPosY(candidate)))
+		distance := f.add(f.mul(dy, dy), f.mul(dx, dx))
 		if distance > float64(chakramRetargetRangeSq4EB250) || distance >= float64(bestDistance) {
 			return
 		}
-		bestDistance = float32(distance)
+		bestDistance = f.spill(distance)
 		best = candidate
 	})
 
@@ -88,13 +92,13 @@ func chakramRetarget4EB250[O comparable, U any](
 		return zero
 	}
 	hooks.storeState(update, chakramReturnStateSeek4EAF00)
-	dx := float64(hooks.loadPosX(best)) - float64(hooks.loadPosX(source))
-	dyExtended := float64(hooks.loadPosY(best)) - float64(hooks.loadPosY(source))
+	dx := f.sub(float64(hooks.loadPosX(best)), float64(hooks.loadPosX(source)))
+	dyExtended := f.sub(float64(hooks.loadPosY(best)), float64(hooks.loadPosY(source)))
 	// 004EB2F3 stores, but does not pop, Y before multiplying the extended
 	// value by that binary32 spill. X remains entirely in x87 registers.
-	dy := float32(dyExtended)
-	denominator := float32(math.Sqrt(dyExtended*float64(dy)+dx*dx) + float64(chakramRetargetEpsilon4EB250))
-	hooks.storeVelocityX(source, float32(dx*float64(hooks.loadSpeed(source))/float64(denominator)))
-	hooks.storeVelocityY(source, float32(float64(dy)*float64(hooks.loadSpeed(source))/float64(denominator)))
+	dy := f.spill(dyExtended)
+	denominator := f.spill(f.add(f.sqrt(f.add(f.mul(dyExtended, float64(dy)), f.mul(dx, dx))), float64(chakramRetargetEpsilon4EB250)))
+	hooks.storeVelocityX(source, f.spill(f.div(f.mul(dx, float64(hooks.loadSpeed(source))), float64(denominator))))
+	hooks.storeVelocityY(source, f.spill(f.div(f.mul(float64(dy), float64(hooks.loadSpeed(source))), float64(denominator))))
 	return best
 }

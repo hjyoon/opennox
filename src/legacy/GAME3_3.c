@@ -2597,6 +2597,7 @@ void nox_xxx_collideChakram_4EAF00(int a1, int a2, float* a3) {
 #endif
 
 //----- (004EB250) --------------------------------------------------------
+#if 0 // Preserved original 32-bit bodies; raw native entries are exported from Go.
 int sub_4EB250(int a1) {
 	float* v1;  // esi
 	int v2;     // ebx
@@ -2654,6 +2655,8 @@ void sub_4EB340(float* a1, int a2) {
 		}
 	}
 }
+
+#endif
 
 //----- (004EB3E0) --------------------------------------------------------
 void sub_4EB3E0(int a1) {

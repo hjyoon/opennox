@@ -23399,6 +23399,13 @@
       "size": 302,
       "sha256": "bd94c247e839a116136edc82f9f61b54184eb25b5719b324c18cc29d80c8bbd9",
       "purpose": "Untouched original point/shape predicate; all302 instructionbytes executed across987 independent contexts in bothFPU profiles;2alignmentbytes excluded. No declared child services."
+    },
+    {
+      "name": "original_complete_retreat_to_master_public_entry_5456D0",
+      "address": "0x005456D0",
+      "size": 192,
+      "sha256": "d890fe558b226a7159b9181a45f0aafe0dcc6b7edbf3e07c18d2ded90d4ba7cf",
+      "purpose": "Complete untouched192-byte raw retreat-to-master parent executed with actual201-byte health/retreat/cast/buff closure and8constant bytes:942root plus1ancillary context per PC53-ToZero/nearest profile,17rawfaults/profile,2distance-boundary result differences. Only Push50A260/Pop50A160 are declared services. Ordered before/after states, cached MUD/live owner reloads, push refusal/shared slots, original payload write histories, faults, whole heap/caller/image and nonvolatile/CW/TOP guards. Native public-entry getters/consumer/golden frozen before engine changes; actual old C SIGSEGV qualified above4GiB after independent layouts, real ordinary owner/Push composition and typed predicate/buff/sound/action controls. No arithmetic/instruction/result substitution or full service-callee/campaign/overall100 claim."
     }
   ],
   "data": [

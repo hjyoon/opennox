@@ -113,9 +113,55 @@ view; only `4EB340` leaves the typed view. The original working-tree captures
 retain their provenance, with exact source/header rebinding to the engine
 commit. These are triage counts, not completion percentages.
 
-Product, host E2E and native CI qualification for this engine remain pending.
-All nine final campaign audits and the previously open user issues remain
-open; overall 100% is **not** achieved.
+The clean `2ceab4b1f` Go 1.26.9 ARM64/CGO product is **66,296,866 bytes**,
+SHA-256 `c3c88a7ee418dc8ee3dacd7dcaed9e6bca082a584041c0450731ffb2684eeacc`.
+Build/help pass with zero warnings and `vcs.modified=false`; the temporary
+`.git` pointer is restored exactly. Six unchanged host E2Es exit naturally
+with code 0: stock RoundChakram **39.207s**, FanChakram **36.587s**, secret
+wall **36.953s**, Blink **44.473s**, first attack **43.299s**, and Lightning/
+Drain Mana cleanup **33.273s**. Actual inventory/mouse/network inputs launch
+the weapons, produce natural damage **38/30**, and restore the original
+weapon/equipment; FanChakram consumes exactly one charge. The unchanged
+six-mode Blink, sixteen-mode first-attack and secret-wall assertions pass.
+All **28 regression PNGs** match the prior wall-destroyed product byte for
+byte; **six new throw PNGs** are preserved, with **four target and two
+regression images actually viewed**. The six newly generated PNGs are moved
+out of the worktree only after exact preservation under ROOT. Initial
+controller copies accidentally ran the previous secret-wall scenario; both
+results are retained and excluded, then the actual named throw scenarios
+are rerun and qualified. These controlled stock host fixtures use virtual,
+headless and mock-audio paths; no earned-campaign or perceptual-fidelity
+credit is inferred. The fourteen C children separately qualify raw entries.
+
+At immutable `2ceab4b1f`, Windows `41483224581` passes amd64, including
+**781,826 passes / eleven skips**. Its 386 build/help pass, but its legacy
+test process ends during the unchanged original Trigger
+`nil-update-cold` fault case, without a Go panic diagnostic. The original
+failure, complete archives, raw streams and exact binaries remain retained;
+this is not a passing 386 gate or a resolved root cause. Opt-in diagnostic
+`41487936285` compares the exact failed PE with the preceding passing
+`c335ee23d` PE, using cold/repeated/full legacy replays and recording direct
+process status separately from test2json. It rebuilds or patches neither
+executable, tests nor runtime and supplies no passing-gate credit.
+
+Linux `41483496771` remains in progress. All five macOS 26 jobs in
+`41485128815` terminate without acquiring a runner; their failure and
+capacity annotations remain preserved. Optional standard ARM64 macOS 15
+run `41488314832` requests the same five full gates at the same immutable
+source. Only the selected runner image changes: native hardware, compiler,
+product, complete tests, strict settings, guards and skip rules remain.
+The default image stays macOS 26. Both standard ARM64 labels are documented
+in the [GitHub runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
+Unfinished native profiles earn no passing credit.
+
+Preservation rehashes all 293 available/restored earlier products, 81 old
+full test executables, all 4,649 personal assets/original GAME.EXE, fifteen
+protected failed Save files, 14,167 compressed JSON records, 1,879 compressed
+logs, recent products and all fourteen current test executables. The five
+historical missing products remain explicitly nonessential per the user;
+their original digests/missing state remain recorded, with no further copy
+search or recovery gate. All nine final campaign audits and the previously
+open user issues remain open; overall 100% is **not** achieved.
 
 ### Native wall-destroyed packet C entry
 
@@ -181,8 +227,9 @@ action and multiplicity, adding exactly 3,966 passes each and no new skips.
 The macOS aggregate run nevertheless retains its original **failure**:
 normal/server-HD never acquire hosted ARM64 runners in three attempts,
 with capacity annotations and failed/cancelled states preserved. The same
-full normal gate is requested individually as `41482200967`; server-HD
-remains pending. Neither unfinished profile earns passing credit, and an
+full normal gate requested individually as `41482200967` also terminates
+without a runner; server-HD remains unqualified at this historical source.
+Neither unfinished profile earns passing credit, and an
 observation timeout never cancels or restarts a live queued job.
 
 Host preprocessing finds **3,490 active C definitions / 296 integer-cast

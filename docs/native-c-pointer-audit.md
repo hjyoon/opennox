@@ -199,8 +199,12 @@ has **41 candidates / ten overlaps**, with only `4EB340` removed. All other
 candidate identities remain and all 191 preprocessing logs have zero
 warnings. The manifest's existing 4,043 records remain unchanged. Working-
 tree snapshots keep their original source labels and are rebound by exact
-C source/header hashes to the committed engine. Product and CI evidence for
-this subsequent engine are separate pending gates.
+C source/header hashes to the committed engine. A clean ARM64 product and
+six host E2Es subsequently qualify. Its native CI remains incomplete:
+Windows amd64 passes, while 386 terminates in an unchanged original Trigger
+nil-fault case; exact failed/passing PE comparison is diagnostic only.
+Unacquired macOS 26 jobs retain their original failures, with identical full
+native gates requested on an optional standard macOS 15 ARM64 image.
 
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source

@@ -98,7 +98,10 @@ func TestMonsterRoamWaypointLifecycleOriginal545790(t *testing.T) {
 					if unsafe.Sizeof(uintptr(0)) == 8 {
 						high := uint64(0xface123400000000)
 						for i := range update.Waypoints {
-							update.Waypoints[i] = (*server.Waypoint)(unsafe.Pointer(uintptr(high | uint64(row.Input.Seed))))
+							// These are opaque poison bits, including unaligned values.
+							// Prepare their exact bytes without manufacturing a Go pointer.
+							offset := 0x6000 + int(layout[2]) + i*8
+							binary.LittleEndian.PutUint64(buf[offset:], high|uint64(row.Input.Seed))
 						}
 						for i := range update.AIStack {
 							for j := range update.AIStack[i].Args {

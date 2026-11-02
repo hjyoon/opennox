@@ -93,6 +93,7 @@ struct313272 table_313272[11] = {
 };
 
 //----- (00545520) --------------------------------------------------------
+#if 0 // Native entries live in monster_retreat_predicates_native_545520_export.go.
 int nox_xxx_monsterCanResumeAttack_545520(int a1) {
 	unsigned short* v1; // ecx
 	double v2;          // st7
@@ -120,6 +121,7 @@ int sub_545580(int a1) {
 int nox_xxx_monsterCanCast2_5455B0(int a1) {
 	return *(uint8_t*)(*(uint32_t*)(a1 + 748) + 1440) & 0x20 && nox_xxx_testUnitBuffs_4FF350(a1, 29);
 }
+#endif
 
 //----- (005455E0) --------------------------------------------------------
 int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1) {
@@ -183,7 +185,7 @@ void sub_5456D0(int a1) {
 	int v7;    // ecx
 
 	v1 = *(uint32_t*)(a1 + 748);
-	if (*(uint32_t*)(a1 + 508) && sub_545580(a1)) {
+	if (*(uint32_t*)(a1 + 508) && sub_545580((nox_object_t*)(uintptr_t)(uint32_t)a1)) {
 		v2 = *(uint32_t*)(a1 + 508);
 		v3 = *(float*)(a1 + 56) - *(float*)(v2 + 56);
 		v4 = *(float*)(a1 + 60) - *(float*)(v2 + 60);

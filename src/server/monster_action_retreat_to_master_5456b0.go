@@ -22,7 +22,7 @@ func monsterRetreatToMasterActive545580(unit *Object) bool {
 		return false
 	}
 	update := unit.UpdateDataMonster()
-	return update.StatusFlags.Has(object.MonStatusCanCastSpells) && unit.HasEnchant(ENCHANT_ANTI_MAGIC)
+	return monsterCanCast2Data5455B0(unit, update)
 }
 
 // monsterActionRetreatToMaster5456D0 restores GAME.EXE 005456D0 with

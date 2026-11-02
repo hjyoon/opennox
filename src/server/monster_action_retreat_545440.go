@@ -91,11 +91,7 @@ func monsterCanResumeAttack545520(unit *Object) bool {
 	if unit == nil || unit.UpdateData == nil || unit.HealthData == nil {
 		return false
 	}
-	health := float64(1)
-	if unit.HealthData.Max != 0 {
-		health = float64(unit.HealthData.Cur) / float64(unit.HealthData.Max)
-	}
-	return health >= float64(unit.UpdateDataMonster().ResumeLevel)
+	return monsterCanResumeAttackData545520(unit.HealthData, unit.UpdateDataMonster())
 }
 
 func monsterRetreatCheckEdibles5455E0(unit *Object, hooks monsterActionRetreatHooks545440) {
@@ -144,7 +140,7 @@ func monsterActionRetreat545440(unit *Object, hooks monsterActionRetreatHooks545
 	}
 	update := unit.UpdateDataMonster()
 	canResume := monsterCanResumeAttack545520(unit)
-	antiMagicCaster := update.StatusFlags.Has(object.MonStatusCanCastSpells) && unit.HasEnchant(ENCHANT_ANTI_MAGIC)
+	antiMagicCaster := monsterCanCast2Data5455B0(unit, update)
 	if canResume && !antiMagicCaster {
 		hooks.pop()
 		return

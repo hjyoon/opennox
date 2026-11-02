@@ -19,9 +19,9 @@ extern struct313272 table_313272[11];
 #include "monster_random_walk_native_545020.h"
 #include "monster_facing_native_545210.h"
 #include "monster_retreat_native_545440.h"
-int nox_xxx_monsterCanResumeAttack_545520(int a1);
-int sub_545580(int a1);
-int nox_xxx_monsterCanCast2_5455B0(int a1);
+int nox_xxx_monsterCanResumeAttack_545520(nox_object_t* unit);
+int sub_545580(nox_object_t* unit);
+int nox_xxx_monsterCanCast2_5455B0(nox_object_t* unit);
 int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1);
 #include "monster_fight_run_state_native_531e20.h"
 void sub_5456D0(int a1);

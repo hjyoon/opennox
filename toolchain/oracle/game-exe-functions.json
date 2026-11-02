@@ -23392,6 +23392,13 @@
       "size": 65,
       "sha256": "c9acf09cea0488c5e8ec6fa4508d43350ff734f3026ad8bef6378e0749d490aa",
       "purpose": "Complete original void attack-action pop root.3270contexts/profile including4rawfaults;all65instructionbytes execute under both startup FPU controls with identical outputs. Pop50A160 alone is a declared world service; no full Pop/End/campaign credit. Signed index-1 timer-prefix alias,all24slots,cached entry MUD across callbacks,ordered service writes and full heap/register/stack/FPU guards."
+    },
+    {
+      "name": "point_shape_original_547DB0",
+      "address": "0x00547DB0",
+      "size": 302,
+      "sha256": "bd94c247e839a116136edc82f9f61b54184eb25b5719b324c18cc29d80c8bbd9",
+      "purpose": "Untouched original point/shape predicate; all302 instructionbytes executed across987 independent contexts in bothFPU profiles;2alignmentbytes excluded. No declared child services."
     }
   ],
   "data": [

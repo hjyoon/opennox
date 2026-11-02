@@ -175,6 +175,7 @@ int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1) {
 // 5456B0/5456C0 use native pointers in monster_fight_run_state_native_531e20_export.go.
 
 //----- (005456D0) --------------------------------------------------------
+#if 0 // Native entry lives in monster_retreat_master_native_5456d0_export.go.
 void sub_5456D0(int a1) {
 	int v1;    // edi
 	int v2;    // eax
@@ -207,6 +208,7 @@ void sub_5456D0(int a1) {
 		nox_xxx_monsterPopAction_50A160(a1);
 	}
 }
+#endif
 
 //----- (00545790) --------------------------------------------------------
 long long sub_545790(int a1) {

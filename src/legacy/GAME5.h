@@ -24,7 +24,7 @@ int sub_545580(nox_object_t* unit);
 int nox_xxx_monsterCanCast2_5455B0(nox_object_t* unit);
 int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1);
 #include "monster_fight_run_state_native_531e20.h"
-void sub_5456D0(int a1);
+void sub_5456D0(nox_object_t* unit);
 long long sub_545790(int a1);
 int sub_5457C0(int a1);
 char nox_xxx_mobActionRoam_5457E0(int* a1);

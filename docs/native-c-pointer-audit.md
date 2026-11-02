@@ -200,11 +200,30 @@ candidate identities remain and all 191 preprocessing logs have zero
 warnings. The manifest's existing 4,043 records remain unchanged. Working-
 tree snapshots keep their original source labels and are rebound by exact
 C source/header hashes to the committed engine. A clean ARM64 product and
-six host E2Es subsequently qualify. Its native CI remains incomplete:
-Windows amd64 passes, while 386 terminates in an unchanged original Trigger
-nil-fault case; exact failed/passing PE comparison is diagnostic only.
-Unacquired macOS 26 jobs retain their original failures, with identical full
-native gates requested on an optional standard macOS 15 ARM64 image.
+six host E2Es subsequently qualify. Linux's four native CI gates and a
+fresh full Windows amd64/386 run pass. The earlier Windows 386 original
+Trigger nil-fault process termination and its exact binaries remain
+preserved; corrected exact-PE replays complete but do not identify its
+cause. Both macOS 26/15 CI runs fail to acquire runners. Five native local
+ARM64 test profiles pass instead. Across those five local and six remote
+profiles, every earlier terminal identity/action/multiplicity remains,
+with 5,176 additional passes per ordinary profile and 5,181 in strict,
+zero new skips and zero emitted warnings. This supplies no passing macOS
+remote-CI credit.
+
+The next review covers raw death entries `549D80`, `549E00`, `549E70` and
+`54A250`, whose public object arguments are still fixed-width integers.
+Existing Go references select ordinary native callbacks and do not close
+those raw ABIs. Pre-engine original execution covers all 282 instruction
+bytes and 305 inputs per FPU profile, with byte-identical complete outputs.
+Eight faults occur in explicitly declared world position reads; none occur
+in these original instructions. Reentrant calls execute original bodies,
+and complete image/64 KiB heap/caller/register/FPU checks pass. A push-world
+mutation demonstrates that later damage/spark calls read the live point.
+The current manifest does not yet seal these four ranges. Getter/consumer
+freezing, actual above-4-GiB C reproductions, manifest additions and the port
+remain pending under `ROOT/monster-death-explosion-native-entry-port`;
+no crash or new native-port credit is inferred from this preparation.
 
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source

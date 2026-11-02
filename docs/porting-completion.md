@@ -138,26 +138,72 @@ At immutable `2ceab4b1f`, Windows `41483224581` passes amd64, including
 test process ends during the unchanged original Trigger
 `nil-update-cold` fault case, without a Go panic diagnostic. The original
 failure, complete archives, raw streams and exact binaries remain retained;
-this is not a passing 386 gate or a resolved root cause. Opt-in diagnostic
-`41487936285` compares the exact failed PE with the preceding passing
-`c335ee23d` PE, using cold/repeated/full legacy replays and recording direct
-process status separately from test2json. It rebuilds or patches neither
-executable, tests nor runtime and supplies no passing-gate credit.
+the failure remains unresolved. Diagnostic `41487936285` preserves its
+initial wrong-compiler full-replay failures. Corrected diagnostic
+`41490320091` uses the original pinned i686 LLVM-MinGW environment and
+replays both exact retained PEs without rebuilding or patching them. All
+26 direct processes exit 0: ten cold fault cases, twenty fault-suite
+iterations, valid/fault controls and the full legacy suite per PE. The
+current full legacy suite passes **523,012 / 75 skips**, versus
+**521,902 / 75 skips** for `c335ee23d`, retaining all old terminal identities
+and adding 1,110 passes. This diagnostic does not identify the cause of the
+original abrupt termination or supply native-gate credit.
 
-Linux `41483496771` remains in progress. All five macOS 26 jobs in
-`41485128815` terminate without acquiring a runner; their failure and
-capacity annotations remain preserved. Optional standard ARM64 macOS 15
-run `41488314832` requests the same five full gates at the same immutable
-source. Only the selected runner image changes: native hardware, compiler,
-product, complete tests, strict settings, guards and skip rules remain.
-The default image stays macOS 26. Both standard ARM64 labels are documented
-in the [GitHub runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
-Unfinished native profiles earn no passing credit.
+Fresh complete Windows native run `41492669808` at actual checkout
+`b7d940f4c` passes both build/help/test gates: **781,826 / eleven skips** on
+amd64 and **762,096 / 94 skips** on 386. Its full archives, raw jobs, two
+products and six executed test PEs are retained with verified API digests,
+binary hashes and ZIP CRCs. All emitted compiler/linker/test-build warnings
+are zero. The first native failure remains preserved and its cause stays
+open. All 6,230 runtime/test inputs match qualified `2ceab4b1f`; these later
+CI/docs commits are not relabelled as the older checkout.
+
+Linux native `41483496771` passes all four gates at `2ceab4b1f`: normal/HD
+each **789,916 / 54 skips**, server/server-HD each **783,806 / seven skips**.
+All four products and complete streams are retained and hash/CRC checked;
+full text and raw-job warning scans find zero warnings. The separate
+default-link damage checks retain their 133,384 passes.
+
+Both macOS 26 run `41485128815` and optional standard ARM64 macOS 15 run
+`41488314832` terminate without acquiring any of their five runners.
+Their failures and capacity annotations remain preserved. The default
+image remains macOS 26; selecting macOS 15 changes only the runner image.
+Both labels are documented in the
+[GitHub runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
+These runs earn no macOS CI credit. Native local ARM64 checks at actual
+`b7d940f4c` instead complete all five official test profiles:
+
+| Local native test profile | PASS events | Existing skips |
+| --- | ---: | ---: |
+| Normal | 787,925 | 43 |
+| HD | 787,925 | 43 |
+| Server | 781,856 | 4 |
+| Server HD | 781,856 | 4 |
+| Strict highres/cgocheck2/checkptr2 | 649,199 | 8 |
+
+The four ordinary profiles run all four packages without a selector;
+strict keeps the unchanged official selector and real OpenAL null/native-FX
+settings. The server audio package has no tests, preserving its package
+skip. All eighteen additional executed Mach-O ARM64 test binaries and their
+GC symbols are verified and retained, giving **32 current full local test
+executables** with the fourteen preceding selected/before binaries. The
+local Go installation lacks `go tool nm`; the initial metadata preparation
+failures are retained and `/usr/bin/nm` verifies the native symbols instead.
+The actual tests did not need rerunning for that metadata correction.
+
+All eleven profiles across **five local ARM64 checks and six native CI
+checks** preserve every `f6672bd1c` terminal identity/action/multiplicity.
+Each ordinary profile adds exactly **5,176 passes** and strict adds **5,181**,
+with zero new skips or warnings. This mixed coverage does not establish
+eleven passing remote CI profiles or additional product-profile coverage.
+Proof: `ROOT/chakram-retarget-native-entry-port/hybrid11-native-test-profiles-qualified-with-no-new-skips-v1.json`.
 
 Preservation rehashes all 293 available/restored earlier products, 81 old
 full test executables, all 4,649 personal assets/original GAME.EXE, fifteen
 protected failed Save files, 14,167 compressed JSON records, 1,879 compressed
-logs, recent products and all fourteen current test executables. The five
+logs, recent products and the fourteen initial current test executables;
+all eighteen additional full-profile executables are separately rehashed.
+The five
 historical missing products remain explicitly nonessential per the user;
 their original digests/missing state remain recorded, with no further copy
 search or recovery gate. All nine final campaign audits and the previously

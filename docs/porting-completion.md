@@ -55,6 +55,123 @@ completion requirements.
 
 ## Current findings
 
+### Native secret-wall state packet C entries
+
+Runtime `f6672bd1c` ports public C `4DF120` and `4DF180` to native wall
+arguments and complete unit/update/player traversal pointers. Both use the
+existing native wall record type and retain their scalar zero return. The
+wall WORD is cached before First; Next runs after each Send, using live
+player state. The three-byte packet keeps its identity and service mutations
+throughout the traversal. Raw entries retain original faults and add no
+class/null admission. The ordinary campaign sender retains its separate
+guarded player snapshot. Both original C bodies remain exact under `#if 0`,
+with two independent C11 public-signature assertions.
+
+Reference-only `c042c0907` freezes seven original contract/getter/consumer/
+golden/producer/before-test/provenance files before engine changes. Both
+original FPU profiles execute **1,188 contexts**, including **26 faults**,
+with byte-identical complete outputs. All **172 instruction bytes** execute;
+twenty alignment bytes earn no credit. First `4DA7C0`, Next `4DA7F0` and
+Send `4E5420` are explicit world-service boundaries. Whole original image,
+64 KiB heap including service edits, protected caller, valid-return
+nonvolatile registers and FPU CW/TOP are guarded. Coverage includes all 256
+unsigned recipient bytes, shared/repeated records, live mutations, ignored
+Send results and completed event prefixes before faults.
+
+Both actual old C entries **SIGSEGV above 4 GiB** after independent native
+layouts, existing typed C and ordinary player traversal, the complete native
+pointer-chain controls and seven whole records pass. The first fixture
+preparation incorrectly treated `alloc.New`'s argument as an initializer;
+its ordinary control rejects before target entry. Explicit post-allocation
+stores correct preparation before the reference freeze. That first source,
+failed executable/output and the qualified before executable remain retained.
+No original expected result changes.
+
+Normal and highres/cgocheck2/checkptr2 selections each pass **2,397 events**:
+**2,396 new native passes** and one existing sender control. All **fourteen
+fresh default-C production children** pass in each profile, inspecting real
+C First/Next/Send, packet allocation/queue links, cached wall ID, unsigned 255
+and slot 31 routing, inactive/empty players and live disconnection. Terminal
+identities/actions/multiplicities agree, without new skips. Ordinary sender
+admission and unchanged E2E guards pass **eleven events** in each profile;
+the manifest verifier passes **21**. Seven qualification/preparation test
+executables are retained, including the first failed preparation. Final
+local compiler/linker warnings are zero; initial module-download information
+is retained separately from warnings.
+
+The macOS CI strict pattern adds only the `SecretWallState` alternative.
+Every old alternative remains an exact prefix; flags, guards and skip rules
+are retained. This is an explicit coverage extension, not an unchanged-
+selector claim. All **4,304 prior inputs** and seven frozen references remain
+exact. The manifest preserves all **4,040 old records**, metadata/order and
+backed bytes, adding two 86-byte code ranges and no data: **3,349 code / 693
+data ranges**, **4,042 records**. The initially rejected global-sort draft is
+retained; insertion preserves the original record order.
+
+The clean Go 1.26.9 ARM64 product is **66,258,258 bytes**, SHA-256
+`7c5b9eaf3bd88cd74e1b4196e1a626e02fc0005309002f7453de899a6d95c55d`.
+Build/help pass with zero warnings and the original `.git` pointer restored.
+The unchanged stock G_Crypts target passes in **41.491s**, verifying both
+diagonal secret walls through real contact, natural opening, four server/
+client crossings and one sound event per wall. Blink, first-attack and
+Lightning/Drain Mana regressions pass in **41.335s / 47.722s / 36.970s**;
+all four lanes exit naturally with code 0. All **28 regression captures**
+remain byte-identical to the preceding edible-search product, and four are
+actually viewed. The target exercises the ordinary snapshot sender; the
+fourteen separate default-C children qualify the raw entries. These
+headless/virtual/mock-audio lanes earn no campaign or audible-fidelity credit.
+
+All eleven native configurations pass at the same immutable `f6672bd1c`
+source: Windows `41439960164`, Linux `41439996678` and macOS `41439996662`.
+
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 784,740 | 54 | 0 |
+| linux-amd64-opennox-hd | 784,740 | 54 | 0 |
+| linux-amd64-opennox-server | 778,630 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 778,630 | 7 | 0 |
+| macos-arm64-hd | 782,749 | 43 | 0 |
+| macos-arm64-normal | 782,749 | 43 | 0 |
+| macos-arm64-server | 776,680 | 4 | 0 |
+| macos-arm64-server-hd | 776,680 | 4 | 0 |
+| macos-arm64-strict | 644,018 | 8 | 0 |
+| opennox-server-windows-386 | 756,920 | 94 | 0 |
+| opennox-server-windows-amd64 | 776,650 | 11 | 0 |
+
+All **11 artifact ZIPs / 10 products / 24 full parent test executables**
+remain retained with API digests, binary SHA checks and every member CRC.
+Complete text/JSONL streams and raw job logs have **zero compiler/linker/
+test-build warnings**, without new suppression. Linux's separate default-
+link damage lane retains 133,384 passes. Every preceding terminal identity/
+action/multiplicity is retained, adding **2,396 native passes** in each of
+the eleven profiles with no new skips. Only the two established dynamic
+pointer-label normalizations are used. The strict selector extension above
+retains every earlier alternative and instrumentation/guard/skip setting.
+
+The repeated host audit finds **3,491 active C definitions / 297 integer-cast
+candidates**, and **42 typed-pointer narrowing definitions**, eleven
+overlapping the integer view. Only the two secret-wall entries leave the
+typed view. All 191 C input/header hashes are rebound to clean `f6672bd1c`;
+the initial working-tree snapshots keep their actual provenance. These are
+triage counts, not remaining defects or completion percentages.
+
+Preservation again verifies 293 surviving/restored older products, all 81
+older test executables, 4,649 personal files, original GAME.EXE, fifteen
+protected failed-Save files, 14,167 compressed JSON records and 1,879
+compressed output logs, plus recent products and retained local executables.
+The user-cleanup recovery remains **37 exact-copy restorations / five missing
+older products**, detailed below; no new all-products-preserved claim is
+made. Local and product proofs are under
+`ROOT/secret-wall-state-native-entry-port` and
+`ROOT/secret-wall-state-native-product-e2e-v1`.
+The completed engine qualification and the five-product archival gap are
+recorded together in
+`all-current-secretwall-engine-gates-qualified-archival-five-open-v1.json`.
+
+All nine final chapter 1–3 audits, actual user sale-silence reproduction and
+the older Windows memory-failure cause remain open. Overall 100% is **not**
+achieved.
+
 ### Native edible-search C entries and archival copy recovery
 
 Runtime `c351c49c0` ports raw `5455E0`, search `544A00` and callback `544A40`

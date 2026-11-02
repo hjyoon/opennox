@@ -140,6 +140,32 @@ unit traversal pointers. Their existing ordinary Go implementation does not
 close those public C paths. Original execution and actual C reproduction
 must precede a port; a static match supplies no crash or completion credit.
 
+Runtime `f6672bd1c` ports both secret-wall packet entries to the existing
+native wall record type and full native unit/update/player pointers. Raw
+live traversal, cached wall WORD, unchanged packet identity, zero return and
+original faults remain separate from the ordinary guarded player snapshot.
+Seven original references are frozen before engine changes; both original
+FPU profiles execute 172 instruction bytes and 1,188 contexts, including
+26 faults, with byte-identical outputs. Both actual old C entries SIGSEGV
+above 4 GiB after independent native controls. Normal/strict comparisons and
+fourteen fresh default-C pipeline children pass in each profile.
+
+The repeated host scan now finds **3,491 active definitions / 297 integer-
+parameter cast candidates**. The separate typed-pointer view contains **42
+definitions**, retaining eleven overlaps with the integer view. Only
+`4DF120` and `4DF180` leave the typed view; all prior integer-candidate
+identities remain. All 191 C inputs and headers match clean `f6672bd1c`, with
+zero preprocessor warnings. The original working-tree captures retain their
+actual provenance under `ROOT/secret-wall-state-native-entry-port`.
+
+Raw wall-destroyed entry `4DF0A0` is a follow-up integer-pointer candidate.
+Its existing ordinary Go counterpart does not port its public C ABI. The
+complete 118-byte original body has distinct direct-Send return and recipient-
+32 broadcast paths. Both original FPU profiles execute 1,974 contexts,
+including 43 faults, with byte-identical complete outputs. This is original
+execution evidence only: its native getter/consumer, actual C reproduction
+and port remain pending under `ROOT/wall-destroyed-native-entry-port`.
+
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source
 revision. Static inventory changes alone earn no campaign, audio, runtime

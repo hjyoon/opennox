@@ -23420,6 +23420,20 @@
       "size": 32,
       "sha256": "5e58e34d04aa27066ba2172b237397a038c814a1a69f29306d9aec24f75f76ff",
       "purpose": "Complete untouched raw ROAM lifecycle leaf;1321contexts per PC53-ToZero/nearest profile,6rawfaults/profile,both complete outputs identical;no callee services,instruction/result substitutions or constant-data ranges. Original signed-index/store/returned-update-pointer history;whole image/64KiB heap/caller and valid-return nonvolatile/CW/TOP guards. Five getter/consumer/golden/provenance files and two actual C-before SIGSEGV reproductions above4GiB frozen before engine changes. Native pointer/stack-slot projections retain full-word guards; out-of-array projections do not establish named-field alias equivalence or certify malformed game states. No complete ROAM graph,campaign or overall100 claim."
+    },
+    {
+      "name": "original_edible_search_native_closure_544A00",
+      "address": "0x00544A00",
+      "size": 53,
+      "sha256": "83366f180c005b8ee6dba25dfa7945d3f4cee0a5e1cb3cf7c2032d8ca714b60d",
+      "purpose": "Complete unchanged original edible search/callback closure executed with actual parent5455E0, flags40A5C0 and poison5347F0 in3406 independent contexts per PC53 ToZero/nearest profile, including13 fault prefixes.439 total executed instruction bytes,206 newly sealed; nine FPU-sensitive contexts retained. Spatial517F90,visibility5370E0 and Push50A260 only are world services. Actual nested search/shared scratch/live mutation/store order/whole original image+heap+caller/nonvolatile+FPU guarded; native actual C and raw Go use the same frozen canonical ToZero reference. Nil search unit faults at declared spatial point-read admission. Existing parent/flags/poison seals unchanged; no alignment or mutable scratch data credit, no overall100% claim."
+    },
+    {
+      "name": "original_edible_search_native_closure_544A40",
+      "address": "0x00544A40",
+      "size": 153,
+      "sha256": "0ef74720849f4b7cbfa9d648523f9eb363b2a27c820eeb6cbda077f350043c52",
+      "purpose": "Complete unchanged original edible search/callback closure executed with actual parent5455E0, flags40A5C0 and poison5347F0 in3406 independent contexts per PC53 ToZero/nearest profile, including13 fault prefixes.439 total executed instruction bytes,206 newly sealed; nine FPU-sensitive contexts retained. Spatial517F90,visibility5370E0 and Push50A260 only are world services. Actual nested search/shared scratch/live mutation/store order/whole original image+heap+caller/nonvolatile+FPU guarded; native actual C and raw Go use the same frozen canonical ToZero reference. Nil search unit faults at declared spatial point-read admission. Existing parent/flags/poison seals unchanged; no alignment or mutable scratch data credit, no overall100% claim."
     }
   ],
   "data": [

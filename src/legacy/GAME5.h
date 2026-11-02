@@ -22,7 +22,7 @@ extern struct313272 table_313272[11];
 int nox_xxx_monsterCanResumeAttack_545520(nox_object_t* unit);
 int sub_545580(nox_object_t* unit);
 int nox_xxx_monsterCanCast2_5455B0(nox_object_t* unit);
-int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1);
+void* nox_xxx_mobRetreatCheckEdibles_5455E0(nox_object_t* a1);
 #include "monster_fight_run_state_native_531e20.h"
 void sub_5456D0(nox_object_t* unit);
 void* sub_545790(nox_object_t* unit);

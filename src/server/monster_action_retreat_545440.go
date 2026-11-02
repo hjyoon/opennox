@@ -29,41 +29,53 @@ func monsterSearchEdible544A00(unit *Object, radius float32, hooks monsterSearch
 	if unit == nil || hooks.eachInCircle == nil || hooks.canInteract == nil {
 		return nil
 	}
-	nearestDistance := monsterSearchEdibleMaxDistance544A00
-	var nearest *Object
+	state := MonsterEdibleSearchState544A00{BestDistance: monsterSearchEdibleMaxDistance544A00}
 	hooks.eachInCircle(unit.PosVec, radius, func(candidate *Object) bool {
-		if candidate == nil || !candidate.ObjClass.Has(object.ClassFood) {
-			return true
-		}
-		food := candidate.ObjSubClass.AsFood()
-		if food.Has(object.FoodJug) || food.Has(object.FoodMushroom) && unit.Poison540 == 0 {
-			return true
-		}
-		if food.Has(object.FoodPotion) &&
-			!(food.Has(object.FoodHealthPotion) && hooks.online && unit.ObjSubClass.AsMonster().Has(object.MonsterNPC)) {
-			return true
-		}
-		if !hooks.canInteract(unit, candidate, 0) {
-			return true
-		}
-		// 00544A9E..00544ACB retains x87 53-bit intermediates through
-		// FCOM, then spills only the winning distance to binary32. Both
-		// stages use gameplay's round-toward-zero mode, including ties
-		// against the spilled cache. Preserve the Y-square/X-square/add
-		// boundaries without changing thread state or contracting the sum.
-		dx := monsterMoveToRunAddChop53_544434(float64(candidate.PosVec.X), -float64(unit.PosVec.X))
-		dy := monsterMoveToRunAddChop53_544434(float64(candidate.PosVec.Y), -float64(unit.PosVec.Y))
-		ySquared := monsterMoveToRunSquareChop53_544434(dy)
-		xSquared := monsterMoveToRunSquareChop53_544434(dx)
-		distance := monsterMoveToRunAddChop53_544434(ySquared, xSquared)
-		// The original tests C0 alone: unordered also replaces the winner.
-		if !(distance >= float64(nearestDistance)) {
-			nearestDistance = float32(monsterMoveToRunSpill544440(distance))
-			nearest = candidate
+		if candidate != nil {
+			monsterSearchEdibleCandidate544A40(candidate, unit, &state, hooks.canInteract, func() bool { return hooks.online })
 		}
 		return true
 	})
-	return nearest
+	return state.BestObject
+}
+
+// The raw callback reads live fields and shared scratch after world services.
+// Its direct field reads retain the original null-input fault prefix.
+func monsterSearchEdibleCandidate544A40(candidate, unit *Object, state *MonsterEdibleSearchState544A00, interact func(*Object, *Object, int) bool, online func() bool) {
+	if !candidate.ObjClass.Has(object.ClassFood) {
+		return
+	}
+	food := candidate.ObjSubClass.AsFood()
+	if food.Has(object.FoodJug) || food.Has(object.FoodMushroom) && unit.Poison540 == 0 {
+		return
+	}
+	food = candidate.ObjSubClass.AsFood()
+	if food.Has(object.FoodPotion) && !(food.Has(object.FoodHealthPotion) && online() && unit.ObjSubClass.AsMonster().Has(object.MonsterNPC)) {
+		return
+	}
+	if !interact(unit, candidate, 0) {
+		return
+	}
+	// Original PC53 ToZero retains intermediates through FCOM and spills only
+	// the winning distance. C0 alone also replaces on an unordered comparison.
+	dx := monsterEdibleSubtract544A40(float64(candidate.PosVec.X), float64(unit.PosVec.X))
+	dy := monsterEdibleSubtract544A40(float64(candidate.PosVec.Y), float64(unit.PosVec.Y))
+	ySquared := monsterMoveToRunSquareChop53_544434(dy)
+	xSquared := monsterMoveToRunSquareChop53_544434(dx)
+	distance := monsterMoveToRunAddChop53_544434(ySquared, xSquared)
+	if !(distance >= float64(state.BestDistance)) {
+		state.BestDistance = float32(monsterMoveToRunSpill544440(distance))
+		state.BestObject = candidate
+	}
+}
+
+// x87 produces the negative indefinite NaN for infinity minus itself.
+// Preserve operand NaN payloads through the normal arithmetic path.
+func monsterEdibleSubtract544A40(a, b float64) float64 {
+	if math.IsInf(a, 0) && a == b {
+		return math.Float64frombits(0xfff8000000000000)
+	}
+	return monsterMoveToRunAddChop53_544434(a, -b)
 }
 
 // MonsterSearchEdible544A00 binds the native-width edible search to the live
@@ -94,7 +106,7 @@ func monsterCanResumeAttack545520(unit *Object) bool {
 	return monsterCanResumeAttackData545520(unit.HealthData, unit.UpdateDataMonster())
 }
 
-func monsterRetreatCheckEdibles5455E0(unit *Object, hooks monsterActionRetreatHooks545440) {
+func monsterRetreatCheckEdibles5455E0(unit *Object, hooks monsterActionRetreatHooks545440) *AIStackItem {
 	radius := monsterRetreatFoodRangeDefault5455E0
 	if hooks.quest {
 		radius = monsterRetreatFoodRangeQuest5455E0
@@ -113,22 +125,25 @@ func monsterRetreatCheckEdibles5455E0(unit *Object, hooks monsterActionRetreatHo
 		if pickup := hooks.push(ai.ACTION_PICKUP_OBJECT); pickup != nil {
 			pickup.Args[0] = uintptr(food.CObj())
 		}
-		if move := hooks.push(ai.ACTION_MOVE_TO); move != nil {
+		move := hooks.push(ai.ACTION_MOVE_TO)
+		if move != nil {
 			move.Args[0] = uintptr(math.Float32bits(food.PosVec.X))
 			y := uintptr(math.Float32bits(food.PosVec.Y))
 			move.Args[2] = uintptr(food.CObj())
 			move.Args[1] = y // 0054566A stores the pointer before the saved Y.
 		}
-		return
+		return move
 	}
 	hooks.push(ai.DEPENDENCY_NOT_HEALTHY)
 	hooks.push(ai.DEPENDENCY_NO_VISIBLE_ENEMY)
 	hooks.push(ai.DEPENDENCY_NO_VISIBLE_FOOD)
-	if roam := hooks.push(ai.ACTION_ROAM); roam != nil {
+	roam := hooks.push(ai.ACTION_ROAM)
+	if roam != nil {
 		roam.Args[0] = 0
 		// 0054569E writes a BYTE, not a sign-extended direction DWORD.
 		roam.Args[2] = roam.Args[2]&^uintptr(0xff) | 0x80
 	}
+	return roam
 }
 
 // monsterActionRetreat545440 restores GAME.EXE 00545440 through 005455E0.

@@ -124,6 +124,7 @@ int nox_xxx_monsterCanCast2_5455B0(int a1) {
 #endif
 
 //----- (005455E0) --------------------------------------------------------
+#if 0 // Native entries live in monster_edibles_native_544a00_export.go.
 int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1) {
 	int v1;      // edi
 	int* v2;     // eax
@@ -170,6 +171,8 @@ int* nox_xxx_mobRetreatCheckEdibles_5455E0(int a1) {
 	}
 	return result;
 }
+
+#endif
 
 //----- (005456B0) --------------------------------------------------------
 // 5456B0/5456C0 use native pointers in monster_fight_run_state_native_531e20_export.go.

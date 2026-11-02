@@ -6783,6 +6783,7 @@ int* nox_xxx_mobActionHunt_5449D0(int a1) {
 }
 
 //----- (00544A00) --------------------------------------------------------
+#if 0 // Native entries live in monster_edibles_native_544a00_export.go.
 int nox_xxx_mobSearchEdible_544A00(nox_object_t* a1, float a2) {
 	*getMemU32Ptr(0x5D4594, 2489452) = 0;
 	*getMemU32Ptr(0x5D4594, 2489444) = 1259902592;
@@ -6816,6 +6817,8 @@ void nox_xxx_mobSearchEdible2_544A40(int a1, int a2) {
 		}
 	}
 }
+
+#endif
 
 //----- (00544AE0) --------------------------------------------------------
 int sub_544AE0(int a1, float a2) {

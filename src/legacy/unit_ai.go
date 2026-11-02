@@ -1025,8 +1025,8 @@ func sub_50CB10() unsafe.Pointer {
 	return unsafe.Pointer(&points[0])
 }
 
-func Nox_xxx_mobSearchEdible_544A00(a1 *server.Object, a2 float32) int {
-	return int(C.nox_xxx_mobSearchEdible_544A00(asObjectC(a1), C.float(a2)))
+func Nox_xxx_mobSearchEdible_544A00(a1 *server.Object, a2 float32) *server.Object {
+	return asObjectS(C.nox_xxx_mobSearchEdible_544A00(asObjectC(a1), C.float(a2)))
 }
 func Nox_xxx_weaponGetStaminaByType_4F7E80(a1 int) int {
 	return int(server.WeaponStaminaByType4F7E80(uint32(a1)))

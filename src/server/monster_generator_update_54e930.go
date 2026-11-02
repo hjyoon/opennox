@@ -100,20 +100,7 @@ func (s *Server) monsterGeneratorNativeDeps54E930(
 		playerByInd:     s.Players.ByInd,
 		trace:           s.MapTraceRay,
 		occupied: func(point types.Pointf) bool {
-			occupied := false
-			rect := types.Rectf{
-				Min: types.Ptf(point.X-monsterGeneratorCollisionGap54EF00, point.Y-monsterGeneratorCollisionGap54EF00),
-				Max: types.Ptf(point.X+monsterGeneratorCollisionGap54EF00, point.Y+monsterGeneratorCollisionGap54EF00),
-			}
-			s.Map.EachObjInRect(rect, func(candidate *Object) bool {
-				if !candidate.Class().Has(object.ClassMonsterGenerator) &&
-					candidate.Field5&monsterGeneratorDisabled54E930 == 0 &&
-					candidate.Sub547DB0(&point) {
-					occupied = true
-				}
-				return true
-			})
-			return occupied
+			return s.PointOccupied54EF00(&point)
 		},
 		tileAllow: runtime.MapTileAllowTeleport,
 		canPlace:  s.MonsterSpawnCanPlace50DE80,

@@ -1227,6 +1227,7 @@ int nox_xxx_monsterCheckDodgeables_547C50(int a1) {
 #endif
 
 //----- (00547DB0) --------------------------------------------------------
+#if 0 // Native pointer/precision entry: point_shape_native_547db0_export.go.
 int sub_547DB0(int a1, float2* a2) {
 	double v3; // st7
 	double v4; // st6
@@ -1264,6 +1265,7 @@ int sub_547DB0(int a1, float2* a2) {
 	}
 	return 1;
 }
+#endif
 
 //----- (00547EE0) --------------------------------------------------------
 #if 0
@@ -4853,7 +4855,7 @@ int nox_xxx_mgenSetCreaturePos_54ED50(int a1, float2* a2, int a3, int a4) {
 		nox_xxx_utilNormalizeVector_509F20(&a1a);
 		a1a.field_0 = a1a.field_0 * 45.0 + *(float*)(a1 + 56);
 		a1a.field_4 = a1a.field_4 * 45.0 + *(float*)(a1 + 60);
-		if (!sub_54EF00(&a1a.field_0)) {
+		if (!sub_54EF00(&a1a)) {
 			v10.field_8 = a1a.field_0;
 			v10.field_0 = *(float*)(a1 + 56);
 			v4 = *(uint32_t*)(a4 + 16);
@@ -4891,6 +4893,7 @@ int nox_xxx_mgenSetCreaturePos_54ED50(int a1, float2* a2, int a3, int a4) {
 }
 
 //----- (0054EF00) --------------------------------------------------------
+#if 0 // Native parent and typed callback: point_shape_native_547db0_export.go.
 int sub_54EF00(float* a3) {
 	float4 a1; // [esp+0h] [ebp-10h]
 
@@ -4914,6 +4917,8 @@ void sub_54EF60(float* a1, int a2) {
 		}
 	}
 }
+
+#endif
 
 //----- (0054EF90) --------------------------------------------------------
 int sub_54EF90(float a1, int a2, int a3, int a4) {
@@ -4944,7 +4949,7 @@ int sub_54EF90(float a1, int a2, int a3, int a4) {
 		v12.field_8 = cos(v9) * a1 + *v4;
 		v12.field_C = sin(*(float*)&v13) * a1 + v4[1];
 		if (nox_xxx_mapTraceRay_535250(&v12, 0, 0, v6)) {
-			if (!sub_54EF00(&v12.field_8) && !nox_xxx_mapTileAllowTeleport_411A90((float2*)&v12.field_8)) {
+			if (!sub_54EF00((float2*)&v12.field_8) && !nox_xxx_mapTileAllowTeleport_411A90((float2*)&v12.field_8)) {
 				break;
 			}
 		}

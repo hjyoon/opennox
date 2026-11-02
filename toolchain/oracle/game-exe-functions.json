@@ -23455,6 +23455,34 @@
       "size": 153,
       "sha256": "0ef74720849f4b7cbfa9d648523f9eb363b2a27c820eeb6cbda077f350043c52",
       "purpose": "Complete unchanged original edible search/callback closure executed with actual parent5455E0, flags40A5C0 and poison5347F0 in3406 independent contexts per PC53 ToZero/nearest profile, including13 fault prefixes.439 total executed instruction bytes,206 newly sealed; nine FPU-sensitive contexts retained. Spatial517F90,visibility5370E0 and Push50A260 only are world services. Actual nested search/shared scratch/live mutation/store order/whole original image+heap+caller/nonvolatile+FPU guarded; native actual C and raw Go use the same frozen canonical ToZero reference. Nil search unit faults at declared spatial point-read admission. Existing parent/flags/poison seals unchanged; no alignment or mutable scratch data credit, no overall100% claim."
+    },
+    {
+      "name": "monster_death_raw_original_549d80",
+      "address": "0x00549D80",
+      "size": 124,
+      "sha256": "679dbc4b948ca7b0dccf6282d7ad6d12a600918b30cdb5e91cb15354c700fb5f",
+      "purpose": "Complete original raw death callback, independently executed in both PC53 FPU profiles before native ABI changes; declared world services and their read faults are separately recorded. This seal alone supplies no native-port credit."
+    },
+    {
+      "name": "monster_death_raw_original_549e00",
+      "address": "0x00549E00",
+      "size": 104,
+      "sha256": "c1470c29225426e9dc338d03e8bc7ffc115b4c4895266f648745999d3afcb82f",
+      "purpose": "Complete original raw death callback, independently executed in both PC53 FPU profiles before native ABI changes; declared world services and their read faults are separately recorded. This seal alone supplies no native-port credit."
+    },
+    {
+      "name": "monster_death_raw_original_549e70",
+      "address": "0x00549E70",
+      "size": 27,
+      "sha256": "8bed39df362fc9cb094a628c5bb9acaf0d9431df1efd2de8a5bdac3dfc2f6a0f",
+      "purpose": "Complete original raw death callback, independently executed in both PC53 FPU profiles before native ABI changes; declared world services and their read faults are separately recorded. This seal alone supplies no native-port credit."
+    },
+    {
+      "name": "monster_death_raw_original_54a250",
+      "address": "0x0054A250",
+      "size": 27,
+      "sha256": "5f113c7feb7cdefb55fe0dfc53bd01ada304de36eb9745c5b2801c58b010aefd",
+      "purpose": "Complete original raw death callback, independently executed in both PC53 FPU profiles before native ABI changes; declared world services and their read faults are separately recorded. This seal alone supplies no native-port credit."
     }
   ],
   "data": [

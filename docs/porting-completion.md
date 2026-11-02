@@ -209,6 +209,36 @@ their original digests/missing state remain recorded, with no further copy
 search or recovery gate. All nine final campaign audits and the previously
 open user issues remain open; overall 100% is **not** achieved.
 
+### Next raw monster-death original references
+
+Reference-only preparation seals original `549D80`, `549E00`, `549E70` and
+`54A250` before changing their native engine or public integer object ABIs.
+Both FPU profiles execute all **282 instruction bytes** and **305 inputs**,
+with identical complete outputs. Eight faults belong to explicitly declared
+world point reads; none occur in these original entry instructions. Complete
+image/64 KiB heap/caller/register/FPU checks and original reentrant execution
+pass. Six input/producer/golden/provenance files are frozen, and both published
+producer replays match the canonical goldens byte for byte.
+
+The four new nonoverlapping manifest records retain all **4,043 preceding
+records**, their order and metadata. The verifier unit tests pass **21 events** with
+zero warnings, now sealing **3,354 code / 693 data / 4,047 total records**.
+An initial global-sort preparation is rejected before any source mutation;
+that failed source/result is retained and the corrected publication appends
+the records. The native getter draft passes C syntax/type preflight, but
+complete frozen consumers, actual old-C high-pointer reproductions, the
+port and its product/runtime gates remain pending. These references earn
+no new native-entry or overall completion credit.
+
+The full Go code-verifier CLI rejects the earlier `5471F4` jump-table data
+in an executable section. The untouched preceding
+manifest reproduces the identical first rejection; both failures and the
+executed tool are retained. An independent PE check verifies every code/data
+byte hash, raw-file range bound and original full-tree file binding for all
+4,047 records, identifying `5471F4` and `5471FC` as the two existing
+executable-section data records. No expected value or CLI section policy changes, and no full
+Go CLI pass is claimed. That preexisting verifier-policy issue remains open.
+
 ### Native wall-destroyed packet C entry
 
 Runtime `c335ee23d` ports public C `4DF0A0` from an integer wall argument to

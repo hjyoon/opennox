@@ -220,10 +220,21 @@ Eight faults occur in explicitly declared world position reads; none occur
 in these original instructions. Reentrant calls execute original bodies,
 and complete image/64 KiB heap/caller/register/FPU checks pass. A push-world
 mutation demonstrates that later damage/spark calls read the live point.
-The current manifest does not yet seal these four ranges. Getter/consumer
-freezing, actual above-4-GiB C reproductions, manifest additions and the port
-remain pending under `ROOT/monster-death-explosion-native-entry-port`;
-no crash or new native-port credit is inferred from this preparation.
+Six original input/producer/golden/provenance files are subsequently frozen
+before the engine change. Both published producers replay byte for byte.
+Four nonoverlapping manifest seals add these 282 bytes, retaining every
+previous record, its order and metadata: **3,354 code / 693 data / 4,047
+total records**; all 21 verifier unit checks pass. The full Go CLI still
+rejects the earlier `5471F4` jump-table data in an executable section; the
+unchanged preceding manifest reproduces the identical rejection. All 4,047
+range hashes and raw PE bounds pass an independent byte check, with both
+CLI failures retained and no passing full-CLI credit. The initial publication
+preflight rejects a global sort before any source mutation because it would
+change the prior record order; the failed preparation is retained and the
+new records are appended instead. Getter/consumer freezing, actual
+above-4-GiB C reproductions and the port remain pending under
+`ROOT/monster-death-explosion-native-entry-port`; no crash or new native-port
+credit is inferred from this preparation.
 
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source

@@ -1,7 +1,7 @@
 # Native C entry pointer audit
 
-This inventory prioritizes remaining public C ABIs after the native point
-and occupancy port. It does not supply an overall porting denominator or
+This inventory prioritizes remaining public C ABIs after the native point,
+occupancy and retreat ports. It does not supply an overall porting denominator or
 count confirmed runtime crashes.
 
 At `616b61d`, host macOS ARM64 normal preprocessing of all **191** top-level
@@ -44,13 +44,29 @@ public ABIs are independently typechecked and compared with the original.
 The fourteen native-width/other candidates remain separated. This scan
 introduces no new fixed-32-bit candidate or preprocessor warning.
 
-The raw `5456D0` C update still has an integer object argument. Its call to
-the newly typed predicate explicitly reconstructs only the pointer width
-that this old entry already admitted; this does not port `5456D0`. No direct
-production reference to that raw symbol is found outside its definition and
-header, while the ordinary dispatcher uses the existing native Go update.
-That static classification does not close indirect reachability or the full
-retreat call graph. It remains a follow-up target.
+At that preceding `43ae3d9` source, raw `5456D0` still has an integer object
+argument. No direct production call is found outside its definition/header;
+the ordinary dispatcher already uses a native Go update. That classification
+does not close indirect reachability. The subsequent actual C reproduction
+SIGSEGV above 4 GiB after independent layouts, real native owner/Push
+composition and typed sound/action/buff/predicate controls pass.
+
+Runtime `8212e8c` ports raw `5456D0` to a typed `nox_object_t*` entry and shares
+its update core with the ordinary dispatcher. The raw entry retains original
+faults, pointer-load order, cached MUD/live owner behavior, unspilled distance
+arithmetic and ordered action writes. Ordinary admission, including guarded
+missing health, remains intact. Five original references are frozen before
+engine changes, including a corrected C-prefix-versus-Go-EXT layout check;
+the initial preparation failure and actual old C crash remain preserved.
+
+The repeated `8212e8c` host scan finds **3,498 active C definitions / 300
+integer-cast candidates / 286 fixed-32-bit candidates**. Only `5456D0` leaves
+the fixed-width inventory. Fourteen native-width/other candidates remain
+separate; no new candidate or preprocessor warning is introduced. Integer
+object entries `5455E0`, `545790` and `5457C0` remain follow-up targets.
+Their ordinary native dispatcher implementations do not port those raw C
+ABIs. In particular, ROAM cancel has signed unchecked stack-index arithmetic
+and a pointer-shaped return; widening its first argument alone is insufficient.
 
 Build, strict-pointer, product and CI results belong in
 [porting-completion.md](porting-completion.md), with their exact source

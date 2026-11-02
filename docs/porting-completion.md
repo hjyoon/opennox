@@ -55,6 +55,111 @@ completion requirements.
 
 ## Current findings
 
+### Native retreat-to-master C update and continued fixed-width audit
+
+Runtime `8212e8c` ports the public `5456D0` update from an integer object
+argument to a typed `nox_object_t*` C/Go entry. The raw entry and ordinary
+dispatcher share the update core, including original unspilled PC53/ToZero
+distance arithmetic, unordered comparison, cached update-data pointer, live
+owner reloads and ordered action writes. The ordinary dispatcher keeps its
+existing class/head admission and guarded missing-health behavior; the raw
+entry retains original faults and adds no admission. The entire earlier C
+body remains exact under `#if 0`.
+
+Reference-only `9873b972` freezes five getter/consumer/golden/provenance files
+before engine changes. Each original FPU profile executes **942 root contexts
+plus one ancillary null-buff context**, including **17 raw faults**. Two
+unspilled distance-boundary contexts differ between the original FPU profiles;
+both complete outputs remain preserved. Actual original predicates/buff loads
+execute with only Push/Pop declared as services. Ordered service states,
+pointer mutation, shared/refused action slots, whole image/heap/caller and
+valid-return nonvolatile/CW/TOP guards pass. There are **393 instruction
+bytes / eight constant-data bytes**; helper alignment earns no credit.
+
+Before porting, the actual public C entry **SIGSEGV above 4 GiB** after
+independent layouts, real ordinary native owner/Push composition, typed
+sound/action/buff/predicate controls and complete allocation guards pass.
+The first preparation mistakenly compares total Go object size with its
+shared C prefix: Go appends two documented EXT handles. Its exact source,
+binary and failure remain preserved. The corrected before preparation checks
+the shared prefix and both EXT handles, retaining every original field guard;
+the full original consumer/getter/golden do not change. That promoted version
+is frozen before the engine port.
+
+The frozen original comparison passes **1,888 normal events**. The affected
+ordinary/raw selection and actual default Push/Pop composition pass **7,894
+events**, both normally and with highres/cgocheck2/checkptr2. Composition
+includes 27 fresh child modes; a separate test preserves ordinary missing-
+health admission and the raw original fault. Seven exact local test
+executables, including both before preparations, remain retained. No existing
+expected value, selector, golden or skip changes. All **4,280 prior inputs**
+and five frozen references remain exact; current input count is **4,287**.
+
+Only one nonoverlapping **192-byte** parent range is added to the original
+manifest. All **4,035 earlier records**, relative order, metadata and backed
+bytes/SHA remain exact. The manifest now has **3,343 code / 693 data ranges**
+and **4,036 records**; the helper and constant ranges were already covered.
+
+All **eleven required native configurations pass at the same immutable
+`8212e8c` source**: Windows `41395175807`, Linux `41395265377` and macOS
+`41395268208`. No runtime profile is repeated in this batch.
+
+| Native configuration | PASS events | SKIP events | Build warnings |
+| --- | ---: | ---: | ---: |
+| linux-amd64-opennox | 772,811 | 54 | 0 |
+| linux-amd64-opennox-hd | 772,811 | 54 | 0 |
+| linux-amd64-opennox-server | 766,701 | 7 | 0 |
+| linux-amd64-opennox-server-hd | 766,701 | 7 | 0 |
+| macos-arm64-hd | 770,820 | 43 | 0 |
+| macos-arm64-normal | 770,820 | 43 | 0 |
+| macos-arm64-server | 764,751 | 4 | 0 |
+| macos-arm64-server-hd | 764,751 | 4 | 0 |
+| macos-arm64-strict | 632,089 | 8 | 0 |
+| opennox-server-windows-386 | 744,991 | 94 | 0 |
+| opennox-server-windows-amd64 | 764,721 | 11 | 0 |
+
+Every prior Windows and macOS-strict terminal identity/action/multiplicity
+is retained, adding **1,918 new passes** per profile and no new skips. The
+strict selector is unchanged. Linux's extra default-link damage lane retains
+**133,384 passes**. All **11 available ZIPs / 10 native products / 24 full
+parent test executables** and every non-skipped raw job log are retained,
+with API digests, binary payload SHA and every ZIP member CRC verified. Every
+text/JSONL byte is warning-scanned: compiler, linker, test-build and raw-job
+warnings are **zero**, with no added suppression. The first artifact collector
+fails on a network read timeout; its two partial downloads and full failure
+output are preserved. Only missing archives are retried; successful archives
+are reused after size/SHA verification. The complete batch proof is
+`ROOT/monster-retreat-master-native-entry-port/all-current-retreat-master-gates-and-preservation-qualified-v1.json`.
+
+The clean Go 1.26.9 ARM64 product is **66,201,266 bytes**, SHA-256
+`ad17ea28bddc3da682ff070c8e8b6d9fbd61ca03beaaf146a65dd63bd6e86521`.
+Build/help pass without warnings and record clean `8212e8c` source; the
+original `.git` pointer is restored. Unchanged host Blink, first-attack and
+Lightning/Drain Mana cleanup lanes pass in **50.627s / 78.036s / 46.243s**.
+All 28 captures are preserved and byte-identical to the preceding predicate
+product; four are actually viewed. These headless/virtual/mock-audio lanes
+earn no additional campaign or audible-output completion credit.
+
+The repeated clang-preprocessed audit of **191 C files** now finds **3,498
+active definitions / 300 integer-cast candidates / 286 fixed-32-bit
+candidates**, with fourteen native-width/other candidates kept separate.
+Only `5456D0` leaves the fixed-width inventory; no candidate or preprocessor
+warning is added. These are static triage counts, not remaining confirmed
+defects or a completion percentage. The integer-object ROAM start/cancel
+entries `545790`/`5457C0` and edible-check entry `5455E0` remain follow-up
+targets; ordinary native dispatcher implementations do not port those ABIs.
+
+Preservation rehashes all earlier 298 products, 81 full test executables,
+4,649 personal files, original GAME.EXE, 15 protected failed-Save files,
+14,167 compressed JSON records and 1,879 compressed output logs, plus recent
+products and prior frozen references. No additional disposable Go temporary
+AR files are found, and the warm shared compiler cache is retained. The
+artifact network-timeout partials, failure logs and successful retries remain
+preserved. No assets, Save, inputs, goldens, records, products or executables
+are removed. All nine final chapter 1–3 audits, actual user sale-silence
+reproduction and the earlier Windows memory-failure cause remain open.
+Overall 100% is **not** achieved.
+
 ### Native retreat predicate C entries and fixed-width pointer audit
 
 Runtime `43ae3d9` ports public `545520`, `545580` and `5455B0` from integer
@@ -155,9 +260,10 @@ the forwarding `545580` is outside both cast counts. These are static triage
 counts, not confirmed remaining defects or a completion percentage. Integer
 handles, control flags and callback-address references require semantic
 classification; see [native-c-pointer-audit.md](native-c-pointer-audit.md).
-Raw C `5456D0` remains an unported integer-object entry and a follow-up target;
-ordinary runtime uses its existing native Go update. Its call-site conversion
-does not port that outer entry or close indirect reachability.
+At that preceding `43ae3d9` source, raw C `5456D0` remains an unported
+integer-object entry; ordinary runtime uses its existing native Go update.
+Its call-site conversion does not port that outer entry or close indirect
+reachability. The subsequent `8212e8c` port is recorded above.
 
 Preservation rechecks all earlier 298 products, 81 full test executables,
 4,649 personal files, original GAME.EXE, 15 protected failed-Save files and
